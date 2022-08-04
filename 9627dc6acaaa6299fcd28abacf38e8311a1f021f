@@ -22,6 +22,54 @@
       },
       "revId": "9627dc6acaaa6299fcd28abacf38e8311a1f021f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fac927_b8e5503c",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-04T16:40:28Z",
+      "side": 1,
+      "message": "I\u0027ve split out ImageProvider into its own header.",
+      "parentUuid": "143615e0_d338319f",
+      "range": {
+        "startLine": 45,
+        "startChar": 17,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "9627dc6acaaa6299fcd28abacf38e8311a1f021f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a4fb28_1ec388dd",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-04T16:40:28Z",
+      "side": 1,
+      "message": "I\u0027ve split out ImageProvider into its own header.",
+      "parentUuid": "143615e0_d338319f",
+      "range": {
+        "startLine": 45,
+        "startChar": 17,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "9627dc6acaaa6299fcd28abacf38e8311a1f021f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
