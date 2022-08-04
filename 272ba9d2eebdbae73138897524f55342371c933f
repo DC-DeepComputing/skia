@@ -290,6 +290,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c33a89ae_4c2eec61",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-04T19:56:01Z",
+      "side": 1,
+      "message": "Filed b/241451603 for RGB565 support in libavif.",
+      "parentUuid": "aed49b3e_a10ff80c",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 5
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4183920f_1b3d0fce",
