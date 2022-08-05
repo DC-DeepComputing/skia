@@ -136,14 +136,6 @@ public:
         return fOrigColors4f[i].toSkColor();
     }
 
-    bool colorsCanConvertToSkColor() const {
-        bool canConvert = true;
-        for (int i = 0; i < fColorCount; ++i) {
-            canConvert &= fOrigColors4f[i].fitsInBytes();
-        }
-        return canConvert;
-    }
-
     SkColor4f*          fOrigColors4f; // original colors, as floats
     SkScalar*           fOrigPos;      // original positions
     int                 fColorCount;
