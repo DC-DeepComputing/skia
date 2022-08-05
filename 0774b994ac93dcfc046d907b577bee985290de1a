@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c77913_62c8926a",
+        "filename": ".bazelrc",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T13:26:06Z",
+      "side": 1,
+      "message": "nit: All of the other flags in this list are ordered (disable, enable)",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 86
+      },
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c26b152c_352bc41d",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T13:26:06Z",
+      "side": 1,
+      "message": "I would remove this (have this condition return the empty set)...",
+      "range": {
+        "startLine": 56,
+        "startChar": 49,
+        "endLine": 56,
+        "endChar": 81
+      },
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "647ee83d_2ac17351",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T13:26:06Z",
+      "side": 1,
+      "message": "... and then remove these changes.\n\nIs there a reason we needed to do it this way? Having two separate defines that clients can use to control the same feature is confusing and error-prone.",
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
