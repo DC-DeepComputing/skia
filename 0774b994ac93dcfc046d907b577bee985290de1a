@@ -62,6 +62,24 @@
       "message": "... and then remove these changes.\n\nIs there a reason we needed to do it this way? Having two separate defines that clients can use to control the same feature is confusing and error-prone.",
       "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff72b70a_b9eef5b0",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-05T13:38:02Z",
+      "side": 1,
+      "message": "The reason I did it this was to try to make it less error-prone and more future-proof. If we change the default here, we won\u0027t have to update the Bazel rules.\n\nBazel won\u0027t let the flag be set to true and false, so this shouldn\u0027t be defined in two ways.\n\nIf you still prefer, I can do as you suggested.",
+      "parentUuid": "647ee83d_2ac17351",
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
