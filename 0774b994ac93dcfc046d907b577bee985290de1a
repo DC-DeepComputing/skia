@@ -80,6 +80,24 @@
       "parentUuid": "647ee83d_2ac17351",
       "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be9170e_2d77dee3",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T15:23:03Z",
+      "side": 1,
+      "message": "Yeah, I\u0027d rather keep it the other way. If the default ever changes, it\u0027s going to mean we\u0027re deleting the code entirely anyway. I don\u0027t love that the only external option is a negative, but that\u0027s just how skia tends to operate (to support staging changes for the few clients that need to slowly opt-in to things).",
+      "parentUuid": "ff72b70a_b9eef5b0",
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
