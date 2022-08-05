@@ -16,6 +16,24 @@
       "message": "skia:12541 is a catch-all Bazel bug",
       "revId": "71233f2db68ceeaa1801d8368509e235b99cea38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "042c0a4b_b792610b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-05T18:03:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5acf66d0_ec945e70",
+      "revId": "71233f2db68ceeaa1801d8368509e235b99cea38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
