@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe15df3a_68a1f3cf",
+        "filename": ".bazelrc",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-05T15:40:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c77913_62c8926a",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 86
+      },
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c26b152c_352bc41d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-05T13:26:06Z",
       "side": 1,
       "message": "I would remove this (have this condition return the empty set)...",
+      "range": {
+        "startLine": 56,
+        "startChar": 49,
+        "endLine": 56,
+        "endChar": 81
+      },
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be74b497_332f28d2",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-05T15:40:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c26b152c_352bc41d",
       "range": {
         "startLine": 56,
         "startChar": 49,
@@ -96,6 +144,24 @@
       "side": 1,
       "message": "Yeah, I\u0027d rather keep it the other way. If the default ever changes, it\u0027s going to mean we\u0027re deleting the code entirely anyway. I don\u0027t love that the only external option is a negative, but that\u0027s just how skia tends to operate (to support staging changes for the few clients that need to slowly opt-in to things).",
       "parentUuid": "ff72b70a_b9eef5b0",
+      "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1132d103_6bbdc949",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-05T15:40:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6be9170e_2d77dee3",
       "revId": "0774b994ac93dcfc046d907b577bee985290de1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
