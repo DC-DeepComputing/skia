@@ -195,6 +195,24 @@
       "parentUuid": "18a082b2_6167e61e",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd7aec4_a22983f4",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T17:48:36Z",
+      "side": 1,
+      "message": "That\u0027s pretty much where I\u0027m at, as well. I\u0027d like to see some of the related work ready, but recognize that it may be difficult if that work is happening down in Edge, so I\u0027d be okay with this landing.\n\nFor the record: On the other CL you linked, I\u0027m not that strongly opposed to putting other text-rasterization hints in SkSurfaceProps. The gamma thing smells like a color space, but it\u0027s not quite - it\u0027s just a transfer function. And there is abundant precedent for special handling of blitter gamma for text in both libraries and commercial software.",
+      "parentUuid": "cabb5cec_e4fbc224",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
