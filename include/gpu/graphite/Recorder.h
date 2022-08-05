@@ -48,7 +48,6 @@ using TextureDataCache = PipelineDataCache<std::unique_ptr<SkTextureDataBlock>, 
 
 struct SK_API RecorderOptions final {
     RecorderOptions() = default;
-    RecorderOptions(const RecorderOptions&) = default;
     ~RecorderOptions();
 
     sk_sp<ImageProvider> fImageProvider;

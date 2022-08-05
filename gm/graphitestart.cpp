@@ -261,6 +261,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+#if 0
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
@@ -311,9 +312,23 @@ protected:
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(kTileWidth, 2*kTileHeight,
                                                           kTileWidth, kTileHeight));
 
+#endif
+
         // Bottom-right corner
         {
-            // <add tile here>
+            const SkRect kTile = SkRect::MakeXYWH(kTileWidth, 0, kTileWidth, kTileHeight);
+
+            SkPaint restorePaint;
+            restorePaint.setBlendMode(SkBlendMode::kMultiply);
+
+            SkPaint circlePaint;
+            circlePaint.setColor(SK_ColorBLUE);
+
+            canvas->clipRect(kTile);
+            canvas->saveLayer(nullptr, &restorePaint);
+
+                canvas->drawCircle(kTile.center(), kTileWidth/2.0f, circlePaint);
+            canvas->restore();
         }
     }
 

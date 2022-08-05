@@ -32,7 +32,6 @@
 #include <cstring>
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "include/gpu/graphite/ImageProvider.h"
 #include <unordered_map>
 #endif
 

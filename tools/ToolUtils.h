@@ -32,7 +32,7 @@
 #include "tools/SkMetaData.h"
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/RecorderOptions.h"
 #endif
 
 class SkBitmap;
