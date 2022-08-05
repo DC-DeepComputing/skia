@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b145f694_4066e2cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-05T13:21:33Z",
+      "side": 1,
+      "message": "PTAL at the SK_DISABLE_LEGACY_SHADERCONTEXT changes in SkTypes.h and bazel/BUILD.bazel",
+      "revId": "107272b27958a487c21b36d4f96ff25ba2ba9e13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
