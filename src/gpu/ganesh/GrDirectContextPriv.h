@@ -12,7 +12,6 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/AtlasTypes.h"
-#include "src/gpu/ganesh/BaseDevice.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 
 class GrAtlasManager;
