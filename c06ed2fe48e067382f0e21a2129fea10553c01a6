@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e566ed6d_9d482402",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-05T19:30:20Z",
+      "side": 1,
+      "message": "Does this still need to be guarded for Chromium, given that it no longer propagates LCD text?",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 39
+      },
+      "revId": "c06ed2fe48e067382f0e21a2129fea10553c01a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
