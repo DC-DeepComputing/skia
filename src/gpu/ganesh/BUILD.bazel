@@ -31,6 +31,8 @@ CORE_FILES = [
     "GrBuffer.h",
     "GrBufferAllocPool.cpp",
     "GrBufferAllocPool.h",
+    "GrBufferTransferRenderTask.h",
+    "GrBufferTransferRenderTask.cpp",
     "GrCaps.cpp",
     "GrCaps.h",
     "GrClientMappedBufferManager.cpp",
