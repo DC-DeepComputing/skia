@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c017fd_a5ff6033",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-05T20:25:24Z",
+      "side": 1,
+      "message": "We\u0027re currently missing some important bug fixes (and the path API additions) in mainline piet-gpu. If you want to try things out before the PR lands, you can change this line to `https://github.com/dfrg/piet-gpu.git@4fc730558e67ffb0adca42839aa85fa8e3609197` to pull in cbrokaw\u0027s development branch.",
+      "range": {
+        "startLine": 42,
+        "startChar": 52,
+        "endLine": 42,
+        "endChar": 166
+      },
+      "revId": "0e75a6fc76eb4256150a2feec0d59959d19f5edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
