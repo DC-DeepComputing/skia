@@ -52,7 +52,7 @@ FakeClasses(Cubic, Cubic);
 #ifdef SK_RELEASE
 #define FORCE_RELEASE 1
 #else
-#define FORCE_RELEASE 1  // set force release to 1 for multiple thread -- no debugging
+#define FORCE_RELEASE 0  // set force release to 1 for multiple thread -- no debugging
 #endif
 
 #define DEBUG_UNDER_DEVELOPMENT 0
@@ -115,12 +115,12 @@ FakeClasses(Cubic, Cubic);
 #define DEBUG_ANGLE 1
 #define DEBUG_ASSEMBLE 1
 #define DEBUG_COINCIDENCE 1
-#define DEBUG_COINCIDENCE_DUMP 0
-#define DEBUG_COINCIDENCE_ORDER 0  // tight arc quads may generate out-of-order coincidence spans
+#define DEBUG_COINCIDENCE_DUMP 1
+#define DEBUG_COINCIDENCE_ORDER 1  // tight arc quads may generate out-of-order coincidence spans
 #define DEBUG_COINCIDENCE_VERBOSE 1
 #define DEBUG_CUBIC_BINARY_SEARCH 0
 #define DEBUG_CUBIC_SPLIT 1
-#define DEBUG_DUMP_VERIFY 0
+#define DEBUG_DUMP_VERIFY 1
 #define DEBUG_DUMP_SEGMENTS 1
 #define DEBUG_FLOW 1
 #define DEBUG_LIMIT_WIND_SUM 15
