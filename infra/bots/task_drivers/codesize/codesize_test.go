@@ -266,6 +266,7 @@ func test(t *testing.T, patch types.Patch, expectedBloatyFileGCSPath, expectedBl
 		compileTaskNameNoPatch: "Build-Debian10-Clang-x86_64-Release-NoPatch",
 		binaryName:             "dm",
 		bloatyCIPDVersion:      "1",
+		bloatyPath:             "/path/to/bloaty",
 	}
 
 	res := td.RunTestSteps(t, false, func(ctx context.Context) error {
@@ -302,7 +303,7 @@ func test(t *testing.T, patch types.Patch, expectedBloatyFileGCSPath, expectedBl
 
 	// Assert that Bloaty was invoked with the expected arguments.
 	bloatyCmd := commands[1]
-	assert.Equal(t, "bloaty/bloaty", bloatyCmd.Name)
+	assert.Equal(t, "/path/to/bloaty", bloatyCmd.Name)
 	assert.Equal(t, []string{"build/dm", "-d", "compileunits,symbols", "-n", "0", "--tsv"}, bloatyCmd.Args)
 
 	if isTryjob {
@@ -314,7 +315,7 @@ func test(t *testing.T, patch types.Patch, expectedBloatyFileGCSPath, expectedBl
 
 		// Assert that Bloaty was invoked with the expected arguments.
 		bloatyCmd = commands[3]
-		assert.Equal(t, "bloaty/bloaty", bloatyCmd.Name)
+		assert.Equal(t, "/path/to/bloaty", bloatyCmd.Name)
 		assert.Equal(t, []string{"build/dm", "--", "build_nopatch/dm",
 			"-d", "compileunits,symbols", "-n", "0", "-s", "file"}, bloatyCmd.Args)
 	}
