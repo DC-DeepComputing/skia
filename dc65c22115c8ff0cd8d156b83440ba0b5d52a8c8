@@ -213,6 +213,24 @@
       "parentUuid": "cabb5cec_e4fbc224",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "715ee031_c204871c",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-08-05T19:22:48Z",
+      "side": 1,
+      "message": "Great!\n\nFWIW, we\u0027d be very happy to move all the contrast/gamma work upstream ASAP.  Maintaining downstream diffs is unwieldy, especially for something so central as text-rendering. :)  I can start prepping updated CLs for that stuff next week, if you like.\n\nLanding this CL, in the meantime, would be appreciated.",
+      "parentUuid": "1dd7aec4_a22983f4",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
