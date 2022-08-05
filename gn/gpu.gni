@@ -838,3 +838,11 @@ skia_shared_gpu_sources = [
   "$_src/text/gpu/TextBlobRedrawCoordinator.cpp",
   "$_src/text/gpu/TextBlobRedrawCoordinator.h",
 ]
+
+skia_piet_gpu_sources = [
+  "$_src/gpu/piet/PietTypes.h",
+  "$_src/gpu/piet/Renderer.cpp",
+  "$_src/gpu/piet/Renderer.h",
+  "$_src/gpu/piet/Scene.cpp",
+  "$_src/gpu/piet/Scene.h",
+]
