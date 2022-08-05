@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec36b112_e194f822",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-05T15:47:25Z",
+      "side": 1,
+      "message": "My plan for syncing this op with respect to OpsTasks is to add a GrRenderTask::Flags value that indicates that a task can\u0027t be reordered. In practice I don\u0027t see that we\u0027d get much value out of reordering around these ops WRT SkMesh updates.",
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a2ac932_bccb90e6",
+        "filename": "src/gpu/ganesh/GrBufferTransferRenderTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-05T15:47:25Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure what to do here. This task doesn\u0027t reference any proxies. I see a number of ops with comments like this:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/GrWaitRenderTask.cpp;l\u003d15?q\u003dGrWaitRenderTask::gatherProxyIntervals\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F\n\nBut they all have some proxy (either a target or not). Also, the comments reference  fEndOfOpsTaskOpIndices that must be kept in sync but that doesn\u0027t seem to exist anymore.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 80
+      },
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
