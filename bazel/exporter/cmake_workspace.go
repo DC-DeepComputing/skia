@@ -21,11 +21,6 @@ type cmakeWorkspace struct {
 	rules map[string]*cmakeRule
 }
 
-// writeState tracks the state of an in-progress write of the workspace.
-type writeState struct {
-	writtenRules []string // All cmakeRule's written during write.
-}
-
 // newCMakeWorkspace will create a new CMake workspace object.
 func newCMakeWorkspace() *cmakeWorkspace {
 	return &cmakeWorkspace{rules: map[string]*cmakeRule{}}

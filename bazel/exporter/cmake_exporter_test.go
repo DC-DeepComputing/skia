@@ -7,6 +7,7 @@ package exporter
 
 import (
 	"bytes"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,12 +15,14 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.skia.org/infra/go/skerr"
 	"go.skia.org/skia/bazel/exporter/build_proto/analysis_v2"
+	"go.skia.org/skia/bazel/exporter/interfaces"
 	"go.skia.org/skia/bazel/exporter/interfaces/mocks"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 )
 
 const testWorkspaceDir = "/path/to/workspace"
+const testCMakeOutFname = "/not/necessarily/in/workspace/CMakeLists.txt"
 
 // This input test data (in textproto format) started as output of
 // a bazel cquery call - like:
@@ -155,37 +158,51 @@ const textProto = `results {
   }`
 
 func TestExport_QueryReadError_ReturnsError(t *testing.T) {
-	e := NewCMakeExporter(testWorkspaceDir)
 	var contents bytes.Buffer
+	openFileFn := func(path string) (interfaces.Writer, error) {
+		assert.Equal(t, path, testCMakeOutFname)
+		return &contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, openFileFn)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return([]byte{}, skerr.Fmt("expected error"))
-	err := e.Export(qcmd, &contents, "projName")
+	err := e.Export(qcmd)
 	assert.Error(t, err)
 	assert.Equal(t, 0, contents.Len())
 }
 
 func TestExport_InvalidProtobuf_ReturnsError(t *testing.T) {
-	e := NewCMakeExporter(testWorkspaceDir)
 	var contents bytes.Buffer
+	openFileFn := func(path string) (interfaces.Writer, error) {
+		assert.True(t, filepath.IsAbs(path))
+		assert.Equal(t, path, testCMakeOutFname)
+		return &contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, openFileFn)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(make([]byte, 50), skerr.Fmt("empty data"))
-	err := e.Export(qcmd, &contents, "projName")
+	err := e.Export(qcmd)
 	assert.Error(t, err)
 	assert.Equal(t, 0, contents.Len())
 }
 
 func TestExport_ValidProtobuf_Success(t *testing.T) {
-	qr := analysis_v2.CqueryResult{}
-	err := prototext.Unmarshal([]byte(textProto), &qr)
+	qr := &analysis_v2.CqueryResult{}
+	err := prototext.Unmarshal([]byte(textProto), qr)
 	require.NoError(t, err)
-	protoData, err := proto.Marshal(&qr)
+	protoData, err := proto.Marshal(qr)
 	require.NoError(t, err)
 
-	e := NewCMakeExporter(testWorkspaceDir)
 	var contents bytes.Buffer
+	openFileFn := func(path string) (interfaces.Writer, error) {
+		assert.True(t, filepath.IsAbs(path))
+		assert.Equal(t, path, testCMakeOutFname)
+		return &contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, openFileFn)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(protoData, nil)
-	err = e.Export(qcmd, &contents, "projName")
+	err = e.Export(qcmd)
 	require.NoError(t, err)
 
 	// This expected CMake output text is created by hand.
@@ -247,49 +264,6 @@ set_target_properties(src_apps_hello PROPERTIES INCLUDE_DIRECTORIES
 )
 `
 	assert.Equal(t, expected, contents.String())
-}
-
-func TestIsFileRule_InvalidRule_ReturnsFalse(t *testing.T) {
-	assert.False(t, isFileTarget(""))
-}
-
-func TestIsFileRule_ValidFileRule_ReturnsTrue(t *testing.T) {
-	assert.True(t, isFileTarget("//dir/path:hello.c"))
-}
-
-func TestIsFileRule_ValidNonFileRule_ReturnsFalse(t *testing.T) {
-	assert.False(t, isFileTarget("//dir/path:hello"))
-}
-
-func TestFindRule_RuleExists_Success(t *testing.T) {
-	qr := analysis_v2.CqueryResult{}
-	err := prototext.Unmarshal([]byte(textProto), &qr)
-	require.NoError(t, err)
-
-	r, err := findRule(&qr, "//src/apps:hello")
-	require.NoError(t, err)
-	require.NotNil(t, r)
-	assert.Equal(t, "//src/apps:hello", r.GetName())
-}
-
-func TestFindRule_RuleDoesntExists_ReturnsError(t *testing.T) {
-	qr := analysis_v2.CqueryResult{}
-	err := prototext.Unmarshal([]byte(textProto), &qr)
-	require.NoError(t, err)
-
-	r, err := findRule(&qr, "//path/to:nonexistent_rule")
-	assert.Error(t, err)
-	assert.Nil(t, r)
-}
-
-func TestFindRule_InvalidRule_ReturnsError(t *testing.T) {
-	qr := analysis_v2.CqueryResult{}
-	err := prototext.Unmarshal([]byte(textProto), &qr)
-	require.NoError(t, err)
-
-	r, err := findRule(&qr, "")
-	assert.Error(t, err)
-	assert.Nil(t, r)
 }
 
 func TestGetRuleCopts_CoptsExists_Success(t *testing.T) {
