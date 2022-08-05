@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c9e145e_e16d89f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-05T19:08:33Z",
+      "side": 1,
+      "message": "nit: its",
+      "range": {
+        "startLine": 7,
+        "startChar": 19,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "41637fe6f326d147a001ca5a1b9de669c313ca32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb6ef83_c3e365ea",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-05T19:08:33Z",
+      "side": 1,
+      "message": "We only run on one, right? So why do we need to dump both?",
+      "range": {
+        "startLine": 142,
+        "startChar": 54,
+        "endLine": 143,
+        "endChar": 90
+      },
+      "revId": "41637fe6f326d147a001ca5a1b9de669c313ca32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

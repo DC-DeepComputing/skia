@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa260ed3_5bf12fdf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-05T19:08:33Z",
+      "side": 1,
+      "message": "I don\u0027t really understand how this is beneficial - it seems like there\u0027s some code that might be worth sharing?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "a2e6524e638f443879d60ded0b6599dd377adbec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2608691_9bb56e54",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-05T19:08:33Z",
+      "side": 1,
+      "message": "Is the plan to put this in `T`? This seems like a separate, unrelated change, that might not need to be backported?",
+      "range": {
+        "startLine": 10,
+        "startChar": 29,
+        "endLine": 11,
+        "endChar": 60
+      },
+      "revId": "a2e6524e638f443879d60ded0b6599dd377adbec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
