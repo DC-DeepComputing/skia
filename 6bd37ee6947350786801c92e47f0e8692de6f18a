@@ -20,6 +20,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be4b8921_8be60cc9",
+        "filename": "public.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "It seems like this file still uses the .cpp first rule",
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04913cd4_3e3bff1a",
+        "filename": "src/gpu/ganesh/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69a1b36_a9aacf77",
+        "filename": "src/gpu/ganesh/GrBufferTransferRenderTask.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "push right one \u0027 \u0027 ?",
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e316f27_c788f460",
+        "filename": "src/gpu/ganesh/GrBufferTransferRenderTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "GrBufferTransferRenderTask_DEFINED ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 40
+      },
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3a2ac932_bccb90e6",
         "filename": "src/gpu/ganesh/GrBufferTransferRenderTask.h",
         "patchSetId": 5
@@ -36,6 +110,93 @@
         "startChar": 0,
         "endLine": 33,
         "endChar": 80
+      },
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a07edab_bfd7ef20",
+        "filename": "src/gpu/ganesh/GrBufferTransferRenderTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "I think you\u0027re okay w/o a fake op/interval since this Task doesn\u0027t have any proxies at all.\n\nWrt \u0027fEndOfOpsTaskOpIndices\u0027 not existing any more, I\u0027ve created skbug.com/13629 (Investigate removing fake ops/intervals from Ganesh)",
+      "parentUuid": "3a2ac932_bccb90e6",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 80
+      },
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea40b45c_f1657feb",
+        "filename": "src/gpu/ganesh/GrDrawingManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "copies ?",
+      "range": {
+        "startLine": 106,
+        "startChar": 31,
+        "endLine": 106,
+        "endChar": 37
+      },
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcde70d5_e96b7120",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this line and #250 be reversed ?",
+      "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049937e2_5fafcdba",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-05T16:19:08Z",
+      "side": 1,
+      "message": "useTask ?",
+      "range": {
+        "startLine": 287,
+        "startChar": 51,
+        "endLine": 287,
+        "endChar": 55
       },
       "revId": "6bd37ee6947350786801c92e47f0e8692de6f18a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
