@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e622f5e_ee21b979",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-08T14:51:07Z",
+      "side": 1,
+      "message": "This is just the list of flags for the cmake build, right? We\u0027ll have a different list for our .gni targets?\n\nIf so, please rename the variable accordingly.",
+      "revId": "3e52e2a5d526f6b486cfb432770f51c3c900e2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26c491b_cb59d5d0",
+        "filename": "bazel/exporter/cmake_exporter.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-08T14:51:07Z",
+      "side": 1,
+      "message": "skerr.Wrap()",
+      "range": {
+        "startLine": 128,
+        "startChar": 14,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "3e52e2a5d526f6b486cfb432770f51c3c900e2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
