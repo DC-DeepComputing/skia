@@ -191,6 +191,8 @@ def compile_fn(api, checkout_root, out_dir):
     extra_cflags.append('-O1')
   if compiler != 'MSVC' and configuration == 'OptimizeForSize':
     extra_cflags.append('-Oz')
+    # build IDs are required for Bloaty if we want to use strip to ignore debug symbols.
+    extra_ldflags.append('-Wl,--build-id=0x0011223344')
 
   if 'Exceptions' in extra_tokens:
     extra_cflags.append('/EHsc')
