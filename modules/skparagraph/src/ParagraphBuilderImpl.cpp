@@ -23,10 +23,6 @@ std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(
         const ParagraphStyle& style, sk_sp<FontCollection> fontCollection) {
-    auto unicode = SkUnicode::Make();
-    if (nullptr == unicode) {
-        return nullptr;
-    }
     return std::make_unique<ParagraphBuilderImpl>(style, fontCollection);
 }
 
@@ -91,7 +87,7 @@ TextStyle ParagraphBuilderImpl::peekStyle() {
 }
 
 void ParagraphBuilderImpl::addText(const std::u16string& text) {
-    auto utf8 = fUnicode->convertUtf16ToUtf8(text);
+    auto utf8 = SkUnicode::convertUtf16ToUtf8(text);
     fUtf8.append(utf8);
 }
 
@@ -155,6 +151,22 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     addPlaceholder(PlaceholderStyle(), true);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
+}
+
+
+SkSpan<const char> ParagraphBuilderImpl::getText() const {
+    return SkSpan<const char>(fUtf8.c_str(), fUtf8.size());
+}
+
+std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build(
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    SkSpan<const char> text(fUtf8.c_str(), fUtf8.size());
+    std::shared_ptr<SkUnicode> unicode =
+            SkUnicode::Make(text, bidiRegions, graphemeBreaks, lineBreaks);
+    return std::make_unique<ParagraphImpl>(
+            fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, unicode);
 }
 
 void ParagraphBuilderImpl::Reset() {
