@@ -22,17 +22,25 @@ namespace skgpu::graphite {
 PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkBlender> blender,
                          sk_sp<SkShader> shader,
-                         sk_sp<SkColorFilter> colorFilter)
+                         sk_sp<SkColorFilter> colorFilter,
+                         sk_sp<SkBlender> primitiveBlender,
+                         bool skipColorXform)
         : fColor(color)
         , fBlender(std::move(blender))
         , fShader(std::move(shader))
-        , fColorFilter(std::move(colorFilter)) {}
+        , fColorFilter(std::move(colorFilter))
+        , fPrimitiveBlender(std::move(primitiveBlender))
+        , fSkipColorXform(skipColorXform) {}
 
-PaintParams::PaintParams(const SkPaint& paint)
+PaintParams::PaintParams(const SkPaint& paint,
+                         sk_sp<SkBlender> primitiveBlender,
+                         bool skipColorXform)
         : fColor(paint.getColor4f())
         , fBlender(paint.refBlender())
         , fShader(paint.refShader())
-        , fColorFilter(paint.refColorFilter()) {}
+        , fColorFilter(paint.refColorFilter())
+        , fPrimitiveBlender(std::move(primitiveBlender))
+        , fSkipColorXform(skipColorXform) {}
 
 PaintParams::PaintParams(const PaintParams& other) = default;
 PaintParams::~PaintParams() = default;
@@ -48,6 +56,8 @@ sk_sp<SkBlender> PaintParams::refBlender() const { return fBlender; }
 sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
 
 sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; }
+
+sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
 
 void PaintParams::toKey(const SkKeyContext& keyContext,
                         SkPaintParamsKeyBuilder* builder,
