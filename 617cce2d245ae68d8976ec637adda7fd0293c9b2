@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a9f716_d47d04d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-08T19:31:32Z",
+      "side": 1,
+      "message": "Changed make_positions_from_buffer to make_points_from_buffer. Mask type things the points encode the leftTop, and for Paths and Drawables the points encode the glyph\u0027s position.",
+      "revId": "617cce2d245ae68d8976ec637adda7fd0293c9b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

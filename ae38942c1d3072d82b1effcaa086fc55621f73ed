@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b1c4c36_16f92ad6",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-08T19:31:32Z",
+      "side": 1,
+      "message": "Almost all this file is an anonymous namespace. This included.",
+      "parentUuid": "e9bcf0a0_efff8867",
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85c0c80c_fa5125bd",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe4a131_97afad96",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-08T19:31:32Z",
+      "side": 1,
+      "message": "No. For masks this is actually leftTop (should fix that). For Path and Drawable, this is position.",
+      "parentUuid": "85c0c80c_fa5125bd",
+      "range": {
+        "startLine": 244,
+        "startChar": 20,
+        "endLine": 244,
+        "endChar": 28
+      },
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13bf23a0_4bc4e9d6",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-08-08T19:10:23Z",
       "side": 1,
       "message": "positions ?",
+      "range": {
+        "startLine": 1281,
+        "startChar": 20,
+        "endLine": 1281,
+        "endChar": 28
+      },
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c538fcf2_aba41aad",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-08T19:31:32Z",
+      "side": 1,
+      "message": "This is correct because this is a mask type.",
+      "parentUuid": "13bf23a0_4bc4e9d6",
       "range": {
         "startLine": 1281,
         "startChar": 20,
