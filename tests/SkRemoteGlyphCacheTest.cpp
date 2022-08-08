@@ -951,7 +951,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_TypefaceWithNoPaths,
     auto props = FindSurfaceProps(direct);
     std::unique_ptr<SkCanvas> cache_diff_canvas = server.makeAnalysisCanvas(
             500, 500, props, nullptr, direct->supportsDistanceFieldText());
-    for (SkScalar textSize : { 70, 180, 270, 340}) {
+    for (SkScalar textSize : { /*70, 180, 270,*/ 340}) {
         auto serverBlob = MakeEmojiBlob(serverTf, textSize);
 
         SkPaint paint;
