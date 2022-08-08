@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e280c0_d0ee2e61",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-08T17:52:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "53519c43_85b96998",
+      "range": {
+        "startLine": 66,
+        "startChar": 12,
+        "endLine": 66,
+        "endChar": 18
+      },
+      "revId": "2965e1b7e03ecd18922cf704a0e10c062ab1992d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b990cc7_709a2ccb",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-08T16:25:58Z",
       "side": 1,
       "message": "Can\u0027t premultiply c0 and c1 before the loop -- it ends up scaling the translation.",
+      "range": {
+        "startLine": 422,
+        "startChar": 29,
+        "endLine": 422,
+        "endChar": 49
+      },
+      "revId": "2965e1b7e03ecd18922cf704a0e10c062ab1992d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "894c7a4f_0aefd7c1",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-08T17:52:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3b990cc7_709a2ccb",
       "range": {
         "startLine": 422,
         "startChar": 29,
