@@ -16,6 +16,24 @@
       "message": "`SkMetaData.cpp` (lower `k` and `.cpp`).",
       "revId": "663ec474bbb86be93448f3f6d6ef626c657069fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d79bd914_d0ceadd9",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-08T11:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48a6e5d7_1f06526a",
+      "revId": "663ec474bbb86be93448f3f6d6ef626c657069fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
