@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58cc0d53_350a40a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-08T19:34:08Z",
+      "side": 1,
+      "message": "Reminder: if CQ tasks run on these machines, we\u0027ll need to cherry-pick this change to all supported branches.",
+      "revId": "28530213807ad7f7cb8a14f834c79bd72d0ccc47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
