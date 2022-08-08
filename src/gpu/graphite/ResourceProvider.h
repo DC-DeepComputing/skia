@@ -40,6 +40,10 @@ class Sampler;
 class Texture;
 class TextureInfo;
 
+#ifdef SK_ENABLE_PIET_GPU
+class PietRenderer;
+#endif
+
 class ResourceProvider {
 public:
     virtual ~ResourceProvider();
@@ -71,6 +75,10 @@ public:
     SkRuntimeEffectDictionary* runtimeEffectDictionary() { return &fRuntimeEffectDictionary; }
 
     void resetAfterSnap();
+
+#ifdef SK_ENABLE_PIET_GPU
+    virtual const PietRenderer* pietRenderer() const = 0;
+#endif
 
 #if GRAPHITE_TEST_UTILS
     ResourceCache* resourceCache() { return fResourceCache.get(); }

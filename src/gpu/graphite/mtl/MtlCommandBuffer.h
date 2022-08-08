@@ -50,6 +50,14 @@ public:
     }
     bool commit();
 
+#ifdef SK_ENABLE_PIET_GPU
+    // Returns the underlying MTLCommandBuffer after ensuring that there are no active command
+    // encoders associated with it. This function is intended for non-typical use cases (such as
+    // piet-gpu) that need to encode commands directly and outside of the CommandBuffer class
+    // abstractions.
+    id<MTLCommandBuffer> getCommandBufferForDirectEncoding();
+#endif
+
 private:
     MtlCommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer, const MtlGpu* gpu);
 
