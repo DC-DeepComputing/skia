@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 
+#include <unordered_set>
+
 namespace sktext::gpu {
 class Glyph;
 }
@@ -37,6 +39,12 @@ public:
     const sk_sp<TextureProxy>* getProxies(MaskFormat format,
                                           unsigned int* numActiveProxies) {
         format = this->resolveMaskFormat(format);
+#ifdef SK_ENABLE_PIET_GPU
+        if (format != MaskFormat::kA565 && fPietAtlas) {
+            *numActiveProxies = fPietAtlas->numActivePages();
+            return fPietAtlas->getProxies();
+        }
+#endif  // SK_ENABLE_PIET_GPU
         if (this->initAtlas(format)) {
             *numActiveProxies = this->getAtlas(format)->numActivePages();
             return this->getAtlas(format)->getProxies();
@@ -110,6 +118,11 @@ private:
     static_assert(kMaskFormatCount == 3);
     bool fSupportBilerpAtlas;
     DrawAtlasConfig fAtlasConfig;
+
+#ifdef SK_ENABLE_PIET_GPU
+    std::unique_ptr<DrawAtlas> fPietAtlas;
+    std::unordered_set<sktext::gpu::Glyph*> fPietGlyphs;
+#endif
 };
 
 }  // namespace skgpu::graphite
