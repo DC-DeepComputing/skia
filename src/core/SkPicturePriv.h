@@ -12,8 +12,6 @@
 
 class SkReadBuffer;
 class SkWriteBuffer;
-class SkStream;
-struct SkPictInfo;
 
 class SkPicturePriv {
 public:
@@ -145,7 +143,5 @@ public:
         kCurrent_Version = kAnisotropicFilter
     };
 };
-
-bool SkPicture_StreamIsSKP(SkStream*, SkPictInfo*);
 
 #endif
