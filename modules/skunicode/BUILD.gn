@@ -33,6 +33,7 @@ if (skia_use_icu) {
       deps += [ "//third_party/icu:headers" ]
     } else {
       sources += skia_unicode_builtin_icu_sources
+      sources += skia_unicode_client_sources
       deps += [ "//third_party/icu" ]
     }
     configs += [

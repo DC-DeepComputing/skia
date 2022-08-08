@@ -2,6 +2,7 @@
 
 #include "modules/skparagraph/src/Iterators.h"
 #include "modules/skparagraph/src/OneLineShaper.h"
+#include "modules/skunicode/include/SkUnicode.h"
 #include "src/utils/SkUTF.h"
 #include <algorithm>
 #include <unordered_set>
@@ -303,8 +304,6 @@ void OneLineShaper::addUnresolvedWithRun(GlyphRange glyphRange) {
 #ifndef SK_PARAGRAPH_GRAPHEME_EDGES
 void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnresolvedBLock) {
 
-    auto text = fCurrentRun->fOwner->text();
-
     GlyphRange block = EMPTY_RANGE;
     bool graphemeResolved = false;
     TextIndex graphemeStart = EMPTY_INDEX;
@@ -320,9 +319,8 @@ void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnres
         if ((fCurrentRun->leftToRight() ? gi > graphemeStart : gi < graphemeStart) || graphemeStart == EMPTY_INDEX) {
             // This is the Flutter change
             // Do not count control codepoints as unresolved
-            const char* cluster = text.begin() + ci;
-            SkUnichar codepoint = nextUtf8Unit(&cluster, text.end());
-            bool isControl8 = fParagraph->getUnicode()->isControl(codepoint);
+            bool isControl8 = fParagraph->codeUnitHasProperty(ci,
+                                                              SkUnicode::CodeUnitFlags::kControl);
             // We only count glyph resolved if all the glyphs in its grapheme are resolved
             graphemeResolved = glyph != 0 || isControl8;
             graphemeStart = gi;
@@ -762,7 +760,7 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
         if (dir == Dir::right) {
             while (index < fCurrentRun->fTextRange.end) {
                 if (this->fParagraph->codeUnitHasProperty(index,
-                                                          CodeUnitFlags::kGraphemeStart)) {
+                                                          SkUnicode::CodeUnitFlags::kGraphemeStart)) {
                     return index;
                 }
                 ++index;
@@ -771,7 +769,7 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
         } else {
             while (index > fCurrentRun->fTextRange.start) {
                 if (this->fParagraph->codeUnitHasProperty(index,
-                                                          CodeUnitFlags::kGraphemeStart)) {
+                                                          SkUnicode::CodeUnitFlags::kGraphemeStart)) {
                     return index;
                 }
                 --index;

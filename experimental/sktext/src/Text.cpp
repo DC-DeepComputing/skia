@@ -32,11 +32,13 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
         SkASSERT(fUnicode);
         return;
     }
+    // TODO: Implement UTF16 Unicode
+    /*
     // Get white spaces
     fCodeUnitProperties.push_back_n(utf16.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
     this->fUnicode->forEachCodepoint((char16_t*)utf16.data(), utf16.size(),
        [this](SkUnichar unichar, int32_t start, int32_t end) {
-            if (this->fUnicode->isWhitespace(unichar)) {
+            if (fUnicode->isWhitespace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpace;
                 }
@@ -58,6 +60,7 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
                                     fCodeUnitProperties[pos] |= CodeUnitFlags::kSoftLineBreakBefore;
                                 }
                             });
+    */
 }
 
 std::unique_ptr<FontResolvedText> UnicodeText::resolveFonts(SkSpan<FontBlock> blocks) {
