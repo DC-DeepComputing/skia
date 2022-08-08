@@ -14,7 +14,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 namespace SkSL {
-    class Compiler;
+class Compiler;
 }
 
 namespace skgpu {
