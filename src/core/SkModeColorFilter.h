@@ -12,8 +12,10 @@
 
 class SkModeColorFilter : public SkColorFilterBase {
 public:
-    static sk_sp<SkColorFilter> Make(SkColor color, SkBlendMode mode) {
-        return sk_sp<SkColorFilter>(new SkModeColorFilter(color, mode));
+    static sk_sp<SkColorFilter> Make(const SkColor4f& color,
+                                     sk_sp<SkColorSpace> colorSpace,
+                                     SkBlendMode mode) {
+        return sk_sp<SkColorFilter>(new SkModeColorFilter(color, std::move(colorSpace), mode));
     }
 
     bool onIsAlphaUnchanged() const override;
@@ -32,7 +34,7 @@ public:
     SK_FLATTENABLE_HOOKS(SkModeColorFilter)
 
 protected:
-    SkModeColorFilter(SkColor color, SkBlendMode mode);
+    SkModeColorFilter(const SkColor4f& color, sk_sp<SkColorSpace>, SkBlendMode mode);
 
     void flatten(SkWriteBuffer&) const override;
     bool onAsAColorMode(SkColor*, SkBlendMode*) const override;
@@ -42,8 +44,9 @@ protected:
                           const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override;
 
 private:
-    SkColor     fColor;
-    SkBlendMode fMode;
+    sk_sp<SkColorSpace> fColorSpace;
+    SkColor4f           fColor;
+    SkBlendMode         fMode;
 
     friend class SkColorFilter;
 
