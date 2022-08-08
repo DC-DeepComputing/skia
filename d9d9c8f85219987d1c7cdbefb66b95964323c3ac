@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "839bcf8f_e48e7635",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-08T06:18:48Z",
+      "side": 1,
+      "message": "This is really rough but works to demonstrate the plumbing. Most of this code should go into a DrawAtlas subclass (possibly defined in graphite/piet).\n\nThe plot/rectanizer logic in AtlasTypes should also probably get refactored to enable populating them with paths but without the invariants around dirty subplot regions and bitmap copies. Once we a suitable subplot rect is found, the entire plot can be marked as dirty and get re-drawn by piet. I think it makes sense for each plot to also own an associated piet scene fragment for partial scene updates at that granularity.\n\nGiven all that maybe we should just reimplement the plot/rectanizer logic specifically for piet for PietAtlas.",
+      "revId": "d9d9c8f85219987d1c7cdbefb66b95964323c3ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
