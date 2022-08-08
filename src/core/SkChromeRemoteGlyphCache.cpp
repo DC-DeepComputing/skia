@@ -466,7 +466,9 @@ void RemoteStrike::prepareForPathDrawing(
                     hasPath = fSentPaths.set(packedID.glyphID(), markAsPath);
                 }
 
-                if (!(*hasPath)) {
+                if (*hasPath) {
+                    accepted->accept(packedID, position);
+                } else {
                     rejected->reject(i);
                 }
             });
