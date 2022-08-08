@@ -91,20 +91,43 @@ bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* a
     return true;
 }
 
+bool Plot::addSubplotWithPath(int width, int height, const SkPath& path, AtlasLocator* atlasLocator) {
+    SkASSERT(width <= fWidth && height <= fHeight);
+
+    SkIPoint16 loc;
+    if (!fRectanizer.addRect(width, height, &loc)) {
+        return false;
+    }
+
+    auto rect = skgpu::IRect16::MakeXYWH(loc.fX, loc.fY, width, height);
+    fDirtyRect.join({rect.fLeft, rect.fTop, rect.fRight, rect.fBottom});
+
+    rect.offset(fOffset.fX, fOffset.fY);
+    atlasLocator->updateRect(rect);
+    SkDEBUGCODE(fDirty = true;)
+
+    fPlotEntries.push_back({rect, path});
+
+    return true;
+}
+
 std::pair<const void*, SkIRect> Plot::prepareForUpload() {
     // We should only be issuing uploads if we are in fact dirty
-    SkASSERT(fDirty && fData);
+    SkASSERT(fDirty);
     size_t rowBytes = fBytesPerPixel * fWidth;
-    const unsigned char* dataPtr = fData;
     // Clamp to 4-byte aligned boundaries
     unsigned int clearBits = 0x3 / fBytesPerPixel;
     fDirtyRect.fLeft &= ~clearBits;
     fDirtyRect.fRight += clearBits;
     fDirtyRect.fRight &= ~clearBits;
     SkASSERT(fDirtyRect.fRight <= fWidth);
+
     // Set up dataPtr
-    dataPtr += rowBytes * fDirtyRect.fTop;
-    dataPtr += fBytesPerPixel * fDirtyRect.fLeft;
+    const unsigned char* dataPtr = fData;
+    if (dataPtr) {
+        dataPtr += rowBytes * fDirtyRect.fTop;
+        dataPtr += fBytesPerPixel * fDirtyRect.fLeft;
+    }
 
     SkIRect offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
     fDirtyRect.setEmpty();
@@ -115,6 +138,7 @@ std::pair<const void*, SkIRect> Plot::prepareForUpload() {
 
 void Plot::resetRects() {
     fRectanizer.reset();
+    fPlotEntries.clear();
 
     fGenID = fGenerationCounter->next();
     fPlotLocator = PlotLocator(fPageIndex, fPlotIndex, fGenID);
