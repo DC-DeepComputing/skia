@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6ba19f_0d0bce52",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-08T11:57:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f684ed8_2bd58ba5",
+      "revId": "51179074138d173a1472d3afc827e60cd03f6949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94808c57_dc3ef19b",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-07T19:45:29Z",
       "side": 1,
       "message": "This test should be `numAxes \u003c 1` since it may be -1 if it couldn\u0027t be determined. (Here and below.)",
+      "revId": "51179074138d173a1472d3afc827e60cd03f6949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a0290f_31a374be",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-08T11:57:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94808c57_dc3ef19b",
       "revId": "51179074138d173a1472d3afc827e60cd03f6949",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
