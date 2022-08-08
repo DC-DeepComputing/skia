@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb059b11_1674ba48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-08-08T10:13:59Z",
+      "side": 1,
+      "message": "Requires an FT roll before landing to produce the right test result for the ClipBox CLIO test: https://skia-review.googlesource.com/c/skia/+/566196",
+      "revId": "436463a233b4e1ce703675694d8a99a5d38e6913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
