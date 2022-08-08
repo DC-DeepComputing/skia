@@ -568,3 +568,42 @@ DEF_TEST(SkRasterPipeline_lowp_clamp01, r) {
     p.append(SkRasterPipeline::store_8888, &ptr);
     p.run(0,0,1,1);
 }
+
+// This tests a branching pipeline
+DEF_TEST(SkRasterPipeline_loop, r) {
+    // Our input test data:
+    // For each pixel, our pipeline will compute the sum of integers 0..R, putting the result in G
+    float rg[8][2];
+    for (int i = 0; i < 8; i++) {
+        rg[i][0] = i;
+        rg[i][1] = 0;
+    }
+    SkRasterPipeline_MemoryCtx ptr = { rg, 0 };
+
+    // Until we have stages that let RP function like a general purpose CPU, we use this callback
+    // to stand-in for the body of our loop. That lets this test focus on the branching stage.
+    //
+    //   while (r) { g += r; r--; }
+    //               ^^^^^^^^^^^^
+    SkRasterPipeline_CallbackCtx cb;
+    cb.fn = [](SkRasterPipeline_CallbackCtx* self, int active_pixels) {
+        for (int i = 0; i < active_pixels; ++i) {
+            self->rgba[4 * i + 1] += self->rgba[4 * i + 0];
+            self->rgba[4 * i + 0] = std::max(self->rgba[4 * i + 0] - 1, 0.0f);
+        }
+    };
+
+    int branch_offset = -1;
+
+    SkRasterPipeline_<256> p;
+    p.append(SkRasterPipeline::load_rgf32, &ptr);
+    p.append(SkRasterPipeline::callback, &cb);
+    p.append(SkRasterPipeline::branch_nz, &branch_offset);
+    p.append(SkRasterPipeline::store_rgf32, &ptr);
+    p.run(0, 0, 8, 1);
+
+    for (int i = 0; i < 8; ++i) {
+        REPORTER_ASSERT(r, rg[i][0] == 0.0f);
+        REPORTER_ASSERT(r, rg[i][1] == (i * (i + 1)) / 2.0f);
+    }
+}
