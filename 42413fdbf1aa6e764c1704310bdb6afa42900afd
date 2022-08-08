@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d23999_52c2a2fc",
+        "filename": "src/gpu/piet/Scene.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-08T15:15:48Z",
+      "side": 1,
+      "message": "stale comment",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 83,
+        "endChar": 36
+      },
+      "revId": "42413fdbf1aa6e764c1704310bdb6afa42900afd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
