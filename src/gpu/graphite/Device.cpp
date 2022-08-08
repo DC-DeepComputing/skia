@@ -615,7 +615,9 @@ void Device::drawGeometry(const Transform& localToDevice,
                           const Geometry& geometry,
                           const SkPaint& paint,
                           const SkStrokeRec& style,
-                          SkEnumBitMask<DrawFlags> flags) {
+                          SkEnumBitMask<DrawFlags> flags,
+                          sk_sp<SkBlender> primitiveBlender,
+                          bool skipColorXForm) {
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -722,7 +724,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint};
+    PaintParams shading{paint, primitiveBlender, skipColorXForm};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
