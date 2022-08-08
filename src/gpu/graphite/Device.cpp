@@ -460,7 +460,9 @@ void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                      Geometry(sk_ref_sp(vertices)),
                      paint,
                      kFillStyle,
-                     DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
+                     DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter,
+                     blender,
+                     skipColorXform);
 }
 
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
@@ -615,7 +617,9 @@ void Device::drawGeometry(const Transform& localToDevice,
                           const Geometry& geometry,
                           const SkPaint& paint,
                           const SkStrokeRec& style,
-                          SkEnumBitMask<DrawFlags> flags) {
+                          SkEnumBitMask<DrawFlags> flags,
+                          sk_sp<SkBlender> primitiveBlender,
+                          bool skipColorXform) {
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -722,7 +726,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint};
+    PaintParams shading{paint, primitiveBlender, skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
