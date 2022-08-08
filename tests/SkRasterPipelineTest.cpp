@@ -677,3 +677,76 @@ DEF_TEST(SkRasterPipeline_stack_rewind, r) {
         stack.validate(r);
     }
 }
+
+// This tests a branching pipeline
+DEF_TEST(SkRasterPipeline_loop, r) {
+    // Implements:
+    //   for (float i = 1; i <= input; i++) {
+    //     sum += i;
+    //   }
+
+    static constexpr int N = SkRasterPipeline_kMaxStride_highp;
+
+    // Every slot needs to be N-wide
+    float v_input[N] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    float v_i[N];
+    float v_sum[N] = { 0 };
+
+    SkRasterPipeline_<256> p;
+    // Set execution mask according to tail
+    p.append(SkRasterPipeline::init_lane_masks);
+
+    // Initializer (i = 1)
+    auto imm_ctx = [](float v) {
+        void* ctx = nullptr;
+        memcpy(&ctx, &v, sizeof(v));
+        return ctx;
+    };
+    p.append(SkRasterPipeline::immediate, imm_ctx(1.0f));
+    p.append(SkRasterPipeline::store_masked, v_i);
+
+    // TODO: loop_begin with stack-of-loop-masks update
+
+    // This is our top-of-loop branch target
+    const int start_pc = p.numStages();
+
+    // Test expression (i < input)
+    p.append(SkRasterPipeline::load_unmasked, v_i);
+    p.append(SkRasterPipeline::cmp_flte, v_input);
+
+    // Apply test expression result to the loop mask
+    p.append(SkRasterPipeline::loop_mask);
+
+    // All lanes finished? Jump to target_end.
+    const int end_src_pc = p.numStages();
+    int end_offset;  // Relative offset to end_pc, computed below
+    p.append(SkRasterPipeline::branch_all_zero, &end_offset);
+
+    // Loop body (sum += i)
+    p.append(SkRasterPipeline::load_unmasked, v_sum);
+    p.append(SkRasterPipeline::add_f, v_i);
+    p.append(SkRasterPipeline::store_masked, v_sum);
+
+    // TODO: loop_next to manage continue statements
+
+    // Loop increment expression (i++)
+    // TODO: I'm cheating here a bit, by swapping LHS/RHS. Naive algorithm would be less efficient.
+    p.append(SkRasterPipeline::immediate, imm_ctx(1.0f));
+    p.append(SkRasterPipeline::add_f, v_i);
+    p.append(SkRasterPipeline::store_masked, v_i);
+
+    // Unconditional branch to start_pc
+    const int start_offset = start_pc - p.numStages();
+    p.append(SkRasterPipeline::branch, &start_offset);
+
+    // This is our end-of-loop branch target
+    end_offset = p.numStages() - end_src_pc;
+
+    // TODO: loop_end to pop stack-of-loop-masks
+
+    p.run(0, 0, 8, 1);
+
+    for (int i = 0; i < 8; ++i) {
+        REPORTER_ASSERT(r, v_sum[i] == (i * (i + 1)) / 2.0f);
+    }
+}
