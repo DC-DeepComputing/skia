@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dcd57d1_f869dbd5",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-08T19:08:43Z",
+      "side": 1,
+      "message": "At the moment no, CMake and GNI use the same list of flags. However, if that ever changes, then this will be renamed.",
+      "parentUuid": "6e622f5e_ee21b979",
+      "revId": "3e52e2a5d526f6b486cfb432770f51c3c900e2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e26c491b_cb59d5d0",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-08-08T14:51:07Z",
       "side": 1,
       "message": "skerr.Wrap()",
+      "range": {
+        "startLine": 128,
+        "startChar": 14,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "3e52e2a5d526f6b486cfb432770f51c3c900e2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f08a0989_0f57307d",
+        "filename": "bazel/exporter/cmake_exporter.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-08T19:08:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e26c491b_cb59d5d0",
       "range": {
         "startLine": 128,
         "startChar": 14,
