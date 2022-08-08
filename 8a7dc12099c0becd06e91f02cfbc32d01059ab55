@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a29e59b2_c75e970a",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-08T19:28:11Z",
+      "side": 0,
+      "message": "Obsolete comment leftover from an abandoned experiment.",
+      "revId": "8a7dc12099c0becd06e91f02cfbc32d01059ab55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

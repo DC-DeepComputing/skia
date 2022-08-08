@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7df754d_cd2f88d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-08T19:28:11Z",
+      "side": 1,
+      "message": "This is just minor cleanup. It does inflate the size of a pipeline slightly (one extra pointer for each stage that previously had no context). The benefit is that we eliminate the branch inside the Ctx{} helper\u0027s construction. The bigger benefit (to me) is that it\u0027s now possible to (easily) have branching stages.\n\nIt might have been possible to compute target positions in program at the time the pipeline is compiled, but it would have slowed down the process. With a fixed size per stage, we can do (relative) branches VERY easily. The follow-up CL shows a proof-of-concept implementation of this (although it\u0027s not ready to land).",
+      "revId": "698d982eee57402c99c8221cff8aba19b054a750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
