@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46947f51_20e4a218",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-08T16:25:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5bbeccad_6a6171b1",
+      "range": {
+        "startLine": 64,
+        "startChar": 15,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb99041e_4bc1c082",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-08-02T15:45:39Z",
       "side": 1,
       "message": "this can just be `.bits()`.",
+      "range": {
+        "startLine": 110,
+        "startChar": 40,
+        "endLine": 110,
+        "endChar": 61
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ab26fc6_b1802685",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-08T16:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb99041e_4bc1c082",
       "range": {
         "startLine": 110,
         "startChar": 40,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c2a2f1_c3610dc8",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-08T16:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53dbb4dd_c0f38e14",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 1
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bbc9587_98b073dd",
@@ -117,6 +189,30 @@
       "writtenOn": "2022-08-02T15:45:39Z",
       "side": 1,
       "message": "I wonder if the perf hit is the extra matrix math that is added here compared to before? Besides the preTranslate and preScale\u0027s, we\u0027re copying the SkM44 in toDevice to an SkMatrix every glyph.\n\nI couldn\u0027t come up with a good way of keeping leftTop and widthHeight in separate attributes that would let us calculate the final matrix entirely in the vertex shader. The best I could do was to add 2 floats for leftTop, bringing it up to 56 bytes/glyph. widthHeight is calculatable from the atlas points that are uploaded already, and we can fold fStrikeToSourceScale into the matrix once outside the loop.\n\nThe option that doesn\u0027t add any more data would be to fold fStrikeToSourceScale into the matrix at the start, and store the first 2 columns in a float[6], column-major that we can `\u003c\u003c` in one go. Then update the vertex shader to apply the widthHeight scale in addition. The last column of the matrix we could calculate from leftTop per iteration, but we could inline it and have the matrix columns loaded into skvx::float4\u0027s and do (left * c0 + top * c1 + c3), then just write (x,y,w).",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 468,
+        "endChar": 81
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3328bf8_4045779b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-08T16:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bbc9587_98b073dd",
       "range": {
         "startLine": 463,
         "startChar": 8,

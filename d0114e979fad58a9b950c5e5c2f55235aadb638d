@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5522ff5_fd543d79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-08T16:25:58Z",
+      "side": 1,
+      "message": "This appears to be about as fast if not a shade faster than the current code. As a separate step I may try to set the CTM as a uniform to reduce the instance data size and see what effect it has on batching and perf.",
+      "revId": "d0114e979fad58a9b950c5e5c2f55235aadb638d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
