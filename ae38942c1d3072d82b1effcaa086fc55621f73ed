@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9bcf0a0_efff8867",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-08T19:10:23Z",
+      "side": 1,
+      "message": "static or in an anonymous namespace ?",
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c0c80c_fa5125bd",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-08T19:10:23Z",
+      "side": 1,
+      "message": "Should this be \u0027positions\u0027 ?",
+      "range": {
+        "startLine": 244,
+        "startChar": 20,
+        "endLine": 244,
+        "endChar": 28
+      },
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13bf23a0_4bc4e9d6",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-08T19:10:23Z",
+      "side": 1,
+      "message": "positions ?",
+      "range": {
+        "startLine": 1281,
+        "startChar": 20,
+        "endLine": 1281,
+        "endChar": 28
+      },
+      "revId": "ae38942c1d3072d82b1effcaa086fc55621f73ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
