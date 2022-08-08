@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cffbe30e_a2154f4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-08T13:15:08Z",
+      "side": 1,
+      "message": "Great. Final nit: The CL description is no longer accurate - it still indicates that this CL is about plumbing LCDText down. Probably want to explain the real rationale of this CL (paving the way for plumbing other text related surface props).",
+      "revId": "c744b20475cc9e68e7131be1f388347762610494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
