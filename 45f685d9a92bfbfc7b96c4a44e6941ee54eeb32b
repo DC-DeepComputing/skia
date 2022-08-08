@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "045156cf_07231c04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-08-08T20:35:47Z",
+      "side": 1,
+      "message": "Thanks for getting rid of that noise!",
+      "revId": "45f685d9a92bfbfc7b96c4a44e6941ee54eeb32b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
