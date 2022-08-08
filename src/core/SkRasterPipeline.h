@@ -118,7 +118,13 @@ struct skcms_TransferFunction;
     M(alter_2pt_conical_compensate_focal)                          \
     M(alter_2pt_conical_unswap)                                    \
     M(mask_2pt_conical_nan)                                        \
-    M(mask_2pt_conical_degenerates) M(apply_vector_mask)
+    M(mask_2pt_conical_degenerates) M(apply_vector_mask)           \
+    M(init_lane_masks) M(branch) M(branch_all_zero)                \
+    M(load_unmasked) M(store_unmasked) M(store_masked)             \
+    M(loop_mask)                                                   \
+    M(immediate)                                                   \
+    M(add_f)                                                       \
+    M(cmp_flte)
 
 // The combined list of all stages:
 #define SK_RASTER_PIPELINE_STAGES_ALL(M) \
@@ -295,6 +301,7 @@ public:
     void append_stack_rewind();
 
     bool empty() const { return fStages == nullptr; }
+    int numStages() const { return fNumStages; }
 
 private:
     struct StageList {

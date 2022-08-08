@@ -667,3 +667,101 @@ DEF_TEST(SkRasterPipeline_stack_rewind, r) {
         stack.validate(r);
     }
 }
+
+// This tests a branching pipeline
+DEF_TEST(SkRasterPipeline_loop, r) {
+    // Use an odd number of test values, to verify tail handling, etc.
+    float rg[13][2];
+    for (int i = 0; i < 13; i++) {
+        rg[i][0] = i;  // "input"
+        rg[i][1] = 0;  // unused
+    }
+
+    SkRasterPipeline_MemoryCtx memCtx = { rg, 0 };
+
+    // Implements:
+    //   sum = 0;
+    //   for (float i = 1; i <= input; i++) {
+    //     sum += i;
+    //   }
+
+    static constexpr int N = SkRasterPipeline_kMaxStride_highp;
+
+    // Every slot needs to be N-wide
+    float v_input[N];
+    float v_i[N];
+    float v_sum[N];
+
+    SkRasterPipeline_<256> p;
+    auto imm_ctx = [](float v) {
+        void* ctx = nullptr;
+        memcpy(&ctx, &v, sizeof(v));
+        return ctx;
+    };
+
+    // Header: Load our input values into rg. This takes the place of a caller supplying XY, eg.
+    p.append(SkRasterPipeline::load_rgf32, &memCtx);
+
+    // Set execution mask according to tail
+    p.append(SkRasterPipeline::init_lane_masks);
+
+    // input = r (save off "parameter" that we use as loop bounds)
+    p.append(SkRasterPipeline::store_masked, v_input);
+
+    // sum = 0
+    p.append(SkRasterPipeline::immediate, imm_ctx(0.0f));
+    p.append(SkRasterPipeline::store_masked, v_sum);
+
+    // Initializer (i = 1)
+    p.append(SkRasterPipeline::immediate, imm_ctx(1.0f));
+    p.append(SkRasterPipeline::store_masked, v_i);
+
+    // TODO: loop_begin with stack-of-loop-masks update
+
+    // This is our top-of-loop branch target
+    const int start_pc = p.numStages();
+
+    // Test expression (i < input)
+    p.append(SkRasterPipeline::load_unmasked, v_i);
+    p.append(SkRasterPipeline::cmp_flte, v_input);
+
+    // Apply test expression result to the loop mask
+    p.append(SkRasterPipeline::loop_mask);
+
+    // All lanes finished? Jump to target_end.
+    const int end_src_pc = p.numStages();
+    int end_offset;  // Relative offset to end_pc, computed below
+    p.append(SkRasterPipeline::branch_all_zero, &end_offset);
+
+    // Loop body (sum += i)
+    p.append(SkRasterPipeline::load_unmasked, v_sum);
+    p.append(SkRasterPipeline::add_f, v_i);
+    p.append(SkRasterPipeline::store_masked, v_sum);
+
+    // TODO: loop_next to manage continue statements
+
+    // Loop increment expression (i++)
+    // TODO: I'm cheating here a bit, by swapping LHS/RHS. Naive algorithm would be less efficient.
+    p.append(SkRasterPipeline::immediate, imm_ctx(1.0f));
+    p.append(SkRasterPipeline::add_f, v_i);
+    p.append(SkRasterPipeline::store_masked, v_i);
+
+    // Unconditional branch to start_pc
+    const int start_offset = start_pc - p.numStages();
+    p.append(SkRasterPipeline::branch, &start_offset);
+
+    // This is our end-of-loop branch target
+    end_offset = p.numStages() - end_src_pc;
+
+    // TODO: loop_end to pop stack-of-loop-masks
+
+    // Footer: Write sum back out to our "dst" memory buffer
+    p.append(SkRasterPipeline::load_unmasked, v_sum);
+    p.append(SkRasterPipeline::store_rgf32, &memCtx);
+
+    p.run(0, 0, 13, 1);
+
+    for (int i = 0; i < 13; ++i) {
+        REPORTER_ASSERT(r, rg[i][0] == (i * (i + 1)) / 2.0f);
+    }
+}

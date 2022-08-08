@@ -135,6 +135,8 @@ namespace SK_OPTS_NS {
     SI U8  pack(U16 v)          { return  (U8)v; }
 
     SI F if_then_else(I32 c, F t, F e) { return c ? t : e; }
+    SI bool any(I32 c)                 { return c != 0; }
+    SI bool all(I32 c)                 { return c != 0; }
 
     template <typename T>
     SI T gather(const T* p, U32 ix) { return p[ix]; }
@@ -210,11 +212,17 @@ namespace SK_OPTS_NS {
     SI F if_then_else(I32 c, F t, F e) { return vbslq_f32((U32)c,t,e); }
 
     #if defined(SK_CPU_ARM64)
+        SI bool any(I32 c) { return vmaxvq_u32((U32)c) > 0; }
+        SI bool all(I32 c) { return vminvq_u32((U32)c) > 0; }
+
         SI F     mad(F f, F m, F a) { return vfmaq_f32(a,f,m); }
         SI F  floor_(F v) { return vrndmq_f32(v); }
         SI F   sqrt_(F v) { return vsqrtq_f32(v); }
         SI U32 round(F v, F scale) { return vcvtnq_u32_f32(v*scale); }
     #else
+        SI bool any(I32 c) { return c[0] | c[1] | c[2] | c[3]; }
+        SI bool all(I32 c) { return c[0] & c[1] & c[2] & c[3]; }
+
         SI F mad(F f, F m, F a) { return vmlaq_f32(a,f,m); }
         SI F floor_(F v) {
             F roundtrip = vcvtq_f32_s32(vcvtq_s32_f32(v));
@@ -387,6 +395,9 @@ namespace SK_OPTS_NS {
     }
 
     SI F if_then_else(I32 c, F t, F e) { return _mm256_blendv_ps(e,t,c); }
+    // NOTE: This version of 'all' only works with mask values (true == all bits set)
+    SI bool any(I32 c) { return !_mm256_testz_si256(c, _mm256_set1_epi32(-1)); }
+    SI bool all(I32 c) { return  _mm256_testc_si256(c, _mm256_set1_epi32(-1)); }
 
     template <typename T>
     SI V<T> gather(const T* p, U32 ix) {
@@ -728,6 +739,9 @@ template <typename T> using V = T __attribute__((ext_vector_type(4)));
     SI F if_then_else(I32 c, F t, F e) {
         return _mm_or_ps(_mm_and_ps(c, t), _mm_andnot_ps(c, e));
     }
+    // NOTE: This only checks the top bit of each lane, and is incorrect with non-mask values.
+    SI bool any(I32 c) { return _mm_movemask_ps(c) != 0b0000; }
+    SI bool all(I32 c) { return _mm_movemask_ps(c) == 0b1111; }
 
     SI F floor_(F v) {
     #if defined(JUMPER_IS_SSE41) || defined(JUMPER_IS_AVX)
@@ -1120,6 +1134,20 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
         }                                                                       \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,        \
                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
+
+    #define STAGE_BRANCH(name, ...)                                                         \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,                     \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);                \
+        static void ABI name(Params* params, void** program,                                \
+                             F r, F g, F b, F a) {                                          \
+            int offset = name##_k(Ctx{program},params->dx,params->dy,params->tail, r,g,b,a, \
+                                  params->dr,params->dg,params->db,params->da);             \
+            program += 2 * (offset - 1);                                                    \
+            auto next = (Stage)load_and_inc(program);                                       \
+            JUMPER_MUSTTAIL return next(params,program, r,g,b,a);                           \
+        }                                                                                   \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,                     \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #else
     #define STAGE(name, ...)                                                         \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
@@ -1132,6 +1160,19 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
         }                                                                            \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
+
+    #define STAGE_BRANCH(name, ...)                                                  \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,              \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);         \
+        static void ABI name(size_t tail, void** program, size_t dx, size_t dy,      \
+                             F r, F g, F b, F a, F dr, F dg, F db, F da) {           \
+            int offset = name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);    \
+            program += 2 * (offset - 1);                                             \
+            auto next = (Stage)load_and_inc(program);                                \
+            JUMPER_MUSTTAIL return next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);   \
+        }                                                                            \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,              \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #endif
 
 
@@ -2796,6 +2837,55 @@ STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     store4(c->rgba,0, r,g,b,a);
     c->fn(c, tail ? tail : N);
     load4(c->read_from,0, &r,&g,&b,&a);
+}
+
+// All control flow stages used by SkSL maintain some state in the common registers:
+//   dr: condition mask
+//   dg: loop mask
+STAGE(init_lane_masks, Ctx::None) {
+    uint32_t iota[] = {0,1,2,3,4,5,6,7};
+    I32 mask = tail ? sk_unaligned_load<U32>(iota) < tail : I32(~0);
+    dr = dg = sk_bit_cast<F>(mask);
+}
+
+STAGE_BRANCH(branch, int* target_offset) {
+    return *target_offset;
+}
+
+STAGE_BRANCH(branch_all_zero, int* target_offset) {
+    // If any lane is active, proceed to the next instruction. Otherwise, jump to our target.
+    return any(sk_bit_cast<I32>(dr) & sk_bit_cast<I32>(dg)) ? 1 : *target_offset;
+}
+
+STAGE(loop_mask, Ctx::None) {
+    dg = sk_bit_cast<F>(sk_bit_cast<I32>(dg) & sk_bit_cast<I32>(r));
+}
+
+STAGE(load_unmasked, float* ctx) {
+    r = sk_unaligned_load<F>(ctx);
+}
+
+STAGE(store_unmasked, float* ctx) {
+    sk_unaligned_store(ctx, r);
+}
+
+STAGE(store_masked, float* ctx) {
+    I32 mask = sk_bit_cast<I32>(dr) & sk_bit_cast<I32>(dg);
+    sk_unaligned_store(ctx, if_then_else(mask, r, sk_unaligned_load<F>(ctx)));
+}
+
+STAGE(immediate, void* ctx) {
+    float val;
+    memcpy(&val, &ctx, sizeof(val));
+    r = F(val);
+}
+
+STAGE(add_f, float* ctx) {
+    r += sk_unaligned_load<F>(ctx);
+}
+
+STAGE(cmp_flte, float* ctx) {
+    r = sk_bit_cast<F>(cond_to_mask(r <= sk_unaligned_load<F>(ctx)));
 }
 
 STAGE(gauss_a_to_rgba, Ctx::None) {
