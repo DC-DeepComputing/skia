@@ -12,6 +12,10 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/graphite/piet/PietRenderer.h"
+#endif
+
 #import <Metal/Metal.h>
 
 namespace skgpu::graphite {
@@ -30,6 +34,10 @@ public:
     sk_cfp<id<MTLDepthStencilState>> findOrCreateCompatibleDepthStencilState(
             const DepthStencilSettings&);
 
+#ifdef SK_ENABLE_PIET_GPU
+    const PietRenderer* pietRenderer() const override { return fPietRenderer.get(); }
+#endif
+
 private:
     const MtlGpu* mtlGpu();
 
@@ -45,6 +53,10 @@ private:
                                  SkTileMode yTileMode) override;
 
     SkTHashMap<DepthStencilSettings, sk_cfp<id<MTLDepthStencilState>>> fDepthStencilStates;
+
+#ifdef SK_ENABLE_PIET_GPU
+    std::unique_ptr<PietRenderer> fPietRenderer;
+#endif
 };
 
 } // namespace skgpu::graphite

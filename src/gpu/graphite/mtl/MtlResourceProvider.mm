@@ -25,7 +25,11 @@ namespace skgpu::graphite {
 MtlResourceProvider::MtlResourceProvider(const Gpu* gpu,
                                          sk_sp<GlobalCache> globalCache,
                                          SingleOwner* singleOwner)
-    : ResourceProvider(gpu, std::move(globalCache), singleOwner) {
+        : ResourceProvider(gpu, std::move(globalCache), singleOwner)
+#ifdef SK_ENABLE_PIET_GPU
+        , fPietRenderer(PietRenderer::MakeMetal(gpu))
+#endif
+{
 }
 
 const MtlGpu* MtlResourceProvider::mtlGpu() {
