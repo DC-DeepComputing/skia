@@ -124,7 +124,7 @@ func isFileTarget(target string) bool {
 
 // Create a string that uniquely identifies the rule and can be used
 // in the exported CMake file as a valid name.
-func getRuleCMakeName(bazelRuleName string) (string, error) {
+func getRuleSimpleName(bazelRuleName string) (string, error) {
 	s, err := makeCanonicalRuleName(bazelRuleName)
 	if err != nil {
 		return "", skerr.Wrap(err)
