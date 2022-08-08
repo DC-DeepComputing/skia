@@ -76,6 +76,15 @@ bool MtlCommandBuffer::commit() {
     return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
 }
 
+#ifdef SK_ENABLE_PIET_GPU
+id<MTLCommandBuffer> MtlCommandBuffer::getCommandBufferForDirectEncoding() {
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+    this->endBlitCommandEncoder();
+    return fCommandBuffer.get();
+}
+#endif
+
 bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                        const Texture* colorTexture,
                                        const Texture* resolveTexture,
@@ -636,6 +645,5 @@ bool MtlCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
 #endif
     return true;
 }
-
 
 } // namespace skgpu::graphite

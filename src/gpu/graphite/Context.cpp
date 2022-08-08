@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/QueueManager.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -29,6 +30,10 @@
 
 #ifdef SK_METAL
 #include "src/gpu/graphite/mtl/MtlTrampoline.h"
+#endif
+
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/graphite/PietRenderer.h"
 #endif
 
 namespace skgpu::graphite {
@@ -73,6 +78,7 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
         return nullptr;
     }
     context->fResourceProvider = std::move(resourceProvider);
+
     return context;
 }
 #endif
@@ -80,7 +86,14 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
 std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, fGlobalCache, options));
+    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, fGlobalCache, options));
+
+#if defined(SK_ENABLE_PIET_GPU) && defined(SK_METAL)
+    recorder->priv().setPietRenderer(
+            MtlTrampoline::MakePietRenderer(fSharedContext.get(), fQueueManager.get()));
+#endif
+
+    return recorder;
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {

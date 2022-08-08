@@ -29,6 +29,10 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/graphite/PietRenderer.h"
+#endif
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())

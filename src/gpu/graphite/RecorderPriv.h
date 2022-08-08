@@ -41,6 +41,11 @@ public:
 
     void flushTrackedDevices();
 
+#ifdef SK_ENABLE_PIET_GPU
+    sk_sp<PietRenderer> pietRenderer() const;
+    void setPietRenderer(sk_sp<PietRenderer>);
+#endif
+
 private:
     explicit RecorderPriv(Recorder* recorder) : fRecorder(recorder) {}
     RecorderPriv& operator=(const RecorderPriv&) = delete;

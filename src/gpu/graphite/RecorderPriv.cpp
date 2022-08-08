@@ -14,6 +14,10 @@
 #include "src/gpu/graphite/TaskGraph.h"
 #include "src/sksl/SkSLUtil.h"
 
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/graphite/PietRenderer.h"
+#endif
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fRecorder->singleOwner())
@@ -82,5 +86,13 @@ void RecorderPriv::flushTrackedDevices() {
         device->flushPendingWorkToRecorder();
     }
 }
+
+#ifdef SK_ENABLE_PIET_GPU
+sk_sp<PietRenderer> RecorderPriv::pietRenderer() const { return fRecorder->fPietRenderer; }
+
+void RecorderPriv::setPietRenderer(sk_sp<PietRenderer> pietRenderer) {
+    fRecorder->fPietRenderer = std::move(pietRenderer);
+}
+#endif
 
 } // namespace skgpu::graphite

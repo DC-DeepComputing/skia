@@ -12,7 +12,12 @@
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/graphite/mtl/MtlPietRenderer.h"
+#endif
+
 namespace skgpu::graphite {
+
 sk_sp<SharedContext> MtlTrampoline::MakeSharedContext(const MtlBackendContext& backendContext,
                                                       const ContextOptions& options) {
     return MtlSharedContext::Make(backendContext, options);
@@ -34,5 +39,14 @@ std::unique_ptr<ResourceProvider> MtlTrampoline::MakeResourceProvider(
                                                  std::move(globalCache),
                                                  singleOwner);
 }
+
+#ifdef SK_ENABLE_PIET_GPU
+sk_sp<PietRenderer> MtlTrampoline::MakePietRenderer(const SharedContext* sharedContext,
+                                                    const QueueManager* queueManager) {
+    id<MTLDevice> device = static_cast<const MtlSharedContext*>(sharedContext)->device();
+    id<MTLCommandQueue> queue = static_cast<const MtlQueueManager*>(queueManager)->queue();
+    return sk_sp<PietRenderer>(new MtlPietRenderer(device, queue));
+}
+#endif
 
 }  // namespace skgpu::graphite

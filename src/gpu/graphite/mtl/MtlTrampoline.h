@@ -24,6 +24,10 @@ class QueueManager;
 class ResourceProvider;
 class SharedContext;
 
+#ifdef SK_ENABLE_PIET_GPU
+class PietRenderer;
+#endif
+
 /*
  * This class is used to hold functions which trampoline from the Graphite cpp code
  * to the Mtl Objective-C files.
@@ -37,6 +41,9 @@ public:
                                                                   sk_sp<GlobalCache>,
                                                                   SingleOwner*);
 
+#ifdef SK_ENABLE_PIET_GPU
+    static sk_sp<PietRenderer> MakePietRenderer(const SharedContext*, const QueueManager*);
+#endif
 };
 
 } // namespace skgpu::graphite

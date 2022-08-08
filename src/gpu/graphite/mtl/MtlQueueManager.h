@@ -23,6 +23,10 @@ public:
     MtlQueueManager(sk_cfp<id<MTLCommandQueue>> queue, const SharedContext*);
     ~MtlQueueManager() override {}
 
+#ifdef SK_ENABLE_PIET_GPU
+    id<MTLCommandQueue> queue() const { return fQueue.get(); }
+#endif
+
 private:
     const MtlSharedContext* mtlSharedContext() const;
 

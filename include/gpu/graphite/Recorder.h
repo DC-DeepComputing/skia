@@ -42,6 +42,10 @@ class Task;
 class TaskGraph;
 class UploadBufferManager;
 
+#ifdef SK_ENABLE_PIET_GPU
+class PietRenderer;
+#endif
+
 template<typename StorageT, typename BaseT> class PipelineDataCache;
 using UniformDataCache = PipelineDataCache<SkUniformDataBlockPassThrough, SkUniformDataBlock>;
 using TextureDataCache = PipelineDataCache<std::unique_ptr<SkTextureDataBlock>, SkTextureDataBlock>;
@@ -122,6 +126,10 @@ private:
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
     sk_sp<ImageProvider> fClientImageProvider;
+
+#ifdef SK_ENABLE_PIET_GPU
+    sk_sp<PietRenderer> fPietRenderer;
+#endif
 
     // In debug builds we guard against improper thread handling
     // This guard is passed to the ResourceCache.
