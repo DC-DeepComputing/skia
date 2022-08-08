@@ -135,6 +135,7 @@ namespace SK_OPTS_NS {
     SI U8  pack(U16 v)          { return  (U8)v; }
 
     SI F if_then_else(I32 c, F t, F e) { return c ? t : e; }
+    SI bool all(I32 c)                 { return c != 0; }
 
     template <typename T>
     SI T gather(const T* p, U32 ix) { return p[ix]; }
@@ -208,6 +209,7 @@ namespace SK_OPTS_NS {
     SI U8  pack(U16 v)                           { return __builtin_convertvector(v,  U8); }
 
     SI F if_then_else(I32 c, F t, F e) { return vbslq_f32((U32)c,t,e); }
+    SI bool all(I32 c) { return vminvq_u32((U32)c) > 0; }
 
     #if defined(SK_CPU_ARM64)
         SI F     mad(F f, F m, F a) { return vfmaq_f32(a,f,m); }
@@ -387,6 +389,10 @@ namespace SK_OPTS_NS {
     }
 
     SI F if_then_else(I32 c, F t, F e) { return _mm256_blendv_ps(e,t,c); }
+    SI bool all(I32 c) {
+        // TODO: Optimized version (or just move RP to skvx)
+        return (c[0] & c[1] & c[2] & c[3] & c[4] & c[5] & c[6] & c[7]) != 0;
+    }
 
     template <typename T>
     SI V<T> gather(const T* p, U32 ix) {
@@ -727,6 +733,9 @@ template <typename T> using V = T __attribute__((ext_vector_type(4)));
 
     SI F if_then_else(I32 c, F t, F e) {
         return _mm_or_ps(_mm_and_ps(c, t), _mm_andnot_ps(c, e));
+    }
+    SI bool all(I32 c) {
+        return _mm_movemask_ps(_mm_cmpneq_ps(c, _mm_set1_ps(0))) == 0b1111;
     }
 
     SI F floor_(F v) {
@@ -1132,6 +1141,19 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
         }                                                                            \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
+
+    #define STAGE_BRANCH(name, ...)                                                  \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,              \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);         \
+        static void ABI name(size_t tail, void** program, size_t dx, size_t dy,      \
+                             F r, F g, F b, F a, F dr, F dg, F db, F da) {           \
+            int offset = name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);    \
+            program += 2 * (offset - 1);                                             \
+            auto next = (Stage)load_and_inc(program);                                \
+            next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);                          \
+        }                                                                            \
+        SI int name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,              \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #endif
 
 
@@ -2698,6 +2720,11 @@ STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     store4(c->rgba,0, r,g,b,a);
     c->fn(c, tail ? tail : N);
     load4(c->read_from,0, &r,&g,&b,&a);
+}
+
+STAGE_BRANCH(branch_nz, int* target_offset) {
+    // TODO: This needs to limit evaluation to the first `tail` lanes of `r`
+    return all(r == 0) ? 1 : *target_offset;
 }
 
 STAGE(gauss_a_to_rgba, Ctx::None) {
@@ -4373,6 +4400,7 @@ STAGE_PP(swizzle, void* ctx) {
     NOT_IMPLEMENTED(mask_2pt_conical_nan)
     NOT_IMPLEMENTED(mask_2pt_conical_degenerates)
     NOT_IMPLEMENTED(apply_vector_mask)
+    NOT_IMPLEMENTED(branch_nz)
 #undef NOT_IMPLEMENTED
 
 #endif//defined(JUMPER_IS_SCALAR) controlling whether we build lowp stages
