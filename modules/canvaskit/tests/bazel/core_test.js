@@ -1481,7 +1481,7 @@ describe('Core canvas behavior', () => {
 
     gm('MakeLazyImageFromTextureSource_readPixels', (canvas) => {
         if (!CanvasKit.gpu) {
-            return;
+            return SHOULD_SKIP;
         }
 
         // This makes an offscreen <img> with the provided source.
@@ -1519,7 +1519,56 @@ describe('Core canvas behavior', () => {
             font.delete();
             paint.delete();
         });
-    })
+    });
+
+    pause_gm('MakeLazyImageFromTextureSource_Surface_makeImageSnapshot', (canvas) => {
+        if (!CanvasKit.gpu) {
+            return SHOULD_SKIP;
+        }
+
+        // This makes an offscreen <img> with the provided source.
+        const imageEle = new Image();
+        imageEle.src = '/assets/mandrill_512.png';
+
+        // We need to wait until the image is loaded before the texture can use it. For good
+        // measure, we also wait for it to be decoded.
+        return imageEle.decode().then(() => {
+            const img = CanvasKit.MakeLazyImageFromTextureSource(imageEle);
+
+            const recorder = new CanvasKit.PictureRecorder();
+            const recorderCanvas = recorder.beginRecording();
+            const src = CanvasKit.XYWHRect(0, 0, 512, 512);
+            recorderCanvas.drawImageRectCubic(img, src, src, 1/3, 1/3);
+            const picture = recorder.finishRecordingAsPicture();
+
+            const glCanvas = document.createElement("canvas");
+            glCanvas.width = 512;
+            glCanvas.height = 512;
+            debugger;
+            const surface = CanvasKit.MakeWebGLCanvasSurface(glCanvas);
+            const surfaceCanvas = surface.getCanvas();
+            surfaceCanvas.drawPicture(picture);
+            const newImg = surface.makeImageSnapshot();
+
+            canvas.drawImageRectCubic(newImg, src, CanvasKit.XYWHRect(256, 0, 256, 256), 1/3, 1/3);
+            canvas.drawImageRectCubic(img, src, CanvasKit.XYWHRect(0, 0, 256, 256), 1/3, 1/3);
+
+            const font = new CanvasKit.Font(null, 20);
+            const paint = new CanvasKit.Paint();
+            paint.setColor(CanvasKit.BLACK);
+            canvas.drawText('original', 100, 280, paint, font);
+            canvas.drawText('makeImageSnapshot', 290, 280, paint, font);
+
+            img.delete();
+            newImg.delete();
+            picture.delete();
+            surface.delete();
+            font.delete();
+            paint.delete();
+            recorder.delete();
+        });
+    });
+
 
     it('encodes images in three different ways', () => {
         // This creates and draws an Image that is 1 pixel wide, 4 pixels tall with
