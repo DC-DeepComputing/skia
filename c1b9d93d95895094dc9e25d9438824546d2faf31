@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a2ba8a_1322e1d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-08T16:48:19Z",
+      "side": 1,
+      "message": "lgtm\n\nI\u0027d suggest holding off on skvm plumbing if you don\u0027t need it right now. There\u0027s a non-zero chance that the skvm blitter goes away entirely.",
+      "revId": "c1b9d93d95895094dc9e25d9438824546d2faf31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
