@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5afd1fb_a07fadc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-08-08T14:17:25Z",
+      "side": 1,
+      "message": "Ben, can you help here? The gold image should look more like this: https://screenshot.googleplex.com/3TXEX48BmMahnp5.png - and I was expecting it to come out like this after rebasing (with main containing the latest FT roll). Locally it does look like it. Does the Android Native Fonts bot roll FT differently?\n",
+      "revId": "7eee5cfa2d322df906936a223370d109a882cf15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
