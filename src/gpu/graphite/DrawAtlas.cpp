@@ -48,10 +48,11 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(SkColorType colorType, size_t bpp, in
                                            AtlasGenerationCounter* generationCounter,
                                            AllowMultitexturing allowMultitexturing,
                                            PlotEvictionCallback* evictor,
-                                           std::string_view label) {
+                                           std::string_view label,
+                                           bool usePiet) {
     std::unique_ptr<DrawAtlas> atlas(new DrawAtlas(colorType, bpp, width, height,
                                                    plotWidth, plotHeight, generationCounter,
-                                                   allowMultitexturing, label));
+                                                   allowMultitexturing, label, usePiet));
 
     if (evictor != nullptr) {
         atlas->fEvictionCallbacks.emplace_back(evictor);
@@ -63,7 +64,7 @@ std::unique_ptr<DrawAtlas> DrawAtlas::Make(SkColorType colorType, size_t bpp, in
 
 DrawAtlas::DrawAtlas(SkColorType colorType, size_t bpp, int width, int height,
                      int plotWidth, int plotHeight, AtlasGenerationCounter* generationCounter,
-                     AllowMultitexturing allowMultitexturing, std::string_view label)
+                     AllowMultitexturing allowMultitexturing, std::string_view label, bool usePiet)
         : fColorType(colorType)
         , fBytesPerPixel(bpp)
         , fTextureWidth(width)
@@ -77,7 +78,8 @@ DrawAtlas::DrawAtlas(SkColorType colorType, size_t bpp, int width, int height,
         , fFlushesSinceLastUse(0)
         , fMaxPages(AllowMultitexturing::kYes == allowMultitexturing ?
                             PlotLocator::kMaxMultitexturePages : 1)
-        , fNumActivePages(0) {
+        , fNumActivePages(0)
+        , fUsePiet(usePiet) {
     int numPlotsX = width/plotWidth;
     int numPlotsY = height/plotHeight;
     SkASSERT(numPlotsX * numPlotsY <= PlotLocator::kMaxPlots);
@@ -111,6 +113,7 @@ inline bool DrawAtlas::updatePlot(AtlasLocator* atlasLocator, Plot* plot) {
 bool DrawAtlas::addToPage(unsigned int pageIdx, int width, int height, const void* image,
                           AtlasLocator* atlasLocator) {
     SkASSERT(fProxies[pageIdx]);
+    SkASSERT(!fUsePiet);
 
     // look through all allocated plots for one we can share, in Most Recently Refed order
     PlotList::Iter plotIter;
@@ -125,11 +128,72 @@ bool DrawAtlas::addToPage(unsigned int pageIdx, int width, int height, const voi
     return false;
 }
 
+#ifdef SK_ENABLE_PIET_GPU
+
+bool DrawAtlas::addPietGlyphToPage(unsigned int pageIdx, int width, int height,
+                                   const SkPath& glyphPath, AtlasLocator* atlasLocator) {
+    SkASSERT(fProxies[pageIdx]);
+    SkASSERT(fUsePiet);
+
+    Page& page = fPages[pageIdx];
+    SkASSERT(page.fPietScene);
+
+    // look through all allocated plots for one we can share, in Most Recently Refed order
+    PlotList::Iter plotIter;
+    plotIter.init(page.fPlotList, PlotList::Iter::kHead_IterStart);
+
+    for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
+        if (plot->addSubplotWithPath(width, height, glyphPath, atlasLocator)) {
+            return this->updatePlot(atlasLocator, plot);
+        }
+    }
+
+    return false;
+}
+
+#endif  // SK_ENABLE_PIET_GPU
+
 bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     for (uint32_t pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
+        Page& page = fPages[pageIdx];
+#ifdef SK_ENABLE_PIET_GPU
+        if (fUsePiet) {
+            TextureProxy* proxy = fProxies[pageIdx].get();
+            SkASSERT(proxy);
+
+            PlotList::Iter plotIter;
+            plotIter.init(page.fPlotList, PlotList::Iter::kHead_IterStart);
+            bool needsUpload = false;
+            for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
+                if (plot->needsUpload()) {
+                    plot->prepareForUpload();
+
+                    needsUpload = true;
+                }
+                // TODO: retain fragments per plot and only dispatch modified fragments.
+                for (const auto& entry : plot->plotEntries()) {
+                    // The translation factor here is wrong. This needs to transform from
+                    // font coordinates while taking into account any packing.
+                    const auto& rect = entry.fRect;
+                    page.fPietScene->addPath(
+                            entry.fPath,
+                            {1.0, 0.0,
+                             0.0, 1.0, 
+                             (float)rect.fLeft,
+                             (float)rect.fTop + (float)rect.height()});
+                }
+            }
+            if (needsUpload && page.fPietScene->finalize()) {
+                // TODO: need to track the pending task to avoid modifying the Scene before its
+                // compute pass gets encoded.
+                return dc->recordPietSceneRender(recorder, sk_ref_sp(proxy), page.fPietScene);
+            }
+            return true;
+        }
+#endif
         PlotList::Iter plotIter;
-        plotIter.init(fPages[pageIdx].fPlotList, PlotList::Iter::kHead_IterStart);
+        plotIter.init(page.fPlotList, PlotList::Iter::kHead_IterStart);
         for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
             if (plot->needsUpload()) {
                 TextureProxy* proxy = fProxies[pageIdx].get();
@@ -163,6 +227,8 @@ static constexpr auto kAtlasRecentlyUsedCount = 128;
 DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
                                            int width, int height, const void* image,
                                            AtlasLocator* atlasLocator) {
+    SkASSERT(!fUsePiet);
+
     if (width > fPlotWidth || height > fPlotHeight) {
         return ErrorCode::kError;
     }
@@ -220,6 +286,72 @@ DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
     // for fresh uploads.
     return ErrorCode::kTryAgain;
 }
+
+#ifdef SK_ENABLE_PIET_GPU
+DrawAtlas::ErrorCode DrawAtlas::addPietGlyphToAtlas(Recorder* recorder, int width, int height,
+                                                    const SkPath& glyphPath,
+                                                    AtlasLocator* atlasLocator) {
+    SkASSERT(fUsePiet);
+
+    if (width > fPlotWidth || height > fPlotHeight) {
+        return ErrorCode::kError;
+    }
+
+    // Look through each page to see if we can upload without having to flush
+    // We prioritize this upload to the first pages, not the most recently used, to make it easier
+    // to remove unused pages in reverse page order.
+    for (unsigned int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
+        if (this->addPietGlyphToPage(pageIdx, width, height, glyphPath, atlasLocator)) {
+            return ErrorCode::kSucceeded;
+        }
+    }
+
+    // If the above fails, then see if the least recently used plot per page has already been
+    // queued for upload if we're at max page allocation, or if the plot has aged out otherwise.
+    // We wait until we've grown to the full number of pages to begin evicting already queued
+    // plots so that we can maximize the opportunity for reuse.
+    // As before we prioritize this upload to the first pages, not the most recently used.
+    if (fNumActivePages == this->maxPages()) {
+        for (unsigned int pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
+            Page& page = fPages[pageIdx];
+            Plot* plot = page.fPlotList.tail();
+            SkASSERT(plot);
+            if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextTokenToFlush()) {
+                this->processEvictionAndResetRects(plot);
+                SkDEBUGCODE(bool verify = )plot->addSubplotWithPath(width, height, glyphPath, atlasLocator);
+                SkASSERT(verify);
+                if (!this->updatePlot(atlasLocator, plot)) {
+                    return ErrorCode::kError;
+                }
+                return ErrorCode::kSucceeded;
+            }
+        }
+    } else {
+        // If we haven't activated all the available pages, try to create a new one and add to it
+        if (!this->activateNewPage(recorder)) {
+            return ErrorCode::kError;
+        }
+
+        if (this->addPietGlyphToPage(fNumActivePages-1, width, height, glyphPath, atlasLocator)) {
+            return ErrorCode::kSucceeded;
+        } else {
+            // If we fail to upload to a newly activated page then something has gone terribly
+            // wrong - return an error
+            return ErrorCode::kError;
+        }
+    }
+
+    if (!fNumActivePages) {
+        return ErrorCode::kError;
+    }
+
+    // All plots are currently in use by the current set of draws, so we need to fail. This
+    // gives the Device a chance to snap the current set of uploads and draws, advance the draw
+    // token, and call back into this function. The subsequent call will have plots available
+    // for fresh uploads.
+    return ErrorCode::kTryAgain;
+}
+#endif  // SK_ENABLE_PIET_GPU
 
 void DrawAtlas::compact(DrawToken startTokenForNextFlush) {
     if (fNumActivePages < 1) {
@@ -377,6 +509,12 @@ bool DrawAtlas::createPages(AtlasGenerationCounter* generationCounter) {
         // set up allocated plots
         fPages[i].fPlotArray = std::make_unique<sk_sp<Plot>[]>(numPlotsX * numPlotsY);
 
+#ifdef SK_ENABLE_PIET_GPU
+        if (fUsePiet) {
+            fPages[i].fPietScene = skgpu::piet::Scene::Make();
+        }
+#endif
+
         sk_sp<Plot>* currPlot = fPages[i].fPlotArray.get();
         for (int y = numPlotsY - 1, r = 0; y >= 0; --y, ++r) {
             for (int x = numPlotsX - 1, c = 0; x >= 0; --x, ++c) {
@@ -400,10 +538,11 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
     SkASSERT(fNumActivePages < this->maxPages());
     SkASSERT(!fProxies[fNumActivePages]);
 
-    auto textureInfo = recorder->priv().caps()->getDefaultSampledTextureInfo(fColorType,
-                                                                             /*levelCount=*/1,
-                                                                             Protected::kNo,
-                                                                             Renderable::kNo);
+    auto textureInfo = recorder->priv().caps()->getDefaultSampledTextureInfo(
+            fColorType,
+            /*levelCount=*/1,
+            Protected::kNo,
+            fUsePiet ? Renderable::kYes : Renderable::kNo);
     fProxies[fNumActivePages].reset(new TextureProxy({fTextureWidth, fTextureHeight}, textureInfo,
                                                      SkBudgeted::kYes));
     if (!fProxies[fNumActivePages]) {
@@ -411,7 +550,8 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
     }
 
     if constexpr (kDumpAtlasData) {
-        SkDebugf("activated page#: %d\n", fNumActivePages);
+        SkDebugf("activated page#: %d - (%s piet)\n",
+                 fNumActivePages, fUsePiet ? ("using") : ("not using"));
     }
 
     ++fNumActivePages;

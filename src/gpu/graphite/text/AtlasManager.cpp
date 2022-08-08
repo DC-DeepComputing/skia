@@ -28,7 +28,8 @@ AtlasManager::AtlasManager(Recorder* recorder)
         : fRecorder(recorder)
         , fSupportBilerpAtlas{recorder->priv().caps()->supportBilerpFromGlyphAtlas()}
         , fAtlasConfig{recorder->priv().caps()->maxTextureSize(),
-                       recorder->priv().caps()->glyphCacheTextureMaximumBytes()} {
+                       recorder->priv().caps()->glyphCacheTextureMaximumBytes()}
+        {
     if (!recorder->priv().caps()->allowMultipleGlyphCacheTextures() ||
         // multitexturing supported only if range can represent the index + texcoords fully
         !(recorder->priv().caps()->shaderCaps()->fFloatIs32Bits ||
@@ -45,10 +46,19 @@ void AtlasManager::freeAll() {
     for (int i = 0; i < kMaskFormatCount; ++i) {
         fAtlases[i] = nullptr;
     }
+
+#ifdef SK_ENABLE_PIET_GPU
+    fPietAtlas = nullptr;
+#endif
 }
 
 bool AtlasManager::hasGlyph(MaskFormat format, Glyph* glyph) {
     SkASSERT(glyph);
+#ifdef SK_ENABLE_PIET_GPU
+    if (fPietGlyphs.find(glyph) != fPietGlyphs.end()) {
+        return fPietAtlas->hasID(glyph->fAtlasLocator.plotLocator());
+    }
+#endif
     return this->getAtlas(format)->hasID(glyph->fAtlasLocator.plotLocator());
 }
 
@@ -163,9 +173,45 @@ DrawAtlas::ErrorCode AtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                                    int srcPadding) {
     SkASSERT(0 <= srcPadding && srcPadding <= SK_DistanceFieldInset);
 
+#ifdef SK_ENABLE_PIET_GPU
+    bool usePiet = false;
+    if (skGlyph.setPathHasBeenCalled() && skGlyph.path() != nullptr) {
+        SkASSERT(glyph != nullptr);
+        MaskFormat format = Glyph::FormatFromSkGlyph(skGlyph.maskFormat());
+
+        // Only use piet for A8 and RGB formats.
+        if (format != MaskFormat::kA565) {
+            usePiet = true;
+            fPietGlyphs.insert(glyph);
+            if (!fPietAtlas) {
+                SkDebugf("AtlasManager: initializing piet atlas\n");
+                SkASSERT(glyph != nullptr);
+                SkColorType colorType = MaskFormatToColorType(format);
+                SkISize atlasDimensions = fAtlasConfig.atlasDimensions(format);
+                SkISize plotDimensions = fAtlasConfig.plotDimensions(format);
+                fPietAtlas = DrawAtlas::Make(
+                        colorType,
+                        SkColorTypeBytesPerPixel(colorType),
+                        atlasDimensions.width(), atlasDimensions.height(),
+                        plotDimensions.width(), plotDimensions.height(),
+                        this,
+                        fAllowMultitexturing,
+                        nullptr,
+                        /*label=*/"PietAtlas",
+                        /*usePiet=*/true);
+            }
+        }
+    }
+
+    if (!usePiet && skGlyph.image() == nullptr) {
+        return DrawAtlas::ErrorCode::kError;
+    }
+#else
     if (skGlyph.image() == nullptr) {
         return DrawAtlas::ErrorCode::kError;
     }
+#endif  // SK_ENABLE_PIET_GPU
+
     SkASSERT(glyph != nullptr);
 
     MaskFormat glyphFormat = Glyph::FormatFromSkGlyph(skGlyph.maskFormat());
@@ -201,26 +247,40 @@ DrawAtlas::ErrorCode AtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 
     const int width = skGlyph.width() + 2*padding;
     const int height = skGlyph.height() + 2*padding;
-    int rowBytes = width * bytesPerPixel;
-    size_t size = height * rowBytes;
+    DrawAtlas::ErrorCode errorCode;
+#ifdef SK_ENABLE_PIET_GPU
+    if (usePiet) {
+        SkASSERT(fPietAtlas);
+        errorCode = fPietAtlas->addPietGlyphToAtlas(fRecorder,
+                                                    width,
+                                                    height,
+                                                    *skGlyph.path(),
+                                                    &glyph->fAtlasLocator);
+    } else {
+#endif
+        int rowBytes = width * bytesPerPixel;
+        size_t size = height * rowBytes;
 
-    // Temporary storage for normalizing glyph image.
-    SkAutoSMalloc<1024> storage(size);
-    void* dataPtr = storage.get();
-    if (padding > 0) {
-        sk_bzero(dataPtr, size);
-        // Advance in one row and one column.
-        dataPtr = (char*)(dataPtr) + rowBytes + bytesPerPixel;
+        // Temporary storage for normalizing glyph image.
+        SkAutoSMalloc<1024> storage(size);
+        void* dataPtr = storage.get();
+        if (padding > 0) {
+            sk_bzero(dataPtr, size);
+            // Advance in one row and one column.
+            dataPtr = (char*)(dataPtr) + rowBytes + bytesPerPixel;
+        }
+
+        get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
+
+        DrawAtlas* atlas = this->getAtlas(expectedMaskFormat);
+        errorCode = atlas->addToAtlas(fRecorder,
+                                      width,
+                                      height,
+                                      storage.get(),
+                                      &glyph->fAtlasLocator);
+#ifdef SK_ENABLE_PIET_GPU
     }
-
-    get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
-    DrawAtlas* atlas = this->getAtlas(expectedMaskFormat);
-    auto errorCode = atlas->addToAtlas(fRecorder,
-                                       width,
-                                       height,
-                                       storage.get(),
-                                       &glyph->fAtlasLocator);
+#endif
 
     if (errorCode == DrawAtlas::ErrorCode::kSucceeded) {
         glyph->fAtlasLocator.insetSrc(srcPadding);
@@ -236,6 +296,13 @@ bool AtlasManager::recordUploads(DrawContext* dc) {
         }
     }
 
+#ifdef SK_ENABLE_PIET_GPU
+    if (fPietAtlas && !fPietAtlas->recordUploads(dc, fRecorder)) {
+        SkDebugf("@@@ failed to record a piet atlas upload\n");
+        return false;
+    }
+#endif
+
     fRecorder->priv().tokenTracker()->issueFlushToken();
     return true;
 }
@@ -245,7 +312,16 @@ void AtlasManager::addGlyphToBulkAndSetUseToken(BulkUsePlotUpdater* updater,
                                                 DrawToken token) {
     SkASSERT(glyph);
     if (updater->add(glyph->fAtlasLocator)) {
+#ifdef SK_ENABLE_PIET_GPU
+        auto iter = fPietGlyphs.find(glyph);
+        if (iter != fPietGlyphs.end()) {
+            fPietAtlas->setLastUseToken(glyph->fAtlasLocator, token);
+        } else {
+            this->getAtlas(format)->setLastUseToken(glyph->fAtlasLocator, token);
+        }
+#else
         this->getAtlas(format)->setLastUseToken(glyph->fAtlasLocator, token);
+#endif
     }
 }
 
@@ -263,6 +339,8 @@ void AtlasManager::setAtlasDimensionsToMinimum_ForTesting() {
 bool AtlasManager::initAtlas(MaskFormat format) {
     int index = MaskFormatToAtlasIndex(format);
     if (fAtlases[index] == nullptr) {
+        // TODO: the same format could have resulted in both a piet and non-piet atlas and we need a
+        // way to make a decision between them
         SkColorType colorType = MaskFormatToColorType(format);
         SkISize atlasDimensions = fAtlasConfig.atlasDimensions(format);
         SkISize plotDimensions = fAtlasConfig.plotDimensions(format);
