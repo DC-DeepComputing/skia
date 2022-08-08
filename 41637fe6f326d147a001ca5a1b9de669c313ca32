@@ -45,6 +45,30 @@
       },
       "revId": "41637fe6f326d147a001ca5a1b9de669c313ca32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01cc2ab9_68133084",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-08T13:32:30Z",
+      "side": 1,
+      "message": "It is what the old code did and I wasn\u0027t sure if it was of any benefit to teams like Fuchsia.  However, I\u0027ll just move the definition of `kNativeGLType` and use that here.",
+      "parentUuid": "ebb6ef83_c3e365ea",
+      "range": {
+        "startLine": 142,
+        "startChar": 54,
+        "endLine": 143,
+        "endChar": 90
+      },
+      "revId": "41637fe6f326d147a001ca5a1b9de669c313ca32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
