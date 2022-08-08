@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d1b68f_cadb16e4",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-08T19:14:43Z",
+      "side": 1,
+      "message": "I had some trepidation because --enable_gpu_test_utils turns on some test-only files, and it is doubtful that Chrome et al need those files. This might be a non-issue though if those test-only files are partitioned into their own list.",
+      "parentUuid": "4dcd57d1_f869dbd5",
+      "revId": "3e52e2a5d526f6b486cfb432770f51c3c900e2b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e26c491b_cb59d5d0",
