@@ -109,7 +109,8 @@ struct skcms_TransferFunction;
     M(rgb_to_hsl) M(hsl_to_rgb)                                    \
     M(gauss_a_to_rgba)                                             \
     M(emboss)                                                      \
-    M(swizzle)
+    M(swizzle)                                                     \
+    M(branch_all_zero)
 
 // The largest number of pixels we handle at a time. We have a separate value for the largest number
 // of pixels we handle in the highp pipeline. Many of the context structs in this file are only used
