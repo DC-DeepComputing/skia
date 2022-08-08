@@ -1,11 +1,14 @@
 // Copyright 2019 Google LLC.
+#include "include/core/SkImageEncoder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorPriv.h"
+#include "include/core/SkContourMeasure.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
+#include "include/core/SkRSXform.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTextBlob.h"
@@ -25,11 +28,75 @@
 #include "src/utils/SkUTF.h"
 #include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tests/Test.h"
 
 static DEFINE_bool(verboseParagraph, false, "paragraph samples very verbose.");
 
 using namespace skia::textlayout;
 namespace {
+#define TestCanvasWidth 1000
+#define TestCanvasHeight 600
+class TestCanvas {
+public:
+    TestCanvas(const char* testName) : name(testName) {
+        bits.allocN32Pixels(TestCanvasWidth, TestCanvasHeight);
+        canvas = new SkCanvas(bits);
+        canvas->clear(SK_ColorWHITE);
+    }
+
+    ~TestCanvas() {
+        SkString tmpDir = skiatest::GetTmpDir();
+        if (!tmpDir.isEmpty()) {
+            SkString path = SkOSPath::Join(tmpDir.c_str(), name);
+            SkFILEWStream file(path.c_str());
+            if (!SkEncodeImage(&file, bits, SkEncodedImageFormat::kPNG, 100)) {
+                SkDebugf("Cannot write a picture %s\n", name);
+            }
+        }
+        delete canvas;
+    }
+
+    void drawRects(SkColor color, std::vector<TextBox>& result, bool fill = false) {
+
+        SkPaint paint;
+        if (!fill) {
+            paint.setStyle(SkPaint::kStroke_Style);
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(1);
+        }
+        paint.setColor(color);
+        for (auto& r : result) {
+            canvas->drawRect(r.rect, paint);
+        }
+    }
+
+    void drawLine(SkColor color, SkRect rect, bool vertical = true) {
+
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(1);
+        paint.setColor(color);
+        if (vertical) {
+            canvas->drawLine(rect.fLeft, rect.fTop, rect.fLeft, rect.fBottom, paint);
+        } else {
+            canvas->drawLine(rect.fLeft, rect.fTop, rect.fRight, rect.fTop, paint);
+        }
+    }
+
+    void drawLines(SkColor color, std::vector<TextBox>& result) {
+
+        for (auto& r : result) {
+            drawLine(color, r.rect);
+        }
+    }
+
+    SkCanvas* get() { return canvas; }
+private:
+    SkBitmap bits;
+    SkCanvas* canvas;
+    const char* name;
+};
 
 class ParagraphView_Base : public Sample {
 protected:
@@ -3715,6 +3782,221 @@ private:
 };
 
 
+#define LETTER_WIDTH1 10.0
+#define LETTER_WIDTH2 10.0
+#define FONT_SIZE1 100.0
+#define FONT_SIZE2 100.0
+#define RADIUS 225.0
+class ParagraphLogo : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphLogo"); }
+public:
+    void onDrawContent(SkCanvas* canvas) override {
+
+        SkString strChapelHill("C H A P E L L   H I L L");
+        SkString strGoogle("G O O G L E");
+        sk_sp<SkTypeface> typeface(SkTypeface::MakeFromName("sans-serif", SkFontStyle::Normal()));
+        SkFont font(typeface);
+        font.setSubpixel(true);
+
+        SkPaint black;
+        black.setColor(SK_ColorBLACK);
+        black.setStyle(SkPaint::kStroke_Style);
+        black.setAntiAlias(true);
+        black.setStrokeWidth(1);
+        SkPaint pale;
+        pale.setColor(0xFF88AED0);
+        pale.setStyle(SkPaint::kFill_Style);
+        SkPaint white;
+        white.setColor(SK_ColorWHITE);
+        white.setStyle(SkPaint::kFill_Style);
+        SkPaint gray = GetPaint(SkColors::kLtGray, LETTER_WIDTH2);
+        SkPaint red = GetPaint(SkColors::kRed, LETTER_WIDTH1);
+        SkPaint blue = GetPaint(SkColors::kBlue, LETTER_WIDTH1);
+        SkPaint green = GetPaint(SkColors::kGreen, LETTER_WIDTH1);
+        SkPaint yellow = GetPaint(SkColors::kYellow, LETTER_WIDTH1);
+        std::vector<SkPaint> grays = { gray };
+        std::vector<SkPaint> multicolor = {
+                red, blue, green, yellow, blue, red, green, blue, yellow, red, blue};
+
+        auto draw = [&](const SkString& text, const SkPath& circle, std::vector<SkPaint> paints) {
+
+            SkTArray<SkGlyphID> glyphs;
+            SkTArray<SkScalar> widths;
+            int glyphCount;
+            getGlyphsInfo(font, text, &glyphCount, &glyphs, &widths);
+
+            SkTArray<SkRect> bounds;
+            bounds.push_back_n(glyphCount);
+            font.getBounds(glyphs.data(), glyphCount, bounds.data(), &paints[0]);
+
+            SkAutoCanvasRestore acr(canvas, true);
+            canvas->translate(font.getSize(), font.getSize());
+            if (circle.countPoints() == 1) {
+                SkPoint pos = circle.getPoint(0);
+                for (int i = 0; i < glyphCount; ++i) {
+                    auto& glyph = glyphs[i];
+                    SkPaint& paint = paints[(i/2)%paints.size()];
+                    canvas->drawGlyphs(1, &glyph, &pos, {0, 0}, font, paint);
+                    pos.fX += widths[i];
+                }
+            } else {
+                SkTArray<SkRSXform> transforms;
+                if (!extractXForms(strChapelHill,
+                                   font,
+                                   glyphCount,
+                                   glyphs.data(),
+                                   widths.data(),
+                                   circle,
+                                   &transforms)) {
+                    return;
+                }
+                for (int i = 0; i < glyphCount && i < transforms.size(); ++i) {
+                    auto& glyph = glyphs[i];
+                    auto& xform = transforms[i];
+                    SkPaint& paint = paints[(i/2)%paints.size()];
+                    canvas->drawGlyphs(1, &glyph, &xform, {0, 0}, font, paint);
+                }
+            }
+        };
+
+        auto drawChurh = [&](SkSize size) {
+            SkAutoCanvasRestore acr(canvas, true);
+            canvas->translate(RADIUS, RADIUS);
+
+            SkScalar sep = size.height() / 50;
+            SkScalar corner = sep;
+            // Triangle
+            SkPath triangle;
+            triangle.moveTo(SkPoint::Make(size.width()/6, 0));
+            triangle.lineTo(SkPoint::Make(0, size.height()/6));
+            triangle.lineTo(SkPoint::Make(size.width()/3, size.height()/6));
+            triangle.close();
+            canvas->drawPath(triangle, pale);
+            canvas->translate(0, size.height()/6 + sep);
+            // Rectangle
+            canvas->drawRoundRect(SkRect::MakeXYWH(-size.width()/12,
+                                                   0,
+                                                   size.width()/2,
+                                                   size.height()/12),
+                                  corner,
+                                  corner,
+                                  pale);
+            canvas->translate(0, size.height()/12 + sep);
+            // Prism
+            SkPath prism;
+            prism.moveTo(SkPoint::Make(-size.width()/6, 0));
+            prism.lineTo(SkPoint::Make(-size.width()/3, size.height()/6));
+            prism.lineTo(SkPoint::Make(size.width()*4/3, size.height()/6));
+            prism.lineTo(SkPoint::Make(size.width()*7/6, 0));
+            prism.close();
+            canvas->drawPath(prism, pale);
+            canvas->translate(0, size.height()/6 + sep);
+            // Rectangle
+            canvas->drawRoundRect(SkRect::MakeXYWH(-size.width()/6,
+                                                   0,
+                                                   size.width()*8/6,
+                                                   size.height()/3),
+                                  corner,
+                                  corner,
+                                  pale);
+            // Windows
+            canvas->drawCircle(
+                    SkPoint::Make(size.width() / 6, size.height() / 6), size.width() / 8, white);
+            canvas->drawCircle(
+                    SkPoint::Make(size.width() / 2, size.height() / 6), size.width() / 8, white);
+            canvas->drawCircle(
+                    SkPoint::Make(size.width()*5 / 6, size.height() / 6), size.width() / 8, white);
+            canvas->translate(0, size.height()/3 + sep);
+        };
+
+        font.setSize(FONT_SIZE1);
+        canvas->drawCircle(SkPoint::Make(RADIUS*2, RADIUS*2), RADIUS*2, black);
+
+        SkRect rect1 = SkRect::MakeXYWH(LETTER_WIDTH1, LETTER_WIDTH1, 3*RADIUS, 3*RADIUS);
+        SkPath circle1 = SkPath().arcTo(rect1, -180, 180, false);
+        draw(strChapelHill, circle1, multicolor);
+
+        //drawChurh(SkSize::Make(RADIUS/2, RADIUS));
+
+        SkRect rect2 = SkRect::MakeXYWH(FONT_SIZE2/2, RADIUS*2, 0, 0);
+        SkPath circle2 = SkPath().arcTo(rect2, -180, 180, false);
+        font.setSize(FONT_SIZE2);
+        draw(strGoogle, circle2, grays);
+
+        auto image = GetResourceAsImage("images/nc.png");
+        canvas->drawImage(image.get(), RADIUS/2, RADIUS*2.6, SkSamplingOptions(), &blue);
+    }
+
+    bool extractXForms(const SkString& text,
+                       const SkFont& font,
+                       int glyphCount,
+                       SkGlyphID* glyphs,
+                       SkScalar* widths,
+                       const SkPath& circle,
+                       SkTArray<SkRSXform>* transforms) {
+
+        SkContourMeasureIter measure(circle, false, 1);
+        auto cont = measure.next();
+        auto dist = 0;
+        for (int i = 0; i < glyphCount && cont != nullptr; i++) {
+          auto width = widths[i];
+          dist += width/2;
+          if (dist > cont->length()) {
+            // jump to next contour
+            cont = measure.next();
+            if (cont == nullptr) {
+              // We have come to the end of the path - terminate the string
+              // right here.
+              break;
+            }
+            dist = width/2;
+          }
+
+          // Gives us the (x, y) coordinates as well as the cos/sin of the tangent
+          // line at that position.
+          SkPoint position;
+          SkVector tangent;
+
+          if (!cont->getPosTan(dist, &position, &tangent)) {
+              return false;
+          }
+          auto cx = position.fX;
+          auto cy = position.fY;
+          auto cosT = tangent.fX;
+          auto sinT = tangent.fY;
+
+          auto adjustedX = cx - (width/2 * cosT);
+          auto adjustedY = cy - (width/2 * sinT);
+
+          transforms->emplace_back(SkRSXform::Make(cosT, sinT, adjustedX, adjustedY));
+          dist += width/2;
+        }
+
+        return true;
+    }
+
+    void getGlyphsInfo(const SkFont& font, const SkString& text,
+                       int* glyphCount,
+                       SkTArray<SkGlyphID>* glyphs,
+                       SkTArray<SkScalar>* widths) {
+        *glyphCount = font.countText(text.c_str(), text.size(), SkTextEncoding::kUTF8);
+        glyphs->resize(*glyphCount);
+        font.textToGlyphs(
+                text.c_str(), text.size(), SkTextEncoding::kUTF8, glyphs->begin(), *glyphCount);
+        widths->resize(*glyphCount);
+        font.getWidths(glyphs->begin(), *glyphCount, widths->begin());
+    }
+
+    SkPaint GetPaint(SkColor4f color, int width) const {
+        SkPaint paint(color);
+        paint.setStrokeWidth(width);
+        paint.setStyle(SkPaint::kStrokeAndFill_Style);
+        return paint;
+    }
+};
+
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3781,3 +4063,4 @@ DEF_SAMPLE(return new ParagraphView62();)
 DEF_SAMPLE(return new ParagraphView63();)
 DEF_SAMPLE(return new ParagraphView64();)
 DEF_SAMPLE(return new ParagraphView65();)
+DEF_SAMPLE(return new ParagraphLogo();)
