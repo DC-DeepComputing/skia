@@ -104,29 +104,34 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(
                                        pathPaint.getPathEffect() ||
                                        pathPaint.getMaskFilter() ||
                                        (stroking && !hairline);
-            if (!needsExactCTM) {
-                for (auto [variant, pos] : accepted->accepted()) {
-                    const SkPath* path = variant.glyph()->path();
-                    SkMatrix m;
-                    SkPoint translate = drawOrigin + pos;
-                    m.setScaleTranslate(strikeToSourceScale, strikeToSourceScale,
-                                        translate.x(), translate.y());
-                    SkAutoCanvasRestore acr(canvas, true);
-                    canvas->concat(m);
-                    canvas->drawPath(*path, pathPaint);
-                }
-            } else {
-                for (auto [variant, pos] : accepted->accepted()) {
-                    const SkPath* path = variant.glyph()->path();
-                    SkMatrix m;
-                    SkPoint translate = drawOrigin + pos;
-                    m.setScaleTranslate(strikeToSourceScale, strikeToSourceScale,
-                                        translate.x(), translate.y());
+            {
+                SkBulkGlyphMetricsAndPaths glyphs{sk_sp<SkStrike>(strike)};
+                if (!needsExactCTM) {
+                    for (auto [variant, pos] : accepted->accepted()) {
+                        const SkGlyph& glyph = *glyphs.glyph(variant.packedID().glyphID());
+                        const SkPath* path = glyph.path();
+                        SkMatrix m;
+                        SkPoint translate = drawOrigin + pos;
+                        m.setScaleTranslate(strikeToSourceScale, strikeToSourceScale,
+                                            translate.x(), translate.y());
+                        SkAutoCanvasRestore acr(canvas, true);
+                        canvas->concat(m);
+                        canvas->drawPath(*path, pathPaint);
+                    }
+                } else {
+                    for (auto [variant, pos] : accepted->accepted()) {
+                        const SkGlyph& glyph = *glyphs.glyph(variant.packedID().glyphID());
+                        const SkPath* path = glyph.path();
+                        SkMatrix m;
+                        SkPoint translate = drawOrigin + pos;
+                        m.setScaleTranslate(strikeToSourceScale, strikeToSourceScale,
+                                            translate.x(), translate.y());
 
-                    SkPath deviceOutline;
-                    path->transform(m, &deviceOutline);
-                    deviceOutline.setIsVolatile(true);
-                    canvas->drawPath(deviceOutline, pathPaint);
+                        SkPath deviceOutline;
+                        path->transform(m, &deviceOutline);
+                        deviceOutline.setIsVolatile(true);
+                        canvas->drawPath(deviceOutline, pathPaint);
+                    }
                 }
             }
 
