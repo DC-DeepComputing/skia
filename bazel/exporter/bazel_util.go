@@ -18,6 +18,11 @@ import (
 	"go.skia.org/skia/bazel/exporter/build_proto/build"
 )
 
+// writeState tracks the state of an in-progress write of the workspace.
+type writeState struct {
+	writtenRules []string // All cmakeRule's written during write.
+}
+
 const (
 	ruleOnlyRepoPattern = `^(@\w+)$`
 	rulePattern         = `^(?P<repo>@[^/]+)?/(?P<path>[^:]+)(?P<target>:[^:]+)?$`

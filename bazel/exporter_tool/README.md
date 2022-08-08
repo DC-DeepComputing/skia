@@ -12,7 +12,8 @@ At the root level of the Skia workspace:
 
 ```sh
 bazel build //bazel/exporter_tool
-bazel-bin/bazel/exporter_tool/exporter_tool_/exporter_tool -proj_name=Skia -rule='//:skia_public'
+bazel-bin/bazel/exporter_tool/exporter_tool_/exporter_tool -output_format=cmake \
+    -proj_name=Skia -rule='//:skia_public'
 ```
 
 This will write to a single `CMakeLists.txt` file a valid CMake project with
@@ -23,3 +24,15 @@ and all dependent targets.
 
 * External dependencies are not supported.
 * Only the `//:skia_public` rule is supported. Other rules *may* work.
+
+# Bazel to *.gni
+
+At the root level of the Skia workspace:
+
+```sh
+bazel build //bazel/exporter_tool
+bazel-bin/bazel/exporter_tool/exporter_tool_/exporter_tool -output_format=gni -proj_name=Skia \
+    -rule='//src/...' -rule='//include/...'
+```
+
+This will update some `*.gni` files that reside in //gn that contain file lists.
