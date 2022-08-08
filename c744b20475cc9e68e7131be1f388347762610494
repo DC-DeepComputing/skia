@@ -16,6 +16,24 @@
       "message": "Great. Final nit: The CL description is no longer accurate - it still indicates that this CL is about plumbing LCDText down. Probably want to explain the real rationale of this CL (paving the way for plumbing other text related surface props).",
       "revId": "c744b20475cc9e68e7131be1f388347762610494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6307925_0304c0a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-08-08T16:33:11Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "cffbe30e_a2154f4d",
+      "revId": "c744b20475cc9e68e7131be1f388347762610494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
