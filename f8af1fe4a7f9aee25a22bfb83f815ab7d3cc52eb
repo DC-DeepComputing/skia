@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1dc6bdb_f7f24123",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-08T15:13:35Z",
+      "side": 1,
+      "message": "nit: update docs to be more general also?",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 24
+      },
+      "revId": "f8af1fe4a7f9aee25a22bfb83f815ab7d3cc52eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
