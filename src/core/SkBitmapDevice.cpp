@@ -410,6 +410,7 @@ void SkBitmapDevice::drawImageRect(const SkImage* image, const SkRect* src, cons
     SkBitmap bitmap;
     // TODO: Elevate direct context requirement to public API and remove cheat.
     auto dContext = as_IB(image)->directContext();
+    SkDebugf("drawImageRect dContext %p\n", dContext);
     if (!as_IB(image)->getROPixels(dContext, &bitmap)) {
         return;
     }

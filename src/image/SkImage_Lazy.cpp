@@ -131,6 +131,7 @@ SkImage_Lazy::SkImage_Lazy(Validator* validator)
 
 bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
                                SkImage::CachingHint chint) const {
+    SkDebugf("getROPixels ctx %p\n", ctx);
     auto check_output_bitmap = [bitmap]() {
         SkASSERT(bitmap->isImmutable());
         SkASSERT(bitmap->getPixels());
