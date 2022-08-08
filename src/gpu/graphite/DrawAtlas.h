@@ -17,6 +17,10 @@
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/RectanizerSkyline.h"
 
+#ifdef SK_ENABLE_PIET_GPU
+#include "src/gpu/piet/Scene.h"
+#endif
+
 namespace skgpu::graphite {
 
 class DrawContext;
@@ -60,7 +64,7 @@ public:
      *  @param width               Width in pixels of the atlas.
      *  @param height              Height in pixels of the atlas.
      *  @param plotWidth           The width of each plot. width/plotWidth should be an integer.
-     *  @param plotWidth           The height of each plot. height/plotHeight should be an integer.
+     *  @param plotHeight          The height of each plot. height/plotHeight should be an integer.
      *  @param atlasGeneration     A pointer to the context's generation counter.
      *  @param allowMultitexturing Can the atlas use more than one texture.
      *  @param evictor             A pointer to an eviction callback class.
@@ -73,7 +77,8 @@ public:
                                            AtlasGenerationCounter* generationCounter,
                                            AllowMultitexturing allowMultitexturing,
                                            PlotEvictionCallback* evictor,
-                                           std::string_view label);
+                                           std::string_view label,
+                                           bool usePiet = false);
 
     /**
      * TODO: the process described here is tentative, and this comment revised once locked down.
@@ -104,6 +109,10 @@ public:
 
     ErrorCode addToAtlas(Recorder*, int width, int height, const void* image, AtlasLocator*);
     bool recordUploads(DrawContext*, Recorder*);
+
+#ifdef SK_ENABLE_PIET_GPU
+    ErrorCode addPietGlyphToAtlas(Recorder*, int width, int height, const SkPath& glyphPath, AtlasLocator*);
+#endif
 
     const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
 
@@ -162,7 +171,7 @@ public:
 private:
     DrawAtlas(SkColorType, size_t bpp, int width, int height, int plotWidth, int plotHeight,
               AtlasGenerationCounter* generationCounter,
-              AllowMultitexturing allowMultitexturing, std::string_view label);
+              AllowMultitexturing allowMultitexturing, std::string_view label, bool usePiet = false);
 
     bool updatePlot(AtlasLocator*, Plot* plot);
 
@@ -179,6 +188,9 @@ private:
     }
 
     bool addToPage(unsigned int pageIdx, int width, int height, const void* image, AtlasLocator*);
+#ifdef SK_ENABLE_PIET_GPU
+    bool addPietGlyphToPage(unsigned int pageIdx, int width, int height, const SkPath& glyphPath, AtlasLocator*);
+#endif
 
     bool createPages(AtlasGenerationCounter*);
     bool activateNewPage(Recorder*);
@@ -222,6 +234,10 @@ private:
         std::unique_ptr<sk_sp<Plot>[]> fPlotArray;
         // LRU list of Plots (MRU at head - LRU at tail)
         PlotList fPlotList;
+
+#ifdef SK_ENABLE_PIET_GPU
+        sk_sp<skgpu::piet::Scene> fPietScene;
+#endif
     };
     // proxies kept separate to make it easier to pass them up to client
     sk_sp<TextureProxy> fProxies[PlotLocator::kMaxMultitexturePages];
@@ -229,6 +245,9 @@ private:
     uint32_t fMaxPages;
 
     uint32_t fNumActivePages;
+    
+    // TODO: hacky piet flag
+    bool fUsePiet;
 
     SkDEBUGCODE(void validate(const AtlasLocator& atlasLocator) const;)
 };

@@ -9,8 +9,10 @@
 #define skgpu_AtlasTypes_DEFINED
 
 #include <array>
+#include <vector>
 
 #include "include/core/SkColorType.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -440,6 +442,9 @@ public:
 
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
 
+    // Update the dirty region 
+    bool addSubplotWithPath(int width, int height, const SkPath& path, AtlasLocator* atlasLocator);
+
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
      * know when we can 'piggy back' uploads, i.e. if the last upload hasn't been flushed to
@@ -459,6 +464,12 @@ public:
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
     void resetRects();
+
+    struct PlotEntry {
+        IRect16 fRect;
+        SkPath fPath;
+    };
+    const std::vector<PlotEntry>& plotEntries() const { return fPlotEntries; }
 
     /**
      * Create a clone of this plot. The cloned plot will take the place of the current plot in
@@ -491,6 +502,7 @@ private:
     AtlasGenerationCounter* const fGenerationCounter;
     uint64_t fGenID;
     PlotLocator fPlotLocator;
+    std::vector<PlotEntry> fPlotEntries;
     unsigned char* fData;
     const int fWidth;
     const int fHeight;
