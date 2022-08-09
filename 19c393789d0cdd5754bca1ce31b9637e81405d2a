@@ -39,6 +39,30 @@
       },
       "revId": "19c393789d0cdd5754bca1ce31b9637e81405d2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d7877a3_ba9b4fc6",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-09T19:16:34Z",
+      "side": 1,
+      "message": "Yes. This solves the mystery of why I was still seeing multiple samplers being created even with this code. This does mean Samplers are budgeted (since Shareable \u003d\u003e Budgeted).",
+      "parentUuid": "8e6c8c2c_2ab61292",
+      "range": {
+        "startLine": 217,
+        "startChar": 72,
+        "endLine": 217,
+        "endChar": 75
+      },
+      "revId": "19c393789d0cdd5754bca1ce31b9637e81405d2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
