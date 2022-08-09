@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01826530_e54fc472",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 1,
+      "message": "Kevin:\n\nThis CL will never land - this review is only to discuss needed Bazel\u003eGNI exporter changes. PTAL.",
+      "revId": "0b06ad4d832b649d1f10a7c5c113c608a9e08456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80b7bf0_e98beedf",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 1,
+      "message": "The SkPicture files are not in a separate bazel rule(1) which is why they are lumped in here with the other skia_core_public files. As far as I can tell skia_skpicture_sources and skia_skpicture_public isn\u0027t used so I think this should be OK. I still need to verify they are unused by Flutter.\n\n\n(1) https://crsrc.org/c/third_party/skia/src/core/BUILD.bazel;l\u003d235?q\u003dSkPictureData.cpp\u0026ss\u003dchromium%2Fchromium%2Fsrc",
+      "range": {
+        "startLine": 340,
+        "startChar": 2,
+        "endLine": 350,
+        "endChar": 37
+      },
+      "revId": "0b06ad4d832b649d1f10a7c5c113c608a9e08456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b30b754_480e38b4",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 1,
+      "message": "Not in current core.gni and file is empty(1). I think it is safe to delete from the entire source base.\n\n(1) https://crsrc.org/c/third_party/skia/src/core/SkUtilsArm.cpp",
+      "revId": "0b06ad4d832b649d1f10a7c5c113c608a9e08456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

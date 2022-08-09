@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42eeea98_5cc2258c",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "Note: Many current *.gni files are not sorted making comparison harder.",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 34
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a90a49ff_4032a806",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "There is no Bazel rule exporting these https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/c/BUILD.bazel.\n\nNote: They are referenced in //public.bzl, but nowhere else.",
+      "range": {
+        "startLine": 101,
+        "startChar": 2,
+        "endLine": 104,
+        "endChar": 28
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e60d750_4212de76",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "Is this just missing from BUILD.bazel(1)? Looks only used for GPU and/or Graphite(2).\n\n(1) https://crsrc.org/c/third_party/skia/src/core/BUILD.bazel\n(2) https://crsrc.org/c/third_party/skia/src/core/SkKeyContext.cpp",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38a7389b_97f0e048",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "Not in a Bazel file.",
+      "range": {
+        "startLine": 311,
+        "startChar": 14,
+        "endLine": 311,
+        "endChar": 32
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20ffee6f_b2f99afc",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "SkDiscardableMemoryPool.cpp not in a bazel file.",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef9e2950_d6c81aef",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "BUILD.bazel identifies these as private headers(1) which is why they are filtered out.\n\n(1) https://crsrc.org/c/third_party/skia/src/opts/BUILD.bazel",
+      "range": {
+        "startLine": 457,
+        "startChar": 2,
+        "endLine": 464,
+        "endChar": 33
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f13a22_14106948",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "No Bazel build rule for these sources.",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2cff8e8_ac05689d",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "All merged into skia_core_public. WDYT about creating a separate Bazel rule for these - just so that they can be mapped to the same file list?",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 612,
+        "endChar": 1
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c9be2d4_a905a9ea",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "No Bazel rule for sk_effects.cpp",
+      "range": {
+        "startLine": 33,
+        "startChar": 12,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe538b14_f8b34fef",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-09T14:30:33Z",
+      "side": 0,
+      "message": "SkPerlinNoiseShader.cpp is now in core.gni along with the other shader files in https://crsrc.org/c/third_party/skia/src/shaders/BUILD.bazel;l\u003d7. Where should this be?",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
