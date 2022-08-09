@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cb1a66f5_d99c9ec0",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-09T20:58:26Z",
+      "side": 1,
+      "message": "\u003e You\u0027ll also want one that looks like this but has `Test` in the name (I think there should be examples in this file). Right now you\u0027re just telling us to build with it, but we probably want to test, too? \n\nAh i see, Done.\n\n\u003e And perhaps we want to test on Android, given that the intent is to run on Android? (You\u0027ll also need \"Android\" in the name - there are som eexamples of that here, too.)\n\nI don\u0027t think we need an android bot here since the android framework uses an entirely different build system and dependencies. The bots would build with the ndk so that\u0027s not really the same as building the platform code. So as far as android goes, i think the platform cts tests would suffice for now.",
+      "parentUuid": "79bdbc90_359bfcba",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 17
+      },
+      "revId": "8a51847b48b405b9f96fb6db4c33b4711aac18f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "014663ab_44490f5e",
         "filename": "infra/bots/recipe_modules/build/default.py",
         "patchSetId": 1
