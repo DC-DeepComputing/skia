@@ -16,6 +16,29 @@
       "message": "In tracking down another bug, I realized these weren\u0027t being cached. PTAL.",
       "revId": "19c393789d0cdd5754bca1ce31b9637e81405d2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6c8c2c_2ab61292",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-09T17:13:07Z",
+      "side": 1,
+      "message": "Should this be kYes? I would think multiple things could use the same Sampler object at the same time.",
+      "range": {
+        "startLine": 217,
+        "startChar": 72,
+        "endLine": 217,
+        "endChar": 75
+      },
+      "revId": "19c393789d0cdd5754bca1ce31b9637e81405d2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
