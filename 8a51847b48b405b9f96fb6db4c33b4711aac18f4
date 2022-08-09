@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "79bdbc90_359bfcba",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-09T20:23:49Z",
+      "side": 1,
+      "message": "You\u0027ll also want one that looks like this but has `Test` in the name (I think there should be examples in this file). Right now you\u0027re just telling us to build with it, but we probably want to test, too? And perhaps we want to test on Android, given that the intent is to run on Android? (You\u0027ll also need \"Android\" in the name - there are som eexamples of that here, too.)",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 17
+      },
+      "revId": "8a51847b48b405b9f96fb6db4c33b4711aac18f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "014663ab_44490f5e",
