@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f6771b4_d9d146d2",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2478,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-09T17:29:34Z",
+      "side": 1,
+      "message": "If this were below supportsRGBX it probably wouldn\u0027t require its own comment.",
+      "range": {
+        "startLine": 2478,
+        "startChar": 0,
+        "endLine": 2478,
+        "endChar": 63
+      },
+      "revId": "a085442e4dcc6b452f730f848036e43e990ece20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
