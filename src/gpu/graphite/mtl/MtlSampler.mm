@@ -76,7 +76,7 @@ sk_sp<MtlSampler> MtlSampler::Make(const MtlGpu* gpu,
     samplerDesc.mipFilter = mipFilter;
     samplerDesc.lodMinClamp = 0.0f;
     samplerDesc.lodMaxClamp = FLT_MAX;  // default value according to docs.
-    samplerDesc.maxAnisotropy = 1.0f;
+    samplerDesc.maxAnisotropy = 1;      // TODO: if we start using aniso, need to add to key
     samplerDesc.normalizedCoordinates = true;
     if (@available(macOS 10.11, iOS 9.0, *)) {
         samplerDesc.compareFunction = MTLCompareFunctionNever;
