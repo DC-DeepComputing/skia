@@ -131,6 +131,7 @@ skia_graphite_sources = [
   "$_src/geom/SubRunData.h",
   "$_src/geom/Transform.cpp",
   "$_src/geom/Transform_graphite.h",
+  "$_src/geom/VerticesData.h",
   "$_src/render/CoverBoundsRenderStep.cpp",
   "$_src/render/CoverBoundsRenderStep.h",
   "$_src/render/DynamicInstancesPatchAllocator.h",
