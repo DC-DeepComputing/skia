@@ -39,6 +39,30 @@
       },
       "revId": "3041244c684b3a8df2783083fa30623d3b8ed3e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a97fee2_c27eca76",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2022-08-09T21:02:43Z",
+      "side": 1,
+      "message": "I don\u0027t think so. We don\u0027t do it in Impeller for instance https://github.com/flutter/engine/blob/29aea24d0367993ece728aad86c80c92f7c8f295/impeller/renderer/backend/metal/command_buffer_mtl.mm#L130",
+      "parentUuid": "360113c0_306ce512",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 46
+      },
+      "revId": "3041244c684b3a8df2783083fa30623d3b8ed3e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
