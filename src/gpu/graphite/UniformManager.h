@@ -81,6 +81,7 @@ public:
     void write(skvx::float2);
     void write(skvx::float4);
     void write(SkSLType type, unsigned int count, const void* src);
+    void write(bool);
 
 private:
 #ifdef SK_DEBUG
