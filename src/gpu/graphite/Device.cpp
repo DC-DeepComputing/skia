@@ -454,7 +454,7 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                           const SkPaint& paint, bool skipColorXform)  {
-  // TODO - Add GPU handling of skipColorXform once Graphite has its color system more fleshed out.
+  // TODO - Add GPU handling of skipColorXForm uniform.
   this->drawGeometry(this->localToDeviceTransform(),
                      Geometry(sk_ref_sp(vertices)),
                      paint,
@@ -732,7 +732,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint, primitiveBlender, skipColorXform};
+    PaintParams shading {paint, primitiveBlender, skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
