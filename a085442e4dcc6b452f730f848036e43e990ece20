@@ -22,6 +22,30 @@
       },
       "revId": "a085442e4dcc6b452f730f848036e43e990ece20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7adfd99e_9a2c4417",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2478,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-09T18:22:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f6771b4_d9d146d2",
+      "range": {
+        "startLine": 2478,
+        "startChar": 0,
+        "endLine": 2478,
+        "endChar": 63
+      },
+      "revId": "a085442e4dcc6b452f730f848036e43e990ece20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
