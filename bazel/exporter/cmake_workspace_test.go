@@ -13,10 +13,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"go.skia.org/infra/go/skerr"
-	"go.skia.org/skia/bazel/exporter/build_proto/analysis_v2"
+	"go.skia.org/skia/bazel/exporter/interfaces"
 	"go.skia.org/skia/bazel/exporter/interfaces/mocks"
-	"google.golang.org/protobuf/encoding/prototext"
-	"google.golang.org/protobuf/proto"
 )
 
 const workspaceTestWorkspaceDir = "/path/to/workspace"
@@ -163,24 +161,19 @@ func getTestDataProtoBuf() {
 // Note: this helper function makes no test assertions as the
 // Export function is already tested.
 func getTestWorkspace(t *testing.T) (cmakeWorkspace, error) {
-	// Unmarshal the textproto into equivalent Go objects.
-	qr := analysis_v2.CqueryResult{}
-	err := prototext.Unmarshal([]byte(workspaceTestTextProto), &qr)
-	if err != nil {
-		return cmakeWorkspace{}, skerr.Wrap(err)
-	}
-	// Marshal into protobuf.
-	protoData, err := proto.Marshal(&qr)
+	protoData, err := textProtoToProtobuf(workspaceTestTextProto)
 	if err != nil {
 		return cmakeWorkspace{}, skerr.Wrap(err)
 	}
 
 	// Export to CMake buffer.
-	e := NewCMakeExporter(workspaceTestWorkspaceDir)
-	var contents bytes.Buffer
+	openFileFn := func(path string) (interfaces.Writer, error) {
+		return new(bytes.Buffer), nil
+	}
+	e := NewCMakeExporter("projName", workspaceTestWorkspaceDir, "CMakeLists.txt", openFileFn)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(protoData, nil)
-	err = e.Export(qcmd, &contents, "projName")
+	err = e.Export(qcmd)
 	if err != nil {
 		return cmakeWorkspace{}, skerr.Wrap(err)
 	}
