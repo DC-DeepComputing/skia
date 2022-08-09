@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1585cda3_b49986f1",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-09T22:04:44Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t think we need an android bot here since the android framework uses an entirely different build system and dependencies. The bots would build with the ndk so that\u0027s not really the same as building the platform code. So as far as android goes, i think the platform cts tests would suffice for now.\n\nFWIW, I meant an Android bot that builds Skia as a shared library and runs our tests, rather than actually merging with the Android framework. That said, I don\u0027t expect it to necessarily behave differently from linux.",
+      "parentUuid": "cb1a66f5_d99c9ec0",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 17
+      },
+      "revId": "8a51847b48b405b9f96fb6db4c33b4711aac18f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "014663ab_44490f5e",
         "filename": "infra/bots/recipe_modules/build/default.py",
         "patchSetId": 1
@@ -61,6 +85,24 @@
       "writtenOn": "2022-08-08T20:32:07Z",
       "side": 1,
       "message": "i\u0027m not entirely sure where the \"extra_tokens\" variable comes from. But i\u0027m guessing it has to do with some magic with the \"-AVIF\" suffix in the job names.\n\nbecause i couldn\u0027t find any other similar code for the wuffs bot either.\n\nso please let me know if i am missing anything.",
+      "revId": "8a51847b48b405b9f96fb6db4c33b4711aac18f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e7d394b_5583521e",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-09T22:04:44Z",
+      "side": 1,
+      "message": "This looks right to me, but Joe\u0027s more the expert here.",
+      "parentUuid": "014663ab_44490f5e",
       "revId": "8a51847b48b405b9f96fb6db4c33b4711aac18f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
