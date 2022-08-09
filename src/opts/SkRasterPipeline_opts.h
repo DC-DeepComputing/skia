@@ -1107,6 +1107,12 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
     }
 }
 
+#if defined(__clang__)
+    #define MUST_TAIL [[clang::musttail]]
+#else
+    #define MUST_TAIL
+#endif
+
 #if JUMPER_NARROW_STAGES
     #define STAGE(name, ...)                                                    \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,        \
@@ -1116,7 +1122,7 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
             name##_k(Ctx{program},params->dx,params->dy,params->tail, r,g,b,a,  \
                      params->dr, params->dg, params->db, params->da);           \
             auto next = (Stage)load_and_inc(program);                           \
-            next(params,program, r,g,b,a);                                      \
+            MUST_TAIL return next(params,program, r,g,b,a);                     \
         }                                                                       \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,        \
                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
@@ -1128,7 +1134,7 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
                              F r, F g, F b, F a, F dr, F dg, F db, F da) {           \
             name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);                 \
             auto next = (Stage)load_and_inc(program);                                \
-            next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);                          \
+            MUST_TAIL return next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);         \
         }                                                                            \
         SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
                          F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
