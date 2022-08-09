@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17431299_d864e47c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-09T20:49:50Z",
+      "side": 1,
+      "message": "The Apple WWDC presentation says it doesn\u0027t add much overhead so I added it without a ContextOption. One thing is that we don\u0027t currently label our Encoders, so if that\u0027s the issue we won\u0027t know which one it is. I\u0027ll give it some thought and see\nif there\u0027s something to be done there.",
+      "revId": "3041244c684b3a8df2783083fa30623d3b8ed3e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
