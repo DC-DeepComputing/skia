@@ -12,7 +12,7 @@
 
 class SkModeColorFilter : public SkColorFilterBase {
 public:
-    static sk_sp<SkColorFilter> Make(SkColor color, SkBlendMode mode) {
+    static sk_sp<SkColorFilter> Make(const SkColor4f& color, SkBlendMode mode) {
         return sk_sp<SkColorFilter>(new SkModeColorFilter(color, mode));
     }
 
@@ -32,7 +32,7 @@ public:
     SK_FLATTENABLE_HOOKS(SkModeColorFilter)
 
 protected:
-    SkModeColorFilter(SkColor color, SkBlendMode mode);
+    SkModeColorFilter(const SkColor4f& color, SkBlendMode mode);
 
     void flatten(SkWriteBuffer&) const override;
     bool onAsAColorMode(SkColor*, SkBlendMode*) const override;
@@ -42,7 +42,7 @@ protected:
                           const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override;
 
 private:
-    SkColor     fColor;
+    SkColor4f   fColor; // always stored in sRGB
     SkBlendMode fMode;
 
     friend class SkColorFilter;
