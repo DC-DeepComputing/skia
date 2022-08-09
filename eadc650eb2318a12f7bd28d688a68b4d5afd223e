@@ -16,6 +16,23 @@
       "message": "Okay canvaskit side of changes lgtm",
       "revId": "eadc650eb2318a12f7bd28d688a68b4d5afd223e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db28e861_cf3752bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T14:20:23Z",
+      "side": 1,
+      "message": "C++ side LGTM",
+      "revId": "eadc650eb2318a12f7bd28d688a68b4d5afd223e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
