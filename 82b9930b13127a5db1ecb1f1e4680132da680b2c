@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b3bbd84_ec53b202",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "We could sort the existing file lists as a separate CL w/o breaking anything, I would guess",
+      "parentUuid": "42eeea98_5cc2258c",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 34
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a90a49ff_4032a806",
         "filename": "gn/core.gni",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-09T14:30:33Z",
       "side": 0,
       "message": "There is no Bazel rule exporting these https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/c/BUILD.bazel.\n\nNote: They are referenced in //public.bzl, but nowhere else.",
+      "range": {
+        "startLine": 101,
+        "startChar": 2,
+        "endLine": 104,
+        "endChar": 28
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127f8716_279357ce",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "I don\u0027t think our C API (what these are) is used anywhere. It was low on my Bazel implement priority list. We could probably break this out as its own source list and see if anything breaks.",
+      "parentUuid": "a90a49ff_4032a806",
       "range": {
         "startLine": 101,
         "startChar": 2,
@@ -146,6 +194,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2cba8e16_a5d78685",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "That appears to have been an oversight so far. I didn\u0027t realize skia_enable_precompile was on by default.",
+      "parentUuid": "f2f13a22_14106948",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2cff8e8_ac05689d",
         "filename": "gn/core.gni",
         "patchSetId": 1
@@ -157,6 +223,30 @@
       "writtenOn": "2022-08-09T14:30:33Z",
       "side": 0,
       "message": "All merged into skia_core_public. WDYT about creating a separate Bazel rule for these - just so that they can be mapped to the same file list?",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 612,
+        "endChar": 1
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "237b930b_9481c068",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "SGTM. I support slicing and dicing our bazel filegroups however best suits backwards compatibility.",
+      "parentUuid": "e2cff8e8_ac05689d",
       "range": {
         "startLine": 593,
         "startChar": 0,
@@ -192,6 +282,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6de30362_6fa1c942",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "Same thing as before about unused C API",
+      "parentUuid": "5c9be2d4_a905a9ea",
+      "range": {
+        "startLine": 33,
+        "startChar": 12,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe538b14_f8b34fef",
         "filename": "gn/effects.gni",
         "patchSetId": 1
@@ -203,6 +317,24 @@
       "writtenOn": "2022-08-09T14:30:33Z",
       "side": 0,
       "message": "SkPerlinNoiseShader.cpp is now in core.gni along with the other shader files in https://crsrc.org/c/third_party/skia/src/shaders/BUILD.bazel;l\u003d7. Where should this be?",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a38f108_129c94cd",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-09T15:26:42Z",
+      "side": 0,
+      "message": "I would guess it should be with other Shaders. Ask michaelludwig@ who may know",
+      "parentUuid": "fe538b14_f8b34fef",
       "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
