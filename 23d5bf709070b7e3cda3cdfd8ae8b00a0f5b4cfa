@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a54242cc_661ee7d0",
+        "filename": "src/text/StrikeForGPU.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-09T14:52:44Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 89,
+        "startChar": 39,
+        "endLine": 89,
+        "endChar": 46
+      },
+      "revId": "23d5bf709070b7e3cda3cdfd8ae8b00a0f5b4cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
