@@ -178,3 +178,55 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRenderTarget(GrRecordingContext* r
 }
 
 #endif
+
+#if SK_GRAPHITE_ENABLED
+///////////////////////////////////////////////////////////////////////////////
+
+class SkSpecialSurface_Graphite : public SkSpecialSurface_Base {
+public:
+    SkSpecialSurface_Graphite(sk_sp<skgpu::BaseDevice> device, SkIRect subset)
+            : SkSpecialSurface_Base(subset, device->surfaceProps())
+            , fReadView(device->readSurfaceView()) {
+
+        fCanvas = std::make_unique<SkCanvas>(std::move(device));
+        fCanvas->clipRect(SkRect::Make(subset));
+    }
+
+    sk_sp<SkSpecialImage> onMakeImageSnapshot() override {
+        if (!fReadView.asTextureProxy()) {
+            return nullptr;
+        }
+        GrColorType ct = SkColorTypeToGrColorType(fCanvas->imageInfo().colorType());
+
+        // Note: SkSpecialImages can only be snapShotted once, so this call is destructive and we
+        // move fReadMove.
+        return SkSpecialImage::MakeGraphite(fCanvas->recordingContext(),
+                                            this->subset(),
+                                            kNeedNewImageUniqueID_SpecialImage,
+                                            std::move(fReadView), ct,
+                                            fCanvas->imageInfo().refColorSpace(),
+                                            this->props());
+    }
+
+private:
+    GrSurfaceProxyView fReadView;
+};
+
+sk_sp<SkSpecialSurface> SkSpecialSurface::MakeGraphite(skgpu::graphite::Recorder* recorder,
+                                                       const SkImageInfo& ii,
+                                                       const SkSurfaceProps& props) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    sk_sp<skgpu::graphite::Device> device = skgpu::graphite::Device::Make(recorder, ii,
+                                                                          SkBudgeted::kYes);
+    if (!device) {
+        return nullptr;
+    }
+
+    const SkIRect subset = SkIRect::MakeSize(ii.dimensions());
+
+    return sk_make_sp<SkSpecialSurface_Graphite>(std::move(device), subset);
+}
+#endif
