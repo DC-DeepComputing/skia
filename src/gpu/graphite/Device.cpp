@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/Gpu.h"
+#include "src/gpu/graphite/ImageUtils.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
@@ -453,7 +454,7 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                           const SkPaint& paint, bool skipColorXform)  {
-  // TODO - Add GPU handling of skipColorXform once Graphite has its color system more fleshed out.
+  // TODO - Add GPU handling of skipColorXForm uniform.
   this->drawGeometry(this->localToDeviceTransform(),
                      Geometry(sk_ref_sp(vertices)),
                      paint,
@@ -545,10 +546,17 @@ void Device::drawImageRect(const SkImage* image, const SkRect* src, const SkRect
         }
     }
 
+    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(this->recorder(),
+                                                                           image, sampling);
+    if (!imageToDraw) {
+        SKGPU_LOG_W("Device::drawImageRect: Creation of Graphite-backed image failed");
+        return;
+    }
+
     // construct a shader, so we can call drawRect with the dst
-    auto s = make_img_shader_for_paint(paint, sk_ref_sp(image), tmpSrc,
+    auto s = make_img_shader_for_paint(paint, std::move(imageToDraw), tmpSrc,
                                        SkTileMode::kClamp, SkTileMode::kClamp,
-                                       sampling, &matrix);
+                                       newSampling, &matrix);
     if (!s) {
         return;
     }
@@ -724,7 +732,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint, primitiveBlender, skipColorXform};
+    PaintParams shading {paint, primitiveBlender, skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
