@@ -134,6 +134,7 @@ public:
                         const skgpu::graphite::Transform& toDevice) const;
     void fillInstanceData(DrawWriter* dw,
                           int offset, int count,
+                          int ssboIndex,
                           SkSpan<const Glyph*> glyphs,
                           uint16_t depth,
                           const skgpu::graphite::Transform& toDevice) const;
@@ -407,6 +408,7 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
 
 void TransformedMaskVertexFiller::fillInstanceData(DrawWriter* dw,
                                                    int offset, int count,
+                                                   int ssboIndex,
                                                    SkSpan<const Glyph*> glyphs,
                                                    uint16_t depth,
                                                    const Transform& toDevice) const {
@@ -430,7 +432,7 @@ void TransformedMaskVertexFiller::fillInstanceData(DrawWriter* dw,
                             << newC1.x() << newC1.y() << newC1.w()
                             << newC3.x() << newC3.y() << newC3.w()
                             << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
-                            << depth;
+                            << depth << ssboIndex;
     }
 }
 
@@ -1241,6 +1243,7 @@ public:
                         const skgpu::graphite::Transform& transform) const override;
     void fillInstanceData(skgpu::graphite::DrawWriter*,
                           int offset, int count,
+                          int ssboIndex,
                           uint16_t depth,
                           const skgpu::graphite::Transform& transform) const override;
 
@@ -1692,6 +1695,7 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
 
 void DirectMaskSubRun::fillInstanceData(DrawWriter* dw,
                                         int offset, int count,
+                                        int ssboIndex,
                                         uint16_t depth,
                                         const skgpu::graphite::Transform& toDevice) const {
     auto quadData = [&]() {
@@ -1712,7 +1716,7 @@ void DirectMaskSubRun::fillInstanceData(DrawWriter* dw,
                             << c1.x() << c1.y() << c1.w()
                             << newC3.x() << newC3.y() << newC3.w()
                             << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
-                            << depth;
+                            << depth << ssboIndex;
     }
 }
 
@@ -1821,6 +1825,7 @@ public:
                         const skgpu::graphite::Transform& transform) const override;
     void fillInstanceData(DrawWriter*,
                           int offset, int count,
+                          int ssboIndex,
                           uint16_t depth,
                           const skgpu::graphite::Transform& transform) const override;
 
@@ -2016,10 +2021,12 @@ void TransformedMaskSubRun::fillVertexData(DrawWriter* dw,
 
 void TransformedMaskSubRun::fillInstanceData(DrawWriter* dw,
                                              int offset, int count,
+                                             int ssboIndex,
                                              uint16_t depth,
                                              const Transform& transform) const {
     fVertexFiller.fillInstanceData(dw,
                                    offset, count,
+                                   ssboIndex,
                                    fGlyphs.glyphs(),
                                    depth,
                                    transform);
@@ -2118,6 +2125,7 @@ public:
                         const skgpu::graphite::Transform& transform) const override;
     void fillInstanceData(DrawWriter*,
                           int offset, int count,
+                          int ssboIndex,
                           uint16_t depth,
                           const skgpu::graphite::Transform& transform) const override;
 
@@ -2377,10 +2385,12 @@ void SDFTSubRun::fillVertexData(DrawWriter* dw,
 
 void SDFTSubRun::fillInstanceData(DrawWriter* dw,
                                   int offset, int count,
+                                  int ssboIndex,
                                   uint16_t depth,
                                   const Transform& transform) const {
     fVertexFiller.fillInstanceData(dw,
                                    offset, count,
+                                   ssboIndex,
                                    fGlyphs.glyphs(),
                                    depth,
                                    transform);

@@ -120,6 +120,7 @@ public:
     virtual void fillInstanceData(
             skgpu::graphite::DrawWriter*,
             int offset, int count,
+            int ssboIndex,
             uint16_t depth,
             const skgpu::graphite::Transform& transform) const = 0;
 

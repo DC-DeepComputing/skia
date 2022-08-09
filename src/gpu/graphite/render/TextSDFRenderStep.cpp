@@ -49,7 +49,8 @@ TextSDFRenderStep::TextSDFRenderStep(bool isA8)
                       {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3},
                       {"uvScale", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
-                      {"depth", VertexAttribType::kUShort_norm, SkSLType::kFloat}},
+                      {"depth", VertexAttribType::kUShort_norm, SkSLType::kFloat},
+                      {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}},
                      /*varyings=*/
                      {{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
@@ -145,11 +146,13 @@ const char* TextSDFRenderStep::fragmentCoverageSkSL() const {
     )";
 }
 
-void TextSDFRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TextSDFRenderStep::writeVertices(DrawWriter* dw,
+                                      const DrawParams& params,
+                                      int ssboIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     uint16_t unormDepth = params.order().depth().bits();
     subRunData.subRun()->fillInstanceData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
-                                          unormDepth, params.transform());
+                                          ssboIndex, unormDepth, params.transform());
 }
 
 void TextSDFRenderStep::writeUniformsAndTextures(const DrawParams& params,
