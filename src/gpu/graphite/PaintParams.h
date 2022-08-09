@@ -27,7 +27,6 @@ namespace skgpu::graphite {
 // assumed to be anti-aliased.
 class PaintParams {
 public:
-    // TODO - Do we need primitiveBlender and skipColorXform to both of these constructors?
     PaintParams(const SkColor4f& color, sk_sp<SkBlender>, sk_sp<SkShader>, sk_sp<SkColorFilter>,
                 sk_sp<SkBlender> = nullptr, bool = false);
     explicit PaintParams(const SkPaint&, sk_sp<SkBlender> = nullptr, bool = false);
