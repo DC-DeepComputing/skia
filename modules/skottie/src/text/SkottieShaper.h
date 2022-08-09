@@ -8,6 +8,7 @@
 #ifndef SkottieShaper_DEFINED
 #define SkottieShaper_DEFINED
 
+#include "include/core/SkFont.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/utils/SkTextUtils.h"
@@ -15,7 +16,6 @@
 #include <vector>
 
 class SkFontMgr;
-class SkTextBlob;
 class SkTypeface;
 class SkString;
 
@@ -27,8 +27,16 @@ namespace skottie {
 
 class Shaper final {
 public:
+    struct GlyphRunRec {
+        SkFont fFont;
+        size_t fSize;
+    };
+
     struct Fragment {
-        sk_sp<SkTextBlob> fBlob;
+        std::vector<GlyphRunRec> fRuns;
+        std::vector<SkGlyphID>   fGlyphIDsStorage;
+        std::vector<SkPoint>     fGlyphPosStorage;
+
         SkPoint           fPos;
 
         // Only valid for kFragmentGlyphs
