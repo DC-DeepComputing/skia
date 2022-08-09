@@ -70,6 +70,24 @@
       "parentUuid": "6d31343e_c513a07c",
       "revId": "e7d0a87f9d10d4a6024310a114487637fdb0b913",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "853e95fb_44f25a8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-09T22:19:29Z",
+      "side": 1,
+      "message": "Ah okay got it.\n\nI think you have to hit the CQ+2 button and not me (since i am not a committer). Thanks for doing that!",
+      "parentUuid": "b692fa03_547f43dc",
+      "revId": "e7d0a87f9d10d4a6024310a114487637fdb0b913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
