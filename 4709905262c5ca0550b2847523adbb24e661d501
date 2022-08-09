@@ -22,6 +22,30 @@
       },
       "revId": "4709905262c5ca0550b2847523adbb24e661d501",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c6b333e_f08752e3",
+        "filename": "src/core/SkModeColorFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-09T17:07:46Z",
+      "side": 1,
+      "message": "good catch! I decided to remove SkModeColorFilter::Make to remove that temptation, everything just uses SkColorFilters::Blend.\n\nThis brings it pretty close to being able to encapsulate entirely in a cpp file, we just need a way to register the flattenable. That I can do later as follow up along with other color filter impls.",
+      "parentUuid": "a53e4ae5_36ca6e4b",
+      "range": {
+        "startLine": 76,
+        "startChar": 34,
+        "endLine": 76,
+        "endChar": 38
+      },
+      "revId": "4709905262c5ca0550b2847523adbb24e661d501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
