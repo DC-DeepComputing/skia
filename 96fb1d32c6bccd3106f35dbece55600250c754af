@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68971f25_2597de56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-09T20:06:57Z",
+      "side": 1,
+      "message": "PS6 accidentally switched back to using the source color instead of the srgb color, PS7 has the fix and confirmed locally that that fixes the bad GM results from ps6.",
+      "revId": "96fb1d32c6bccd3106f35dbece55600250c754af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
