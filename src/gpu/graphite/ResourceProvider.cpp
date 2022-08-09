@@ -7,6 +7,9 @@
 
 #include "src/gpu/graphite/ResourceProvider.h"
 
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkTileMode.h"
+
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
