@@ -26,7 +26,7 @@ _string_flags = [
 
 _string_list_flags = [
     "//src/gpu:gpu_backend",
-    "//bazel/common_config_settings:include_decoder",
+    "//src/codec:include_decoder",
     "//bazel/common_config_settings:include_encoder",
     "//bazel/common_config_settings:include_fontmgr",
 ]
