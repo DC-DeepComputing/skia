@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4046dea9_d6ab314b",
+        "filename": "src/core/SkModeColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-09T15:00:47Z",
+      "side": 1,
+      "message": "I\u0027d suggest just converting to (and storing) in sRGB up front (in the factory). That simplifies the serialization code, as well as a few spots where we know we want sRGB anyway. (You\u0027d still need something like mapColorToDst, but the source would just be sRGB).\n\nWe use this approach in SkPaint, and it\u0027s nice because it means you don\u0027t need to keep the CS around.",
+      "revId": "041db7e990994b955a63075c8714cd463061315a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
