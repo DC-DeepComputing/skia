@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4beb3fad_a99e10e5",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-09T16:31:32Z",
+      "side": 1,
+      "message": "Currently, we only pass in a primitive blender and skipColorXform bool to the PaintParams constructor that takes SkPaint. \n\nI added them as default arguments on this constructor also, but would you recommend removing them for any reason?\n\nAlso, let me know your thoughts on having these as default arguments or if you\u0027d prefer each PaintParams call (and similarly, drawGeometry call) explicitly assign them values.",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
