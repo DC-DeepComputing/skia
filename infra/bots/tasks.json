@@ -19584,6 +19584,11 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
+          "name": "skia/bots/binutils_linux_x64",
+          "path": "binutils_linux_x64",
+          "version": "version:1"
+        },
+        {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
           "version": "version:1"
@@ -19606,6 +19611,10 @@
         "dm",
         "--bloaty_cipd_version",
         "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--strip_binary",
+        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19649,6 +19658,11 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
+          "name": "skia/bots/binutils_linux_x64",
+          "path": "binutils_linux_x64",
+          "version": "version:1"
+        },
+        {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
           "version": "version:1"
@@ -19671,6 +19685,10 @@
         "fm",
         "--bloaty_cipd_version",
         "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--strip_binary",
+        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19714,6 +19732,11 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
+          "name": "skia/bots/binutils_linux_x64",
+          "path": "binutils_linux_x64",
+          "version": "version:1"
+        },
+        {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
           "version": "version:1"
@@ -19736,6 +19759,10 @@
         "skottie_tool",
         "--bloaty_cipd_version",
         "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--strip_binary",
+        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19779,6 +19806,11 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
+          "name": "skia/bots/binutils_linux_x64",
+          "path": "binutils_linux_x64",
+          "version": "version:1"
+        },
+        {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
           "version": "version:1"
@@ -19801,6 +19833,10 @@
         "skottie_tool_cpu",
         "--bloaty_cipd_version",
         "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--strip_binary",
+        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19844,6 +19880,11 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
+          "name": "skia/bots/binutils_linux_x64",
+          "path": "binutils_linux_x64",
+          "version": "version:1"
+        },
+        {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
           "version": "version:1"
@@ -19866,6 +19907,10 @@
         "skottie_tool_gpu",
         "--bloaty_cipd_version",
         "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--strip_binary",
+        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
