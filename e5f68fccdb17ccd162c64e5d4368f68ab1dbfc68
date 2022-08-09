@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1826dc4e_20e6a569",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-09T14:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64af5147_e9b524c1",
+      "range": {
+        "startLine": 903,
+        "startChar": 28,
+        "endLine": 903,
+        "endChar": 36
+      },
+      "revId": "e5f68fccdb17ccd162c64e5d4368f68ab1dbfc68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83cf3abe_5e94f537",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-08-09T14:13:41Z",
       "side": 1,
       "message": "??",
+      "range": {
+        "startLine": 908,
+        "startChar": 12,
+        "endLine": 908,
+        "endChar": 86
+      },
+      "revId": "e5f68fccdb17ccd162c64e5d4368f68ab1dbfc68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d6607f_d3ec802e",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-09T14:34:08Z",
+      "side": 1,
+      "message": "Right now the way the strike cache handles Drawables is not that flexible. For Paths, we can use SkPath to ref the underlying data. That way the strike can be removed from the cache, but the paths are still live. It would be nice to have a similar behavior for drawables, but the drawable data is stored in the strike itself. So, the SubRun must maintain a ref to the entire strike. This means some extra data is kept alive.",
+      "parentUuid": "83cf3abe_5e94f537",
       "range": {
         "startLine": 908,
         "startChar": 12,
