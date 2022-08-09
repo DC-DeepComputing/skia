@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a53e4ae5_36ca6e4b",
+        "filename": "src/core/SkModeColorFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-09T15:27:23Z",
+      "side": 1,
+      "message": "Sorry, I think that you still need to call SkColorFilters::Blend in each of these cases. Otherwise you could deserialize a bad filter that should have been elided by the factory (and you could end up triggering the debugfail on line 125).",
+      "range": {
+        "startLine": 76,
+        "startChar": 34,
+        "endLine": 76,
+        "endChar": 38
+      },
+      "revId": "4709905262c5ca0550b2847523adbb24e661d501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
