@@ -46,6 +46,30 @@
       },
       "revId": "4672080955e469d91ac1354cc781d4bb49f86f74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4d8bef_0f64745d",
+        "filename": "modules/canvaskit/tests/bazel/font_test.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-10T16:36:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "43b40183_86eeba54",
+      "range": {
+        "startLine": 445,
+        "startChar": 50,
+        "endLine": 445,
+        "endChar": 58
+      },
+      "revId": "4672080955e469d91ac1354cc781d4bb49f86f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
