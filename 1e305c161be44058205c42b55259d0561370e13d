@@ -16,6 +16,24 @@
       "message": "The dry run should let us verify that the new tests ran.",
       "revId": "1e305c161be44058205c42b55259d0561370e13d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8fb3eb_0c59ab5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-10T12:12:05Z",
+      "side": 1,
+      "message": "Oh, I was mistaken. The new bot doesn\u0027t seem to be an option until we submit `tasks.json`",
+      "parentUuid": "f4a9815b_c09be134",
+      "revId": "1e305c161be44058205c42b55259d0561370e13d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
