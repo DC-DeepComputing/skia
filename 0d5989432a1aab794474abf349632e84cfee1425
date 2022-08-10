@@ -22,6 +22,30 @@
       },
       "revId": "0d5989432a1aab794474abf349632e84cfee1425",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff588912_44d860e0",
+        "filename": "src/gpu/tessellate/Tessellation.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-10T15:07:54Z",
+      "side": 1,
+      "message": "Sure; do you mean just here or everywhere we name something \"*SsboIndex\"?",
+      "parentUuid": "46ddf184_36c1c103",
+      "range": {
+        "startLine": 81,
+        "startChar": 5,
+        "endLine": 81,
+        "endChar": 9
+      },
+      "revId": "0d5989432a1aab794474abf349632e84cfee1425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
