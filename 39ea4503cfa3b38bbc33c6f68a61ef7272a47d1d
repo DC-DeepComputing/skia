@@ -39,6 +39,30 @@
       },
       "revId": "39ea4503cfa3b38bbc33c6f68a61ef7272a47d1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b8afa51_09c38673",
+        "filename": "modules/canvaskit/tests/bazel/font_test.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-10T14:21:12Z",
+      "side": 1,
+      "message": "The test font should no longer be addressed by glyph IDs directly, but rather by codepoints. I removed positions as an argument and used drawText, will remove this line. I\u0027ll insert spaces to the test string.",
+      "parentUuid": "2cc72bc3_c375de76",
+      "range": {
+        "startLine": 445,
+        "startChar": 53,
+        "endLine": 445,
+        "endChar": 61
+      },
+      "revId": "39ea4503cfa3b38bbc33c6f68a61ef7272a47d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
