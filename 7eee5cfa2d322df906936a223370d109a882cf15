@@ -52,6 +52,24 @@
       "parentUuid": "6465ea42_cfc21b8b",
       "revId": "7eee5cfa2d322df906936a223370d109a882cf15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3d6416_b2f3a79c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-10T09:28:21Z",
+      "side": 1,
+      "message": "Reproducible on device if I run a larger set of tests, but not if I match more specifically for example only to `-m colrv1` tests. The failed result is consistent with not activating variable COLRv1 support in the test constructor. Looks like I need to set the SkGraphics flag differently?",
+      "parentUuid": "46d03437_62677dfc",
+      "revId": "7eee5cfa2d322df906936a223370d109a882cf15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
