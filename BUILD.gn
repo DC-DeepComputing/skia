@@ -294,6 +294,12 @@ template("optional") {
       if (defined(invoker.configs)) {
         configs += invoker.configs
       }
+      if (!defined(deps)) {
+        deps = []
+      }
+      if (defined(invoker.public_deps)) {
+        deps += invoker.public_deps
+      }
       all_dependent_configs = [ ":" + target_name + "_public" ]
     }
     if (defined(invoker.sources_for_tests) && skia_enable_tools) {
@@ -1091,7 +1097,10 @@ optional("jpeg_decode") {
   enabled = skia_use_libjpeg_turbo_decode
   public_defines = [ "SK_CODEC_DECODES_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  # There is a transitive dependency
+  # SkCodec.cpp -> SkJpegCodec.h -> SkJpegDecoderMgr.h -> jpeglib.h
+  # such that we need to make jpeg headers available to anything that depends on jpeg_decode.
+  public_deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
   sources = [
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
@@ -1206,7 +1215,7 @@ optional("raw") {
   enabled = skia_use_dng_sdk && skia_use_libjpeg_turbo_decode && skia_use_piex
   public_defines = [ "SK_CODEC_DECODES_RAW" ]
 
-  deps = [
+  pubic_deps = [
     "//third_party/dng_sdk",
     "//third_party/libjpeg-turbo:libjpeg",
     "//third_party/piex",
