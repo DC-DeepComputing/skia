@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0737ea2a_9508d051",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-10T18:49:22Z",
+      "side": 1,
+      "message": "LGTM with nit",
+      "revId": "ca28659dbe6878b2fee1d5bb8a04f2adca827f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da07636b_72c330ec",
+        "filename": "infra/bots/assets/gcloud_mac_arm64/create.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-10T18:49:22Z",
+      "side": 1,
+      "message": "Nit: I generally prefer to create a temporary directory to avoid dirtying CWD in case the script is interrupted or fails early.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 67
+      },
+      "revId": "ca28659dbe6878b2fee1d5bb8a04f2adca827f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
