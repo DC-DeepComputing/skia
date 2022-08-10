@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99727542_f084d3e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-08-10T13:00:10Z",
+      "side": 1,
+      "message": "FYI: Looks like this string is malformed.\nSpecifically this part:\n```\n...luci.skia.skia.primary:Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_NativeFonts,luci.skia.skia.primary...\n```\nSections between buckets should be separated by \";\" or we can just completely remove the 2nd luci.skia.skia.primary.\nThis should work:\n```\nCq-Include-Trybots: luci.skia.skia.primary:Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_NativeFonts,Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit,Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit,BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64,BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64\n```",
+      "revId": "39ea4503cfa3b38bbc33c6f68a61ef7272a47d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
