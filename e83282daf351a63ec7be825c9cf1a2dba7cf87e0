@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96bb5a01_43300066",
+        "filename": "include/c/sk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-10T17:33:39Z",
+      "side": 0,
+      "message": "This file is still included in gm/cgms.cpp. Should that be deleted in this CL?",
+      "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
