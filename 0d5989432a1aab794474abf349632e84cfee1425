@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ddf184_36c1c103",
+        "filename": "src/gpu/tessellate/Tessellation.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:59:52Z",
+      "side": 1,
+      "message": "nit: Can we capitilize this like kSSBOIndex?",
+      "range": {
+        "startLine": 81,
+        "startChar": 5,
+        "endLine": 81,
+        "endChar": 9
+      },
+      "revId": "0d5989432a1aab794474abf349632e84cfee1425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
