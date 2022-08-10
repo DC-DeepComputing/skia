@@ -821,13 +821,13 @@ sk_sp<SkImage> VulkanTestHelper::importHardwareBufferForRead(skiatest::Reporter*
 
 bool VulkanTestHelper::flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter,
                                                       sk_sp<SkSurface> surface) {
-    surface->flushAndSubmit();
+    GrFlushInfo info;
+    surface->flush(SkSurface::BackendSurfaceAccess::kPresent, info);
     surface.reset();
     GrBackendSemaphore semaphore;
     if (!this->setupSemaphoreForSignaling(reporter, &semaphore)) {
         return false;
     }
-    GrFlushInfo info;
     info.fNumSemaphores = 1;
     info.fSignalSemaphores = &semaphore;
     GrSemaphoresSubmitted submitted = fDirectContext->flush(info);
@@ -1223,8 +1223,10 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
                 return;
             }
         } else {
-            surface.reset();
+            GrFlushInfo info;
+            surface->flush(SkSurface::BackendSurfaceAccess::kPresent, info);
             srcHelper->doClientSync();
+            surface.reset();
             srcHelper->releaseImage();
         }
     }
