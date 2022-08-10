@@ -26,8 +26,6 @@ CORE_FILES = [
     "SkAutoPixmapStorage.cpp",
     "SkAutoPixmapStorage.h",
     "SkBBHFactory.cpp",
-    "SkBigPicture.cpp",
-    "SkBigPicture.h",
     "SkBitmap.cpp",
     "SkBitmapCache.cpp",
     "SkBitmapCache.h",
@@ -231,18 +229,7 @@ CORE_FILES = [
     "SkPathPriv.h",
     "SkPathRef.cpp",
     "SkPath_serial.cpp",
-    "SkPicture.cpp",
-    "SkPictureData.cpp",
-    "SkPictureData.h",
-    "SkPictureFlat.cpp",
-    "SkPictureFlat.h",
-    "SkPictureImageGenerator.cpp",
-    "SkPicturePlayback.cpp",
-    "SkPicturePlayback.h",
     "SkPicturePriv.h",
-    "SkPictureRecord.cpp",
-    "SkPictureRecord.h",
-    "SkPictureRecorder.cpp",
     "SkPipelineData.h",
     "SkPixelRef.cpp",
     "SkPixelRefPriv.h",
@@ -275,10 +262,6 @@ CORE_FILES = [
     "SkRecordOpts.cpp",
     "SkRecordOpts.h",
     "SkRecordPattern.h",
-    "SkRecordedDrawable.cpp",
-    "SkRecordedDrawable.h",
-    "SkRecorder.cpp",
-    "SkRecorder.h",
     "SkRecords.cpp",
     "SkRecords.h",
     "SkRect.cpp",
@@ -419,9 +402,35 @@ split_srcs_and_hdrs(
     files = SKSL_FILES,
 )
 
+# SkPicture files are maintained as a separate filegroup for backward compatability
+# with GNI files. This allows the generation of skia_skpicture_sources GNI file list.
+filegroup(
+    name = "skpicture_srcs",
+    srcs = [
+        "SkBigPicture.cpp",
+        "SkBigPicture.h",
+        "SkPicture.cpp",
+        "SkPictureData.cpp",
+        "SkPictureData.h",
+        "SkPictureFlat.cpp",
+        "SkPictureFlat.h",
+        "SkPictureImageGenerator.cpp",
+        "SkPicturePlayback.cpp",
+        "SkPicturePlayback.h",
+        "SkPictureRecord.cpp",
+        "SkPictureRecord.h",
+        "SkPictureRecorder.cpp",
+        "SkRecordedDrawable.cpp",
+        "SkRecordedDrawable.h",
+        "SkRecorder.cpp",
+        "SkRecorder.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 filegroup(
     name = "srcs",
-    srcs = [":core_srcs"] + select({
+    srcs = [":core_srcs"] + [":skpicture_srcs"] + select({
         "//src/sksl:needs_sksl": [
             ":sksl_srcs",
         ],
