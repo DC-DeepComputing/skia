@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dab483f1_62540270",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-10T14:22:16Z",
+      "side": 1,
+      "message": "Thanks, updated commit msg with your suggestion.",
+      "parentUuid": "99727542_f084d3e2",
+      "revId": "39ea4503cfa3b38bbc33c6f68a61ef7272a47d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cc72bc3_c375de76",
