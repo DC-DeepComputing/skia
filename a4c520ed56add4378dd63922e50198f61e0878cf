@@ -22,6 +22,30 @@
       },
       "revId": "a4c520ed56add4378dd63922e50198f61e0878cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "956ce201_f251cb44",
+        "filename": "src/shaders/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-10T20:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1147138f_50e0acf1",
+      "range": {
+        "startLine": 31,
+        "startChar": 39,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "a4c520ed56add4378dd63922e50198f61e0878cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
