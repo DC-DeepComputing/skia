@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7082c1aa_42fa3c21",
+        "filename": "src/codec/SkJpegCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-10T20:27:09Z",
+      "side": 0,
+      "message": "So what you\u0027re saying is that before this forward declaration was done on purpose so as not to re-export jpeglib.h as public API/deps. But iwyu wanted SkJpegDecoderMgr.h pulled in because...? Well, I\u0027m not sure why. The only uses are as a pointer and as a template argument to std::unique_ptr which is special in that incomplete types are specifically allowed for exactly this reason.",
+      "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
