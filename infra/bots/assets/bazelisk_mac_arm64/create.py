@@ -15,7 +15,6 @@ import subprocess
 
 
 URL = 'https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-darwin-arm64'
-BINARY = URL.split('/')[-1]
 
 
 def create_asset(target_dir):
