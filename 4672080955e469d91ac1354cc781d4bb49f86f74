@@ -22,6 +22,30 @@
       },
       "revId": "4672080955e469d91ac1354cc781d4bb49f86f74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43b40183_86eeba54",
+        "filename": "modules/canvaskit/tests/bazel/font_test.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-10T15:31:51Z",
+      "side": 1,
+      "message": "Ack - done, thanks.",
+      "parentUuid": "2dbfb66f_635a662f",
+      "range": {
+        "startLine": 445,
+        "startChar": 50,
+        "endLine": 445,
+        "endChar": 58
+      },
+      "revId": "4672080955e469d91ac1354cc781d4bb49f86f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
