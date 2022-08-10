@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1147138f_50e0acf1",
+        "filename": "src/shaders/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-10T20:06:42Z",
+      "side": 1,
+      "message": "nit: filegroups (plural)",
+      "range": {
+        "startLine": 31,
+        "startChar": 39,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "a4c520ed56add4378dd63922e50198f61e0878cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
