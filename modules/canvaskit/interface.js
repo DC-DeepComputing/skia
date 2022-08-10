@@ -834,9 +834,10 @@ CanvasKit.onRuntimeInitialized = function() {
     return ok;
   };
 
-  CanvasKit.ColorFilter.MakeBlend = function(color4f, mode) {
+  CanvasKit.ColorFilter.MakeBlend = function(color4f, mode, colorSpace) {
     var cPtr = copyColorToWasm(color4f);
-    return CanvasKit.ColorFilter._MakeBlend(cPtr, mode);
+    colorSpace = colorSpace || CanvasKit.ColorSpace.SRGB;
+    return CanvasKit.ColorFilter._MakeBlend(cPtr, mode, colorSpace);
   };
 
   // colorMatrix is an ColorMatrix (e.g. Float32Array of length 20)
@@ -1037,7 +1038,7 @@ CanvasKit.onRuntimeInitialized = function() {
   CanvasKit.Shader.MakeColor = function(color4f, colorSpace) {
     colorSpace = colorSpace || null;
     var cPtr = copyColorToWasm(color4f);
-    return CanvasKit.Shader._MakeColor(cPtr, colorSpace);
+    return CanvasKit.Shader._MakeColor(cPtr, colorSpace);1
   };
 
   // TODO(kjlubick) remove deprecated names.
