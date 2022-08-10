@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeaf5e06_32b43ffe",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-10T15:46:39Z",
+      "side": 1,
+      "message": "Not necessary now, but it could be good to pack this with the depth into a ushort2. I think we\u0027d have to convert the depth to normalized float in the vertex shader though.",
+      "range": {
+        "startLine": 51,
+        "startChar": 72,
+        "endLine": 51,
+        "endChar": 76
+      },
+      "revId": "422d1ca24ac526b714914aa5e7f38f138590c67a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
