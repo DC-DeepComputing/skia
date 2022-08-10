@@ -22,6 +22,30 @@
       },
       "revId": "422d1ca24ac526b714914aa5e7f38f138590c67a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e831369_8789770d",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-10T15:53:27Z",
+      "side": 1,
+      "message": "Good call; I think Michael also mentioned we might want to do this, but I\u0027m going to save it for another CL.",
+      "parentUuid": "aeaf5e06_32b43ffe",
+      "range": {
+        "startLine": 51,
+        "startChar": 72,
+        "endLine": 51,
+        "endChar": 76
+      },
+      "revId": "422d1ca24ac526b714914aa5e7f38f138590c67a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
