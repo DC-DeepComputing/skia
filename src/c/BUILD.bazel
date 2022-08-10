@@ -3,3 +3,25 @@ load("//bazel:macros.bzl", "exports_files_legacy")
 licenses(["notice"])
 
 exports_files_legacy()
+
+C_FILES = [
+    "sk_c_from_to.h",
+    "sk_imageinfo.cpp",
+    "sk_paint.cpp",
+    "sk_surface.cpp",
+    "sk_types_priv.h",
+]
+
+split_srcs_and_hdrs(
+    name = "c",
+    files = C_FILES,
+)
+
+# In own filegroup so that it can be mapped to //gn/effects.gni.
+filegroup(
+    name = "c_effects_srcs",
+    srcs = [
+        "sk_effects.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
