@@ -22,6 +22,30 @@
       },
       "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773a6338_0b14430a",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "I think default values makes sense for these constructors and for drawGeometry. While we don\u0027t make PaintParams in that many places right now, if we start doing so for tests, etc. the typical call will be to just pass in the SkPaint.\n\nI could see not having default parameters on the constructor that takes all the values directly.\n\nThese constructors, like drawGeometry, should have parameter names. And we probably would add a name to the first SkBlender parameter on the first constructor, like \"finalBlender\" to differentiate those two blenders.",
+      "parentUuid": "4beb3fad_a99e10e5",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

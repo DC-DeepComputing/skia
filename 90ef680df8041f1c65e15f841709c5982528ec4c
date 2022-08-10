@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "254294b4_1ef2805a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "Thanks! Just a few nits and then it lgtm",
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fb1b8da_1ec26814",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "nit: use std::move(blender) in this case since we\u0027re not needing to refer to the blender any more and it saves on ref counting.",
+      "range": {
+        "startLine": 463,
+        "startChar": 21,
+        "endLine": 463,
+        "endChar": 28
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0e50ec_175bb82d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "Here and several places below where we recursively call drawGeometry() will need to be updated to pass in `std::move(primitiveBlender), skipColorXform` so that isn\u0027t lost.\n\nIn the current state, I don\u0027t think this would have caused any problems because drawVertices() and the other primitive-color uses tend to ignore mask filters and path effects, but it\u0027d be a surprising gotcha if that ever changed.",
+      "range": {
+        "startLine": 652,
+        "startChar": 18,
+        "endLine": 652,
+        "endChar": 30
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4961939_1ff0787b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "We can also move the primitive blender into the constructor at this point.",
+      "range": {
+        "startLine": 735,
+        "startChar": 31,
+        "endLine": 735,
+        "endChar": 47
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb8836e_70b2dc62",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "In this case, I think having parameter names can help describe what these do, since they are specific to the primitive-color handling (whereas the other parameters would all get very redundant names).\n\nEventually we made change the boolean to be something like \"const SkColorSpace* primitiveColorSpace\", but since this would almost always be sRGB or the device\u0027s color space, taking the color space could be overkill and we\u0027d stick with the boolean.",
+      "range": {
+        "startLine": 188,
+        "startChar": 22,
+        "endLine": 189,
+        "endChar": 34
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc38796f_41cc5904",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:56:07Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment here like \"nullptr means there\u0027s no primitive color blending is skipped\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 25,
+        "endLine": 65,
+        "endChar": 42
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
