@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dbfb66f_635a662f",
+        "filename": "modules/canvaskit/tests/bazel/font_test.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-10T15:18:13Z",
+      "side": 1,
+      "message": "You need to switch the font and paint in the call to drawText\n\nhttps://chromium.googlesource.com/skia/+/8f46ecc84fab83ffccd2977a633006d77ec3c161/modules/canvaskit/canvaskit/types/index.d.ts#1167",
+      "range": {
+        "startLine": 445,
+        "startChar": 50,
+        "endLine": 445,
+        "endChar": 58
+      },
+      "revId": "4672080955e469d91ac1354cc781d4bb49f86f74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
