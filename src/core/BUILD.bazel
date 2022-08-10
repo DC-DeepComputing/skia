@@ -419,6 +419,18 @@ split_srcs_and_hdrs(
     files = SKSL_FILES,
 )
 
+# Mapped to skia_precompile_sources variable in //gn/core.gni.
+filegroup(
+    name = "precompile_srcs",
+    srcs = [
+        "SkCombinationBuilder.cpp",
+        "SkFactoryFunctions.cpp",
+        "SkFactoryFunctions.h",
+        "SkPrecompile.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 filegroup(
     name = "srcs",
     srcs = [":core_srcs"] + select({
