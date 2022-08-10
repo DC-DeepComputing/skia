@@ -1975,7 +1975,12 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
                 // We are confident that Angle does it as we expect. Our non-angle test bots do seem
                 // to pass and draw correctly so we could consider enabling this more broadly in the
                 // future.
-                if (ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown) {
+                // In addition, disable BGRA MSAA on Mesa. While Mesa claims that it supports both
+                // BGRA via EXT_texture_format_BGRA8888 and multisampling via
+                // ES 3.0+/ANGLE_framebuffer_multisample, the combination of these two capabilities
+                // is buggy.
+                if (ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown &&
+                    ctxInfo.angleDriver() != GrGLDriver::kMesa) {
                     // Angle incorrectly requires GL_BGRA8_EXT for the interalFormat for both ES2
                     // and ES3 even though this extension does not define that value. The extension
                     // only defines GL_BGRA_EXT as an internal format.
