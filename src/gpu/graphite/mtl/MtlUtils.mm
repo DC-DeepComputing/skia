@@ -71,7 +71,7 @@ MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mas
 static const bool gPrintSKSL = false;
 static const bool gPrintMSL = false;
 
-bool SkSLToMSL(const MtlGpu* gpu,
+bool SkSLToMSL(SkSL::Compiler* compiler,
                const std::string& sksl,
                SkSL::ProgramKind programKind,
                const SkSL::ProgramSettings& settings,
@@ -83,11 +83,9 @@ bool SkSLToMSL(const MtlGpu* gpu,
 #else
     const std::string& src = sksl;
 #endif
-    SkSL::Compiler* compiler = gpu->shaderCompiler();
-    std::unique_ptr<SkSL::Program> program =
-            gpu->shaderCompiler()->convertProgram(programKind,
-                                                  src,
-                                                  settings);
+    std::unique_ptr<SkSL::Program> program = compiler->convertProgram(programKind,
+                                                                      src,
+                                                                      settings);
     if (!program || !compiler->toMetal(*program, msl)) {
         errorHandler->compileError(src.c_str(), compiler->errorText().c_str());
         return false;
