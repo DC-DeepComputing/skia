@@ -22,6 +22,8 @@ static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_Sk
 static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
+constexpr static SkPMColor4f kOpaqueRed = {1,0,0,1};
+constexpr static SkPMColor4f kOpaqueBlue = {1,0,0,1};
 constexpr static int kWidth=10, kHeight=10;
 
 }
@@ -65,18 +67,24 @@ static bool fuzzy_equals(const float a[4], const SkPMColor4f& b) {
 static void check_sdc_color(skiatest::Reporter* reporter,
                             skgpu::v1::SurfaceDrawContext* sdc,
                             GrDirectContext* ctx,
-                            const SkPMColor4f& color) {
+                            const SkPMColor4f& expectedColor) {
     auto info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
     GrPixmap pixmap = GrPixmap::Allocate(info);
     sdc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
     for (int y = 0; y < kHeight; ++y) {
         for (int x = 0; x < kWidth; ++x) {
-            if (!fuzzy_equals(pix, color)) {
+//            SkDebugf("Got [%0.3f, %0.3f, %0.3f, %0.3f] - Expected [%0.3f, %0.3f, %0.3f, %0.3f]\n",
+//                    pix[0], pix[1], pix[2], pix[3],
+//                    expectedColor.fR, expectedColor.fG, expectedColor.fB, expectedColor.fA);
+//            return;
+
+            if (!fuzzy_equals(pix, expectedColor)) {
                 ERRORF(reporter, "SDC color mismatch.\n"
                                  "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
                                  "Expected [%0.3f, %0.3f, %0.3f, %0.3f]",
-                       pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
+                       pix[0], pix[1], pix[2], pix[3],
+                       expectedColor.fR, expectedColor.fG, expectedColor.fB, expectedColor.fA);
                 return;
             }
             pix += 4;
@@ -203,6 +211,49 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
     dstColor = SkBlendMode_Apply(SkBlendMode::kSrcOver, kTransCyan, dstColor);
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
+}
+
+static void lighten_test(GrDirectContext* dContext, skiatest::Reporter* reporter,
+                         SkBlendMode firstBM, SkBlendMode secondBM) {
+
+    SkPMColor4f expectedColor = SK_PMColor4fWHITE;
+    expectedColor = SkBlendMode_Apply(firstBM, kTransYellow, expectedColor);
+    expectedColor = SkBlendMode_Apply(secondBM, kTransCyan, expectedColor);
+
+
+    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
+                                                   SkBackingFit::kApprox, {kWidth, kHeight},
+                                                   kDMSAAProps, /*label=*/{});
+
+
+    sdc->clear(SK_PMColor4fWHITE);
+
+    draw_paint_with_aa(sdc.get(), kOpaqueBlue, firstBM);
+
+    draw_paint_with_dmsaa(sdc.get(), kOpaqueRed, secondBM);
+
+    check_sdc_color(reporter, sdc.get(), dContext, expectedColor);
+}
+
+
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         require_dst_reads,
+                         CtsEnforcement::kApiLevel_T) {
+    lighten_test(ctxInfo.directContext(), reporter,
+                 SkBlendMode::kSrcOver, SkBlendMode::kLighten);
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_maybe_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         nullptr,
+                         CtsEnforcement::kApiLevel_T) {
+    lighten_test(ctxInfo.directContext(), reporter,
+                 SkBlendMode::kSrcOver, SkBlendMode::kLighten);
 }
 
 // This test is used to test for crbug.com/1241134. The bug appears on Adreno5xx devices with OS
