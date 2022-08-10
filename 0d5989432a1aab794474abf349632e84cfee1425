@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40cca356_159d1185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T15:13:57Z",
+      "side": 1,
+      "message": "Jim did revert his instanced text CL, which is causing a merge conflict with this one.",
+      "revId": "0d5989432a1aab794474abf349632e84cfee1425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46ddf184_36c1c103",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "Sure; do you mean just here or everywhere we name something \"*SsboIndex\"?",
       "parentUuid": "46ddf184_36c1c103",
+      "range": {
+        "startLine": 81,
+        "startChar": 5,
+        "endLine": 81,
+        "endChar": 9
+      },
+      "revId": "0d5989432a1aab794474abf349632e84cfee1425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3acbcd4d_9b405d5d",
+        "filename": "src/gpu/tessellate/Tessellation.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T15:13:57Z",
+      "side": 1,
+      "message": "Oh yeah, I guess PatchWriter has a few other places that could be \"SSBOIndex\" instead. When it starts out lower-case, \"ssboIndex\" is fine to me. \"Ssbo\" doesn\u0027t seem right since it\u0027s an acronym.\n\n(that said, there is the \"Gpu\" type instead of \"GPU\", so maybe I\u0027m just the odd one out here, so let\u0027s just leave it as is for now). Disregard!",
+      "parentUuid": "ff588912_44d860e0",
       "range": {
         "startLine": 81,
         "startChar": 5,
