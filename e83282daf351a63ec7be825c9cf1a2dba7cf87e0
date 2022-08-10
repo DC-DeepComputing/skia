@@ -16,6 +16,24 @@
       "message": "This file is still included in gm/cgms.cpp. Should that be deleted in this CL?",
       "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b01cc0a_35d9d380",
+        "filename": "include/c/sk_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-10T17:35:06Z",
+      "side": 0,
+      "message": "Will do (after I see if the canaries pass/fail with this as is)",
+      "parentUuid": "96bb5a01_43300066",
+      "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
