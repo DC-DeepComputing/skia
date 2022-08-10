@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b34219d_3a6e4357",
+        "filename": "modules/sksg/src/SkSGText.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-10T15:29:51Z",
+      "side": 0,
+      "message": "I see this already had the awkward issue of glyphs which are not simple geometry.",
+      "revId": "76c5a62ed803cdf7deef02b66173bfee2b1cf8c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
