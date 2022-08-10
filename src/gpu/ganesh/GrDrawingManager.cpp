@@ -313,31 +313,56 @@ void GrDrawingManager::removeRenderTasks() {
         task->disown(this);
     }
     fDAG.reset();
+    fReorderBlockingTaskIndices.clear();
     fLastRenderTasks.reset();
 }
 
 void GrDrawingManager::sortTasks() {
-    if (!GrTTopoSort<GrRenderTask, GrRenderTask::TopoSortTraits>(fDAG)) {
-        SkDEBUGFAIL("Render task topo sort failed.");
-        return;
-    }
+    // We separately sort the ranges around non-reorderable tasks.
+    size_t start = 0;
+    for (size_t i = 0; i <= fReorderBlockingTaskIndices.size() && start < fDAG.size(); ++i) {
+        size_t end = i == fReorderBlockingTaskIndices.size() ? fDAG.size() : fReorderBlockingTaskIndices[i];
+        SkSpan span(fDAG.begin() + start, end - start);
 
 #if SK_GPU_V1 && defined(SK_DEBUG)
-    // This block checks for any unnecessary splits in the opsTasks. If two sequential opsTasks
-    // could have merged it means the opsTask was artificially split.
-    if (!fDAG.empty()) {
-        auto prevOpsTask = fDAG[0]->asOpsTask();
-        for (int i = 1; i < fDAG.count(); ++i) {
-            auto curOpsTask = fDAG[i]->asOpsTask();
-
-            if (prevOpsTask && curOpsTask) {
-                SkASSERT(!prevOpsTask->canMerge(curOpsTask));
+        // In order to partition the dag array like this it must be the case that each partition
+        // only depends on nodes in the partition or earlier partitions.
+        auto check = [&](const GrRenderTask* task, auto&& check) -> void {
+            SkASSERT(GrRenderTask::TopoSortTraits::WasOutput(task) ||
+                     std::find_if(span.begin(), span.end(), [task](const auto& n) {
+                         return n.get() == task; }));
+            for (size_t i = 0; i < task->fDependencies.size(); ++i) {
+                check(task->fDependencies[i], check);
             }
+        };
+        for (const auto& node : span) {
+            check(node.get(), check);
+        }
+#endif
 
-            prevOpsTask = curOpsTask;
+        if (!GrTTopoSort<GrRenderTask, GrRenderTask::TopoSortTraits>(span, start)) {
+            SkDEBUGFAIL("Render task topo sort failed.");
+        }
+#if SK_GPU_V1 && defined(SK_DEBUG)
+        else if (!span.empty()) {
+            // This block checks for any unnecessary splits in the opsTasks. If two sequential opsTasks
+            // could have merged it means the opsTask was artificially split.
+            auto prevOpsTask = span[0]->asOpsTask();
+            for (size_t j = 1; j < span.size(); ++j) {
+                auto curOpsTask = span[j]->asOpsTask();
+
+                if (prevOpsTask && curOpsTask) {
+                    SkASSERT(!prevOpsTask->canMerge(curOpsTask));
+                }
+
+                prevOpsTask = curOpsTask;
+            }
+        }
+#endif
+        if (i != fReorderBlockingTaskIndices.size()) {
+            start = fReorderBlockingTaskIndices[i] + 1;
         }
     }
-#endif
 }
 
 // Reorder the array to match the llist without reffing & unreffing sk_sp's.
@@ -356,8 +381,23 @@ static void reorder_array_by_llist(const SkTInternalLList<T>& llist, SkTArray<sk
 
 bool GrDrawingManager::reorderTasks(GrResourceAllocator* resourceAllocator) {
     SkASSERT(fReduceOpsTaskSplitting);
+    // We separately sort the ranges around non-reorderable tasks.
+    size_t start = 0;
+    bool clustered = true;
     SkTInternalLList<GrRenderTask> llist;
-    bool clustered = GrClusterRenderTasks(SkSpan(fDAG), &llist);
+    for (size_t i = 0; i <= fReorderBlockingTaskIndices.size() && start < fDAG.size(); ++i) {
+        size_t end = i == fReorderBlockingTaskIndices.size() ? fDAG.size() : fReorderBlockingTaskIndices[i];
+        SkSpan span(fDAG.begin() + start, end - start);
+        SkTInternalLList<GrRenderTask> spanlist;
+        if (!GrClusterRenderTasks(span, &spanlist)) {
+            clustered = false;
+            break;
+        }
+        if (i < fReorderBlockingTaskIndices.size()) {
+            spanlist.addToTail(fDAG[fReorderBlockingTaskIndices[i]].get());
+        }
+        llist.concat(std::move(spanlist));
+    }
     if (!clustered) {
         return false;
     }
@@ -411,17 +451,21 @@ GrRenderTask* GrDrawingManager::insertTaskBeforeLast(sk_sp<GrRenderTask> task) {
     if (fDAG.empty()) {
         return fDAG.push_back(std::move(task)).get();
     }
-    // Release 'fDAG.back()' and grab the raw pointer, in case the SkTArray grows
-    // and reallocates during emplace_back.
-    // TODO: Either use std::vector that can do this for us, or use SkSTArray to get the
-    // perf win.
-    fDAG.emplace_back(fDAG.back().release());
-    return (fDAG[fDAG.count() - 2] = std::move(task)).get();
+    if (!fReorderBlockingTaskIndices.empty() &&
+        fReorderBlockingTaskIndices.back() == fDAG.count()) {
+        fReorderBlockingTaskIndices.back()++;
+    }
+    fDAG.push_back(std::move(task));
+    fDAG.back().swap(fDAG.fromBack(1));
+    return fDAG.back().get();
 }
 
 GrRenderTask* GrDrawingManager::appendTask(sk_sp<GrRenderTask> task) {
     if (!task) {
         return nullptr;
+    }
+    if (task->blocksReordering()) {
+        fReorderBlockingTaskIndices.push_back(fDAG.count());
     }
     return fDAG.push_back(std::move(task)).get();
 }
@@ -544,6 +588,7 @@ void GrDrawingManager::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
 
     fDAG.swap(ddl->fRenderTasks);
     SkASSERT(fDAG.empty());
+    fReorderBlockingTaskIndices.clear();
 
     for (auto& renderTask : ddl->fRenderTasks) {
         renderTask->disown(this);
