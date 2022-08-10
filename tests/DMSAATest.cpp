@@ -22,9 +22,13 @@ static SkSurfaceProps kDMSAAProps(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_Sk
 static SkSurfaceProps kBasicProps(0, kUnknown_SkPixelGeometry);
 constexpr static SkPMColor4f kTransYellow = {.5f,.5f,.0f,.5f};
 constexpr static SkPMColor4f kTransCyan = {.0f,.5f,.5f,.5f};
+constexpr static SkPMColor4f kOpaqueRed = {1,0,0,1};
+constexpr static SkPMColor4f kOpaqueBlue = {0,0,1,1};
 constexpr static int kWidth=10, kHeight=10;
 
 }
+
+enum class DrawType { kRect, kMesh, kPath };
 
 static void draw_paint_with_aa(skgpu::v1::SurfaceDrawContext* sdc,
                                const SkPMColor4f& color,
@@ -52,6 +56,20 @@ static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
     sdc->drawVertices(nullptr, std::move(paint), SkMatrixProvider(SkMatrix::I()), vertices);
 }
 
+static void draw_paint_with_dmsaa_and_path(skgpu::v1::SurfaceDrawContext* sdc,
+                                           const SkPMColor4f& color,
+                                           SkBlendMode blendMode) {
+
+    SkPath path;
+    path.addCircle(kWidth/2.0f, kHeight/2.0f, kWidth/2.0f);
+    path.addCircle(kWidth, kHeight/2.0f, kWidth/2.0f);
+
+    GrPaint paint;
+    paint.setColor4f(color);
+    paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
+    sdc->drawPath(nullptr, std::move(paint), GrAA::kNo, SkMatrix::I(), path, GrStyle::SimpleFill());
+}
+
 static bool fuzzy_equals(const float a[4], const SkPMColor4f& b) {
     constexpr static float kTolerance = 2.5f / 256;
     for (int i = 0; i < 4; ++i) {
@@ -65,18 +83,24 @@ static bool fuzzy_equals(const float a[4], const SkPMColor4f& b) {
 static void check_sdc_color(skiatest::Reporter* reporter,
                             skgpu::v1::SurfaceDrawContext* sdc,
                             GrDirectContext* ctx,
-                            const SkPMColor4f& color) {
+                            const SkPMColor4f& expectedColor) {
     auto info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
     GrPixmap pixmap = GrPixmap::Allocate(info);
     sdc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
     for (int y = 0; y < kHeight; ++y) {
         for (int x = 0; x < kWidth; ++x) {
-            if (!fuzzy_equals(pix, color)) {
+//            SkDebugf("Got [%0.3f, %0.3f, %0.3f, %0.3f] - Expected [%0.3f, %0.3f, %0.3f, %0.3f]\n",
+//                    pix[0], pix[1], pix[2], pix[3],
+//                    expectedColor.fR, expectedColor.fG, expectedColor.fB, expectedColor.fA);
+//            return;
+
+            if (!fuzzy_equals(pix, expectedColor)) {
                 ERRORF(reporter, "SDC color mismatch.\n"
                                  "Got      [%0.3f, %0.3f, %0.3f, %0.3f]\n"
                                  "Expected [%0.3f, %0.3f, %0.3f, %0.3f]",
-                       pix[0], pix[1], pix[2], pix[3], color.fR, color.fG, color.fB, color.fA);
+                       pix[0], pix[1], pix[2], pix[3],
+                       expectedColor.fR, expectedColor.fG, expectedColor.fB, expectedColor.fA);
                 return;
             }
             pix += 4;
@@ -118,6 +142,17 @@ static void require_dst_reads(GrContextOptions* options) {
     options->fSuppressAdvancedBlendEquations = true;
     options->fSuppressFramebufferFetch = true;
 }
+
+static void require_dst_reads_but_no_atlas_path_renderer(GrContextOptions* options) {
+    options->fSuppressAdvancedBlendEquations = true;
+    options->fSuppressFramebufferFetch = true;
+    options->fGpuPathRenderers &= ~GpuPathRenderers::kAtlas;
+}
+
+static void no_atlas_path_renderer(GrContextOptions* options) {
+    options->fGpuPathRenderers &= ~GpuPathRenderers::kAtlas;
+}
+
 
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext,
@@ -203,6 +238,102 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
     dstColor = SkBlendMode_Apply(SkBlendMode::kSrcOver, kTransCyan, dstColor);
 
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
+}
+
+static void draw(skgpu::v1::SurfaceDrawContext* sdc,
+                 DrawType drawType,
+                 SkBlendMode blendMode,
+                 const SkPMColor4f& color) {
+    switch(drawType) {
+        case DrawType::kRect:
+            draw_paint_with_aa(sdc, color, blendMode);
+            break;
+        case DrawType::kMesh:
+            draw_paint_with_dmsaa(sdc, color, blendMode);
+            break;
+        case DrawType::kPath:
+            draw_paint_with_dmsaa_and_path(sdc, color, blendMode);
+            break;
+    }
+}
+
+static void blend_mode_test(GrDirectContext* dContext, skiatest::Reporter* reporter,
+                            const SkPMColor4f& firstColor, const SkPMColor4f& secondColor) {
+
+    for (int firstBM = 0; firstBM < kSkBlendModeCount; ++firstBM) {
+        for (int secondBM = 0; secondBM < kSkBlendModeCount; ++secondBM) {
+            for (auto firstDrawType : { DrawType::kRect, DrawType::kMesh, DrawType::kPath }) {
+                for (auto secondDrawType : { DrawType::kRect, DrawType::kMesh, DrawType::kPath }) {
+                    SkBlendMode firstBlendMode = (SkBlendMode) firstBM;
+                    SkBlendMode secondBlendMode = (SkBlendMode) secondBM;
+
+                    SkPMColor4f expectedColor = SK_PMColor4fWHITE;
+                    expectedColor = SkBlendMode_Apply(firstBlendMode, firstColor, expectedColor);
+                    expectedColor = SkBlendMode_Apply(secondBlendMode, secondColor, expectedColor);
+
+
+                    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext,
+                                                                   GrColorType::kRGBA_8888,
+                                                                   nullptr,
+                                                                   SkBackingFit::kApprox,
+                                                                   { kWidth, kHeight },
+                                                                   kDMSAAProps,
+                                                                   /*label=*/{});
+
+
+                    sdc->clear(SK_PMColor4fWHITE);
+
+                    draw(sdc.get(), firstDrawType, firstBlendMode, firstColor);
+
+                    draw(sdc.get(), secondDrawType, secondBlendMode, secondColor);
+
+                    check_sdc_color(reporter, sdc.get(), dContext, expectedColor);
+                }
+            }
+        }
+    }
+}
+
+#if 0
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         require_dst_reads,
+                         CtsEnforcement::kApiLevel_T) {
+    blend_mode_test(ctxInfo.directContext(), reporter,
+                    kOpaqueBlue, kOpaqueRed);
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         require_dst_reads_but_no_atlas_path_renderer,
+                         CtsEnforcement::kApiLevel_T) {
+    blend_mode_test(ctxInfo.directContext(), reporter,
+                    kOpaqueBlue, kOpaqueRed);
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         no_atlas_path_renderer,
+                         CtsEnforcement::kApiLevel_T) {
+    blend_mode_test(ctxInfo.directContext(), reporter,
+                    kOpaqueBlue, kOpaqueRed);
+}
+#endif
+
+DEF_GPUTEST_FOR_CONTEXTS(DMSAA_lightenBM_maybe_with_DstReads,
+                         &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         nullptr,
+                         CtsEnforcement::kApiLevel_T) {
+    blend_mode_test(ctxInfo.directContext(), reporter,
+                    kOpaqueBlue, kOpaqueRed);
 }
 
 // This test is used to test for crbug.com/1241134. The bug appears on Adreno5xx devices with OS
