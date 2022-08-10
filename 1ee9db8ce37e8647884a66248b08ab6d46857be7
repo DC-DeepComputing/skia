@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c94b8f14_22624f7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-10T11:49:25Z",
+      "side": 1,
+      "message": "For (temporary) logistical reasons, CanvasKit has its own copy of some test assets in https://github.com/google/skia/tree/main/modules/canvaskit/tests/assets\n\nYou\u0027ll want to replace/rename the font there also.",
+      "revId": "1ee9db8ce37e8647884a66248b08ab6d46857be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
