@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f45a6ab3_6d3e7e8e",
+        "filename": "src/gpu/ganesh/SurfaceFillContext_v1.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-10T14:35:57Z",
+      "side": 1,
+      "message": "Along these same clean up lines, I think we can get rid of this hierarchy split from when we had SFCs and SDCs for v1 and v2 (separate CL).",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 59
+      },
+      "revId": "f7d2163eb20095c533eb29a1f9866af79ecfcbaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
