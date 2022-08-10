@@ -22,6 +22,30 @@
       },
       "revId": "0e75a6fc76eb4256150a2feec0d59959d19f5edc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b94c8ac_7a7bce2c",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-10T20:30:29Z",
+      "side": 1,
+      "message": "The necessary changes have merged into piet-gpu mainline, so this should no longer be necessary",
+      "parentUuid": "47c017fd_a5ff6033",
+      "range": {
+        "startLine": 42,
+        "startChar": 52,
+        "endLine": 42,
+        "endChar": 166
+      },
+      "revId": "0e75a6fc76eb4256150a2feec0d59959d19f5edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
