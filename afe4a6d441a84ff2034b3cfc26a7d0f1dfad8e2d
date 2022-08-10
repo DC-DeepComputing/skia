@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df98c858_4a32fd72",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-10T15:52:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38cb6196_5a2e01ff",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 19
+      },
+      "revId": "afe4a6d441a84ff2034b3cfc26a7d0f1dfad8e2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1fb690f_50e50055",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-10T14:19:16Z",
       "side": 1,
       "message": "Same comment about keeping private hdrs separate from srcs",
+      "range": {
+        "startLine": 34,
+        "startChar": 12,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "afe4a6d441a84ff2034b3cfc26a7d0f1dfad8e2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8535476d_9d65d770",
+        "filename": "src/shaders/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-10T15:52:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1fb690f_50e50055",
       "range": {
         "startLine": 34,
         "startChar": 12,
