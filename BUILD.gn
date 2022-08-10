@@ -294,6 +294,12 @@ template("optional") {
       if (defined(invoker.configs)) {
         configs += invoker.configs
       }
+      if (!defined(deps)) {
+        deps = []
+      }
+      if (defined(invoker.public_deps)) {
+        deps += invoker.public_deps
+      }
       all_dependent_configs = [ ":" + target_name + "_public" ]
     }
     if (defined(invoker.sources_for_tests) && skia_enable_tools) {
@@ -1091,7 +1097,7 @@ optional("jpeg_decode") {
   enabled = skia_use_libjpeg_turbo_decode
   public_defines = [ "SK_CODEC_DECODES_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  public_deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
   sources = [
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
@@ -1103,7 +1109,7 @@ optional("jpeg_encode") {
   enabled = skia_use_libjpeg_turbo_encode
   public_defines = [ "SK_ENCODE_JPEG" ]
 
-  deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
+  public_deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
   public = [ "include/encode/SkJpegEncoder.h" ]
   sources = [
     "src/images/SkJPEGWriteUtility.cpp",
@@ -1115,7 +1121,7 @@ optional("jpegxl_decode") {
   enabled = skia_use_libjxl_decode
   public_defines = [ "SK_CODEC_DECODES_JPEGXL" ]
 
-  deps = [ "//third_party/libjxl" ]
+  public_deps = [ "//third_party/libjxl" ]
   sources = [ "src/codec/SkJpegxlCodec.cpp" ]
 }
 
@@ -1187,7 +1193,7 @@ optional("png_decode") {
   enabled = skia_use_libpng_decode
   public_defines = [ "SK_CODEC_DECODES_PNG" ]
 
-  deps = [ "//third_party/libpng" ]
+  public_deps = [ "//third_party/libpng" ]
   sources = [
     "src/codec/SkIcoCodec.cpp",
     "src/codec/SkPngCodec.cpp",
@@ -1198,7 +1204,7 @@ optional("png_encode") {
   enabled = skia_use_libpng_encode
   public_defines = [ "SK_ENCODE_PNG" ]
 
-  deps = [ "//third_party/libpng" ]
+  public_deps = [ "//third_party/libpng" ]
   sources = [ "src/images/SkPngEncoder.cpp" ]
 }
 
@@ -1206,7 +1212,7 @@ optional("raw") {
   enabled = skia_use_dng_sdk && skia_use_libjpeg_turbo_decode && skia_use_piex
   public_defines = [ "SK_CODEC_DECODES_RAW" ]
 
-  deps = [
+  public_deps = [
     "//third_party/dng_sdk",
     "//third_party/libjpeg-turbo:libjpeg",
     "//third_party/piex",
@@ -1234,7 +1240,7 @@ optional("webp_decode") {
   enabled = skia_use_libwebp_decode
   public_defines = [ "SK_CODEC_DECODES_WEBP" ]
 
-  deps = [ "//third_party/libwebp" ]
+  public_deps = [ "//third_party/libwebp" ]
   sources = [ "src/codec/SkWebpCodec.cpp" ]
 }
 
@@ -1242,7 +1248,7 @@ optional("webp_encode") {
   enabled = skia_use_libwebp_encode
   public_defines = [ "SK_ENCODE_WEBP" ]
 
-  deps = [ "//third_party/libwebp" ]
+  public_deps = [ "//third_party/libwebp" ]
   sources = [ "src/images/SkWebpEncoder.cpp" ]
 }
 
@@ -1250,7 +1256,7 @@ optional("wuffs") {
   enabled = skia_use_wuffs
   public_defines = [ "SK_HAS_WUFFS_LIBRARY" ]
 
-  deps = [ "//third_party/wuffs" ]
+  public_deps = [ "//third_party/wuffs" ]
   sources = [ "src/codec/SkWuffsCodec.cpp" ]
 }
 
