@@ -34,6 +34,24 @@
       "parentUuid": "e5afd1fb_a07fadc6",
       "revId": "7eee5cfa2d322df906936a223370d109a882cf15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d03437_62677dfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-10T09:04:00Z",
+      "side": 1,
+      "message": "Not reproducible with a crow x64 Android emulator - the generated dm screenshot, at least in 8888 config looks good. Will try to see if I can reproduce it on a real device.",
+      "parentUuid": "6465ea42_cfc21b8b",
+      "revId": "7eee5cfa2d322df906936a223370d109a882cf15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
