@@ -20,7 +20,7 @@ describe('Font Behavior', () => {
 
     let colrv1FontBuffer = null;
     // This font has glyphs for COLRv1. Also used in gms/colrv1.cpp
-    const colrv1FontLoaded = fetch('/assets/more_samples-glyf_colr_1.ttf').then(
+    const colrv1FontLoaded = fetch('/assets/test_glyphs-glyf_colr_1.ttf').then(
         (response) => response.arrayBuffer()).then(
         (buffer) => {
             colrv1FontBuffer = buffer;
@@ -431,7 +431,7 @@ describe('Font Behavior', () => {
             5, 25, textPaint, annotationFont);
 
         // These glyphIDs show off gradients in the COLRv1 font.
-        const glyphIDs = [2, 5, 6, 7, 8, 55];
+        const testCodepoints = "\u{F0200}\u{F0100}\u{F0101}\u{F0102}\u{F0103}\u{F0D00}";
         const testFont = new CanvasKit.Font(colrFace);
         const sizes = [12, 18, 30, 100];
         let y = 30;
@@ -441,7 +441,7 @@ describe('Font Behavior', () => {
             const metrics = testFont.getMetrics();
             y -= metrics.ascent;
             const positions = calculateRun(testFont, glyphIDs)
-            canvas.drawGlyphs(glyphIDs, positions, 5, y, testFont, textPaint);
+            canvas.drawText(testCodepoints, 5, y, testFont, textPaint);
             y += metrics.descent + metrics.leading;
         }
 
