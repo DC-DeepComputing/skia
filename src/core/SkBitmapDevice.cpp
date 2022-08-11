@@ -596,7 +596,7 @@ sk_sp<SkSpecialImage> SkBitmapDevice::makeSpecial(const SkImage* image) {
                                          image->makeNonTextureImage(), this->surfaceProps());
 }
 
-sk_sp<SkSpecialImage> SkBitmapDevice::snapSpecial(const SkIRect& bounds, bool forceCopy) {
+sk_sp<SkSpecialImage> SkBitmapDevice::snapSpecial1(const SkIRect& bounds, bool forceCopy) {
     if (forceCopy) {
         return SkSpecialImage::CopyFromRaster(bounds, fBitmap, this->surfaceProps());
     } else {

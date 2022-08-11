@@ -151,13 +151,13 @@ private:
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
 
-    void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override {}
+    void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override;
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
-                     const SkSamplingOptions&, const SkPaint&) override {}
+                     const SkSamplingOptions&, const SkPaint&) override;
 
     sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
     sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
-    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
+    sk_sp<SkSpecialImage> snapSpecial1(const SkIRect& subset, bool forceCopy = false) override;
 
     // DrawFlags alters the effects used by drawShape.
     enum class DrawFlags : unsigned {

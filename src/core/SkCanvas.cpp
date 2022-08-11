@@ -906,7 +906,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
         // The src device can be snapped directly
         skif::LayerSpace<SkIRect> srcSubset(SkIRect::MakeSize(srcDims));
         if (srcSubset.intersect(requiredInput)) {
-            filterInput = src->snapSpecial(SkIRect(srcSubset));
+            filterInput = src->snapSpecial1(SkIRect(srcSubset));
 
             // TODO: For now image filter input images need to have a (0,0) origin. The required
             // input's top left has been baked into srcSubset so we use that as the image origin.
@@ -929,7 +929,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
         SkIRect srcSubset = srcRect.roundOut();
         sk_sp<SkSpecialImage> srcImage;
         if (srcSubset.intersect(SkIRect::MakeSize(srcDims)) &&
-            (srcImage = src->snapSpecial(srcSubset))) {
+            (srcImage = src->snapSpecial1(srcSubset))) {
             // Make a new surface and draw 'srcImage' into it with the srcToIntermediate transform
             // to produce the final input image for the filter
             SkBaseDevice::CreateInfo info(make_layer_info(src->imageInfo(), requiredInput.width(),
@@ -953,7 +953,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
                                                    SkSamplingOptions{SkFilterMode::kLinear},
                                                    SkMatrix::Translate(srcSubset.topLeft())));
             intermediateDevice->drawPaint(imageFill);
-            filterInput = intermediateDevice->snapSpecial();
+            filterInput = intermediateDevice->snapSpecial2();
 
             // TODO: Like the non-intermediate case, we need to apply the image origin.
             mapping.applyOrigin(requiredInput.topLeft());
@@ -1183,7 +1183,7 @@ void SkCanvas::internalSaveBehind(const SkRect* localBounds) {
     // a client, and the drawClippedToSaveBehind below). Since this is not saving a layer, with its
     // own device, we need to explicitly copy the back image contents so that its original content
     // is available when we splat it back later during restore.
-    auto backImage = device->snapSpecial(devBounds, /* copy */ true);
+    auto backImage = device->snapSpecial1(devBounds, /* forceCopy= */ true);
     if (!backImage) {
         return;
     }

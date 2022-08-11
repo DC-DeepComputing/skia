@@ -66,10 +66,17 @@ public:
                                                     GrSurfaceOrigin);
 #endif
 
+#if SK_GRAPHITE_ENABLED
+    static sk_sp<SkSpecialSurface> MakeGraphite(skgpu::graphite::Recorder*,
+                                                const SkImageInfo&,
+                                                const SkSurfaceProps&);
+#endif
+
     /**
      * Use and existing SkBitmap as the backing store.
      */
-    static sk_sp<SkSpecialSurface> MakeFromBitmap(const SkIRect& subset, SkBitmap& bm,
+    static sk_sp<SkSpecialSurface> MakeFromBitmap(const SkIRect& subset,
+                                                  SkBitmap& bm,
                                                   const SkSurfaceProps&);
 
     /**

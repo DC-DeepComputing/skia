@@ -33,6 +33,11 @@ class SkSpecialSurface;
 class SkSurface;
 enum class SkTileMode;
 
+namespace skgpu::graphite {
+class TextureProxyView;
+}
+
+
 enum {
     kNeedNewImageUniqueID_SpecialImage = 0
 };
@@ -92,6 +97,15 @@ public:
                                                      sk_sp<SkColorSpace>,
                                                      const SkSurfaceProps&,
                                                      SkAlphaType at = kPremul_SkAlphaType);
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    static sk_sp<SkSpecialImage> MakeGraphite(skgpu::graphite::Recorder*,
+                                              const SkIRect& subset,
+                                              uint32_t uniqueID,
+                                              skgpu::graphite::TextureProxyView,
+                                              const SkColorInfo&,
+                                              const SkSurfaceProps&);
 #endif
 
     /**

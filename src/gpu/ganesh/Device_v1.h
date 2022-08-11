@@ -159,7 +159,7 @@ public:
 
     sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
     sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
-    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
+    sk_sp<SkSpecialImage> snapSpecial1(const SkIRect& subset, bool forceCopy = false) override;
 
     bool onAccessPixels(SkPixmap*) override;
 

@@ -306,14 +306,14 @@ void SkBaseDevice::drawSpecial(SkSpecialImage*, const SkMatrix&, const SkSamplin
                                const SkPaint&) {}
 sk_sp<SkSpecialImage> SkBaseDevice::makeSpecial(const SkBitmap&) { return nullptr; }
 sk_sp<SkSpecialImage> SkBaseDevice::makeSpecial(const SkImage*) { return nullptr; }
-sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial(const SkIRect&, bool) { return nullptr; }
-sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial() {
-    return this->snapSpecial(SkIRect::MakeWH(this->width(), this->height()));
+sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial1(const SkIRect&, bool) { return nullptr; }
+sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial2() {
+    return this->snapSpecial1(SkIRect::MakeWH(this->width(), this->height()));
 }
 
 void SkBaseDevice::drawDevice(SkBaseDevice* device, const SkSamplingOptions& sampling,
                               const SkPaint& paint) {
-    sk_sp<SkSpecialImage> deviceImage = device->snapSpecial();
+    sk_sp<SkSpecialImage> deviceImage = device->snapSpecial2();
     if (deviceImage) {
         this->drawSpecial(deviceImage.get(), device->getRelativeTransform(*this), sampling, paint);
     }

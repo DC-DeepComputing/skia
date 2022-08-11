@@ -28,6 +28,12 @@
 #include "src/shaders/SkImageShader.h"
 #endif
 
+#if SK_GRAPHITE_ENABLED
+namespace skgpu::graphite {
+    class TextureProxyView;
+}
+#endif
+
 // Currently the raster imagefilters can only handle certain imageinfos. Call this to know if
 // a given info is supported.
 static bool valid_for_imagefilters(const SkImageInfo& info) {
@@ -54,6 +60,10 @@ public:
 
 #if SK_SUPPORT_GPU
     virtual GrSurfaceProxyView onView(GrRecordingContext* context) const = 0;
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    virtual skgpu::graphite::TextureProxyView onTextureProxyView() const = 0;
 #endif
 
     // This subset is relative to the backing store's coordinate frame, it has already been mapped
@@ -373,14 +383,14 @@ public:
         : INHERITED(subset, uniqueID, props)
         , fContext(context)
         , fView(std::move(view))
-        , fColorType(ct)
-        , fAlphaType(at)
-        , fColorSpace(std::move(colorSpace)) {
+        , fColorType1(ct)
+        , fAlphaType1(at)
+        , fColorSpace1(std::move(colorSpace)) {
     }
 
-    SkAlphaType alphaType() const override { return fAlphaType; }
+    SkAlphaType alphaType() const override { return fAlphaType1; }
 
-    SkColorType colorType() const override { return GrColorTypeToSkColorType(fColorType); }
+    SkColorType colorType() const override { return GrColorTypeToSkColorType(fColorType1); }
 
     size_t getSize() const override {
         return fView.proxy()->gpuMemorySize();
@@ -401,7 +411,7 @@ public:
                 new SkImage_Gpu(sk_ref_sp(canvas->recordingContext()),
                                 this->uniqueID(),
                                 fView,
-                                SkColorInfo(this->colorType(), fAlphaType, fColorSpace)));
+                                SkColorInfo(this->colorType(), fAlphaType1, fColorSpace1)));
 
         canvas->drawImageRect(img, SkRect::Make(this->subset()), dst,
                               sampling, paint, SkCanvas::kStrict_SrcRectConstraint);
@@ -419,7 +429,7 @@ public:
     }
 
     SkColorSpace* onGetColorSpace() const override {
-        return fColorSpace.get();
+        return fColorSpace1.get();
     }
 
     sk_sp<SkSpecialSurface> onMakeSurface(SkColorType colorType, const SkColorSpace* colorSpace,
@@ -439,10 +449,199 @@ public:
                                                    subset,
                                                    this->uniqueID(),
                                                    fView,
-                                                   fColorType,
-                                                   fColorSpace,
+                                                   fColorType1,
+                                                   fColorSpace1,
                                                    this->props(),
-                                                   fAlphaType);
+                                                   fAlphaType1);
+    }
+
+    sk_sp<SkImage> onAsImage(const SkIRect* subset) const override {
+        GrSurfaceProxy* proxy = fView.proxy();
+        if (subset) {
+            if (proxy->isFunctionallyExact() && *subset == SkIRect::MakeSize(proxy->dimensions())) {
+                proxy->priv().exactify(false);
+                // The existing GrTexture is already tight so reuse it in the SkImage
+                return wrap_proxy_in_image(fContext, fView, this->colorType(), fAlphaType1,
+                                           fColorSpace1);
+            }
+
+            auto subsetView = GrSurfaceProxyView::Copy(fContext,
+                                                       fView,
+                                                       GrMipmapped::kNo,
+                                                       *subset,
+                                                       SkBackingFit::kExact,
+                                                       SkBudgeted::kYes,
+                                                       /*label=*/"SkSpecialImage_AsImage");
+            if (!subsetView) {
+                return nullptr;
+            }
+            SkASSERT(subsetView.asTextureProxy());
+            SkASSERT(subsetView.proxy()->priv().isExact());
+
+            // MDB: this is acceptable (wrapping subsetProxy in an SkImage) bc Copy will
+            // return a kExact-backed proxy
+            return wrap_proxy_in_image(fContext, std::move(subsetView), this->colorType(),
+                                       fAlphaType1, fColorSpace1);
+        }
+
+        proxy->priv().exactify(true);
+
+        return wrap_proxy_in_image(fContext, fView, this->colorType(), fAlphaType1, fColorSpace1);
+    }
+
+    sk_sp<SkShader> onAsShader(SkTileMode tileMode,
+                               const SkSamplingOptions& sampling,
+                               const SkMatrix& lm) const override {
+        // The special image's logical (0,0) is at its subset's topLeft() so we need to account for
+        // that in the local matrix used when sampling.
+        SkMatrix subsetOrigin = SkMatrix::Translate(-this->subset().topLeft());
+        subsetOrigin.postConcat(lm);
+        // However, we don't need to modify the subset itself since that is defined with respect to
+        // the base image, and the local matrix is applied before any tiling/clamping.
+        const SkRect subset = SkRect::Make(this->subset());
+
+        // asImage() w/o a subset makes no copy; create the SkImageShader directly to remember the
+        // subset used to access the image.
+        return SkImageShader::MakeSubset(
+                this->asImage(), subset, tileMode, tileMode, sampling, &subsetOrigin);
+    }
+
+    sk_sp<SkSurface> onMakeTightSurface(SkColorType colorType, const SkColorSpace* colorSpace,
+                                        const SkISize& size, SkAlphaType at) const override {
+        // TODO (michaelludwig): Why does this ignore colorType but onMakeSurface doesn't ignore it?
+        //    Once makeTightSurface() goes away, should this type overriding behavior be moved into
+        //    onMakeSurface() or is this unnecessary?
+        colorType = colorSpace && colorSpace->gammaIsLinear()
+            ? kRGBA_F16_SkColorType : kRGBA_8888_SkColorType;
+        SkImageInfo info = SkImageInfo::Make(size, colorType, at, sk_ref_sp(colorSpace));
+        return SkSurface::MakeRenderTarget(
+                fContext, SkBudgeted::kYes, info, 0, fView.origin(), nullptr);
+    }
+
+private:
+    GrRecordingContext*       fContext;
+    GrSurfaceProxyView        fView;
+    const GrColorType         fColorType1;
+    const SkAlphaType         fAlphaType1;
+    sk_sp<SkColorSpace>       fColorSpace1;
+
+    using INHERITED = SkSpecialImage_Base;
+};
+
+sk_sp<SkSpecialImage> SkSpecialImage::MakeDeferredFromGpu(GrRecordingContext* context,
+                                                          const SkIRect& subset,
+                                                          uint32_t uniqueID,
+                                                          GrSurfaceProxyView view,
+                                                          GrColorType colorType,
+                                                          sk_sp<SkColorSpace> colorSpace,
+                                                          const SkSurfaceProps& props,
+                                                          SkAlphaType at) {
+    if (!context || context->abandoned() || !view.asTextureProxy()) {
+        return nullptr;
+    }
+    SkASSERT_RELEASE(rect_fits(subset, view.proxy()->width(), view.proxy()->height()));
+    return sk_make_sp<SkSpecialImage_Gpu>(context, subset, uniqueID, std::move(view), colorType,
+                                          at, std::move(colorSpace), props);
+}
+#endif
+
+#if SK_GRAPHITE_ENABLED
+///////////////////////////////////////////////////////////////////////////////
+
+#include "src/gpu/graphite/Image_Graphite.h"
+
+namespace skgpu::graphite {
+
+#if 0
+static sk_sp<SkImage> wrap_proxy_in_image(GrRecordingContext* context, GrSurfaceProxyView view,
+                                          SkColorType colorType, SkAlphaType alphaType,
+                                          sk_sp<SkColorSpace> colorSpace) {
+    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(context),
+                                   kNeedNewImageUniqueID,
+                                   std::move(view),
+                                   SkColorInfo(colorType, alphaType, std::move(colorSpace)));
+}
+#endif
+
+class SkSpecialImage_Graphite : public SkSpecialImage_Base {
+public:
+    SkSpecialImage_Graphite(Recorder* recorder,
+                            const SkIRect& subset,
+                            uint32_t uniqueID,
+                            TextureProxyView view,
+                            const SkColorInfo& colorInfo,
+                            const SkSurfaceProps& props)
+            : SkSpecialImage_Base(subset, uniqueID, props)
+            , fRecorder(recorder)
+            , fTextureProxyView(std::move(view))
+            , fColorInfo(colorInfo) {
+    }
+
+    SkAlphaType alphaType() const override { return fColorInfo.alphaType(); }
+
+    SkColorType colorType() const override { return fColorInfo.colorType(); }
+
+    size_t getSize() const override {
+        return 0; // fTextureProxyView.proxy()->gpuMemorySize();
+    }
+
+    void onDraw(SkCanvas* canvas,
+                SkScalar x, SkScalar y,
+                const SkSamplingOptions& sampling,
+                const SkPaint* paint) const override {
+        SkRect dst = SkRect::MakeXYWH(x, y,
+                                      this->subset().width(), this->subset().height());
+
+        // TODO: In this instance we know we're going to draw a sub-portion of the backing
+        // texture into the canvas so it is okay to wrap it in an SkImage. This poses
+        // some problems for full deferral however in that when the deferred SkImage_Gpu
+        // instantiates itself it is going to have to either be okay with having a larger
+        // than expected backing texture (unlikely) or the 'fit' of the SurfaceProxy needs
+        // to be tightened (if it is deferred).
+        sk_sp<SkImage> img = sk_sp<SkImage>(new skgpu::graphite::Image(this->uniqueID(),
+                                                                       fTextureProxyView,
+                                                                       fColorInfo));
+
+        canvas->drawImageRect(img, SkRect::Make(this->subset()), dst,
+                              sampling, paint, SkCanvas::kStrict_SrcRectConstraint);
+    }
+
+#if SK_SUPPORT_GPU
+    GrSurfaceProxyView onView(GrRecordingContext*) const override { return {}; }
+#endif
+
+    TextureProxyView onTextureProxyView() const override { return fTextureProxyView; }
+
+    bool onGetROPixels(SkBitmap* dst) const override {
+        // This should never be called: All GPU image filters are implemented entirely on the GPU,
+        // so we never perform read-back.
+        SkASSERT(false);
+        return false;
+    }
+
+    SkColorSpace* onGetColorSpace() const override {
+        return fColorInfo.colorSpace();
+    }
+
+    sk_sp<SkSpecialSurface> onMakeSurface(SkColorType colorType,
+                                          const SkColorSpace* colorSpace,
+                                          const SkISize& size,
+                                          SkAlphaType at,
+                                          const SkSurfaceProps& props) const override {
+        SkASSERT(fRecorder);
+
+        SkImageInfo ii = SkImageInfo::Make(size, colorType, at, sk_ref_sp(colorSpace));
+
+        return SkSpecialSurface::MakeGraphite(fRecorder, ii, props);
+    }
+
+    sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const override {
+        return SkSpecialImage::MakeGraphite(fRecorder,
+                                            subset,
+                                            this->uniqueID(),
+                                            fTextureProxyView,
+                                            fColorInfo,
+                                            this->props());
     }
 
     sk_sp<SkImage> onAsImage(const SkIRect* subset) const override {
@@ -502,35 +701,33 @@ public:
         //    Once makeTightSurface() goes away, should this type overriding behavior be moved into
         //    onMakeSurface() or is this unnecessary?
         colorType = colorSpace && colorSpace->gammaIsLinear()
-            ? kRGBA_F16_SkColorType : kRGBA_8888_SkColorType;
+                    ? kRGBA_F16_SkColorType : kRGBA_8888_SkColorType;
         SkImageInfo info = SkImageInfo::Make(size, colorType, at, sk_ref_sp(colorSpace));
         return SkSurface::MakeRenderTarget(
                 fContext, SkBudgeted::kYes, info, 0, fView.origin(), nullptr);
     }
 
 private:
-    GrRecordingContext*       fContext;
-    GrSurfaceProxyView        fView;
-    const GrColorType         fColorType;
-    const SkAlphaType         fAlphaType;
-    sk_sp<SkColorSpace>       fColorSpace;
-
-    using INHERITED = SkSpecialImage_Base;
+    Recorder*        fRecorder;
+    TextureProxyView fTextureProxyView;
+    SkColorInfo      fColorInfo;
 };
 
-sk_sp<SkSpecialImage> SkSpecialImage::MakeDeferredFromGpu(GrRecordingContext* context,
-                                                          const SkIRect& subset,
-                                                          uint32_t uniqueID,
-                                                          GrSurfaceProxyView view,
-                                                          GrColorType colorType,
-                                                          sk_sp<SkColorSpace> colorSpace,
-                                                          const SkSurfaceProps& props,
-                                                          SkAlphaType at) {
-    if (!context || context->abandoned() || !view.asTextureProxy()) {
+} // namespace skgpu::graphite
+
+sk_sp<SkSpecialImage> SkSpecialImage::MakeGraphite(skgpu::graphite::Recorder* recorder,
+                                                   const SkIRect& subset,
+                                                   uint32_t uniqueID,
+                                                   skgpu::graphite::TextureProxyView view,
+                                                   const SkColorInfo& colorInfo,
+                                                   const SkSurfaceProps& props) {
+    if (!recorder || !view.asTextureProxy()) {
         return nullptr;
     }
+
     SkASSERT_RELEASE(rect_fits(subset, view.proxy()->width(), view.proxy()->height()));
-    return sk_make_sp<SkSpecialImage_Gpu>(context, subset, uniqueID, std::move(view), colorType,
-                                          at, std::move(colorSpace), props);
+    return sk_make_sp<SkSpecialImage_Graphite>(recorder, subset, uniqueID, std::move(view),
+                                               colorInfo, props);
 }
-#endif
+
+#endif // SK_GRAPHITE_ENABLED
