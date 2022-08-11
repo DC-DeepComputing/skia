@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4337032f_4538058c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-11T13:38:25Z",
+      "side": 1,
+      "message": "Now uses alternate scheme with TSAN, too. (The optimized scheme isn\u0027t actually thread un-safe, it\u0027s just that TSAN injects numerous calls to external functions, forcing all of the stage functions to NOT do tail-call optimization).",
+      "revId": "c13cdd484c0db282f198ea3f3a3041b34299dfbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
