@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6292270_ea5e03cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-11T17:33:32Z",
+      "side": 1,
+      "message": "The flag was rebaselined in chromium a while ago, and the cast() helper was for an earlier version of the code - it was no longer used.",
+      "revId": "2274248295b78d33da9513c78ae965762d127c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
