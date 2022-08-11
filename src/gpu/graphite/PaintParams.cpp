@@ -57,6 +57,8 @@ sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
 
 sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; }
 
+sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
+
 void PaintParams::toKey(const SkKeyContext& keyContext,
                         SkPaintParamsKeyBuilder* builder,
                         SkPipelineDataGatherer* gatherer) const {
