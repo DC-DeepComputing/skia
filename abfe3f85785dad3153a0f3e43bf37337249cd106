@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6dbadf0_86f7d505",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T19:34:49Z",
+      "side": 1,
+      "message": "The name `getAllCodePoints` is generic and doesn\u0027t state what these do. These are more like `computeCodeUnitFlags` or something like that.\n\nWorse though is that these are named the same but actually set different sets of flags and don\u0027t do the same thing. From the naming I would expect these to do exactly the same thing, just one works on UTF-16 and one on UTF-8, but the same string in either encoding would logically produce similar output (the same set of flags in the same order, but maybe a different number of repetitions of each flag).",
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe73af22_4053be4a",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T19:34:49Z",
+      "side": 1,
+      "message": "This name is way too generic. What mapping? Worse, this is no longer creating the mapping and forces the \"Callbacks\" to be tightly coupled to this implementation\u0027s indexes to be able to create the mapping. The \"Callbacks\" would be better called \"Appenders\" since that\u0027s the actual requirement.",
+      "range": {
+        "startLine": 151,
+        "startChar": 13,
+        "endLine": 151,
+        "endChar": 27
+      },
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41872899_1610ad66",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T19:34:49Z",
+      "side": 1,
+      "message": "UTF-16 code units?",
+      "range": {
+        "startLine": 175,
+        "startChar": 30,
+        "endLine": 175,
+        "endChar": 40
+      },
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
