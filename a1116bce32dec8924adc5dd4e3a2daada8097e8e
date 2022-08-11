@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b1f22db_28ccbab8",
+        "filename": "gn/core.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "These two public headers were redundant as they are in skia_skpicture_public. I\u0027m not sure if they should also be here.",
+      "range": {
+        "startLine": 594,
+        "startChar": 0,
+        "endLine": 595,
+        "endChar": 39
+      },
+      "revId": "a1116bce32dec8924adc5dd4e3a2daada8097e8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca65d90_2c11c65f",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Agreed: http://review.skia.org/567296",
+      "parentUuid": "2b3bbd84_ec53b202",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 34
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a90a49ff_4032a806",
@@ -97,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "422b6d9e_a8838f41",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Waiting for http://review.skia.org/567637 to land.",
+      "parentUuid": "127f8716_279357ce",
+      "range": {
+        "startLine": 101,
+        "startChar": 2,
+        "endLine": 104,
+        "endChar": 28
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e60d750_4212de76",
         "filename": "gn/core.gni",
         "patchSetId": 1
@@ -108,6 +156,24 @@
       "writtenOn": "2022-08-09T14:30:33Z",
       "side": 0,
       "message": "Is this just missing from BUILD.bazel(1)? Looks only used for GPU and/or Graphite(2).\n\n(1) https://crsrc.org/c/third_party/skia/src/core/BUILD.bazel\n(2) https://crsrc.org/c/third_party/skia/src/core/SkKeyContext.cpp",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00a29c71_016bb25b",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Added in http://review.skia.org/c/skia/+/567697/5/src/core/BUILD.bazel",
+      "parentUuid": "8e60d750_4212de76",
       "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -135,6 +201,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c40b2a07_95cd9106",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Added in http://review.skia.org/567697",
+      "parentUuid": "38a7389b_97f0e048",
+      "range": {
+        "startLine": 311,
+        "startChar": 14,
+        "endLine": 311,
+        "endChar": 32
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20ffee6f_b2f99afc",
@@ -152,6 +242,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "862c09b4_da3d1f9c",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Fixed Bazel file.",
+      "parentUuid": "20ffee6f_b2f99afc",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef9e2950_d6c81aef",
@@ -165,6 +273,30 @@
       "writtenOn": "2022-08-09T14:30:33Z",
       "side": 0,
       "message": "BUILD.bazel identifies these as private headers(1) which is why they are filtered out.\n\n(1) https://crsrc.org/c/third_party/skia/src/opts/BUILD.bazel",
+      "range": {
+        "startLine": 457,
+        "startChar": 2,
+        "endLine": 464,
+        "endChar": 33
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a81f019c_5d82768b",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "including private headers, so fixed.",
+      "parentUuid": "ef9e2950_d6c81aef",
       "range": {
         "startLine": 457,
         "startChar": 2,
@@ -206,6 +338,24 @@
       "side": 0,
       "message": "That appears to have been an oversight so far. I didn\u0027t realize skia_enable_precompile was on by default.",
       "parentUuid": "f2f13a22_14106948",
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5c396b_08428166",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Fixed in https://skia-review.googlesource.com/c/skia/+/567477",
+      "parentUuid": "2cba8e16_a5d78685",
       "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -257,6 +407,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bc93f5_83965468",
+        "filename": "gn/core.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Fixed in http://review.skia.org/567298",
+      "parentUuid": "237b930b_9481c068",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 612,
+        "endChar": 1
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c9be2d4_a905a9ea",
@@ -294,6 +468,30 @@
       "side": 0,
       "message": "Same thing as before about unused C API",
       "parentUuid": "5c9be2d4_a905a9ea",
+      "range": {
+        "startLine": 33,
+        "startChar": 12,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "82b9930b13127a5db1ecb1f1e4680132da680b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84832496_757d9a09",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-11T14:27:40Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "6de30362_6fa1c942",
       "range": {
         "startLine": 33,
         "startChar": 12,
