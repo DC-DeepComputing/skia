@@ -34,6 +34,24 @@
       "parentUuid": "7082c1aa_42fa3c21",
       "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "702d0176_0a436c2a",
+        "filename": "src/codec/SkJpegCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-11T12:19:56Z",
+      "side": 0,
+      "message": "Thank you! I had also been puzzling about why SkJpegDecoderMgr couldn\u0027t be forward declared. An inline virtual destructor did not occur to me.",
+      "parentUuid": "be931e28_c4417014",
+      "revId": "e83282daf351a63ec7be825c9cf1a2dba7cf87e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
