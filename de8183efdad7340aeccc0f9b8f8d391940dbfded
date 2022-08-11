@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ab4762b_9c62f1ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T15:03:20Z",
+      "side": 1,
+      "message": "This all looks fine to me once all the user iwyu lands. It is unfortunate that the set of includes in a public header file is also effectively API. (I suppose that\u0027s one of the things modules is supposed to fix.)",
+      "revId": "de8183efdad7340aeccc0f9b8f8d391940dbfded",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
