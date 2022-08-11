@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "deb7402e_3cbf3a90",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-11T19:55:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d7ad774_97260a8f",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "33ebe3735e3f011a0acd2f3d18b95d660ce6857e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ec071fd_11d4accc",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4982d5fa_07439072",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-11T19:55:19Z",
+      "side": 1,
+      "message": "Yeah there are a few places I don\u0027t want to be storing the Gpu and plan on removing in future CLs. Just wanted to leave it as a pure rename for this CL.",
+      "parentUuid": "2ec071fd_11d4accc",
+      "range": {
+        "startLine": 222,
+        "startChar": 4,
+        "endLine": 222,
+        "endChar": 40
+      },
+      "revId": "33ebe3735e3f011a0acd2f3d18b95d660ce6857e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54543e0e_88e1184b",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-11T19:47:07Z",
       "side": 1,
       "message": "this lines up funny, looks like a regular initializer list for Sampler, instead of the super ctor. I\u0027d just have `: Resource(sharedContext, ...) {}` on a line, and if its args have to wrap, align them with the `(` of Resource.",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 27
+      },
+      "revId": "33ebe3735e3f011a0acd2f3d18b95d660ce6857e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e856acb_2c52a4c7",
+        "filename": "src/gpu/graphite/Sampler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-11T19:55:19Z",
+      "side": 1,
+      "message": "ha yeah, that was me in automated mode not paying attention to what was I was doing",
+      "parentUuid": "54543e0e_88e1184b",
       "range": {
         "startLine": 13,
         "startChar": 10,
