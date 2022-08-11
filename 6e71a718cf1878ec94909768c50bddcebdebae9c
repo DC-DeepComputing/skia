@@ -33,6 +33,23 @@
       "message": "Text blob conservative bounds logic has a fallback for fonts which return empty bounds: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkTextBlob.cpp;drc\u003d1aea90338109cdc5735ffef278ffb3385ef8a70b;l\u003d321\n\nThis was omitted in the initial refactor, and can cause rendering failures with certain fonts.\n\nFix added in PS#2.",
       "revId": "6e71a718cf1878ec94909768c50bddcebdebae9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "363e2f68_84baeecb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T18:05:27Z",
+      "side": 1,
+      "message": "Yeah, in particular variable fonts do not have conservative bounds across all glyphs anymore.",
+      "revId": "6e71a718cf1878ec94909768c50bddcebdebae9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
