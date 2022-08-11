@@ -30,7 +30,8 @@ class GrTextureProxy;
 struct SkIPoint;
 struct SkIRect;
 
-namespace skgpu {
+namespace skgpu /* ::v1 */ {
+
 class SingleOwner;
 class SurfaceFillContext;
 

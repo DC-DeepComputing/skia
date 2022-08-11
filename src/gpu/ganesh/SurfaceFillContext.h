@@ -10,22 +10,34 @@
 
 #include "src/gpu/ganesh/SurfaceContext.h"
 
-namespace skgpu {
+#include "src/gpu/ganesh/ops/OpsTask.h"
+
+namespace skgpu /* ::v1 */ {
 
 // This class is left over from the v1/v2 split. It should be merged back into
 // v1::SurfaceFillContext.
 class SurfaceFillContext : public SurfaceContext {
 public:
+    SurfaceFillContext(GrRecordingContext* rContext,
+                       GrSurfaceProxyView readView,
+                       GrSurfaceProxyView writeView,
+                       const GrColorInfo& colorInfo);
 
     SurfaceFillContext* asFillContext() override { return this; }
+
+    v1::OpsTask* getOpsTask();
+
+#if GR_TEST_UTILS
+    v1::OpsTask* testingOnly_PeekLastOpsTask() { return fOpsTask.get(); }
+#endif
 
     /**
      * Provides a performance hint that the render target's contents are allowed
      * to become undefined.
      */
-    virtual void discard() = 0;
+    virtual void discard();
 
-    virtual void resolveMSAA() = 0;
+    virtual void resolveMSAA();
 
     /**
      * Clear the rect of the render target to the given color.
@@ -54,7 +66,7 @@ public:
     }
 
     /** Fills 'dstRect' with 'fp' */
-    virtual void fillRectWithFP(const SkIRect& dstRect, std::unique_ptr<GrFragmentProcessor>) = 0;
+    virtual void fillRectWithFP(const SkIRect& dstRect, std::unique_ptr<GrFragmentProcessor>);
 
     /**
      * A convenience version of fillRectWithFP that applies a coordinate transformation via
@@ -101,20 +113,27 @@ public:
      */
     virtual bool blitTexture(GrSurfaceProxyView,
                              const SkIRect& srcRect,
-                             const SkIPoint& dstPoint) = 0;
+                             const SkIPoint& dstPoint);
 
-    virtual sk_sp<GrRenderTask> refRenderTask() = 0;
+    virtual sk_sp<GrRenderTask> refRenderTask();
+
+    int numSamples() const { return this->asRenderTargetProxy()->numSamples(); }
+    bool wrapsVkSecondaryCB() const { return this->asRenderTargetProxy()->wrapsVkSecondaryCB(); }
+
+    SkArenaAlloc* arenaAlloc() { return this->arenas()->arenaAlloc(); }
+    sktext::gpu::SubRunAllocator* subRunAlloc() { return this->arenas()->subRunAlloc(); }
+
+    const GrSurfaceProxyView& writeSurfaceView() const { return fWriteView; }
 
 protected:
-    SurfaceFillContext(GrRecordingContext* rContext,
-                       GrSurfaceProxyView readView,
-                       GrSurfaceProxyView writeView,
-                       const GrColorInfo& colorInfo)
-            : SurfaceContext(rContext, std::move(readView), colorInfo)
-            , fWriteView(std::move(writeView)) {
-        SkASSERT(this->asSurfaceProxy() == fWriteView.proxy());
-        SkASSERT(this->origin() == fWriteView.origin());
-    }
+    v1::OpsTask* replaceOpsTask();
+
+    /**
+     * Creates a constant color paint for a clear, using src-over if possible to improve batching.
+     */
+    static void ClearToGrPaint(std::array<float, 4> color, GrPaint* paint);
+
+    void addOp(GrOp::Owner);
 
     template <SkAlphaType AlphaType>
     static std::array<float, 4> ConvertColor(SkRGBA4f<AlphaType> color);
@@ -124,10 +143,34 @@ protected:
 
     GrSurfaceProxyView fWriteView;
 
-private:
+//private:
+protected:
+    sk_sp<GrArenas> arenas() { return fWriteView.proxy()->asRenderTargetProxy()->arenas(); }
+
+    void addDrawOp(GrOp::Owner);
+
+    /** Override to be notified in subclass before the current ops task is replaced. */
+    virtual void willReplaceOpsTask(v1::OpsTask* prevTask, v1::OpsTask* nextTask) {}
+
+    /**
+     * Override to be called to participate in the decision to discard all previous ops if a
+     * fullscreen clear occurs.
+     */
+    virtual v1::OpsTask::CanDiscardPreviousOps canDiscardPreviousOpsOnFullClear() const {
+        return v1::OpsTask::CanDiscardPreviousOps::kYes;
+    }
+
     virtual void internalClear(const SkIRect* scissor,
                                std::array<float, 4> color,
-                               bool upgradePartialToFull = false) = 0;
+                               bool upgradePartialToFull = false);
+
+    SkDEBUGCODE(void onValidate() const override;)
+
+    // $$ remove the v1::OpsTask
+
+    // The OpsTask can be closed by some other surface context that has picked it up. For this
+    // reason, the OpsTask should only ever be accessed via 'getOpsTask'.
+    sk_sp<v1::OpsTask> fOpsTask;
 
     using INHERITED = SurfaceContext;
 };

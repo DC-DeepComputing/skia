@@ -17,7 +17,7 @@
 #if SK_GPU_V1
 #include "src/gpu/ganesh/Device_v1.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
-#include "src/gpu/ganesh/SurfaceFillContext_v1.h"
+#include "src/gpu/ganesh/SurfaceFillContext.h"
 #endif
 
 void GrRecordingContextPriv::addOnFlushCallbackObject(GrOnFlushCallbackObject* onFlushCBObject) {
@@ -99,10 +99,10 @@ std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceP
                                                                  info.refColorSpace(),
                                                                  SkSurfaceProps());
         } else {
-            sc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                                 std::move(readView),
-                                                                 std::move(writeView),
-                                                                 info);
+            sc = std::make_unique<skgpu::SurfaceFillContext>(this->context(),
+                                                             std::move(readView),
+                                                             std::move(writeView),
+                                                             info);
         }
     } else {
         sc = std::make_unique<skgpu::SurfaceContext>(this->context(),
@@ -196,10 +196,10 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
     GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
     GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
     std::unique_ptr<skgpu::SurfaceFillContext> sfc;
-    sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                          std::move(readView),
-                                                          std::move(writeView),
-                                                          info.colorInfo());
+    sfc = std::make_unique<skgpu::SurfaceFillContext>(this->context(),
+                                                      std::move(readView),
+                                                      std::move(writeView),
+                                                      info.colorInfo());
     sfc->discard();
     return sfc;
 #endif
@@ -260,10 +260,10 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
     GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
     GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
     std::unique_ptr<skgpu::SurfaceFillContext> sfc;
-    sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                          std::move(readView),
-                                                          std::move(writeView),
-                                                          info.colorInfo());
+    sfc = std::make_unique<skgpu::SurfaceFillContext>(this->context(),
+                                                      std::move(readView),
+                                                      std::move(writeView),
+                                                      info.colorInfo());
     sfc->discard();
     return sfc;
 #endif
@@ -355,10 +355,10 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFCFromBa
     GrSurfaceProxyView readView(            proxy, origin,  readSwizzle);
     GrSurfaceProxyView writeView(std::move(proxy), origin, writeSwizzle);
 
-    return std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
-                                                           std::move(readView),
-                                                           std::move(writeView),
-                                                           std::move(info));
+    return std::make_unique<skgpu::SurfaceFillContext>(this->context(),
+                                                       std::move(readView),
+                                                       std::move(writeView),
+                                                       std::move(info));
 #endif
 
     return nullptr;
