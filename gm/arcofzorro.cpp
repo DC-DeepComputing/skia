@@ -15,6 +15,8 @@
 #include "include/core/SkString.h"
 #include "include/utils/SkRandom.h"
 
+#include "include/core/SkBitmap.h"
+
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
@@ -23,7 +25,7 @@ namespace skiagm {
 class ArcOfZorroGM : public GM {
 public:
     ArcOfZorroGM() {
-        this->setBGColor(0xFFCCCCCC);
+        this->setBGColor(0xFFFFFFFF);
     }
 
 protected:
@@ -33,51 +35,32 @@ protected:
     }
 
     SkISize onISize() override {
-        return SkISize::Make(1000, 1000);
+        return SkISize::Make(16, 16);
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
+        SkRect r { 0, 0, 16, 16};
 
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
+        SkPaint p1;
+        p1.setBlendMode(SkBlendMode::kColorDodge);
+        p1.setColor({1, 0, 0, 1});
 
-        SkPaint p;
+        SkPaint p2;
+        p2.setBlendMode(SkBlendMode::kColorBurn);
+        p2.setColor({0, 0, 1, 1});
 
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
+        canvas->drawRect(r, p1);
+        canvas->drawRect(r, p2);
 
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
+        SkBitmap bm;
+        SkImageInfo info = SkImageInfo::Make({16, 16}, SkColorType::kRGBA_8888_SkColorType,
+                                             SkAlphaType::kPremul_SkAlphaType);
 
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
+        bm.allocPixels(info);
+        canvas->readPixels(bm, 0, 0);
 
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        SkColor4f color = bm.getColor4f(8, 8);
+        SkDebugf("%.2f %.2f %.2f %.2f\n", color.fR, color.fG, color.fB, color.fA);
     }
 
 private:
