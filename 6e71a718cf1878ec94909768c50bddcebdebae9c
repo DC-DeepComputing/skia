@@ -50,6 +50,23 @@
       "message": "Yeah, in particular variable fonts do not have conservative bounds across all glyphs anymore.",
       "revId": "6e71a718cf1878ec94909768c50bddcebdebae9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d110d2aa_53e1f04e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-11T18:56:19Z",
+      "side": 1,
+      "message": "Text blob conservative bounds logic has a fallback for fonts which return empty bounds: \n\nThis was omitted in the initial refactor.",
+      "revId": "6e71a718cf1878ec94909768c50bddcebdebae9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
