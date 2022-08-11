@@ -16,6 +16,29 @@
       "message": "I think skia:13563? skia:1305237 doesn\u0027t seem to exist and chromium:1305237 seems to be about optical sizing?",
       "revId": "5affbf407ce9d097a413f7e5cd0056ed54aa2d60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dab8bc3_aa8c30f2",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-11T19:01:08Z",
+      "side": 1,
+      "message": "As msvc likes to point out, these are double literals, and initializer lists do not allow narrowing. So will want some `-0.3f` here and a bunch of other `f` spread about to ensure these are all actually float literals.",
+      "range": {
+        "startLine": 232,
+        "startChar": 68,
+        "endLine": 232,
+        "endChar": 72
+      },
+      "revId": "5affbf407ce9d097a413f7e5cd0056ed54aa2d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
