@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57fc9670_f0417934",
+        "filename": "include/private/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-11T13:37:33Z",
+      "side": 1,
+      "message": "Does this need to have this visibility? If it is only being used in this BUILD.bazel file, the default visibility (private) is fine.",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 14
+      },
+      "revId": "e04e76dd1494d2f5b6cea096effd31ac2ffb1b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
