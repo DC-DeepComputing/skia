@@ -144,6 +144,7 @@ public:
                 return type.columns() * this->size(type.componentType());
             case Type::TypeKind::kMatrix: // fall through
             case Type::TypeKind::kArray:
+                SkASSERT(!type.isUnsizedArray());
                 return type.columns() * this->stride(type);
             case Type::TypeKind::kStruct: {
                 size_t total = 0;

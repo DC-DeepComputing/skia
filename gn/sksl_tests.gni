@@ -296,17 +296,18 @@ sksl_glsl_tests = [
 
 sksl_metal_tests = [
   "/sksl/compute/ArrayAdd.compute",
+  "/sksl/compute/Uniforms.compute",
   "/sksl/compute/Desaturate.compute",
   "/sksl/compute/DesaturateFunction.compute",
   "/sksl/compute/DesaturateReadWrite.compute",
   "/sksl/compute/MatrixMultiply.compute",
   "/sksl/compute/Raytrace.compute",
   "/sksl/compute/Threadgroup.compute",
-  "/sksl/errors/ComputeUniform.compute",
   "/sksl/errors/DuplicateBinding.compute",
   "/sksl/errors/InvalidInOutType.compute",
   "/sksl/errors/InvalidMainParameters.compute",
   "/sksl/errors/InvalidMainReturn.compute",
+  "/sksl/errors/InvalidUnsizedArray.compute",
   "/sksl/errors/UnspecifiedBinding.compute",
   "/sksl/metal/CastHalf4ToMat2x2.sksl",
   "/sksl/metal/CastMat2x2ToMat3x3.sksl",
@@ -320,6 +321,7 @@ sksl_metal_tests = [
   "/sksl/metal/OutParams.sksl",
   "/sksl/metal/OutVarsRequireLocation.sksl",
   "/sksl/metal/SamplerGlobals.sksl",
+  "/sksl/metal/StorageBuffer.sksl",
   "/sksl/metal/SwizzleHelper.sksl",
 ]
 

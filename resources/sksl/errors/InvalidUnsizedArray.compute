@@ -1,0 +1,30 @@
+in int[] a;
+
+uniform blockOne {
+    int[] b;
+};
+
+buffer blockTwo {
+    int[] c;
+    int d;
+};
+
+buffer blockThree {
+    int[] e;
+    int[] f;
+};
+
+void main() {
+    int[] g;
+}
+
+/*%%*
+unsized arrays are only permitted in storage blocks
+user-defined stage in/out variables not allowed in compute shaders
+'in' variables may not have unsized array type
+unsized array must be the last member of a storage block
+unsized array must be the last member of a storage block
+unsized array must be the last member of a storage block
+unsized arrays are only permitted in storage blocks
+function variable cannot be an unsized array
+*%%*/

@@ -12,7 +12,16 @@ void c() {
 }
 
 /*%%*
+unsized arrays are only permitted in storage blocks
+user-defined stage in/out variables not allowed in compute shaders
+'in' variables may not have unsized array type
 in / out variables may not be declared threadgroup
+unsized arrays are only permitted in storage blocks
+user-defined stage in/out variables not allowed in compute shaders
+'out' variables may not have unsized array type
+in / out variables may not be declared threadgroup
+'threadgroup' is not permitted here
+'threadgroup' is not permitted here
 'threadgroup' is not permitted here
 expected expression, but found 'threadgroup'
 *%%*/
