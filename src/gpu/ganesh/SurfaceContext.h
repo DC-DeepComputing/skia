@@ -30,22 +30,11 @@ class GrTextureProxy;
 struct SkIPoint;
 struct SkIRect;
 
-namespace skgpu {
+namespace skgpu::v1 {
+
 class SingleOwner;
 class SurfaceFillContext;
 
-/**
- * A helper object to orchestrate commands for a particular surface
- *
- *            SurfaceContext
- *                   |
- *          SurfaceFillContext
- *                   |
- *                v1::SFC
- *                   |
- *               v1::SDC
- *
- */
 class SurfaceContext {
 public:
     // If it is known that the GrSurfaceProxy is not renderable, you can directly call the ctor
@@ -153,11 +142,11 @@ public:
      * different size than srcRect. Though, it could be relaxed to allow non-scaling color
      * conversions.
      */
-    std::unique_ptr<skgpu::SurfaceFillContext> rescale(const GrImageInfo& info,
-                                                       GrSurfaceOrigin,
-                                                       SkIRect srcRect,
-                                                       SkImage::RescaleGamma,
-                                                       SkImage::RescaleMode);
+    std::unique_ptr<skgpu::v1::SurfaceFillContext> rescale(const GrImageInfo& info,
+                                                           GrSurfaceOrigin,
+                                                           SkIRect srcRect,
+                                                           SkImage::RescaleGamma,
+                                                           SkImage::RescaleMode);
 
     /**
      * Like the above but allows the caller ot specify a destination fill context and
@@ -248,6 +237,6 @@ private:
     using INHERITED = SkRefCnt;
 };
 
-} // namespace skgpu
+} // namespace skgpu::v1
 
 #endif // SurfaceContext_DEFINED
