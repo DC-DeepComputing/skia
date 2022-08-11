@@ -16,6 +16,24 @@
       "message": "This change should also remove the use of SetVariableColrV1EnabledFunc in gm/colrv1.cpp as well. Logically, this is an early setup global and this is the right place to set the value, but I don\u0027t see how this will fix much given that gm/colrv1.cpp is still mucking with it.\n\nI see that you\u0027ve updated the follow on change to do this, but I would much prefer that this be done here in this change as it\u0027s way easier to follow that way.",
       "revId": "95e2214d34ab171b2d4c57722fce28790b5be9e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37e66375_91eb12ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-11T07:33:24Z",
+      "side": 1,
+      "message": "Ok, done. Removed the flag handling from colrv1.cpp.",
+      "parentUuid": "ea677a63_a7447fe9",
+      "revId": "95e2214d34ab171b2d4c57722fce28790b5be9e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
