@@ -63,6 +63,30 @@
       },
       "revId": "eb81e0023f1c721818baff8beda4df414323af71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff7035b_3df73bf0",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-11T18:15:16Z",
+      "side": 1,
+      "message": "That\u0027s what I figured.",
+      "parentUuid": "b2e49755_6120bc7f",
+      "range": {
+        "startLine": 108,
+        "startChar": 50,
+        "endLine": 108,
+        "endChar": 65
+      },
+      "revId": "eb81e0023f1c721818baff8beda4df414323af71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
