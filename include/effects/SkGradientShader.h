@@ -187,7 +187,9 @@ public:
                                                sk_sp<SkColorSpace> colorSpace, const SkScalar pos[],
                                                int count, SkTileMode mode);
 
-    /** Returns a shader that generates a sweep gradient given a center.
+    /** Returns a shader that generates a sweep gradient given a center.x
+        Accepts negative angles, draws between 0 and 360 degrees. Accepts angles > 360. 0 means horizontal positive x axis.
+        Start angle must be < end angle.
         <p />
         @param  cx         The X coordinate of the center of the sweep
         @param  cx         The Y coordinate of the center of the sweep
