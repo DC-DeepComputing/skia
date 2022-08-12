@@ -81,11 +81,10 @@ public:
 #endif
 
 protected:
-    ResourceProvider(const SharedContext* sharedContext,
-                     sk_sp<GlobalCache>,
+    ResourceProvider(SharedContext* sharedContext,
                      SingleOwner* singleOwner);
 
-    const SharedContext* fSharedContext;
+    SharedContext* fSharedContext;
 
 private:
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(const SkRuntimeEffectDictionary*,
@@ -104,8 +103,9 @@ private:
                                               const GraphiteResourceKey& key,
                                               SkBudgeted);
 
+    // Each ResourceProvider owns one local cache; for some resources it also refers out to the
+    // global cache of the SharedContext, which is assumed to outlive the ResourceProvider.
     sk_sp<ResourceCache> fResourceCache;
-    sk_sp<GlobalCache>   fGlobalCache;
 
     // Compiler used for compiling SkSL into backend shader code. We only want to create the
     // compiler once, as there is significant overhead to the first compile.
