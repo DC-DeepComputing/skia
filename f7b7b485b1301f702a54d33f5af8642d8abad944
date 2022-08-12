@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0194adba_7187e423",
+        "filename": "src/gpu/ganesh/GrAttachment.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-12T13:34:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a745a5c4_51108c2b",
+      "range": {
+        "startLine": 97,
+        "startChar": 25,
+        "endLine": 97,
+        "endChar": 30
+      },
+      "revId": "f7b7b485b1301f702a54d33f5af8642d8abad944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c48c7fb_34f0bb43",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-12T13:24:53Z",
       "side": 1,
       "message": "resource ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 79,
+        "endLine": 99,
+        "endChar": 88
+      },
+      "revId": "f7b7b485b1301f702a54d33f5af8642d8abad944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c433be93_90047722",
+        "filename": "src/gpu/ganesh/GrAttachment.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-12T13:34:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c48c7fb_34f0bb43",
       "range": {
         "startLine": 99,
         "startChar": 79,
