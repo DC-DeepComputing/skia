@@ -113,6 +113,10 @@ char* SkStrAppendScalar(char buffer[], SkScalar);
     Light weight class for managing strings. Uses reference
     counting to make string assignments and copies very fast
     with no extra RAM cost. Assumes UTF8 encoding.
+
+    DEPRECATED. When SkString was written, standard library versions were
+    not reliable, necessitating a custom version. Replacing existing uses
+    is non-trivial, but most new use-cases should use the standard library.
 */
 class SK_API SkString {
 public:
