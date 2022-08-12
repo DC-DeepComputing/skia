@@ -568,3 +568,94 @@ DEF_TEST(SkRasterPipeline_lowp_clamp01, r) {
     p.append(SkRasterPipeline::store_8888, &ptr);
     p.run(0,0,1,1);
 }
+
+// Helper struct that can be used to scrape stack addresses at different points in a pipeline
+struct StackCheckerCtx : SkRasterPipeline_CallbackCtx {
+    StackCheckerCtx() {
+        this->fn = [](SkRasterPipeline_CallbackCtx* self, int active_pixels) {
+            auto ctx = (StackCheckerCtx*)self;
+            ctx->stack_addrs.push_back(&active_pixels);
+        };
+    }
+
+    // Call one of these two each time the checker callback is added:
+    StackCheckerCtx* expectGrowth() {
+        expect_growth.push_back(true);
+        return this;
+    }
+
+    StackCheckerCtx* expectBaseline() {
+        expect_growth.push_back(false);
+        return this;
+    }
+
+    // In release builds, it's possible for tail call optimization to prevent ALL stack growth.
+    // So, we only verify that growth matches expectations in debug builds. (We always check that
+    // we got the expected number of captured stack addresses).
+    void validate(skiatest::Reporter* r) {
+        REPORTER_ASSERT(r, stack_addrs.size() == expect_growth.size());
+
+#ifdef SK_DEBUG
+        void* baseline = stack_addrs[0];
+        for (size_t i = 0; i < stack_addrs.size(); i++) {
+            if (expect_growth[i]) {
+                REPORTER_ASSERT(r, stack_addrs[i] != baseline);
+            } else {
+                REPORTER_ASSERT(r, stack_addrs[i] == baseline);
+            }
+        }
+#endif
+    }
+
+private:
+    std::vector<void*> stack_addrs;
+    std::vector<bool>  expect_growth;
+};
+
+DEF_TEST(SkRasterPipeline_stack_rewind, r) {
+    // This test verifies that we can control stack usage with stack_checkpoint and stack_rewind.
+
+    // Without stack_rewind, we should see stack growth:
+    {
+        StackCheckerCtx stack;
+        uint32_t rgba = 0xff0000ff;
+        SkRasterPipeline_MemoryCtx ptr = { &rgba, 0 };
+
+        SkRasterPipeline_<256> p;
+        p.append(SkRasterPipeline::callback, stack.expectBaseline());
+        p.append(SkRasterPipeline::load_8888,  &ptr);
+        p.append(SkRasterPipeline::callback, stack.expectGrowth());
+        p.append(SkRasterPipeline::swap_rb);
+        p.append(SkRasterPipeline::callback, stack.expectGrowth());
+        p.append(SkRasterPipeline::store_8888, &ptr);
+        p.run(0,0,1,1);
+
+        REPORTER_ASSERT(r, rgba == 0xffff0000); // Ensure the pipeline worked
+        stack.validate(r);
+    }
+
+    // With stack_rewind, we should be able to get back to baseline:
+    {
+        StackCheckerCtx stack;
+        uint32_t rgba = 0xff0000ff;
+        SkRasterPipeline_MemoryCtx ptr = { &rgba, 0 };
+        SkRasterPipeline_CheckpointCtx checkpoint;
+
+        SkRasterPipeline_<256> p;
+        p.append(SkRasterPipeline::stack_checkpoint, &checkpoint);
+        p.append(SkRasterPipeline::callback, stack.expectBaseline());
+        p.append(SkRasterPipeline::load_8888,  &ptr);
+        p.append(SkRasterPipeline::callback, stack.expectGrowth());
+        p.append(SkRasterPipeline::stack_rewind, &checkpoint);
+        p.append(SkRasterPipeline::callback, stack.expectBaseline());
+        p.append(SkRasterPipeline::swap_rb);
+        p.append(SkRasterPipeline::callback, stack.expectGrowth());
+        p.append(SkRasterPipeline::stack_rewind, &checkpoint);
+        p.append(SkRasterPipeline::callback, stack.expectBaseline());
+        p.append(SkRasterPipeline::store_8888, &ptr);
+        p.run(0,0,1,1);
+
+        REPORTER_ASSERT(r, rgba == 0xffff0000); // Ensure the pipeline worked
+        stack.validate(r);
+    }
+}

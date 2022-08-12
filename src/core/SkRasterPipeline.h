@@ -37,6 +37,7 @@ struct skcms_TransferFunction;
 
 #define SK_RASTER_PIPELINE_STAGES(M)                               \
     M(callback)                                                    \
+    M(stack_checkpoint) M(stack_rewind)                            \
     M(move_src_dst) M(move_dst_src) M(swap_src_dst)                \
     M(clamp_0) M(clamp_1) M(clamp_a) M(clamp_gamut)                \
     M(unpremul) M(premul) M(premul_dst)                            \
@@ -167,6 +168,19 @@ struct SkRasterPipeline_CallbackCtx {
     // When fn() returns, the pipeline will read back those active pixels from read_from.
     float rgba[4*SkRasterPipeline_kMaxStride_highp];
     float* read_from = rgba;
+};
+
+// state shared by checkpoint and rewind
+struct SkRasterPipeline_CheckpointCtx {
+    float  r[SkRasterPipeline_kMaxStride_highp];
+    float  g[SkRasterPipeline_kMaxStride_highp];
+    float  b[SkRasterPipeline_kMaxStride_highp];
+    float  a[SkRasterPipeline_kMaxStride_highp];
+    float dr[SkRasterPipeline_kMaxStride_highp];
+    float dg[SkRasterPipeline_kMaxStride_highp];
+    float db[SkRasterPipeline_kMaxStride_highp];
+    float da[SkRasterPipeline_kMaxStride_highp];
+    void** program;
 };
 
 struct SkRasterPipeline_GradientCtx {
