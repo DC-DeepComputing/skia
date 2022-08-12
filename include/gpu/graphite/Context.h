@@ -103,7 +103,6 @@ private:
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<QueueManager> fQueueManager;
-    sk_sp<GlobalCache> fGlobalCache;
     BackendApi fBackend;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
