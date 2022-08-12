@@ -46,6 +46,30 @@
       },
       "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "220f3844_807996a6",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Alright, I removed the default parameters on the PaintParams constructor that takes in all the values directly.\n\nI differentiated between the blenders in the constructor by naming what was previously \"blender\" -\u003e \"finalBlender\"... do you think it makes sense to also change the member attribute name from fBlender to fFinalBlender (and therefore blender() -\u003e finalBlender(), etc.?)",
+      "parentUuid": "773a6338_0b14430a",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f762dcd1_2bf52748",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fb1b8da_1ec26814",
+      "range": {
+        "startLine": 463,
+        "startChar": 21,
+        "endLine": 463,
+        "endChar": 28
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c0e50ec_175bb82d",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-10T14:56:07Z",
       "side": 1,
       "message": "Here and several places below where we recursively call drawGeometry() will need to be updated to pass in `std::move(primitiveBlender), skipColorXform` so that isn\u0027t lost.\n\nIn the current state, I don\u0027t think this would have caused any problems because drawVertices() and the other primitive-color uses tend to ignore mask filters and path effects, but it\u0027d be a surprising gotcha if that ever changed.",
+      "range": {
+        "startLine": 652,
+        "startChar": 18,
+        "endLine": 652,
+        "endChar": 30
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cc7acf_faf01d55",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Great catch! 😄",
+      "parentUuid": "7c0e50ec_175bb82d",
       "range": {
         "startLine": 652,
         "startChar": 18,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26d0cd9e_f25a4f80",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4961939_1ff0787b",
+      "range": {
+        "startLine": 735,
+        "startChar": 31,
+        "endLine": 735,
+        "endChar": 47
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eb8836e_70b2dc62",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c031a47a_41e3bfce",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eb8836e_70b2dc62",
+      "range": {
+        "startLine": 188,
+        "startChar": 22,
+        "endLine": 189,
+        "endChar": 34
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc38796f_41cc5904",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-08-10T14:56:07Z",
       "side": 1,
       "message": "Let\u0027s add a comment here like \"nullptr means there\u0027s no primitive color blending is skipped\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 25,
+        "endLine": 65,
+        "endChar": 42
+      },
+      "revId": "90ef680df8041f1c65e15f841709c5982528ec4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4270af72_e2859f16",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T15:26:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc38796f_41cc5904",
       "range": {
         "startLine": 65,
         "startChar": 25,
