@@ -662,9 +662,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     }
     if (true
         && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) // TODO: all formats
-        && !sampling.useCubic && sampling.filter == SkFilterMode::kLinear
-        && fTileModeX != SkTileMode::kDecal // TODO decal too?
-        && fTileModeY != SkTileMode::kDecal) {
+        && !sampling.useCubic && sampling.filter == SkFilterMode::kLinear) {
 
         auto ctx = alloc->make<SkRasterPipeline_SamplerCtx2>();
         *(SkRasterPipeline_GatherCtx*)(ctx) = *gather;
@@ -689,9 +687,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     }
     if (true
         && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) // TODO: all formats
-        && sampling.useCubic
-        && fTileModeX != SkTileMode::kDecal // TODO decal too?
-        && fTileModeY != SkTileMode::kDecal) {
+        && sampling.useCubic) {
 
         auto ctx = alloc->make<SkRasterPipeline_SamplerCtx2>();
         *(SkRasterPipeline_GatherCtx*)(ctx) = *gather;

@@ -2718,10 +2718,11 @@ STAGE(gauss_a_to_rgba, Ctx::None) {
     b = a;
 }
 
-SI F tile(F v, SkTileMode mode, float limit, float invLimit) {
+SI F tile(F v, SkTileMode mode, float limit, float invLimit, I32* cond) {
     // The ix_and_ptr() calls in sample() will clamp tile()'s output, so no need to clamp here.
     switch (mode) {
-        case SkTileMode::kDecal:
+        case SkTileMode::kDecal:  *cond &= cond_to_mask((0 <= v) & (v < limit));
+                                  [[fallthrough]];
         case SkTileMode::kClamp:  return v;
         case SkTileMode::kRepeat: return v - floor_(v*invLimit)*limit;
         case SkTileMode::kMirror:
@@ -2732,8 +2733,9 @@ SI F tile(F v, SkTileMode mode, float limit, float invLimit) {
 
 SI void sample(const SkRasterPipeline_SamplerCtx2* ctx, F x, F y,
                F* r, F* g, F* b, F* a) {
-    x = tile(x, ctx->tileX, ctx->width , ctx->invWidth );
-    y = tile(y, ctx->tileY, ctx->height, ctx->invHeight);
+    I32 decal_mask(~0);
+    x = tile(x, ctx->tileX, ctx->width , ctx->invWidth , &decal_mask);
+    y = tile(y, ctx->tileY, ctx->height, ctx->invHeight, &decal_mask);
 
     switch (ctx->ct) {
         default: *r = *g = *b = *a = 0;
@@ -2749,6 +2751,11 @@ SI void sample(const SkRasterPipeline_SamplerCtx2* ctx, F x, F y,
             }
         } break;
     }
+
+    *r = sk_bit_cast<F>(sk_bit_cast<I32>(*r) & decal_mask);
+    *g = sk_bit_cast<F>(sk_bit_cast<I32>(*g) & decal_mask);
+    *b = sk_bit_cast<F>(sk_bit_cast<I32>(*b) & decal_mask);
+    *a = sk_bit_cast<F>(sk_bit_cast<I32>(*a) & decal_mask);
 }
 
 template <int D>
