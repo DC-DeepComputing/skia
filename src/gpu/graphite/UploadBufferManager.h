@@ -31,6 +31,8 @@ public:
     // Finalizes all buffers and transfers ownership of them to a Recording.
     void transferToRecording(Recording*);
 
+    void reset();
+
 private:
     ResourceProvider* fResourceProvider;
 

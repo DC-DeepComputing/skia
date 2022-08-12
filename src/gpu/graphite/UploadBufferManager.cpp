@@ -80,4 +80,15 @@ void UploadBufferManager::transferToRecording(Recording* recording) {
     }
 }
 
+void UploadBufferManager::reset() {
+    for (sk_sp<Buffer>& buffer : fUsedBuffers) {
+        buffer->unmap();
+        fUsedBuffers.clear();
+        if (fReusedBuffer) {
+            fReusedBuffer->unmap();
+            fReusedBuffer = nullptr;
+        }
+    }
+}
+
 }  // namespace skgpu::graphite
