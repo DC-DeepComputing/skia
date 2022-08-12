@@ -65,9 +65,8 @@ public:
 
     std::unique_ptr<Recording> snap();
 
-    ImageProvider* clientImageProvider() const {
-        return fClientImageProvider.get();
-    }
+    ImageProvider* clientImageProvider() { return fClientImageProvider.get(); }
+    const ImageProvider* clientImageProvider() const { return fClientImageProvider.get(); }
 
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
