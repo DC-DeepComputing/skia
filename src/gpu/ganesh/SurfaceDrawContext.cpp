@@ -1442,6 +1442,7 @@ void SurfaceDrawContext::drawImageLattice(const GrClip* clip,
 
 void SurfaceDrawContext::drawDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable,
                                       const SkRect& bounds) {
+    RETURN_IF_ABANDONED
     GrOp::Owner op(DrawableOp::Make(fContext, std::move(drawable), bounds));
     SkASSERT(op);
     this->addOp(std::move(op));
