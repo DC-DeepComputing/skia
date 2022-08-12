@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2758610_00ca167f",
+        "filename": "bazel/defines.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-12T15:04:16Z",
+      "side": 1,
+      "message": "On the one hand I understand the desire for this as an option. However, if this is for staging Skia changes it\u0027s generally a better idea to set such defines in the target code repository (for these to be specified directly in G3). The idea is to be able to atomically remove the flag (making the Skia change appear) and fix up the target. To do this the flag must be removed in the target repository. Adding a flag here allows for suppression of the new code at the same time as the Skia side change, but then there will still need to be another change to also define the flag on the G3 side anyway, then a change to remove the flag from here, then a change on the G3 side to remove the flag there while updating the G3 code. Along the way it\u0027s also easy to end up in an awkward situation where both G3 and Skia are trying to set the same flag.\n\nStaging flags like this in public.bazel were a bad idea too, and were never staging flags anyway. They were permanent flags that someone sometime might want to work on removing, so they were never \"extra\".\n\nIn short, I think making a place for such flags here is a bad idea. To the point where I would actually encourage this change with a G3 side change where the build asserts that EXTRA_DEFINES is empty with a big comment about how you did things wrong if it isn\u0027t.",
+      "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
