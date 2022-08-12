@@ -12,6 +12,7 @@
 #include "include/core/SkSize.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/core/SkShaderCodeDictionary.h"
 
 namespace skgpu {
 class SingleOwner;
@@ -36,6 +37,9 @@ public:
     const Caps* caps() const { return fCaps.get(); }
     sk_sp<const Caps> refCaps() const;
 
+    SkShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
+    const SkShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionary; }
+
     virtual std::unique_ptr<ResourceProvider> makeResourceProvider(sk_sp<GlobalCache>,
                                                                    SingleOwner*) const = 0;
 
@@ -55,6 +59,7 @@ private:
     virtual void onDeleteBackendTexture(BackendTexture&) = 0;
 
     sk_sp<const Caps> fCaps;
+    SkShaderCodeDictionary fShaderDictionary;
 };
 
 } // namespace skgpu::graphite
