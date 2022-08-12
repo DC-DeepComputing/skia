@@ -70,6 +70,30 @@
       },
       "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a3103a_4482a10f",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-12T20:50:10Z",
+      "side": 1,
+      "message": "Yeah I think so. Originally, it was just blender() to correspond with the naming from SkPaint. At the SkPaint level there is only one blender to worry about, but PaintParams is aggregating a few other sources, so I think it makes sense that we can refine that name to emphasize it\u0027s the final blend.\n\nAn argument could be made that \"blender\" and \"primitiveBlender\" are disambiguated enough, but I like being explicit.",
+      "parentUuid": "220f3844_807996a6",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
