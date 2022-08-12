@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e721db_35723180",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1445,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-12T21:37:43Z",
+      "side": 1,
+      "message": "Should we also add the other macros from other methods?\n\n```\n    ASSERT_SINGLE_OWNER\n    SkDEBUGCODE(this-\u003evalidate();)\n```",
+      "range": {
+        "startLine": 1445,
+        "startChar": 4,
+        "endLine": 1445,
+        "endChar": 23
+      },
+      "revId": "bc019dfee168de628a437ef6048eca894aa27612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
