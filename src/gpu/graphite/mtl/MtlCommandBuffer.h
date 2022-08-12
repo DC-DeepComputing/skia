@@ -28,7 +28,7 @@ class MtlSharedContext;
 
 class MtlCommandBuffer final : public CommandBuffer {
 public:
-    static sk_sp<MtlCommandBuffer> Make(const MtlSharedContext*);
+    static sk_sp<MtlCommandBuffer> Make(id<MTLCommandQueue>, const MtlSharedContext*);
     ~MtlCommandBuffer() override;
 
     bool isFinished() {

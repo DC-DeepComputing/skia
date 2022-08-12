@@ -30,12 +30,17 @@ public:
     bool submitToGpu();
     void checkForFinishedWork(SyncToCpu);
 
+#if GRAPHITE_TEST_UTILS
+    virtual void testingOnly_startCapture() {}
+    virtual void testingOnly_endCapture() {}
+#endif
+
 protected:
     QueueManager(const SharedContext* sharedContext);
 
     using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
 
-    const SharedContext* fSharedContext;
+    const SharedContext* fSharedContext2;
     sk_sp<CommandBuffer> fCurrentCommandBuffer;
 
 private:

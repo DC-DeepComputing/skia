@@ -12,15 +12,17 @@
 
 namespace skgpu::graphite {
 
-MtlQueueManager::MtlQueueManager(const SharedContext* sharedContext)
-        : QueueManager(sharedContext) {}
+MtlQueueManager::MtlQueueManager(sk_cfp<id<MTLCommandQueue>> queue,
+                                 const SharedContext* sharedContext)
+        : QueueManager(sharedContext)
+        , fQueue(std::move(queue)) {}
 
 const MtlSharedContext* MtlQueueManager::mtlSharedContext() const {
-    return static_cast<const MtlSharedContext*>(fSharedContext);
+    return static_cast<const MtlSharedContext*>(fSharedContext2);
 }
 
 sk_sp<CommandBuffer> MtlQueueManager::getNewCommandBuffer() {
-    return MtlCommandBuffer::Make(this->mtlSharedContext());
+    return MtlCommandBuffer::Make(fQueue.get(), this->mtlSharedContext());
 }
 
 class WorkSubmission final : public GpuWorkSubmission {
@@ -32,7 +34,7 @@ public:
     bool isFinished() override {
         return static_cast<MtlCommandBuffer*>(this->commandBuffer())->isFinished();
     }
-    void waitUntilFinished(const SharedContext*) override {
+    void waitUntilFinished() override {
         return static_cast<MtlCommandBuffer*>(this->commandBuffer())->waitUntilFinished();
     }
 };
@@ -49,6 +51,39 @@ QueueManager::OutstandingSubmission MtlQueueManager::onSubmitToGpu() {
             new WorkSubmission(std::move(fCurrentCommandBuffer)));
     return submission;
 }
+
+#if GRAPHITE_TEST_UTILS
+void MtlQueueManager::testingOnly_startCapture() {
+    if (@available(macOS 10.13, iOS 11.0, *)) {
+        // TODO: add newer Metal interface as well
+        MTLCaptureManager* captureManager = [MTLCaptureManager sharedCaptureManager];
+        if (captureManager.isCapturing) {
+            return;
+        }
+        if (@available(macOS 10.15, iOS 13.0, *)) {
+            MTLCaptureDescriptor* captureDescriptor = [[MTLCaptureDescriptor alloc] init];
+            captureDescriptor.captureObject = fQueue.get();
+
+            NSError *error;
+            if (![captureManager startCaptureWithDescriptor: captureDescriptor error:&error])
+            {
+                NSLog(@"Failed to start capture, error %@", error);
+            }
+        } else {
+            [captureManager startCaptureWithCommandQueue: fQueue.get()];
+        }
+     }
+}
+
+void MtlQueueManager::testingOnly_endCapture() {
+    if (@available(macOS 10.13, iOS 11.0, *)) {
+        MTLCaptureManager* captureManager = [MTLCaptureManager sharedCaptureManager];
+        if (captureManager.isCapturing) {
+            [captureManager stopCapture];
+        }
+    }
+}
+#endif
 
 } // namespace skgpu::graphite
 
