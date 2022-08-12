@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "062fff9f_8dbe5185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-12T15:40:28Z",
+      "side": 1,
+      "message": "Other than these files needing a note that they are non-rolling customization points for external users of Skia\u0027s bazel build, lgtm.",
+      "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2758610_00ca167f",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "Or is it currently the idea that we simply have this EXTRA_DEFINES in Skia so that we can reference it, but there will be a different one on the G3 side? If so, that isn\u0027t obvious here.",
       "parentUuid": "c2758610_00ca167f",
+      "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad34a90c_86f57529",
+        "filename": "bazel/defines.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-12T15:40:28Z",
+      "side": 1,
+      "message": "As clarified elsewhere, bazel/*.bzl stuff exists on both sides but doesn\u0027t roll so that they can be different. However, we need to note that really obviously, otherwise not only will I forget, but someone is going to try to put a define here and wonder why it \"isn\u0027t working\".",
+      "parentUuid": "f98b637a_9ac13529",
       "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
