@@ -47,7 +47,7 @@ class SkDescriptor;
 class SkFontDescriptor;
 
 namespace {
-static inline const constexpr bool kSkShowTextBlitCoverage = false;
+static inline const constexpr bool kSkShowTextBlitCoverage = true;
 }
 
 static SkFontMetrics scale_fontmetrics(const SkFontMetrics& src, float sx, float sy) {
@@ -345,8 +345,11 @@ protected:
 
         const auto& rec = this->userTF()->fGlyphRecs[glyph.getGlyphID()];
 
+        auto draw_matrix = SkMatrix::Translate(-glyph.fLeft, -glyph.fTop)
+                         * SkMatrix::Scale(0.01f, 0.01f)
+                         * fMatrix;
         return rec.fDrawable
-            ? sk_make_sp<DrawableMatrixWrapper>(rec.fDrawable, fMatrix)
+            ? sk_make_sp<DrawableMatrixWrapper>(rec.fDrawable, draw_matrix)
             : nullptr;
     }
 

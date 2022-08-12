@@ -137,12 +137,13 @@ AnimationBuilder::AnimationBuilder(sk_sp<ResourceProvider> rp, sk_sp<SkFontMgr> 
     , fHasNontrivialBlending(false) {}
 
 AnimationBuilder::AnimationInfo AnimationBuilder::parse(const skjson::ObjectValue& jroot) {
+    AutoScope ascope(this);
+
     this->dispatchMarkers(jroot["markers"]);
 
     this->parseAssets(jroot["assets"]);
     this->parseFonts(jroot["fonts"], jroot["chars"]);
 
-    AutoScope ascope(this);
     AutoPropertyTracker apt(this, jroot, PropertyObserver::NodeType::COMPOSITION);
     auto root = CompositionBuilder(*this, fCompSize, jroot).build(*this);
 

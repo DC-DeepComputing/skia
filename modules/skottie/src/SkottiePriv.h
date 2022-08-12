@@ -181,6 +181,7 @@ public:
 private:
     friend class CompositionBuilder;
     friend class LayerBuilder;
+    friend class AnimatedGlyph;
 
     struct AttachLayerContext;
     struct AttachShapeContext;

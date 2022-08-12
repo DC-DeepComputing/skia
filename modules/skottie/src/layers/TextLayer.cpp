@@ -11,6 +11,7 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkTypes.h"
 #include "modules/skottie/src/SkottieJson.h"
+#include "modules/skottie/src/text/AnimatedFont.h"
 #include "modules/skottie/src/text/TextAdapter.h"
 #include "modules/skottie/src/text/TextAnimator.h"
 #include "modules/skottie/src/text/TextValue.h"
@@ -99,7 +100,7 @@ SkFontStyle FontStyle(const AnimationBuilder* abuilder, const char* style) {
     return SkFontStyle(weight, SkFontStyle::kNormal_Width, slant);
 }
 
-bool parse_glyph_path(const skjson::ObjectValue* jdata,
+bool parse_glyph_path(const skjson::ObjectValue& jdata,
                       const AnimationBuilder* abuilder,
                       SkPath* path) {
     // Glyph path encoding:
@@ -120,11 +121,7 @@ bool parse_glyph_path(const skjson::ObjectValue* jdata,
     //       ]
     //   }
 
-    if (!jdata) {
-        return false;
-    }
-
-    const skjson::ArrayValue* jshapes = (*jdata)["shapes"];
+    const skjson::ArrayValue* jshapes = jdata["shapes"];
     if (!jshapes) {
         // Space/empty glyph.
         return true;
@@ -222,6 +219,11 @@ void AnimationBuilder::parseFonts(const skjson::ObjectValue* jfonts,
                       nullptr, // placeholder
                       SkCustomTypefaceBuilder()
                   });
+    }
+
+    // FIXME
+    if (jchars) {
+        this->resolveEmbeddedTypefaces(*jchars);
     }
 
     // Optional pass.
@@ -356,21 +358,35 @@ bool AnimationBuilder::resolveEmbeddedTypefaces(const skjson::ArrayValue& jchars
             }
         }
 
-        SkPath path;
-        if (!parse_glyph_path((*jchar)["data"], this, &path)) {
+        const skjson::ObjectValue* jdata = (*jchar)["data"];
+        if (!jdata) {
             continue;
         }
-
-        const auto advance = ParseDefault((*jchar)["w"], 0.0f);
 
         // Interestingly, glyph paths are defined in a percentage-based space,
         // regardless of declared glyph size...
         static constexpr float kPtScale = 0.01f;
 
-        // Normalize the path and advance for 1pt.
-        path.transform(SkMatrix::Scale(kPtScale, kPtScale));
+        const auto advance = ParseDefault((*jchar)["w"], 0.0f) * kPtScale;
 
-        current_font->fCustomBuilder.setGlyph(glyph_id, advance * kPtScale, path);
+        if (auto aglyph = AnimatedGlyph::Make(*jdata, this)) {
+            auto bounds = aglyph->getBounds(); //.makeOffset(0, -82);
+            bounds.fLeft   *= kPtScale;
+            bounds.fTop    *= kPtScale;
+            bounds.fRight  *= kPtScale;
+            bounds.fBottom *= kPtScale;
+
+            current_font->fCustomBuilder.setGlyph(glyph_id, advance, aglyph, bounds);
+            continue;
+        }
+
+        SkPath path;
+        if (parse_glyph_path(*jdata, this, &path)) {
+            // Normalize the path and advance for 1pt.
+            path.transform(SkMatrix::Scale(kPtScale, kPtScale));
+
+            current_font->fCustomBuilder.setGlyph(glyph_id, advance, path);
+        }
     }
 
     // Final pass to commit custom typefaces.
