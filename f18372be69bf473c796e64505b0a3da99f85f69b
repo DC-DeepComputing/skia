@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "406159a4_3420bb18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-12T13:43:37Z",
+      "side": 1,
+      "message": "Looking forward to more sensible resource abstractions in Graphite!",
+      "revId": "f18372be69bf473c796e64505b0a3da99f85f69b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
