@@ -32,7 +32,7 @@ public:
     }
     SkShaderCodeDictionary* shaderCodeDictionary() {
         return fContext->fSharedContext->shaderCodeDictionary();
-    };
+    }
 #endif
 
 private:

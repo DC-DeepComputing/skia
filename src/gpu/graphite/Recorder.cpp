@@ -58,10 +58,12 @@ private:
     DefaultImageProvider() {}
 };
 
-/**************************************************************************************************/
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 RecorderOptions::~RecorderOptions() = default;
 
-/**************************************************************************************************/
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 static int32_t next_id() {
     static std::atomic<int32_t> nextID{1};
     int32_t id;
@@ -71,29 +73,44 @@ static int32_t next_id() {
     return id;
 }
 
+Recorder::State::State(Recorder* recorder)
+        : fDrawBufferManager(recorder->priv().resourceProvider(),
+                             recorder->priv().caps()->requiredUniformBufferAlignment())
+        , fUploadBufferManager(recorder->priv().resourceProvider())
+        , fAtlasManager(recorder)
+        , fTextBlobCache(next_id()) {}
+
+void Recorder::State::resetAfterSnap(Recording* recording) {
+    // These are cleared regardless of success or failure
+    fRuntimeEffectDict.reset();
+    fUniformDataCache.reset();
+    fTextureDataCache.reset();
+
+    if (recording) {
+        fDrawBufferManager.transferToRecording(recording);
+        fUploadBufferManager.transferToRecording(recording);
+    } else {
+        fDrawBufferManager.reset();
+        fUploadBufferManager.reset(); // ?
+    }
+
+    // Intentionally don't reset the AtlasManager and other text-related
+    // state objects so that we can reuse their results across Recordings.
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options)
         : fSharedContext(std::move(sharedContext))
-        , fRuntimeEffectDict(std::make_unique<SkRuntimeEffectDictionary>())
-        , fGraph(new TaskGraph)
-        , fUniformDataCache(new UniformDataCache)
-        , fTextureDataCache(new TextureDataCache)
-        , fRecorderID(next_id())
-        , fAtlasManager(std::make_unique<AtlasManager>(this))
-        , fTokenTracker(std::make_unique<TokenTracker>())
-        , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
-        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
-
-    fClientImageProvider = options.fImageProvider;
-    if (!fClientImageProvider) {
-        fClientImageProvider = DefaultImageProvider::Make();
-    }
-
+        , fClientImageProvider(options.fImageProvider ? options.fImageProvider
+                                                      : DefaultImageProvider::Make())
+        , fGraph(new TaskGraph) {
+    // Cannot create the ResourceProvider until we have a valid SingleOwner
     fResourceProvider = fSharedContext->makeResourceProvider(this->singleOwner());
-    fDrawBufferManager.reset(new DrawBufferManager(
-            fResourceProvider.get(), fSharedContext->caps()->requiredUniformBufferAlignment()));
-    fUploadBufferManager.reset(new UploadBufferManager(fResourceProvider.get()));
     SkASSERT(fResourceProvider);
+    // Must fill in the rest of the Recorder's state after we have its ResourceProvider
+    fState = std::make_unique<State>(this);
 }
 
 Recorder::~Recorder() {
@@ -103,7 +120,13 @@ Recorder::~Recorder() {
     }
 
     // TODO: needed?
-    fStrikeCache->freeAll();
+    fState->fStrikeCache.freeAll();
+}
+
+std::unique_ptr<TaskGraph> Recorder::snapGraph() {
+    std::unique_ptr<TaskGraph> oldGraph = std::move(fGraph);
+    fGraph = std::make_unique<TaskGraph>();
+    return oldGraph;
 }
 
 std::unique_ptr<Recording> Recorder::snap() {
@@ -112,28 +135,15 @@ std::unique_ptr<Recording> Recorder::snap() {
         device->flushPendingWorkToRecorder();
     }
 
-    // TODO: fulfill all promise images in the TextureDataCache here
-    // TODO: create all the samplers needed in the TextureDataCache here
-
-    if (!fGraph->prepareResources(fResourceProvider.get(), fRuntimeEffectDict.get())) {
-        // Leaving 'fTrackedDevices' alone since they were flushed earlier and could still be
-        // attached to extant SkSurfaces.
-        size_t requiredAlignment = fSharedContext->caps()->requiredUniformBufferAlignment();
-        fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(), requiredAlignment));
-        fTextureDataCache = std::make_unique<TextureDataCache>();
-        // We leave the UniformDataCache alone
-        fGraph->reset();
-        fRuntimeEffectDict->reset();
+    std::unique_ptr<TaskGraph> graph = this->snapGraph();
+    if (!graph->prepareResources(fResourceProvider.get(),
+                                 this->priv().runtimeEffectDictionary())) {
+        fState->resetAfterSnap(nullptr);
         return nullptr;
     }
 
-    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph)));
-    fDrawBufferManager->transferToRecording(recording.get());
-    fUploadBufferManager->transferToRecording(recording.get());
-
-    fGraph = std::make_unique<TaskGraph>();
-    fRuntimeEffectDict->reset();
-    fTextureDataCache = std::make_unique<TextureDataCache>();
+    std::unique_ptr<Recording> recording(new Recording(std::move(graph)));
+    fState->resetAfterSnap(recording.get());
     return recording;
 }
 
@@ -153,9 +163,9 @@ void Recorder::deregisterDevice(const Device* device) {
 }
 
 #if GR_TEST_UTILS
-bool Recorder::deviceIsRegistered(Device* device) {
-    ASSERT_SINGLE_OWNER
-    for (auto& currentDevice : fTrackedDevices) {
+bool RecorderPriv::deviceIsRegistered(Device* device) {
+    ASSERT_SINGLE_OWNER_PRIV
+    for (auto& currentDevice : fRecorder->fTrackedDevices) {
         if (device == currentDevice) {
             return true;
         }

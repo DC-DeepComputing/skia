@@ -35,7 +35,6 @@ public:
     // 'unusedBytes' is less than the 'requiredBytes' to the original allocation.
     void returnVertexBytes(size_t unusedBytes);
 
-
     // Get the shared static buffer filled with contents computed by the InitializeBufferFn.
     // Both InitializeBufferFn and BufferSizeFn should be static functions since their addresses are
     // used in the static buffer's internal unique keys.
@@ -50,6 +49,11 @@ public:
 
     // Finalizes all buffers and transfers ownership of them to a Recording.
     void transferToRecording(Recording*);
+
+    // Reset the DrawBufferManager to the same state as if it had transferred ownership to a
+    // Recording, except this is used when a Recording could not be snapped and the reosurces should
+    // just be discarded.
+    void reset();
 
 private:
     ResourceProvider* fResourceProvider;

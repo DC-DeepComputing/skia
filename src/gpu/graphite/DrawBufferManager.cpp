@@ -202,4 +202,26 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
     }
 }
 
+void DrawBufferManager::reset() {
+    for (auto& buffer : fUsedBuffers) {
+        buffer->unmap();
+    }
+    fUsedBuffers.clear();
+
+    // The current draw buffers have not been added to fUsedBuffers,
+    // so we need to handle them as well.
+    if (fCurrentVertexBuffer) {
+        fCurrentVertexBuffer->unmap();
+        fCurrentVertexBuffer = nullptr;
+    }
+    if (fCurrentIndexBuffer) {
+        fCurrentIndexBuffer->unmap();
+        fCurrentIndexBuffer = nullptr;
+    }
+    if (fCurrentUniformBuffer) {
+        fCurrentUniformBuffer->unmap();
+        fCurrentUniformBuffer = nullptr;
+    }
+}
+
 } // namespace skgpu::graphite

@@ -37,8 +37,4 @@ bool TaskGraph::addCommands(ResourceProvider* resourceProvider, CommandBuffer* c
     return true;
 }
 
-void TaskGraph::reset() {
-    fTasks.clear();
-}
-
 } // namespace skgpu::graphite

@@ -99,6 +99,12 @@ public:
         return fDataBlocks.size() - 1;  /* -1 to discount the invalidID's entry */
     }
 
+    void reset() {
+        fDataBlockIDs.clear();
+        fDataBlocks.clear();
+        fArena.reset();
+    }
+
 private:
     struct Hash {
         // This hash operator de-references and hashes the data contents
@@ -124,7 +130,7 @@ private:
     // Note: the unique IDs are only unique w/in a Recorder or a Recording _not_ globally
     std::unordered_map<const BaseT*, Index, Hash, Eq> fDataBlockIDs;
     std::vector<StorageT> fDataBlocks;
-    SkArenaAlloc fArena{0};
+    SkArenaAllocWithReset fArena{0};
 
     void validate() const {
 #ifdef SK_DEBUG

@@ -26,9 +26,6 @@ public:
     bool prepareResources(ResourceProvider*, const SkRuntimeEffectDictionary*);
     bool addCommands(ResourceProvider*, CommandBuffer*);
 
-    void reset();
-
-protected:
 private:
     std::vector<sk_sp<Task>> fTasks;
 };

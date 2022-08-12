@@ -72,14 +72,14 @@ public:
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
 
-#if GR_TEST_UTILS
-    bool deviceIsRegistered(Device*);
-#endif
+
 
 private:
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
     friend class RecorderPriv; // for ctor and hidden methods
+
+    struct State;
 
     Recorder(sk_sp<SharedContext>, const RecorderOptions&);
 
@@ -105,23 +105,17 @@ private:
     void registerDevice(Device*);
     void deregisterDevice(const Device*);
 
+    std::unique_ptr<TaskGraph> snapGraph();
+
     sk_sp<SharedContext> fSharedContext;
-    std::unique_ptr<ResourceProvider> fResourceProvider;
-    std::unique_ptr<SkRuntimeEffectDictionary> fRuntimeEffectDict;
-
-    std::unique_ptr<TaskGraph> fGraph;
-    std::unique_ptr<UniformDataCache> fUniformDataCache;
-    std::unique_ptr<TextureDataCache> fTextureDataCache;
-    std::unique_ptr<DrawBufferManager> fDrawBufferManager;
-    std::unique_ptr<UploadBufferManager> fUploadBufferManager;
-    std::vector<Device*> fTrackedDevices;
-
-    uint32_t fRecorderID;  // Needed for MessageBox handling for text
-    std::unique_ptr<AtlasManager> fAtlasManager;
-    std::unique_ptr<TokenTracker> fTokenTracker;
-    std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
-    std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
     sk_sp<ImageProvider> fClientImageProvider;
+
+    std::unique_ptr<ResourceProvider> fResourceProvider;
+    std::unique_ptr<State> fState;
+
+    std::unique_ptr<TaskGraph> fGraph; // needs to be a pointer to move to Recording
+
+    std::vector<Device*> fTrackedDevices;
 
     // In debug builds we guard against improper thread handling
     // This guard is passed to the ResourceCache.
