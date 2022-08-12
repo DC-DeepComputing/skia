@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52934d0e_4aa6cd43",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-12T19:33:08Z",
+      "side": 1,
+      "message": "which HAS a high likelihood of a cache hit?",
+      "range": {
+        "startLine": 29,
+        "startChar": 59,
+        "endLine": 29,
+        "endChar": 69
+      },
+      "revId": "6620f335532d855a2b03b62bb0e17ddf43b4912b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bf7741_e4415ea1",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-12T19:33:08Z",
+      "side": 1,
+      "message": "Did you pick spin lock over mutex here because you assume the functions we\u0027re locking should be fairly short calls?",
+      "range": {
+        "startLine": 66,
+        "startChar": 12,
+        "endLine": 66,
+        "endChar": 22
+      },
+      "revId": "6620f335532d855a2b03b62bb0e17ddf43b4912b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
