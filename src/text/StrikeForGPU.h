@@ -23,6 +23,7 @@ class SkDrawableGlyphBuffer;
 class SkReadBuffer;
 class SkSourceGlyphBuffer;
 class SkStrike;
+class SkStrikeCache;
 class SkStrikeClient;
 class SkStrikeSpec;
 class SkWriteBuffer;
@@ -30,6 +31,44 @@ struct SkGlyphPositionRoundingSpec;
 struct SkScalerContextEffects;
 
 namespace sktext {
+// -- SkStrikePromise ------------------------------------------------------------------------------
+// SkStrikePromise produces an SkStrike when needed by GPU glyph rendering. In ordinary
+// operation, it just wraps an SkStrike. When used for remote glyph cache operation, the promise is
+// serialized to an SkDescriptor. When SkStrikePromise is deserialized, uses the descriptor to
+// look up the SkStrike.
+//
+// When deserializing some care must be taken; if the needed SkStrike is removed from the cache,
+// then looking up using the descriptor will fail resulting in a deserialization failure. The
+// Renderer/GPU system solves this problem by pinning all the strikes needed into the cache.
+class SkStrikePromise {
+public:
+    SkStrikePromise() = delete;
+    SkStrikePromise(const SkStrikePromise&) = delete;
+    SkStrikePromise& operator=(const SkStrikePromise&) = delete;
+    SkStrikePromise(SkStrikePromise&&);
+    SkStrikePromise& operator=(SkStrikePromise&&);
+
+    explicit SkStrikePromise(sk_sp<SkStrike>&& strike);
+    explicit SkStrikePromise(const SkStrikeSpec& spec);
+
+    static std::optional<SkStrikePromise> MakeFromBuffer(SkReadBuffer& buffer,
+                                                         const SkStrikeClient* client,
+                                                         SkStrikeCache* strikeCache);
+    void flatten(SkWriteBuffer& buffer) const;
+
+    // Do what is needed to return a strike.
+    SkStrike* strike();
+
+    // Reset the sk_sp<SkStrike> to nullptr.
+    void resetStrike();
+
+    // Return a descriptor used to look up the SkStrike.
+    const SkDescriptor& descriptor() const;
+
+private:
+    std::variant<sk_sp<SkStrike>, std::unique_ptr<SkStrikeSpec>> fStrikeOrSpec;
+};
+
 // -- StrikeForGPU ---------------------------------------------------------------------------------
 class StrikeForGPU {
 public:
@@ -63,6 +102,9 @@ public:
     // Return underlying SkStrike for building SubRuns while processing glyph runs.
     virtual sk_sp<SkStrike> getUnderlyingStrike() const = 0;
 
+    // Return a strike promise.
+    virtual SkStrikePromise strikePromise() = 0;
+
     // Return the maximum dimension of a span of glyphs.
     virtual SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) = 0;
 
@@ -92,48 +134,12 @@ union IDOrDrawable {
     SkDrawable* fDrawable;
 };
 
-// -- StrikeRef ------------------------------------------------------------------------------------
-// Hold a ref to either a RemoteStrike or an SkStrike. Use either to flatten a descriptor, but
-// when MakeFromBuffer runs look up the SkStrike associated with the descriptor.
-class StrikeRef {
-public:
-    StrikeRef() = delete;
-    StrikeRef(sk_sp<SkStrike>&& strike);
-    StrikeRef(StrikeForGPU* strike);
-    StrikeRef(const StrikeRef&) = delete;
-    const StrikeRef& operator=(const StrikeRef&) = delete;
-    StrikeRef(StrikeRef&&);
-    StrikeRef& operator=(StrikeRef&&);
-
-    // Flatten a descriptor into the buffer.
-    void flatten(SkWriteBuffer& buffer) const;
-
-    // Unflatten a descriptor, and create a StrikeRef holding an sk_sp<SkStrike>. The client is
-    // used to do SkTypeFace id translation if passed in.
-    static std::optional<StrikeRef> MakeFromBuffer(SkReadBuffer& buffer,
-                                                   const SkStrikeClient* client);
-
-    // getStrikeAndSetToNullptr can only be used when holding an SkStrike. This will only return
-    // the SkStrike the first time, and will return nullptr on all future calls. Once this is
-    // called, flatten can not be called.
-    sk_sp<SkStrike> getStrikeAndSetToNullptr();
-
-    StrikeForGPU* asStrikeForGPU();
-
-private:
-    friend class StrikeRefTestingPeer;
-    // A StrikeRef can hold a pointer from a RemoteStrike which is of type SkStrikeForGPU,
-    // or it can hold an actual ref to an actual SkStrike.
-    std::variant<std::monostate, StrikeForGPU*, sk_sp<SkStrike>> fStrike;
-};
-
-
 // -- StrikeForGPUCacheInterface -------------------------------------------------------------------
 class StrikeForGPUCacheInterface {
 public:
     virtual ~StrikeForGPUCacheInterface() = default;
     virtual ScopedStrikeForGPU findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) = 0;
-    virtual StrikeRef findOrCreateStrikeRef(const SkStrikeSpec& strikeSpec) = 0;
+    //virtual StrikeRef findOrCreateStrikeRef(const SkStrikeSpec& strikeSpec) = 0;
 };
 }  // namespace sktext
 #endif  // sktext_StrikeForGPU_DEFINED
