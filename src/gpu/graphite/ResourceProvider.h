@@ -73,8 +73,6 @@ public:
                                                  SkTileMode xTileMode,
                                                  SkTileMode yTileMode);
 
-    SkShaderCodeDictionary* shaderCodeDictionary() const;
-
     SkSL::Compiler* skslCompiler() { return fCompiler.get(); }
 
 #if GRAPHITE_TEST_UTILS
