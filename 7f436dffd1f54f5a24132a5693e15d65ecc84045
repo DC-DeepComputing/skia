@@ -16,6 +16,24 @@
       "message": "Why does this one do only whitespace and the UTF-8 version above sets kControl, kPartOfIntraWordBreak, and kTabulation?",
       "revId": "7f436dffd1f54f5a24132a5693e15d65ecc84045",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bebc6810_e7b30ba8",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-12T15:59:25Z",
+      "side": 1,
+      "message": "It\u0027s currently in use only by not-working SkText version, but still, you are right.\nI missed that part.",
+      "parentUuid": "f6bd92ec_ce3eb377",
+      "revId": "7f436dffd1f54f5a24132a5693e15d65ecc84045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
