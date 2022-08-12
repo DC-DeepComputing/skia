@@ -87,6 +87,24 @@
       "parentUuid": "ad34a90c_86f57529",
       "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72444ac7_cb9eeaf2",
+        "filename": "bazel/defines.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-12T16:50:47Z",
+      "side": 1,
+      "message": "It\u0027s enough to remind me. Hopefully it\u0027s enough for future people.",
+      "parentUuid": "63a1387b_45d27304",
+      "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
