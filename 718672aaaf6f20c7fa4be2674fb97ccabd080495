@@ -69,6 +69,24 @@
       "parentUuid": "f98b637a_9ac13529",
       "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a1387b_45d27304",
+        "filename": "bazel/defines.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-12T15:47:57Z",
+      "side": 1,
+      "message": "Added some all caps docs. Is that sufficient?",
+      "parentUuid": "ad34a90c_86f57529",
+      "revId": "718672aaaf6f20c7fa4be2674fb97ccabd080495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
