@@ -41,8 +41,8 @@ ExtractRenderStepData(UniformDataCache* geometryUniformDataCache,
 
 std::string GetSkSLVS(const GraphicsPipelineDesc& desc);
 
-std::string GetSkSLFS(SkShaderCodeDictionary* dict,
-                      SkRuntimeEffectDictionary* rteDict,
+std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
+                      const SkRuntimeEffectDictionary* rteDict,
                       const GraphicsPipelineDesc& desc,
                       BlendInfo* blendInfo);
 

@@ -262,8 +262,8 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc) {
     return sksl;
 }
 
-std::string GetSkSLFS(SkShaderCodeDictionary* dict,
-                      SkRuntimeEffectDictionary* rteDict,
+std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
+                      const SkRuntimeEffectDictionary* rteDict,
                       const GraphicsPipelineDesc& desc,
                       BlendInfo* blendInfo) {
     if (!desc.paintParamsID().isValid()) {

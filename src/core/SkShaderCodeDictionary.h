@@ -118,7 +118,7 @@ struct SkShaderSnippet {
 // for program creation and its invocation.
 class SkShaderInfo {
 public:
-    SkShaderInfo(SkRuntimeEffectDictionary* rteDict = nullptr)
+    SkShaderInfo(const SkRuntimeEffectDictionary* rteDict = nullptr)
             : fRuntimeEffectDictionary(rteDict) {}
     ~SkShaderInfo() = default;
     SkShaderInfo(SkShaderInfo&&) = default;
@@ -157,7 +157,7 @@ private:
     std::vector<SkPaintParamsKey::BlockReader> fBlockReaders;
 
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags{SnippetRequirementFlags::kNone};
-    SkRuntimeEffectDictionary* fRuntimeEffectDictionary = nullptr;
+    const SkRuntimeEffectDictionary* fRuntimeEffectDictionary = nullptr;
 
 #ifdef SK_GRAPHITE_ENABLED
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the
