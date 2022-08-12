@@ -18,8 +18,9 @@
 namespace skgpu::graphite {
 
 SharedContext::SharedContext(sk_sp<const Caps> caps)
-    : fCaps(std::move(caps)) {
-}
+        : fCaps(std::move(caps))
+        , fGlobalCache()
+        , fShaderDictionary() {}
 
 SharedContext::~SharedContext() {
     // TODO: add disconnect?
