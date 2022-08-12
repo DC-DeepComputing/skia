@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdcac27c_3ed56f72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-12T20:14:57Z",
+      "side": 1,
+      "message": "Here is a working prototype that uses only the RemoteCanvas to do the slug conversion. See SkChromeRemoteGlyphCache.cpp.\n\nI will start breaking this into little parts and start submitting them.",
+      "revId": "b845a4fe9d21ea56067d67a0424ff9108d804738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
