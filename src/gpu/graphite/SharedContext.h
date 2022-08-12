@@ -13,6 +13,7 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/GlobalCache.h"
 
 namespace skgpu {
 class SingleOwner;
@@ -23,7 +24,6 @@ namespace skgpu::graphite {
 class BackendTexture;
 class Caps;
 class CommandBuffer;
-class GlobalCache;
 class ResourceProvider;
 class TextureInfo;
 
@@ -37,11 +37,13 @@ public:
     const Caps* caps() const { return fCaps.get(); }
     sk_sp<const Caps> refCaps() const;
 
+    GlobalCache* globalCache() { return &fGlobalCache; }
+    const GlobalCache* globalCache() const { return &fGlobalCache; }
+
     SkShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
     const SkShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionary; }
 
-    virtual std::unique_ptr<ResourceProvider> makeResourceProvider(sk_sp<GlobalCache>,
-                                                                   SingleOwner*) const = 0;
+    virtual std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*) const = 0;
 
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
     void deleteBackendTexture(BackendTexture&);
@@ -59,6 +61,7 @@ private:
     virtual void onDeleteBackendTexture(BackendTexture&) = 0;
 
     sk_sp<const Caps> fCaps;
+    GlobalCache fGlobalCache;
     SkShaderCodeDictionary fShaderDictionary;
 };
 
