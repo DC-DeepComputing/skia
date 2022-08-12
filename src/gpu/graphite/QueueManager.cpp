@@ -23,7 +23,7 @@ namespace skgpu::graphite {
 static constexpr int kDefaultOutstandingAllocCnt = 8;
 
 QueueManager::QueueManager(const SharedContext* sharedContext)
-        : fSharedContext(sharedContext)
+        : fSharedContext2(sharedContext)
         , fOutstandingSubmissions(sizeof(OutstandingSubmission), kDefaultOutstandingAllocCnt) {
 }
 
@@ -95,7 +95,7 @@ void QueueManager::checkForFinishedWork(SyncToCpu sync) {
         // wait for the last submission to finish
         OutstandingSubmission* back = (OutstandingSubmission*)fOutstandingSubmissions.back();
         if (back) {
-            (*back)->waitUntilFinished(fSharedContext);
+            (*back)->waitUntilFinished();
         }
     }
 

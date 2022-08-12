@@ -92,7 +92,7 @@ public:
     // deleting this object. However, I want to implement all the purging logic first to make sure
     // we don't have a use case for calling internalDispose but not wanting to delete the actual
     // object yet.
-    bool wasDestroyed() const { return fSharedContext == nullptr; }
+    bool wasDestroyed() const { return fSharedContext2 == nullptr; }
 
     const GraphiteResourceKey& key() const { return fKey; }
     // This should only ever be called by the ResourceProvider
@@ -219,7 +219,7 @@ private:
 
     // This is not ref'ed but internalDispose() will be called before the Gpu object is destroyed.
     // That call will set this to nullptr.
-    const SharedContext* fSharedContext;
+    const SharedContext* fSharedContext2;
 
     mutable std::atomic<int32_t> fUsageRefCnt;
     mutable std::atomic<int32_t> fCommandBufferRefCnt;
