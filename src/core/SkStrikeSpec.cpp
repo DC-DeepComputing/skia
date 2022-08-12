@@ -8,6 +8,7 @@
 #include "src/core/SkStrikeSpec.h"
 
 #include "include/core/SkGraphics.h"
+#include "include/core/SkTypeface.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkStrikeCache.h"

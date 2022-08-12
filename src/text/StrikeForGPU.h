@@ -30,6 +30,29 @@ struct SkGlyphPositionRoundingSpec;
 struct SkScalerContextEffects;
 
 namespace sktext {
+class SkStrikePromise {
+public:
+    SkStrikePromise() = delete;
+    SkStrikePromise(const SkStrikePromise&) = delete;
+    SkStrikePromise& operator=(const SkStrikePromise&) = delete;
+    SkStrikePromise(SkStrikePromise&&);
+    SkStrikePromise& operator=(SkStrikePromise&&);
+
+    explicit SkStrikePromise(sk_sp<SkStrike>&& strike);
+    explicit SkStrikePromise(const SkStrikeSpec& spec);
+
+    static std::optional<SkStrikePromise> MakeFromBuffer(
+            SkReadBuffer& buffer, const SkStrikeClient* client);
+    SkStrike* strike();
+    void resetStrike();
+    const SkDescriptor& descriptor() const;
+    void flatten(SkWriteBuffer& buffer) const;
+
+
+private:
+    std::variant<sk_sp<SkStrike>, std::unique_ptr<SkStrikeSpec>> fStrikeOrSpec;
+};
+
 // -- StrikeForGPU ---------------------------------------------------------------------------------
 class StrikeForGPU {
 public:
@@ -62,6 +85,9 @@ public:
 
     // Return underlying SkStrike for building SubRuns while processing glyph runs.
     virtual sk_sp<SkStrike> getUnderlyingStrike() const = 0;
+
+    // Return a strike promise.
+    virtual SkStrikePromise strikePromise() = 0;
 
     // Return the maximum dimension of a span of glyphs.
     virtual SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) = 0;
