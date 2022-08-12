@@ -300,7 +300,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     }
 
     BlendInfo blendInfo;
-    auto dict = resourceProvider->shaderCodeDictionary();
+    auto dict = sharedContext->shaderCodeDictionary();
     if (!SkSLToMSL(skslCompiler,
                    GetSkSLFS(dict, runtimeDict, pipelineDesc, &blendInfo),
                    SkSL::ProgramKind::kGraphiteFragment,
