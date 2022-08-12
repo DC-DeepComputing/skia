@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed7d34a4_9d95c544",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T21:54:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3473b13c_e2eabf54",
+      "range": {
+        "startLine": 671,
+        "startChar": 27,
+        "endLine": 671,
+        "endChar": 28
+      },
+      "revId": "0a63bbed1de62c792b247813afd92b7ba659ea89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60bf7d19_278e08b2",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-08-12T20:50:10Z",
       "side": 1,
       "message": "Both of these constructors arg lists are getting pretty long, let\u0027s put one on each line.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 54
+      },
+      "revId": "0a63bbed1de62c792b247813afd92b7ba659ea89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b0a9d77_6349c8b5",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T21:54:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60bf7d19_278e08b2",
       "range": {
         "startLine": 30,
         "startChar": 4,

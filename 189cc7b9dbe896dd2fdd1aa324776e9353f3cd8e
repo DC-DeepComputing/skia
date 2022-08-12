@@ -94,6 +94,30 @@
       },
       "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ebe940_df07bbe4",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-12T21:54:00Z",
+      "side": 1,
+      "message": "The only one I was unsure about was asBlendMode, which I named asFinalBlendMode. Going to go ahead and get this submitted to CQ, but please just let me know if you want me to change it in my follow-up CL.",
+      "parentUuid": "83a3103a_4482a10f",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "189cc7b9dbe896dd2fdd1aa324776e9353f3cd8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
