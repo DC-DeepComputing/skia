@@ -179,6 +179,10 @@ public:
         this->updateDelta(increase);
     }
 
+    sktext::SkStrikePromise strikePromise() override {
+        return sktext::SkStrikePromise(sk_ref_sp<SkStrike>(this));
+    }
+
     SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) override {
         auto [maxDimension, increase] = fScalerCache.findMaximumGlyphDimension(glyphs);
         this->updateDelta(increase);
@@ -221,9 +225,6 @@ public:
     sk_sp<SkStrike> findOrCreateStrike(const SkStrikeSpec& strikeSpec) SK_EXCLUDES(fLock);
 
     sktext::ScopedStrikeForGPU findOrCreateScopedStrike(
-            const SkStrikeSpec& strikeSpec) override SK_EXCLUDES(fLock);
-
-    sktext::StrikeRef findOrCreateStrikeRef(
             const SkStrikeSpec& strikeSpec) override SK_EXCLUDES(fLock);
 
     static void PurgeAll();

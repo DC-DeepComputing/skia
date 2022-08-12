@@ -195,6 +195,8 @@ public:
     void prepareForDrawableDrawing(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) override;
 
+    sktext::SkStrikePromise strikePromise() override;
+
     SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) override;
 
     void onAboutToExitScope() override {}
@@ -502,6 +504,10 @@ void RemoteStrike::prepareForDrawableDrawing(
             });
 }
 
+sktext::SkStrikePromise RemoteStrike::strikePromise() {
+    return sktext::SkStrikePromise{*this->fStrikeSpec};
+}
+
 // -- WireTypeface ---------------------------------------------------------------------------------
 struct WireTypeface {
     WireTypeface() = default;
@@ -532,7 +538,6 @@ public:
     void writeStrikeData(std::vector<uint8_t>* memory);
 
     sktext::ScopedStrikeForGPU findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) override;
-    sktext::StrikeRef findOrCreateStrikeRef(const SkStrikeSpec& strikeSpec) override;
 
     // Methods for testing
     void setMaxEntriesInDescriptorMapForTesting(size_t count);
@@ -648,10 +653,6 @@ void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
 sktext::ScopedStrikeForGPU SkStrikeServerImpl::findOrCreateScopedStrike(
         const SkStrikeSpec& strikeSpec) {
     return sktext::ScopedStrikeForGPU{this->getOrCreateCache(strikeSpec)};
-}
-
-sktext::StrikeRef SkStrikeServerImpl::findOrCreateStrikeRef(const SkStrikeSpec& strikeSpec) {
-    return sktext::StrikeRef{this->getOrCreateCache(strikeSpec)};
 }
 
 void SkStrikeServerImpl::checkForDeletedEntries() {
@@ -786,31 +787,12 @@ protected:
         SkMatrix positionMatrix = this->localToDevice();
         positionMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
-        // TODO these two passes can be converted into one when the SkRemoteGlyphCache's strike
-        //  cache is fortified with enough information for supporting slug creation.
-
-        // Use the lightweight strike cache provided by SkRemoteGlyphCache through fPainter to do
-        // the analysis. Just ignore the resulting SubRunContainer. Since we're passing in a null
-        // SubRunAllocator no SubRuns will be produced.
-        STSubRunAllocator<sizeof(SubRunContainer), alignof(SubRunContainer)> tempAlloc;
-        auto [_, container] = SubRunContainer::MakeInAlloc(glyphRunList,
-                                                           positionMatrix,
-                                                           drawingPaint,
-                                                           this->strikeDeviceInfo(),
-                                                           fStrikeServerImpl,
-                                                           &tempAlloc,
-                                                           SubRunContainer::kStrikeCalculationsOnly,
-                                                           "Convert Slug Analysis");
-        // Calculations only. No SubRuns.
-        SkASSERT(container->isEmpty());
-
-        // Use the glyph strike cache to get actual glyph information.
         return skgpu::v1::MakeSlug(this->localToDevice(),
                                    glyphRunList,
                                    initialPaint,
                                    drawingPaint,
                                    this->strikeDeviceInfo(),
-                                   SkStrikeCache::GlobalStrikeCache());
+                                   fStrikeServerImpl);
     }
 
 private:
