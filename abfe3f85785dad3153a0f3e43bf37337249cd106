@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6db6c7f3_4a55fe98",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-12T14:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6dbadf0_86f7d505",
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe73af22_4053be4a",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87bdd441_7d4320f8",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-12T14:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe73af22_4053be4a",
+      "range": {
+        "startLine": 151,
+        "startChar": 13,
+        "endLine": 151,
+        "endChar": 27
+      },
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41872899_1610ad66",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-08-11T19:34:49Z",
       "side": 1,
       "message": "UTF-16 code units?",
+      "range": {
+        "startLine": 175,
+        "startChar": 30,
+        "endLine": 175,
+        "endChar": 40
+      },
+      "revId": "abfe3f85785dad3153a0f3e43bf37337249cd106",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ac1ebd_e09dbef7",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-12T14:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41872899_1610ad66",
       "range": {
         "startLine": 175,
         "startChar": 30,
