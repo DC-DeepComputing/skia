@@ -16,6 +16,52 @@
       "message": "The current investigation into the leaking of VkImages suggested the leak could be caused by budgeted vs unbudgeted. However, this was a slight red herring and kind of got lucky in how it fixed things.\n\nThe cache logic for budgeted is that we check if we are over budget and if so we free the resource. Since the original GrVkTextureRT was budgeted it put us over limit (its very large). So when its refs go to zero we\u0027d be over the limit and thus free it instead of returning to the cache. It would then start to free its internal refs (before reducing the caches currently used budget). So the internal GrAttachment, even with size 0, would not be moved to scratch since we are already over budget.\n\nIn the unbudgeted case, we are under the cache limit. But when the GrVkTextureRT gets freed we first check if making it budgeted would put us over the limit. For these large resources it would so we don\u0027t add it the cache and free it. When freeing it we drop the ref to the GrAttachment. This now goes through the same check of, can I be added without putting us over the budget. Since its size is zero this works and we hold on to the GrAttachment.\n\nThe real fix is that we shouldn\u0027t even be attempting to use the GrAttachment as a\ncached scratch resource, regardless of budgeting. So that is what this change fixes.",
       "revId": "f7b7b485b1301f702a54d33f5af8642d8abad944",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a745a5c4_51108c2b",
+        "filename": "src/gpu/ganesh/GrAttachment.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-12T13:24:53Z",
+      "side": 1,
+      "message": "cache ?",
+      "range": {
+        "startLine": 97,
+        "startChar": 25,
+        "endLine": 97,
+        "endChar": 30
+      },
+      "revId": "f7b7b485b1301f702a54d33f5af8642d8abad944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c48c7fb_34f0bb43",
+        "filename": "src/gpu/ganesh/GrAttachment.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-12T13:24:53Z",
+      "side": 1,
+      "message": "resource ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 79,
+        "endLine": 99,
+        "endChar": 88
+      },
+      "revId": "f7b7b485b1301f702a54d33f5af8642d8abad944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
