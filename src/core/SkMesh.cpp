@@ -467,9 +467,6 @@ SkMesh& SkMesh::operator=(const SkMesh&) = default;
 SkMesh& SkMesh::operator=(SkMesh&&)      = default;
 
 sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, const void* data, size_t size) {
-    if (!data) {
-        return nullptr;
-    }
     if (!dc) {
         return SkMeshPriv::CpuIndexBuffer::Make(data, size);
     }
@@ -487,9 +484,6 @@ sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, sk_sp<const SkDa
 }
 
 sk_sp<VertexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, const void* data, size_t size) {
-    if (!data) {
-        return nullptr;
-    }
     if (!dc) {
         return SkMeshPriv::CpuVertexBuffer::Make(data, size);
     }
@@ -618,4 +612,29 @@ bool SkMesh::validate() const {
     return sm.ok();
 }
 
+//////////////////////////////////////////////////////////////////////////////
+
+static inline bool check_update(const void* data, size_t offset, size_t size, size_t bufferSize) {
+    SkSafeMath sm;
+    return data                                &&
+           size                                &&
+           SkIsAlign4(offset)                  &&
+           SkIsAlign4(size)                    &&
+           sm.add(offset, size) <= bufferSize  &&
+           sm.ok();
+}
+
+bool SkMesh::IndexBuffer::update(GrDirectContext* dc,
+                                 const void* data,
+                                 size_t offset,
+                                 size_t size) {
+    return check_update(data, offset, size, this->size()) && this->onUpdate(dc, data, offset, size);
+}
+
+bool SkMesh::VertexBuffer::update(GrDirectContext* dc,
+                                  const void* data,
+                                  size_t offset,
+                                  size_t size) {
+    return check_update(data, offset, size, this->size()) && this->onUpdate(dc, data, offset, size);
+}
 #endif  // SK_ENABLE_SKSL
