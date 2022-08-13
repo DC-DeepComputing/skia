@@ -38,7 +38,7 @@ func isExternalRule(name string) bool {
 // Given a Bazel rule name find that rule from within the
 // query results. Returns nil if the given rule is not present.
 func findRule(qr *analysis_v2.CqueryResult, name string) *build.Rule {
-	for _, result := range qr.GetResults() {
+	for _, result := range qr.Results {
 		r := result.GetTarget().GetRule()
 		if r.GetName() == name {
 			return r
