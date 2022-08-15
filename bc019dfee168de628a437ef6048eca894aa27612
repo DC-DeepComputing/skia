@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1940e373_5dc8a2c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-15T13:17:22Z",
+      "side": 1,
+      "message": "lgtm with added lines",
+      "revId": "bc019dfee168de628a437ef6048eca894aa27612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76e721db_35723180",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-08-12T21:37:43Z",
       "side": 1,
       "message": "Should we also add the other macros from other methods?\n\n```\n    ASSERT_SINGLE_OWNER\n    SkDEBUGCODE(this-\u003evalidate();)\n```",
+      "range": {
+        "startLine": 1445,
+        "startChar": 4,
+        "endLine": 1445,
+        "endChar": 23
+      },
+      "revId": "bc019dfee168de628a437ef6048eca894aa27612",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ecd78fc_e91c57c3",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1445,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-15T13:17:22Z",
+      "side": 1,
+      "message": "Yeah I think we should put the whole batch in. Probably also a\n    GR_CREATE_TRACE_MARKER_CONTEXT(\"SurfaceDrawContext\", \"drawDrawable\", fContext);",
+      "parentUuid": "76e721db_35723180",
       "range": {
         "startLine": 1445,
         "startChar": 4,
