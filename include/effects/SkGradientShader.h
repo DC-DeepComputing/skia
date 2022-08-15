@@ -188,6 +188,12 @@ public:
                                                int count, SkTileMode mode);
 
     /** Returns a shader that generates a sweep gradient given a center.
+
+        The shader accepts negative angles and angles larger than 360, draws
+        between 0 and 360 degrees, similar to the CSS conic-gradient
+        semantics. 0 degrees means horizontal positive x axis. The start angle
+        must be greater than the end angle, otherwise a null pointer is
+        returned. Color stops must begin with 0 and end with 1.
         <p />
         @param  cx         The X coordinate of the center of the sweep
         @param  cx         The Y coordinate of the center of the sweep
@@ -220,6 +226,12 @@ public:
     }
 
     /** Returns a shader that generates a sweep gradient given a center.
+
+        The shader accepts negative angles and angles larger than 360, draws
+        between 0 and 360 degrees, similar to the CSS conic-gradient
+        semantics. 0 degrees means horizontal positive x axis. The start angle
+        must be greater than the end angle, otherwise a null pointer is
+        returned. Color stops must begin with 0 and end with 1.
         <p />
         @param  cx         The X coordinate of the center of the sweep
         @param  cx         The Y coordinate of the center of the sweep
