@@ -22,6 +22,30 @@
       },
       "revId": "7c9b9733bb7dffe9cdc10b274b432cd2a53c6ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "571dfbfc_f5e7ca41",
+        "filename": "src/text/StrikeForGPU.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-15T18:28:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c284f3d0_9d00b7d1",
+      "range": {
+        "startLine": 37,
+        "startChar": 72,
+        "endLine": 37,
+        "endChar": 76
+      },
+      "revId": "7c9b9733bb7dffe9cdc10b274b432cd2a53c6ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
