@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd47472_9245a56a",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be `writeonly` to match the original program?",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b2ddded_afe67fc6",
+        "filename": "resources/sksl/compute/MatrixMultiply.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "`writeonly`?",
+      "range": {
+        "startLine": 10,
+        "startChar": 24,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6955aa2_6e67cbfc",
+        "filename": "resources/sksl/compute/Threadgroup.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "`writeonly` ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 24,
+        "endLine": 8,
+        "endChar": 25
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "629dd241_72206265",
+        "filename": "resources/sksl/errors/InvalidInOutType.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "At least one should probably be `inout`",
+      "range": {
+        "startLine": 1,
+        "startChar": 25,
+        "endLine": 1,
+        "endChar": 27
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9013e61c_a396d65e",
+        "filename": "resources/sksl/errors/InvalidThreadgroupCompute.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "This test was about `threadgroup`, let\u0027s clean up the unrelated parts (swap in `readonly`/`writeonly` as necessary) rather than have it become a swamp of errors.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 0
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134b2042_28791ac7",
+        "filename": "src/sksl/SkSLMemoryLayout.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "The doc comment says we will return 0 if the type is unsupported; seems like asserting might be overly harsh?",
+      "range": {
+        "startLine": 147,
+        "startChar": 16,
+        "endLine": 147,
+        "endChar": 49
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b8eefe_74675f69",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "\"Function variable\" is kind of awkward phrasing. Let\u0027s stick with the original message: `unsized arrays are not permitted here`.",
+      "range": {
+        "startLine": 122,
+        "startChar": 49,
+        "endLine": 122,
+        "endChar": 93
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16639aa7_4224f87c",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "This is OK, but as errors go, `unsized arrays are not permitted here` is less likely to become outdated if we make changes later.",
+      "range": {
+        "startLine": 65,
+        "startChar": 37,
+        "endLine": 65,
+        "endChar": 88
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31b953d_039d2e72",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T14:47:29Z",
+      "side": 1,
+      "message": "\"user-defined stage in/out variable\" is confusing terminology; let\u0027s simplify this error message.",
+      "range": {
+        "startLine": 72,
+        "startChar": 26,
+        "endLine": 72,
+        "endChar": 44
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
