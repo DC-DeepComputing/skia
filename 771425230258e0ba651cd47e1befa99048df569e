@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5b2b106_e6cd6438",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-15T18:20:17Z",
+      "side": 1,
+      "message": "To make this more platform-independent, I wonder if it might be better to have a virtual method on CommandBuffer that takes a callback function, that each backend will implement. I\u0027m not sure how we\u0027d use it to call the different backends of Piet though, and ensure we\u0027re matching APIs.",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
