@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc0e252_285ac96c",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-15T03:03:12Z",
+      "side": 1,
+      "message": "nit: line (slightly) too long",
+      "range": {
+        "startLine": 288,
+        "startChar": 99,
+        "endLine": 288,
+        "endChar": 100
+      },
+      "revId": "b1fcf8538f5949e5d0d90637b8da383fd9916f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
