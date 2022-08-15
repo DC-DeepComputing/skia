@@ -1416,6 +1416,10 @@ bool GrMtlGpu::onTransferFromBufferToBuffer(sk_sp<GrGpuBuffer> src,
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     [blitCmdEncoder popDebugGroup];
 #endif
+
+    cmdBuffer->addGrBuffer(src);
+    cmdBuffer->addGrBuffer(dst);
+
     return true;
 }
 
