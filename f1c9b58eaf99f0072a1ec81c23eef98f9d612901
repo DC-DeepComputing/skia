@@ -1,0 +1,745 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a3e33a_ac9c8996",
+        "filename": "bazel/exporter/BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "If you call this util_test.go, it will be only bundled into the exporter_test binary, reducing the dependencies of the exporter itself.",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d4707d_ad5e55e0",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "ubernit: crypto/sha256 should join the other system imports above.",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5625d2ec_77a92c9e",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "workspace?",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 10
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e7d8cc_ced371c6",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "For consistency, can we just say \"alphabetical\" order?",
+      "range": {
+        "startLine": 64,
+        "startChar": 37,
+        "endLine": 64,
+        "endChar": 49
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b20d036_d7fb4652",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Specifically a variable that is a list of strings. https://github.com/google/skia/blob/main/gn/skia.gni#L14 defines lots of string variables, but we don\u0027t care about those.",
+      "range": {
+        "startLine": 216,
+        "startChar": 9,
+        "endLine": 216,
+        "endChar": 17
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c7db16_7d48a54f",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we log the error here? And the error below?",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "018d3103_8b0fb2e3",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Here and everywhere: TODO(cmumford) or TODO(skbug.com/12345).",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "761eba55_a61bb478",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Is there a reason this needs to take an array to append to? Can the client be responsible for appending?\n\nFrom the function name alone, it was not obvious to me that appending was taking place.",
+      "range": {
+        "startLine": 433,
+        "startChar": 35,
+        "endLine": 433,
+        "endChar": 49
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57159690_abedd9a2",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Prefer nil slices to empty slices unless there is a good reason for it (and that good reason should be documented).\n\nhttps://github.com/golang/go/wiki/CodeReviewComments#declaring-empty-slices\n\nHere and below",
+      "range": {
+        "startLine": 436,
+        "startChar": 9,
+        "endLine": 436,
+        "endChar": 19
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af312edf_4294df4d",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Would it simplify things to have this be a field? A field that is reset with something like e.reset() before convertRule is called for the first time?",
+      "range": {
+        "startLine": 451,
+        "startChar": 79,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b8891df_e3795f0c",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "ubernit: Choose one of (o, other, otherRule). \"or\" being a real English word throws me off a bit (especially when I read Python in the same day).",
+      "range": {
+        "startLine": 474,
+        "startChar": 2,
+        "endLine": 474,
+        "endChar": 4
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8c1569_9df399d0",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "I don\u0027t understand how this sort logic makes that happen. Can you add a small worked example in the comments?\n\nAlso typo with \u0026_src",
+      "range": {
+        "startLine": 501,
+        "startChar": 45,
+        "endLine": 501,
+        "endChar": 68
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dddeb032_1d3e7942",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "suggestion/idea: We run gn format on the outputted gni files? Then our generation logic can be a little bit simpler and we know they are formatted correctly.",
+      "range": {
+        "startLine": 538,
+        "startChar": 39,
+        "endLine": 538,
+        "endChar": 48
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33ad371_043f5ed5",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Why is this just an io.Writer and not an interfaces.Writer?\n\nThere are some fmt.FPrintln calls that could probably be simplified with w.WriteString()",
+      "range": {
+        "startLine": 563,
+        "startChar": 73,
+        "endLine": 563,
+        "endChar": 83
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36929608_5d583205",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "I don\u0027t know this acronym. Please spell it out.",
+      "range": {
+        "startLine": 659,
+        "startChar": 63,
+        "endLine": 659,
+        "endChar": 66
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2204bdaa_b3f935dd",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "You can use the \u003d\u003d operator on two arrays and they will be equal iff they have the same size and content: https://go.dev/play/p/i_1UV4VmYM8",
+      "range": {
+        "startLine": 676,
+        "startChar": 8,
+        "endLine": 676,
+        "endChar": 13
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ad5d6e2_af67df68",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "skerr.Wrap(err)",
+      "range": {
+        "startLine": 740,
+        "startChar": 13,
+        "endLine": 740,
+        "endChar": 16
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a28a12b8_31b8bdef",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "I prefer a slightly different pattern for table-driven testing. This variant is a bit harder to debug because it\u0027s not clear from the failure logs and line number which of the test cases failed. Being a for loop makes it harder to set breakpoints when debugging.\n\nSee https://github.com/google/skia-buildbot/blob/1cac79ee11cb0efaa0e28c1bface8beeb476a14d/skolo/go/sensors/dlpth1c_test.go#L99 where one declares a test function and passes in the parameters via function calls.\n\nHere and all tests in this file.",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28660fe9_607ff54e",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "perhaps TestIsTargetCppHeaderFile_HandlesDifferentHeaderVariations",
+      "range": {
+        "startLine": 499,
+        "startChar": 31,
+        "endLine": 499,
+        "endChar": 45
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf87cb5b_cb831fd2",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "This function has way more branches than this test covers. Please add some more with justification of why we are skipping things (at least for now).",
+      "range": {
+        "startLine": 523,
+        "startChar": 17,
+        "endLine": 523,
+        "endChar": 31
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33e2130d_35422625",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Perhaps TestAbsToWorkspacePath_ReturnsRelativePath ?\n \nWe don\u0027t always need 3 parts if the input is self-explanatory.",
+      "range": {
+        "startLine": 526,
+        "startChar": 5,
+        "endLine": 526,
+        "endChar": 50
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71e37f6_775323be",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Where possible, I prefer static strings as inputs and expected outputs for tests. This saves me from having to go find testWorkspaceDir to see its contents, make sure it is an absolute path, do the mental gymnastics of filepath.Join, etc.\n\nJust inline the invocation like:\n\n\"/path/to/workspace/foo/bar.txt\"\n\nOf note, these tests will all fail on Windows because of the forward slashes all over. Should we add a caveat to the top of the executable that this only is currently supported on Unix systems?",
+      "range": {
+        "startLine": 531,
+        "startChar": 17,
+        "endLine": 531,
+        "endChar": 33
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40d860c8_0bf4c1d6",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "TestWorkspaceToAbsPath_ReturnsAbsolutePath\n\n(note the first section is copypasta).",
+      "range": {
+        "startLine": 545,
+        "startChar": 45,
+        "endLine": 545,
+        "endChar": 59
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d649925_a987d98e",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Perhaps TestGetGNILineVariable_FindsListLiterals?\n\nI don\u0027t think the \"VariousLines\" adds much explanation to the test.",
+      "range": {
+        "startLine": 579,
+        "startChar": 5,
+        "endLine": 579,
+        "endChar": 56
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "711a0ea5_6e4820cc",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "This leading space confuses me. Why does this make not finding the variable foo ok?",
+      "range": {
+        "startLine": 589,
+        "startChar": 4,
+        "endLine": 589,
+        "endChar": 5
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c279c9b_49f35bfb",
+        "filename": "bazel/exporter/interfaces/file_system.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Maybe we should add a WriteCloser so we can properly close any opened files.",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 30
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed51a68c_88469847",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "ioutil is deprecated. use os.ReadFile instead\n\nhttps://pkg.go.dev/io/ioutil#ReadFile",
+      "range": {
+        "startLine": 99,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5c3fef_5d31e616",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "You should defer the closing of this file.",
+      "range": {
+        "startLine": 141,
+        "startChar": 2,
+        "endLine": 141,
+        "endChar": 3
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea9e5593_8a9a0db8",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Could you break the contents of this if statement into its own function? main() is getting quite long at the moment.",
+      "range": {
+        "startLine": 164,
+        "startChar": 5,
+        "endLine": 164,
+        "endChar": 17
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48408de8_4822d285",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "numOutOfDate, err :\u003d \n\nUnless there\u0027s a reason to re-use the err variable outside the scope of this if statement.",
+      "range": {
+        "startLine": 166,
+        "startChar": 2,
+        "endLine": 166,
+        "endChar": 21
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "125bf8c8_c183566b",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "Probably want to add in an os.Exit() here.",
+      "range": {
+        "startLine": 168,
+        "startChar": 7,
+        "endLine": 168,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c34436e7_ed4c2396",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "\"For portability, the status code should be in the range [0, 125].\" - https://pkg.go.dev/os#Exit\n\nI don\u0027t think we can guarantee that. Just exit with a static exit code",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 23
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7326348b_e5d6e84a",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T20:05:55Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me where this err would get set that is not already checked by an if err !\u003d nil",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 7
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
