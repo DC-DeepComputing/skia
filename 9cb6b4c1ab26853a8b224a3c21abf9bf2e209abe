@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e857d9ad_df065e10",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-15T14:50:43Z",
+      "side": 1,
+      "message": "Update comment ?",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 53
+      },
+      "revId": "9cb6b4c1ab26853a8b224a3c21abf9bf2e209abe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727950f3_4a88f7bb",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-15T14:50:43Z",
+      "side": 1,
+      "message": "a tight fit here\nShouldn\u0027t this also be: this-\u003ehasPerspective() ?",
+      "range": {
+        "startLine": 377,
+        "startChar": 28,
+        "endLine": 377,
+        "endChar": 30
+      },
+      "revId": "9cb6b4c1ab26853a8b224a3c21abf9bf2e209abe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
