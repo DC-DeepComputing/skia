@@ -16,6 +16,24 @@
       "message": "This is quite straight forward, but it seems strange to reverse the angle and the colors here followed by unconditionally reversing them again below.",
       "revId": "eeaa64629f73f0f4d6e14153025baaecdce76d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56319526_1d2b3398",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-15T14:59:01Z",
+      "side": 1,
+      "message": "I have been thinking about how to fuse that with the part below but I was concerned that might get really hard to read if I have `if` statements inside the clockwise/counterclockwise change of the angles.",
+      "parentUuid": "7a6ae3c9_2efb3316",
+      "revId": "eeaa64629f73f0f4d6e14153025baaecdce76d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
