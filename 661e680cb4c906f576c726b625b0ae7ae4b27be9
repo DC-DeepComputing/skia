@@ -16,6 +16,29 @@
       "message": "Kevin:\n\nThis adds a dependency - which we may not want. WDYT?\n\nAlso, this presubmit runs Bazel, and I\u0027m not sure we should be doing this for all Skia developers. I could filter for *.go and *.bazel files in the changes, but doesn\u0027t Gazelle also generate Bazel projects for native code?",
       "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe9f2ad_d041c2c7",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T17:42:59Z",
+      "side": 1,
+      "message": "We can probably gate this behind only changes that edit .go files.",
+      "range": {
+        "startLine": 247,
+        "startChar": 9,
+        "endLine": 247,
+        "endChar": 35
+      },
+      "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
