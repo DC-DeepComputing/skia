@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a43db5_3a12c0e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-15T12:22:49Z",
+      "side": 1,
+      "message": "This CL does not modify any *.gni files. When this tool is run, via `make -C bazel generate_gni`, it writes all output to //gn_out/gn. Currently only core.gni and effects.gni are generated. The current plan is to follow this CL with one that modifies those two *.gni files and adds a presubmit check to ensure they are up-to-date if ever a Bazel file is modified.",
+      "revId": "fb7af10f9d2a053ae72315b88934c234ea21909f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
