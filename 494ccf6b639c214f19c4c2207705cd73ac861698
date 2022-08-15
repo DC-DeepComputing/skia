@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5882317_e0bd262a",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-15T16:56:26Z",
+      "side": 1,
+      "message": "This takes a long time to build, and I\u0027m pretty sure the right thing to do is to put the exporter_tool into CIPD and fetch it into //bin. WDYT?",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315c1970_5860f3d3",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-15T16:56:26Z",
+      "side": 1,
+      "message": "I don\u0027t like the fact that these arguments are repeated in //bazel/Makefile and therefore must be kept in sync. WDYT about calling `make -C bazel check_gni` here instead of directly invoking exporter_tool?",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
