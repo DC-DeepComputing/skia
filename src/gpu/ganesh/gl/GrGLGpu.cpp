@@ -1118,6 +1118,13 @@ void GrGLGpu::uploadTexData(SkISize texDims,
     this->unbindXferBuffer(GrGpuBufferType::kXferCpuToGpu);
     GL_CALL(PixelStorei(GR_GL_UNPACK_ALIGNMENT, 1));
 
+    if (externalFormat == GR_GL_RED) {
+        GrGLenum internalFormat = this->glCaps().getTexImageOrStorageInternalFormat(GrGLFormat::kR8);
+        GL_CALL(TexImage2D(target, 0, internalFormat, dstRect.width(), dstRect.height(), 0,
+                           externalFormat, externalType, texels[0].fPixels));
+        return;
+    }
+
     SkISize dims = dstRect.size();
     for (int level = 0; level < mipLevelCount; ++level, dims = {std::max(dims.width()  >> 1, 1),
                                                                 std::max(dims.height() >> 1, 1)}) {
@@ -1818,7 +1825,8 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
 
     bool success = false;
     if (internalFormat) {
-        if (this->glCaps().formatSupportsTexStorage(format)) {
+        if (this->glCaps().formatSupportsTexStorage(format) &&
+            format != GrGLFormat::kR8) {
             auto levelCount = std::max(mipLevelCount, 1);
             GrGLenum error = GL_ALLOC_CALL(TexStorage2D(target, levelCount, internalFormat,
                                                         dimensions.width(), dimensions.height()));
