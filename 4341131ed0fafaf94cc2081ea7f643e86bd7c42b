@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9920c1a3_056ff3f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T17:26:25Z",
+      "side": 1,
+      "message": "Can you intentionally introduce a change in a generated .go file and run the Housekeeper Presubmit to make sure the CQ will catch the error?",
+      "revId": "4341131ed0fafaf94cc2081ea7f643e86bd7c42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
