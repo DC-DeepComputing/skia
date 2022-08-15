@@ -23,11 +23,11 @@ public:
     inline static constexpr Kind kExpressionKind = Kind::kFunctionReference;
 
     FunctionReference(const Context& context, Position pos,
-                      std::vector<const FunctionDeclaration*> functions)
+                      const FunctionDeclaration* functions)
         : INHERITED(pos, kExpressionKind, context.fTypes.fInvalid.get())
-        , fFunctions(std::move(functions)) {}
+        , fFunctions(functions) {}
 
-    const std::vector<const FunctionDeclaration*>& functions() const {
+    const FunctionDeclaration* functions() const {
         return fFunctions;
     }
 
@@ -45,12 +45,11 @@ public:
     }
 
 private:
-    FunctionReference(Position pos, std::vector<const FunctionDeclaration*> functions,
-                      const Type* type)
+    FunctionReference(Position pos, const FunctionDeclaration* functions, const Type* type)
         : INHERITED(pos, kExpressionKind, type)
-        , fFunctions(std::move(functions)) {}
+        , fFunctions(functions) {}
 
-    std::vector<const FunctionDeclaration*> fFunctions;
+    const FunctionDeclaration* fFunctions;
 
     using INHERITED = Expression;
 };
