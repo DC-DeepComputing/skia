@@ -22,6 +22,30 @@
       },
       "revId": "21185bab1e2ca9ba0099c4c09fe36e9036420008",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab5fcad9_2b69b51d",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-15T15:28:07Z",
+      "side": 1,
+      "message": "So the idea here was to pull the backend queues off of SharedContext so that only the QueueManagers could access them. We still need the SharedContext because all Resources need the SharedContext to be able to delete themselves (well not on metal but all others), and CommandBuffers right now are Resources. We could certainly revisit this and make every backend object individually hold a SharedContext if it needs it or decide if we want CommandBuffers to be Resources (and be able to be cached in our one cache).",
+      "parentUuid": "bb886bb3_9ecb49b7",
+      "range": {
+        "startLine": 39,
+        "startChar": 27,
+        "endLine": 39,
+        "endChar": 47
+      },
+      "revId": "21185bab1e2ca9ba0099c4c09fe36e9036420008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
