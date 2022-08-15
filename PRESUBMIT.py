@@ -242,6 +242,12 @@ def _RegenerateAllExamplesCPP(input_api, output_api):
     )]
   return results
 
+
+def _CheckGeneratedBazelBUILDFiles(input_api, output_api):
+  return _RunCommandAndCheckGitDiff(output_api,
+                                    ['make', '-C', 'bazel', 'generate_go'])
+
+
 def _CheckBazelBUILDFiles(input_api, output_api):
   """Makes sure our BUILD.bazel files are compatible with G3."""
   results = []
@@ -388,6 +394,7 @@ def _CommonChecks(input_api, output_api):
   results.extend(_CheckGitConflictMarkers(input_api, output_api))
   results.extend(_RegenerateAllExamplesCPP(input_api, output_api))
   results.extend(_CheckBazelBUILDFiles(input_api, output_api))
+  results.extend(_CheckGeneratedBazelBUILDFiles(input_api, output_api))
   return results
 
 
