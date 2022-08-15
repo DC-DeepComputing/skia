@@ -147,6 +147,11 @@ public:
         fBlendInfo = blendInfo;
     }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+
+    void setPrimitiveBlendInfo(const skgpu::BlendInfo& blendInfo) {
+        fPrimitiveBlendInfo = blendInfo;
+    }
+    const skgpu::BlendInfo& primitiveBlendInfo() const { return fPrimitiveBlendInfo; }
 #endif
 
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
@@ -163,6 +168,7 @@ private:
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the
     // matching fixed-function settings that the program's caller needs to set up.
     skgpu::BlendInfo fBlendInfo;
+    skgpu::BlendInfo fPrimitiveBlendInfo;
 #endif
 };
 
@@ -179,15 +185,18 @@ public:
         const SkPaintParamsKey& paintParamsKey() const { return fKey; }
 #ifdef SK_GRAPHITE_ENABLED
         const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+        const skgpu::BlendInfo& primitiveBlendInfo() const { return fPrimitiveBlendInfo; }
 #endif
 
     private:
         friend class SkShaderCodeDictionary;
 
 #ifdef SK_GRAPHITE_ENABLED
-        Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo)
+        Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo,
+              const skgpu::BlendInfo& primBlendInfo)
                 : fKey(key.asSpan())
-                , fBlendInfo(blendInfo) {
+                , fBlendInfo(blendInfo)
+                , fPrimitiveBlendInfo(primBlendInfo) {
         }
 #else
         Entry(const SkPaintParamsKey& key) : fKey(key.asSpan()) {}
@@ -206,6 +215,7 @@ public:
         // with the key. It could, theoretically, be recreated from the key but that would add
         // extra complexity.
         skgpu::BlendInfo fBlendInfo;
+        skgpu::BlendInfo fPrimitiveBlendInfo;
 #endif
     };
 
@@ -242,7 +252,7 @@ public:
 
 private:
 #ifdef SK_GRAPHITE_ENABLED
-    Entry* makeEntry(const SkPaintParamsKey&, const skgpu::BlendInfo&);
+    Entry* makeEntry(const SkPaintParamsKey&, const skgpu::BlendInfo&, const skgpu::BlendInfo&);
 #else
     Entry* makeEntry(const SkPaintParamsKey&);
 #endif

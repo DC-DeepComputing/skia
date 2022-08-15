@@ -13,6 +13,7 @@
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/UniformManager.h"
 
 // ensure that these types are the sizes the uniform data is expecting
 static_assert(sizeof(int32_t) == 4);
@@ -648,6 +649,12 @@ void UniformManager::write(skvx::float2 v) {
 void UniformManager::write(skvx::float4 v) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
     this->write(kType, 1, &v);
+}
+
+void UniformManager::write(bool b) {
+    // TODO - add backend support for booleans. For now, treat as an int.
+    static constexpr SkSLType kType = SkSLType::kInt;
+    this->write(kType, 1, &b);
 }
 
 } // namespace skgpu::graphite
