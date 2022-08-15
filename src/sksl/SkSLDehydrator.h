@@ -27,6 +27,7 @@ template <typename T> class SkSpan;
 namespace SkSL {
 
 class Expression;
+class FunctionDeclaration;
 class OutputStream;
 class ProgramElement;
 class Statement;
@@ -131,6 +132,14 @@ private:
     void write(const Symbol& s);
 
     void writeExpressionSpan(const SkSpan<const std::unique_ptr<Expression>>& span);
+
+    void addOverloadChainToDehydrationList(const SymbolTable& symbols,
+                                           const FunctionDeclaration& func,
+                                           std::vector<const Symbol*>* dehydrationList);
+
+    void addSymbolToDehydrationList(const SymbolTable& symbols,
+                                    const Symbol& symbol,
+                                    std::vector<const Symbol*>* dehydrationList);
 
     uint16_t fNextId = 1;
 
