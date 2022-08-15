@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecaf1707_ab65496a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-15T17:47:28Z",
+      "side": 1,
+      "message": "Gazelle does not generate anything for CPP code (not anymore)",
+      "parentUuid": "b9e2f25b_f5e2c8cd",
+      "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fe9f2ad_d041c2c7",
