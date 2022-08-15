@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e2f25b_f5e2c8cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-15T15:05:13Z",
+      "side": 1,
+      "message": "Kevin:\n\nThis adds a dependency - which we may not want. WDYT?\n\nAlso, this presubmit runs Bazel, and I\u0027m not sure we should be doing this for all Skia developers. I could filter for *.go and *.bazel files in the changes, but doesn\u0027t Gazelle also generate Bazel projects for native code?",
+      "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
