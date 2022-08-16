@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "909dc604_3418efee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T01:17:04Z",
+      "side": 1,
+      "message": "oh I wish the gerrit code editor cleaned up white space at end of lines...",
+      "revId": "7c7ba4a07cdd6ffdad9a9e257bdbb8d7eeb22dd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
