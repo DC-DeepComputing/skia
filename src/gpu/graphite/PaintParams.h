@@ -71,6 +71,7 @@ private:
     // A nullptr fPrimitiveBlender means there's no primitive color blending and it is skipped
     sk_sp<SkBlender>     fPrimitiveBlender;
     bool                 fSkipColorXform;
+    bool                 fRequiresLocalCoords;
 
     // TODO: Will also store ColorFilter, dither, and any extra shader from an
     // active clipShader().
