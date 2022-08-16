@@ -16,6 +16,23 @@
       "message": "LGTM, thanks!",
       "revId": "b85a32bd1cc5aa9c54cf25902eef5e6140d43163",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6f029b1_95f10e33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-16T12:55:46Z",
+      "side": 1,
+      "message": "Adding Brian since this affects an API header.",
+      "revId": "b85a32bd1cc5aa9c54cf25902eef5e6140d43163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
