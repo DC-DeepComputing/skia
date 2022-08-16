@@ -160,6 +160,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
         // index as we go.
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
+
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
