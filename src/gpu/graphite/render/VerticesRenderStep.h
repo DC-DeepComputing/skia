@@ -24,8 +24,13 @@ public:
     void writeUniformsAndTextures(const DrawParams&, SkPipelineDataGatherer*) const override;
 
 private:
-    bool fHasColor;
+    bool fHasColor = false;
     bool fHasTexture;
+
+    // TODO: Remove temporary method to avoid private field not used compiler warning
+    bool hasColor() { return fHasColor; }
+
+    void writeVerticesTexture(DrawWriter* writer, const DrawParams& params, int ssboIndex) const;
 };
 
 }  // namespace skgpu::graphite
