@@ -567,6 +567,13 @@ cflags_cc       = strip_slashes(js['targets']['//:skia']['cflags_cc'])
 local_includes  = strip_slashes(js['targets']['//:skia']['include_dirs'])
 export_includes = strip_slashes(js['targets']['//:public']['include_dirs'])
 
+# Skottie sits on top of skia, so we need to speficy these sources to be build
+# Python sets handle duplicate flags, source files, and includes for us
+android_srcs.update(strip_slashes(js['targets']['//modules/skottie:skottie']['sources']))
+cflags.update(strip_slashes(js['targets']['//modules/skottie:skottie']['cflags']))
+cflags_cc.update(strip_slashes(js['targets']['//modules/skottie:skottie']['cflags_cc']))
+local_includes.update(strip_slashes(js['targets']['//modules/skottie:skottie']['include_dirs']))
+
 gm_srcs         = strip_slashes(js['targets']['//:gm']['sources'])
 gm_includes     = strip_slashes(js['targets']['//:gm']['include_dirs'])
 
