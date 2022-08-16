@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03fd9bc6_37c59efb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-16T21:52:50Z",
+      "side": 1,
+      "message": "PTAL. This was an attempted fix for b/229626353, but I still think it\u0027s worth doing. Before this, each path generated a separate draw and that seems unnecessary.",
+      "revId": "76cf21a7cd28be4095aab30c13bf63b98f65c3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
