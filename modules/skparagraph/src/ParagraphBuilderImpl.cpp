@@ -43,9 +43,12 @@ ParagraphBuilderImpl::ParagraphBuilderImpl(
         : ParagraphBuilder(style, fontCollection)
         , fUtf8()
         , fFontCollection(std::move(fontCollection))
-        , fParagraphStyle(style)
-        , fUnicode(std::move(unicode)) {
-    SkASSERT(fUnicode);
+        , fParagraphStyle(style) {
+    if (unicode != nullptr) {
+        fUnicode = std::move(unicode);
+    } else {
+        fUnicode.reset();
+    }
     startStyledBlock();
 }
 
@@ -91,7 +94,7 @@ TextStyle ParagraphBuilderImpl::peekStyle() {
 }
 
 void ParagraphBuilderImpl::addText(const std::u16string& text) {
-    auto utf8 = fUnicode->convertUtf16ToUtf8(text);
+    auto utf8 = SkUnicode::convertUtf16ToUtf8(text);
     fUtf8.append(utf8);
 }
 
@@ -155,6 +158,35 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     addPlaceholder(PlaceholderStyle(), true);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
+}
+
+
+SkSpan<char> ParagraphBuilderImpl::getText() {
+    return SkSpan<char>(fUtf8.isEmpty() ? nullptr : fUtf8.writable_str(), fUtf8.size());
+}
+
+const ParagraphStyle& ParagraphBuilderImpl::getParagraphStyle() const {
+    return fParagraphStyle;
+}
+
+std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> words,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    // This is the place where SkUnicode is paired with SkParagraph
+    auto unicode =
+            SkUnicode::Make(SkSpan<char>(fUtf8.isEmpty() ? nullptr : &fUtf8[0], fUtf8.size()),
+                            std::move(bidiRegions),
+                            std::move(words),
+                            std::move(graphemeBreaks),
+                            std::move(lineBreaks));
+    return std::make_unique<ParagraphImpl>(std::move(fUtf8),
+                                           fParagraphStyle,
+                                           fStyledBlocks,
+                                           fPlaceholders,
+                                           fFontCollection,
+                                           std::move(unicode));
 }
 
 void ParagraphBuilderImpl::Reset() {
