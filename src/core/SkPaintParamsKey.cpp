@@ -40,6 +40,8 @@ void SkPaintParamsKeyBuilder::checkReset() {
     SkASSERT(fStack.empty());
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fBlendInfo == skgpu::BlendInfo());
+    // TODO - Is the below assertion needed? Would it even be true?
+    // SkASSERT(fPrimitiveBlendInfo == skgpu::BlendInfo());
 #endif
 }
 #endif
