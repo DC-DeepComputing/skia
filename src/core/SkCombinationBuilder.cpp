@@ -716,6 +716,7 @@ void SkCombinationBuilder::createKey(const SkKeyContext& keyContext,
     } else {
         // TODO: need to handle fBlenders here
     }
+    // TODO: Add combinations w/ primitive blenders as well here.
 
 }
 
