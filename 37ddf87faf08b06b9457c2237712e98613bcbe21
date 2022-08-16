@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cfb1385_9c1dd0b9",
+        "filename": "resources/sksl/shared/VectorScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-16T16:40:19Z",
+      "side": 1,
+      "message": "Here too?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 40
+      },
+      "revId": "37ddf87faf08b06b9457c2237712e98613bcbe21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a113c823_79b76983",
+        "filename": "resources/sksl/shared/VectorScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-16T16:40:19Z",
+      "side": 1,
+      "message": "... and here?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 40
+      },
+      "revId": "37ddf87faf08b06b9457c2237712e98613bcbe21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
