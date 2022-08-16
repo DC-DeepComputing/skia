@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065d86da_41a3c9fa",
+        "filename": "resources/sksl/shared/VectorScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-16T17:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cfb1385_9c1dd0b9",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 40
+      },
+      "revId": "37ddf87faf08b06b9457c2237712e98613bcbe21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a113c823_79b76983",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-16T16:40:19Z",
       "side": 1,
       "message": "... and here?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 40
+      },
+      "revId": "37ddf87faf08b06b9457c2237712e98613bcbe21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e97036_89015b48",
+        "filename": "resources/sksl/shared/VectorScalarMath.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-16T17:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a113c823_79b76983",
       "range": {
         "startLine": 91,
         "startChar": 0,
