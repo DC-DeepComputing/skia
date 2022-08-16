@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8cf7a91_247cadef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-16T22:58:02Z",
+      "side": 1,
+      "message": "I wanted to try and run the avif unit tests as well, but i could not figure out how to build/run tests with bazel.",
+      "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
