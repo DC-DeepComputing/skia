@@ -80,10 +80,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fUnicode(std::move(unicode))
         , fHasLineBreaks(false)
         , fHasWhitespacesInside(false)
-        , fTrailingSpaces(0)
-{
-    SkASSERT(fUnicode);
-}
+        , fTrailingSpaces(0) { }
 
 ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                              ParagraphStyle style,
@@ -98,8 +95,53 @@ ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                         std::move(fonts),
                         std::move(unicode))
 {
-    SkASSERT(fUnicode);
     fText =  SkUnicode::convertUtf16ToUtf8(utf16text);
+}
+
+ParagraphImpl::ParagraphImpl(const SkString& text,
+              ParagraphStyle style,
+              SkTArray<Block, true> blocks,
+              SkTArray<Placeholder, true> placeholders,
+              sk_sp<FontCollection> fonts,
+              std::vector<SkUnicode::BidiRegion> bidiRegions,
+              std::vector<SkUnicode::Position> words,
+              std::vector<SkUnicode::Position> graphemeBreaks,
+              std::vector<SkUnicode::LineBreakBefore> lineBreaks)
+        : ParagraphImpl(text,
+                        std::move(style),
+                        std::move(blocks),
+                        std::move(placeholders),
+                        std::move(fonts),
+                        nullptr)
+{
+    fUnicode = SkUnicode::Make(SkSpan<char>(fText.isEmpty()? nullptr : &fText[0], fText.size()),
+                               std::move(bidiRegions),
+                               std::move(words),
+                               std::move(graphemeBreaks),
+                               std::move(lineBreaks));
+}
+
+ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
+              ParagraphStyle style,
+              SkTArray<Block, true> blocks,
+              SkTArray<Placeholder, true> placeholders,
+              sk_sp<FontCollection> fonts,
+              std::vector<SkUnicode::BidiRegion> bidiRegions,
+              std::vector<SkUnicode::Position> words,
+              std::vector<SkUnicode::Position> graphemeBreaks,
+              std::vector<SkUnicode::LineBreakBefore> lineBreaks)
+        : ParagraphImpl(utf16text,
+                        std::move(style),
+                        std::move(blocks),
+                        std::move(placeholders),
+                        std::move(fonts),
+                        nullptr)
+{
+    fUnicode = SkUnicode::Make(SkSpan<char>(fText.isEmpty()? nullptr : &fText[0], fText.size()),
+                               std::move(bidiRegions),
+                               std::move(words),
+                               std::move(graphemeBreaks),
+                               std::move(lineBreaks));
 }
 
 ParagraphImpl::~ParagraphImpl() = default;
