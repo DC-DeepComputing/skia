@@ -70,7 +70,8 @@ public:
     // although we could go as far as allowing RenderStep to handle composing the final SkSL if
     // given the paint combination's SkSL.
 
-    // Returns the body of a vertex function, which must define a float4 devPosition variable.
+    // Returns the body of a vertex function, which must define a float4 devPosition variable and
+    // assign the appropriate value to the predefined float2 localCoordinate varying.
     // It has access to the variables declared by vertexAttributes(), instanceAttributes(),
     // and uniforms(). The 'devPosition' variable's z must store the PaintDepth normalized to a
     // float from [0, 1], for each processed draw although the RenderStep can choose to upload it
