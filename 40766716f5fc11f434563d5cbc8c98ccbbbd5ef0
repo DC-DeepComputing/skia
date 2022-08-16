@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd04f32_6fdc6fbb",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "This can stay protected right?",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 39
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dd295fa_06c429aa",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "Vertices doesn\u0027t have textures, in the same way that this flag was intended for. The atlas\u0027ing text RenderSteps actually have a Texture resource that they control, and that\u0027s what this flag is for. Vertices just define special local coordinates (frequently referred to as texture coordinates since that\u0027s often where they are destined for), but the texture or shader that\u0027s being sampled is managed by the paint, with no visibility to the RenderStep.\n\nI think whether or not there are texture coords in the vertices\u0027 data, we\u0027d just use kPerformsShading.",
+      "range": {
+        "startLine": 56,
+        "startChar": 81,
+        "endLine": 56,
+        "endChar": 93
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a72152d_2f80a3fa",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "In the new world where local coords are coming from RenderSteps, the default local coord is the 2D position that\u0027s transformed to get devPosition.\n\nWe\u0027d want to add `localCoords \u003d position;` here since there\u0027s no override from the SkVertices definition, but the paint could still need local coords.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 70
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "155d25a1_2179aef6",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "very minor nit, but can we line these up with the 2nd `{`?",
+      "range": {
+        "startLine": 109,
+        "startChar": 24,
+        "endLine": 109,
+        "endChar": 25
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5fd5c8_d83cdcba",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "VertexWriter knows how to write SkV2\u0027s as well, so we don\u0027t have to go back to SkPoint. We can just do `\u003c\u003c devPoints[0] \u003c\u003c t[0] \u003c\u003c ssboIndex \u003c\u003c ...`.",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07b2245_6ee7d6ea",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "I don\u0027t know if it\u0027s worth doing for performance in this case, but there is a special \"type\" called `VertexWriter::If(bool, value)` that would let you do something like `\u003c\u003c If(fHasTexture, t[0])` in the regular writeVertices(). Then if fHasTexture is false, the texture coord won\u0027t be evaluated.\n\nBut using If has a little bit of overhead, and since there\u0027s often a lot of vertices that could add up, so it\u0027s also fine to have these split up so the branch happens just once at the start.",
+      "range": {
+        "startLine": 153,
+        "startChar": 27,
+        "endLine": 153,
+        "endChar": 50
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4780802_1ba23aee",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T17:10:24Z",
+      "side": 1,
+      "message": "another way we frequently get around this is to add a `(void) fHasColor;` line to the constructor definition. That way it doesn\u0027t have as much impact as adding a function to the header.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 41
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
