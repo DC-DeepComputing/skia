@@ -87,6 +87,24 @@
       "message": "Drive by comment, shouldn\u0027t this go up in the latest milestone?",
       "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f53d532_c8bf7f49",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-16T18:56:26Z",
+      "side": 1,
+      "message": "D\u0027oh, yes!",
+      "parentUuid": "66b4e0de_ea3f4efb",
+      "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
