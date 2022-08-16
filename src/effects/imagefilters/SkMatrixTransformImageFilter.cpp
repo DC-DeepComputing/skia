@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkMatrixImageFilter.h"
+#include "src/core/SkImageFilter_Base.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkRect.h"
@@ -16,27 +16,53 @@
 #include "src/core/SkSpecialSurface.h"
 #include "src/core/SkWriteBuffer.h"
 
-SkMatrixImageFilter::SkMatrixImageFilter(const SkMatrix& transform,
-                                         const SkSamplingOptions& sampling,
-                                         sk_sp<SkImageFilter> input)
-    : INHERITED(&input, 1, nullptr)
-    , fTransform(transform)
-    , fSampling(sampling) {
-    // Pre-cache so future calls to fTransform.getType() are threadsafe.
-    (void)fTransform.getType();
-}
+namespace {
 
-sk_sp<SkImageFilter> SkMatrixImageFilter::Make(const SkMatrix& transform,
-                                               const SkSamplingOptions& sampling,
-                                               sk_sp<SkImageFilter> input) {
+class SkMatrixImageFilter : public SkImageFilter_Base {
+public:
+    // TODO(michaelludwig): Update this to use SkM44.
+    SkMatrixImageFilter(const SkMatrix& transform,
+                        const SkSamplingOptions& sampling,
+                        sk_sp<SkImageFilter> input)
+            : INHERITED(&input, 1, nullptr)
+            , fTransform(transform)
+            , fSampling(sampling) {
+        // Pre-cache so future calls to fTransform.getType() are threadsafe.
+        (void)fTransform.getType();
+    }
+
+    SkRect computeFastBounds(const SkRect&) const override;
+
+protected:
+
+    void flatten(SkWriteBuffer&) const override;
+
+    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
+    SkIRect onFilterNodeBounds(const SkIRect& src, const SkMatrix& ctm,
+                               MapDirection, const SkIRect* inputRect) const override;
+
+private:
+    friend void ::SkRegisterMatrixTransformImageFilterFlattenable();
+    SK_FLATTENABLE_HOOKS(SkMatrixImageFilter)
+
+    SkMatrix            fTransform;
+    SkSamplingOptions   fSampling;
+
+    using INHERITED = SkImageFilter_Base;
+};
+
+} // namespace
+
+sk_sp<SkImageFilter> SkImageFilters::MatrixTransform(const SkMatrix& transform,
+                                                     const SkSamplingOptions& sampling,
+                                                     sk_sp<SkImageFilter> input) {
     return sk_sp<SkImageFilter>(new SkMatrixImageFilter(transform,
                                                         sampling,
                                                         std::move(input)));
 }
 
-sk_sp<SkImageFilter> SkImageFilters::MatrixTransform(
-        const SkMatrix& transform, const SkSamplingOptions& sampling, sk_sp<SkImageFilter> input) {
-    return SkMatrixImageFilter::Make(transform, sampling, std::move(input));
+void SkRegisterMatrixTransformImageFilterFlattenable() {
+    SK_REGISTER_FLATTENABLE(SkMatrixImageFilter);
 }
 
 sk_sp<SkFlattenable> SkMatrixImageFilter::CreateProc(SkReadBuffer& buffer) {
@@ -51,7 +77,7 @@ sk_sp<SkFlattenable> SkMatrixImageFilter::CreateProc(SkReadBuffer& buffer) {
             return buffer.readSampling();
         }
     }();
-    return Make(matrix, sampling, common.getInput(0));
+    return SkImageFilters::MatrixTransform(matrix, sampling, common.getInput(0));
 }
 
 void SkMatrixImageFilter::flatten(SkWriteBuffer& buffer) const {
