@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d1e8c76_d6662609",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T16:34:02Z",
+      "side": 1,
+      "message": "Follow-up CL to set localCoords from VerticesRenderStep",
+      "revId": "0d0a56d84e9de97e96ebc481ac7ebbea8804b19c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
