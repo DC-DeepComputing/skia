@@ -1,0 +1,10 @@
+uniform half4 colorGreen, colorRed;
+
+half4 main(float2) {
+    // On some older devices, integer division is inexact, so divisions like 9/3 can result in 2.
+    // This is permitted by GLSL ES2 (which allows integers to be simulated with floats),
+    // but is not ES3 compliant.
+    int nine = int(colorGreen.a * 9);
+    int three = int(colorRed.a * 3);
+    return (nine / three == 3) ? colorGreen : colorRed;
+}
