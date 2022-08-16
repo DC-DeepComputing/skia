@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a69b294_81e2813d",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-16T14:16:02Z",
+      "side": 1,
+      "message": "An empty line is not the same as a hard line break.\nI think it should be:\n(fGhostClusterRange.width() \u003e 0 \u0026\u0026\n           fOwner-\u003ecluster(fGhostClusterRange.end - 1).isHardBreak()) ||",
+      "range": {
+        "startLine": 1045,
+        "startChar": 11,
+        "endLine": 1046,
+        "endChar": 71
+      },
+      "revId": "4edc54033e093ca1ad88fc0e5995d808a7ff0328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
