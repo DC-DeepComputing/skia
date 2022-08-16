@@ -409,6 +409,9 @@ public:
     // Should we disable TessellationPathRenderer due to a faulty driver?
     bool disableTessellationPathRenderer() const { return fDisableTessellationPathRenderer; }
 
+    // Should we disable SmallPathRenderer due to a faulty driver?
+    bool disableSmallPathRenderer() const { return fDisableSmallPathRenderer; }
+
     // Returns how to sample the dst values for the passed in GrRenderTargetProxy.
     GrDstSampleFlags getDstSampleFlagsForProxy(const GrRenderTargetProxy*, bool drawUsesMSAA) const;
 
@@ -580,6 +583,7 @@ protected:
 
     // Driver workaround
     bool fDisableTessellationPathRenderer            : 1;
+    bool fDisableSmallPathRenderer                   : 1;
     bool fAvoidStencilBuffers                        : 1;
     bool fAvoidWritePixelsFastPath                   : 1;
     bool fNativeDrawIndexedIndirectIsBroken          : 1;

@@ -10,6 +10,7 @@
 
 #include "src/gpu/ganesh/PathRenderer.h"
 
+class GrCaps;
 class GrStyledShape;
 
 namespace skgpu::v1 {
@@ -17,6 +18,8 @@ namespace skgpu::v1 {
 class SmallPathRenderer final : public PathRenderer {
 public:
     SmallPathRenderer() = default;
+
+    static bool IsSupported(const GrCaps& caps);
 
     const char* name() const override { return "Small"; }
 

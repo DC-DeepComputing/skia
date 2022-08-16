@@ -4219,6 +4219,17 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     if (ctxInfo.renderer() == GrGLRenderer::kPowerVRRogue) {
         fDisableTessellationPathRenderer = true;
     }
+    // It appears that the SmallPathRenderer has issues with uploads when running through WebGL on
+    // Adreno 4xx devices. At the moment we are unable to read the WebGL renderer string for unclear
+    // reasons, so we check for GrGLRenderer::kOther as well.
+    if (ctxInfo.renderer() == GrGLRenderer::kAdreno430 ||
+        ctxInfo.renderer() == GrGLRenderer::kAdreno4xx_other ||
+        (ctxInfo.renderer() == GrGLRenderer::kWebGL &&
+         (ctxInfo.webglRenderer() == GrGLRenderer::kAdreno430 ||
+          ctxInfo.webglRenderer() == GrGLRenderer::kAdreno4xx_other ||
+          ctxInfo.webglRenderer() == GrGLRenderer::kOther))) {
+        fDisableSmallPathRenderer = true;
+    }
 
 #ifdef SK_BUILD_FOR_WIN
     // glDrawElementsIndirect fails GrMeshTest on every Win10 Intel bot.

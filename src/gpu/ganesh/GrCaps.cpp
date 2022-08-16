@@ -58,6 +58,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fShouldCollapseSrcOverToSrcWhenAble = false;
     fMustSyncGpuDuringAbandon = true;
     fDisableTessellationPathRenderer = false;
+    fDisableSmallPathRenderer = false;
 
     fBlendEquationSupport = kBasic_BlendEquationSupport;
     fAdvBlendEqDisableFlags = 0;
@@ -113,6 +114,7 @@ void GrCaps::applyOptionsOverrides(const GrContextOptions& options) {
     this->onApplyOptionsOverrides(options);
     if (options.fDisableDriverCorrectnessWorkarounds) {
         SkASSERT(!fDisableTessellationPathRenderer);
+        SkASSERT(!fDisableSmallPathRenderer);
         SkASSERT(!fAvoidStencilBuffers);
         SkASSERT(!fAvoidWritePixelsFastPath);
         SkASSERT(!fNativeDrawIndexedIndirectIsBroken);
@@ -236,6 +238,8 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Read pixels row bytes support", fReadPixelsRowBytesSupport);
     writer->appendBool("Disable TessellationPathRenderer current driver [workaround]",
                        fDisableTessellationPathRenderer);
+    writer->appendBool("Disable SmallPathRenderer current driver [workaround]",
+                       fDisableSmallPathRenderer);
     writer->appendBool("Clamp-to-border", fClampToBorderSupport);
 
     writer->appendBool("Prefer VRAM Use over flushes [workaround]", fPreferVRAMUseOverFlushes);
