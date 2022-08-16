@@ -259,8 +259,9 @@ class SKUNICODE_API SkUnicode {
 
         static std::unique_ptr<SkUnicode> Make();
 
-        static std::unique_ptr<SkUnicode> Make(SkSpan<const char> text,
+        static std::unique_ptr<SkUnicode> Make(SkSpan<char> text,
                                                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                                               std::vector<SkUnicode::Position> words,
                                                std::vector<SkUnicode::Position> graphemeBreaks,
                                                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
 };

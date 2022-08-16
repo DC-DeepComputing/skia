@@ -157,6 +157,22 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
 }
 
+
+SkSpan<const char> ParagraphBuilderImpl::getText() const {
+    return SkSpan<const char>(fUtf8.c_str(), fUtf8.size());
+}
+
+std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    SkSpan<const char> text(fUtf8.c_str(), fUtf8.size());
+    std::shared_ptr<SkUnicode> unicode =
+            SkUnicode::Make(text, bidiRegions, graphemeBreaks, lineBreaks);
+    return std::make_unique<ParagraphImpl>(
+            fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, unicode);
+}
+
 void ParagraphBuilderImpl::Reset() {
     fTextStyles.reset();
     fUtf8.reset();
