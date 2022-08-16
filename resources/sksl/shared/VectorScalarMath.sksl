@@ -69,8 +69,8 @@ bool test_int() {
     ok = ok && (x == int4(2, 1, 1, 2));
     x.xyz = inputGreen.aga * 9;
     ok = ok && (x == int4(9, 9, 9, 2));
-    x.xy = x.zw / 3;
-    ok = ok && (x == int4(3, 0, 9, 2));
+    x.xy = x.zw / 4;
+    ok = ok && (x == int4(2, 0, 9, 2));
 
     // (Vector op scalar).swizzle
     x = (inputRed * 5).yxwz;

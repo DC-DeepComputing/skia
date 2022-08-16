@@ -15,8 +15,8 @@ bool test_int_b() {
     ok = ok && x == ivec4(2, 1, 1, 2);
     x.xyz = inputGreen.wyw * 9;
     ok = ok && x == ivec4(9, 9, 9, 2);
-    x.xy = x.zw / 3;
-    ok = ok && x == ivec4(3, 0, 9, 2);
+    x.xy = x.zw / 4;
+    ok = ok && x == ivec4(2, 0, 9, 2);
     x = (inputRed * 5).yxwz;
     ok = ok && x == ivec4(0, 5, 5, 0);
     x = 2 + inputRed;
