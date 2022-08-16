@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71d42a46_2c028591",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T19:40:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10df0409_5fb3e663",
+      "range": {
+        "startLine": 155,
+        "startChar": 32,
+        "endLine": 155,
+        "endChar": 86
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a13ce9f8_83c44431",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1e0328_ec6f5ce9",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T19:40:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a13ce9f8_83c44431",
+      "range": {
+        "startLine": 214,
+        "startChar": 4,
+        "endLine": 216,
+        "endChar": 54
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6ed0390_0c9331ac",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-08-16T16:54:41Z",
       "side": 1,
       "message": "I\u0027d like the local coordinate varying to be optional when the PaintParams doesn\u0027t require local coords.\n\nThe easiest way to do this without requiring the RenderSteps to be aware of the PaintParams is to have them define a float2 localCoord local variable in their vertex SkSL, much like it does for devPosition. Then the rest of the shader generation can assign `localCoord` to the varying it creates when it needs it.",
+      "range": {
+        "startLine": 73,
+        "startChar": 94,
+        "endLine": 74,
+        "endChar": 85
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e95205ee_c19b4263",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T19:40:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6ed0390_0c9331ac",
       "range": {
         "startLine": 73,
         "startChar": 94,

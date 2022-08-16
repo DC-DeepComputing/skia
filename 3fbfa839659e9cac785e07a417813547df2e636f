@@ -22,6 +22,30 @@
       },
       "revId": "3fbfa839659e9cac785e07a417813547df2e636f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c87f7c_54f32248",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T19:40:05Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6b0be977_f6d8c346",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "3fbfa839659e9cac785e07a417813547df2e636f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

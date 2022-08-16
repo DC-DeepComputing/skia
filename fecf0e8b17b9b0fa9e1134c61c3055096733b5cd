@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86e77270_70d50a6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-16T19:40:05Z",
+      "side": 1,
+      "message": "Alright, take a look when you get the chance. I now pass in \"coords\" again for now, made some naming changes, and restructured it like we talked about (I hope 😊).",
+      "revId": "fecf0e8b17b9b0fa9e1134c61c3055096733b5cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
