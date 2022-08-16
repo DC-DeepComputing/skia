@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f27d217_0717894e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T00:53:21Z",
+      "side": 1,
+      "message": "Most of the files changed were needing to pass the SkRuntimeEffectDictionary into the task graph so that it was available to call when making GraphicsPipelines.\n\nI elected to have the prepareResources() take in ResourceProvider* and SkRuntimeEffectDictionar* to be as restrictive as possible. The other option I considered would be to just pass in the Recorder, but I was concerned that that would leak more general Recorder use than we\u0027d want in the prepare-resources phases.",
+      "revId": "aff723620db765a6d7d9354bbfc9bc55c84ffd44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
