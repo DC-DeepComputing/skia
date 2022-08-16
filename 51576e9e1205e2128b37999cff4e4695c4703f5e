@@ -229,6 +229,53 @@
       },
       "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa70453_708c5399",
+        "filename": "tests/sksl/compute/ArrayAdd.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-16T13:40:51Z",
+      "side": 1,
+      "message": "There\u0027s a comment about it earlier in the CL. I think we only have two good options:\n  - This one, where we convert the unsized arrays to being size 1.\n  - Omitting the array member entirely, and then adding helpers that compute offsets from the buffer address.\n  \n  I think the current ([1]) solution is probably involves much less rewriting of variable references, etc... ?",
+      "parentUuid": "30faa5d7_d2630ef6",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d861056_cf17dadc",
+        "filename": "tests/sksl/compute/MatrixMultiply.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-16T13:40:51Z",
+      "side": 1,
+      "message": "Previously, we flattened all of the buffers as parameters to main, so if they had overlapping binding (but different set) values, they\u0027d end up distinct (and it was possible to bind them to distinct resources). Now we\u0027re getting a buffer() conflict, right? Seems like we need to number our buffers by taking `set` into account?",
+      "range": {
+        "startLine": 25,
+        "startChar": 208,
+        "endLine": 25,
+        "endChar": 217
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
