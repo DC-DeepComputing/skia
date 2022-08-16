@@ -52,6 +52,24 @@
       "parentUuid": "c04ed5e5_5f767c22",
       "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1936342_828b181a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-16T18:38:20Z",
+      "side": 1,
+      "message": "Sure okay. We already have blaze rules for the dependent libraries on google3, so it should be fairly easy to include them here. I will add them sometime soon.",
+      "parentUuid": "e3a0218f_95be86be",
+      "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
