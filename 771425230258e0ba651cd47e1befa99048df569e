@@ -22,6 +22,115 @@
       },
       "revId": "771425230258e0ba651cd47e1befa99048df569e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5093046f_03a4db12",
+        "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T20:22:36Z",
+      "side": 1,
+      "message": "I think we\u0027re going to want this to live on Recorder.",
+      "range": {
+        "startLine": 58,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 47
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e41f498d_5143ff0e",
+        "filename": "src/gpu/graphite/piet/PietRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T20:22:36Z",
+      "side": 1,
+      "message": "Should this be something fAtlasProxy?",
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca46b31_1884737e",
+        "filename": "src/gpu/graphite/piet/PietRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T20:22:36Z",
+      "side": 1,
+      "message": "Do we want this name to be more specific like PietAtlasRenderTask?",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 20
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a39ce8_5a67732a",
+        "filename": "src/gpu/graphite/piet/PietRenderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T20:22:36Z",
+      "side": 1,
+      "message": "I\u0027m not 100% convinced we need the piet namespace/directory in here as files are current setup. We essentially have two files a RenderTask and this Renderer. And I don\u0027t think we\u0027ll be adding much more. We don\u0027t currently have any other RenderTask be in a special folder.",
+      "range": {
+        "startLine": 13,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc3a6388_e655bf97",
+        "filename": "src/gpu/graphite/piet/PietRenderer_Metal.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T20:22:36Z",
+      "side": 1,
+      "message": "I\u0027m a little confused about the difference between MtlPietRenderer and skgpu::piet::MtlRenderer. On both things we\u0027re accessing metal specific things, so what are we gaining from them being two classes?\n\nLike could we just move all the guts of skgpu::piet::RendererBase/MtlRenderer to just be part of PietRenderer and MtlPientRenderer?",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
