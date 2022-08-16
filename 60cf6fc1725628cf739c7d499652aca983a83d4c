@@ -34,6 +34,24 @@
       "parentUuid": "26ba49b4_17cfe7b1",
       "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3a0218f_95be86be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-16T18:36:06Z",
+      "side": 1,
+      "message": "It would make things a lot smoother in the future to have those Bazel rules. I\u0027m happy to review and/or assist with such an addition.",
+      "parentUuid": "c04ed5e5_5f767c22",
+      "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
