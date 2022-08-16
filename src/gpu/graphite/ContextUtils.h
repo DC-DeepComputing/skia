@@ -39,7 +39,7 @@ ExtractRenderStepData(UniformDataCache* geometryUniformDataCache,
                       const RenderStep* step,
                       const DrawParams& params);
 
-std::string GetSkSLVS(const GraphicsPipelineDesc& desc, const bool defineLocalCoordsVarying);
+std::string GetSkSLVS(const GraphicsPipelineDesc& desc, const bool defineLocalCoordinatesVarying);
 
 std::string GetSkSLFS(SkShaderCodeDictionary* dict,
                       SkRuntimeEffectDictionary* rteDict,
