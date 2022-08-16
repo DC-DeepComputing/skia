@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98457950_672986bf",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-16T18:27:47Z",
+      "side": 1,
+      "message": "built*",
+      "range": {
+        "startLine": 570,
+        "startChar": 73,
+        "endLine": 570,
+        "endChar": 78
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b3a019_a5fe04cd",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-16T18:27:47Z",
+      "side": 1,
+      "message": "specify*",
+      "range": {
+        "startLine": 570,
+        "startChar": 45,
+        "endLine": 570,
+        "endChar": 52
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214db1e8_95edf983",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-16T18:27:47Z",
+      "side": 1,
+      "message": "nit: I find it a lot easier to read with things lined up, like in the block above, e.g.\n\n```\nandroid_srcs.update(strip_slashes(js[\u0027targets\u0027][\u0027//modules/skottie:skottie\u0027][\u0027sources\u0027]))\ncflags      .update(strip_slashes(js[\u0027targets\u0027][\u0027//modules/skottie:skottie\u0027][\u0027cflags\u0027]))",
+      "range": {
+        "startLine": 573,
+        "startChar": 7,
+        "endLine": 573,
+        "endChar": 13
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c4881e3_6661f1c4",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-16T18:27:47Z",
+      "side": 1,
+      "message": "If we (for some reason) decided to disable skottie by removing the line on `549`, we\u0027d still include these. (And then I\u0027m guessing the keys wouldn\u0027t be in the right dictionaries, so the script might fail?) To have a single point of making the decision, maybe this should be something like:\n\n```\n  if (gn_args[`skia_enable_skottie`]) \n    ...\n```",
+      "range": {
+        "startLine": 572,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 96
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
