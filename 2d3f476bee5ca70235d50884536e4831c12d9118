@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16aca089_1c30eb49",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-16T15:17:47Z",
+      "side": 1,
+      "message": "nit: one more space here to make these line up?",
+      "range": {
+        "startLine": 239,
+        "startChar": 48,
+        "endLine": 239,
+        "endChar": 49
+      },
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1272834_88943097",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-16T15:17:47Z",
+      "side": 1,
+      "message": "nit: four spaces",
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec40226b_a84543e8",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-16T15:17:47Z",
+      "side": 1,
+      "message": "Just want to point out that floating point is floating point and if we really do need to start at 0 and end at 1, that should be done exactly. In this code 0 looks like it should be fine (stop - stopsStartOffset) should be exactly 0 for the first stop, but ((stop[N] - stop[0]) * (1 / (stop[N] - stop[0]))) may not always exactly equal 1. Not sure how close to 1 this needs to be.",
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
