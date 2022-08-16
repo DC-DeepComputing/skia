@@ -93,6 +93,27 @@ public:
                   SkTArray<Placeholder, true> placeholders,
                   sk_sp<FontCollection> fonts,
                   std::shared_ptr<SkUnicode> unicode);
+
+    ParagraphImpl(const SkString& text,
+                  ParagraphStyle style,
+                  SkTArray<Block, true> blocks,
+                  SkTArray<Placeholder, true> placeholders,
+                  sk_sp<FontCollection> fonts,
+                  std::vector<SkUnicode::BidiRegion> bidiRegions,
+                  std::vector<SkUnicode::Position> words,
+                  std::vector<SkUnicode::Position> graphemeBreaks,
+                  std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+    ParagraphImpl(const std::u16string& utf16text,
+                  ParagraphStyle style,
+                  SkTArray<Block, true> blocks,
+                  SkTArray<Placeholder, true> placeholders,
+                  sk_sp<FontCollection> fonts,
+                  std::vector<SkUnicode::BidiRegion> bidiRegions,
+                  std::vector<SkUnicode::Position> words,
+                  std::vector<SkUnicode::Position> graphemeBreaks,
+                  std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
     ~ParagraphImpl() override;
 
     void layout(SkScalar width) override;
