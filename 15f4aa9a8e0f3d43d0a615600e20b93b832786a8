@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "767ad8cf_454a550d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-16T21:49:50Z",
+      "side": 1,
+      "message": "PTAL. ",
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c573b47_5662c03a",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-16T21:49:50Z",
+      "side": 1,
+      "message": "This should work, but the resulting string is empty. The enum values match the spec, so I\u0027m not sure what\u0027s going on.",
+      "range": {
+        "startLine": 705,
+        "startChar": 4,
+        "endLine": 705,
+        "endChar": 76
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
