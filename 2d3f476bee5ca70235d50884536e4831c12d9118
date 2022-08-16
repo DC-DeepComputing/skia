@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9080a7ed_c5fb9058",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-16T16:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16aca089_1c30eb49",
+      "range": {
+        "startLine": 239,
+        "startChar": 48,
+        "endLine": 239,
+        "endChar": 49
+      },
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1272834_88943097",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c38c6c_506ad760",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-16T16:03:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1272834_88943097",
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec40226b_a84543e8",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-08-16T15:17:47Z",
       "side": 1,
       "message": "Just want to point out that floating point is floating point and if we really do need to start at 0 and end at 1, that should be done exactly. In this code 0 looks like it should be fine (stop - stopsStartOffset) should be exactly 0 for the first stop, but ((stop[N] - stop[0]) * (1 / (stop[N] - stop[0]))) may not always exactly equal 1. Not sure how close to 1 this needs to be.",
+      "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "753e86a2_9b90c341",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-16T16:03:01Z",
+      "side": 1,
+      "message": "Ack, I think this is ok for now - if the precision is not sufficient it would affect the precision of how the gradient looks. I think this would be hard to spot unless font size becomes large and the gradient is hitting this condition.",
+      "parentUuid": "ec40226b_a84543e8",
       "revId": "2d3f476bee5ca70235d50884536e4831c12d9118",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
