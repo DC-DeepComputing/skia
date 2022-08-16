@@ -16,6 +16,24 @@
       "message": "I noticed there were no Bazel rules updated for this. Is that on anybody\u0027s TODO list?",
       "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c04ed5e5_5f767c22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-16T18:33:20Z",
+      "side": 1,
+      "message": "Since this was behind a flag and is intended only to be used under the Android build system for now, i thought it was ok to not have the Bazel rules.\n\nIf it\u0027s mandatory to have that, i can add them. Please let me know.",
+      "parentUuid": "26ba49b4_17cfe7b1",
+      "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
