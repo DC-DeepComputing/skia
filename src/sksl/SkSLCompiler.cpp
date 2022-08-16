@@ -7,6 +7,7 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
+#include "include/private/SkMutex.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkSLSymbol.h"
@@ -19,6 +20,7 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDSLParser.h"
+#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLRehydrator.h"
@@ -153,6 +155,19 @@ public:
     Context* fContext;
 };
 
+// Returns a singleton mutex which guards the creation of built-in modules. This is necessary
+// because they share a global resource (the `core_modifiers` modifier pool).
+static SkMutex& module_loader_mutex() {
+    static SkMutex* sMutex = new SkMutex;
+    return *sMutex;
+}
+
+// Returns a singleton ModifiersPool used by all built-in modules.
+static ModifiersPool* core_modifiers() {
+    static ModifiersPool* sCoreModifiers = new ModifiersPool;
+    return sCoreModifiers;
+}
+
 Compiler::Compiler(const ShaderCaps* caps)
         : fErrorReporter(this)
         , fContext(std::make_shared<Context>(fErrorReporter, *caps, fMangler))
@@ -216,7 +231,9 @@ inline static constexpr BuiltinTypePtr kPrivateTypes[] = {
 
 #undef TYPE
 
-std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() {
+std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() const {
+    SkAutoMutexExclusive lock(module_loader_mutex());
+
     auto rootSymbolTable = std::make_shared<SymbolTable>(*fContext, /*builtin=*/true);
 
     for (BuiltinTypePtr rootType : kRootTypes) {
@@ -231,7 +248,7 @@ std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() {
     // treat it as builtin (ie, no need to clone it into the Program).
     rootSymbolTable->add(std::make_unique<Variable>(/*pos=*/Position(),
                                                     /*modifiersPosition=*/Position(),
-                                                    fCoreModifiers.add(Modifiers{}),
+                                                    core_modifiers()->add(Modifiers{}),
                                                     "sk_Caps",
                                                     fContext->fTypes.fSkCaps.get(),
                                                     /*builtin=*/false,
@@ -341,7 +358,7 @@ static void add_public_type_aliases(SkSL::SymbolTable* symbols, const SkSL::Buil
     symbols->add(Type::MakeAliasType("sk_Caps", *types.fInvalid));
 }
 
-std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTableWithPublicTypes() {
+std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTableWithPublicTypes() const {
     auto result = this->makeRootSymbolTable();
     add_public_type_aliases(result.get(), fContext->fTypes);
     return result;
@@ -396,7 +413,9 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     SkASSERT(base);
 
     // Put the core-module modifier pool into the context.
-    AutoModifiersPool autoPool(fContext, &fCoreModifiers);
+    SkAutoMutexExclusive lock(module_loader_mutex());
+
+    AutoModifiersPool autoPool(fContext, core_modifiers());
 
     // Built-in modules always use default program settings.
     ProgramSettings settings;
@@ -584,11 +603,13 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module, const ParsedModule
     SkASSERT(!this->errorCount());
 
     // Create a temporary program configuration with default settings.
+    SkAutoMutexExclusive lock(module_loader_mutex());
+
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = module.fKind;
     AutoProgramConfig autoConfig(fContext, &config);
-    AutoModifiersPool autoPool(fContext, &fCoreModifiers);
+    AutoModifiersPool autoPool(fContext, core_modifiers());
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
 
