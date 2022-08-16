@@ -59,6 +59,15 @@ public:
     // Constructs a SkParagraph object that can be used to layout and paint the text to a SkCanvas.
     std::unique_ptr<Paragraph> Build() override;
 
+    // Support for "Client" unicode
+    SkSpan<const char> getText() const;
+    std::unique_ptr<Paragraph> BuildWithClientInfo(
+                    std::vector<SkUnicode::BidiRegion> bidiRegions,
+                    std::vector<SkUnicode::Position> words,
+                    std::vector<SkUnicode::Position> graphemeBreaks,
+                    std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+    // Support for Flutter optimization
     void Reset() override;
 
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
@@ -68,7 +77,7 @@ public:
     // Just until we fix all the code; calls icu::make inside
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
                                                   sk_sp<FontCollection> fontCollection);
-private:
+protected:
     void startStyledBlock();
     void endRunIfNeeded();
     const TextStyle& internalPeekStyle();
