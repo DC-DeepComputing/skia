@@ -46,6 +46,30 @@
       },
       "revId": "4edc54033e093ca1ad88fc0e5995d808a7ff0328",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05efac93_ae1ca573",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-16T14:38:28Z",
+      "side": 1,
+      "message": "The last line or ellipsis considered as a hard break because Flutter expect it.\nThere is a comment above these lines. At some point we HAD to match the old text renderer no matter what.\nAnd thank you for the test.",
+      "parentUuid": "09011941_94919b24",
+      "range": {
+        "startLine": 1045,
+        "startChar": 11,
+        "endLine": 1046,
+        "endChar": 71
+      },
+      "revId": "4edc54033e093ca1ad88fc0e5995d808a7ff0328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
