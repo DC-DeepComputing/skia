@@ -68,16 +68,6 @@ static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
     const SkPaintParamsKey::BlockReader& reader = shaderInfo.blockReader(entryIndex);
     const SkShaderSnippet* entry = reader.entry();
 
-    if (entry->needsLocalCoords()) {
-        // The snippet requested local coordinates; the pre-local matrix must be its first uniform.
-        SkASSERT(entry->fUniforms.size() >= 1);
-        SkASSERT(entry->fUniforms.front().type() == SkSLType::kFloat4x4);
-
-        // Multiply in this entry's pre-local coordinate matrix.
-        preLocalMatrix += " * ";
-        preLocalMatrix += entry->getMangledUniformName(0, entryIndex);
-    }
-
     return entry->fExpressionGenerator(shaderInfo, entryIndex, reader, priorStageOutputName,
                                        fragCoord, preLocalMatrix);
 }
@@ -132,10 +122,7 @@ static void emit_preamble_for_entry(const SkShaderInfo& shaderInfo,
 //   in the Graphite pre-compiled module.
 std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const {
     std::string preamble = "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
-
-    if (step->numVaryings() > 0) {
-        preamble += skgpu::graphite::EmitVaryings(step, "in");
-    }
+    preamble += skgpu::graphite::EmitVaryings(step, "in");
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     // TODO: replace hard-coded bufferIDs with the backend's step and paint uniform-buffer indices.
@@ -153,6 +140,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
         preamble += step->texturesAndSamplersSkSL(binding);
     }
 
+    // TODO: Remove this multiplication step once all render steps emit local coordinates.
     std::string mainBody = SkSL::String::printf("void main() {\n"
                                                 "    float4 coords = %s sk_FragCoord;\n",
                                                 this->needsLocalCoords() ? "dev2LocalUni *" : "");
@@ -160,9 +148,11 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
     // TODO: what is the correct initial color to feed in?
     std::string lastOutputVar = "initialColor";
     SkSL::String::appendf(&mainBody, "    half4 %s = half4(0);", lastOutputVar.c_str());
+    SkSL::String::appendf(&mainBody, "    float4 outLocalCoords = float4(localCoords, 0, 0);");
 
     for (int entryIndex = 0; entryIndex < (int)fBlockReaders.size();) {
         // Emit shader main body code. This never alters the preamble or increases the entry index.
+        std::string coordsVar = this->needsLocalCoords() ? "outLocalCoords" : "coords";
         lastOutputVar = emit_glue_code_for_entry(*this, entryIndex, lastOutputVar, "coords",
                                                  "float4x4(1.0)", &mainBody);
 
@@ -170,7 +160,6 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
         // index as we go.
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
-
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
