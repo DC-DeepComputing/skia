@@ -16,6 +16,75 @@
       "message": "I have begun modularizing the changes I\u0027ve been working on. Here\u0027s the first of a couple of CLs - should be a nice size though. 😊",
       "revId": "554951a5985e11751674769678040f281b02f1dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10df0409_5fb3e663",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T16:54:41Z",
+      "side": 1,
+      "message": "If the paint doesn\u0027t need local coords, we should be able to pass in a constant like `float4(0)`, since it will never be read by the rest of the shader.\n\nThis also creates a bit of a chicken-and-egg problem, though, since every paint that needs local coords is going to try and use `outLocalCoords` and not `coords`. Until the other RenderSteps have been updated, `outLocalCoords` will not have the right values.\n\nMaybe it\u0027s better that we have everything very close to wired up, but still pass in `coords`, and then go through updating the RenderSteps. Then once they are all producing the right local coords to the varying, we swap out what we pass into emit_glue_code_for_entry and remove all the use of dev2LocalUni and the preLocal matrices.",
+      "range": {
+        "startLine": 155,
+        "startChar": 32,
+        "endLine": 155,
+        "endChar": 86
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a13ce9f8_83c44431",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T16:54:41Z",
+      "side": 1,
+      "message": "Let\u0027s have EmitVaryings take a boolean for whether or not it should add this varying. GetSkSLVS will need to be updated to also take a parameter that says whether or not local coords need to be produced. \n\nWe should be able to determine that value when GetSkSLFS is called. Right now GetSkSLVS gets called before GetSkSLFS in MtlGraphicsPipeline.mm, but there\u0027s no reason that shouldn\u0027t be re-ordered and let GetSkSLFS report if it needs the coords.",
+      "range": {
+        "startLine": 214,
+        "startChar": 4,
+        "endLine": 216,
+        "endChar": 54
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ed0390_0c9331ac",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T16:54:41Z",
+      "side": 1,
+      "message": "I\u0027d like the local coordinate varying to be optional when the PaintParams doesn\u0027t require local coords.\n\nThe easiest way to do this without requiring the RenderSteps to be aware of the PaintParams is to have them define a float2 localCoord local variable in their vertex SkSL, much like it does for devPosition. Then the rest of the shader generation can assign `localCoord` to the varying it creates when it needs it.",
+      "range": {
+        "startLine": 73,
+        "startChar": 94,
+        "endLine": 74,
+        "endChar": 85
+      },
+      "revId": "554951a5985e11751674769678040f281b02f1dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

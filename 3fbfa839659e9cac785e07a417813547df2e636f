@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b0be977_f6d8c346",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-16T16:54:41Z",
+      "side": 0,
+      "message": "If we get rid of this I think the current way the local matrix shader is set up to work won\u0027t be correct. \n\nWe\u0027ll need to register special glue code function for the local matrix shader that handles transforming its coords and then passing it on to its child (currently it uses the default glue function, which assumes children can be invoked first with the same local coords and then the have the shader operate just on the children outputs, but that is incompatible with how the local matrix shader works).\n\nIn the long run, I do want this to be deleted, but I don\u0027t think we quite can yet.",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "3fbfa839659e9cac785e07a417813547df2e636f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
