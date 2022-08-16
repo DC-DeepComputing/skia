@@ -123,6 +123,24 @@
       "parentUuid": "0f53d532_c8bf7f49",
       "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e4e24a3_d2d54d98",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-16T19:53:29Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/569657",
+      "parentUuid": "39324eee_ed630840",
+      "revId": "60cf6fc1725628cf739c7d499652aca983a83d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
