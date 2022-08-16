@@ -91,14 +91,20 @@ public:
     // coverage splatted out into all four channels.
     virtual const char* fragmentCoverageSkSL() const { return R"()"; }
 
+    // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
+    // is true. When implemented, the returned SkSL fragment should write its color into a
+    // 'half4 outputColor' variable (defined in the calling code).
+    virtual const char* fragmentColorSkSL() const { return R"()"; }
+
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
 
-    bool requiresMSAA()    const { return fFlags & Flags::kRequiresMSAA;    }
-    bool performsShading() const { return fFlags & Flags::kPerformsShading; }
-    bool hasTextures()     const { return fFlags & Flags::kHasTextures;     }
-    bool emitsCoverage()   const { return fFlags & Flags::kEmitsCoverage;   }
+    bool requiresMSAA()          const { return fFlags & Flags::kRequiresMSAA;    }
+    bool performsShading()       const { return fFlags & Flags::kPerformsShading; }
+    bool hasTextures()           const { return fFlags & Flags::kHasTextures;     }
+    bool emitsCoverage()         const { return fFlags & Flags::kEmitsCoverage;   }
+    bool emitsPrimitiveColor()   const { return fFlags & Flags::kEmitsPrimitiveColor;   }
 
     PrimitiveType primitiveType()  const { return fPrimitiveType;  }
     size_t        vertexStride()   const { return fVertexStride;   }
@@ -126,11 +132,12 @@ public:
     }
 
     enum class Flags : unsigned {
-        kNone            = 0b0000,
-        kRequiresMSAA    = 0b0001,
-        kPerformsShading = 0b0010,
-        kHasTextures     = 0b0100,
-        kEmitsCoverage   = 0b1000,
+        kNone                  = 0b00000,
+        kRequiresMSAA          = 0b00001,
+        kPerformsShading       = 0b00010,
+        kHasTextures           = 0b00100,
+        kEmitsCoverage         = 0b01000,
+        kEmitsPrimitiveColor   = 0b10000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
     // TODO: Actual API to do things
@@ -283,6 +290,7 @@ private:
             fRequiresMSAA |= fSteps[i]->requiresMSAA();
             fEmitsCoverage |= fSteps[i]->emitsCoverage();
             fDepthStencilFlags |= fSteps[i]->depthStencilFlags();
+            fEmitsPrimitiveColor |= fSteps[i]->emitsPrimitiveColor();
             SkDEBUGCODE(performsShading |= fSteps[i]->performsShading());
         }
         SkASSERT(performsShading); // at least one step needs to actually shade
@@ -298,6 +306,7 @@ private:
     int      fStepCount;
     bool     fRequiresMSAA = false;
     bool     fEmitsCoverage = false;
+    bool     fEmitsPrimitiveColor = false;
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 };
