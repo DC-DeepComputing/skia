@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58dd9f9b_a73b8bcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-16T18:54:09Z",
+      "side": 1,
+      "message": "Another piece of cleaning up SharedContext to more of a global \"readOnly\" type class",
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
