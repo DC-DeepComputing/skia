@@ -153,7 +153,7 @@ public:
 
     bool hasUniforms() const { return fUniformManager.size(); }
 
-    SkUniformDataBlock peekUniformData() const { return fUniformManager.peekData(); }
+    SkUniformDataBlock peekUniformData() { return fUniformManager.peekData(); }
 
 private:
 #ifdef SK_DEBUG
