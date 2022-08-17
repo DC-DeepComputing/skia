@@ -24,11 +24,14 @@ struct ShaderCaps;
  */
 class Context {
 public:
-    Context(ErrorReporter& errors, const ShaderCaps& caps, Mangler& mangler);
+    Context(const BuiltinTypes& types,
+            const ShaderCaps& caps,
+            ErrorReporter& errors,
+            Mangler& mangler);
     ~Context();
 
-    // The Context holds all of the built-in types.
-    BuiltinTypes fTypes;
+    // The Context holds a reference to all of the built-in types.
+    const BuiltinTypes& fTypes;
 
     // The Context holds a reference to our shader caps bits.
     const ShaderCaps& fCaps;
