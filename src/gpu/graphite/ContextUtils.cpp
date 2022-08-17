@@ -260,7 +260,7 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc, const bool defineLocalCo
     // Vertex shader function declaration
     sksl += "void main() {\n";
     // Create stepLocalCoords which render steps can write to.
-    if (defineLocalCoordsVarying) {  sksl += "float2 stepLocalCoords = float2(0);\n";}
+    sksl += "float2 stepLocalCoords = float2(0);\n";
     // Vertex shader body
     sksl += step->vertexSkSL();
     sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + rtAdjust.zw, devPosition.zw);\n";
