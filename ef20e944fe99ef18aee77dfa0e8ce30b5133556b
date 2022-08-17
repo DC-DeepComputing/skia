@@ -130,6 +130,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fefa672_cea9ef43",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-17T19:41:34Z",
+      "side": 1,
+      "message": "I believe the BackendTextures could be deleted on any Recorder (and Context if we add a delete function there). The key reason for having the delete is so that in Vulkan we have to send the memory back to memory allocator versus just straight deleting it. We should just be using one shared thread safe memory allocator for everything.\n\nThe normal use for a BackendTexture is for a client to simply wrap a backend texture that they made outside of Skia (e.g. from the window system). In those cases the client is fully in charge of deleting the backend texture themselves.\n\nPreviously since we only had these create/delete functions on Context there wasn\u0027t even a question on which object to delete the BackendTexture since you only had one choice. But now you can technically call delete on any Recorder so we need to clarify what is safe to do.",
+      "parentUuid": "d45a1190_823484d7",
+      "range": {
+        "startLine": 89,
+        "startChar": 45,
+        "endLine": 89,
+        "endChar": 75
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bcdd457_697fbd95",
         "filename": "src/gpu/graphite/ResourceProvider.cpp",
         "patchSetId": 2
