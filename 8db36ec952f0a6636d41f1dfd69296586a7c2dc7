@@ -33,6 +33,92 @@
       "message": "Deferring to Eric\u0027s expertise.",
       "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feaf8eaf_a381276e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-17T16:35:25Z",
+      "side": 1,
+      "message": "+Ravi to check my understanding of how the Gerrit tryjob selector UI updates.",
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc5cd4d_a96e3fb6",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-17T16:35:25Z",
+      "side": 1,
+      "message": "Nit: let\u0027s note that the cq_config property is defined in jobs.json",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 38
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98053ffc_4ddea1fd",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-17T16:35:25Z",
+      "side": 1,
+      "message": "We call these \"try jobs\"",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 10
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57c0183_ed6747fd",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-08-17T16:35:25Z",
+      "side": 1,
+      "message": "I\u0027m not sure that this is the case.  IIRC the list on the Gerrit UI is only updated after commit (manually?). However, the commit queue automatically incorporates updates to tasks.json.  I think I\u0027d just recommend using the `sk` tool.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 72
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
