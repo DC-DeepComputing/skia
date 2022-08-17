@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43932f89_f59dd1d7",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "I think this would make more sense if we decide to abandon the current typed abstraction in favor of defining the piet backend types as `void*`. Otherwise, I think having a backend-specific getter in the various subclasses seems more consistent with other classes, (e.g. MtlSharedContext has a getter for MTLDevice but SharedContext does not).",
+      "parentUuid": "a5b2b106_e6cd6438",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5093046f_03a4db12",
         "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-16T20:22:36Z",
       "side": 1,
       "message": "I think we\u0027re going to want this to live on Recorder.",
+      "range": {
+        "startLine": 58,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 47
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d69ef3c9_9c4d74de",
+        "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5093046f_03a4db12",
       "range": {
         "startLine": 58,
         "startChar": 34,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "497b03f8_97772eee",
+        "filename": "src/gpu/graphite/piet/PietRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "I don\u0027t think this should mention \"atlas\" since that\u0027s just one use case for piet. Maybe `fTargetProxy` so that it\u0027s a bit more specific as to what the texture is for?",
+      "parentUuid": "e41f498d_5143ff0e",
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cca46b31_1884737e",
         "filename": "src/gpu/graphite/piet/PietRenderTask.h",
         "patchSetId": 3
@@ -77,6 +143,30 @@
       "writtenOn": "2022-08-16T20:22:36Z",
       "side": 1,
       "message": "Do we want this name to be more specific like PietAtlasRenderTask?",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 20
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17002edb_419b82a6",
+        "filename": "src/gpu/graphite/piet/PietRenderTask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "This task can be used to draw to any texture and I expect we\u0027ll want to experiment with non-atlas use cases for path rendering (both with piet and our native compute) so it makes sense to keep this generic.",
+      "parentUuid": "cca46b31_1884737e",
       "range": {
         "startLine": 39,
         "startChar": 6,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a51cd67_5666a011",
+        "filename": "src/gpu/graphite/piet/PietRenderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "Done. Note that `skgpu::piet` refers to the pgpu C library wrappers defined in src/gpu/piet, which I think makes sense to keep. I went ahead and got rid of the src/gpu/graphite/piet for the graphite\u003c-\u003epiet integration types.",
+      "parentUuid": "08a39ce8_5a67732a",
+      "range": {
+        "startLine": 13,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc3a6388_e655bf97",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-08-16T20:22:36Z",
       "side": 1,
       "message": "I\u0027m a little confused about the difference between MtlPietRenderer and skgpu::piet::MtlRenderer. On both things we\u0027re accessing metal specific things, so what are we gaining from them being two classes?\n\nLike could we just move all the guts of skgpu::piet::RendererBase/MtlRenderer to just be part of PietRenderer and MtlPientRenderer?",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f554cf1_cbdafded",
+        "filename": "src/gpu/graphite/piet/PietRenderer_Metal.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-17T18:57:39Z",
+      "side": 1,
+      "message": "The distinction is that skgpu::piet::Renderer (along with all other types in src/gpu/piet) is purely intended to be a C++ wrapper around the pgpu C library type and related free functions, whereas skgpu::graphite::PietRenderer is meant to bridge graphite types (such as SharedContext, Texture, CommandBuffer) with the former.\n\nThe skgpu::piet::* definitions handle things like automatically calling piet library destructors, wrapping around piet path iterators, etc without directly depending on graphite types. I think it makes sense to maintain that separation (between src/gpu/piet and src/graphite/Piet* types).\n\nOne complication here is the approach I took to provide some strongly typed piet API wrappers where piet consumes backend API types directly as `void*`. `skgpu::piet::MtlRenderer` is only there to declare a typed interface in terms of `id\u003cMTLDevice\u003e, id\u003cMTLCommandQueue\u003e` etc and do so near the pgpu C API boundary. This type enforcement is technically already done my MtlPietRenderer so it feels redundant to have both a `graphite::MtlPietRenderer` and a `piet::MtlRenderer`\n\nAs you pointed out we could certainly remove src/gpu/piet/Renderer.* and move all that logic here to PietRenderer and MtlPietRenderer and call the pgpu API functions here directly (or perhaps go through an unspecialized `piet::RendererBase`). I personally like keeping all direct piet C API calls outside graphite but I\u0027m not too strongly attached to the idea if you think merging them here would be better.",
+      "parentUuid": "bc3a6388_e655bf97",
       "range": {
         "startLine": 32,
         "startChar": 4,
