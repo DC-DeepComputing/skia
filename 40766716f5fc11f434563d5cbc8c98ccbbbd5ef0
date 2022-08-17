@@ -310,6 +310,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd9b3c53_8f48f59c",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T20:44:35Z",
+      "side": 1,
+      "message": "Correction: \"since texture coordinates are passed in as an array of 2D points\"*.",
+      "parentUuid": "3a64f8d3_ba68e14e",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f07b2245_6ee7d6ea",
         "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
         "patchSetId": 8
