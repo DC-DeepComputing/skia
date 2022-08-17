@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460915f1_48302e6f",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-17T13:18:14Z",
+      "side": 1,
+      "message": "Can we use SkThreadAnnotations.h here? My read of things suggests it\u0027s almost possible, but would require that the mutex be global? (core_modifiers could be annotated with SK_REQUIRES). module_load_mutex almost works (eg, using SK_RETURN_CAPABILITY), but you still need a way to reference the actual mutex instance in the attribute.\n\nIt\u0027s okay if there\u0027s no way to do this (I\u0027m consistently disappointed by the limitations of the thread annotations), but it would be a nice check in this case, to ensure we don\u0027t accidentally add new references to core_modifiers.",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 0
+      },
+      "revId": "32d413c7bf237345f3312da5dff8adad44d95cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
