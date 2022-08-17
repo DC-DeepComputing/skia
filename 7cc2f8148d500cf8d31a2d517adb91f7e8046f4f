@@ -103,6 +103,30 @@
       },
       "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0728a1ba_ec9df0a4",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-17T19:51:55Z",
+      "side": 1,
+      "message": "+1, I like that approach.",
+      "parentUuid": "aeb17f99_82c4a8c2",
+      "range": {
+        "startLine": 554,
+        "startChar": 3,
+        "endLine": 554,
+        "endChar": 30
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
