@@ -106,6 +106,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d45a1190_823484d7",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T19:32:12Z",
+      "side": 1,
+      "message": "Just for my understanding, how is this currently handled for the Context?",
+      "parentUuid": "1c5133f9_9c8a3c93",
+      "range": {
+        "startLine": 89,
+        "startChar": 45,
+        "endLine": 89,
+        "endChar": 75
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bcdd457_697fbd95",
         "filename": "src/gpu/graphite/ResourceProvider.cpp",
         "patchSetId": 2
