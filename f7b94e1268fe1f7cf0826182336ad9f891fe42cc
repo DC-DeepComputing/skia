@@ -70,6 +70,30 @@
       },
       "revId": "f7b94e1268fe1f7cf0826182336ad9f891fe42cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a92d7f6_3aebebcc",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-17T13:15:27Z",
+      "side": 1,
+      "message": "Really digging into the issue gave me new appreciation for the subtleties of skbug.com/8791 and why real GLSL doesn\u0027t have flexible literal types. The only way to fix the issue (AFAICS) would be for the outer assignment-expression to influence the type of the inner FunctionCall-expression, and it\u0027s not clear how to implement something like that with what we have today, where expressions don\u0027t have any knowledge of their neighbors.",
+      "parentUuid": "c90544d4_5672c20a",
+      "range": {
+        "startLine": 874,
+        "startChar": 17,
+        "endLine": 874,
+        "endChar": 19
+      },
+      "revId": "f7b94e1268fe1f7cf0826182336ad9f891fe42cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
