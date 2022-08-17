@@ -56,6 +56,29 @@
       },
       "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bcdd457_697fbd95",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:27:26Z",
+      "side": 1,
+      "message": "Any value in reporting a warning or error when the texture exceeds the max texture size? That\u0027s a little bit more of a variable condition compared to asking for a 0x0 texture.",
+      "range": {
+        "startLine": 241,
+        "startChar": 32,
+        "endLine": 241,
+        "endChar": 94
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
