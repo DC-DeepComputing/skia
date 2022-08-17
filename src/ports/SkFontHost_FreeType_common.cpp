@@ -16,6 +16,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkColorData.h"
+#include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFDot6.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
@@ -725,13 +726,48 @@ bool colrv1_configure_skpaint(FT_Face face,
                 }
             }
 
-            // TODO(https://crbug.com/skia/13653): Interpolate a zero radius
-            // circle with manual color interpolation or upgrade the
-            // MakeTwoPointConical shader to understand negative radii.
-            if (startRadius < 0 || endRadius < 0) {
-                paint->setColor(SK_ColorTRANSPARENT);
-                return true;
+            SkASSERT(!(startRadius == 0.f && endRadius == 0.f));
+
+            auto interpolateZeroRadiusStartColorStop = [](SkScalar zeroRadiusColorStop,
+                                                          std::vector<SkColor>& colors,
+                                                          std::vector<SkScalar>& stops) -> void {
+                const auto lerp_color = [](SkColor c0, SkColor c1, float t) {
+                    const auto c0_4f = Sk4f_fromL32(c0), c1_4f = Sk4f_fromL32(c1),
+                               c_4f = c0_4f + (c1_4f - c0_4f) * t;
+
+                    return Sk4f_toL32(c_4f);
+                };
+
+                SkColor beforeColor;
+                SkColor afterColor;
+                SkColor startColor;
+                size_t afterIndex = 0;
+                for (size_t i = 0; i < stops.size(); ++i) {
+                    if (stops[i] > zeroRadiusColorStop) afterIndex = i;
+                }
+                beforeColor = colors[afterIndex - 1];
+                afterColor = colors[afterIndex];
+                startColor = lerp_color(beforeColor,
+                                        afterColor,
+                                        (zeroRadiusColorStop - stops[afterIndex - 1]) /
+                                                (stops[afterIndex] - stops[afterIndex - 1]));
+                stops.erase(stops.begin(), stops.begin() + afterIndex);
+                colors.erase(colors.begin(), colors.begin() + afterIndex);
+                stops.insert(stops.begin(), 0);
+                colors.insert(colors.begin(), startColor);
+            };
+
+            SkScalar zeroRadiusColorStop = 0.f;
+            if (startRadius < 0) {
+              // Find color stop position where radius is = 0.
+              // After the scaling we have done above, let's imagine the size of the radius as a function of the color stops:
+              // r(x) = r0 + x*(r1-r0)
+              // Solving for r(x) = 0, we get: x = -r0 / (r1-r0)
+              zeroRadiusColorStop = - startRadius / (endRadius - startRadius);
+              startRadius = 0;
+              interpolateZeroRadiusStartColorStop(zeroRadiusColorStop, colors, stops);
             }
+
 
             // An opaque color is needed to ensure the gradient is not modulated by alpha.
             paint->setColor(SK_ColorBLACK);
