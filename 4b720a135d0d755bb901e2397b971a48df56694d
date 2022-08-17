@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd12328_eb063c6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-17T15:05:35Z",
+      "side": 1,
+      "message": "More detail on the revert: It appears the bottom 3 rows of the hslcolorfilter GM are dropping their filtering on angle_mtl_es3/IntelIrisPlus. Additionally 2 cases in the middle row of the mixerCF are also losing their filtering (on the same config/device combo).",
+      "revId": "4b720a135d0d755bb901e2397b971a48df56694d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
