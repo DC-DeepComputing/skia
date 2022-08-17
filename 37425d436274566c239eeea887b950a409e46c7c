@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff3f1e71_dcbbc487",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-17T19:04:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63b3a019_a5fe04cd",
+      "range": {
+        "startLine": 570,
+        "startChar": 45,
+        "endLine": 570,
+        "endChar": 52
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "187969b4_c5c73b99",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-17T19:04:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98457950_672986bf",
+      "range": {
+        "startLine": 570,
+        "startChar": 73,
+        "endLine": 570,
+        "endChar": 78
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "214db1e8_95edf983",
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b673579_cedf8aed",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-17T19:04:30Z",
+      "side": 1,
+      "message": "Ack. Changed this block. Let me know if the new formatting works.",
+      "parentUuid": "214db1e8_95edf983",
+      "range": {
+        "startLine": 573,
+        "startChar": 7,
+        "endLine": 573,
+        "endChar": 13
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c4881e3_6661f1c4",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-08-16T18:27:47Z",
       "side": 1,
       "message": "If we (for some reason) decided to disable skottie by removing the line on `549`, we\u0027d still include these. (And then I\u0027m guessing the keys wouldn\u0027t be in the right dictionaries, so the script might fail?) To have a single point of making the decision, maybe this should be something like:\n\n```\n  if (gn_args[`skia_enable_skottie`]) \n    ...\n```",
+      "range": {
+        "startLine": 572,
+        "startChar": 0,
+        "endLine": 575,
+        "endChar": 96
+      },
+      "revId": "37425d436274566c239eeea887b950a409e46c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ec45b7_0355e7c5",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-17T19:04:30Z",
+      "side": 1,
+      "message": "That makes sense, done.",
+      "parentUuid": "0c4881e3_6661f1c4",
       "range": {
         "startLine": 572,
         "startChar": 0,
