@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "844bbdae_5158b293",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T18:59:55Z",
+      "side": 1,
+      "message": "Looks like the offset is included in the GlyphRun.",
+      "parentUuid": "98a3fee7_54133d69",
+      "range": {
+        "startLine": 347,
+        "startChar": 52,
+        "endLine": 347,
+        "endChar": 72
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "967179dc_545a6687",
         "filename": "src/core/SkFont.cpp",
         "patchSetId": 6
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "In SkMatrixPriv? Actually it looks like there\u0027s something in there already that takes just a point: DifferentialAreaScale. So maybe we can use that with the offset of the run and avoid computing the bounds.",
       "parentUuid": "967179dc_545a6687",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 34
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41d24bd9_67fece79",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T18:59:55Z",
+      "side": 1,
+      "message": "Switching to SkMatrixPriv::DifferentialAreaScale. I\u0027ve centralized everything in SkFontPriv::ApproximateTransformedTextSize().",
+      "parentUuid": "a46b761e_e24c9fba",
       "range": {
         "startLine": 354,
         "startChar": 0,
@@ -159,6 +207,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7cf53c6_f12fce42",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T18:59:55Z",
+      "side": 1,
+      "message": "Using SkMatrixPriv::DifferentialAreaScale instead.",
+      "parentUuid": "9d16b4f0_da4abd68",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 30
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e335deb0_ebab7277",
@@ -182,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c633063_f9037e3d",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T18:59:55Z",
+      "side": 1,
+      "message": "Removed to use ApproximateTransformedTextSize (which does essentially the same thing) instead.",
+      "parentUuid": "e335deb0_ebab7277",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 29
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52891f95_9f47d356",
@@ -195,6 +291,30 @@
       "writtenOn": "2022-08-17T16:26:22Z",
       "side": 1,
       "message": "Maybe just pass the matrix in.\nHere and below.",
+      "range": {
+        "startLine": 47,
+        "startChar": 18,
+        "endLine": 47,
+        "endChar": 43
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33d0aed6_eaed636f",
+        "filename": "src/text/gpu/SDFTControl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T18:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52891f95_9f47d356",
       "range": {
         "startLine": 47,
         "startChar": 18,
