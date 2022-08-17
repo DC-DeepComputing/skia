@@ -61,7 +61,7 @@ struct MultiPictureDocument final : public SkDocument {
     const SkSerialProcs fProcs;
     SkPictureRecorder fPictureRecorder;
     SkSize fCurrentPageSize;
-    SkTArray<sk_sp<SkPicture>> fPages;
+    SkTArray<sk_sp<SkPicture>, true> fPages;
     SkTArray<SkSize> fSizes;
     std::function<void(const SkPicture*)> fOnEndPage;
     MultiPictureDocument(SkWStream* s, const SkSerialProcs* procs,

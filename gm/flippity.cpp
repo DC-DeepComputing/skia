@@ -111,7 +111,7 @@ static sk_sp<SkImage> make_text_image(GrDirectContext* dContext, const char* tex
 // Create an image with each corner marked w/ "LL", "LR", etc., with the origin either bottom-left
 // or top-left.
 static sk_sp<SkImage> make_reference_image(GrDirectContext* dContext,
-                                           const SkTArray<sk_sp<SkImage>>& labels,
+                                           const SkTArray<sk_sp<SkImage>, true>& labels,
                                            bool bottomLeftOrigin) {
     SkASSERT(kNumLabels == labels.count());
 
@@ -305,7 +305,7 @@ private:
     }
 
 private:
-    SkTArray<sk_sp<SkImage>> fLabels;
+    SkTArray<sk_sp<SkImage>, true> fLabels;
     sk_sp<SkImage> fReferenceImages[2];
 
     using INHERITED = GM;

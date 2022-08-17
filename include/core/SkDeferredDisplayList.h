@@ -99,11 +99,11 @@ private:
     // These are ordered such that the destructor cleans op tasks up first (which may refer back
     // to the arena and memory pool in their destructors).
     GrRecordingContext::OwnedArenas fArenas;
-    SkTArray<sk_sp<GrRenderTask>>   fRenderTasks;
+    SkTArray<sk_sp<GrRenderTask>, true>       fRenderTasks;
 
     SkTArray<GrRecordingContext::ProgramData> fProgramData;
-    sk_sp<GrRenderTargetProxy>      fTargetProxy;
-    sk_sp<LazyProxyData>            fLazyProxyData;
+    sk_sp<GrRenderTargetProxy>                fTargetProxy;
+    sk_sp<LazyProxyData>                      fLazyProxyData;
 #endif
 };
 

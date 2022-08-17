@@ -162,7 +162,7 @@ protected:
     template <typename T> using TrackedResourceArray = SkSTArray<kInitialTrackedResourcesCount, T>;
     TrackedResourceArray<sk_sp<const GrManagedResource>> fTrackedResources;
     TrackedResourceArray<gr_rp<const GrRecycledResource>> fTrackedRecycledResources;
-    SkSTArray<16, sk_sp<const GrBuffer>> fTrackedGpuBuffers;
+    SkSTArray<16, sk_sp<const GrBuffer>, true> fTrackedGpuBuffers;
     SkSTArray<16, gr_cb<const GrSurface>> fTrackedGpuSurfaces;
 
     // Tracks whether we are in the middle of a command buffer begin/end calls and thus can add
@@ -331,7 +331,7 @@ private:
 
     SkTArray<std::unique_ptr<GrVkSecondaryCommandBuffer>, true> fSecondaryCommandBuffers;
     VkFence                                                     fSubmitFence;
-    SkTArray<sk_sp<skgpu::RefCntedCallback>>                    fFinishedProcs;
+    SkTArray<sk_sp<skgpu::RefCntedCallback>, true>              fFinishedProcs;
 
     using INHERITED = GrVkCommandBuffer;
 };

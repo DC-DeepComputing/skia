@@ -804,7 +804,7 @@ void Viewer::initSlides() {
 #endif
     };
 
-    SkTArray<sk_sp<Slide>> dirSlides;
+    SkTArray<sk_sp<Slide>, true> dirSlides;
 
     const auto addSlide =
             [&](const SkString& name, const SkString& path, const SlideFactory& fact) {

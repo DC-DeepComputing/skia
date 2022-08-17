@@ -518,7 +518,9 @@ private:
     }
 
     template <bool E = MEM_MOVE> std::enable_if_t<E, void> move(int dst, int src) {
-        memcpy(&fItemArray[dst], &fItemArray[src], sizeof(T));
+        memcpy(static_cast<void*>(&fItemArray[dst]),
+               static_cast<void*>(&fItemArray[src]),
+               sizeof(T));
     }
     template <bool E = MEM_MOVE> std::enable_if_t<E, void> move(void* dst) {
         sk_careful_memcpy(dst, fItemArray, fCount * sizeof(T));

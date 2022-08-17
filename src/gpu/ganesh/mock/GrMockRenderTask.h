@@ -42,7 +42,7 @@ public:
 #endif
 
 private:
-    SkTArray<sk_sp<GrSurfaceProxy>> fUsed;
+    SkTArray<sk_sp<GrSurfaceProxy>, true> fUsed;
 };
 
 #endif
