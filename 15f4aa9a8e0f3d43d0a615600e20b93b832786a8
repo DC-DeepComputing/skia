@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f52bdb_ada683c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T13:53:54Z",
+      "side": 1,
+      "message": "Outside of all of these comments I\u0027ve thought about this overnight and I think another approach may be better -- re-enabling perspective SDF text support. There\u0027s a check in SmallPathRenderer that determines the scale of the base SDF for perspective, and I think we could move it over to the text renderer.",
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "139557cd_d5d1a129",
@@ -43,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "359895a8_b5dfcc4b",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T13:53:54Z",
+      "side": 1,
+      "message": "As written, yes -- but as you say below we need to figure out what\u0027s going on with the GetString issue. I also need to change this to not disable on Adreno 4xx in general. I don\u0027t believe this bug happens when using GLES directly, otherwise it would have come up by now.",
+      "parentUuid": "139557cd_d5d1a129",
+      "range": {
+        "startLine": 4224,
+        "startChar": 46,
+        "endLine": 4224,
+        "endChar": 52
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2ed0534_4ca0f2d1",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 1
@@ -54,6 +95,30 @@
       "writtenOn": "2022-08-17T13:39:10Z",
       "side": 1,
       "message": "We should probably add a condition to check for GrGLDriver::kQualcomm to avoid triggering on Freedreno driver. Not that it\u0027s likely to encounter a freedreno running on 4xx on a real device, but at least it\u0027ll be there for future copy-pasta.",
+      "range": {
+        "startLine": 4225,
+        "startChar": 8,
+        "endLine": 4225,
+        "endChar": 15
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc9469c7_67d63a62",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4225,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T13:53:54Z",
+      "side": 1,
+      "message": "I\u0027ll be removing the non WebGL case, as above. There\u0027s no way that I can tell to get access to the driver information through WebGL, just the vendor and the renderer.",
+      "parentUuid": "a2ed0534_4ca0f2d1",
       "range": {
         "startLine": 4225,
         "startChar": 8,
@@ -101,6 +166,30 @@
       "side": 1,
       "message": "Hm, seems like we need to get to the bottom of this. When I go to webglreport.com I get \"ANGLE (Apple, Apple M1 Pro, OpenGL 4.1)\" so it seems like it ought to work in Chrome. Could it be something in the emscripten GL-\u003eWebGL layer?",
       "parentUuid": "3c573b47_5662c03a",
+      "range": {
+        "startLine": 705,
+        "startChar": 4,
+        "endLine": 705,
+        "endChar": 76
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616c2e1a_fa4c2618",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T13:53:54Z",
+      "side": 1,
+      "message": "It\u0027s likely but I\u0027m not sure who to ask. Kevin doesn\u0027t seem to know.",
+      "parentUuid": "d0f6b9bd_d8ed3a01",
       "range": {
         "startLine": 705,
         "startChar": 4,
