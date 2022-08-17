@@ -46,22 +46,27 @@ SDFTControl::SDFTControl(
     SkASSERT_RELEASE(0 < min && min <= max);
 }
 
-bool SDFTControl::isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint) const {
+bool SDFTControl::isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
+                           bool matrixHasPerspective) const {
     return !fForcePaths &&
-           !isSDFT(approximateDeviceTextSize, paint) &&
+           !isSDFT(approximateDeviceTextSize, paint, matrixHasPerspective) &&
+           !matrixHasPerspective &&
             approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas;
 }
 
-bool SDFTControl::isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint) const {
+bool SDFTControl::isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
+                         bool matrixHasPerspective) const {
     return !fForcePaths &&
            fAbleToUseSDFT &&
            paint.getMaskFilter() == nullptr &&
            paint.getStyle() == SkPaint::kFill_Style &&
-           fMinDistanceFieldFontSize <= approximateDeviceTextSize &&
+           (fMinDistanceFieldFontSize <= approximateDeviceTextSize ||
+            matrixHasPerspective) &&
            approximateDeviceTextSize <= fMaxDistanceFieldFontSize;
 }
 
-SkScalar scaled_text_size(const SkScalar textSize, const SkMatrix& viewMatrix) {
+SkScalar scaled_text_size(const SkScalar textSize, const SkMatrix& viewMatrix,
+                          const SkRect& bounds) {
     SkScalar scaledTextSize = textSize;
 
     if (viewMatrix.hasPerspective()) {
@@ -82,9 +87,10 @@ SkScalar scaled_text_size(const SkScalar textSize, const SkMatrix& viewMatrix) {
 }
 
 std::tuple<SkFont, SkScalar, SDFTMatrixRange>
-SDFTControl::getSDFFont(const SkFont& font, const SkMatrix& viewMatrix) const {
+SDFTControl::getSDFFont(const SkFont& font, const SkMatrix& viewMatrix,
+                        const SkRect& bounds) const {
     SkScalar textSize = font.getSize();
-    SkScalar scaledTextSize = scaled_text_size(textSize, viewMatrix);
+    SkScalar scaledTextSize = scaled_text_size(textSize, viewMatrix, bounds);
 
     SkFont dfFont{font};
 

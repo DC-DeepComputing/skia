@@ -71,7 +71,7 @@ protected:
         SkSurfaceProps props(SkSurfaceProps::kUseDeviceIndependentFonts_Flag | inputProps.flags(),
                              inputProps.pixelGeometry());
         auto surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, 0, &props);
-        SkCanvas* canvas = surface ? surface->getCanvas() : inputCanvas;
+        SkCanvas* canvas = inputCanvas;//surface ? surface->getCanvas() : inputCanvas;
         // init our new canvas with the old canvas's matrix
         canvas->setMatrix(inputCanvas->getLocalToDeviceAs3x3());
         SkScalar x = 0, y = 0;
