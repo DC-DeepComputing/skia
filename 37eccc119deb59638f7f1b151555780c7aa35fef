@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65334f94_964f7614",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T19:18:00Z",
+      "side": 1,
+      "message": "I think this all looks good after we translate the bounds using the offset. One could argue that source bounds from the SkGlyphRun should include the offset, but it doesn\u0027t. So, it\u0027s not really source bounds.",
+      "revId": "37eccc119deb59638f7f1b151555780c7aa35fef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
