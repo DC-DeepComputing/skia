@@ -416,13 +416,13 @@ protected:
 private:
     // Base renderers that get wrapped on the offscreen renderers so that they can be transformed
     // for visualization, or supersampled.
-    SkTArray<sk_sp<ShapeRenderer>> fShapes;
+    SkTArray<sk_sp<ShapeRenderer>, true> fShapes;
 
-    SkTArray<sk_sp<OffscreenShapeRenderer>> fNative;
-    SkTArray<sk_sp<OffscreenShapeRenderer>> fRaster;
-    SkTArray<sk_sp<OffscreenShapeRenderer>> fHairline;
-    SkTArray<sk_sp<OffscreenShapeRenderer>> fSS4;
-    SkTArray<sk_sp<OffscreenShapeRenderer>> fSS16;
+    SkTArray<sk_sp<OffscreenShapeRenderer>, true> fNative;
+    SkTArray<sk_sp<OffscreenShapeRenderer>, true> fRaster;
+    SkTArray<sk_sp<OffscreenShapeRenderer>, true> fHairline;
+    SkTArray<sk_sp<OffscreenShapeRenderer>, true> fSS4;
+    SkTArray<sk_sp<OffscreenShapeRenderer>, true> fSS16;
 
     SkScalar fStrokeWidth;
 
@@ -461,7 +461,7 @@ private:
     }
 
     void drawShapes(SkCanvas* canvas, const char* name, int gridX,
-                    SkTArray<sk_sp<OffscreenShapeRenderer>> shapes) {
+                    SkTArray<sk_sp<OffscreenShapeRenderer>, true> shapes) {
         SkAutoCanvasRestore autoRestore(canvas, /* save */ true);
 
         for (int i = 0; i < shapes.count(); ++i) {

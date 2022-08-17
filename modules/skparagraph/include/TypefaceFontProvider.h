@@ -28,7 +28,7 @@ public:
     void appendTypeface(sk_sp<SkTypeface> typeface);
 
 private:
-    SkTArray<sk_sp<SkTypeface>> fStyles;
+    SkTArray<sk_sp<SkTypeface>, true> fStyles;
     SkString fFamilyName;
     SkString fAlias;
 };

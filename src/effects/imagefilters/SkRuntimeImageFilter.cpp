@@ -171,7 +171,7 @@ sk_sp<SkSpecialImage> SkRuntimeImageFilter::onFilterImage(const Context& ctx,
     const int inputCount = this->countInputs();
     SkASSERT(inputCount == fChildShaderNames.count());
 
-    SkSTArray<1, sk_sp<SkShader>> inputShaders;
+    SkSTArray<1, sk_sp<SkShader>, true> inputShaders;
     for (int i = 0; i < inputCount; i++) {
         SkIPoint inputOffset = SkIPoint::Make(0, 0);
         sk_sp<SkSpecialImage> input(this->filterInput(i, ctx, &inputOffset));

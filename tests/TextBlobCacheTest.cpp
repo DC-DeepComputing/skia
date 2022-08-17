@@ -33,7 +33,7 @@
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
-static void draw(SkCanvas* canvas, int redraw, const SkTArray<sk_sp<SkTextBlob>>& blobs) {
+static void draw(SkCanvas* canvas, int redraw, const SkTArray<sk_sp<SkTextBlob>, true>& blobs) {
     int yOffset = 0;
     for (int r = 0; r < redraw; r++) {
         for (int i = 0; i < blobs.count(); i++) {
@@ -97,7 +97,7 @@ static void text_blob_cache_inner(skiatest::Reporter* reporter, GrDirectContext*
     }
 
     // generate textblobs
-    SkTArray<sk_sp<SkTextBlob>> blobs;
+    SkTArray<sk_sp<SkTextBlob>, true> blobs;
     for (int i = 0; i < count; i++) {
         SkFont font;
         font.setSize(48); // draw big glyphs to really stress the atlas

@@ -66,7 +66,7 @@ private:
     static const int kNumElements = 1000;
     static const int kMaxEdges = 5;
 
-    SkTArray<sk_sp<ToolUtils::TopoTestNode>> fGraph;
+    SkTArray<sk_sp<ToolUtils::TopoTestNode>, true> fGraph;
     SkRandom fRand;
 
     using INHERITED = Benchmark;

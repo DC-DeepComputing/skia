@@ -231,7 +231,7 @@ private:
     // flushes.
     sk_sp<GrBufferAllocPool::CpuBufferCache> fCpuBufferCache;
 
-    SkTArray<sk_sp<GrRenderTask>>            fDAG;
+    SkTArray<sk_sp<GrRenderTask>, true>      fDAG;
     std::vector<int>                         fReorderBlockerTaskIndices;
     skgpu::v1::OpsTask*                      fActiveOpsTask = nullptr;
 

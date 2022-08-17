@@ -46,7 +46,7 @@
 #include <utility>
 
 class ClipTileRenderer;
-using ClipTileRendererArray = SkTArray<sk_sp<ClipTileRenderer>>;
+using ClipTileRendererArray = SkTArray<sk_sp<ClipTileRenderer>, true>;
 
 // This GM mimics the draw calls used by complex compositors that focus on drawing rectangles
 // and quadrilaterals with per-edge AA, with complex images, effects, and seamless tiling.

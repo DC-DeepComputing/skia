@@ -68,7 +68,7 @@ private:
 
     void purge(int count);
 
-    SkTArray<sk_sp<SkTypeface>> fTypefaces;
+    SkTArray<sk_sp<SkTypeface>, true> fTypefaces;
 };
 
 #endif

@@ -302,7 +302,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
     // fulfillment due to cache pressure.
     static constexpr int kMaxBytes = 1;
     dContext->setResourceCacheLimit(kMaxBytes);
-    SkTArray<sk_sp<GrTexture>> textures;
+    SkTArray<sk_sp<GrTexture>, true> textures;
     for (int i = 0; i < 5; ++i) {
         auto format = dContext->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                        GrRenderable::kNo);

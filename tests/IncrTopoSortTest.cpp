@@ -303,7 +303,7 @@ private:
         }
     }
 
-    SkTArray<sk_sp<Node>> fNodes;
+    SkTArray<sk_sp<Node>, true> fNodes;
 
     struct StackInfo {
         sk_sp<Node> fNode;  // This gets a ref bc, in 'shift' it will be pulled out of 'fNodes'

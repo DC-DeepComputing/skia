@@ -34,7 +34,7 @@ public:
         return fDDL->programData();
     }
 
-    const SkTArray<sk_sp<GrRenderTask>>& renderTasks() const {
+    const SkTArray<sk_sp<GrRenderTask>, true>& renderTasks() const {
         return fDDL->fRenderTasks;
     }
 #endif

@@ -112,7 +112,7 @@ public:
 
     // External objects accessible by the effect's SkSL code. Each binding is a name and particular
     // kind of object. See SkParticleBinding::Make* for details.
-    SkTArray<sk_sp<SkParticleBinding>> fBindings;
+    SkTArray<sk_sp<SkParticleBinding>, true> fBindings;
 
     void visitFields(SkFieldVisitor* v);
 

@@ -239,7 +239,7 @@ private:
     SkTArray<PromiseImageInfo>           fImageInfo;
 
     // TODO: review the use of 'fPromiseImages' - it doesn't seem useful/necessary
-    SkTArray<sk_sp<SkImage>>             fPromiseImages;    // All the promise images in the
+    SkTArray<sk_sp<SkImage>, true>       fPromiseImages;    // All the promise images in the
                                                             // reconstituted picture
 };
 
