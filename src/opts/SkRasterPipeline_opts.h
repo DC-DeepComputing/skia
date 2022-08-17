@@ -2730,24 +2730,142 @@ SI F tile(F v, SkTileMode mode, float limit, float invLimit) {
     SkUNREACHABLE;
 }
 
+SI F srgb_to_linear(F v) {
+    return if_then_else(v <= 0.04045f,
+                        v * (float)(1/12.92),
+                        approx_powf(mad((float)1/1.055, v, (float)(0.055/1.055)), 2.4f));
+}
+
 SI void sample(const SkRasterPipeline_SamplerCtx2* ctx, F x, F y,
                F* r, F* g, F* b, F* a) {
     x = tile(x, ctx->tileX, ctx->width , ctx->invWidth );
     y = tile(y, ctx->tileY, ctx->height, ctx->invHeight);
 
+    // ie, ix_and_ptr, w/o templates
+    x = clamp(x, ctx->width);
+    y = clamp(y, ctx->height);
+    U32 ix = trunc_(y)*ctx->stride + trunc_(x);
+
+    // Default values to avoid redundant work below
+    *r = *g = *b = 0;
+    *a = 1;
+
     switch (ctx->ct) {
-        default: *r = *g = *b = *a = 0;
-                 break;
+        case kAlpha_8_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *a = from_byte(gather(ptr, ix));
+        } break;
+
+        case kGray_8_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *r = *g = *b = from_byte(gather(ptr, ix));
+        } break;
+
+        case kR8_unorm_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *r = from_byte(gather(ptr, ix));
+        } break;
+
+        case kA16_unorm_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            *a = from_short(gather(ptr, ix));
+        } break;
+
+        case kA16_float_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            *a = from_half(gather(ptr, ix));
+        } break;
+
+        case kRGB_565_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_565(gather(ptr, ix), r, g, b);
+        } break;
+
+        case kARGB_4444_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_4444(gather(ptr, ix), r, g, b, a);
+        } break;
+
+        case kR8G8_unorm_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_88(gather(ptr, ix), r, g);
+        } break;
 
         case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType: {
-            const uint32_t* ptr;
-            U32 ix = ix_and_ptr(&ptr, ctx, x,y);
-            from_8888(gather(ptr, ix), r,g,b,a);
+        case kBGRA_8888_SkColorType:
+        case kRGB_888x_SkColorType:
+        case kSRGBA_8888_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_8888(gather(ptr, ix), r, g, b, a);
             if (ctx->ct == kBGRA_8888_SkColorType) {
-                std::swap(*r,*b);
+                std::swap(*r, *b);
+            }
+            if (ctx->ct == kRGB_888x_SkColorType) {
+                *a = 1;
+            }
+            if (ctx->ct == kSRGBA_8888_SkColorType) {
+                *r = srgb_to_linear(*r);
+                *g = srgb_to_linear(*g);
+                *b = srgb_to_linear(*b);
             }
         } break;
+
+        case kR16G16_unorm_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_1616(gather(ptr, ix), r, g);
+        } break;
+
+        case kR16G16_float_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            auto px = gather(ptr, ix);
+
+            U16 R,G;
+            load2((const uint16_t*)&px, 0, &R, &G);
+            *r = from_half(R);
+            *g = from_half(G);
+        } break;
+
+        case kRGBA_1010102_SkColorType:
+        case kBGRA_1010102_SkColorType:
+        case kRGB_101010x_SkColorType:
+        case kBGR_101010x_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_1010102(gather(ptr, ix), r, g, b, a);
+            if (ctx->ct == kBGRA_1010102_SkColorType || ctx->ct == kBGR_101010x_SkColorType) {
+                std::swap(*r, *b);
+            }
+            if (ctx->ct == kRGB_101010x_SkColorType || ctx->ct == kBGR_101010x_SkColorType) {
+                *a = 1;
+            }
+        } break;
+
+        case kR16G16B16A16_unorm_SkColorType: {
+            const uint64_t* ptr = (const uint64_t*)ctx->pixels;
+            from_16161616(gather(ptr, ix), r, g, b, a);
+        } break;
+
+        case kRGBA_F16Norm_SkColorType:
+        case kRGBA_F16_SkColorType: {
+            const uint64_t* ptr = (const uint64_t*)ctx->pixels;
+            auto px = gather(ptr, ix);
+
+            U16 R, G, B, A;
+            load4((const uint16_t*)&px, 0, &R, &G, &B, &A);
+            *r = from_half(R);
+            *g = from_half(G);
+            *b = from_half(B);
+            *a = from_half(A);
+        } break;
+
+        case kRGBA_F32_SkColorType: {
+            const float* ptr = (const float*)ctx->pixels;
+            *r = gather(ptr, 4*ix + 0);
+            *g = gather(ptr, 4*ix + 1);
+            *b = gather(ptr, 4*ix + 2);
+            *a = gather(ptr, 4*ix + 3);
+        } break;
+
+        default: SkUNREACHABLE;
     }
 }
 
