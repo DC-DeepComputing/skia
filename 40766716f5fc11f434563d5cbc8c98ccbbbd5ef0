@@ -286,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a64f8d3_ba68e14e",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T20:42:59Z",
+      "side": 1,
+      "message": "Okay, after some more experimentation:\n`t[0]` works and `texCoords[state.f0]` also works. \n\n`devPoints[0]` was the culprit which requires the x and y accesses. I think this makes sense because `devPosition` is an array of `SkV4`s (has 4 floats), whereas `position` in this class is `kFloat2`. This was modeled after some other render steps (such as `BitmapTextRenderStep`,`SDFTextRenderStep`) and is helpful for assigning directly to `texCoords` which is also `kFloat2` type (since texture coordinates are passed in as one 2D point).\n\nI propose we do the following: \n`devPoints[0].x \u003c\u003c devPoints[0].y \u003c\u003c texCoords[state.f0]...`\nThis will get rid of `t` and doesn\u0027t require making `position` a `float4` type, which would inconvenience the assignment to `texCoords`. Let me know what you think.",
+      "parentUuid": "10de71b0_a5bc72cd",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f07b2245_6ee7d6ea",
         "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
         "patchSetId": 8
