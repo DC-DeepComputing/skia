@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cff8b40_2115800b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:50:47Z",
+      "side": 1,
+      "message": "just some small notes, with the most odd one being the varying to be half4 instead of float4.",
+      "revId": "c69a29c0646331d97302d15ca63cab052136ce48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60fefd0a_975466a0",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:50:47Z",
+      "side": 1,
+      "message": "This seems odd to me; coordinates are generally kept in float4 so we don\u0027t run into issues accessing large textures (2048 and up), so if emit_glue_code_for_entry is expecting it to be a half4 variable that seems more a problem to fix in emit_glue_code and not here. It also should be fine as a float4 already, since that\u0027s what `coords` is defined as.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 93
+      },
+      "revId": "c69a29c0646331d97302d15ca63cab052136ce48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c65f5256_b427f4f7",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:50:47Z",
+      "side": 1,
+      "message": "This line of SkSL shouldn\u0027t be guarded by the if. RenderSteps won\u0027t have visibility to `defineLocalCoordsVarying`, so `stepLocalCoords` will always need to be defined so they can write to it.",
+      "range": {
+        "startLine": 263,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 35
+      },
+      "revId": "c69a29c0646331d97302d15ca63cab052136ce48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f9c5f1_e6b2df88",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:50:47Z",
+      "side": 1,
+      "message": "nit: our style doesn\u0027t add const to primitives or other things passed in by value.",
+      "range": {
+        "startLine": 42,
+        "startChar": 56,
+        "endLine": 42,
+        "endChar": 62
+      },
+      "revId": "c69a29c0646331d97302d15ca63cab052136ce48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
