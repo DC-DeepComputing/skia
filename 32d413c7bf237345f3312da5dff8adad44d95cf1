@@ -46,6 +46,30 @@
       },
       "revId": "32d413c7bf237345f3312da5dff8adad44d95cf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3cb2bd_ff767a54",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-17T13:39:05Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t think it\u0027s possible to point at a function with GUARDED_BY (that \"thing\" needs to be a thing that has annotations on it - in turn, for lock/unlock). I also realized that you could do the bundling solution (that\u0027s how the RTE shared compiler used to work, although now it\u0027s in a separate translation unit, so that fell apart).\n\nFor this, it\u0027s probably worth it - just put the mutex and pool in a local struct, and have a singleton instance.",
+      "parentUuid": "96b78c99_a00ac7d2",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 0
+      },
+      "revId": "32d413c7bf237345f3312da5dff8adad44d95cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
