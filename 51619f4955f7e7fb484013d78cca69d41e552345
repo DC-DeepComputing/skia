@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10df9d97_ba16d721",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-17T19:29:56Z",
+      "side": 1,
+      "message": "It might be worth mentioning here that these are needed bc of Skottie. (I say this partially because we haven\u0027t gotten approval and we may not end up going this direction. We could potentially revert in that case, although it may not be a clean revert.)",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 25
+      },
+      "revId": "51619f4955f7e7fb484013d78cca69d41e552345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416453e2_4ffed4bf",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-17T19:29:56Z",
+      "side": 1,
+      "message": "Why did these get moved from being pulled from the json to being explicitly specified here?\n\nOr were there none in the generated version, and these needed to be added manually? I might have a slight preference for inserting them in your new if block. Otherwise, perhaps a comment explaining that these are required for skottie.",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 275,
+        "endChar": 33
+      },
+      "revId": "51619f4955f7e7fb484013d78cca69d41e552345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b315bf89_c34ba014",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-17T19:29:56Z",
+      "side": 1,
+      "message": "This should either line up with `js`, on the prior line, or be indented 4 spaces.",
+      "range": {
+        "startLine": 583,
+        "startChar": 35,
+        "endLine": 583,
+        "endChar": 37
+      },
+      "revId": "51619f4955f7e7fb484013d78cca69d41e552345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b19520_b9b0f6ca",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-17T19:29:56Z",
+      "side": 1,
+      "message": "Same",
+      "range": {
+        "startLine": 587,
+        "startChar": 35,
+        "endLine": 587,
+        "endChar": 37
+      },
+      "revId": "51619f4955f7e7fb484013d78cca69d41e552345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
