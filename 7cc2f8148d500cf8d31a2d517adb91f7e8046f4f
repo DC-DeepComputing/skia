@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12947daa_de6d3df9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-17T19:07:46Z",
+      "side": 1,
+      "message": "Please add tests to UniformManagerTest.cpp.",
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b7230e9_f5f6c2c4",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-17T19:07:46Z",
+      "side": 1,
+      "message": "Looks like this is relying on VLAs (by the book, these are C only)?\n\nIt\u0027s probably better to do something portable:\n\n```\nSkASSERT(paddingSize \u003c\u003d 16);\nstatic constexpr char kPadding[16] \u003d {};\n```",
+      "range": {
+        "startLine": 554,
+        "startChar": 3,
+        "endLine": 554,
+        "endChar": 30
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
