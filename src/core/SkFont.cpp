@@ -343,8 +343,18 @@ SkRect SkFontPriv::GetFontBounds(const SkFont& font) {
     return bounds;
 }
 
-SkScalar SkFontPriv::ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix) {
-    return font.getSize() * matrix.getMaxScale();
+SkScalar SkFontPriv::ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix,
+                                                    const SkRect& bounds) {
+    if (!matrix.hasPerspective()) {
+        return font.getSize() * matrix.getMaxScale();
+    } else {
+        // approximate the scale since we can't get it from the matrix
+        SkRect xformedBounds;
+        matrix.mapRect(&xformedBounds, bounds);
+        SkScalar maxScale = SkScalarAbs(std::max(xformedBounds.width() / bounds.width(),
+                                                 xformedBounds.height() / bounds.height()));
+        return font.getSize() * maxScale;
+    }
 }
 
 int SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkTextEncoding encoding) {
