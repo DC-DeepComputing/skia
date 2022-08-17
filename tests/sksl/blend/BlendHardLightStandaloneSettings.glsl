@@ -10,6 +10,9 @@ vec4 blend_overlay_h4h4h4(vec4 src, vec4 dst) {
     result.xyz += dst.xyz * (1.0 - src.w) + src.xyz * (1.0 - dst.w);
     return result;
 }
+vec4 blend_hard_light_h4h4h4(vec4 src, vec4 dst) {
+    return blend_overlay_h4h4h4(dst, src);
+}
 void main() {
-    sk_FragColor = blend_overlay_h4h4h4(dst, src);
+    sk_FragColor = blend_hard_light_h4h4h4(src, dst);
 }
