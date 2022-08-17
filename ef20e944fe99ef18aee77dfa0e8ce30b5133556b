@@ -60,6 +60,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6bc811c_35299ed0",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:30:47Z",
+      "side": 1,
+      "message": "just a thought for when we have nothing to do, but could BackendTexture use an explicit bool operator that calls isValid()?",
+      "range": {
+        "startLine": 79,
+        "startChar": 23,
+        "endLine": 80,
+        "endChar": 30
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5133f9_9c8a3c93",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:30:47Z",
+      "side": 1,
+      "message": "Should we clarify that we require that it must be deleted by the same Recorder that created it?\n\nOr should be explicit in the docs here that it has to be deleted, but any recorder can do it?\n\nAlso, out of curiosity, are there other ways to create a BackendTexture that the client could use that wouldn\u0027t require them to use deleteBackendTexture?",
+      "range": {
+        "startLine": 89,
+        "startChar": 45,
+        "endLine": 89,
+        "endChar": 75
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bcdd457_697fbd95",
         "filename": "src/gpu/graphite/ResourceProvider.cpp",
         "patchSetId": 2
