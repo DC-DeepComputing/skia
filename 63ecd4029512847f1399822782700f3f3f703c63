@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98a3fee7_54133d69",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T17:31:57Z",
+      "side": 1,
+      "message": "Unfortunately, yes. If we could scale like that then it would be a linear transformation, and it\u0027s not. One thing I don\u0027t think I took into account is the offset of the GlyphRun -- that has to be included as well.",
+      "parentUuid": "18334e7c_7b957874",
+      "range": {
+        "startLine": 347,
+        "startChar": 52,
+        "endLine": 347,
+        "endChar": 72
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "967179dc_545a6687",
         "filename": "src/core/SkFont.cpp",
         "patchSetId": 6
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a46b761e_e24c9fba",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T17:31:57Z",
+      "side": 1,
+      "message": "In SkMatrixPriv? Actually it looks like there\u0027s something in there already that takes just a point: DifferentialAreaScale. So maybe we can use that with the offset of the run and avoid computing the bounds.",
+      "parentUuid": "967179dc_545a6687",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 34
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3672794c_5ead28da",
         "filename": "src/text/gpu/SDFTControl.cpp",
         "patchSetId": 6
@@ -77,6 +125,30 @@
       "writtenOn": "2022-08-17T16:26:22Z",
       "side": 1,
       "message": "Doesn\u0027t this need to be moved into the std::max? If these can be negative then max seems to give the wrong result.",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 30
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d16b4f0_da4abd68",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-17T17:31:57Z",
+      "side": 1,
+      "message": "Agreed, yes.",
+      "parentUuid": "3672794c_5ead28da",
       "range": {
         "startLine": 79,
         "startChar": 19,
