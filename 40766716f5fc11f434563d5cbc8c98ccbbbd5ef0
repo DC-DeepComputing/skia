@@ -236,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1609b60_86f62e22",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T17:22:35Z",
+      "side": 1,
+      "message": "Update: using simply devPoints[0] and t[0] compiled OK, but led to an error at runtime within BufferWriter::validate at this assert: `SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) \u003c\u003d fEnd);`\n\nSo I now do devPoints[0].x \u003c\u003c devPoints[0].y \u003c\u003c ..., which works fine and appears to be how we do it in other RenderSteps. Might be worth looking into though if this is unexpected behavior.",
+      "parentUuid": "e7f53754_799c15b8",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07b2245_6ee7d6ea",
