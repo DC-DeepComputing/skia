@@ -15,7 +15,7 @@
 #include "include/private/SkSLProgramKind.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLPosition.h"
-#include "src/sksl/SkSLInliner.h"
+#include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLMangler.h"
 #include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLParsedModule.h"
@@ -142,7 +142,6 @@ public:
         kOn,
     };
     static void EnableOptimizer(OverrideFlag flag) { sOptimizer = flag; }
-    static void EnableInliner(OverrideFlag flag) { sInliner = flag; }
 
     /**
      * If fExternalFunctions is supplied in the settings, those values are registered in the symbol
@@ -248,11 +247,6 @@ private:
     /** Optimize a module after rehydrating it. */
     bool optimizeRehydratedModule(LoadedModule& module, const ParsedModule& base);
 
-    /** Flattens out function calls when it is safe to do so. */
-    bool runInliner(const std::vector<std::unique_ptr<ProgramElement>>& elements,
-                    std::shared_ptr<SymbolTable> symbols,
-                    ProgramUsage* usage);
-
     const ParsedModule& loadSharedModule();
     const ParsedModule& loadGPUModule();
     const ParsedModule& loadVertexModule();
@@ -284,7 +278,7 @@ private:
     ModifiersPool fCoreModifiers;
 
     Mangler fMangler;
-    Inliner fInliner;
+
     // This is the current symbol table of the code we are processing, and therefore changes during
     // compilation
     std::shared_ptr<SymbolTable> fSymbolTable;
@@ -292,7 +286,6 @@ private:
     std::string fErrorText;
 
     static OverrideFlag sOptimizer;
-    static OverrideFlag sInliner;
 
     friend class AutoSource;
     friend class ::SkSLCompileBench;
