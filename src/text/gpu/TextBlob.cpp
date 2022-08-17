@@ -270,10 +270,14 @@ auto TextBlob::Key::Make(const GlyphRunList& glyphRunList,
         // Do any runs use direct drawing types?.
         key.fHasSomeDirectSubRuns = false;
         for (auto& run : glyphRunList) {
+            // DirectSubRuns don't support perspective so using the correct bounds
+            // is not necessary here.
             SkScalar approximateDeviceTextSize =
-                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix);
+                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix,
+                                                               SkRect{});
             key.fHasSomeDirectSubRuns |=
-                    strikeDevice.fSDFTControl->isDirect(approximateDeviceTextSize, paint);
+                    strikeDevice.fSDFTControl->isDirect(approximateDeviceTextSize, paint,
+                                                        drawMatrix);
         }
 
         if (key.fHasSomeDirectSubRuns) {
