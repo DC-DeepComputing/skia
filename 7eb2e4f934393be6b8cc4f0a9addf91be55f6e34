@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01970231_0a833efb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:25:26Z",
+      "side": 1,
+      "message": "I\u0027m assuming the batching benefits we\u0027re getting are for the solid color case givne how we handle the local coord generation as a uniform still?",
+      "revId": "7eb2e4f934393be6b8cc4f0a9addf91be55f6e34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50656851_3ace536d",
+        "filename": "src/gpu/ganesh/ops/SmallPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:25:26Z",
+      "side": 1,
+      "message": "wdyt about using bulk operations:\n\n    SkPoint pts[4];\n    SkPoint3 out[4];\n    translatedBounds.toQuad(pts);\n    ctm.mapHomogeneousPoints(out, pts, 4);\n    \ntoQuad puts the points in TL, TR, BR, BL order so the vertex writing would access them as [0], [3], [1], [2]",
+      "range": {
+        "startLine": 521,
+        "startChar": 12,
+        "endLine": 530,
+        "endChar": 84
+      },
+      "revId": "7eb2e4f934393be6b8cc4f0a9addf91be55f6e34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9311c688_70e3e7fd",
+        "filename": "src/gpu/ganesh/ops/SmallPathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:25:26Z",
+      "side": 1,
+      "message": "Do we need this anymore? If there are different shader paths that distance field can take based on similarity or s+T, is that encoded in the flags?\n\nIf so, can we check those, or OR the flags together to get the most general SDF shader?",
+      "range": {
+        "startLine": 618,
+        "startChar": 12,
+        "endLine": 621,
+        "endChar": 13
+      },
+      "revId": "7eb2e4f934393be6b8cc4f0a9addf91be55f6e34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
