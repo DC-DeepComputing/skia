@@ -13,8 +13,8 @@ half4 main(float2 coords) {
     int zero = int(colorGreen.r);
     int one  = int(colorGreen.g);
 
-    for (int x = zero; x < 100; ++x) {
-        for (int y = one; y < 100; ++y) {
+    for (int x = zero; x < 100; x += one) {
+        for (int y = one; y < 100; y += one) {
             if ((x/y) != exact_division(x, y)) {
                 return half4(1, float(x) / 255, float(y) / 255, 1);
             }

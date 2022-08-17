@@ -517,7 +517,8 @@ SKSL_TEST(CPU + GPU, kApiLevel_T, Hex,                             "shared/Hex.s
 SKSL_TEST(GPU_ES3,   kNever,      HexUnsigned,                     "shared/HexUnsigned.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, InoutParameters,                 "shared/InoutParameters.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, InoutParamsAreDistinct,          "shared/InoutParamsAreDistinct.sksl")
-SKSL_TEST(GPU_ES3,   kApiLevel_T, IntegerDivisionES3,              "shared/IntegerDivisionES3.sksl")
+SKSL_TEST(GPU_ES3,   kApiLevel_T, IntegerDivisionScalarES3,        "shared/IntegerDivisionScalarES3.sksl")
+SKSL_TEST(GPU_ES3,   kApiLevel_T, IntegerDivisionVectorES3,        "shared/IntegerDivisionVectorES3.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, Matrices,                        "shared/Matrices.sksl")
 SKSL_TEST(GPU_ES3,   kNever,      MatricesNonsquare,               "shared/MatricesNonsquare.sksl")
 // TODO(skia:12443) These tests actually don't work on MANY devices. The GLSL SkQP suite
