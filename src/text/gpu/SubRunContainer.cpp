@@ -2183,6 +2183,7 @@ static std::tuple<AtlasTextOp::MaskType, uint32_t, bool> calculate_sdf_parameter
     DFGPFlags |= drawMatrix.isScaleTranslate() ? kScaleOnly_DistanceFieldEffectFlag : 0;
     DFGPFlags |= useGammaCorrectDistanceTable ? kGammaCorrect_DistanceFieldEffectFlag : 0;
     DFGPFlags |= MT::kAliasedDistanceField == maskType ? kAliased_DistanceFieldEffectFlag : 0;
+    DFGPFlags |= drawMatrix.hasPerspective() ? kPerspective_DistanceFieldEffectFlag : 0;
 
     if (isLCD) {
         DFGPFlags |= kUseLCD_DistanceFieldEffectFlag;
@@ -2260,7 +2261,11 @@ SDFTSubRun::regenerateAtlas(int begin, int end, GrMeshDrawTarget *target) const 
 }
 
 size_t SDFTSubRun::vertexStride(const SkMatrix& drawMatrix) const {
-    return sizeof(Mask2DVertex);
+    if (drawMatrix.hasPerspective()) {
+        return sizeof(Mask3DVertex);
+    } else {
+        return sizeof(Mask2DVertex);
+    }
 }
 
 void SDFTSubRun::fillVertexData(
@@ -2507,17 +2512,19 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         rejected->setSource(glyphRun.source());
         const SkFont& runFont = glyphRun.font();
 
-        // Only consider using direct or SDFT drawing if not drawing hairlines and not perspective.
-        if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0)
-            && !positionMatrix.hasPerspective()) {
+        // Only consider using direct or SDFT drawing if not drawing hairlines.
+        if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0)) {
+            SkRect runBounds = glyphRun.sourceBounds(runPaint);
             SkScalar approximateDeviceTextSize =
-                    SkFontPriv::ApproximateTransformedTextSize(runFont, positionMatrix);
+                    SkFontPriv::ApproximateTransformedTextSize(runFont, positionMatrix, runBounds);
 
-            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint)) {
+            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint,
+                                   positionMatrix.hasPerspective())) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         SkStrikeSpec::MakeSDFT(
-                                runFont, runPaint, deviceProps, positionMatrix, SDFTControl);
+                                runFont, runPaint, deviceProps, positionMatrix, runBounds,
+                                SDFTControl);
 
                 if constexpr(kTrace) {
                     msg.appendf("  SDFT case:\n%s", strikeSpec.dump().c_str());
@@ -2546,7 +2553,8 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 }
             }
 
-            if (!rejected->source().empty() && !SDFTControl.forcePaths()) {
+            if (!rejected->source().empty() && !positionMatrix.hasPerspective() &&
+                !SDFTControl.forcePaths()) {
                 // Process masks including ARGB - this should be the 99.99% case.
                 // This will handle medium size emoji that are sharing the run with SDFT drawn text.
                 // If things are too big they will be passed along to the drawing of last resort
