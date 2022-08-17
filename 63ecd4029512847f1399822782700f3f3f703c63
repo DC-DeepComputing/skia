@@ -16,6 +16,121 @@
       "message": "PTAL.",
       "revId": "63ecd4029512847f1399822782700f3f3f703c63",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18334e7c_7b957874",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T16:26:22Z",
+      "side": 1,
+      "message": "Do we need to pass the bounds in. Since we are just taking the ratio of the original and projected sides, can\u0027t we use any rectangle? Say the unit square?",
+      "range": {
+        "startLine": 347,
+        "startChar": 52,
+        "endLine": 347,
+        "endChar": 72
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967179dc_545a6687",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T16:26:22Z",
+      "side": 1,
+      "message": "It seems like this should be inside the std::max on the two values.\n\nAdditionally, I have seen this mapRect pattern a few times. Should we centralize this code?",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 34
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3672794c_5ead28da",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T16:26:22Z",
+      "side": 1,
+      "message": "Doesn\u0027t this need to be moved into the std::max? If these can be negative then max seems to give the wrong result.",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 30
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e335deb0_ebab7277",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T16:26:22Z",
+      "side": 1,
+      "message": "SkFont\u0027s",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 29
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52891f95_9f47d356",
+        "filename": "src/text/gpu/SDFTControl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T16:26:22Z",
+      "side": 1,
+      "message": "Maybe just pass the matrix in.\nHere and below.",
+      "range": {
+        "startLine": 47,
+        "startChar": 18,
+        "endLine": 47,
+        "endChar": 43
+      },
+      "revId": "63ecd4029512847f1399822782700f3f3f703c63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
