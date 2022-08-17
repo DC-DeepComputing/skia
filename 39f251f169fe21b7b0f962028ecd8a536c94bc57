@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bcedc22_de5b7aa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T13:53:23Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "39f251f169fe21b7b0f962028ecd8a536c94bc57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1692dc34_751679f0",
@@ -43,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4e1d917_e01e250f",
+        "filename": "tests/GrGlyphVectorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T13:53:23Z",
+      "side": 1,
+      "message": "I will fix this in a followup CL.",
+      "parentUuid": "1692dc34_751679f0",
+      "range": {
+        "startLine": 76,
+        "startChar": 7,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "39f251f169fe21b7b0f962028ecd8a536c94bc57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4af2e67_dbeabc32",
         "filename": "tests/GrGlyphVectorTest.cpp",
         "patchSetId": 2
@@ -54,6 +95,30 @@
       "writtenOn": "2022-08-17T13:49:22Z",
       "side": 1,
       "message": "rm ? copied from above ?",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 51
+      },
+      "revId": "39f251f169fe21b7b0f962028ecd8a536c94bc57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf079d1_cd923686",
+        "filename": "tests/GrGlyphVectorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-17T13:53:23Z",
+      "side": 1,
+      "message": "I will fix this in a follow up CL.",
+      "parentUuid": "a4af2e67_dbeabc32",
       "range": {
         "startLine": 92,
         "startChar": 0,
