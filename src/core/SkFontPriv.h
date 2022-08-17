@@ -67,9 +67,11 @@ public:
     /** Return the approximate largest dimension of typical text when transformed by the matrix.
      *
      * @param matrix  used to transform size
+     * @param bounds  local rect for text
      * @return  typical largest dimension
      */
-    static SkScalar ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix);
+    static SkScalar ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix,
+                                                   const SkRect& bounds);
 
     static bool IsFinite(const SkFont& font) {
         return SkScalarIsFinite(font.getSize()) &&
