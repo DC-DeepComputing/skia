@@ -22,6 +22,30 @@
       },
       "revId": "828243f8c39c7db260694cafc3455680c6542092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a94d7d7_b986f52f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T20:09:15Z",
+      "side": 1,
+      "message": "I think that makes sense. This would let us simplify code in outputCoverage if we wanted to (it could start out as equal to 1.0, and if nothing wrote to it, then the SkSL compiler would see `sk_FragColor \u003d lastOutputVar * 1.0` and drop the whole multiply).  \n\nAnd since we\u0027re having the policy that these RenderStep snippets return the empty string, we could just concat them directly without checking.\n\nIn the case of the primitive color, I think we\u0027d still keep it inside the if like you\u0027ve done since there\u0027s more involved SkSl afterwards to handle the blending (eventually).",
+      "parentUuid": "59b6267a_3cad3f6b",
+      "range": {
+        "startLine": 165,
+        "startChar": 8,
+        "endLine": 165,
+        "endChar": 16
+      },
+      "revId": "828243f8c39c7db260694cafc3455680c6542092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
