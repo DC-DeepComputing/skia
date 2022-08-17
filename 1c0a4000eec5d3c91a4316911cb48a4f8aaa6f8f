@@ -16,6 +16,46 @@
       "message": "Elaboration on a comment",
       "revId": "1c0a4000eec5d3c91a4316911cb48a4f8aaa6f8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fda077_775bd44c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T20:01:04Z",
+      "side": 1,
+      "message": "One little variation on the writeVerticesTexture() case to try, but otherwise this lgtm once the parent is ready to land.",
+      "revId": "1c0a4000eec5d3c91a4316911cb48a4f8aaa6f8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "501f5223_52337777",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T20:01:04Z",
+      "side": 1,
+      "message": "from my comments on the earlier CL, let\u0027s move this fix into that one.",
+      "range": {
+        "startLine": 263,
+        "startChar": 13,
+        "endLine": 263,
+        "endChar": 50
+      },
+      "revId": "1c0a4000eec5d3c91a4316911cb48a4f8aaa6f8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -262,6 +262,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10de71b0_a5bc72cd",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T20:01:04Z",
+      "side": 1,
+      "message": "That is surprising to me. That happens if too many bytes are written, which would happen if we had a mismatch between our vertex attribute definitions and the types we were sending to the vertex writer.\n\nI didn\u0027t see any obvious mismatch, so I wonder if the vertex writer \u003c\u003c template is getting confused by `t` itself being an array of 3 SkV2\u0027s and tries to advance that many instead of seeing it as `t[0]` and just needing two floats. \n\nSince we aren\u0027t transforming the coords, can you try just passing in `texCoords[state.f0]` as an SkPoint. That would be both simpler than seeing the x/y accesses and skips the copy into the `t` variable.\n\nAfter this lands, I think it\u0027ll be worthwhile trying to reproduce the runtime assertions to see if we can understand what was going on when we were writing SkV2s from an array.",
+      "parentUuid": "c1609b60_86f62e22",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f07b2245_6ee7d6ea",
         "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
         "patchSetId": 8
