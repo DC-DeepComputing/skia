@@ -87,10 +87,6 @@ struct skcms_TransferFunction;
     M(check_decal_mask)                                            \
     M(negate_x)                                                    \
     M(bilinear) M(bicubic)                                         \
-    M(bilinear_nx) M(bilinear_px) M(bilinear_ny) M(bilinear_py)    \
-    M(bicubic_n3x) M(bicubic_n1x) M(bicubic_p1x) M(bicubic_p3x)    \
-    M(bicubic_n3y) M(bicubic_n1y) M(bicubic_p1y) M(bicubic_p3y)    \
-    M(save_xy) M(accumulate)                                       \
     M(clamp_x_1) M(mirror_x_1) M(repeat_x_1)                       \
     M(evenly_spaced_gradient)                                      \
     M(gradient)                                                    \
@@ -129,18 +125,6 @@ struct SkRasterPipeline_GatherCtx {
     float       height;
 
     float       weights[16];  // for bicubic and bicubic_clamp_8888
-};
-
-// State shared by save_xy, accumulate, and bilinear_* / bicubic_*.
-struct SkRasterPipeline_SamplerCtx {
-    float      x[SkRasterPipeline_kMaxStride];
-    float      y[SkRasterPipeline_kMaxStride];
-    float     fx[SkRasterPipeline_kMaxStride];
-    float     fy[SkRasterPipeline_kMaxStride];
-    float scalex[SkRasterPipeline_kMaxStride];
-    float scaley[SkRasterPipeline_kMaxStride];
-
-    float weights[16];  // for bicubic_[np][13][xy]
 };
 
 struct SkRasterPipeline_TileCtx {

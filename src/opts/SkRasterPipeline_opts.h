@@ -2592,110 +2592,6 @@ STAGE(apply_vector_mask, const uint32_t* ctx) {
     a = sk_bit_cast<F>(sk_bit_cast<U32>(a) & mask);
 }
 
-STAGE(save_xy, SkRasterPipeline_SamplerCtx* c) {
-    // Whether bilinear or bicubic, all sample points are at the same fractional offset (fx,fy).
-    // They're either the 4 corners of a logical 1x1 pixel or the 16 corners of a 3x3 grid
-    // surrounding (x,y) at (0.5,0.5) off-center.
-    F fx = fract(r + 0.5f),
-      fy = fract(g + 0.5f);
-
-    // Samplers will need to load x and fx, or y and fy.
-    sk_unaligned_store(c->x,  r);
-    sk_unaligned_store(c->y,  g);
-    sk_unaligned_store(c->fx, fx);
-    sk_unaligned_store(c->fy, fy);
-}
-
-STAGE(accumulate, const SkRasterPipeline_SamplerCtx* c) {
-    // Bilinear and bicubic filters are both separable, so we produce independent contributions
-    // from x and y, multiplying them together here to get each pixel's total scale factor.
-    auto scale = sk_unaligned_load<F>(c->scalex)
-               * sk_unaligned_load<F>(c->scaley);
-    dr = mad(scale, r, dr);
-    dg = mad(scale, g, dg);
-    db = mad(scale, b, db);
-    da = mad(scale, a, da);
-}
-
-// In bilinear interpolation, the 4 pixels at +/- 0.5 offsets from the sample pixel center
-// are combined in direct proportion to their area overlapping that logical query pixel.
-// At positive offsets, the x-axis contribution to that rectangle is fx, or (1-fx) at negative x.
-// The y-axis is symmetric.
-
-template <int kScale>
-SI void bilinear_x(SkRasterPipeline_SamplerCtx* ctx, F* x) {
-    *x = sk_unaligned_load<F>(ctx->x) + (kScale * 0.5f);
-    F fx = sk_unaligned_load<F>(ctx->fx);
-
-    F scalex;
-    if (kScale == -1) { scalex = 1.0f - fx; }
-    if (kScale == +1) { scalex =        fx; }
-    sk_unaligned_store(ctx->scalex, scalex);
-}
-template <int kScale>
-SI void bilinear_y(SkRasterPipeline_SamplerCtx* ctx, F* y) {
-    *y = sk_unaligned_load<F>(ctx->y) + (kScale * 0.5f);
-    F fy = sk_unaligned_load<F>(ctx->fy);
-
-    F scaley;
-    if (kScale == -1) { scaley = 1.0f - fy; }
-    if (kScale == +1) { scaley =        fy; }
-    sk_unaligned_store(ctx->scaley, scaley);
-}
-
-STAGE(bilinear_nx, SkRasterPipeline_SamplerCtx* ctx) { bilinear_x<-1>(ctx, &r); }
-STAGE(bilinear_px, SkRasterPipeline_SamplerCtx* ctx) { bilinear_x<+1>(ctx, &r); }
-STAGE(bilinear_ny, SkRasterPipeline_SamplerCtx* ctx) { bilinear_y<-1>(ctx, &g); }
-STAGE(bilinear_py, SkRasterPipeline_SamplerCtx* ctx) { bilinear_y<+1>(ctx, &g); }
-
-
-// In bicubic interpolation, the 16 pixels and +/- 0.5 and +/- 1.5 offsets from the sample
-// pixel center are combined with a non-uniform cubic filter, with higher values near the center.
-//
-// This helper computes the total weight along one axis (our bicubic filter is separable), given one
-// column of the sampling matrix, and a fractional pixel offset. See SkCubicResampler for details.
-
-SI F bicubic_wts(F t, float A, float B, float C, float D) {
-    return mad(t, mad(t, mad(t, D, C), B), A);
-}
-
-template <int kScale>
-SI void bicubic_x(SkRasterPipeline_SamplerCtx* ctx, F* x) {
-    *x = sk_unaligned_load<F>(ctx->x) + (kScale * 0.5f);
-    F fx = sk_unaligned_load<F>(ctx->fx);
-
-    F scalex;
-    const float* w = ctx->weights;
-    if (kScale == -3) { scalex = bicubic_wts(fx, w[0], w[4], w[ 8], w[12]); }
-    if (kScale == -1) { scalex = bicubic_wts(fx, w[1], w[5], w[ 9], w[13]); }
-    if (kScale == +1) { scalex = bicubic_wts(fx, w[2], w[6], w[10], w[14]); }
-    if (kScale == +3) { scalex = bicubic_wts(fx, w[3], w[7], w[11], w[15]); }
-    sk_unaligned_store(ctx->scalex, scalex);
-}
-template <int kScale>
-SI void bicubic_y(SkRasterPipeline_SamplerCtx* ctx, F* y) {
-    *y = sk_unaligned_load<F>(ctx->y) + (kScale * 0.5f);
-    F fy = sk_unaligned_load<F>(ctx->fy);
-
-    F scaley;
-    const float* w = ctx->weights;
-    if (kScale == -3) { scaley = bicubic_wts(fy, w[0], w[4], w[ 8], w[12]); }
-    if (kScale == -1) { scaley = bicubic_wts(fy, w[1], w[5], w[ 9], w[13]); }
-    if (kScale == +1) { scaley = bicubic_wts(fy, w[2], w[6], w[10], w[14]); }
-    if (kScale == +3) { scaley = bicubic_wts(fy, w[3], w[7], w[11], w[15]); }
-    sk_unaligned_store(ctx->scaley, scaley);
-}
-
-STAGE(bicubic_n3x, SkRasterPipeline_SamplerCtx* ctx) { bicubic_x<-3>(ctx, &r); }
-STAGE(bicubic_n1x, SkRasterPipeline_SamplerCtx* ctx) { bicubic_x<-1>(ctx, &r); }
-STAGE(bicubic_p1x, SkRasterPipeline_SamplerCtx* ctx) { bicubic_x<+1>(ctx, &r); }
-STAGE(bicubic_p3x, SkRasterPipeline_SamplerCtx* ctx) { bicubic_x<+3>(ctx, &r); }
-
-STAGE(bicubic_n3y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<-3>(ctx, &g); }
-STAGE(bicubic_n1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<-1>(ctx, &g); }
-STAGE(bicubic_p1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+1>(ctx, &g); }
-STAGE(bicubic_p3y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+3>(ctx, &g); }
-
 STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     store4(c->rgba,0, r,g,b,a);
     c->fn(c, tail ? tail : N);
@@ -2718,10 +2614,11 @@ STAGE(gauss_a_to_rgba, Ctx::None) {
     b = a;
 }
 
-SI F tile(F v, SkTileMode mode, float limit, float invLimit) {
+SI F tile(F v, SkTileMode mode, float limit, float invLimit, I32* mask) {
     // The ix_and_ptr() calls in sample() will clamp tile()'s output, so no need to clamp here.
     switch (mode) {
-        case SkTileMode::kDecal:
+        case SkTileMode::kDecal:  *mask &= cond_to_mask((0 <= v) & (v < limit));
+                                  [[fallthrough]];
         case SkTileMode::kClamp:  return v;
         case SkTileMode::kRepeat: return v - floor_(v*invLimit)*limit;
         case SkTileMode::kMirror:
@@ -2730,25 +2627,149 @@ SI F tile(F v, SkTileMode mode, float limit, float invLimit) {
     SkUNREACHABLE;
 }
 
-SI void sample(const SkRasterPipeline_SamplerCtx2* ctx, F x, F y,
-               F* r, F* g, F* b, F* a) {
-    x = tile(x, ctx->tileX, ctx->width , ctx->invWidth );
-    y = tile(y, ctx->tileY, ctx->height, ctx->invHeight);
+SI F srgb_to_linear(F v) {
+    return if_then_else(v <= 0.04045f,
+                        v * (float)(1/12.92),
+                        approx_powf(mad((float)(1/1.055), v, (float)(0.055/1.055)), 2.4f));
+}
+
+SI void sample(const SkRasterPipeline_SamplerCtx2* ctx, F x, F y, F* r, F* g, F* b, F* a) {
+    I32 decal_mask(~0);
+
+    x = tile(x, ctx->tileX, ctx->width , ctx->invWidth , &decal_mask);
+    y = tile(y, ctx->tileY, ctx->height, ctx->invHeight, &decal_mask);
+
+    // ie, ix_and_ptr, w/o templates
+    x = clamp(x, ctx->width);
+    y = clamp(y, ctx->height);
+    U32 ix = trunc_(y)*ctx->stride + trunc_(x);
+
+    // Default values to avoid redundant work below
+    *r = *g = *b = 0;
+    *a = 1;
 
     switch (ctx->ct) {
-        default: *r = *g = *b = *a = 0;
-                 break;
+        case kAlpha_8_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *a = from_byte(gather(ptr, ix));
+        } break;
+
+        case kGray_8_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *r = *g = *b = from_byte(gather(ptr, ix));
+        } break;
+
+        case kR8_unorm_SkColorType: {
+            const uint8_t* ptr = (const uint8_t*)ctx->pixels;
+            *r = from_byte(gather(ptr, ix));
+        } break;
+
+        case kA16_unorm_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            *a = from_short(gather(ptr, ix));
+        } break;
+
+        case kA16_float_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            *a = from_half(gather(ptr, ix));
+        } break;
+
+        case kRGB_565_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_565(gather(ptr, ix), r, g, b);
+        } break;
+
+        case kARGB_4444_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_4444(gather(ptr, ix), r, g, b, a);
+        } break;
+
+        case kR8G8_unorm_SkColorType: {
+            const uint16_t* ptr = (const uint16_t*)ctx->pixels;
+            from_88(gather(ptr, ix), r, g);
+        } break;
 
         case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType: {
-            const uint32_t* ptr;
-            U32 ix = ix_and_ptr(&ptr, ctx, x,y);
-            from_8888(gather(ptr, ix), r,g,b,a);
+        case kBGRA_8888_SkColorType:
+        case kRGB_888x_SkColorType:
+        case kSRGBA_8888_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_8888(gather(ptr, ix), r, g, b, a);
             if (ctx->ct == kBGRA_8888_SkColorType) {
-                std::swap(*r,*b);
+                std::swap(*r, *b);
+            }
+            if (ctx->ct == kRGB_888x_SkColorType) {
+                *a = 1;
+            }
+            if (ctx->ct == kSRGBA_8888_SkColorType) {
+                *r = srgb_to_linear(*r);
+                *g = srgb_to_linear(*g);
+                *b = srgb_to_linear(*b);
             }
         } break;
+
+        case kR16G16_unorm_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_1616(gather(ptr, ix), r, g);
+        } break;
+
+        case kR16G16_float_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            auto px = gather(ptr, ix);
+
+            U16 R,G;
+            load2((const uint16_t*)&px, 0, &R, &G);
+            *r = from_half(R);
+            *g = from_half(G);
+        } break;
+
+        case kRGBA_1010102_SkColorType:
+        case kBGRA_1010102_SkColorType:
+        case kRGB_101010x_SkColorType:
+        case kBGR_101010x_SkColorType: {
+            const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+            from_1010102(gather(ptr, ix), r, g, b, a);
+            if (ctx->ct == kBGRA_1010102_SkColorType || ctx->ct == kBGR_101010x_SkColorType) {
+                std::swap(*r, *b);
+            }
+            if (ctx->ct == kRGB_101010x_SkColorType || ctx->ct == kBGR_101010x_SkColorType) {
+                *a = 1;
+            }
+        } break;
+
+        case kR16G16B16A16_unorm_SkColorType: {
+            const uint64_t* ptr = (const uint64_t*)ctx->pixels;
+            from_16161616(gather(ptr, ix), r, g, b, a);
+        } break;
+
+        case kRGBA_F16Norm_SkColorType:
+        case kRGBA_F16_SkColorType: {
+            const uint64_t* ptr = (const uint64_t*)ctx->pixels;
+            auto px = gather(ptr, ix);
+
+            U16 R, G, B, A;
+            load4((const uint16_t*)&px, 0, &R, &G, &B, &A);
+            *r = from_half(R);
+            *g = from_half(G);
+            *b = from_half(B);
+            *a = from_half(A);
+        } break;
+
+        case kRGBA_F32_SkColorType: {
+            const float* ptr = (const float*)ctx->pixels;
+            *r = gather(ptr, 4*ix + 0);
+            *g = gather(ptr, 4*ix + 1);
+            *b = gather(ptr, 4*ix + 2);
+            *a = gather(ptr, 4*ix + 3);
+        } break;
+
+        case kUnknown_SkColorType: SkUNREACHABLE;
     }
+
+    *r = sk_bit_cast<F>(sk_bit_cast<I32>(*r) & decal_mask);
+    *g = sk_bit_cast<F>(sk_bit_cast<I32>(*g) & decal_mask);
+    *b = sk_bit_cast<F>(sk_bit_cast<I32>(*b) & decal_mask);
+    *a = sk_bit_cast<F>(sk_bit_cast<I32>(*a) & decal_mask);
 }
 
 template <int D>
@@ -2775,6 +2796,11 @@ SI void sampler(const SkRasterPipeline_SamplerCtx2* ctx,
     }
 }
 
+// In bilinear interpolation, the 4 pixels at +/- 0.5 offsets from the sample pixel center
+// are combined in direct proportion to their area overlapping that logical query pixel.
+// At positive offsets, the x-axis contribution to that rectangle is fx, or (1-fx) at negative x.
+// The y-axis is symmetric.
+
 STAGE(bilinear, const SkRasterPipeline_SamplerCtx2* ctx) {
     F x = r, fx = fract(x + 0.5f),
       y = g, fy = fract(y + 0.5f);
@@ -2783,6 +2809,17 @@ STAGE(bilinear, const SkRasterPipeline_SamplerCtx2* ctx) {
 
     sampler(ctx, x,y, wx,wy, &r,&g,&b,&a);
 }
+
+// In bicubic interpolation, the 16 pixels and +/- 0.5 and +/- 1.5 offsets from the sample
+// pixel center are combined with a non-uniform cubic filter, with higher values near the center.
+//
+// This helper computes the total weight along one axis (our bicubic filter is separable), given one
+// column of the sampling matrix, and a fractional pixel offset. See SkCubicResampler for details.
+
+SI F bicubic_wts(F t, float A, float B, float C, float D) {
+    return mad(t, mad(t, mad(t, D, C), B), A);
+}
+
 STAGE(bicubic, SkRasterPipeline_SamplerCtx2* ctx) {
     F x = r, fx = fract(x + 0.5f),
       y = g, fy = fract(y + 0.5f);
@@ -4345,20 +4382,6 @@ STAGE_PP(swizzle, void* ctx) {
     NOT_IMPLEMENTED(bilinear)
     NOT_IMPLEMENTED(bicubic)
     NOT_IMPLEMENTED(bicubic_clamp_8888)
-    NOT_IMPLEMENTED(bilinear_nx)
-    NOT_IMPLEMENTED(bilinear_ny)
-    NOT_IMPLEMENTED(bilinear_px)
-    NOT_IMPLEMENTED(bilinear_py)
-    NOT_IMPLEMENTED(bicubic_n3x)
-    NOT_IMPLEMENTED(bicubic_n1x)
-    NOT_IMPLEMENTED(bicubic_p1x)
-    NOT_IMPLEMENTED(bicubic_p3x)
-    NOT_IMPLEMENTED(bicubic_n3y)
-    NOT_IMPLEMENTED(bicubic_n1y)
-    NOT_IMPLEMENTED(bicubic_p1y)
-    NOT_IMPLEMENTED(bicubic_p3y)
-    NOT_IMPLEMENTED(save_xy)
-    NOT_IMPLEMENTED(accumulate)
     NOT_IMPLEMENTED(xy_to_2pt_conical_well_behaved)
     NOT_IMPLEMENTED(xy_to_2pt_conical_strip)
     NOT_IMPLEMENTED(xy_to_2pt_conical_focal_on_circle)
