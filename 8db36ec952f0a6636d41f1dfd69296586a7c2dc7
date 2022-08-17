@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "124f1682_1390ea77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-17T17:38:15Z",
+      "side": 1,
+      "message": "Addressed all specific comments, though still waiting for Ravi\u0027s eyes in case he has anything to add. Thanks for having a look!",
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dc5cd4d_a96e3fb6",
@@ -65,6 +82,30 @@
       "writtenOn": "2022-08-17T16:35:25Z",
       "side": 1,
       "message": "Nit: let\u0027s note that the cq_config property is defined in jobs.json",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 38
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee9fae23_21dd5047",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-17T17:38:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dc5cd4d_a96e3fb6",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -116,6 +157,54 @@
         "startChar": 0,
         "endLine": 61,
         "endChar": 72
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c559dbb_2be3df0e",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-17T17:38:15Z",
+      "side": 1,
+      "message": "Checked again using https://skia-review.googlesource.com/c/buildbot/+/564026/, and you are right. Fixed.",
+      "parentUuid": "d57c0183_ed6747fd",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 72
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb91cf2d_4cdb0386",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-17T17:38:15Z",
+      "side": 1,
+      "message": "Updated to use both terms, since the UI says Checks.",
+      "parentUuid": "98053ffc_4ddea1fd",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 10
       },
       "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
