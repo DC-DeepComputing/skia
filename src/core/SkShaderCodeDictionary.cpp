@@ -196,6 +196,7 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
         const SkPaintParamsKey& key
 #ifdef SK_GRAPHITE_ENABLED
         , const skgpu::BlendInfo& blendInfo
+        , const skgpu::BlendInfo& primitiveBlendInfo
 #endif
         ) {
     uint8_t* newKeyData = fArena.makeArray<uint8_t>(key.sizeInBytes());
@@ -203,7 +204,8 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
 
     SkSpan<const uint8_t> newKeyAsSpan = SkSpan(newKeyData, key.sizeInBytes());
 #ifdef SK_GRAPHITE_ENABLED
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo); });
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo,
+                                                              primitiveBlendInfo); });
 #else
     return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan); });
 #endif
@@ -230,7 +232,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
     }
 
 #ifdef SK_GRAPHITE_ENABLED
-    Entry* newEntry = this->makeEntry(key, builder->blendInfo());
+    Entry* newEntry = this->makeEntry(key, builder->blendInfo(), builder->primitiveBlendInfo());
 #else
     Entry* newEntry = this->makeEntry(key);
 #endif
@@ -290,6 +292,7 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID,
 
 #ifdef SK_GRAPHITE_ENABLED
     info->setBlendInfo(entry->blendInfo());
+    info->setPrimitiveBlendInfo(entry->primitiveBlendInfo());
 #endif
 }
 

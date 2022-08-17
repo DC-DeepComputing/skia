@@ -67,12 +67,18 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #ifdef SK_ENABLE_SKSL
 void SkBlenderBase::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
-                             SkPipelineDataGatherer* gatherer) const {
+                             SkPipelineDataGatherer* gatherer,
+                             bool primitiveColorBlender) const {
 
-    if (std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
+    std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode();
+    if (bm.has_value() && !primitiveColorBlender) {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
-    } else {
+    } else if (bm.has_value() && primitiveColorBlender){
+        PrimitiveBlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
+    } else if (!primitiveColorBlender) {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+    } else if (primitiveColorBlender) {
+        PrimitiveBlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
     }
     builder->endBlock();
 }
