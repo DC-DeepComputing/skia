@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e326d1a9_5ca27d36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:41:43Z",
+      "side": 1,
+      "message": "modulo resolving vla, which can\u0027t use in skia, and adding tests, looks good to me.",
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5c6dd2_c043580d",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:41:43Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment here to clarify that `peekUniformData()` should only be called when all the uniforms are done, and is not const so that it can pad as needed to the final required alignment.\n\nWere we to be calling this willy-nilly, we\u0027d add incorrect padding in the middle.",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b7230e9_f5f6c2c4",
@@ -31,6 +71,30 @@
       "writtenOn": "2022-08-17T19:07:46Z",
       "side": 1,
       "message": "Looks like this is relying on VLAs (by the book, these are C only)?\n\nIt\u0027s probably better to do something portable:\n\n```\nSkASSERT(paddingSize \u003c\u003d 16);\nstatic constexpr char kPadding[16] \u003d {};\n```",
+      "range": {
+        "startLine": 554,
+        "startChar": 3,
+        "endLine": 554,
+        "endChar": 30
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeb17f99_82c4a8c2",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-17T19:41:43Z",
+      "side": 1,
+      "message": "The other option would be to append and then memset:\n\n    T* padding \u003d fStorage.append(paddingSize);\n    memset(padding, 0, paddingSize);\n    \nthen we have no dependency on the max required alignment we can encounter.",
+      "parentUuid": "7b7230e9_f5f6c2c4",
       "range": {
         "startLine": 554,
         "startChar": 3,
