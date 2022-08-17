@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2139ec4f_e830844c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T17:59:18Z",
+      "side": 1,
+      "message": "Let me know if these primitive color CLs (this one which adds support for render steps to emit primitive color, and the follow-up of setting that color from within VerticesRenderStep) should be routed to someone else. I don\u0027t mean to inundate you with CLs, just not sure who else would be best to take a look. 😊",
+      "revId": "0b930268598b2cbfbf897c18a976c757c5ece916",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
