@@ -16,6 +16,41 @@
       "message": "I wanted to try and run the avif unit tests as well, but i could not figure out how to build/run tests with bazel.",
       "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f16a23_160349e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-17T12:31:18Z",
+      "side": 1,
+      "message": "We currently do not have unit tests for our Bazel build (coming soon). In a follow up CL (which I will CC you on), I will add the avif_decode_codec to our \"everything including the kitchen sink\" build, which we use to check the includes of files. That\u0027s the closest thing we have at the moment for Bazele \"testing\" on the CQ.",
+      "parentUuid": "f8cf7a91_247cadef",
+      "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "919acd05_ee517af2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-17T12:31:18Z",
+      "side": 1,
+      "message": "LGTM. We also need to land http://cl/468171364 so our G3 roller does not break (the @libavif does not work internally, so it needs some conversion).",
+      "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
