@@ -171,6 +171,13 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
 
+    if (step->emitsPrimitiveColor()) {
+        mainBody += "half4 outputColor;";
+        mainBody += step->fragmentColorSkSL();
+        // TODO: Apply primitive blender
+        // For now, just overwrite the prior color stored in lastOutputVar
+        SkSL::String::appendf(&mainBody, "    %s = outputColor;\n", lastOutputVar.c_str());
+    }
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
