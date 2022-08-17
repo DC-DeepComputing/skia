@@ -370,6 +370,7 @@ private:
         varyingHandler->addPassThroughAttribute(dfPathEffect.fInColor.asShaderVar(),
                                                 args.fOutputColor);
 
+        Maybe this isn't working? Pass in 3D verts instead? Try using DistanceFieldA8GeoProc instead?
         if (dfPathEffect.fMatrix.hasPerspective()) {
             // Setup position (output position is transformed, local coords are pass through)
             WriteOutputPosition(vertBuilder,

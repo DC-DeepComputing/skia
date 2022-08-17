@@ -2183,6 +2183,7 @@ static std::tuple<AtlasTextOp::MaskType, uint32_t, bool> calculate_sdf_parameter
     DFGPFlags |= drawMatrix.isScaleTranslate() ? kScaleOnly_DistanceFieldEffectFlag : 0;
     DFGPFlags |= useGammaCorrectDistanceTable ? kGammaCorrect_DistanceFieldEffectFlag : 0;
     DFGPFlags |= MT::kAliasedDistanceField == maskType ? kAliased_DistanceFieldEffectFlag : 0;
+    DFGPFlags |= drawMatrix.hasPerspective() ? kPerspective_DistanceFieldEffectFlag : 0;
 
     if (isLCD) {
         DFGPFlags |= kUseLCD_DistanceFieldEffectFlag;
@@ -2260,7 +2261,11 @@ SDFTSubRun::regenerateAtlas(int begin, int end, GrMeshDrawTarget *target) const 
 }
 
 size_t SDFTSubRun::vertexStride(const SkMatrix& drawMatrix) const {
-    return sizeof(Mask2DVertex);
+    if (drawMatrix.hasPerspective()) {
+        return sizeof(Mask3DVertex);
+    } else {
+        return sizeof(Mask2DVertex);
+    }
 }
 
 void SDFTSubRun::fillVertexData(
@@ -2452,13 +2457,18 @@ size_t SubRunContainer::EstimateAllocSize(const GlyphRunList& glyphRunList) {
 
 SubRunContainerOwner SubRunContainer::MakeInAlloc(
         const GlyphRunList& glyphRunList,
-        const SkMatrix& positionMatrix,
+        const SkMatrix& inMatrix,
         const SkPaint& runPaint,
         SkStrikeDeviceInfo strikeDeviceInfo,
         StrikeForGPUCacheInterface* strikeCache,
         SubRunAllocator* alloc,
         SubRunCreationBehavior creationBehavior,
         const char* tag) {
+    bool hasPerspective = inMatrix.hasPerspective();
+    SkMatrix positionMatrix = inMatrix;
+    positionMatrix[6] = 0;
+    positionMatrix[7] = 0;
+    positionMatrix[8] = 1;
     SkASSERT(alloc != nullptr);
     [[maybe_unused]] SkString msg;
     if constexpr (kTrace) {
@@ -2513,7 +2523,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
             SkScalar approximateDeviceTextSize =
                     SkFontPriv::ApproximateTransformedTextSize(runFont, positionMatrix);
 
-            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint)) {
+            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint) || hasPerspective) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         SkStrikeSpec::MakeSDFT(
