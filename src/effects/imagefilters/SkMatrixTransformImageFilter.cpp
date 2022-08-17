@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 
 #include "include/core/SkCanvas.h"
@@ -20,7 +21,8 @@ namespace {
 
 class SkMatrixImageFilter : public SkImageFilter_Base {
 public:
-    // TODO(michaelludwig): Update this to use SkM44.
+    // TODO(michaelludwig): Update this to use SkM44, but there's little point until skif::Mapping
+    // can handle SkM44 too.
     SkMatrixImageFilter(const SkMatrix& transform,
                         const SkSamplingOptions& sampling,
                         sk_sp<SkImageFilter> input)
@@ -28,25 +30,32 @@ public:
             , fTransform(transform)
             , fSampling(sampling) {
         // Pre-cache so future calls to fTransform.getType() are threadsafe.
-        (void)fTransform.getType();
+        (void) static_cast<const SkMatrix&>(fTransform).getType();
     }
 
     SkRect computeFastBounds(const SkRect&) const override;
 
 protected:
-
     void flatten(SkWriteBuffer&) const override;
-
-    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
-    SkIRect onFilterNodeBounds(const SkIRect& src, const SkMatrix& ctm,
-                               MapDirection, const SkIRect* inputRect) const override;
 
 private:
     friend void ::SkRegisterMatrixTransformImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkMatrixImageFilter)
 
-    SkMatrix            fTransform;
-    SkSamplingOptions   fSampling;
+    skif::FilterResult onFilterImage(const skif::Context& context) const override;
+
+    skif::LayerSpace<SkIRect> onGetInputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& desiredOutput,
+            const skif::LayerSpace<SkIRect>& contentBounds,
+            VisitChildren recurse) const override;
+
+    skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override;
+
+    skif::ParameterSpace<SkMatrix> fTransform;
+    SkSamplingOptions fSampling;
 
     using INHERITED = SkImageFilter_Base;
 };
@@ -82,40 +91,32 @@ sk_sp<SkFlattenable> SkMatrixImageFilter::CreateProc(SkReadBuffer& buffer) {
 
 void SkMatrixImageFilter::flatten(SkWriteBuffer& buffer) const {
     this->INHERITED::flatten(buffer);
-    buffer.writeMatrix(fTransform);
+    buffer.writeMatrix(SkMatrix(fTransform));
     buffer.writeSampling(fSampling);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkSpecialImage> SkMatrixImageFilter::onFilterImage(const Context& ctx,
-                                                         SkIPoint* offset) const {
+skif::FilterResult SkMatrixImageFilter::onFilterImage(const skif::Context& context) const {
+    skif::FilterResult childOutput = this->filterInput(0, context);
+    skif::LayerSpace<SkRect> srcBoundsF{childOutput.layerBounds()};
+    skif::LayerSpace<SkMatrix> matrix = context.mapping().paramToLayer(fTransform);
+    skif::LayerSpace<SkIRect> dstBounds = matrix.mapRect(srcBoundsF).roundOut();
 
-    SkIPoint inputOffset = SkIPoint::Make(0, 0);
-    sk_sp<SkSpecialImage> input(this->filterInput(0, ctx, &inputOffset));
-    if (!input) {
-        return nullptr;
+    // TODO(michaelludwig): Generalize this logic for image filters that fall into the pattern of
+    // draw into canvas, or fill canvas with X. Ideally it would let us avoid building a full
+    // canvas and device for the very constrained operations that they actually perform.
+
+    // Unless a child filter optimized its result, srcBounds should be large enough that dstBounds
+    // will cover the desired output. However, we only need to produce the intersection between
+    // what's desired and what's defined.
+    if (!dstBounds.intersect(context.desiredOutput())) {
+        return {};
     }
 
-    SkMatrix matrix;
-    if (!ctx.ctm().invert(&matrix)) {
-        return nullptr;
-    }
-    matrix.postConcat(fTransform);
-    matrix.postConcat(ctx.ctm());
-
-    const SkIRect srcBounds = SkIRect::MakeXYWH(inputOffset.x(), inputOffset.y(),
-                                                input->width(), input->height());
-    const SkRect srcRect = SkRect::Make(srcBounds);
-
-    SkRect dstRect;
-    matrix.mapRect(&dstRect, srcRect);
-    SkIRect dstBounds;
-    dstRect.roundOut(&dstBounds);
-
-    sk_sp<SkSpecialSurface> surf(ctx.makeSurface(dstBounds.size()));
+    sk_sp<SkSpecialSurface> surf(context.makeSurface(SkISize(dstBounds.size())));
     if (!surf) {
-        return nullptr;
+        return {};
     }
 
     SkCanvas* canvas = surf->getCanvas();
@@ -123,52 +124,55 @@ sk_sp<SkSpecialImage> SkMatrixImageFilter::onFilterImage(const Context& ctx,
 
     canvas->clear(0x0);
 
-    canvas->translate(-SkIntToScalar(dstBounds.x()), -SkIntToScalar(dstBounds.y()));
-    canvas->concat(matrix);
+    canvas->translate(-dstBounds.left(), -dstBounds.top());
+    canvas->concat(SkMatrix(matrix));
 
     SkPaint paint;
     paint.setAntiAlias(true);
     paint.setBlendMode(SkBlendMode::kSrc);
 
-    input->draw(canvas, srcRect.x(), srcRect.y(), fSampling, &paint);
+    childOutput.image()->draw(canvas, srcBoundsF.left(), srcBoundsF.top(), fSampling, &paint);
 
-    offset->fX = dstBounds.fLeft;
-    offset->fY = dstBounds.fTop;
-    return surf->makeImageSnapshot();
+    return {surf->makeImageSnapshot(), dstBounds.topLeft()};
 }
 
 SkRect SkMatrixImageFilter::computeFastBounds(const SkRect& src) const {
     SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    SkRect dst;
-    fTransform.mapRect(&dst, bounds);
-    return dst;
+    return static_cast<const SkMatrix&>(fTransform).mapRect(bounds);
 }
 
-SkIRect SkMatrixImageFilter::onFilterNodeBounds(const SkIRect& src, const SkMatrix& ctm,
-                                                MapDirection dir, const SkIRect* inputRect) const {
-    SkMatrix matrix;
-    if (!ctm.invert(&matrix)) {
-        return src;
+skif::LayerSpace<SkIRect> SkMatrixImageFilter::onGetInputLayerBounds(
+        const skif::Mapping& mapping,
+        const skif::LayerSpace<SkIRect>& desiredOutput,
+        const skif::LayerSpace<SkIRect>& contentBounds,
+        VisitChildren recurse) const {
+    // The required input for this filter to cover 'desiredOutput' is the smallest rectangle such
+    // that after being transformed by the layer-space adjusted 'fTransform', it contains the output
+    skif::LayerSpace<SkMatrix> inverse;
+    if (!mapping.paramToLayer(fTransform).invert(&inverse)) {
+        return skif::LayerSpace<SkIRect>::Empty();
     }
-    if (kForward_MapDirection == dir) {
-        matrix.postConcat(fTransform);
+    skif::LayerSpace<SkIRect> requiredInput =
+            inverse.mapRect(skif::LayerSpace<SkRect>(desiredOutput)).roundOut();
+
+    // Additionally if there is any filtering beyond nearest neighbor, we request an extra buffer of
+    // pixels so that the content is available to the bilerp/bicubic kernel.
+    if (fSampling != SkSamplingOptions()) {
+        requiredInput.outset(skif::LayerSpace<SkISize>({1, 1}));
+    }
+
+    if (recurse == VisitChildren::kNo) {
+        return requiredInput;
     } else {
-        SkMatrix transformInverse;
-        if (!fTransform.invert(&transformInverse)) {
-            return src;
-        }
-        matrix.postConcat(transformInverse);
+        // Our required input is the desired output for our child image filter.
+        return this->visitInputLayerBounds(mapping, requiredInput, contentBounds);
     }
-    matrix.postConcat(ctm);
-    SkRect floatBounds;
-    matrix.mapRect(&floatBounds, SkRect::Make(src));
-    SkIRect result = floatBounds.roundOut();
+}
 
-    if (kReverse_MapDirection == dir && SkSamplingOptions() != fSampling) {
-        // When filtering we might need some pixels in the source that might be otherwise
-        // clipped off.
-        result.outset(1, 1);
-    }
-
-    return result;
+skif::LayerSpace<SkIRect> SkMatrixImageFilter::onGetOutputLayerBounds(
+        const skif::Mapping& mapping,
+        const skif::LayerSpace<SkIRect>& contentBounds) const {
+    // The output of this filter is the transformed bounds of its child's output.
+    skif::LayerSpace<SkRect> childOutput{this->visitOutputLayerBounds(mapping, contentBounds)};
+    return mapping.paramToLayer(fTransform).mapRect(childOutput).roundOut();
 }
