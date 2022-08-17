@@ -1,9 +1,13 @@
-### Compilation failed:
 
-error: 11: index -1 out of range for 'float3x3'
-    float3 undefined = indexMatrix(-1) + indexMatrix(3);
-                                   ^^
-error: 11: index 3 out of range for 'float3x3'
-    float3 undefined = indexMatrix(-1) + indexMatrix(3);
-                                                     ^
-2 errors
+out vec4 sk_FragColor;
+uniform vec4 colorGreen;
+uniform vec4 colorRed;
+const mat3 values = mat3(1.0);
+vec3 indexMatrix_f3i(int index) {
+    return values[index];
+}
+vec4 main() {
+    (indexMatrix_f3i(0) + indexMatrix_f3i(1)) + indexMatrix_f3i(2);
+    indexMatrix_f3i(-1) + indexMatrix_f3i(3);
+    return colorGreen;
+}
