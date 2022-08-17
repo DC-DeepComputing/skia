@@ -133,9 +133,10 @@ protected:
 
     gr_cp<ID3D12GraphicsCommandList> fCommandList;
 
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<GrManagedResource>> fTrackedResources;
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<GrRecycledResource>> fTrackedRecycledResources;
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>> fTrackedGpuBuffers;
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<GrManagedResource>, true> fTrackedResources;
+    SkSTArray<kInitialTrackedResourcesCount,
+              sk_sp<GrRecycledResource>, true> fTrackedRecycledResources;
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>, true> fTrackedGpuBuffers;
 
 
     // When we create a command list it starts in an active recording state
@@ -149,7 +150,7 @@ private:
 
     SkSTArray<4, D3D12_RESOURCE_BARRIER> fResourceBarriers;
 
-    SkTArray<sk_sp<skgpu::RefCntedCallback>> fFinishedCallbacks;
+    SkTArray<sk_sp<skgpu::RefCntedCallback>, true> fFinishedCallbacks;
 };
 
 class GrD3DDirectCommandList : public GrD3DCommandList {

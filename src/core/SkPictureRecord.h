@@ -36,29 +36,29 @@ public:
 
     SkPictureRecord(const SkIRect& dimensions, uint32_t recordFlags);
 
-    const SkTArray<sk_sp<const SkPicture>>& getPictures() const {
+    const SkTArray<sk_sp<const SkPicture>, true>& getPictures() const {
         return fPictures;
     }
 
-    const SkTArray<sk_sp<SkDrawable>>& getDrawables() const {
+    const SkTArray<sk_sp<SkDrawable>, true>& getDrawables() const {
         return fDrawables;
     }
 
-    const SkTArray<sk_sp<const SkTextBlob>>& getTextBlobs() const {
+    const SkTArray<sk_sp<const SkTextBlob>, true>& getTextBlobs() const {
         return fTextBlobs;
     }
 
 #if SK_SUPPORT_GPU
-    const SkTArray<sk_sp<const sktext::gpu::Slug>>& getSlugs() const {
+    const SkTArray<sk_sp<const sktext::gpu::Slug>, true>& getSlugs() const {
         return fSlugs;
     }
 #endif
 
-    const SkTArray<sk_sp<const SkVertices>>& getVertices() const {
+    const SkTArray<sk_sp<const SkVertices>, true>& getVertices() const {
         return fVertices;
     }
 
-    const SkTArray<sk_sp<const SkImage>>& getImages() const {
+    const SkTArray<sk_sp<const SkImage>, true>& getImages() const {
         return fImages;
     }
 
@@ -251,13 +251,13 @@ private:
 
     SkWriter32 fWriter;
 
-    SkTArray<sk_sp<const SkImage>>    fImages;
-    SkTArray<sk_sp<const SkPicture>>  fPictures;
-    SkTArray<sk_sp<SkDrawable>>       fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>> fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>> fVertices;
+    SkTArray<sk_sp<const SkImage>, true>    fImages;
+    SkTArray<sk_sp<const SkPicture>, true>  fPictures;
+    SkTArray<sk_sp<SkDrawable>, true>       fDrawables;
+    SkTArray<sk_sp<const SkTextBlob>, true> fTextBlobs;
+    SkTArray<sk_sp<const SkVertices>, true> fVertices;
 #if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const sktext::gpu::Slug>> fSlugs;
+    SkTArray<sk_sp<const sktext::gpu::Slug>, true> fSlugs;
 #endif
 
     uint32_t fRecordFlags;

@@ -69,7 +69,7 @@ public:
 #define SK_PICT_EOF_TAG     SkSetFourByteTag('e', 'o', 'f', ' ')
 
 template <typename T>
-T* read_index_base_1_or_null(SkReadBuffer* reader, const SkTArray<sk_sp<T>>& array) {
+T* read_index_base_1_or_null(SkReadBuffer* reader, const SkTArray<sk_sp<T>, true>& array) {
     int index = reader->readInt();
     return reader->validate(index > 0 && index <= array.count()) ? array[index - 1].get() : nullptr;
 }
@@ -156,13 +156,13 @@ private:
     const SkPath    fEmptyPath;
     const SkBitmap  fEmptyBitmap;
 
-    SkTArray<sk_sp<const SkPicture>>   fPictures;
-    SkTArray<sk_sp<SkDrawable>>        fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>>  fVertices;
-    SkTArray<sk_sp<const SkImage>>     fImages;
+    SkTArray<sk_sp<const SkPicture>, true>         fPictures;
+    SkTArray<sk_sp<SkDrawable>, true>              fDrawables;
+    SkTArray<sk_sp<const SkTextBlob>, true>        fTextBlobs;
+    SkTArray<sk_sp<const SkVertices>, true>        fVertices;
+    SkTArray<sk_sp<const SkImage>, true>           fImages;
 #if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const sktext::gpu::Slug>>      fSlugs;
+    SkTArray<sk_sp<const sktext::gpu::Slug>, true> fSlugs;
 #endif
 
 

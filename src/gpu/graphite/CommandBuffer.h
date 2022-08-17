@@ -101,8 +101,8 @@ private:
 #endif
 
     inline static constexpr int kInitialTrackedResourcesCount = 32;
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<Resource>> fTrackedResources;
-    SkTArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<Resource>, true> fTrackedResources;
+    SkTArray<sk_sp<RefCntedCallback>, true> fFinishedProcs;
 };
 
 } // namespace skgpu::graphite

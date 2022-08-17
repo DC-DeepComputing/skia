@@ -169,7 +169,7 @@ protected:
     // targetUpdateBounds must not extend beyond the proxy bounds.
     virtual ExpectedOutcome onMakeClosed(GrRecordingContext*, SkIRect* targetUpdateBounds) = 0;
 
-    SkSTArray<1, sk_sp<GrSurfaceProxy>> fTargets;
+    SkSTArray<1, sk_sp<GrSurfaceProxy>, true> fTargets;
 
     // List of texture proxies whose contents are being prepared on a worker thread
     // TODO: this list exists so we can fire off the proper upload when an renderTask begins

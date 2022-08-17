@@ -819,7 +819,7 @@ bool equals(SkDrawable* a, SkDrawable* b) {
 }
 
 template <typename T>
-static int find_or_append(SkTArray<sk_sp<T>>& array, T* obj) {
+static int find_or_append(SkTArray<sk_sp<T>, true>& array, T* obj) {
     for (int i = 0; i < array.count(); i++) {
         if (equals(array[i].get(), obj)) {
             return i;

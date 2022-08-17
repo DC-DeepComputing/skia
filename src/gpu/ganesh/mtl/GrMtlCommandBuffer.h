@@ -104,8 +104,9 @@ private:
 
     static const int kInitialTrackedResourcesCount = 32;
 
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrManagedResource>> fTrackedResources;
-    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>> fTrackedGrBuffers;
+    SkSTArray<kInitialTrackedResourcesCount,
+              sk_sp<const GrManagedResource>, true> fTrackedResources;
+    SkSTArray<kInitialTrackedResourcesCount, sk_sp<const GrBuffer>, true> fTrackedGrBuffers;
     SkSTArray<16, gr_cb<const GrSurface>> fTrackedGrSurfaces;
 
     id<MTLCommandBuffer>        fCmdBuffer;
@@ -114,7 +115,7 @@ private:
     MTLRenderPassDescriptor*    fPreviousRenderPassDescriptor;
     bool                        fHasWork;
 
-    SkTArray<sk_sp<skgpu::RefCntedCallback>> fFinishedCallbacks;
+    SkTArray<sk_sp<skgpu::RefCntedCallback>, true> fFinishedCallbacks;
 
 };
 

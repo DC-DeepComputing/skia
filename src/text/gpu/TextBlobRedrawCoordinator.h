@@ -89,7 +89,7 @@ private:
         uint32_t fID;
         // Current clients don't generate multiple GrAtlasTextBlobs per SkTextBlob, so an array w/
         // linear search is acceptable.  If usage changes, we should re-evaluate this structure.
-        SkSTArray<1, sk_sp<TextBlob>> fBlobs;
+        SkSTArray<1, sk_sp<TextBlob>, true> fBlobs;
     };
 
     sk_sp<TextBlob> findOrCreateBlob(const SkMatrixProvider& viewMatrix,

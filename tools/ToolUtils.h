@@ -212,7 +212,7 @@ public:
     static uint32_t      GetID(TopoTestNode* node) { return node->id(); }
 
     // Helper functions for TopoSortBench & TopoSortTest
-    static void AllocNodes(SkTArray<sk_sp<ToolUtils::TopoTestNode>>* graph, int num) {
+    static void AllocNodes(SkTArray<sk_sp<ToolUtils::TopoTestNode>, true>* graph, int num) {
         graph->reserve_back(num);
 
         for (int i = 0; i < num; ++i) {

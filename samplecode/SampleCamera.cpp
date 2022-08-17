@@ -18,7 +18,7 @@
 
 namespace {
 class CameraView : public Sample {
-    SkTArray<sk_sp<SkShader>> fShaders;
+    SkTArray<sk_sp<SkShader>, true> fShaders;
     int fShaderIndex = 0;
     bool fFrontFace = false;
     SkScalar fRX = 0;

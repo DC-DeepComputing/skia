@@ -56,7 +56,7 @@ static sk_sp<SkColorFilter> cf_make_colorize(SkColor color) {
     return SkColorFilters::Blend(color, SkBlendMode::kSrc);
 }
 
-static void sk_gm_get_colorfilters(SkTArray<sk_sp<SkColorFilter>>* array) {
+static void sk_gm_get_colorfilters(SkTArray<sk_sp<SkColorFilter>, true>* array) {
     array->push_back(cf_make_brightness(0.5f));
     array->push_back(cf_make_grayscale());
     array->push_back(cf_make_colorize(SK_ColorBLUE));
@@ -202,7 +202,7 @@ public:
 };
 
 DEF_SIMPLE_GM(colorfiltershader, canvas, 610, 610) {
-    SkTArray<sk_sp<SkColorFilter>> filters;
+    SkTArray<sk_sp<SkColorFilter>, true> filters;
     sk_gm_get_colorfilters(&filters);
 
     SkTRefArray<SkShader*> shaders;
