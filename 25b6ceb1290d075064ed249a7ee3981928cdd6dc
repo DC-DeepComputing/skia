@@ -51,6 +51,42 @@
       "message": "LGTM. We also need to land http://cl/468171364 so our G3 roller does not break (the @libavif does not work internally, so it needs some conversion).",
       "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d22270b_9af9ffb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-17T15:45:58Z",
+      "side": 1,
+      "message": "Thank you for that CL. I have approved it for libavif OWNERs. I will submit this to CQ once that lands in google3.",
+      "parentUuid": "919acd05_ee517af2",
+      "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc762be7_355314c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-17T15:45:58Z",
+      "side": 1,
+      "message": "Sounds good. Thanks for the explanation.",
+      "parentUuid": "78f16a23_160349e4",
+      "revId": "25b6ceb1290d075064ed249a7ee3981928cdd6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
