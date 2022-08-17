@@ -12,6 +12,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintDefaults.h"
 #include "src/core/SkScalerCache.h"
 #include "src/core/SkScalerContext.h"
@@ -343,8 +344,15 @@ SkRect SkFontPriv::GetFontBounds(const SkFont& font) {
     return bounds;
 }
 
-SkScalar SkFontPriv::ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix) {
-    return font.getSize() * matrix.getMaxScale();
+SkScalar SkFontPriv::ApproximateTransformedTextSize(const SkFont& font, const SkMatrix& matrix,
+                                                    const SkRect& bounds) {
+    if (!matrix.hasPerspective()) {
+        return font.getSize() * matrix.getMaxScale();
+    } else {
+        // approximate the scale since we can't get it directly from the matrix
+        SkScalar maxScale = SkMatrixPriv::DifferentialAreaScale(matrix, bounds.center());
+        return font.getSize() * maxScale;
+    }
 }
 
 int SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkTextEncoding encoding) {
