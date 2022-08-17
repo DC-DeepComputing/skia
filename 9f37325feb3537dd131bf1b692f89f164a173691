@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a4e7a1_e5af31c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-17T16:48:31Z",
+      "side": 1,
+      "message": "Bad images were actually flakes (that have been seen before, but not for ~200 commits).",
+      "revId": "9f37325feb3537dd131bf1b692f89f164a173691",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
