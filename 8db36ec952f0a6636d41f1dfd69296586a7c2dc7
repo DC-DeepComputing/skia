@@ -16,6 +16,23 @@
       "message": "Turns out my notes on jobs and tasks found a better home in this readme than hidden away in a GDoc.",
       "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f357a113_5a7da7e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-08-17T15:34:02Z",
+      "side": 1,
+      "message": "Deferring to Eric\u0027s expertise.",
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
