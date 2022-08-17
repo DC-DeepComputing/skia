@@ -660,11 +660,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
         }
         return append_misc();
     }
-    if (true
-        && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) // TODO: all formats
-        && !sampling.useCubic && sampling.filter == SkFilterMode::kLinear
-        && fTileModeX != SkTileMode::kDecal // TODO decal too?
-        && fTileModeY != SkTileMode::kDecal) {
+    if (!sampling.useCubic && sampling.filter == SkFilterMode::kLinear) {
 
         auto ctx = alloc->make<SkRasterPipeline_SamplerCtx2>();
         *(SkRasterPipeline_GatherCtx*)(ctx) = *gather;
@@ -687,11 +683,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
         }
         return append_misc();
     }
-    if (true
-        && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) // TODO: all formats
-        && sampling.useCubic
-        && fTileModeX != SkTileMode::kDecal // TODO decal too?
-        && fTileModeY != SkTileMode::kDecal) {
+    if (sampling.useCubic) {
 
         auto ctx = alloc->make<SkRasterPipeline_SamplerCtx2>();
         *(SkRasterPipeline_GatherCtx*)(ctx) = *gather;
@@ -704,54 +696,8 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
         return append_misc();
     }
 
-    SkRasterPipeline_SamplerCtx* sampler = alloc->make<SkRasterPipeline_SamplerCtx>();
-
-    auto sample = [&](SkRasterPipeline::StockStage setup_x,
-                      SkRasterPipeline::StockStage setup_y) {
-        p->append(setup_x, sampler);
-        p->append(setup_y, sampler);
-        append_tiling_and_gather();
-        p->append(SkRasterPipeline::accumulate, sampler);
-    };
-
-    if (sampling.useCubic) {
-        CubicResamplerMatrix(sampling.cubic.B, sampling.cubic.C).getColMajor(sampler->weights);
-
-        p->append(SkRasterPipeline::save_xy, sampler);
-
-        sample(SkRasterPipeline::bicubic_n3x, SkRasterPipeline::bicubic_n3y);
-        sample(SkRasterPipeline::bicubic_n1x, SkRasterPipeline::bicubic_n3y);
-        sample(SkRasterPipeline::bicubic_p1x, SkRasterPipeline::bicubic_n3y);
-        sample(SkRasterPipeline::bicubic_p3x, SkRasterPipeline::bicubic_n3y);
-
-        sample(SkRasterPipeline::bicubic_n3x, SkRasterPipeline::bicubic_n1y);
-        sample(SkRasterPipeline::bicubic_n1x, SkRasterPipeline::bicubic_n1y);
-        sample(SkRasterPipeline::bicubic_p1x, SkRasterPipeline::bicubic_n1y);
-        sample(SkRasterPipeline::bicubic_p3x, SkRasterPipeline::bicubic_n1y);
-
-        sample(SkRasterPipeline::bicubic_n3x, SkRasterPipeline::bicubic_p1y);
-        sample(SkRasterPipeline::bicubic_n1x, SkRasterPipeline::bicubic_p1y);
-        sample(SkRasterPipeline::bicubic_p1x, SkRasterPipeline::bicubic_p1y);
-        sample(SkRasterPipeline::bicubic_p3x, SkRasterPipeline::bicubic_p1y);
-
-        sample(SkRasterPipeline::bicubic_n3x, SkRasterPipeline::bicubic_p3y);
-        sample(SkRasterPipeline::bicubic_n1x, SkRasterPipeline::bicubic_p3y);
-        sample(SkRasterPipeline::bicubic_p1x, SkRasterPipeline::bicubic_p3y);
-        sample(SkRasterPipeline::bicubic_p3x, SkRasterPipeline::bicubic_p3y);
-
-        p->append(SkRasterPipeline::move_dst_src);
-    } else if (sampling.filter == SkFilterMode::kLinear) {
-        p->append(SkRasterPipeline::save_xy, sampler);
-
-        sample(SkRasterPipeline::bilinear_nx, SkRasterPipeline::bilinear_ny);
-        sample(SkRasterPipeline::bilinear_px, SkRasterPipeline::bilinear_ny);
-        sample(SkRasterPipeline::bilinear_nx, SkRasterPipeline::bilinear_py);
-        sample(SkRasterPipeline::bilinear_px, SkRasterPipeline::bilinear_py);
-
-        p->append(SkRasterPipeline::move_dst_src);
-    } else {
-        append_tiling_and_gather();
-    }
+    // TODO: Add `nearest` stage here
+    append_tiling_and_gather();
 
     return append_misc();
 }
