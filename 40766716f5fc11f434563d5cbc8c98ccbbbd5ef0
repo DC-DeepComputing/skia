@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0dfe3c_01fe6c4e",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Yes, now it can since I am no longer defining different combinations of flags within an anonymous namespace.",
+      "parentUuid": "bcd04f32_6fdc6fbb",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 39
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2dd295fa_06c429aa",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-16T17:10:24Z",
       "side": 1,
       "message": "Vertices doesn\u0027t have textures, in the same way that this flag was intended for. The atlas\u0027ing text RenderSteps actually have a Texture resource that they control, and that\u0027s what this flag is for. Vertices just define special local coordinates (frequently referred to as texture coordinates since that\u0027s often where they are destined for), but the texture or shader that\u0027s being sampled is managed by the paint, with no visibility to the RenderStep.\n\nI think whether or not there are texture coords in the vertices\u0027 data, we\u0027d just use kPerformsShading.",
+      "range": {
+        "startLine": 56,
+        "startChar": 81,
+        "endLine": 56,
+        "endChar": 93
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b31839_605bd5a1",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "That makes sense - removed!",
+      "parentUuid": "2dd295fa_06c429aa",
       "range": {
         "startLine": 56,
         "startChar": 81,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0334031_4eac6ac8",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a72152d_2f80a3fa",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 70
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "155d25a1_2179aef6",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-08-16T17:10:24Z",
       "side": 1,
       "message": "very minor nit, but can we line these up with the 2nd `{`?",
+      "range": {
+        "startLine": 109,
+        "startChar": 24,
+        "endLine": 109,
+        "endChar": 25
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a95557c_ee7b15dd",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Absolutely, good catch. Thanks for keeping me honest. 😜",
+      "parentUuid": "155d25a1_2179aef6",
       "range": {
         "startLine": 109,
         "startChar": 24,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f53754_799c15b8",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Ah, I see. That\u0027s much cleaner, and got each vertex\u0027s appending to be on one line again. Yay!",
+      "parentUuid": "5c5fd5c8_d83cdcba",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07b2245_6ee7d6ea",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da229916_3819c799",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a good option to consider and to have in the tool belt. I do think that overhead would add up fairly quickly in this case though, especially once we introduce color as well.",
+      "parentUuid": "f07b2245_6ee7d6ea",
+      "range": {
+        "startLine": 153,
+        "startChar": 27,
+        "endLine": 153,
+        "endChar": 50
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4780802_1ba23aee",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-08-16T17:10:24Z",
       "side": 1,
       "message": "another way we frequently get around this is to add a `(void) fHasColor;` line to the constructor definition. That way it doesn\u0027t have as much impact as adding a function to the header.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 41
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdc9096a_9986f78d",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-17T14:12:08Z",
+      "side": 1,
+      "message": "Ah, that\u0027s more clever.",
+      "parentUuid": "b4780802_1ba23aee",
       "range": {
         "startLine": 30,
         "startChar": 4,
