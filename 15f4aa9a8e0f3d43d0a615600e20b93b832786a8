@@ -222,6 +222,30 @@
       },
       "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e643ddf_d5fc118d",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-17T18:23:44Z",
+      "side": 1,
+      "message": "Jim and I discovered that emscripten does not have WEBGL_debug_renderer_info enabled by default, even when it is available. \n\nhttps://github.com/emscripten-core/emscripten/blob/fb83ec814d4774a0c50601186cd9aee6e680c59f/src/library_webgl.js#L1129\n\nBy enabling it in webgl.js before we pass the WebGL context into GrContext, that seems to make this return a non-empty string.",
+      "parentUuid": "f4d224b7_ec77897b",
+      "range": {
+        "startLine": 705,
+        "startChar": 4,
+        "endLine": 705,
+        "endChar": 76
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
