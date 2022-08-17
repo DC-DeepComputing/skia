@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "139557cd_d5d1a129",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4224,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-17T13:39:10Z",
+      "side": 1,
+      "message": "Does this mean we\u0027re going to disable on all WebGL?",
+      "range": {
+        "startLine": 4224,
+        "startChar": 46,
+        "endLine": 4224,
+        "endChar": 52
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2ed0534_4ca0f2d1",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4225,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-17T13:39:10Z",
+      "side": 1,
+      "message": "We should probably add a condition to check for GrGLDriver::kQualcomm to avoid triggering on Freedreno driver. Not that it\u0027s likely to encounter a freedreno running on 4xx on a real device, but at least it\u0027ll be there for future copy-pasta.",
+      "range": {
+        "startLine": 4225,
+        "startChar": 8,
+        "endLine": 4225,
+        "endChar": 15
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c573b47_5662c03a",
         "filename": "src/gpu/ganesh/gl/GrGLUtil.cpp",
         "patchSetId": 1
@@ -31,6 +77,30 @@
       "writtenOn": "2022-08-16T21:49:50Z",
       "side": 1,
       "message": "This should work, but the resulting string is empty. The enum values match the spec, so I\u0027m not sure what\u0027s going on.",
+      "range": {
+        "startLine": 705,
+        "startChar": 4,
+        "endLine": 705,
+        "endChar": 76
+      },
+      "revId": "15f4aa9a8e0f3d43d0a615600e20b93b832786a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f6b9bd_d8ed3a01",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-17T13:39:10Z",
+      "side": 1,
+      "message": "Hm, seems like we need to get to the bottom of this. When I go to webglreport.com I get \"ANGLE (Apple, Apple M1 Pro, OpenGL 4.1)\" so it seems like it ought to work in Chrome. Could it be something in the emscripten GL-\u003eWebGL layer?",
+      "parentUuid": "3c573b47_5662c03a",
       "range": {
         "startLine": 705,
         "startChar": 4,
