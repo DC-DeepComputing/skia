@@ -540,7 +540,8 @@ sk_sp<const GrBuffer> DrawMeshHelper::makeIndexBuffer(const uint16_t indices[], 
     return fState->resourceProvider()->createBuffer(indices,
                                                     count*sizeof(uint16_t),
                                                     GrGpuBufferType::kIndex,
-                                                    kDynamic_GrAccessPattern);
+                                                    kDynamic_GrAccessPattern,
+                                                    SkBackingFit::kApprox);
 }
 
 template<typename T>
@@ -548,7 +549,8 @@ sk_sp<const GrBuffer> DrawMeshHelper::makeVertexBuffer(const T* data, int count)
     return fState->resourceProvider()->createBuffer(data,
                                                     count*sizeof(T),
                                                     GrGpuBufferType::kVertex,
-                                                    kDynamic_GrAccessPattern);
+                                                    kDynamic_GrAccessPattern,
+                                                    SkBackingFit::kApprox);
 }
 
 sk_sp<const GrBuffer> DrawMeshHelper::getIndexBuffer() {

@@ -200,7 +200,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
         return rp->createBuffer(points.get(),
                                 totalVertices*sizeof(SkPoint),
                                 GrGpuBufferType::kXferCpuToGpu,
-                                kDynamic_GrAccessPattern);
+                                kDynamic_GrAccessPattern,
+                                SkBackingFit::kApprox);
     };
 
     auto create_vertex_buffer = [&](sk_sp<GrGpuBuffer> srcBuffer,
@@ -217,7 +218,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
         sk_sp<GrGpuBuffer> vb = rp->createBuffer(points.get(),
                                                  dstVertexCount*sizeof(SkPoint),
                                                  GrGpuBufferType::kVertex,
-                                                 kDynamic_GrAccessPattern);
+                                                 kDynamic_GrAccessPattern,
+                                                 SkBackingFit::kApprox);
 
         // copy actual quad data from the source buffer to our new vb.
 

@@ -289,16 +289,23 @@ public:
      * @param size            minimum size of buffer to return.
      * @param GrGpuBufferType hint to the graphics subsystem about what the buffer will be used for.
      * @param GrAccessPattern hint to the graphics subsystem about how the data will be accessed.
+     * @param fit             Indicates whether the backing buffer must exactly match the passed
+     *                        size (up to backend API alignment constraints) or may be over-
+     *                        allocated/binned to increase the likelihood of cache reuse.
      *
      * @return the buffer if successful, otherwise nullptr.
      */
-    sk_sp<GrGpuBuffer> createBuffer(size_t size, GrGpuBufferType, GrAccessPattern);
+    sk_sp<GrGpuBuffer> createBuffer(size_t size,
+                                    GrGpuBufferType,
+                                    GrAccessPattern,
+                                    SkBackingFit fit);
 
     /** Same as above but also fills the buffer from data. */
     sk_sp<GrGpuBuffer> createBuffer(const void* data,
                                     size_t size,
                                     GrGpuBufferType type,
-                                    GrAccessPattern pattern);
+                                    GrAccessPattern pattern,
+                                    SkBackingFit fit);
 
     /**
      * If passed in render target already has a stencil buffer on the specified surface, return

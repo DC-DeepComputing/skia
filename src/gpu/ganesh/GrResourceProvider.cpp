@@ -442,7 +442,11 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferT
         return std::move(buffer);
     }
 
-    auto buffer = this->createBuffer(staticData, size, intendedType, kStatic_GrAccessPattern);
+    auto buffer = this->createBuffer(staticData,
+                                     size,
+                                     intendedType,
+                                     kStatic_GrAccessPattern,
+                                     SkBackingFit::kExact);
     if (!buffer) {
         return nullptr;
     }
@@ -465,7 +469,10 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
         return std::move(buffer);
     }
 
-    auto buffer = this->createBuffer(size, intendedType, kStatic_GrAccessPattern);
+    auto buffer = this->createBuffer(size,
+                                     intendedType,
+                                     kStatic_GrAccessPattern,
+                                     SkBackingFit::kExact);
     if (!buffer) {
         return nullptr;
     }
@@ -503,8 +510,10 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
         const skgpu::UniqueKey* key) {
     size_t bufferSize = patternSize * reps * sizeof(uint16_t);
 
-    sk_sp<GrGpuBuffer> buffer(
-            this->createBuffer(bufferSize, GrGpuBufferType::kIndex, kStatic_GrAccessPattern));
+    sk_sp<GrGpuBuffer> buffer = this->createBuffer(bufferSize,
+                                                   GrGpuBufferType::kIndex,
+                                                   kStatic_GrAccessPattern,
+                                                   SkBackingFit::kExact);
     if (!buffer) {
         return nullptr;
     }
@@ -589,30 +598,34 @@ int GrResourceProvider::NumIndicesPerAAQuad() { return kIndicesPerAAQuad; }
 
 sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
                                                     GrGpuBufferType intendedType,
-                                                    GrAccessPattern accessPattern) {
+                                                    GrAccessPattern accessPattern,
+                                                    SkBackingFit fit) {
     if (this->isAbandoned()) {
         return nullptr;
     }
-    if (kDynamic_GrAccessPattern != accessPattern) {
-        return this->gpu()->createBuffer(size, intendedType, accessPattern);
+    // We only attempt to cache scratch buffers for kDynamic.
+    if (accessPattern != kDynamic_GrAccessPattern) {
+        fit = SkBackingFit::kExact;
     }
-    // bin by pow2+midpoint with a reasonable min
-    static const size_t MIN_SIZE = 1 << 12;
-    static const size_t MIN_UNIFORM_SIZE = 1 << 7;
-    size_t allocSize = intendedType == GrGpuBufferType::kUniform ? std::max(size, MIN_UNIFORM_SIZE)
-                                                                 : std::max(size, MIN_SIZE);
-    size_t ceilPow2 = GrNextSizePow2(allocSize);
-    size_t floorPow2 = ceilPow2 >> 1;
-    size_t mid = floorPow2 + (floorPow2 >> 1);
-    allocSize = (allocSize <= mid) ? mid : ceilPow2;
-
-    skgpu::ScratchKey key;
-    GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(allocSize, intendedType, &key);
-    auto buffer =
-            sk_sp<GrGpuBuffer>(static_cast<GrGpuBuffer*>(this->cache()->findAndRefScratchResource(
-                    key)));
+    size_t allocSize = size;
+    sk_sp<GrGpuBuffer> buffer;
+    if (fit == SkBackingFit::kApprox) {
+        // bin by pow2+midpoint with a reasonable min
+        static const size_t MIN_SIZE = 1 << 12;
+        static const size_t MIN_UNIFORM_SIZE = 1 << 7;
+        allocSize = intendedType == GrGpuBufferType::kUniform
+                  ? std::max(size, MIN_UNIFORM_SIZE)
+                  : std::max(size, MIN_SIZE);
+        size_t ceilPow2 = GrNextSizePow2(allocSize);
+        size_t floorPow2 = ceilPow2 >> 1;
+        size_t mid = floorPow2 + (floorPow2 >> 1);
+        allocSize = (allocSize <= mid) ? mid : ceilPow2;
+        skgpu::ScratchKey key;
+        GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(allocSize, intendedType, &key);
+        buffer.reset(static_cast<GrGpuBuffer*>(this->cache()->findAndRefScratchResource(key)));
+    }
     if (!buffer) {
-        buffer = this->gpu()->createBuffer(allocSize, intendedType, kDynamic_GrAccessPattern);
+        buffer = this->gpu()->createBuffer(allocSize, intendedType, accessPattern);
     }
     return buffer;
 }
@@ -620,9 +633,10 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
 sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(const void* data,
                                                     size_t size,
                                                     GrGpuBufferType type,
-                                                    GrAccessPattern pattern) {
+                                                    GrAccessPattern pattern,
+                                                    SkBackingFit fit) {
     SkASSERT(data);
-    auto buffer = this->createBuffer(size, type, pattern);
+    auto buffer = this->createBuffer(size, type, pattern, fit);
     if (!buffer) {
         return nullptr;
     }

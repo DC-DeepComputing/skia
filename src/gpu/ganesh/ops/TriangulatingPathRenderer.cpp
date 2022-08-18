@@ -112,8 +112,10 @@ public:
         SkASSERT(stride && eagerCount);
 
         size_t size = eagerCount * stride;
-        fVertexBuffer = fResourceProvider->createBuffer(size, GrGpuBufferType::kVertex,
-                                                        kStatic_GrAccessPattern);
+        fVertexBuffer = fResourceProvider->createBuffer(size,
+                                                        GrGpuBufferType::kVertex,
+                                                        kStatic_GrAccessPattern,
+                                                        SkBackingFit::kExact);
         if (!fVertexBuffer) {
             return nullptr;
         }
@@ -303,7 +305,8 @@ private:
                 sk_sp<GrGpuBuffer> buffer = rp->createBuffer(fVertexData->vertices(),
                                                              fVertexData->size(),
                                                              GrGpuBufferType::kVertex,
-                                                             kStatic_GrAccessPattern);
+                                                             kStatic_GrAccessPattern,
+                                                             SkBackingFit::kExact);
                 if (!buffer) {
                     return;
                 }

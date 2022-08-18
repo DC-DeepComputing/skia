@@ -657,7 +657,8 @@ bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
     // TODO: Use staging buffer manager if available to be more efficient with buffer space.
     auto tempBuffer = dc->priv().resourceProvider()->createBuffer(size,
                                                                   GrGpuBufferType::kXferCpuToGpu,
-                                                                  kDynamic_GrAccessPattern);
+                                                                  kDynamic_GrAccessPattern,
+                                                                  SkBackingFit::kExact);
     if (!tempBuffer) {
         return false;
     }

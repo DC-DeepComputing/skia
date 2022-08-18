@@ -206,7 +206,8 @@ sk_sp<Base> SkMeshPriv::GpuBuffer<Base, Type>::Make(GrDirectContext* dc,
     sk_sp<GrGpuBuffer> buffer = dc->priv().resourceProvider()->createBuffer(
             size,
             Type,
-            kStatic_GrAccessPattern);
+            kDynamic_GrAccessPattern,
+            SkBackingFit::kExact);
     if (!buffer) {
         return nullptr;
     }
