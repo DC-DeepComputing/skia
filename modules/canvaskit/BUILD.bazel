@@ -299,43 +299,51 @@ wasm_cc_binary(
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_canvas_polyfill",
+    name = "enable_canvas_polyfill",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_fonts",
+    name = "enable_fonts",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "include_embedded_font",
+    name = "include_embedded_font",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "include_matrix_js",
+    name = "include_matrix_js",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_skottie",
+    name = "enable_skottie",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_skp_serialization",
+    name = "enable_skp_serialization",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_particles",
+    name = "enable_particles",
+    external_default = False,
+    internal_default = False,
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_runtime_effect",
+    name = "enable_runtime_effect",
+    external_default = False,
+    internal_default = False,
 )
 
 karma_test(

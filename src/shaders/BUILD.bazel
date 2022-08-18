@@ -41,8 +41,9 @@ split_srcs_and_hdrs(
 )
 
 bool_flag(
-    default = True,
-    flag_name = "legacy_shader_context",
+    name = "legacy_shader_context",
+    external_default = True,
+    internal_default = True,
 )
 
 filegroup(
