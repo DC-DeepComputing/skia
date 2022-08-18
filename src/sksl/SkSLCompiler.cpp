@@ -216,7 +216,7 @@ inline static constexpr BuiltinTypePtr kPrivateTypes[] = {
 #undef TYPE
 
 std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() {
-    auto rootSymbolTable = std::make_shared<SymbolTable>(*fContext, /*builtin=*/true);
+    auto rootSymbolTable = std::make_shared<SymbolTable>(/*builtin=*/true);
 
     for (BuiltinTypePtr rootType : kRootTypes) {
         rootSymbolTable->addWithoutOwnership((fContext->fTypes.*rootType).get());
