@@ -32,7 +32,8 @@ split_srcs_and_hdrs(
 )
 
 string_flag_with_values(
-    flag_name = "gpu_backend",
+    name = "gpu_backend",
+    internal_default = ["gl_backend"],
     multiple = True,
     values = [
         "gl_backend",
@@ -42,7 +43,7 @@ string_flag_with_values(
 )
 
 string_flag_with_values(
-    flag_name = "with_gl_standard",
+    name = "with_gl_standard",  # TODO(kjlubick) connect with SK_ASSUME_GL...
     values = [
         "gles_standard",
         "gl_standard",
@@ -70,14 +71,16 @@ selects.config_setting_group(
 )
 
 bool_flag(
-    default = True,
-    flag_name = "use_vulkan_memory_allocator",
+    name = "use_vulkan_memory_allocator",
+    external_default = True,
+    internal_default = True,
     public = False,  # Users should use :vulkan_with_vma
 )
 
 bool_flag(
-    default = False,
-    flag_name = "enable_gpu_test_utils",
+    name = "enable_gpu_test_utils",
+    external_default = False,
+    internal_default = False,
 )
 
 filegroup(
