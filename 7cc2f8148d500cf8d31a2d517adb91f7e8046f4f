@@ -220,6 +220,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1104751c_c7f45cf6",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T16:58:23Z",
+      "side": 1,
+      "message": "Renamed to finishUniformDataBlock.",
+      "parentUuid": "7a859992_41d4dda5",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b7230e9_f5f6c2c4",
