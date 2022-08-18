@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e37d33a_af08c02d",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-18T17:45:58Z",
+      "side": 1,
+      "message": "Why are we declaring a default for this in Skia? This isn\u0027t a Skia thing? Why not just have a standard set of flags on the G3 side?",
+      "revId": "a8f5ede08145ac3f5dc4690c5d72b25d54711845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87fe4c68_5717036f",
+        "filename": "bazel/common_config_settings/defs.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-18T17:45:58Z",
+      "side": 1,
+      "message": "Once again, I find it unsupportable to weave a particular external (and call it \"internal\") build of Skia in the Skia build.",
+      "revId": "a8f5ede08145ac3f5dc4690c5d72b25d54711845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
