@@ -270,11 +270,6 @@ void Inliner::ensureScopedBlocks(Statement* inlinedBody, Statement* parentStmt) 
     }
 }
 
-void Inliner::reset() {
-    fContext->fMangler->reset();
-    fInlinedStatementCounter = 0;
-}
-
 std::unique_ptr<Expression> Inliner::inlineExpression(Position pos,
                                                       VariableRewriteMap* varMap,
                                                       SymbolTable* symbolTableForExpression,
@@ -1131,6 +1126,8 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
     if (fInlinedStatementCounter >= kInlinedStatementLimit) {
         return false;
     }
+
+    fContext->fMangler->reset();
 
     InlineCandidateList candidateList;
     this->buildCandidateList(elements, symbols, usage, &candidateList);
