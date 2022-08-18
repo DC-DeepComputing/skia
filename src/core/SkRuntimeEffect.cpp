@@ -62,6 +62,8 @@
 
 #ifdef SK_ENABLE_SKSL
 
+bool disable_sksl_via_skvm = true;
+
 using ChildType = SkRuntimeEffect::ChildType;
 
 static bool init_uniform_type(const SkSL::Context& ctx,
@@ -1059,6 +1061,7 @@ public:
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        if (disable_sksl_via_skvm) { return {}; }
         SkASSERT(
                 SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get()));
 
@@ -1240,6 +1243,7 @@ public:
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        if (disable_sksl_via_skvm) { return {}; }
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
             return {};
         }
@@ -1353,6 +1357,7 @@ public:
     skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                           SkArenaAlloc* alloc) const override {
+        if (disable_sksl_via_skvm) { return {}; }
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
             return {};
         }

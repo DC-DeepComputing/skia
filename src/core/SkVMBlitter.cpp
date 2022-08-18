@@ -750,11 +750,14 @@ void SkVMBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
     }
 }
 
+bool disable_skvm_blitter = true;
+
 SkVMBlitter* SkVMBlitter::Make(const SkPixmap& device,
                                const SkPaint& paint,
                                const SkMatrixProvider& matrices,
                                SkArenaAlloc* alloc,
                                sk_sp<SkShader> clip) {
+    if (disable_skvm_blitter) { return nullptr; }
     bool ok = true;
     SkVMBlitter* blitter = alloc->make<SkVMBlitter>(
             device, paint, /*sprite=*/nullptr, SkIPoint{0,0}, matrices, std::move(clip), &ok);
@@ -767,6 +770,7 @@ SkVMBlitter* SkVMBlitter::Make(const SkPixmap& device,
                                int left, int top,
                                SkArenaAlloc* alloc,
                                sk_sp<SkShader> clip) {
+    if (disable_skvm_blitter) { return nullptr; }
     if (paint.getMaskFilter()) {
         // TODO: SkVM support for mask filters?  definitely possible!
         return nullptr;
