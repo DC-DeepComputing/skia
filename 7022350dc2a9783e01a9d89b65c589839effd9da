@@ -51,6 +51,24 @@
       "parentUuid": "1da71839_b5223086",
       "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61ba2148_e0156f1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:48:12Z",
+      "side": 1,
+      "message": "Ack--it\u0027s almost-entirely harmless and gives us fewer alignment issues to reason about. SGTM.",
+      "parentUuid": "7df9cd5b_dbe7a568",
+      "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
