@@ -228,11 +228,11 @@ DEF_TEST(UniformManagerCheckPaddingScalarVector, r) {
                     // a/b: padding as part of the uniform type (vec3 takes 4 slots)
                     // _  : padding between uniforms for alignment
                     static constexpr const char* kExpectedLayout[5][5] = {
-                        { "", "",      "",       "",         ""         },
-                        { "", "AB",    "A_BB",   "A___BBBb", "A___BBBB" },
-                        { "", "AAB",   "AABB",   "AA__BBBb", "AA__BBBB" },
-                        { "", "AAAaB", "AAAaBB", "AAAaBBBb", "AAAaBBBB" },
-                        { "", "AAAAB", "AAAABB", "AAAABBBb", "AAAABBBB" },
+                        { "", "",         "",         "",         ""         },
+                        { "", "AB",       "A_BB",     "A___BBBb", "A___BBBB" },
+                        { "", "AAB_",     "AABB",     "AA__BBBb", "AA__BBBB" },
+                        { "", "AAAaB___", "AAAaBB__", "AAAaBBBb", "AAAaBBBB" },
+                        { "", "AAAAB___", "AAAABB__", "AAAABBBb", "AAAABBBB" },
                     };
                     const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) *
                                         elementSize1;
@@ -247,11 +247,11 @@ DEF_TEST(UniformManagerCheckPaddingScalarVector, r) {
                     // a/b: padding as part of the uniform type (vec3 takes 4 slots)
                     // _  : padding between uniforms for alignment
                     static constexpr const char* kExpectedLayout[5][5] = {
-                        { "", "",      "",       "",         ""         },
-                        { "", "A_BB",   "A___BBBB", "A_______BBBBBBbb", "A_______BBBBBBBB" },
-                        { "", "AABB",   "AA__BBBB", "AA______BBBBBBbb", "AA______BBBBBBBB" },
-                        { "", "AAAaBB", "AAAaBBBB", "AAAa____BBBBBBbb", "AAAa____BBBBBBBB" },
-                        { "", "AAAABB", "AAAABBBB", "AAAA____BBBBBBbb", "AAAA____BBBBBBBB" },
+                        { "", "",         "",         "",                 ""         },
+                        { "", "A_BB",     "A___BBBB", "A_______BBBBBBbb", "A_______BBBBBBBB" },
+                        { "", "AABB",     "AA__BBBB", "AA______BBBBBBbb", "AA______BBBBBBBB" },
+                        { "", "AAAaBB__", "AAAaBBBB", "AAAa____BBBBBBbb", "AAAa____BBBBBBBB" },
+                        { "", "AAAABB__", "AAAABBBB", "AAAA____BBBBBBbb", "AAAA____BBBBBBBB" },
                     };
                     const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) * 2;
                     SkUniformDataBlock uniformData = mgr.peekData();
@@ -265,11 +265,19 @@ DEF_TEST(UniformManagerCheckPaddingScalarVector, r) {
                     // a/b: padding as part of the uniform type (vec3 takes 4 slots)
                     // _  : padding between uniforms for alignment
                     static constexpr const char* kExpectedLayout[5][5] = {
-                        { "", "",          "",           "",             ""         },
-                        { "", "AAB",       "AABB",       "AA__BBBb",     "AA__BBBB" },
-                        { "", "AAAAB",     "AAAABB",     "AAAABBBb",     "AAAABBBB" },
-                        { "", "AAAAAAaaB", "AAAAAAaaBB", "AAAAAAaaBBBb", "AAAAAAaaBBBB" },
-                        { "", "AAAAAAAAB", "AAAAAAAABB", "AAAAAAAABBBb", "AAAAAAAABBBB" },
+                        { "", "", "", "", "" },
+                        { "", "AAB_",     "AABB",     "AA__BBBb", "AA__BBBB" },
+                        { "", "AAAAB___", "AAAABB__", "AAAABBBb", "AAAABBBB" },
+                        { "",
+                          "AAAAAAaaB_______",
+                          "AAAAAAaaBB______",
+                          "AAAAAAaaBBBb____",
+                          "AAAAAAaaBBBB____" },
+                        { "",
+                          "AAAAAAAAB_______",
+                          "AAAAAAAABB______",
+                          "AAAAAAAABBBb____",
+                          "AAAAAAAABBBB____" },
                     };
                     const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) * 2;
                     SkUniformDataBlock uniformData = mgr.peekData();
@@ -372,12 +380,12 @@ DEF_TEST(UniformManagerCheckPaddingVectorMatrix, r) {
                             {"", "", "AABBBB",   "AA__BBBbBBBbBBBb", "AA__BBBBBBBBBBBBBBBB"},
                             {"", "", "AAAABBBB", "AAAABBBbBBBbBBBb", "AAAABBBBBBBBBBBBBBBB"},
                             {"", "",
-                             "AAAAAAaaBBBB",
-                             "AAAAAAaaBBBbBBBbBBBb",
+                             "AAAAAAaaBBBB____",
+                             "AAAAAAaaBBBbBBBbBBBb____",
                              "AAAAAAaaBBBBBBBBBBBBBBBB"},
                             {"", "",
-                             "AAAAAAAABBBB",
-                             "AAAAAAAABBBbBBBbBBBb",
+                             "AAAAAAAABBBB____",
+                             "AAAAAAAABBBbBBBbBBBb____",
                              "AAAAAAAABBBBBBBBBBBBBBBB"},
                     };
                     const size_t size = strlen(kExpectedLayout[vecLength1][matSize2]) * 2;
@@ -428,15 +436,15 @@ DEF_TEST(UniformManagerCheckPaddingMatrixVector, r) {
                     static constexpr const char* kExpectedLayout[5][5] = {
                         { "", "", "", "", "" },
                         { "", "", "", "", "" },
-                        { "", "AAAAB", "AAAABB", "AAAABBBb", "AAAABBBB" },
+                        { "", "AAAAB_", "AAAABB", "AAAABBBb", "AAAABBBB" },
                         { "",
-                          "AAAaAAAaAAAaB",
-                          "AAAaAAAaAAAaBB",
+                          "AAAaAAAaAAAaB___",
+                          "AAAaAAAaAAAaBB__",
                           "AAAaAAAaAAAaBBBb",
                           "AAAaAAAaAAAaBBBB" },
                         { "",
-                          "AAAAAAAAAAAAAAAAB",
-                          "AAAAAAAAAAAAAAAABB",
+                          "AAAAAAAAAAAAAAAAB___",
+                          "AAAAAAAAAAAAAAAABB__",
                           "AAAAAAAAAAAAAAAABBBb",
                           "AAAAAAAAAAAAAAAABBBB" },
                     };
@@ -457,12 +465,12 @@ DEF_TEST(UniformManagerCheckPaddingMatrixVector, r) {
                         { "", "", "", "", "" },
                         { "", "AAAABB", "AAAABBBB", "AAAA____BBBBBBbb", "AAAA____BBBBBBBB" },
                         { "",
-                          "AAAaAAAaAAAaBB",
+                          "AAAaAAAaAAAaBB__",
                           "AAAaAAAaAAAaBBBB",
                           "AAAaAAAaAAAa____BBBBBBbb",
                           "AAAaAAAaAAAa____BBBBBBBB" },
                         { "",
-                          "AAAAAAAAAAAAAAAABB",
+                          "AAAAAAAAAAAAAAAABB__",
                           "AAAAAAAAAAAAAAAABBBB",
                           "AAAAAAAAAAAAAAAABBBBBBbb",
                           "AAAAAAAAAAAAAAAABBBBBBBB" },
@@ -481,17 +489,17 @@ DEF_TEST(UniformManagerCheckPaddingMatrixVector, r) {
                     static constexpr const char* kExpectedLayout[5][5] = {
                         { "", "", "", "", "" },
                         { "", "", "", "", "" },
-                        { "", "AAAAAAAAB", "AAAAAAAABB", "AAAAAAAABBBb", "AAAAAAAABBBB" },
+                        { "", "AAAAAAAAB___", "AAAAAAAABB__", "AAAAAAAABBBb", "AAAAAAAABBBB" },
                         { "",
-                          "AAAAAAaaAAAAAAaaAAAAAAaaB",
-                          "AAAAAAaaAAAAAAaaAAAAAAaaBB",
-                          "AAAAAAaaAAAAAAaaAAAAAAaaBBBb",
-                          "AAAAAAaaAAAAAAaaAAAAAAaaBBBB" },
+                          "AAAAAAaaAAAAAAaaAAAAAAaaB_______",
+                          "AAAAAAaaAAAAAAaaAAAAAAaaBB______",
+                          "AAAAAAaaAAAAAAaaAAAAAAaaBBBb____",
+                          "AAAAAAaaAAAAAAaaAAAAAAaaBBBB____" },
                         { "",
-                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB",
-                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABB",
-                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBb",
-                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB" },
+                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB_______",
+                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABB______",
+                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBb____",
+                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB____" },
                     };
                     const size_t size = strlen(kExpectedLayout[matSize1][vecLength2]) * 2;
                     SkUniformDataBlock uniformData = mgr.peekData();
