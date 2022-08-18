@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba79af7_f98a608d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "nit/up to you: seems like we could just pass the entire `const ShaderInfo\u0026 shaderInfo` as the first parameter (here and at the top of `append_default_snippet_arguments` as well). It would fit the pattern in this file where many/most functions take ShaderInfo at the front of the param list, and it would make our lives easier down the road if we need more stuff from it.",
+      "range": {
+        "startLine": 45,
+        "startChar": 51,
+        "endLine": 45,
+        "endChar": 52
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d068273_115d5872",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 148,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 9
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb194983_774bc633",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 16
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4a273c_ba920ff6",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 64
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f78fc7_f974ea33",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "This is copied verbatim from `EmitPaintParamsUniforms` and could probably be factored out into a helper.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 0
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad39f599_a977ffec",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "SkSL::String::appendf(\u0026result, \"    %s %s_%d\", SkSLTypeString(u.type()), u.name(), manglingSuffix);",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2572f24f_2dd21399",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:03:56Z",
+      "side": 1,
+      "message": "You can just put `float4x4` directly. These typenames are not in flux.",
+      "range": {
+        "startLine": 199,
+        "startChar": 30,
+        "endLine": 199,
+        "endChar": 32
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
