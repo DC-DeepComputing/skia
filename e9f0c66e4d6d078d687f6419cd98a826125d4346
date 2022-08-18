@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454a9a30_7b774fe4",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-18T12:03:42Z",
+      "side": 1,
+      "message": "Debian10-gcc-Docker bots are opinionated about memcpy args, and fail to build without this cast:\n\n    error: \u0027void* memcpy(void*, const void*, size_t)\u0027 writing to an object of type \u0027class sk_sp\u003cSkTypeface\u003e\u0027 with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Werror\u003dclass-memaccess]\n         memcpy(\u0026fItemArray[dst], \u0026fItemArray[src], sizeof(T));\n         ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n         \n(https://logs.chromium.org/logs/skia/5cc5dd363855c111/+/steps/Run_build_script_in_Docker/0/stdout)",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 523,
+        "endChar": 26
+      },
+      "revId": "e9f0c66e4d6d078d687f6419cd98a826125d4346",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
