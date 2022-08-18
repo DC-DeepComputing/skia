@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19407700_2ab060c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-18T18:37:53Z",
+      "side": 1,
+      "message": "This is a (part of ) temp solution helping Flutter people to reduce memory for yet another copy of ICU.\nThe changes that actually allow not to link ICU to Skia will be coming later.",
+      "revId": "658c903d44fd01a5608b1cc494133116f85aa1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
