@@ -34,6 +34,24 @@
       "parentUuid": "7178b6d3_ee4b2587",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baed4d89_5ad02afd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-18T14:22:05Z",
+      "side": 1,
+      "message": "Thanks.\n\nI can\u0027t quite tell whether Mike thought there was a real issue with mem-copying sk_sps, or just didn\u0027t want to argue with the compiler because the non-memcopy code is good enough.  I suspect it\u0027s the latter?\n\nHe\u0027s prolly right about that, the only reason this piqued my interest is I was looking at uninlining checkRealloc and it\u0027s much more tractable for MEM_MOVE\u003dtrue types.\n\nBut even that is speculative at this point, I\u0027m guessing we could maybe save 20-30KB at best.  So if there\u0027s anything iffy about this, it might not be worth pursuing.",
+      "parentUuid": "a1685ce1_d5f29a66",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
