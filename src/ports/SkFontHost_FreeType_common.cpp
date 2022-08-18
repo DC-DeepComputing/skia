@@ -16,6 +16,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkColorData.h"
+#include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFDot6.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
@@ -136,6 +137,55 @@ int bittst(const uint8_t data[], int bitOffset) {
     int lowBit = data[bitOffset >> 3] >> (~bitOffset & 7);
     return lowBit & 1;
 }
+
+SkColor lerpSkColor(SkColor c0, SkColor c1, float t) {
+    const auto c0_4f = Sk4f_fromL32(c0), c1_4f = Sk4f_fromL32(c1),
+               c_4f = c0_4f + (c1_4f - c0_4f) * t;
+
+    return Sk4f_toL32(c_4f);
+};
+
+enum TruncateStops {
+  TruncateStart,
+  TruncateEnd
+};
+
+/* Truncate a vector of color stops at a previously computed stop position and insert at that
+ * position the color interpolated between the surrounding stops. */
+void truncateToStopInterpolating(SkScalar zeroRadiusColorStop,
+                                         std::vector<SkColor>& colors,
+                                         std::vector<SkScalar>& stops,
+                                         TruncateStops truncateStops) {
+    SkASSERT(zeroRadiusColorStop > 0.f && zeroRadiusColorStop < 1.f);
+    SkASSERT(stops.size() > 1u);
+    size_t afterIndex = 0;
+    if (truncateStops == TruncateStart) {
+        afterIndex =
+                std::lower_bound(stops.begin(), stops.end(), zeroRadiusColorStop) - stops.begin();
+    } else {
+        afterIndex =
+                std::upper_bound(stops.begin(), stops.end(), zeroRadiusColorStop) - stops.begin();
+    }
+
+    SkColor beforeColor = colors[afterIndex - 1];
+    SkColor afterColor = colors[afterIndex];
+    SkColor lerpColor = lerpSkColor(beforeColor,
+                             afterColor,
+                             (zeroRadiusColorStop - stops[afterIndex - 1]) /
+                                     (stops[afterIndex] - stops[afterIndex - 1]));
+
+    if (truncateStops == TruncateStart) {
+        stops.erase(stops.begin(), stops.begin() + afterIndex);
+        colors.erase(colors.begin(), colors.begin() + afterIndex);
+        stops.insert(stops.begin(), 0);
+        colors.insert(colors.begin(), lerpColor);
+    } else {
+        stops.erase(stops.begin() + afterIndex, stops.end());
+        colors.erase(colors.begin() + afterIndex, colors.end());
+        stops.insert(stops.end(), 1);
+        colors.insert(colors.end(), lerpColor);
+    }
+};
 
 /**
  *  Copies a FT_Bitmap into an SkMask with the same dimensions.
@@ -724,13 +774,29 @@ bool colrv1_configure_skpaint(FT_Face face,
                     stop = (stop - stopsStartOffset) * scaleFactor;
                 }
             }
+            SkASSERT(!(startRadius == 0.f && endRadius == 0.f));
 
-            // TODO(https://crbug.com/skia/13653): Interpolate a zero radius
-            // circle with manual color interpolation or upgrade the
-            // MakeTwoPointConical shader to understand negative radii.
-            if (startRadius < 0 || endRadius < 0) {
-                paint->setColor(SK_ColorTRANSPARENT);
-                return true;
+            if (startRadius < 0) {
+                // Compute color stop position where radius is = 0.  After the scaling of stop
+                // positions to the normal 0,1 range that we have done above, the  size
+                // of the radius as a function of the color stops is: r(x) = r0 + x*(r1-r0) S
+                // Solving this function for r(x) = 0, we get: x = -r0 / (r1-r0)
+                SkScalar zeroRadiusColorStop = -startRadius / (endRadius - startRadius);
+
+                startRadius = 0.f;
+                truncateToStopInterpolating(zeroRadiusColorStop, colors, stops, TruncateStart);
+
+                SkVector startEndDiff = end - start;
+                startEndDiff.scale(zeroRadiusColorStop);
+                start = start + startEndDiff;
+            }
+            if (endRadius < 0) {
+                SkScalar zeroRadiusColorStop = -startRadius / (endRadius - startRadius);
+                endRadius = 0.f;
+                truncateToStopInterpolating(zeroRadiusColorStop, colors, stops, TruncateEnd);
+                SkVector startEndDiff = end - start;
+                startEndDiff.scale(1 - zeroRadiusColorStop);
+                end = end - startEndDiff;
             }
 
             // An opaque color is needed to ensure the gradient is not modulated by alpha.
