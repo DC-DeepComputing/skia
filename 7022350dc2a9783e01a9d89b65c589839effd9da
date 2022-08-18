@@ -33,6 +33,24 @@
       "message": "Do we need/want the padding in all APIs? I thought it was only Metal that required it. (Although it\u0027s harmless to just have it everywhere I suppose)",
       "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df9cd5b_dbe7a568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T15:26:22Z",
+      "side": 1,
+      "message": "Yes, when uniform blocks are in SSBOs, they need to be sized so that each array entry can be accessed correctly in units of the struct-size. Having padding at the end of the struct to match its max alignment is consistent with how C++ does it, so should be familiar to devs. The alternative would be we calculate the padding needed each time we append a new entry, but I like having users of UniformManager and SkUniformDataBlock be relatively dumb in these regards.",
+      "parentUuid": "1da71839_b5223086",
+      "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
