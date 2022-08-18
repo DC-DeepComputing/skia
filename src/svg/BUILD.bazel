@@ -5,8 +5,9 @@ licenses(["notice"])
 exports_files_legacy()
 
 bool_flag(
-    default = False,
-    flag_name = "enable_svg_canvas",
+    name = "enable_svg_canvas",
+    external_default = False,
+    internal_default = False,
 )
 
 filegroup(
