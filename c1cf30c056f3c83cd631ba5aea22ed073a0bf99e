@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e766df06_e33f583c",
+        "filename": "resources/sksl/compute/MatrixMultiply.compute",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-18T20:16:30Z",
+      "side": 1,
+      "message": "Ah yes, it looks like I forgot to look into why this was getting rejected. I now fixed the DSL parser to allow unsized arrays with the `float data[]` syntax in interface blocks.",
+      "parentUuid": "c386c0ad_420c8698",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 17
+      },
+      "revId": "c1cf30c056f3c83cd631ba5aea22ed073a0bf99e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "011d3918_6f657ba0",

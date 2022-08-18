@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "593e3da2_046072f9",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-18T20:16:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "41e22d53_3c937e0a",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b2ddded_afe67fc6",
