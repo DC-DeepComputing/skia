@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0102cfe4_a115caea",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T15:47:35Z",
+      "side": 1,
+      "message": "Don\u0027t we compensate w/ this kind of stuff:\n\nSK_REGISTER_FLATTENABLE(SkMorphologyImageFilter);\n// TODO (michaelludwig): Remove after grace period for SKPs to stop using old name\nSkFlattenable::Register(\"SkMorphologyImageFilterImpl\", SkMorphologyImageFilter::CreateProc);",
+      "parentUuid": "88cb325a_5f080af1",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 25
+      },
+      "revId": "ed4a69c4929261b79a8aaf4e98add6f7a0f66bda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c6b7f73_39d38ce7",
         "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
         "patchSetId": 1
