@@ -819,8 +819,8 @@ bool equals(SkDrawable* a, SkDrawable* b) {
 }
 
 template <typename T>
-static int find_or_append(SkTArray<sk_sp<T>>& array, T* obj) {
-    for (int i = 0; i < array.count(); i++) {
+static int find_or_append(std::vector<sk_sp<T>>& array, T* obj) {
+    for (size_t i = 0; i < array.size(); i++) {
         if (equals(array[i].get(), obj)) {
             return i;
         }
@@ -828,7 +828,7 @@ static int find_or_append(SkTArray<sk_sp<T>>& array, T* obj) {
 
     array.push_back(sk_ref_sp(obj));
 
-    return array.count() - 1;
+    return SkToInt(array.size()) - 1;
 }
 
 sk_sp<SkSurface> SkPictureRecord::onNewSurface(const SkImageInfo& info, const SkSurfaceProps&) {
@@ -847,7 +847,7 @@ void SkPictureRecord::addMatrix(const SkMatrix& matrix) {
 void SkPictureRecord::addPaintPtr(const SkPaint* paint) {
     if (paint) {
         fPaints.push_back(*paint);
-        this->addInt(fPaints.count());
+        this->addInt(fPaints.size());
     } else {
         this->addInt(0);
     }

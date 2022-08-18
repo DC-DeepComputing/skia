@@ -11,10 +11,10 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkPicture.h"
-#include "include/private/SkTArray.h"
 #include "src/core/SkPictureFlat.h"
 
 #include <memory>
+#include <vector>
 
 class SkData;
 class SkPictureRecord;
@@ -69,9 +69,9 @@ public:
 #define SK_PICT_EOF_TAG     SkSetFourByteTag('e', 'o', 'f', ' ')
 
 template <typename T>
-T* read_index_base_1_or_null(SkReadBuffer* reader, const SkTArray<sk_sp<T>>& array) {
+T* read_index_base_1_or_null(SkReadBuffer* reader, const std::vector<sk_sp<T>>& array) {
     int index = reader->readInt();
-    return reader->validate(index > 0 && index <= array.count()) ? array[index - 1].get() : nullptr;
+    return reader->validate(index > 0 && index <= array.size()) ? array[index - 1].get() : nullptr;
 }
 
 class SkPictureData {
@@ -102,12 +102,12 @@ public:
     const SkImage* getImage(SkReadBuffer* reader) const {
         // images are written base-0, unlike paths, pictures, drawables, etc.
         const int index = reader->readInt();
-        return reader->validateIndex(index, fImages.count()) ? fImages[index].get() : nullptr;
+        return reader->validateIndex(index, fImages.size()) ? fImages[index].get() : nullptr;
     }
 
     const SkPath& getPath(SkReadBuffer* reader) const {
         int index = reader->readInt();
-        return reader->validate(index > 0 && index <= fPaths.count()) ?
+        return reader->validate(index > 0 && index <= fPaths.size()) ?
                 fPaths[index - 1] : fEmptyPath;
     }
 
@@ -148,21 +148,21 @@ private:
     void parseBufferTag(SkReadBuffer&, uint32_t tag, uint32_t size);
     void flattenToBuffer(SkWriteBuffer&, bool textBlobsOnly) const;
 
-    SkTArray<SkPaint>  fPaints;
-    SkTArray<SkPath>   fPaths;
+    std::vector<SkPaint>  fPaints;
+    std::vector<SkPath>   fPaths;
 
     sk_sp<SkData>   fOpData;    // opcodes and parameters
 
     const SkPath    fEmptyPath;
     const SkBitmap  fEmptyBitmap;
 
-    SkTArray<sk_sp<const SkPicture>>   fPictures;
-    SkTArray<sk_sp<SkDrawable>>        fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>>  fVertices;
-    SkTArray<sk_sp<const SkImage>>     fImages;
+    std::vector<sk_sp<const SkPicture>>   fPictures;
+    std::vector<sk_sp<SkDrawable>>        fDrawables;
+    std::vector<sk_sp<const SkTextBlob>>  fTextBlobs;
+    std::vector<sk_sp<const SkVertices>>  fVertices;
+    std::vector<sk_sp<const SkImage>>     fImages;
 #if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const sktext::gpu::Slug>>      fSlugs;
+    std::vector<sk_sp<const sktext::gpu::Slug>>      fSlugs;
 #endif
 
 

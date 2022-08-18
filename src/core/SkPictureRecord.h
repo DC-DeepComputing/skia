@@ -14,12 +14,13 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
-#include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkWriter32.h"
+
+#include <vector>
 
 // These macros help with packing and unpacking a single byte value and
 // a 3 byte value into/out of a uint32_t
@@ -36,29 +37,29 @@ public:
 
     SkPictureRecord(const SkIRect& dimensions, uint32_t recordFlags);
 
-    const SkTArray<sk_sp<const SkPicture>>& getPictures() const {
+    const std::vector<sk_sp<const SkPicture>>& getPictures() const {
         return fPictures;
     }
 
-    const SkTArray<sk_sp<SkDrawable>>& getDrawables() const {
+    const std::vector<sk_sp<SkDrawable>>& getDrawables() const {
         return fDrawables;
     }
 
-    const SkTArray<sk_sp<const SkTextBlob>>& getTextBlobs() const {
+    const std::vector<sk_sp<const SkTextBlob>>& getTextBlobs() const {
         return fTextBlobs;
     }
 
 #if SK_SUPPORT_GPU
-    const SkTArray<sk_sp<const sktext::gpu::Slug>>& getSlugs() const {
+    const std::vector<sk_sp<const sktext::gpu::Slug>>& getSlugs() const {
         return fSlugs;
     }
 #endif
 
-    const SkTArray<sk_sp<const SkVertices>>& getVertices() const {
+    const std::vector<sk_sp<const SkVertices>>& getVertices() const {
         return fVertices;
     }
 
-    const SkTArray<sk_sp<const SkImage>>& getImages() const {
+    const std::vector<sk_sp<const SkImage>>& getImages() const {
         return fImages;
     }
 
@@ -242,7 +243,7 @@ protected:
     void recordRestore(bool fillInSkips = true);
 
 private:
-    SkTArray<SkPaint>  fPaints;
+    std::vector<SkPaint>  fPaints;
 
     struct PathHash {
         uint32_t operator()(const SkPath& p) { return p.getGenerationID(); }
@@ -251,13 +252,13 @@ private:
 
     SkWriter32 fWriter;
 
-    SkTArray<sk_sp<const SkImage>>    fImages;
-    SkTArray<sk_sp<const SkPicture>>  fPictures;
-    SkTArray<sk_sp<SkDrawable>>       fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>> fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>> fVertices;
+    std::vector<sk_sp<const SkImage>>    fImages;
+    std::vector<sk_sp<const SkPicture>>  fPictures;
+    std::vector<sk_sp<SkDrawable>>       fDrawables;
+    std::vector<sk_sp<const SkTextBlob>> fTextBlobs;
+    std::vector<sk_sp<const SkVertices>> fVertices;
 #if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const sktext::gpu::Slug>> fSlugs;
+    std::vector<sk_sp<const sktext::gpu::Slug>> fSlugs;
 #endif
 
     uint32_t fRecordFlags;
