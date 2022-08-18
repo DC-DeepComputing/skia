@@ -37,6 +37,10 @@ public:
                                        const ComputePipelineDesc&,
                                        const ComputePassDesc&);
 
+    // DO NOT SUBMIT: This creates an example compute kernel that multiplies a 512-element vector by
+    // 2 using a single work group dispatched over 512 threads.
+    static sk_sp<ComputePassTask> MakeHackTaskForLocalTesting(ResourceProvider*);
+
     ~ComputePassTask() override = default;
 
     bool prepareResources(ResourceProvider*) override;
