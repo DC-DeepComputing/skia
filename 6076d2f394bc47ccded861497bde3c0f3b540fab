@@ -123,6 +123,24 @@
       "parentUuid": "9e3605ef_3a9eb1b4",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a477cf7_7ecd45c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-18T15:48:29Z",
+      "side": 1,
+      "message": "Interesting. We have a bunch of std::vector usage in the code now. So maybe something to think more about.\n\nWDYT of something like this?\n  #include \"include/core/SkRefCnt.h\"\n\n  template \u003ctypename T\u003e struct default_memmove {\n      static constexpr bool v \u003d false;\n  };\n\n  template \u003ctypename T\u003e struct default_memmove\u003csk_sp\u003cT\u003e\u003e {\n      static constexpr bool v \u003d true;\n  };\n\n  template \u003ctypename T, bool MEM_MOVE \u003d default_memmove\u003cT\u003e::v\u003e class SkTArray {\n  ...\n  template \u003cint N, typename T, bool MEM_MOVE \u003d default_memmove\u003cT\u003e::v\u003e\n  class SkSTArray : private SkAlignedSTStorage\u003cN,T\u003e, public SkTArray\u003cT, MEM_MOVE\u003e {",
+      "parentUuid": "ec1c11e5_8a15c4c3",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
