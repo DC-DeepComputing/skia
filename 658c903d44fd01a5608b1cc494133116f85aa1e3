@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58157ed5_bd2461a8",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-18T20:24:16Z",
+      "side": 1,
+      "message": "Yes. For the Client-provided SkUnicode we can only create it AFTER the paragraph text is computed.",
+      "parentUuid": "afee038a_e3f79bde",
+      "revId": "658c903d44fd01a5608b1cc494133116f85aa1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed305db2_2798bdd7",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2aaba0f_01cc3fdc",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-18T20:24:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed305db2_2798bdd7",
+      "revId": "658c903d44fd01a5608b1cc494133116f85aa1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c27d3168_d77c6d7f",
@@ -65,6 +101,24 @@
       "writtenOn": "2022-08-18T19:29:08Z",
       "side": 1,
       "message": "nit: four more spaces?",
+      "revId": "658c903d44fd01a5608b1cc494133116f85aa1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "280b8ed5_1b34f9a6",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-18T20:24:16Z",
+      "side": 1,
+      "message": "Better reformat code (CLion)",
+      "parentUuid": "c27d3168_d77c6d7f",
       "revId": "658c903d44fd01a5608b1cc494133116f85aa1e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
