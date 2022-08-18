@@ -105,6 +105,24 @@
       "message": "Note that std::vector still doesn\u0027t have this optimization. See https://quuxplusone.github.io/blog/2022/05/18/std-relocate/ for the most recent ideas around this.",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1c11e5_8a15c4c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-18T15:31:35Z",
+      "side": 1,
+      "message": "Quick test, replacing a handful of SkTArrays with std::vector: https://skia-review.googlesource.com/c/skia/+/570781\n\nNo idea why bloaty thinks icudt69_dat grew ~2K with the patch, but even taking that at face value std::vector seems slightly worse code-size-wise.",
+      "parentUuid": "9e3605ef_3a9eb1b4",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
