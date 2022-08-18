@@ -159,6 +159,24 @@
       "parentUuid": "4a477cf7_7ecd45c3",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e319f21_904bde58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-18T16:03:46Z",
+      "side": 1,
+      "message": "Docs for that at https://github.com/facebook/folly/blob/main/folly/docs/Traits.md#isrelocatable .",
+      "parentUuid": "e6309eef_c660a995",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
