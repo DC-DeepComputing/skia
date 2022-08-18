@@ -150,6 +150,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cafd950_d1b79b94",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:17:58Z",
+      "side": 1,
+      "message": "I think a non-const `finishUniformDataBlock()` is a great idea. That names makes it obvious that it\u0027s potentially mutating and that you shouldn\u0027t call it early. \n\nI would advocate for keeping around the const `peekUniformMethod` method as-is, just doing what a peek should do (show me the data as-is, no mutations or funny business) even if it\u0027s only really useful for testing. The last line of `finishUniformDataBlock()` could be `return this-\u003epeekUniformData()`.",
+      "parentUuid": "72582e18_37cead8f",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b7230e9_f5f6c2c4",
         "filename": "src/gpu/graphite/UniformManager.cpp",
         "patchSetId": 1
