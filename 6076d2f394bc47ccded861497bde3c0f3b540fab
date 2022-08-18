@@ -52,6 +52,24 @@
       "parentUuid": "a1685ce1_d5f29a66",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46d4c917_6014f222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-18T14:34:42Z",
+      "side": 1,
+      "message": "I agree that it was probably just simpler to follow the letter of the law when there isn\u0027t a perf gain. 20-30KB is nothing to sneeze at. Do you know if std::vector has better code size? If so, we could try moving the non-STArrays over to that and then try this? Some of these STArrays are probably dubious in terms of actually mattering for performance, too.",
+      "parentUuid": "baed4d89_5ad02afd",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
