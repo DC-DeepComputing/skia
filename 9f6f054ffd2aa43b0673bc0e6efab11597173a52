@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77eb4959_f1a7b2b5",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:47:31Z",
+      "side": 1,
+      "message": "`getMangledUniformName` only honors this when `SK_GRAPHITE_ENABLED` is on, so maybe it should be inside the #ifdef immediately below? I\u0027m not entirely sure of how `SkShaderInfo` is meant to work in a world without Graphite. (Rob, WDYT?)",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 27
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
