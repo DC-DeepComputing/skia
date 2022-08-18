@@ -42,10 +42,14 @@ std::string get_mangled_name(const std::string& baseName, int manglingSuffix) {
 
 } // anonymous namespace
 
-
-std::string SkShaderSnippet::getMangledUniformName(int uniformIdx, int mangleId) const {
+std::string SkShaderSnippet::getMangledUniformName(int uniformIdx,
+                                                   int mangleId,
+                                                   const char* ssboIndex) const {
     std::string result;
     result = fUniforms[uniformIdx].name() + std::string("_") + std::to_string(mangleId);
+    if (ssboIndex) {
+        result = skgpu::graphite::EmitStorageBufferAccess("fs", ssboIndex, result.c_str());
+    }
     return result;
 }
 
@@ -73,7 +77,7 @@ static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
 
         // Multiply in this entry's pre-local coordinate matrix.
         preLocalMatrix += " * ";
-        preLocalMatrix += entry->getMangledUniformName(0, entryIndex);
+        preLocalMatrix += entry->getMangledUniformName(0, entryIndex, shaderInfo.ssboIndex());
     }
 
     return entry->fExpressionGenerator(shaderInfo, entryIndex, reader, priorStageOutputName,
@@ -141,19 +145,34 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
         preamble += skgpu::graphite::EmitRenderStepUniforms(/*bufferID=*/1, "Step",
                                                             step->uniforms());
     }
-    preamble += skgpu::graphite::EmitPaintParamsUniforms(/*bufferID=*/2, "FS", fBlockReaders,
-                                                         this->needsLocalCoords());
+    if (ssboIndex()) {
+        preamble += skgpu::graphite::EmitPaintParamsStorageBuffer(
+                /*bufferID=*/2, "FS", "fs", fBlockReaders, this->needsLocalCoords());
+    } else {
+        preamble += skgpu::graphite::EmitPaintParamsUniforms(
+                /*bufferID=*/2, "FS", fBlockReaders, this->needsLocalCoords());
+    }
     int binding = 0;
     preamble += skgpu::graphite::EmitTexturesAndSamplers(fBlockReaders, &binding);
     if (step->hasTextures()) {
         preamble += step->texturesAndSamplersSkSL(binding);
     }
 
+    std::string mainBody = "void main() {\n";
+
     // TODO: Remove all the use of dev2LocalUni and the preLocal matrices once all render steps
     // that require local coordinates emit them directly.
-    std::string mainBody = SkSL::String::printf("void main() {\n"
-                                                "    float4 coords = %s sk_FragCoord;\n",
-                                                this->needsLocalCoords() ? "dev2LocalUni *" : "");
+    if (!this->needsLocalCoords()) {
+        mainBody += "    float4 coords = sk_FragCoord;\n";
+    } else if (ssboIndex()) {
+        SkSL::String::appendf(
+                &mainBody,
+                "    float4 coords = %s * sk_FragCoord;\n",
+                skgpu::graphite::EmitStorageBufferAccess("fs", ssboIndex(), "dev2LocalUni")
+                        .c_str());
+    } else {
+        mainBody += "    float4 coords = dev2LocalUni * sk_FragCoord;\n";
+    }
 
     // TODO: what is the correct initial color to feed in?
     std::string lastOutputVar = "initialColor";
@@ -306,7 +325,8 @@ static std::string append_default_snippet_arguments(const SkShaderSnippet* entry
                                                     const std::string& priorStageOutputName,
                                                     const std::string& fragCoord,
                                                     const std::string& currentPreLocalExpr,
-                                                    SkSpan<const std::string> childOutputs) {
+                                                    SkSpan<const std::string> childOutputs,
+                                                    const char* ssboIndex) {
     std::string code = "(";
 
     const char* separator = "";
@@ -332,7 +352,7 @@ static std::string append_default_snippet_arguments(const SkShaderSnippet* entry
         if (i == 0 && entry->needsLocalCoords()) {
             code += currentPreLocalExpr;
         } else {
-            code += entry->getMangledUniformName(i, entryIndex);
+            code += entry->getMangledUniformName(i, entryIndex, ssboIndex);
         }
     }
 
@@ -387,8 +407,13 @@ static void emit_helper_function(const SkShaderInfo& shaderInfo,
 
     // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
     SkSL::String::appendf(&helperFn, "    return %s", entry->fStaticFunctionName);
-    helperFn += append_default_snippet_arguments(entry, curEntryIndex, "inColor",
-                                                 "pos", "preLocal", childOutputVarNames);
+    helperFn += append_default_snippet_arguments(entry,
+                                                 curEntryIndex,
+                                                 "inColor",
+                                                 "pos",
+                                                 "preLocal",
+                                                 childOutputVarNames,
+                                                 shaderInfo.ssboIndex());
     helperFn += ";\n"
                 "}\n";
 
@@ -415,9 +440,13 @@ std::string GenerateDefaultExpression(const SkShaderInfo& shaderInfo,
     if (entry->fNumChildren == 0) {
         // We don't have any children; return an expression which invokes the snippet directly.
         return entry->fStaticFunctionName +
-               append_default_snippet_arguments(entry, entryIndex, priorStageOutputName,
-                                                fragCoord, currentPreLocalExpr,
-                                                /*childOutputs=*/{});
+               append_default_snippet_arguments(entry,
+                                                entryIndex,
+                                                priorStageOutputName,
+                                                fragCoord,
+                                                currentPreLocalExpr,
+                                                /*childOutputs=*/{},
+                                                shaderInfo.ssboIndex());
     } else {
         // Return an expression which invokes the helper function from the preamble.
         std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, entryIndex);
@@ -590,7 +619,7 @@ static constexpr char kImageShaderName[] = "sk_compute_coords";
 // Ideally the "sk_compute_coords" code snippet could just take texture and
 // sampler references and do everything. That is going to take more time to figure out though so,
 // for the sake of expediency, we're generating custom code to do the sampling.
-std::string GenerateImageShaderExpression(const SkShaderInfo&,
+std::string GenerateImageShaderExpression(const SkShaderInfo& shaderInfo,
                                           int entryIndex,
                                           const SkPaintParamsKey::BlockReader& reader,
                                           const std::string& priorStageOutputName,
@@ -600,11 +629,16 @@ std::string GenerateImageShaderExpression(const SkShaderInfo&,
     std::string samplerVarName = reader.entry()->getMangledSamplerName(0, entryIndex);
 
     // Uniform slot 0 is used to make the preLocalMatrix; it's handled in emit_glue_code_for_entry.
-    std::string subsetName = reader.entry()->getMangledUniformName(1, entryIndex);
-    std::string tmXName = reader.entry()->getMangledUniformName(2, entryIndex);
-    std::string tmYName = reader.entry()->getMangledUniformName(3, entryIndex);
-    std::string imgWidthName = reader.entry()->getMangledUniformName(4, entryIndex);
-    std::string imgHeightName = reader.entry()->getMangledUniformName(5, entryIndex);
+    std::string subsetName =
+            reader.entry()->getMangledUniformName(1, entryIndex, shaderInfo.ssboIndex());
+    std::string tmXName =
+            reader.entry()->getMangledUniformName(2, entryIndex, shaderInfo.ssboIndex());
+    std::string tmYName =
+            reader.entry()->getMangledUniformName(3, entryIndex, shaderInfo.ssboIndex());
+    std::string imgWidthName =
+            reader.entry()->getMangledUniformName(4, entryIndex, shaderInfo.ssboIndex());
+    std::string imgHeightName =
+            reader.entry()->getMangledUniformName(5, entryIndex, shaderInfo.ssboIndex());
 
     return SkSL::String::printf("sample(%s, %s(%s, %s, %s, %s, %s, %s, %s))",
                                 samplerVarName.c_str(),
@@ -647,7 +681,12 @@ public:
             , fPreamble(preamble) {}
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
-        return get_mangled_name(std::string(decl->var().name()), fEntryIndex);
+        std::string result = get_mangled_name(std::string(decl->var().name()), fEntryIndex);
+        if (fShaderInfo.ssboIndex()) {
+            result = skgpu::graphite::EmitStorageBufferAccess(
+                    "fs", fShaderInfo.ssboIndex(), result.c_str());
+        }
+        return result;
     }
 
     void defineFunction(const char* decl, const char* body, bool isMain) override {
@@ -927,7 +966,7 @@ static constexpr char kBlendHelperName[] = "sk_blend";
 // in the shader (i.e., fixed function blending isn't possible).
 // It exists as custom glue code so that we can deal with the dest reads. If that can be
 // standardized (e.g., via a snippets requirement flag) this could be removed.
-std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo&,
+std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo& shaderInfo,
                                                  int entryIndex,
                                                  const SkPaintParamsKey::BlockReader& reader,
                                                  const std::string& priorStageOutputName,
@@ -937,7 +976,8 @@ std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo&,
     SkASSERT(reader.entry()->fUniforms.size() == 1);
     SkASSERT(reader.numDataPayloadFields() == 0);
 
-    std::string uniformName = reader.entry()->getMangledUniformName(0, entryIndex);
+    std::string uniformName =
+            reader.entry()->getMangledUniformName(0, entryIndex, shaderInfo.ssboIndex());
 
     // TODO: emit function to perform dest read into preamble, and replace half(1) with that call
 
