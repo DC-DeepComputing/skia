@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41e22d53_3c937e0a",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T14:11:03Z",
+      "side": 1,
+      "message": "`readonly` and `writeonly` are brand new, so we don\u0027t do any real enforcement of them in the front-end yet. There\u0027s skia:13627 to track this work for textures; you should probably file a similar tracking bug if there\u0027s similar work to do for storage buffers.\n\nI think as long as the frontend is enforcing things properly, it\u0027s fine if a particular backend does nothing for `readonly` and `writeonly`.",
+      "parentUuid": "ef4064b4_b7b4d884",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b2ddded_afe67fc6",
         "filename": "resources/sksl/compute/MatrixMultiply.compute",
         "patchSetId": 1
