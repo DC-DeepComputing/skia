@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02239291_664ef0b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T14:40:36Z",
+      "side": 1,
+      "message": "Ah, great call (and thanks for writing those tests!). The existing tests actually failed with these changes, so I\u0027ve updated them. With those updates we\u0027re now exercising cases where we do \u0026 don\u0027t add padding, and the new tests will fail without the corresponding changes to UniformManager.cpp, so personally I\u0027m ok with that. Do you think we should add additional tests?",
+      "parentUuid": "12947daa_de6d3df9",
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d5c6dd2_c043580d",
@@ -72,6 +90,30 @@
       "side": 1,
       "message": "Ooh, I didn\u0027t notice that. I feel like a `peek` function should really not be mutating the data at all. That violates my expectations pretty significantly vs what a function named `peek` ought to do.\n\nCan we do the padding-up elsewhere, or make a dedicated function for it?",
       "parentUuid": "5d5c6dd2_c043580d",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fd94037_99e89cf1",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T14:40:36Z",
+      "side": 1,
+      "message": "I\u0027d rather just rename this function, since we don\u0027t anticipate a use-case that doesn\u0027t need the padding. Would `read` be better? Any other suggestions?",
+      "parentUuid": "1fb5625b_a97800dd",
       "range": {
         "startLine": 156,
         "startChar": 23,
@@ -143,6 +185,30 @@
       "side": 1,
       "message": "+1, I like that approach.",
       "parentUuid": "aeb17f99_82c4a8c2",
+      "range": {
+        "startLine": 554,
+        "startChar": 3,
+        "endLine": 554,
+        "endChar": 30
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11db0e16_b314688e",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T14:40:36Z",
+      "side": 1,
+      "message": "Oh yea that\u0027s perfect; I\u0027d missed that aspect of the SkTDArray API.",
+      "parentUuid": "0728a1ba_ec9df0a4",
       "range": {
         "startLine": 554,
         "startChar": 3,
