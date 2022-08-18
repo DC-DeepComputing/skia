@@ -160,6 +160,10 @@ struct ModuleLoader {
     // the same time; this could clobber shared state (such as the modifier pool).
     SkMutex fMutex;
 
+    // The built-in types are universal, immutable, and shared by every Compiler. They are created
+    // when the ModuleLoader is instantiated and never change.
+    const BuiltinTypes fBuiltinTypes;
+
     // This ModifiersPool is shared by every built-in module.
     ModifiersPool fCoreModifiers SK_GUARDED_BY(fMutex);
 };
@@ -172,7 +176,8 @@ static ModuleLoader& module_loader() {
 
 Compiler::Compiler(const ShaderCaps* caps)
         : fErrorReporter(this)
-        , fContext(std::make_shared<Context>(fErrorReporter, *caps, fMangler))
+        , fContext(std::make_shared<Context>(module_loader().fBuiltinTypes, *caps,
+                                             fErrorReporter, fMangler))
         , fInliner(fContext.get()) {
     SkASSERT(caps);
     fRootModule.fSymbols = this->makeRootSymbolTable();
