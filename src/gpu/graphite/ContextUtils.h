@@ -53,6 +53,14 @@ std::string EmitPaintParamsUniforms(int bufferID,
                                     bool needsDev2Local);
 std::string EmitRenderStepUniforms(int bufferID, const char* name,
                                    SkSpan<const SkUniform> uniforms);
+std::string EmitPaintParamsStorageBuffer(int bufferID,
+                                         const char* typePrefix,
+                                         const char* namePrefix,
+                                         const std::vector<SkPaintParamsKey::BlockReader>& readers,
+                                         bool needsLocalCoords);
+std::string EmitStorageBufferAccess(const char* bufferPrefix,
+                                    const char* ssboIndex,
+                                    const char* uniformName);
 std::string EmitTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockReader>&,
                                     int* binding);
 std::string EmitVaryings(const RenderStep*, const char* direction, bool emitLocalCoordsVarying);
