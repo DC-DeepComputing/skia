@@ -5,7 +5,12 @@ licenses(["notice"])
 exports_files_legacy()
 
 string_flag_with_values(
-    flag_name = "include_encoder",
+    name = "include_encoder",
+    internal_default = [
+        "jpeg_encode_codec",
+        "png_encode_codec",
+        "webp_encode_codec",
+    ],
     multiple = True,
     values = [
         "jpeg_encode_codec",
