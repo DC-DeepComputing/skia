@@ -521,6 +521,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94128bd0_66b568f6",
+        "filename": "tests/sksl/compute/ArrayAdd.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:46:28Z",
+      "side": 1,
+      "message": "We should ask Apple if they have any recommendations here. Switching to pointers adds an extra indirection, so it would be better to keep the arrays IMO, but obviously we want to generate conceptually-correct code too!\n\nFor the time being I\u0027m fine with `[1]` especially if we\u0027re not the first ones to do it.",
+      "parentUuid": "f104f3c8_6a12901b",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "51576e9e1205e2128b37999cff4e4695c4703f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d861056_cf17dadc",
         "filename": "tests/sksl/compute/MatrixMultiply.metal",
         "patchSetId": 1

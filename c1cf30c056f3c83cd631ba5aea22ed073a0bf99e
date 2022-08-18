@@ -22,6 +22,52 @@
       },
       "revId": "c1cf30c056f3c83cd631ba5aea22ed073a0bf99e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "011d3918_6f657ba0",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:46:28Z",
+      "side": 1,
+      "message": "size_t",
+      "range": {
+        "startLine": 227,
+        "startChar": 17,
+        "endLine": 227,
+        "endChar": 25
+      },
+      "revId": "c1cf30c056f3c83cd631ba5aea22ed073a0bf99e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1193ef0d_b21043bb",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:46:28Z",
+      "side": 1,
+      "message": "nit/optional: what do you think of hoisting the buffer check out of the loop?\n\n            size_t last \u003d fields.size() - (modifiers.fFlags \u0026 Modifiers::kBuffer_Flag) ? 1 : 0;\n            for (size_t i \u003d 0; i \u003c last; ++i) {\n                if (fields[i].fType-\u003eisUnsizedArray()) {\n                    context.fErrors-\u003eerror(pos, \"unsized array must be the last member of a storage block\");\n                }\n            }",
+      "range": {
+        "startLine": 227,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 13
+      },
+      "revId": "c1cf30c056f3c83cd631ba5aea22ed073a0bf99e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
