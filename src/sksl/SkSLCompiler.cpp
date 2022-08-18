@@ -7,9 +7,11 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
+#include "include/private/SkMutex.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkSLSymbol.h"
+#include "include/private/SkThreadAnnotations.h"
 #include "include/sksl/DSLCore.h"
 #include "include/sksl/DSLModifiers.h"
 #include "include/sksl/DSLType.h"
@@ -19,6 +21,7 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDSLParser.h"
+#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLRehydrator.h"
@@ -152,6 +155,21 @@ public:
     Context* fContext;
 };
 
+struct ModuleLoader {
+    // This mutex ensures that we don't try to instantiate built-in modules from multiple threads at
+    // the same time; this could clobber shared state (such as the modifier pool).
+    SkMutex fMutex;
+
+    // This ModifiersPool is shared by every built-in module.
+    ModifiersPool fCoreModifiers SK_GUARDED_BY(fMutex);
+};
+
+// Returns a singleton ModuleLoader which will own all of the built-in modules.
+static ModuleLoader& module_loader() {
+    static ModuleLoader* sModuleLoader = new ModuleLoader;
+    return *sModuleLoader;
+}
+
 Compiler::Compiler(const ShaderCaps* caps)
         : fErrorReporter(this)
         , fContext(std::make_shared<Context>(fErrorReporter, *caps, fMangler))
@@ -215,7 +233,10 @@ inline static constexpr BuiltinTypePtr kPrivateTypes[] = {
 
 #undef TYPE
 
-std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() {
+std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() const {
+    ModuleLoader& moduleLoader = module_loader();
+    SkAutoMutexExclusive lock(moduleLoader.fMutex);
+
     auto rootSymbolTable = std::make_shared<SymbolTable>(/*builtin=*/true);
 
     for (BuiltinTypePtr rootType : kRootTypes) {
@@ -230,7 +251,7 @@ std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTable() {
     // treat it as builtin (ie, no need to clone it into the Program).
     rootSymbolTable->add(std::make_unique<Variable>(/*pos=*/Position(),
                                                     /*modifiersPosition=*/Position(),
-                                                    fCoreModifiers.add(Modifiers{}),
+                                                    moduleLoader.fCoreModifiers.add(Modifiers{}),
                                                     "sk_Caps",
                                                     fContext->fTypes.fSkCaps.get(),
                                                     /*builtin=*/false,
@@ -340,7 +361,7 @@ static void add_public_type_aliases(SkSL::SymbolTable* symbols, const SkSL::Buil
     symbols->add(Type::MakeAliasType("sk_Caps", *types.fInvalid));
 }
 
-std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTableWithPublicTypes() {
+std::shared_ptr<SymbolTable> Compiler::makeRootSymbolTableWithPublicTypes() const {
     auto result = std::make_shared<SymbolTable>(fRootModule.fSymbols, /*builtin=*/true);
     add_public_type_aliases(result.get(), fContext->fTypes);
     return result;
@@ -395,7 +416,10 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     SkASSERT(base);
 
     // Put the core-module modifier pool into the context.
-    AutoModifiersPool autoPool(fContext, &fCoreModifiers);
+    ModuleLoader& moduleLoader = module_loader();
+    SkAutoMutexExclusive lock(moduleLoader.fMutex);
+
+    AutoModifiersPool autoPool(fContext, &moduleLoader.fCoreModifiers);
 
     // Built-in modules always use default program settings.
     ProgramSettings settings;
@@ -577,11 +601,14 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module, const ParsedModule
     SkASSERT(!this->errorCount());
 
     // Create a temporary program configuration with default settings.
+    ModuleLoader& moduleLoader = module_loader();
+    SkAutoMutexExclusive lock(moduleLoader.fMutex);
+
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = module.fKind;
     AutoProgramConfig autoConfig(fContext, &config);
-    AutoModifiersPool autoPool(fContext, &fCoreModifiers);
+    AutoModifiersPool autoPool(fContext, &moduleLoader.fCoreModifiers);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
 
