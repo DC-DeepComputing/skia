@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0248eb4f_a4d3ea93",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-18T13:56:51Z",
+      "side": 1,
+      "message": "This change seems valid, but is doing something beyond what the CL description says, right? (We no longer make a deep copy of the root symbol table when this is called, we just make a smaller table that inherits from the copy in the root module, and that only contains the aliases)?",
+      "revId": "93a8fed79ec8c7dcc138a708d8e805e9dba2233d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
