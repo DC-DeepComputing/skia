@@ -332,6 +332,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25043041_d3726ea6",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T14:51:43Z",
+      "side": 1,
+      "message": "Oh yep, that would do it. Once we just upload the positions before transforming, and do it on the GPU, we\u0027ll just have an SkV2 again and can simplify it.",
+      "parentUuid": "fd9b3c53_8f48f59c",
+      "range": {
+        "startLine": 152,
+        "startChar": 27,
+        "endLine": 152,
+        "endChar": 66
+      },
+      "revId": "40766716f5fc11f434563d5cbc8c98ccbbbd5ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07b2245_6ee7d6ea",
