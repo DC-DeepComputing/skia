@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71154074_3606d01e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fba79af7_f98a608d",
+      "range": {
+        "startLine": 45,
+        "startChar": 51,
+        "endLine": 45,
+        "endChar": 52
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d068273_115d5872",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-18T21:03:56Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 148,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 9
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e69aed_278ea5f8",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d068273_115d5872",
       "range": {
         "startLine": 148,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f7512fe_9927a033",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb194983_774bc633",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 16
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c4a273c_ba920ff6",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-08-18T21:03:56Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 64
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb3f0b07_29347c27",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c4a273c_ba920ff6",
       "range": {
         "startLine": 171,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2699b43c_eb629b5e",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57f78fc7_f974ea33",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 0
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad39f599_a977ffec",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cec3121_c04bff85",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad39f599_a977ffec",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2572f24f_2dd21399",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-08-18T21:03:56Z",
       "side": 1,
       "message": "You can just put `float4x4` directly. These typenames are not in flux.",
+      "range": {
+        "startLine": 199,
+        "startChar": 30,
+        "endLine": 199,
+        "endChar": 32
+      },
+      "revId": "79b28c3829f41a1975e2c9c75f195e31a2c002f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83be3a9c_98dc7fc8",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-18T21:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2572f24f_2dd21399",
       "range": {
         "startLine": 199,
         "startChar": 30,
