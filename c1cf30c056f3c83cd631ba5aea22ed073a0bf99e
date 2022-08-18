@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c386c0ad_420c8698",
+        "filename": "resources/sksl/compute/MatrixMultiply.compute",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:26:51Z",
+      "side": 1,
+      "message": "nit: any reason this was changed from `float data1[]` to `float[] data1`? My assumption was that either should work and be equivalent, and it\u0027s probably more useful to use both forms to broaden our test coverage.",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 17
+      },
+      "revId": "c1cf30c056f3c83cd631ba5aea22ed073a0bf99e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
