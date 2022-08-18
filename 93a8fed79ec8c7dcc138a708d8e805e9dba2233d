@@ -16,6 +16,24 @@
       "message": "This change seems valid, but is doing something beyond what the CL description says, right? (We no longer make a deep copy of the root symbol table when this is called, we just make a smaller table that inherits from the copy in the root module, and that only contains the aliases)?",
       "revId": "93a8fed79ec8c7dcc138a708d8e805e9dba2233d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbc4c33_431281d6",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T14:08:05Z",
+      "side": 1,
+      "message": "You noticed :) I didn\u0027t want to go overboard describing this in the CL description since it\u0027s really immaterial, but yes, this is a behavioral change.\n\nThe reason this changed is because of a subtle latent bug.  `SymbolTable::addWithoutOwnership` allows a symbol to hide a symbol in a parent table, but _doesn\u0027t_ allow a symbol to overwrite an old symbol in the existing table. \n\n`add_public_type_aliases` wants to replace the SkSL private types with aliases to the Invalid type. It does this via `addWithoutOwnership`. This works great for the `sksl_public` table (which overlays the root table). It doesn\u0027t work at all for this case (where it would be rewriting symbols that already exist in the root table). \n\nI noticed this because `addWithoutOwnership` actually rejects the add, and attempts to report it as an error. However, this error occurs before actual compilation starts, so error reporting isn\u0027t set up yet. Previously, this error would silently fall into the void and get discarded (probably gets swallowed by the compiler\u0027s ErrorReporter and cleared out when compilation actually begins). However, `ThreadContext::ReportError` would access null and crash.\n\nBecause of the crash, I noticed the issue. Now, the root-symbol-table-with-public-types actually hides the private types, as intended.",
+      "parentUuid": "0248eb4f_a4d3ea93",
+      "revId": "93a8fed79ec8c7dcc138a708d8e805e9dba2233d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
