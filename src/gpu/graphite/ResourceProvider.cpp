@@ -9,7 +9,7 @@
 
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
-
+#include "include/gpu/graphite/BackendTexture.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -236,5 +236,21 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
 void ResourceProvider::resetAfterSnap() {
     fRuntimeEffectDictionary.reset();
 }
+
+BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+    if (dimensions.isEmpty() || dimensions.width()  > fSharedContext->caps()->maxTextureSize() ||
+                                dimensions.height() > fSharedContext->caps()->maxTextureSize()) {
+        return {};
+    }
+
+    return this->onCreateBackendTexture(dimensions, info);
+}
+
+void ResourceProvider::deleteBackendTexture(BackendTexture& texture) {
+    this->onDeleteBackendTexture(texture);
+    // Invalidate the texture;
+    texture = BackendTexture();
+}
+
 
 }  // namespace skgpu::graphite
