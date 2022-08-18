@@ -290,14 +290,14 @@ void SkTable_ColorFilter::addToKey(const SkKeyContext& keyContext,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkColorFilter> SkTableColorFilter::Make(const uint8_t table[256]) {
+sk_sp<SkColorFilter> SkColorFilters::Table(const uint8_t table[256]) {
     return sk_make_sp<SkTable_ColorFilter>(table, table, table, table);
 }
 
-sk_sp<SkColorFilter> SkTableColorFilter::MakeARGB(const uint8_t tableA[256],
-                                                  const uint8_t tableR[256],
-                                                  const uint8_t tableG[256],
-                                                  const uint8_t tableB[256]) {
+sk_sp<SkColorFilter> SkColorFilters::TableARGB(const uint8_t tableA[256],
+                                               const uint8_t tableR[256],
+                                               const uint8_t tableG[256],
+                                               const uint8_t tableB[256]) {
     if (!tableA && !tableR && !tableG && !tableB) {
         return nullptr;
     }

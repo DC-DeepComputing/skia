@@ -161,7 +161,7 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
     };
 
-    colorFilters[0] = SkColorMatrixFilter::MakeLightingFilter(SK_ColorLTGRAY, 0xFF440000);
+    colorFilters[0] = SkColorFilters::Lighting(SK_ColorLTGRAY, 0xFF440000);
     colorFilters[1] = SkTableColorFilter::Make(table1);
     colorFilters[2] = SkColorFilters::Compose(SkTableColorFilter::MakeARGB(nullptr, table3,
                                                                            table3, table3),

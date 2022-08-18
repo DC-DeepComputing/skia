@@ -116,7 +116,7 @@ static sk_sp<SkColorFilter> make_fuzz_colorfilter(Fuzz* fuzz, int depth) {
         case 4: {
             SkColor mul, add;
             fuzz->next(&mul, &add);
-            return SkColorMatrixFilter::MakeLightingFilter(mul, add);
+            return SkColorFilters::Lighting(mul, add);
         }
         case 5: {
             bool grayscale;
