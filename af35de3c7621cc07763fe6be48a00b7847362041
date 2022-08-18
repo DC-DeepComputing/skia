@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eddc7d7a_3098b3ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "First pass",
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3125d19_3bf1e18a",
+        "filename": "src/core/SkBlenderBase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "put \u0027primitiveColorBlender\u0027 here.\n\nThe rule is we can elide the parameters names if it wouldn\u0027t clarify anything e.g.:\n  SkPipelineDataGatherer* gatherer",
+      "range": {
+        "startLine": 65,
+        "startChar": 30,
+        "endLine": 65,
+        "endChar": 31
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3bb0f73_02f7b8fe",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "// Unlike in the usual blendmode case, the primitive blend mode will always be implemented via shader-based blending.\n\n?",
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26788eb_d243623a",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 936,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "/* primitiveColorBlender\u003d */ bc otherwise we don\u0027t easily know what the \u0027false\u0027 is doing.",
+      "range": {
+        "startLine": 936,
+        "startChar": 76,
+        "endLine": 936,
+        "endChar": 81
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae50443c_1b3a50f1",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "\u0027\\n\u0027 here ?",
+      "range": {
+        "startLine": 196,
+        "startChar": 42,
+        "endLine": 196,
+        "endChar": 43
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6791a5_ad25a4ce",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "Probably need to add names here now to disambiguate the two BlendInfos",
+      "range": {
+        "startLine": 256,
+        "startChar": 46,
+        "endLine": 256,
+        "endChar": 94
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8682f1d7_1a083383",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "/* primitiveColorBlender\u003d */ again",
+      "range": {
+        "startLine": 78,
+        "startChar": 69,
+        "endLine": 78,
+        "endChar": 70
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42c2db59_8eaf2b53",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T19:23:29Z",
+      "side": 1,
+      "message": "here too",
+      "range": {
+        "startLine": 85,
+        "startChar": 73,
+        "endLine": 85,
+        "endChar": 74
+      },
+      "revId": "af35de3c7621cc07763fe6be48a00b7847362041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
