@@ -143,7 +143,13 @@ split_srcs_and_hdrs(
 )
 
 string_flag_with_values(
-    flag_name = "include_decoder",
+    name = "include_decoder",
+    internal_default = [
+        "gif_decode_codec",
+        "jpeg_decode_codec",
+        "png_decode_codec",
+        "webp_decode_codec",
+    ],
     multiple = True,
     values = [
         "avif_decode_codec",
