@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0f50a3_083f8a50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T15:33:31Z",
+      "side": 1,
+      "message": "lgtm, just some comment nits",
+      "revId": "c9572d4d9260fe63eb6d9c10ede1c73e0b882db3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fbf1fd6_249b68ca",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T15:33:31Z",
+      "side": 1,
+      "message": "Recorder associated with",
+      "range": {
+        "startLine": 84,
+        "startChar": 69,
+        "endLine": 84,
+        "endChar": 91
+      },
+      "revId": "c9572d4d9260fe63eb6d9c10ede1c73e0b882db3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0b4832_19704a60",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T15:33:31Z",
+      "side": 1,
+      "message": "created",
+      "range": {
+        "startLine": 84,
+        "startChar": 36,
+        "endLine": 84,
+        "endChar": 42
+      },
+      "revId": "c9572d4d9260fe63eb6d9c10ede1c73e0b882db3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

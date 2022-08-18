@@ -224,6 +224,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb3d78ac_e4048e16",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-18T15:33:31Z",
+      "side": 1,
+      "message": "oh yeah, good call adding the delete back to the context. Helps reinforce and make it easy to delete from anywhere.",
+      "parentUuid": "70af61ea_c43b5178",
+      "range": {
+        "startLine": 89,
+        "startChar": 45,
+        "endLine": 89,
+        "endChar": 75
+      },
+      "revId": "ef20e944fe99ef18aee77dfa0e8ce30b5133556b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bcdd457_697fbd95",
