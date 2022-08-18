@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef74a32c_a34abcfe",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T15:33:16Z",
+      "side": 1,
+      "message": "Should this be SkMatrixTransformImageFilter now ?\nCan this class be \u0027final\u0027 ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 25
+      },
+      "revId": "ed4a69c4929261b79a8aaf4e98add6f7a0f66bda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6b7f73_39d38ce7",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T15:33:16Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 27,
+        "startChar": 14,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "ed4a69c4929261b79a8aaf4e98add6f7a0f66bda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eeb53e6_0f409b60",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T15:33:16Z",
+      "side": 1,
+      "message": "rm ?",
+      "revId": "ed4a69c4929261b79a8aaf4e98add6f7a0f66bda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
