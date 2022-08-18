@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc1f7520_12295a80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:54:56Z",
+      "side": 1,
+      "message": "LGTM but would like Rob to take a look as well since I\u0027m less familiar with the Graphite SSBO designs.",
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77eb4959_f1a7b2b5",
@@ -19,6 +36,75 @@
         "startChar": 0,
         "endLine": 167,
         "endChar": 27
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b32081_a0ad6ce3",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:54:56Z",
+      "side": 1,
+      "message": "Looking at this more closely, seems like we don\u0027t need to sum at all; just early-out and return true if `size()` ever returns non-zero.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 28
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130d8c00_6683502c",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:54:56Z",
+      "side": 1,
+      "message": "tiny nit: `static constexpr char kSsboIndexAttribute[] \u003d \"ssboIndex\"`. \n\nhttp://go/totw/140#a-static-class-member",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 153,
+        "endChar": 52
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c32eb7_1cda90c0",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T21:54:56Z",
+      "side": 1,
+      "message": "tiny nit: consider initializing via `\u003d nullptr` here rather than at the constructor; this is safer (protects us in case a second constructor is later added) and easier to read. Same for the `size_t`s below as well.",
+      "range": {
+        "startLine": 214,
+        "startChar": 32,
+        "endLine": 215,
+        "endChar": 41
       },
       "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
