@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ef3a004_0d38390f",
+        "filename": "src/shaders/gradients/SkGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T16:19:41Z",
+      "side": 1,
+      "message": "A following CL w/ add some code back into this file.",
+      "revId": "6614e09dd71d29a78d634a6d658dfee7e43380ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
