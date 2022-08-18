@@ -33,7 +33,7 @@
     Modern implementations of std::vector<T> will generally provide similar performance
     characteristics when used with appropriate care. Consider using std::vector<T> in new code.
 */
-template <typename T, bool MEM_MOVE = false> class SkTArray {
+template <typename T, bool MEM_MOVE = sk_is_trivially_relocatable<T>::value> class SkTArray {
 private:
     enum ReallocType { kExactFit, kGrowing, kShrinking };
 
