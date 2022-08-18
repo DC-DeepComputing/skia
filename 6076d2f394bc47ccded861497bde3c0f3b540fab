@@ -70,6 +70,24 @@
       "parentUuid": "baed4d89_5ad02afd",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e3605ef_3a9eb1b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-18T14:52:18Z",
+      "side": 1,
+      "message": "I don\u0027t have numbers, but I vaguely recall std::vector generating more bloat that SkTArray in the past.  Maybe I can run a quick experiment to verify.",
+      "parentUuid": "46d4c917_6014f222",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
