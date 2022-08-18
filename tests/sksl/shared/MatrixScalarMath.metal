@@ -11,6 +11,7 @@ struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
 struct Globals {
+    const int plus;
     const int minus;
     const int star;
     const int slash;
@@ -42,7 +43,7 @@ bool test_bifffff22(Uniforms _uniforms, int op, float m11, float m12, float m21,
     return ((m2[0].x == expected[0].x && m2[0].y == expected[0].y) && m2[1].x == expected[1].x) && m2[1].y == expected[1].y;
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
-    Globals _globals{2, 3, 4};
+    Globals _globals{1, 2, 3, 4};
     (void)_globals;
     Outputs _out;
     (void)_out;
@@ -50,12 +51,6 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     float f2 = float(2.0h * _uniforms.colorGreen.y);
     float f3 = float(3.0h * _uniforms.colorGreen.y);
     float f4 = float(4.0h * _uniforms.colorGreen.y);
-    float2x2 _0_expected = float2x2(float2(f1 + 1.0, f2 + 1.0), float2(f3 + 1.0, f4 + 1.0));
-    float _1_one = float(_uniforms.colorRed.x);
-    float2x2 _2_m2 = float2x2(float2(f1 * _1_one, f2 * _1_one), float2(f3 * _1_one, f4 * _1_one));
-    {
-        _2_m2 += (float2x2(1.0, 1.0, 1.0, 1.0) * 1.0);
-    }
-    _out.sk_FragColor = (((((_2_m2[0].x == _0_expected[0].x && _2_m2[0].y == _0_expected[0].y) && _2_m2[1].x == _0_expected[1].x) && _2_m2[1].y == _0_expected[1].y) && test_bifffff22(_uniforms, _globals.minus, f1, f2, f3, f4, float2x2(float2(f1 - 1.0, f2 - 1.0), float2(f3 - 1.0, f4 - 1.0)))) && test_bifffff22(_uniforms, _globals.star, f1, f2, f3, f4, float2x2(float2(f1 * 2.0, f2 * 2.0), float2(f3 * 2.0, f4 * 2.0)))) && test_bifffff22(_uniforms, _globals.slash, f1, f2, f3, f4, float2x2(float2(f1 / 2.0, f2 / 2.0), float2(f3 / 2.0, f4 / 2.0))) ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor = ((test_bifffff22(_uniforms, _globals.plus, f1, f2, f3, f4, float2x2(float2(f1 + 1.0, f2 + 1.0), float2(f3 + 1.0, f4 + 1.0))) && test_bifffff22(_uniforms, _globals.minus, f1, f2, f3, f4, float2x2(float2(f1 - 1.0, f2 - 1.0), float2(f3 - 1.0, f4 - 1.0)))) && test_bifffff22(_uniforms, _globals.star, f1, f2, f3, f4, float2x2(float2(f1 * 2.0, f2 * 2.0), float2(f3 * 2.0, f4 * 2.0)))) && test_bifffff22(_uniforms, _globals.slash, f1, f2, f3, f4, float2x2(float2(f1 / 2.0, f2 / 2.0), float2(f3 / 2.0, f4 / 2.0))) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
