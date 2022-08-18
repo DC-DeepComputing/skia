@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884942d2_e8fb02a4",
+        "filename": "resources/sksl/errors/DuplicateBinding.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T14:14:24Z",
+      "side": 1,
+      "message": "nit: stray `T`",
+      "range": {
+        "startLine": 13,
+        "startChar": 75,
+        "endLine": 13,
+        "endChar": 76
+      },
+      "revId": "9a79577f832506c6fc68ad8a3f642975a7a2a1b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
