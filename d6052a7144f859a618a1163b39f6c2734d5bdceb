@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "861dc2d7_aa0f2bc9",
+        "filename": "src/text/GlyphRun.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-18T16:45:30Z",
+      "side": 1,
+      "message": "I guess, maybe, tab this over a bit ?",
+      "revId": "d6052a7144f859a618a1163b39f6c2734d5bdceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
