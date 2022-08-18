@@ -112,18 +112,21 @@ std::string get_uniforms(SkSpan<const SkUniform> uniforms, int* offset, int mang
     *offset = offsetter.size();
     return result;
 }
+
+bool have_uniforms(const std::vector<SkPaintParamsKey::BlockReader>& readers) {
+    size_t numUniforms = 0;
+    for (auto r : readers) {
+        numUniforms += r.entry()->fUniforms.size();
+    }
+    return numUniforms != 0;
+}
 }  // anonymous namespace
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
                                     const std::vector<SkPaintParamsKey::BlockReader>& readers,
                                     bool needsLocalCoords) {
-    size_t numUniforms = 0;
-    for (auto r : readers) {
-        numUniforms += r.entry()->fUniforms.size();
-    }
-
-    if (!numUniforms) {
+    if (!have_uniforms(readers)) {
         return {};
     }
 
@@ -157,6 +160,58 @@ std::string EmitRenderStepUniforms(int bufferID, const char* name,
     result.append("};\n\n");
 
     return result;
+}
+
+std::string EmitPaintParamsStorageBuffer(int bufferID,
+                                         const char* bufferTypePrefix,
+                                         const char* bufferNamePrefix,
+                                         const std::vector<SkPaintParamsKey::BlockReader>& readers,
+                                         bool needsLocalCoords) {
+    if (!have_uniforms(readers)) {
+        return {};
+    }
+
+    std::string result;
+    SkSL::String::appendf(&result, "struct %sUniformData {\n", bufferTypePrefix);
+    for (int i = 0; i < (int)readers.size(); ++i) {
+        SkSpan<const SkUniform> uniforms = readers[i].entry()->fUniforms;
+        if (uniforms.empty()) {
+            continue;
+        }
+        SkSL::String::appendf(&result, "// %s uniforms\n", readers[i].entry()->fName);
+        int manglingSuffix = i;
+        for (const SkUniform& u : uniforms) {
+            SkSL::String::appendf(
+                    &result, "    %s %s_%d", SkSLTypeString(u.type()), u.name(), manglingSuffix);
+            if (u.count()) {
+                SkSL::String::appendf(&result, "[%u]", u.count());
+            }
+            result.append(";\n");
+        }
+    }
+    if (needsLocalCoords) {
+        result.append(
+                "// NeedsLocalCoords\n"
+                "    float4x4 dev2LocalUni;\n");
+    }
+    result.append("};\n\n");
+
+    // TODO(b/242076321) make unsized
+    SkSL::String::appendf(&result,
+                          "layout (binding=%d) buffer %sUniforms {\n"
+                          "    %sUniformData %sUniformData[256];\n"
+                          "};\n",
+                          bufferID,
+                          bufferTypePrefix,
+                          bufferTypePrefix,
+                          bufferNamePrefix);
+    return result;
+}
+
+std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
+                                    const char* ssboIndex,
+                                    const char* uniformName) {
+    return SkSL::String::printf("%sUniformData[%s].%s", bufferNamePrefix, ssboIndex, uniformName);
 }
 
 std::string EmitTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockReader>& readers,
@@ -224,6 +279,14 @@ std::string EmitVaryings(const RenderStep* step, const char* direction,
         SkSL::String::appendf(&result, " %s;\n", v.fName);
     }
 
+    if (step->shadingSsboIndexVarying()) {
+        SkSL::String::appendf(&result,
+                              "    layout(location=%d) %s int %s;\n",
+                              location++,
+                              direction,
+                              step->shadingSsboIndexVarying());
+    }
+
     return result;
 }
 
@@ -270,6 +333,12 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc, bool defineLocalCoordsVa
         // Assign Render Step's stepLocalCoords to the localCoordsVar varying.
         sksl += "localCoordsVar = stepLocalCoords;\n";
     }
+
+    if (step->shadingSsboIndexVarying()) {
+        // Assign SSBO index value to the SSBO index varying
+        SkSL::String::appendf(
+                &sksl, "%s = %s;\n", step->shadingSsboIndexVarying(), step->ssboIndex());
+    }
     sksl += "}\n";
 
     return sksl;
@@ -285,7 +354,7 @@ std::string GetSkSLFS(SkShaderCodeDictionary* dict,
         return {};
     }
 
-    SkShaderInfo shaderInfo(rteDict);
+    SkShaderInfo shaderInfo(rteDict, desc.renderStep()->shadingSsboIndexVarying());
 
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
     *blendInfo = shaderInfo.blendInfo();
