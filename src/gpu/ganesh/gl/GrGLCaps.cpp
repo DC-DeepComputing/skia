@@ -4220,6 +4220,10 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fDisableTessellationPathRenderer = true;
     }
 
+    if (ctxInfo.renderer() == GrGLRenderer::kPowerVRRogue) {
+        fTransferFromBufferToBufferSupport = false;
+    }
+
 #ifdef SK_BUILD_FOR_WIN
     // glDrawElementsIndirect fails GrMeshTest on every Win10 Intel bot.
     if (ctxInfo.driver() == GrGLDriver::kIntel ||

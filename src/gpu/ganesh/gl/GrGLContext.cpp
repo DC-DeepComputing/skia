@@ -42,6 +42,8 @@ std::unique_ptr<GrGLContext> GrGLContext::Make(sk_sp<const GrGLInterface> interf
      * 06/18/2015 - This bug does not affect the nexus 6 (which has an Adreno 4xx).
      */
 #ifdef SK_BUILD_FOR_ANDROID
+    char androidAPIVersion[PROP_VALUE_MAX];
+    int strLength = __system_property_get("ro.build.version.sdk", androidAPIVersion);
     if (!options.fDisableDriverCorrectnessWorkarounds &&
         args.fDriverInfo.fRenderer == GrGLRenderer::kAdreno3xx) {
         char androidAPIVersion[PROP_VALUE_MAX];
@@ -50,6 +52,7 @@ std::unique_ptr<GrGLContext> GrGLContext::Make(sk_sp<const GrGLInterface> interf
             args.fGLSLGeneration = SkSL::GLSLGeneration::k100es;
         }
     }
+    SkDebugf("API: %s\n", androidAPIVersion);
 #endif
 
     // Many ES3 drivers only advertise the ES2 image_external extension, but support the _essl3
