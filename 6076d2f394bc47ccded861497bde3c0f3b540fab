@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7178b6d3_ee4b2587",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-18T13:23:47Z",
+      "side": 1,
+      "message": "A few thoughts... \n\n1) If the use cases aren\u0027t using Sk*S*TArray maybe they should just use std::vector?\n\n2) I\u0027m having some déjà vu. I have a recollection that we used to make sk_sp\u0027s mem-movable but had to stop that for some reason (UBSAN?). Will do a little git history spelunking...\n\n3) If we do wan\u0027t this, maybe we can have some template foo to change the default MEM_MOVE to be true when T is a sk_sp\u003cU\u003e?",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
