@@ -198,6 +198,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a859992_41d4dda5",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:31:18Z",
+      "side": 1,
+      "message": "I don\u0027t feel strongly about having a peek if you think having it around is unnecessary/confusing/pessimizes the common case, but it seems like a minor gap in the API to me that the only time you can see the data is when you call `finish`. I would\u0027ve thought that there would be value in having a way to peek at the data post-`finish` in a safe way. (Pre-`finish` I don\u0027t care what peek does. It can return nothing or assert and I\u0027m fine with this.) If we don\u0027t actually need this ability, or if it would cost us performance, we can jettison it.\n\nI do think it\u0027s important that the finisher has a name that conveys that it mutates the data/shouldn\u0027t be called more than once. Renaming it to `finish` solves that.",
+      "parentUuid": "2a7d5ca4_1795ab7c",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 38
+      },
+      "revId": "7cc2f8148d500cf8d31a2d517adb91f7e8046f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b7230e9_f5f6c2c4",
         "filename": "src/gpu/graphite/UniformManager.cpp",
         "patchSetId": 1
