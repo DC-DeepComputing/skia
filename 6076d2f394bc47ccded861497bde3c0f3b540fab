@@ -177,6 +177,24 @@
       "parentUuid": "e6309eef_c660a995",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de27daa2_d40e3e8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-18T18:06:26Z",
+      "side": 1,
+      "message": "Oh that\u0027s much nicer and more scalable!\n\nWDYT of using \"sk_is_trivially_relocatable\", to match the hopefully-soon-to-come std::is_trivially_relocatable?\n\nhttps://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1144r2.html#wording-traits",
+      "parentUuid": "4e319f21_904bde58",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
