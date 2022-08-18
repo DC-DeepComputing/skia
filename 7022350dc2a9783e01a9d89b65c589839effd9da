@@ -16,6 +16,23 @@
       "message": "lgtm modulo rename.",
       "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1da71839_b5223086",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-18T15:19:11Z",
+      "side": 1,
+      "message": "Do we need/want the padding in all APIs? I thought it was only Metal that required it. (Although it\u0027s harmless to just have it everywhere I suppose)",
+      "revId": "7022350dc2a9783e01a9d89b65c589839effd9da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
