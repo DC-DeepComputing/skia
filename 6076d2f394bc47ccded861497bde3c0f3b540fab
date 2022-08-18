@@ -141,6 +141,24 @@
       "parentUuid": "ec1c11e5_8a15c4c3",
       "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6309eef_c660a995",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-18T16:02:18Z",
+      "side": 1,
+      "message": "This is somewhat how folly works, https://github.com/facebook/folly/blob/d9ca0739a7cf934409ebece90f249eedc192fd53/folly/FBVector.h#L589 , see folly::IsRelocatable\u003cT\u003e. Having a separate trait makes some sense in that the class itself can declare that it is relocatable, as opposed to the user of the class declaring if it is relocatable.",
+      "parentUuid": "4a477cf7_7ecd45c3",
+      "revId": "6076d2f394bc47ccded861497bde3c0f3b540fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
