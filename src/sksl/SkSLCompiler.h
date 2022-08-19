@@ -17,7 +17,6 @@
 #include "include/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLContext.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLMangler.h"
-#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLParsedModule.h"
 
 #include <array>
@@ -233,8 +232,8 @@ private:
     };
 
 
-    std::shared_ptr<SymbolTable> makeRootSymbolTable();
-    std::shared_ptr<SymbolTable> makeRootSymbolTableWithPublicTypes();
+    std::shared_ptr<SymbolTable> makeRootSymbolTable() const;
+    std::shared_ptr<SymbolTable> makeRootSymbolTableWithPublicTypes() const;
 
     /** Optimize every function in the program. */
     bool optimize(Program& program);
@@ -280,9 +279,6 @@ private:
 
     ParsedModule fPublicModule;              // [Shared] + Runtime effect intrinsics - Private types
     ParsedModule fRuntimeShaderModule;       // [Public] + Runtime shader decls
-
-    // holds ModifiersPools belonging to the core includes for lifetime purposes
-    ModifiersPool fCoreModifiers;
 
     Mangler fMangler;
 
