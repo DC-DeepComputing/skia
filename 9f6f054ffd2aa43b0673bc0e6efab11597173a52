@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f259069_14730d4e",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-19T15:18:52Z",
+      "side": 1,
+      "message": "Thank goodness... I think this will simplify a lot of things, and I\u0027m glad we won\u0027t need to thread this stuff back into Ganesh.",
+      "parentUuid": "68bf7c68_31937d70",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 27
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17b32081_a0ad6ce3",
