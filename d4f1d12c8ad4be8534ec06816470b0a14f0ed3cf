@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15cc6723_57756e31",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "since the SkVertices object is only storing SkColor already, and not SkColor4f\u0027s, we can save bandwidth by having the VertexAttribType be kUByte4_norm and the SkSLType can be kHalf4.\n\nUnfortunately, we can\u0027t just write SkColor to VertexWriters and have them work out correctly due to machine endian-ness. We only support little endian, so that means an SkColor gets split into B,G,R,A whereas the GPU wants to interpret them as rgba. We can either call the helper function SkSwizzle_RB as we write them to the buffer, or we can use a swizzle in SkSL, so your assignment to the varying would be `color \u003d vertColor.bgra` to swap the B and R channels. This looks like the approach that\u0027s used in Ganesh, which minimizes CPU work.",
+      "range": {
+        "startLine": 36,
+        "startChar": 58,
+        "endLine": 36,
+        "endChar": 83
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e48c6379_5c438cd9",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "Let\u0027s have the varying be a half4, which is sufficient for color data compared to a float.\n\nThe attribute above can also be half4, so the sksl that assigns the varying will be pretty trivial.",
+      "range": {
+        "startLine": 56,
+        "startChar": 84,
+        "endLine": 56,
+        "endChar": 91
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeacf9a7_84641d64",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "SkSL and the effect pipeline generally operate on premul colors, so they\u0027ve had alpha multiplied. SkColor and SkColor4f are not premul. Sometimes we can fold the premultiply into the color space transform, but since DrawVertices may skip that and the primitive color we\u0027re writing to is general purpose, I think it makes sense to make sure it\u0027s premul here.\n\nThis also makes it consistent with how the Ganesh drawmeshop handles it, where its color varying is premul. This means that the colors are interpolated in premul, which can work out to different gradient than if they were unpremul (generally nicer to interpolate pre-multiplied).\n\nIf we were to combine this with the SkSL swizzling mentioned above, this would look like `color \u003d half4(vertColor.bgr * vertColor.a, vertColor.a);` or I believe we can simply do `color \u003d premul(vertColor.bgra);`.",
+      "range": {
+        "startLine": 83,
+        "startChar": 20,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9722f8bb_6eea8c91",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "can be dropped, too.",
+      "range": {
+        "startLine": 87,
+        "startChar": 26,
+        "endLine": 87,
+        "endChar": 40
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d04b37_c84b3373",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "this expression is redundant (and same with the `\u0026\u0026 !fHasColor` below), given the first if condition.",
+      "range": {
+        "startLine": 112,
+        "startChar": 25,
+        "endLine": 112,
+        "endChar": 40
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c0392cf_f8e38e60",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "Given how short these snippets are, I think it\u0027s clearer if we don\u0027t use raw strings and just return `\"\"` and `\"primitiveColor \u003d color;\"`",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 5
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6a0af22_3f8580c2",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T01:01:11Z",
+      "side": 1,
+      "message": "While I think this will all go away since using kUByte4_norm will let us just write colors[state.fX] directly, there\u0027s no difference between SkColor4f and SkV4 in terms of memory layout (just 4 floats). VertexWriter\u0027s \u003c\u003c is templated so that any type that\u0027s plain-old-data is memcpy\u0027d, so \u003c\u003c SkV4 and \u003c\u003c SkColor4f amount to the same thing.",
+      "range": {
+        "startLine": 220,
+        "startChar": 8,
+        "endLine": 226,
+        "endChar": 67
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
