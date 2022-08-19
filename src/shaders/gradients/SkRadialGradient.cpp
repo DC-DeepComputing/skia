@@ -149,14 +149,14 @@ void SkRadialGradient::addToKey(const SkKeyContext& keyContext,
 }
 #endif
 
-sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
-                                             const SkColor4f colors[],
-                                             sk_sp<SkColorSpace> colorSpace,
-                                             const SkScalar pos[],
-                                             int colorCount,
-                                             SkTileMode mode,
-                                             uint32_t flags,
-                                             const SkMatrix* localMatrix) {
+sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius,
+                                          const SkColor4f colors[],
+                                          sk_sp<SkColorSpace> colorSpace,
+                                          const SkScalar pos[],
+                                          int colorCount,
+                                          SkTileMode mode,
+                                          uint32_t flags,
+                                          const SkMatrix* localMatrix) {
     if (radius < 0) {
         return nullptr;
     }
@@ -183,25 +183,26 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     return sk_make_sp<SkRadialGradient>(center, radius, desc);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
-                                             const SkColor colors[],
-                                             const SkScalar pos[],
-                                             int colorCount,
-                                             SkTileMode mode,
-                                             uint32_t flags,
-                                             const SkMatrix* localMatrix) {
+sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius,
+                                          const SkColor colors[],
+                                          const SkScalar pos[],
+                                          int colorCount,
+                                          SkTileMode mode,
+                                          uint32_t flags,
+                                          const SkMatrix* localMatrix) {
     SkColorConverter converter(colors, colorCount);
-    return MakeRadial(center, radius, converter.fColors4f.begin(), nullptr, pos, colorCount, mode,
-                      flags, localMatrix);
+    return RadialGradient(center, radius, converter.fColors4f.begin(), nullptr, pos, colorCount,
+                          mode, flags, localMatrix);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
-                                             const SkColor4f colors[],
-                                             sk_sp<SkColorSpace> colorSpace,
-                                             const SkScalar pos[],
-                                             int count,
-                                             SkTileMode mode) {
-    return MakeRadial(center, radius, colors, std::move(colorSpace), pos, count, mode, 0, nullptr);
+sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius,
+                                          const SkColor4f colors[],
+                                          sk_sp<SkColorSpace> colorSpace,
+                                          const SkScalar pos[],
+                                          int colorCount,
+                                          SkTileMode mode) {
+    return RadialGradient(center, radius, colors, std::move(colorSpace), pos, colorCount,
+                          mode, 0, nullptr);
 }
 
 void SkRegisterRadialGradientShaderFlattenable() {
