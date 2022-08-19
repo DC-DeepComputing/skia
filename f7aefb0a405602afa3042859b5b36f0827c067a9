@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8d0d829_8adfcce4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-19T13:27:22Z",
+      "side": 1,
+      "message": "John already has a CL over here: http://review.skia.org/571386\n\n",
+      "revId": "f7aefb0a405602afa3042859b5b36f0827c067a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
