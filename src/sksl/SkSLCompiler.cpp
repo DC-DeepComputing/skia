@@ -103,7 +103,6 @@ class ProgramUsage;
 
 // These flags allow tools like Viewer or Nanobench to override the compiler's ProgramSettings.
 Compiler::OverrideFlag Compiler::sOptimizer = OverrideFlag::kDefault;
-Compiler::OverrideFlag Compiler::sInliner = OverrideFlag::kDefault;
 
 using RefKind = VariableReference::RefKind;
 
@@ -500,19 +499,6 @@ std::unique_ptr<Program> Compiler::convertProgram(ProgramKind kind,
             break;
     }
 
-    switch (sInliner) {
-        case OverrideFlag::kDefault:
-            break;
-        case OverrideFlag::kOff:
-            settings.fInlineThreshold = 0;
-            break;
-        case OverrideFlag::kOn:
-            if (settings.fInlineThreshold == 0) {
-                settings.fInlineThreshold = kDefaultInlineThreshold;
-            }
-            break;
-    }
-
     // Disable optimization settings that depend on a parent setting which has been disabled.
     settings.fInlineThreshold *= (int)settings.fOptimize;
     settings.fRemoveDeadFunctions &= settings.fOptimize;
@@ -573,25 +559,7 @@ std::unique_ptr<Expression> Compiler::convertIdentifier(Position pos, std::strin
 }
 
 bool Compiler::optimizeRehydratedModule(LoadedModule& module, const ParsedModule& base) {
-    SkASSERT(!this->errorCount());
-
-    // Create a temporary program configuration with default settings.
-    ProgramConfig config;
-    config.fIsBuiltinCode = true;
-    config.fKind = module.fKind;
-    AutoProgramConfig autoConfig(fContext, &config);
-    AutoModifiersPool autoPool(fContext, &fCoreModifiers);
-
-    std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
-
-    // Perform inline-candidate analysis and inline any functions deemed suitable.
-    Inliner inliner(fContext.get());
-    while (this->errorCount() == 0) {
-        if (!this->runInliner(&inliner, module.fElements, module.fSymbols, usage.get())) {
-            break;
-        }
-    }
-    return this->errorCount() == 0;
+    return true;
 }
 
 bool Compiler::optimizeModuleForDehydration(LoadedModule& module, const ParsedModule& base) {
@@ -629,14 +597,8 @@ bool Compiler::optimize(Program& program) {
     }
 
     SkASSERT(!this->errorCount());
-    ProgramUsage* usage = program.fUsage.get();
 
     if (this->errorCount() == 0) {
-        // Run the inliner only once; it is expensive! Multiple passes can occasionally shake out
-        // more wins, but it's diminishing returns.
-        Inliner inliner(fContext.get());
-        this->runInliner(&inliner, program.fOwnedElements, program.fSymbols, usage);
-
         // Unreachable code can confuse some drivers, so it's worth removing. (skia:12012)
         Transform::EliminateUnreachableCode(program);
 
@@ -651,27 +613,6 @@ bool Compiler::optimize(Program& program) {
     }
 
     return this->errorCount() == 0;
-}
-
-bool Compiler::runInliner(Inliner* inliner,
-                          const std::vector<std::unique_ptr<ProgramElement>>& elements,
-                          std::shared_ptr<SymbolTable> symbols,
-                          ProgramUsage* usage) {
-    // The program's SymbolTable was taken out of fSymbolTable when the program was bundled, but
-    // the inliner relies (indirectly) on having a valid SymbolTable.
-    // In particular, inlining can turn a non-optimizable expression like `normalize(myVec)` into
-    // `normalize(vec2(7))`, which is now optimizable. The optimizer can use DSL to simplify this
-    // expression--e.g., in the case of normalize, using DSL's Length(). The DSL relies on
-    // convertIdentifier() to look up `length`. convertIdentifier() needs a valid symbol table to
-    // find the declaration of `length`. To allow this chain of events to succeed, we re-insert the
-    // program's symbol table temporarily.
-    SkASSERT(!fSymbolTable);
-    fSymbolTable = symbols;
-
-    bool result = inliner->analyze(elements, symbols, usage);
-
-    fSymbolTable = nullptr;
-    return result;
 }
 
 bool Compiler::finalize(Program& program) {
