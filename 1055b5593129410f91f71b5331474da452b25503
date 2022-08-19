@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f4dde61_b5342a1d",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T18:20:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab9292d8_6139d5ff",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 13
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8a54a5b_f67de969",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-19T15:16:16Z",
       "side": 1,
       "message": "Can we put this up by the emitLocalCOordsVarying? That way the declarations are grouped into automatic varyings and per-RenderStep-declared varyings.",
+      "range": {
+        "startLine": 282,
+        "startChar": 4,
+        "endLine": 288,
+        "endChar": 5
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00e5e912_2c0419c4",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T18:20:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8a54a5b_f67de969",
       "range": {
         "startLine": 282,
         "startChar": 4,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf316ef3_ff9eafad",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T18:20:50Z",
+      "side": 1,
+      "message": "My thinking was the the individual RenderSteps could reference this constant when defining their attributes, though I haven\u0027t included that in this CL. But anyways, if we eventually have a shared list of attributes for all RenderSteps, that might not be so useful. Removed for now.",
+      "parentUuid": "db7f8369_98eb84f2",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 81
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "596959d2_3d723db7",
@@ -123,6 +195,30 @@
       "writtenOn": "2022-08-19T15:16:16Z",
       "side": 1,
       "message": "Like with the special local coords varying, there\u0027s no need for the RenderStep to define the varying\u0027s name. We can see that they\u0027ve provided the name of their attribute and then ContextUtils code gen can set the varying name directly on ShaderInfo if the RenderStep has an SSBO index attribute name defined.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 51
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f4c5b46_9c80455b",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T18:20:50Z",
+      "side": 1,
+      "message": "I ended up passing a needsSsboIndex boolean through GetSkSLFS and GetSkSLVS, to be consistent with how we handle local coords, but does that seem like overkill?",
+      "parentUuid": "596959d2_3d723db7",
       "range": {
         "startLine": 213,
         "startChar": 0,
