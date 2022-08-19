@@ -16,6 +16,98 @@
       "message": "CC\u0027ing Michael for RenderStep changes.",
       "revId": "1055b5593129410f91f71b5331474da452b25503",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8a54a5b_f67de969",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:16:16Z",
+      "side": 1,
+      "message": "Can we put this up by the emitLocalCOordsVarying? That way the declarations are grouped into automatic varyings and per-RenderStep-declared varyings.",
+      "range": {
+        "startLine": 282,
+        "startChar": 4,
+        "endLine": 288,
+        "endChar": 5
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee674ff_3250faf4",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:16:16Z",
+      "side": 1,
+      "message": "When we last discussed how to handle this, this was the plan we came up with. I also don\u0027t want to block this CL, but we could make this a little bit more flexible for the RenderStep and follow the pattern that got established for local coords and primitive color: have a flag/boolean that says it\u0027s using ssbo\u0027s, and then have a virtual that gets the vertex shader sksl for assigning to an index variable. Then this could be packed in anything else we could represent.\n\nBut for now I think this serves our purposes, is light weight, and we can consolidate the vertex shader generation when the dust settles, once the full program flow has been implemented.",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 84
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7f8369_98eb84f2",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:16:16Z",
+      "side": 1,
+      "message": "With how the code generation is handled, there\u0027s no real need to have these names shared in a constant for the subclasses. Particularly if we drop to just having RenderSteps export their attribute name, an attribute declaration is more readable IMO having \"ssboIndex\" in its initializer list vs. kSsboIndexAttribute.",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 81
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "596959d2_3d723db7",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:16:16Z",
+      "side": 1,
+      "message": "Like with the special local coords varying, there\u0027s no need for the RenderStep to define the varying\u0027s name. We can see that they\u0027ve provided the name of their attribute and then ContextUtils code gen can set the varying name directly on ShaderInfo if the RenderStep has an SSBO index attribute name defined.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 51
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

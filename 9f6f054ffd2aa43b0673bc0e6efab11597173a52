@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68bf7c68_31937d70",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:16:16Z",
+      "side": 1,
+      "message": "The current plan is that the generality of SkShaderCodeDictionary probably won\u0027t be reasonable, since SkVM and Ganesh are on the chopping block, so the code dictionary will eventually migrate to src/gpu/graphite and all the ifdefs can go away. Only reason it hasn\u0027t happened already is time allocation.",
+      "parentUuid": "77eb4959_f1a7b2b5",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 27
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17b32081_a0ad6ce3",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 4
