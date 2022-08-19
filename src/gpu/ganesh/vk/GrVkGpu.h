@@ -176,6 +176,7 @@ public:
 
     bool updateBuffer(sk_sp<GrVkBuffer> buffer, const void* src, VkDeviceSize offset,
                       VkDeviceSize size);
+    bool zeroBuffer(sk_sp<GrGpuBuffer>);
 
     enum PersistentCacheKeyType : uint32_t {
         kShader_PersistentCacheKeyType = 0,

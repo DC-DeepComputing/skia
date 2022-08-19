@@ -341,7 +341,7 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
             inputFormat = kBitMask_BmpInputFormat;
             switch (headerType) {
                 case kInfoV1_BmpHeaderType: {
-                    // The V1 header stores the bit masks after the header
+                    // The V0 header stores the bit masks after the header
                     uint8_t buffer[kBmpMaskBytes];
                     if (stream->read(buffer, kBmpMaskBytes) != kBmpMaskBytes) {
                         SkCodecPrintf("Error: unable to read bit inputMasks.\n");
@@ -358,7 +358,7 @@ SkCodec::Result SkBmpCodec::ReadHeader(SkStream* stream, bool inIco,
                 case kInfoV4_BmpHeaderType:
                 case kInfoV5_BmpHeaderType:
                     // Header types are matched based on size.  If the header
-                    // is V2+, we are guaranteed to be able to read at least
+                    // is V1+, we are guaranteed to be able to read at least
                     // this size.
                     SkASSERT(infoBytesRemaining >= 48);
                     inputMasks.red = get_int(iBuffer.get(), 36);

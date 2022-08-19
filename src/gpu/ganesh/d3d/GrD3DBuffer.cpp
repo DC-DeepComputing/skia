@@ -148,6 +148,26 @@ void GrD3DBuffer::onUnmap(MapType type) {
     this->internalUnmap(type, 0, this->size());
 }
 
+bool GrD3DBuffer::onClearToZero() {
+    if (!fD3DResource) {
+        return false;
+    }
+
+    void* ptr = this->internalMap(MapType::kWriteDiscard, 0, this->size());
+    if (!ptr) {
+        return false;
+    }
+    if (this->accessPattern() == kStatic_GrAccessPattern) {
+        // We should never call this method on static buffers in protected contexts.
+        SkASSERT(!this->getD3DGpu()->protectedContext());
+        //*** any alignment restrictions?
+    }
+    std::memset(ptr, 0, this->size());
+    this->internalUnmap(MapType::kWriteDiscard, 0, this->size());
+
+    return true;
+}
+
 bool GrD3DBuffer::onUpdateData(const void* src, size_t offset, size_t size, bool /*preserve*/) {
     if (!fD3DResource) {
         return false;
@@ -156,11 +176,6 @@ bool GrD3DBuffer::onUpdateData(const void* src, size_t offset, size_t size, bool
     void* ptr = this->internalMap(MapType::kWriteDiscard, offset, size);
     if (!ptr) {
         return false;
-    }
-    if (this->accessPattern() == kStatic_GrAccessPattern) {
-        // We should never call this method on static buffers in protected contexts.
-        SkASSERT(!this->getD3DGpu()->protectedContext());
-        //*** any alignment restrictions?
     }
     memcpy(ptr, src, size);
     this->internalUnmap(MapType::kWriteDiscard, offset, size);

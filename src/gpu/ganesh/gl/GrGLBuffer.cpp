@@ -243,6 +243,23 @@ void GrGLBuffer::onUnmap(MapType) {
     fMapPtr = nullptr;
 }
 
+bool GrGLBuffer::onClearToZero() {
+    SkASSERT(fBufferID);
+
+    // TODO: Add support for glClearBufferData on GL 4.3+
+    this->onMap(GrGpuBuffer::MapType::kWriteDiscard);
+    if (fMapPtr) {
+        std::memset(fMapPtr, 0, this->size());
+        this->onUnmap(GrGpuBuffer::MapType::kWriteDiscard);
+        return true;
+    }
+
+    void* zeros = sk_calloc_throw(this->size());
+    bool result = this->updateData(zeros, 0, this->size(), /*preserve=*/false);
+    sk_free(zeros);
+    return result;
+}
+
 bool GrGLBuffer::onUpdateData(const void* src, size_t offset, size_t size, bool preserve) {
     SkASSERT(fBufferID);
 
