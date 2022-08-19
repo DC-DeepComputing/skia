@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf54a17c_08d51b49",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-19T22:04:21Z",
+      "side": 1,
+      "message": "This was actually a lifetime bug; it only worked before because Setting::Convert always returned a Literal and discarded the view.",
+      "range": {
+        "startLine": 585,
+        "startChar": 17,
+        "endLine": 585,
+        "endChar": 28
+      },
+      "revId": "fb5914f48efe0e35008aa286693171c90a46590d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
