@@ -22,6 +22,30 @@
       },
       "revId": "d577671a3e19d7e744e352bee76f669b88ec6526",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1695cc8e_3862acbb",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-19T18:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0cd9cb5_5384ecef",
+      "range": {
+        "startLine": 835,
+        "startChar": 0,
+        "endLine": 835,
+        "endChar": 22
+      },
+      "revId": "d577671a3e19d7e744e352bee76f669b88ec6526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
