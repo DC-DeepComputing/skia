@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85269791_32a3d8b0",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-19T18:00:44Z",
+      "side": 1,
+      "message": "\u003e That seems analogous to how we\u0027re handling RenderPassTasks, where the CommandBuffer takes the data and does what it wants. Eventually  renderPietScene  could move up to the top-level CB when we have other backends supported, right?\n\u003e It would also mean that the need for a PietRenderer is reduced, if I\u0027m understanding this CL correctly. PietRenderTask wouldn\u0027t need to store a fRenderer anymore, and any internal sharing of the queue/command buffer between our use and piet\u0027s is hidden underneath the CB implementation.\n\nIn an earlier iteration when I was first integrating piet I actually had this exact approach, where there was a virtual `CommandBuffer::renderPietScene` that took care of what the current `graphite::PietRenderer` accomplishes. In that world I had the `piet::Renderer` live on `MtlGpu` (when that existed) and `MtlCommandBuffer` could obtain a `piet::MtlRenderer` directly from it. I abandoned that approach because a) `piet::Renderer` is not thread-safe and needs to be per-recorder as you noted; and b) I wanted to try and keep the piet-related code as separate as possible. That latter point is moot though since a bunch of graphite classes already need to be piet-aware.\n\nBased on our conversation with piet folks yesterday, there are no plans to make the piet Renderer thread-safe so it will have to live on the Recorder, though we may eventually be able to move some shared state out into `SharedContext` (or some other shared object) to allow the different piet renderers to share internal piet GPU resources.\n\nI could come up with a pure-virtual `CommandBuffer::renderPietScene(piet::Renderer*, const piet::Scene\u0026, sk_sp\u003cTexture\u003e)` where `piet::Renderer` is a new opaque base class with no methods on it. This would internally cast `piet::Renderer` down to a `piet::MtlRenderer` and call it with the backend-specific MTLTexture, etc. The `piet::Renderer` would still have to live on the recorder (and referenced from `PietRenderTask`) but as long as multiple threads are not allowed call `CommandBuffer::renderPietScene` on the same `piet::Renderer` this should be safe (or we make `piet::Renderer` itself thread-safe and guard piet library calls with a mutex). `MtlCommandBuffer::getCommandBufferForDirectEncoding()`, \n `graphite::PietRenderer`, and `graphite::MtlPietRenderer` would all go away. WDYT?",
+      "parentUuid": "8489fba1_69236c0f",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5093046f_03a4db12",
         "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
         "patchSetId": 3
