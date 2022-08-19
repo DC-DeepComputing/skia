@@ -93,7 +93,9 @@ struct SkShaderSnippet {
             , fNumChildren(numChildren)
             , fDataPayloadExpectations(dataPayloadExpectations) {}
 
-    std::string getMangledUniformName(int uniformIdx, int mangleId) const;
+    std::string getMangledUniformName(const SkShaderInfo& shaderInfo,
+                                      int uniformIdx,
+                                      int mangleId) const;
     std::string getMangledSamplerName(int samplerIdx, int mangleId) const;
 
     bool needsLocalCoords() const {
@@ -118,8 +120,9 @@ struct SkShaderSnippet {
 // for program creation and its invocation.
 class SkShaderInfo {
 public:
-    SkShaderInfo(SkRuntimeEffectDictionary* rteDict = nullptr)
-            : fRuntimeEffectDictionary(rteDict) {}
+    SkShaderInfo(SkRuntimeEffectDictionary* rteDict = nullptr, const char* ssboIndex = nullptr)
+            : fRuntimeEffectDictionary(rteDict)
+            , fSsboIndex(ssboIndex) {}
     ~SkShaderInfo() = default;
     SkShaderInfo(SkShaderInfo&&) = default;
     SkShaderInfo& operator=(SkShaderInfo&&) = default;
@@ -141,6 +144,7 @@ public:
     const SkRuntimeEffectDictionary* runtimeEffectDictionary() const {
         return fRuntimeEffectDictionary;
     }
+    const char* ssboIndex() const { return fSsboIndex; }
 
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
@@ -159,6 +163,8 @@ private:
 
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags{SnippetRequirementFlags::kNone};
     SkRuntimeEffectDictionary* fRuntimeEffectDictionary = nullptr;
+
+    const char* fSsboIndex;
 
 #ifdef SK_GRAPHITE_ENABLED
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the

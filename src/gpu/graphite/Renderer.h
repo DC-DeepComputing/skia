@@ -112,7 +112,9 @@ public:
     size_t numUniforms()           const { return fUniforms.size();      }
     size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
     size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
-    size_t numVaryings()           const { return fVaryings.size();      }
+
+    const char* ssboIndex()               const { return fSsboIndexAttribute;      }
+    const char* shadingSsboIndexVarying() const { return fShadingSsboIndexVarying; }
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
@@ -147,6 +149,9 @@ protected:
         kEmitsPrimitiveColor   = 0b10000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
+
+    static constexpr char kSsboIndexAttribute[] = "ssboIndex";
+    static constexpr char kShadingSsboIndexVarying[] = "shadingSsboIndexVarying";
 
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
@@ -203,6 +208,9 @@ private:
     std::vector<Attribute> fVertexAttrs;
     std::vector<Attribute> fInstanceAttrs;
     std::vector<Varying>   fVaryings;
+
+    const char* fSsboIndexAttribute = nullptr;
+    const char* fShadingSsboIndexVarying = nullptr;
 
     size_t fVertexStride;   // derived from vertex attribute set
     size_t fInstanceStride; // derived from instance attribute set
