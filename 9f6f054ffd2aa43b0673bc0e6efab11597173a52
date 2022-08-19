@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff496ed8_f5b5ed77",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T14:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17b32081_a0ad6ce3",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 28
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "130d8c00_6683502c",
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7507d907_e6d018bb",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T14:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "130d8c00_6683502c",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 153,
+        "endChar": 52
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58c32eb7_1cda90c0",
@@ -100,6 +148,30 @@
       "writtenOn": "2022-08-18T21:54:56Z",
       "side": 1,
       "message": "tiny nit: consider initializing via `\u003d nullptr` here rather than at the constructor; this is safer (protects us in case a second constructor is later added) and easier to read. Same for the `size_t`s below as well.",
+      "range": {
+        "startLine": 214,
+        "startChar": 32,
+        "endLine": 215,
+        "endChar": 41
+      },
+      "revId": "9f6f054ffd2aa43b0673bc0e6efab11597173a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "205a20b2_740f8bfb",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-19T14:03:42Z",
+      "side": 1,
+      "message": "Done for these fields. The thing about the size_t fields is that there\u0027s logic to set their final values in the constructor, so it might be helpful to keep the assigment to zero there closer to that logic.",
+      "parentUuid": "58c32eb7_1cda90c0",
       "range": {
         "startLine": 214,
         "startChar": 32,
