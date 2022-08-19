@@ -12,7 +12,7 @@
 #include "include/gpu/vk/GrVkMemoryAllocator.h"
 #include "include/gpu/vk/GrVkTypes.h"
 
-class GrVkExtensions;
+namespace skgpu { class VkExtensions; }
 
 enum GrVkExtensionFlags {
     kEXT_debug_report_GrVkExtensionFlag    = 0x0001,
@@ -54,7 +54,7 @@ struct SK_API GrVkBackendContext {
     // then VkInstance was created.
     uint32_t                         fMaxAPIVersion = 0;
     uint32_t                         fExtensions = 0; // Deprecated. Use fVkExtensions instead.
-    const GrVkExtensions*            fVkExtensions = nullptr;
+    const skgpu::VkExtensions*       fVkExtensions = nullptr;
     uint32_t                         fFeatures; // Deprecated. Use fDeviceFeatures[2] instead.
     // The client can create their VkDevice with either a VkPhysicalDeviceFeatures or
     // VkPhysicalDeviceFeatures2 struct, thus we have to support taking both. The
