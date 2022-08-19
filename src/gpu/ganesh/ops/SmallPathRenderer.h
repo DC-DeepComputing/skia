@@ -10,6 +10,7 @@
 
 #include "src/gpu/ganesh/PathRenderer.h"
 
+class GrCaps;
 class GrStyledShape;
 
 namespace skgpu::v1 {
