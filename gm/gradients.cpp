@@ -550,20 +550,23 @@ private:
 
         // We can either interpolate endpoints and premultiply each point (default, more precision),
         // or premultiply the endpoints first, avoiding the need to premultiply each point (cheap).
-        const uint32_t flags[] = { 0, SkGradientShader::kInterpolateColorsInPremul_Flag };
+        const SkGradientFlags flags[] = {
+                SkGradientFlags::kNone,
+                SkGradientFlags::kInterpolateColorsInPremul
+        };
 
         for (size_t i = 0; i < std::size(flags); i++) {
-            paint1.setShader(SkGradientShader::MakeSweep(cx, cy, sweep_colors,
-                                                         nullptr, std::size(sweep_colors),
-                                                         flags[i], nullptr));
-            paint2.setShader(SkGradientShader::MakeRadial(center, radius, colors1,
-                                                          nullptr, std::size(colors1),
-                                                          SkTileMode::kClamp,
-                                                          flags[i], nullptr));
-            paint3.setShader(SkGradientShader::MakeRadial(center, radius, colors2,
-                                                          nullptr, std::size(colors2),
-                                                          SkTileMode::kClamp,
-                                                          flags[i], nullptr));
+            paint1.setShader(SkShaders::SweepGradient(cx, cy, sweep_colors,
+                                                      nullptr, std::size(sweep_colors),
+                                                      flags[i], nullptr));
+            paint2.setShader(SkShaders::RadialGradient(center, radius, colors1,
+                                                       nullptr, std::size(colors1),
+                                                       SkTileMode::kClamp,
+                                                      flags[i], nullptr));
+            paint3.setShader(SkShaders::RadialGradient(center, radius, colors2,
+                                                       nullptr, std::size(colors2),
+                                                       SkTileMode::kClamp,
+                                                       flags[i], nullptr));
             paint1.setDither(fDither);
             paint2.setDither(fDither);
             paint3.setDither(fDither);

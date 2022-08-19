@@ -227,12 +227,11 @@ DEF_SIMPLE_GM(p3, canvas, 450, 1300) {
         SkColor4f colors[] = {{1,0,0,1}, {0,1,0,1}};
 
         SkPaint paint;
-        paint.setShader(
-                SkGradientShader::MakeLinear(points, colors, p3,
-                                             nullptr, std::size(colors),
-                                             SkTileMode::kClamp,
-                                             SkGradientShader::kInterpolateColorsInPremul_Flag,
-                                             nullptr/*local matrix*/));
+        paint.setShader(SkShaders::LinearGradient(points, colors, p3,
+                                                  nullptr, std::size(colors),
+                                                  SkTileMode::kClamp,
+                                                  SkGradientFlags::kInterpolateColorsInPremul,
+                                                  nullptr/*local matrix*/));
         canvas->drawRect({10,10,70,70}, paint);
         canvas->save();
             compare_pixel("PM P3 gradient, P3 red",
@@ -282,12 +281,11 @@ DEF_SIMPLE_GM(p3, canvas, 450, 1300) {
         SkColor4f colors[] = {p3_to_srgb({1,0,0,1}), p3_to_srgb({0,1,0,1})};
 
         SkPaint paint;
-        paint.setShader(
-                SkGradientShader::MakeLinear(points, colors, srgb,
-                                             nullptr, std::size(colors),
-                                             SkTileMode::kClamp,
-                                             SkGradientShader::kInterpolateColorsInPremul_Flag,
-                                             nullptr/*local matrix*/));
+        paint.setShader(SkShaders::LinearGradient(points, colors, srgb,
+                                                  nullptr, std::size(colors),
+                                                  SkTileMode::kClamp,
+                                                  SkGradientFlags::kInterpolateColorsInPremul,
+                                                  nullptr/*local matrix*/));
         canvas->drawRect({10,10,70,70}, paint);
         canvas->save();
             compare_pixel("PM sRGB gradient, P3 red",
@@ -310,12 +308,11 @@ DEF_SIMPLE_GM(p3, canvas, 450, 1300) {
         SkColor4f colors[] = { {0,0,1,1}, {0,1,0,1}, {1,0,0,1} };
 
         SkPaint paint;
-        paint.setShader(
-                SkGradientShader::MakeLinear(points, colors, p3,
-                                             nullptr, std::size(colors),
-                                             SkTileMode::kClamp,
-                                             SkGradientShader::kInterpolateColorsInPremul_Flag,
-                                             nullptr/*local matrix*/));
+        paint.setShader(SkShaders::LinearGradient(points, colors, p3,
+                                                  nullptr, std::size(colors),
+                                                  SkTileMode::kClamp,
+                                                  SkGradientFlags::kInterpolateColorsInPremul,
+                                                  nullptr/*local matrix*/));
         canvas->drawRect({10,10,70,70}, paint);
         canvas->save();
             compare_pixel("Leon's gradient, P3 blue",

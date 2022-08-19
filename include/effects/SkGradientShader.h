@@ -65,9 +65,7 @@ public:
     static sk_sp<SkShader> MakeLinear(const SkPoint pts[2],
                                       const SkColor colors[], const SkScalar pos[], int count,
                                       SkTileMode mode,
-                                      uint32_t flags, const SkMatrix* localMatrix) {
-        return SkShaders::LinearGradient(pts, colors, pos, count, mode, flags, localMatrix);
-    }
+                                      uint32_t flags, const SkMatrix* localMatrix);
 
     static sk_sp<SkShader> MakeLinear(const SkPoint pts[2],
                                       const SkColor colors[], const SkScalar pos[], int count,
@@ -86,10 +84,7 @@ public:
     static sk_sp<SkShader> MakeRadial(const SkPoint& center, SkScalar radius,
                                       const SkColor colors[], const SkScalar pos[], int count,
                                       SkTileMode mode,
-                                      uint32_t flags, const SkMatrix* localMatrix) {
-        return SkShaders::RadialGradient(center, radius, colors, pos, count, mode,
-                                         flags, localMatrix);
-    }
+                                      uint32_t flags, const SkMatrix* localMatrix);
     static sk_sp<SkShader> MakeRadial(const SkPoint& center, SkScalar radius,
                                       const SkColor colors[], const SkScalar pos[], int count,
                                       SkTileMode mode) {
@@ -108,10 +103,7 @@ public:
                                                const SkPoint& end, SkScalar endRadius,
                                                const SkColor colors[], const SkScalar pos[],
                                                int count, SkTileMode mode,
-                                               uint32_t flags, const SkMatrix* localMatrix) {
-        return SkShaders::TwoPointConicalGradient(start, startRadius, end, endRadius, colors, pos,
-                                                  count, mode, flags, localMatrix);
-    }
+                                               uint32_t flags, const SkMatrix* localMatrix);
     static sk_sp<SkShader> MakeTwoPointConical(const SkPoint& start, SkScalar startRadius,
                                                const SkPoint& end, SkScalar endRadius,
                                                const SkColor colors[], const SkScalar pos[],
@@ -136,15 +128,10 @@ public:
                                      const SkColor colors[], const SkScalar pos[], int count,
                                      SkTileMode mode,
                                      SkScalar startAngle, SkScalar endAngle,
-                                     uint32_t flags, const SkMatrix* localMatrix) {
-        return SkShaders::SweepGradient(cx, cy, colors, pos, count, mode, startAngle, endAngle,
-                                        flags, localMatrix);
-    }
+                                     uint32_t flags, const SkMatrix* localMatrix);
     static sk_sp<SkShader> MakeSweep(SkScalar cx, SkScalar cy,
                                      const SkColor colors[], const SkScalar pos[], int count,
-                                     uint32_t flags, const SkMatrix* localMatrix) {
-        return SkShaders::SweepGradient(cx, cy, colors, pos, count, flags, localMatrix);
-    }
+                                     uint32_t flags, const SkMatrix* localMatrix);
     static sk_sp<SkShader> MakeSweep(SkScalar cx, SkScalar cy,
                                      const SkColor colors[], const SkScalar pos[], int count) {
         return SkShaders::SweepGradient(cx, cy, colors, pos, count);

@@ -85,9 +85,9 @@ sk_sp<SkFlattenable> SkRadialGradient::CreateProc(SkReadBuffer& buffer) {
     }
     const SkPoint center = buffer.readPoint();
     const SkScalar radius = buffer.readScalar();
-    return SkGradientShader::MakeRadial(center, radius, desc.fColors, std::move(desc.fColorSpace),
-                                        desc.fPos, desc.fCount, desc.fTileMode, desc.fGradFlags,
-                                        desc.fLocalMatrix);
+    return SkShaders::RadialGradient(center, radius, desc.fColors, std::move(desc.fColorSpace),
+                                     desc.fPos, desc.fCount, desc.fTileMode, desc.fGradFlags,
+                                     desc.fLocalMatrix);
 }
 
 void SkRadialGradient::flatten(SkWriteBuffer& buffer) const {
@@ -155,7 +155,7 @@ sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius
                                           const SkScalar pos[],
                                           int colorCount,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix) {
     if (radius < 0) {
         return nullptr;
@@ -188,7 +188,7 @@ sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius
                                           const SkScalar pos[],
                                           int colorCount,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix) {
     SkColorConverter converter(colors, colorCount);
     return RadialGradient(center, radius, converter.fColors4f.begin(), nullptr, pos, colorCount,
@@ -202,7 +202,7 @@ sk_sp<SkShader> SkShaders::RadialGradient(const SkPoint& center, SkScalar radius
                                           int colorCount,
                                           SkTileMode mode) {
     return RadialGradient(center, radius, colors, std::move(colorSpace), pos, colorCount,
-                          mode, 0, nullptr);
+                          mode, SkGradientFlags::kNone, nullptr);
 }
 
 void SkRegisterRadialGradientShaderFlattenable() {

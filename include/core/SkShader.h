@@ -14,6 +14,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkTileMode.h"
+#include "include/effects/SkGradientFlags.h"
 
 class SkArenaAlloc;
 class SkBitmap;
@@ -160,7 +161,7 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix);
 
     static sk_sp<SkShader> LinearGradient(const SkPoint pts[2],
@@ -168,7 +169,7 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode) {
-        return LinearGradient(pts, colors, pos, count, mode, 0, nullptr);
+        return LinearGradient(pts, colors, pos, count, mode, SkGradientFlags::kNone, nullptr);
     }
 
     /** Returns a shader that generates a linear gradient between the two specified points.
@@ -191,7 +192,7 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix);
     static sk_sp<SkShader> LinearGradient(const SkPoint pts[2],
                                           const SkColor4f colors[],
@@ -220,7 +221,7 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix);
 
     static sk_sp<SkShader> RadialGradient(const SkPoint& center,
@@ -229,7 +230,8 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode) {
-        return RadialGradient(center, radius, colors, pos, count, mode, 0, nullptr);
+        return RadialGradient(center, radius, colors, pos, count, mode,
+                              SkGradientFlags::kNone, nullptr);
     }
 
     /** Returns a shader that generates a radial gradient given the center and radius.
@@ -253,7 +255,7 @@ public:
                                           const SkScalar pos[],
                                           int count,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix);
     static sk_sp<SkShader> RadialGradient(const SkPoint& center,
                                           SkScalar radius,
@@ -275,7 +277,7 @@ public:
                                                    const SkScalar pos[],
                                                    int count,
                                                    SkTileMode mode,
-                                                   uint32_t flags,
+                                                   SkGradientFlags flags,
                                                    const SkMatrix* localMatrix);
     static sk_sp<SkShader> TwoPointConicalGradient(const SkPoint& start, SkScalar startRadius,
                                                    const SkPoint& end, SkScalar endRadius,
@@ -284,7 +286,7 @@ public:
                                                    int count,
                                                    SkTileMode mode) {
         return TwoPointConicalGradient(start, startRadius, end, endRadius, colors, pos, count, mode,
-                                       0, nullptr);
+                                       SkGradientFlags::kNone, nullptr);
     }
 
     /**
@@ -300,7 +302,7 @@ public:
                                                    const SkScalar pos[],
                                                    int count,
                                                    SkTileMode mode,
-                                                   uint32_t flags,
+                                                   SkGradientFlags flags,
                                                    const SkMatrix* localMatrix);
     static sk_sp<SkShader> TwoPointConicalGradient(const SkPoint& start, SkScalar startRadius,
                                                    const SkPoint& end, SkScalar endRadius,
@@ -340,13 +342,13 @@ public:
                                          int count,
                                          SkTileMode mode,
                                          SkScalar startAngle, SkScalar endAngle,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix);
     static sk_sp<SkShader> SweepGradient(SkScalar cx, SkScalar cy,
                                          const SkColor colors[],
                                          const SkScalar pos[],
                                          int count,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix) {
         return SweepGradient(cx, cy, colors, pos, count, SkTileMode::kClamp, 0, 360, flags,
                              localMatrix);
@@ -355,7 +357,7 @@ public:
                                          const SkColor colors[],
                                          const SkScalar pos[],
                                          int count) {
-        return SweepGradient(cx, cy, colors, pos, count, 0, nullptr);
+        return SweepGradient(cx, cy, colors, pos, count, SkGradientFlags::kNone, nullptr);
     }
 
     /** Returns a shader that generates a sweep gradient given a center.
@@ -389,14 +391,14 @@ public:
                                          int count,
                                          SkTileMode mode,
                                          SkScalar startAngle, SkScalar endAngle,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix);
     static sk_sp<SkShader> SweepGradient(SkScalar cx, SkScalar cy,
                                          const SkColor4f colors[],
                                          sk_sp<SkColorSpace> colorSpace,
                                          const SkScalar pos[],
                                          int count,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix);
     static sk_sp<SkShader> SweepGradient(SkScalar cx, SkScalar cy,
                                          const SkColor4f colors[],
