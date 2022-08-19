@@ -51,11 +51,10 @@ build:debug --compilation_mode=dbg
 
 # See also https://github.com/emscripten-core/emsdk/issues/984 for disabling cc_toolchain_resolution
 build:canvaskit_full --noincompatible_enable_cc_toolchain_resolution \
-                     --include_decoder=gif_decode_codec --include_decoder=jpeg_decode_codec \
-                     --include_decoder=png_decode_codec --include_decoder=webp_decode_codec \
+                     --include_decoder=gif_decode_codec,jpeg_decode_codec,png_decode_codec \
+                     --include_decoder=webp_decode_codec \
                      \
-                     --include_encoder=jpeg_encode_codec --include_encoder=png_encode_codec \
-                     --include_encoder=webp_encode_codec \
+                     --include_encoder=jpeg_encode_codec,png_encode_codec,webp_encode_codec \
                      \
                      --with_harfbuzz --with_icu --fontmgr_factory=custom_embedded_fontmgr_factory \
                      --ck_enable_fonts --ck_enable_embedded_font \
