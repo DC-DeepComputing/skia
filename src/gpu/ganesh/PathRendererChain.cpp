@@ -50,7 +50,9 @@ PathRendererChain::PathRendererChain(GrRecordingContext* context, const Options&
         }
     }
     if (options.fGpuPathRenderers & GpuPathRenderers::kSmall) {
-        fChain.push_back(sk_make_sp<SmallPathRenderer>());
+        if (SmallPathRenderer::IsSupported(caps)) {
+            fChain.push_back(sk_make_sp<SmallPathRenderer>());
+        }
     }
     if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
         fChain.push_back(sk_make_sp<TriangulatingPathRenderer>());
