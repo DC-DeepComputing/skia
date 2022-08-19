@@ -178,44 +178,146 @@ private:
 
 namespace {
 
-class UniformBindingCache {
+// Collects and writes uniform data either to uniform buffers or to shared storage buffers.
+class DrawPassUniformWriter {
 public:
-    UniformBindingCache(DrawBufferManager* bufferMgr, UniformDataCache* uniformDataCache)
-            : fBufferMgr(bufferMgr)
-            , fUniformDataCache(uniformDataCache) {
-    }
+    DrawPassUniformWriter(bool useStorageBuffers) : fUseStorageBuffers(useStorageBuffers) {}
 
-    UniformDataCache::Index addUniforms(UniformDataCache::Index uIndex) {
-        if (!uIndex.isValid()) {
-            return {};
+    // Maps a given pipeline index to a batch key, and maps a given uniform data cache index to an
+    // SSBO index in the given batch key's batch.
+    void trackUniforms(uint32_t pipelineIndex,
+                       uint32_t batchKey,
+                       UniformDataCache::Index uniformIndex) {
+        if (!uniformIndex.isValid()) {
+            return;
         }
 
-        const SkUniformDataBlock* udb = fUniformDataCache->lookup(uIndex);
-        SkASSERT(udb);
-
-        if (fBindings.find(uIndex.asUInt()) == fBindings.end()) {
-            // First time encountering this data, so upload to the GPU
-            SkASSERT(udb->size());
-            auto[writer, bufferInfo] = fBufferMgr->getUniformWriter(udb->size());
-            writer.write(udb->data(), udb->size());
-
-            fBindings.insert({uIndex.asUInt(), bufferInfo});
+        if (fPipelineToBatchKey.find(pipelineIndex) == fPipelineToBatchKey.end()) {
+            fPipelineToBatchKey.insert({pipelineIndex, batchKey});
         }
+        SkASSERT(fPipelineToBatchKey[pipelineIndex] == batchKey);
 
-        return uIndex;
+        uint32_t uniformIndexInt = uniformIndex.asUInt();
+        std::unordered_map<uint32_t, int>& ssboIndices = fBatchedSsboIndices[batchKey];
+        if (ssboIndices.find(uniformIndexInt) == ssboIndices.end()) {
+            ssboIndices.insert({uniformIndexInt, ssboIndices.size()});
+        }
     }
 
-    BindBufferInfo getBinding(UniformDataCache::Index uniformDataIndex) {
-        auto lookup = fBindings.find(uniformDataIndex.asUInt());
-        SkASSERT(lookup != fBindings.end());
-        return lookup->second;
+    // Writes all tracked uniform data into buffers, tracking the bindings for the written buffers
+    // by their batch key (if using SSBOs) or uniform data cache indices (if not using SSBOs).
+    void writeUniforms(DrawBufferManager* bufferMgr, UniformDataCache* uniformDataCache) {
+        if (fUseStorageBuffers) {
+            for (auto [batchKey, ssboIndices] : fBatchedSsboIndices) {
+                SkASSERT(ssboIndices.size());
+                size_t udbSize = 0;
+                const SkUniformDataBlock* udbs[ssboIndices.size()];
+                for (auto [uniformDataIndex, ssboIndex] : ssboIndices) {
+                    udbs[ssboIndex] =
+                            uniformDataCache->lookup(UniformDataCache::Index(uniformDataIndex));
+                    if (udbSize == 0) {
+                        udbSize = udbs[ssboIndex]->size();
+                    }
+                    SkASSERT(udbs[ssboIndex]->size() == udbSize);
+                }
+                auto [writer, bufferInfo] = bufferMgr->getSsboWriter(udbSize * ssboIndices.size());
+                for (const SkUniformDataBlock* udb : udbs) {
+                    writer.write(udb->data(), udbSize);
+                }
+                fBufferBindings.insert({batchKey, bufferInfo});
+            }
+
+        } else {  // !fUseStorageBuffer
+            for (auto [batchKey, ssboIndices] : fBatchedSsboIndices) {
+                for (auto [uniformDataIndex, ssboIndex] : ssboIndices) {
+                    if (fBufferBindings.find(uniformDataIndex) != fBufferBindings.end()) {
+                        continue;
+                    }
+                    const SkUniformDataBlock* udb =
+                            uniformDataCache->lookup(UniformDataCache::Index(uniformDataIndex));
+                    SkASSERT(udb->size());
+                    auto [writer, bufferInfo] = bufferMgr->getUniformWriter(udb->size());
+                    writer.write(udb->data(), udb->size());
+                    fBufferBindings.insert({uniformDataIndex, bufferInfo});
+                }
+            }
+        }
     }
+
+    // Updates the current uniform data cache index, whose corresponding buffer binding will be
+    // bound in the next call to bindBuffer if not using SSBOs.
+    void setUniformIndex(UniformDataCache::Index index) {
+        fUniformIndexChanged = index.isValid() && index != fUniformIndex;
+        fUniformIndex = index;
+    }
+
+    // Updates the current batch key, whose corresponding buffer binding will be bound in the next
+    // call to bindBuffer if using SSBOs.
+    void setSsboBatchKey(uint32_t pipelineIndex) {
+        auto key = fPipelineToBatchKey.find(pipelineIndex);
+        if (key == fPipelineToBatchKey.end()) {
+            fBatchKeyChanged = false;
+        } else {
+            fBatchKeyChanged = key->second != fBatchKey;
+            fBatchKey = key->second;
+        }
+    }
+
+    // Binds a new uniform or storage buffer, if necessary, based on most recently provided batch
+    // key and uniform data cache index.
+    void bindBuffer(UniformSlot slot, DrawPassCommands::List& commandList) {
+        if (fUseStorageBuffers) {
+            if (fBatchKeyChanged) {
+                auto binding = fBufferBindings.find(fBatchKey);
+                if (binding != fBufferBindings.end()) {
+                    commandList.bindUniformBuffer(binding->second, slot);
+                }
+            }
+            if (fBatchKeyChanged || fUniformIndexChanged) {
+                SkASSERT(fBatchedSsboIndices.find(fBatchKey) != fBatchedSsboIndices.end() &&
+                         fBatchedSsboIndices[fBatchKey].find(fUniformIndex.asUInt()) !=
+                                 fBatchedSsboIndices[fBatchKey].end());
+                fSsboIndex = fBatchedSsboIndices[fBatchKey][fUniformIndex.asUInt()];
+            }
+
+        } else {  // !fUseStorageBuffers
+            if (fUniformIndexChanged) {
+                auto binding = fBufferBindings.find(fUniformIndex.asUInt());
+                if (binding != fBufferBindings.end()) {
+                    commandList.bindUniformBuffer(binding->second, slot);
+                }
+            }
+        }
+    }
+
+    // Returns whether the most recently provided buffer binding key is different than the one
+    // before.
+    bool bufferBindingChanged() const {
+        return fUseStorageBuffers ? fBatchKeyChanged : fUniformIndexChanged;
+    }
+
+    // Returns the current SSBO index, based on the most recently provided batch key and uniform
+    // data cache index.
+    int ssboIndex() const { return fSsboIndex; }
 
 private:
-    DrawBufferManager* fBufferMgr;
-    UniformDataCache* fUniformDataCache;
+    // Maps some batch key to a map of UniformDataCache indices -> SSBO indices.
+    std::unordered_map<uint32_t, std::unordered_map<uint32_t, int>> fBatchedSsboIndices;
 
-    std::unordered_map<uint32_t, BindBufferInfo> fBindings;
+    // If using storage buffers, maps batch keys to buffer bindings. If not using storage buffers,
+    // maps uniform data cache indices to buffer bindings.
+    std::unordered_map<uint32_t, BindBufferInfo> fBufferBindings;
+
+    // Maps pipeline indices to batch keys, which can be shared between pipelines.
+    std::unordered_map<uint32_t, uint32_t> fPipelineToBatchKey;
+
+    const bool fUseStorageBuffers;
+
+    uint32_t fBatchKey = 0;
+    UniformDataCache::Index fUniformIndex;
+    bool fBatchKeyChanged = false;
+    bool fUniformIndexChanged = false;
+    int fSsboIndex = 0;
 };
 
 // std::unordered_map implementation for GraphicsPipelineDesc* that de-reference the pointers.
@@ -333,10 +435,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // We don't expect the uniforms from the renderSteps to reappear multiple times across a
     // recorder's lifetime so we only de-dupe them w/in a given DrawPass.
     UniformDataCache geometryUniformDataCache;
-    UniformBindingCache geometryUniformBindings(bufferMgr, &geometryUniformDataCache);
-    UniformBindingCache shadingUniformBindings(bufferMgr, recorder->priv().uniformDataCache());
     TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
     TextureBindingCache textureBindingIndices;
+    // TODO(b/242076321) Use storage buffers for shading uniforms, if supported by GPU.
+    DrawPassUniformWriter geometryUniformWriter(/*useStorageBuffers=*/false);
+    DrawPassUniformWriter shadingUniformWriter(/*useStorageBuffers=*/false);
 
     std::unordered_map<const GraphicsPipelineDesc*, uint32_t, Hash, Eq> pipelineDescToIndex;
 
@@ -357,12 +460,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         UniformDataCache::Index shadingUniformIndex;
         TextureDataCache::Index paintTextureDataIndex;
         if (draw.fPaintParams.has_value()) {
-            UniformDataCache::Index uniformDataIndex;
-            std::tie(shaderID, uniformDataIndex, paintTextureDataIndex) =
+            std::tie(shaderID, shadingUniformIndex, paintTextureDataIndex) =
                     ExtractPaintData(recorder, &gatherer, &builder,
                                      draw.fDrawParams.transform().inverse(),
                                      draw.fPaintParams.value());
-            shadingUniformIndex = shadingUniformBindings.addUniforms(uniformDataIndex);
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
@@ -372,16 +473,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             UniformDataCache::Index geometryUniformIndex;
             TextureDataCache::Index stepTextureDataIndex;
             if (step->numUniforms() > 0 || step->hasTextures()) {
-                UniformDataCache::Index uniformDataIndex;
-                std::tie(uniformDataIndex, stepTextureDataIndex) =
+                std::tie(geometryUniformIndex, stepTextureDataIndex) =
                         ExtractRenderStepData(&geometryUniformDataCache,
                                               textureDataCache,
                                               &gatherer,
                                               step,
                                               draw.fDrawParams);
-                if (uniformDataIndex.isValid()) {
-                    geometryUniformIndex = geometryUniformBindings.addUniforms(uniformDataIndex);
-                }
             }
 
             SkUniquePaintParamsID stepShaderID;
@@ -420,6 +517,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 pipelineIndex = pipelineLookup->second;
             }
 
+            geometryUniformWriter.trackUniforms(pipelineIndex, stepIndex, geometryUniformIndex);
+            shadingUniformWriter.trackUniforms(pipelineIndex, desc.paintParamsID().asUInt(),
+                                               stepShadingUniformIndex);
+
             keys.push_back({&draw, stepIndex, pipelineIndex,
                             geometryUniformIndex,
                             stepShadingUniformIndex,
@@ -430,6 +531,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         drawPass->fDepthStencilFlags |= draw.fRenderer.depthStencilFlags();
         drawPass->fRequiresMSAA |= draw.fRenderer.requiresMSAA();
     }
+
+    geometryUniformWriter.writeUniforms(bufferMgr, &geometryUniformDataCache);
+    shadingUniformWriter.writeUniforms(bufferMgr, recorder->priv().uniformDataCache());
 
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
@@ -446,9 +550,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // Used to track when a new pipeline or dynamic state needs recording between draw steps.
     // Setting to # render steps ensures the very first time through the loop will bind a pipeline.
     uint32_t lastPipeline = draws->renderStepCount();
-    UniformDataCache::Index lastShadingUniforms;
     TextureBindingCache::Index lastTextureBindings;
-    UniformDataCache::Index lastGeometryUniforms;
     SkIRect lastScissor = SkIRect::MakeSize(drawPass->fTarget->dimensions());
     // We will reuse these vectors for all the draws as they are just meant for temporary storage
     // as we are creating commands on the fCommandList.
@@ -464,16 +566,18 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const DrawList::Draw& draw = *key.draw();
         const RenderStep& renderStep = key.renderStep();
 
-        const bool geometryUniformChange = key.geometryUniforms().isValid() &&
-                                           key.geometryUniforms() != lastGeometryUniforms;
-        const bool shadingUniformChange = key.shadingUniforms().isValid() &&
-                                          key.shadingUniforms() != lastShadingUniforms;
         const bool textureBindingsChange = key.textureBindings().isValid() &&
                                            key.textureBindings() != lastTextureBindings;
 
         const bool pipelineChange = key.pipeline() != lastPipeline;
-        const bool stateChange = geometryUniformChange ||
-                                 shadingUniformChange ||
+
+        geometryUniformWriter.setSsboBatchKey(key.pipeline());
+        shadingUniformWriter.setSsboBatchKey(key.pipeline());
+        geometryUniformWriter.setUniformIndex(key.geometryUniforms());
+        shadingUniformWriter.setUniformIndex(key.shadingUniforms());
+
+        const bool stateChange = geometryUniformWriter.bufferBindingChanged() ||
+                                 shadingUniformWriter.bufferBindingChanged() ||
                                  textureBindingsChange ||
                                  draw.fDrawParams.clip().scissor() != lastScissor;
 
@@ -492,17 +596,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             drawPass->fCommandList.bindGraphicsPipeline(key.pipeline());
             lastPipeline = key.pipeline();
         }
+
+        geometryUniformWriter.bindBuffer(UniformSlot::kRenderStep, drawPass->fCommandList);
+        shadingUniformWriter.bindBuffer(UniformSlot::kPaint, drawPass->fCommandList);
+
         if (stateChange) {
-            if (geometryUniformChange) {
-                auto binding = geometryUniformBindings.getBinding(key.geometryUniforms());
-                drawPass->fCommandList.bindUniformBuffer(binding, UniformSlot::kRenderStep);
-                lastGeometryUniforms = key.geometryUniforms();
-            }
-            if (shadingUniformChange) {
-                auto binding = shadingUniformBindings.getBinding(key.shadingUniforms());
-                drawPass->fCommandList.bindUniformBuffer(binding, UniformSlot::kPaint);
-                lastShadingUniforms = key.shadingUniforms();
-            }
             if (textureBindingsChange) {
                 auto textureIndexBlock = textureBindingIndices.lookup(key.textureBindings());
 
@@ -543,8 +641,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
         }
 
-        // TODO(b/238623626): Pass in an actual SSBO index, if using storage buffers.
-        renderStep.writeVertices(&drawWriter, draw.fDrawParams, 0);
+        renderStep.writeVertices(&drawWriter, draw.fDrawParams, shadingUniformWriter.ssboIndex());
     }
     // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();
