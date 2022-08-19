@@ -160,8 +160,6 @@ protected:
 
     virtual void writeLiteral(const Literal& l);
 
-    virtual void writeSetting(const Setting& s);
-
     void writeStatement(const Statement& s);
 
     void writeBlock(const Block& b);

@@ -10,15 +10,18 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
+half guarded_divide_Qhhh(half n, half d) {
+    return false ? n / (d + 9.9999999392252903e-09h) : n / d;
+}
 half soft_light_component_Qhh2h2(half2 s, half2 d) {
     if (2.0h * s.x <= s.y) {
-        return (((d.x * d.x) * (s.y - 2.0h * s.x)) / d.y + (1.0h - d.y) * s.x) + d.x * ((-s.y + 2.0h * s.x) + 1.0h);
+        return (guarded_divide_Qhhh((d.x * d.x) * (s.y - 2.0h * s.x), d.y) + (1.0h - d.y) * s.x) + d.x * ((-s.y + 2.0h * s.x) + 1.0h);
     } else if (4.0h * d.x <= d.y) {
         half DSqd = d.x * d.x;
         half DCub = DSqd * d.x;
         half DaSqd = d.y * d.y;
         half DaCub = DaSqd * d.y;
-        return (((DaSqd * (s.x - d.x * ((3.0h * s.y - 6.0h * s.x) - 1.0h)) + ((12.0h * d.y) * DSqd) * (s.y - 2.0h * s.x)) - (16.0h * DCub) * (s.y - 2.0h * s.x)) - DaCub * s.x) / DaSqd;
+        return guarded_divide_Qhhh(((DaSqd * (s.x - d.x * ((3.0h * s.y - 6.0h * s.x) - 1.0h)) + ((12.0h * d.y) * DSqd) * (s.y - 2.0h * s.x)) - (16.0h * DCub) * (s.y - 2.0h * s.x)) - DaCub * s.x, DaSqd);
     } else {
         return ((d.x * ((s.y - 2.0h * s.x) + 1.0h) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0h * s.x)) - d.y * s.x;
     }

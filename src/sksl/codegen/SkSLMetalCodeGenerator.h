@@ -259,8 +259,6 @@ protected:
 
     void writeLiteral(const Literal& f);
 
-    void writeSetting(const Setting& s);
-
     void writeStatement(const Statement& s);
 
     void writeStatements(const StatementArray& statements);

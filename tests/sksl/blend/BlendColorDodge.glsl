@@ -2,6 +2,9 @@
 out vec4 sk_FragColor;
 uniform vec4 src;
 uniform vec4 dst;
+float guarded_divide_Qhhh(float n, float d) {
+    return false ? n / (d + 9.9999999392252903e-09) : n / d;
+}
 float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
     if (d.x == 0.0) {
         return s.x * (1.0 - d.y);
@@ -10,7 +13,7 @@ float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
         if (delta == 0.0) {
             return (s.y * d.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
         } else {
-            delta = min(d.y, (d.x * s.y) / delta);
+            delta = min(d.y, guarded_divide_Qhhh(d.x * s.y, delta));
             return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
         }
     }
