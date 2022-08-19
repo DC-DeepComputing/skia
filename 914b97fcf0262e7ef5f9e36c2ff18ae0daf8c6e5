@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa796ca_9a48533e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-19T16:44:45Z",
+      "side": 1,
+      "message": "It is a bit unfortunate to spot this after branch point :(, I will file a Chrome bug to get merge permission to the 106 branch.",
+      "revId": "914b97fcf0262e7ef5f9e36c2ff18ae0daf8c6e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
