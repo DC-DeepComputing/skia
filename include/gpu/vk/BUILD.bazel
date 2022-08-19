@@ -11,6 +11,8 @@ filegroup(
         "GrVkExtensions.h",
         "GrVkMemoryAllocator.h",
         "GrVkTypes.h",
+        "VkExtensions.h",
+        "VkTypes.h",
     ],
     visibility = ["//include/gpu:__pkg__"],
 )
