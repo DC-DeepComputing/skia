@@ -16,6 +16,29 @@
       "message": "generally this lgtm, besides the current discussion on the command buffer query. Also adding Michael to just look at where we creating and storing the PietRenderer to make that all works with his plans.",
       "revId": "3ac55ccecec069bebf094c1fc1805738f50a9daf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "952d8a4d_9bf6ded8",
+        "filename": "src/gpu/graphite/PietRenderTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:35:03Z",
+      "side": 1,
+      "message": "PietRenderTask (and below)",
+      "range": {
+        "startLine": 19,
+        "startChar": 52,
+        "endLine": 19,
+        "endChar": 62
+      },
+      "revId": "3ac55ccecec069bebf094c1fc1805738f50a9daf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
