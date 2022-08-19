@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e6fb7bf_62eb61bc",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-08-19T11:43:32Z",
+      "side": 0,
+      "message": "I knew there was something... this new version seems to produce the right behavior finally and the code gets easier. PTAL.",
+      "revId": "657a0ab4bfc512c3acfbec99ff7500a302a5c232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
