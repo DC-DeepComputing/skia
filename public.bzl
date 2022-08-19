@@ -115,6 +115,7 @@ SKIA_PUBLIC_HDRS = [
     "include/effects/SkCornerPathEffect.h",
     "include/effects/SkDashPathEffect.h",
     "include/effects/SkDiscretePathEffect.h",
+    "include/effects/SkGradientFlags.h",
     "include/effects/SkGradientShader.h",
     "include/effects/SkHighContrastFilter.h",
     "include/effects/SkImageFilters.h",

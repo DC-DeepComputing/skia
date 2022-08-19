@@ -82,10 +82,10 @@ sk_sp<SkFlattenable> SkSweepGradient::CreateProc(SkReadBuffer& buffer) {
                tScale = buffer.readScalar();
     auto [startAngle, endAngle] = angles_from_t_coeff(tBias, tScale);
 
-    return SkGradientShader::MakeSweep(center.x(), center.y(), desc.fColors,
-                                       std::move(desc.fColorSpace), desc.fPos, desc.fCount,
-                                       desc.fTileMode, startAngle, endAngle,
-                                       desc.fGradFlags, desc.fLocalMatrix);
+    return SkShaders::SweepGradient(center.x(), center.y(), desc.fColors,
+                                    std::move(desc.fColorSpace), desc.fPos, desc.fCount,
+                                    desc.fTileMode, startAngle, endAngle,
+                                    desc.fGradFlags, desc.fLocalMatrix);
 }
 
 void SkSweepGradient::flatten(SkWriteBuffer& buffer) const {
@@ -202,7 +202,7 @@ sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
                                          SkTileMode mode,
                                          SkScalar startAngle,
                                          SkScalar endAngle,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix) {
     if (!SkGradientShaderBase::ValidGradient(colors, pos, colorCount, mode)) {
         return nullptr;
@@ -257,7 +257,7 @@ sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
                                          SkTileMode mode,
                                          SkScalar startAngle,
                                          SkScalar endAngle,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix) {
     SkColorConverter converter(colors, colorCount);
     return SweepGradient(cx, cy, converter.fColors4f.begin(), nullptr, pos, colorCount,
@@ -269,7 +269,7 @@ sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
                                          sk_sp<SkColorSpace> colorSpace,
                                          const SkScalar pos[],
                                          int colorCount,
-                                         uint32_t flags,
+                                         SkGradientFlags flags,
                                          const SkMatrix* localMatrix) {
     return SweepGradient(cx, cy, colors, std::move(colorSpace), pos, colorCount,
                          SkTileMode::kClamp, 0, 360, flags, localMatrix);
@@ -280,7 +280,8 @@ sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
                                          sk_sp<SkColorSpace> colorSpace,
                                          const SkScalar pos[],
                                          int colorCount) {
-    return SweepGradient(cx, cy, colors, std::move(colorSpace), pos, colorCount, 0, nullptr);
+    return SweepGradient(cx, cy, colors, std::move(colorSpace), pos, colorCount,
+                         SkGradientFlags::kNone, nullptr);
 }
 
 void SkRegisterSweepGradientShaderFlattenable() {

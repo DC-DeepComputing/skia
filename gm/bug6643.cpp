@@ -22,9 +22,9 @@ DEF_SIMPLE_GM(bug6643, canvas, 200, 200) {
 
     SkPaint p;
     p.setAntiAlias(true);
-    p.setShader(SkGradientShader::MakeSweep(100, 100, colors, nullptr, std::size(colors),
-                                            SkGradientShader::kInterpolateColorsInPremul_Flag,
-                                            nullptr));
+    p.setShader(SkShaders::SweepGradient(100, 100, colors, nullptr, std::size(colors),
+                                         SkGradientFlags::kInterpolateColorsInPremul,
+                                         nullptr));
 
     SkPictureRecorder recorder;
     recorder.beginRecording(200, 200)->drawPaint(p);

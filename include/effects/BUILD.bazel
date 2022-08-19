@@ -17,6 +17,7 @@ filegroup(
         "SkCornerPathEffect.h",
         "SkDashPathEffect.h",
         "SkDiscretePathEffect.h",
+        "SkGradientFlags.h",
         "SkGradientShader.h",
         "SkHighContrastFilter.h",
         "SkImageFilters.h",

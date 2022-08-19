@@ -30,7 +30,7 @@ public:
 
         Descriptor(const SkColor4f colors[], sk_sp<SkColorSpace> colorSpace,
                    const SkScalar pos[], int colorCount,
-                   SkTileMode mode, uint32_t flags, const SkMatrix* localMatrix);
+                   SkTileMode mode, SkGradientFlags flags, const SkMatrix* localMatrix);
 
         const SkMatrix*     fLocalMatrix;
         const SkColor4f*    fColors;
@@ -38,7 +38,7 @@ public:
         const SkScalar*     fPos;
         int                 fCount;
         SkTileMode          fTileMode;
-        uint32_t            fGradFlags;
+        SkGradientFlags     fGradFlags;
 
         void flatten(SkWriteBuffer&) const;
     };
@@ -65,7 +65,7 @@ public:
 
     bool isOpaque() const override;
 
-    uint32_t getGradFlags() const { return fGradFlags; }
+    SkGradientFlags getGradFlags() const { return fGradFlags; }
 
     const SkMatrix& getGradientMatrix() const { return fPtsToUnit; }
 
@@ -121,9 +121,9 @@ protected:
         return ctx;
     }
 
-    const SkMatrix fPtsToUnit;
+    const SkMatrix  fPtsToUnit;
     SkTileMode      fTileMode;
-    uint8_t        fGradFlags;
+    SkGradientFlags fGradFlags;
 
 public:
     SkScalar getPos(int i) const {

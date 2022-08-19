@@ -46,9 +46,9 @@ sk_sp<SkFlattenable> SkLinearGradient::CreateProc(SkReadBuffer& buffer) {
     SkPoint pts[2];
     pts[0] = buffer.readPoint();
     pts[1] = buffer.readPoint();
-    return SkGradientShader::MakeLinear(pts, desc.fColors, std::move(desc.fColorSpace), desc.fPos,
-                                        desc.fCount, desc.fTileMode, desc.fGradFlags,
-                                        desc.fLocalMatrix);
+    return SkShaders::LinearGradient(pts, desc.fColors, std::move(desc.fColorSpace), desc.fPos,
+                                     desc.fCount, desc.fTileMode, desc.fGradFlags,
+                                     desc.fLocalMatrix);
 }
 
 void SkLinearGradient::flatten(SkWriteBuffer& buffer) const {
@@ -134,7 +134,7 @@ sk_sp<SkShader> SkShaders::LinearGradient(const SkPoint pts[2],
                                           const SkScalar pos[],
                                           int colorCount,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix) {
     if (!pts || !SkScalarIsFinite((pts[1] - pts[0]).length())) {
         return nullptr;
@@ -171,7 +171,7 @@ sk_sp<SkShader> SkShaders::LinearGradient(const SkPoint pts[2],
                                           const SkScalar pos[],
                                           int colorCount,
                                           SkTileMode mode,
-                                          uint32_t flags,
+                                          SkGradientFlags flags,
                                           const SkMatrix* localMatrix) {
     SkColorConverter converter(colors, colorCount);
     return LinearGradient(pts, converter.fColors4f.begin(), nullptr, pos, colorCount, mode, flags,
@@ -184,7 +184,8 @@ sk_sp<SkShader> SkShaders::LinearGradient(const SkPoint pts[2],
                                           const SkScalar pos[],
                                           int colorCount,
                                           SkTileMode mode) {
-    return LinearGradient(pts, colors, std::move(colorSpace), pos, colorCount, mode, 0, nullptr);
+    return LinearGradient(pts, colors, std::move(colorSpace), pos, colorCount, mode,
+                          SkGradientFlags::kNone, nullptr);
 }
 
 void SkRegisterLinearGradientShaderFlattenable() {

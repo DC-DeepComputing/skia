@@ -37,9 +37,9 @@ protected:
 
     void onOnceBeforeDraw() override {
         static const SkColor kColors[2] = {SK_ColorTRANSPARENT, SkColorSetARGB(128, 255, 255, 255)};
-        sk_sp<SkShader> gradient = SkGradientShader::MakeRadial(
+        sk_sp<SkShader> gradient = SkShaders::RadialGradient(
                 {200.f, 200.f}, 25.f, kColors, nullptr, 2, SkTileMode::kMirror,
-                SkGradientShader::kInterpolateColorsInPremul_Flag, nullptr);
+                SkGradientFlags::kInterpolateColorsInPremul, nullptr);
 
         sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(400, 400);
 
