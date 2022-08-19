@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab9292d8_6139d5ff",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-19T15:20:26Z",
+      "side": 1,
+      "message": "`const BlockReader\u0026`\n\nWe don\u0027t want to create BlockReader copies (no idea how cheap/expensive that is), and `auto` makes things look free that oftentimes aren\u0027t.",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 13
+      },
+      "revId": "1055b5593129410f91f71b5331474da452b25503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8a54a5b_f67de969",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 5
