@@ -662,6 +662,10 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool SmallPathRenderer::IsSupported(const GrCaps& caps) {
+    return !caps.disableSmallPathRenderer();
+}
+
 PathRenderer::CanDrawPath SmallPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
     if (!args.fCaps->shaderCaps()->fShaderDerivativeSupport) {
         return CanDrawPath::kNo;
