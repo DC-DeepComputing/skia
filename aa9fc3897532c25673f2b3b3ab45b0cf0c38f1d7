@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c29dbe96_9309f353",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-19T15:10:52Z",
+      "side": 1,
+      "message": "Looks good. The gold diffs look ok.",
+      "revId": "aa9fc3897532c25673f2b3b3ab45b0cf0c38f1d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
