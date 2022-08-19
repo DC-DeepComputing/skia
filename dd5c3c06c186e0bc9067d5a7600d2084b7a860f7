@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed79f25_267fe41f",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:23:52Z",
+      "side": 1,
+      "message": "Git says the flags were added 9 years ago, and since then the only flag has been interpolate in premul or not.\n\nwdyt think about adding `enum class Interpolate { kUnpremul, kPremul }` and replacing the flags arg with `Interpolate mode \u003d kUnpremul`? The deprecated factories can then check their uint flag and map to the new enum.",
+      "range": {
+        "startLine": 163,
+        "startChar": 51,
+        "endLine": 163,
+        "endChar": 56
+      },
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ceaa67_beaf6cbb",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:23:52Z",
+      "side": 1,
+      "message": "We can reduce our factory declarations by using default args for flags and localMatrix.",
+      "range": {
+        "startLine": 164,
+        "startChar": 58,
+        "endLine": 164,
+        "endChar": 69
+      },
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f705cc0a_2f1552d9",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:23:52Z",
+      "side": 1,
+      "message": "functions",
+      "range": {
+        "startLine": 63,
+        "startChar": 38,
+        "endLine": 63,
+        "endChar": 47
+      },
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8425ec27_c1f8eff6",
+        "filename": "src/shaders/gradients/SkGradientShader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T15:23:52Z",
+      "side": 1,
+      "message": "I\u0027d be okay with just including SkColorSpace in SkGradientShader.h and having all the deprecated factories redirect to SkShaders within the header.",
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
