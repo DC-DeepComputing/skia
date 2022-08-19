@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7794ad00_5cb7c45c",
+        "filename": "src/gpu/piet/Render.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-19T21:45:20Z",
+      "side": 1,
+      "message": "I renamed this file due to a name conflict with src/gpu/graphite/Renderer.h (which is apparently not allowed).",
+      "revId": "620211d214c791f324171c09273dec65bf68c93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
