@@ -721,9 +721,9 @@ bool GrVkOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
     return true;
 }
 
-void GrVkOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                      sk_sp<const GrBuffer> instanceBuffer,
-                                      sk_sp<const GrBuffer> vertexBuffer,
+void GrVkOpsRenderPass::onBindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                      sk_sp<GrBuffer> instanceBuffer,
+                                      sk_sp<GrBuffer> vertexBuffer,
                                       GrPrimitiveRestart primRestart) {
     SkASSERT(GrPrimitiveRestart::kNo == primRestart);
     if (!fCurrentRenderPass) {
@@ -744,20 +744,26 @@ void GrVkOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
     // Here our vertex and instance inputs need to match the same 0-based bindings they were
     // assigned in GrVkPipeline. That is, vertex first (if any) followed by instance.
     uint32_t binding = 0;
-    if (auto* gpuVertexBuffer = static_cast<const GrGpuBuffer*>(vertexBuffer.get())) {
+
+    // On this backend we never use CPU buffers.
+    sk_sp<GrGpuBuffer> gpuVertexBuffer  (static_cast<GrGpuBuffer*>(vertexBuffer.release()));
+    sk_sp<GrGpuBuffer> gpuInstanceBuffer(static_cast<GrGpuBuffer*>(vertexBuffer.release()));
+    sk_sp<GrGpuBuffer> gpuIndexBuffer   (static_cast<GrGpuBuffer*>(vertexBuffer.release()));
+
+    if (gpuVertexBuffer) {
         SkASSERT(!gpuVertexBuffer->isCpuBuffer());
         SkASSERT(!gpuVertexBuffer->isMapped());
-        currCmdBuf->bindInputBuffer(fGpu, binding++, std::move(vertexBuffer));
+        currCmdBuf->bindInputBuffer(fGpu, binding++, std::move(gpuVertexBuffer));
     }
-    if (auto* gpuInstanceBuffer = static_cast<const GrGpuBuffer*>(instanceBuffer.get())) {
+    if (gpuInstanceBuffer) {
         SkASSERT(!gpuInstanceBuffer->isCpuBuffer());
         SkASSERT(!gpuInstanceBuffer->isMapped());
-        currCmdBuf->bindInputBuffer(fGpu, binding++, std::move(instanceBuffer));
+        currCmdBuf->bindInputBuffer(fGpu, binding++, std::move(gpuInstanceBuffer));
     }
-    if (auto* gpuIndexBuffer = static_cast<const GrGpuBuffer*>(indexBuffer.get())) {
+    if (gpuIndexBuffer) {
         SkASSERT(!gpuIndexBuffer->isCpuBuffer());
         SkASSERT(!gpuIndexBuffer->isMapped());
-        currCmdBuf->bindIndexBuffer(fGpu, std::move(indexBuffer));
+        currCmdBuf->bindIndexBuffer(fGpu, std::move(gpuIndexBuffer));
     }
 }
 
@@ -787,8 +793,7 @@ void GrVkOpsRenderPass::onDrawIndexedInstanced(int indexCount, int baseIndex, in
     fCurrentCBIsEmpty = false;
 }
 
-void GrVkOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_t offset,
-                                       int drawCount) {
+void GrVkOpsRenderPass::onDrawIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
     SkASSERT(!drawIndirectBuffer->isCpuBuffer());
     if (!fCurrentRenderPass) {
         SkASSERT(fGpu->isDeviceLost());
@@ -812,7 +817,7 @@ void GrVkOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_
     fCurrentCBIsEmpty = false;
 }
 
-void GrVkOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t offset,
+void GrVkOpsRenderPass::onDrawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t offset,
                                               int drawCount) {
     SkASSERT(!drawIndirectBuffer->isCpuBuffer());
     if (!fCurrentRenderPass) {

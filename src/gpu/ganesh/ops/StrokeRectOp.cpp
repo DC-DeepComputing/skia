@@ -210,7 +210,7 @@ private:
             vertexCount = kVertsPerStrokeRect;
         }
 
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex;
 
         void* verts =
@@ -554,7 +554,7 @@ private:
     static const int kBevelVertexCnt = 24;
     static const int kNumBevelRectsInIndexBuffer = 256;
 
-    static sk_sp<const GrGpuBuffer> GetIndexBuffer(GrResourceProvider*, bool miterStroke);
+    static sk_sp<GrGpuBuffer> GetIndexBuffer(GrResourceProvider*, bool miterStroke);
 
     const SkMatrix& viewMatrix() const { return fViewMatrix; }
     bool miterStroke() const { return fMiterStroke; }
@@ -632,7 +632,7 @@ void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
     int instanceCount = fRects.count();
     int maxQuads = this->miterStroke() ? kNumMiterRectsInIndexBuffer : kNumBevelRectsInIndexBuffer;
 
-    sk_sp<const GrGpuBuffer> indexBuffer =
+    sk_sp<GrGpuBuffer> indexBuffer =
             GetIndexBuffer(target->resourceProvider(), this->miterStroke());
     if (!indexBuffer) {
         SkDebugf("Could not allocate indices\n");
@@ -673,8 +673,8 @@ void AAStrokeRectOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBo
     flushState->drawMesh(*fMesh);
 }
 
-sk_sp<const GrGpuBuffer> AAStrokeRectOp::GetIndexBuffer(GrResourceProvider* resourceProvider,
-                                                        bool miterStroke) {
+sk_sp<GrGpuBuffer> AAStrokeRectOp::GetIndexBuffer(GrResourceProvider* resourceProvider,
+                                                  bool miterStroke) {
     if (miterStroke) {
         // clang-format off
         static const uint16_t gMiterIndices[] = {

@@ -238,9 +238,9 @@ bool GrD3DOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
     return true;
 }
 
-void GrD3DOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                       sk_sp<const GrBuffer> instanceBuffer,
-                                       sk_sp<const GrBuffer> vertexBuffer,
+void GrD3DOpsRenderPass::onBindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                       sk_sp<GrBuffer> instanceBuffer,
+                                       sk_sp<GrBuffer> vertexBuffer,
                                        GrPrimitiveRestart primRestart) {
     SkASSERT(GrPrimitiveRestart::kNo == primRestart);
     SkASSERT(fCurrentPipelineState);
@@ -268,7 +268,7 @@ void GrD3DOpsRenderPass::onDrawIndexedInstanced(int indexCount, int baseIndex, i
     fGpu->stats()->incNumDraws();
 }
 
-void GrD3DOpsRenderPass::onDrawIndirect(const GrBuffer* buffer, size_t offset, int drawCount) {
+void GrD3DOpsRenderPass::onDrawIndirect(GrBuffer* buffer, size_t offset, int drawCount) {
     constexpr unsigned int kSlot = 0;
     sk_sp<GrD3DCommandSignature> cmdSig = fGpu->resourceProvider().findOrCreateCommandSignature(
             GrD3DCommandSignature::ForIndexed::kNo, kSlot);
@@ -277,8 +277,7 @@ void GrD3DOpsRenderPass::onDrawIndirect(const GrBuffer* buffer, size_t offset, i
     fGpu->stats()->incNumDraws();
 }
 
-void GrD3DOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* buffer, size_t offset,
-                                               int drawCount) {
+void GrD3DOpsRenderPass::onDrawIndexedIndirect(GrBuffer* buffer, size_t offset, int drawCount) {
     constexpr unsigned int kSlot = 0;
     sk_sp<GrD3DCommandSignature> cmdSig = fGpu->resourceProvider().findOrCreateCommandSignature(
             GrD3DCommandSignature::ForIndexed::kYes, kSlot);

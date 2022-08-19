@@ -42,8 +42,8 @@ private:
     bool onBindTextures(const GrGeometryProcessor&,
                         const GrSurfaceProxy* const geomProcTextures[],
                         const GrPipeline&) override;
-    void onBindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                       sk_sp<const GrBuffer> vertexBuffer, GrPrimitiveRestart) override;
+    void onBindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                       sk_sp<GrBuffer> vertexBuffer, GrPrimitiveRestart) override;
     void onDraw(int vertexCount, int baseVertex) override;
     void onDrawIndexed(int indexCount, int baseIndex, uint16_t minIndexValue,
                        uint16_t maxIndexValue, int baseVertex) override;
@@ -51,9 +51,8 @@ private:
                          int baseVertex) override;
     void onDrawIndexedInstanced(int indexCount, int baseIndex, int instanceCount, int baseInstance,
                                 int baseVertex) override;
-    void onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
-                        int drawCount) override;
-    void onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
+    void onDrawIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount) override;
+    void onDrawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset,
                                int drawCount) override;
 
     void onClear(const GrScissorState& scissor, std::array<float, 4> color) override;
@@ -63,7 +62,7 @@ private:
     void setupRenderPass(const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
                          const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo);
 
-    void setVertexBuffer(GrMtlRenderCommandEncoder*, const GrBuffer*, size_t offset,
+    void setVertexBuffer(GrMtlRenderCommandEncoder*, GrBuffer*, size_t offset,
                          size_t inputBufferIndex);
 
     GrMtlRenderCommandEncoder* setupResolve();

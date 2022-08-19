@@ -20,7 +20,7 @@ class GrMeshDrawTarget;
 // the data out in chunks when we don't start out knowing exactly how many vertices (or instances)
 // we will end up writing.
 struct GrVertexChunk {
-    sk_sp<const GrBuffer> fBuffer;
+    sk_sp<GrBuffer> fBuffer;
     int fCount = 0;
     int fBase;  // baseVertex or baseInstance, depending on the use case.
 };

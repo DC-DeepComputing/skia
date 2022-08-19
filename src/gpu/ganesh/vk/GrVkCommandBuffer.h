@@ -44,9 +44,9 @@ public:
                          BarrierType barrierType,
                          void* barrier);
 
-    void bindInputBuffer(GrVkGpu* gpu, uint32_t binding, sk_sp<const GrBuffer> buffer);
+    void bindInputBuffer(GrVkGpu* gpu, uint32_t binding, sk_sp<GrGpuBuffer> buffer);
 
-    void bindIndexBuffer(GrVkGpu* gpu, sk_sp<const GrBuffer> buffer);
+    void bindIndexBuffer(GrVkGpu* gpu, sk_sp<GrGpuBuffer> buffer);
 
     void bindPipeline(const GrVkGpu* gpu, sk_sp<const GrVkPipeline> pipeline);
 
@@ -95,13 +95,13 @@ public:
               uint32_t firstInstance);
 
     void drawIndirect(const GrVkGpu* gpu,
-                      sk_sp<const GrBuffer> indirectBuffer,
+                      sk_sp<GrBuffer> indirectBuffer,
                       VkDeviceSize offset,
                       uint32_t drawCount,
                       uint32_t stride);
 
     void drawIndexedIndirect(const GrVkGpu* gpu,
-                             sk_sp<const GrBuffer> indirectBuffer,
+                             sk_sp<GrBuffer> indirectBuffer,
                              VkDeviceSize offset,
                              uint32_t drawCount,
                              uint32_t stride);

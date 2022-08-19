@@ -179,7 +179,7 @@ private:
         if (vertexCount == 0 || indexCount == 0) {
             return;
         }
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex;
         void* verts = target->makeVertexSpace(vertexStride, vertexCount, &vertexBuffer,
                                               &firstVertex);
@@ -189,7 +189,7 @@ private:
         }
         memcpy(verts, vertices, vertexCount * vertexStride);
 
-        sk_sp<const GrBuffer> indexBuffer;
+        sk_sp<GrBuffer> indexBuffer;
         int firstIndex;
         uint16_t* idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex);
         if (!idxs) {

@@ -203,7 +203,7 @@ private:
 
         size_t vertexStride = fProgramInfo->geomProc().vertexStride();
         const int kVertexCount = 1024;
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex = 0;
         void* verts = target->makeVertexSpace(vertexStride, kVertexCount, &vertexBuffer,
                                               &firstVertex);

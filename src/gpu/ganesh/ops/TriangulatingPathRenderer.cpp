@@ -359,7 +359,7 @@ private:
         SkRect clipBounds = SkRect::Make(fDevClipBounds);
         path.transform(fViewMatrix);
         SkScalar tol = GrPathUtils::kDefaultTolerance;
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex;
         GrEagerDynamicVertexAllocator allocator(target, &vertexBuffer, &firstVertex);
         int vertexCount = GrAATriangulator::PathToAATriangles(path, tol, clipBounds, &allocator);
@@ -500,7 +500,7 @@ private:
     }
 
     static GrSimpleMesh* CreateMesh(GrMeshDrawTarget* target,
-                                    sk_sp<const GrBuffer> vb,
+                                    sk_sp<GrBuffer> vb,
                                     int firstVertex,
                                     int count) {
         auto mesh = target->allocMesh();

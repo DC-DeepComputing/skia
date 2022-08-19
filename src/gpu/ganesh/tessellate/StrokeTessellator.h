@@ -60,7 +60,7 @@ protected:
     int fVertexCount = 0;
 
     // Only used if sk_VertexID is not supported.
-    sk_sp<const GrGpuBuffer> fVertexBufferIfNoIDSupport;
+    sk_sp<GrGpuBuffer> fVertexBufferIfNoIDSupport;
 };
 
 }  // namespace skgpu::v1

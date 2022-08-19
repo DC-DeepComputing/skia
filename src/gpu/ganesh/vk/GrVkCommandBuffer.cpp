@@ -174,8 +174,7 @@ void GrVkCommandBuffer::submitPipelineBarriers(const GrVkGpu* gpu, bool forSelfD
     SkASSERT(!fDstStageMask);
 }
 
-void GrVkCommandBuffer::bindInputBuffer(GrVkGpu* gpu, uint32_t binding,
-                                        sk_sp<const GrBuffer> buffer) {
+void GrVkCommandBuffer::bindInputBuffer(GrVkGpu* gpu, uint32_t binding, sk_sp<GrGpuBuffer> buffer) {
     VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(buffer.get())->vkBuffer();
     SkASSERT(VK_NULL_HANDLE != vkBuffer);
     SkASSERT(binding < kMaxInputBuffers);
@@ -193,7 +192,7 @@ void GrVkCommandBuffer::bindInputBuffer(GrVkGpu* gpu, uint32_t binding,
     }
 }
 
-void GrVkCommandBuffer::bindIndexBuffer(GrVkGpu* gpu, sk_sp<const GrBuffer> buffer) {
+void GrVkCommandBuffer::bindIndexBuffer(GrVkGpu* gpu, sk_sp<GrGpuBuffer> buffer) {
     VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(buffer.get())->vkBuffer();
     SkASSERT(VK_NULL_HANDLE != vkBuffer);
     // TODO: once ibuffer->offset() no longer always returns 0, we will need to track the offset
@@ -312,7 +311,7 @@ void GrVkCommandBuffer::draw(const GrVkGpu* gpu,
 }
 
 void GrVkCommandBuffer::drawIndirect(const GrVkGpu* gpu,
-                                     sk_sp<const GrBuffer> indirectBuffer,
+                                     sk_sp<GrBuffer> indirectBuffer,
                                      VkDeviceSize offset,
                                      uint32_t drawCount,
                                      uint32_t stride) {
@@ -330,7 +329,7 @@ void GrVkCommandBuffer::drawIndirect(const GrVkGpu* gpu,
 }
 
 void GrVkCommandBuffer::drawIndexedIndirect(const GrVkGpu* gpu,
-                                            sk_sp<const GrBuffer> indirectBuffer,
+                                            sk_sp<GrBuffer> indirectBuffer,
                                             VkDeviceSize offset,
                                             uint32_t drawCount,
                                             uint32_t stride) {

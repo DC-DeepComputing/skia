@@ -77,7 +77,7 @@ static const int kQuadNumVertices = 5;
 static const int kQuadsNumInIdxBuffer = 256;
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gQuadsIndexBufferKey);
 
-sk_sp<const GrBuffer> get_quads_index_buffer(GrResourceProvider* resourceProvider) {
+sk_sp<GrBuffer> get_quads_index_buffer(GrResourceProvider* resourceProvider) {
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gQuadsIndexBufferKey);
     return resourceProvider->findOrCreatePatternedIndexBuffer(
         kQuadIdxBufPattern, kIdxsPerQuad, kQuadsNumInIdxBuffer, kQuadNumVertices,
@@ -111,7 +111,7 @@ static const int kLineSegsNumInIdxBuffer = 256;
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gLinesIndexBufferKey);
 
-sk_sp<const GrBuffer> get_lines_index_buffer(GrResourceProvider* resourceProvider) {
+sk_sp<GrBuffer> get_lines_index_buffer(GrResourceProvider* resourceProvider) {
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gLinesIndexBufferKey);
     return resourceProvider->findOrCreatePatternedIndexBuffer(
         kLineSegIdxBufPattern, kIdxsPerLineSeg,  kLineSegsNumInIdxBuffer, kLineSegNumVertices,
@@ -1195,7 +1195,7 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
         SkASSERT(predictedPrograms & Program::kLine);
         actualPrograms |= Program::kLine;
 
-        sk_sp<const GrBuffer> linesIndexBuffer = get_lines_index_buffer(target->resourceProvider());
+        sk_sp<GrBuffer> linesIndexBuffer = get_lines_index_buffer(target->resourceProvider());
 
         GrMeshDrawOp::PatternHelper helper(target, GrPrimitiveType::kTriangles, sizeof(LineVertex),
                                            std::move(linesIndexBuffer), kLineSegNumVertices,
@@ -1215,10 +1215,10 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
     }
 
     if (quadCount || conicCount) {
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex;
 
-        sk_sp<const GrBuffer> quadsIndexBuffer = get_quads_index_buffer(target->resourceProvider());
+        sk_sp<GrBuffer> quadsIndexBuffer = get_quads_index_buffer(target->resourceProvider());
 
         int vertexCount = kQuadNumVertices * quadAndConicCount;
         void* vertices = target->makeVertexSpace(sizeof(BezierVertex), vertexCount, &vertexBuffer,

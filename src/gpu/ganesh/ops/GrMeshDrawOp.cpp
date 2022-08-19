@@ -66,7 +66,7 @@ void GrMeshDrawOp::onPrePrepareDraws(GrRecordingContext* context,
 //////////////////////////////////////////////////////////////////////////////
 
 GrMeshDrawOp::PatternHelper::PatternHelper(GrMeshDrawTarget* target, GrPrimitiveType primitiveType,
-                                           size_t vertexStride, sk_sp<const GrBuffer> indexBuffer,
+                                           size_t vertexStride, sk_sp<GrBuffer> indexBuffer,
                                            int verticesPerRepetition, int indicesPerRepetition,
                                            int repeatCount, int maxRepetitions) {
     this->init(target, primitiveType, vertexStride, std::move(indexBuffer), verticesPerRepetition,
@@ -74,14 +74,14 @@ GrMeshDrawOp::PatternHelper::PatternHelper(GrMeshDrawTarget* target, GrPrimitive
 }
 
 void GrMeshDrawOp::PatternHelper::init(GrMeshDrawTarget* target, GrPrimitiveType primitiveType,
-                                       size_t vertexStride, sk_sp<const GrBuffer> indexBuffer,
+                                       size_t vertexStride, sk_sp<GrBuffer> indexBuffer,
                                        int verticesPerRepetition, int indicesPerRepetition,
                                        int repeatCount, int maxRepetitions) {
     SkASSERT(target);
     if (!indexBuffer) {
         return;
     }
-    sk_sp<const GrBuffer> vertexBuffer;
+    sk_sp<GrBuffer> vertexBuffer;
     int firstVertex;
     int vertexCount = verticesPerRepetition * repeatCount;
     fVertices = target->makeVertexSpace(vertexStride, vertexCount, &vertexBuffer, &firstVertex);
@@ -117,7 +117,7 @@ void GrMeshDrawOp::PatternHelper::recordDraw(
 GrMeshDrawOp::QuadHelper::QuadHelper(GrMeshDrawTarget* target,
                                      size_t vertexStride,
                                      int quadsToDraw) {
-    sk_sp<const GrGpuBuffer> indexBuffer = target->resourceProvider()->refNonAAQuadIndexBuffer();
+    sk_sp<GrGpuBuffer> indexBuffer = target->resourceProvider()->refNonAAQuadIndexBuffer();
     if (!indexBuffer) {
         SkDebugf("Could not get quad index buffer.");
         return;

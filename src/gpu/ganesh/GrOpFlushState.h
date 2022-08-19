@@ -129,21 +129,21 @@ public:
                     int meshCnt,
                     const GrSurfaceProxy* const primProcProxies[],
                     GrPrimitiveType) final;
-    void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<const GrBuffer>*,
+    void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<GrBuffer>*,
                           int* startVertex) final;
-    uint16_t* makeIndexSpace(int indexCount, sk_sp<const GrBuffer>*, int* startIndex) final;
+    uint16_t* makeIndexSpace(int indexCount, sk_sp<GrBuffer>*, int* startIndex) final;
     void* makeVertexSpaceAtLeast(size_t vertexSize, int minVertexCount, int fallbackVertexCount,
-                                 sk_sp<const GrBuffer>*, int* startVertex,
+                                 sk_sp<GrBuffer>*, int* startVertex,
                                  int* actualVertexCount) final;
     uint16_t* makeIndexSpaceAtLeast(int minIndexCount, int fallbackIndexCount,
-                                    sk_sp<const GrBuffer>*, int* startIndex,
+                                    sk_sp<GrBuffer>*, int* startIndex,
                                     int* actualIndexCount) final;
-    GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
+    GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<GrBuffer>* buffer,
                                                size_t* offset) override {
         return fDrawIndirectPool.makeSpace(drawCount, buffer, offset);
     }
     GrDrawIndexedIndirectWriter makeDrawIndexedIndirectSpace(int drawCount,
-                                                             sk_sp<const GrBuffer>* buffer,
+                                                             sk_sp<GrBuffer>* buffer,
                                                              size_t* offset) override {
         return fDrawIndirectPool.makeIndexedSpace(drawCount, buffer, offset);
     }
@@ -225,8 +225,8 @@ public:
                       const GrPipeline& pipeline) {
         fOpsRenderPass->bindTextures(geomProc, geomProcTextures, pipeline);
     }
-    void bindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                     sk_sp<const GrBuffer> vertexBuffer,
+    void bindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                     sk_sp<GrBuffer> vertexBuffer,
                      GrPrimitiveRestart primitiveRestart = GrPrimitiveRestart::kNo) {
         fOpsRenderPass->bindBuffers(std::move(indexBuffer), std::move(instanceBuffer),
                                     std::move(vertexBuffer), primitiveRestart);
@@ -247,10 +247,10 @@ public:
         fOpsRenderPass->drawIndexedInstanced(indexCount, baseIndex, instanceCount, baseInstance,
                                              baseVertex);
     }
-    void drawIndirect(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
+    void drawIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
         fOpsRenderPass->drawIndirect(drawIndirectBuffer, offset, drawCount);
     }
-    void drawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
+    void drawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
         fOpsRenderPass->drawIndexedIndirect(drawIndirectBuffer, offset, drawCount);
     }
     void drawIndexPattern(int patternIndexCount, int patternRepeatCount,

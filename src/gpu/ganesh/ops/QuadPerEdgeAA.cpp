@@ -461,8 +461,7 @@ void Tessellator::append(GrQuad* deviceQuad, GrQuad* localQuad,
     }
 }
 
-sk_sp<const GrBuffer> GetIndexBuffer(GrMeshDrawTarget* target,
-                                     IndexBufferOption indexBufferOption) {
+sk_sp<GrBuffer> GetIndexBuffer(GrMeshDrawTarget* target, IndexBufferOption indexBufferOption) {
     auto resourceProvider = target->resourceProvider();
 
     switch (indexBufferOption) {

@@ -414,8 +414,8 @@ private:
 
         GrProgramInfo* fProgramInfo = nullptr;
 
-        sk_sp<const GrBuffer> fIndexBuffer;
-        sk_sp<const GrBuffer> fVertexBuffer;
+        sk_sp<GrBuffer> fIndexBuffer;
+        sk_sp<GrBuffer> fVertexBuffer;
         int fBaseVertex;
 
         // How big should 'fVertices' be to hold all the vertex data?

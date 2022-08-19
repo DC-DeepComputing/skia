@@ -145,9 +145,9 @@ private:
     Instance** fTailInstance;
     int fInstanceCount = 1;
 
-    sk_sp<const GrBuffer> fInstanceBuffer;
-    sk_sp<const GrBuffer> fVertexBuffer;
-    sk_sp<const GrBuffer> fIndexBuffer;
+    sk_sp<GrBuffer> fInstanceBuffer;
+    sk_sp<GrBuffer> fVertexBuffer;
+    sk_sp<GrBuffer> fIndexBuffer;
     int fBaseInstance = 0;
 
     // If this op is prePrepared the created programInfo will be stored here for use in

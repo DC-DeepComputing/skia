@@ -91,12 +91,12 @@ private:
     const GrProgramInfo* fCoverHullsProgram = nullptr;
 
     // This buffer gets created by fFanTriangulator during onPrepare.
-    sk_sp<const GrBuffer> fFanBuffer;
+    sk_sp<GrBuffer> fFanBuffer;
     int fBaseFanVertex = 0;
     int fFanVertexCount = 0;
 
     // Only used if sk_VertexID is not supported.
-    sk_sp<const GrGpuBuffer> fHullVertexBufferIfNoIDSupport;
+    sk_sp<GrGpuBuffer> fHullVertexBufferIfNoIDSupport;
 
     friend class GrOp;  // For ctor.
 };

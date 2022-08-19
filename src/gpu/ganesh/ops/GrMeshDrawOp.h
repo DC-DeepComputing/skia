@@ -52,7 +52,7 @@ protected:
     class PatternHelper {
     public:
         PatternHelper(GrMeshDrawTarget*, GrPrimitiveType, size_t vertexStride,
-                      sk_sp<const GrBuffer> indexBuffer, int verticesPerRepetition,
+                      sk_sp<GrBuffer> indexBuffer, int verticesPerRepetition,
                       int indicesPerRepetition, int repeatCount, int maxRepetitions);
 
         /** Called to issue draws to the GrMeshDrawTarget.*/
@@ -66,7 +66,7 @@ protected:
     protected:
         PatternHelper() = default;
         void init(GrMeshDrawTarget*, GrPrimitiveType, size_t vertexStride,
-                  sk_sp<const GrBuffer> indexBuffer, int verticesPerRepetition,
+                  sk_sp<GrBuffer> indexBuffer, int verticesPerRepetition,
                   int indicesPerRepetition, int repeatCount, int maxRepetitions);
 
     private:

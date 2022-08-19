@@ -317,9 +317,9 @@ GrMtlRenderCommandEncoder* GrMtlOpsRenderPass::setupResolve() {
     return nullptr;
 }
 
-void GrMtlOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                       sk_sp<const GrBuffer> instanceBuffer,
-                                       sk_sp<const GrBuffer> vertexBuffer,
+void GrMtlOpsRenderPass::onBindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                       sk_sp<GrBuffer> instanceBuffer,
+                                       sk_sp<GrBuffer> vertexBuffer,
                                        GrPrimitiveRestart primRestart) {
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     if (!fDebugGroupActive) {
@@ -455,7 +455,7 @@ void GrMtlOpsRenderPass::onDrawIndexedInstanced(
 #endif
 }
 
-void GrMtlOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer,
+void GrMtlOpsRenderPass::onDrawIndirect(GrBuffer* drawIndirectBuffer,
                                         size_t bufferOffset,
                                         int drawCount) {
     SkASSERT(fGpu->caps()->nativeDrawIndirectSupport());
@@ -489,7 +489,7 @@ void GrMtlOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer,
 #endif
 }
 
-void GrMtlOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer,
+void GrMtlOpsRenderPass::onDrawIndexedIndirect(GrBuffer* drawIndirectBuffer,
                                                size_t bufferOffset,
                                                int drawCount) {
     SkASSERT(fGpu->caps()->nativeDrawIndirectSupport());
@@ -532,7 +532,7 @@ void GrMtlOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffe
 }
 
 void GrMtlOpsRenderPass::setVertexBuffer(GrMtlRenderCommandEncoder* encoder,
-                                         const GrBuffer* buffer,
+                                         GrBuffer* buffer,
                                          size_t vertexOffset,
                                          size_t inputBufferIndex) {
     if (!buffer) {

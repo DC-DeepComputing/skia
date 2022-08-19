@@ -178,7 +178,7 @@ namespace skgpu::v1::QuadPerEdgeAA {
 
     // This method will return the correct index buffer for the specified indexBufferOption.
     // It will, correctly, return nullptr if the indexBufferOption is kTriStrips.
-    sk_sp<const GrBuffer> GetIndexBuffer(GrMeshDrawTarget*, IndexBufferOption);
+    sk_sp<GrBuffer> GetIndexBuffer(GrMeshDrawTarget*, IndexBufferOption);
 
     // What is the maximum number of quads allowed for the specified indexBuffer option?
     int QuadLimit(IndexBufferOption);

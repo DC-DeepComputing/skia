@@ -169,9 +169,9 @@ void GrOpsRenderPass::bindTextures(const GrGeometryProcessor& geomProc,
     SkDEBUGCODE(fTextureBindingStatus = DynamicStateStatus::kConfigured);
 }
 
-void GrOpsRenderPass::bindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                  sk_sp<const GrBuffer> instanceBuffer,
-                                  sk_sp<const GrBuffer> vertexBuffer,
+void GrOpsRenderPass::bindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                  sk_sp<GrBuffer> instanceBuffer,
+                                  sk_sp<GrBuffer> vertexBuffer,
                                   GrPrimitiveRestart primRestart) {
     if (DrawPipelineStatus::kOk != fDrawPipelineStatus) {
         SkASSERT(DrawPipelineStatus::kNotConfigured != fDrawPipelineStatus);
@@ -262,7 +262,7 @@ void GrOpsRenderPass::drawIndexedInstanced(int indexCount, int baseIndex, int in
     this->onDrawIndexedInstanced(indexCount, baseIndex, instanceCount, baseInstance, baseVertex);
 }
 
-void GrOpsRenderPass::drawIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
+void GrOpsRenderPass::drawIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset,
                                    int drawCount) {
     SkASSERT(this->gpu()->caps()->drawInstancedSupport());
     SkASSERT(drawIndirectBuffer->isCpuBuffer() ||
@@ -288,7 +288,7 @@ void GrOpsRenderPass::drawIndirect(const GrBuffer* drawIndirectBuffer, size_t bu
     this->onDrawIndirect(drawIndirectBuffer, bufferOffset, drawCount);
 }
 
-void GrOpsRenderPass::drawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
+void GrOpsRenderPass::drawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset,
                                           int drawCount) {
     SkASSERT(this->gpu()->caps()->drawInstancedSupport());
     SkASSERT(drawIndirectBuffer->isCpuBuffer() ||

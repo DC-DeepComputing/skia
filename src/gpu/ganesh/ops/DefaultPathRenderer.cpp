@@ -366,13 +366,13 @@ private:
     GrMeshDrawTarget* fTarget;
     size_t fVertexStride;
 
-    sk_sp<const GrBuffer> fVertexBuffer;
+    sk_sp<GrBuffer> fVertexBuffer;
     int fFirstVertex;
     int fVerticesInChunk;
     SkPoint* fVertices;
     SkPoint* fCurVert;
 
-    sk_sp<const GrBuffer> fIndexBuffer;
+    sk_sp<GrBuffer> fIndexBuffer;
     int fFirstIndex;
     int fIndicesInChunk;
     uint16_t* fIndices;

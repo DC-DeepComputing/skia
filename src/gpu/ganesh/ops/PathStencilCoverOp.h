@@ -102,15 +102,15 @@ private:
     const GrProgramInfo* fCoverBBoxProgram = nullptr;
 
     // Filled during onPrepare.
-    sk_sp<const GrBuffer> fFanBuffer;
+    sk_sp<GrBuffer> fFanBuffer;
     int fFanBaseVertex = 0;
     int fFanVertexCount = 0;
 
-    sk_sp<const GrBuffer> fBBoxBuffer;
+    sk_sp<GrBuffer> fBBoxBuffer;
     int fBBoxBaseInstance = 0;
 
     // Only used if sk_VertexID is not supported.
-    sk_sp<const GrGpuBuffer> fBBoxVertexBufferIfNoIDSupport;
+    sk_sp<GrGpuBuffer> fBBoxVertexBufferIfNoIDSupport;
 
     friend class GrOp;  // For ctor.
 };

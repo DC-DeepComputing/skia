@@ -79,8 +79,8 @@ protected:
     // levels of the written patches.
     int fMaxVertexCount = 0;
 
-    sk_sp<const GrGpuBuffer> fFixedVertexBuffer;
-    sk_sp<const GrGpuBuffer> fFixedIndexBuffer;
+    sk_sp<GrGpuBuffer> fFixedVertexBuffer;
+    sk_sp<GrGpuBuffer> fFixedIndexBuffer;
 };
 
 // Draws an array of "outer curve" patches. Each patch is an independent 4-point curve, representing
@@ -120,7 +120,7 @@ public:
     // Draws a 4-point instance for each patch. This method is used for drawing convex hulls over
     // each cubic with GrFillCubicHullShader. The caller is responsible for binding its desired
     // pipeline ahead of time.
-    void drawHullInstances(GrOpFlushState*, sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const;
+    void drawHullInstances(GrOpFlushState*, sk_sp<GrGpuBuffer> vertexBufferIfNeeded) const;
 };
 
 // Prepares an array of "wedge" patches. A wedge is an independent, 5-point closed contour

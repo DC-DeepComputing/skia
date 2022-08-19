@@ -552,7 +552,7 @@ private:
     void onPrepareDraws(GrMeshDrawTarget* target) override {
         int instanceCount = fGeoData.count();
 
-        sk_sp<const GrBuffer> vertexBuffer;
+        sk_sp<GrBuffer> vertexBuffer;
         int firstVertex;
         CircleVertex* verts = (CircleVertex*)target->makeVertexSpace(
                 sizeof(CircleVertex), fVertCount, &vertexBuffer, &firstVertex);
@@ -561,7 +561,7 @@ private:
             return;
         }
 
-        sk_sp<const GrBuffer> indexBuffer;
+        sk_sp<GrBuffer> indexBuffer;
         int firstIndex = 0;
         uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
         if (!indices) {

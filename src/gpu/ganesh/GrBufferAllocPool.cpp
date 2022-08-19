@@ -188,7 +188,7 @@ static inline size_t align_down(size_t x, uint32_t alignment) {
 
 void* GrBufferAllocPool::makeSpace(size_t size,
                                    size_t alignment,
-                                   sk_sp<const GrBuffer>* buffer,
+                                   sk_sp<GrBuffer>* buffer,
                                    size_t* offset) {
     VALIDATE();
 
@@ -241,7 +241,7 @@ void* GrBufferAllocPool::makeSpace(size_t size,
 void* GrBufferAllocPool::makeSpaceAtLeast(size_t minSize,
                                           size_t fallbackSize,
                                           size_t alignment,
-                                          sk_sp<const GrBuffer>* buffer,
+                                          sk_sp<GrBuffer>* buffer,
                                           size_t* offset,
                                           size_t* actualSize) {
     VALIDATE();
@@ -429,7 +429,7 @@ GrVertexBufferAllocPool::GrVertexBufferAllocPool(GrGpu* gpu, sk_sp<CpuBufferCach
 
 void* GrVertexBufferAllocPool::makeSpace(size_t vertexSize,
                                          int vertexCount,
-                                         sk_sp<const GrBuffer>* buffer,
+                                         sk_sp<GrBuffer>* buffer,
                                          int* startVertex) {
     SkASSERT(vertexCount >= 0);
     SkASSERT(buffer);
@@ -448,7 +448,7 @@ void* GrVertexBufferAllocPool::makeSpace(size_t vertexSize,
 
 void* GrVertexBufferAllocPool::makeSpaceAtLeast(size_t vertexSize, int minVertexCount,
                                                 int fallbackVertexCount,
-                                                sk_sp<const GrBuffer>* buffer, int* startVertex,
+                                                sk_sp<GrBuffer>* buffer, int* startVertex,
                                                 int* actualVertexCount) {
     SkASSERT(minVertexCount >= 0);
     SkASSERT(fallbackVertexCount >= minVertexCount);
@@ -480,7 +480,7 @@ void* GrVertexBufferAllocPool::makeSpaceAtLeast(size_t vertexSize, int minVertex
 GrIndexBufferAllocPool::GrIndexBufferAllocPool(GrGpu* gpu, sk_sp<CpuBufferCache> cpuBufferCache)
         : GrBufferAllocPool(gpu, GrGpuBufferType::kIndex, std::move(cpuBufferCache)) {}
 
-void* GrIndexBufferAllocPool::makeSpace(int indexCount, sk_sp<const GrBuffer>* buffer,
+void* GrIndexBufferAllocPool::makeSpace(int indexCount, sk_sp<GrBuffer>* buffer,
                                         int* startIndex) {
     SkASSERT(indexCount >= 0);
     SkASSERT(buffer);
@@ -498,7 +498,7 @@ void* GrIndexBufferAllocPool::makeSpace(int indexCount, sk_sp<const GrBuffer>* b
 }
 
 void* GrIndexBufferAllocPool::makeSpaceAtLeast(int minIndexCount, int fallbackIndexCount,
-                                               sk_sp<const GrBuffer>* buffer, int* startIndex,
+                                               sk_sp<GrBuffer>* buffer, int* startIndex,
                                                int* actualIndexCount) {
     SkASSERT(minIndexCount >= 0);
     SkASSERT(fallbackIndexCount >= minIndexCount);

@@ -82,11 +82,11 @@ private:
 
     GrProgramInfo* fProgram = nullptr;
 
-    sk_sp<const GrBuffer> fInstanceBuffer;
+    sk_sp<GrBuffer> fInstanceBuffer;
     int fBaseInstance;
 
     // Only used if sk_VertexID is not supported.
-    sk_sp<const GrGpuBuffer> fVertexBufferIfNoIDSupport;
+    sk_sp<GrGpuBuffer> fVertexBufferIfNoIDSupport;
 
     GrProcessorSet fProcessors;
 };

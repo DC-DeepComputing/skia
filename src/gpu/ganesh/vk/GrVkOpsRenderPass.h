@@ -72,8 +72,8 @@ private:
     bool onBindTextures(const GrGeometryProcessor&,
                         const GrSurfaceProxy* const geomProcTextures[],
                         const GrPipeline&) override;
-    void onBindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                       sk_sp<const GrBuffer> vertexBuffer, GrPrimitiveRestart) override;
+    void onBindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                       sk_sp<GrBuffer> vertexBuffer, GrPrimitiveRestart) override;
     void onDraw(int vertexCount, int baseVertex) override {
         this->onDrawInstanced(1, 0, vertexCount, baseVertex);
     }
@@ -85,9 +85,8 @@ private:
                          int baseVertex) override;
     void onDrawIndexedInstanced(int indexCount, int baseIndex, int instanceCount, int baseInstance,
                                 int baseVertex) override;
-    void onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) override;
-    void onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t offset,
-                               int drawCount) override;
+    void onDrawIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) override;
+    void onDrawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) override;
 
     void onClear(const GrScissorState& scissor, std::array<float, 4> color) override;
 

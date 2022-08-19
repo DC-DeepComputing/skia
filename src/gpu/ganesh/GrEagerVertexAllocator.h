@@ -41,7 +41,7 @@ public:
 class GrEagerDynamicVertexAllocator : public GrEagerVertexAllocator {
 public:
     GrEagerDynamicVertexAllocator(GrMeshDrawTarget* target,
-                                  sk_sp<const GrBuffer>* vertexBuffer,
+                                  sk_sp<GrBuffer>* vertexBuffer,
                                   int* baseVertex)
             : fTarget(target)
             , fVertexBuffer(vertexBuffer)
@@ -62,7 +62,7 @@ public:
 
 private:
     GrMeshDrawTarget* const fTarget;
-    sk_sp<const GrBuffer>* const fVertexBuffer;
+    sk_sp<GrBuffer>* const fVertexBuffer;
     int* const fBaseVertex;
 
     size_t fLockStride;

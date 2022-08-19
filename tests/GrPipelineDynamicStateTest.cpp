@@ -123,14 +123,14 @@ public:
 
     static GrOp::Owner Make(GrRecordingContext* context,
                             GrScissorTest scissorTest,
-                            sk_sp<const GrBuffer> vbuff) {
+                            sk_sp<GrBuffer> vbuff) {
         return GrOp::Make<GrPipelineDynamicStateTestOp>(context, scissorTest, std::move(vbuff));
     }
 
 private:
     friend class GrOp;
 
-    GrPipelineDynamicStateTestOp(GrScissorTest scissorTest, sk_sp<const GrBuffer> vbuff)
+    GrPipelineDynamicStateTestOp(GrScissorTest scissorTest, sk_sp<GrBuffer> vbuff)
         : INHERITED(ClassID())
         , fScissorTest(scissorTest)
         , fVertexBuffer(std::move(vbuff)) {
@@ -180,8 +180,8 @@ private:
         }
     }
 
-    GrScissorTest               fScissorTest;
-    const sk_sp<const GrBuffer> fVertexBuffer;
+    GrScissorTest         fScissorTest;
+    const sk_sp<GrBuffer> fVertexBuffer;
 
     using INHERITED = GrDrawOp;
 };
@@ -225,10 +225,10 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
         {d, d, kMeshColors[3]}
     };
 
-    sk_sp<const GrBuffer> vbuff(rp->createBuffer(vdata,
-                                                 sizeof(vdata),
-                                                 GrGpuBufferType::kVertex,
-                                                 kDynamic_GrAccessPattern));
+    sk_sp<GrBuffer> vbuff = rp->createBuffer(vdata,
+                                             sizeof(vdata),
+                                             GrGpuBufferType::kVertex,
+                                             kDynamic_GrAccessPattern);
     if (!vbuff) {
         ERRORF(reporter, "vbuff is null.");
         return;

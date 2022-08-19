@@ -96,9 +96,9 @@ bool GrGLOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
     return true;
 }
 
-void GrGLOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                      sk_sp<const GrBuffer> instanceBuffer,
-                                      sk_sp<const GrBuffer> vertexBuffer,
+void GrGLOpsRenderPass::onBindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                      sk_sp<GrBuffer> instanceBuffer,
+                                      sk_sp<GrBuffer> vertexBuffer,
                                       GrPrimitiveRestart primitiveRestart) {
     SkASSERT((primitiveRestart == GrPrimitiveRestart::kNo) || indexBuffer);
     GrGLProgram* program = fGpu->currentProgram();
@@ -268,8 +268,7 @@ static const void* buffer_offset_to_gl_address(const GrBuffer* drawIndirectBuffe
     }
 }
 
-void GrGLOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_t offset,
-                                       int drawCount) {
+void GrGLOpsRenderPass::onDrawIndirect(GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
     using MultiDrawType = GrGLCaps::MultiDrawType;
 
     SkASSERT(fGpu->caps()->nativeDrawIndirectSupport());
@@ -306,7 +305,7 @@ void GrGLOpsRenderPass::onDrawIndirect(const GrBuffer* drawIndirectBuffer, size_
     }
 }
 
-void GrGLOpsRenderPass::multiDrawArraysANGLEOrWebGL(const GrBuffer* drawIndirectBuffer,
+void GrGLOpsRenderPass::multiDrawArraysANGLEOrWebGL(GrBuffer* drawIndirectBuffer,
                                                     size_t offset, int drawCount) {
     SkASSERT(fGpu->glCaps().multiDrawType() == GrGLCaps::MultiDrawType::kANGLEOrWebGL);
     SkASSERT(drawIndirectBuffer->isCpuBuffer());
@@ -343,7 +342,7 @@ void GrGLOpsRenderPass::multiDrawArraysANGLEOrWebGL(const GrBuffer* drawIndirect
     }
 }
 
-void GrGLOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t offset,
+void GrGLOpsRenderPass::onDrawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t offset,
                                               int drawCount) {
     using MultiDrawType = GrGLCaps::MultiDrawType;
 
@@ -378,7 +377,7 @@ void GrGLOpsRenderPass::onDrawIndexedIndirect(const GrBuffer* drawIndirectBuffer
     }
 }
 
-void GrGLOpsRenderPass::multiDrawElementsANGLEOrWebGL(const GrBuffer* drawIndirectBuffer,
+void GrGLOpsRenderPass::multiDrawElementsANGLEOrWebGL(GrBuffer* drawIndirectBuffer,
                                                       size_t offset, int drawCount) {
     SkASSERT(fGpu->glCaps().multiDrawType() == GrGLCaps::MultiDrawType::kANGLEOrWebGL);
     SkASSERT(drawIndirectBuffer->isCpuBuffer());

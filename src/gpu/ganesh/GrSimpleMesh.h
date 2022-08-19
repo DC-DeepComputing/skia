@@ -19,16 +19,16 @@ class GrGeometryProcessor;
  * TODO: Consider migrating every Op to make the appropriate draw directly on GrOpsRenderPass.
  */
 struct GrSimpleMesh {
-    void set(sk_sp<const GrBuffer> vertexBuffer, int vertexCount, int baseVertex);
-    void setIndexed(sk_sp<const GrBuffer> indexBuffer, int indexCount, int baseIndex,
+    void set(sk_sp<GrBuffer> vertexBuffer, int vertexCount, int baseVertex);
+    void setIndexed(sk_sp<GrBuffer> indexBuffer, int indexCount, int baseIndex,
                     uint16_t minIndexValue, uint16_t maxIndexValue, GrPrimitiveRestart,
-                    sk_sp<const GrBuffer> vertexBuffer, int baseVertex);
-    void setIndexedPatterned(sk_sp<const GrBuffer> indexBuffer, int indexCount,
+                    sk_sp<GrBuffer> vertexBuffer, int baseVertex);
+    void setIndexedPatterned(sk_sp<GrBuffer> indexBuffer, int indexCount,
                              int patternRepeatCount, int maxPatternRepetitionsInIndexBuffer,
-                             sk_sp<const GrBuffer> vertexBuffer, int patternVertexCount,
+                             sk_sp<GrBuffer> vertexBuffer, int patternVertexCount,
                              int baseVertex);
 
-    sk_sp<const GrBuffer> fIndexBuffer;
+    sk_sp<GrBuffer> fIndexBuffer;
     int fIndexCount;
     int fPatternRepeatCount;
     int fMaxPatternRepetitionsInIndexBuffer;
@@ -37,14 +37,14 @@ struct GrSimpleMesh {
     uint16_t fMaxIndexValue;
     GrPrimitiveRestart fPrimitiveRestart = GrPrimitiveRestart::kNo;
 
-    sk_sp<const GrBuffer> fVertexBuffer;
+    sk_sp<GrBuffer> fVertexBuffer;
     int fVertexCount;
     int fBaseVertex = 0;
 
     SkDEBUGCODE(bool fIsInitialized = false;)
 };
 
-inline void GrSimpleMesh::set(sk_sp<const GrBuffer> vertexBuffer, int vertexCount, int baseVertex) {
+inline void GrSimpleMesh::set(sk_sp<GrBuffer> vertexBuffer, int vertexCount, int baseVertex) {
     SkASSERT(baseVertex >= 0);
     fIndexBuffer.reset();
     fVertexBuffer = std::move(vertexBuffer);
@@ -53,10 +53,10 @@ inline void GrSimpleMesh::set(sk_sp<const GrBuffer> vertexBuffer, int vertexCoun
     SkDEBUGCODE(fIsInitialized = true;)
 }
 
-inline void GrSimpleMesh::setIndexed(sk_sp<const GrBuffer> indexBuffer, int indexCount,
+inline void GrSimpleMesh::setIndexed(sk_sp<GrBuffer> indexBuffer, int indexCount,
                                      int baseIndex, uint16_t minIndexValue, uint16_t maxIndexValue,
                                      GrPrimitiveRestart primitiveRestart,
-                                     sk_sp<const GrBuffer> vertexBuffer, int baseVertex) {
+                                     sk_sp<GrBuffer> vertexBuffer, int baseVertex) {
     SkASSERT(indexBuffer);
     SkASSERT(indexCount >= 1);
     SkASSERT(baseIndex >= 0);
@@ -75,8 +75,8 @@ inline void GrSimpleMesh::setIndexed(sk_sp<const GrBuffer> indexBuffer, int inde
 }
 
 inline void GrSimpleMesh::setIndexedPatterned(
-        sk_sp<const GrBuffer> indexBuffer, int indexCount, int patternRepeatCount,
-        int maxPatternRepetitionsInIndexBuffer, sk_sp<const GrBuffer> vertexBuffer,
+        sk_sp<GrBuffer> indexBuffer, int indexCount, int patternRepeatCount,
+        int maxPatternRepetitionsInIndexBuffer, sk_sp<GrBuffer> vertexBuffer,
         int patternVertexCount, int baseVertex) {
     SkASSERT(indexBuffer);
     SkASSERT(indexCount >= 1);

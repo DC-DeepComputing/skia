@@ -40,14 +40,14 @@ private:
                         const GrPipeline&) override {
         return true;
     }
-    void onBindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                       sk_sp<const GrBuffer> vertexBuffer, GrPrimitiveRestart) override {}
+    void onBindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                       sk_sp<GrBuffer> vertexBuffer, GrPrimitiveRestart) override {}
     void onDraw(int, int) override { this->noopDraw(); }
     void onDrawIndexed(int, int, uint16_t, uint16_t, int) override { this->noopDraw(); }
     void onDrawInstanced(int, int, int, int) override { this->noopDraw(); }
     void onDrawIndexedInstanced(int, int, int, int, int) override { this->noopDraw(); }
-    void onDrawIndirect(const GrBuffer*, size_t, int) override { this->noopDraw(); }
-    void onDrawIndexedIndirect(const GrBuffer*, size_t, int) override { this->noopDraw(); }
+    void onDrawIndirect(GrBuffer*, size_t, int) override { this->noopDraw(); }
+    void onDrawIndexedIndirect(GrBuffer*, size_t, int) override { this->noopDraw(); }
     void onClear(const GrScissorState& scissor, std::array<float, 4>) override {
         this->markRenderTargetDirty();
     }

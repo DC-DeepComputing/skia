@@ -55,26 +55,26 @@ class DrawMeshHelper {
 public:
     DrawMeshHelper(GrOpFlushState* state) : fState(state) {}
 
-    sk_sp<const GrBuffer> getIndexBuffer();
+    sk_sp<GrBuffer> getIndexBuffer();
 
-    sk_sp<const GrBuffer> makeIndexBuffer(const uint16_t[], int count);
+    sk_sp<GrBuffer> makeIndexBuffer(const uint16_t[], int count);
 
-    template<typename T> sk_sp<const GrBuffer> makeVertexBuffer(const SkTArray<T>& data) {
+    template<typename T> sk_sp<GrBuffer> makeVertexBuffer(const SkTArray<T>& data) {
         return this->makeVertexBuffer(data.begin(), data.count());
     }
-    template<typename T> sk_sp<const GrBuffer> makeVertexBuffer(const std::vector<T>& data) {
+    template<typename T> sk_sp<GrBuffer> makeVertexBuffer(const std::vector<T>& data) {
         return this->makeVertexBuffer(data.data(), data.size());
     }
-    template<typename T> sk_sp<const GrBuffer> makeVertexBuffer(const T* data, int count);
+    template<typename T> sk_sp<GrBuffer> makeVertexBuffer(const T* data, int count);
 
     GrMeshDrawTarget* target() { return fState; }
 
-    sk_sp<const GrBuffer> fIndexBuffer;
-    sk_sp<const GrBuffer> fIndexBuffer2;
-    sk_sp<const GrBuffer> fInstBuffer;
-    sk_sp<const GrBuffer> fVertBuffer;
-    sk_sp<const GrBuffer> fVertBuffer2;
-    sk_sp<const GrBuffer> fDrawIndirectBuffer;
+    sk_sp<GrBuffer> fIndexBuffer;
+    sk_sp<GrBuffer> fIndexBuffer2;
+    sk_sp<GrBuffer> fInstBuffer;
+    sk_sp<GrBuffer> fVertBuffer;
+    sk_sp<GrBuffer> fVertBuffer2;
+    sk_sp<GrBuffer> fDrawIndirectBuffer;
     size_t fDrawIndirectBufferOffset;
 
     GrOpsRenderPass* bindPipeline(GrPrimitiveType, bool isInstanced, bool hasVertexBuffer);
@@ -264,7 +264,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforcement
                      // Draw boxes one line at a time to exercise base instance, base vertex, and
                      // null vertex buffer.
                      for (int y = 0; y < kBoxCountY; ++y) {
-                         sk_sp<const GrBuffer> vertexBuffer;
+                         sk_sp<GrBuffer> vertexBuffer;
                          int baseVertex = 0;
                          switch (y % 3) {
                              case 0:
@@ -286,7 +286,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforcement
                          auto pass = helper->bindPipeline(primitiveType, true,
                                                           SkToBool(vertexBuffer));
                          if (indexed) {
-                             sk_sp<const GrBuffer> indexBuffer = (y % 2) ?
+                             sk_sp<GrBuffer> indexBuffer = (y % 2) ?
                                      helper->fIndexBuffer2 : helper->fIndexBuffer;
                              VALIDATE(indexBuffer);
                              int baseIndex = (y % 2);
@@ -331,7 +331,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforcement
                      GrDrawIndexedIndirectWriter indexedIndirectWriter;
                      if (indexed) {
                          // Make helper->fDrawIndirectBufferOffset nonzero.
-                         sk_sp<const GrBuffer> ignoredBuff;
+                         sk_sp<GrBuffer> ignoredBuff;
                          size_t ignoredOffset;
                          // Make a superfluous call to makeDrawIndirectSpace in order to test
                          // "offsetInBytes!=0" for the actual call to makeDrawIndexedIndirectSpace.
@@ -341,7 +341,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforcement
                                  &helper->fDrawIndirectBufferOffset);
                      } else {
                          // Make helper->fDrawIndirectBufferOffset nonzero.
-                         sk_sp<const GrBuffer> ignoredBuff;
+                         sk_sp<GrBuffer> ignoredBuff;
                          size_t ignoredOffset;
                          // Make a superfluous call to makeDrawIndexedIndirectSpace in order to test
                          // "offsetInBytes!=0" for the actual call to makeDrawIndirectSpace.
@@ -536,7 +536,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MeshTestProcessor::makeProgram
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<const GrBuffer> DrawMeshHelper::makeIndexBuffer(const uint16_t indices[], int count) {
+sk_sp<GrBuffer> DrawMeshHelper::makeIndexBuffer(const uint16_t indices[], int count) {
     return fState->resourceProvider()->createBuffer(indices,
                                                     count*sizeof(uint16_t),
                                                     GrGpuBufferType::kIndex,
@@ -544,14 +544,14 @@ sk_sp<const GrBuffer> DrawMeshHelper::makeIndexBuffer(const uint16_t indices[], 
 }
 
 template<typename T>
-sk_sp<const GrBuffer> DrawMeshHelper::makeVertexBuffer(const T* data, int count) {
+sk_sp<GrBuffer> DrawMeshHelper::makeVertexBuffer(const T* data, int count) {
     return fState->resourceProvider()->createBuffer(data,
                                                     count*sizeof(T),
                                                     GrGpuBufferType::kVertex,
                                                     kDynamic_GrAccessPattern);
 }
 
-sk_sp<const GrBuffer> DrawMeshHelper::getIndexBuffer() {
+sk_sp<GrBuffer> DrawMeshHelper::getIndexBuffer() {
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gIndexBufferKey);
     return fState->resourceProvider()->findOrCreatePatternedIndexBuffer(
             kIndexPattern, 6, kIndexPatternRepeatCount, 4, gIndexBufferKey);

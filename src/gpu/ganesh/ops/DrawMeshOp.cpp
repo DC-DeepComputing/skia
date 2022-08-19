@@ -475,14 +475,14 @@ private:
 
         bool isFromVertices() const { return SkToBool(fVertices); }
 
-        std::tuple<sk_sp<const GrGpuBuffer>, size_t> gpuVB() const {
+        std::tuple<sk_sp<GrGpuBuffer>, size_t> gpuVB() const {
             if (this->isFromVertices()) {
                 return {};
             }
             return {fMeshData.vb->asGpuBuffer(), fMeshData.voffset};
         }
 
-        std::tuple<sk_sp<const GrGpuBuffer>, size_t> gpuIB() const {
+        std::tuple<sk_sp<GrGpuBuffer>, size_t> gpuIB() const {
             if (this->isFromVertices() || !fMeshData.ib) {
                 return {};
             }
@@ -833,7 +833,7 @@ void MeshOp::onCreateProgramInfo(const GrCaps* caps,
 
 void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
     size_t vertexStride = fSpecification->stride();
-    sk_sp<const GrBuffer> vertexBuffer;
+    sk_sp<GrBuffer> vertexBuffer;
     int firstVertex;
     std::tie(vertexBuffer, firstVertex) = fMeshes[0].gpuVB();
 
@@ -857,7 +857,7 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
         firstVertex /= fSpecification->stride();
     }
 
-    sk_sp<const GrBuffer> indexBuffer;
+    sk_sp<GrBuffer> indexBuffer;
     int firstIndex = 0;
 
     std::tie(indexBuffer, firstIndex) = fMeshes[0].gpuIB();

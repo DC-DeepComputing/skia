@@ -72,8 +72,8 @@ public:
                       const GrSurfaceProxy* const geomProcTextures[],
                       const GrPipeline&);
 
-    void bindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                     sk_sp<const GrBuffer> vertexBuffer, GrPrimitiveRestart = GrPrimitiveRestart::kNo);
+    void bindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                     sk_sp<GrBuffer> vertexBuffer, GrPrimitiveRestart = GrPrimitiveRestart::kNo);
 
     // The next several draw*() methods issue draws using the current pipeline state. Before
     // drawing, the caller must configure the pipeline and dynamic state:
@@ -99,7 +99,7 @@ public:
     //
     // If caps.nativeDrawIndirectSupport() is unavailable, then 'drawIndirectBuffer' must be a
     // GrCpuBuffer in order to polyfill. Performance may suffer in this scenario.
-    void drawIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount);
+    void drawIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount);
 
     // Executes multiple draws from an array of GrDrawIndexedIndirectCommand in the provided buffer.
     //
@@ -107,8 +107,7 @@ public:
     //
     // If caps.nativeDrawIndirectSupport() is unavailable, then 'drawIndirectBuffer' must be a
     // GrCpuBuffer in order to polyfill. Performance may suffer in this scenario.
-    void drawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
-                             int drawCount);
+    void drawIndexedIndirect(GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount);
 
     // This is a helper method for drawing a repeating pattern of vertices. The bound index buffer
     // is understood to contain 'maxPatternRepetitionsInIndexBuffer' repetitions of the pattern.
@@ -158,9 +157,9 @@ protected:
 
     // Backends may defer binding of certain buffers if their draw API requires a buffer, or if
     // their bind methods don't support base values.
-    sk_sp<const GrBuffer> fActiveIndexBuffer;
-    sk_sp<const GrBuffer> fActiveVertexBuffer;
-    sk_sp<const GrBuffer> fActiveInstanceBuffer;
+    sk_sp<GrBuffer> fActiveIndexBuffer;
+    sk_sp<GrBuffer> fActiveVertexBuffer;
+    sk_sp<GrBuffer> fActiveInstanceBuffer;
 
 private:
     virtual GrGpu* gpu() = 0;
@@ -181,8 +180,8 @@ private:
     virtual bool onBindTextures(const GrGeometryProcessor&,
                                 const GrSurfaceProxy* const geomProcTextures[],
                                 const GrPipeline&) = 0;
-    virtual void onBindBuffers(sk_sp<const GrBuffer> indexBuffer, sk_sp<const GrBuffer> instanceBuffer,
-                               sk_sp<const GrBuffer> vertexBuffer, GrPrimitiveRestart) = 0;
+    virtual void onBindBuffers(sk_sp<GrBuffer> indexBuffer, sk_sp<GrBuffer> instanceBuffer,
+                               sk_sp<GrBuffer> vertexBuffer, GrPrimitiveRestart) = 0;
     virtual void onDraw(int vertexCount, int baseVertex) = 0;
     virtual void onDrawIndexed(int indexCount, int baseIndex, uint16_t minIndexValue,
                                uint16_t maxIndexValue, int baseVertex) = 0;
@@ -190,10 +189,10 @@ private:
                                  int baseVertex) = 0;
     virtual void onDrawIndexedInstanced(int indexCount, int baseIndex, int instanceCount,
                                         int baseInstance, int baseVertex) = 0;
-    virtual void onDrawIndirect(const GrBuffer*, size_t offset, int drawCount) {
+    virtual void onDrawIndirect(GrBuffer*, size_t offset, int drawCount) {
         SK_ABORT("Not implemented.");  // Only called if caps.nativeDrawIndirectSupport().
     }
-    virtual void onDrawIndexedIndirect(const GrBuffer*, size_t offset, int drawCount) {
+    virtual void onDrawIndexedIndirect(GrBuffer*, size_t offset, int drawCount) {
         SK_ABORT("Not implemented.");  // Only called if caps.nativeDrawIndirectSupport().
     }
     virtual void onClear(const GrScissorState&, std::array<float, 4> color) = 0;

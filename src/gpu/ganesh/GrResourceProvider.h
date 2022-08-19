@@ -203,10 +203,10 @@ public:
      * @return The buffer if successful, otherwise nullptr.
      */
     using InitializeBufferFn = void(*)(skgpu::VertexWriter, size_t bufferSize);
-    sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
-                                                    size_t size,
-                                                    const skgpu::UniqueKey& key,
-                                                    InitializeBufferFn);
+    sk_sp<GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
+                                              size_t size,
+                                              const skgpu::UniqueKey& key,
+                                              InitializeBufferFn);
 
     /**
      * Either finds and refs, or creates a static buffer with the given parameters and contents.
@@ -218,10 +218,10 @@ public:
      *
      * @return The buffer if successful, otherwise nullptr.
      */
-    sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
-                                                    size_t size,
-                                                    const void* staticData,
-                                                    const skgpu::UniqueKey& key);
+    sk_sp<GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
+                                              size_t size,
+                                              const void* staticData,
+                                              const skgpu::UniqueKey& key);
 
     /**
      * Either finds and refs, or creates an index buffer with a repeating pattern for drawing
@@ -236,12 +236,12 @@ public:
      *
      * @return The index buffer if successful, otherwise nullptr.
      */
-    sk_sp<const GrGpuBuffer> findOrCreatePatternedIndexBuffer(const uint16_t* pattern,
-                                                              int patternSize,
-                                                              int reps,
-                                                              int vertCount,
-                                                              const skgpu::UniqueKey& key) {
-        if (auto buffer = this->findByUniqueKey<const GrGpuBuffer>(key)) {
+    sk_sp<GrGpuBuffer> findOrCreatePatternedIndexBuffer(const uint16_t* pattern,
+                                                        int patternSize,
+                                                        int reps,
+                                                        int vertCount,
+                                                        const skgpu::UniqueKey& key) {
+        if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(key)) {
             return buffer;
         }
         return this->createPatternedIndexBuffer(pattern, patternSize, reps, vertCount, &key);
@@ -254,7 +254,7 @@ public:
      * Draw with GrPrimitiveType::kTriangles
      * @ return the non-AA quad index buffer
      */
-    sk_sp<const GrGpuBuffer> refNonAAQuadIndexBuffer() {
+    sk_sp<GrGpuBuffer> refNonAAQuadIndexBuffer() {
         if (!fNonAAQuadIndexBuffer) {
             fNonAAQuadIndexBuffer = this->createNonAAQuadIndexBuffer();
         }
@@ -272,7 +272,7 @@ public:
      * Draw with GrPrimitiveType::kTriangles
      * @ return the AA quad index buffer
      */
-    sk_sp<const GrGpuBuffer> refAAQuadIndexBuffer() {
+    sk_sp<GrGpuBuffer> refAAQuadIndexBuffer() {
         if (!fAAQuadIndexBuffer) {
             fAAQuadIndexBuffer = this->createAAQuadIndexBuffer();
         }
@@ -416,20 +416,20 @@ private:
         return !SkToBool(fCache);
     }
 
-    sk_sp<const GrGpuBuffer> createPatternedIndexBuffer(const uint16_t* pattern,
-                                                        int patternSize,
-                                                        int reps,
-                                                        int vertCount,
-                                                        const skgpu::UniqueKey* key);
+    sk_sp<GrGpuBuffer> createPatternedIndexBuffer(const uint16_t* pattern,
+                                                  int patternSize,
+                                                  int reps,
+                                                  int vertCount,
+                                                  const skgpu::UniqueKey* key);
 
-    sk_sp<const GrGpuBuffer> createNonAAQuadIndexBuffer();
-    sk_sp<const GrGpuBuffer> createAAQuadIndexBuffer();
+    sk_sp<GrGpuBuffer> createNonAAQuadIndexBuffer();
+    sk_sp<GrGpuBuffer> createAAQuadIndexBuffer();
 
     GrResourceCache* fCache;
     GrGpu* fGpu;
     sk_sp<const GrCaps> fCaps;
-    sk_sp<const GrGpuBuffer> fNonAAQuadIndexBuffer;
-    sk_sp<const GrGpuBuffer> fAAQuadIndexBuffer;
+    sk_sp<GrGpuBuffer> fNonAAQuadIndexBuffer;
+    sk_sp<GrGpuBuffer> fAAQuadIndexBuffer;
 
     // In debug builds we guard against improper thread handling
     SkDEBUGCODE(mutable skgpu::SingleOwner* fSingleOwner;)

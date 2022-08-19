@@ -184,9 +184,9 @@ bool GrDawnOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
     return true;
 }
 
-void GrDawnOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
-                                        sk_sp<const GrBuffer> instanceBuffer,
-                                        sk_sp<const GrBuffer> vertexBuffer,
+void GrDawnOpsRenderPass::onBindBuffers(sk_sp<GrBuffer> indexBuffer,
+                                        sk_sp<GrBuffer> instanceBuffer,
+                                        sk_sp<GrBuffer> vertexBuffer,
                                         GrPrimitiveRestart) {
     if (vertexBuffer) {
         wgpu::Buffer vertex = static_cast<const GrDawnBuffer*>(vertexBuffer.get())->get();

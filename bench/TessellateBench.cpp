@@ -226,7 +226,7 @@ DEF_PATH_TESS_BENCH(middle_out_triangulation,
     // Conservative estimate of triangulation (see PathStencilCoverOp)
     const int maxVerts = 3 * (kNumCubicsInChalkboard - 2);
 
-    sk_sp<const GrBuffer> buffer;
+    sk_sp<GrBuffer> buffer;
     int baseVertex;
     VertexWriter vertexWriter = fTarget->makeVertexWriter(
             sizeof(SkPoint), maxVerts, &buffer, &baseVertex);

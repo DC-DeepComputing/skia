@@ -452,8 +452,8 @@ private:
     GrProgramInfo* fProgramInfo = nullptr;
     ColorType      fColorType;
 
-    sk_sp<const GrBuffer> fVertexBuffer;
-    sk_sp<const GrBuffer> fIndexBuffer;
+    sk_sp<GrBuffer> fVertexBuffer;
+    sk_sp<GrBuffer> fIndexBuffer;
     int fBaseVertex;
 
     using INHERITED = GrMeshDrawOp;

@@ -434,12 +434,12 @@ sk_sp<GrGpuResource> GrResourceProvider::findResourceByUniqueKey(const skgpu::Un
                                : sk_sp<GrGpuResource>(fCache->findAndRefUniqueResource(key));
 }
 
-sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferType intendedType,
-                                                                    size_t size,
-                                                                    const void* staticData,
-                                                                    const skgpu::UniqueKey& key) {
+sk_sp<GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferType intendedType,
+                                                              size_t size,
+                                                              const void* staticData,
+                                                              const skgpu::UniqueKey& key) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(key)) {
-        return std::move(buffer);
+        return buffer;
     }
 
     auto buffer = this->createBuffer(staticData, size, intendedType, kStatic_GrAccessPattern);
@@ -453,16 +453,16 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferT
 
     buffer->resourcePriv().setUniqueKey(key);
 
-    return std::move(buffer);
+    return buffer;
 }
 
-sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
+sk_sp<GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
         GrGpuBufferType intendedType,
         size_t size,
         const skgpu::UniqueKey& uniqueKey,
         InitializeBufferFn initializeBufferFn) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(uniqueKey)) {
-        return std::move(buffer);
+        return buffer;
     }
 
     auto buffer = this->createBuffer(size,
@@ -495,10 +495,10 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
         buffer->updateData(stagingBuffer, /*offset=*/0, size, /*preserve=*/false);
     }
 
-    return std::move(buffer);
+    return buffer;
 }
 
-sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
+sk_sp<GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
         const uint16_t* pattern,
         int patternSize,
         int reps,
@@ -537,7 +537,7 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
         SkASSERT(key->isValid());
         this->assignUniqueKeyToResource(*key, buffer.get());
     }
-    return std::move(buffer);
+    return buffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -545,7 +545,7 @@ static constexpr int kMaxNumNonAAQuads = 1 << 12;  // max possible: (1 << 14) - 
 static const int kVertsPerNonAAQuad = 4;
 static const int kIndicesPerNonAAQuad = 6;
 
-sk_sp<const GrGpuBuffer> GrResourceProvider::createNonAAQuadIndexBuffer() {
+sk_sp<GrGpuBuffer> GrResourceProvider::createNonAAQuadIndexBuffer() {
     static_assert(kVertsPerNonAAQuad * kMaxNumNonAAQuads <= 65535);  // indices fit in a uint16_t
 
     static const uint16_t kNonAAQuadIndexPattern[] = {
@@ -567,7 +567,7 @@ static constexpr int kMaxNumAAQuads = 1 << 9;  // max possible: (1 << 13) - 1;
 static const int kVertsPerAAQuad = 8;
 static const int kIndicesPerAAQuad = 30;
 
-sk_sp<const GrGpuBuffer> GrResourceProvider::createAAQuadIndexBuffer() {
+sk_sp<GrGpuBuffer> GrResourceProvider::createAAQuadIndexBuffer() {
     static_assert(kVertsPerAAQuad * kMaxNumAAQuads <= 65535);  // indices fit in a uint16_t
 
     // clang-format off

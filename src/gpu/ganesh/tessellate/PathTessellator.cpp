@@ -221,7 +221,7 @@ void PathCurveTessellator::draw(GrOpFlushState* flushState) const {
 }
 
 void PathCurveTessellator::drawHullInstances(GrOpFlushState* flushState,
-                                             sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const {
+                                             sk_sp<GrGpuBuffer> vertexBufferIfNeeded) const {
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(nullptr, chunk.fBuffer, vertexBufferIfNeeded);
         flushState->drawInstanced(chunk.fCount, chunk.fBase, 4, 0);

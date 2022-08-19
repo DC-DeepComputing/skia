@@ -104,7 +104,7 @@ struct SkMeshPriv {
         virtual const void* peek() const { return nullptr; }
 
 #if SK_SUPPORT_GPU
-        virtual sk_sp<const GrGpuBuffer> asGpuBuffer() const { return nullptr; }
+        virtual sk_sp<GrGpuBuffer> asGpuBuffer() const { return nullptr; }
 #endif
     };
 
@@ -141,7 +141,7 @@ struct SkMeshPriv {
 
         static sk_sp<Base> Make(GrDirectContext*, const void* data, size_t size);
 
-        sk_sp<const GrGpuBuffer> asGpuBuffer() const override { return fBuffer; }
+        sk_sp<GrGpuBuffer> asGpuBuffer() const override { return fBuffer; }
 
         size_t size() const override { return fBuffer->size(); }
 
