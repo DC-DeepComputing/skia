@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9dc950fe_59191157",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-19T15:41:41Z",
+      "side": 1,
+      "message": "Well it can\u0027t just only be a top level CB function. We have to get into backend specific code because piet is setup specifically to take Mtl* objects in its calls. Now if we could get piet to make a more backend agnostic API using things similar to our Backend* classes, then more of this code could just live in the top, non-backend specific classes in Skia.",
+      "parentUuid": "df33df97_98fb4053",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5093046f_03a4db12",
         "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
         "patchSetId": 3
