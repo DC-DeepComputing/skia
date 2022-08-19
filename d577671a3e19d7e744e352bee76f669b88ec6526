@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0cd9cb5_5384ecef",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-19T18:21:44Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be \u0027skia_shared_vk_sources\u0027 ?",
+      "range": {
+        "startLine": 835,
+        "startChar": 0,
+        "endLine": 835,
+        "endChar": 22
+      },
+      "revId": "d577671a3e19d7e744e352bee76f669b88ec6526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
