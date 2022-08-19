@@ -194,6 +194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66edda63_391d11f3",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-19T18:18:13Z",
+      "side": 1,
+      "message": "The execution of the task graph when a recording is inserted should all be happening synchronously, so `renderPietScene` won\u0027t be overlapping execution with itself. The issue that could come up though, (and maybe even with the current approach) is if the Recording that holds the piet tasks is inserted (and has its addCommands and renderPietScene functions called at that time) at the same time that the Recorder that made the Recording is using the piet::Renderer to record new tasks.  Or is that safe because it uses piet::Scenes?\n\nThese questions aside, I like the plan you outlined and the removal of the graphite::PietX types and getCommandBufferForDirectEncoding() (this one made me nervous since it allowed CB usage to break out of the CB abstraction).",
+      "parentUuid": "85269791_32a3d8b0",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 58
+      },
+      "revId": "771425230258e0ba651cd47e1befa99048df569e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5093046f_03a4db12",
         "filename": "src/gpu/graphite/mtl/MtlResourceProvider.h",
         "patchSetId": 3
