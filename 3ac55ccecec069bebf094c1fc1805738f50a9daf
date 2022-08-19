@@ -39,6 +39,29 @@
       },
       "revId": "3ac55ccecec069bebf094c1fc1805738f50a9daf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b79e1d_0f3935b2",
+        "filename": "src/gpu/graphite/PietRenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-19T16:55:32Z",
+      "side": 1,
+      "message": "Maybe PietTrampoline? It seems to fulfill the same function for Piet as MtlTrampoline does for Metal. This might also help name confusion between skgpu::piet::Renderer and this. And there\u0027s additional name confusion because this isn\u0027t related to skgpu::graphite::Renderer.",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "3ac55ccecec069bebf094c1fc1805738f50a9daf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
