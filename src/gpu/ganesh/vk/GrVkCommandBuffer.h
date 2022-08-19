@@ -11,6 +11,7 @@
 #include "include/gpu/vk/GrVkTypes.h"
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/GrRefCnt.h"
+#include "src/gpu/ganesh/vk/GrVkBuffer.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkSemaphore.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
@@ -182,8 +183,8 @@ protected:
 
     static constexpr uint32_t kMaxInputBuffers = 2;
 
-    VkBuffer fBoundInputBuffers[kMaxInputBuffers];
-    VkBuffer fBoundIndexBuffer;
+    sk_sp<GrVkBuffer> fBoundInputBuffers[kMaxInputBuffers];
+    sk_sp<GrVkBuffer> fBoundIndexBuffer;
 
     // Cached values used for dynamic state updates
     VkViewport fCachedViewport;

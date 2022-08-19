@@ -23,6 +23,13 @@ public:
 
     VkBuffer vkBuffer() const { return fBuffer; }
 
+    // Used to insert barriers for kVertex and kIndex buffers (but not other GrGpuBufferTypes)
+    enum class GeometryBufferUsage {
+        kDraw,
+        kTransferDst,
+    };
+    void useGeometryBufferAs(GeometryBufferUsage);
+
     void addMemoryBarrier(VkAccessFlags srcAccessMask,
                           VkAccessFlags dstAccesMask,
                           VkPipelineStageFlags srcStageMask,
@@ -64,6 +71,8 @@ private:
 
     VkBuffer fBuffer;
     GrVkAlloc fAlloc;
+
+    GeometryBufferUsage fLastUsage = GeometryBufferUsage::kDraw;
 
     const GrVkDescriptorSet* fUniformDescriptorSet;
 

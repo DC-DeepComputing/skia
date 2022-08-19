@@ -24,9 +24,9 @@
 
 void GrVkCommandBuffer::invalidateState() {
     for (auto& boundInputBuffer : fBoundInputBuffers) {
-        boundInputBuffer = VK_NULL_HANDLE;
+        boundInputBuffer.reset();
     }
-    fBoundIndexBuffer = VK_NULL_HANDLE;
+    fBoundIndexBuffer.reset();
 
     memset(&fCachedViewport, 0, sizeof(VkViewport));
     fCachedViewport.width = - 1.0f; // Viewport must have a width greater than 0
@@ -175,34 +175,36 @@ void GrVkCommandBuffer::submitPipelineBarriers(const GrVkGpu* gpu, bool forSelfD
 }
 
 void GrVkCommandBuffer::bindInputBuffer(GrVkGpu* gpu, uint32_t binding, sk_sp<GrGpuBuffer> buffer) {
-    VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(buffer.get())->vkBuffer();
+    sk_sp<GrVkBuffer> vkBuffer(static_cast<GrVkBuffer*>(buffer.release()));
     SkASSERT(VK_NULL_HANDLE != vkBuffer);
     SkASSERT(binding < kMaxInputBuffers);
     // TODO: once vbuffer->offset() no longer always returns 0, we will need to track the offset
     // to know if we can skip binding or not.
     if (vkBuffer != fBoundInputBuffers[binding]) {
         VkDeviceSize offset = 0;
+        VkBuffer vb = vkBuffer->vkBuffer();
         GR_VK_CALL(gpu->vkInterface(), CmdBindVertexBuffers(fCmdBuffer,
                                                             binding,
                                                             1,
-                                                            &vkBuffer,
+                                                            &vb,
                                                             &offset));
         fBoundInputBuffers[binding] = vkBuffer;
-        this->addGrBuffer(std::move(buffer));
+        this->addGrBuffer(std::move(vkBuffer));
     }
 }
 
 void GrVkCommandBuffer::bindIndexBuffer(GrVkGpu* gpu, sk_sp<GrGpuBuffer> buffer) {
-    VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(buffer.get())->vkBuffer();
+    sk_sp<GrVkBuffer> vkBuffer(static_cast<GrVkBuffer*>(buffer.release()));
     SkASSERT(VK_NULL_HANDLE != vkBuffer);
     // TODO: once ibuffer->offset() no longer always returns 0, we will need to track the offset
     // to know if we can skip binding or not.
     if (vkBuffer != fBoundIndexBuffer) {
         GR_VK_CALL(gpu->vkInterface(), CmdBindIndexBuffer(fCmdBuffer,
-                                                          vkBuffer, /*offset=*/0,
+                                                          vkBuffer->vkBuffer(),
+                                                          /*offset=*/0,
                                                           VK_INDEX_TYPE_UINT16));
         fBoundIndexBuffer = vkBuffer;
-        this->addGrBuffer(std::move(buffer));
+        this->addGrBuffer(std::move(vkBuffer));
     }
 }
 
@@ -286,6 +288,12 @@ void GrVkCommandBuffer::drawIndexed(const GrVkGpu* gpu,
                                     uint32_t firstInstance) {
     SkASSERT(fIsActive);
     SkASSERT(fActiveRenderPass);
+    for (const auto& buffer : fBoundInputBuffers) {
+        if (buffer) {
+            buffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
+        }
+    }
+    fBoundIndexBuffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
     this->addingWork(gpu);
     GR_VK_CALL(gpu->vkInterface(), CmdDrawIndexed(fCmdBuffer,
                                                   indexCount,
@@ -302,6 +310,11 @@ void GrVkCommandBuffer::draw(const GrVkGpu* gpu,
                              uint32_t firstInstance) {
     SkASSERT(fIsActive);
     SkASSERT(fActiveRenderPass);
+    for (const auto& buffer : fBoundInputBuffers) {
+        if (buffer) {
+            buffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
+        }
+    }
     this->addingWork(gpu);
     GR_VK_CALL(gpu->vkInterface(), CmdDraw(fCmdBuffer,
                                            vertexCount,
@@ -318,6 +331,11 @@ void GrVkCommandBuffer::drawIndirect(const GrVkGpu* gpu,
     SkASSERT(fIsActive);
     SkASSERT(fActiveRenderPass);
     SkASSERT(!indirectBuffer->isCpuBuffer());
+    for (const auto& buffer : fBoundInputBuffers) {
+        if (buffer) {
+            buffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
+        }
+    }
     this->addingWork(gpu);
     VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(indirectBuffer.get())->vkBuffer();
     GR_VK_CALL(gpu->vkInterface(), CmdDrawIndirect(fCmdBuffer,
@@ -337,6 +355,12 @@ void GrVkCommandBuffer::drawIndexedIndirect(const GrVkGpu* gpu,
     SkASSERT(fActiveRenderPass);
     SkASSERT(!indirectBuffer->isCpuBuffer());
     this->addingWork(gpu);
+    for (const auto& buffer : fBoundInputBuffers) {
+        if (buffer) {
+            buffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
+        }
+    }
+    fBoundIndexBuffer->useGeometryBufferAs(GrVkBuffer::GeometryBufferUsage::kDraw);
     VkBuffer vkBuffer = static_cast<const GrVkBuffer*>(indirectBuffer.get())->vkBuffer();
     GR_VK_CALL(gpu->vkInterface(), CmdDrawIndexedIndirect(fCmdBuffer,
                                                           vkBuffer,

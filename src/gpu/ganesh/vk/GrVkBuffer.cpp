@@ -218,6 +218,30 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t offset, size_t s
     }
 }
 
+void GrVkBuffer::useGeometryBufferAs(GeometryBufferUsage usage) {
+    SkASSERT(this->intendedType() == GrGpuBufferType::kIndex ||
+             this->intendedType() == GrGpuBufferType::kVertex);
+    if (usage != fLastUsage) {
+        VkAccessFlags dstAccessMask = this->intendedType() == GrGpuBufferType::kIndex
+                                    ? VK_ACCESS_INDEX_READ_BIT
+                                    : VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
+        VkAccessFlags srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+        VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_TRANSFER_BIT;
+        VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
+        if (usage == GeometryBufferUsage::kTransferDst) {
+            using std::swap;
+            swap(dstAccessMask, srcAccessMask);
+            swap(srcStageMask, dstStageMask);
+        }
+        this->addMemoryBarrier(srcAccessMask,
+                               dstAccessMask,
+                               srcStageMask,
+                               dstStageMask,
+                               /*byRegion=*/false);
+        fLastUsage = usage;
+    }
+}
+
 void GrVkBuffer::addMemoryBarrier(VkAccessFlags srcAccessMask,
                                   VkAccessFlags dstAccesMask,
                                   VkPipelineStageFlags srcStageMask,
