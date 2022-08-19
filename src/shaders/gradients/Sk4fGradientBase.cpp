@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkPaint.h"
 #include "src/shaders/gradients/Sk4fGradientBase.h"
 #include <functional>

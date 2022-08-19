@@ -194,16 +194,16 @@ void SkSweepGradient::addToKey(const SkKeyContext& keyContext,
 }
 #endif
 
-sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
-                                            const SkColor4f colors[],
-                                            sk_sp<SkColorSpace> colorSpace,
-                                            const SkScalar pos[],
-                                            int colorCount,
-                                            SkTileMode mode,
-                                            SkScalar startAngle,
-                                            SkScalar endAngle,
-                                            uint32_t flags,
-                                            const SkMatrix* localMatrix) {
+sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
+                                         const SkColor4f colors[],
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         const SkScalar pos[],
+                                         int colorCount,
+                                         SkTileMode mode,
+                                         SkScalar startAngle,
+                                         SkScalar endAngle,
+                                         uint32_t flags,
+                                         const SkMatrix* localMatrix) {
     if (!SkGradientShaderBase::ValidGradient(colors, pos, colorCount, mode)) {
         return nullptr;
     }
@@ -226,8 +226,8 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
             // interpolation region).
             static constexpr SkScalar clampPos[3] = {0, 1, 1};
             SkColor4f reColors[3] = {colors[0], colors[0], colors[colorCount - 1]};
-            return MakeSweep(cx, cy, reColors, std::move(colorSpace), clampPos, 3, mode, 0,
-                             endAngle, flags, localMatrix);
+            return SweepGradient(cx, cy, reColors, std::move(colorSpace), clampPos, 3, mode, 0,
+                                 endAngle, flags, localMatrix);
         } else {
             return SkGradientShaderBase::MakeDegenerateGradient(colors, pos, colorCount,
                                                                 std::move(colorSpace), mode);
@@ -250,36 +250,37 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
     return sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
-                                            const SkColor colors[],
-                                            const SkScalar pos[],
-                                            int colorCount,
-                                            SkTileMode mode,
-                                            SkScalar startAngle,
-                                            SkScalar endAngle,
-                                            uint32_t flags,
-                                            const SkMatrix* localMatrix) {
+sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
+                                         const SkColor colors[],
+                                         const SkScalar pos[],
+                                         int colorCount,
+                                         SkTileMode mode,
+                                         SkScalar startAngle,
+                                         SkScalar endAngle,
+                                         uint32_t flags,
+                                         const SkMatrix* localMatrix) {
     SkColorConverter converter(colors, colorCount);
-    return MakeSweep(cx, cy, converter.fColors4f.begin(), nullptr, pos, colorCount,
-                     mode, startAngle, endAngle, flags, localMatrix);
+    return SweepGradient(cx, cy, converter.fColors4f.begin(), nullptr, pos, colorCount,
+                         mode, startAngle, endAngle, flags, localMatrix);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
-                                            const SkColor4f colors[],
-                                            sk_sp<SkColorSpace> colorSpace,
-                                            const SkScalar pos[], int count,
-                                            uint32_t flags,
-                                            const SkMatrix* localMatrix) {
-    return MakeSweep(cx, cy, colors, std::move(colorSpace), pos, count,
-                     SkTileMode::kClamp, 0, 360, flags, localMatrix);
+sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
+                                         const SkColor4f colors[],
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         const SkScalar pos[],
+                                         int colorCount,
+                                         uint32_t flags,
+                                         const SkMatrix* localMatrix) {
+    return SweepGradient(cx, cy, colors, std::move(colorSpace), pos, colorCount,
+                         SkTileMode::kClamp, 0, 360, flags, localMatrix);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
-                                            const SkColor4f colors[],
-                                            sk_sp<SkColorSpace> colorSpace,
-                                            const SkScalar pos[],
-                                            int count) {
-    return MakeSweep(cx, cy, colors, std::move(colorSpace), pos, count, 0, nullptr);
+sk_sp<SkShader> SkShaders::SweepGradient(SkScalar cx, SkScalar cy,
+                                         const SkColor4f colors[],
+                                         sk_sp<SkColorSpace> colorSpace,
+                                         const SkScalar pos[],
+                                         int colorCount) {
+    return SweepGradient(cx, cy, colors, std::move(colorSpace), pos, colorCount, 0, nullptr);
 }
 
 void SkRegisterSweepGradientShaderFlattenable() {
