@@ -43,7 +43,7 @@ public:
     GrXferBarrierFlags renderPassBarriers() const override { return GrXferBarrierFlags::kNone; }
     GrLoadOp colorLoadOp() const override { return GrLoadOp::kLoad; }
 
-    void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<const GrBuffer>* buffer,
+    void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<GrBuffer>* buffer,
                           int* startVertex) override {
         if (vertexSize * vertexCount > sizeof(fStaticVertexData)) {
             SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.\n",
@@ -55,7 +55,7 @@ public:
     }
 
     void* makeVertexSpaceAtLeast(size_t vertexSize, int minVertexCount, int fallbackVertexCount,
-                                 sk_sp<const GrBuffer>* buffer, int* startVertex,
+                                 sk_sp<GrBuffer>* buffer, int* startVertex,
                                  int* actualVertexCount) override {
         if (vertexSize * minVertexCount > sizeof(fStaticVertexData)) {
             SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.\n",
@@ -67,7 +67,7 @@ public:
         return fStaticVertexData;
     }
 
-    GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
+    GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<GrBuffer>* buffer,
                                                size_t* offsetInBytes) override {
         if (sizeof(GrDrawIndirectCommand) * drawCount > sizeof(fStaticIndirectData)) {
             SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.\n",
@@ -81,7 +81,7 @@ public:
     void putBackIndirectDraws(int count) override { /* no-op */ }
 
     GrDrawIndexedIndirectWriter makeDrawIndexedIndirectSpace(int drawCount,
-                                                             sk_sp<const GrBuffer>* buffer,
+                                                             sk_sp<GrBuffer>* buffer,
                                                              size_t* offsetInBytes) override {
         if (sizeof(GrDrawIndexedIndirectCommand) * drawCount > sizeof(fStaticIndirectData)) {
             SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.\n",
@@ -101,8 +101,8 @@ public:
 #define UNIMPL(...) __VA_ARGS__ override { SK_ABORT("unimplemented."); }
     UNIMPL(void recordDraw(const GrGeometryProcessor*, const GrSimpleMesh[], int,
                            const GrSurfaceProxy* const[], GrPrimitiveType))
-    UNIMPL(uint16_t* makeIndexSpace(int, sk_sp<const GrBuffer>*, int*))
-    UNIMPL(uint16_t* makeIndexSpaceAtLeast(int, int, sk_sp<const GrBuffer>*, int*, int*))
+    UNIMPL(uint16_t* makeIndexSpace(int, sk_sp<GrBuffer>*, int*))
+    UNIMPL(uint16_t* makeIndexSpaceAtLeast(int, int, sk_sp<GrBuffer>*, int*, int*))
     UNIMPL(void putBackIndices(int))
     UNIMPL(GrRenderTargetProxy* rtProxy() const)
     UNIMPL(const GrSurfaceProxyView& writeView() const)
