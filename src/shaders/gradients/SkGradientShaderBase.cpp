@@ -53,8 +53,8 @@ void SkGradientShaderBase::Descriptor::flatten(SkWriteBuffer& buffer) const {
     }
     SkASSERT(static_cast<uint32_t>(fTileMode) <= kTileModeMask_GSF);
     flags |= ((unsigned)fTileMode << kTileModeShift_GSF);
-    SkASSERT(fGradFlags <= kGradFlagsMask_GSF);
-    flags |= (fGradFlags << kGradFlagsShift_GSF);
+    SkASSERT(static_cast<uint32_t>(fGradFlags) <= kGradFlagsMask_GSF);
+    flags |= (static_cast<uint32_t>(fGradFlags) << kGradFlagsShift_GSF);
 
     buffer.writeUInt(flags);
 
@@ -85,7 +85,7 @@ bool SkGradientShaderBase::DescriptorScope::unflatten(SkReadBuffer& buffer) {
     uint32_t flags = buffer.readUInt();
 
     fTileMode = (SkTileMode)((flags >> kTileModeShift_GSF) & kTileModeMask_GSF);
-    fGradFlags = (flags >> kGradFlagsShift_GSF) & kGradFlagsMask_GSF;
+    fGradFlags = static_cast<SkGradientFlags>((flags >> kGradFlagsShift_GSF) & kGradFlagsMask_GSF);
 
     fCount = buffer.getArrayCount();
 
@@ -124,13 +124,12 @@ bool SkGradientShaderBase::DescriptorScope::unflatten(SkReadBuffer& buffer) {
 SkGradientShaderBase::SkGradientShaderBase(const Descriptor& desc, const SkMatrix& ptsToUnit)
     : INHERITED(desc.fLocalMatrix)
     , fPtsToUnit(ptsToUnit)
+    , fGradFlags(desc.fGradFlags)
     , fColorSpace(desc.fColorSpace ? desc.fColorSpace : SkColorSpace::MakeSRGB())
     , fColorsAreOpaque(true)
 {
     fPtsToUnit.getType();  // Precache so reads are threadsafe.
     SkASSERT(desc.fCount > 1);
-
-    fGradFlags = static_cast<uint8_t>(desc.fGradFlags);
 
     SkASSERT((unsigned)desc.fTileMode < kSkTileModeCount);
     fTileMode = desc.fTileMode;
@@ -312,7 +311,7 @@ bool SkGradientShaderBase::onAppendStages(const SkStageRec& rec) const {
             break;
     }
 
-    const bool premulGrad = fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag;
+    const bool premulGrad = fGradFlags & SkGradientFlags::kInterpolateColorsInPremul;
 
     // Transform all of the colors to destination color space
     SkColor4fXformer xformedColors(fOrigColors4f, fColorCount, fColorSpace.get(), rec.fDstCS);
@@ -467,7 +466,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
                                                         , kUnpremul_SkAlphaType),
                 src    = common.makeColorSpace(fColorSpace),
                 dst    = common.makeColorSpace(dstInfo.refColorSpace());
-    if (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag) {
+    if (fGradFlags & SkGradientFlags::kInterpolateColorsInPremul) {
         dst = dst.makeAlphaType(kPremul_SkAlphaType);
     }
 
@@ -586,7 +585,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
     }
 
     // If we interpolated unpremul, premul now to match our output convention.
-    if (0 == (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag)
+    if (0 == (fGradFlags & SkGradientFlags::kInterpolateColorsInPremul)
             && !fColorsAreOpaque) {
         color = premul(color);
     }
@@ -687,7 +686,7 @@ SkGradientShaderBase::Descriptor::Descriptor(const SkColor4f colors[],
                                              const SkScalar pos[],
                                              int colorCount,
                                              SkTileMode mode,
-                                             uint32_t flags,
+                                             SkGradientFlags flags,
                                              const SkMatrix* localMatrix)
         : fLocalMatrix(localMatrix)
         , fColors(colors)

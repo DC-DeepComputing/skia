@@ -36,9 +36,10 @@ protected:
         SkColor colors[] = { c0, c1 };
         SkPoint pts[] = { { r.fLeft, r.fTop }, { r.fRight, r.fBottom } };
         SkPaint paint;
-        uint32_t flags = doPreMul ? SkGradientShader::kInterpolateColorsInPremul_Flag : 0;
-        paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2,
-                                                     SkTileMode::kClamp, flags, nullptr));
+        SkGradientFlags flags = doPreMul ? SkGradientFlags::kInterpolateColorsInPremul
+                                         : SkGradientFlags::kNone;
+        paint.setShader(SkShaders::LinearGradient(pts, colors, nullptr, 2,
+                                                  SkTileMode::kClamp, flags, nullptr));
         canvas->drawRect(r, paint);
 
         paint.setShader(nullptr);

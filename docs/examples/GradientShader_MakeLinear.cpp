@@ -26,7 +26,7 @@ void draw(SkCanvas* canvas) {
         int flags = 0; // interpolate colors in unpremul
         if (i % 2 == 1) {
             // right column will have premul
-            flags = SkGradientShader::Flags::kInterpolateColorsInPremul_Flag;
+            flags = SkGradientFlags::kInterpolateColorsInPremul;
         }
 
         SkMatrix matr = SkMatrix::I();
