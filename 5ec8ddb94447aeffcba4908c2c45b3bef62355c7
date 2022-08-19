@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76b9fe49_c8ee8a4a",
+        "filename": "src/gpu/graphite/ContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-19T14:46:37Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "7a2c67f1_fa05d5ea",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 51
+      },
+      "revId": "5ec8ddb94447aeffcba4908c2c45b3bef62355c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2c0a76b_ec49884b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb80f8a7_ee480581",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-19T14:46:37Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "d2c0a76b_ec49884b",
+      "range": {
+        "startLine": 28,
+        "startChar": 41,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "5ec8ddb94447aeffcba4908c2c45b3bef62355c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b294615_82cbc5bd",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-19T14:03:23Z",
       "side": 0,
       "message": "This was never used and had no implementation, so I think it got left over from some cleanup.",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 96
+      },
+      "revId": "5ec8ddb94447aeffcba4908c2c45b3bef62355c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a46006a1_3b2dc379",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-19T14:46:37Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "3b294615_82cbc5bd",
       "range": {
         "startLine": 40,
         "startChar": 4,
