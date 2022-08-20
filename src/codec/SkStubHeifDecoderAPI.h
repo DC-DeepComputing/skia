@@ -74,6 +74,10 @@ struct HeifDecoder {
     uint32_t getColorDepth() {
         return 0;
     }
+
+    void setCodecPreference(int codecPreference) {
+
+    }
 };
 
 static inline HeifDecoder* createHeifDecoder() { return new HeifDecoder; }

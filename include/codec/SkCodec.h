@@ -284,6 +284,42 @@ public:
     };
 
     /**
+     * Codec selection order for H/W first, H/W only, S/W first, or S/W only.
+     *
+     * Currently this is only used for HEIF decoding.
+     *
+     * The default is 0, representing no order preference and the decision order will be
+     * device specific.
+     */
+#ifdef SK_HAS_HEIF_LIBRARY
+    enum CodecPreference {
+        /**
+         * No order preference specified, and decoder/encoder will be selected according to the
+         * default order, which is decided by devices.
+         */
+        kNoPreference = 0,
+        /**
+         * No order preference specified, and decoder/encoder will be selected according to the
+         * default order, which is decided by devices.
+         */
+        kPreferSoftwareCodecs = 1,
+        /**
+         * Only use hardware codec.
+         */
+        kOnlyHardwareCodecs = 2,
+        /**
+         * Prefer hardware codec first. Hardware codec will be checked first, if no hardware
+         * codec available for the given content, software codec will then be checked.
+         */
+        kPreferHardwareCodecs = 4,
+        /**
+         * Only use software codec.
+         */
+        kOnlySoftwareCodecs = 8,
+    };
+#endif
+
+    /**
      *  Additional options to pass to getPixels.
      */
     struct Options {
@@ -292,6 +328,9 @@ public:
             , fSubset(nullptr)
             , fFrameIndex(0)
             , fPriorFrame(kNoFrame)
+#ifdef SK_HAS_HEIF_LIBRARY
+            , fCodecPreference(kNoPreference)
+#endif
         {}
 
         ZeroInitialized            fZeroInitialized;
@@ -335,6 +374,18 @@ public:
          *  If set to kNoFrame, the codec will decode any necessary required frame(s) first.
          */
         int                        fPriorFrame;
+
+        /**
+         * Codec selection order for H/W first, H/W only, S/W first, or S/W only.
+         *
+         * Currently this is only used for HEIF decoding.
+         *
+         * The default is 0, representing no order preference and the decision order will be
+         * device specific.
+         */
+#ifdef SK_HAS_HEIF_LIBRARY
+        CodecPreference            fCodecPreference;
+#endif
     };
 
     /**
