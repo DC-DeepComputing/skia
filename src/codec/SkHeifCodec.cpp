@@ -376,6 +376,24 @@ int SkHeifCodec::onGetRepetitionCount() {
     return kRepetitionCountInfinite;
 }
 
+void SkHeifCodec::checkCodecPreference() {
+  static_assert(
+      (int)CodecPreference::kNoPreference == kHeifCodecPreference_none,
+      "CodecPreference mismatch!");
+  static_assert(
+      (int)CodecPreference::kPreferSoftwareCodecs == kHeifCodecPreference_preferSoftwareCodecs,
+      "CodecPreference mismatch!");
+  static_assert(
+      (int)CodecPreference::kOnlyHardwareCodecs == kHeifCodecPreference_onlyHardwareCodecs,
+      "CodecPreference mismatch!");
+  static_assert(
+      (int)CodecPreference::kPreferHardwareCodecs == kHeifCodecPreference_preferHardwareCodecs,
+      "CodecPreference mismatch!");
+  static_assert(
+      (int)CodecPreference::kOnlySoftwareCodecs == kHeifCodecPreference_onlySoftwareCodecs,
+      "CodecPreference mismatch!");
+}
+
 /*
  * Performs the heif decode
  */
@@ -389,6 +407,11 @@ SkCodec::Result SkHeifCodec::onGetPixels(const SkImageInfo& dstInfo,
         // need to retrieve tile config from metadata retriever first.
         return kUnimplemented;
     }
+
+    // Verify CodecPreference enumerator stays in sync with HeifCodecPreference,
+    // and parse the value to media framework.
+    checkCodecPreference();
+    fHeifDecoder->setCodecPreference((int)options.fCodecPreference);
 
     bool success;
     if (fUseAnimation) {

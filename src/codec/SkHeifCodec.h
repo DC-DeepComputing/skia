@@ -82,6 +82,12 @@ private:
     int onGetScanlines(void* dst, int count, size_t rowBytes) override;
     bool onSkipScanlines(int count) override;
 
+    /*
+     * Verify HeifCodecPreference stays in sync with CodecPreference. Raise an assertion
+     * if the check fails.
+     */
+     void checkCodecPreference();
+
     std::unique_ptr<HeifDecoder>       fHeifDecoder;
     HeifFrameInfo                      fFrameInfo;
     SkAutoTMalloc<uint8_t>             fStorage;
