@@ -116,6 +116,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55c9add2_1fad5eac",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-08-20T19:30:52Z",
+      "side": 1,
+      "message": "Extra information: You could also have \"cq_config\" apply conditionally on specific altered paths\nEg: `\"cq_config\": {\"location_regexes\": [\"modules/canvaskit/.*\"]}`",
+      "parentUuid": "ee9fae23_21dd5047",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 38
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98053ffc_4ddea1fd",
@@ -205,6 +229,29 @@
         "startChar": 0,
         "endLine": 61,
         "endChar": 10
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e09cf5f_4112caf8",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-08-20T19:30:52Z",
+      "side": 1,
+      "message": "(Do you need to upload a patchset? I do not see the changes from Eric\u0027s comments)\n\n\nExtra information:\n\nGerrit does not check tasks.json, it has no knowledge of any of the backends that triggers checks across different projects.\nSkCQ (http://go/skcq-design-doc) looks at each Skia change with CQ+1/CQ+2 to see if it has modified tasks.json. If it has then it uses that updated list of try jobs, else it uses the list of try jobs from tasks.json at ToT.\nThis means that if a CL adds 2 new try jobs to the CQ, then running the CQ for that CL will automatically include those 2 new try jobs.\n\n\nSeparately from the above, the \"Choose Tryjobs\" button on Gerrit is populated by Chromium\u0027s Buildbucket Gerrit plugin (https://g3doc.corp.google.com/company/teams/chrome/ops/core_infra/source/git_gerrit/plugins.md?cl\u003dhead#buildbucket) by reading the `buildbucket.config` file at ToT. \n\nUpdating `buildbucket.config` used to be a manual process. But now we have a separate service called trybot-updater that automatically updates that file Eg: https://skia-review.googlesource.com/c/skia/+/568561",
+      "range": {
+        "startLine": 60,
+        "startChar": 56,
+        "endLine": 61,
+        "endChar": 71
       },
       "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
