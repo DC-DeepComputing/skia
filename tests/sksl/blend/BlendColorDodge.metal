@@ -10,7 +10,11 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
+half guarded_divide_Qhhh(half n, half d);
 half color_dodge_component_Qhh2h2(half2 s, half2 d);
+half guarded_divide_Qhhh(half n, half d) {
+    return false ? n / (d + 9.9999999392252903e-09h) : n / d;
+}
 half color_dodge_component_Qhh2h2(half2 s, half2 d) {
     if (d.x == 0.0h) {
         return s.x * (1.0h - d.y);
@@ -19,7 +23,7 @@ half color_dodge_component_Qhh2h2(half2 s, half2 d) {
         if (delta == 0.0h) {
             return (s.y * d.y + s.x * (1.0h - d.y)) + d.x * (1.0h - s.y);
         } else {
-            delta = min(d.y, (d.x * s.y) / delta);
+            delta = min(d.y, guarded_divide_Qhhh(d.x * s.y, delta));
             return (delta * s.y + s.x * (1.0h - d.y)) + d.x * (1.0h - s.y);
         }
     }
