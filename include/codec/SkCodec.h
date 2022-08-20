@@ -289,6 +289,7 @@ public:
             , fSubset(nullptr)
             , fFrameIndex(0)
             , fPriorFrame(kNoFrame)
+            , fCodecPreference(0)
         {}
 
         ZeroInitialized            fZeroInitialized;
@@ -332,6 +333,14 @@ public:
          *  If set to kNoFrame, the codec will decode any necessary required frame(s) first.
          */
         int                        fPriorFrame;
+
+        /**
+         * Codec selection order for H/W first, H/W only, S/W first, or S/W only.
+         *
+         * The default is 0, representing no order preference and the decision order will be
+         * device specific.
+         */
+        int                        fCodecPreference;
     };
 
     /**

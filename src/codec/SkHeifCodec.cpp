@@ -389,6 +389,8 @@ SkCodec::Result SkHeifCodec::onGetPixels(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
+    fHeifDecoder->setCodecPreference(options.fCodecPreference);
+
     bool success;
     if (fUseAnimation) {
         success = fHeifDecoder->decodeSequence(options.fFrameIndex, &fFrameInfo);
