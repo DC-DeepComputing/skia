@@ -16,6 +16,24 @@
       "message": "Do not submit until skia:13673 is addressed",
       "revId": "11b3d69cc7eaebcb76bf4f4d318f1d138c540323",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "602966c7_c95619be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-20T02:56:36Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/571701",
+      "parentUuid": "851d0620_6749faa5",
+      "revId": "11b3d69cc7eaebcb76bf4f4d318f1d138c540323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
