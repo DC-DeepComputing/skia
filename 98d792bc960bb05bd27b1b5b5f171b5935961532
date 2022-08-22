@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e29880_1d4b846f",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-22T17:20:54Z",
+      "side": 1,
+      "message": "What\u0027s the additional impact of removing fReplaceSettings entirely, and just ALWAYS deferring them to the back-end? Seems like it shouldn\u0027t change much?",
+      "range": {
+        "startLine": 402,
+        "startChar": 13,
+        "endLine": 402,
+        "endChar": 29
+      },
+      "revId": "98d792bc960bb05bd27b1b5b5f171b5935961532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
