@@ -46,6 +46,30 @@
       },
       "revId": "98d792bc960bb05bd27b1b5b5f171b5935961532",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2110f956_4d329a21",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-22T18:09:22Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/572220\n\nIt\u0027s much less bad than I expected, but I still don\u0027t think it\u0027s worth it--it\u0027s only a few extra LOC to keep fReplaceSettings and it makes better code.",
+      "parentUuid": "af884971_781213a2",
+      "range": {
+        "startLine": 402,
+        "startChar": 13,
+        "endLine": 402,
+        "endChar": 29
+      },
+      "revId": "98d792bc960bb05bd27b1b5b5f171b5935961532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
