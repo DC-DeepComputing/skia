@@ -1376,7 +1376,8 @@ GrBackendTexture GrD3DGpu::onCreateBackendTexture(SkISize dimensions,
                                                   const GrBackendFormat& format,
                                                   GrRenderable renderable,
                                                   GrMipmapped mipmapped,
-                                                  GrProtected isProtected) {
+                                                  GrProtected isProtected,
+                                                  std::string_view label) {
     const GrD3DCaps& caps = this->d3dCaps();
 
     if (this->protectedContext() != (isProtected == GrProtected::kYes)) {
@@ -1400,7 +1401,7 @@ GrBackendTexture GrD3DGpu::onCreateBackendTexture(SkISize dimensions,
         return {};
     }
 
-    return GrBackendTexture(dimensions.width(), dimensions.height(), info);
+    return GrBackendTexture(dimensions.width(), dimensions.height(), info, label);
 }
 
 static bool copy_color_data(const GrD3DCaps& caps,
@@ -1518,8 +1519,12 @@ bool GrD3DGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
 GrBackendTexture GrD3DGpu::onCreateCompressedBackendTexture(
     SkISize dimensions, const GrBackendFormat& format, GrMipmapped mipmapped,
     GrProtected isProtected) {
-    return this->onCreateBackendTexture(dimensions, format, GrRenderable::kNo, mipmapped,
-                                        isProtected);
+    return this->onCreateBackendTexture(dimensions,
+                                        format,
+                                        GrRenderable::kNo,
+                                        mipmapped,
+                                        isProtected,
+                                        /*label=*/"D3DGpu_CreateCompressedBackendTexture");
 }
 
 bool GrD3DGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTexture,

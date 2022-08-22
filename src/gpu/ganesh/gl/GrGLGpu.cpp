@@ -3709,7 +3709,8 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
                                                  const GrBackendFormat& format,
                                                  GrRenderable renderable,
                                                  GrMipmapped mipmapped,
-                                                 GrProtected isProtected) {
+                                                 GrProtected isProtected,
+                                                 std::string_view label) {
     this->handleDirtyContext();
 
     GrGLFormat glFormat = format.asGLFormat();
@@ -3761,7 +3762,7 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
                     fResetTimestampForTextureParameters);
 
     return GrBackendTexture(dimensions.width(), dimensions.height(), mipmapped, info,
-                            std::move(parameters));
+                            std::move(parameters), label);
 }
 
 bool GrGLGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,

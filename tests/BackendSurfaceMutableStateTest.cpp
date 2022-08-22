@@ -29,7 +29,7 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
 
     GrBackendFormat format = GrBackendFormat::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
     GrBackendTexture backendTex = dContext->createBackendTexture(
-            32, 32, format, GrMipmapped::kNo, GrRenderable::kNo, GrProtected::kNo);
+            32, 32, format, GrMipmapped::kNo, GrRenderable::kNo, {}, GrProtected::kNo);
 
     REPORTER_ASSERT(reporter, backendTex.isValid());
 

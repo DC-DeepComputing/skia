@@ -250,7 +250,8 @@ GrBackendTexture GrMockGpu::onCreateBackendTexture(SkISize dimensions,
                                                    const GrBackendFormat& format,
                                                    GrRenderable,
                                                    GrMipmapped mipmapped,
-                                                   GrProtected) {
+                                                   GrProtected,
+                                                   std::string_view label) {
     SkImage::CompressionType compression = format.asMockCompressionType();
     if (compression != SkImage::CompressionType::kNone) {
         return {}; // should go through onCreateCompressedBackendTexture
@@ -264,7 +265,7 @@ GrBackendTexture GrMockGpu::onCreateBackendTexture(SkISize dimensions,
     GrMockTextureInfo info(colorType, SkImage::CompressionType::kNone, NextExternalTextureID());
 
     fOutstandingTestingOnlyTextureIDs.add(info.id());
-    return GrBackendTexture(dimensions.width(), dimensions.height(), mipmapped, info);
+    return GrBackendTexture(dimensions.width(), dimensions.height(), mipmapped, info, label);
 }
 
 GrBackendTexture GrMockGpu::onCreateCompressedBackendTexture(

@@ -214,6 +214,7 @@ static bool setup_backend_objects(GrDirectContext* dContext,
             SkColors::kTransparent,
             options.fOffScreenMipMapping,
             GrRenderable::kYes,
+            "",
             GrProtected::kNo);
         if (!managedBackendTextureRenderTarget) {
             fputs("Failed to create backendTextureRenderTarget.\n", stderr);

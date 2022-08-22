@@ -137,7 +137,7 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_NoYcbcrSurface,
 
     GrBackendTexture texture = testHelper.directContext()->createBackendTexture(
             kImageWidth, kImageHeight, GrBackendFormat::MakeVk(VK_FORMAT_G8_B8R8_2PLANE_420_UNORM),
-            GrMipmapped::kNo, GrRenderable::kNo, GrProtected::kNo);
+            GrMipmapped::kNo, GrRenderable::kNo, {}, GrProtected::kNo);
     if (texture.isValid()) {
         ERRORF(reporter,
                "GrDirectContext::createBackendTexture() didn't fail as expected for Ycbcr format.");

@@ -34,7 +34,7 @@ private:
         for (int i = 0; i < loops; ++i) {
             fBackendTextures.push_back(context->createBackendTexture(
                     kSize, kSize, kRGBA_8888_SkColorType, SkColors::kRed, fMipmapped,
-                    GrRenderable::kNo, GrProtected::kNo));
+                    GrRenderable::kNo, {}, GrProtected::kNo));
         }
     }
 

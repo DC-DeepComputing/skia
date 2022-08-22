@@ -334,7 +334,8 @@ GrBackendTexture GrDawnGpu::onCreateBackendTexture(SkISize dimensions,
                                                    const GrBackendFormat& backendFormat,
                                                    GrRenderable renderable,
                                                    GrMipmapped mipmapped,
-                                                   GrProtected isProtected) {
+                                                   GrProtected isProtected,
+                                                   std::string_view label) {
     wgpu::TextureFormat format;
     if (!backendFormat.asDawnFormat(&format)) {
         return GrBackendTexture();
@@ -365,7 +366,7 @@ GrBackendTexture GrDawnGpu::onCreateBackendTexture(SkISize dimensions,
     info.fTexture = tex;
     info.fFormat = desc.format;
     info.fLevelCount = desc.mipLevelCount;
-    return GrBackendTexture(dimensions.width(), dimensions.height(), info);
+    return GrBackendTexture(dimensions.width(), dimensions.height(), info, label);
 }
 
 void GrDawnGpu::uploadTextureData(GrColorType srcColorType, const GrMipLevel texels[],
