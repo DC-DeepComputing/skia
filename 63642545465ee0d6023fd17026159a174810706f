@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49be6545_2605208d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-22T16:19:34Z",
+      "side": 1,
+      "message": "No functional changes, just shuffling things around to keep the next CL focused.",
+      "revId": "63642545465ee0d6023fd17026159a174810706f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
