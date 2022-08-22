@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9912e114_6a2e944a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "I like this clean up a lot, just some iteration ideas on it.",
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b96a413_6b2672ce",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer if this was calculated as part of the new combined setCurrentUniforms().\n\nThat would also allow us to simplify some of the internal state, since setCurrentUniforms() is the only place that needs to know if either batch key or uniform index changed. bindBuffer() only needs to know that it needs to bind the buffer, depending on fUseStorageBuffers, so we could combine fBatchKeyChanged and fUniformIndexChanged into a single fNeedBufferBinding field instead.\n\nThis would also mean that we can keep the call to `bindBuffer()` down below inside the `if (stateChanged)` loop, which seems less surprising to me than always calling `bindBuffer()` that may or may not actually bind.",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 84
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b587a5_5ad61daa",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "fBatchKeyChanged and fUniformIndexChanged need to be reset here.",
+      "range": {
+        "startLine": 292,
+        "startChar": 2,
+        "endLine": 292,
+        "endChar": 5
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23576f42_cd1514c7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "We should add a comment here or at the start of DrawPassUniformWriter that a batch key represents either the paint params unique ID or the render step, depending on the slot that the bindings will be assigned to.",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 317,
+        "endChar": 27
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b51eb21d_20799462",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "`stepIndex` is just the index into a Renderer\u0027s array of RenderSteps, so will always be between 0 and 3. Since the batch key gets used across pipelines (a good thing), we need value that is more unique or we\u0027ll end up having every 1st RenderStep of a Renderer go into the same batch (if I\u0027m following the code correctly).\n\nGraphicsPipelineDesc is based on the paintParams unique ID and the pointer to the RenderStep (cast to a uintptr_t). Unfortunately that\u0027s 64 bits so doesn\u0027t act as interchangeably in your types as uint32_t does. I wonder if we should just assign a 32-bit unique ID to RenderStep. That\u0027s probably worth doing, I could put that together pretty quick today in another CL.",
+      "range": {
+        "startLine": 521,
+        "startChar": 63,
+        "endLine": 521,
+        "endChar": 72
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "205e182a_939926b3",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "I\u0027d vote to combine setSsboBatchKey and setUniformIndex into a single function like `setCurrentUniforms(pipelineIndex, UniformDataCache::Index)`",
+      "range": {
+        "startLine": 575,
+        "startChar": 8,
+        "endLine": 578,
+        "endChar": 68
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b861bcec_7b470fdd",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T15:57:41Z",
+      "side": 1,
+      "message": "See earlier comment, but I\u0027m hoping these can get moved back into the if (stateChange) to keep all bindBuffer-y commands inside that if block for readability.",
+      "range": {
+        "startLine": 601,
+        "startChar": 8,
+        "endLine": 603,
+        "endChar": 0
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
