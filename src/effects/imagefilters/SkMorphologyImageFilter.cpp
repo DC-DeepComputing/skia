@@ -499,8 +499,10 @@ static sk_sp<SkSpecialImage> apply_morphology(
     return SkSpecialImage::MakeDeferredFromGpu(rContext,
                                                SkIRect::MakeWH(rect.width(), rect.height()),
                                                kNeedNewImageUniqueID_SpecialImage,
-                                               std::move(srcView), colorType,
-                                               std::move(colorSpace), input->props());
+                                               std::move(srcView),
+                                               GrColorInfo(colorType, kPremul_SkAlphaType,
+                                                           std::move(colorSpace)),
+                                               input->props());
 }
 #endif
 

@@ -1011,8 +1011,9 @@ sk_sp<SkSpecialImage> SkBlurImageFilter::gpuFilter(
                                                SkIRect::MakeSize(dstBounds.size()),
                                                kNeedNewImageUniqueID_SpecialImage,
                                                sdc->readSurfaceView(),
-                                               sdc->colorInfo().colorType(),
-                                               sk_ref_sp(input->getColorSpace()),
+                                               GrColorInfo(sdc->colorInfo().colorType(),
+                                                           sdc->colorInfo().alphaType(),
+                                                           sk_ref_sp(input->getColorSpace())),
                                                ctx.surfaceProps());
 #else // SK_GPU_V1
     return nullptr;
