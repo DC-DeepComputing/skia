@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b3e3c9_122ea21f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T11:38:20Z",
+      "side": 1,
+      "message": "This fuzzer seems reasonable to me. Have you tested it locally? What is the fuzz per second rate? (I like to shoot for \u003e100)",
+      "revId": "335aa3b248ca727dc06f6500ccac75a9b3130937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd487e2_e1077841",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T11:38:20Z",
+      "side": 1,
+      "message": "You also want to add a libfuzzer_app target like https://github.com/google/skia/blob/27ccebd5bef495f51a61160ade5366ed59755e35/BUILD.gn#L3377",
+      "revId": "335aa3b248ca727dc06f6500ccac75a9b3130937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c63182_d3b3466b",
+        "filename": "fuzz/oss_fuzz/FuzzCOLRv1.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T11:38:20Z",
+      "side": 1,
+      "message": "I would add some notes about these numbers being chosen arbitrarily, so we don\u0027t later assume there is something \"magical\" about them.",
+      "range": {
+        "startLine": 30,
+        "startChar": 41,
+        "endLine": 30,
+        "endChar": 44
+      },
+      "revId": "335aa3b248ca727dc06f6500ccac75a9b3130937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a32ee0_a5b4c2d5",
+        "filename": "fuzz/oss_fuzz/FuzzCOLRv1.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T11:38:20Z",
+      "side": 1,
+      "message": "Is 5 kb enough for a small COLRv1 font?",
+      "range": {
+        "startLine": 45,
+        "startChar": 15,
+        "endLine": 45,
+        "endChar": 23
+      },
+      "revId": "335aa3b248ca727dc06f6500ccac75a9b3130937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
