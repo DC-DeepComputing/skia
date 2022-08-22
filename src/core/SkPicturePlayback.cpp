@@ -354,6 +354,9 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
                 reader->readRect(&set[i].fSrcRect);
                 reader->readRect(&set[i].fDstRect);
                 set[i].fMatrixIndex = reader->readInt();
+                if (!reader->validate(set[i].fMatrixIndex >= 0)) {
+                    break;
+                }
                 set[i].fAlpha = reader->readScalar();
                 set[i].fAAFlags = reader->readUInt();
                 set[i].fHasClip = reader->readInt();
@@ -366,8 +369,9 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
 
             int dstClipCount = reader->readInt();
             SkPoint* dstClips = nullptr;
-            if (!reader->validate(expectedClips <= dstClipCount)) {
-                // Entries request more dstClip points than are provided in the buffer
+            if (!reader->validate(dstClipCount >= 0) ||
+                !reader->validate(expectedClips <= dstClipCount)) {
+                // A bad dstClipCount (either negative, or not enough to satisfy entries).
                 break;
             } else if (dstClipCount > 0) {
                 dstClips = (SkPoint*) reader->skip(dstClipCount, sizeof(SkPoint));
@@ -377,7 +381,8 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
                 }
             }
             int matrixCount = reader->readInt();
-            if (!reader->validate((maxMatrixIndex + 1) <= matrixCount) ||
+            if (!reader->validate(matrixCount >= 0) ||
+                !reader->validate(maxMatrixIndex <= (matrixCount - 1)) ||
                 !reader->validate(
                     SkSafeMath::Mul(matrixCount, kMatrixSize) <= reader->available())) {
                 // Entries access out-of-bound matrix indices, given provided matrices or
