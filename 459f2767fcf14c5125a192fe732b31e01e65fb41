@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70e34d2d_9c56f816",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:12:20Z",
+      "side": 1,
+      "message": "nit: I was still a bit confused how this worked. I think a self-documenting helper function called extractFirstPathSegment or extractTopLevelFolder might aid readability.",
+      "range": {
+        "startLine": 518,
+        "startChar": 10,
+        "endLine": 518,
+        "endChar": 50
+      },
+      "revId": "459f2767fcf14c5125a192fe732b31e01e65fb41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

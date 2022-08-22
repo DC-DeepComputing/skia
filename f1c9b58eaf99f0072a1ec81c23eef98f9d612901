@@ -449,6 +449,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a43b5de_779e451b",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:12:20Z",
+      "side": 1,
+      "message": "I think putting it as a field is easier to reason about. If we need to handle concurrency, we can add a sync.Mutex to the GNIExporter struct.",
+      "parentUuid": "6cac7654_a9572b2b",
+      "range": {
+        "startLine": 451,
+        "startChar": 79,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b8891df_e3795f0c",
         "filename": "bazel/exporter/gni_exporter.go",
         "patchSetId": 15
@@ -975,6 +999,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67d2f8e_a410b3b4",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:12:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "38514bc8_79614497",
+      "range": {
+        "startLine": 531,
+        "startChar": 17,
+        "endLine": 531,
+        "endChar": 33
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40d860c8_0bf4c1d6",
@@ -1106,6 +1154,30 @@
       "side": 1,
       "message": "Only because I wanted to strictly rely on a formatted GNI file which trims leading whitespace. I could tweak the regular expression to tolerate leading whitespace, but didn\u0027t see the need to get too fancy.",
       "parentUuid": "711a0ea5_6e4820cc",
+      "range": {
+        "startLine": 589,
+        "startChar": 4,
+        "endLine": 589,
+        "endChar": 5
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff69f47_45169c70",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:12:20Z",
+      "side": 1,
+      "message": "Ack. Can you add that as a comment?",
+      "parentUuid": "85daf1af_b729d1d0",
       "range": {
         "startLine": 589,
         "startChar": 4,
