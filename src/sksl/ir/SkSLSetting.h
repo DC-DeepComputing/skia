@@ -23,8 +23,8 @@ class Type;
 
 /**
  * Represents a compile-time constant setting, such as sk_Caps.integerSupport. These IRNodes should
- * only exist in a dehydrated module. These nodes are replaced with the value of the setting during
- * rehydration or compilation (i.e., whenever fReplaceSettings is true).
+ * only exist in a dehydrated module. These nodes are replaced with the value of the setting in the
+ * backend.
  */
 class Setting final : public Expression {
 public:
@@ -34,10 +34,7 @@ public:
         : INHERITED(pos, kExpressionKind, type)
         , fName(std::move(name)) {}
 
-    // Creates an SkSL setting expression if `fReplaceSettings` is false, or the current value of
-    // the setting when it is true. Reports errors via the ErrorReporter.
-    // (There's no failsafe Make equivalent, because there really isn't a good fallback expression
-    // to produce when the `name` lookup fails. We wouldn't even know the expected type.)
+    // Creates an SkSL setting expression.
     static std::unique_ptr<Expression> Convert(const Context& context, Position pos,
                                                const std::string_view& name);
 

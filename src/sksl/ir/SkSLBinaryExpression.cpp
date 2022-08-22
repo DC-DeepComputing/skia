@@ -189,37 +189,19 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
             // Look up `sk_Caps.rewriteMatrixVectorMultiply`.
             auto caps = Setting::Convert(context, pos, "rewriteMatrixVectorMultiply");
 
-            // There are three possible outcomes from Setting::Convert:
-            // - If `fReplaceSettings` is false in our ProgramSettings, we will get back a Setting
-            //   IRNode. In practice, `fReplaceSettings` is only enabled when compiling modules.
-            //   In this case, we generate a ternary expression which will be optimized away when
-            //   the module code is actually incorporated into a program.
-            // - If `rewriteMatrixVectorMultiply` is true in our shader caps, we will get back a
-            //   Literal set to true. When this happens, we always return the rewritten expression.
-            // - If `rewriteMatrixVectorMultiply` is false in our shader caps, we will get back a
-            //   Literal set to false. When this happens, we return the expression as-is.
-            bool capsBitIsTrue = caps->isBoolLiteral() && caps->as<Literal>().boolValue();
-            if (capsBitIsTrue || !caps->isBoolLiteral()) {
-                // Rewrite the multiplication as a sum of vector-scalar products.
-                std::unique_ptr<Expression> rewrite =
-                        rewrite_matrix_vector_multiply(context, pos, *left, op, *right,
-                                                       *resultType);
-
-                // If we know the caps bit is true, return the rewritten expression directly.
-                if (capsBitIsTrue) {
-                    return rewrite;
-                }
-
-                // Return a ternary expression:
-                //     sk_Caps.rewriteMatrixVectorMultiply ? (rewrite) : (mat * vec)
-                return TernaryExpression::Make(
-                        context,
-                        pos,
-                        std::move(caps),
-                        std::move(rewrite),
-                        std::make_unique<BinaryExpression>(pos, std::move(left), op,
-                                                           std::move(right), resultType));
-            }
+            // Rewrite the multiplication as a sum of vector-scalar products.
+            std::unique_ptr<Expression> rewrite =
+                    rewrite_matrix_vector_multiply(context, pos, *left, op, *right,
+                                                   *resultType);
+            // Return a ternary expression:
+            //     sk_Caps.rewriteMatrixVectorMultiply ? (rewrite) : (mat * vec)
+            return TernaryExpression::Make(
+                    context,
+                    pos,
+                    std::move(caps),
+                    std::move(rewrite),
+                    std::make_unique<BinaryExpression>(pos, std::move(left), op,
+                                                       std::move(right), resultType));
         }
     }
 
