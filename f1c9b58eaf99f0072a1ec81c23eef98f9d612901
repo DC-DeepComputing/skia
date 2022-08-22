@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "143388b9_ed7aad7f",
+        "filename": "bazel/exporter/BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4a3e33a_ac9c8996",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50d4707d_ad5e55e0",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aba640_80a2b8f2",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50d4707d_ad5e55e0",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5625d2ec_77a92c9e",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "workspace?",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 10
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0d1c21_682995bd",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5625d2ec_77a92c9e",
       "range": {
         "startLine": 59,
         "startChar": 8,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "672c2e8d_9988d759",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Currently they are written in the order returned by cquery which is \"dependency-ordered\"(1). I didn\u0027t want to couple this implementation to closely to cquery, so I left it as unspecified. I went ahead and sorted the rules before converting.\n\n(1) https://bazel.build/query/cquery#output-formats",
+      "parentUuid": "f5e7d8cc_ced371c6",
+      "range": {
+        "startLine": 64,
+        "startChar": 37,
+        "endLine": 64,
+        "endChar": 49
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b20d036_d7fb4652",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Specifically a variable that is a list of strings. https://github.com/google/skia/blob/main/gn/skia.gni#L14 defines lots of string variables, but we don\u0027t care about those.",
+      "range": {
+        "startLine": 216,
+        "startChar": 9,
+        "endLine": 216,
+        "endChar": 17
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "416e9184_828056bd",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b20d036_d7fb4652",
       "range": {
         "startLine": 216,
         "startChar": 9,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aaba328_1fe94dcf",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "I decided to make this function return an error and check at a higher level.",
+      "parentUuid": "30c7db16_7d48a54f",
+      "range": {
+        "startLine": 309,
+        "startChar": 9,
+        "endLine": 309,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "018d3103_8b0fb2e3",
@@ -146,6 +284,24 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Here and everywhere: TODO(cmumford) or TODO(skbug.com/12345).",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a94276d_13aa228c",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "018d3103_8b0fb2e3",
       "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -173,6 +329,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "768e83a1_3798d0d2",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Yeah, this is too closely coupled to the caller. Fixed.",
+      "parentUuid": "761eba55_a61bb478",
+      "range": {
+        "startLine": 433,
+        "startChar": 35,
+        "endLine": 433,
+        "endChar": 49
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57159690_abedd9a2",
@@ -186,6 +366,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Prefer nil slices to empty slices unless there is a good reason for it (and that good reason should be documented).\n\nhttps://github.com/golang/go/wiki/CodeReviewComments#declaring-empty-slices\n\nHere and below",
+      "range": {
+        "startLine": 436,
+        "startChar": 9,
+        "endLine": 436,
+        "endChar": 19
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d08f94c4_0353779e",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "I keep making that mistake. Done.",
+      "parentUuid": "57159690_abedd9a2",
       "range": {
         "startLine": 436,
         "startChar": 9,
@@ -221,6 +425,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cac7654_a9572b2b",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "I did it that way originally, but switched to this because I didn\u0027t want to worry about concurrency if the same GNIExporter instance was simultaneously exporting. Granted this class isn\u0027t intended to be used that way, but that\u0027s one less possible future bug.\n\nHappy to switch if you still want to - LMK.",
+      "parentUuid": "af312edf_4294df4d",
+      "range": {
+        "startLine": 451,
+        "startChar": 79,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b8891df_e3795f0c",
         "filename": "bazel/exporter/gni_exporter.go",
         "patchSetId": 15
@@ -232,6 +460,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "ubernit: Choose one of (o, other, otherRule). \"or\" being a real English word throws me off a bit (especially when I read Python in the same day).",
+      "range": {
+        "startLine": 474,
+        "startChar": 2,
+        "endLine": 474,
+        "endChar": 4
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d627e1ac_bb8240d3",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "yeah, I fixed this before seeing your comment. Too aggressively trying to adhere to Go\u0027s preference for super short variable names.",
+      "parentUuid": "3b8891df_e3795f0c",
       "range": {
         "startLine": 474,
         "startChar": 2,
@@ -255,6 +507,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "I don\u0027t understand how this sort logic makes that happen. Can you add a small worked example in the comments?\n\nAlso typo with \u0026_src",
+      "range": {
+        "startLine": 501,
+        "startChar": 45,
+        "endLine": 501,
+        "endChar": 68
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d3e7db_19f01026",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "The sort hack was on line 507 where j/i were reversed. I changed the conditional logic to make it more obvious and added a comment.",
+      "parentUuid": "1b8c1569_9df399d0",
       "range": {
         "startLine": 501,
         "startChar": 45,
@@ -311,6 +587,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70df054c_5bd52ac2",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "oops - fixed.",
+      "parentUuid": "c33ad371_043f5ed5",
+      "range": {
+        "startLine": 563,
+        "startChar": 73,
+        "endLine": 563,
+        "endChar": 83
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36929608_5d583205",
@@ -324,6 +624,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "I don\u0027t know this acronym. Please spell it out.",
+      "range": {
+        "startLine": 659,
+        "startChar": 63,
+        "endLine": 659,
+        "endChar": 66
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51917e48_adf0a548",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "haha - I also typo\u0027d it. done.",
+      "parentUuid": "36929608_5d583205",
       "range": {
         "startLine": 659,
         "startChar": 63,
@@ -357,6 +681,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7bc29f_603d84f8",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2204bdaa_b3f935dd",
+      "range": {
+        "startLine": 676,
+        "startChar": 8,
+        "endLine": 676,
+        "endChar": 13
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ad5d6e2_af67df68",
@@ -370,6 +718,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "skerr.Wrap(err)",
+      "range": {
+        "startLine": 740,
+        "startChar": 13,
+        "endLine": 740,
+        "endChar": 16
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27a380c5_ce8fb7bf",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "man - I\u0027m always missing that. Done.",
+      "parentUuid": "6ad5d6e2_af67df68",
       "range": {
         "startLine": 740,
         "startChar": 13,
@@ -397,6 +769,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83de1c90_e812a48f",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a28a12b8_31b8bdef",
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28660fe9_607ff54e",
@@ -410,6 +800,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "perhaps TestIsTargetCppHeaderFile_HandlesDifferentHeaderVariations",
+      "range": {
+        "startLine": 499,
+        "startChar": 31,
+        "endLine": 499,
+        "endChar": 45
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0893c010_bd7bc0d6",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28660fe9_607ff54e",
       "range": {
         "startLine": 499,
         "startChar": 31,
@@ -443,6 +857,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e2e27bf_e5b38e6f",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Added a bunch of tests.",
+      "parentUuid": "cf87cb5b_cb831fd2",
+      "range": {
+        "startLine": 523,
+        "startChar": 17,
+        "endLine": 523,
+        "endChar": 31
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33e2130d_35422625",
@@ -456,6 +894,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Perhaps TestAbsToWorkspacePath_ReturnsRelativePath ?\n \nWe don\u0027t always need 3 parts if the input is self-explanatory.",
+      "range": {
+        "startLine": 526,
+        "startChar": 5,
+        "endLine": 526,
+        "endChar": 50
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "368b5312_9f43bd5b",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e2130d_35422625",
       "range": {
         "startLine": 526,
         "startChar": 5,
@@ -491,6 +953,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38514bc8_79614497",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Removed testWorkspaceDir as requested.\n\nI decided to use filepath.ToSlash() which should make these tests work on Windows if/when we get there.",
+      "parentUuid": "a71e37f6_775323be",
+      "range": {
+        "startLine": 531,
+        "startChar": 17,
+        "endLine": 531,
+        "endChar": 33
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40d860c8_0bf4c1d6",
         "filename": "bazel/exporter/gni_exporter_test.go",
         "patchSetId": 15
@@ -502,6 +988,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "TestWorkspaceToAbsPath_ReturnsAbsolutePath\n\n(note the first section is copypasta).",
+      "range": {
+        "startLine": 545,
+        "startChar": 45,
+        "endLine": 545,
+        "endChar": 59
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "861bef55_3b114142",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40d860c8_0bf4c1d6",
       "range": {
         "startLine": 545,
         "startChar": 45,
@@ -525,6 +1035,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Perhaps TestGetGNILineVariable_FindsListLiterals?\n\nI don\u0027t think the \"VariousLines\" adds much explanation to the test.",
+      "range": {
+        "startLine": 579,
+        "startChar": 5,
+        "endLine": 579,
+        "endChar": 56
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66873a04_5c273dcd",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "I split into two functions which produced better (hopefully) func names.",
+      "parentUuid": "6d649925_a987d98e",
       "range": {
         "startLine": 579,
         "startChar": 5,
@@ -560,6 +1094,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85daf1af_b729d1d0",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Only because I wanted to strictly rely on a formatted GNI file which trims leading whitespace. I could tweak the regular expression to tolerate leading whitespace, but didn\u0027t see the need to get too fancy.",
+      "parentUuid": "711a0ea5_6e4820cc",
+      "range": {
+        "startLine": 589,
+        "startChar": 4,
+        "endLine": 589,
+        "endChar": 5
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c279c9b_49f35bfb",
         "filename": "bazel/exporter/interfaces/file_system.go",
         "patchSetId": 15
@@ -571,6 +1129,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "Maybe we should add a WriteCloser so we can properly close any opened files.",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 30
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d73540_51ead0c4",
+        "filename": "bazel/exporter/interfaces/file_system.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done. I added a FileSystem shutdown function to do this in main.go. There\u0027s probably a better Go way of doing this, so LMK what you think.",
+      "parentUuid": "7c279c9b_49f35bfb",
       "range": {
         "startLine": 12,
         "startChar": 24,
@@ -604,6 +1186,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1ed3da3_fd5b4123",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed51a68c_88469847",
+      "range": {
+        "startLine": 99,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e5c3fef_5d31e616",
@@ -617,6 +1223,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "You should defer the closing of this file.",
+      "range": {
+        "startLine": 141,
+        "startChar": 2,
+        "endLine": 141,
+        "endChar": 3
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0dd3b08_ace10a10",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e5c3fef_5d31e616",
       "range": {
         "startLine": 141,
         "startChar": 2,
@@ -650,6 +1280,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a213525_d067396d",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea9e5593_8a9a0db8",
+      "range": {
+        "startLine": 164,
+        "startChar": 5,
+        "endLine": 164,
+        "endChar": 17
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48408de8_4822d285",
@@ -663,6 +1317,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "numOutOfDate, err :\u003d \n\nUnless there\u0027s a reason to re-use the err variable outside the scope of this if statement.",
+      "range": {
+        "startLine": 166,
+        "startChar": 2,
+        "endLine": 166,
+        "endChar": 21
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e389ada_4d766ad3",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48408de8_4822d285",
       "range": {
         "startLine": 166,
         "startChar": 2,
@@ -696,6 +1374,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d863190e_aecdfc68",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "125bf8c8_c183566b",
+      "range": {
+        "startLine": 168,
+        "startChar": 7,
+        "endLine": 168,
+        "endChar": 14
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c34436e7_ed4c2396",
@@ -719,6 +1421,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d6f4cb_a82424eb",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c34436e7_ed4c2396",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 23
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7326348b_e5d6e84a",
@@ -732,6 +1458,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "It\u0027s not clear to me where this err would get set that is not already checked by an if err !\u003d nil",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 7
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ecfc17e_d5c90127",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T16:53:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7326348b_e5d6e84a",
       "range": {
         "startLine": 180,
         "startChar": 4,
