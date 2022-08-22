@@ -38,16 +38,17 @@ SDFTextRenderStep::SDFTextRenderStep(bool isA8)
         : RenderStep("SDFTextRenderStep",
                      isA8 ? "A8" : "565",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2},
+                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
+                                   {"atlasSizeInv", SkSLType::kFloat2},
                                    {"distanceAdjust", SkSLType::kFloat}},
-                     PrimitiveType::kTriangles,
+                     PrimitiveType::kTriangleStrip,
                      kDirectShadingPass,
-                     /*vertexAttrs=*/
-                     {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                     /*vertexAttrs=*/ {},
+                     /*instanceAttrs=*/
+                     {{"uvScale", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"depth", VertexAttribType::kUShort_norm, SkSLType::kFloat},
                       {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}},
-                     /*instanceAttrs=*/{},
                      /*varyings=*/
                      {{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
@@ -59,15 +60,19 @@ SDFTextRenderStep::~SDFTextRenderStep() {}
 
 const char* SDFTextRenderStep::vertexSkSL() const {
     return R"(
-        int2 coords = int2(texCoords.x, texCoords.y);
-        int texIdx = coords.x >> 13;
+        float2 baseCoords = float2(float(sk_VertexID >> 1), float(sk_VertexID & 1));
+        baseCoords *= float2(uvScale);
+        baseCoords.xy *= float2(uvScale);
+        float4 position = deviceMatrix*float4(baseCoords, 0, 1);
 
-        unormTexCoords = float2(coords.x & 0x1FFF, coords.y);
+        int texIdx = (int)(uvPos.x >> 13);
+        unormTexCoords = baseCoords + float2(uvPos.x & 0x1fff, uvPos.y);
+
         textureCoords = unormTexCoords * atlasSizeInv;
         texIndex = float(texIdx);
 
-        float4 devPosition = float4(position, depth, 1);
-        )";
+        float4 devPosition = float4(position.xy, depth, position.w);
+    )";
 }
 
 std::string SDFTextRenderStep::texturesAndSamplersSkSL(int binding) const {
@@ -144,10 +149,9 @@ void SDFTextRenderStep::writeVertices(DrawWriter* dw,
                                       const DrawParams& params,
                                       int ssboIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
-    subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
-                                        ssboIndex,
-                                        params.order().depthAsFloat(),
-                                        params.transform());
+    uint16_t unormDepth = params.order().depth().bits();
+    subRunData.subRun()->fillInstanceData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+                                          ssboIndex, unormDepth);
 }
 
 void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
@@ -163,6 +167,7 @@ void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxies && numProxies > 0);
 
     // write uniforms
+    gatherer->write(params.transform());
     skvx::float2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
                                            1.f/proxies[0]->dimensions().height()};
     gatherer->write(atlasDimensionsInverse);
