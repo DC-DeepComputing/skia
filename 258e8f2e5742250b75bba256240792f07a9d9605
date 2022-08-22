@@ -93,6 +93,30 @@
       },
       "revId": "258e8f2e5742250b75bba256240792f07a9d9605",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0371c909_bbd23568",
+        "filename": "gn/effects.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:15:36Z",
+      "side": 1,
+      "message": "Fine by me.",
+      "parentUuid": "9cd4b7b1_cae424dd",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 32
+      },
+      "revId": "258e8f2e5742250b75bba256240792f07a9d9605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
