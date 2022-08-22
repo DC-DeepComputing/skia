@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2df42961_b8f62bf3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T17:01:35Z",
+      "side": 1,
+      "message": "one last little clean up and then let\u0027s land it",
+      "revId": "caa40952f5f67b11c7daf2a829cff88e1f13fdd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e33cd9c_bc801897",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T17:01:35Z",
+      "side": 1,
+      "message": "Skia\u0027s style doesn\u0027t typically have returns on the same line as ifs, and the closing bracket would stick with the else (I missed this before). Depending on context, it can be nice to keep conditions as \u0027true\u0027 for the if, and let the else handle the false, vs. having to notice the `!` at the start. Let\u0027s update this to just be:\n\n    if (fHasColor) {\n        return \"primitiveColor \u003d color;\\n\";\n    } else {\n        return \"\";\n    }",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 151,
+        "endChar": 10
+      },
+      "revId": "caa40952f5f67b11c7daf2a829cff88e1f13fdd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
