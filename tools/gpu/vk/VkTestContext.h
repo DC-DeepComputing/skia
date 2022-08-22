@@ -15,7 +15,7 @@
 #include "include/gpu/vk/GrVkBackendContext.h"
 #include "tools/gpu/vk/GrVulkanDefines.h"
 
-class GrVkExtensions;
+namespace skgpu { class VkExtensions; }
 
 namespace sk_gpu_test {
 class VkTestContext : public TestContext {
@@ -26,7 +26,7 @@ public:
         return fVk;
     }
 
-    const GrVkExtensions* getVkExtensions() const {
+    const skgpu::VkExtensions* getVkExtensions() const {
         return fExtensions;
     }
 
@@ -35,7 +35,7 @@ public:
     }
 
 protected:
-    VkTestContext(const GrVkBackendContext& vk, const GrVkExtensions* extensions,
+    VkTestContext(const GrVkBackendContext& vk, const skgpu::VkExtensions* extensions,
                   const VkPhysicalDeviceFeatures2* features, bool ownsContext,
                   VkDebugReportCallbackEXT debugCallback,
                   PFN_vkDestroyDebugReportCallbackEXT destroyCallback)
@@ -47,7 +47,7 @@ protected:
             , fDestroyDebugReportCallbackEXT(destroyCallback) {}
 
     GrVkBackendContext                  fVk;
-    const GrVkExtensions*               fExtensions;
+    const skgpu::VkExtensions*          fExtensions;
     const VkPhysicalDeviceFeatures2*    fFeatures;
     bool                                fOwnsContext;
     VkDebugReportCallbackEXT            fDebugCallback = VK_NULL_HANDLE;
