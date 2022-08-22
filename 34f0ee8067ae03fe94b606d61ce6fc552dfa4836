@@ -16,6 +16,24 @@
       "message": "Do we consider settings to be constant-expression, or do just not do those checks outside of runtime effects (for the global initializers)?",
       "revId": "34f0ee8067ae03fe94b606d61ce6fc552dfa4836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc514da_105a1fbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-22T17:34:05Z",
+      "side": 1,
+      "message": "Settings IRNodes are considered to be constant-expression. The comment here is a little dated but the idea is sound:\n\nhttp://osscs/skia/skia/+/main:src/sksl/analysis/SkSLIsConstantExpression.cpp;l\u003d36",
+      "parentUuid": "e85dfa54_acbe5dc2",
+      "revId": "34f0ee8067ae03fe94b606d61ce6fc552dfa4836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
