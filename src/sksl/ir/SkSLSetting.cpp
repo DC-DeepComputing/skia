@@ -58,11 +58,6 @@ std::unique_ptr<Expression> Setting::Convert(const Context& context, Position po
         return nullptr;
     }
 
-    if (context.fConfig->fSettings.fReplaceSettings) {
-        // Insert the settings value directly into the IR.
-        return Literal::MakeBool(context, pos, context.fCaps.*(*capsPtr));
-    }
-
     // Generate a Setting IRNode.
     return std::make_unique<Setting>(pos, name, context.fTypes.fBool.get());
 }

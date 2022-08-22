@@ -15,9 +15,6 @@ OpDecorate %sk_FragColor Location 0
 OpDecorate %sk_FragColor Index 0
 OpDecorate %m44 RelaxedPrecision
 OpDecorate %v4 RelaxedPrecision
-OpDecorate %36 RelaxedPrecision
-OpDecorate %37 RelaxedPrecision
-OpDecorate %40 RelaxedPrecision
 OpDecorate %41 RelaxedPrecision
 OpDecorate %42 RelaxedPrecision
 OpDecorate %45 RelaxedPrecision
@@ -26,6 +23,11 @@ OpDecorate %47 RelaxedPrecision
 OpDecorate %50 RelaxedPrecision
 OpDecorate %51 RelaxedPrecision
 OpDecorate %52 RelaxedPrecision
+OpDecorate %55 RelaxedPrecision
+OpDecorate %56 RelaxedPrecision
+OpDecorate %57 RelaxedPrecision
+OpDecorate %58 RelaxedPrecision
+OpDecorate %59 RelaxedPrecision
 %bool = OpTypeBool
 %_ptr_Input_bool = OpTypePointer Input %bool
 %sk_Clockwise = OpVariable %_ptr_Input_bool Input
@@ -50,6 +52,7 @@ OpDecorate %52 RelaxedPrecision
 %float_2 = OpConstant %float 2
 %float_3 = OpConstant %float 3
 %32 = OpConstantComposite %v4float %float_0 %float_1 %float_2 %float_3
+%true = OpConstantTrue %bool
 %int = OpTypeInt 32 1
 %int_0 = OpConstant %int 0
 %int_1 = OpConstant %int 1
@@ -65,22 +68,34 @@ OpFunctionEnd
 %16 = OpLabel
 %m44 = OpVariable %_ptr_Function_mat4v4float Function
 %v4 = OpVariable %_ptr_Function_v4float Function
+%34 = OpVariable %_ptr_Function_v4float Function
 OpStore %m44 %26
 OpStore %v4 %32
-%35 = OpAccessChain %_ptr_Function_v4float %m44 %int_0
-%36 = OpLoad %v4float %35
-%37 = OpVectorTimesScalar %v4float %36 %float_0
-%39 = OpAccessChain %_ptr_Function_v4float %m44 %int_1
-%40 = OpLoad %v4float %39
-%41 = OpVectorTimesScalar %v4float %40 %float_1
-%42 = OpFAdd %v4float %37 %41
-%44 = OpAccessChain %_ptr_Function_v4float %m44 %int_2
+OpSelectionMerge %37 None
+OpBranchConditional %true %35 %36
+%35 = OpLabel
+%40 = OpAccessChain %_ptr_Function_v4float %m44 %int_0
+%41 = OpLoad %v4float %40
+%42 = OpVectorTimesScalar %v4float %41 %float_0
+%44 = OpAccessChain %_ptr_Function_v4float %m44 %int_1
 %45 = OpLoad %v4float %44
-%46 = OpVectorTimesScalar %v4float %45 %float_2
+%46 = OpVectorTimesScalar %v4float %45 %float_1
 %47 = OpFAdd %v4float %42 %46
-%49 = OpAccessChain %_ptr_Function_v4float %m44 %int_3
+%49 = OpAccessChain %_ptr_Function_v4float %m44 %int_2
 %50 = OpLoad %v4float %49
-%51 = OpVectorTimesScalar %v4float %50 %float_3
+%51 = OpVectorTimesScalar %v4float %50 %float_2
 %52 = OpFAdd %v4float %47 %51
-OpReturnValue %52
+%54 = OpAccessChain %_ptr_Function_v4float %m44 %int_3
+%55 = OpLoad %v4float %54
+%56 = OpVectorTimesScalar %v4float %55 %float_3
+%57 = OpFAdd %v4float %52 %56
+OpStore %34 %57
+OpBranch %37
+%36 = OpLabel
+%58 = OpMatrixTimesVector %v4float %26 %32
+OpStore %34 %58
+OpBranch %37
+%37 = OpLabel
+%59 = OpLoad %v4float %34
+OpReturnValue %59
 OpFunctionEnd

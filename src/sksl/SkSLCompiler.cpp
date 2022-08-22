@@ -399,7 +399,6 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
 
     // Built-in modules always use default program settings.
     ProgramSettings settings;
-    settings.fReplaceSettings = false;
 
 #if REHYDRATE
     ProgramConfig config;
@@ -579,7 +578,6 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module, const ParsedModule
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = module.fKind;
-    config.fSettings.fReplaceSettings = false;
     AutoProgramConfig autoConfig(fContext, &config);
     AutoModifiersPool autoPool(fContext, &fCoreModifiers);
 
