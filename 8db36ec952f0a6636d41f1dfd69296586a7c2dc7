@@ -255,6 +255,30 @@
       },
       "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "439da905_37064fe4",
+        "filename": "infra/bots/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-22T14:43:18Z",
+      "side": 1,
+      "message": "Very strange. I too see only 1 patchset here, and I don\u0027t see any of the changes I remember locally, unsaved, or in git reflog.\n\nWait, aha! Some piece of tooling helpfully appended a second Change-Id line to the commit message and thus pushed my patchset to a whole new CL: https://skia-review.googlesource.com/c/skia/+/570037. I\u0027ll go in and fix it. I didn\u0027t see the changes locally because I apparently made them on my other machine; a sync made them visible again.",
+      "parentUuid": "0e09cf5f_4112caf8",
+      "range": {
+        "startLine": 60,
+        "startChar": 56,
+        "endLine": 61,
+        "endChar": 71
+      },
+      "revId": "8db36ec952f0a6636d41f1dfd69296586a7c2dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
