@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86294767_36258bba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-22T15:15:59Z",
+      "side": 1,
+      "message": "I\u0027m okay with running this experiment now. Did we see performance changes (eg, on low-end hardware?) previously? I\u0027m guessing not - those drivers have to effectively inline everything anyway, so unless they do a worse job than us, it should turn out the same.\n\nIt looks like the actual SkSLInliner.h/cpp files aren\u0027t removed in this CL, though. Waiting to make sure?",
+      "revId": "0cf73687dddb8c14e7bc7116fa847d9b9a64c7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
