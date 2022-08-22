@@ -39,6 +39,30 @@
       },
       "revId": "caa40952f5f67b11c7daf2a829cff88e1f13fdd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "872a751e_bc631f99",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T17:05:49Z",
+      "side": 1,
+      "message": "No problem! Thank you for catching it now. Makes sense to me!",
+      "parentUuid": "9e33cd9c_bc801897",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 151,
+        "endChar": 10
+      },
+      "revId": "caa40952f5f67b11c7daf2a829cff88e1f13fdd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
