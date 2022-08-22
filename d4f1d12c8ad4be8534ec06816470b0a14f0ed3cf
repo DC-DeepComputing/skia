@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "420f66c9_e7db0512",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15cc6723_57756e31",
+      "range": {
+        "startLine": 36,
+        "startChar": 58,
+        "endLine": 36,
+        "endChar": 83
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e48c6379_5c438cd9",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-19T01:01:11Z",
       "side": 1,
       "message": "Let\u0027s have the varying be a half4, which is sufficient for color data compared to a float.\n\nThe attribute above can also be half4, so the sksl that assigns the varying will be pretty trivial.",
+      "range": {
+        "startLine": 56,
+        "startChar": 84,
+        "endLine": 56,
+        "endChar": 91
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbaf2cd2_07b4691f",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e48c6379_5c438cd9",
       "range": {
         "startLine": 56,
         "startChar": 84,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "424bafff_dd7e765d",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "premul() doesn\u0027t seem to work (is it implemented for Graphite yet?), so I went with your former approach. 👍",
+      "parentUuid": "aeacf9a7_84641d64",
+      "range": {
+        "startLine": 83,
+        "startChar": 20,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9722f8bb_6eea8c91",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-08-19T01:01:11Z",
       "side": 1,
       "message": "can be dropped, too.",
+      "range": {
+        "startLine": 87,
+        "startChar": 26,
+        "endLine": 87,
+        "endChar": 40
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9101000c_0c75019f",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9722f8bb_6eea8c91",
       "range": {
         "startLine": 87,
         "startChar": 26,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa641a42_afa2406f",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85d04b37_c84b3373",
+      "range": {
+        "startLine": 112,
+        "startChar": 25,
+        "endLine": 112,
+        "endChar": 40
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c0392cf_f8e38e60",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4717913b_e16f22e3",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c0392cf_f8e38e60",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 5
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6a0af22_3f8580c2",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-08-19T01:01:11Z",
       "side": 1,
       "message": "While I think this will all go away since using kUByte4_norm will let us just write colors[state.fX] directly, there\u0027s no difference between SkColor4f and SkV4 in terms of memory layout (just 4 floats). VertexWriter\u0027s \u003c\u003c is templated so that any type that\u0027s plain-old-data is memcpy\u0027d, so \u003c\u003c SkV4 and \u003c\u003c SkColor4f amount to the same thing.",
+      "range": {
+        "startLine": 220,
+        "startChar": 8,
+        "endLine": 226,
+        "endChar": 67
+      },
+      "revId": "d4f1d12c8ad4be8534ec06816470b0a14f0ed3cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d466fc5_7777b1c6",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-22T16:27:13Z",
+      "side": 1,
+      "message": "Yes, I had the same thought and did experiment with this some following your similar feedback on my last review. I realize now my contrived example that included colors (to force the hasColor / fHasColor to be true) was not 100% accurate. With this, I am able to use it as you implied. Thanks 😄",
+      "parentUuid": "e6a0af22_3f8580c2",
       "range": {
         "startLine": 220,
         "startChar": 8,
