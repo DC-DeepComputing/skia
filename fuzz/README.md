@@ -44,8 +44,8 @@ parsing. These are called _binary fuzzers_, as opposed to _API fuzzers_.
 Example PRs for adding fuzzers: [binary](https://github.com/google/oss-fuzz/pull/4108),
 [API](https://github.com/google/oss-fuzz/pull/5657)
 
-There is also an [OSS-fuzz folder](https://github.com/google/oss-fuzz/tree/master/projects/skcms)
-set up for the [skcms repo](https://skia.googlesource.com/skcms/). The build process is similar,
+There is also an [OSS-fuzz folder](https://github.com/google/oss-fuzz/tree/master/projects/skcms)s
+et up for the [skcms repo](https://skia.googlesource.com/skcms/). The build process is similar,
 except instead of compiling using GN targets, the build.sh script compiles the fuzz executables
 directly.
 
