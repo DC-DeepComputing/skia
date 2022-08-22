@@ -16,6 +16,23 @@
       "message": "From offline discussion with Flutter, I added GN control for the legacy guard. But flutter can\u0027t set the GN parameter in their repo until this has rolled into them, so I\u0027ve also updated flutter_defines.gni to enable legacy mode directly.\n\nOnce it lands in flutter, I can make a PR there to control legacy mode using their GN build. Then I can remove the guard from flutter_defines.gni, then fix their unit tests/layer bounds logic, and then remove the guard code within skia.\n\nChromium\u0027s change to SkUserConfig just defines the legacy guard as usual for its layout rebaselines, and has been landed already.",
       "revId": "52ddf6dfe4e8d886d91fbed3c9f7994eb47ab978",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d11ad706_b9a69df3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-22T20:11:37Z",
+      "side": 1,
+      "message": "Also adding other Brian so they are aware in this change to behavior in saveLayer.",
+      "revId": "52ddf6dfe4e8d886d91fbed3c9f7994eb47ab978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
