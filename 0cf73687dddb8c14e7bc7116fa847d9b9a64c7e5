@@ -16,6 +16,24 @@
       "message": "I\u0027m okay with running this experiment now. Did we see performance changes (eg, on low-end hardware?) previously? I\u0027m guessing not - those drivers have to effectively inline everything anyway, so unless they do a worse job than us, it should turn out the same.\n\nIt looks like the actual SkSLInliner.h/cpp files aren\u0027t removed in this CL, though. Waiting to make sure?",
       "revId": "0cf73687dddb8c14e7bc7116fa847d9b9a64c7e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d969e4c4_b081cd3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-22T18:24:32Z",
+      "side": 1,
+      "message": "I\u0027ve already got CLs lined up (the Setting-related changes) which I need to make sure are Pinpoint-safe. I don\u0027t think I want to land this until those are in and have settled for a day or two.\n\nRe deleting SkSLInliner entirely, sure, I can do that. I took it out of the bzl/gn files so it\u0027s as good as dead anwyay.",
+      "parentUuid": "86294767_36258bba",
+      "revId": "0cf73687dddb8c14e7bc7116fa847d9b9a64c7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
