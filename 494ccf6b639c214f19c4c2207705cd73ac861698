@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f806095_0decd59c",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:57:01Z",
+      "side": 1,
+      "message": "You could also maybe write a bazel genrule that downloads this, instead of relying on CIPD.",
+      "parentUuid": "2ecbb7fb_2911be02",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "315c1970_5860f3d3",
         "filename": "PRESUBMIT.py",
         "patchSetId": 1
