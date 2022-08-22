@@ -63,6 +63,8 @@ using namespace sktext;
 using namespace sktext::gpu;
 
 #if defined(SK_GRAPHITE_ENABLED)
+using BindBufferInfo = skgpu::graphite::BindBufferInfo;
+using BufferType = skgpu::graphite::BufferType;
 using Device = skgpu::graphite::Device;
 using DrawWriter = skgpu::graphite::DrawWriter;
 using Rect = skgpu::graphite::Rect;
@@ -131,6 +133,11 @@ public:
                         SkSpan<const Glyph*> glyphs,
                         SkScalar depth,
                         const skgpu::graphite::Transform& toDevice) const;
+    void fillInstanceData(DrawWriter* dw,
+                          int offset, int count,
+                          int ssboIndex,
+                          SkSpan<const Glyph*> glyphs,
+                          uint16_t depth) const;
 #endif
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
     MaskFormat grMaskType() const {return fMaskType;}
@@ -407,6 +414,35 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
                         << ssboIndex;
     }
 }
+
+
+void TransformedMaskVertexFiller::fillInstanceData(DrawWriter* dw,
+                                                   int offset, int count,
+                                                   int ssboIndex,
+                                                   SkSpan<const Glyph*> glyphs,
+                                                   uint16_t depth) const {
+    auto quadData = [&]() {
+        return SkMakeZip(glyphs.subspan(offset, count),
+                         fLeftTop.subspan(offset, count));
+    };
+
+    DrawWriter::Instances instances{*dw, {}, {}, 4};
+    instances.reserve(count);
+    // Need to send width & height & strikeToSourceScale & translation vector
+    // coords = (s*w*b_x + t_x, s*h*b_y + t_y)
+    skvx::float4 newC0 = fStrikeToSourceScale*c0;
+    skvx::float4 newC1 = fStrikeToSourceScale*c1;
+    for (auto [glyph, leftTop]: quadData()) {
+        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        skvx::float4 newC3 = leftTop.x()*c0 + leftTop.y()*c1 + c3;
+        instances.append(1) << newC0.x() << newC0.y() << newC0.w()
+                            << newC1.x() << newC1.y() << newC1.w()
+                            << newC3.x() << newC3.y() << newC3.w()
+                            << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
+                            << depth << ssboIndex;
+    }
+}
+
 #endif
 
 
@@ -1215,7 +1251,11 @@ public:
                         int offset, int count,
                         int ssboIndex,
                         SkScalar depth,
-                        const skgpu::graphite::Transform& transform) const override;
+                        const Transform& transform) const override;
+    void fillInstanceData(skgpu::graphite::DrawWriter*,
+                          int offset, int count,
+                          int ssboIndex,
+                          uint16_t depth) const override;
 
     MaskFormat maskFormat() const override { return fMaskFormat; }
 #endif
@@ -1654,7 +1694,7 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
                                       int offset, int count,
                                       int ssboIndex,
                                       SkScalar depth,
-                                      const skgpu::graphite::Transform& toDevice) const {
+                                      const Transform& toDevice) const {
     auto quadData = [&]() {
         return SkMakeZip(fGlyphs.glyphs().subspan(offset, count),
                          fLeftTopDevicePos.subspan(offset, count));
@@ -1671,6 +1711,30 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
         transformed_direct_dw(dw, ssboIndex, quadData(), depth, toDevice);
     }
 }
+
+
+void DirectMaskSubRun::fillInstanceData(DrawWriter* dw,
+                                        int offset, int count,
+                                        int ssboIndex,
+                                        uint16_t depth) const {
+    auto quadData = [&]() {
+        return SkMakeZip(fGlyphs.glyphs().subspan(offset, count),
+                         fLeftTopDevicePos.subspan(offset, count));
+    };
+
+    DrawWriter::Instances instances{*dw, {}, {}, 4};
+    instances.reserve(count);
+    for (auto [glyph, leftTop]: quadData()) {
+        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        skvx::float4 newC3 = leftTop.x()*c0 + leftTop.y()*c1 + c3;
+        instances.append(1) << c0.x() << c0.y() << c0.w()
+                            << c1.x() << c1.y() << c1.w()
+                            << newC3.x() << newC3.y() << newC3.w()
+                            << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
+                            << depth << ssboIndex;
+    }
+}
+
 #endif
 
 // true if only need to translate by integer amount, device rect.
@@ -1774,7 +1838,11 @@ public:
                         int offset, int count,
                         int ssboIndex,
                         SkScalar depth,
-                        const skgpu::graphite::Transform& transform) const override;
+                        const Transform& transform) const override;
+    void fillInstanceData(DrawWriter*,
+                          int offset, int count,
+                          int ssboIndex,
+                          uint16_t depth) const override;
 
     MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
 #endif
@@ -1967,6 +2035,18 @@ void TransformedMaskSubRun::fillVertexData(DrawWriter* dw,
                                  depth,
                                  transform);
 }
+
+
+void TransformedMaskSubRun::fillInstanceData(DrawWriter* dw,
+                                             int offset, int count,
+                                             int ssboIndex,
+                                             uint16_t depth) const {
+    fVertexFiller.fillInstanceData(dw,
+                                   offset, count,
+                                   ssboIndex,
+                                   fGlyphs.glyphs(),
+                                   depth);
+}
 #endif
 
 int TransformedMaskSubRun::glyphCount() const {
@@ -2058,7 +2138,11 @@ public:
                         int offset, int count,
                         int ssboIndex,
                         SkScalar depth,
-                        const skgpu::graphite::Transform& transform) const override;
+                        const Transform& transform) const override;
+    void fillInstanceData(DrawWriter*,
+                          int offset, int count,
+                          int ssboIndex,
+                          uint16_t depth) const override;
 
     MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
 #endif
@@ -2312,13 +2396,24 @@ void SDFTSubRun::fillVertexData(DrawWriter* dw,
                                 int offset, int count,
                                 int ssboIndex,
                                 SkScalar depth,
-                                const skgpu::graphite::Transform& transform) const {
+                                const Transform& transform) const {
     fVertexFiller.fillVertexData(dw,
                                  offset, count,
                                  ssboIndex,
                                  fGlyphs.glyphs(),
                                  depth,
                                  transform);
+}
+
+void SDFTSubRun::fillInstanceData(DrawWriter* dw,
+                                  int offset, int count,
+                                  int ssboIndex,
+                                  uint16_t depth) const {
+    fVertexFiller.fillInstanceData(dw,
+                                   offset, count,
+                                   ssboIndex,
+                                   fGlyphs.glyphs(),
+                                   depth);
 }
 #endif
 
