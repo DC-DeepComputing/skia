@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb6ad77f_ae5c747c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-08-22T23:26:59Z",
+      "side": 1,
+      "message": "This change is ready for a review. Greg, can you PTAL.",
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
