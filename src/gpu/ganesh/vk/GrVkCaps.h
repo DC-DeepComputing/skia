@@ -12,9 +12,10 @@
 #include "include/private/SkTDArray.h"
 #include "src/gpu/ganesh/GrCaps.h"
 
-class GrVkExtensions;
 struct GrVkInterface;
 class GrVkRenderTarget;
+
+namespace skgpu { class VkExtensions; }
 
 /**
  * Stores some capabilities of a Vk backend.
@@ -31,7 +32,7 @@ public:
              const VkPhysicalDeviceFeatures2& features,
              uint32_t instanceVersion,
              uint32_t physicalDeviceVersion,
-             const GrVkExtensions& extensions,
+             const skgpu::VkExtensions& extensions,
              GrProtected isProtected = GrProtected::kNo);
 
     bool isFormatSRGB(const GrBackendFormat&) const override;
@@ -314,13 +315,13 @@ private:
 
     void init(const GrContextOptions& contextOptions, const GrVkInterface* vkInterface,
               VkPhysicalDevice device, const VkPhysicalDeviceFeatures2&,
-              uint32_t physicalDeviceVersion, const GrVkExtensions&, GrProtected isProtected);
+              uint32_t physicalDeviceVersion, const skgpu::VkExtensions&, GrProtected isProtected);
     void initGrCaps(const GrVkInterface* vkInterface,
                     VkPhysicalDevice physDev,
                     const VkPhysicalDeviceProperties&,
                     const VkPhysicalDeviceMemoryProperties&,
                     const VkPhysicalDeviceFeatures2&,
-                    const GrVkExtensions&);
+                    const skgpu::VkExtensions&);
     void initShaderCaps(const VkPhysicalDeviceProperties&, const VkPhysicalDeviceFeatures2&);
 
     void initFormatTable(const GrVkInterface*, VkPhysicalDevice, const VkPhysicalDeviceProperties&);

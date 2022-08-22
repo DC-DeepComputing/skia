@@ -29,7 +29,7 @@
 #include <execinfo.h>
 #endif
 #include "include/gpu/vk/GrVkBackendContext.h"
-#include "include/gpu/vk/GrVkExtensions.h"
+#include "include/gpu/vk/VkExtensions.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/ports/SkOSLibrary.h"
 
@@ -388,7 +388,7 @@ static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc, VkInstance i
 }
 
 static bool setup_features(GrVkGetProc getProc, VkInstance inst, VkPhysicalDevice physDev,
-                           uint32_t physDeviceVersion, GrVkExtensions* extensions,
+                           uint32_t physDeviceVersion, skgpu::VkExtensions* extensions,
                            VkPhysicalDeviceFeatures2* features, bool isProtected) {
     SkASSERT(physDeviceVersion >= VK_MAKE_VERSION(1, 1, 0) ||
              extensions->hasExtension(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, 1));
@@ -453,7 +453,7 @@ static bool setup_features(GrVkGetProc getProc, VkInstance inst, VkPhysicalDevic
 
 bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             GrVkBackendContext* ctx,
-                            GrVkExtensions* extensions,
+                            skgpu::VkExtensions* extensions,
                             VkPhysicalDeviceFeatures2* features,
                             VkDebugReportCallbackEXT* debugCallback,
                             uint32_t* presentQueueIndexPtr,
