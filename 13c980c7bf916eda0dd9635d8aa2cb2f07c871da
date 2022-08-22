@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ad828d8_2170baed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-22T13:57:05Z",
+      "side": 1,
+      "message": "This is free (~0 change to code size) performance when we hit this code path today. I\u0027d like to remove some of the bicubic fast paths, which means we\u0027ll hit this code path more often - this mitigates the performance penalty of doing so.",
+      "revId": "13c980c7bf916eda0dd9635d8aa2cb2f07c871da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
