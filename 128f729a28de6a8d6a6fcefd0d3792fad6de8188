@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "934d0691_9e8142cf",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "I like this idea! Done.",
+      "parentUuid": "5b96a413_6b2672ce",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 84
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0b587a5_5ad61daa",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7353a24_5b704b71",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0b587a5_5ad61daa",
+      "range": {
+        "startLine": 292,
+        "startChar": 2,
+        "endLine": 292,
+        "endChar": 5
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23576f42_cd1514c7",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-08-22T15:57:41Z",
       "side": 1,
       "message": "We should add a comment here or at the start of DrawPassUniformWriter that a batch key represents either the paint params unique ID or the render step, depending on the slot that the bindings will be assigned to.",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 317,
+        "endChar": 27
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06d1e7b2_c9ea220b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23576f42_cd1514c7",
       "range": {
         "startLine": 317,
         "startChar": 4,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2dbf6543_7ad2b121",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "Ah, good call, I had forgotten that this part was a bit WIP. I had considered using the RenderStep pointer; would it make sense to make the batch keys 64-bit ints? I don\u0027t have strong feelings about doing that vs. adding a unique ID to RenderSteps.",
+      "parentUuid": "b51eb21d_20799462",
+      "range": {
+        "startLine": 521,
+        "startChar": 63,
+        "endLine": 521,
+        "endChar": 72
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "205e182a_939926b3",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 2
@@ -123,6 +219,30 @@
       "writtenOn": "2022-08-22T15:57:41Z",
       "side": 1,
       "message": "I\u0027d vote to combine setSsboBatchKey and setUniformIndex into a single function like `setCurrentUniforms(pipelineIndex, UniformDataCache::Index)`",
+      "range": {
+        "startLine": 575,
+        "startChar": 8,
+        "endLine": 578,
+        "endChar": 68
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2689a096_7b06f528",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "205e182a_939926b3",
       "range": {
         "startLine": 575,
         "startChar": 8,
@@ -146,6 +266,30 @@
       "writtenOn": "2022-08-22T15:57:41Z",
       "side": 1,
       "message": "See earlier comment, but I\u0027m hoping these can get moved back into the if (stateChange) to keep all bindBuffer-y commands inside that if block for readability.",
+      "range": {
+        "startLine": 601,
+        "startChar": 8,
+        "endLine": 603,
+        "endChar": 0
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfc439c9_3e77deb1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-22T20:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b861bcec_7b470fdd",
       "range": {
         "startLine": 601,
         "startChar": 8,
