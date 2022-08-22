@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ecbb7fb_2911be02",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T19:56:20Z",
+      "side": 1,
+      "message": "CIPD is a viable strategy as well. Be sure to add a suffix to the CIPD package name for the os and architecture.",
+      "parentUuid": "bee29d02_c59945bf",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "315c1970_5860f3d3",
         "filename": "PRESUBMIT.py",
         "patchSetId": 1
