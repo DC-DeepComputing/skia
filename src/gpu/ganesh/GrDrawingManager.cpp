@@ -32,6 +32,7 @@
 #include "src/gpu/ganesh/GrRenderTaskCluster.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
+#include "src/gpu/ganesh/GrStagingBufferManager.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrTTopoSort.h"
 #include "src/gpu/ganesh/GrTexture.h"
@@ -887,8 +888,6 @@ void GrDrawingManager::newBufferTransferTask(sk_sp<GrGpuBuffer> src,
     SkASSERT(dstOffset + size <= dst->size());
     SkASSERT(src->intendedType() == GrGpuBufferType::kXferCpuToGpu);
     SkASSERT(dst->intendedType() != GrGpuBufferType::kXferCpuToGpu);
-    SkASSERT(!src->isMapped());
-    SkASSERT(!dst->isMapped());
 
     SkDEBUGCODE(this->validate());
     SkASSERT(fContext);
