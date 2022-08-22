@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0de0621_476af4e9",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-22T20:31:27Z",
+      "side": 1,
+      "message": "The code doesn\u0027t seem to implement this - am I reading it wrong? The asBlendMode call on a custom blender will return nullopt, right?",
+      "range": {
+        "startLine": 1044,
+        "startChar": 7,
+        "endLine": 1044,
+        "endChar": 62
+      },
+      "revId": "26974a80f766f24f81993d6a640ac3a3cff7f3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
