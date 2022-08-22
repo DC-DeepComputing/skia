@@ -5,6 +5,10 @@
  * found in the LICENSE file.
  */
 #include "src/pathops/SkPathOpsLine.h"
+#include "src/pathops/SkPathOpsTypes.h"
+
+#include <cmath>
+#include <algorithm>
 
 SkDPoint SkDLine::ptAtT(double t) const {
     if (0 == t) {
