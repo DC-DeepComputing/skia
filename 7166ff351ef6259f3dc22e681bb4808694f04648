@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78b431ac_ec45be0b",
+        "filename": "fuzz/oss_fuzz/FuzzCOLRv1.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-22T13:47:29Z",
+      "side": 1,
+      "message": "ubernit: smalle -\u003e small",
+      "range": {
+        "startLine": 47,
+        "startChar": 52,
+        "endLine": 47,
+        "endChar": 58
+      },
+      "revId": "7166ff351ef6259f3dc22e681bb4808694f04648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
