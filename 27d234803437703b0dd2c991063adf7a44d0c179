@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7384c9e_65f9d60d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-22T17:05:38Z",
+      "side": 1,
+      "message": "With the previous CL landed (to mitigate the bicubic impact), this slows down certain image draws by 11-15%. The flutter size bot shows a 13k savings. Locally, it shrinks my size-optimized x64 skottie_tool by 20k.",
+      "revId": "27d234803437703b0dd2c991063adf7a44d0c179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
