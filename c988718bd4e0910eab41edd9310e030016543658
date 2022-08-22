@@ -16,6 +16,29 @@
       "message": "Thanks for the help and quick review, Kevin.",
       "revId": "c988718bd4e0910eab41edd9310e030016543658",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62d25fec_a2a086a8",
+        "filename": "fuzz/FuzzMain.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-22T14:06:39Z",
+      "side": 1,
+      "message": "I realize the intention here is to fuzz colrv1 code and that\u0027s what will be seeded, but the reality is that this is more like `fuzz_typeface_rendering`. This is probably a good idea since we don\u0027t currently have one, but it isn\u0027t (and won\u0027t be) colrv1 specific so it\u0027s a bit misleading to name it such.\n\nIt\u0027s fine to land as-is, but it is something to keep in mind.",
+      "range": {
+        "startLine": 82,
+        "startChar": 17,
+        "endLine": 82,
+        "endChar": 23
+      },
+      "revId": "c988718bd4e0910eab41edd9310e030016543658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
