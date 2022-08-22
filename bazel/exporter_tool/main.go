@@ -9,9 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
 	"runtime/pprof"
-	"strings"
 
 	"go.skia.org/infra/go/common"
 	"go.skia.org/infra/go/skerr"
@@ -88,18 +86,6 @@ type fileSystem struct {
 }
 
 func (fs *fileSystem) OpenFile(path string) (interfaces.Writer, error) {
-	if fs.outFormat == "gni" {
-		// TODO(skbug.com/12345): Remove this debug code - only for development.
-		if strings.HasPrefix(path, fs.workspaceDir) {
-			s := strings.TrimPrefix(path, fs.workspaceDir)
-			path = filepath.Join(fs.workspaceDir, "gn_out", s)
-			d := filepath.Dir(path)
-			err := os.MkdirAll(d, 0777)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Unable to make dir %q: %v\n", d, err)
-			}
-		}
-	}
 	f, err := os.Create(path)
 	if err != nil {
 		return nil, skerr.Wrap(err)
