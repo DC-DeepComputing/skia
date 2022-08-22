@@ -330,6 +330,38 @@ def _RunCommandAndCheckGitDiff(output_api, command):
   return results
 
 
+def _CheckGNIGenerated(input_api, output_api):
+  """Ensures that the generated *.gni files are current.
+
+  The Bazel project files are authoritative and some *.gni files are
+  generated from them using the exporter_tool. This check ensures they
+  are still current.
+  """
+  for affected_file in input_api.AffectedFiles(include_deletes=True):
+    affected_file_path = affected_file.LocalPath()
+    if affected_file_path.endswith('BUILD.bazel'):
+      try:
+        subprocess.check_output(['bazelisk', 'build', '//bazel/exporter_tool'],
+                                stderr=subprocess.STDOUT)
+      except:
+        return [
+            output_api.PresubmitNotifyResult('Unable to build exporter_tool')
+        ]
+      try:
+        cmd = ['make', '-C', 'bazel', 'check_gni']
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+      except:
+        return [
+            output_api.PresubmitPromptWarning(
+                'A Bazel build file was modified and one (or more) generated GNI '
+                'files are out of date. Run `make -C bazel generate_gni` to update.'
+            )
+        ]
+
+  # No *.bazel files changed.
+  return []
+
+
 def _CheckBuildifier(input_api, output_api):
   """Runs Buildifier and fails on linting errors, or if it produces any diffs.
 
@@ -404,6 +436,7 @@ def CheckChangeOnUpload(input_api, output_api):
   results.extend(_CheckPublicBzl(input_api, output_api))
   # Buildifier might not be on the CI machines.
   results.extend(_CheckBuildifier(input_api, output_api))
+  results.extend(_CheckGNIGenerated(input_api, output_api))
   return results
 
 
