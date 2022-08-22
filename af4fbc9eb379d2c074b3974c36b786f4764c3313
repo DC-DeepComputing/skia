@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "089bb5c0_f5a77653",
+        "filename": "tests/sksl/workarounds/RewriteMatrixVectorMultiplyStandaloneSettings.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-22T18:07:56Z",
+      "side": 1,
+      "message": "I am also concerned that replacing every mat-vec multiply in SkSL with this construct might bite us.",
+      "range": {
+        "startLine": 6,
+        "startChar": 11,
+        "endLine": 6,
+        "endChar": 96
+      },
+      "revId": "af4fbc9eb379d2c074b3974c36b786f4764c3313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
