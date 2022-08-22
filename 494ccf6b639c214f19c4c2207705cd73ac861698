@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bee29d02_c59945bf",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T19:53:05Z",
+      "side": 1,
+      "message": "But that app could get out-of-date, and that approach would result in subtle bugs. I\u0027m worried about always building the tool because it took just under 3 min. to build on my M1 mac (likely due to https://github.com/bazelbuild/bazel/issues/8230).\n\nI looked for, but couldn\u0027t find, a way to log an info message to inform the user that a long running task was in progress. I don\u0027t think I should be using Python\u0027s `print()`.",
+      "parentUuid": "fb29cfc0_72b23e72",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "315c1970_5860f3d3",
         "filename": "PRESUBMIT.py",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I think that should be ok.",
       "parentUuid": "315c1970_5860f3d3",
+      "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7dfaf1_9a3f62a9",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-22T19:53:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c2d0c41_1e9586a0",
       "revId": "494ccf6b639c214f19c4c2207705cd73ac861698",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
