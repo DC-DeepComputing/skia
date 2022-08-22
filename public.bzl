@@ -1416,6 +1416,8 @@ BASE_SRCS_ALL = [
     "src/sksl/SkSLMemoryLayout.h",
     "src/sksl/SkSLMemoryPool.h",
     "src/sksl/SkSLModifiersPool.h",
+    "src/sksl/SkSLModuleLoader.cpp",
+    "src/sksl/SkSLModuleLoader.h",
     "src/sksl/SkSLOperator.cpp",
     "src/sksl/SkSLOutputStream.cpp",
     "src/sksl/SkSLOutputStream.h",
