@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1285d447_6058ef26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-23T23:05:26Z",
+      "side": 1,
+      "message": "It looks like the final buffer read sees the pre-compute-pass state of the output buffer on a Radeon GPU (Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Graphite). I\u0027m not sure why this is but maybe I\u0027m hitting some race condition when mapping the buffer from a discrete GPU after submit? Either that or the compute kernel isn\u0027t running for some reason but the test is passing on integrated GPUs (M1 and Intel IrisPro).",
+      "revId": "bbce486e13b913757b159779a97acb8fcd7a980b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
