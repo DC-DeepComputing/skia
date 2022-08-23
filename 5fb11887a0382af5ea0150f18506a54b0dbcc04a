@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e5afbd_29d9e193",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-23T19:30:23Z",
+      "side": 1,
+      "message": "Turns out VK_WHOLE_SIZE is defined in Chrome as a type that needs to be cast. Just avoid it.",
+      "revId": "5fb11887a0382af5ea0150f18506a54b0dbcc04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
