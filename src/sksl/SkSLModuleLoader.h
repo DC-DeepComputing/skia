@@ -16,6 +16,7 @@ namespace SkSL {
 
 class ModifiersPool;
 struct ParsedModule;
+class SymbolTable;
 class Type;
 
 using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
@@ -37,6 +38,10 @@ public:
     // They are created when the ModuleLoader is instantiated and never change.
     const BuiltinTypes& builtinTypes();
     const ParsedModule& rootModule();
+
+    // This is used for testing purposes; it contains root types and public aliases (mat2 for
+    // float2x2), and hides private types like sk_Caps.
+    std::shared_ptr<SymbolTable>& rootSymbolTableWithPublicTypes();
 
     // A list of all the root (public) and private types. You don't need the lock to use this.
     static SkSpan<const BuiltinTypePtr> RootTypeList();
