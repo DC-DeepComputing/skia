@@ -230,36 +230,17 @@ SK_MAKE_BITMASK_OPS(RenderStep::Flags);
  * on the other hand are virtual implement the technique specific functionality. It is entirely
  * possible for certain types of steps, e.g. a bounding box cover, to be re-used across different
  * Renderers even if the preceeding steps were different.
+ *
+ * All Renderers are accessed through the SharedContext's RendererProvider.
  */
 class Renderer {
     using StepFlags = RenderStep::Flags;
 public:
-    // Graphite defines a limited set of renderers in order to increase likelihood of batching
-    // across draw calls, and reduce the number of shader permutations required. These Renderers
-    // are stateless singletons and remain alive for the entire program. Each Renderer corresponds
-    // to a specific recording function on DrawList and fill type.
-    static const Renderer& StencilTessellatedCurvesAndTris(SkPathFillType);
-
-    static const Renderer& StencilTessellatedWedges(SkPathFillType);
-
-    static const Renderer& ConvexTessellatedWedges();
-
-    static const Renderer& TessellatedStrokes();
-
-    static const Renderer& TextDirect(bool isA8);
-
-    static const Renderer& TextSDF(bool useLCDText);
-
-    static const Renderer& Vertices(SkVertices::VertexMode, bool hasColors, bool hasTexCoords);
-
-
-    // TODO: Add renderers for primitives (rect, rrect, etc.) and atlas draws; add support for
-    // inverse filled strokes.
-
     // The maximum number of render steps that any Renderer is allowed to have.
     static constexpr int kMaxRenderSteps = 4;
 
     SkSpan<const RenderStep* const> steps() const {
+        SkASSERT(fStepCount > 0); // steps() should only be called on valid Renderers.
         return {&fSteps.front(), static_cast<size_t>(fStepCount) };
     }
 
@@ -273,6 +254,8 @@ public:
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
 private:
+    friend class RendererProvider; // for ctors
+
     // max render steps is 4, so just spell the options out for now...
     Renderer(std::string_view name, const RenderStep* s1)
             : Renderer(name, std::array<const RenderStep*, 1>{s1}) {}
@@ -301,6 +284,10 @@ private:
         // At least one step needs to actually shade.
         SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
     }
+
+    // Initialized to an invalid configuration, used by RendererProvider when config options disable
+    // a particular implementation. Renderers from this ctor this should never be exposed.
+    Renderer() : fSteps(), fName(""), fStepCount(0) {}
 
     // Cannot move or copy
     Renderer(const Renderer&) = delete;
