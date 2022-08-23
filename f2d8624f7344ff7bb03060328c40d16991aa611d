@@ -87,6 +87,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5ae34b2_1d935012",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-08-23T17:53:38Z",
+      "side": 1,
+      "message": "Sorry but forgot to mention earlier that there are other areas, other than GrGLGpu, where we are sending the label, as part of this CL, to GrBackendTexture from onCreateBackendTexture like GrD3DGpu, GrDawnGpu, GrMockGpu GrMtlGpu etc.\n\nhttps://source.chromium.org/search?q\u003donCreateBackendTexture\u0026ss\u003dchromium%2Fchromium%2Fsrc\n\nBecause they are not part of GL, should it be ok to let the labels be sent to GrBackendTexture like above for these backends?",
+      "parentUuid": "daffc710_f8b5a42b",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
