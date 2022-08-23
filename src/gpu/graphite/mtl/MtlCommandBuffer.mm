@@ -541,6 +541,13 @@ void MtlCommandBuffer::bindBuffer(const Buffer* buffer, unsigned int offset, uns
 
     id<MTLBuffer> mtlBuffer = buffer ? static_cast<const MtlBuffer*>(buffer)->mtlBuffer() : nullptr;
     fActiveComputeCommandEncoder->setBuffer(mtlBuffer, offset, index);
+
+#ifdef SK_BUILD_FOR_MAC
+    if (buffer && buffer->bufferType() == BufferType::kXferGpuToCpu &&
+        fSharedContext->mtlCaps().isMac()) {
+        fComputeBuffersToSynchronize.push_back(buffer);
+    }
+#endif
 }
 
 void MtlCommandBuffer::dispatchThreadgroups(const WorkgroupSize& globalSize,
@@ -553,6 +560,22 @@ void MtlCommandBuffer::endComputePass() {
     SkASSERT(fActiveComputeCommandEncoder);
     fActiveComputeCommandEncoder->endEncoding();
     fActiveComputeCommandEncoder.reset();
+
+#ifdef SK_BUILD_FOR_MAC
+    if (!fComputeBuffersToSynchronize.empty()) {
+        MtlBlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
+#ifdef SK_ENABLE_MTL_DEBUG_INFO
+        blitCmdEncoder->pushDebugGroup(@"syncComputeBuffersToCPU");
+#endif
+        for (const Buffer* buffer : fComputeBuffersToSynchronize) {
+            blitCmdEncoder->synchronizeResource(static_cast<const MtlBuffer*>(buffer)->mtlBuffer());
+        }
+        fComputeBuffersToSynchronize.clear();
+#ifdef SK_ENABLE_MTL_DEBUG_INFO
+        blitCmdEncoder->popDebugGroup();
+#endif
+    }
+#endif
 }
 
 static bool check_max_blit_width(int widthInPixels) {

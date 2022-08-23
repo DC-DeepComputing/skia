@@ -22,6 +22,8 @@ public:
 
     bool isMapped() const { return fMapPtr; }
 
+    BufferType bufferType() const { return fType; }
+
 protected:
     Buffer(const SharedContext* sharedContext,
            size_t size,
@@ -40,7 +42,6 @@ private:
 
     // TODO: Remove these getters once we start using fType and fPrioritizeGpuReads in key
     // generation. For now this silences compiler unused member warnings.
-    BufferType bufferType() const { return fType; }
     PrioritizeGpuReads prioritizeGpuReads() const { return fPrioritizeGpuReads; }
 
     size_t             fSize;

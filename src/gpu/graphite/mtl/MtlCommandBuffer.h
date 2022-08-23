@@ -144,6 +144,10 @@ private:
 
     const MtlSharedContext* fSharedContext;
 
+#ifdef SK_BUILD_FOR_MAC
+    std::vector<const Buffer*> fComputeBuffersToSynchronize;
+#endif
+
 #ifdef SK_ENABLE_PIET_GPU
     const skgpu::piet::MtlRenderer* fPietRenderer = nullptr;  // owned by MtlQueueManager
 #endif
