@@ -183,6 +183,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6191eb6c_9e7b7957",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-08-23T19:23:21Z",
+      "side": 1,
+      "message": "Greg and Jim, thanks for the confirmation. Updated the CL with the changes.",
+      "parentUuid": "cd4e733e_b02c1275",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
