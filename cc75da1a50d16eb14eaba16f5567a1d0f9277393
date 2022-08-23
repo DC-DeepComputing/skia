@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eca82d84_06e16f5a",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-23T20:28:47Z",
+      "side": 1,
+      "message": "I\u0027m thinking of using this to do ubershader kind of work, switch on AA vs. aliased, LCD vs A8, etc.",
+      "range": {
+        "startLine": 52,
+        "startChar": 24,
+        "endLine": 52,
+        "endChar": 37
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
