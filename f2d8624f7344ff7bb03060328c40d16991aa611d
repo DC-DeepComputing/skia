@@ -159,6 +159,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd4e733e_b02c1275",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-23T18:51:23Z",
+      "side": 1,
+      "message": "Jim for context, this CL is when the client is asking Skia to make the backend object for them. I think the question was right now (when Aditya updates the suggestions above) GL is the only backend that will actually be setting the label. So for the other backends should we be setting the label on the GrBackendTexture if we didn\u0027t do it on the backend object, and my opinion there is no we should not.",
+      "parentUuid": "ad8f487d_8fd8cac5",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
