@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc58944f_befbaf4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T22:00:21Z",
+      "side": 1,
+      "message": "Other than nits below this all LGTM, but Greg should look at it for Graphite-correctness as well.",
+      "revId": "02976683d90a515e8b52a07df6b807b30e961c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c0569d1_94ccbf62",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T22:00:21Z",
+      "side": 1,
+      "message": "nit: kProblemSize, kFactor",
+      "range": {
+        "startLine": 22,
+        "startChar": 23,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "02976683d90a515e8b52a07df6b807b30e961c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef7ebe27_0085fafc",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T22:00:21Z",
+      "side": 1,
+      "message": "nit/up to you: this confused me for a second because it mixed pointer-incrementing with array-indexing. Consider using `*inData++ \u003d ....;` and `*outData++ \u003d ....;` or `inData[]` and `outData[]` consistently throughout.",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 63,
+        "endChar": 22
+      },
+      "revId": "02976683d90a515e8b52a07df6b807b30e961c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
