@@ -16,6 +16,24 @@
       "message": "It looks like the final buffer read sees the pre-compute-pass state of the output buffer on a Radeon GPU (Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Graphite). I\u0027m not sure why this is but maybe I\u0027m hitting some race condition when mapping the buffer from a discrete GPU after submit? Either that or the compute kernel isn\u0027t running for some reason but the test is passing on integrated GPUs (M1 and Intel IrisPro).",
       "revId": "bbce486e13b913757b159779a97acb8fcd7a980b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5535579_4f68e908",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-23T23:17:17Z",
+      "side": 1,
+      "message": "OK, to be able to read back the contents of a managed GPU buffer from the CPU, there needs to be a call to `[MTLBlitCommandEncoder synchronizeResource:]`. We have this wired up only for `CommandBuffer::copyTextureToBuffer`.\n\nDoes it make sense to add a test-only setting for `CommandBuffer` to explicitly synchronize managed buffer resources that are bound to a compute pass? I expect most of our uses will keep buffers containing compute pass output in GPU member and feed them directly to subsequent compute/render passes, so CPU readback for buffers shouldn\u0027t be needed outside tests.\n\n(also see the compute example in: https://developer.apple.com/documentation/metal/resource_fundamentals/synchronizing_a_managed_resource?language\u003dobjc)",
+      "parentUuid": "1285d447_6058ef26",
+      "revId": "bbce486e13b913757b159779a97acb8fcd7a980b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
