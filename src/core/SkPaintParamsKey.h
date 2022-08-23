@@ -187,6 +187,11 @@ public:
         fBlendInfo = blendInfo;
     }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+
+    void setPrimitiveBlendInfo(const skgpu::BlendInfo& blendInfo) {
+        fPrimitiveBlendInfo = blendInfo;
+    }
+    const skgpu::BlendInfo& primitiveBlendInfo() const { return fPrimitiveBlendInfo; }
 #endif
 
     void beginBlock(int32_t codeSnippetID);
@@ -228,6 +233,7 @@ public:
         fData.rewind();
 #ifdef SK_GRAPHITE_ENABLED
         fBlendInfo = {};
+        fPrimitiveBlendInfo = {};
 #endif
         SkDEBUGCODE(fLocked = false;)
         SkDEBUGCODE(this->checkReset();)
@@ -270,6 +276,7 @@ private:
 
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::BlendInfo fBlendInfo;
+    skgpu::BlendInfo fPrimitiveBlendInfo;
 #endif
 };
 

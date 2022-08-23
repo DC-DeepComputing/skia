@@ -61,7 +61,8 @@ public:
     // TODO: make pure virtual
     virtual void addToKey(const SkKeyContext&,
                           SkPaintParamsKeyBuilder*,
-                          SkPipelineDataGatherer*) const;
+                          SkPipelineDataGatherer*,
+                          bool primitiveColorBlender) const;
 #endif
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
