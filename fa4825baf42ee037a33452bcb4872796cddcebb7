@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9f4746_4a50e500",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T20:52:18Z",
+      "side": 1,
+      "message": "This is (finally) our fallback logic when we can\u0027t guarantee the compiler will protect us.\n\nThis CL also moves the preprocessor logic for the musttail attribute (so we can reference it in tests, and in the append_stack_rewind function).",
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
