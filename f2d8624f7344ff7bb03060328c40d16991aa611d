@@ -39,6 +39,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f96b9d93_43c667e3",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-08-23T17:16:55Z",
+      "side": 1,
+      "message": "To set it on GLTexture, I can instead send the label to createTexture here\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/gl/GrGLGpu.cpp;l\u003d1465?q\u003dGrGlGpu.cpp\u0026ss\u003dchromium%2Fchromium%2Fsrc\n\nin which we call set_khr_debug_label\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/gl/GrGLGpu.cpp;l\u003d1801;drc\u003d8f20fb0fd2ed4ccb7dd703557c34c3afd798f49b?q\u003dGrGlGpu.cpp\u0026ss\u003dchromium%2Fchromium%2Fsrc\n\nwhich can be modified to take a new parameter, label, which would set the label on GLTexture. Does this approach seems ok?",
+      "parentUuid": "da8c3535_6af9363b",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
