@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c60dbc_676f87ab",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3770,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-23T19:30:26Z",
+      "side": 1,
+      "message": "we do want to pass the label in here though because we set it on the backend object. It is just the other backends where we didn\u0027t set it that we want to not also put it on the GrBackendTexture.",
+      "range": {
+        "startLine": 3770,
+        "startChar": 49,
+        "endLine": 3770,
+        "endChar": 50
+      },
+      "revId": "a760b0be983559a7d8ffb8439afc067a31118787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
