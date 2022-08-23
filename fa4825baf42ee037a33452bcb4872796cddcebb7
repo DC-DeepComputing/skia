@@ -16,6 +16,144 @@
       "message": "This is (finally) our fallback logic when we can\u0027t guarantee the compiler will protect us.\n\nThis CL also moves the preprocessor logic for the musttail attribute (so we can reference it in tests, and in the append_stack_rewind function).",
       "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6ff741b_125d4111",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 379,
+        "startChar": 23,
+        "endLine": 379,
+        "endChar": 48
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a183a24b_c27bc60b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "will",
+      "range": {
+        "startLine": 1158,
+        "startChar": 17,
+        "endLine": 1158,
+        "endChar": 20
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d557afb4_d1f2c80d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "How does it do this? I genuinely do not know.",
+      "range": {
+        "startLine": 1158,
+        "startChar": 96,
+        "endLine": 1158,
+        "endChar": 97
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "977c3fb3_8b017308",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "class?",
+      "range": {
+        "startLine": 573,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 6
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac2485ff_ba2006ad",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "Should we start at 1? Checking the zero entry against itself seems unnecessary. (Presumably the behavior cannot be Growth here)",
+      "range": {
+        "startLine": 618,
+        "startChar": 24,
+        "endLine": 618,
+        "endChar": 25
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ccf489_0cf34130",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-23T21:01:07Z",
+      "side": 1,
+      "message": "fStackAddrs, fExpectedBehavior?",
+      "range": {
+        "startLine": 630,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 43
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
