@@ -110,7 +110,6 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -133,7 +132,6 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -156,7 +154,6 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -180,7 +177,6 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -324,7 +320,6 @@ void add_localmatrixshader_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(lmInverse);
 
     gatherer->addFlags(
             dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kLocalMatrixShader));
@@ -377,7 +372,7 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
-    gatherer->write(SkM44(lmInverse));
+    // gatherer->write(SkM44(lmInverse));
     gatherer->write(imgData.fSubset);
     gatherer->write(static_cast<int>(imgData.fTileModes[0]));
     gatherer->write(static_cast<int>(imgData.fTileModes[1]));
