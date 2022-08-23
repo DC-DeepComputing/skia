@@ -154,7 +154,7 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
-sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii, SkBudgeted budgeted) {
+sk_sp<Device> Device::Make1(Recorder* recorder, const SkImageInfo& ii, SkBudgeted budgeted) {
     if (!recorder) {
         return nullptr;
     }
@@ -163,14 +163,14 @@ sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii, SkBudgeted
                                                                              Protected::kNo,
                                                                              Renderable::kYes);
     sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo, budgeted));
-    return Make(recorder,
+    return Make2(recorder,
                 std::move(target),
                 ii.refColorSpace(),
                 ii.colorType(),
                 ii.alphaType());
 }
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make2(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            sk_sp<SkColorSpace> colorSpace,
                            SkColorType colorType,
@@ -244,11 +244,11 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // TODO: Inspect the paint and create info to determine if there's anything that has to be
     // modified to support inline subpasses.
     // TODO: onCreateDevice really should return sk_sp<SkBaseDevice>...
-    return Make(fRecorder, info.fInfo, SkBudgeted::kYes).release();
+    return Make1(fRecorder, info.fInfo, SkBudgeted::kYes).release();
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {
-    return MakeGraphite(fRecorder, ii);
+    return SkSurface::MakeGraphite(fRecorder, SkBudgeted::kNo, ii);
 }
 
 bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
@@ -927,6 +927,18 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawDevice(SkBaseDevice* device,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint& paint) {
+    this->SkBaseDevice::drawDevice(device, sampling, paint);
+}
+
+void Device::drawSpecial(SkSpecialImage* special,
+                         const SkMatrix& localToDevice,
+                         const SkSamplingOptions& sampling,
+                         const SkPaint& paint) {
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -935,8 +947,13 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
     return nullptr;
 }
 
-sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+sk_sp<SkSpecialImage> Device::snapSpecial1(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
+
+    if (forceCopy) {
+
+    }
+
     return nullptr;
 }
 

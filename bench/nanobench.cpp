@@ -361,7 +361,7 @@ struct GraphiteTarget : public Target {
             return false;
         }
 
-        this->surface = MakeGraphite(this->recorder.get(), info);
+        this->surface = SkSurface::MakeGraphite(this->recorder.get(), SkBudgeted::kNo, info);
         if (!this->surface) {
             return false;
         }
