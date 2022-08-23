@@ -15,27 +15,7 @@
 #include "src/core/SkSurfacePriv.h"
 
  ///////////////////////////////////////////////////////////////////////////////
-class SkSpecialSurface_Base : public SkSpecialSurface {
-public:
-    SkSpecialSurface_Base(const SkIRect& subset, const SkSurfaceProps& props)
-        : INHERITED(subset, props)
-        , fCanvas(nullptr) {
-    }
 
-    // reset is called after an SkSpecialImage has been snapped
-    void reset() { fCanvas.reset(); }
-
-    // This can return nullptr if reset has already been called or something when wrong in the ctor
-    SkCanvas* onGetCanvas() { return fCanvas.get(); }
-
-    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot() = 0;
-
-protected:
-    std::unique_ptr<SkCanvas> fCanvas;   // initialized by derived classes in ctors
-
-private:
-    using INHERITED = SkSpecialSurface;
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 static SkSpecialSurface_Base* as_SB(SkSpecialSurface* surface) {

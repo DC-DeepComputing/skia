@@ -39,7 +39,10 @@ class GrRecordingContext;
 class GrRenderTarget;
 enum GrSurfaceOrigin: int;
 
-namespace skgpu::graphite { class Recorder; }
+namespace skgpu::graphite {
+    class BackendTexture;
+    class Recorder;
+}
 
 /** \class SkSurface
     SkSurface is responsible for managing the pixels that a canvas draws into. The pixels can be
@@ -391,6 +394,35 @@ public:
 #endif  // SK_BUILD_FOR_ANDROID_FRAMEWORK
                                                     );
 #endif
+
+#ifdef SK_GRAPHITE_ENABLED
+    static sk_sp<SkSurface> MakeGraphite(skgpu::graphite::Recorder*,
+                                         const SkImageInfo& imageInfo,
+                                         const SkSurfaceProps* surfaceProps = nullptr);
+
+
+    /**
+     * Wraps a GPU-backed texture into SkSurface. Depending on the backend gpu API, the caller may
+     * be required to ensure the texture is valid for the lifetime of returned SkSurface. The
+     * required lifetimes for the specific apis are:
+     *     Metal: Skia will call retain on the underlying MTLTexture so the caller can drop it once
+     *            this call returns.
+     *
+     * SkSurface is returned if all parameters are valid. BackendTexture is valid if its format
+     * agrees with colorSpace and context; for instance, if backendTexture has an sRGB
+     * configuration, then context must support sRGB, and colorSpace must be present. Further,
+     * backendTexture width and height must not exceed context capabilities, and the context must
+     * be able to support back-end textures.
+     *
+     * If SK_ENABLE_GRAPHITE is not defined, this has no effect and returns nullptr.
+     */
+    static sk_sp<SkSurface> MakeGraphiteFromBackendTexture(skgpu::graphite::Recorder*,
+                                                           const skgpu::graphite::BackendTexture&,
+                                                           SkColorType colorType,
+                                                           sk_sp<SkColorSpace> colorSpace,
+                                                           const SkSurfaceProps* props);
+
+#endif // SK_GRAPHITE_ENABLED
 
 #ifdef SK_METAL
     /** Creates SkSurface from CAMetalLayer.
