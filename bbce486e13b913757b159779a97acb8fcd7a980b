@@ -34,6 +34,24 @@
       "parentUuid": "1285d447_6058ef26",
       "revId": "bbce486e13b913757b159779a97acb8fcd7a980b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19bb6ea3_0471300a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-23T23:19:50Z",
+      "side": 1,
+      "message": "s/GPU member/GPU memory/\ns/Intel IrisPro/Intel IrisPlus + IntelHD/",
+      "parentUuid": "f5535579_4f68e908",
+      "revId": "bbce486e13b913757b159779a97acb8fcd7a980b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
