@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d29d251_bccd2e5d",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "Added a comment to explain the rationale - let me know if it doesn\u0027t clarify things.",
+      "parentUuid": "c6ff741b_125d4111",
+      "range": {
+        "startLine": 379,
+        "startChar": 23,
+        "endLine": 379,
+        "endChar": 48
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a183a24b_c27bc60b",
@@ -89,6 +113,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cf234f8_c9b2a335",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "PTAL. I added a longer comment to explain the mechanism.",
+      "parentUuid": "d557afb4_d1f2c80d",
+      "range": {
+        "startLine": 1158,
+        "startChar": 96,
+        "endLine": 1158,
+        "endChar": 97
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e60d3c97_87474291",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a183a24b_c27bc60b",
+      "range": {
+        "startLine": 1158,
+        "startChar": 17,
+        "endLine": 1158,
+        "endChar": 20
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "977c3fb3_8b017308",
         "filename": "tests/SkRasterPipelineTest.cpp",
         "patchSetId": 3
@@ -100,6 +172,30 @@
       "writtenOn": "2022-08-23T21:01:07Z",
       "side": 1,
       "message": "class?",
+      "range": {
+        "startLine": 573,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 6
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f2db7c3_82248990",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "Done (this was originally not encapsulated at all, forgot to fix this when I moved all the checking/assertion logic to member functions).",
+      "parentUuid": "977c3fb3_8b017308",
       "range": {
         "startLine": 573,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fb885c1_66d2be38",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac2485ff_ba2006ad",
+      "range": {
+        "startLine": 618,
+        "startChar": 24,
+        "endLine": 618,
+        "endChar": 25
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2ccf489_0cf34130",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-08-23T21:01:07Z",
       "side": 1,
       "message": "fStackAddrs, fExpectedBehavior?",
+      "range": {
+        "startLine": 630,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 43
+      },
+      "revId": "fa4825baf42ee037a33452bcb4872796cddcebb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c4c535_6f2d96e1",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-23T21:42:24Z",
+      "side": 1,
+      "message": "Done (I\u0027ve spent too much time in the RP code, which uses a decidedly non-Skia coding convention)",
+      "parentUuid": "f2ccf489_0cf34130",
       "range": {
         "startLine": 630,
         "startChar": 0,
