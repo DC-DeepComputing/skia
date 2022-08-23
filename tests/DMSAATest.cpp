@@ -222,6 +222,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                        SkColors::kBlue,
                                                        GrMipmapped::kNo,
                                                        GrRenderable::kYes,
+                                                       {},
                                                        GrProtected::kNo);
 
     auto sourceImage = SkImage::MakeFromTexture(context,
@@ -237,6 +238,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                   SkColors::kRed,
                                                   GrMipmapped::kNo,
                                                   GrRenderable::kYes,
+                                                  {},
                                                   GrProtected::kNo);
 
     auto texture2 = context->createBackendTexture(surfaceDims.width(),
@@ -245,6 +247,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                   SkColors::kYellow,
                                                   GrMipmapped::kNo,
                                                   GrRenderable::kYes,
+                                                  {},
                                                   GrProtected::kNo);
 
     SkPaint paint;

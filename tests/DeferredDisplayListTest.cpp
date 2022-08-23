@@ -865,6 +865,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest, reporter, ctxInfo, CtsEnf
                                                                     kRGBA_8888_SkColorType,
                                                                     GrMipmapped::kNo,
                                                                     GrRenderable::kNo,
+                                                                    "",
                                                                     GrProtected::kNo);
     if (!mbet) {
         return;

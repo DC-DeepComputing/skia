@@ -105,6 +105,7 @@ static sk_sp<GrTextureProxy> create_wrapped_backend(GrDirectContext* dContext) {
             GrColorTypeToSkColorType(kColorType),
             GrMipmapped::kNo,
             GrRenderable::kNo,
+            "",
             GrProtected::kNo);
     if (!mbet) {
         return nullptr;

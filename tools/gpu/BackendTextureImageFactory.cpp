@@ -24,7 +24,8 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                                     pixmap,
                                                     origin,
                                                     renderable,
-                                                    GrProtected::kNo);
+                                                    GrProtected::kNo,
+                                                    "");
     if (!mbet) {
         return nullptr;
     }
@@ -57,6 +58,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                                     color,
                                                     mipmapped,
                                                     renderable,
+                                                    "",
                                                     GrProtected::kNo);
     if (!mbet) {
         return nullptr;

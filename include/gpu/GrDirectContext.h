@@ -445,11 +445,13 @@ public:
       * For the Vulkan backend the layout of the created VkImage will be:
       *      VK_IMAGE_LAYOUT_UNDEFINED.
       */
-     GrBackendTexture createBackendTexture(int width, int height,
-                                           const GrBackendFormat&,
-                                           GrMipmapped,
-                                           GrRenderable,
-                                           GrProtected = GrProtected::kNo);
+    GrBackendTexture createBackendTexture(int width,
+                                          int height,
+                                          const GrBackendFormat&,
+                                          GrMipmapped,
+                                          GrRenderable,
+                                          std::string_view label = {},
+                                          GrProtected = GrProtected::kNo);
 
      /**
       * If possible, create an uninitialized backend texture. The client should ensure that the
@@ -463,6 +465,7 @@ public:
                                            SkColorType,
                                            GrMipmapped,
                                            GrRenderable,
+                                           std::string_view label = {},
                                            GrProtected = GrProtected::kNo);
 
      /**
@@ -479,6 +482,7 @@ public:
                                            const SkColor4f& color,
                                            GrMipmapped,
                                            GrRenderable,
+                                           std::string_view label = {},
                                            GrProtected = GrProtected::kNo,
                                            GrGpuFinishedProc finishedProc = nullptr,
                                            GrGpuFinishedContext finishedContext = nullptr);
@@ -499,6 +503,7 @@ public:
                                            const SkColor4f& color,
                                            GrMipmapped,
                                            GrRenderable,
+                                           std::string_view label = {},
                                            GrProtected = GrProtected::kNo,
                                            GrGpuFinishedProc finishedProc = nullptr,
                                            GrGpuFinishedContext finishedContext = nullptr);
@@ -527,6 +532,7 @@ public:
                                            GrSurfaceOrigin,
                                            GrRenderable,
                                            GrProtected,
+                                           std::string_view label = {},
                                            GrGpuFinishedProc finishedProc = nullptr,
                                            GrGpuFinishedContext finishedContext = nullptr);
 
@@ -537,9 +543,10 @@ public:
                                            GrSurfaceOrigin textureOrigin,
                                            GrRenderable renderable,
                                            GrProtected isProtected,
+                                           std::string_view label = {},
                                            GrGpuFinishedProc finishedProc = nullptr,
                                            GrGpuFinishedContext finishedContext = nullptr) {
-         return this->createBackendTexture(&srcData, 1, textureOrigin, renderable, isProtected,
+         return this->createBackendTexture(&srcData, 1, textureOrigin, renderable, isProtected, label,
                                            finishedProc, finishedContext);
      }
 
@@ -548,6 +555,7 @@ public:
                                           int numLevels,
                                           GrRenderable renderable,
                                           GrProtected isProtected,
+                                           std::string_view label = {},
                                           GrGpuFinishedProc finishedProc = nullptr,
                                           GrGpuFinishedContext finishedContext = nullptr) {
         return this->createBackendTexture(srcData,
@@ -555,18 +563,21 @@ public:
                                           kTopLeft_GrSurfaceOrigin,
                                           renderable,
                                           isProtected,
+                                          label,
                                           finishedProc,
                                           finishedContext);
     }
     GrBackendTexture createBackendTexture(const SkPixmap& srcData,
                                           GrRenderable renderable,
                                           GrProtected isProtected,
+                                          std::string_view label = {},
                                           GrGpuFinishedProc finishedProc = nullptr,
                                           GrGpuFinishedContext finishedContext = nullptr) {
         return this->createBackendTexture(&srcData,
                                           1,
                                           renderable,
                                           isProtected,
+                                          label,
                                           finishedProc,
                                           finishedContext);
     }

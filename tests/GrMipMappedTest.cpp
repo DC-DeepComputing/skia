@@ -60,6 +60,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                                                                          SkColors::kTransparent,
                                                                          mipmapped,
                                                                          renderable,
+                                                                         "",
                                                                          GrProtected::kNo);
             if (!mbet) {
                 ERRORF(reporter, "Could not make texture.");
