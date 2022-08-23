@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd357365_a0618d67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-23T20:25:52Z",
+      "side": 1,
+      "message": "PTAL. Much more compact, and gets perspective text working as well.",
+      "revId": "46ce5d0820f29a9cff02ba72c206e3dd1260843d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
