@@ -57,6 +57,30 @@
       },
       "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8919bcd4_127efe14",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-23T15:38:41Z",
+      "side": 1,
+      "message": "I gated it on *.go and BUILD.bazel (which Gazelle generates). PS5 had a test hack to force presubmission failure - reverted it in PS6.",
+      "parentUuid": "3fe9f2ad_d041c2c7",
+      "range": {
+        "startLine": 247,
+        "startChar": 9,
+        "endLine": 247,
+        "endChar": 35
+      },
+      "revId": "661e680cb4c906f576c726b625b0ae7ae4b27be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
