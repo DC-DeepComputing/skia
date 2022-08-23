@@ -251,6 +251,16 @@ def _CheckOutOfDateGeneratedGo(input_api, output_api):
       return _RunCommandAndCheckGitDiff(output_api, ['go', 'generate', './...'])
   return []  # No modified Go source files.
 
+def _CheckGeneratedBazelBUILDFiles(input_api, output_api):
+    for affected_file in input_api.AffectedFiles(include_deletes=True):
+      affected_file_path = affected_file.LocalPath()
+      if (affected_file_path.endswith('.go') or
+          affected_file_path.endswith('BUILD.bazel')):
+        return _RunCommandAndCheckGitDiff(output_api,
+                                          ['make', '-C', 'bazel', 'generate_go'])
+    return []  # No modified Go source files.
+
+
 def _CheckBazelBUILDFiles(input_api, output_api):
   """Makes sure our BUILD.bazel files are compatible with G3."""
   results = []
@@ -398,6 +408,7 @@ def _CommonChecks(input_api, output_api):
   results.extend(_RegenerateAllExamplesCPP(input_api, output_api))
   results.extend(_CheckBazelBUILDFiles(input_api, output_api))
   results.extend(_CheckOutOfDateGeneratedGo(input_api, output_api))
+  results.extend(_CheckGeneratedBazelBUILDFiles(input_api, output_api))
   return results
 
 
