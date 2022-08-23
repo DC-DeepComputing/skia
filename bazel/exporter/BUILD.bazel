@@ -36,7 +36,6 @@ go_test(
     ],
     embed = [":exporter"],
     deps = [
-        "//bazel/exporter/build_proto/analysis_v2",
         "//bazel/exporter/build_proto/build",
         "//bazel/exporter/interfaces/mocks",
         "@com_github_stretchr_testify//assert",
