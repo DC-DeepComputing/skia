@@ -930,6 +930,18 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawDevice(SkBaseDevice* device,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint& paint) {
+    this->SkBaseDevice::drawDevice(device, sampling, paint);
+}
+
+void Device::drawSpecial(SkSpecialImage* special,
+                         const SkMatrix& localToDevice,
+                         const SkSamplingOptions& sampling,
+                         const SkPaint& paint) {
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -940,6 +952,11 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
+
+    if (forceCopy) {
+
+    }
+
     return nullptr;
 }
 

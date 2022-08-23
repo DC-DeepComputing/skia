@@ -324,6 +324,10 @@ public:
                                           TextureReleaseProc textureReleaseProc = nullptr,
                                           ReleaseContext releaseContext = nullptr);
 
+#if defined(SK_GRAPHITE_ENABLED)
+    static sk_sp<SkImage> MakeGraphite(skgpu::graphite::Recorder*);
+#endif
+
     /** Creates an SkImage from a GPU backend texture. The backend texture must stay
         valid and unchanged until textureReleaseProc is called. The textureReleaseProc is
         called when the SkImage is deleted or no longer refers to the texture and will be
