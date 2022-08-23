@@ -38,7 +38,7 @@ constexpr int kNumTextAtlasTextures = 4;
 
 BitmapTextRenderStep::BitmapTextRenderStep(bool isA8)
         : RenderStep("BitmapTextRenderStep",
-                     "",
+                     isA8 ? "A8" : "ARGB",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
                      /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2}},
                      PrimitiveType::kTriangles,

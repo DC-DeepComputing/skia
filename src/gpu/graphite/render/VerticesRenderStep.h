@@ -15,7 +15,7 @@ namespace skgpu::graphite {
 
 class VerticesRenderStep final : public RenderStep {
 public:
-    explicit VerticesRenderStep(PrimitiveType, std::string_view, bool hasColor, bool hasTexture);
+    explicit VerticesRenderStep(PrimitiveType, bool hasColor, bool hasTexCoords);
 
     ~VerticesRenderStep() override;
 
