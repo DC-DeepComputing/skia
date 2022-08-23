@@ -92,8 +92,7 @@ public:
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,
             GrColor color,
-            const SkMatrix& drawMatrix,
-            SkPoint drawOrigin,
+            const SkMatrix& positionMatrix,
             SkIRect clip) const = 0;
 
     // This call is not thread safe. It should only be called from GrDrawOp::onPrepare which

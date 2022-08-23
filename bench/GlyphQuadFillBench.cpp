@@ -79,7 +79,7 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
 
         for (int loop = 0; loop < loops; loop++) {
             subRun->fillVertexData(fVertices.get(), 0, subRun->glyphCount(),
-                                   grColor, positionMatrix, {0, 0}, clip);
+                                   grColor, positionMatrix, clip);
         }
     }
 
