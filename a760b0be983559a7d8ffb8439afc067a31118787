@@ -22,6 +22,30 @@
       },
       "revId": "a760b0be983559a7d8ffb8439afc067a31118787",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "251ac1af_4d367c2d",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3770,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-08-23T19:36:40Z",
+      "side": 1,
+      "message": "Apologies, I misunderstood. Fixed it in the latest patch.",
+      "parentUuid": "77c60dbc_676f87ab",
+      "range": {
+        "startLine": 3770,
+        "startChar": 49,
+        "endLine": 3770,
+        "endChar": 50
+      },
+      "revId": "a760b0be983559a7d8ffb8439afc067a31118787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
