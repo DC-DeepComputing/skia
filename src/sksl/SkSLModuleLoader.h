@@ -37,6 +37,7 @@ public:
     // They are created when the ModuleLoader is instantiated and never change.
     const BuiltinTypes& builtinTypes();
     const ParsedModule& rootModule();
+    std::shared_ptr<SymbolTable>& rootSymbolTableWithPublicTypes();
 
     // A list of all the root (public) and private types. You don't need the lock to use this.
     static SkSpan<const BuiltinTypePtr> RootTypeList();
