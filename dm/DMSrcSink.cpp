@@ -2160,7 +2160,7 @@ Result GraphiteSink::draw(const Src& src,
     dst->allocPixels(ii);
 
     {
-        sk_sp<SkSurface> surface = MakeGraphite(recorder.get(), ii);
+        sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder.get(), SkBudgeted::kNo, ii);
         if (!surface) {
             return Result::Fatal("Could not create a surface.");
         }
