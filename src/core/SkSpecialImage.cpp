@@ -28,6 +28,12 @@
 #include "src/shaders/SkImageShader.h"
 #endif
 
+#if SK_GRAPHITE_ENABLED
+namespace skgpu::graphite {
+    class TextureProxyView;
+}
+#endif
+
 // Currently the raster imagefilters can only handle certain imageinfos. Call this to know if
 // a given info is supported.
 static bool valid_for_imagefilters(const SkImageInfo& info) {
@@ -36,49 +42,6 @@ static bool valid_for_imagefilters(const SkImageInfo& info) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-class SkSpecialImage_Base : public SkSpecialImage {
-public:
-    SkSpecialImage_Base(const SkIRect& subset, uint32_t uniqueID, const SkSurfaceProps& props)
-        : INHERITED(subset, uniqueID, props) {
-    }
-    ~SkSpecialImage_Base() override { }
-
-    virtual void onDraw(SkCanvas*, SkScalar x, SkScalar y, const SkSamplingOptions&,
-                        const SkPaint*) const = 0;
-
-    virtual bool onGetROPixels(SkBitmap*) const = 0;
-
-    virtual GrRecordingContext* onGetContext() const { return nullptr; }
-
-    virtual SkColorSpace* onGetColorSpace() const = 0;
-
-#if SK_SUPPORT_GPU
-    virtual GrSurfaceProxyView onView(GrRecordingContext* context) const = 0;
-#endif
-
-    // This subset is relative to the backing store's coordinate frame, it has already been mapped
-    // from the content rect by the non-virtual makeSubset().
-    virtual sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const = 0;
-
-    virtual sk_sp<SkSpecialSurface> onMakeSurface(
-            SkColorType colorType, const SkColorSpace* colorSpace, const SkISize& size,
-            SkAlphaType at, const SkSurfaceProps&) const = 0;
-
-    // This subset (when not null) is relative to the backing store's coordinate frame, it has
-    // already been mapped from the content rect by the non-virtual asImage().
-    virtual sk_sp<SkImage> onAsImage(const SkIRect* subset) const = 0;
-
-    virtual sk_sp<SkShader> onAsShader(SkTileMode,
-                                       const SkSamplingOptions&,
-                                       const SkMatrix&) const = 0;
-
-    virtual sk_sp<SkSurface> onMakeTightSurface(
-            SkColorType colorType, const SkColorSpace* colorSpace,
-            const SkISize& size, SkAlphaType at) const = 0;
-
-private:
-    using INHERITED = SkSpecialImage;
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 static inline const SkSpecialImage_Base* as_SIB(const SkSpecialImage* image) {
@@ -116,7 +79,13 @@ SkColorSpace* SkSpecialImage::getColorSpace() const {
 
 #if SK_SUPPORT_GPU
 GrSurfaceProxyView SkSpecialImage::view(GrRecordingContext* context) const {
-    return as_SIB(this)->onView(context);
+    return as_SIB(this)->onView1(context);
+}
+#endif
+
+#if SK_GRAPHITE_ENABLED
+skgpu::graphite::TextureProxyView SkSpecialImage::textureProxyView() const {
+    return as_SIB(this)->onTextureProxyView();
 }
 #endif
 
@@ -237,12 +206,18 @@ public:
     }
 
 #if SK_SUPPORT_GPU
-    GrSurfaceProxyView onView(GrRecordingContext* context) const override {
+    GrSurfaceProxyView onView1(GrRecordingContext* context) const override {
         if (context) {
             return std::get<0>(GrMakeCachedBitmapProxyView(
                     context, fBitmap, /*label=*/"SpecialImageRaster_OnView", GrMipmapped::kNo));
         }
 
+        return {};
+    }
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView onTextureProxyView() const override {
         return {};
     }
 #endif
