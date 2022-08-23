@@ -59,7 +59,7 @@ protected:
 
     void onDraw(SkCanvas* inputCanvas) override {
         // set up offscreen rendering with distance field text
-        auto ctx = inputCanvas->recordingContext();
+        //auto ctx = inputCanvas->recordingContext();
         SkISize size = this->onISize();
         if (!inputCanvas->getBaseLayerSize().isEmpty()) {
             size = inputCanvas->getBaseLayerSize();
@@ -70,7 +70,7 @@ protected:
         inputCanvas->getProps(&inputProps);
         SkSurfaceProps props(SkSurfaceProps::kUseDeviceIndependentFonts_Flag | inputProps.flags(),
                              inputProps.pixelGeometry());
-        auto surface = SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, 0, &props);
+        SkSurface* surface = nullptr;//SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, 0, &props);
         SkCanvas* canvas = surface ? surface->getCanvas() : inputCanvas;
         // init our new canvas with the old canvas's matrix
         canvas->setMatrix(inputCanvas->getLocalToDeviceAs3x3());
