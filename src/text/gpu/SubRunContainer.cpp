@@ -262,7 +262,7 @@ SkRect TransformedMaskVertexFiller::deviceRect(
         const SkMatrix& drawMatrix, SkPoint drawOrigin) const {
     SkRect outBounds = fSourceBounds;
     outBounds.offset(drawOrigin);
-    return drawMatrix.mapRect(outBounds);
+    return fSourceBounds;
 }
 
 int TransformedMaskVertexFiller::unflattenSize() const {
@@ -1701,14 +1701,15 @@ std::tuple<bool, SkRect> DirectMaskSubRun::deviceRectAndCheckTransform(
 class TransformedMaskSubRun final : public SubRun, public AtlasSubRun {
 public:
     TransformedMaskSubRun(const SkMatrix& initialPositionMatrix,
+                          SkScalar finalScale,
                           TransformedMaskVertexFiller&& vertexFiller,
                           GlyphVector&& glyphs);
 
     static SubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                             const SkMatrix& initialPositionMatrix,
+                            SkScalar finalScale,
                             SkStrikePromise&& strikePromise,
                             SkRect sourceBounds,
-                            SkScalar strikeToSourceScale,
                             MaskFormat maskType,
                             SubRunAllocator* alloc);
 
@@ -1790,6 +1791,7 @@ private:
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
 
     const SkMatrix& fInitialPositionMatrix;
+    const SkScalar fFinalScale;
 
     const TransformedMaskVertexFiller fVertexFiller;
 
@@ -1799,32 +1801,37 @@ private:
 };
 
 TransformedMaskSubRun::TransformedMaskSubRun(const SkMatrix& initialPositionMatrix,
+                                             SkScalar finalScale,
                                              TransformedMaskVertexFiller&& vertexFiller,
                                              GlyphVector&& glyphs)
         : fInitialPositionMatrix{initialPositionMatrix}
+        , fFinalScale{finalScale}
         , fVertexFiller{std::move(vertexFiller)}
         , fGlyphs{std::move(glyphs)} { }
 
 SubRunOwner TransformedMaskSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                         const SkMatrix& initialPositionMatrix,
+                                        SkScalar finalScale,
                                         SkStrikePromise&& strikePromise,
                                         SkRect sourceBounds,
-                                        SkScalar strikeToSourceScale,
                                         MaskFormat maskType,
                                         SubRunAllocator* alloc) {
     auto vertexFiller = TransformedMaskVertexFiller::Make(
-            sourceBounds, maskType, 0, strikeToSourceScale, accepted, alloc);
+            sourceBounds, maskType, 0, finalScale, accepted, alloc);
 
     auto glyphVector = GlyphVector::Make(std::move(strikePromise), accepted.get<0>(), alloc);
 
     return alloc->makeUnique<TransformedMaskSubRun>(
-            initialPositionMatrix, std::move(vertexFiller), std::move(glyphVector));
+            initialPositionMatrix, finalScale, std::move(vertexFiller), std::move(glyphVector));
 }
 
 SubRunOwner TransformedMaskSubRun::MakeFromBuffer(const SkMatrix& initialPositionMatrix,
                                                   SkReadBuffer& buffer,
                                                   SubRunAllocator* alloc,
                                                   const SkStrikeClient* client) {
+    SkScalar finalScale = buffer.readScalar();
+    if (!buffer.validate(finalScale != 0)) { return nullptr; }
+
     auto vertexFiller = TransformedMaskVertexFiller::MakeFromBuffer(buffer, alloc);
     if (!buffer.validate(vertexFiller.has_value())) { return nullptr; }
 
@@ -1834,7 +1841,7 @@ SubRunOwner TransformedMaskSubRun::MakeFromBuffer(const SkMatrix& initialPositio
         return nullptr;
     }
     return alloc->makeUnique<TransformedMaskSubRun>(
-            initialPositionMatrix, std::move(*vertexFiller), std::move(*glyphVector));
+            initialPositionMatrix, finalScale, std::move(*vertexFiller), std::move(*glyphVector));
 }
 
 int TransformedMaskSubRun::unflattenSize() const {
@@ -1842,6 +1849,8 @@ int TransformedMaskSubRun::unflattenSize() const {
 }
 
 void TransformedMaskSubRun::doFlatten(SkWriteBuffer& buffer) const {
+    SkASSERT(fFinalScale != 0);
+    buffer.writeScalar(fFinalScale);
     fVertexFiller.flatten(buffer);
     fGlyphs.flatten(buffer);
 }
@@ -1930,12 +1939,16 @@ void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int coun
                                            const SkMatrix& drawMatrix, SkPoint drawOrigin,
                                            SkIRect clip) const {
     const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
-    fVertexFiller.fillVertexData(offset, count,
-                                 fGlyphs.glyphs(),
-                                 color,
-                                 positionMatrix,
-                                 clip,
-                                 vertexDst);
+
+    if (SkMatrix inverse; fInitialPositionMatrix.invert(&inverse)) {
+        const SkMatrix viewDifference = SkMatrix::Concat(positionMatrix, inverse);
+        fVertexFiller.fillVertexData(offset, count,
+                                     fGlyphs.glyphs(),
+                                     color,
+                                     viewDifference,
+                                     clip,
+                                     vertexDst);
+    }
 }
 
 size_t TransformedMaskSubRun::vertexStride(const SkMatrix& drawMatrix) const {
@@ -2704,7 +2717,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 continue;
             }
 
-            SkScalar strikeToSourceScale = 1;
+            SkScalar finalScale = 1;
             SkFont reducedFont = runFont;
             if (originalMaxGlyphDimension > kMaxBilerpAtlasDimension) {
                 // For glyphs that won't fit in the atlas, calculating the amount to reduce the
@@ -2747,23 +2760,25 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
                 // Calculate the factor to make the maximum dimension of the reduced font be the
                 // same size as the maximum dimension from the original runFont.
-                strikeToSourceScale = originalMaxGlyphDimension / maxGlyphDimension;
+                finalScale = originalMaxGlyphDimension / maxGlyphDimension;
             }
 
-            if (!SkScalarNearlyZero(strikeToSourceScale)) {
+            if (!SkScalarNearlyZero(finalScale)) {
                 SkStrikeSpec strikeSpec = SkStrikeSpec::MakeTransformMask(
-                        reducedFont, runPaint, deviceProps, scalerContextFlags, SkMatrix::I());
+                        reducedFont, runPaint, deviceProps, scalerContextFlags, *gaugingMatrix);
                 if constexpr (kTrace) {
                     msg.appendf("Transformed case:\n%s", strikeSpec.dump().c_str());
                 }
                 ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
-                accepted->startSource(rejected->source());
+                accepted->startTransformed(rejected->source(), container->initialPosition());
                 if constexpr (kTrace) {
                     msg.appendf("glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                 }
-                SkRect sourceBounds = strike->prepareForMaskDrawing(
-                        strikeToSourceScale, accepted, rejected);
+
+                // Remember, the top left points generated by prepareForMaskDrawing are in device
+                // space.
+                SkRect sourceBounds = strike->prepareForMaskDrawing(finalScale, accepted, rejected);
                 rejected->flipRejectsToSource();
                 SkASSERT(rejected->source().empty());
 
@@ -2775,9 +2790,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                                 container->fSubRuns.append(
                                         TransformedMaskSubRun::Make(acceptedGlyphsAndLocations,
                                                                     container->initialPosition(),
+                                                                    finalScale,
                                                                     strike->strikePromise(),
                                                                     sourceBounds,
-                                                                    strikeToSourceScale,
                                                                     format,
                                                                     alloc));
                             };

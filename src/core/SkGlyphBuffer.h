@@ -131,6 +131,9 @@ public:
     // during drawing.
     void startSource(const SkZip<const SkGlyphID, const SkPoint>& source);
 
+    void startTransformed(const SkZip<const SkGlyphID, const SkPoint>& source,
+                          const SkMatrix& positionMatrix);
+
     // Load the buffer with SkPackedGlyphIDs, calculating positions, so they can be constant.
     //
     // The positions are calculated integer positions in devices space, and the mapping of
