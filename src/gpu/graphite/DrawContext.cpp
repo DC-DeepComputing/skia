@@ -35,22 +35,20 @@
 namespace skgpu::graphite {
 
 sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
-                                     sk_sp<SkColorSpace> colorSpace,
-                                     SkColorType colorType,
-                                     SkAlphaType alphaType) {
+                                     const SkColorInfo& colorInfo,
+                                     const SkSurfaceProps& props) {
     if (!target) {
         return nullptr;
     }
 
     // TODO: validate that the color type and alpha type are compatible with the target's info
-    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(),
-                                              colorType,
-                                              alphaType,
-                                              std::move(colorSpace));
-    return sk_sp<DrawContext>(new DrawContext(std::move(target), imageInfo));
+    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(), colorInfo);
+    return sk_sp<DrawContext>(new DrawContext(std::move(target), imageInfo, props));
 }
 
-DrawContext::DrawContext(sk_sp<TextureProxy> target, const SkImageInfo& ii)
+DrawContext::DrawContext(sk_sp<TextureProxy> target,
+                         const SkImageInfo& ii,
+                         const SkSurfaceProps& props)
         : fTarget(std::move(target))
         , fImageInfo(ii)
         , fPendingDraws(std::make_unique<DrawList>())
