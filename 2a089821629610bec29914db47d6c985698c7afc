@@ -16,6 +16,24 @@
       "message": "So I think this looks good, especially for something we want to cherry-pick back to 105 and 106. However, this does seem to be picking rather unfortunate sizes to scale up (scales up small sizes a lot) in my local testing.",
       "revId": "2a089821629610bec29914db47d6c985698c7afc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c95c9ab_ae4ff520",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-23T13:20:05Z",
+      "side": 1,
+      "message": "I agree about it looking bad. I\u0027m going to check this in as a stop gap, while I work on the more complex better looking solution. I think I have that solution figured out, I\u0027m just trying to work out the details with perspective.",
+      "parentUuid": "45b51a02_901dedd7",
+      "revId": "2a089821629610bec29914db47d6c985698c7afc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
