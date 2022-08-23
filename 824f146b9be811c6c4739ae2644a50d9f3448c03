@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db1edf3_f205e0f4",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T01:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca2a6e87_7d123293",
+      "range": {
+        "startLine": 426,
+        "startChar": 14,
+        "endLine": 426,
+        "endChar": 16
+      },
+      "revId": "824f146b9be811c6c4739ae2644a50d9f3448c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "251e3e67_321c5e80",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-19T19:41:39Z",
       "side": 1,
       "message": "This is a pretty pure translation, and I did it to minimize the amount of behavioral changes that the matrix image filter undergoes at once. However, in a follow-up CL I\u0027m going to add a transform field to skif::FilterResult to allow consecutive matrix transforms to be concatenated without generating new images. This will also allow it to be consolidated with the final draw, or let filters like the post-blur upscaling be combined together. That will make the immediate logic in MatrixTransformImageFilter::onFilterBounds pretty trivial.",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 60
+      },
+      "revId": "824f146b9be811c6c4739ae2644a50d9f3448c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75965cf6_01252259",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T01:22:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "251e3e67_321c5e80",
       "range": {
         "startLine": 121,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "258c91d0_afbe143f",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T01:22:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1fc604cb_198033ab",
+      "range": {
+        "startLine": 156,
+        "startChar": 8,
+        "endLine": 156,
+        "endChar": 59
+      },
+      "revId": "824f146b9be811c6c4739ae2644a50d9f3448c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78ff4054_56272558",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5561920_3b262dfc",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T01:22:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "78ff4054_56272558",
+      "range": {
+        "startLine": 168,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 5
+      },
+      "revId": "824f146b9be811c6c4739ae2644a50d9f3448c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "099ca514_5b891d23",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-08-19T19:41:39Z",
       "side": 1,
       "message": "going back to my earlier comment about \u0027matrix\u0027, this is equivalent to \u0027matrix\u0027 when the map direction is kForward (the getOutputLayerBounds operation).",
+      "range": {
+        "startLine": 181,
+        "startChar": 11,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "824f146b9be811c6c4739ae2644a50d9f3448c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec0bc01_054d5e01",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T01:22:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "099ca514_5b891d23",
       "range": {
         "startLine": 181,
         "startChar": 11,
