@@ -1196,7 +1196,7 @@ public:
 
     void fillVertexData(void* vertexDst, int offset, int count,
                         GrColor color,
-                        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                        const SkMatrix& positionMatrix,
                         SkIRect clip) const override;
 #endif  // SK_SUPPORT_GPU
 
@@ -1401,8 +1401,7 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
             calculate_colors(sdc, paint, viewMatrix, fMaskFormat, sdc->surfaceProps(), &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                drawMatrix,
-                                                drawOrigin,
+                                                positionMatrix,
                                                 geometricClipRect,
                                                 std::move(subRunStorage),
                                                 drawingColor,
@@ -1491,7 +1490,7 @@ void transformed_direct_3D(SkZip<Quad, const Glyph*, const VertexData> quadData,
 
 void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
                                       GrColor color,
-                                      const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                      const SkMatrix& positionMatrix,
                                       SkIRect clip) const {
     auto quadData = [&](auto dst) {
         return SkMakeZip(dst,
@@ -1499,7 +1498,6 @@ void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
                          fLeftTopDevicePos.subspan(offset, count));
     };
 
-    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     auto [noTransformNeeded, originOffset] =
             can_use_direct(fInitialPositionMatrix, positionMatrix);
 
@@ -1755,7 +1753,7 @@ public:
     void fillVertexData(
             void* vertexDst, int offset, int count,
             GrColor color,
-            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            const SkMatrix& positionMatrix,
             SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
@@ -1876,9 +1874,9 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
     SkPMColor4f drawingColor = calculate_colors(
             sdc, paint, viewMatrix, fVertexFiller.grMaskType(), sdc->surfaceProps(), &grPaint);
 
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                drawMatrix,
-                                                drawOrigin,
+                                                positionMatrix,
                                                 SkIRect::MakeEmpty(),
                                                 std::move(subRunStorage),
                                                 drawingColor,
@@ -1927,9 +1925,8 @@ std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
 
 void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
                                            GrColor color,
-                                           const SkMatrix& drawMatrix, SkPoint drawOrigin,
+                                           const SkMatrix& positionMatrix,
                                            SkIRect clip) const {
-    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     fVertexFiller.fillVertexData(offset, count,
                                  fGlyphs.glyphs(),
                                  color,
@@ -2041,7 +2038,7 @@ public:
     void fillVertexData(
             void* vertexDst, int offset, int count,
             GrColor color,
-            const SkMatrix& drawMatrix, SkPoint drawOrigin,
+            const SkMatrix& positionMatrix,
             SkIRect clip) const override;
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
@@ -2221,9 +2218,9 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
     auto [maskType, DFGPFlags, useGammaCorrectDistanceTable] =
             calculate_sdf_parameters(*sdc, drawMatrix, fUseLCDText, fAntiAliased);
 
+    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                drawMatrix,
-                                                drawOrigin,
+                                                positionMatrix,
                                                 SkIRect::MakeEmpty(),
                                                 std::move(subRunStorage),
                                                 drawingColor,
@@ -2282,10 +2279,8 @@ size_t SDFTSubRun::vertexStride(const SkMatrix& drawMatrix) const {
 void SDFTSubRun::fillVertexData(
         void *vertexDst, int offset, int count,
         GrColor color,
-        const SkMatrix& drawMatrix, SkPoint drawOrigin,
+        const SkMatrix& positionMatrix,
         SkIRect clip) const {
-    const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
-
     fVertexFiller.fillVertexData(offset, count,
                                  fGlyphs.glyphs(),
                                  color,

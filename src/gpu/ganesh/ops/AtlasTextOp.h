@@ -35,23 +35,20 @@ public:
 
     struct Geometry {
         Geometry(const sktext::gpu::AtlasSubRun& subRun,
-                 const SkMatrix& drawMatrix,
-                 SkPoint drawOrigin,
+                 const SkMatrix& positionMatrix,
                  SkIRect clipRect,
                  sk_sp<SkRefCnt>&& supportData,
                  const SkPMColor4f& color)
             : fSubRun{subRun}
             , fSupportDataKeepAlive{std::move(supportData)}
-            , fDrawMatrix{drawMatrix}
-            , fDrawOrigin{drawOrigin}
+            , fPositionMatrix{positionMatrix}
             , fClipRect{clipRect}
             , fColor{color} {
                 SkASSERT(fSupportDataKeepAlive != nullptr);
         }
 
         static Geometry* Make(const sktext::gpu::AtlasSubRun& subRun,
-                              const SkMatrix& drawMatrix,
-                              SkPoint drawOrigin,
+                              const SkMatrix& positionMatrix,
                               SkIRect clipRect,
                               sk_sp<SkRefCnt>&& supportData,
                               const SkPMColor4f& color,
@@ -64,8 +61,8 @@ public:
         // Keep the TextBlob or Slug alive until the op is deleted.
         sk_sp<SkRefCnt> fSupportDataKeepAlive;
 
-        const SkMatrix fDrawMatrix;
-        const SkPoint fDrawOrigin;
+        // The drawing matrix and glyph origin combined.
+        const SkMatrix fPositionMatrix;
 
         // fClipRect is only used in the DirectMaskSubRun case to do geometric clipping.
         // TransformedMaskSubRun, and SDFTSubRun don't use this field, and expect an empty rect.

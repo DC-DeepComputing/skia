@@ -74,7 +74,7 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fMaskType(static_cast<uint32_t>(maskType))
         , fUsesLocalCoords(false)
         , fNeedsGlyphTransform(needsTransform)
-        , fHasPerspective(needsTransform && geo->fDrawMatrix.hasPerspective())
+        , fHasPerspective(needsTransform && geo->fPositionMatrix.hasPerspective())
         , fUseGammaCorrectDistanceTable(false)
         , fHead{geo}
         , fTail{&fHead->fNext} {
@@ -99,7 +99,7 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fMaskType(static_cast<uint32_t>(maskType))
         , fUsesLocalCoords(false)
         , fNeedsGlyphTransform(needsTransform)
-        , fHasPerspective(needsTransform && geo->fDrawMatrix.hasPerspective())
+        , fHasPerspective(needsTransform && geo->fPositionMatrix.hasPerspective())
         , fUseGammaCorrectDistanceTable(useGammaCorrectDistanceTable)
         , fLuminanceColor(luminanceColor)
         , fHead{geo}
@@ -110,8 +110,7 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
 }
 
 auto AtlasTextOp::Geometry::Make(const sktext::gpu::AtlasSubRun& subRun,
-                                 const SkMatrix& drawMatrix,
-                                 SkPoint drawOrigin,
+                                 const SkMatrix& positionMatrix,
                                  SkIRect clipRect,
                                  sk_sp<SkRefCnt>&& supportData,
                                  const SkPMColor4f& color,
@@ -120,8 +119,7 @@ auto AtlasTextOp::Geometry::Make(const sktext::gpu::AtlasSubRun& subRun,
     // all geometry dtors for now.
     void* geo = alloc->makeBytesAlignedTo(sizeof(Geometry), alignof(Geometry));
     return new(geo) Geometry{subRun,
-                             drawMatrix,
-                             drawOrigin,
+                             positionMatrix,
                              clipRect,
                              std::move(supportData),
                              color};
@@ -129,7 +127,7 @@ auto AtlasTextOp::Geometry::Make(const sktext::gpu::AtlasSubRun& subRun,
 
 void AtlasTextOp::Geometry::fillVertexData(void *dst, int offset, int count) const {
     fSubRun.fillVertexData(
-            dst, offset, count, fColor.toBytes_RGBA(), fDrawMatrix, fDrawOrigin, fClipRect);
+            dst, offset, count, fColor.toBytes_RGBA(), fPositionMatrix, fClipRect);
 }
 
 void AtlasTextOp::visitProxies(const GrVisitProxyFunc& func) const {
@@ -141,11 +139,12 @@ SkString AtlasTextOp::onDumpInfo() const {
     SkString str;
     int i = 0;
     for(Geometry* geom = fHead; geom != nullptr; geom = geom->fNext) {
+        SkPoint origin = geom->fPositionMatrix.mapOrigin();
         str.appendf("%d: Color: 0x%08x Trans: %.2f,%.2f\n",
                     i++,
                     geom->fColor.toBytes_RGBA(),
-                    geom->fDrawOrigin.x(),
-                    geom->fDrawOrigin.y());
+                    origin.x(),
+                    origin.y());
     }
 
     str += fProcessors.dumpProcessors();
@@ -201,9 +200,9 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
     // If we need local coordinates, compute an inverse view matrix. If this is solid color, the
     // processor analysis will not require local coords and the GPs will skip local coords when
     // the matrix is identity. When the shaders require local coords, combineIfPossible requires all
-    // all geometries to have same draw matrix.
+    // geometries to have same draw matrix.
     SkMatrix localMatrix = SkMatrix::I();
-    if (fUsesLocalCoords && !fHead->fDrawMatrix.invert(&localMatrix)) {
+    if (fUsesLocalCoords && !fHead->fPositionMatrix.invert(&localMatrix)) {
         return;
     }
 
@@ -283,9 +282,9 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
     for (const Geometry* geo = fHead; geo != nullptr; geo = geo->fNext) {
         const sktext::gpu::AtlasSubRun& subRun = geo->fSubRun;
-        SkASSERTF((int) subRun.vertexStride(geo->fDrawMatrix) == vertexStride,
+        SkASSERTF((int) subRun.vertexStride(geo->fPositionMatrix) == vertexStride,
                   "subRun stride: %d vertex buffer stride: %d\n",
-                  (int)subRun.vertexStride(geo->fDrawMatrix), vertexStride);
+                  (int)subRun.vertexStride(geo->fPositionMatrix), vertexStride);
 
         const int subRunEnd = subRun.glyphCount();
         for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
@@ -410,8 +409,9 @@ GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, con
     if (fUsesLocalCoords) {
         // If the fragment processors use local coordinates, the GPs compute them using the inverse
         // of the view matrix stored in a uniform, so all geometries must have the same matrix.
-        const SkMatrix& thisFirstMatrix = fHead->fDrawMatrix;
-        const SkMatrix& thatFirstMatrix = that->fHead->fDrawMatrix;
+        const SkMatrix& thisFirstMatrix = fHead->fPositionMatrix;
+        const SkMatrix& thatFirstMatrix = that->fHead->fPositionMatrix;
+        // TODO: can this compare the affine part of the matrices?
         if (!SkMatrixPriv::CheapEqual(thisFirstMatrix, thatFirstMatrix)) {
             return CombineResult::kCannotCombine;
         }
