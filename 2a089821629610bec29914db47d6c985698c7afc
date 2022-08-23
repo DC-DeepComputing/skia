@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b51a02_901dedd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-23T02:01:47Z",
+      "side": 1,
+      "message": "So I think this looks good, especially for something we want to cherry-pick back to 105 and 106. However, this does seem to be picking rather unfortunate sizes to scale up (scales up small sizes a lot) in my local testing.",
+      "revId": "2a089821629610bec29914db47d6c985698c7afc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
