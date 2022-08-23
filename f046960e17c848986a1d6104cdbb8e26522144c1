@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e2bb86c_767ec7b1",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-23T17:44:54Z",
+      "side": 1,
+      "message": "So now you can put this back to get the right strike size but then not apply the ctm again.",
+      "range": {
+        "startLine": 2768,
+        "startChar": 80,
+        "endLine": 2768,
+        "endChar": 94
+      },
+      "revId": "f046960e17c848986a1d6104cdbb8e26522144c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
