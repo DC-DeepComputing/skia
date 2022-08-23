@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5ba4bc6_76ab7594",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-23T18:03:04Z",
+      "side": 1,
+      "message": "Kevin: I don\u0027t believe this should land as-is with an emtpty sksl/codegen:core_srcs filegroup. SkSLVMCodeGenerator.cpp was duplicated, but removing it from GPU_SRCS caused an error. Maybe a missing dependency on core_srcs somewhere? LMK what rule should contain SkSLVMCodeGenerator.cpp and I\u0027ll continue to fix this.",
+      "revId": "9fd6faac04edc5616b5855208a339af15d7836a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
