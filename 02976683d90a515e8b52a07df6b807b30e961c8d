@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d6e0ec_b4095720",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-23T22:28:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c0569d1_94ccbf62",
+      "range": {
+        "startLine": 22,
+        "startChar": 23,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "02976683d90a515e8b52a07df6b807b30e961c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef7ebe27_0085fafc",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-23T22:00:21Z",
       "side": 1,
       "message": "nit/up to you: this confused me for a second because it mixed pointer-incrementing with array-indexing. Consider using `*inData++ \u003d ....;` and `*outData++ \u003d ....;` or `inData[]` and `outData[]` consistently throughout.",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 63,
+        "endChar": 22
+      },
+      "revId": "02976683d90a515e8b52a07df6b807b30e961c8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e58729dd_8f805fce",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-23T22:28:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef7ebe27_0085fafc",
       "range": {
         "startLine": 58,
         "startChar": 8,
