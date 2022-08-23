@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8592200e_15f73ef7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-23T20:29:02Z",
+      "side": 1,
+      "message": "In the code I have a question about fUsesLocalCoords. If you don\u0027t know, who should I ask?",
+      "revId": "3ac2d1ba2dc95f9ef5c4b91ca51e43b7d316eff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf858a5_b09dfb12",
+        "filename": "src/gpu/ganesh/ops/AtlasTextOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-23T20:29:02Z",
+      "side": 1,
+      "message": "I don\u0027t understand what fUsesLocalCoords is or how often it\u0027s a constraint. Now that things are positionMatrices, they have different offsets. For fUsesLocalCoords is it enough that the have the same upper 2x2, but the positions can be different?",
+      "range": {
+        "startLine": 410,
+        "startChar": 8,
+        "endLine": 417,
+        "endChar": 9
+      },
+      "revId": "3ac2d1ba2dc95f9ef5c4b91ca51e43b7d316eff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
