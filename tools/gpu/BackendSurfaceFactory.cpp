@@ -31,6 +31,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                                        ii.colorType(),
                                                        mipmapped,
                                                        GrRenderable::kYes,
+                                                       "",
                                                        isProtected);
     if (!mbet) {
         return nullptr;

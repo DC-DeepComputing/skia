@@ -292,7 +292,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WrappedProxyTest,
                                                                                 kWidthHeight,
                                                                                 colorType,
                                                                                 GrMipmapped::kNo,
-                                                                                GrRenderable::kYes);
+                                                                                GrRenderable::kYes,
+                                                                                "");
                 if (!mbet) {
                     ERRORF(reporter,
                            "Could not create renderable backend texture of color type %d",
@@ -320,7 +321,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WrappedProxyTest,
                                                                                 kWidthHeight,
                                                                                 colorType,
                                                                                 GrMipmapped::kNo,
-                                                                                GrRenderable::kNo);
+                                                                                GrRenderable::kNo,
+                                                                                "");
                 if (!mbet) {
                     ERRORF(reporter,
                            "Could not create non-renderable backend texture of color type %d",

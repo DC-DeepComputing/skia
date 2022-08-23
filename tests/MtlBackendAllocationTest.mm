@@ -123,6 +123,7 @@ DEF_GPUTEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
                                                                       format,
                                                                       mipmapped,
                                                                       renderable,
+                                                                      "",
                                                                       GrProtected::kNo);
                     };
 
@@ -165,6 +166,7 @@ DEF_GPUTEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
                                                                    swizzledColor,
                                                                    mipmapped,
                                                                    renderable,
+                                                                   "",
                                                                    GrProtected::kNo);
                     };
                     test_color_init(dContext, reporter, createWithColorMtd, combo.fColorType,

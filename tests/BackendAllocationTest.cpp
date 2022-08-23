@@ -636,6 +636,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                                                                            colorType,
                                                                            mipmapped,
                                                                            renderable,
+                                                                           "",
                                                                            GrProtected::kNo);
                         check_vk_tiling(mbet->texture());
 #ifdef SK_DEBUG
@@ -664,6 +665,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                                                                         color,
                                                                         mipmapped,
                                                                         renderable,
+                                                                        "",
                                                                         GrProtected::kNo);
                         check_vk_tiling(mbet->texture());
 
@@ -694,7 +696,8 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                                                                         numLevels,
                                                                         origin,
                                                                         renderable,
-                                                                        GrProtected::kNo);
+                                                                        GrProtected::kNo,
+                                                                        "");
                         check_vk_tiling(mbet->texture());
 #ifdef SK_DEBUG
                         {
@@ -845,6 +848,7 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
                                                                           format,
                                                                           mipmapped,
                                                                           renderable,
+                                                                          "",
                                                                           GrProtected::kNo);
                         };
 
@@ -886,6 +890,7 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
                                                                        swizzledColor,
                                                                        mipmapped,
                                                                        renderable,
+                                                                       "",
                                                                        GrProtected::kNo);
                         };
                         test_color_init(context, reporter, createWithColorMtd, combo.fColorType,
@@ -991,6 +996,7 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                                                                            format,
                                                                            mipmapped,
                                                                            renderable,
+                                                                           "",
                                                                            GrProtected::kNo);
                         check_vk_tiling(mbet->texture());
                         return mbet;
@@ -1044,6 +1050,7 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                                                                         swizzledColor,
                                                                         mipmapped,
                                                                         renderable,
+                                                                        "",
                                                                         GrProtected::kNo);
                         check_vk_tiling(mbet->texture());
                         return mbet;

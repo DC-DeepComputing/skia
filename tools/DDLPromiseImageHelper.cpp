@@ -131,6 +131,7 @@ static GrBackendTexture create_yuva_texture(GrDirectContext* direct,
                                               kTopLeft_GrSurfaceOrigin,
                                               GrRenderable::kNo,
                                               GrProtected::kNo,
+                                              /*label=*/"CreateYuvaTexture",
                                               markFinished,
                                               &finishedBECreate);
     if (beTex.isValid()) {
@@ -179,6 +180,7 @@ void DDLPromiseImageHelper::CreateBETexturesForPromiseImage(GrDirectContext* dir
                                                        kTopLeft_GrSurfaceOrigin,
                                                        GrRenderable::kNo,
                                                        GrProtected::kNo,
+                                                       /*label=*/"CreateBETexturesForPromiseImage",
                                                        markFinished,
                                                        &finishedBECreate);
         SkASSERT(backendTex.isValid());
