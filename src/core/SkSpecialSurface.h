@@ -8,6 +8,7 @@
 #ifndef SkSpecialSurface_DEFINED
 #define SkSpecialSurface_DEFINED
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
@@ -66,10 +67,17 @@ public:
                                                     GrSurfaceOrigin);
 #endif
 
+#if SK_GRAPHITE_ENABLED
+    static sk_sp<SkSpecialSurface> MakeGraphite(skgpu::graphite::Recorder*,
+                                                const SkImageInfo&,
+                                                const SkSurfaceProps&);
+#endif
+
     /**
      * Use and existing SkBitmap as the backing store.
      */
-    static sk_sp<SkSpecialSurface> MakeFromBitmap(const SkIRect& subset, SkBitmap& bm,
+    static sk_sp<SkSpecialSurface> MakeFromBitmap(const SkIRect& subset,
+                                                  SkBitmap& bm,
                                                   const SkSurfaceProps&);
 
     /**
@@ -94,6 +102,28 @@ private:
     const SkIRect        fSubset;
 
     using INHERITED = SkRefCnt;
+};
+
+class SkSpecialSurface_Base : public SkSpecialSurface {
+public:
+    SkSpecialSurface_Base(const SkIRect& subset, const SkSurfaceProps& props)
+            : INHERITED(subset, props)
+            , fCanvas(nullptr) {
+    }
+
+    // reset is called after an SkSpecialImage has been snapped
+    void reset() { fCanvas.reset(); }
+
+    // This can return nullptr if reset has already been called or something when wrong in the ctor
+    SkCanvas* onGetCanvas() { return fCanvas.get(); }
+
+    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot() = 0;
+
+protected:
+    std::unique_ptr<SkCanvas> fCanvas;   // initialized by derived classes in ctors
+
+private:
+    using INHERITED = SkSpecialSurface;
 };
 
 #endif

@@ -88,11 +88,11 @@ sk_sp<SkSurface> GraphiteMetalWindowContext::getBackbufferSurface() {
     skgpu::graphite::BackendTexture backendTex(this->dimensions(),
                                                (skgpu::graphite::MtlHandle)currentDrawable.texture);
 
-    surface = MakeGraphiteFromBackendTexture(this->graphiteRecorder(),
-                                             backendTex,
-                                             kBGRA_8888_SkColorType,
-                                             fDisplayParams.fColorSpace,
-                                             &fDisplayParams.fSurfaceProps);
+    surface = SkSurface::MakeGraphiteFromBackendTexture(this->graphiteRecorder(),
+                                                        backendTex,
+                                                        kBGRA_8888_SkColorType,
+                                                        fDisplayParams.fColorSpace,
+                                                        &fDisplayParams.fSurfaceProps);
 
     fDrawableHandle = CFRetain((skgpu::graphite::MtlHandle) currentDrawable);
 
