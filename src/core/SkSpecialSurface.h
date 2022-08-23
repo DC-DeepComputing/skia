@@ -34,17 +34,18 @@ class SkSpecialSurface : public SkRefCnt {
 public:
     const SkSurfaceProps& props() const { return fProps; }
 
+    const SkIRect& subset() const { return fSubset; }
     int width() const { return fSubset.width(); }
     int height() const { return fSubset.height(); }
 
     /**
-    *  Return a canvas that will draw into this surface. This will always
-    *  return the same canvas for a given surface, and is managed/owned by the
-    *  surface.
+    *  Return a canvas that will draw into this special surface. This will always
+    *  return the same canvas for a given special surface, and is managed/owned by the
+    *  special surface.
     *
     *  The canvas will be invalid after 'newImageSnapshot' is called.
     */
-    SkCanvas* getCanvas();
+    SkCanvas* getCanvas() { return fCanvas.get(); }
 
     /**
     *  Returns an image of the current state of the surface pixels up to this
@@ -85,15 +86,14 @@ public:
 protected:
     SkSpecialSurface(const SkIRect& subset, const SkSurfaceProps&);
 
-    // For testing only
-    friend class TestingSpecialSurfaceAccess;
-    const SkIRect& subset() const { return fSubset; }
+
+    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot() = 0;
+
+    std::unique_ptr<SkCanvas> fCanvas;   // initialized by derived classes in ctors
 
 private:
     const SkSurfaceProps fProps;
     const SkIRect        fSubset;
-
-    using INHERITED = SkRefCnt;
 };
 
 #endif
