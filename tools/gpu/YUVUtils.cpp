@@ -302,7 +302,8 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
                             fPixmaps.plane(i),
                             kTopLeft_GrSurfaceOrigin,
                             GrRenderable::kNo,
-                            GrProtected::kNo);
+                            GrProtected::kNo,
+                            "");
                     if (mbets[i]) {
                         textures[i] = mbets[i]->texture();
                     } else {

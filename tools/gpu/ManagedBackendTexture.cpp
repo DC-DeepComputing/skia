@@ -65,8 +65,14 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromInfo(GrDirectContext
                                                                  GrMipmapped mipmapped,
                                                                  GrRenderable renderable,
                                                                  GrProtected isProtected) {
-    return MakeWithoutData(
-            dContext, ii.width(), ii.height(), ii.colorType(), mipmapped, renderable, isProtected);
+    return MakeWithoutData(dContext,
+                           ii.width(),
+                           ii.height(),
+                           ii.colorType(),
+                           mipmapped,
+                           renderable,
+                           "",
+                           isProtected);
 }
 
 sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromBitmap(GrDirectContext* dContext,
@@ -106,7 +112,8 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromPixmap(GrDirectConte
                         static_cast<int>(levels.size()),
                         kTopLeft_GrSurfaceOrigin,
                         renderable,
-                        isProtected);
+                        isProtected,
+                        "");
 }
 
 }  // namespace sk_gpu_test

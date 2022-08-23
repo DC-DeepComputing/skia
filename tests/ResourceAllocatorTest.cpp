@@ -74,7 +74,7 @@ static sk_sp<GrSurfaceProxy> make_backend(GrDirectContext* dContext, const Proxy
     SkASSERT(SkColorType::kUnknown_SkColorType != skColorType);
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, p.fSize, p.fSize, skColorType, GrMipmapped::kNo, GrRenderable::kNo);
+            dContext, p.fSize, p.fSize, skColorType, GrMipmapped::kNo, GrRenderable::kNo, "");
 
     if (!mbet) {
         return nullptr;

@@ -473,6 +473,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                                        const GrBackendFormat& backendFormat,
                                                        GrMipmapped mipmapped,
                                                        GrRenderable renderable,
+                                                       std::string_view label,
                                                        GrProtected isProtected) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     if (this->abandoned()) {
@@ -480,13 +481,14 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
     }
 
     return fGpu->createBackendTexture({width, height}, backendFormat, renderable,
-                                      mipmapped, isProtected);
+                                      mipmapped, isProtected, label);
 }
 
 GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                                        SkColorType skColorType,
                                                        GrMipmapped mipmapped,
                                                        GrRenderable renderable,
+                                                       std::string_view label,
                                                        GrProtected isProtected) {
     if (this->abandoned()) {
         return GrBackendTexture();
@@ -494,7 +496,8 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
 
     const GrBackendFormat format = this->defaultBackendFormat(skColorType, renderable);
 
-    return this->createBackendTexture(width, height, format, mipmapped, renderable, isProtected);
+    return this->createBackendTexture(
+            width, height, format, mipmapped, renderable, label, isProtected);
 }
 
 static GrBackendTexture create_and_clear_backend_texture(
@@ -505,10 +508,11 @@ static GrBackendTexture create_and_clear_backend_texture(
         GrRenderable renderable,
         GrProtected isProtected,
         sk_sp<skgpu::RefCntedCallback> finishedCallback,
-        std::array<float, 4> color) {
+        std::array<float, 4> color,
+        std::string_view label) {
     GrGpu* gpu = dContext->priv().getGpu();
     GrBackendTexture beTex = gpu->createBackendTexture(dimensions, backendFormat, renderable,
-                                                       mipmapped, isProtected);
+                                                       mipmapped, isProtected, label);
     if (!beTex.isValid()) {
         return {};
     }
@@ -569,6 +573,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                                        const SkColor4f& color,
                                                        GrMipmapped mipmapped,
                                                        GrRenderable renderable,
+                                                       std::string_view label,
                                                        GrProtected isProtected,
                                                        GrGpuFinishedProc finishedProc,
                                                        GrGpuFinishedContext finishedContext) {
@@ -586,7 +591,8 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                             renderable,
                                             isProtected,
                                             std::move(finishedCallback),
-                                            color.array());
+                                            color.array(),
+                                            label);
 }
 
 GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
@@ -594,6 +600,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                                        const SkColor4f& color,
                                                        GrMipmapped mipmapped,
                                                        GrRenderable renderable,
+                                                       std::string_view label,
                                                        GrProtected isProtected,
                                                        GrGpuFinishedProc finishedProc,
                                                        GrGpuFinishedContext finishedContext) {
@@ -618,7 +625,8 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,
                                             renderable,
                                             isProtected,
                                             std::move(finishedCallback),
-                                            swizzledColor.array());
+                                            swizzledColor.array(),
+                                            label);
 }
 
 GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
@@ -626,6 +634,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
                                                        GrSurfaceOrigin textureOrigin,
                                                        GrRenderable renderable,
                                                        GrProtected isProtected,
+                                                       std::string_view label,
                                                        GrGpuFinishedProc finishedProc,
                                                        GrGpuFinishedContext finishedContext) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
@@ -653,6 +662,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
                                                         backendFormat,
                                                         mipmapped,
                                                         renderable,
+                                                        label,
                                                         isProtected);
     if (!beTex.isValid()) {
         return {};
