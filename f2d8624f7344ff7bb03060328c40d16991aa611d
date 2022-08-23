@@ -16,6 +16,29 @@
       "message": "This change is ready for a review. Greg, can you PTAL.",
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da8c3535_6af9363b",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-23T13:46:24Z",
+      "side": 1,
+      "message": "This stores the value on GrBackendTexture, but it is not actually getting set on the GLTexture. I assume you want that to happen? When the GrBackendTexture gets wrapped back into Skia by the client we will store the label internally in Skia, but again it still won\u0027t be on the actual texture.",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
