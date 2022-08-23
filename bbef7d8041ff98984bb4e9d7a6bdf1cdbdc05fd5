@@ -16,6 +16,29 @@
       "message": "@Greg, can you please requeue. There were Mac failure which I fixed in the latest patch. Thanks.",
       "revId": "bbef7d8041ff98984bb4e9d7a6bdf1cdbdc05fd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e3d8dc_d68a54b9",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1686,
+      "author": {
+        "id": 8986
+      },
+      "writtenOn": "2022-08-23T21:41:55Z",
+      "side": 1,
+      "message": "As part of this or a subsequent change, we should add more meaningful labels than just \"Skia\" for textures Skia creates for its own purposes.\n\nAt a minimum, the CL shouldn\u0027t cause textures currently labeled as \"Skia\" to now have blank labels.",
+      "range": {
+        "startLine": 1686,
+        "startChar": 57,
+        "endLine": 1686,
+        "endChar": 63
+      },
+      "revId": "bbef7d8041ff98984bb4e9d7a6bdf1cdbdc05fd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
