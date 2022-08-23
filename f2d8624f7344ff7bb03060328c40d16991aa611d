@@ -63,6 +63,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daffc710_f8b5a42b",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-23T17:22:42Z",
+      "side": 1,
+      "message": "That would work and is a fine solution. I guess we\u0027d update the other callers to createTexture to just pass in a generic \"Skia\" for now to match the current behavior? Or we could check if label is null and default to \"Skia\" in set_khr_debug_label. Either seems fine to me.",
+      "parentUuid": "f96b9d93_43c667e3",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
