@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e1c43e_d21950c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-23T12:18:47Z",
+      "side": 1,
+      "message": "PS2 had the requested \"break\", which generated the presubmit error, and PS3 reverted that.",
+      "revId": "aa389a78371938d4081843987372b3435f3982d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
