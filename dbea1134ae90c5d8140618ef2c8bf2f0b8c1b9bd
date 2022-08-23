@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d4bebf_eb9d75fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T13:04:04Z",
+      "side": 1,
+      "message": "lgtm modulo resolving the batch key size.",
+      "revId": "dbea1134ae90c5d8140618ef2c8bf2f0b8c1b9bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

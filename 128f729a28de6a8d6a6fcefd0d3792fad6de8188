@@ -208,6 +208,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5f7fc10_36f26cd1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-23T13:04:04Z",
+      "side": 1,
+      "message": "It might be faster to switch to 64 bit ints for now, but there aren\u0027t going to be that many render steps defined ever so a 32-bit or lower precision int will be sufficient. But we can use 64 and then when the RenderSteps have an ID we can reduce the batch key type too.",
+      "parentUuid": "2dbf6543_7ad2b121",
+      "range": {
+        "startLine": 521,
+        "startChar": 63,
+        "endLine": 521,
+        "endChar": 72
+      },
+      "revId": "128f729a28de6a8d6a6fcefd0d3792fad6de8188",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "205e182a_939926b3",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 2
