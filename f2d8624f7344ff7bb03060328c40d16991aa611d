@@ -111,6 +111,30 @@
       },
       "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b136a309_55f43f16",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-23T17:57:38Z",
+      "side": 1,
+      "message": "I would say unless we are actually setting those values on their respective backend objects we should not be putting the label on the GrBackendTexture. The GrBackendTexture should just describe the actual state of the object its wrapping.\n\n+jvanverth who has been adding some of the labels onto D3D and Metal objects",
+      "parentUuid": "c5ae34b2_1d935012",
+      "range": {
+        "startLine": 3765,
+        "startChar": 50,
+        "endLine": 3765,
+        "endChar": 56
+      },
+      "revId": "f2d8624f7344ff7bb03060328c40d16991aa611d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
