@@ -329,7 +329,12 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     size_t offset = 0;
 
     SkSL::SharedCompiler compiler;
+
+    // Disable memory pooling; this might slow down compilation slightly, but it will ensure that a
+    // long-lived mesh specification doesn't waste memory.
     SkSL::ProgramSettings settings;
+    settings.fUseMemoryPool = false;
+
     // TODO(skia:11209): Add SkCapabilities to the API, check against required version.
     std::unique_ptr<SkSL::Program> vsProgram = compiler->convertProgram(
             SkSL::ProgramKind::kMeshVertex,
