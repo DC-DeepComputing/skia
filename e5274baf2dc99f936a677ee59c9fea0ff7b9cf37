@@ -146,6 +146,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "221f7b1a_049c4010",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T17:29:24Z",
+      "side": 1,
+      "message": "OK, that makes sense. However, `SK_BUILD_FOR_MAC` does _not_ mean the same thing, right? AFAIK `SK_BUILD_FOR_MAC` will be true on both M1 Macs and Intel Macs.\n\nWe could (maybe already do?) have something like `SK_BUILD_FOR_APPLE_SILICON` which equates to `SK_BUILD_FOR_IOS || (SK_BUILD_FOR_MAC \u0026\u0026 ARM64)` though? That would let us narrow down the scope of this guard.",
+      "parentUuid": "f10459cc_0eab77fe",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
