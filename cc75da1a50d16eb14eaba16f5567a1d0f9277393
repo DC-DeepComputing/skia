@@ -22,6 +22,145 @@
       },
       "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5585ab_1ee6b777",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "So it\u0027s expected that the flags portion is unused currently, that makes sense. Will this mean that the SDFTextRenderStep and BitmapTextRenderStep could be combined if all goes well?",
+      "parentUuid": "eca82d84_06e16f5a",
+      "range": {
+        "startLine": 52,
+        "startChar": 24,
+        "endLine": 52,
+        "endChar": 37
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08d372df_150e1cb6",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "There\u0027s now a local variable defined by the outer template for storing local coords that will be passed to the paint that needs it. RenderSteps just have to be updated to assign to `stepLocalCoord`, which is a float2. I believe for text it\u0027s just this sub expression.",
+      "range": {
+        "startLine": 68,
+        "startChar": 46,
+        "endLine": 68,
+        "endChar": 92
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bf39d3_fe11d7e1",
+        "filename": "src/gpu/graphite/render/SDFTextRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "I know this will hopefully go away, but out of curiosity, how did moving to the uniform change performance locally?",
+      "range": {
+        "startLine": 41,
+        "startChar": 37,
+        "endLine": 41,
+        "endChar": 49
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5776528d_ad361eef",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1690,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "I\u0027m assuming the plan for these functions will be to wait until perf is okay, and then get rid of them in a follow up CL if we can stick with instancing?",
+      "range": {
+        "startLine": 1690,
+        "startChar": 23,
+        "endLine": 1690,
+        "endChar": 37
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8708e9f1_3a64f1db",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "Given the consolidation of these subrun types in graphite, will it be reasonable when there\u0027s one uber AtlasTextRenderStep definition to just have the AtlasSubRun expose the glyph and position zips?",
+      "range": {
+        "startLine": 1718,
+        "startChar": 25,
+        "endLine": 1719,
+        "endChar": 65
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adca8f08_1b02c806",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1732,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:24:03Z",
+      "side": 1,
+      "message": "This looks like the same as TransformedMaskVertexFiller::fillInstanceData except it has a fStrikeToSourceScale \u003d\u003d 1.0, and fLeftTopDevicePos is maybe defined differently than the filler\u0027s fLeftTop?\n\nHow hard would it be to reuse that?",
+      "range": {
+        "startLine": 1713,
+        "startChar": 0,
+        "endLine": 1732,
+        "endChar": 1
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
