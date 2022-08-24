@@ -43,10 +43,12 @@ public:
     BuiltinVariableScanner(const Context& context) : fContext(context) {}
 
     void addDeclaringElement(const std::string& name) {
-        // If this is the *first* time we've seen this builtin, findAndInclude will return the
-        // corresponding ProgramElement.
-        BuiltinMap& builtins = *fContext.fBuiltins;
-        if (const ProgramElement* decl = builtins.findAndInclude(name)) {
+        if (const ProgramElement* decl = fContext.fBuiltins->find(name)) {
+            // Prevent including an element more than once. We only have a small handful of built-in
+            // variables, so linear search here is good enough.
+            if (std::find(fNewElements.begin(), fNewElements.end(), decl) != fNewElements.end()) {
+                return;
+            }
             SkASSERT(decl->is<GlobalVarDeclaration>() || decl->is<InterfaceBlock>());
             fNewElements.push_back(decl);
         }
