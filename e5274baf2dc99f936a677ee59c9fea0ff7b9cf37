@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f10459cc_0eab77fe",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-24T16:17:15Z",
+      "side": 1,
+      "message": "The first \"big\" table labeled \"Metal feature availability by GPU family\", the isMac() query is asking about the GPU family. The GPU family splits Apple and Mac it different families. There is now a new Metal3 family, but I don\u0027t think we have support for that yet?",
+      "parentUuid": "36ab7101_b5ce208a",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
