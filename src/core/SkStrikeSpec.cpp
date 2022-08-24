@@ -213,6 +213,11 @@ SkSpan<const SkGlyph*> SkBulkGlyphMetrics::glyphs(SkSpan<const SkGlyphID> glyphI
     return fStrike->metrics(glyphIDs, fGlyphs.get());
 }
 
+SkSpan<const SkGlyph*> SkBulkGlyphMetrics::glyphsFast(SkSpan<const SkGlyphID> glyphIDs) {
+    fGlyphs.reset(glyphIDs.size());
+    return fStrike->metricsFast(glyphIDs, fGlyphs.get());
+}
+
 const SkGlyph* SkBulkGlyphMetrics::glyph(SkGlyphID glyphID) {
     return this->glyphs(SkSpan<const SkGlyphID>{&glyphID, 1})[0];
 }

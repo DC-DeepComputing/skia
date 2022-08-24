@@ -287,6 +287,7 @@ public:
     bool isVertical() const { return false; }
 
     SkGlyph     makeGlyph(SkPackedGlyphID, SkArenaAlloc*);
+    SkGlyph     makeGlyphFast(SkPackedGlyphID, SkArenaAlloc*);
     void        getImage(const SkGlyph&);
     void        getPath(SkGlyph&, SkArenaAlloc*);
     sk_sp<SkDrawable> getDrawable(SkGlyph&);
@@ -373,6 +374,7 @@ protected:
      *  The fMaskFormat will already be set to a requested format but may be changed.
      */
     virtual void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) = 0;
+    virtual void generateMetricsFast(SkGlyph* glyph, SkArenaAlloc*) {}
 
     /** Generates the contents of glyph.fImage.
      *  When called, glyph.fImage will be pointing to a pre-allocated,
@@ -429,7 +431,7 @@ private:
 
     /** Returns false if the glyph has no path at all. */
     void internalGetPath(SkGlyph&, SkArenaAlloc*);
-    SkGlyph internalMakeGlyph(SkPackedGlyphID, SkMask::Format, SkArenaAlloc*);
+    SkGlyph internalMakeGlyph(SkGlyph&, SkMask::Format, SkArenaAlloc*);
 
     // SkMaskGamma::PreBlend converts linear masks to gamma correcting masks.
 protected:

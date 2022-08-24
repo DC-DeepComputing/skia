@@ -29,7 +29,9 @@ public:
 
 protected:
     bool generateAdvance(SkGlyph* glyph) override;
+    bool generateAdvanceInternal(SkGlyph* glyph, DWRITE_GLYPH_METRICS* gm, DWRITE_FONT_METRICS*);
     void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override;
+    void generateMetricsFast(SkGlyph* glyph, SkArenaAlloc*) override;
     void generateImage(const SkGlyph& glyph) override;
     bool generatePath(const SkGlyph&, SkPath*) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;

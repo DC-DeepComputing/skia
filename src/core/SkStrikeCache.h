@@ -90,6 +90,13 @@ public:
         return glyphs;
     }
 
+    SkSpan<const SkGlyph*> metricsFast(SkSpan<const SkGlyphID> glyphIDs,
+                                   const SkGlyph* results[]) {
+        auto [glyphs, increase] = fScalerCache.metricsFast(glyphIDs, results);
+        this->updateDelta(increase);
+        return glyphs;
+    }
+
     SkSpan<const SkGlyph*> preparePaths(SkSpan<const SkGlyphID> glyphIDs,
                                         const SkGlyph* results[]) {
         auto [glyphs, increase] = fScalerCache.preparePaths(glyphIDs, results);

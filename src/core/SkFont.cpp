@@ -228,6 +228,31 @@ void SkFont::getWidthsBounds(const SkGlyphID glyphIDs[],
     }
 }
 
+void SkFont::getWidthsBoundsFast(const SkGlyphID glyphIDs[],
+                             int count,
+                             SkScalar widths[],
+                             SkRect bounds[],
+                             const SkPaint* paint) const {
+    auto [strikeSpec, strikeToSourceScale] = SkStrikeSpec::MakeCanonicalized(*this, paint);
+    SkBulkGlyphMetrics metrics{strikeSpec};
+    SkSpan<const SkGlyph*> glyphs = metrics.glyphsFast(SkSpan(glyphIDs, count));
+
+    if (bounds) {
+        SkMatrix scaleMat = SkMatrix::Scale(strikeToSourceScale, strikeToSourceScale);
+        SkRect* cursor = bounds;
+        for (auto glyph : glyphs) {
+            scaleMat.mapRectScaleTranslate(cursor++, glyph->rect());
+        }
+    }
+
+    if (widths) {
+        SkScalar* cursor = widths;
+        for (auto glyph : glyphs) {
+            *cursor++ = glyph->advanceX() * strikeToSourceScale;
+        }
+    }
+}
+
 void SkFont::getPos(const SkGlyphID glyphIDs[], int count, SkPoint pos[], SkPoint origin) const {
     auto [strikeSpec, strikeToSourceScale] = SkStrikeSpec::MakeCanonicalized(*this);
     SkBulkGlyphMetrics metrics{strikeSpec};

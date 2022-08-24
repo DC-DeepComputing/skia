@@ -43,6 +43,32 @@ std::tuple<SkGlyph*, size_t> SkScalerCache::glyph(SkPackedGlyphID packedGlyphID)
     return {fGlyphForIndex[digest.index()], size};
 }
 
+std::tuple<SkGlyph*, size_t> SkScalerCache::glyphFast(SkPackedGlyphID packedGlyphID) {
+    SkGlyphDigest* digest = fDigestForPackedGlyphID.find(packedGlyphID);
+
+    // TODO: Rationalize whether or not to use the existing cache, and/or
+    // whether a secondary cache for 'fast' metrics makes sense in terms of
+    // memory vs. CPU.
+    if (digest != nullptr) {
+        return {fGlyphForIndex[digest->index()], 0};
+    }
+
+    digest = fDigestFastForPackedGlyphID.find(packedGlyphID);
+
+    if (digest != nullptr) {
+        return {fGlyphForIndexFast[digest->index()], 0};
+    }
+
+    SkGlyph* glyph = fAlloc.make<SkGlyph>(fScalerContext->makeGlyphFast(packedGlyphID, &fAlloc));
+
+    size_t index = fGlyphForIndexFast.size();
+    SkGlyphDigest new_digest = SkGlyphDigest{index, *glyph};
+    fDigestFastForPackedGlyphID.set(glyph->getPackedID(), new_digest);
+    fGlyphForIndexFast.push_back(glyph);
+    return {fGlyphForIndexFast[index], sizeof(SkGlyph)};
+}
+
+
 std::tuple<SkGlyphDigest, size_t> SkScalerCache::digest(SkPackedGlyphID packedGlyphID) {
     SkGlyphDigest* digest = fDigestForPackedGlyphID.find(packedGlyphID);
 
@@ -128,6 +154,21 @@ std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::internalPrepare(
     return {{results, glyphIDs.size()}, delta};
 }
 
+std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::internalPrepareFast(
+        SkSpan<const SkGlyphID> glyphIDs, PathDetail pathDetail, const SkGlyph** results) {
+    SkASSERT(pathDetail == kMetricsOnly);
+    const SkGlyph** cursor = results;
+    size_t delta = 0;
+    for (auto glyphID : glyphIDs) {
+        auto [glyph, size] = this->glyphFast(SkPackedGlyphID{glyphID});
+        delta += size;
+        *cursor++ = glyph;
+    }
+
+    return {{results, glyphIDs.size()}, delta};
+}
+
+
 std::tuple<const void*, size_t> SkScalerCache::prepareImage(SkGlyph* glyph) {
     size_t delta = 0;
     if (glyph->setImage(&fAlloc, fScalerContext.get())) {
@@ -165,6 +206,13 @@ std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::metrics(
         SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) {
     SkAutoMutexExclusive lock{fMu};
     auto [glyphs, delta] = this->internalPrepare(glyphIDs, kMetricsOnly, results);
+    return {glyphs, delta};
+}
+
+std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::metricsFast(
+        SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) {
+    SkAutoMutexExclusive lock{fMu};
+    auto [glyphs, delta] = this->internalPrepareFast(glyphIDs, kMetricsOnly, results);
     return {glyphs, delta};
 }
 

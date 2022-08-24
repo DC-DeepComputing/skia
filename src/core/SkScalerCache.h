@@ -63,6 +63,9 @@ public:
     std::tuple<SkSpan<const SkGlyph*>, size_t> metrics(
             SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) SK_EXCLUDES(fMu);
 
+    std::tuple<SkSpan<const SkGlyph*>, size_t> metricsFast(
+            SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) SK_EXCLUDES(fMu);
+
     std::tuple<SkSpan<const SkGlyph*>, size_t> preparePaths(
             SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) SK_EXCLUDES(fMu);
 
@@ -115,6 +118,7 @@ private:
     // Return a glyph. Create it if it doesn't exist, and initialize the glyph with metrics and
     // advances using a scaler.
     std::tuple<SkGlyph*, size_t> glyph(SkPackedGlyphID) SK_REQUIRES(fMu);
+    std::tuple<SkGlyph*, size_t> glyphFast(SkPackedGlyphID) SK_REQUIRES(fMu);
 
     std::tuple<SkGlyphDigest, size_t> digest(SkPackedGlyphID) SK_REQUIRES(fMu);
 
@@ -139,6 +143,11 @@ private:
             SkSpan<const SkGlyphID> glyphIDs,
             PathDetail pathDetail,
             const SkGlyph** results) SK_REQUIRES(fMu);
+    std::tuple<SkSpan<const SkGlyph*>, size_t> internalPrepareFast(
+            SkSpan<const SkGlyphID> glyphIDs,
+            PathDetail pathDetail,
+            const SkGlyph** results) SK_REQUIRES(fMu);
+
 
     const std::unique_ptr<SkScalerContext> fScalerContext;
     const SkFontMetrics                    fFontMetrics;
@@ -153,8 +162,10 @@ private:
     // provides a dense index for glyphs.
     SkTHashMap<SkPackedGlyphID, SkGlyphDigest, SkPackedGlyphID::Hash>
             fDigestForPackedGlyphID SK_GUARDED_BY(fMu);
+    SkTHashMap<SkPackedGlyphID, SkGlyphDigest, SkPackedGlyphID::Hash>
+            fDigestFastForPackedGlyphID SK_GUARDED_BY(fMu);
     std::vector<SkGlyph*> fGlyphForIndex SK_GUARDED_BY(fMu);
-
+    std::vector<SkGlyph*> fGlyphForIndexFast SK_GUARDED_BY(fMu);
     // so we don't grow our arrays a lot
     inline static constexpr size_t kMinGlyphCount = 8;
     inline static constexpr size_t kMinGlyphImageSize = 16 /* height */ * 8 /* width */;
