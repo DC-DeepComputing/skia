@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b4bacc_14a103d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-24T21:03:00Z",
+      "side": 1,
+      "message": "Do we have a test that exercises the polyfill route? All of the changed test files look like they\u0027re now assuming the intrinsic exists.",
+      "revId": "b3bce48bbea81e9017b5130da55fdbea2ec54ecf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
