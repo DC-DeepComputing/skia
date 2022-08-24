@@ -84,6 +84,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fNativeDrawIndexedIndirectIsBroken = false;
     fAvoidReorderingRenderTasks = false;
     fAvoidDithering = false;
+    fDisablePerspectiveText = false;
 
     fPreferVRAMUseOverFlushes = true;
 
@@ -247,6 +248,7 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
                        fNativeDrawIndexedIndirectIsBroken);
     writer->appendBool("Avoid DAG reordering [workaround]", fAvoidReorderingRenderTasks);
     writer->appendBool("Avoid Dithering [workaround]", fAvoidDithering);
+    writer->appendBool("DisablePerspectiveText [workaround]", fDisablePerspectiveText);
 
     if (this->advancedBlendEquationSupport()) {
         writer->appendHexU32("Advanced Blend Equation Disable Flags", fAdvBlendEqDisableFlags);
