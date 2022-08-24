@@ -39,10 +39,12 @@ SkScalar SDFTControl::MinSDFTRange(bool useSDFTForSmallText, SkScalar min) {
 }
 
 SDFTControl::SDFTControl(
-        bool ableToUseSDFT, bool useSDFTForSmallText, SkScalar min, SkScalar max, bool forcePaths)
+        bool ableToUseSDFT, bool useSDFTForSmallText, bool useSDFTForPerspectiveText,
+        SkScalar min, SkScalar max, bool forcePaths)
         : fMinDistanceFieldFontSize{MinSDFTRange(useSDFTForSmallText, min)}
         , fMaxDistanceFieldFontSize{max}
         , fAbleToUseSDFT{ableToUseSDFT}
+        , fAbleToUsePerspectiveSDFT{useSDFTForPerspectiveText}
         , fForcePaths{forcePaths} {
     SkASSERT_RELEASE(0 < min && min <= max);
 }
@@ -64,7 +66,7 @@ bool SDFTControl::isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& pain
            paint.getStyle() == SkPaint::kFill_Style &&
            0 < approximateDeviceTextSize &&
            (fMinDistanceFieldFontSize <= approximateDeviceTextSize ||
-            matrix.hasPerspective()) &&
+            (fAbleToUsePerspectiveSDFT && matrix.hasPerspective())) &&
            approximateDeviceTextSize <= fMaxDistanceFieldFontSize;
 }
 
