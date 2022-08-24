@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19ef6afe_4e2b05df",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-24T15:37:58Z",
+      "side": 1,
+      "message": "yes apple means all apple silicon, so iphones and m* chips. Mac means mac devices without apple silicon. Apple uses the same language for their feature tables for metal, https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf",
+      "parentUuid": "f129c075_7382dafb",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
