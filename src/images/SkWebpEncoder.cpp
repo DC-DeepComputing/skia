@@ -25,6 +25,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 // A WebP encoder only, on top of (subset of) libwebp
 // For more information on WebP image format, and libwebp library, see:
@@ -152,6 +153,116 @@ bool SkWebpEncoder::Encode(SkWStream* stream, const SkPixmap& pixmap, const Opti
         stream->write(assembled.bytes, assembled.size);
         WebPDataClear(&assembled);
     }
+
+    return true;
+}
+
+bool SkWebpEncoder::EncodeAnimated(SkWStream* stream,
+                                   const std::vector<Frame>& frames,
+                                   const Options& opts) {
+    WebPAnimEncoder* enc = NULL;
+    int timestamp_ms = 0;
+
+    for (const auto& frame : frames) {
+        const auto& pixmap = frame.pixmap;
+
+        if (enc == NULL) {
+            int width = pixmap.width();
+            int height = pixmap.height();
+            enc = WebPAnimEncoderNew(width, height, NULL);
+
+            if (enc == NULL) {
+                return false;
+            }
+        }
+
+        WebPConfig webp_config;
+        if (!WebPConfigPreset(&webp_config, WEBP_PRESET_DEFAULT, opts.fQuality)) {
+            return false;
+        }
+
+        WebPPicture pic;
+        WebPPictureInit(&pic);
+        SkAutoTCallVProc<WebPPicture, WebPPictureFree> autoPic(&pic);
+        pic.width = pixmap.width();
+        pic.height = pixmap.height();
+
+        // Set compression, method, and pixel format.
+        // libwebp recommends using BGRA for lossless and YUV for lossy.
+        // The choices of |webp_config.method| currently just match Chrome's defaults.  We
+        // could potentially expose this decision to the client.
+        if (Compression::kLossy == opts.fCompression) {
+            webp_config.lossless = 0;
+#ifndef SK_WEBP_ENCODER_USE_DEFAULT_METHOD
+            webp_config.method = 3;
+#endif
+            pic.use_argb = 0;
+        } else {
+            webp_config.lossless = 1;
+            webp_config.method = 0;
+            pic.use_argb = 1;
+        }
+
+        {
+            const SkColorType ct = pixmap.colorType();
+            const bool premul = pixmap.alphaType() == kPremul_SkAlphaType;
+
+            SkBitmap tmpBm;
+            WebPPictureImportProc importProc = nullptr;
+            const SkPixmap* src = &pixmap;
+            if (ct == kRGB_888x_SkColorType) {
+                importProc = WebPPictureImportRGBX;
+            } else if (!premul && ct == kRGBA_8888_SkColorType) {
+                importProc = WebPPictureImportRGBA;
+            }
+#ifdef WebPPictureImportBGRA
+            else if (!premul && ct == kBGRA_8888_SkColorType) {
+                importProc = WebPPictureImportBGRA;
+            }
+#endif
+            else {
+                importProc = WebPPictureImportRGBA;
+                auto info = pixmap.info()
+                                    .makeColorType(kRGBA_8888_SkColorType)
+                                    .makeAlphaType(kUnpremul_SkAlphaType);
+                if (!tmpBm.tryAllocPixels(info) ||
+                    !pixmap.readPixels(tmpBm.info(), tmpBm.getPixels(), tmpBm.rowBytes())) {
+                    return false;
+                }
+                src = &tmpBm.pixmap();
+            }
+
+            if (!importProc(&pic, reinterpret_cast<const uint8_t*>(src->addr()), src->rowBytes())) {
+                return false;
+            }
+        }
+
+        if (!WebPEncode(&webp_config, &pic)) {
+            return false;
+        }
+
+        if (!WebPAnimEncoderAdd(enc, &pic, timestamp_ms, &webp_config)) {
+            return false;
+        }
+
+        timestamp_ms += frame.duration;
+
+        WebPPictureFree(&pic);
+    }
+
+    // Add a last fake frame to signal the last duration.
+    if (!WebPAnimEncoderAdd(enc, NULL, timestamp_ms, NULL)) {
+        return false;
+    }
+
+    WebPData assembled;
+    if (!WebPAnimEncoderAssemble(enc, &assembled)) {
+        return false;
+    }
+
+    stream->write(assembled.bytes, assembled.size);
+    WebPDataClear(&assembled);
+    WebPAnimEncoderDelete(enc);
 
     return true;
 }
