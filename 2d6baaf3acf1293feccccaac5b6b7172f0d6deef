@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c57c463_3fa5ae8e",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T23:36:41Z",
+      "side": 1,
+      "message": "I didn\u0027t notice this usage of SharedCompiler when writing http://review.skia.org/572292, so for a few days, our mesh specifications were using the memory pool. Not a big deal, just a little more memory usage than you\u0027d otherwise expect. This brings them back to their previous state.",
+      "range": {
+        "startLine": 336,
+        "startChar": 13,
+        "endLine": 336,
+        "endChar": 27
+      },
+      "revId": "2d6baaf3acf1293feccccaac5b6b7172f0d6deef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
