@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f129c075_7382dafb",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T15:31:06Z",
+      "side": 1,
+      "message": "iPhone \u003d\u003d MTLResourceStorageModeShared\nIntel Mac \u003d\u003d MTLResourceStorageModeManaged\n\nWhere does M1 Mac fall? It is a Mac with an Apple chip.",
+      "parentUuid": "1edc7ae6_b468f441",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
