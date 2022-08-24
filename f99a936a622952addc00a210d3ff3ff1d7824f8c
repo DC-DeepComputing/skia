@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e1c16e7_e7b9ad2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-24T22:15:00Z",
+      "side": 1,
+      "message": "This only affects clients that are specifically targeting AVX, but there\u0027s still no reason to pessimize them.",
+      "revId": "f99a936a622952addc00a210d3ff3ff1d7824f8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
