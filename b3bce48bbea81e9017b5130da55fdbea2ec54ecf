@@ -16,6 +16,24 @@
       "message": "Do we have a test that exercises the polyfill route? All of the changed test files look like they\u0027re now assuming the intrinsic exists.",
       "revId": "b3bce48bbea81e9017b5130da55fdbea2ec54ecf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79af59c1_b5dc68e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T21:12:37Z",
+      "side": 1,
+      "message": "I agree. I will add golden outputs for the rewritten forms in `workarounds/`.\n\nAlso, it looks like the fma intrinsic test is not currently runnable. We should definitely fix that! fma didn\u0027t see any attention during the great intrinsic cleanup because it only exists in GLSL 4, so I didn\u0027t need to touch it. (Determinants are ES3 so they\u0027ve received a bit more attention, but the test is still a little underwhelming compared to ES2 intrinsics where I\u0027ve tried to cover them pretty thoroughly.)",
+      "parentUuid": "a7b4bacc_14a103d5",
+      "revId": "b3bce48bbea81e9017b5130da55fdbea2ec54ecf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
