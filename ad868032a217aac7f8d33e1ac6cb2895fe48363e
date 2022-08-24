@@ -22,6 +22,30 @@
       },
       "revId": "ad868032a217aac7f8d33e1ac6cb2895fe48363e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1d3489_66c6950a",
+        "filename": "src/sksl/SkSLModuleLoader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T14:06:03Z",
+      "side": 1,
+      "message": "It\u0027s used by the Rehydrator, in a constructor that is only used by tests.\nReal-world uses of the Rehydrator always have a proper symbol table to pass in (either the true root, or the parent module\u0027s symbol table).\nAt one point I remember adding better comments to those ctors but it must have been in a CL that got abandoned/didn\u0027t make it to the finish line.",
+      "parentUuid": "62df9074_9b35851c",
+      "range": {
+        "startLine": 42,
+        "startChar": 24,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ad868032a217aac7f8d33e1ac6cb2895fe48363e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
