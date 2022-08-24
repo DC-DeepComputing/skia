@@ -17,15 +17,13 @@
 namespace SkSL {
 struct SharedCompiler::Impl {
     Impl() {
-        // These caps are configured to apply *no* workarounds. This avoids changes that are
-        // unnecessary (GLSL intrinsic rewrites), or possibly even incorrect.
-        // We may apply other "neutral" transformations to the user's SkSL, including inlining.
-        // Anything determined by the device caps is deferred to the GPU backend. The processor
-        // set produces the final program (including our re-emitted SkSL), and the backend's
-        // compiler resolves any necessary workarounds.
+        // Our goal is to apply *no* workarounds. This avoids changes that are unnecessary (GLSL
+        // intrinsic rewrites), or possibly even incorrect. We may apply other "neutral"
+        // transformations to the user's SkSL, such as constant-folding. Anything determined by the
+        // device caps is deferred to the GPU backend. The processor set produces the final program
+        // (including our re-emitted SkSL), and the backend's compiler resolves any necessary
+        // workarounds.
         fCaps = ShaderCapsFactory::Standalone();
-        fCaps->fBuiltinFMASupport = true;
-        fCaps->fBuiltinDeterminantSupport = true;
         fCompiler = new SkSL::Compiler(fCaps.get());
     }
 
