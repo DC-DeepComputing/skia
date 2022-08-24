@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba76e386_5e599439",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T14:13:28Z",
+      "side": 1,
+      "message": "I\u0027m trying to understand why this is specialized on BUILD_FOR_MAC. My hypothesis is that iOS doesn\u0027t need synchronization because it\u0027s always using shared memory, but Mac might need it because it has dedicated GPUs where synchronizing is actually meaningful.\n\nAre we actually _allowed_ to skip synchronizing resources on iOS/M1 architectures? Or is it just working in practice either way? I feel like it might be safest to just always synchronize (presumably it\u0027s cheap on architectures where it doesn\u0027t matter?)\n\nOr, my initial hypothesis might be off base and there\u0027s a different reason for this. A comment explaining the rationale for future readers would be a good idea.",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
