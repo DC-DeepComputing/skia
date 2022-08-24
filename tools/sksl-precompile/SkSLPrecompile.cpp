@@ -16,6 +16,7 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLDehydrator.h"
 #include "src/sksl/SkSLFileOutputStream.h"
+#include "src/sksl/SkSLModuleLoader.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
@@ -99,8 +100,10 @@ ResultCode processCommand(const std::vector<std::string>& paths) {
             return ResultCode::kInputError;
         }
 
+        auto moduleLoader = SkSL::ModuleLoader::Get();
         modules.push_front(compiler.loadModule(SkSL::ProgramKind::kFragment,
                                                SkSL::Compiler::MakeModulePath(modulePath.c_str()),
+                                               moduleLoader.coreModifiers(),
                                                /*base=*/inheritedSymbols,
                                                /*dehydrate=*/inheritedSymbols == nullptr));
         inheritedSymbols = modules.front().fSymbols;
