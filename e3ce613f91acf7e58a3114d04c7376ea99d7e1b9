@@ -280,6 +280,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8270d7ef_e246a6e5",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T21:12:46Z",
+      "side": 1,
+      "message": "Thanks for the details! We should document how this is handled in the Skia API. (In `SkWebPEncoder.h` - I still think `Frame` should move to `SkEncoder`, but this may be handled differently per encoder.)\n\nThis also brings up that a `Frame` should have offset values.\n\nWe might also want a way to specify the canvas size. One option, implicit here, is that the canvas is the size of the first image. But I think that would limit some things that the encoder would otherwise allow us to do.\n\nAnd what should happen if a frame doesn\u0027t fit within the canvas? I think that should be an error.",
+      "parentUuid": "ce5b3b49_5800d638",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1
