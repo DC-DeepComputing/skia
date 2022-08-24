@@ -46,6 +46,30 @@
       },
       "revId": "4564a5b79c3cd8a2bc1f3c918d5264a681936e3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a91518e5_c97998bf",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T20:40:55Z",
+      "side": 1,
+      "message": "OK, that\u0027s fine. Just curious. Agreed that it\u0027s not much code and SkSL can handle this no sweat (Ganesh worked fine without modules at all).",
+      "parentUuid": "48bc9d2b_96f83ab6",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 0
+      },
+      "revId": "4564a5b79c3cd8a2bc1f3c918d5264a681936e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
