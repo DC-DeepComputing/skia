@@ -8,6 +8,7 @@
 #ifndef SkSpecialSurface_DEFINED
 #define SkSpecialSurface_DEFINED
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
@@ -63,6 +64,12 @@ public:
                                                     const SkImageInfo&,
                                                     const SkSurfaceProps&,
                                                     GrSurfaceOrigin);
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    static sk_sp<SkSpecialSurface> MakeGraphite(skgpu::graphite::Recorder*,
+                                                const SkImageInfo&,
+                                                const SkSurfaceProps&);
 #endif
 
     /**
