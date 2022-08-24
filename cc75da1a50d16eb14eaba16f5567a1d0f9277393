@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "911b99f4_3bc877dd",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-24T14:43:52Z",
+      "side": 1,
+      "message": "Found it and answered my question.",
+      "parentUuid": "31ca2c0e_c2d3bd35",
+      "range": {
+        "startLine": 68,
+        "startChar": 46,
+        "endLine": 68,
+        "endChar": 92
+      },
+      "revId": "cc75da1a50d16eb14eaba16f5567a1d0f9277393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06bf39d3_fe11d7e1",
