@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d96d2574_01ac41ca",
+        "filename": "modules/skottie/src/Layer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-24T16:32:27Z",
+      "side": 1,
+      "message": "Interestingly, this CL yields a bunch of subtle/trivial diffs which appear related to filtering.\n\nI\u0027m guessing they are caused by differences in buffer sizing for saveLayer and possibly image filters (presumably we\u0027re more efficient, using tighter bounds), and will likely require g3 staging.",
+      "range": {
+        "startLine": 472,
+        "startChar": 7,
+        "endLine": 472,
+        "endChar": 33
+      },
+      "revId": "f07abc3a36420845f2852bef9fb3034d6282dd0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
