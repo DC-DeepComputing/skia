@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7403848b_a6a1e682",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-24T17:38:47Z",
+      "side": 1,
+      "message": "Do we know what device will be used at compile time? Maybe we do, but if we don\u0027t that\u0027s why we also have the runtime isMac() check here as well.",
+      "parentUuid": "221f7b1a_049c4010",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
