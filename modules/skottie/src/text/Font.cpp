@@ -50,6 +50,12 @@ bool Font::Builder::parseGlyph(const AnimationBuilder* abuilder,
     static constexpr float kPtScale = 0.01f;
     const auto advance = ParseDefault(jchar["w"], 0.0f) * kPtScale;
 
+    if (auto node = ParseGlyphComp(abuilder, *jdata)) {
+        fCustomBuilder.setGlyph(glyph_id, advance, SkPath());
+        fGlyphComps.set(glyph_id, std::move(node));
+        return true;
+    }
+
     SkPath path;
     if (!ParseGlyphPath(abuilder, *jdata, &path)) {
         return false;
@@ -122,8 +128,44 @@ bool Font::Builder::ParseGlyphPath(const skottie::internal::AnimationBuilder* ab
     return true;
 }
 
+sk_sp<sksg::RenderNode> Font::Builder::ParseGlyphComp(const AnimationBuilder* abuilder,
+                                                      const skjson::ObjectValue& jdata) {
+    AnimationBuilder::LayerInfo linfo{
+        {0,0},
+        ParseDefault<float>(jdata["ip"], 0.0f),
+        ParseDefault<float>(jdata["op"], 0.0f)
+    };
+
+    return abuilder->attachPrecompLayer(jdata, &linfo);
+}
+
 std::unique_ptr<Font> Font::Builder::detach() {
-    return std::unique_ptr<Font>(new Font(fCustomBuilder.detach()));
+    return std::unique_ptr<Font>(new Font(std::move(fGlyphComps), fCustomBuilder.detach()));
+}
+
+Font::Font(GlyphCompMap&& glyph_comps, sk_sp<SkTypeface> tf)
+    : fGlyphComps(std::move(glyph_comps))
+    , fTypeface(std::move(tf))
+{}
+
+Font::~Font() = default;
+
+sk_sp<sksg::RenderNode> Font::operator[](SkGlyphID gid) const {
+    if (auto* n = fGlyphComps.find(gid)) {
+        return *n;
+    }
+
+    return nullptr;
+}
+
+sk_sp<sksg::RenderNode> GlyphCompMapper::getGlyphComp(const SkTypeface* tf, SkGlyphID gid) const {
+    for (const auto& font : fFonts) {
+        if (font->typeface().get() == tf) {
+            return (*font)[gid];
+        }
+    }
+
+    return nullptr;
 }
 
 }  // namespace skottie::internal

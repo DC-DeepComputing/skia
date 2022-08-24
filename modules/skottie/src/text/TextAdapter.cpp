@@ -192,7 +192,9 @@ private:
 
 sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
                                      const AnimationBuilder* abuilder,
-                                     sk_sp<SkFontMgr> fontmgr, sk_sp<Logger> logger) {
+                                     sk_sp<SkFontMgr> fontmgr,
+                                     sk_sp<GlyphCompMapper> custom_glyph_mapper,
+                                     sk_sp<Logger> logger) {
     // General text node format:
     // "t": {
     //    "a": [], // animators (see TextAnimator)
@@ -253,6 +255,7 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
             : 1;
 
     auto adapter = sk_sp<TextAdapter>(new TextAdapter(std::move(fontmgr),
+                                                      std::move(custom_glyph_mapper),
                                                       std::move(logger),
                                                       gGroupingMap[SkToSizeT(apg - 1)]));
 
@@ -322,9 +325,11 @@ sk_sp<TextAdapter> TextAdapter::Make(const skjson::ObjectValue& jlayer,
     return adapter;
 }
 
-TextAdapter::TextAdapter(sk_sp<SkFontMgr> fontmgr, sk_sp<Logger> logger, AnchorPointGrouping apg)
+TextAdapter::TextAdapter(sk_sp<SkFontMgr> fontmgr, sk_sp<GlyphCompMapper> custom_glyph_mapper,
+                         sk_sp<Logger> logger, AnchorPointGrouping apg)
     : fRoot(sksg::Group::Make())
     , fFontMgr(std::move(fontmgr))
+    , fCustomGlyphMapper(std::move(custom_glyph_mapper))
     , fLogger(std::move(logger))
     , fAnchorPointGrouping(apg)
     , fHasBlurAnimator(false)
