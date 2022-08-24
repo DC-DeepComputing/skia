@@ -404,6 +404,30 @@
       },
       "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abec79ca_84d51694",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-24T18:09:14Z",
+      "side": 1,
+      "message": "FYI, D3D12 can create a buffer on the DEFAULT heap, which is GPU-only; the UPLOAD heap, which is XferCpuToGpu; or the READBACK heap, which is XferGpuToCpu. It\u0027s possible we could emulate fully R/W mappable behavior with a pair of UPLOAD and READBACK buffers associated with a DEFAULT buffer, but that seems like it\u0027s hiding the cost from the client when this is supposed to be a low-level interface.",
+      "parentUuid": "0efcc71c_f69e97fb",
+      "range": {
+        "startLine": 48,
+        "startChar": 54,
+        "endLine": 48,
+        "endChar": 67
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
