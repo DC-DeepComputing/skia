@@ -930,19 +930,51 @@ IMPL_LOAD4_TRANSPOSED(4, float, vld4q_f32)
 #elif SKVX_USE_SIMD && defined(__SSE__)
 
 SI void strided_load4(const float* v,
+                      size_t tail,
                       Vec<4,float>& a,
                       Vec<4,float>& b,
                       Vec<4,float>& c,
                       Vec<4,float>& d) {
-    __m128 a_ = _mm_loadu_ps(v);
-    __m128 b_ = _mm_loadu_ps(v+4);
-    __m128 c_ = _mm_loadu_ps(v+8);
-    __m128 d_ = _mm_loadu_ps(v+12);
+    __m128 a_, b_, c_, d_;
+    if (__builtin_expect(tail, 0)) {
+        b_ = c_ = d_ = _mm_setzero_si128();
+        if (  true  ) { a_ = _mm_loadu_ps(v + 0); }
+        if (tail > 1) { b_ = _mm_loadu_ps(v + 4); }
+        if (tail > 2) { c_ = _mm_loadu_ps(v + 8); }
+    } else {
+        a_ = _mm_loadu_ps(v +  0);
+        b_ = _mm_loadu_ps(v +  4);
+        c_ = _mm_loadu_ps(v +  8);
+        d_ = _mm_loadu_ps(v + 12);
+    }
     _MM_TRANSPOSE4_PS(a_, b_, c_, d_);
     a = bit_pun<Vec<4,float>>(a_);
     b = bit_pun<Vec<4,float>>(b_);
     c = bit_pun<Vec<4,float>>(c_);
     d = bit_pun<Vec<4,float>>(d_);
+}
+
+SI void strided_store4(float* v,
+                       size_t tail,
+                       Vec<4,float>& a,
+                       Vec<4,float>& b,
+                       Vec<4,float>& c,
+                       Vec<4,float>& d) {
+    __m128 a_ = bit_pun<__m128>(a),
+           b_ = bit_pun<__m128>(b),
+           c_ = bit_pun<__m128>(c),
+           d_ = bit_pun<__m128>(d);
+    _MM_TRANSPOSE4_PS(a_, b_, c_, d_);
+    if (__builtin_expect(tail, 0)) {
+        if (  true  ) { _mm_storeu_ps(v + 0, a_); }
+        if (tail > 1) { _mm_storeu_ps(v + 4, b_); }
+        if (tail > 2) { _mm_storeu_ps(v + 8, c_); }
+    } else {
+        _mm_storeu_ps(v + 0, a_);
+        _mm_storeu_ps(v + 4, b_);
+        _mm_storeu_ps(v + 8, c_);
+        _mm_storeu_ps(v +12, d_);
+    }
 }
 #endif
 

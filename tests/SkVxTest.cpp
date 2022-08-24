@@ -354,4 +354,202 @@ DEF_TEST(SkVx_saturated_add, r) {
     }
 }
 
+// Can we pass skvx values in registers, just like RP does with clang vector extensions?
+using F = float4;
+static const size_t N = sizeof(F) / sizeof(float);
+
+#define ABI
+
+using Stage = void(ABI*)(size_t tail, void** program, size_t dx, size_t dy, F,F,F,F, F,F,F,F);
+
+#define SI __attribute__((always_inline)) static inline
+
+SI void* load_and_inc(void**& program) {
+#if defined(__GNUC__) && defined(__x86_64__)
+    // If program is in %rsi (we try to make this likely) then this is a single instruction.
+    void* rax;
+    asm("lodsq" : "=a"(rax), "+S"(program));  // Write-only %rax, read-write %rsi.
+    return rax;
+#else
+    // On ARM *program++ compiles into pretty ideal code without any handholding.
+    return *program++;
+#endif
+}
+
+struct Ctx {
+    struct None {};
+
+    void**& program;
+
+    template <typename T>
+    operator T*() {
+        return (T*)load_and_inc(program);
+    }
+    operator None() {
+        load_and_inc(program);
+        return None{};
+    }
+};
+
+[[maybe_unused]]
+static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, void** program) {
+    auto start = (Stage)load_and_inc(program);
+    const size_t x0 = dx;
+    for (; dy < ylimit; dy++) {
+        dx = x0;
+        while (dx + N <= xlimit) {
+            start(0,program,dx,dy,    0,0,0,0, 0,0,0,0);
+            dx += N;
+        }
+        if (size_t tail = xlimit - dx) {
+            start(tail,program,dx,dy, 0,0,0,0, 0,0,0,0);
+        }
+    }
+}
+
+#if 1 // SK_HAS_MUSTTAIL
+    #define JUMPER_MUSTTAIL [[clang::musttail]]
+#else
+    #define JUMPER_MUSTTAIL
+#endif
+
+#define STAGE(name, ...)                                                         \
+    SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
+                     F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);        \
+    [[maybe_unused]]                                                             \
+    static void ABI name(size_t tail, void** program, size_t dx, size_t dy,      \
+                         F r, F g, F b, F a, F dr, F dg, F db, F da) {           \
+        name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);                 \
+        auto next = (Stage)load_and_inc(program);                                \
+        JUMPER_MUSTTAIL return next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);   \
+    }                                                                            \
+    [[maybe_unused]]                                                             \
+    SI void name##_k(__VA_ARGS__, size_t dx, size_t dy, size_t tail,             \
+                        F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
+
+[[maybe_unused]] static void ABI just_return(size_t, void**, size_t,size_t, F,F,F,F, F,F,F,F) {}
+
+#define BLEND_MODE(name)                       \
+    SI F name##_channel(F s, F d, F sa, F da); \
+    STAGE(name, Ctx::None) {                   \
+        r = name##_channel(r,dr,a,da);         \
+        g = name##_channel(g,dg,a,da);         \
+        b = name##_channel(b,db,a,da);         \
+        a = name##_channel(a,da,a,da);         \
+    }                                          \
+    SI F name##_channel(F s, F d, F sa, F da)
+
+[[maybe_unused]] SI F inv(F x) { return 1.0f - x; }
+[[maybe_unused]] SI F two(F x) { return x + x; }
+
+
+BLEND_MODE(clear)    { return 0; }
+BLEND_MODE(srcatop)  { return s*da + d*inv(sa); }
+BLEND_MODE(dstatop)  { return d*sa + s*inv(da); }
+BLEND_MODE(srcin)    { return s * da; }
+BLEND_MODE(dstin)    { return d * sa; }
+BLEND_MODE(srcout)   { return s * inv(da); }
+BLEND_MODE(dstout)   { return d * inv(sa); }
+BLEND_MODE(srcover)  { return fma(d, inv(sa), s); }
+BLEND_MODE(dstover)  { return fma(s, inv(da), d); }
+
+BLEND_MODE(modulate) { return s*d; }
+BLEND_MODE(multiply) { return s*inv(da) + d*inv(sa) + s*d; }
+BLEND_MODE(plus_)    { return min(s + d, 1.0f); }  // We can clamp to either 1 or sa.
+BLEND_MODE(screen)   { return s + d - s*d; }
+BLEND_MODE(xor_)     { return s*inv(da) + d*inv(sa); }
+#undef BLEND_MODE
+
+STAGE(uniform_color, const SkColor4f* c) {
+    r = c->fR;
+    g = c->fG;
+    b = c->fB;
+    a = c->fA;
+}
+
+STAGE(uniform_color_dst, const SkColor4f* c) {
+    dr = c->fR;
+    dg = c->fG;
+    db = c->fB;
+    da = c->fA;
+}
+
+STAGE(swap_rb, Ctx::None) {
+    auto tmp = r;
+    r = b;
+    b = tmp;
+}
+
+struct MemoryCtx {
+    void* pixels;
+    int   stride;
+};
+
+template <typename T>
+SI T* ptr_at_xy(const MemoryCtx* ctx, size_t dx, size_t dy) {
+    return (T*)ctx->pixels + dy*ctx->stride + dx;
+}
+
+// clamp v to [0,limit).
+[[maybe_unused]] SI F clamp(F v, F limit) {
+    F inclusive = bit_pun<F>( bit_pun<Vec<N, uint>>(limit) - 1 );  // Exclusive -> inclusive.
+    return min(max(0, v), inclusive);
+}
+
+STAGE(load_f32, const MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<const float>(ctx, 4*dx, 4*dy);
+    strided_load4(ptr, tail, r, g, b, a);
+}
+
+STAGE(store_f32, const MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<float>(ctx, 4*dx, 4*dy);
+    strided_store4(ptr, tail, r,g,b,a);
+}
+
+struct Pipeline {
+    void append(Stage fn, void* ctx = nullptr) {
+        program.push_back((void*)fn);
+        program.push_back(ctx);
+    }
+
+    void run(size_t x, size_t y, size_t w, size_t h) {
+        program.push_back((void*)just_return);
+        start_pipeline(x, y, x + w, y + h, program.data());
+    }
+
+    SkTArray<void*, true> program;
+};
+
+DEF_TEST(SkVx_pipeline, r) {
+    SkColor4f data[4] = { SkColors::kBlack, SkColors::kGreen, SkColors::kRed, SkColors::kBlue };
+    MemoryCtx ctx = { data, 0 };
+
+    Pipeline p;
+    p.append(load_f32, &ctx);
+    p.append(swap_rb);
+    p.append(store_f32, &ctx);
+    p.run(0, 0, 4, 1);
+
+    REPORTER_ASSERT(r, data[0] == SkColors::kBlack);
+    REPORTER_ASSERT(r, data[1] == SkColors::kGreen);
+    REPORTER_ASSERT(r, data[2] == SkColors::kBlue);
+    REPORTER_ASSERT(r, data[3] == SkColors::kRed);
+}
+
+DEF_TEST(SkVx_pipeline2, r) {
+    SkColor4f data[4] = { SkColors::kBlack, SkColors::kGreen, SkColors::kRed, SkColors::kBlue };
+    MemoryCtx ctx = { data, 0 };
+
+    Pipeline p;
+    p.append(uniform_color, &data[3]);
+    p.append(swap_rb);
+    p.append(store_f32, &ctx);
+    p.run(0, 0, 4, 1);
+
+    REPORTER_ASSERT(r, data[0] == SkColors::kRed);
+    REPORTER_ASSERT(r, data[1] == SkColors::kRed);
+    REPORTER_ASSERT(r, data[2] == SkColors::kRed);
+    REPORTER_ASSERT(r, data[3] == SkColors::kRed);
+}
+
 }  // namespace skvx
