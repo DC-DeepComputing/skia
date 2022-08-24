@@ -2038,6 +2038,29 @@ public:
                 initialPositionMatrix, std::move(*vertexFiller), std::move(*glyphVector));
     }
 
+    int unflattenSize() const override {
+        return sizeof(TransformedMaskSubRun) +
+               fGlyphs.unflattenSize() +
+               fVertexFiller.unflattenSize();
+    }
+
+    bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
+        // If we are not scaling the cache entry to be larger, than a cache with smaller glyphs may
+        // be better.
+        if (fInitialPositionMatrix.getMaxScale() < 1) {
+            return false;
+        }
+        return true;
+    }
+
+    const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
+
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override {
+        fGlyphs.packedGlyphIDToGlyph(cache);
+    }
+
+    int glyphCount() const override { return SkCount(fGlyphs.glyphs()); }
+
 #if SK_SUPPORT_GPU
     void draw(SkCanvas*,
               const GrClip* clip,
@@ -2086,40 +2109,7 @@ public:
                                                  std::move(grPaint));
         return {clip, std::move(op)};
     }
-#endif  // SK_SUPPORT_GPU
-#if defined(SK_GRAPHITE_ENABLED)
-    void draw(SkCanvas*,
-              SkPoint drawOrigin,
-              const SkPaint&,
-              sk_sp<SkRefCnt> subRunStorage,
-              Device*) const override {
-        // TODO: see makeAtlasTextOp for Geometry set up
-        device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
-    }
-#endif
 
-    int unflattenSize() const override {
-        return sizeof(TransformedMaskSubRun) +
-               fGlyphs.unflattenSize() +
-               fVertexFiller.unflattenSize();
-    }
-
-    bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
-        // If we are not scaling the cache entry to be larger, than a cache with smaller glyphs may
-        // be better.
-        if (fInitialPositionMatrix.getMaxScale() < 1) {
-            return false;
-        }
-        return true;
-    }
-
-    const AtlasSubRun* testingOnly_atlasSubRun() const override { return this; }
-
-    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override {
-        fGlyphs.packedGlyphIDToGlyph(cache);
-    }
-
-#if SK_SUPPORT_GPU
     std::tuple<bool, int> regenerateAtlas(int begin, int end,
                                           GrMeshDrawTarget* target) const override {
         return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target);
@@ -2143,7 +2133,17 @@ public:
         return fVertexFiller.vertexStride(drawMatrix);
     }
 #endif  // SK_SUPPORT_GPU
+
 #if defined(SK_GRAPHITE_ENABLED)
+    void draw(SkCanvas*,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage,
+              Device*) const override {
+        // TODO: see makeAtlasTextOp for Geometry set up
+        device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
+    }
+
     std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder*) const override {
         return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, recorder);
     }
@@ -2172,11 +2172,7 @@ public:
     }
 
     MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
-#endif
-
-    int glyphCount() const override {
-        return SkCount(fGlyphs.glyphs());
-    }
+#endif  // SK_GRAPHITE_ENABLED
 
 protected:
     SubRunType subRunType() const override { return kTransformMask; }
