@@ -290,6 +290,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "876124f6_a7bbee46",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T18:09:12Z",
+      "side": 1,
+      "message": "Re eGPUs: in practice AFAIK none exist for M1 Macs yet (no drivers). But let\u0027s go with Jim\u0027s suggestion and drop the compile time check.",
+      "parentUuid": "32b2f9c5_967c25f4",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
