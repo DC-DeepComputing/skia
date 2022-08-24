@@ -242,6 +242,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5245ad5d_91b1c32c",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T18:00:02Z",
+      "side": 1,
+      "message": "I\u0027m fine with removing the #if altogether as well and letting the isFoo() accessors do it.",
+      "parentUuid": "d2fe1758_5fd93d71",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
