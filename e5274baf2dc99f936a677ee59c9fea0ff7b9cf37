@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c017f2a0_4d310b88",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-24T00:12:30Z",
+      "side": 1,
+      "message": "Let me know what you think about this approach and whether this is the right layer to special case this. This might make sense to generalize such that it works for any pipeline that uses a buffer with `BufferType::kXferGpuToCpu`",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 6
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
