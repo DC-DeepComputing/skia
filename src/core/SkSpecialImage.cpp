@@ -28,6 +28,9 @@
 #include "src/shaders/SkImageShader.h"
 #endif
 
+#if SK_GRAPHITE_ENABLED
+#endif
+
 // Currently, the raster imagefilters can only handle certain imageinfos. Call this to know if
 // a given info is supported.
 static bool valid_for_imagefilters(const SkImageInfo& info) {
@@ -35,7 +38,6 @@ static bool valid_for_imagefilters(const SkImageInfo& info) {
     return info.colorType() == kN32_SkColorType;
 }
 
-///////////////////////////////////////////////////////////////////////////////
 SkSpecialImage::SkSpecialImage(const SkIRect& subset,
                                uint32_t uniqueID,
                                const SkSurfaceProps& props)
@@ -82,6 +84,12 @@ sk_sp<SkShader> SkSpecialImage::asShader(const SkSamplingOptions& sampling,
                                          const SkMatrix& lm) const {
     return this->asShader(SkTileMode::kClamp, sampling, lm);
 }
+
+#if SK_GRAPHITE_ENABLED
+skgpu::graphite::TextureProxyView SkSpecialImage::textureProxyView() const {
+    return this->onTextureProxyView();
+}
+#endif
 
 #ifdef SK_DEBUG
 bool SkSpecialImage::RectFits(const SkIRect& rect, int width, int height) {
@@ -158,12 +166,18 @@ public:
     }
 
 #if SK_SUPPORT_GPU
-    GrSurfaceProxyView onView(GrRecordingContext* context) const override {
+    GrSurfaceProxyView onView1(GrRecordingContext* context) const override {
         if (context) {
             return std::get<0>(GrMakeCachedBitmapProxyView(
                     context, fBitmap, /*label=*/"SpecialImageRaster_OnView", GrMipmapped::kNo));
         }
 
+        return {};
+    }
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView onTextureProxyView() const override {
         return {};
     }
 #endif
@@ -335,7 +349,11 @@ public:
 
     GrRecordingContext* onGetContext() const override { return fContext; }
 
-    GrSurfaceProxyView onView(GrRecordingContext* context) const override { return fView; }
+    GrSurfaceProxyView onView1(GrRecordingContext* context) const override { return fView; }
+
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView onTextureProxyView() const override { return {}; }
+#endif
 
     bool onGetROPixels(SkBitmap* dst) const override {
         // This should never be called: All GPU image filters are implemented entirely on the GPU,
