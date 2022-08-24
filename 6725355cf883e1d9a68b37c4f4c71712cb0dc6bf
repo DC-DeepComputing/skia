@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17b2956e_1b9616bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T00:49:42Z",
+      "side": 1,
+      "message": "I\u0027m not sure what\u0027s going on with the chrome canary failure. https://chromium-review.googlesource.com/c/chromium/src/+/3841205 added suppressions for the failing tests including `paint/invalidation/reflection/reflection-with-rotation.html`. But for some reason the high_dpi variant is not respecting that expectation being set to pass/fail.\n\nInterestingly, the other tests that are suppressed were on other configs and didn\u0027t overlap with high_dpi, and the reflection-with-rotation test only ever failed on the high_dpi variant. I will need to check with the Blink team on this.",
+      "revId": "6725355cf883e1d9a68b37c4f4c71712cb0dc6bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
