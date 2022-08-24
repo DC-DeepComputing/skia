@@ -16,6 +16,40 @@
       "message": "PTAL",
       "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5493ac47_aaba820f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-24T13:10:39Z",
+      "side": 1,
+      "message": "There seems to be a large amount of code that could be shared with the existing single-frame encode function. Is there any way to rearrange this to avoid the copy-paste?\n\nAlso: Do we need to worry about color spaces? (I see that the single-frame encode checks for a color space and embeds an ICC profile. We\u0027d need to ensure that all the frames have the same color space, but we ought to do that, right?)\n\n+scroggo, who may have other input.",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1e599b3_064bfade",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-24T13:10:39Z",
+      "side": 1,
+      "message": "Can we make this SkSpan\u003cFrame\u003e instead? (from include/core/SkSpan.h)",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
