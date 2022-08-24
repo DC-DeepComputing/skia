@@ -22,6 +22,30 @@
       },
       "revId": "f07abc3a36420845f2852bef9fb3034d6282dd0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "770ecf80_30e80795",
+        "filename": "modules/skottie/src/Layer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T16:41:27Z",
+      "side": 1,
+      "message": "That seems like a plausible explanation.",
+      "parentUuid": "d96d2574_01ac41ca",
+      "range": {
+        "startLine": 472,
+        "startChar": 7,
+        "endLine": 472,
+        "endChar": 33
+      },
+      "revId": "f07abc3a36420845f2852bef9fb3034d6282dd0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
