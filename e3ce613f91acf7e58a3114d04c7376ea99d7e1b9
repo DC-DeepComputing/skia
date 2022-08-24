@@ -55,6 +55,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fdc3f7f_864e5505",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "I think this should be in a more common place. We don\u0027t currently support multi-frame for any other encoders, but we could in the future, and presumably it would have roughly the same API.\n\nI think it should be on `SkEncoder`, even though it doesn\u0027t yet have any other APIs like this.",
+      "range": {
+        "startLine": 39,
+        "startChar": 18,
+        "endLine": 39,
+        "endChar": 23
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675a3a1a_4a3704fe",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "These should be split up by field.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 70
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f1e599b3_064bfade",
         "filename": "include/encode/SkWebpEncoder.h",
         "patchSetId": 1
@@ -66,6 +112,230 @@
       "writtenOn": "2022-08-24T13:10:39Z",
       "side": 1,
       "message": "Can we make this SkSpan\u003cFrame\u003e instead? (from include/core/SkSpan.h)",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cf885aa_85ae1800",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "Please use a smart pointer for this. We have several `return` statements that will leak this object.",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 19
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "717ce787_3e816e60",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "`nullptr`, here and elsewhere.",
+      "range": {
+        "startLine": 163,
+        "startChar": 27,
+        "endLine": 163,
+        "endChar": 31
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a7602d4_5c0fccad",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "I find it curious that this name includes `_ms` but the public API does not.\n\nThat said, `SkCodec::FrameInfo::fDuration` also doesn\u0027t include it, so it perhaps makes sense to match.",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 164,
+        "endChar": 20
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dea7fd9b_659ffe26",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "Skia typically uses camelCase.",
+      "range": {
+        "startLine": 164,
+        "startChar": 17,
+        "endLine": 164,
+        "endChar": 20
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1252f1a_66ff4751",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "nit: I personally prefer\n\n```\nif (!enc) {\n```\n\nbut I\u0027m not aware that we\u0027re consistent on this.",
+      "range": {
+        "startLine": 169,
+        "startChar": 12,
+        "endLine": 169,
+        "endChar": 23
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "807a88c2_562ece88",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "I don\u0027t remember - how does libwebp handle a different width and height per frame? We should do something reasonable and consistent. This means documenting in the header file and writing tests. (It doesn\u0027t guarantee that we\u0027ll follow it if/when we add support for another format, but it gives us something to start with!)",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbbb8781_ef561503",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "Aren\u0027t you going to double-free this due to `autoPic`?",
+      "range": {
+        "startLine": 250,
+        "startChar": 8,
+        "endLine": 250,
+        "endChar": 23
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "627a4a0e_3f5cf5e9",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "Is this standard use of the libwebp API?",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78149b6e_47e59309",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "Please use RAII so we don\u0027t skip Clearing it on failure.",
+      "range": {
+        "startLine": 258,
+        "startChar": 13,
+        "endLine": 258,
+        "endChar": 22
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787950b7_e4c27290",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-24T18:46:33Z",
+      "side": 1,
+      "message": "This returns a boolean. Once you use RAII to clean up your resources, you can make this\n\n```\nreturn stream-\u003ewrite(...);\n```",
+      "range": {
+        "startLine": 263,
+        "startChar": 12,
+        "endLine": 263,
+        "endChar": 17
+      },
       "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
