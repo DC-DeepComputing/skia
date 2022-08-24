@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62df9074_9b35851c",
+        "filename": "src/sksl/SkSLModuleLoader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-24T14:03:18Z",
+      "side": 1,
+      "message": "Is it? Looks like it\u0027s used by the rehydrator, actually?",
+      "range": {
+        "startLine": 42,
+        "startChar": 24,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ad868032a217aac7f8d33e1ac6cb2895fe48363e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
