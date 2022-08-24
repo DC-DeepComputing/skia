@@ -194,6 +194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29f423b7_31b5f55b",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T17:47:25Z",
+      "side": 1,
+      "message": "Can we replace the `#ifdef SK_BUILD_FOR_MAC` (which targets M1 and Intel Macs) with `#ifdef SK_BUILD_FOR_MAC \u0026\u0026 !defined(SK_CPU_ARM64)` (which targets non-M1 Macs only)? Since Apple silicon always uses MTLResourceStorageModeShared, this means we can eliminate this check entirely on Apple silicon Macs. This seems valid to me, and saves code on M1, unless there\u0027s a counterexample I\u0027m not thinking of?\n\nI\u0027m not sure what you mean by \"do we know the device\" because it\u0027s definitely Metal (this is in MtlCommandBuffer) and the CPU architecture is known at compile time; what else is missing?",
+      "parentUuid": "7403848b_a6a1e682",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
