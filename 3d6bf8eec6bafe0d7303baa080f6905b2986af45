@@ -16,6 +16,52 @@
       "message": "Ok. I have rebased the additional CL, and have fixed the merge problem with Jim\u0027s CL. PTAL",
       "revId": "3d6bf8eec6bafe0d7303baa080f6905b2986af45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ee61769_e70306f6",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-24T18:02:54Z",
+      "side": 1,
+      "message": "New function Jim added.",
+      "range": {
+        "startLine": 484,
+        "startChar": 1,
+        "endLine": 484,
+        "endChar": 25
+      },
+      "revId": "3d6bf8eec6bafe0d7303baa080f6905b2986af45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a021e4c_d4cffcbb",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-24T18:02:54Z",
+      "side": 1,
+      "message": "Here is the new member function that Jim added.",
+      "range": {
+        "startLine": 749,
+        "startChar": 0,
+        "endLine": 749,
+        "endChar": 51
+      },
+      "revId": "3d6bf8eec6bafe0d7303baa080f6905b2986af45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
