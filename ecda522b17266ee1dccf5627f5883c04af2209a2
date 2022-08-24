@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa6478e_5291462b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-24T19:17:14Z",
+      "side": 1,
+      "message": "Hmmm, seems like an odd discontinuity to add, though I understand why. It seems the shader for this should be a solid color which is the average color of the gradient, but of course if the range is zero there is no average color. So really what is wanted is the average color as the range goes to zero (if it were ever non-zero). But we don\u0027t have that information here.",
+      "revId": "ecda522b17266ee1dccf5627f5883c04af2209a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
