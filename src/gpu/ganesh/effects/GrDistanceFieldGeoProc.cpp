@@ -151,8 +151,8 @@ private:
             // For general transforms, to determine the amount of correction we multiply a unit
             // vector pointing along the SDF gradient direction by the Jacobian of the st coords
             // (which is the inverse transform for this fragment) and take the length of the result.
-            fragBuilder->codeAppend("half2 dist_grad = half2(float2(dFdx(distance), "
-                                                                   "dFdy(distance)));");
+            fragBuilder->codeAppend("half2 dist_grad = half2(float2((distance), "
+                                                                   "(distance)));");
             // the length of the gradient may be 0, so we need to check for this
             // this also compensates for the Adreno, which likes to drop tiles on division by 0
             fragBuilder->codeAppend("half dg_len2 = dot(dist_grad, dist_grad);");
@@ -162,8 +162,8 @@ private:
             fragBuilder->codeAppend("dist_grad = dist_grad*half(inversesqrt(dg_len2));");
             fragBuilder->codeAppend("}");
 
-            fragBuilder->codeAppendf("half2 Jdx = half2(dFdx(%s));", st.fsIn());
-            fragBuilder->codeAppendf("half2 Jdy = half2(dFdy(%s));", st.fsIn());
+            fragBuilder->codeAppendf("half2 Jdx = half2((%s));", st.fsIn());
+            fragBuilder->codeAppendf("half2 Jdy = half2((%s));", st.fsIn());
             fragBuilder->codeAppend("half2 grad = half2(dist_grad.x*Jdx.x + dist_grad.y*Jdy.x,");
             fragBuilder->codeAppend("                 dist_grad.x*Jdx.y + dist_grad.y*Jdy.y);");
 
