@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fea5971a_a7493708",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-24T17:43:26Z",
+      "side": 1,
+      "message": "\u003e There seems to be a large amount of code that could be shared with the existing single-frame encode function. Is there any way to rearrange this to avoid the copy-paste?\n\u003e \n\u003e Also: Do we need to worry about color spaces? (I see that the single-frame encode checks for a color space and embeds an ICC profile. We\u0027d need to ensure that all the frames have the same color space, but we ought to do that, right?)\n\u003e \n\nNote Chrome doesn\u0027t support ICC profiles with animation currently:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/webp/webp_image_decoder.cc;l\u003d379;drc\u003d040667a8d3c4caf8ffbc1f4d6299a8bfe00fee13\n\n\u003e +scroggo, who may have other input.",
+      "parentUuid": "5493ac47_aaba820f",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1e599b3_064bfade",
