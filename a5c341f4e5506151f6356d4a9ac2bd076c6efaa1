@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f5be7fe_31f459eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-24T16:15:07Z",
+      "side": 1,
+      "message": "Probably need to fire off a Graphite bot on this one",
+      "revId": "a5c341f4e5506151f6356d4a9ac2bd076c6efaa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60e40cb7_35e52091",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-24T16:15:07Z",
+      "side": 1,
+      "message": "\u0027paint\u0027 here ?",
+      "range": {
+        "startLine": 2093,
+        "startChar": 28,
+        "endLine": 2093,
+        "endChar": 29
+      },
+      "revId": "a5c341f4e5506151f6356d4a9ac2bd076c6efaa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951c26b3_5530b193",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2095,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-24T16:15:07Z",
+      "side": 1,
+      "message": "\u0027device\u0027 here ?",
+      "range": {
+        "startLine": 2095,
+        "startChar": 20,
+        "endLine": 2095,
+        "endChar": 21
+      },
+      "revId": "a5c341f4e5506151f6356d4a9ac2bd076c6efaa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe0cbf7_30197dd3",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2151,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-24T16:15:07Z",
+      "side": 1,
+      "message": "\u0027localToDevice\u0027",
+      "range": {
+        "startLine": 2151,
+        "startChar": 70,
+        "endLine": 2151,
+        "endChar": 71
+      },
+      "revId": "a5c341f4e5506151f6356d4a9ac2bd076c6efaa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
