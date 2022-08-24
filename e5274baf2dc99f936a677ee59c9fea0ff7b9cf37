@@ -218,6 +218,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2fe1758_5fd93d71",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-24T17:57:40Z",
+      "side": 1,
+      "message": "Unless it\u0027s a difference between something in the MacOS and iOS SDKs, we shouldn\u0027t be using SK_BUILD_FOR_MAC. If the runtime check is showing up as a hotspot then maybe we could do as you suggest, but I think the isMac() and isApple() checks should be enough.",
+      "parentUuid": "29f423b7_31b5f55b",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
