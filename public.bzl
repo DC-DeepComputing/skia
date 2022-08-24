@@ -1898,7 +1898,6 @@ MTL_SRCS = [
 ]
 
 VULKAN_SRCS = [
-    "src/gpu/vk/VulkanExtensions.cpp",
     "src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.cpp",
     "src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.h",
     "src/gpu/ganesh/vk/GrVkBuffer.cpp",
@@ -1924,8 +1923,6 @@ VULKAN_SRCS = [
     "src/gpu/ganesh/vk/GrVkImageLayout.h",
     "src/gpu/ganesh/vk/GrVkImageView.cpp",
     "src/gpu/ganesh/vk/GrVkImageView.h",
-    "src/gpu/ganesh/vk/GrVkInterface.cpp",
-    "src/gpu/ganesh/vk/GrVkInterface.h",
     "src/gpu/ganesh/vk/GrVkManagedResource.h",
     "src/gpu/ganesh/vk/GrVkMemory.cpp",
     "src/gpu/ganesh/vk/GrVkMemory.h",
@@ -1967,6 +1964,9 @@ VULKAN_SRCS = [
     "src/gpu/ganesh/vk/GrVkUtil.h",
     "src/gpu/ganesh/vk/GrVkVaryingHandler.cpp",
     "src/gpu/ganesh/vk/GrVkVaryingHandler.h",
+    "src/gpu/vk/VulkanExtensions.cpp",
+    "src/gpu/vk/VulkanInterface.cpp",
+    "src/gpu/vk/VulkanInterface.h",
 ]
 
 ################################################################################

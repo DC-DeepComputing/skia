@@ -88,9 +88,9 @@ void VulkanWindowContext::initializeContext() {
     localGetPhysicalDeviceProperties(backendContext.fPhysicalDevice, &physDeviceProperties);
     uint32_t physDevVersion = physDeviceProperties.apiVersion;
 
-    fInterface.reset(new GrVkInterface(backendContext.fGetProc, fInstance, fDevice,
-                                       backendContext.fInstanceVersion, physDevVersion,
-                                       &extensions));
+    fInterface.reset(new skgpu::VulkanInterface(backendContext.fGetProc, fInstance, fDevice,
+                                                backendContext.fInstanceVersion, physDevVersion,
+                                                &extensions));
 
     GET_PROC(DestroyInstance);
     if (fDebugCallback != VK_NULL_HANDLE) {
