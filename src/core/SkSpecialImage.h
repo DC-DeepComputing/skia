@@ -34,6 +34,11 @@ class SkSpecialSurface;
 class SkSurface;
 enum class SkTileMode;
 
+namespace skgpu::graphite {
+class Recorder;
+class TextureProxyView;
+}
+
 enum {
     kNeedNewImageUniqueID_SpecialImage = 0
 };
@@ -96,6 +101,15 @@ public:
                                                      GrSurfaceProxyView,
                                                      const GrColorInfo&,
                                                      const SkSurfaceProps&);
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    static sk_sp<SkSpecialImage> MakeGraphite(skgpu::graphite::Recorder*,
+                                              const SkIRect& subset,
+                                              uint32_t uniqueID,
+                                              skgpu::graphite::TextureProxyView,
+                                              const SkColorInfo&,
+                                              const SkSurfaceProps&);
 #endif
 
     /**
@@ -170,6 +184,10 @@ public:
     GrSurfaceProxyView view(GrRecordingContext* context) const { return this->onView(context); }
 #endif
 
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView textureProxyView() const;
+#endif
+
     /**
      *  Regardless of the underlying backing store, return the contents as an SkBitmap.
      *  The returned bitmap represents the subset accessed by this image, thus (0,0) refers to the
@@ -195,6 +213,10 @@ protected:
 
 #if SK_SUPPORT_GPU
     virtual GrSurfaceProxyView onView(GrRecordingContext*) const = 0;
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    virtual skgpu::graphite::TextureProxyView onTextureProxyView() const;
 #endif
 
     // This subset is relative to the backing store's coordinate frame, it has already been mapped
@@ -230,4 +252,4 @@ private:
     const uint32_t       fUniqueID;
 };
 
-#endif
+#endif // SkSpecialImage_DEFINED
