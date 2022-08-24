@@ -266,6 +266,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32b2f9c5_967c25f4",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-24T18:06:54Z",
+      "side": 1,
+      "message": "I\u0027m not sure if we always know at compile time whether we\u0027ll be using Apple silicon or not. The GPU selection itself happens at runtime (even on newer macs) and there is always the possibility (though probably highly uncommon) that a user has a discrete GPU on their modern mac that they prefer to use. We would need to make sure that we ALWAYS select the GPU with unified memory at runtime when running on newer macs if we want to conditionally disable this code on ARM (and maybe that\u0027s what want after all?).\n\nI view the conditional compilation here in somewhat the inverse: `SK_BUILD_FOR_IOS` is an optimization since discrete GPUs there are practically impossible and we are more worried about code size and battery usage. Macs have the possibility of using discrete GPUs and the runtime check based on the GPU type is probably appropriate depending on the GPU the user requested.\n\nAnother thought that I have here is that I think this conditional synchronization should probably be purely based on the actual buffer storage mode and not the GPU type. I imagine we\u0027ll have compute pipelines that operate on intermediate buffers that never have to be synchronized to the CPU (even on discrete GPUs) where `MTLResourceStorageModePrivate` might be preferred. This is sort of what I was trying to achieve with the `BufferType::kXferGpuToCpu` check but I probably misunderstood what that buffer type is for.",
+      "parentUuid": "29f423b7_31b5f55b",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
@@ -324,6 +348,30 @@
       "writtenOn": "2022-08-24T13:33:55Z",
       "side": 1,
       "message": "Is this really the buffer type we want here (and the input as well)? The design around these buffers types are that they are used for transfers from gpu to cpu. In other words on metal they are being blitted from gpu memory to the buffer and then mapped/read on the cpu. That is different than being used in a Compute call and the buffer just happening to also be mappable.\n\nMaybe we need to add a new BufferType to handle compute? In general do we expect that compute buffers need to be mappable on the CPU or is that just a bonus if they are? Maybe we need some sort of generic readBuffer call for compute? But for now I don\u0027t see that being a public use API so all support for it should be guarded by testing only compile flags.",
+      "range": {
+        "startLine": 48,
+        "startChar": 54,
+        "endLine": 48,
+        "endChar": 67
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172a2519_b3b1c7f5",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-24T18:06:54Z",
+      "side": 1,
+      "message": "I imagine we\u0027ll have compute pipelines that operate on intermediate buffers that never have to be synchronized to the CPU (even on discrete GPUs) where  `MTLResourceStorageModePrivate`  might be preferred. This is sort of what I was trying to achieve with the `BufferType::kXferGpuToCpu` check but I probably misunderstood what that buffer type really means.\n\nPractically the only two use cases for CPU-readback on compute buffers that I can foresee are 1) unit tests like this one, and 2) if we exposed GPGPU compute functionality in the public API for users that don\u0027t care about graphics. I don\u0027t know if 2) is a use case that makes sense for Skia but maybe one day.\n\nWhat are your thoughts on what the layering would look like for a generic `readBuffer` call? Would that be a method on Context/Recorder? Would that require a task type of its own? It needs to end up in `MtlCommandBuffer` eventually since synchronization has to be done via the blit encoder.",
+      "parentUuid": "0efcc71c_f69e97fb",
       "range": {
         "startLine": 48,
         "startChar": 54,
