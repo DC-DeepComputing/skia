@@ -304,6 +304,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1620c01a_8ff8d6dc",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-24T22:02:13Z",
+      "side": 1,
+      "message": "\u003e Thanks for the details! We should document how this is handled in the Skia API. (In `SkWebPEncoder.h` - I still think `Frame` should move to `SkEncoder`, but this may be handled differently per encoder.)\n\u003e \n\u003e This also brings up that a `Frame` should have offset values.\n\u003e \n\u003e We might also want a way to specify the canvas size. One option, implicit here, is that the canvas is the size of the first image. But I think that would limit some things that the encoder would otherwise allow us to do.\n\u003e \n\nI think that is limiting if you wanted to define a large canvas and use the background color to cover all but a section of it for instance.\n\n\u003e And what should happen if a frame doesn\u0027t fit within the canvas? I think that should be an error.\n\nThat makes sense to me.",
+      "parentUuid": "8270d7ef_e246a6e5",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1
