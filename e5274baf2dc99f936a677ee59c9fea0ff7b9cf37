@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36ab7101_b5ce208a",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-24T15:43:23Z",
+      "side": 1,
+      "message": "I haven\u0027t looked closely at this doc before, sorry, and it\u0027s pretty enormous. What specifically should I look for here? The first chart I see shows \"Mac\" as a mix of Intel GPU, AMD GPU, and M1/M2 GPU (which matches the colloquial term): http://screen/3zQMtBxRhCJo59Q",
+      "parentUuid": "19ef6afe_4e2b05df",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 23
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c017f2a0_4d310b88",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
