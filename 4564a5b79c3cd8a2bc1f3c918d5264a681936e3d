@@ -22,6 +22,30 @@
       },
       "revId": "4564a5b79c3cd8a2bc1f3c918d5264a681936e3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48bc9d2b_96f83ab6",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-24T20:36:18Z",
+      "side": 1,
+      "message": "A \"wedge\" felt like a very specialized concept that was really coupled to this particular renderstep technique, so I didn\u0027t like how far apart its sksl logic was from everything else. It\u0027s also not that much sksl relative to the `tessellate_filled_curve` function so we\u0027re getting less benefit from the module system.",
+      "parentUuid": "36fa23bb_f0faf7d8",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 0
+      },
+      "revId": "4564a5b79c3cd8a2bc1f3c918d5264a681936e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
