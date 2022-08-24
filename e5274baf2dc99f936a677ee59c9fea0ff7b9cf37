@@ -22,6 +22,53 @@
       },
       "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086005c1_9c05dca2",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-24T13:33:55Z",
+      "side": 1,
+      "message": "This definitely seems like the wrong place to be tracking such a thing. It should definitely be the calling code that is trying to read the buffer that should be handling the synchronization.",
+      "parentUuid": "c017f2a0_4d310b88",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 6
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0efcc71c_f69e97fb",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-24T13:33:55Z",
+      "side": 1,
+      "message": "Is this really the buffer type we want here (and the input as well)? The design around these buffers types are that they are used for transfers from gpu to cpu. In other words on metal they are being blitted from gpu memory to the buffer and then mapped/read on the cpu. That is different than being used in a Compute call and the buffer just happening to also be mappable.\n\nMaybe we need to add a new BufferType to handle compute? In general do we expect that compute buffers need to be mappable on the CPU or is that just a bonus if they are? Maybe we need some sort of generic readBuffer call for compute? But for now I don\u0027t see that being a public use API so all support for it should be guarded by testing only compile flags.",
+      "range": {
+        "startLine": 48,
+        "startChar": 54,
+        "endLine": 48,
+        "endChar": 67
+      },
+      "revId": "e5274baf2dc99f936a677ee59c9fea0ff7b9cf37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
