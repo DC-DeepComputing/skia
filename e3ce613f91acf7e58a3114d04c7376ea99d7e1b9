@@ -256,6 +256,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce5b3b49_5800d638",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-24T19:13:05Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t remember - how does libwebp handle a different width and height per frame? We should do something reasonable and consistent. This means documenting in the header file and writing tests. (It doesn\u0027t guarantee that we\u0027ll follow it if/when we add support for another format, but it gives us something to start with!)\n\nA frame can be \u003c\u003d to the canvas size in webp. offsets are snapped to even values.",
+      "parentUuid": "807a88c2_562ece88",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1
