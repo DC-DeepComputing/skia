@@ -128,6 +128,12 @@ public:
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
+
+protected:
+    void draw(skgpu::graphite::Device*,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage) const;
 };
 
 // -- SubRun -------------------------------------------------------------------------------------
