@@ -18,6 +18,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
 #include "src/utils/SkUTF.h"
 #include "tools/ToolUtils.h"
 
@@ -39,7 +40,7 @@ namespace skiagm {
 
 class ScaledEmojiGM : public GM {
 public:
-    ScaledEmojiGM() { }
+    ScaledEmojiGM() {}
 
 protected:
     struct EmojiFont {
@@ -49,7 +50,7 @@ protected:
 
     void onOnceBeforeDraw() override {
         fEmojiFont.fTypeface = ToolUtils::emoji_typeface();
-        fEmojiFont.fText     = ToolUtils::emoji_sample_text();
+        fEmojiFont.fText = ToolUtils::emoji_sample_text();
     }
 
     SkString onShortName() override {
@@ -59,7 +60,7 @@ protected:
     SkISize onISize() override { return SkISize::Make(1200, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
-
+        SkDebugf("Start onDraw\n");
         canvas->drawColor(SK_ColorGRAY);
 
         SkPaint paint;
@@ -73,13 +74,14 @@ protected:
         // SDF path with scaling, path rendering with scaling
         SkFontMetrics metrics;
         SkScalar y = 0;
-        for (SkScalar textSize : { 70, 180, 270, 340 }) {
+        for (SkScalar textSize : {70, 180, 270, 340}) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
             canvas->drawSimpleText(text, strlen(text), SkTextEncoding::kUTF8, 10, y, font, paint);
             y += metrics.fDescent + metrics.fLeading;
         }
+        SkDebugf("End onDraw\n");
     }
 
 private:
@@ -176,7 +178,6 @@ protected:
     SkISize onISize() override { return SkISize::Make(1200, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
-
         canvas->drawColor(SK_ColorGRAY);
         SkMatrix taper;
         taper.setPerspY(-0.0025f);
