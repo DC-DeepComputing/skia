@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ed615b_7680d6d6",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-25T19:57:03Z",
+      "side": 1,
+      "message": "This is a change in behavior for graphite, but I think it makes it consistent with how drawVertices is meant to behave where overlapping triangles are supposed to double-blend.",
+      "range": {
+        "startLine": 65,
+        "startChar": 21,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "5a39855f9f810b5c5a7a2b25a0492f35cf3d2b7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
