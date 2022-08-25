@@ -30,12 +30,18 @@ describe('Paragraph Behavior', function() {
             robotoFontBuffer = buffer;
         });
 
+    let robotoVariableFontBuffer = null;
+    const robotoVariableFontLoaded = fetch('/assets/RobotoSlab-VariableFont_wght.ttf').then(
+        (response) => response.arrayBuffer()).then(
+        (buffer) => {
+            robotoVariableFontBuffer = buffer;
+        });
+
     beforeEach(async () => {
-        await EverythingLoaded;
+        await LoadCanvasKit;
         await notoSerifFontLoaded;
         await notoSerifBoldItalicFontLoaded;
         await emojiFontLoaded;
-        await robotoFontLoaded;
         container = document.createElement('div');
         container.innerHTML = `
             <canvas width=600 height=600 id=test></canvas>
@@ -124,6 +130,7 @@ describe('Paragraph Behavior', function() {
         expect(flm.left).toBeCloseTo(13.818, 3);
         expect(flm.baseline).toBeCloseTo(21.141, 3);
 
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, 230), paint);
         canvas.drawParagraph(paragraph, 10, 10);
 
@@ -156,6 +163,8 @@ describe('Paragraph Behavior', function() {
             'This text has a red foregroundColor and a blue backgroundColor.');
         const paragraph = builder.build();
         paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         fontMgr.delete();
@@ -192,6 +201,8 @@ describe('Paragraph Behavior', function() {
             'This text is stroked in black and has no fill');
         const paragraph = builder.build();
         paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
         // Again 5px to the right so you can tell the fill is transparent
         canvas.drawParagraph(paragraph, 15, 10);
@@ -226,6 +237,8 @@ describe('Paragraph Behavior', function() {
             'This text should have a lot of space between the letters and words.');
         const paragraph = builder.build();
         paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         fontMgr.delete();
@@ -255,6 +268,8 @@ describe('Paragraph Behavior', function() {
         builder.addText('This text should have a shadow behind it.');
         const paragraph = builder.build();
         paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         fontMgr.delete();
@@ -325,6 +340,8 @@ describe('Paragraph Behavior', function() {
 
         const paragraph2 = builder2.build();
         paragraph2.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
         canvas.drawParagraph(paragraph2, 220, 10);
 
@@ -352,6 +369,49 @@ describe('Paragraph Behavior', function() {
         builder.addText('This Text Should Be In Small Caps');
         const paragraph = builder.build();
         paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
+        canvas.drawParagraph(paragraph, 10, 10);
+
+        fontMgr.delete();
+        paragraph.delete();
+        builder.delete();
+    });
+
+    gm('paragraph_font_variations', (canvas) => {
+        const fontMgr = CanvasKit.FontMgr.FromData(robotoVariableFontBuffer);
+        expect(fontMgr.countFamilies()).toEqual(1);
+        expect(fontMgr.getFamilyName(0)).toEqual('Roboto Slab');
+
+        const paraStyle = new CanvasKit.ParagraphStyle({
+            textStyle: {
+                color: CanvasKit.BLACK,
+                fontFamilies: ['Roboto Slab'],
+                fontSize: 30,
+            },
+            textAlign: CanvasKit.TextAlign.Center,
+        });
+        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
+        builder.addText('Normal\n');
+        builder.pushStyle(new CanvasKit.TextStyle({
+            fontFamilies: ['Roboto Slab'],
+            fontSize: 30,
+            fontVariations: [{axis: 'wght', value: 900}]
+        }));
+        builder.addText('Heavy Weight\n');
+        builder.pushStyle(new CanvasKit.TextStyle({
+            fontFamilies: ['Roboto Slab'],
+            fontSize: 30,
+            fontVariations: [{axis: 'wght', value: 100}]
+        }));
+        builder.addText('Light Weight\n');
+        builder.pop();
+        builder.pop();
+
+        const paragraph = builder.build();
+        paragraph.layout(300);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         fontMgr.delete();
@@ -391,6 +451,8 @@ describe('Paragraph Behavior', function() {
         paragraph.layout(300);
 
         let rects = paragraph.getRectsForPlaceholders();
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         for (const rect of rects) {
@@ -473,6 +535,7 @@ describe('Paragraph Behavior', function() {
                 color: CanvasKit.Color(0, 200, 200),
             }
         ];
+        canvas.clear(CanvasKit.WHITE);
         // Move it down a bit so we can see the rects that go above 0,0
         canvas.translate(10, 10);
         canvas.drawParagraph(paragraph, 0, 0);
@@ -535,6 +598,8 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 10, 10);
 
         const paint = new CanvasKit.Paint();
@@ -567,6 +632,8 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.translate(10, 10);
         canvas.drawParagraph(paragraph, 0, 0);
 
@@ -647,6 +714,8 @@ describe('Paragraph Behavior', function() {
 
         paragraph.layout(wrapTo);
 
+        canvas.clear(CanvasKit.WHITE);
+
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, wrapTo+10), paint);
         canvas.drawParagraph(paragraph, 10, 10);
 
@@ -701,6 +770,8 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+
+        canvas.clear(CanvasKit.WHITE);
 
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, wrapTo+10), paint);
         canvas.drawParagraph(paragraph, 10, 10);
@@ -771,6 +842,8 @@ describe('Paragraph Behavior', function() {
             start: 25,
             end: 26,
         });
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, 230), paint);
         canvas.drawParagraph(paragraph, 10, 10);
 
@@ -813,6 +886,7 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawParagraph(paragraph, 0, 0);
 
         fontMgr.delete();
@@ -824,6 +898,7 @@ describe('Paragraph Behavior', function() {
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer);
         expect(fontMgr.countFamilies()).toEqual(1);
         expect(fontMgr.getFamilyName(0)).toEqual('Noto Serif');
+        canvas.clear(CanvasKit.WHITE);
         const paint = new CanvasKit.Paint();
         paint.setColor(CanvasKit.RED);
         paint.setStyle(CanvasKit.PaintStyle.Stroke);
@@ -893,6 +968,8 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, wrapTo+10), paint);
         canvas.drawParagraph(paragraph, 10, 10);
 
@@ -942,6 +1019,8 @@ describe('Paragraph Behavior', function() {
         const paragraph = builder.build();
 
         paragraph.layout(wrapTo);
+
+        canvas.clear(CanvasKit.WHITE);
         canvas.drawRect(CanvasKit.LTRBRect(10, 10, wrapTo+10, wrapTo+10), paint);
         canvas.drawParagraph(paragraph, 10, 10);
 
@@ -954,6 +1033,7 @@ describe('Paragraph Behavior', function() {
     });
 
     gm('paragraph_builder_with_reset', (canvas) => {
+        canvas.clear(CanvasKit.WHITE);
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
 
         const wrapTo = 250;
@@ -998,47 +1078,6 @@ describe('Paragraph Behavior', function() {
         builder.delete();
     });
 
-    // This helped find and resolve skbug.com/13247
-    gm('paragraph_saved_to_skpicture', (canvas) => {
-        const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
-
-        const wrapTo = 250;
-
-        const paraStyle = new CanvasKit.ParagraphStyle({
-            textStyle: {
-                fontSize: 20,
-            },
-        });
-
-        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
-        builder.addText('This was saved to an SkPicture\n');
-
-        const boldItalic = new CanvasKit.TextStyle({
-            fontStyle: {
-                weight: CanvasKit.FontWeight.Bold,
-                slant: CanvasKit.FontSlant.Italic,
-            }
-        });
-        builder.pushStyle(boldItalic);
-        builder.addText(`Bold, Italic\n`);
-        builder.pop();
-        const paragraph = builder.build();
-        paragraph.layout(wrapTo);
-
-        const recorder = new CanvasKit.PictureRecorder();
-        const skpCanvas = recorder.beginRecording(CanvasKit.LTRBRect(0, 0, 200, 200));
-        skpCanvas.drawParagraph(paragraph, 10, 10);
-        const picture = recorder.finishRecordingAsPicture();
-
-        canvas.drawPicture(CanvasKit.MakePicture(picture.serialize()));
-
-        picture.delete();
-        recorder.delete();
-        paragraph.delete();
-        fontMgr.delete();
-        builder.delete();
-    });
-
     it('should replace tab characters', () => {
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
         const wrapTo = 250;
@@ -1072,4 +1111,119 @@ describe('Paragraph Behavior', function() {
         fontMgr.delete();
         builder.delete();
     });
+/*
+    // The purpose of this text is to make sure that we can use Client ICU
+    // API for English text and get the results reasonably similar to the
+    // normal paragraph API.
+gm('paragraph_client_icu', (canvas) => {
+        const fontMgr = CanvasKit.FontMgr.FromData(robotoFontBuffer);
+        expect(fontMgr.countFamilies()).toEqual(1);
+        expect(fontMgr.getFamilyName(0)).toEqual('Roboto');
+
+        const wrapTo = 200;
+
+        const paraStyle = new CanvasKit.ParagraphStyle({
+            textStyle: {
+                color: CanvasKit.BLACK,
+                fontFamilies: ['Roboto'],
+                fontSize: 50,
+                maxLines: 3,
+            },
+            textAlign: CanvasKit.TextAlign.Left,
+            maxLines: 3,
+        });
+
+        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
+        builder.addText('The quick brown fox\n' +
+                        ' ate a hamburgerfons and got sick.');
+
+        const text = builder.getText();
+
+        // Pass 1 bidi region as a triple of integers, [start:end), direction
+        const mallocedBidis = CanvasKit.Malloc(Uint32Array, 3);
+        mallocedBidis.toTypedArray().set([0, text.length, 0]);
+
+        // Pass the entire text as one word. It's only used for the method
+        // getWords
+        const mallocedWords = CanvasKit.Malloc(Uint32Array, 2);
+        mallocedWords.toTypedArray().set([0, text.length]);
+
+        // Pass each character as a separate grapheme
+        const mallocedGraphemes = CanvasKit.Malloc(Uint32Array, text.length + 1);
+        let graphemesArr = mallocedGraphemes.toTypedArray();
+        for (let i = 0; i <= text.length; i++) {
+            graphemesArr[i] = i;
+        }
+
+        // Pass each space as a "soft" line break
+        var spaces = [0];
+        for (let i = 0; i < text.length; ++i) {
+          if (text[i] === ' ') {
+              spaces.push(i + 1);
+          }
+        }
+        spaces[spaces.length] = text.length;
+        const mallocedSoftBreaks = CanvasKit.Malloc(Uint32Array, spaces.length);
+        mallocedSoftBreaks.toTypedArray().set(spaces);
+
+        // Pass each new line as a "hard" line break
+        var newLines = [];
+        for (let i = 0; i < text.length; ++i) {
+          if (text[i] === '\n') {
+              newLines.push(i + 1);
+          }
+        }
+        const mallocedHardBreaks = CanvasKit.Malloc(Uint32Array, newLines.length);
+        mallocedHardBreaks.toTypedArray().set(newLines);
+
+        const paragraph = builder.buildWithClientInfo(
+            mallocedBidis,
+            mallocedWords,
+            graphemesArr,
+            mallocedSoftBreaks,
+            mallocedHardBreaks
+        );
+
+        paragraph.layout(600);
+
+        expect(paragraph.didExceedMaxLines()).toBeFalsy();
+        expect(paragraph.getAlphabeticBaseline()).toBeCloseTo(46.399, 2);
+        expect(paragraph.getHeight()).toEqual(177);
+        expect(paragraph.getIdeographicBaseline()).toBeCloseTo(58.599, 2);
+        expect(paragraph.getLongestLine()).toBeCloseTo(570.199, 2);
+        expect(paragraph.getMaxIntrinsicWidth()).toBeCloseTo(1219.150, 2);
+        expect(paragraph.getMaxWidth()).toEqual(600);
+        expect(paragraph.getMinIntrinsicWidth()).toBeCloseTo(341.399, 2);
+
+        const lineMetrics = paragraph.getLineMetrics();
+        expect(lineMetrics.length).toEqual(3); // 3 lines worth of metrics
+        const flm = lineMetrics[0]; // First Line Metric
+        expect(flm.startIndex).toEqual(0);
+        expect(flm.endExcludingWhitespaces).toEqual(25)
+        expect(flm.endIndex).toEqual(26); // Including whitespaces but
+                                          // excluding newlines
+        expect(flm.endIncludingNewline).toEqual(26);
+        expect(flm.lineNumber).toEqual(0);
+        expect(flm.isHardBreak).toEqual(false);
+        expect(flm.ascent).toBeCloseTo(46.399, 2);
+        expect(flm.descent).toBeCloseTo(12.199, 2);
+        expect(flm.height).toBeCloseTo(59.000, 2);
+        expect(flm.width).toBeCloseTo(570.200, 2);
+        expect(flm.left).toBeCloseTo(0, 3);
+        expect(flm.baseline).toBeCloseTo(46.799, 2);
+
+        canvas.drawParagraph(paragraph, 10, 10);
+
+        paint.delete();
+        fontMgr.delete();
+        paragraph.delete();
+        builder.delete();
+
+        CanvasKit.Free(mallocedBidis);
+        CanvasKit.Free(mallocedWords);
+        CanvasKit.Free(mallocedGraphemes);
+        CanvasKit.Free(mallocedSoftBreaks);
+        CanvasKit.Free(mallocedHardBreaks);
+    });
+ */
 });
