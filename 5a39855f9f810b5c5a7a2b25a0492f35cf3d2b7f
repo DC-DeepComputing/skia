@@ -22,6 +22,30 @@
       },
       "revId": "5a39855f9f810b5c5a7a2b25a0492f35cf3d2b7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3456767d_42220f26",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-25T21:08:37Z",
+      "side": 1,
+      "message": "Yes, seems right to me.",
+      "parentUuid": "18ed615b_7680d6d6",
+      "range": {
+        "startLine": 65,
+        "startChar": 21,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "5a39855f9f810b5c5a7a2b25a0492f35cf3d2b7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
