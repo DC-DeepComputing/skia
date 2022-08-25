@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73fecec4_7601113c",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-25T18:29:19Z",
+      "side": 1,
+      "message": "do we need to check or assert that storage buffers are mappable/ inData is not null? This will be much more obvious when we move to requesting specific usages.",
+      "range": {
+        "startLine": 58,
+        "startChar": 57,
+        "endLine": 58,
+        "endChar": 60
+      },
+      "revId": "93f018d6cca174ca5465eb81c3eb947445e72399",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
