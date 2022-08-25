@@ -538,6 +538,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd7245ec_a25ea006",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-25T02:25:14Z",
+      "side": 1,
+      "message": "\u003e I do not think libwebp support customized offset for each frames (James correct me if I am wrong), The canvas sizes are directly specified in WebPAnimEncoderNew and when adding frames, if the sizes not match the frame will be dropped[1].\n\u003e \n\nI forgot about this limitation in the API. gif2webp has an extra step around this [4].\n\nThis isn\u0027t a limitation of the format however.\n\n\u003e I do see there are options to set background color and loop limit[2], and customize lossy/lossless for per frame[3](do we want to expose these options in the Skia API?).\n\u003e \n\u003e [1]https://source.chromium.org/chromium/chromium/src/+/main:third_party/libwebp/src/src/mux/anim_encode.c;l\u003d1378\n\u003e [2]https://source.chromium.org/chromium/chromium/src/+/main:third_party/libwebp/src/src/webp/mux.h;l\u003d281\n\u003e [3]https://source.chromium.org/chromium/chromium/src/+/main:third_party/libwebp/src/src/webp/mux.h;l\u003d437\n\n[4] https://chromium.googlesource.com/webm/libwebp/+/e8f83de2867456a75b13aa1e876b22e2d1e1c077/examples/gif2webp.c#348\n[5] https://developers.google.com/speed/webp/docs/riff_container#animation",
+      "parentUuid": "086c2739_702f93bb",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1
