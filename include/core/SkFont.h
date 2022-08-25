@@ -385,6 +385,9 @@ public:
         this->getWidthsBounds(glyphs, count, widths, nullptr, nullptr);
     }
 
+    void getWidthsFast(const SkGlyphID glyphs[], int count, SkScalar widths[]) const {
+        this->getWidthsBoundsFast(glyphs, count, widths, nullptr, nullptr);
+    }
     /** Retrieves the advance and bounds for each glyph in glyphs.
         Both widths and bounds may be nullptr.
         If widths is not nullptr, widths must be an array of count entries.
@@ -397,6 +400,9 @@ public:
         @param paint       optional, specifies stroking, SkPathEffect and SkMaskFilter
      */
     void getWidthsBounds(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[],
+                         const SkPaint* paint) const;
+
+    void getWidthsBoundsFast(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[],
                          const SkPaint* paint) const;
 
 
@@ -412,6 +418,11 @@ public:
     void getBounds(const SkGlyphID glyphs[], int count, SkRect bounds[],
                    const SkPaint* paint) const {
         this->getWidthsBounds(glyphs, count, nullptr, bounds, paint);
+    }
+
+    void getBoundsFast(const SkGlyphID glyphs[], int count, SkRect bounds[],
+                   const SkPaint* paint) const {
+        this->getWidthsBoundsFast(glyphs, count, nullptr, bounds, paint);
     }
 
     /** Retrieves the positions for each glyph, beginning at the specified origin. The caller

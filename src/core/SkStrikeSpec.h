@@ -124,6 +124,7 @@ class SkBulkGlyphMetrics {
 public:
     explicit SkBulkGlyphMetrics(const SkStrikeSpec& spec);
     SkSpan<const SkGlyph*> glyphs(SkSpan<const SkGlyphID> glyphIDs);
+    SkSpan<const SkGlyph*> glyphsFast(SkSpan<const SkGlyphID> glyphIDs);
     const SkGlyph* glyph(SkGlyphID glyphID);
 
 private:

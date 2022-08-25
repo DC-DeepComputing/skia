@@ -31,6 +31,7 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkSharedMutex.h"
+#include "skia/ext/skia_utils_win.h"
 #include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_EBLC.h"
@@ -428,6 +429,12 @@ SkScalerContext_DW::~SkScalerContext_DW() {
 }
 
 bool SkScalerContext_DW::generateAdvance(SkGlyph* glyph) {
+  DWRITE_GLYPH_METRICS gm;
+  DWRITE_FONT_METRICS dwfm;
+  return generateAdvanceInternal(glyph, &gm, &dwfm);
+}
+
+bool SkScalerContext_DW::generateAdvanceInternal(SkGlyph* glyph, DWRITE_GLYPH_METRICS* gm, DWRITE_FONT_METRICS* dwfm) {
     glyph->fAdvanceX = 0;
     glyph->fAdvanceY = 0;
     uint16_t glyphId = glyph->getGlyphID();
@@ -438,8 +445,6 @@ bool SkScalerContext_DW::generateAdvance(SkGlyph* glyph) {
     if (fGlyphCount <= glyphId) {
         return false;
     }
-
-    DWRITE_GLYPH_METRICS gm;
 
     if (DWRITE_MEASURING_MODE_GDI_CLASSIC == fMeasuringMode ||
         DWRITE_MEASURING_MODE_GDI_NATURAL == fMeasuringMode)
@@ -453,20 +458,19 @@ bool SkScalerContext_DW::generateAdvance(SkGlyph* glyph) {
                  nullptr,
                  DWRITE_MEASURING_MODE_GDI_NATURAL == fMeasuringMode,
                  &glyphId, 1,
-                 &gm),
+                 gm),
              "Could not get gdi compatible glyph metrics.");
     } else {
         Exclusive l(maybe_dw_mutex(*typeface));
-        HRBM(typeface->fDWriteFontFace->GetDesignGlyphMetrics(&glyphId, 1, &gm),
+        HRBM(typeface->fDWriteFontFace->GetDesignGlyphMetrics(&glyphId, 1, gm),
              "Could not get design metrics.");
     }
 
-    DWRITE_FONT_METRICS dwfm;
     {
         Shared l(maybe_dw_mutex(*typeface));
-        typeface->fDWriteFontFace->GetMetrics(&dwfm);
+        typeface->fDWriteFontFace->GetMetrics(dwfm);
     }
-    SkScalar advanceX = fTextSizeMeasure * gm.advanceWidth / dwfm.designUnitsPerEm;
+    SkScalar advanceX = fTextSizeMeasure * gm->advanceWidth / dwfm->designUnitsPerEm;
 
     SkVector advance = { advanceX, 0 };
     if (DWRITE_MEASURING_MODE_GDI_CLASSIC == fMeasuringMode ||
@@ -781,7 +785,9 @@ void SkScalerContext_DW::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
     glyph->fLeft = 0;
     glyph->fTop = 0;
 
-    if (!this->generateAdvance(glyph)) {
+    DWRITE_GLYPH_METRICS gm;
+    DWRITE_FONT_METRICS dwfm;
+    if (!this->generateAdvanceInternal(glyph, &gm, &dwfm)) {
         return;
     }
 
@@ -835,6 +841,85 @@ void SkScalerContext_DW::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
     }
     // TODO: handle the case where a request for DWRITE_TEXTURE_ALIASED_1x1
     // fails, and try DWRITE_TEXTURE_CLEARTYPE_3x1.
+}
+
+void SkScalerContext_DW::generateMetricsFast(SkGlyph* glyph, SkArenaAlloc* alloc) {
+
+     // GetAlphaTextureBounds succeeds but sometimes returns empty bounds like
+     // { 0x80000000, 0x80000000, 0x80000000, 0x80000000 }
+     // for small, but not quite zero, sized glyphs.
+     // Only set as non-empty if the returned bounds are non-empty.
+    auto glyphCheckAndSetBounds = [](SkGlyph* glyph, const SkIRect& bbox) {
+        if (bbox.fLeft >= bbox.fRight || bbox.fTop >= bbox.fBottom) {
+            return false;
+        }
+
+        // We're trying to pack left and top into int16_t,
+        // and width and height into uint16_t, after outsetting by 1.
+        if (!SkIRect::MakeXYWH(-32767, -32767, 65535, 65535).contains(bbox)) {
+            return false;
+        }
+
+        glyph->fWidth = SkToU16(bbox.fRight - bbox.fLeft);
+        glyph->fHeight = SkToU16(bbox.fBottom - bbox.fTop);
+        glyph->fLeft = SkToS16(bbox.fLeft);
+        glyph->fTop = SkToS16(bbox.fTop);
+        return true;
+    };
+
+    glyph->fWidth = 0;
+    glyph->fHeight = 0;
+    glyph->fLeft = 0;
+    glyph->fTop = 0;
+
+    DWRITE_GLYPH_METRICS gm;
+    DWRITE_FONT_METRICS dwfm;
+    if (!this->generateAdvanceInternal(glyph, &gm, &dwfm)) {
+        return;
+    }
+
+    DWriteFontTypeface* typeface = this->getDWriteTypeface();
+    if (typeface->fIsColorFont) {
+        if (isColorGlyph(*glyph) && generateColorMetrics(glyph)) {
+            glyph->fMaskFormat = SkMask::kARGB32_Format;
+            glyph->fScalerContextBits |= ScalerContextBits::COLR;
+            glyph->setPath(alloc, nullptr, false);
+            return;
+        }
+
+        if (isSVGGlyph(*glyph) && generateSVGMetrics(glyph)) {
+            glyph->fMaskFormat = SkMask::kARGB32_Format;
+            glyph->fScalerContextBits |= ScalerContextBits::SVG;
+            glyph->setPath(alloc, nullptr, false);
+            return;
+        }
+
+        if (isPngGlyph(*glyph) && generatePngMetrics(glyph)) {
+            glyph->fMaskFormat = SkMask::kARGB32_Format;
+            glyph->fScalerContextBits |= ScalerContextBits::PNG;
+            glyph->setPath(alloc, nullptr, false);
+            return;
+        }
+    }
+
+    SkRect rect = SkRect::MakeLTRB(
+            gm.leftSideBearing,
+            (-gm.verticalOriginY + gm.topSideBearing),
+            (gm.advanceWidth - gm.rightSideBearing),
+            (-gm.verticalOriginY + static_cast<int>(gm.advanceHeight) - gm.bottomSideBearing));
+    rect.fLeft   *= fTextSizeMeasure / dwfm.designUnitsPerEm;
+    rect.fTop    *= fTextSizeMeasure / dwfm.designUnitsPerEm;
+    rect.fRight  *= fTextSizeMeasure / dwfm.designUnitsPerEm;
+    rect.fBottom *= fTextSizeMeasure / dwfm.designUnitsPerEm;
+    SkIRect adjusted_rect;
+    rect.roundOut(&adjusted_rect);
+
+    // TODO: Scope to antialiasing?
+    adjusted_rect.inset(-1, -1);
+
+    // TODO: Apply this->fXform.
+    glyphCheckAndSetBounds(glyph, adjusted_rect);
+    return;
 }
 
 void SkScalerContext_DW::generateFontMetrics(SkFontMetrics* metrics) {

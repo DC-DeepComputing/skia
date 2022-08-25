@@ -180,14 +180,22 @@ bool SkScalerContext::GetGammaLUTData(SkScalar contrast, SkScalar paintGamma, Sk
 }
 
 SkGlyph SkScalerContext::makeGlyph(SkPackedGlyphID packedID, SkArenaAlloc* alloc) {
-    return internalMakeGlyph(packedID, fRec.fMaskFormat, alloc);
-}
-
-SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::Format format, SkArenaAlloc* alloc) {
     SkGlyph glyph{packedID};
-    glyph.fMaskFormat = format;
+    glyph.fMaskFormat = fRec.fMaskFormat;
     // Must call to allow the subclass to determine the glyph representation to use.
     this->generateMetrics(&glyph, alloc);
+    return internalMakeGlyph(glyph, fRec.fMaskFormat, alloc);
+}
+
+SkGlyph SkScalerContext::makeGlyphFast(SkPackedGlyphID packedID, SkArenaAlloc* alloc) {
+    SkGlyph glyph{packedID};
+    glyph.fMaskFormat = fRec.fMaskFormat;
+    // Must call to allow the subclass to determine the glyph representation to use.
+    this->generateMetricsFast(&glyph, alloc);
+    return internalMakeGlyph(glyph, fRec.fMaskFormat, alloc);
+}
+
+SkGlyph SkScalerContext::internalMakeGlyph(SkGlyph& glyph, SkMask::Format format, SkArenaAlloc* alloc) {
     SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
     if (fGenerateImageFromPath) {
         this->internalGetPath(glyph, alloc);
