@@ -29,10 +29,10 @@ void Swizzle::apply(SkRasterPipeline* pipeline) const {
             pipeline->append(SkRasterPipeline::alpha_to_red);
             return;
         default: {
-            static_assert(sizeof(uintptr_t) >= 4 * sizeof(char));
+            static_assert(sizeof(intptr_t) >= 4 * sizeof(char));
             // Rather than allocate the 4 control bytes on the heap somewhere, just jam them right
-            // into a uintptr_t context.
-            uintptr_t ctx;
+            // into an intptr_t context.
+            intptr_t ctx;
             memcpy(&ctx, this->asString().c_str(), 4 * sizeof(char));
             pipeline->append(SkRasterPipeline::swizzle, ctx);
             return;

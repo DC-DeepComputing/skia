@@ -57,6 +57,12 @@ struct Ctx {
     operator T*() {
         return (T*)load_and_inc(program);
     }
+    operator intptr_t() {
+        const void* ptr = load_and_inc(program);
+        intptr_t val;
+        memcpy(&val, &ptr, sizeof(val));
+        return val;
+    }
     operator None() {
         load_and_inc(program);
         return None{};
@@ -2928,7 +2934,7 @@ STAGE(bicubic_clamp_8888, const SkRasterPipeline_GatherCtx* ctx) {
 
 // ~~~~~~ skgpu::Swizzle stage ~~~~~~ //
 
-STAGE(swizzle, void* ctx) {
+STAGE(swizzle, intptr_t ctx) {
     auto ir = r, ig = g, ib = b, ia = a;
     F* o[] = {&r, &g, &b, &a};
     char swiz[4];
@@ -4292,7 +4298,7 @@ STAGE_PP(srcover_rgba_8888, const SkRasterPipeline_MemoryCtx* ctx) {
 
 // ~~~~~~ skgpu::Swizzle stage ~~~~~~ //
 
-STAGE_PP(swizzle, void* ctx) {
+STAGE_PP(swizzle, intptr_t ctx) {
     auto ir = r, ig = g, ib = b, ia = a;
     U16* o[] = {&r, &g, &b, &a};
     char swiz[4];
