@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba70b2f5_4dc2dd9b",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T20:04:00Z",
+      "side": 1,
+      "message": "Do we want to change this comment now that this file is not Ganesh-specific?",
+      "range": {
+        "startLine": 32,
+        "startChar": 36,
+        "endLine": 32,
+        "endChar": 49
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb628f7f_fbebd572",
+        "filename": "src/gpu/ganesh/vk/GrVkImage.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T20:04:00Z",
+      "side": 1,
+      "message": "Less of a critique so much as a question - should this be indented as much as it is here?",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 31
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33b77bab_2144fc48",
+        "filename": "src/gpu/ganesh/vk/GrVkImage.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T20:04:00Z",
+      "side": 1,
+      "message": "If the other parameters are on new lines, would it make sense to split these two up as well?",
+      "range": {
+        "startLine": 280,
+        "startChar": 23,
+        "endLine": 280,
+        "endChar": 30
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
