@@ -50,6 +50,23 @@
       "message": "Matthew, can you add yourself to the AUTHORS file if you are interested in landing this patch?\n\nThanks,\nHerb",
       "revId": "1e6af4e62c777a34a4545d536178d863b6ef3578",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89fa4693_79f8c2ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5770
+      },
+      "writtenOn": "2022-08-25T13:50:52Z",
+      "side": 1,
+      "message": "AUTHORS updated",
+      "revId": "1e6af4e62c777a34a4545d536178d863b6ef3578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
