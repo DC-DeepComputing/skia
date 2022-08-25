@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d38f63c6_773cf71e",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-25T15:22:12Z",
+      "side": 1,
+      "message": "I figured it out. The mac toolchain does not include defines by default when compiling objective C code.",
+      "parentUuid": "494139cf_7fcd19ca",
+      "range": {
+        "startLine": 118,
+        "startChar": 10,
+        "endLine": 118,
+        "endChar": 16
+      },
+      "revId": "4b94c58c8e35d969159be2932f2dea4a3239205f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0361449_583a519b",
