@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35cd8ead_6f7bac7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Added a note in SkWebpEncoder.h",
+      "parentUuid": "4e163fb3_d88b498f",
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e864e11b_5c36c3f4",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-08-25T15:04:03Z",
       "side": 1,
       "message": "```\n/**\n * A single frame to be encoded into an animated image.\n *\n * If a frame does not fit in the canvas size, this is an error.\n * TODO: Add offsets when we have support for an encoder that supports using\n * offsets.\n */\n```\n\nI think you should be more specific in comments for `EncodeAnimated`. e.g.\n\n```\nIf the frame does not match the canvas size, this is an error.\n```\n\n(I think that is a much more helpful API than simply dropping the frame. We\u0027ll need to handle that manually.)",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1477a875_bbd9b7fb",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e864e11b_5c36c3f4",
       "range": {
         "startLine": 40,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df7b7d38_a4455ab6",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50543e77_e72b1ae2",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 55
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6c2cf5f_c8ee59de",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-08-25T15:04:03Z",
       "side": 1,
       "message": "This can just be\n\n```\nDuration of the frame in millseconds.\n```",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 46,
+        "endChar": 70
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6780bece_5fbb0e64",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6c2cf5f_c8ee59de",
       "range": {
         "startLine": 46,
         "startChar": 12,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c705a0d2_bb6ae5e4",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90e5069f_49dd3637",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 7
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a179c70_0eed443e",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-08-25T15:04:03Z",
       "side": 1,
       "message": "This should be `static` (or in an anonymous `namespace`, but this file is using the former).\n\nAlso, Skia style makes a static function more like `preprocess_webp_picture`.",
+      "range": {
+        "startLine": 52,
+        "startChar": 5,
+        "endLine": 52,
+        "endChar": 26
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734b53d8_e5470f41",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a179c70_0eed443e",
       "range": {
         "startLine": 52,
         "startChar": 5,
@@ -158,6 +296,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e423bd7_4d67be46",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "This is handled by gerrit presubmit (or directly run `git cl format`), maybe the rules of the formatting tool changed?",
+      "parentUuid": "ed56a41c_aae21ca9",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 88
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96678aea_55e1ccf4",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 2
@@ -169,6 +331,30 @@
       "writtenOn": "2022-08-25T15:04:03Z",
       "side": 1,
       "message": "Initially I thought you should move this closer to where it\u0027s used, but I don\u0027t think you actually need it. See comments in `SkWebpEncoder::EncodeAnimated`.",
+      "range": {
+        "startLine": 126,
+        "startChar": 6,
+        "endLine": 126,
+        "endChar": 26
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba15396_f6336710",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96678aea_55e1ccf4",
       "range": {
         "startLine": 126,
         "startChar": 6,
@@ -202,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88129d7e_d9b2a83b",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3873353f_fada09cf",
+      "range": {
+        "startLine": 151,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9769abbf_c922756f",
@@ -225,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c020c33e_5e30dcad",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9769abbf_c922756f",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 52
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3be37342_42b4d65a",
@@ -238,6 +472,30 @@
       "writtenOn": "2022-08-25T15:04:03Z",
       "side": 1,
       "message": "Sorry, that\u0027s not what I meant. The `WebPData` can be on the stack, but we need to call `WebPDataClear` on it. In this patch set we do not. That can be done with a unique pointer or Skia\u0027s custom thing.",
+      "range": {
+        "startLine": 243,
+        "startChar": 4,
+        "endLine": 243,
+        "endChar": 71
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a5b3425_24c2ead9",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3be37342_42b4d65a",
       "range": {
         "startLine": 243,
         "startChar": 4,

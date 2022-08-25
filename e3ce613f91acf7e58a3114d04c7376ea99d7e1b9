@@ -124,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e31079c_73e66237",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d357c6cf_a7ad74e2",
+      "range": {
+        "startLine": 39,
+        "startChar": 18,
+        "endLine": 39,
+        "endChar": 23
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "675a3a1a_4a3704fe",
@@ -610,6 +634,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d517f0aa_820ebadd",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Thanks for the info James! Do you think we should do similar blend handling or return false when frame sizes do not match?",
+      "parentUuid": "cd7245ec_a25ea006",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1
@@ -686,6 +734,24 @@
       "side": 1,
       "message": "This is from the animated encoding example from libwebp library: https://source.chromium.org/chromium/chromium/src/+/main:third_party/libwebp/src/examples/img2webp.c;l\u003d294",
       "parentUuid": "627a4a0e_3f5cf5e9",
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9560f75_abf99ac7",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-25T17:19:27Z",
+      "side": 1,
+      "message": "Mark as resolved.",
+      "parentUuid": "4f334d56_a604e1dc",
       "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
