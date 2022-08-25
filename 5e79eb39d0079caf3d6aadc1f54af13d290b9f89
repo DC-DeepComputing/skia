@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e163fb3_d88b498f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "\u003e I do see there are options to set background color and loop limit, and customize lossy/lossless for per frame.\n\nI don\u0027t have a strong preference. These could be added later as needed.",
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e864e11b_5c36c3f4",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "```\n/**\n * A single frame to be encoded into an animated image.\n *\n * If a frame does not fit in the canvas size, this is an error.\n * TODO: Add offsets when we have support for an encoder that supports using\n * offsets.\n */\n```\n\nI think you should be more specific in comments for `EncodeAnimated`. e.g.\n\n```\nIf the frame does not match the canvas size, this is an error.\n```\n\n(I think that is a much more helpful API than simply dropping the frame. We\u0027ll need to handle that manually.)",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50543e77_e72b1ae2",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "This one is fairly self-explanatory. Maybe it doesn\u0027t need a comment? Or just\n\n```\nPixmap of the frame.\n```\n\nIt\u0027s actually more than pixels - it includes the format and size.",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 55
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6c2cf5f_c8ee59de",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "This can just be\n\n```\nDuration of the frame in millseconds.\n```",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 46,
+        "endChar": 70
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90e5069f_49dd3637",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "This needs more details. e.g. How do we handle differently sized frames?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 7
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a179c70_0eed443e",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "This should be `static` (or in an anonymous `namespace`, but this file is using the former).\n\nAlso, Skia style makes a static function more like `preprocess_webp_picture`.",
+      "range": {
+        "startLine": 52,
+        "startChar": 5,
+        "endLine": 52,
+        "endChar": 26
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed56a41c_aae21ca9",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "Why did this get reformatted? Did anything meaningfully change? I think the old formatting was fine. And changing the formatting makes it harder to see what changed.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 88
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96678aea_55e1ccf4",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "Initially I thought you should move this closer to where it\u0027s used, but I don\u0027t think you actually need it. See comments in `SkWebpEncoder::EncodeAnimated`.",
+      "range": {
+        "startLine": 126,
+        "startChar": 6,
+        "endLine": 126,
+        "endChar": 26
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3873353f_fada09cf",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "I\u0027d be tempted to move this down to where we set `custom_ptr`, since it wouldn\u0027t work without that being set.\n\nFurther, I might move that whole block (setting `custom_ptr` etc, in lines 153 - 158 in this patch set) to occur after `preprocess_webp_picture`. Here\u0027s my thinking - that function doesn\u0027t use the `writer`, and if it did, it would be a problem because we don\u0027t set it in `SkWebpEncoder::EncodeAnimated` before calling that method.",
+      "range": {
+        "startLine": 151,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9769abbf_c922756f",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "Here you\u0027ve essentially written an RAII class and then wrapped it in another one. We only need one level of that.\n\nOne way to do it is with `SkAutoTCallVProc`, which is used elsewhere in this file. That was a Skia template before we moved to C++11 everywhere. You could also do something like:\n\n```\nstruct Deleter {\n    void operator()(WebPAnimEncoder* encoder) { WebPAnimEncoderDelete(encoder); }\n}\n\nstd::unique_ptr\u003cWebPAnimEncoder, Deleter\u003e encoderMgr;\n```\n\nI don\u0027t have a strong preference between the two. Using the struct allows saving a little bit of memory, though it\u0027s negligible in this case. (I don\u0027t know whether the Skia template also does that.)",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 52
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be37342_42b4d65a",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "Sorry, that\u0027s not what I meant. The `WebPData` can be on the stack, but we need to call `WebPDataClear` on it. In this patch set we do not. That can be done with a unique pointer or Skia\u0027s custom thing.",
+      "range": {
+        "startLine": 243,
+        "startChar": 4,
+        "endLine": 243,
+        "endChar": 71
+      },
+      "revId": "5e79eb39d0079caf3d6aadc1f54af13d290b9f89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

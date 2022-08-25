@@ -102,6 +102,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d357c6cf_a7ad74e2",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "I don\u0027t follow how that discussion led to leaving it here. Please move it to `SkEncoder`.",
+      "parentUuid": "348b85a4_a0592de6",
+      "range": {
+        "startLine": 39,
+        "startChar": 18,
+        "endLine": 39,
+        "endChar": 23
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "675a3a1a_4a3704fe",
         "filename": "include/encode/SkWebpEncoder.h",
         "patchSetId": 1
@@ -363,6 +387,30 @@
       "range": {
         "startLine": 164,
         "startChar": 8,
+        "endLine": 164,
+        "endChar": 20
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8608598_2b7106f7",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-25T15:04:03Z",
+      "side": 1,
+      "message": "My personal preference would be to leave existing code alone.",
+      "parentUuid": "da08ce74_d24f643f",
+      "range": {
+        "startLine": 164,
+        "startChar": 17,
         "endLine": 164,
         "endChar": 20
       },
