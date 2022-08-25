@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82b7df26_5253da7e",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T17:43:14Z",
+      "side": 1,
+      "message": "I know this is a WIP - just documenting some of my thoughts so that we can talk about some next steps.\n\nHere is a link to Perfetto documentation on system tracing:\nhttps://perfetto.dev/docs/instrumentation/tracing-sdk#system-mode\n\nNotably this segment might help us make the best explanation:\n\"The main advantage of this mode is that it is possible to create fused traces where app events are overlaid on the same timeline of OS events. This enables full-stack performance investigations, looking all the way through syscalls and kernel scheduling events.\n\nThe main limitation of this mode is that it requires the external traced daemon to be up and running and reachable through the UNIX socket connection.\"",
+      "range": {
+        "startLine": 60,
+        "startChar": 13,
+        "endLine": 60,
+        "endChar": 20
+      },
+      "revId": "0be83d5ce1840306f452ffabced9614f6b8a4a53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4a055f_2f68d072",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T17:43:14Z",
+      "side": 1,
+      "message": "While this is technically the most robust way (since Perfetto does allow you to output trace events both in-process and through the application), I want to get your thoughts on something. \n\nI am wondering if there would ever be a use case where a client would want both of these enabled at once. We should talk about whether we want to offer this feature even though no one has requested it yet or if we should just use one bool to allow picking between one or the other.",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 26
+      },
+      "revId": "0be83d5ce1840306f452ffabced9614f6b8a4a53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
