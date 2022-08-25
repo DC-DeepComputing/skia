@@ -21,6 +21,12 @@ clang_sha256 = "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8
 clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
 
 debs_to_install = [
+    # libsdl2
+    {
+        # https://packages.debian.org/bullseye/amd64/libsdl2-dev/download
+        "sha256":"509625ecf274d1d9c8209c48c297755d7baf199f5f8d42559035a7c185224908",
+        "url":"https://ftp.debian.org/debian/pool/main/libs/libsdl2/libsdl2-dev_2.0.14+dfsg2-3+deb11u1_amd64.deb",
+    },
     # These three comprise glibc. libc6 has the shared libraries, like libc itself, the math library
     # (libm), etc. linux-libc-dev has the header files specific to linux. libc6-dev has the libc
     # system headers (e.g. malloc.h, math.h).
