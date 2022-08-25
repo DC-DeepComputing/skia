@@ -78,7 +78,7 @@ void SkRasterPipeline::dump() const {
         const char* name = "";
         switch (st->stage) {
         #define M(x) case x: name = #x; break;
-            SK_RASTER_PIPELINE_STAGES(M)
+            SK_RASTER_PIPELINE_STAGES_ALL(M)
         #undef M
         }
         stages.push_back(name);
@@ -387,13 +387,12 @@ SkRasterPipeline::StartPipelineFn SkRasterPipeline::build_pipeline(void** ip) co
         // Stages are stored backwards in fStages, so we reverse here, back to front.
         *--ip = (void*)SkOpts::just_return_lowp;
         for (const StageList* st = fStages; st; st = st->prev) {
-            if (auto fn = SkOpts::stages_lowp[st->stage]) {
-                *--ip = st->ctx;
-                *--ip = (void*)fn;
-            } else {
+            if (st->stage >= kNumLowpStages) {
                 ip = reset_point;
                 break;
             }
+            *--ip = st->ctx;
+            *--ip = (void*)SkOpts::stages_lowp[st->stage];
         }
         if (ip != reset_point) {
             return SkOpts::start_pipeline_lowp;
