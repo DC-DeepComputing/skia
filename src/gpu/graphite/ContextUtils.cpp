@@ -350,6 +350,7 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc,
 std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
                       const SkRuntimeEffectDictionary* rteDict,
                       const GraphicsPipelineDesc& desc,
+                      bool useStorageBuffers,
                       BlendInfo* blendInfo,
                       bool* requiresLocalCoordsVarying,
                       bool* requiresShadingSsboIndexVarying) {
@@ -358,8 +359,7 @@ std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
         return {};
     }
 
-    *requiresShadingSsboIndexVarying =
-            desc.renderStep()->ssboIndex() && desc.renderStep()->performsShading();
+    *requiresShadingSsboIndexVarying = useStorageBuffers && desc.renderStep()->performsShading();
     const char* shadingSsboIndexVar =
             *requiresShadingSsboIndexVarying ? "shadingSsboIndexVar" : nullptr;
     SkShaderInfo shaderInfo(rteDict, shadingSsboIndexVar);

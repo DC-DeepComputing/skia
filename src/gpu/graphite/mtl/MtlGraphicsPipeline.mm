@@ -292,15 +292,16 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     BlendInfo blendInfo;
     bool localCoordsNeeded = false;
-    bool shadingSsboIndexNeeded = false;
+    bool shadingSsboIndexVaryingNeeded = false;
     auto dict = sharedContext->shaderCodeDictionary();
     if (!SkSLToMSL(skslCompiler,
                    GetSkSLFS(dict,
                              runtimeDict,
                              pipelineDesc,
+                             sharedContext->caps()->storageBufferPreferred(),
                              &blendInfo,
                              &localCoordsNeeded,
-                             &shadingSsboIndexNeeded),
+                             &shadingSsboIndexVaryingNeeded),
                    SkSL::ProgramKind::kGraphiteFragment,
                    settings,
                    &msl[kFragment_ShaderType],
@@ -310,7 +311,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     }
 
     if (!SkSLToMSL(skslCompiler,
-                   GetSkSLVS(pipelineDesc, localCoordsNeeded, shadingSsboIndexNeeded),
+                   GetSkSLVS(pipelineDesc, localCoordsNeeded, shadingSsboIndexVaryingNeeded),
                    SkSL::ProgramKind::kGraphiteVertex,
                    settings,
                    &msl[kVertex_ShaderType],
