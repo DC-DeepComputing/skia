@@ -55,6 +55,16 @@ enum SubRun::SubRunType : int {
     kDrawable,
     kSubRunTypeCount,
 };
+
+// AtlasSubRun provides a draw() function that grants the anonymous subclasses access to
+// Device::drawAtlasSubRun.
+void AtlasSubRun::draw(skgpu::graphite::Device* device,
+                       SkPoint drawOrigin,
+                       const SkPaint& paint,
+                       sk_sp<SkRefCnt> subRunStorage) const {
+    device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
+}
+
 }  // namespace sktext::gpu
 
 using MaskFormat = skgpu::MaskFormat;
@@ -1776,8 +1786,7 @@ void DirectMaskSubRun::draw(SkCanvas*,
                             const SkPaint& paint,
                             sk_sp<SkRefCnt> subRunStorage,
                             Device* device) const {
-    // TODO: see makeAtlasTextOp for Geometry set up
-    device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
+    this->AtlasSubRun::draw(device, drawOrigin, paint, std::move(subRunStorage));
 }
 #endif
 
@@ -2215,8 +2224,7 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               Device* device) const override {
-        // TODO: see makeAtlasTextOp for Geometry set up
-        device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
+        this->AtlasSubRun::draw(device, drawOrigin, paint, std::move(subRunStorage));
     }
 
     std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder* recorder) const override {
@@ -2552,8 +2560,7 @@ void SDFTSubRun::draw(SkCanvas*,
                       const SkPaint& paint,
                       sk_sp<SkRefCnt> subRunStorage,
                       Device* device) const {
-    // TODO: see makeAtlasTextOp for Geometry set up
-    device->drawAtlasSubRun(this, drawOrigin, paint, std::move(subRunStorage));
+    this->AtlasSubRun::draw(device, drawOrigin, paint, std::move(subRunStorage));
 }
 #endif
 
