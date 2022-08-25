@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042d761e_994a0174",
+        "filename": "src/gpu/graphite/SynchronizeToCpuTask.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-25T02:26:45Z",
+      "side": 1,
+      "message": "This could also be named `SyncBufferToCpuTask`",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "377b531bf48326a767dedc05a87b0803e3811bf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
