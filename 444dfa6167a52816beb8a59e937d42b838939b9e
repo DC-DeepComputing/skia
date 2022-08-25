@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a574e54f_76265c99",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-25T14:26:24Z",
+      "side": 1,
+      "message": "This is non-standard formatting",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1014,
+        "endChar": 4
+      },
+      "revId": "444dfa6167a52816beb8a59e937d42b838939b9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5467200_9f59c142",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1328,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-25T14:26:24Z",
+      "side": 1,
+      "message": "Since we\u0027re dropping \u0027clip\u0027 and \u0027viewMatrix\u0027 here do we have any guarantees about their values (e.g., nullptr and I()) ?\nI guess, is the \u0027sdc\u0027 also null?",
+      "revId": "444dfa6167a52816beb8a59e937d42b838939b9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
