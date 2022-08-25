@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f738ff29_ca72d008",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-25T22:50:43Z",
+      "side": 1,
+      "message": "I defined this here thinking that we could potentially use this in derived RenderStep classes\u0027 attribute definitions.",
+      "revId": "3302bc1ad6e3463b62a816a342fbfc78c1785018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
