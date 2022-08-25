@@ -158,6 +158,9 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
 
 
 SkSpan<char> ParagraphBuilderImpl::getText() {
+    if (!fUtf8.isEmpty()) {
+        this->endRunIfNeeded();
+    }
     return SkSpan<char>(fUtf8.isEmpty() ? nullptr : fUtf8.writable_str(), fUtf8.size());
 }
 
