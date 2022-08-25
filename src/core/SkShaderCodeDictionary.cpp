@@ -183,7 +183,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
     std::string lastOutputVar = "initialColor";
     SkSL::String::appendf(&mainBody, "    half4 %s = half4(0);", lastOutputVar.c_str());
     if (this->needsLocalCoords()) {
-        // Get the local coordinates varying into float4 format as expected by emit_glue_code.
+        // Get the local coordinates varying into half4 format as expected by emit_glue_code.
         mainBody += "float4 outLocalCoords = float4(localCoordsVar, 0.0, 0.0);\n";
     }
 
@@ -200,7 +200,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
     }
 
     if (step->emitsPrimitiveColor()) {
-        mainBody += "    half4 primitiveColor;";
+        mainBody += "half4 primitiveColor;";
         mainBody += step->fragmentColorSkSL();
         // TODO: Apply primitive blender
         // For now, just overwrite the prior color stored in lastOutputVar
@@ -224,6 +224,7 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
         const SkPaintParamsKey& key
 #ifdef SK_GRAPHITE_ENABLED
         , const skgpu::BlendInfo& blendInfo
+        , const skgpu::BlendInfo& primitiveBlendInfo
 #endif
         ) {
     uint8_t* newKeyData = fArena.makeArray<uint8_t>(key.sizeInBytes());
@@ -231,7 +232,8 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
 
     SkSpan<const uint8_t> newKeyAsSpan = SkSpan(newKeyData, key.sizeInBytes());
 #ifdef SK_GRAPHITE_ENABLED
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo); });
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo,
+                                                              primitiveBlendInfo); });
 #else
     return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan); });
 #endif
@@ -258,7 +260,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
     }
 
 #ifdef SK_GRAPHITE_ENABLED
-    Entry* newEntry = this->makeEntry(key, builder->blendInfo());
+    Entry* newEntry = this->makeEntry(key, builder->blendInfo(), builder->primitiveBlendInfo());
 #else
     Entry* newEntry = this->makeEntry(key);
 #endif
@@ -318,6 +320,7 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID,
 
 #ifdef SK_GRAPHITE_ENABLED
     info->setBlendInfo(entry->blendInfo());
+    info->setPrimitiveBlendInfo(entry->primitiveBlendInfo());
 #endif
 }
 
