@@ -9,5 +9,5 @@ package interfaces
 type QueryCommand interface {
 	// Read will return the response data for a `bazel cquery ...`
 	// invocation.
-	Read() ([]byte, error)
+	ReadX() ([]byte, error)
 }

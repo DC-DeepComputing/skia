@@ -1065,7 +1065,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.gpu("IntelIris6100", "IntelHD4400") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
-		skip(ALL, "tests", ALL, "SkSLMatrixFoldingES2_GPU")               // skia:11919
+		skip(ALL, "tests", ALL, "SkSLMatrixFoldingES2_GPU") // skia:11919
 	}
 
 	if b.matchGpu("Intel") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
@@ -1108,16 +1108,16 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if !b.extraConfig("Vulkan") && (b.gpu("RTX3060") ||
-									b.gpu("QuadroP400") ||
-									b.matchGpu("GTX[6-9]60") ||
-									b.matchGpu("Mali400") ||
-									b.matchGpu("Tegra3") ||
-									b.matchGpu("Radeon(R9|HD)")) {
-		skip(ALL, "tests", ALL, "SkSLMatrixScalarNoOpFolding_GPU")  // skia:13556
+		b.gpu("QuadroP400") ||
+		b.matchGpu("GTX[6-9]60") ||
+		b.matchGpu("Mali400") ||
+		b.matchGpu("Tegra3") ||
+		b.matchGpu("Radeon(R9|HD)")) {
+		skip(ALL, "tests", ALL, "SkSLMatrixScalarNoOpFolding_GPU") // skia:13556
 	}
 
 	if b.matchOs("Mac") && b.extraConfig("ANGLE") {
-		skip(ALL, "tests", ALL, "SkSLMatrixScalarNoOpFolding_GPU")  // https://anglebug.com/7525
+		skip(ALL, "tests", ALL, "SkSLMatrixScalarNoOpFolding_GPU") // https://anglebug.com/7525
 	}
 
 	if b.gpu("RTX3060") && b.extraConfig("Vulkan") {
