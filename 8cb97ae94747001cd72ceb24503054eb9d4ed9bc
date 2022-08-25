@@ -45,6 +45,29 @@
       },
       "revId": "8cb97ae94747001cd72ceb24503054eb9d4ed9bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da4c632f_1286d684",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T13:31:58Z",
+      "side": 1,
+      "message": "Now that SDFT perspective is worked out do we still need fForcePaths?",
+      "range": {
+        "startLine": 48,
+        "startChar": 10,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "8cb97ae94747001cd72ceb24503054eb9d4ed9bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
