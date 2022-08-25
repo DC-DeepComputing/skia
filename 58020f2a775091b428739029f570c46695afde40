@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43afe63_9eeebf8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-25T16:03:17Z",
+      "side": 1,
+      "message": "I\u0027m going to be adding a bunch of highp-only stages for SkSL ... and I was really getting sick of adding NOT_IMPLEMENTED for each one. Shaving 1k of .data/.text is just a bonus.",
+      "revId": "58020f2a775091b428739029f570c46695afde40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
