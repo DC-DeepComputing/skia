@@ -5,35 +5,35 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.h"
+#include "src/gpu/vk/VulkanAMDMemoryAllocator.h"
 
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/ganesh/vk/GrVkMemory.h"
-#include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
 
+namespace skgpu {
+
 #ifndef SK_USE_VMA
-sk_sp<GrVkMemoryAllocator> GrVkAMDMemoryAllocator::Make(
-        VkInstance instance,
-        VkPhysicalDevice physicalDevice,
-        VkDevice device,
-        uint32_t physicalDeviceVersion,
-        const skgpu::VulkanExtensions* extensions,
-        sk_sp<const skgpu::VulkanInterface> interface,
-        const GrVkCaps* caps) {
+sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(
+         VkInstance instance,
+         VkPhysicalDevice physicalDevice,
+         VkDevice device,
+         uint32_t physicalDeviceVersion,
+         const VulkanExtensions* extensions,
+         sk_sp<const GrVkInterface> interface,
+         bool mustUseCoherentHostVisibleMemory) {
     return nullptr;
 }
 #else
 
-sk_sp<GrVkMemoryAllocator> GrVkAMDMemoryAllocator::Make(
+sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(
         VkInstance instance,
         VkPhysicalDevice physicalDevice,
         VkDevice device,
         uint32_t physicalDeviceVersion,
-        const skgpu::VulkanExtensions* extensions,
-        sk_sp<const skgpu::VulkanInterface> interface,
-        const GrVkCaps* caps) {
+        const VulkanExtensions* extensions,
+        sk_sp<const VulkanInterface> interface,
+        bool mustUseCoherentHostVisibleMemory) {
 #define GR_COPY_FUNCTION(NAME) functions.vk##NAME = interface->fFunctions.f##NAME
 #define GR_COPY_FUNCTION_KHR(NAME) functions.vk##NAME##KHR = interface->fFunctions.f##NAME
 
@@ -97,24 +97,25 @@ sk_sp<GrVkMemoryAllocator> GrVkAMDMemoryAllocator::Make(
     VmaAllocator allocator;
     vmaCreateAllocator(&info, &allocator);
 
-    return sk_sp<GrVkAMDMemoryAllocator>(new GrVkAMDMemoryAllocator(
-            allocator, std::move(interface), caps->mustUseCoherentHostVisibleMemory()));
+    return sk_sp<VulkanAMDMemoryAllocator>(new VulkanAMDMemoryAllocator(
+            allocator, std::move(interface), mustUseCoherentHostVisibleMemory));
 }
 
-GrVkAMDMemoryAllocator::GrVkAMDMemoryAllocator(VmaAllocator allocator,
-                                               sk_sp<const skgpu::VulkanInterface> interface,
-                                               bool mustUseCoherentHostVisibleMemory)
+VulkanAMDMemoryAllocator::VulkanAMDMemoryAllocator(VmaAllocator allocator,
+                                                   sk_sp<const VulkanInterface> interface,
+                                                   bool mustUseCoherentHostVisibleMemory)
         : fAllocator(allocator)
         , fInterface(std::move(interface))
         , fMustUseCoherentHostVisibleMemory(mustUseCoherentHostVisibleMemory) {}
 
-GrVkAMDMemoryAllocator::~GrVkAMDMemoryAllocator() {
+VulkanAMDMemoryAllocator::~VulkanAMDMemoryAllocator() {
     vmaDestroyAllocator(fAllocator);
     fAllocator = VK_NULL_HANDLE;
 }
 
-VkResult GrVkAMDMemoryAllocator::allocateImageMemory(VkImage image, AllocationPropertyFlags flags,
-                                                     skgpu::VulkanBackendMemory* backendMemory) {
+VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
+                                                       AllocationPropertyFlags flags,
+                                                       VulkanBackendMemory* backendMemory) {
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
     VmaAllocationCreateInfo info;
     info.flags = 0;
@@ -140,14 +141,15 @@ VkResult GrVkAMDMemoryAllocator::allocateImageMemory(VkImage image, AllocationPr
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForImage(fAllocator, image, &info, &allocation, nullptr);
     if (VK_SUCCESS == result) {
-        *backendMemory = (skgpu::VulkanBackendMemory)allocation;
+        *backendMemory = (VulkanBackendMemory)allocation;
     }
     return result;
 }
 
-VkResult GrVkAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer, BufferUsage usage,
-                                                      AllocationPropertyFlags flags,
-                                                      skgpu::VulkanBackendMemory* backendMemory) {
+VkResult VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
+                                                        BufferUsage usage,
+                                                        AllocationPropertyFlags flags,
+                                                        VulkanBackendMemory* backendMemory) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     VmaAllocationCreateInfo info;
     info.flags = 0;
@@ -210,20 +212,20 @@ VkResult GrVkAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer, BufferUsa
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForBuffer(fAllocator, buffer, &info, &allocation, nullptr);
     if (VK_SUCCESS == result) {
-        *backendMemory = (skgpu::VulkanBackendMemory)allocation;
+        *backendMemory = (VulkanBackendMemory)allocation;
     }
 
     return result;
 }
 
-void GrVkAMDMemoryAllocator::freeMemory(const skgpu::VulkanBackendMemory& memoryHandle) {
+void VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory& memoryHandle) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     vmaFreeMemory(fAllocator, allocation);
 }
 
-void GrVkAMDMemoryAllocator::getAllocInfo(const skgpu::VulkanBackendMemory& memoryHandle,
-                                          skgpu::VulkanAlloc* alloc) const {
+void VulkanAMDMemoryAllocator::getAllocInfo(const VulkanBackendMemory& memoryHandle,
+                                            VulkanAlloc* alloc) const {
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     VmaAllocationInfo vmaInfo;
     vmaGetAllocationInfo(fAllocator, allocation, &vmaInfo);
@@ -233,13 +235,13 @@ void GrVkAMDMemoryAllocator::getAllocInfo(const skgpu::VulkanBackendMemory& memo
 
     uint32_t flags = 0;
     if (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT & memFlags) {
-        flags |= skgpu::VulkanAlloc::kMappable_Flag;
+        flags |= VulkanAlloc::kMappable_Flag;
     }
     if (!SkToBool(VK_MEMORY_PROPERTY_HOST_COHERENT_BIT & memFlags)) {
-        flags |= skgpu::VulkanAlloc::kNoncoherent_Flag;
+        flags |= VulkanAlloc::kNoncoherent_Flag;
     }
     if (VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT & memFlags) {
-        flags |= skgpu::VulkanAlloc::kLazilyAllocated_Flag;
+        flags |= VulkanAlloc::kLazilyAllocated_Flag;
     }
 
     alloc->fMemory        = vmaInfo.deviceMemory;
@@ -249,43 +251,45 @@ void GrVkAMDMemoryAllocator::getAllocInfo(const skgpu::VulkanBackendMemory& memo
     alloc->fBackendMemory = memoryHandle;
 }
 
-VkResult GrVkAMDMemoryAllocator::mapMemory(const skgpu::VulkanBackendMemory& memoryHandle,
-                                           void** data) {
+VkResult VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory& memoryHandle,
+                                             void** data) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     return vmaMapMemory(fAllocator, allocation, data);
 }
 
-void GrVkAMDMemoryAllocator::unmapMemory(const skgpu::VulkanBackendMemory& memoryHandle) {
+void VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory& memoryHandle) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     vmaUnmapMemory(fAllocator, allocation);
 }
 
-VkResult GrVkAMDMemoryAllocator::flushMemory(const skgpu::VulkanBackendMemory& memoryHandle,
-                                             VkDeviceSize offset, VkDeviceSize size) {
+VkResult VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory& memoryHandle,
+                                               VkDeviceSize offset, VkDeviceSize size) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     return vmaFlushAllocation(fAllocator, allocation, offset, size);
 }
 
-VkResult GrVkAMDMemoryAllocator::invalidateMemory(const skgpu::VulkanBackendMemory& memoryHandle,
-                                                  VkDeviceSize offset, VkDeviceSize size) {
+VkResult VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory& memoryHandle,
+                                                    VkDeviceSize offset, VkDeviceSize size) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const VmaAllocation allocation = (const VmaAllocation)memoryHandle;
     return vmaInvalidateAllocation(fAllocator, allocation, offset, size);
 }
 
-uint64_t GrVkAMDMemoryAllocator::totalUsedMemory() const {
+uint64_t VulkanAMDMemoryAllocator::totalUsedMemory() const {
     VmaTotalStatistics stats;
     vmaCalculateStatistics(fAllocator, &stats);
     return stats.total.statistics.allocationBytes;
 }
 
-uint64_t GrVkAMDMemoryAllocator::totalAllocatedMemory() const {
+uint64_t VulkanAMDMemoryAllocator::totalAllocatedMemory() const {
     VmaTotalStatistics stats;
     vmaCalculateStatistics(fAllocator, &stats);
     return stats.total.statistics.blockBytes;
 }
 
 #endif // SK_USE_VMA
+
+} // namespace skgpu
