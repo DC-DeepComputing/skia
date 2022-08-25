@@ -1119,6 +1119,8 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
                 styledShape.writable()->setRect(drawBounds);
             }
         }
+
+        // The bounds for SubRun is already in device space.
         drawBounds = localToDevice.mapRect(drawBounds);
 
         // Hairlines get an extra pixel *after* transforming to device space
