@@ -8,6 +8,7 @@
 #ifndef SkWebpEncoder_DEFINED
 #define SkWebpEncoder_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/encode/SkEncoder.h"
 
 class SkWStream;
@@ -36,6 +37,17 @@ namespace SkWebpEncoder {
         float fQuality = 100.0f;
     };
 
+    struct SK_API Frame {
+        /**
+         *  |pixmap| is the images pixels of the frame.
+         */
+        SkPixmap pixmap;
+        /**
+         *  |duration| is the duration of the frame (in milliseconds).
+         */
+        int duration;
+    };
+
     /**
      *  Encode the |src| pixels to the |dst| stream.
      *  |options| may be used to control the encoding behavior.
@@ -43,6 +55,14 @@ namespace SkWebpEncoder {
      *  Returns true on success.  Returns false on an invalid or unsupported |src|.
      */
     SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+
+    /**
+     *  Encode the |src| frames to the |dst| stream.
+     *  |options| may be used to control the encoding behavior.
+     *
+     *  Returns true on success.  Returns false on an invalid or unsupported |src|.
+     */
+    SK_API bool EncodeAnimated(SkWStream* dst, const SkSpan<Frame>& src, const Options& options);
 } // namespace SkWebpEncoder
 
 #endif
