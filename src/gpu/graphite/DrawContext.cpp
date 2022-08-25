@@ -64,6 +64,10 @@ DrawContext::~DrawContext() {
     fDrawPasses.clear();
 }
 
+TextureProxyView DrawContext::readSurfaceView() {
+
+}
+
 void DrawContext::clear(const SkColor4f& clearColor) {
     fPendingLoadOp = LoadOp::kClear;
     SkPMColor4f pmColor = clearColor.premul();
