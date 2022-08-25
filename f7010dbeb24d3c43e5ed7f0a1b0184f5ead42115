@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84105d06_d528c9ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-25T20:44:43Z",
+      "side": 1,
+      "message": "LGTM modulo Nicolette\u0027s comments/questions. G3 failure doesn\u0027t seem to be this CL.",
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba70b2f5_4dc2dd9b",
