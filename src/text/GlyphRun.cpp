@@ -284,7 +284,7 @@ const GlyphRunList& sktext::GlyphRunBuilder::blobToGlyphRunList(
                 scaledRotations);
     }
 
-    return this->setGlyphRunList(&blob, blob.bounds().makeOffset(origin), origin);
+    return this->setGlyphRunList(&blob, blob.bounds(), origin);
 }
 
 std::tuple<SkSpan<const SkPoint>, SkSpan<const SkVector>>

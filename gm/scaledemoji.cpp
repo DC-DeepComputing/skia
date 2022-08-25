@@ -18,6 +18,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
 #include "src/utils/SkUTF.h"
 #include "tools/ToolUtils.h"
 
@@ -39,7 +40,7 @@ namespace skiagm {
 
 class ScaledEmojiGM : public GM {
 public:
-    ScaledEmojiGM() { }
+    ScaledEmojiGM() {}
 
 protected:
     struct EmojiFont {
@@ -49,7 +50,7 @@ protected:
 
     void onOnceBeforeDraw() override {
         fEmojiFont.fTypeface = ToolUtils::emoji_typeface();
-        fEmojiFont.fText     = ToolUtils::emoji_sample_text();
+        fEmojiFont.fText = ToolUtils::emoji_sample_text();
     }
 
     SkString onShortName() override {
@@ -59,7 +60,7 @@ protected:
     SkISize onISize() override { return SkISize::Make(1200, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
-
+        SkDebugf("Start onDraw\n");
         canvas->drawColor(SK_ColorGRAY);
 
         SkPaint paint;
@@ -73,13 +74,14 @@ protected:
         // SDF path with scaling, path rendering with scaling
         SkFontMetrics metrics;
         SkScalar y = 0;
-        for (SkScalar textSize : { 70, 180, 270, 340 }) {
+        for (SkScalar textSize : {70, 180, 270, 340}) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
             canvas->drawSimpleText(text, strlen(text), SkTextEncoding::kUTF8, 10, y, font, paint);
             y += metrics.fDescent + metrics.fLeading;
         }
+        SkDebugf("End onDraw\n");
     }
 
 private:
@@ -167,6 +169,20 @@ protected:
                 ++count;
             }
         }
+
+        SkScalar w = this->width(),
+                 h = this->height();
+        SkPoint orthoPts[4] = { { 0, 0 }, { w, 0 }, { 0, h }, { w, h } };
+
+        SkPoint perspPts[4] = {
+                {  0.45f * w, 0.5f * h },
+                {  0.55f * w, 0.5f * h },
+                {  0.0f * w, h },
+                {  1.0f * w, h }
+        };
+
+        fPerspective.setPolyToPoly(orthoPts, perspPts, std::size(perspPts));
+
     }
 
     SkString onShortName() override {
@@ -176,16 +192,15 @@ protected:
     SkISize onISize() override { return SkISize::Make(1200, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
-
         canvas->drawColor(SK_ColorGRAY);
-        SkMatrix taper;
-        taper.setPerspY(-0.0025f);
 
         SkPaint paint;
         SkFont font;
         font.setTypeface(fEmojiFont.fTypeface);
-        font.setSize(40);
+        font.setSize(200);
         sk_sp<SkTextBlob> blob = make_hpos_test_blob_utf8(fEmojiFont.fText.c_str(), font);
+
+        SkScalar centerX = (1200 - blob->bounds().width())/2;
 
         // draw text at different point sizes
         // Testing GPU bitmap path, SDF path with no scaling,
@@ -195,18 +210,19 @@ protected:
         for (auto rotate : {0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0}) {
             canvas->save();
             SkMatrix perspective;
+            perspective.postConcat(fPerspective);
             perspective.postTranslate(-600, -600);
-            perspective.postConcat(taper);
             perspective.postRotate(rotate);
             perspective.postTranslate(600, 600);
             canvas->concat(perspective);
             SkScalar y = 670;
             for (int i = 0; i < 5; i++) {
 
+                SkDebugf("Iter: %d Rot: %g\n", i, rotate);
                 y += -metrics.fAscent;
 
                 // Draw with an origin.
-                canvas->drawTextBlob(blob, 565, y, paint);
+                canvas->drawTextBlob(blob, centerX, y, paint);
 
                 y += metrics.fDescent + metrics.fLeading;
             }
@@ -215,6 +231,7 @@ protected:
     }
 
 private:
+    SkMatrix fPerspective;
     using INHERITED = GM;
 };
 
