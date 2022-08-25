@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/ImageUtils.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
@@ -926,6 +927,47 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawDevice(SkBaseDevice* device,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint& paint) {
+    this->SkBaseDevice::drawDevice(device, sampling, paint);
+}
+
+void Device::drawSpecial(SkSpecialImage* special,
+                         const SkMatrix& localToDevice,
+                         const SkSamplingOptions& sampling,
+                         const SkPaint& paint) {
+    SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
+//    SkASSERT(special->isGraphiteBacked());
+
+    SkRect dst = SkRect::Make(special->subset());
+    dst = localToDevice.mapRect(dst);
+
+    sk_sp<SkImage> img = sk_make_sp<Image>(special->uniqueID(),
+                                           special->textureProxyView(),
+                                           special->colorInfo());
+    if (!img) {
+        return;
+    }
+
+    sk_sp<SkShader> imgShader = make_img_shader_for_paint(paint,
+                                                          std::move(img),
+                                                          SkRect::Make(special->subset()),
+                                                          SkTileMode::kClamp, SkTileMode::kClamp,
+                                                          sampling,
+                                                          nullptr);
+    if (!imgShader) {
+        return;
+    }
+
+    SkPaint paintWithShader(paint);
+    paintWithShader.setStyle(SkPaint::kFill_Style);
+    paintWithShader.setShader(std::move(imgShader));
+    paintWithShader.setPathEffect(nullptr);  // drawSpecial doesn't support path effects
+
+    this->drawRect(dst, paintWithShader);
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -936,7 +978,19 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
-    return nullptr;
+
+    SkIRect finalSubset = subset;
+    TextureProxyView view = fDC->readSurfaceView(fRecorder->priv().caps());
+    if (forceCopy || !view) {
+        // TODO: fill this in
+    }
+
+    return SkSpecialImage::MakeGraphite(fRecorder,
+                                        finalSubset,
+                                        kNeedNewImageUniqueID_SpecialImage,
+                                        std::move(view),
+                                        this->imageInfo().colorInfo(),
+                                        this->surfaceProps());
 }
 
 #if GRAPHITE_TEST_UTILS
