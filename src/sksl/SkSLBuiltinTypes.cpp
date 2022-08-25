@@ -6,7 +6,6 @@
  */
 
 #include "src/sksl/SkSLBuiltinTypes.h"
-
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/spirv.h"
 
