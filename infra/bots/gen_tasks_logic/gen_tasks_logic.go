@@ -1995,6 +1995,7 @@ func (b *jobBuilder) presubmit() {
 		// Use MACHINE_TYPE_LARGE because it seems to save time versus
 		// MEDIUM and we want presubmit to be fast.
 		b.linuxGceDimensions(MACHINE_TYPE_LARGE)
+		b.usesGo()
 		b.usesGit()
 		b.cipd(&specs.CipdPackage{
 			Name:    "infra/recipe_bundles/chromium.googlesource.com/chromium/tools/build",
