@@ -16,6 +16,8 @@
 #include "src/gpu/ganesh/vk/GrVkRenderTarget.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 
+#include <string>
+
 #if defined(SK_ENABLE_SCOPED_LSAN_SUPPRESSIONS)
 #include <sanitizer/lsan_interface.h>
 #endif
@@ -459,24 +461,27 @@ static void setup_dynamic_state(VkPipelineDynamicStateCreateInfo* dynamicInfo,
     dynamicInfo->pDynamicStates = dynamicStates;
 }
 
+// TODO(nscobie): print most inputs to this function
 sk_sp<GrVkPipeline> GrVkPipeline::Make(GrVkGpu* gpu,
-                                   const GrGeometryProcessor::AttributeSet& vertexAttribs,
-                                   const GrGeometryProcessor::AttributeSet& instanceAttribs,
+                                   const GrGeometryProcessor::AttributeSet& vertexAttribs, // skip (redundant)
+                                   const GrGeometryProcessor::AttributeSet& instanceAttribs, // skip (redundant)
                                    GrPrimitiveType primitiveType,
                                    GrSurfaceOrigin origin,
                                    const GrStencilSettings& stencilSettings,
                                    int numSamples,
-                                   bool isHWAntialiasState,
+                                   bool isHWAntialiasState, // skip (ignored)
                                    const skgpu::BlendInfo& blendInfo,
-                                   bool isWireframe,
-                                   bool useConservativeRaster,
+                                   bool isWireframe, // skip (probably, used in SKia debugging)
+                                   bool useConservativeRaster, // unlikely used, but cheap to log
                                    uint32_t subpass,
-                                   VkPipelineShaderStageCreateInfo* shaderStageInfo,
+                                   VkPipelineShaderStageCreateInfo* shaderStageInfo, // skip (redundant w/ shader)
                                    int shaderStageCount,
-                                   VkRenderPass compatibleRenderPass,
+                                   VkRenderPass compatibleRenderPass, // print 64 bit handle?
                                    VkPipelineLayout layout,
                                    bool ownsLayout,
                                    VkPipelineCache cache) {
+    // TODO(nscobie): print here, with an index passed in from caller?
+    // SkDebugf("nscobie-debug: in GrVkPipeline::Make, log index: %s", std::to_string(logIndex));
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
     SkSTArray<2, VkVertexInputBindingDescription, true> bindingDescs;
     SkSTArray<16, VkVertexInputAttributeDescription> attributeDesc;
@@ -543,7 +548,8 @@ sk_sp<GrVkPipeline> GrVkPipeline::Make(GrVkGpu* gpu,
     VkPipeline vkPipeline;
     VkResult err;
     {
-        TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+        // TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+        TRACE_EVENT0_AND_LOG("skia.shaders", "CreateGraphicsPipeline", "nscobie-test logging worked!");
 #if defined(SK_ENABLE_SCOPED_LSAN_SUPPRESSIONS)
         // skia:8712
         __lsan::ScopedDisabler lsanDisabler;

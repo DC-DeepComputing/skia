@@ -50,6 +50,9 @@ private:
     std::unique_ptr<perfetto::TracingSession> tracingSession;
     int fd{-1};
 
+    bool useSystemBackend;
+    bool useInProcessBackend;
+
     /** Store the perfetto trace file output path, name, and extension separately. This isolation
      * of name components becomes useful when splitting traces up by sections, where we want to
      * alter the base file name but keep the trace output path and file extension the same.
@@ -58,8 +61,9 @@ private:
     std::string fOutputFileExtension;
     std::string fCurrentSessionFullOutputPath;
 
-    void openNewTracingSession(const std::string& baseFileName);
-    void closeTracingSession();
+    void initializeTracing(bool useSystemBackend, bool useInProcessBackend);
+    void openNewTracingSessionFile(const std::string& baseFileName);
+    void closeTracingSessionFile();
 
     /** Overloaded private methods to initiate a trace event with 0-2 arguments. Perfetto supports
      * adding an arbitrary number of debug annotations or arguments, but the existing Skia trace

@@ -7,6 +7,9 @@
 #include "include/core/SkTypes.h"
 #include "include/utils/SkTraceEventPhase.h"
 
+#include <mutex>
+#include <string>
+
 // Trace events are for tracking application performance and resource usage.
 // Macros are provided to track:
 //    Duration of scoped regions
@@ -68,6 +71,41 @@ static inline void sk_noop(...) {}
 #define TRACE_EMPTY_FMT(fmt, ...) do {} while (0)
 #endif
 
+// TODO: disable this if SK_DISABLE_TRACING ??
+inline std::mutex gSkTraceLoggingMutex;
+inline uint64_t gSkTraceLoggingIndex = 0; // TODO any way to make this "private"? (or at least put it in a namespace?)
+inline uint64_t claimNextSkTraceLoggingIndex() {
+    gSkTraceLoggingMutex.lock();
+    uint64_t claimed = gSkTraceLoggingIndex;
+    gSkTraceLoggingIndex++;
+    gSkTraceLoggingMutex.unlock();
+    return claimed;
+}
+
+// inline void traceEventAndLog(category )
+
+// TODO: add _ALWAYS variant(s)?
+// SkDebugf("[%s] %s (skTraceLoggingIndex=%" PRId64 "): %s\n", category_group, name, gSkTraceLoggingIndex, logString);
+// TODO: check if tracing is enabled before claim/log?
+#define TRACE_EVENT0_AND_LOG(category_group, name, logString) \
+    do { \
+        uint64_t logIndex = claimNextSkTraceLoggingIndex(); \
+        TRACE_EVENT1(category_group, name, "skTraceLoggingIndex", gSkTraceLoggingIndex); \
+        SkDebugf("[%s] %s (skTraceLoggingIndex=%" PRId64 "): %s\n", category_group, name, gSkTraceLoggingIndex, logString); \
+    } while (0)
+
+// TODO: coerce arg1 name/value to strings and log them too?? not strictly necessary since they're in the trace...
+// TODO: check if tracing is enabled before claim/log?
+#define TRACE_EVENT1_AND_LOG(category_group, name, arg1_name, arg1_value, logString) \
+    do { \
+        uint64_t logIndex = claimNextSkTraceLoggingIndex(); \
+        TRACE_EVENT2(category_group, name, arg1_name, arg1_value, "skTraceLoggingIndex", gSkTraceLoggingIndex); \
+        SkDebugf("[%s] %s (skTraceLoggingIndex=%" PRId64 "): %s\n", category_group, name, gSkTraceLoggingIndex, logString); \
+    } while (0)
+
+#define TRACE_EVENT_INSTANT0_AND_LOG(category_group, name, scope) TRACE_EVENT_INSTANT0(category_group, name, scope)
+#define TRACE_EVENT_INSTANT1_AND_LOG(category_group, name, scope, arg1_name, arg1_value) TRACE_EVENT_INSTANT1(category_group, name, scope, arg1_name, arg1_value)
+
 #ifdef SK_DISABLE_TRACING
 
 #define ATRACE_ANDROID_FRAMEWORK(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)
@@ -82,7 +120,7 @@ static inline void sk_noop(...) {}
     TRACE_EMPTY(cg, n, scope, a1n, a1v, a2n, a2v)
 #define TRACE_COUNTER1(cg, n, value) TRACE_EMPTY(cg, n, value)
 #define TRACE_COUNTER2(cg, n, v1n, v1v, v2n, v2v) TRACE_EMPTY(cg, n, v1n, v1v, v2n, v2v)
-
+/*
 #elif defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
 
 #include <cutils/trace.h>
@@ -159,8 +197,11 @@ public:
     SkAndroidFrameworkTraceUtil __trace(name)
 #define TRACE_EVENT0_ALWAYS(category_group, name) \
     SkAndroidFrameworkTraceUtilAlways __trace_always(name)
+    // TODO(nscobie): don't direct to another macro here, just call to a function that's overloaded
+    // (and maybe templatized for numbers) and let the compiler do the work of choosing which to use!
 #define TRACE_EVENT1(category_group, name, arg1_name, arg1_val) \
     SkAndroidFrameworkTraceUtil __trace(name)
+    // ATRACE_ANDROID_FRAMEWORK("[%s] %s: %s=%s", category_group, name, arg1_name, std::to_string(arg1_val).c_str())
 #define TRACE_EVENT2(category_group, name, arg1_name, arg1_val, arg2_name, arg2_val) \
     SkAndroidFrameworkTraceUtil __trace(name)
 
@@ -206,7 +247,7 @@ public:
 // This is only used for some shader text logging that isn't supported in ATrace anyway.
 #define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret)             \
   do { *ret = false; } while (0)
-
+*/
 #else // !SK_BUILD_FOR_ANDROID_FRAMEWORK && !SK_DISABLE_TRACING
 
 #define ATRACE_ANDROID_FRAMEWORK(fmt, ...) TRACE_EMPTY_FMT(fmt, ##__VA_ARGS__)

@@ -22,6 +22,8 @@
 #include "src/gpu/ganesh/vk/GrVkRenderTarget.h"
 #include "src/utils/SkShaderUtils.h"
 
+#include <string>
+
 GrVkPipelineState* GrVkPipelineStateBuilder::CreatePipelineState(
         GrVkGpu* gpu,
         const GrProgramDesc& desc,
@@ -164,7 +166,9 @@ void GrVkPipelineStateBuilder::storeShadersInCache(const std::string shaders[],
 GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
                                                       VkRenderPass compatibleRenderPass,
                                                       bool overrideSubpassForResolveLoad) {
-    TRACE_EVENT0("skia.shaders", TRACE_FUNC);
+    // TRACE_EVENT0("skia.shaders", TRACE_STR_COPY(std::string(TRACE_FUNC) + " (nscobie-debug log index: " + std::to_string(pipelineCreationLogIndex) + ")"));
+    // TRACE_EVENT0("skia.shaders", std::format("%s (log index: %lld)", TRACE_FUNC, pipelineCreationLogIndex));
+    TRACE_EVENT0_AND_LOG("skia.shaders", TRACE_FUNC, "nscobie-debug logging worked!");
 
     VkDescriptorSetLayout dsLayout[GrVkUniformHandler::kDescSetCount];
     VkShaderModule shaderModules[kGrShaderTypeCount] = { VK_NULL_HANDLE,
@@ -240,6 +244,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
             }
         }
 
+        // nscobie-note: creating shaders (log sksl down this branch)
         bool success = this->createVkShaderModule(VK_SHADER_STAGE_VERTEX_BIT,
                                                   *sksl[kVertex_GrShaderType],
                                                   &shaderModules[kVertex_GrShaderType],
@@ -325,6 +330,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
          fGpu->vkCaps().programInfoWillUseDiscardableMSAA(fProgramInfo))) {
         subpass = 1;
     }
+    // nscobie-note: pipeline creation, log state down this branch
     sk_sp<const GrVkPipeline> pipeline = resourceProvider.makePipeline(
             fProgramInfo, shaderStageInfo, numShaderStages, compatibleRenderPass, pipelineLayout,
             subpass);

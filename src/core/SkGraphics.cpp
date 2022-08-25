@@ -28,12 +28,27 @@
 #include "src/core/SkTSearch.h"
 #include "src/core/SkTypefaceCache.h"
 
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+// TODO: is it okay to pull these in here?
+#include "include/private/SkOnce.h"
+#include "include/utils/SkEventTracer.h"
+#include "tools/trace/SkPerfettoTrace.h"
+#endif
+
 #include <stdlib.h>
 
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
     SkCpu::CacheRuntimeFeatures();
     SkOpts::Init();
+
+// TODO: maybe move this to android-land??? maybe not...
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    static SkOnce perfettoOnce;
+    static SkPerfettoTrace* perfettoTrace;
+    once([] { perfettoTrace = new SkPerfettoTrace; });
+    gUserTracer.store(perfettoTrace); // TODO: which memory order should we use? https://en.cppreference.com/w/cpp/atomic/memory_order
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////

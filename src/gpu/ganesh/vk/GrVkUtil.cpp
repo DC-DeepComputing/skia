@@ -13,6 +13,9 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/utils/SkShaderUtils.h"
+
+#include <string>
 
 bool GrVkFormatIsSupported(VkFormat format) {
     switch (format) {
@@ -83,6 +86,8 @@ SkSL::ProgramKind vk_shader_stage_to_skiasl_kind(VkShaderStageFlagBits stage) {
     return SkSL::ProgramKind::kFragment;
 }
 
+// nscobie-note: print (shaderString?) with
+// SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(sksl));
 bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              const std::string& shaderString,
                              VkShaderStageFlagBits stage,
@@ -91,7 +96,11 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              const SkSL::ProgramSettings& settings,
                              std::string* outSPIRV,
                              SkSL::Program::Inputs* outInputs) {
-    TRACE_EVENT0("skia.shaders", "CompileVkShaderModule");
+    TRACE_EVENT0_AND_LOG("skia.shaders", TRACE_FUNC, ("nscobie-debug logging worked!\n" + SkShaderUtils::PrettyPrint(shaderString)).c_str());
+    // TRACE_EVENT1("skia.shaders", TRACE_FUNC, "logIndex", 0);
+    // TRACE_EVENT0("skia.shaders", "CompileVkShaderModule (nscobie-debug log index: " + std::to_string(logIndex));
+    // SkDebugf("nscobie-debug GrCompileVkShaderModule compiling SkSL (log index: %lld)", (long long) 0);
+    // SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(shaderString));
     auto errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
     std::unique_ptr<SkSL::Program> program = gpu->shaderCompiler()->convertProgram(
             vk_shader_stage_to_skiasl_kind(stage), shaderString, settings);

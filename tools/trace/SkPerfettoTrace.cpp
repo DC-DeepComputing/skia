@@ -34,34 +34,54 @@ static DEFINE_bool(longPerfettoTrace, false,
                    "sessions.\n"
                    "Will only have an effect if perfetto tracing is enabled. See --trace.");
 
-SkPerfettoTrace::SkPerfettoTrace() {
-    fOutputPath = FLAGS_perfettoOutputDir[0];
-    fOutputFileExtension = FLAGS_perfettoOutputFileExtension[0];
-    this->openNewTracingSession(FLAGS_perfettoOutputFileName[0]);
+SkPerfettoTrace::SkPerfettoTrace(bool useSystemBackend, bool useInProcessBackend) {
+    // TODO: assert (system || process)
+    
+    initializeTracing(useSystemBackend, useInProcessBackend);
+    
+    if (useInProcessBackend) {
+        fOutputPath = FLAGS_perfettoOutputDir[0];
+        fOutputFileExtension = FLAGS_perfettoOutputFileExtension[0];
+        this->openNewTracingSessionFile(FLAGS_perfettoOutputFileName[0]);
+    }
 }
 
 SkPerfettoTrace::~SkPerfettoTrace() {
-    this->closeTracingSession();
+    // TODO: figure out what to do in this scenario when tracing to system backend
+
+    if (useInProcessBackend) {
+        this->closeTracingSessionFile();
+    }
 }
 
-void SkPerfettoTrace::openNewTracingSession(const std::string& baseFileName) {
+void SkPerfettoTrace::initializeTracing(bool useSystemBackend, bool useInProcessBackend) {
     perfetto::TracingInitArgs args;
-    /* Store the current tracing session's output file path as a member attribute so it can
-     * be referenced when closing a tracing session (needed for short traces where writing to
-     * the output file occurs at the end of all tracing). */
-    fCurrentSessionFullOutputPath = fOutputPath + baseFileName + fOutputFileExtension;
+
+    // TODO: explain
+    if (useSystemBackend) {
+        args.backends |= perfetto::kSystemBackend;
+    }
 
     /* Enable using only the in-process backend (recording only within the app itself). This is as
      * opposed to additionally including perfetto::kSystemBackend, which uses a Perfetto daemon. */
-    args.backends |= perfetto::kInProcessBackend;
+    if (useInProcessBackend) {
+        args.backends |= perfetto::kInProcessBackend;
+    }
 
-    if (FLAGS_longPerfettoTrace) {
+    if (useInProcessBackend && FLAGS_longPerfettoTrace) {
         /* Set the shared memory buffer size higher than the default of 256 KB to
         reduce trace writer packet loss occurrences associated with larger traces. */
         args.shmem_size_hint_kb = 2000;
     }
     perfetto::Tracing::Initialize(args);
     perfetto::TrackEvent::Register();
+}
+
+void SkPerfettoTrace::openNewTracingSessionFile(const std::string& baseFileName) {
+    /* Store the current tracing session's output file path as a member attribute so it can
+     * be referenced when closing a tracing session (needed for short traces where writing to
+     * the output file occurs at the end of all tracing). */
+    fCurrentSessionFullOutputPath = fOutputPath + baseFileName + fOutputFileExtension;
 
     // Set up event tracing configuration.
     perfetto::protos::gen::TrackEventConfig track_event_cfg;
@@ -97,7 +117,7 @@ void SkPerfettoTrace::openNewTracingSession(const std::string& baseFileName) {
     tracingSession->StartBlocking();
 }
 
-void SkPerfettoTrace::closeTracingSession() {
+void SkPerfettoTrace::closeTracingSessionFile() {
     perfetto::TrackEvent::Flush();
     tracingSession->StopBlocking();
     if (!FLAGS_longPerfettoTrace) {
@@ -347,8 +367,12 @@ void SkPerfettoTrace::triggerTraceEvent(const uint8_t* categoryEnabledFlag,
 }
 
 void SkPerfettoTrace::newTracingSection(const char* name) {
-    if (perfetto::Tracing::IsInitialized()) {
-        this->closeTracingSession();
+    // TODO: figure out what to do in this scenario when tracing to system backend
+
+    if (useInProcessBackend) {
+        if (perfetto::Tracing::IsInitialized()) {
+            this->closeTracingSessionFile();
+        }
+        this->openNewTracingSessionFile(name);
     }
-    this->openNewTracingSession(name);
 }
