@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b65dc3_36220f0e",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-25T14:40:38Z",
+      "side": 1,
+      "message": "SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)?",
+      "range": {
+        "startLine": 1182,
+        "startChar": 4,
+        "endLine": 1182,
+        "endChar": 18
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968c1b24_2985e229",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-25T14:40:38Z",
+      "side": 1,
+      "message": "SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)?",
+      "range": {
+        "startLine": 1269,
+        "startChar": 4,
+        "endLine": 1269,
+        "endChar": 18
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
