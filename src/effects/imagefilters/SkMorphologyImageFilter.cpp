@@ -441,7 +441,7 @@ static sk_sp<SkSpecialImage> apply_morphology(
         GrRecordingContext* rContext, SkSpecialImage* input, const SkIRect& rect,
         MorphType morphType, SkISize radius, const SkImageFilter_Base::Context& ctx) {
     GrSurfaceProxyView srcView = input->view(rContext);
-    SkAlphaType srcAlphaType = input->alphaType();
+    SkAlphaType srcAlphaType = input->alphaType1();
     SkASSERT(srcView.asTextureProxy());
 
     GrSurfaceProxy* proxy = srcView.proxy();

@@ -365,14 +365,14 @@ sk_sp<SkSpecialImage> SkArithmeticImageFilter::filterImageGPU(
                 SkIntToScalar(bgSubset.left() - backgroundOffset.fX),
                 SkIntToScalar(bgSubset.top()  - backgroundOffset.fY));
         fp = GrTextureEffect::MakeSubset(std::move(backgroundView),
-                                         background->alphaType(),
+                                         background->alphaType1(),
                                          backgroundMatrix,
                                          sampler,
                                          bgSubset,
                                          caps);
         fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                           background->getColorSpace(),
-                                           background->alphaType(),
+                                           background->getColorSpace1(),
+                                           background->alphaType1(),
                                            ctx.colorSpace(),
                                            kPremul_SkAlphaType);
     } else {
@@ -385,14 +385,14 @@ sk_sp<SkSpecialImage> SkArithmeticImageFilter::filterImageGPU(
                 SkIntToScalar(fgSubset.left() - foregroundOffset.fX),
                 SkIntToScalar(fgSubset.top()  - foregroundOffset.fY));
         auto fgFP = GrTextureEffect::MakeSubset(std::move(foregroundView),
-                                                foreground->alphaType(),
+                                                foreground->alphaType1(),
                                                 foregroundMatrix,
                                                 sampler,
                                                 fgSubset,
                                                 caps);
         fgFP = GrColorSpaceXformEffect::Make(std::move(fgFP),
-                                             foreground->getColorSpace(),
-                                             foreground->alphaType(),
+                                             foreground->getColorSpace1(),
+                                             foreground->alphaType1(),
                                              ctx.colorSpace(),
                                              kPremul_SkAlphaType);
         fp = make_arithmetic_fp(std::move(fgFP), std::move(fp), fK, fEnforcePMColor);

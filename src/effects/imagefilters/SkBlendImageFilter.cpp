@@ -284,10 +284,10 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
         SkMatrix bgMatrix = SkMatrix::Translate(
                 SkIntToScalar(bgSubset.left() - backgroundOffset.fX),
                 SkIntToScalar(bgSubset.top()  - backgroundOffset.fY));
-        fp = GrTextureEffect::MakeSubset(std::move(backgroundView), background->alphaType(),
+        fp = GrTextureEffect::MakeSubset(std::move(backgroundView), background->alphaType1(),
                                          bgMatrix, sampler, bgSubset, caps);
-        fp = GrColorSpaceXformEffect::Make(std::move(fp), background->getColorSpace(),
-                                           background->alphaType(), ctx.colorSpace(),
+        fp = GrColorSpaceXformEffect::Make(std::move(fp), background->getColorSpace1(),
+                                           background->alphaType1(), ctx.colorSpace(),
                                            kPremul_SkAlphaType);
     } else {
         fp = GrFragmentProcessor::MakeColor(SK_PMColor4fTRANSPARENT);
@@ -300,10 +300,10 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
         SkMatrix fgMatrix = SkMatrix::Translate(
                 SkIntToScalar(fgSubset.left() - foregroundOffset.fX),
                 SkIntToScalar(fgSubset.top()  - foregroundOffset.fY));
-        auto fgFP = GrTextureEffect::MakeSubset(std::move(foregroundView), foreground->alphaType(),
+        auto fgFP = GrTextureEffect::MakeSubset(std::move(foregroundView), foreground->alphaType1(),
                                                 fgMatrix, sampler, fgSubset, caps);
-        fgFP = GrColorSpaceXformEffect::Make(std::move(fgFP), foreground->getColorSpace(),
-                                             foreground->alphaType(), ctx.colorSpace(),
+        fgFP = GrColorSpaceXformEffect::Make(std::move(fgFP), foreground->getColorSpace1(),
+                                             foreground->alphaType1(), ctx.colorSpace(),
                                              kPremul_SkAlphaType);
 
         SkSurfaceProps props{}; // default OK; blend-image filters don't render text

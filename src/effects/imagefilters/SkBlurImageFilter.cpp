@@ -995,9 +995,9 @@ sk_sp<SkSpecialImage> SkBlurImageFilter::gpuFilter(
     auto sdc = SkGpuBlurUtils::GaussianBlur(
             context,
             std::move(inputView),
-            SkColorTypeToGrColorType(input->colorType()),
-            input->alphaType(),
-            ctx.colorSpace() ? sk_ref_sp(input->getColorSpace()) : nullptr,
+            SkColorTypeToGrColorType(input->colorType1()),
+            input->alphaType1(),
+            ctx.colorSpace() ? sk_ref_sp(input->getColorSpace1()) : nullptr,
             dstBounds,
             inputBounds,
             sigma.x(),

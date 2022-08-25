@@ -306,7 +306,7 @@ sk_sp<SkSpecialImage> SkDisplacementMapImageFilter::onFilterImage(const Context&
                                               color->subset(),
                                               *rContext->priv().caps());
         fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                           color->getColorSpace(), color->alphaType(),
+                                           color->getColorSpace1(), color->alphaType1(),
                                            ctx.colorSpace(), kPremul_SkAlphaType);
         GrImageInfo info(ctx.grColorType(),
                          kPremul_SkAlphaType,
