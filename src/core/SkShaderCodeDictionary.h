@@ -194,7 +194,8 @@ public:
         friend class SkShaderCodeDictionary;
 
 #ifdef SK_GRAPHITE_ENABLED
-        Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo)
+        Entry(const SkPaintParamsKey& key,
+              const skgpu::BlendInfo& blendInfo)
                 : fKey(key.asSpan())
                 , fBlendInfo(blendInfo) {
         }
@@ -251,7 +252,8 @@ public:
 
 private:
 #ifdef SK_GRAPHITE_ENABLED
-    Entry* makeEntry(const SkPaintParamsKey&, const skgpu::BlendInfo&);
+    Entry* makeEntry(const SkPaintParamsKey&,
+                     const skgpu::BlendInfo& blendInfo);
 #else
     Entry* makeEntry(const SkPaintParamsKey&);
 #endif
