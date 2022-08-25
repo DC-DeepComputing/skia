@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "553b84d3_36311fb5",
+        "filename": "src/core/SkBlenderBase.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56875d80_f4fa0ec3",
+      "revId": "daedb909068d76f41130c80d8ace0486d64a77f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6a17704_9e993848",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-08-25T14:44:09Z",
       "side": 1,
       "message": "Why do you have braces here?",
+      "range": {
+        "startLine": 744,
+        "startChar": 39,
+        "endLine": 744,
+        "endChar": 40
+      },
+      "revId": "daedb909068d76f41130c80d8ace0486d64a77f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b872a629_d0c82b53",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6a17704_9e993848",
       "range": {
         "startLine": 744,
         "startChar": 39,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "421483e9_e79d9e7e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T14:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b0991dc_9637cd9f",
+      "range": {
+        "startLine": 186,
+        "startChar": 50,
+        "endLine": 186,
+        "endChar": 55
+      },
+      "revId": "daedb909068d76f41130c80d8ace0486d64a77f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "387033e5_3253c62c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-08-25T14:44:09Z",
       "side": 1,
       "message": "Since this won\u0027t be changing the fixed function blending, do we actually need it here?",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 41
+      },
+      "revId": "daedb909068d76f41130c80d8ace0486d64a77f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da59fa94_afe15c17",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T14:56:52Z",
+      "side": 1,
+      "message": "Ah, I see, since the blendInfo only contains fixed-function settings that the program\u0027s caller needs, we wouldn\u0027t need primitive blend info at all. I deleted this member and removed all references to it.",
+      "parentUuid": "387033e5_3253c62c",
       "range": {
         "startLine": 180,
         "startChar": 4,
