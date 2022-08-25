@@ -40,6 +40,7 @@ using AtlasTextOp = skgpu::v1::AtlasTextOp;
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #endif
 
 #include <cinttypes>
@@ -82,6 +83,7 @@ using DrawWriter = skgpu::graphite::DrawWriter;
 using Rect = skgpu::graphite::Rect;
 using Recorder = skgpu::graphite::Recorder;
 using Renderer = skgpu::graphite::Renderer;
+using RendererProvider = skgpu::graphite::RendererProvider;
 using TextureProxy = skgpu::graphite::TextureProxy;
 using Transform = skgpu::graphite::Transform;
 #endif
@@ -1567,8 +1569,8 @@ public:
     std::tuple<Rect, Transform> boundsAndDeviceMatrix(const Transform&,
                                                       SkPoint drawOrigin) const override;
 
-    const Renderer* renderer() const override {
-        return &Renderer::TextDirect(fMaskFormat == skgpu::MaskFormat::kA8);
+    const Renderer* renderer(const RendererProvider* renderers) const override {
+        return renderers->bitmapText(fMaskFormat == skgpu::MaskFormat::kA8);
     }
 
     void fillVertexData(DrawWriter*,
@@ -2239,8 +2241,8 @@ public:
                 localToDevice.preTranslate(drawOrigin.x(), drawOrigin.y())};
     }
 
-    const Renderer* renderer() const override {
-        return &Renderer::TextDirect(fVertexFiller.grMaskType() == skgpu::MaskFormat::kA8);
+    const Renderer* renderer(const RendererProvider* renderers) const override {
+        return renderers->bitmapText(fVertexFiller.grMaskType() == skgpu::MaskFormat::kA8);
     }
 
     void fillVertexData(DrawWriter* dw,
@@ -2361,7 +2363,9 @@ public:
     std::tuple<Rect, Transform> boundsAndDeviceMatrix(const Transform&,
                                                       SkPoint drawOrigin) const override;
 
-    const Renderer* renderer() const override { return &Renderer::TextSDF(fUseLCDText); }
+    const Renderer* renderer(const RendererProvider* renderers) const override {
+        return renderers->sdfText(fUseLCDText);
+    }
 
     void fillVertexData(DrawWriter*,
                         int offset, int count,
