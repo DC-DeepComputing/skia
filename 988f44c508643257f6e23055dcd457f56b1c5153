@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36bb2541_c0219bf0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T15:57:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77fb0f13_c89195df",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35b65dc3_36220f0e",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3431b4_456c219b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T15:57:03Z",
+      "side": 1,
+      "message": "Since this does not have any GPU code. This can always be compiled so the guard can be removed.",
+      "parentUuid": "35b65dc3_36220f0e",
+      "range": {
+        "startLine": 1182,
+        "startChar": 4,
+        "endLine": 1182,
+        "endChar": 18
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "968c1b24_2985e229",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-25T14:40:38Z",
       "side": 1,
       "message": "SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)?",
+      "range": {
+        "startLine": 1269,
+        "startChar": 4,
+        "endLine": 1269,
+        "endChar": 18
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5303a3be_95ee8a33",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T15:57:03Z",
+      "side": 1,
+      "message": "Since this does not have any GPU code. This can always be compiled so the guard can be removed.",
+      "parentUuid": "968c1b24_2985e229",
       "range": {
         "startLine": 1269,
         "startChar": 4,
