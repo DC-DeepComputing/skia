@@ -43,6 +43,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "af20f900_ee01e6ce",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-25T16:19:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc1e7044_a5024a44",
+      "range": {
+        "startLine": 390,
+        "startChar": 12,
+        "endLine": 390,
+        "endChar": 46
+      },
+      "revId": "58020f2a775091b428739029f570c46695afde40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2b569ea0_b3ef2c3c",
         "filename": "src/core/SkRasterPipeline.h",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-25T16:11:16Z",
       "side": 1,
       "message": "Ahhhhhhh (runs away screaming).",
+      "range": {
+        "startLine": 254,
+        "startChar": 8,
+        "endLine": 254,
+        "endChar": 16
+      },
+      "revId": "58020f2a775091b428739029f570c46695afde40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b798bbf8_9b3c6f4d",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-25T16:19:44Z",
+      "side": 1,
+      "message": "I know. I just moved the horror from SkOpts.h. I wanted to just inject the values into the enumeration itself, but couldn\u0027t figure out how to continue the enum without increasing the value at the cross-over point.",
+      "parentUuid": "2b569ea0_b3ef2c3c",
       "range": {
         "startLine": 254,
         "startChar": 8,
