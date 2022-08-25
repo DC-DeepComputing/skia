@@ -551,8 +551,9 @@ std::unique_ptr<Type> Type::MakeArrayType(std::string_view name, const Type& com
                                        componentType, columns);
 }
 
-std::unique_ptr<Type> Type::MakeGenericType(const char* name, std::vector<const Type*> types) {
-    return std::make_unique<GenericType>(name, std::move(types));
+std::unique_ptr<Type> Type::MakeGenericType(const char* name, SkSpan<const Type* const> types) {
+    return std::make_unique<GenericType>(name,
+                                         std::vector<const Type*>(types.begin(), types.end()));
 }
 
 std::unique_ptr<Type> Type::MakeLiteralType(const char* name, const Type& scalarType,
