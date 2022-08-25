@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6addd38d_4e649205",
+        "filename": "include/encode/SkEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-25T18:18:32Z",
+      "side": 1,
+      "message": "This is an ok start. Another option would be to blend the frame to the previous canvas like we do in gif2webp. That would hide the limitation from the user.",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
