@@ -1334,9 +1334,9 @@ public:
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
               Device* device) const override {
-        // TODO
+        fDrawingDrawing.submitDraws(canvas, drawOrigin, paint);
     }
-#endif  // SK_SUPPORT_GPU
+#endif  // SK_GRAPHITE_ENABLED
 
     int unflattenSize() const override;
 
