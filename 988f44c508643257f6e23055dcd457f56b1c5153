@@ -140,6 +140,30 @@
       },
       "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f82575_cffd8cdb",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-25T16:17:33Z",
+      "side": 1,
+      "message": "It could reduce the lib size for non-GPU builds, but I don\u0027t think it\u0027s enough to matter.",
+      "parentUuid": "5303a3be_95ee8a33",
+      "range": {
+        "startLine": 1269,
+        "startChar": 4,
+        "endLine": 1269,
+        "endChar": 18
+      },
+      "revId": "988f44c508643257f6e23055dcd457f56b1c5153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
