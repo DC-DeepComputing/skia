@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7bd287d_6df77414",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-25T14:38:25Z",
+      "side": 1,
+      "message": "Okay so the real answer to my questions was that this is a graphite file and not ganesh. I completely missed that distinction the first time reading this.\n\nI think this is fine as is for now.",
+      "parentUuid": "d5503c98_19a7744c",
+      "range": {
+        "startLine": 85,
+        "startChar": 12,
+        "endLine": 85,
+        "endChar": 17
+      },
+      "revId": "8cb97ae94747001cd72ceb24503054eb9d4ed9bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da4c632f_1286d684",
