@@ -28,6 +28,9 @@
 #include "src/shaders/SkImageShader.h"
 #endif
 
+#if SK_GRAPHITE_ENABLED
+#endif
+
 // Currently, the raster imagefilters can only handle certain imageinfos. Call this to know if
 // a given info is supported.
 static bool valid_for_imagefilters(const SkImageInfo& info) {
@@ -83,6 +86,19 @@ sk_sp<SkShader> SkSpecialImage::asShader(const SkSamplingOptions& sampling,
                                          const SkMatrix& lm) const {
     return this->asShader(SkTileMode::kClamp, sampling, lm);
 }
+
+#if SK_GRAPHITE_ENABLED
+skgpu::graphite::TextureProxyView SkSpecialImage::textureProxyView() const {
+    return this->onTextureProxyView();
+}
+
+skgpu::graphite::TextureProxyView SkSpecialImage::onTextureProxyView() const {
+    // To get here we would need to be trying to retrieve a Graphite-backed resource from
+    // either a raster or Ganesh-backed special image. That should never happen.
+    SkASSERT(0);
+    return {};
+}
+#endif
 
 #ifdef SK_DEBUG
 bool SkSpecialImage::RectFits(const SkIRect& rect, int width, int height) {
