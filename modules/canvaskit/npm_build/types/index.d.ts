@@ -559,6 +559,7 @@ export interface CanvasKit {
     readonly TextAlign: TextAlignEnumValues;
     readonly TextBaseline: TextBaselineEnumValues;
     readonly TextDirection: TextDirectionEnumValues;
+    readonly LineBreakType: LineBreakTypeEnumValues;
     readonly TextHeightBehavior: TextHeightBehaviorEnumValues;
 
     // Paragraph Constants
@@ -981,6 +982,17 @@ export interface ParagraphBuilder extends EmbindObject<ParagraphBuilder> {
      * Canvas.
      */
     build(): Paragraph;
+
+    /**
+     * Returns a Paragraph object that can be used to be layout and paint the text to an
+     * Canvas.
+     */
+    buildWithClientInfo(bidiRegions?: Uint32Array | null,
+                        words?: | Uint32Array | null,
+                        graphemes?: Uint32Array | null,
+                        softLineBreaks?: | Uint32Array | null,
+                        hardLineBreaks?: | Uint32Array | null): Paragraph;
+    getText(): string;
 
     /**
      * Remove a style from the stack. Useful to apply different styles to chunks
@@ -4171,6 +4183,7 @@ export type RectWidthStyle = EmbindEnumEntity;
 export type TextAlign = EmbindEnumEntity;
 export type TextBaseline = EmbindEnumEntity;
 export type TextDirection = EmbindEnumEntity;
+export type LineBreakType = EmbindEnumEntity;
 export type TextHeightBehavior = EmbindEnumEntity;
 
 export interface AffinityEnumValues extends EmbindEnum {
@@ -4428,6 +4441,11 @@ export interface TextBaselineEnumValues extends EmbindEnum {
 export interface TextDirectionEnumValues extends EmbindEnum {
     LTR: TextDirection;
     RTL: TextDirection;
+}
+
+export interface LineBreakTypeEnumValues extends EmbindEnum {
+    SoftLineBreak: LineBreakType;
+    HardtLineBreak: LineBreakType;
 }
 
 export interface TextHeightBehaviorEnumValues extends EmbindEnum {
