@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d77633_958ac067",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T15:40:07Z",
+      "side": 1,
+      "message": "As we discussed, no need to re-review, I just addressed your comments and will be submitting the change now. Thank you for your attention to the details! Helps me get a better grasp on how you all do things.",
+      "revId": "ddf165786cdf48fe87fb9d44f5a35365ebe53337",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

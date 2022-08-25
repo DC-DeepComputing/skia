@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89638ddb_6763c9c9",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T15:40:07Z",
+      "side": 1,
+      "message": "Ah, yep, forgot to return it to one line after deleting the primitive blender info parameter.",
+      "parentUuid": "450100ae_9c681e7b",
+      "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10026071_d199d782",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-25T15:13:01Z",
       "side": 1,
       "message": "same here\nOh, and \u0027blendInfo\u0027 isn\u0027t really adding anything here so you can omit it",
+      "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af295f0_c9febc63",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T15:40:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10026071_d199d782",
       "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "817efe53_4939de52",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T15:40:07Z",
+      "side": 1,
+      "message": "Hmmm, yes, that appears to be the case. This method was added to the header file in a different CL (https://skia-review.googlesource.com/c/skia/+/566560) and should have had the body filled out (or at least have been properly stubbed). I suppose the compiler didn\u0027t yell at me since the method is not yet invoked anywhere.",
+      "parentUuid": "fe183b73_a2c3308d",
+      "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dd7cf0a_f58c73f9",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-08-25T15:13:01Z",
       "side": 1,
       "message": "I think this should go before the \u0027fShader\u0027 block. We\u0027re, roughly, trying to model the paint pipeline in our ordering in this method.",
+      "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f49d13cb_252bf290",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-25T15:40:07Z",
+      "side": 1,
+      "message": "Makes sense to me - moved it up 😊",
+      "parentUuid": "7dd7cf0a_f58c73f9",
       "revId": "bd965f946718fe9317118ba767b64cff3ff1997f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
