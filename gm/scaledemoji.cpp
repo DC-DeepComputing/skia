@@ -73,7 +73,7 @@ protected:
         // SDF path with scaling, path rendering with scaling
         SkFontMetrics metrics;
         SkScalar y = 0;
-        for (SkScalar textSize : { 70, 180, 270, 340 }) {
+        for (SkScalar textSize : { 80, 160, 320, 640 }) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
