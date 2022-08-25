@@ -151,6 +151,7 @@ bool Window_mac::attach(BackendType attachType) {
             break;
 #endif
         default:
+
             SkASSERT_RELEASE(false);
     }
     this->onBackendCreated();
