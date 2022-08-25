@@ -18,6 +18,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
 #include "src/utils/SkUTF.h"
 #include "tools/ToolUtils.h"
 
@@ -39,7 +40,7 @@ namespace skiagm {
 
 class ScaledEmojiGM : public GM {
 public:
-    ScaledEmojiGM() { }
+    ScaledEmojiGM() {}
 
 protected:
     struct EmojiFont {
@@ -49,7 +50,7 @@ protected:
 
     void onOnceBeforeDraw() override {
         fEmojiFont.fTypeface = ToolUtils::emoji_typeface();
-        fEmojiFont.fText     = ToolUtils::emoji_sample_text();
+        fEmojiFont.fText = ToolUtils::emoji_sample_text();
     }
 
     SkString onShortName() override {
@@ -73,7 +74,7 @@ protected:
         // SDF path with scaling, path rendering with scaling
         SkFontMetrics metrics;
         SkScalar y = 0;
-        for (SkScalar textSize : { 70, 180, 270, 340 }) {
+        for (SkScalar textSize : {70, 180, 270, 340}) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
