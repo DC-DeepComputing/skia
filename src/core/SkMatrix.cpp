@@ -1858,7 +1858,7 @@ SkScalar SkMatrixPriv::DifferentialAreaScale(const SkMatrix& m, const SkPoint& p
     SkPoint3 xyw;
     m.mapHomogeneousPoints(&xyw, &p, 1);
 
-    if (xyw.fZ < SK_ScalarNearlyZero) {
+    if (SkScalarAbs(xyw.fZ) < SK_ScalarNearlyZero) {
         // Reaching the discontinuity of xy/w and where the point would clip to w >= 0
         return SK_ScalarInfinity;
     }
