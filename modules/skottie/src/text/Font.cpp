@@ -11,6 +11,7 @@
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/sksg/include/SkSGPath.h"
+#include "modules/sksg/include/SkSGTransform.h"
 
 namespace skottie::internal {
 
@@ -47,15 +48,23 @@ bool Font::Builder::parseGlyph(const AnimationBuilder* abuilder,
     }
     const auto glyph_id = SkTo<SkGlyphID>(uni);
 
+    // Normalize the path and advance for 1pt.
     static constexpr float kPtScale = 0.01f;
     const auto advance = ParseDefault(jchar["w"], 0.0f) * kPtScale;
+
+    if (auto comp_node = ParseGlyphComp(abuilder, *jdata)) {
+        fCustomBuilder.setGlyph(glyph_id, advance, SkPath());
+
+        fGlyphComps.set(glyph_id, std::move(comp_node));
+
+        return true;
+    }
 
     SkPath path;
     if (!ParseGlyphPath(abuilder, *jdata, &path)) {
         return false;
     }
 
-    // Normalize the path and advance for 1pt.
     path.transform(SkMatrix::Scale(kPtScale, kPtScale));
 
     fCustomBuilder.setGlyph(glyph_id, advance, path);
@@ -122,8 +131,55 @@ bool Font::Builder::ParseGlyphPath(const skottie::internal::AnimationBuilder* ab
     return true;
 }
 
+sk_sp<sksg::RenderNode>
+Font::Builder::ParseGlyphComp(const AnimationBuilder* abuilder, const skjson::ObjectValue& jdata) {
+    AnimationBuilder::LayerInfo linfo{
+        {0,0},
+        ParseDefault<float>(jdata["ip"], 0.0f),
+        ParseDefault<float>(jdata["op"], 0.0f)
+    };
+
+    auto comp_node = abuilder->attachPrecompLayer(jdata, &linfo);
+
+    if (const skjson::ObjectValue* jtransform = jdata["ks"]) {
+        static constexpr float kPtScale = 0.01f;
+
+        auto normalizing_scale = sksg::Matrix<SkMatrix>::Make(SkMatrix::Scale(kPtScale, kPtScale));
+        auto transform_node = abuilder->attachMatrix2D(*jtransform, std::move(normalizing_scale));
+        comp_node = sksg::TransformEffect::Make(std::move(comp_node),
+                                                std::move(transform_node));
+    }
+
+    return comp_node;
+}
+
 std::unique_ptr<Font> Font::Builder::detach() {
-    return std::unique_ptr<Font>(new Font(fCustomBuilder.detach()));
+    return std::unique_ptr<Font>(new Font(std::move(fGlyphComps), fCustomBuilder.detach()));
+}
+
+Font::Font(GlyphCompMap&& glyph_comps, sk_sp<SkTypeface> tf)
+    : fGlyphComps(std::move(glyph_comps))
+    , fTypeface(std::move(tf))
+{}
+
+Font::~Font() = default;
+
+sk_sp<sksg::RenderNode> Font::operator[](SkGlyphID gid) const {
+    if (auto* n = fGlyphComps.find(gid)) {
+        return *n;
+    }
+
+    return nullptr;
+}
+
+sk_sp<sksg::RenderNode> GlyphCompMapper::getGlyphComp(const SkTypeface* tf, SkGlyphID gid) const {
+    for (const auto& font : fFonts) {
+        if (font->typeface().get() == tf) {
+            return (*font)[gid];
+        }
+    }
+
+    return nullptr;
 }
 
 }  // namespace skottie::internal
