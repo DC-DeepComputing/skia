@@ -460,6 +460,12 @@ bool GrDirectContext::supportsDistanceFieldText() const {
     return this->caps()->shaderCaps()->supportsDistanceFieldText();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+bool GrDirectContext::supportsPerspectiveDistanceFieldText() const {
+    return !this->caps()->disablePerspectiveSDFText();
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 void GrDirectContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {

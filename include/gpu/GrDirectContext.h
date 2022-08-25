@@ -412,6 +412,7 @@ public:
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
     bool supportsDistanceFieldText() const;
+    bool supportsPerspectiveDistanceFieldText() const;
 
     void storeVkPipelineCacheData();
 
