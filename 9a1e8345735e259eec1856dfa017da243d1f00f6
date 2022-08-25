@@ -16,6 +16,23 @@
       "message": "AUTHORS updated",
       "revId": "9a1e8345735e259eec1856dfa017da243d1f00f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b275b67_b37fbaa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T14:06:28Z",
+      "side": 1,
+      "message": "It looks like the bots are running now. They are complaining about unused variables.",
+      "revId": "9a1e8345735e259eec1856dfa017da243d1f00f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
