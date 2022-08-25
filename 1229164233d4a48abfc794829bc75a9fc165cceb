@@ -16,6 +16,24 @@
       "message": "PS4 fixes a bug here. MSVC, older clang, etc... have all nullptr lowp stages, regardless.",
       "revId": "1229164233d4a48abfc794829bc75a9fc165cceb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81105107_5a829cf6",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T18:56:31Z",
+      "side": 1,
+      "message": "Still LGTM",
+      "parentUuid": "eff5c989_afdb6d84",
+      "revId": "1229164233d4a48abfc794829bc75a9fc165cceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
