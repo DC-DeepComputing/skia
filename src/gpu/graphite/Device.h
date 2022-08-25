@@ -41,6 +41,7 @@ class Renderer;
 class Shape;
 class StrokeStyle;
 class TextureProxy;
+class TextureProxyView;
 
 class Device final : public SkBaseDevice  {
 public:
@@ -75,6 +76,7 @@ public:
 #if GRAPHITE_TEST_UTILS
     TextureProxy* proxy();
 #endif
+    TextureProxyView readSurfaceView();
 
 private:
     class IntersectionTreeSet;
@@ -153,9 +155,9 @@ private:
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
 
-    void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override {}
+    void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override;
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
-                     const SkSamplingOptions&, const SkPaint&) override {}
+                     const SkSamplingOptions&, const SkPaint&) override;
 
     sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
     sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;

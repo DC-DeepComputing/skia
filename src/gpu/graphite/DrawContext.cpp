@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/UploadTask.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "src/gpu/graphite/geom/Geometry.h"
@@ -62,6 +63,14 @@ DrawContext::~DrawContext() {
     // If the DC is destroyed and there are pending commands, they won't be drawn.
     fPendingDraws.reset();
     fDrawPasses.clear();
+}
+
+TextureProxyView DrawContext::readSurfaceView(const Caps* caps) {
+    TextureProxy* proxy = this->target();
+    Swizzle swizzle = caps->getReadSwizzle(this->imageInfo().colorType(),
+                                           proxy->textureInfo());
+
+    return TextureProxyView(sk_ref_sp(proxy), swizzle);
 }
 
 void DrawContext::clear(const SkColor4f& clearColor) {
