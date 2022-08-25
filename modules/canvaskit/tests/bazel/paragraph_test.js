@@ -1038,4 +1038,107 @@ describe('Paragraph Behavior', function() {
         fontMgr.delete();
         builder.delete();
     });
+
+    gm('paragraph_client_icu', (canvas) => {
+        const paint = new CanvasKit.Paint();
+
+        paint.setColor(CanvasKit.RED);
+        paint.setStyle(CanvasKit.PaintStyle.Stroke);
+
+        const fontMgr = CanvasKit.FontMgr.FromData(robotoFontBuffer);
+        expect(fontMgr.countFamilies()).toEqual(1);
+        expect(fontMgr.getFamilyName(0)).toEqual('Roboto');
+
+        const wrapTo = 200;
+
+        const paraStyle = new CanvasKit.ParagraphStyle({
+            textStyle: {
+                color: CanvasKit.BLACK,
+                fontFamilies: ['Roboto'],
+                fontSize: 50,
+                maxLines: 3,
+            },
+            textAlign: CanvasKit.TextAlign.Left,
+            maxLines: 3,
+        });
+
+        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
+        builder.addText('The quick brown fox ate a hamburgerfons and got sick.');
+
+        const text = builder.getText();
+
+        const bidis = CanvasKit.Malloc(Uint32Array, 3);
+        bidis.toTypedArray().set([0, text.length, 0]);
+
+        const words = CanvasKit.Malloc(Uint32Array, 2);
+        words.toTypedArray().set([0, text.length]);
+
+        const graphemes = CanvasKit.Malloc(Uint32Array, text.length + 1);
+        let graphemesArr = graphemes.toTypedArray();
+        for (let i = 0; i <= text.length; i++) {
+            graphemesArr[i] = i;
+        }
+
+        var spaces = [0];
+        for (var i = 0; i < text.length; ++i) {
+          i = text.indexOf(' ', i);
+          if (i == -1) break;
+          spaces[spaces.length] = i + 1;
+        }
+        spaces[spaces.length] = text.length;
+        const softBreaks = CanvasKit.Malloc(Uint32Array, spaces.length);
+        softBreaks.toTypedArray().set(spaces);
+
+        var newLines = [];
+        for (var i = 0; i < text.length; ++i) {
+          i = text.indexOf('\n', i);
+          if (i == -1) break;
+          newLines[newLines.length] = i + 1;
+        }
+        const hardBreaks = CanvasKit.Malloc(Uint32Array, newLines.length);
+        hardBreaks.toTypedArray().set(newLines);
+
+        const paragraph = builder.buildWithClientInfo(
+            bidis,
+            words,
+            graphemesArr,
+            softBreaks,
+            hardBreaks
+        );
+
+        paragraph.layout(600);
+
+        expect(paragraph.didExceedMaxLines()).toBeFalsy();
+        expect(paragraph.getAlphabeticBaseline()).toBeCloseTo(46.386, 3);
+        expect(paragraph.getHeight()).toEqual(177);
+        expect(paragraph.getIdeographicBaseline()).toBeCloseTo(58.593, 3);
+        expect(paragraph.getLongestLine()).toBeCloseTo(570.898, 3);
+        expect(paragraph.getMaxIntrinsicWidth()).toBeCloseTo(1220.579, 3);
+        expect(paragraph.getMaxWidth()).toEqual(600);
+        expect(paragraph.getMinIntrinsicWidth()).toBeCloseTo(341.700, 3);
+
+        const lineMetrics = paragraph.getLineMetrics();
+        expect(lineMetrics.length).toEqual(3); // 3 lines worth of metrics
+        const flm = lineMetrics[0]; // First Line Metric
+        expect(flm.startIndex).toEqual(0);
+        expect(flm.endExcludingWhitespaces).toEqual(25)
+        expect(flm.endIndex).toEqual(26); // Including whitespaces but
+                                          // excluding newlines
+        expect(flm.endIncludingNewline).toEqual(26);
+        expect(flm.lineNumber).toEqual(0);
+        expect(flm.isHardBreak).toEqual(false);
+        expect(flm.ascent).toBeCloseTo(46.386, 3);
+        expect(flm.descent).toBeCloseTo(12.207, 3);
+        expect(flm.height).toBeCloseTo(59.000, 3);
+        expect(flm.width).toBeCloseTo(570.900, 3);
+        expect(flm.left).toBeCloseTo(0, 3);
+        expect(flm.baseline).toBeCloseTo(46.792, 3);
+
+        canvas.drawParagraph(paragraph, 10, 10);
+
+        paint.delete();
+        fontMgr.delete();
+        paragraph.delete();
+        builder.delete();
+});
 });
