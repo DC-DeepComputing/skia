@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d938ee4_bd1ff858",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-25T13:28:41Z",
+      "side": 1,
+      "message": "should this be a little more specific? Like if I just saw this cap I could think it means we don\u0027t support doing any text in perspective (even as paths). Maybe disablePerspectiveForSDF? Because I imagine we also want to disable perspective for the small path renderer as well?",
+      "range": {
+        "startLine": 520,
+        "startChar": 9,
+        "endLine": 520,
+        "endChar": 31
+      },
+      "revId": "8cb97ae94747001cd72ceb24503054eb9d4ed9bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff4cd661_e921aad1",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-25T13:28:41Z",
+      "side": 1,
+      "message": "Why is this one always true get the getSDFTControl on RecordingContext uses the caps? Also why do we even get both of these variations of getSDFTControl?",
+      "range": {
+        "startLine": 85,
+        "startChar": 12,
+        "endLine": 85,
+        "endChar": 17
+      },
+      "revId": "8cb97ae94747001cd72ceb24503054eb9d4ed9bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
