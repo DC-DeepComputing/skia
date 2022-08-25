@@ -16,6 +16,52 @@
       "message": "I\u0027m going to be adding a bunch of highp-only stages for SkSL ... and I was really getting sick of adding NOT_IMPLEMENTED for each one. Shaving 1k of .data/.text is just a bonus.",
       "revId": "58020f2a775091b428739029f570c46695afde40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1e7044_a5024a44",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T16:11:16Z",
+      "side": 1,
+      "message": "This needs a comment about stage ordering.",
+      "range": {
+        "startLine": 390,
+        "startChar": 12,
+        "endLine": 390,
+        "endChar": 46
+      },
+      "revId": "58020f2a775091b428739029f570c46695afde40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b569ea0_b3ef2c3c",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-25T16:11:16Z",
+      "side": 1,
+      "message": "Ahhhhhhh (runs away screaming).",
+      "range": {
+        "startLine": 254,
+        "startChar": 8,
+        "endLine": 254,
+        "endChar": 16
+      },
+      "revId": "58020f2a775091b428739029f570c46695afde40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
