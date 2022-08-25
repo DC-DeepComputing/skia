@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d04451c_78e58661",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-25T15:56:58Z",
+      "side": 1,
+      "message": "Is there value to this being a public api query? Like would anyone besides our internal skia class need it? If not can we just make that class go through caps to the query itself?",
+      "range": {
+        "startLine": 415,
+        "startChar": 0,
+        "endLine": 415,
+        "endChar": 54
+      },
+      "revId": "2a6955a7eab81c7592cf90565be92b2c3b479b57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
