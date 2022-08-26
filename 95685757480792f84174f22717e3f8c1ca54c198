@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ebf9252_d359ef15",
+        "filename": "include/encode/SkEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-08-26T17:13:22Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t follow what\u0027s going on in gif2webp. How does that allow using offsets?\n\nIt\u0027s a bit roundabout! `GIFReadFrame()` sets a view, using the gif rectangle, into the canvas sized `WebPPicture` [1] and then `GIFBlendFrames()` will use the rectangle to merge to the previous canvas [2]. The encoder will then rediscover the sub rectangle or rectangles [3][4].\n\nI think the API could have handled this blending, but as it is now the application would need to handle it.\n\nGiven all that, for this image [5] you can end up with something like:\n\n```\nCanvas size: 990 x 1050\nFeatures present: animation transparency\nBackground color : 0x00000000  Loop Count : 0\nNumber of frames: 8\nNo.: width height alpha x_offset y_offset duration   dispose blend image_size  compression\n  1:   630   870   yes      240      180      100       none    no        396    lossless\n  2:   750   930   yes      180      120      100       none    no        416    lossless\n  3:   960  1050   yes       30        0      100 background    no        514    lossless\n  4:   810   990   yes       30       60      100 background   yes        420    lossless\n  5:   630   870   yes      120      180      100       none   yes        394    lossless\n  6:   750   930   yes       60      120      100       none    no        416    lossless\n  7:   960  1050   yes        0        0      100 background    no        510    lossless\n  8:   810   990   yes      150       60      100       none   yes        426    lossless\n```\n\n[1] https://chromium.googlesource.com/webm/libwebp/+/e8f83de2867456a75b13aa1e876b22e2d1e1c077/examples/gifdec.c#131\n[2] https://chromium.googlesource.com/webm/libwebp/+/e8f83de2867456a75b13aa1e876b22e2d1e1c077/examples/gifdec.c#280\n[3] https://chromium.googlesource.com/webm/libwebp/+/e8f83de2867456a75b13aa1e876b22e2d1e1c077/src/mux/anim_encode.c#1052\n[4] https://chromium.googlesource.com/webm/libwebp/+/e8f83de2867456a75b13aa1e876b22e2d1e1c077/src/mux/anim_encode.c#532\n[5] https://storage.googleapis.com/downloads.webmproject.org/webp/images/dancing-banana.gif",
+      "parentUuid": "1429ae51_a5d9955a",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9df14648_c980cf6c",
         "filename": "include/encode/SkWebpEncoder.h",
         "patchSetId": 3
