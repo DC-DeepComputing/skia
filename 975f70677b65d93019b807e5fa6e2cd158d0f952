@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16051f99_314130d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-26T14:10:43Z",
+      "side": 1,
+      "message": "Yeah, this seems better since graphite will fit in more automatically.",
+      "revId": "975f70677b65d93019b807e5fa6e2cd158d0f952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
