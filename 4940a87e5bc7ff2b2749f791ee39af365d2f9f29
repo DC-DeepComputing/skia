@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce20bf9e_ebbef966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T14:34:21Z",
+      "side": 1,
+      "message": "I now remember seeing this. Emscripten doesn\u0027t support platforms yet (but our rules use platforms).\n\nTry compiling with --noincompatible_enable_cc_toolchain_resolution\n\nhttps://github.com/google/skia/blob/3f1bd6d9bf3865bdf5f789966431f8467a57fc61/bazel/buildrc#L52-L53",
+      "parentUuid": "6043318c_ee98575b",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00630cd6_d6573c91",
         "filename": "gn/skia.gni",
         "patchSetId": 2
