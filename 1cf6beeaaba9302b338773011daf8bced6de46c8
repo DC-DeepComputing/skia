@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cd6fc25_d8a1f885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-26T19:11:16Z",
+      "side": 1,
+      "message": "I found one error in the generated files post LGTM that I fixed in PS20. There are some files, like include/core/SkDrawLooper.h, which are deprecated and not in the current *.gni files.\n\nA second look is welcome, but I\u0027m also waiting for the canary builds in http://review.skia.org/569117 to successfully complete.",
+      "revId": "1cf6beeaaba9302b338773011daf8bced6de46c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
