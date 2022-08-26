@@ -39,6 +39,30 @@
       },
       "revId": "4c3a4e4466baa55cd9e883f78500334dc518c994",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f70032_faa1674d",
+        "filename": "include/core/SkRect.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T20:15:44Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/574216/",
+      "parentUuid": "bd3bba1c_e0bd1cb2",
+      "range": {
+        "startLine": 219,
+        "startChar": 96,
+        "endLine": 219,
+        "endChar": 103
+      },
+      "revId": "4c3a4e4466baa55cd9e883f78500334dc518c994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
