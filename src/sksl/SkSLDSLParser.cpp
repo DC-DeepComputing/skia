@@ -935,7 +935,6 @@ DSLModifiers DSLParser::modifiers() {
     }
     int flags = 0;
     for (;;) {
-        // TODO: handle duplicate flags
         int tokenFlag = parse_modifier_token(peek().fKind);
         if (!tokenFlag) {
             break;
@@ -945,6 +944,11 @@ DSLModifiers DSLParser::modifiers() {
         // functions before the IR is built, so testing for it in Convert gives false positives.
         if (tokenFlag == Modifiers::kHasSideEffects_Flag && !ThreadContext::IsModule()) {
             this->error(modifier, "'sk_has_side_effects' is not permitted here");
+        }
+        int repeatedFlags = (tokenFlag & flags);
+        if (tokenFlag & flags) {
+            this->error(modifier, "'" + Modifiers::DescribeFlags(repeatedFlags) +
+                                  "' appears more than once");
         }
         flags |= tokenFlag;
         end = this->position(modifier).endOffset();
