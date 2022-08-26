@@ -22,6 +22,30 @@
       },
       "revId": "385ab785839108ebc9d5bd593325580d7d57a86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe82f016_dc01f94b",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-26T14:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aa471d7_4ea137a9",
+      "range": {
+        "startLine": 839,
+        "startChar": 1,
+        "endLine": 839,
+        "endChar": 4
+      },
+      "revId": "385ab785839108ebc9d5bd593325580d7d57a86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

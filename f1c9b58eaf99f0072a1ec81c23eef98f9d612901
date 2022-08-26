@@ -471,6 +471,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d816e80_678c83d2",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-26T14:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a43b5de_779e451b",
+      "range": {
+        "startLine": 451,
+        "startChar": 79,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b8891df_e3795f0c",
@@ -578,6 +602,30 @@
       "writtenOn": "2022-08-15T20:05:55Z",
       "side": 1,
       "message": "suggestion/idea: We run gn format on the outputted gni files? Then our generation logic can be a little bit simpler and we know they are formatted correctly.",
+      "range": {
+        "startLine": 538,
+        "startChar": 39,
+        "endLine": 538,
+        "endChar": 48
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a648a7bb_8be6ab2b",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-26T14:18:58Z",
+      "side": 1,
+      "message": "Done.\n\nUp till now, CheckCurrent() generated in-memory GNI content and compared it with the on-disk files. It also verified the correct variables were exported. I changed this to only do the variable check. The presubmit check will do a normal export (followed by a gn format) for the GNI verification. I think this is a better developer experience (with less code).",
+      "parentUuid": "dddeb032_1d3e7942",
       "range": {
         "startLine": 538,
         "startChar": 39,
@@ -1178,6 +1226,30 @@
       "side": 1,
       "message": "Ack. Can you add that as a comment?",
       "parentUuid": "85daf1af_b729d1d0",
+      "range": {
+        "startLine": 589,
+        "startChar": 4,
+        "endLine": 589,
+        "endChar": 5
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1771e701_95f8a091",
+        "filename": "bazel/exporter/gni_exporter_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-26T14:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ff69f47_45169c70",
       "range": {
         "startLine": 589,
         "startChar": 4,
