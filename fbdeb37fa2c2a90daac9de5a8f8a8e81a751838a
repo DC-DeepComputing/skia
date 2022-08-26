@@ -22,6 +22,30 @@
       },
       "revId": "fbdeb37fa2c2a90daac9de5a8f8a8e81a751838a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86310951_7d293525",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-26T19:10:35Z",
+      "side": 1,
+      "message": "In terms of codegen it makes no difference AFAIK, but from a style perspective I agree, we should probably use the Metal approach here. It\u0027s cleaner. Want a followup CL that does this?",
+      "parentUuid": "8b37d0f1_169efb17",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 21
+      },
+      "revId": "fbdeb37fa2c2a90daac9de5a8f8a8e81a751838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
