@@ -16,6 +16,23 @@
       "message": "Added original author",
       "revId": "787d20338f6b023deec84240d4b23823f37646ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d3efb91_9a3f20a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-26T14:08:22Z",
+      "side": 1,
+      "message": "@Cary, thanks for the fix.",
+      "revId": "787d20338f6b023deec84240d4b23823f37646ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
