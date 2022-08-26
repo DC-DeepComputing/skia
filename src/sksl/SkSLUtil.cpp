@@ -36,7 +36,7 @@ std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
 }
 #else
 std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
-    return std::make_unique<GrShaderCaps>();
+    return std::make_unique<ShaderCaps>();
 }
 #endif  // defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
 
