@@ -16,6 +16,126 @@
       "message": "This is unfortunately is not able to find the emscripten headers, the error is as follows.\n\n└─ $ ▶ bazel build //example:hello_world_wasm\nINFO: Analyzed target //example:hello_world_wasm (0 packages loaded, 0 targets configured).\nINFO: Found 1 target...\nERROR: /home/ubuntu/skia/BUILD.bazel:8:16: Compiling src/gpu/ganesh/gl/webgl/GrGLMakeNativeInterface_webgl.cpp failed: (Exit 1): clang_trampoline_linux.sh failed: error executing command toolchain/linux_trampolines/clang_trampoline_linux.sh -MD -MF bazel-out/wasm-fastbuild-ST-44e122afa881/bin/_objs/skia_public/GrGLMakeNativeInterface_webgl.d ... (remaining 142 arguments skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nsrc/gpu/ganesh/gl/webgl/GrGLMakeNativeInterface_webgl.cpp:10:10: fatal error: \u0027emscripten/html5.h\u0027 file not found\n#include \u003cemscripten/html5.h\u003e\n         ^~~~~~~~~~~~~~~~~~~~\n1 error generated.\nTarget //example:hello_world_wasm failed to build\n",
       "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05905c15_334d48c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "I made comments on the Bazel stuff. Deferring to Brian for C++ stuff.",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00630cd6_d6573c91",
+        "filename": "gn/skia.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "You do not need to modify .gni files when adding Bazel support",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "654584f0_785458bf",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "nit: put this at the bottom of the list",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 13
+      },
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7dc3442_b5854ba3",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "Please do not turn on flags by default.",
+      "range": {
+        "startLine": 42,
+        "startChar": 14,
+        "endLine": 42,
+        "endChar": 18
+      },
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dddf6cb7_bc3b4d50",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "Is the goal to have sdl2 *not* work for a Linux/unix build? Items in a select statement are mutually exclusive.",
+      "range": {
+        "startLine": 69,
+        "startChar": 46,
+        "endLine": 69,
+        "endChar": 50
+      },
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742426b2_16e9d626",
+        "filename": "tools/sk_app/sdl2/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T12:20:18Z",
+      "side": 1,
+      "message": "Instead of putting all these linkopts here, bundle them into a cc_library under //bazel/external/sdl2, similar to how we handle fontconfig: https://github.com/google/skia/blob/main/bazel/external/fontconfig/BUILD.bazel\n\nYou\u0027ll also need to add to //WORKSPACE.bazel",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
