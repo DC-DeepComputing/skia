@@ -180,6 +180,7 @@ public:
 
 private:
     friend class CompositionBuilder;
+    friend class Font;
     friend class LayerBuilder;
 
     struct AttachLayerContext;
@@ -286,6 +287,7 @@ private:
 
     SkTHashMap<SkString, AssetInfo>                fAssets;
     SkTHashMap<SkString, FontInfo>                 fFonts;
+    sk_sp<GlyphCompMapper>                         fCustomGlyphMapper;
     mutable SkTHashMap<SkString, FootageAssetInfo> fImageAssetCache;
 
     using INHERITED = SkNoncopyable;

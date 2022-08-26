@@ -27,10 +27,12 @@ class Matrix;
 namespace skottie {
 namespace internal {
 
+class GlyphCompMapper;
+
 class TextAdapter final : public AnimatablePropertyContainer {
 public:
     static sk_sp<TextAdapter> Make(const skjson::ObjectValue&, const AnimationBuilder*,
-                                   sk_sp<SkFontMgr>, sk_sp<Logger>);
+                                   sk_sp<SkFontMgr>, sk_sp<GlyphCompMapper>, sk_sp<Logger>);
 
     ~TextAdapter() override;
 
@@ -50,7 +52,7 @@ private:
         kAll,
     };
 
-    TextAdapter(sk_sp<SkFontMgr>, sk_sp<Logger>, AnchorPointGrouping);
+    TextAdapter(sk_sp<SkFontMgr>, sk_sp<GlyphCompMapper>, sk_sp<Logger>, AnchorPointGrouping);
 
     struct FragmentRec {
         SkPoint                      fOrigin; // fragment position
@@ -65,6 +67,7 @@ private:
     };
 
     void reshape();
+    std::vector<sk_sp<sksg::RenderNode>> makeTextNode(Shaper::Fragment&) const;
     void addFragment(Shaper::Fragment&);
     void buildDomainMaps(const Shaper::Result&);
 
@@ -80,6 +83,7 @@ private:
 
     const sk_sp<sksg::Group>         fRoot;
     const sk_sp<SkFontMgr>           fFontMgr;
+    const sk_sp<GlyphCompMapper>     fCustomGlyphMapper;
     sk_sp<Logger>                    fLogger;
     const AnchorPointGrouping        fAnchorPointGrouping;
 

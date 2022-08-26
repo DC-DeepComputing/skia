@@ -275,15 +275,28 @@ bool AnimationBuilder::resolveEmbeddedTypefaces(const skjson::ArrayValue& jchars
 
     // Final pass to commit custom typefaces.
     auto has_unresolved = false;
-    fFonts.foreach([&has_unresolved](const SkString&, FontInfo* finfo) {
+    std::vector<std::unique_ptr<Font>> custom_fonts;
+    fFonts.foreach([&has_unresolved, &custom_fonts](const SkString&, FontInfo* finfo) {
         if (finfo->fTypeface) {
             return; // already resolved
         }
 
-        finfo->fTypeface = finfo->fCustomFontBuilder.detach()->typeface();
+        auto font = finfo->fCustomFontBuilder.detach();
+
+        finfo->fTypeface = font->typeface();
+
+        if (font->customGlyphCount() > 0) {
+            custom_fonts.push_back(std::move(font));
+        }
 
         has_unresolved |= !finfo->fTypeface;
     });
+
+    // Stash custom font data for later use.
+    if (!custom_fonts.empty()) {
+        custom_fonts.shrink_to_fit();
+        fCustomGlyphMapper = sk_make_sp<GlyphCompMapper>(std::move(custom_fonts));
+    }
 
     return !has_unresolved;
 }
@@ -293,6 +306,7 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachTextLayer(const skjson::ObjectVa
     return this->attachDiscardableAdapter<TextAdapter>(jlayer,
                                                        this,
                                                        fLazyFontMgr.getMaybeNull(),
+                                                       fCustomGlyphMapper,
                                                        fLogger);
 }
 
