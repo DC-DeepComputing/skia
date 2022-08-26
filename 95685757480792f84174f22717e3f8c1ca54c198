@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "473ea097_b1e45f26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "Still needs tests. You could put them in `skia/tests/EncodeTest.cpp` or add a new file.",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6addd38d_4e649205",
@@ -14,6 +31,162 @@
       "writtenOn": "2022-08-25T18:18:32Z",
       "side": 1,
       "message": "This is an ok start. Another option would be to blend the frame to the previous canvas like we do in gif2webp. That would hide the limitation from the user.",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1429ae51_a5d9955a",
+        "filename": "include/encode/SkEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "I don\u0027t follow what\u0027s going on in gif2webp. How does that allow using offsets?",
+      "parentUuid": "6addd38d_4e649205",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9df14648_c980cf6c",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": ". I\n\nThis is a new sentence.",
+      "range": {
+        "startLine": 52,
+        "startChar": 67,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f0623c_fd366398",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "nit: Sorry, I was thinking this would go on line 146, right after the line where we set `custom_ptr`.",
+      "range": {
+        "startLine": 142,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 30
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e51268c_51e4c9ab",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "We might want to also check for a null stream.",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 25
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd293ea_398c77cd",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "const",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 7
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdeda0fc_ec333f9e",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "canvasWidth*",
+      "range": {
+        "startLine": 184,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 20
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e06fd5_af90a97a",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-26T15:04:47Z",
+      "side": 1,
+      "message": "I suppose this will fail if width and height are bad?",
+      "range": {
+        "startLine": 189,
+        "startChar": 12,
+        "endLine": 189,
+        "endChar": 30
+      },
       "revId": "95685757480792f84174f22717e3f8c1ca54c198",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
