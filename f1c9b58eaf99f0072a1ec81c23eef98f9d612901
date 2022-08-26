@@ -1307,6 +1307,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "701aa705_c39b24b4",
+        "filename": "bazel/exporter/interfaces/file_system.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-26T14:29:51Z",
+      "side": 1,
+      "message": "This seems like a reasonable approach.",
+      "parentUuid": "29d73540_51ead0c4",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 30
+      },
+      "revId": "f1c9b58eaf99f0072a1ec81c23eef98f9d612901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed51a68c_88469847",
