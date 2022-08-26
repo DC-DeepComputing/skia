@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b37d0f1_169efb17",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-26T19:01:59Z",
+      "side": 1,
+      "message": "Just a question: in some cases you have the string hardcoded, in others - define static constexpr char (like kInverse2x2). Shouldn\u0027t it be the same everywhere?",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 21
+      },
+      "revId": "fbdeb37fa2c2a90daac9de5a8f8a8e81a751838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
