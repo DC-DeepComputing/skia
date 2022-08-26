@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20d1fec_03c5d495",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-26T18:46:14Z",
+      "side": 0,
+      "message": "Most of the changes to SubRunContainer.h/cpp are related to this so that we don\u0027t have to forward declare classes in anonymous namespaces. It was working but clangd was giving me warnings and it seems brittle.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 1
+      },
+      "revId": "bb5e046310e72bb8ccb9dcc0d9dd8d00add7facc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
