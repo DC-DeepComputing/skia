@@ -68,8 +68,8 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+#include <algorithm>
 #include <cmath>
-#include <set>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -3941,7 +3941,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
         return;
     }
     // Emit interface blocks.
-    std::set<SpvId> interfaceVars;
+    SkTArray<SpvId> interfaceVars;
     for (const ProgramElement* e : program.elements()) {
         if (e->is<InterfaceBlock>()) {
             const InterfaceBlock& intf = e->as<InterfaceBlock>();
@@ -3950,7 +3950,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
             const Modifiers& modifiers = intf.variable().modifiers();
             if ((modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) &&
                 modifiers.fLayout.fBuiltin == -1 && !this->isDead(intf.variable())) {
-                interfaceVars.insert(id);
+                interfaceVars.push_back(id);
             }
         }
     }
@@ -3987,9 +3987,14 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
         if (var->storage() == Variable::Storage::kGlobal &&
             (var->modifiers().fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) &&
             !this->isDead(*var)) {
-            interfaceVars.insert(spvId);
+            interfaceVars.push_back(spvId);
         }
     }
+    // Remove any duplicates from the interface variable list.
+    std::sort(interfaceVars.begin(), interfaceVars.end());
+    int numInterfaceVars = std::distance(interfaceVars.begin(),
+                                         std::unique(interfaceVars.begin(), interfaceVars.end()));
+    interfaceVars.resize(numInterfaceVars);
     this->writeCapabilities(out);
     this->writeInstruction(SpvOpExtInstImport, fGLSLExtendedInstructions, "GLSL.std.450", out);
     this->writeInstruction(SpvOpMemoryModel, SpvAddressingModelLogical, SpvMemoryModelGLSL450, out);
