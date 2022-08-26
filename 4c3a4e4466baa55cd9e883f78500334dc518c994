@@ -16,6 +16,29 @@
       "message": "This also appears to have shaved 2.5K off of the build! Not bad.",
       "revId": "4c3a4e4466baa55cd9e883f78500334dc518c994",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd3bba1c_e0bd1cb2",
+        "filename": "include/core/SkRect.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-26T20:10:44Z",
+      "side": 1,
+      "message": "nit: line too long (here and below)",
+      "range": {
+        "startLine": 219,
+        "startChar": 96,
+        "endLine": 219,
+        "endChar": 103
+      },
+      "revId": "4c3a4e4466baa55cd9e883f78500334dc518c994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
