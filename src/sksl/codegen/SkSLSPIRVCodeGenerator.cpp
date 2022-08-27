@@ -69,7 +69,6 @@
 #include "src/sksl/ir/SkSLVariableReference.h"
 
 #include <cmath>
-#include <set>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -3340,7 +3339,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     const Type& type = intfVar.type();
     if (!memoryLayout.isSupported(type)) {
         fContext.fErrors->error(type.fPosition, "type '" + type.displayName() +
-                                            "' is not permitted here");
+                                                "' is not permitted here");
         return this->nextId(nullptr);
     }
     SpvStorageClass_ storageClass = get_storage_class(intf.variable(), SpvStorageClassFunction);
@@ -3941,7 +3940,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
         return;
     }
     // Emit interface blocks.
-    std::set<SpvId> interfaceVars;
+    SkTArray<SpvId> interfaceVars;
     for (const ProgramElement* e : program.elements()) {
         if (e->is<InterfaceBlock>()) {
             const InterfaceBlock& intf = e->as<InterfaceBlock>();
@@ -3950,7 +3949,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
             const Modifiers& modifiers = intf.variable().modifiers();
             if ((modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) &&
                 modifiers.fLayout.fBuiltin == -1 && !this->isDead(intf.variable())) {
-                interfaceVars.insert(id);
+                interfaceVars.push_back(id);
             }
         }
     }
@@ -3987,7 +3986,11 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
         if (var->storage() == Variable::Storage::kGlobal &&
             (var->modifiers().fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) &&
             !this->isDead(*var)) {
-            interfaceVars.insert(spvId);
+            // Make sure it's not already in the list.
+            if (std::find(interfaceVars.begin(), interfaceVars.end(), spvId) ==
+                interfaceVars.end()) {
+                interfaceVars.push_back(spvId);
+            }
         }
     }
     this->writeCapabilities(out);
