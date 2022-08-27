@@ -1,7 +1,7 @@
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
-OpEntryPoint Fragment %main "main" %sk_Clockwise %sk_FragColor %vLocalCoord_Stage0
+OpEntryPoint Fragment %main "main" %sk_FragColor %sk_Clockwise %vLocalCoord_Stage0
 OpExecutionMode %main OriginUpperLeft
 OpName %uniformBuffer "uniformBuffer"
 OpMemberName %uniformBuffer 0 "sk_RTAdjust"
