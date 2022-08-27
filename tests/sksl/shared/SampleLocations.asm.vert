@@ -1,7 +1,7 @@
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
-OpEntryPoint Vertex %main "main" %3 %sk_InstanceID %sk_VertexID %vcoord_Stage0
+OpEntryPoint Vertex %main "main" %3 %vcoord_Stage0 %sk_InstanceID %sk_VertexID
 OpName %sk_PerVertex "sk_PerVertex"
 OpMemberName %sk_PerVertex 0 "sk_Position"
 OpMemberName %sk_PerVertex 1 "sk_PointSize"
