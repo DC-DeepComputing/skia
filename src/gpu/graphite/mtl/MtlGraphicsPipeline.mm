@@ -290,6 +290,9 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     auto skslCompiler = resourceProvider->skslCompiler();
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
+    const RenderStep* renderStep =
+            sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
+
     BlendInfo blendInfo;
     bool localCoordsNeeded = false;
     bool shadingSsboIndexNeeded = false;
@@ -297,7 +300,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     if (!SkSLToMSL(skslCompiler,
                    GetSkSLFS(dict,
                              runtimeDict,
-                             pipelineDesc,
+                             renderStep,
+                             pipelineDesc.paintID(),
                              &blendInfo,
                              &localCoordsNeeded,
                              &shadingSsboIndexNeeded),
@@ -310,7 +314,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     }
 
     if (!SkSLToMSL(skslCompiler,
-                   GetSkSLVS(pipelineDesc, localCoordsNeeded, shadingSsboIndexNeeded),
+                   GetSkSLVS(renderStep, localCoordsNeeded, shadingSsboIndexNeeded),
                    SkSL::ProgramKind::kGraphiteVertex,
                    settings,
                    &msl[kVertex_ShaderType],
