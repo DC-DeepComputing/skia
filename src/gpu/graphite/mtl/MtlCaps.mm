@@ -555,7 +555,11 @@ TextureInfo MtlCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledI
     info.fLevelCount = 1;
     info.fFormat = singleSpec.fFormat;
     info.fUsage = usage;
-    info.fStorageMode = MTLStorageModePrivate;
+    if (@available(macOS 11.0, iOS 10.0, *)) {
+        info.fStorageMode = MTLStorageModeMemoryless;
+    } else {
+        info.fStorageMode = MTLStorageModePrivate;
+    }
     info.fFramebufferOnly = false;
 
     return info;
@@ -570,7 +574,11 @@ TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
     info.fLevelCount = 1;
     info.fFormat = MtlDepthStencilFlagsToFormat(depthStencilType);
     info.fUsage = MTLTextureUsageRenderTarget;
-    info.fStorageMode = MTLStorageModePrivate;
+    if (@available(macOS 11.0, iOS 10.0, *)) {
+        info.fStorageMode = MTLStorageModeMemoryless;
+    } else {
+        info.fStorageMode = MTLStorageModePrivate;
+    }
     info.fFramebufferOnly = false;
 
     return info;
@@ -607,18 +615,23 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
             builder[i] = pipelineDescKey[i];
         }
         // add renderpassdesc key
-        MtlTextureInfo colorInfo, depthStencilInfo;
-        renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&colorInfo);
-        renderPassDesc.fDepthStencilAttachment.fTextureInfo.getMtlTextureInfo(&depthStencilInfo);
-        SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
-        uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
-        uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
-        builder[pipelineDescKey.size()] = colorAttachmentKey;
-        builder[pipelineDescKey.size()+1] = dsAttachmentKey;
+        uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
+        builder[pipelineDescKey.size()] = renderPassKey & 0xFFFFFFFF;
+        builder[pipelineDescKey.size()+1] = (renderPassKey >> 32) & 0xFFFFFFFF;
         builder.finish();
     }
 
     return pipelineKey;
+}
+
+uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
+    MtlTextureInfo colorInfo, depthStencilInfo;
+    renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&colorInfo);
+    renderPassDesc.fDepthStencilAttachment.fTextureInfo.getMtlTextureInfo(&depthStencilInfo);
+    SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
+    uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
+    uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
+    return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
 }
 
 UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {

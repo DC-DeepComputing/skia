@@ -37,6 +37,10 @@ public:
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
+    // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other
+    // UniqueKeys (e.g. makeGraphicsPipelineKey).
+    uint64_t getRenderPassDescKey(const RenderPassDesc&) const;
+
     bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
     bool isApple()const  { return fGPUFamily == GPUFamily::kApple; }
 
