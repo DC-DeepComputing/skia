@@ -39,6 +39,30 @@
       },
       "revId": "9fd6faac04edc5616b5855208a339af15d7836a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4612725c_1b7e6b07",
+        "filename": "src/sksl/codegen/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-28T06:55:01Z",
+      "side": 1,
+      "message": "Of course 🤦 done.",
+      "parentUuid": "30c6303a_6e8a727c",
+      "range": {
+        "startLine": 39,
+        "startChar": 9,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "9fd6faac04edc5616b5855208a339af15d7836a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
