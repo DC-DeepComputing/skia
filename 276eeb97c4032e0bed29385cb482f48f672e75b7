@@ -70,6 +70,30 @@
       },
       "revId": "276eeb97c4032e0bed29385cb482f48f672e75b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c4b558_d31411e6",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-29T14:05:33Z",
+      "side": 0,
+      "message": "I believe they were needed early on because our attribute setup wasn\u0027t as mature, but they never got removed.",
+      "parentUuid": "f1f3c98f_3ae4f364",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "276eeb97c4032e0bed29385cb482f48f672e75b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
