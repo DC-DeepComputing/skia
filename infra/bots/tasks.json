@@ -11069,6 +11069,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -11164,6 +11165,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -11259,6 +11261,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -11354,6 +11357,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -11449,6 +11453,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -11544,6 +11549,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
+        "cpu:x86-64",
         "os:Debian-11.2",
         "pool:Skia"
       ],
