@@ -79,6 +79,24 @@
       "message": "I must admit that the only part of this that I don\u0027t fully understand is the existing use of code point to mean glyph id and the mappings that go along with it. However, that appears to be a completely existing issue which this doesn\u0027t actually modify or make any more difficult to correct. But it does make it rather more interesting to understand under which circumstances this works and when it doesn\u0027t. I suppose if it currently creates the output you want, that\u0027s probably good enough for now.\n\nIn particular, which this doesn\u0027t work well with complex scripts (and already didn\u0027t) emoji is becoming a complex script itself (e.g. family, group, and profession emoji) and it would be interesting to see an attempt at animating those.",
       "revId": "35499a5cb5c084b1ed187c7203acf5455b706fb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc7ede3_3c57d3a5",
+        "filename": "modules/skottie/src/text/Font.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-29T14:59:43Z",
+      "side": 1,
+      "message": "Yeah, as you noted before also, this is a shortcoming of the Lottie font format which likely limits its uses.\n\nFor the animated font use cases that I\u0027m aware of it may not be a big issue, since they involve animating a small carefully-picked set of glyphs and not the whole font.  E.g. animate \"O\" and \"V\" for visual bling, and rely on font fallback and native fonts for everything else.  Or animate some custom/magic code points, and inject them into text fields to add some special decorations.",
+      "parentUuid": "a7250409_2bafad6d",
+      "revId": "35499a5cb5c084b1ed187c7203acf5455b706fb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
