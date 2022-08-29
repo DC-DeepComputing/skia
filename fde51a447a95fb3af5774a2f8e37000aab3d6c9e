@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b083d0b_dd5497b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-29T15:16:52Z",
+      "side": 1,
+      "message": "nvm - I was fooled by skbug.com/13517 into thinking the initial version of this CL was busted.",
+      "revId": "fde51a447a95fb3af5774a2f8e37000aab3d6c9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
