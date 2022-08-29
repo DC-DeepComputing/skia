@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7504aef8_ba63e30e",
+        "filename": "gn/effects_imagefilters.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-29T16:44:43Z",
+      "side": 1,
+      "message": "I\u0027m not sure if these should be part of the public API. Where did the change come from?",
+      "range": {
+        "startLine": 8,
+        "startChar": 30,
+        "endLine": 8,
+        "endChar": 47
+      },
+      "revId": "2185d16ddf1fb566c9bf8cab1781768776c627b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
