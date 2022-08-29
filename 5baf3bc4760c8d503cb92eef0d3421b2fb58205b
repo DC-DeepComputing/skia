@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03ee7e34_253dd102",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-29T19:56:10Z",
+      "side": 1,
+      "message": "Is there a reason this was changed from being a dep to a public dep? Are we letting the client use the memory allocator directly?",
+      "range": {
+        "startLine": 899,
+        "startChar": 6,
+        "endLine": 899,
+        "endChar": 17
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60eadf4c_235ddd97",
+        "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-29T19:56:10Z",
+      "side": 1,
+      "message": "Nit: I imagine this is intended to be aligned with the other ones",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b5314f_e20d347f",
+        "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-29T19:56:10Z",
+      "side": 1,
+      "message": "Nit: Do we want to rename this macro so it\u0027s not GR_ since it\u0027s now used for Graphite also?",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 26
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53db3052_359a577a",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-29T19:56:10Z",
+      "side": 1,
+      "message": "Could you explain what select_multi means? It\u0027s not immediately clear what that is doing based off of the name. Maybe a more Vulkan-oriented name?",
+      "range": {
+        "startLine": 1,
+        "startChar": 76,
+        "endLine": 1,
+        "endChar": 88
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2691b65_3dad6a06",
         "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
         "patchSetId": 3
@@ -19,6 +111,29 @@
         "startChar": 21,
         "endLine": 23,
         "endChar": 34
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8888e148_a3c01a8f",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-29T19:56:10Z",
+      "side": 1,
+      "message": "Nit: Change macro name to not be \"GR_\"?",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 24
       },
       "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
