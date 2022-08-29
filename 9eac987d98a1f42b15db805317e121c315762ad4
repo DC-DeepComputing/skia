@@ -46,6 +46,30 @@
       },
       "revId": "9eac987d98a1f42b15db805317e121c315762ad4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60fa2537_cc1a08d3",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-29T14:09:32Z",
+      "side": 1,
+      "message": "Change to:\n\nif (this-\u003eisApple()) {\n   info.fStorageMode \u003d MTLStorageModeMemoryless;\nelse {\n   info.fStorageMode \u003d MTLStorageModePrivate;\n}\n\nUnfortunately you can\u0027t mix @availble with other conditionals in the same if statement.",
+      "parentUuid": "5da01507_3c41ec62",
+      "range": {
+        "startLine": 559,
+        "startChar": 0,
+        "endLine": 559,
+        "endChar": 53
+      },
+      "revId": "9eac987d98a1f42b15db805317e121c315762ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
