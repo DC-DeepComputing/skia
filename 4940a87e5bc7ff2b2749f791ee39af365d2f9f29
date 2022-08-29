@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1c3e689_adad978f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7871
+      },
+      "writtenOn": "2022-08-29T06:31:26Z",
+      "side": 1,
+      "message": "Thanks ! this does solve the header issue for emscripten.\nBut, since it uses the SDL version with emsdk (which is SDL and not SDL2), we are having missing files, unknown types error etc.\nI will try to resolve them manually and see how it goes.",
+      "parentUuid": "ce20bf9e_ebbef966",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00630cd6_d6573c91",
         "filename": "gn/skia.gni",
         "patchSetId": 2
