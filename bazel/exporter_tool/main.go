@@ -43,6 +43,9 @@ var fileListWriteOrder = map[string][]string{
 	"gn/effects_imagefilters.gni": {
 		"skia_effects_imagefilter_public",
 		"skia_effects_imagefilter_sources"},
+	"gn/pdf.gni": {
+		"skia_pdf_public",
+		"skia_pdf_sources"},
 	/*
 		TODO(skbug.com/12345): Add support for all *.gni files containing file lists.
 
@@ -57,9 +60,6 @@ var fileListWriteOrder = map[string][]string{
 			"skia_metal_sources",
 			"skia_native_gpu_sources",
 			"skia_shared_gpu_sources"},
-		"gn/pdf.gni": {
-			"skia_pdf_public",
-			"skia_pdf_sources"},
 		"gn/sksl.gni": {
 			"skia_sksl_sources",
 			"skia_sksl_tracing_sources",
