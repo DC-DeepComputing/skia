@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2691b65_3dad6a06",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-29T19:47:33Z",
+      "side": 1,
+      "message": "Typo?",
+      "range": {
+        "startLine": 23,
+        "startChar": 21,
+        "endLine": 23,
+        "endChar": 34
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
