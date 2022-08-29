@@ -71,6 +71,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ec99487_8d15860a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-29T13:08:57Z",
+      "side": 1,
+      "message": "Sorry for slow response. I was on vacation on Friday so just catching up now. I wrote a lot of the C++ code so it\u0027s probably better to have someone else familiar with sk_app review. Adding Jim.",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00630cd6_d6573c91",
@@ -84,6 +101,24 @@
       "writtenOn": "2022-08-26T12:20:18Z",
       "side": 1,
       "message": "You do not need to modify .gni files when adding Bazel support",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919abe31_7c03d614",
+        "filename": "gn/skia.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-29T13:08:57Z",
+      "side": 1,
+      "message": "Oh yeah that might have been left over from my old change where I was doing my testing by building with GN. It might be nice to leave this in but default to false (assuming it builds against SDL and works when set to true)",
+      "parentUuid": "00630cd6_d6573c91",
       "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -147,6 +182,30 @@
       "writtenOn": "2022-08-26T12:20:18Z",
       "side": 1,
       "message": "Is the goal to have sdl2 *not* work for a Linux/unix build? Items in a select statement are mutually exclusive.",
+      "range": {
+        "startLine": 69,
+        "startChar": 46,
+        "endLine": 69,
+        "endChar": 50
+      },
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df0ed996_1fb09bd5",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-29T13:08:57Z",
+      "side": 1,
+      "message": "In theory we could have both the xwindows and sdl implementations in a single build and select one by command flag. But having them mutually exclusive at build time is fine. But we should be able to build and use the SDL impl on Linux.",
+      "parentUuid": "dddf6cb7_bc3b4d50",
       "range": {
         "startLine": 69,
         "startChar": 46,
