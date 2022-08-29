@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4066ccbd_41149090",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-29T14:00:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a5ada3d3_15310018",
+      "range": {
+        "startLine": 273,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 94
+      },
+      "revId": "7f06be8c884294f31a5b54741d725210ce61bdd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afb08ea7_b286941e",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "sure. If we need is public doesn\u0027t take much effort to move it back later.",
       "parentUuid": "afb08ea7_b286941e",
+      "range": {
+        "startLine": 87,
+        "startChar": 18,
+        "endLine": 87,
+        "endChar": 57
+      },
+      "revId": "7f06be8c884294f31a5b54741d725210ce61bdd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "371a8302_00c06f19",
+        "filename": "src/gpu/graphite/mtl/MtlResourceProvider.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-29T14:00:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bf303db_b66daea1",
       "range": {
         "startLine": 87,
         "startChar": 18,

@@ -46,6 +46,30 @@
       },
       "revId": "276eeb97c4032e0bed29385cb482f48f672e75b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "609ecdf2_bb209371",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-29T14:00:02Z",
+      "side": 0,
+      "message": "I think it may have been a hold over from when we were making and testing drawing more directly on the CommandBuffer and GraphicsPipelines weren\u0027t accessed indirectly through GraphicsPIpelineDesc?",
+      "parentUuid": "f1f3c98f_3ae4f364",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "276eeb97c4032e0bed29385cb482f48f672e75b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
