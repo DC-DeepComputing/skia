@@ -70,6 +70,30 @@
       },
       "revId": "9eac987d98a1f42b15db805317e121c315762ad4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c5424f_3b3a12d4",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-29T14:58:41Z",
+      "side": 1,
+      "message": "Thanks! I\u0027ve consolidated this logic into a private function `MTLStorageMode getDefaultMSAAStorageMode(Discardable)`. This takes a new Discardable enum that gets passed into getDefaultMSAATextureInfo() to eventually handle the case when we deal with non-readable framebuffers correctly (for now everything passes in kYes).",
+      "parentUuid": "60fa2537_cc1a08d3",
+      "range": {
+        "startLine": 559,
+        "startChar": 0,
+        "endLine": 559,
+        "endChar": 53
+      },
+      "revId": "9eac987d98a1f42b15db805317e121c315762ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
