@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1ca94d2_c4916533",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-29T15:35:03Z",
+      "side": 1,
+      "message": "Is this because G3 disables the legacy shader context stuff? If so, lgtm.",
+      "revId": "d8705f529b1ad2594eb02621de93d7aa914d316c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
