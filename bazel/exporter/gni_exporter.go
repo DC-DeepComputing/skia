@@ -83,7 +83,8 @@ type gniPattern struct {
 	gni string         // Workspace relative *.gni file path.
 }
 
-// This list is processed in order to map directory paths to *.gni files.
+// This list maps directory paths to *.gni files.
+// It is processed in order and the first match is used.
 var dirToGniMapper = []gniPattern{
 	{reg: regexp.MustCompile(`^include/core$`), gni: "gn/core.gni"},
 	{reg: regexp.MustCompile(`^include/docs$`), gni: "gn/pdf.gni"},
@@ -121,48 +122,49 @@ var dirToGniMapper = []gniPattern{
 //	"A" → "B"
 //	"B" → "C"
 var mergeMap = map[string]string{
-	"//include/private:private_hdrs":          "//src/core:core_srcs",
-	"//include/private:sksl_private_hdrs":     "//src/sksl:core_srcs",
-	"//include/private/chromium:private_hdrs": "//src/core:core_srcs",
-	"//include/sksl:public_hdrs":              "//src/sksl:core_srcs",
-	"//src/c:effects_srcs":                    "//src/effects:effects_srcs",
-	"//src/c:srcs":                            "//src/core:core_srcs",
-	"//src/core:core_hdrs":                    "//src/core:core_srcs",
-	"//src/core:precompile_hdrs":              "//src/core:precompile_srcs",
-	"//src/core:skpicture_hdrs":               "//src/core:skpicture_srcs",
-	"//src/core:sksl_hdrs":                    "//src/core:core_srcs",
-	"//src/core:sksl_srcs":                    "//src/core:core_srcs",
-	"//src/effects:effects_hdrs":              "//src/effects:effects_srcs",
-	"//src/image:core_hdrs":                   "//src/core:core_srcs",
-	"//src/image:core_srcs":                   "//src/core:core_srcs",
-	"//src/lazy:lazy_hdrs":                    "//src/core:core_srcs",
-	"//src/lazy:lazy_srcs":                    "//src/core:core_srcs",
-	"//src/opts:private_hdrs":                 "//src/core:core_srcs",
-	"//src/pathops:pathops_hdrs":              "//src/pathops:pathops_srcs",
-	"//src/pdf:pdf_hdrs":                      "//src/pdf:pdf_srcs",
-	"//src/shaders:shader_hdrs":               "//src/core:core_srcs",
-	"//src/shaders:shader_srcs":               "//src/core:core_srcs",
-	"//src/shaders:skpicture_hdrs":            "//src/shaders:skpicture_srcs",
-	"//src/shaders:skpicture_srcs":            "//src/core:skpicture_srcs",
-	"//src/shaders/gradients:gradient_hdrs":   "//src/effects:effects_srcs",
-	"//src/shaders/gradients:gradient_srcs":   "//src/effects:effects_srcs",
-	"//src/sksl:core_hdrs":                    "//src/sksl:core_srcs",
-	"//src/sksl/analysis:analysis_hdrs":       "//src/sksl:core_srcs",
-	"//src/sksl/analysis:analysis_srcs":       "//src/sksl:core_srcs",
-	"//src/sksl/codegen:core_srcs":            "//src/sksl:core_srcs",
-	"//src/sksl/codegen:gpu_hdrs":             "//src/sksl/codegen:gpu_srcs",
-	"//src/sksl/codegen:srcs":                 "//src/sksl:core_srcs",
-	"//src/sksl/dsl:srcs":                     "//src/sksl:core_srcs",
-	"//src/sksl/dsl/priv:srcs":                "//src/sksl:core_srcs",
-	"//src/sksl/ir:ir_hdrs":                   "//src/sksl:core_srcs",
-	"//src/sksl/ir:ir_srcs":                   "//src/sksl:core_srcs",
-	"//src/sksl/tracing:srcs":                 "//src/sksl:core_srcs",
-	"//src/sksl/transform:transform_srcs":     "//src/sksl:core_srcs",
-	"//src/text:text_hdrs":                    "//src/core:core_srcs",
-	"//src/text:text_srcs":                    "//src/core:core_srcs",
-	"//src/utils:core_hdrs":                   "//src/utils:core_srcs",
-	"//src/utils:json_hdrs":                   "//src/utils:core_srcs",
-	"//src/utils:json_srcs":                   "//src/utils:core_srcs",
+	"//include/private:private_hdrs":             "//src/core:core_srcs",
+	"//include/private:sksl_private_hdrs":        "//src/sksl:core_srcs",
+	"//include/private/chromium:private_hdrs":    "//src/core:core_srcs",
+	"//include/sksl:public_hdrs":                 "//src/sksl:core_srcs",
+	"//src/c:effects_srcs":                       "//src/effects:effects_srcs",
+	"//src/c:srcs":                               "//src/core:core_srcs",
+	"//src/core:core_hdrs":                       "//src/core:core_srcs",
+	"//src/core:precompile_hdrs":                 "//src/core:precompile_srcs",
+	"//src/core:skpicture_hdrs":                  "//src/core:skpicture_srcs",
+	"//src/core:sksl_hdrs":                       "//src/core:core_srcs",
+	"//src/core:sksl_srcs":                       "//src/core:core_srcs",
+	"//src/effects:effects_hdrs":                 "//src/effects:effects_srcs",
+	"//src/image:core_hdrs":                      "//src/core:core_srcs",
+	"//src/image:core_srcs":                      "//src/core:core_srcs",
+	"//src/lazy:lazy_hdrs":                       "//src/core:core_srcs",
+	"//src/lazy:lazy_srcs":                       "//src/core:core_srcs",
+	"//src/opts:private_hdrs":                    "//src/core:core_srcs",
+	"//src/pathops:pathops_hdrs":                 "//src/pathops:pathops_srcs",
+	"//src/pdf:pdf_hdrs":                         "//src/pdf:pdf_srcs",
+	"//src/shaders:shader_hdrs":                  "//src/core:core_srcs",
+	"//src/shaders:shader_srcs":                  "//src/core:core_srcs",
+	"//src/shaders:skpicture_hdrs":               "//src/shaders:skpicture_srcs",
+	"//src/shaders:skpicture_srcs":               "//src/core:skpicture_srcs",
+	"//src/shaders/gradients:gradient_hdrs":      "//src/effects:effects_srcs",
+	"//src/shaders/gradients:gradient_srcs":      "//src/effects:effects_srcs",
+	"//src/sksl:core_hdrs":                       "//src/sksl:core_srcs",
+	"//src/sksl/analysis:analysis_hdrs":          "//src/sksl:core_srcs",
+	"//src/sksl/analysis:analysis_srcs":          "//src/sksl:core_srcs",
+	"//src/sksl/codegen:core_srcs":               "//src/sksl:core_srcs",
+	"//src/sksl/codegen:gpu_hdrs":                "//src/sksl/codegen:gpu_srcs",
+	"//src/sksl/codegen:srcs":                    "//src/sksl:core_srcs",
+	"//src/sksl/dsl:srcs":                        "//src/sksl:core_srcs",
+	"//src/sksl/dsl/priv:srcs":                   "//src/sksl:core_srcs",
+	"//src/sksl/ir:ir_hdrs":                      "//src/sksl:core_srcs",
+	"//src/sksl/ir:ir_srcs":                      "//src/sksl:core_srcs",
+	"//src/sksl/tracing:srcs":                    "//src/sksl:core_srcs",
+	"//src/sksl/transform:transform_srcs":        "//src/sksl:core_srcs",
+	"//src/text:text_hdrs":                       "//src/core:core_srcs",
+	"//src/text:text_srcs":                       "//src/core:core_srcs",
+	"//src/utils:core_hdrs":                      "//src/utils:core_srcs",
+	"//src/utils:json_hdrs":                      "//src/utils:core_srcs",
+	"//src/utils:json_srcs":                      "//src/utils:core_srcs",
+	"//include/effects:public_imagefilters_hdrs": "//src/effects/imagefilters:imagefilters_hdrs",
 }
 
 // Override the generated rule (technically GNI file set) name. This is
@@ -290,14 +292,29 @@ func getRuleGNIVariableName(r *build.Rule) (string, error) {
 	return n, nil
 }
 
+// Is the file path a C++ header?
+func isHeaderFile(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	return ext == ".h" || ext == ".hpp"
+}
+
 // Is the file path portion of the given |target| a C/C++ header file?
 func isTargetCppHeaderFile(target string) bool {
 	_, _, t, err := parseRule(target)
 	if err != nil {
 		return false
 	}
-	ext := strings.ToLower(filepath.Ext(t))
-	return ext == ".h" || ext == ".hpp"
+	return isHeaderFile(t)
+}
+
+// Does the list of file paths contain only header files?
+func fileListContainsOnlyCppHeaderFiles(files []string) bool {
+	for _, f := range files {
+		if !isHeaderFile(f) {
+			return false
+		}
+	}
+	return len(files) > 0 // Empty list is false, else all are headers.
 }
 
 // Should the given rule be skipped during the export process?
@@ -514,7 +531,10 @@ func (e *GNIExporter) getLocationGNFilePath(absRuleLocationDir string) string {
 func (e *GNIExporter) getRuleGNFilePath(r *build.Rule) (string, error) {
 	// TODO(skbug.com/12345): Un-hardcode this. There are a few cases where not
 	// all files in a directory map to the same GNI file.
-	if r.GetName() == "//src/c:effects_srcs" {
+	switch r.GetName() {
+	case "//include/effects:public_imagefilters_hdrs":
+		return "gn/effects_imagefilters.gni", nil
+	case "//src/c:effects_srcs":
 		return "gn/effects.gni", nil
 	}
 	if strings.Contains(r.GetName(), ":gpu_") {
@@ -624,9 +644,9 @@ func (e *GNIExporter) convertRule(r *build.Rule, qr *analysis_v2.CqueryResult) e
 	fmt.Fprintf(&contents, "%s = [\n", ruleVariableName)
 
 	printedIncludeComment := false
-	hasSrcs := strings.HasPrefix(files[0], "$_src")
+	onlyHeaders := fileListContainsOnlyCppHeaderFiles(files)
 	for _, target := range files {
-		if hasSrcs && !printedIncludeComment && strings.HasPrefix(target, "$_include") {
+		if !onlyHeaders && !printedIncludeComment && strings.HasPrefix(target, "$_include") {
 			fmt.Fprintf(&contents, "\n  # Includes\n")
 			printedIncludeComment = true
 		}

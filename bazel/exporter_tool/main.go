@@ -40,12 +40,12 @@ var fileListWriteOrder = map[string][]string{
 	"gn/effects.gni": {
 		"skia_effects_public",
 		"skia_effects_sources"},
+	"gn/effects_imagefilters.gni": {
+		"skia_effects_imagefilter_public",
+		"skia_effects_imagefilter_sources"},
 	/*
 		TODO(skbug.com/12345): Add support for all *.gni files containing file lists.
 
-		"gn/effects_imagefilters.gni": {
-			"skia_effects_imagefilter_public",
-			"skia_effects_imagefilter_sources"},
 		"gn/gpu.gni": {
 			"skia_gpu_sources",
 			"skia_gl_gpu_sources",
