@@ -498,7 +498,7 @@ describe('Paragraph Behavior', function() {
         builder.delete();
     });
 
-    gm('paragraph_emoji', (canvas) => {
+    fgm('paragraph_emoji', (canvas) => {
         const fontMgr = CanvasKit.FontMgr.FromData([notoSerifFontBuffer, emojiFontBuffer]);
         expect(fontMgr.countFamilies()).toEqual(2);
         expect(fontMgr.getFamilyName(0)).toEqual('Noto Serif');

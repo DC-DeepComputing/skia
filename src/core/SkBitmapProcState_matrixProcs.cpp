@@ -503,10 +503,13 @@ SkBitmapProcState::MatrixProc SkBitmapProcState::chooseMatrixProc(bool translate
         if (fTileModeX == SkTileMode::kRepeat) {
             return RepeatX_RepeatY_Procs[index];
         }
-
         return MirrorX_MirrorY_Procs[index];
     }
 
     SkASSERT(fTileModeX == fTileModeY);
     return nullptr;
+}
+
+uint32_t sktests::pack_clamp(SkFixed f, unsigned max, SkFixed one) {
+    return ::pack<clamp, extract_low_bits_clamp_clamp>(f, max, one);
 }
