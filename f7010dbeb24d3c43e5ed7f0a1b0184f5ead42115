@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da447ffe_ab3167d3",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-29T15:24:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba70b2f5_4dc2dd9b",
+      "range": {
+        "startLine": 32,
+        "startChar": 36,
+        "endLine": 32,
+        "endChar": 49
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb628f7f_fbebd572",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c15fea7b_62b705e2",
+        "filename": "src/gpu/ganesh/vk/GrVkImage.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-29T15:24:24Z",
+      "side": 1,
+      "message": "So a general (maybe unofficial style??) that I and some others have picked up from android, is that if a line needs to spill over onto the next line indent it 8 spaces. Now saying that the more guideline in practice is to write this in a way that makes it the most readable. I\u0027ve played around with a few versions of how to break up this statement and so far this is the best I\u0027ve come up.",
+      "parentUuid": "cb628f7f_fbebd572",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 31
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33b77bab_2144fc48",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-08-25T20:04:00Z",
       "side": 1,
       "message": "If the other parameters are on new lines, would it make sense to split these two up as well?",
+      "range": {
+        "startLine": 280,
+        "startChar": 23,
+        "endLine": 280,
+        "endChar": 30
+      },
+      "revId": "f7010dbeb24d3c43e5ed7f0a1b0184f5ead42115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4adb53f8_50b75bbf",
+        "filename": "src/gpu/ganesh/vk/GrVkImage.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-29T15:24:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33b77bab_2144fc48",
       "range": {
         "startLine": 280,
         "startChar": 23,
