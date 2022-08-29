@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "babcb2e3_397f07da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-29T16:59:08Z",
+      "side": 1,
+      "message": "You added the win arm exception so you win the lottery as reviewer.",
+      "revId": "35dade4dea0799fe21afb5e090a968c4e21d44e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
