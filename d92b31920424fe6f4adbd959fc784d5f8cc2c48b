@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa7c406_195d7500",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-29T20:19:24Z",
+      "side": 1,
+      "message": "Comment about why this is needed for scalar?",
+      "range": {
+        "startLine": 1379,
+        "startChar": 4,
+        "endLine": 1379,
+        "endChar": 47
+      },
+      "revId": "d92b31920424fe6f4adbd959fc784d5f8cc2c48b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
