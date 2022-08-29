@@ -20,7 +20,6 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
-#include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkTransformShader.h"
 
 #ifdef SK_ENABLE_SKSL
@@ -177,100 +176,6 @@ bool SkImageShader::isOpaque() const {
     return fImage->isOpaque() &&
            fTileModeX != SkTileMode::kDecal && fTileModeY != SkTileMode::kDecal;
 }
-
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-
-static bool legacy_shader_can_handle(const SkMatrix& inv) {
-    SkASSERT(!inv.hasPerspective());
-
-    // Scale+translate methods are always present, but affine might not be.
-    if (!SkOpts::S32_alpha_D32_filter_DXDY && !inv.isScaleTranslate()) {
-        return false;
-    }
-
-    // legacy code uses SkFixed 32.32, so ensure the inverse doesn't map device coordinates
-    // out of range.
-    const SkScalar max_dev_coord = 32767.0f;
-    const SkRect src = inv.mapRect(SkRect::MakeWH(max_dev_coord, max_dev_coord));
-
-    // take 1/4 of max signed 32bits so we have room to subtract local values
-    const SkScalar max_fixed32dot32 = float(SK_MaxS32) * 0.25f;
-    if (!SkRect::MakeLTRB(-max_fixed32dot32, -max_fixed32dot32,
-                          +max_fixed32dot32, +max_fixed32dot32).contains(src)) {
-        return false;
-    }
-
-    // legacy shader impl should be able to handle these matrices
-    return true;
-}
-
-SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
-                                                    SkArenaAlloc* alloc) const {
-    SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
-    if (fImage->alphaType() == kUnpremul_SkAlphaType) {
-        return nullptr;
-    }
-    if (fImage->colorType() != kN32_SkColorType) {
-        return nullptr;
-    }
-    if (fTileModeX != fTileModeY) {
-        return nullptr;
-    }
-    if (fTileModeX == SkTileMode::kDecal || fTileModeY == SkTileMode::kDecal) {
-        return nullptr;
-    }
-
-    SkSamplingOptions sampling = fSampling;
-    if (sampling.isAniso()) {
-        sampling = SkSamplingPriv::AnisoFallback(fImage->hasMipmaps());
-    }
-
-    auto supported = [](const SkSamplingOptions& sampling) {
-        const std::tuple<SkFilterMode,SkMipmapMode> supported[] = {
-            {SkFilterMode::kNearest, SkMipmapMode::kNone},    // legacy None
-            {SkFilterMode::kLinear,  SkMipmapMode::kNone},    // legacy Low
-            {SkFilterMode::kLinear,  SkMipmapMode::kNearest}, // legacy Medium
-        };
-        for (auto [f, m] : supported) {
-            if (sampling.filter == f && sampling.mipmap == m) {
-                return true;
-            }
-        }
-        return false;
-    };
-    if (sampling.useCubic || !supported(sampling)) {
-        return nullptr;
-    }
-
-    // SkBitmapProcShader stores bitmap coordinates in a 16bit buffer,
-    // so it can't handle bitmaps larger than 65535.
-    //
-    // We back off another bit to 32767 to make small amounts of
-    // intermediate math safe, e.g. in
-    //
-    //     SkFixed fx = ...;
-    //     fx = tile(fx + SK_Fixed1);
-    //
-    // we want to make sure (fx + SK_Fixed1) never overflows.
-    if (fImage-> width() > 32767 ||
-        fImage->height() > 32767) {
-        return nullptr;
-    }
-
-    SkMatrix inv;
-    if (!this->computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, &inv) ||
-        !legacy_shader_can_handle(inv)) {
-        return nullptr;
-    }
-
-    if (!rec.isLegacyCompatible(fImage->colorSpace())) {
-        return nullptr;
-    }
-
-    return SkBitmapProcLegacyShader::MakeContext(*this, fTileModeX, fTileModeY, sampling,
-                                                 as_IB(fImage.get()), rec, alloc);
-}
-#endif
 
 SkImage* SkImageShader::onIsAImage(SkMatrix* texM, SkTileMode xy[]) const {
     if (texM) {

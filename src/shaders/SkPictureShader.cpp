@@ -20,7 +20,6 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkVM.h"
-#include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkImageShader.h"
 #include <atomic>
 
@@ -331,25 +330,6 @@ skvm::Color SkPictureShader::onProgram(skvm::Builder* p,
                                         matrices, lm, dst,
                                         uniforms, alloc);
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-SkShaderBase::Context* SkPictureShader::onMakeContext(const ContextRec& rec, SkArenaAlloc* alloc)
-const {
-    auto lm = this->totalLocalMatrix(rec.fLocalMatrix);
-    sk_sp<SkShader> bitmapShader = this->rasterShader(*rec.fMatrix, &lm, rec.fDstColorType,
-                                                      rec.fDstColorSpace, rec.fProps);
-    if (!bitmapShader) {
-        return nullptr;
-    }
-
-    ContextRec localRec = rec;
-    localRec.fLocalMatrix = lm->isIdentity() ? nullptr : lm.get();
-
-    return as_SB(bitmapShader)->makeContext(localRec, alloc);
-}
-#endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

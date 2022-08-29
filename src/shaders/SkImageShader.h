@@ -10,7 +10,6 @@
 
 #include "include/core/SkImage.h"
 #include "include/core/SkM44.h"
-#include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkShaderBase.h"
 
 class SkKeyContext;
@@ -65,9 +64,7 @@ private:
                   bool clampAsIfUnpremul);
 
     void flatten(SkWriteBuffer&) const override;
-#ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
-    Context* onMakeContext(const ContextRec&, SkArenaAlloc* storage) const override;
-#endif
+
     SkImage* onIsAImage(SkMatrix*, SkTileMode*) const override;
 
     bool onAppendStages(const SkStageRec&) const override;

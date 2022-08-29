@@ -18,7 +18,6 @@
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
-#include "src/shaders/SkBitmapProcShader.h"
 
 #if SK_SUPPORT_GPU
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"

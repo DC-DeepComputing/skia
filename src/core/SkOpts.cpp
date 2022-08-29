@@ -39,7 +39,6 @@
 #endif
 
 #include "src/core/SkCubicSolver.h"
-#include "src/opts/SkBitmapProcState_opts.h"
 #include "src/opts/SkBlitMask_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
 #include "src/opts/SkChecksum_opts.h"
@@ -84,9 +83,6 @@ namespace SkOpts {
     DEFINE_DEFAULT(cubic_solver);
 
     DEFINE_DEFAULT(hash_fn);
-
-    DEFINE_DEFAULT(S32_alpha_D32_filter_DX);
-    DEFINE_DEFAULT(S32_alpha_D32_filter_DXDY);
 
     DEFINE_DEFAULT(interpret_skvm);
 #undef DEFINE_DEFAULT

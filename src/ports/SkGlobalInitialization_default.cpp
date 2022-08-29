@@ -31,7 +31,6 @@
     #include "src/effects/SkEmbossMaskFilter.h"
     #include "src/effects/SkOpPE.h"
     #include "src/effects/SkTrimPE.h"
-    #include "src/shaders/SkBitmapProcShader.h"
     #include "src/shaders/SkColorFilterShader.h"
     #include "src/shaders/SkImageShader.h"
     #include "src/shaders/SkLocalMatrixShader.h"
