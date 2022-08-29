@@ -1374,7 +1374,13 @@ SI U32 to_unorm(F v, F scale, F bias = 1.0f) {
     return round(min(max(0, v), bias), scale);
 }
 
-SI I32 cond_to_mask(I32 cond) { return if_then_else(cond, I32(~0), I32(0)); }
+SI I32 cond_to_mask(I32 cond) {
+#if defined(JUMPER_IS_SCALAR)
+    return if_then_else(cond, I32(~0), I32(0));
+#else
+    return cond;
+#endif
+}
 
 // Now finally, normal Stages!
 
