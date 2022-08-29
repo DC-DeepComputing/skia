@@ -362,19 +362,18 @@ func writeGNFileHeader(writer interfaces.Writer, gniFile *gniFileContents) {
 	}
 }
 
-// Print a warning, to stdout, of all files in the list of
-// files which are duplicated entries.
-//
-// Note: |files| must be sorted.
-func warnDuplicates(files []string) {
+// Find the first duplicated file in a sorted list of file paths.
+// The file paths are case insensitive.
+func findDuplicate(files []string) (path string, hasDuplicate bool) {
 	for i, e := range files {
 		if i == len(files)-1 {
 			continue
 		}
-		if e == files[i+1] {
-			fmt.Printf("Warning, duplicate file: %s\n", e)
+		if strings.EqualFold(e, files[i+1]) {
+			return e, true
 		}
 	}
+	return "", false
 }
 
 // Retrieve all sources ("srcs" attribute) and headers ("hdrs" attribute)
@@ -594,7 +593,9 @@ func (e *GNIExporter) convertRule(r *build.Rule, qr *analysis_v2.CqueryResult) e
 		}
 		return isfx >= jsfx // Make $_include come after $_src.
 	})
-	warnDuplicates(files)
+	if dup, hasDup := findDuplicate(files); hasDup {
+		return skerr.Fmt("%q is included in two or more rules.", dup)
+	}
 
 	ruleVariableName, err := getRuleGNIVariableName(r)
 	if err != nil {
