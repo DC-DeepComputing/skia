@@ -22,6 +22,30 @@
       },
       "revId": "2185d16ddf1fb566c9bf8cab1781768776c627b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcc01bd6_2a30af6c",
+        "filename": "gn/effects_imagefilters.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-29T17:39:45Z",
+      "side": 1,
+      "message": "These are here because all rules in `//src/effects/imagefilters` are mapped to this file. I think this exposes at least two problems with how rules are currently mapped to GNI files.\n\n1. exporter_tool is mapping `//src/effects:imagefilters_hdrs` (which is private).\n2. A rule, like `//src/effects:private_hdrs`, could \"publish\" another group\u0027s headers, if it had public visibility, but the tool won\u0027t properly deal with that.\n\nI\u0027m going to look into these issues and return to this review when they are dealt with.",
+      "parentUuid": "7504aef8_ba63e30e",
+      "range": {
+        "startLine": 8,
+        "startChar": 30,
+        "endLine": 8,
+        "endChar": 47
+      },
+      "revId": "2185d16ddf1fb566c9bf8cab1781768776c627b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
