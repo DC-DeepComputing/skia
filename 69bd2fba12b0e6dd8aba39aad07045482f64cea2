@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02fec455_7eba5e5e",
+        "filename": "tools/sk_app/mac/GraphiteMetalWindowContext_mac.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-29T18:33:28Z",
+      "side": 1,
+      "message": "This is a temporary solution so that xcode doesn\u0027t trigger metal validation errors. We still need a more robust solution to discardable MSAA and framebuffer-only textures in metal.\n\nBefore this CL, we didn\u0027t trigger validation errors because we never drew from the resolve attachment. We also tended not to trigger multiple renderpasses within a frame, so the use of a private resource for the MSAA attachment that didn\u0027t preserve its own contents across passes wasn\u0027t obvious.\n\nSwitching to memoryless MSAA attachment made that very apparent even within a single rendperass, and required the draw to load the resolve content. This in turn, triggered the issue in viewer where our framebuffer was read only.\n\nI think we will need to add a system of persisting a specific MSAA attachment to read-only resolve attachments and use MTLStorageModeStoreAndResolve instead of just resolve.",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 40
+      },
+      "revId": "69bd2fba12b0e6dd8aba39aad07045482f64cea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
