@@ -39,6 +39,30 @@
       },
       "revId": "289b6692cc6b3ba6e434d90f7cba8d032aa16a07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a55ab97_e087bc86",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-29T19:08:18Z",
+      "side": 1,
+      "message": "Michael and I talked, and I just need to pass the creationBounds as the bounds for the SubRun.",
+      "parentUuid": "40bd706b_f3e14740",
+      "range": {
+        "startLine": 1124,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 9
+      },
+      "revId": "289b6692cc6b3ba6e434d90f7cba8d032aa16a07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
