@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "155dfee4_51686a77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-29T17:37:58Z",
+      "side": 1,
+      "message": "Hello Michael, this is just a prototype, and doesn\u0027t need a review. I\u0027m just trying to understand how the clipping works, and if I need to carry around the sourceBounds and the deviceBounds. Can you please take a look at ClipStack.cpp.",
+      "revId": "289b6692cc6b3ba6e434d90f7cba8d032aa16a07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40bd706b_f3e14740",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-29T17:37:58Z",
+      "side": 1,
+      "message": "@Michael, can you just ask the Geometry for the device bounds? At this point the SubRun in this CL, the SubRun does not have the sourceBounds. Is it to outset in source space instead of device space?",
+      "range": {
+        "startLine": 1124,
+        "startChar": 8,
+        "endLine": 1126,
+        "endChar": 9
+      },
+      "revId": "289b6692cc6b3ba6e434d90f7cba8d032aa16a07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
