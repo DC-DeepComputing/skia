@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41877114_a9c2c158",
+        "filename": "modules/canvaskit/tests/bazel/paragraph_test.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T21:42:22Z",
+      "side": 1,
+      "message": "This one is ok.",
+      "range": {
+        "startLine": 1099,
+        "startChar": 24,
+        "endLine": 1099,
+        "endChar": 28
+      },
+      "revId": "a8c78b448202747e5564915daf86409743f019ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f26a2ed_7123bd9e",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 1138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T21:42:22Z",
+      "side": 1,
+      "message": "There\u0027s an extra space here before ate that is not in the assertion below.",
+      "range": {
+        "startLine": 1138,
+        "startChar": 24,
+        "endLine": 1138,
+        "endChar": 29
+      },
+      "revId": "a8c78b448202747e5564915daf86409743f019ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
