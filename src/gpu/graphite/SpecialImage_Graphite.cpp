@@ -70,7 +70,7 @@ public:
     bool onGetROPixels(SkBitmap* dst) const override {
         // This should never be called: All GPU image filters are implemented entirely on the GPU,
         // so we never perform read-back.
-        SkASSERT(false);
+//        SkASSERT(false);
         return false;
     }
 
