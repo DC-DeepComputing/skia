@@ -862,6 +862,15 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Gpu::onAsView(
     return {std::move(view), ct};
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Gpu::onAsView(
+        skgpu::graphite::Recorder*,
+        skgpu::graphite::Mipmapped) const {
+    return {};
+}
+#endif
+
+
 std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
         GrRecordingContext* rContext,
         SkSamplingOptions sampling,
