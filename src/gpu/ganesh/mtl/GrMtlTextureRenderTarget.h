@@ -25,7 +25,7 @@ public:
     static sk_sp<GrMtlTextureRenderTarget> MakeWrappedTextureRenderTarget(GrMtlGpu*,
                                                                           SkISize,
                                                                           int sampleCnt,
-                                                                          id<MTLTexture>,
+                                                                          GrMtlTextureInfo& info,
                                                                           GrWrapCacheable);
     GrBackendFormat backendFormat() const override {
         return GrMtlTexture::backendFormat();

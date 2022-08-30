@@ -894,6 +894,9 @@ optional("gpu_shared") {
   if (skia_use_vulkan) {
     sources += skia_shared_vk_sources
   }
+  if (skia_use_metal) {
+    sources += skia_shared_mtl_sources
+  }
 }
 
 optional("gpu") {

@@ -69,8 +69,7 @@ GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedTyp
 
     size = SkAlignTo(size, gpu->mtlCaps().getMinBufferAlignment());
     fMtlBuffer = size == 0 ? nil :
-            [gpu->device() newBufferWithLength: size
-                                       options: options];
+            gpu->memoryAllocator()->newBufferWithLength(size, options, &fAlloc);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     fMtlBuffer.label = kBufferTypeNames[(int)intendedType];
 #endif

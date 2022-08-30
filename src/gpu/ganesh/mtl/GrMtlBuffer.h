@@ -8,6 +8,7 @@
 #ifndef GrMtlBuffer_DEFINED
 #define GrMtlBuffer_DEFINED
 
+#include "include/gpu/mtl/GrMtlTypes.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlUniformHandler.h"
 
@@ -56,6 +57,7 @@ private:
 
     bool fIsDynamic;
     id<MTLBuffer> fMtlBuffer;
+    sk_sp<skgpu::MetalAlloc> fAlloc;
 
     using INHERITED = GrGpuBuffer;
 };
