@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "608138a1_5b26c9ee",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "So public_deps is a gn thing that means when a target adds this target as a deps, that target can include your public deps in its deps.\n\nSo if you had something A -\u003e(deps) -\u003e B -\u003e(deps) C. Then A would not have anything in C visible to it. However, if you do A -\u003e(deps) -\u003e B -\u003e(public_deps) C, then A would be able to see C.\n\nIn our build the target \"gpu\" needs to be able to see the vulkanmemoryallocator deps (it needs to make sure -I//third_party/vulkanmemoryallocator is on the compile command for its files. since I moved the deps of vma into \"gpu_shared\" I need to set it as a public_deps so that \"gpu\" is still able to see it.",
+      "parentUuid": "03ee7e34_253dd102",
+      "range": {
+        "startLine": 899,
+        "startChar": 6,
+        "endLine": 899,
+        "endChar": 17
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60eadf4c_235ddd97",
         "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-29T19:56:10Z",
       "side": 1,
       "message": "Nit: I imagine this is intended to be aligned with the other ones",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ddc6f0b_54bafba0",
+        "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60eadf4c_235ddd97",
       "range": {
         "startLine": 34,
         "startChar": 8,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-29T19:56:10Z",
       "side": 1,
       "message": "Nit: Do we want to rename this macro so it\u0027s not GR_ since it\u0027s now used for Graphite also?",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 26
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c6a43ad_f5f31b38",
+        "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "Done, need to land prereq CL first https://skia-review.googlesource.com/c/skia/+/575058/1?usp\u003drelated-change",
+      "parentUuid": "02b5314f_e20d347f",
       "range": {
         "startLine": 149,
         "startChar": 0,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d3745c3_59466f4c",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "So this is a bazel specific function. \u0027select\u0027 allows you to give a list of optional things that bazel will pick one of. It essentially is something like\n    if (A) add foo\n    else if (B) add bar\n    else if (C) add ..\n    else do nothing\n\nmulti_select is more just independent ifs that each can conditionally add something like.\n    if (A) add foo\n    if (B) add bar\n    if (C) add ..\n\nI believe you could think of multi_select as short hand to writing\n    ] + select({\n        A : add foo\n        default : nothing\n    }) + select({\n        B : add bar\n        default : nothing\n    }) + select({\n        C : add ...\n        default : nothing\n    })",
+      "parentUuid": "53db3052_359a577a",
+      "range": {
+        "startLine": 1,
+        "startChar": 76,
+        "endLine": 1,
+        "endChar": 88
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2691b65_3dad6a06",
         "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
         "patchSetId": 3
@@ -106,6 +202,30 @@
       "writtenOn": "2022-08-29T19:47:33Z",
       "side": 1,
       "message": "Typo?",
+      "range": {
+        "startLine": 23,
+        "startChar": 21,
+        "endLine": 23,
+        "endChar": 34
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "352ca51c_3a302ca1",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2691b65_3dad6a06",
       "range": {
         "startLine": 23,
         "startChar": 21,
@@ -129,6 +249,30 @@
       "writtenOn": "2022-08-29T19:56:10Z",
       "side": 1,
       "message": "Nit: Change macro name to not be \"GR_\"?",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 24
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a05b24c_d9486b2a",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-30T17:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8888e148_a3c01a8f",
       "range": {
         "startLine": 37,
         "startChar": 8,
