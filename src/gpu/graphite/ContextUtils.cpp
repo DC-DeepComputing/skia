@@ -365,6 +365,10 @@ std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
     SkShaderInfo shaderInfo(rteDict, shadingSsboIndexVar);
 
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
+    SkDebugf("seeing %d %d %d\n", (int) shaderInfo.blendInfo().fEquation,
+                                  (int) shaderInfo.blendInfo().fSrcBlend,
+                                  (int) shaderInfo.blendInfo().fDstBlend);
+
     *blendInfo = shaderInfo.blendInfo();
     *requiresLocalCoordsVarying = shaderInfo.needsLocalCoords();
 
