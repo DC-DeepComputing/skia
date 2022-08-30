@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
+#include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorPriv.h"
@@ -432,6 +433,61 @@ DEF_TEST(Encode_WebpOptions, r) {
     REPORTER_ASSERT(r, almost_equals(bm0, bm1, 0));
     REPORTER_ASSERT(r, almost_equals(bm0, bm2, 90));
     REPORTER_ASSERT(r, almost_equals(bm2, bm3, 50));
+}
+
+DEF_TEST(Encode_WebpAnim, r) {
+    bool success;
+
+    const int frameCount = 3;
+    const int width = 16;
+    const int height = 16;
+    auto info = SkImageInfo::MakeN32Premul(width, height);
+    std::vector<SkPixmap> pixmaps(frameCount);
+    std::vector<SkBitmap> bitmaps(frameCount);
+    std::vector<SkEncoder::Frame> frames(frameCount);
+    std::vector<int> durations = {50, 100, 150};
+    std::vector<SkColor> colors = {SK_ColorRED, SK_ColorBLUE, SK_ColorGREEN};
+
+    for (int i = 0; i < frameCount; i++) {
+        bitmaps[i].allocPixels(info);
+        bitmaps[i].eraseColor(colors[i]);
+        success = bitmaps[i].peekPixels(&pixmaps[i]);
+        REPORTER_ASSERT(r, success);
+
+        frames[i].pixmap = pixmaps[i];
+        frames[i].duration = durations[i];
+    }
+
+    SkDynamicMemoryWStream stream;
+    SkWebpEncoder::Options options;
+    options.fCompression = SkWebpEncoder::Compression::kLossy;
+    options.fQuality = 100;
+
+    success = SkWebpEncoder::EncodeAnimated(&stream, frames, options);
+    REPORTER_ASSERT(r, success);
+
+    auto codec = SkCodec::MakeFromData(stream.detachAsData());
+    REPORTER_ASSERT(r, !!codec);
+
+    std::vector<SkCodec::FrameInfo> frameInfos = codec->getFrameInfo();
+    REPORTER_ASSERT(r, frameInfos.size() == frameCount);
+
+    for (size_t i = 0; i < frameInfos.size(); ++i) {
+        SkBitmap bitmap;
+        bitmap.allocPixels(info);
+        bitmap.eraseColor(0);
+
+        SkCodec::Options options;
+        options.fFrameIndex = (int)i;
+
+        auto result = codec->getPixels(info, bitmap.getPixels(), bitmap.rowBytes(), &options);
+        if (result != SkCodec::kSuccess) {
+            ERRORF(r, "error in frame %zu: %s", i, SkCodec::ResultToString(result));
+        }
+
+        REPORTER_ASSERT(r, almost_equals(bitmap, bitmaps[i], 10));
+        REPORTER_ASSERT(r, frameInfos[i].fDuration == durations[i]);
+    }
 }
 
 DEF_TEST(Encode_Alpha, r) {
