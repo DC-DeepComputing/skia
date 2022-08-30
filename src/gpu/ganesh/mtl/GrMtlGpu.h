@@ -9,6 +9,8 @@
 #define GrMtlGpu_DEFINED
 
 #include "include/gpu/mtl/GrMtlBackendContext.h"
+#include "include/gpu/mtl/GrMtlMemoryAllocator.h"
+
 #include "include/private/SkDeque.h"
 #include "include/private/gpu/ganesh/GrMtlTypesPriv.h"
 
@@ -46,6 +48,8 @@ public:
     const GrMtlCaps& mtlCaps() const { return *fMtlCaps.get(); }
 
     id<MTLDevice> device() const { return fDevice; }
+
+    skgpu::MetalMemoryAllocator* memoryAllocator() const { return fMemoryAllocator.get(); }
 
     GrMtlResourceProvider& resourceProvider() { return fResourceProvider; }
 
@@ -127,7 +131,7 @@ public:
 
 private:
     GrMtlGpu(GrDirectContext*, const GrContextOptions&, id<MTLDevice>,
-             id<MTLCommandQueue>, GrMTLHandle binaryArchive);
+             id<MTLCommandQueue>, GrMTLHandle binaryArchive, sk_sp<skgpu::MetalMemoryAllocator>);
 
     void destroyResources();
 
@@ -307,6 +311,8 @@ private:
 
     id<MTLDevice> fDevice;
     id<MTLCommandQueue> fQueue;
+
+    sk_sp<skgpu::MetalMemoryAllocator> fMemoryAllocator;
 
     sk_sp<GrMtlCommandBuffer> fCurrentCmdBuffer;
 

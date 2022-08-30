@@ -96,15 +96,21 @@ sk_sp<GrMtlTexture> GrMtlTexture::MakeNewTexture(GrMtlGpu* gpu,
 
 sk_sp<GrMtlTexture> GrMtlTexture::MakeWrappedTexture(GrMtlGpu* gpu,
                                                      SkISize dimensions,
-                                                     id<MTLTexture> texture,
+                                                     const GrMtlTextureInfo& info,
                                                      GrWrapCacheable cacheable,
                                                      GrIOType ioType) {
+
+    id<MTLTexture> texture = GrGetMTLTexture(info.fTexture.get());
     SkASSERT(nil != texture);
+    // We don't currently support sampling from a MSAA texture in shaders.
+    if (texture.sampleCount != 1) {
+        return nullptr;
+    }
     if (@available(macOS 10.11, iOS 9.0, *)) {
         SkASSERT(SkToBool(texture.usage & MTLTextureUsageShaderRead));
     }
     sk_sp<GrMtlAttachment> attachment =
-            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture,
+            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture, info.fAlloc,
                                          GrAttachment::UsageFlags::kTexture, cacheable,
                                          /*label=*/"MtlAttachment_MakeWrapped");
     if (!attachment) {

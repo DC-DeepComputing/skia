@@ -8,7 +8,9 @@
 #ifndef GrMtlTypes_DEFINED
 #define GrMtlTypes_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/mtl/GrMtlMemoryAllocator.h"
 #include "include/ports/SkCFObject.h"
 
 /**
@@ -40,6 +42,7 @@ public:
     GrMtlTextureInfo() {}
 
     sk_cfp<GrMTLHandle> fTexture;
+    sk_sp<skgpu::MetalAlloc> fAlloc;
 
     bool operator==(const GrMtlTextureInfo& that) const {
         return fTexture == that.fTexture;
