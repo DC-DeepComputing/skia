@@ -46,6 +46,30 @@
       },
       "revId": "69bd2fba12b0e6dd8aba39aad07045482f64cea2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a19dbd9_6402050b",
+        "filename": "tools/sk_app/mac/GraphiteMetalWindowContext_mac.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-30T14:45:32Z",
+      "side": 1,
+      "message": "Ack, that would simplify our end a lot.",
+      "parentUuid": "fd9307e7_256f9982",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 40
+      },
+      "revId": "69bd2fba12b0e6dd8aba39aad07045482f64cea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
