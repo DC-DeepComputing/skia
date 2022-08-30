@@ -658,6 +658,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d5c7a1b_ef5e106a",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "Given that no clients are (currently) asking for this, I think you should file a bug at skbug.com (you can assign it to me for now) to track the details James shared here. (We can also reference that bug in the TODO.)",
+      "parentUuid": "d517f0aa_820ebadd",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 37
+      },
+      "revId": "e3ce613f91acf7e58a3114d04c7376ea99d7e1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbbb8781_ef561503",
         "filename": "src/images/SkWebpEncoder.cpp",
         "patchSetId": 1

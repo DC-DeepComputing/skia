@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc4eb0d7_d3779719",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "Please initialize.\n\nOr perhaps better yet, move it to where it\u0027s used, or even inline the `REPORTER_ASSERT`s.",
+      "range": {
+        "startLine": 439,
+        "startChar": 9,
+        "endLine": 439,
+        "endChar": 16
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35ed2829_a1771a21",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "You don\u0027t need this variable. You can just use the ones in the `frames`.",
+      "range": {
+        "startLine": 445,
+        "startChar": 26,
+        "endLine": 445,
+        "endChar": 33
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8254fb3_30083ec1",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "Are these `almost_equal`, or are they exactly equal?",
+      "range": {
+        "startLine": 488,
+        "startChar": 27,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f60e09a5_0a7b8967",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "nit: This should be a separate test.",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 74
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ee04d2_53a5a6c8",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T15:03:33Z",
+      "side": 1,
+      "message": "Again, you can use `frameUnmatched.pixmap` directly.",
+      "range": {
+        "startLine": 497,
+        "startChar": 13,
+        "endLine": 497,
+        "endChar": 15
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
