@@ -178,6 +178,8 @@ public:
     GrRecordingContext* getContext() const { return this->onGetContext(); }
 
 #if SK_SUPPORT_GPU
+    bool isGraphiteBacked() const;
+
     /**
      * Regardless of how the underlying backing data is stored, returns the contents as a
      * GrSurfaceProxyView. The returned view's proxy represents the entire backing image, so texture
