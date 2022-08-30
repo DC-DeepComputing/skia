@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca48ee8a_3654a327",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-30T18:25:41Z",
+      "side": 1,
+      "message": "Sending to you for some preliminary feedback. \n\nPotential effort remaining:\nI imagine we don\u0027t want everything that used to require local coordinates to break, so I would still need to implement the use of the local matrix shader for gradients \u0026 images. \n\nI also plan to explore whether we can delete some of the functionality around needsLocalCoords() in SkPipelineData.*, ContextUtils.*, and SkShaderCodeDictionary.*. ",
+      "revId": "bd887fbcdeb1813ab324ac46be6525860b679e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
