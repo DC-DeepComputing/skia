@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d39555de_20f4d7c2",
+        "filename": "src/image/SkImage_Gpu.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-30T21:14:01Z",
+      "side": 1,
+      "message": "Maybe put a log entry here?",
+      "range": {
+        "startLine": 869,
+        "startChar": 4,
+        "endLine": 869,
+        "endChar": 13
+      },
+      "revId": "cdd8cc5a578a6ebf38565055fc477c94d767d9a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b4f538_d36b74dd",
+        "filename": "src/image/SkImage_GpuYUVA.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-30T21:14:01Z",
+      "side": 1,
+      "message": "And here.",
+      "range": {
+        "startLine": 234,
+        "startChar": 4,
+        "endLine": 234,
+        "endChar": 14
+      },
+      "revId": "cdd8cc5a578a6ebf38565055fc477c94d767d9a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55168dc9_63c1cbfd",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-30T21:14:01Z",
+      "side": 1,
+      "message": "And here.",
+      "range": {
+        "startLine": 585,
+        "startChar": 4,
+        "endLine": 585,
+        "endChar": 14
+      },
+      "revId": "cdd8cc5a578a6ebf38565055fc477c94d767d9a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
