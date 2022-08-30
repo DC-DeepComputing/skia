@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a688bbf1_4f0ff49c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:32:21Z",
+      "side": 1,
+      "message": "+Derek/Brian for public API thoughts",
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddea0246_4985a2b2",
