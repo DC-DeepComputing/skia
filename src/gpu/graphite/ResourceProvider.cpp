@@ -57,6 +57,8 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
         }
+    } else {
+        SkDebugf("found pipeline\n");
     }
     return pipeline;
 }

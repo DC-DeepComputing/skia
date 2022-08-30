@@ -29,9 +29,12 @@ bool TaskGraph::prepareResources(ResourceProvider* resourceProvider,
 
 bool TaskGraph::addCommands(ResourceProvider* resourceProvider, CommandBuffer* commandBuffer) {
     for (const auto& task: fTasks) {
+        SkDebugf("adding Task: %p\n", task.get());
         if (!task->addCommands(resourceProvider, commandBuffer)) {
             return false;
         }
+
+//        commandBuffer->
     }
 
     return true;

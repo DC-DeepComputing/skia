@@ -258,7 +258,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
     }
 
 #ifdef SK_GRAPHITE_ENABLED
-    Entry* newEntry = this->makeEntry(key, builder->blendInfo());
+    Entry* newEntry = this->makeEntry(key, builder->blendInfo1());
 #else
     Entry* newEntry = this->makeEntry(key);
 #endif
@@ -310,14 +310,14 @@ const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const
     return nullptr;
 }
 
-void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID,
+void SkShaderCodeDictionary::getShaderInfo1(SkUniquePaintParamsID uniqueID,
                                            SkShaderInfo* info) const {
     auto entry = this->lookup(uniqueID);
 
     entry->paintParamsKey().toShaderInfo(this, info);
 
 #ifdef SK_GRAPHITE_ENABLED
-    info->setBlendInfo(entry->blendInfo());
+    info->setBlendInfo(entry->blendInfo2());
 #endif
 }
 
@@ -930,6 +930,10 @@ static constexpr char kErrorName[] = "sk_error";
 static constexpr char kPassthroughName[] = "sk_passthrough";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkPaintParamsKey::DataPayloadField kFixedFunctionDataFields[] = {
+  { "blendMode", SkPaintParamsKey::DataPayloadType::kByte, 1},
+};
+
 // This method generates the glue code for the case where the SkBlendMode-based blending is
 // handled with fixed function blending.
 std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
@@ -940,7 +944,7 @@ std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
                                                    const std::string& currentPreLocalExpr) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(reader.entry()->fUniforms.empty());
-    SkASSERT(reader.numDataPayloadFields() == 0);
+    SkASSERT(reader.numDataPayloadFields() == 1);
 
     // The actual blending is set up via the fixed function pipeline so we don't actually
     // need to access the blend mode in the glue code.
@@ -1402,7 +1406,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateFixedFunctionBlenderExpression,
             GenerateDefaultPreamble,
             kNoChildren,
-            { }      // no data payload
+            kFixedFunctionDataFields
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
             "ShaderBasedBlender",

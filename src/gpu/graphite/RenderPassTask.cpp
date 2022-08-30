@@ -34,7 +34,13 @@ RenderPassTask::RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                                sk_sp<TextureProxy> target)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
-        , fTarget(std::move(target)) {}
+        , fTarget(std::move(target)) {
+    SkDebugf("RenderPassTask %p: num-drawPasses %d\n", this, (int) fDrawPasses.size());
+    for (size_t i = 0; i < fDrawPasses.size(); ++i) {
+        SkDebugf("%d: drawPass: %p\n", (int) i, fDrawPasses[i].get());
+    }
+
+}
 
 RenderPassTask::~RenderPassTask() = default;
 

@@ -187,7 +187,7 @@ public:
         }
         const SkPaintParamsKey& paintParamsKey() const { return fKey; }
 #ifdef SK_GRAPHITE_ENABLED
-        const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+        const skgpu::BlendInfo& blendInfo2() const { return fBlendInfo2; }
 #endif
 
     private:
@@ -196,7 +196,7 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
         Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo)
                 : fKey(key.asSpan())
-                , fBlendInfo(blendInfo) {
+                , fBlendInfo2(blendInfo) {
         }
 #else
         Entry(const SkPaintParamsKey& key) : fKey(key.asSpan()) {}
@@ -214,7 +214,7 @@ public:
         // The BlendInfo isn't used in the hash (that is the key's job) but it does directly vary
         // with the key. It could, theoretically, be recreated from the key but that would add
         // extra complexity.
-        skgpu::BlendInfo fBlendInfo;
+        skgpu::BlendInfo fBlendInfo2;
 #endif
     };
 
@@ -237,7 +237,7 @@ public:
         return this->getEntry(SkTo<int>(codeSnippetID));
     }
 
-    void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*) const;
+    void getShaderInfo1(SkUniquePaintParamsID, SkShaderInfo*) const;
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
 

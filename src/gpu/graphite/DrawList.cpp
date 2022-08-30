@@ -36,6 +36,10 @@ void DrawList::recordDraw(const Renderer& renderer,
 
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
 
+    SkDebugf("recorderDraw: tex: %p\n", paint->shader());
+    if (paint->shader()) {
+        SkDebugf("-----\n");
+    }
     fDraws.push_back({renderer, this->deduplicateTransform(localToDevice),
                       geometry, clip, ordering, paint, stroke});
     fRenderStepCount += renderer.numRenderSteps();

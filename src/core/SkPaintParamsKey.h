@@ -184,9 +184,10 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
-        fBlendInfo = blendInfo;
+        SkDebugf("setBlendInfo %d %d %d\n", (int) blendInfo.fEquation, (int) blendInfo.fSrcBlend, (int) blendInfo.fDstBlend);
+        fBlendInfo1 = blendInfo;
     }
-    const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+    const skgpu::BlendInfo& blendInfo1() const { return fBlendInfo1; }
 #endif
 
     void beginBlock(int32_t codeSnippetID);
@@ -227,7 +228,7 @@ public:
         SkASSERT(fLocked);
         fData.rewind();
 #ifdef SK_GRAPHITE_ENABLED
-        fBlendInfo = {};
+        fBlendInfo1 = {};
 #endif
         SkDEBUGCODE(fLocked = false;)
         SkDEBUGCODE(this->checkReset();)
@@ -269,7 +270,7 @@ private:
     SkTDArray<uint8_t> fData;
 
 #ifdef SK_GRAPHITE_ENABLED
-    skgpu::BlendInfo fBlendInfo;
+    skgpu::BlendInfo fBlendInfo1;
 #endif
 };
 
