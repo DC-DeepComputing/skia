@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddea0246_4985a2b2",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:25:24Z",
+      "side": 1,
+      "message": "We should put these behind a build flag (or more than one?). Probably `SK_HAS_HEIF_LIBRARY`. If this isn\u0027t defined, we won\u0027t compile `SkHeifCodec.cpp`, which is (currently) the only one that uses it.",
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd3e425_7b26acbd",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:25:24Z",
+      "side": 1,
+      "message": "This comment needs more details. e.g. What formats does this apply to?",
+      "range": {
+        "startLine": 338,
+        "startChar": 11,
+        "endLine": 338,
+        "endChar": 32
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "048b0df4_63a5dd60",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:25:24Z",
+      "side": 1,
+      "message": "`SkCodec::Options` is the right place for this 😊",
+      "range": {
+        "startLine": 343,
+        "startChar": 35,
+        "endLine": 343,
+        "endChar": 51
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c975380_efff1641",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:25:24Z",
+      "side": 1,
+      "message": "What do other values mean? Can this be an `enum`?",
+      "range": {
+        "startLine": 343,
+        "startChar": 8,
+        "endLine": 343,
+        "endChar": 11
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acc40d4_ece80218",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-30T17:25:24Z",
+      "side": 1,
+      "message": "This needs to be added to `src/codec/SkStubHeifDecoderAPI.h`.",
+      "range": {
+        "startLine": 392,
+        "startChar": 18,
+        "endLine": 392,
+        "endChar": 36
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
