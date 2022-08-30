@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4456dc02_9dda98d0",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T19:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc4eb0d7_d3779719",
+      "range": {
+        "startLine": 439,
+        "startChar": 9,
+        "endLine": 439,
+        "endChar": 16
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35ed2829_a1771a21",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-30T15:03:33Z",
       "side": 1,
       "message": "You don\u0027t need this variable. You can just use the ones in the `frames`.",
+      "range": {
+        "startLine": 445,
+        "startChar": 26,
+        "endLine": 445,
+        "endChar": 33
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04856018_f5f76a9b",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T19:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35ed2829_a1771a21",
       "range": {
         "startLine": 445,
         "startChar": 26,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea6e894e_85bf6be6",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T19:05:40Z",
+      "side": 1,
+      "message": "These are not exactly equal since we specified kLossy compression.",
+      "parentUuid": "a8254fb3_30083ec1",
+      "range": {
+        "startLine": 488,
+        "startChar": 27,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f60e09a5_0a7b8967",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2123ef28_db6f9ae0",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T19:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f60e09a5_0a7b8967",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 74
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42ee04d2_53a5a6c8",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-08-30T15:03:33Z",
       "side": 1,
       "message": "Again, you can use `frameUnmatched.pixmap` directly.",
+      "range": {
+        "startLine": 497,
+        "startChar": 13,
+        "endLine": 497,
+        "endChar": 15
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c839a105_f0a52a30",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T19:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42ee04d2_53a5a6c8",
       "range": {
         "startLine": 497,
         "startChar": 13,
