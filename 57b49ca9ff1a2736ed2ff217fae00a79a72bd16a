@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "611feb45_8ad75664",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-30T15:47:55Z",
+      "side": 1,
+      "message": "SkTHashMap automatically uses SkOpts to hash keys for us, so that helps simplify things.",
+      "range": {
+        "startLine": 431,
+        "startChar": 4,
+        "endLine": 431,
+        "endChar": 14
+      },
+      "revId": "57b49ca9ff1a2736ed2ff217fae00a79a72bd16a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c8e3c4_c7ed478b",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-30T15:47:55Z",
+      "side": 1,
+      "message": "We didn\u0027t have a Renderer.cpp file, but maybe it\u0027d be better to have this defined there instead of shoe-horning it into RendererProvider.cpp (my thinking had been it was \"okay\" since this is where all the RenderSteps get created anyways). wdyt?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 50
+      },
+      "revId": "57b49ca9ff1a2736ed2ff217fae00a79a72bd16a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
