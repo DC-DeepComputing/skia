@@ -8,8 +8,8 @@
 #ifndef skgpu_graphite_Device_DEFINED
 #define skgpu_graphite_Device_DEFINED
 
+#include "include/private/SkEnumBitMask.h"
 #include "src/core/SkDevice.h"
-#include "src/core/SkEnumBitMask.h"
 
 #include "src/gpu/graphite/ClipStack_graphite.h"
 #include "src/gpu/graphite/DrawOrder.h"

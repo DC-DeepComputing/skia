@@ -245,6 +245,7 @@ BASE_SRCS_ALL = [
     "include/private/SkColorData.h",
     "include/private/SkDeque.h",
     "include/private/SkEncodedInfo.h",
+    "include/private/SkEnumBitMask.h",
     "include/private/SkFixed.h",
     "include/private/SkFloatBits.h",
     "include/private/SkFloatingPoint.h",

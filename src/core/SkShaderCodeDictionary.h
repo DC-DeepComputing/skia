@@ -10,6 +10,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkTHash.h"
@@ -18,7 +19,6 @@
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
-#include "src/core/SkEnumBitMask.h"
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 

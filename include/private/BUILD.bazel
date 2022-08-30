@@ -33,6 +33,7 @@ filegroup(
         "SkColorData.h",
         "SkDeque.h",
         "SkEncodedInfo.h",
+        "SkEnumBitMask.h",
         "SkFixed.h",
         "SkFloatBits.h",
         "SkFloatingPoint.h",

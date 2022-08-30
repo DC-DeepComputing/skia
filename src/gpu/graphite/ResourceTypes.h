@@ -9,7 +9,7 @@
 #define skgpu_graphite_ResourceTypes_DEFINED
 
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "src/core/SkEnumBitMask.h"
+#include "include/private/SkEnumBitMask.h"
 
 namespace skgpu::graphite {
 
