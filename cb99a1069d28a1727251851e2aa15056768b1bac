@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fc24ce0_8aef88ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-30T17:34:17Z",
+      "side": 1,
+      "message": "Since GrVkMemoryAllocator seems to be the only public type that uses these, and the only place in client code that interacts with that is chromium\u0027s custom allocator, I am leaning towards keeping SkEnumBitMask and not bringing GrTFlagsMask into graphite. It seems pretty reasonable to migrate to SkEnumBitMask with a #define and it would also let us rename the class to something more general purpose like `skgpu::VkMemoryAllocator`.",
+      "revId": "cb99a1069d28a1727251851e2aa15056768b1bac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
