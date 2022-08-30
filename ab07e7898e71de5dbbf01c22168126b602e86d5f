@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6599a62_4aaaa000",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-30T16:19:12Z",
+      "side": 1,
+      "message": "Seems like we should change the BuiltinDeterminantSupport and BuiltinFMASupport caps factories to set the fields to `false` now? All of our goldens are exercising the same code path.",
+      "revId": "ab07e7898e71de5dbbf01c22168126b602e86d5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
