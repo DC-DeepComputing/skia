@@ -166,6 +166,16 @@ private:
     NSError* fError SK_GUARDED_BY(fMutex);
 };
 
+static dispatch_time_t mtlcompiler_wait_duration(int timeoutMS) {
+    if (@available(macOS 10.15, iOS 13.0, *)) {
+        // Wait as long as necessary for compilation to eventually complete.
+        return DISPATCH_TIME_FOREVER;
+    } else {
+        // Allow a fixed amount of time for compilation to complete.
+        return dispatch_time(DISPATCH_TIME_NOW, timeoutMS * 1000000ULL);
+    }
+}
+
 id<MTLLibrary> GrMtlNewLibraryWithSource(id<MTLDevice> device, NSString* mslCode,
                                          MTLCompileOptions* options, NSError** error) {
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
@@ -183,14 +193,11 @@ id<MTLLibrary> GrMtlNewLibraryWithSource(id<MTLDevice> device, NSString* mslCode
                          options: options
                completionHandler: completionHandler];
 
-    // Wait 1 second for the compiler
-    constexpr auto kTimeoutNS = 1000000000UL;
-    if (dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, kTimeoutNS))) {
+    constexpr int kTimeoutMS = 1000;
+    if (dispatch_semaphore_wait(semaphore, mtlcompiler_wait_duration(kTimeoutMS))) {
         if (error) {
-            constexpr auto kTimeoutMS = kTimeoutNS/1000000UL;
             NSString* description =
-                    [NSString stringWithFormat:@"Compilation took longer than %lu ms",
-                                               kTimeoutMS];
+                    [NSString stringWithFormat:@"Compilation took longer than %d ms", kTimeoutMS];
             *error = GrCreateMtlError(description, GrMtlErrorCode::kTimeout);
         }
         return nil;
@@ -218,13 +225,11 @@ id<MTLRenderPipelineState> GrMtlNewRenderPipelineStateWithDescriptor(
     [device newRenderPipelineStateWithDescriptor: pipelineDescriptor
                                completionHandler: completionHandler];
 
-    // Wait 1 second for pipeline creation
-    constexpr auto kTimeoutNS = 1000000000UL;
-    if (dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, kTimeoutNS))) {
+    constexpr int kTimeoutMS = 1000;
+    if (dispatch_semaphore_wait(semaphore, mtlcompiler_wait_duration(kTimeoutMS))) {
         if (error) {
-            constexpr auto kTimeoutMS = kTimeoutNS/1000000UL;
             NSString* description =
-                    [NSString stringWithFormat:@"Pipeline creation took longer than %lu ms",
+                    [NSString stringWithFormat:@"Pipeline creation took longer than %d ms",
                                                kTimeoutMS];
             *error = GrCreateMtlError(description, GrMtlErrorCode::kTimeout);
         }
