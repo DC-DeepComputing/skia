@@ -1,0 +1,515 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c78ce75e_5543ef75",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "You don\u0027t need this. local-example also serves the extra.html",
+      "range": {
+        "startLine": 116,
+        "startChar": 6,
+        "endLine": 116,
+        "endChar": 11
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48e2097_15412176",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "The same feedback I have for the unit test goes here. Additionally, do we need this example? Is there something we could to to make it more clear what it was doing?",
+      "range": {
+        "startLine": 417,
+        "startChar": 10,
+        "endLine": 417,
+        "endChar": 15
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce06f142_49cf75af",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "I don\u0027t think you actually exposed this enum to the JS API. Is it necessary to?",
+      "range": {
+        "startLine": 562,
+        "startChar": 13,
+        "endLine": 562,
+        "endChar": 26
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503b0ff6_fc749c33",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Please explain what the input parameters are and mean. For example, mention that bidis are expected to be of length 3n.",
+      "range": {
+        "startLine": 988,
+        "startChar": 7,
+        "endLine": 988,
+        "endChar": 13
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebbd9298_f4ed91bf",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "We can make named types to describe these better. For example, you could have\n\n    /**\n     * CanvasKit APIs accept normal arrays, typed arrays, or Malloc\u0027d memory\n     * for bidi regions. Regions are triples of integers \n     * [startIdx, stopIdx, bidiLevel]\n     * where startIdx is inclusive and stopIdx is exclusive.\n     * Length 3 * n where n is the number of regions.\n     */\n    export type InputBidiRegions \u003d MallocObj | Uint32Array | number[];\n    \nThese go near the bottom, around line 4100",
+      "range": {
+        "startLine": 990,
+        "startChar": 38,
+        "endLine": 990,
+        "endChar": 49
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d5fca8_121203c2",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Please add an explanation of what this does.",
+      "range": {
+        "startLine": 995,
+        "startChar": 4,
+        "endLine": 995,
+        "endChar": 11
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dfeabe9_5d0fa056",
+        "filename": "modules/canvaskit/package-lock.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Neither should this.",
+      "range": {
+        "startLine": 11,
+        "startChar": 7,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18837103_fdc84d4f",
+        "filename": "modules/canvaskit/package.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "This should not be modified.",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 21,
+        "endChar": 15
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1dd70f5_b9e34109",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "How about we name these variables like bPtr, wPtr, gPtr etc. Then we can call the input parameter words and not words0.",
+      "range": {
+        "startLine": 328,
+        "startChar": 10,
+        "endLine": 328,
+        "endChar": 15
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9ad000_8e2bf8e0",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "This should be ||",
+      "range": {
+        "startLine": 333,
+        "startChar": 67,
+        "endLine": 333,
+        "endChar": 69
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb91c5d_39acca4f",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Can we use vec.reserve to avoid extraneous resize operations?",
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5a02509_739160bc",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "The bazel build shows some warnings for this code. If you are on Linux (not sure about Mac), you can try `make bazel_canvaskit_debug` to try this locally.",
+      "range": {
+        "startLine": 442,
+        "startChar": 23,
+        "endLine": 442,
+        "endChar": 28
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75820990_b9af46da",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "In C++, is there a memcpy or similar way to copy all the data from one array into a vector?",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 24
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32820e3e_c1a0138d",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Can you add a comment explaining the purpose of the test? It\u0027s not clear from just the output of the gm nor a quick read of the code.",
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a4436b_f8ae4268",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1085,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "This paint is not used. Did you mean to use it to highlight certain aspects of the gm?",
+      "range": {
+        "startLine": 1085,
+        "startChar": 8,
+        "endLine": 1085,
+        "endChar": 13
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f80e12d7_05ba378c",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Do we need to get text from the builder? Isn\u0027t this just the same string that went into addText?",
+      "range": {
+        "startLine": 1107,
+        "startChar": 14,
+        "endLine": 1107,
+        "endChar": 18
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40408df0_133a8aa0",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "I don\u0027t understand why bidis and words were set to these three values. Can you add a comment explaining?",
+      "range": {
+        "startLine": 1110,
+        "startChar": 34,
+        "endLine": 1110,
+        "endChar": 51
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53357cb0_1552699b",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Are these indexes (SkUnicode::Position) referring to bytes in the string data? Note that JS doesn\u0027t make it easy to access the bytes of a string, only the \"characters\". \n\nWould you be able to add an example using emoji or other multi-byte glyphs?",
+      "range": {
+        "startLine": 1116,
+        "startChar": 27,
+        "endLine": 1116,
+        "endChar": 36
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31782c92_ddbccd49",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "Why is there a space at index 0?",
+      "range": {
+        "startLine": 1121,
+        "startChar": 22,
+        "endLine": 1121,
+        "endChar": 23
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9d9634_23fa7a9a",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "prefer let and const in test code (For historical reasons, we use var in the bindings code; closure didn\u0027t support let and const at CanvasKit\u0027s inception).",
+      "range": {
+        "startLine": 1122,
+        "startChar": 13,
+        "endLine": 1122,
+        "endChar": 16
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7df3206_c5c54216",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "if (text[i] \u003d\u003d\u003d \u0027 \u0027) {\n        spaces.push(i);\n    }\n\nNote that in JS we almost always want triple equals signs \u003d\u003d\u003d or !\u003d\u003d to avoid type coercion.",
+      "range": {
+        "startLine": 1123,
+        "startChar": 10,
+        "endLine": 1125,
+        "endChar": 40
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31195b3_cf5c7741",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "I believe newLines is empty, right? Should we add a newline to the test text?\n\nTo simplify the test and assuming there is a newline, could we just have a constant array value instead of dynamically searching over static text?",
+      "range": {
+        "startLine": 1131,
+        "startChar": 12,
+        "endLine": 1131,
+        "endChar": 20
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71cf3fe6_e5d97d28",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T12:34:42Z",
+      "side": 1,
+      "message": "You need CanvasKit.Free(bidis) and others for every Malloc\u0027d object",
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
