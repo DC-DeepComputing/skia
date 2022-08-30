@@ -99,7 +99,7 @@ skia_core_public = [
   "$_include/core/SkYUVAPixmaps.h",
 ]
 
-# //src/core:core_srcs
+# //src/core:srcs
 skia_core_sources = [
   "$_src/core/Sk4px.h",
   "$_src/core/SkAAClip.cpp",
@@ -570,7 +570,7 @@ skia_core_sources = [
 # //include/pathops:public_hdrs
 skia_pathops_public = [ "$_include/pathops/SkPathOps.h" ]
 
-# //src/pathops:pathops_srcs
+# //src/pathops:srcs
 skia_pathops_sources = [
   "$_src/pathops/SkAddIntersections.cpp",
   "$_src/pathops/SkAddIntersections.h",

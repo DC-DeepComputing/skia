@@ -121,45 +121,33 @@ var dirToGniMapper = []gniPattern{
 //	"A" → "B"
 //	"B" → "C"
 var mergeMap = map[string]string{
-	"//include/private:private_hdrs":          "//src/core:core_srcs",
+	"//include/private:private_hdrs":          "//src/core:srcs",
 	"//include/private:sksl_private_hdrs":     "//src/sksl:core_srcs",
-	"//include/private/chromium:private_hdrs": "//src/core:core_srcs",
+	"//include/private/chromium:private_hdrs": "//src/core:srcs",
 	"//include/sksl:public_hdrs":              "//src/sksl:core_srcs",
-	"//src/c:effects_srcs":                    "//src/effects:effects_srcs",
-	"//src/c:srcs":                            "//src/core:core_srcs",
-	"//src/core:core_hdrs":                    "//src/core:core_srcs",
+	"//src/c:effects_srcs":                    "//src/effects:srcs",
+	"//src/c:srcs":                            "//src/core:srcs",
+	"//src/core:core_hdrs":                    "//src/core:srcs",
 	"//src/core:precompile_hdrs":              "//src/core:precompile_srcs",
 	"//src/core:skpicture_hdrs":               "//src/core:skpicture_srcs",
-	"//src/core:sksl_hdrs":                    "//src/core:core_srcs",
-	"//src/core:sksl_srcs":                    "//src/core:core_srcs",
-	"//src/effects:effects_hdrs":              "//src/effects:effects_srcs",
-	"//src/image:core_hdrs":                   "//src/core:core_srcs",
-	"//src/image:core_srcs":                   "//src/core:core_srcs",
-	"//src/lazy:lazy_hdrs":                    "//src/core:core_srcs",
-	"//src/lazy:lazy_srcs":                    "//src/core:core_srcs",
-	"//src/opts:private_hdrs":                 "//src/core:core_srcs",
-	"//src/pathops:pathops_hdrs":              "//src/pathops:pathops_srcs",
+	"//src/core:sksl_hdrs":                    "//src/core:srcs",
+	"//src/effects:effects_hdrs":              "//src/effects:srcs",
+	"//src/image:core_hdrs":                   "//src/core:srcs",
+	"//src/image:core_srcs":                   "//src/core:srcs",
+	"//src/lazy:lazy_hdrs":                    "//src/core:srcs",
+	"//src/lazy:lazy_srcs":                    "//src/core:srcs",
+	"//src/opts:private_hdrs":                 "//src/core:srcs",
+	"//src/pathops:pathops_hdrs":              "//src/pathops:srcs",
 	"//src/pdf:pdf_hdrs":                      "//src/pdf:pdf_srcs",
-	"//src/shaders:shader_hdrs":               "//src/core:core_srcs",
-	"//src/shaders:shader_srcs":               "//src/core:core_srcs",
+	"//src/shaders:shader_hdrs":               "//src/core:srcs",
 	"//src/shaders:skpicture_hdrs":            "//src/shaders:skpicture_srcs",
 	"//src/shaders:skpicture_srcs":            "//src/core:skpicture_srcs",
-	"//src/shaders/gradients:gradient_hdrs":   "//src/effects:effects_srcs",
-	"//src/shaders/gradients:gradient_srcs":   "//src/effects:effects_srcs",
-	"//src/sksl:core_hdrs":                    "//src/sksl:core_srcs",
-	"//src/sksl/analysis:analysis_hdrs":       "//src/sksl:core_srcs",
-	"//src/sksl/analysis:analysis_srcs":       "//src/sksl:core_srcs",
-	"//src/sksl/codegen:core_srcs":            "//src/sksl:core_srcs",
+	"//src/shaders:srcs":                      "//src/core:srcs",
+	"//src/shaders/gradients:gradient_hdrs":   "//src/effects:srcs",
+	"//src/shaders/gradients:srcs":            "//src/effects:srcs",
 	"//src/sksl/codegen:gpu_hdrs":             "//src/sksl/codegen:gpu_srcs",
-	"//src/sksl/codegen:srcs":                 "//src/sksl:core_srcs",
-	"//src/sksl/dsl:srcs":                     "//src/sksl:core_srcs",
-	"//src/sksl/dsl/priv:srcs":                "//src/sksl:core_srcs",
-	"//src/sksl/ir:ir_hdrs":                   "//src/sksl:core_srcs",
-	"//src/sksl/ir:ir_srcs":                   "//src/sksl:core_srcs",
-	"//src/sksl/tracing:srcs":                 "//src/sksl:core_srcs",
-	"//src/sksl/transform:transform_srcs":     "//src/sksl:core_srcs",
-	"//src/text:text_hdrs":                    "//src/core:core_srcs",
-	"//src/text:text_srcs":                    "//src/core:core_srcs",
+	"//src/text:text_hdrs":                    "//src/core:srcs",
+	"//src/text:text_srcs":                    "//src/core:srcs",
 	"//src/utils:core_hdrs":                   "//src/utils:core_srcs",
 	"//src/utils:json_hdrs":                   "//src/utils:core_srcs",
 	"//src/utils:json_srcs":                   "//src/utils:core_srcs",
@@ -176,17 +164,93 @@ var ruleNameMap = map[string]string{
 	"include_pathops_public_hdrs":                "skia_pathops_public",
 	"include_utils_public_hdrs":                  "skia_utils_public",
 	"modules_skcms_skcms":                        "skcms_sources",
-	"src_core_core_srcs":                         "skia_core_sources",
 	"src_core_precompile_srcs":                   "skia_precompile_sources",
 	"src_core_skpicture_srcs":                    "skia_skpicture_sources",
-	"src_effects_effects_srcs":                   "skia_effects_sources",
+	"src_core_srcs":                              "skia_core_sources",
+	"src_effects_srcs":                           "skia_effects_sources",
 	"src_effects_imagefilters_imagefilters_hdrs": "skia_effects_imagefilter_public",
 	"src_effects_imagefilters_imagefilters_srcs": "skia_effects_imagefilter_sources",
-	"src_pathops_pathops_srcs":                   "skia_pathops_sources",
+	"src_pathops_srcs":                           "skia_pathops_sources",
 	"src_pdf_pdf_srcs":                           "skia_pdf_sources",
 	"src_sksl_codegen_gpu_srcs":                  "skia_sksl_gpu_sources",
 	"src_sksl_core_srcs":                         "skia_sksl_sources",
 	"src_utils_core_srcs":                        "skia_utils_sources",
+}
+
+// When retrieving all files referenced by a rule dependent rules are also
+// traversed recursively. There are cases where a rule maps to a GNI file list
+// but one of the dependent rules need to map to a different GNI list. This
+// lists all rule names which are excluded from that recursive traversal.
+// Excluded rules will be processed individually.
+var nonRecursiveIncludeRules = []string{
+	// Bazel:
+	//   deps: //include:public_hdrs → //include/core:public_hdrs → //include/core:skpicture_public_hdrs
+	//   would map: //include:public_hdrs → core.gni:skia_core_public
+	// GN:
+	//   wants in: core.gni:skia_skpicture_public
+	"//include/core:skpicture_public_hdrs",
+	// Bazel:
+	//   deps: //include:private_hdrs → //include/private:private_hdrs → //include/private:sksl_private_hdrs
+	//   would map: //include:private_hdrs → core.gni:skia_core_public
+	// GN:
+	//   wants in: sksl.gni:skia_sksl_sources
+	"//include/private:sksl_private_hdrs",
+	// Bazel:
+	//   deps: //include:private_hdrs → //include/private:private_hdrs → //include/private/chromium:private_hdrs
+	//   maps to: //include:private_hdrs → core.gni:skia_core_public
+	// Prevent double processing because //include/private/chromium:private_hdrs has __pkg__ vis.
+	"//include/private/chromium:private_hdrs",
+	// Bazel:
+	//   deps: //include:private_hdrs → //include/private/gpu:private_hdrs → //include/private/gpu/ganesh:private_hdrs
+	//   would map: //include:private_hdrs → core.gni:skia_core_public
+	// GN:
+	//   wants in: gpu.gni:skia_gpu_sources
+	"//include/private/gpu/ganesh:private_hdrs",
+	// Bazel:
+	//   deps: //src:private_hdrs → //src/core:private_hdrs → //src/core:skpicture_hdrs
+	//   would map: //src:private_hdrs → core.gni:skia_core_public
+	// GN:
+	//   wants in: core.gni:skia_skpicture_sources
+	"//src/core:skpicture_hdrs",
+	// Bazel:
+	//   deps: //src:srcs → //src/core:srcs → //src/core:skpicture_srcs
+	//   would map: //src:srcs → core.gni:skia_core_public
+	// GN:
+	//   wants in: core.gni:skia_skpicture_sources
+	"//src/core:skpicture_srcs",
+	// Bazel:
+	//   deps: //src:srcs → //src/effects:srcs → //src/effects/imagefilters:srcs
+	//   would map: //src:srcs → core.gni:skia_core_public
+	// GN:
+	//   wants in: effects_imagefilters.gni:skia_effects_imagefilter_sources
+	"//src/effects/imagefilters:srcs",
+	// Bazel:
+	//   deps: //src:srcs → //src/shaders:srcs → //src/shaders:skpicture_srcs
+	//   would map: //src:srcs → core.gni:skia_core_public
+	// GN:
+	//   wants in: core.gni:skia_skpicture_sources
+	"//src/shaders:skpicture_srcs",
+	// Bazel:
+	//   deps: src:srcs → //src/shaders:srcs → //src/shaders/gradients:srcs.
+	//   would map: //src:srcs → core.gni:skia_core_public
+	// GN:
+	//   wants in: effects.gni:skia_effects_sources
+	"//src/shaders/gradients:srcs",
+}
+
+// Private rules, which are normally skipped during export, that should be
+// exported.
+var privateExportRules = []string{
+	"//src/core:precompile_srcs",
+	"//src/core:precompile_hdrs",
+	"//src/pathops:pathops_hdrs",
+}
+
+// Rules to not export.
+var noExportRules = []string{
+	"//src/image:srcs",
+	"//src/opts:srcs", // Hardcoded in //gn/opts.gni.
+	"//src/text:srcs",
 }
 
 var deprecatedFiles = []string{
@@ -229,8 +293,8 @@ func NewGNIExporter(params GNIExporterParams, filesystem interfaces.FileSystem) 
 	return e
 }
 
-// Retrieve all rule attributes which are internal file targets.
-func getRuleFiles(r *build.Rule, attrName string) ([]string, error) {
+// Retrieve all rule attributes that are internal file targets.
+func getRuleFiles(r *build.Rule, attrName string, qr *analysis_v2.CqueryResult) ([]string, error) {
 	items, err := getRuleStringArrayAttribute(r, attrName)
 	if err != nil {
 		return nil, skerr.Wrap(err)
@@ -238,8 +302,25 @@ func getRuleFiles(r *build.Rule, attrName string) ([]string, error) {
 
 	var files []string
 	for _, item := range items {
-		if !isExternalRule(item) && isFileTarget(item) {
+		if isExternalRule(item) {
+			continue
+		}
+		if isFileTarget(item) {
 			files = append(files, item)
+			continue
+		}
+		if !includeDependentRule(item) {
+			continue
+		}
+		dep := findRule(qr, item)
+		if dep == nil {
+			fmt.Printf("Cannot find rule %s\n", item)
+		} else {
+			depfiles, err := getRuleFiles(dep, attrName, qr)
+			if err != nil {
+				return nil, skerr.Wrap(err)
+			}
+			files = append(files, depfiles...)
 		}
 	}
 	return files, nil
@@ -300,6 +381,12 @@ func isTargetCppHeaderFile(target string) bool {
 	return ext == ".h" || ext == ".hpp"
 }
 
+// Should a rule, identified by the rule name, be included into downstream
+// rules which reference the rule?
+func includeDependentRule(ruleName string) bool {
+	return !util.In(ruleName, nonRecursiveIncludeRules)
+}
+
 // Should the given rule be skipped during the export process?
 // The general rule is that:
 //
@@ -308,43 +395,38 @@ func isTargetCppHeaderFile(target string) bool {
 //  2. Contains the word "public" in the rule name.
 //  3. Matches a few hardcoded rule names to wither skip or not.
 func shouldSkipRule(r *build.Rule) (bool, error) {
-	if r.GetName() == "//src/opts:srcs" {
-		// This has a hardcoded footer in //gn/opts.gni.
+	if util.In(r.GetName(), noExportRules) {
 		return true, nil
+	}
+	if util.In(r.GetName(), privateExportRules) {
+		return false, nil
+	}
+	if !includeDependentRule(r.GetName()) {
+		return false, nil
 	}
 	if strings.Contains(r.GetName(), "public") {
 		return false, nil
 	}
-	if r.GetName() == "//include/private:private_hdrs" ||
-		r.GetName() == "//src/opts:private_hdrs" {
-		return false, nil
+	if strings.Contains(r.GetName(), "private_hdrs") {
+		return true, nil
 	}
 	vis, err := getRuleStringArrayAttribute(r, "visibility")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Rule %s bad visibility: %v", r.GetName(), err)
 		return false, skerr.Wrap(err)
 	}
-	if len(vis) != 1 || !strings.HasSuffix(vis[0], ":__pkg__") {
-		// It's possible to have multiple visibility values. Only checking
-		// for a list of one because this implementation is simplistic, but
-		// adequate for Skia's current Bazel rules.
-		return false, nil
-	}
-	// Iterate over srcs because rules may put headers in srcs. Only if srcs
-	// is made up solely of headers will it be skipped.
-	srcs, err := getRuleStringArrayAttribute(r, "srcs")
-	if err != nil {
-		return false, skerr.Wrap(err)
-	}
-	if len(srcs) == 0 {
+	if len(vis) == 0 || vis[0] == "//visibility:private" {
+		// Bazel default visibility is private. Private rules are not exported.
 		return true, nil
 	}
-	for _, item := range srcs {
-		if isFileTarget(item) && !isTargetCppHeaderFile(item) {
-			return false, nil
-		}
+	if len(vis) > 1 {
+		return false, skerr.Fmt("Multiple visibility attributes not supported.")
 	}
-	return true, nil
+	if vis[0] == "//visibility:public" {
+		// Explicitly public rules are not skipped.
+		return false, nil
+	}
+	return !strings.HasSuffix(vis[0], ":__pkg__"), nil
 }
 
 // Write the *.gni file header.
@@ -382,13 +464,13 @@ func warnDuplicates(files []string) {
 // something like:
 //
 //	"//src/core/file.cpp".
-func getSrcsAndHdrs(r *build.Rule) ([]string, error) {
-	srcs, err := getRuleFiles(r, "srcs")
+func getSrcsAndHdrs(r *build.Rule, qr *analysis_v2.CqueryResult) ([]string, error) {
+	srcs, err := getRuleFiles(r, "srcs", qr)
 	if err != nil {
 		return nil, skerr.Wrap(err)
 	}
 
-	hdrs, err := getRuleFiles(r, "hdrs")
+	hdrs, err := getRuleFiles(r, "hdrs", qr)
 	if err != nil {
 		return nil, skerr.Wrap(err)
 	}
@@ -545,7 +627,7 @@ func (e *GNIExporter) convertRule(r *build.Rule, qr *analysis_v2.CqueryResult) e
 		// Will find and write this rule later when the target rule is exported.
 		return nil
 	}
-	targets, err := getSrcsAndHdrs(r)
+	targets, err := getSrcsAndHdrs(r, qr)
 	if err != nil {
 		return skerr.Wrap(err)
 	}
@@ -562,7 +644,7 @@ func (e *GNIExporter) convertRule(r *build.Rule, qr *analysis_v2.CqueryResult) e
 		}
 		e.convertedRules = append(e.convertedRules, otherRule.GetName())
 
-		otherFiles, err := getSrcsAndHdrs(otherRule)
+		otherFiles, err := getSrcsAndHdrs(otherRule, qr)
 		if err != nil {
 			return skerr.Wrap(err)
 		}

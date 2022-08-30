@@ -29,7 +29,7 @@ skia_effects_public = [
   "$_include/effects/SkTrimPathEffect.h",
 ]
 
-# //src/effects:effects_srcs
+# //src/effects:srcs
 skia_effects_sources = [
   "$_src/effects/Sk1DPathEffect.cpp",
   "$_src/effects/Sk2DPathEffect.cpp",
