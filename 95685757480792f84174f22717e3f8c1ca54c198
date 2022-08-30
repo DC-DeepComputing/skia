@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c7f3d764_95fcb87c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "473ea097_b1e45f26",
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6addd38d_4e649205",
         "filename": "include/encode/SkEncoder.h",
         "patchSetId": 3
@@ -94,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7364fe36_91287056",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9df14648_c980cf6c",
+      "range": {
+        "startLine": 52,
+        "startChar": 67,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4f0623c_fd366398",
@@ -117,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "381a7fef_5a43b7ee",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4f0623c_fd366398",
+      "range": {
+        "startLine": 142,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 30
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e51268c_51e4c9ab",
@@ -130,6 +196,30 @@
       "writtenOn": "2022-08-26T15:04:47Z",
       "side": 1,
       "message": "We might want to also check for a null stream.",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 25
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0edb14c_ab4f7653",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done. Also added check for `Encode(.)`",
+      "parentUuid": "0e51268c_51e4c9ab",
       "range": {
         "startLine": 180,
         "startChar": 4,
@@ -186,6 +276,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2f9b2d0_7e7d97e1",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bd293ea_398c77cd",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 7
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daf7ef69_85d2e801",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdeda0fc_ec333f9e",
+      "range": {
+        "startLine": 184,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 20
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71e06fd5_af90a97a",
@@ -199,6 +337,30 @@
       "writtenOn": "2022-08-26T15:04:47Z",
       "side": 1,
       "message": "I suppose this will fail if width and height are bad?",
+      "range": {
+        "startLine": 189,
+        "startChar": 12,
+        "endLine": 189,
+        "endChar": 30
+      },
+      "revId": "95685757480792f84174f22717e3f8c1ca54c198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "585ff69d_e69e5c26",
+        "filename": "src/images/SkWebpEncoder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-30T10:15:59Z",
+      "side": 1,
+      "message": "Yes it will return nullptr on invalid width/height:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/libwebp/src/src/mux/anim_encode.c;l\u003d244",
+      "parentUuid": "71e06fd5_af90a97a",
       "range": {
         "startLine": 189,
         "startChar": 12,
