@@ -28,8 +28,8 @@ public:
 
     void reset();
 
-protected:
-private:
+//protected:
+//private:
     std::vector<sk_sp<Task>> fTasks;
 };
 

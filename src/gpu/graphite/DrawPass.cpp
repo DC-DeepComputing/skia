@@ -722,6 +722,7 @@ const Texture* DrawPass::getTexture(size_t index) const {
     SkASSERT(fSampledTextures[index]->texture());
     return fSampledTextures[index]->texture();
 }
+
 const Sampler* DrawPass::getSampler(size_t index) const {
     SkASSERT(index < fSamplers.size());
     SkASSERT(fSamplers[index]);
