@@ -53,7 +53,8 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeGraphite(skgpu::graphite::Recorder
 
     sk_sp<skgpu::graphite::Device> device = skgpu::graphite::Device::Make(recorder, ii,
                                                                           SkBudgeted::kYes,
-                                                                          props);
+                                                                          props,
+                                                                          false);
     if (!device) {
         return nullptr;
     }

@@ -7,6 +7,9 @@
 
 #include "src/gpu/graphite/DrawPass.h"
 
+#include "include/core/SkBlender.h"
+#include "src/core/SkBlenderBase.h"
+
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Buffer.h"
@@ -722,6 +725,7 @@ const Texture* DrawPass::getTexture(size_t index) const {
     SkASSERT(fSampledTextures[index]->texture());
     return fSampledTextures[index]->texture();
 }
+
 const Sampler* DrawPass::getSampler(size_t index) const {
     SkASSERT(index < fSamplers.size());
     SkASSERT(fSamplers[index]);

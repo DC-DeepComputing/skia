@@ -32,6 +32,8 @@ bool TaskGraph::addCommands(ResourceProvider* resourceProvider, CommandBuffer* c
         if (!task->addCommands(resourceProvider, commandBuffer)) {
             return false;
         }
+
+//        commandBuffer->
     }
 
     return true;

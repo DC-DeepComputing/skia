@@ -16,11 +16,14 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkColorFilterPriv.h"
+#include "src/shaders/SkImageShader.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+//#include "include/core/SkShader.h"
 
 namespace {
 
+#if 0
 sk_sp<SkShader> create_gradient_shader(SkRect r,
                                        const std::array<SkColor, 3>& colors,
                                        const std::array<float, 3>& offsets) {
@@ -229,6 +232,29 @@ void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
         dstPaint.setColor(kTransBluish);
     }
 }
+#endif
+
+void draw_quarter(SkCanvas* canvas, sk_sp<SkImage> img, SkRect fullRectToDraw,
+                  float offX, float offY) {
+    SkRect imgSubset = SkRect::MakeXYWH(img->width() * offX / 2.0f, img->height() * offY / 2.0f,
+                                        img->width() / 2.0f, img->height() / 2.0f);
+    SkRect rectSubset = SkRect::MakeXYWH(fullRectToDraw.fLeft + (fullRectToDraw.width() * offX / 2.0f),
+                                         /*fullRectToDraw.fTop +*/ (fullRectToDraw.height() * offY / 2.0f),
+                                         fullRectToDraw.width() / 2.0f,
+                                         fullRectToDraw.height() / 2.0f);
+    rectSubset.inset(1, 1);
+
+    SkMatrix srcToDst = SkMatrix::RectToRect(imgSubset, rectSubset);
+
+    sk_sp<SkShader> s = SkImageShader::MakeSubset(img, imgSubset,
+                                                  SkTileMode::kClamp, SkTileMode::kClamp,
+                                                  SkSamplingOptions(), &srcToDst);
+
+    SkPaint paint;
+    paint.setShader(std::move(s));
+
+    canvas->drawRect(rectSubset, paint);
+}
 
 } // anonymous namespace
 
@@ -259,6 +285,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+#if 0
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
@@ -294,7 +321,24 @@ protected:
 
         // Middle-right tile
         {
-            // <add tile here>
+            const SkRect kTile = SkRect::MakeXYWH(2*kTileWidth, kTileHeight,
+                                                  kTileWidth, kTileHeight);
+
+//            canvas->clipRect(kTile);
+
+            sk_sp<SkImage> img = GetResourceAsImage("images/mandrill_128.png");
+            img = img->makeRasterImage();
+
+            if (canvas->recorder()) {
+                img = img->makeTextureImage(canvas->recorder());
+            } else if (canvas->recordingContext() && canvas->recordingContext()->asDirectContext()) {
+                img = img->makeTextureImage(canvas->recordingContext()->asDirectContext());
+            }
+
+            draw_quarter(canvas, img, kTile, 0, 0);
+            draw_quarter(canvas, img, kTile, 1, 0);
+            draw_quarter(canvas, img, kTile, 0, 1);
+            draw_quarter(canvas, img, kTile, 1, 1);
         }
 
         canvas->restore();
@@ -309,10 +353,32 @@ protected:
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(kTileWidth, 2*kTileHeight,
                                                           kTileWidth, kTileHeight));
 
+#endif
+
+#if 1
         // Bottom-right corner
         {
-            // <add tile here>
+            const SkRect kTile = SkRect::MakeXYWH(2*kTileWidth, 2*kTileHeight,
+                                                  kTileWidth, kTileHeight);
+
+            SkPaint circlePaint;
+            circlePaint.setColor(SK_ColorBLUE);
+            circlePaint.setBlendMode(SkBlendMode::kSrc);
+
+            canvas->clipRect(kTile);
+            canvas->drawCircle(kTile.center(), kTileWidth/2.0f, circlePaint);
+
+            SkPaint restorePaint;
+            restorePaint.setBlendMode(SkBlendMode::kPlus);
+
+            canvas->saveLayer(nullptr, &restorePaint);
+                circlePaint.setColor(SK_ColorRED);
+                circlePaint.setBlendMode(SkBlendMode::kSrc);
+
+                canvas->drawCircle(kTile.center(), kTileWidth/2.0f, circlePaint);
+            canvas->restore();
         }
+#endif
     }
 
 private:
