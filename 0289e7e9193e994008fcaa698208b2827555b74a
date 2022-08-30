@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf842029_826dc7ca",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-30T19:25:32Z",
+      "side": 1,
+      "message": "The example runs side by side with the normal paragraph and you can see that it formats the same way.",
+      "parentUuid": "d6f5c1c5_5bdf4c67",
+      "range": {
+        "startLine": 417,
+        "startChar": 10,
+        "endLine": 417,
+        "endChar": 15
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce06f142_49cf75af",
@@ -767,6 +791,30 @@
       "side": 1,
       "message": "Since this is the only place where we test what getText does, can you add an assert for the text value?",
       "parentUuid": "b61158ec_df44f648",
+      "range": {
+        "startLine": 1107,
+        "startChar": 14,
+        "endLine": 1107,
+        "endChar": 18
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e4dfe88_828ef4ce",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1107,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-08-30T19:25:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1300d2e1_c2b10673",
       "range": {
         "startLine": 1107,
         "startChar": 14,
