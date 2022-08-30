@@ -83,7 +83,8 @@ type gniPattern struct {
 	gni string         // Workspace relative *.gni file path.
 }
 
-// This list is processed in order to map directory paths to *.gni files.
+// This list maps directory paths to *.gni files.
+// It is processed in order and the first match is used.
 var dirToGniMapper = []gniPattern{
 	{reg: regexp.MustCompile(`^include/core$`), gni: "gn/core.gni"},
 	{reg: regexp.MustCompile(`^include/docs$`), gni: "gn/pdf.gni"},
@@ -187,12 +188,25 @@ var ruleNameMap = map[string]string{
 	"src_sksl_codegen_gpu_srcs":                  "skia_sksl_gpu_sources",
 	"src_sksl_core_srcs":                         "skia_sksl_sources",
 	"src_utils_core_srcs":                        "skia_utils_sources",
+	"include_effects_public_imagefilters_hdrs":   "skia_effects_imagefilter_public",
 }
 
 var deprecatedFiles = []string{
 	"include/core/SkDrawLooper.h",
 	"include/effects/SkBlurDrawLooper.h",
 	"include/effects/SkLayerDrawLooper.h",
+}
+
+// Rules to always export.
+var noSkipRules = []string{
+	"//include/effects:public_imagefilters_hdrs",
+	"//include/private:private_hdrs",
+	"//src/opts:private_hdrs",
+}
+
+var noExportRules = []string{
+	"//src/opts:srcs", // Hardcoded in //gn/opts.gni.
+	"//src/effects/imagefilters:imagefilters_hdrs", // private headers.
 }
 
 // TODO(skbug.com/12345): Remove when development is complete.
@@ -290,14 +304,29 @@ func getRuleGNIVariableName(r *build.Rule) (string, error) {
 	return n, nil
 }
 
+// Is the file path a C++ header?
+func isHeaderFile(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	return ext == ".h" || ext == ".hpp"
+}
+
 // Is the file path portion of the given |target| a C/C++ header file?
 func isTargetCppHeaderFile(target string) bool {
 	_, _, t, err := parseRule(target)
 	if err != nil {
 		return false
 	}
-	ext := strings.ToLower(filepath.Ext(t))
-	return ext == ".h" || ext == ".hpp"
+	return isHeaderFile(t)
+}
+
+// Does the list of file paths contain only header files?
+func fileListContainsOnlyCppHeaderFiles(files []string) bool {
+	for _, f := range files {
+		if !isHeaderFile(f) {
+			return false
+		}
+	}
+	return len(files) > 0 // Empty list is false, else all are headers.
 }
 
 // Should the given rule be skipped during the export process?
@@ -308,15 +337,13 @@ func isTargetCppHeaderFile(target string) bool {
 //  2. Contains the word "public" in the rule name.
 //  3. Matches a few hardcoded rule names to wither skip or not.
 func shouldSkipRule(r *build.Rule) (bool, error) {
-	if r.GetName() == "//src/opts:srcs" {
-		// This has a hardcoded footer in //gn/opts.gni.
+	if util.In(r.GetName(), noSkipRules) {
+		return false, nil
+	}
+	if util.In(r.GetName(), noExportRules) {
 		return true, nil
 	}
 	if strings.Contains(r.GetName(), "public") {
-		return false, nil
-	}
-	if r.GetName() == "//include/private:private_hdrs" ||
-		r.GetName() == "//src/opts:private_hdrs" {
 		return false, nil
 	}
 	vis, err := getRuleStringArrayAttribute(r, "visibility")
@@ -514,7 +541,10 @@ func (e *GNIExporter) getLocationGNFilePath(absRuleLocationDir string) string {
 func (e *GNIExporter) getRuleGNFilePath(r *build.Rule) (string, error) {
 	// TODO(skbug.com/12345): Un-hardcode this. There are a few cases where not
 	// all files in a directory map to the same GNI file.
-	if r.GetName() == "//src/c:effects_srcs" {
+	switch r.GetName() {
+	case "//include/effects:public_imagefilters_hdrs":
+		return "gn/effects_imagefilters.gni", nil
+	case "//src/c:effects_srcs":
 		return "gn/effects.gni", nil
 	}
 	if strings.Contains(r.GetName(), ":gpu_") {
@@ -624,9 +654,9 @@ func (e *GNIExporter) convertRule(r *build.Rule, qr *analysis_v2.CqueryResult) e
 	fmt.Fprintf(&contents, "%s = [\n", ruleVariableName)
 
 	printedIncludeComment := false
-	hasSrcs := strings.HasPrefix(files[0], "$_src")
+	onlyHeaders := fileListContainsOnlyCppHeaderFiles(files)
 	for _, target := range files {
-		if hasSrcs && !printedIncludeComment && strings.HasPrefix(target, "$_include") {
+		if !onlyHeaders && !printedIncludeComment && strings.HasPrefix(target, "$_include") {
 			fmt.Fprintf(&contents, "\n  # Includes\n")
 			printedIncludeComment = true
 		}
