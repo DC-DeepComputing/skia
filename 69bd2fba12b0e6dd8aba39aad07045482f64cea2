@@ -22,6 +22,30 @@
       },
       "revId": "69bd2fba12b0e6dd8aba39aad07045482f64cea2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd9307e7_256f9982",
+        "filename": "tools/sk_app/mac/GraphiteMetalWindowContext_mac.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-30T14:21:18Z",
+      "side": 1,
+      "message": "MTLStorageModeStoreAndResolve is fairly slow, so we don\u0027t want to do it unless we have to. There are other issues with framebuffer-only, like dest read. I\u0027m wondering if we should require clients who want to use framebuffer-only to draw to an offscreen and blit that to the framebuffer.",
+      "parentUuid": "02fec455_7eba5e5e",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 40
+      },
+      "revId": "69bd2fba12b0e6dd8aba39aad07045482f64cea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
