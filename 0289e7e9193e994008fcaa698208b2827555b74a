@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6f5c1c5_5bdf4c67",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T18:18:10Z",
+      "side": 1,
+      "message": "I think the unit test is fine (since it\u0027s nearly identical). WDYT?",
+      "parentUuid": "fd39bcbf_69740f96",
+      "range": {
+        "startLine": 417,
+        "startChar": 10,
+        "endLine": 417,
+        "endChar": 15
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce06f142_49cf75af",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 7
@@ -731,6 +755,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1300d2e1_c2b10673",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T18:18:10Z",
+      "side": 1,
+      "message": "Since this is the only place where we test what getText does, can you add an assert for the text value?",
+      "parentUuid": "b61158ec_df44f648",
+      "range": {
+        "startLine": 1107,
+        "startChar": 14,
+        "endLine": 1107,
+        "endChar": 18
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40408df0_133a8aa0",
         "filename": "modules/canvaskit/tests/paragraph.spec.js",
         "patchSetId": 7
@@ -813,6 +861,30 @@
       "side": 1,
       "message": "It\u0027s an interesting challenge. Not as easy as one character \u003d\u003d one glyph, though.\nSince for now Flutter people desperately need that I am going to leave this task for later (but I promise I will add that) if it\u0027s Ok with you.",
       "parentUuid": "53357cb0_1552699b",
+      "range": {
+        "startLine": 1116,
+        "startChar": 27,
+        "endLine": 1116,
+        "endChar": 36
+      },
+      "revId": "0289e7e9193e994008fcaa698208b2827555b74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd83708_3259c7a1",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-30T18:18:10Z",
+      "side": 1,
+      "message": "Fine by me.",
+      "parentUuid": "45a6f80d_0a38e991",
       "range": {
         "startLine": 1116,
         "startChar": 27,
