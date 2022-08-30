@@ -25,7 +25,7 @@ public:
         kCheckBounds = 1 << 1
     };
 
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(ShaderFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(ShaderFlags);
 
     constexpr static int kNumShaderFlags = 2;
 
@@ -93,7 +93,7 @@ private:
     const ShaderFlags fShaderFlags;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(AtlasInstancedHelper::ShaderFlags);
+SKGPU_MAKE_BITFIELD_CLASS_OPS(AtlasInstancedHelper::ShaderFlags);
 
 } // namespace skgpu::v1
 

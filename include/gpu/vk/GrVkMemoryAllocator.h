@@ -32,7 +32,7 @@ public:
         kProtected  = 0x8,
     };
 
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(AllocationPropertyFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(AllocationPropertyFlags);
 
     enum class BufferUsage {
         // Buffers that will only be accessed from the device (large const buffers). Will always be
@@ -138,6 +138,6 @@ public:
     virtual uint64_t totalAllocatedMemory() const = 0;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrVkMemoryAllocator::AllocationPropertyFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrVkMemoryAllocator::AllocationPropertyFlags)
 
 #endif

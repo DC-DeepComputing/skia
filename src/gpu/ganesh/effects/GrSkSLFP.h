@@ -425,6 +425,6 @@ private:
     friend class GrSkSLFPFactory;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrSkSLFP::OptFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrSkSLFP::OptFlags)
 
 #endif

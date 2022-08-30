@@ -43,7 +43,7 @@ private:
 
         kBoth        = 0b11,
     };
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(Buffer);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(Buffer);
 
     ClearOp(Buffer buffer,
             const GrScissorState& scissor,
@@ -79,7 +79,7 @@ private:
     Buffer               fBuffer;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(ClearOp::Buffer)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(ClearOp::Buffer)
 
 } // namespace skgpu::v1
 

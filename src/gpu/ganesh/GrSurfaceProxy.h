@@ -474,6 +474,6 @@ private:
     SkDEBUGCODE(SkString   fDebugName;)
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrSurfaceProxy::ResolveFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrSurfaceProxy::ResolveFlags)
 
 #endif

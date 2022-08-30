@@ -960,7 +960,7 @@ private:
     using INHERITED = GrMeshDrawOp;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(AAHairlineOp::Program)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(AAHairlineOp::Program)
 
 void AAHairlineOp::makeLineProgramInfo(const GrCaps& caps, SkArenaAlloc* arena,
                                        const GrPipeline* pipeline,

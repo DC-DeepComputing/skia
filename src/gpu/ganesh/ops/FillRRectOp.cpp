@@ -100,7 +100,7 @@ private:
     };
     constexpr static int kNumProcessorFlags = 5;
 
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(ProcessorFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(ProcessorFlags);
 
     class Processor;
 
@@ -155,7 +155,7 @@ private:
     GrProgramInfo* fProgramInfo = nullptr;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(FillRRectOpImpl::ProcessorFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(FillRRectOpImpl::ProcessorFlags)
 
 // Hardware derivatives are not always accurate enough for highly elliptical corners. This method
 // checks to make sure the corners will still all look good if we use HW derivatives.

@@ -54,7 +54,7 @@ private:
     char fPadding[4] = {};
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrGLSLFPFragmentBuilder::ScopeFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrGLSLFPFragmentBuilder::ScopeFlags)
 
 /*
  * This class is used by Xfer processors to build their fragment code.

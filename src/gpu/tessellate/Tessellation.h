@@ -85,7 +85,7 @@ enum class PatchAttribs {
     kWideColorIfEnabled = 1 << 6,  // If kColor is set, specifies it to be float4 wide color.
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(PatchAttribs)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(PatchAttribs)
 
 // When PatchAttribs::kExplicitCurveType is set, these are the values that tell the GPU what type of
 // curve is being drawn.

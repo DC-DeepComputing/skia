@@ -39,7 +39,7 @@ enum class GrXferBarrierFlags {
     kBlend   = 1 << 1,
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrXferBarrierFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrXferBarrierFlags)
 
 /**
  * GrXferProcessor is responsible for implementing the xfer mode that blends the src color and dst
@@ -225,7 +225,7 @@ public:
          */
         kUnaffectedByDstValue = 0x80,
     };
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(AnalysisProperties);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(AnalysisProperties);
 
     static sk_sp<const GrXferProcessor> MakeXferProcessor(const GrXPFactory*,
                                                           const GrProcessorAnalysisColor&,
@@ -264,7 +264,7 @@ private:
 #pragma clang diagnostic pop
 #endif
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrXPFactory::AnalysisProperties)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrXPFactory::AnalysisProperties)
 
 //////////////////////////////////////////////////////////////////////////////
 

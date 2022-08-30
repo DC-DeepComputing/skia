@@ -19,7 +19,7 @@ public:
         kCheckBounds = 1 << 1  // Clamp atlasCoverage to 0 if outside the path's valid atlas bounds.
     };
 
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(Flags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(Flags);
 
     GrModulateAtlasCoverageEffect(Flags flags, std::unique_ptr<GrFragmentProcessor> inputFP,
                                   GrSurfaceProxyView atlasView, const SkMatrix& devToAtlasMatrix,
@@ -48,6 +48,6 @@ private:
     const SkIRect fBounds;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrModulateAtlasCoverageEffect::Flags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrModulateAtlasCoverageEffect::Flags)
 
 #endif

@@ -218,7 +218,7 @@ private:
         kIsOpaque  = 1 << 1,  //!< Hint from client that rendering to this device will be
         //   opaque even if the config supports alpha.
     };
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(DeviceFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(DeviceFlags);
 
     static SkImageInfo MakeInfo(SurfaceContext*,  DeviceFlags);
     static bool CheckAlphaTypeAndGetFlags(SkAlphaType, InitContents, DeviceFlags*);
@@ -287,7 +287,7 @@ private:
     friend class ::SkSurface_Gpu;      // for access to surfaceProps
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(Device::DeviceFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(Device::DeviceFlags)
 
 } // namespace skgpu::v1
 

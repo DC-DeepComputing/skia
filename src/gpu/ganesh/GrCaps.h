@@ -490,7 +490,7 @@ public:
         // approach, but inline uploads are very rare and already slow.
         kVulkanHasResolveLoadSubpass = 0x1,
     };
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(ProgramDescOverrideFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(ProgramDescOverrideFlags);
 
 
     virtual GrProgramDesc makeDesc(
@@ -663,6 +663,6 @@ private:
     using INHERITED = SkRefCnt;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrCaps::ProgramDescOverrideFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrCaps::ProgramDescOverrideFlags)
 
 #endif

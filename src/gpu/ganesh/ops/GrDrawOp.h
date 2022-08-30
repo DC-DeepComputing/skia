@@ -103,7 +103,7 @@ protected:
         /** Indices that the op reads and/or writes the stencil buffer */
         kUsesStencil = 0x2,
     };
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(FixedFunctionFlags);
+    SKGPU_DECL_BITFIELD_CLASS_OPS_FRIENDS(FixedFunctionFlags);
     virtual FixedFunctionFlags fixedFunctionFlags() const {
         // Override usesMSAA() and usesStencil() instead.
         SK_ABORT("fixedFunctionFlags() not implemented.");
@@ -116,6 +116,6 @@ private:
     using INHERITED = GrOp;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrDrawOp::FixedFunctionFlags)
+SKGPU_MAKE_BITFIELD_CLASS_OPS(GrDrawOp::FixedFunctionFlags)
 
 #endif
