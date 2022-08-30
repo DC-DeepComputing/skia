@@ -55,12 +55,14 @@ sk_sp<SkSurface> SkSurface::MakeFromCAMetalLayer(GrRecordingContext* rContext,
 
                 GrMtlGpu* mtlGpu = (GrMtlGpu*) resourceProvider->priv().gpu();
                 sk_sp<GrRenderTarget> surface;
+                GrMtlTextureInfo textureInfo;
+                textureInfo.fTexture.reset(CFBridgingRetain(currentDrawable.texture));
                 if (metalLayer.framebufferOnly) {
                     surface = GrMtlRenderTarget::MakeWrappedRenderTarget(
-                            mtlGpu, desc.fDimensions, desc.fSampleCnt, currentDrawable.texture);
+                            mtlGpu, desc.fDimensions, desc.fSampleCnt, textureInfo);
                 } else {
                     surface = GrMtlTextureRenderTarget::MakeWrappedTextureRenderTarget(
-                            mtlGpu, desc.fDimensions, desc.fSampleCnt, currentDrawable.texture,
+                            mtlGpu, desc.fDimensions, desc.fSampleCnt, textureInfo,
                             GrWrapCacheable::kNo);
                 }
                 if (surface && desc.fSampleCnt > 1) {
@@ -124,12 +126,14 @@ sk_sp<SkSurface> SkSurface::MakeFromMTKView(GrRecordingContext* rContext,
 
                 GrMtlGpu* mtlGpu = (GrMtlGpu*) resourceProvider->priv().gpu();
                 sk_sp<GrRenderTarget> surface;
+                GrMtlTextureInfo textureInfo;
+                textureInfo.fTexture.reset(CFBridgingRetain(currentDrawable.texture));
                 if (mtkView.framebufferOnly) {
                     surface = GrMtlRenderTarget::MakeWrappedRenderTarget(
-                            mtlGpu, desc.fDimensions, desc.fSampleCnt, currentDrawable.texture);
+                            mtlGpu, desc.fDimensions, desc.fSampleCnt, textureInfo);
                 } else {
                     surface = GrMtlTextureRenderTarget::MakeWrappedTextureRenderTarget(
-                            mtlGpu, desc.fDimensions, desc.fSampleCnt, currentDrawable.texture,
+                            mtlGpu, desc.fDimensions, desc.fSampleCnt, textureInfo,
                             GrWrapCacheable::kNo);
                 }
                 if (surface && desc.fSampleCnt > 1) {

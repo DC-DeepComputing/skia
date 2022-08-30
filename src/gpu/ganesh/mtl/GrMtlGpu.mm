@@ -29,6 +29,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlTexture.h"
 #include "src/gpu/ganesh/mtl/GrMtlTextureRenderTarget.h"
 #include "src/gpu/ganesh/mtl/GrMtlUtil.h"
+#include "src/gpu/mtl/GrMtlMemoryAllocatorImpl.h"
 
 #import <simd/simd.h>
 
@@ -63,7 +64,18 @@ sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextO
     id<MTLDevice> GR_NORETAIN device = (__bridge id<MTLDevice>)(context.fDevice.get());
     id<MTLCommandQueue> GR_NORETAIN queue = (__bridge id<MTLCommandQueue>)(context.fQueue.get());
 
-    return sk_sp<GrGpu>(new GrMtlGpu(direct, options, device, queue, context.fBinaryArchive.get()));
+    sk_sp<GrMtlMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
+    if (!memoryAllocator) {
+        // We were not given a memory allocator at creation
+        memoryAllocator = GrMtlMemoryAllocatorImpl::Make(device);
+    }
+    if (!memoryAllocator) {
+        SkDEBUGFAIL("No supplied Metal memory allocator and unable to create one internally.");
+        return nullptr;
+    }
+
+    return sk_sp<GrGpu>(new GrMtlGpu(direct, options, device, queue, context.fBinaryArchive.get(),
+                                     memoryAllocator));
 }
 
 // This constant determines how many OutstandingCommandBuffers are allocated together as a block in
@@ -73,10 +85,12 @@ sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextO
 static const int kDefaultOutstandingAllocCnt = 8;
 
 GrMtlGpu::GrMtlGpu(GrDirectContext* direct, const GrContextOptions& options,
-                   id<MTLDevice> device, id<MTLCommandQueue> queue, GrMTLHandle binaryArchive)
+                   id<MTLDevice> device, id<MTLCommandQueue> queue, GrMTLHandle binaryArchive,
+		   sk_sp<GrMtlMemoryAllocator> memoryAllocator)
         : INHERITED(direct)
         , fDevice(device)
         , fQueue(queue)
+        , fMemoryAllocator(memoryAllocator)
         , fOutstandingCommandBuffers(sizeof(OutstandingCommandBuffer), kDefaultOutstandingAllocCnt)
         , fResourceProvider(this)
         , fStagingBufferManager(this)
@@ -693,54 +707,30 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
     return std::move(tex);
 }
 
-// TODO: Extra retain/release can't be avoided here because of getMtlTextureInfo copying the
-// sk_cfp. It would be useful to have a (possibly-internal-only?) API to get the raw pointer.
-static id<MTLTexture> get_texture_from_backend(const GrBackendTexture& backendTex) {
-    GrMtlTextureInfo textureInfo;
-    if (!backendTex.getMtlTextureInfo(&textureInfo)) {
-        return nil;
-    }
-    return GrGetMTLTexture(textureInfo.fTexture.get());
-}
-
-static id<MTLTexture> get_texture_from_backend(const GrBackendRenderTarget& backendRT) {
-    GrMtlTextureInfo textureInfo;
-    if (!backendRT.getMtlTextureInfo(&textureInfo)) {
-        return nil;
-    }
-    return GrGetMTLTexture(textureInfo.fTexture.get());
-}
-
 sk_sp<GrTexture> GrMtlGpu::onWrapBackendTexture(const GrBackendTexture& backendTex,
                                                 GrWrapOwnership,
                                                 GrWrapCacheable cacheable,
                                                 GrIOType ioType) {
-    id<MTLTexture> mtlTexture = get_texture_from_backend(backendTex);
-    if (!mtlTexture) {
-        return nullptr;
-    }
-    // We don't currently support sampling from a MSAA texture in shaders.
-    if (mtlTexture.sampleCount != 1) {
+    // TODO: Extra retain/release can't be avoided here because of getMtlTextureInfo copying the
+    // sk_cfp. It would be useful to have a (possibly-internal-only?) API to get the raw pointer.
+    GrMtlTextureInfo textureInfo;
+    if (!backendTex.getMtlTextureInfo(&textureInfo)) {
         return nullptr;
     }
 
-    return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), mtlTexture, cacheable,
+    return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), textureInfo, cacheable,
                                             ioType);
 }
 
 sk_sp<GrTexture> GrMtlGpu::onWrapCompressedBackendTexture(const GrBackendTexture& backendTex,
                                                           GrWrapOwnership,
                                                           GrWrapCacheable cacheable) {
-    id<MTLTexture> mtlTexture = get_texture_from_backend(backendTex);
-    if (!mtlTexture) {
-        return nullptr;
-    }
-    // We don't currently support sampling from a MSAA texture in shaders.
-    if (mtlTexture.sampleCount != 1) {
+    GrMtlTextureInfo textureInfo;
+    if (!backendTex.getMtlTextureInfo(&textureInfo)) {
         return nullptr;
     }
 
-    return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), mtlTexture, cacheable,
+    return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), textureInfo, cacheable,
                                             kRead_GrIOType);
 }
 
@@ -748,31 +738,13 @@ sk_sp<GrTexture> GrMtlGpu::onWrapRenderableBackendTexture(const GrBackendTexture
                                                           int sampleCnt,
                                                           GrWrapOwnership,
                                                           GrWrapCacheable cacheable) {
-    id<MTLTexture> mtlTexture = get_texture_from_backend(backendTex);
-    if (!mtlTexture) {
+    GrMtlTextureInfo textureInfo;
+    if (!backendTex.getMtlTextureInfo(&textureInfo)) {
         return nullptr;
     }
-    // We don't currently support sampling from a MSAA texture in shaders.
-    if (mtlTexture.sampleCount != 1) {
-        return nullptr;
-    }
-
-    const GrMtlCaps& caps = this->mtlCaps();
-
-    MTLPixelFormat format = mtlTexture.pixelFormat;
-    if (!caps.isFormatRenderable(format, sampleCnt)) {
-        return nullptr;
-    }
-
-    if (@available(macOS 10.11, iOS 9.0, *)) {
-        SkASSERT(MTLTextureUsageRenderTarget & mtlTexture.usage);
-    }
-
-    sampleCnt = caps.getRenderTargetSampleCount(sampleCnt, format);
-    SkASSERT(sampleCnt);
 
     return GrMtlTextureRenderTarget::MakeWrappedTextureRenderTarget(
-            this, backendTex.dimensions(), sampleCnt, mtlTexture, cacheable);
+            this, backendTex.dimensions(), sampleCnt, textureInfo, cacheable);
 }
 
 sk_sp<GrRenderTarget> GrMtlGpu::onWrapBackendRenderTarget(const GrBackendRenderTarget& backendRT) {
@@ -780,17 +752,12 @@ sk_sp<GrRenderTarget> GrMtlGpu::onWrapBackendRenderTarget(const GrBackendRenderT
         return nullptr;
     }
 
-    id<MTLTexture> mtlTexture = get_texture_from_backend(backendRT);
-    if (!mtlTexture) {
+    GrMtlTextureInfo textureInfo;
+    if (!backendRT.getMtlTextureInfo(&textureInfo)) {
         return nullptr;
     }
-
-    if (@available(macOS 10.11, iOS 9.0, *)) {
-        SkASSERT(MTLTextureUsageRenderTarget & mtlTexture.usage);
-    }
-
     return GrMtlRenderTarget::MakeWrappedRenderTarget(this, backendRT.dimensions(),
-                                                      backendRT.sampleCnt(), mtlTexture);
+                                                      backendRT.sampleCnt(), textureInfo);
 }
 
 bool GrMtlGpu::onRegenerateMipMapLevels(GrTexture* texture) {

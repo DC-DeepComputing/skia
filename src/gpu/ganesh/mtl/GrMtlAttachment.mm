@@ -20,12 +20,14 @@ GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
                                  UsageFlags supportedUsages,
                                  id<MTLTexture> texture,
+                                 sk_sp<GrMtlAlloc> alloc,
                                  SkBudgeted budgeted,
                                  std::string_view label)
         : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
                        texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo, label)
-        , fTexture(texture) {
+        , fTexture(texture)
+        , fAlloc(std::move(alloc)) {
     this->registerWithCache(budgeted);
 }
 
@@ -33,12 +35,14 @@ GrMtlAttachment::GrMtlAttachment(GrMtlGpu* gpu,
                                  SkISize dimensions,
                                  UsageFlags supportedUsages,
                                  id<MTLTexture> texture,
+                                 sk_sp<GrMtlAlloc> alloc,
                                  GrWrapCacheable cacheable,
                                  std::string_view label)
         : GrAttachment(gpu, dimensions, supportedUsages, texture.sampleCount,
                        texture.mipmapLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        GrProtected::kNo, label)
-        , fTexture(texture) {
+        , fTexture(texture)
+        , fAlloc(std::move(alloc)) {
     this->registerWithCacheWrapped(cacheable);
 }
 
@@ -117,7 +121,8 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::Make(GrMtlGpu* gpu,
         desc.usage = mtlTextureUsage;
         desc.storageMode = (MTLStorageMode)mtlStorageMode;
     }
-    id<MTLTexture> texture = [gpu->device() newTextureWithDescriptor:desc];
+    sk_sp<GrMtlAlloc> alloc;
+    id<MTLTexture> texture = gpu->memoryAllocator()->createTexture(desc, &alloc);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
     if (attachmentUsages == UsageFlags::kStencilAttachment) {
         texture.label = @"Stencil";
@@ -142,7 +147,7 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::Make(GrMtlGpu* gpu,
 #endif
 
     return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages,
-                                                      texture, budgeted,
+                                                      texture, std::move(alloc), budgeted,
                                                       /*label=*/"MakeMtlAttachment"));
 }
 
@@ -150,12 +155,13 @@ sk_sp<GrMtlAttachment> GrMtlAttachment::MakeWrapped(
         GrMtlGpu* gpu,
         SkISize dimensions,
         id<MTLTexture> texture,
+        sk_sp<GrMtlAlloc> alloc,
         UsageFlags attachmentUsages,
         GrWrapCacheable cacheable,
         std::string_view label) {
 
     return sk_sp<GrMtlAttachment>(new GrMtlAttachment(gpu, dimensions, attachmentUsages, texture,
-                                                      cacheable, label));
+                                                      alloc, cacheable, label));
 }
 
 GrMtlAttachment::~GrMtlAttachment() {

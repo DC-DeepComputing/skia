@@ -8,6 +8,7 @@
 #ifndef GrMtlTypes_DEFINED
 #define GrMtlTypes_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/GrTypes.h"
 #include "include/ports/SkCFObject.h"
 
@@ -31,6 +32,26 @@ using GrMTLHandle = const void*;
 #define SK_API_AVAILABLE_CA_METAL_LAYER SK_API_AVAILABLE(macos(10.11), ios(8.0))
 #endif  // TARGET_OS_SIMULATOR
 
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#endif
+
+// interface classes for the GPU memory allocator
+class GrMtlAlloc : public SkRefCnt {
+public:
+    ~GrMtlAlloc() override = default;
+};
+
+class GrMtlMemoryAllocator : public SkRefCnt {
+public:
+#ifdef __OBJC__
+    virtual id<MTLBuffer> createBuffer(NSUInteger length, MTLResourceOptions options,
+                                       sk_sp<GrMtlAlloc>* allocation) = 0;
+    virtual id<MTLTexture> createTexture(MTLTextureDescriptor* texDesc,
+                                         sk_sp<GrMtlAlloc>* allocation) = 0;
+#endif
+};
+
 /**
  * Types for interacting with Metal resources created externally to Skia.
  * This is used by GrBackendObjects.
@@ -40,6 +61,7 @@ public:
     GrMtlTextureInfo() {}
 
     sk_cfp<GrMTLHandle> fTexture;
+    sk_sp<GrMtlAlloc> fAlloc;
 
     bool operator==(const GrMtlTextureInfo& that) const {
         return fTexture == that.fTexture;
