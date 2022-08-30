@@ -45,6 +45,30 @@
       },
       "revId": "57b49ca9ff1a2736ed2ff217fae00a79a72bd16a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ba7887_2bae0d6a",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T17:07:13Z",
+      "side": 1,
+      "message": "I don\u0027t have strong feelings about it, but I think I\u0027d personally prefer this in a Renderer.cpp file.",
+      "parentUuid": "b3c8e3c4_c7ed478b",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 50
+      },
+      "revId": "57b49ca9ff1a2736ed2ff217fae00a79a72bd16a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
