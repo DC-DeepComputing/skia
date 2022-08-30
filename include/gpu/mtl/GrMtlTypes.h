@@ -58,6 +58,27 @@ struct GrMtlSurfaceInfo {
     GrMTLStorageMode fStorageMode = 0;  // MTLStorageMode fStorageMode = MTLStorageModeShared;
 };
 
+#include "include/core/SkRefCnt.h"
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#endif
+
+// interface classes for the GPU memory allocator
+class GrMtlAlloc : public SkRefCnt {
+public:
+    ~GrMtlAlloc() override = default;
+};
+
+class GrMtlMemoryAllocator : public SkRefCnt {
+public:
+#ifdef __OBJC__
+    virtual id<MTLBuffer> createBuffer(NSUInteger length, MTLResourceOptions options,
+                                       sk_sp<GrMtlAlloc>* allocation) = 0;
+    virtual id<MTLTexture> createTexture(MTLTextureDescriptor* texDesc,
+                                         sk_sp<GrMtlAlloc>* allocation) = 0;
+#endif
+};
+
 #endif
 
 #endif

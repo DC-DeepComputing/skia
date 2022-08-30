@@ -29,6 +29,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlTexture.h"
 #include "src/gpu/ganesh/mtl/GrMtlTextureRenderTarget.h"
 #include "src/gpu/ganesh/mtl/GrMtlUtil.h"
+#include "src/gpu/mtl/GrMtlMemoryAllocatorImpl.h"
 
 #import <simd/simd.h>
 
@@ -63,7 +64,18 @@ sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextO
     id<MTLDevice> GR_NORETAIN device = (__bridge id<MTLDevice>)(context.fDevice.get());
     id<MTLCommandQueue> GR_NORETAIN queue = (__bridge id<MTLCommandQueue>)(context.fQueue.get());
 
-    return sk_sp<GrGpu>(new GrMtlGpu(direct, options, device, queue, context.fBinaryArchive.get()));
+    sk_sp<GrMtlMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
+    if (!memoryAllocator) {
+        // We were not given a memory allocator at creation
+        memoryAllocator = GrMtlMemoryAllocatorImpl::Make(device);
+    }
+    if (!memoryAllocator) {
+        SkDEBUGFAIL("No supplied Metal memory allocator and unable to create one internally.");
+        return nullptr;
+    }
+
+    return sk_sp<GrGpu>(new GrMtlGpu(direct, options, device, queue, context.fBinaryArchive.get(),
+                                     memoryAllocator));
 }
 
 // This constant determines how many OutstandingCommandBuffers are allocated together as a block in
@@ -73,10 +85,12 @@ sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextO
 static const int kDefaultOutstandingAllocCnt = 8;
 
 GrMtlGpu::GrMtlGpu(GrDirectContext* direct, const GrContextOptions& options,
-                   id<MTLDevice> device, id<MTLCommandQueue> queue, GrMTLHandle binaryArchive)
+                   id<MTLDevice> device, id<MTLCommandQueue> queue, GrMTLHandle binaryArchive,
+		   sk_sp<GrMtlMemoryAllocator> memoryAllocator)
         : INHERITED(direct)
         , fDevice(device)
         , fQueue(queue)
+        , fMemoryAllocator(memoryAllocator)
         , fOutstandingCommandBuffers(sizeof(OutstandingCommandBuffer), kDefaultOutstandingAllocCnt)
         , fResourceProvider(this)
         , fStagingBufferManager(this)
