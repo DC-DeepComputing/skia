@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad785d83_66f4c9af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-30T19:39:53Z",
+      "side": 1,
+      "message": "Your recent CLs made me remember this one. This at least gets an interface in place that Graphite can use. It\u0027s based on the D3D allocator setup.\n",
+      "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
