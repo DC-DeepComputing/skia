@@ -127,8 +127,8 @@ private:
     // These resources all get instantiated during prepareResources.
     // Use a vector instead of SkTBlockList for the full pipelines so that random access is fast.
     std::vector<sk_sp<GraphicsPipeline>> fFullPipelines;
-    std::vector<sk_sp<TextureProxy>> fSampledTextures;
-    std::vector<sk_sp<Sampler>> fSamplers;
+    std::vector<sk_sp<TextureProxy>> fSampledTextures1;
+    std::vector<sk_sp<Sampler>> fSamplers1;
 };
 
 } // namespace skgpu::graphite

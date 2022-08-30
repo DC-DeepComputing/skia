@@ -184,6 +184,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
+        SkDebugf("setBlendInfo %d %d %d\n", (int) blendInfo.fEquation, (int) blendInfo.fSrcBlend, (int) blendInfo.fDstBlend);
         fBlendInfo = blendInfo;
     }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }

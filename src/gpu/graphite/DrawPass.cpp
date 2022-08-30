@@ -7,6 +7,9 @@
 
 #include "src/gpu/graphite/DrawPass.h"
 
+#include "include/core/SkBlender.h"
+#include "src/core/SkBlenderBase.h"
+
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Buffer.h"
@@ -403,11 +406,40 @@ std::pair<int, int> get_unique_texture_sampler_indices(
 
 } // anonymous namespace
 
+static void dump(DrawList* dl) {
+
+    SkDebugf("DrawList %p\n", dl);
+    for (int i = 0; i < dl->drawCount(); ++i) {
+        const DrawList::Draw& d = dl->fDraws.item(i);
+
+        SkDebugf("draw %d: ", i);
+
+        if (d.fPaintParams.has_value()) {
+            SkColor4f color = d.fPaintParams.value().color();
+            SkDebugf("color: (%.2f, %.2f, %.2f, %.2f) ", color.fR, color.fG, color.fB, color.fA);
+
+            if (d.fPaintParams.value().finalBlender()) {
+                std::optional<SkBlendMode> bm = as_BB(d.fPaintParams.value().finalBlender())->asBlendMode();
+                if (bm.has_value()) {
+                    SkDebugf("bm: %s ", SkBlendMode_Name(bm.value()));
+                }
+            }
+        }
+
+        SkDebugf("\n");
+    }
+
+    SkDebugf("\n");
+}
+
 std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
                                          std::pair<LoadOp, StoreOp> ops,
                                          std::array<float, 4> clearColor) {
+
+    dump(draws.get());
+
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -465,6 +497,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                     ExtractPaintData(recorder, &gatherer, &builder,
                                      draw.fDrawParams.transform().inverse(),
                                      draw.fPaintParams.value());
+            SkDebugf("------  paintTextureDataIndex %d\n", paintTextureDataIndex.asUInt());
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
@@ -619,7 +652,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                             auto& info = textureDataBlock->texture(i);
                             std::tie((*textureIndices)[i + *numTextures],
                                      (*samplerIndices)[i + *numTextures]) =
-                                    get_unique_texture_sampler_indices(drawPass->fSampledTextures,
+                                    get_unique_texture_sampler_indices(drawPass->fSampledTextures1,
                                                                        drawPass->fSamplerDescs,
                                                                        info);
                         }
@@ -652,12 +685,21 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     passBounds.roundOut();
     drawPass->fBounds = SkIRect::MakeLTRB((int) passBounds.left(), (int) passBounds.top(),
                                           (int) passBounds.right(), (int) passBounds.bot());
+
+    SkDebugf("DrawList %p -> DrawPass %p\n", draws.get(), drawPass.get());
     return drawPass;
 }
 
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const SkRuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
+    SkDebugf("DrawPass::prepareResources %p: numPipelineDesc: %d sampledTextures %d target %p %dx%d\n",
+             this,
+             (int) fPipelineDescs.count(),
+             (int) fSampledTextures1.size(),
+             this->target()->texture(),
+             this->target()->texture()->dimensions().fWidth,
+             this->target()->texture()->dimensions().fHeight);
     fFullPipelines.reserve(fPipelineDescs.count());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs.items()) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
@@ -673,15 +715,20 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     // once we've created pipelines, so we drop the storage for them here.
     fPipelineDescs.reset();
 
-    for (size_t i = 0; i < fSampledTextures.size(); ++i) {
+    for (size_t i = 0; i < fSampledTextures1.size(); ++i) {
+        SkDebugf("texture %d: %p %dx%d\n",
+                 (int) i,
+                 fSampledTextures1[i]->texture(),
+                 fSampledTextures1[i]->texture()->dimensions().fWidth,
+                 fSampledTextures1[i]->texture()->dimensions().fHeight);
         // TODO: We need to remove this check once we are creating valid SkImages from things like
         // snapshot, save layers, etc. Right now we only support SkImages directly made for graphite
         // and all others have a TextureProxy with an invalid TextureInfo.
-        if (!fSampledTextures[i]->textureInfo().isValid()) {
+        if (!fSampledTextures1[i]->textureInfo().isValid()) {
             SKGPU_LOG_W("Failed to validate sampled texture. Will not create renderpass!");
             return false;
         }
-        if (!fSampledTextures[i]->instantiate(resourceProvider)) {
+        if (!fSampledTextures1[i]->instantiate(resourceProvider)) {
             SKGPU_LOG_W("Failed to instantiate sampled texture. Will not create renderpass!");
             return false;
         }
@@ -695,7 +742,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
             SKGPU_LOG_W("Failed to create sampler. Will not create renderpass!");
             return false;
         }
-        fSamplers.push_back(std::move(sampler));
+        fSamplers1.push_back(std::move(sampler));
     }
     // The DrawPass may be long lived on a Recording and we no longer need the SamplerDescs
     // once we've created Samplers, so we drop the storage for them here.
@@ -708,24 +755,25 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
     for (size_t i = 0; i < fFullPipelines.size(); ++i) {
         commandBuffer->trackResource(fFullPipelines[i]);
     }
-    for (size_t i = 0; i < fSampledTextures.size(); ++i) {
-        commandBuffer->trackResource(fSampledTextures[i]->refTexture());
+    for (size_t i = 0; i < fSampledTextures1.size(); ++i) {
+        commandBuffer->trackResource(fSampledTextures1[i]->refTexture());
     }
-    for (size_t i = 0; i < fSamplers.size(); ++i) {
-        commandBuffer->trackResource(fSamplers[i]);
+    for (size_t i = 0; i < fSamplers1.size(); ++i) {
+        commandBuffer->trackResource(fSamplers1[i]);
     }
 }
 
 const Texture* DrawPass::getTexture(size_t index) const {
-    SkASSERT(index < fSampledTextures.size());
-    SkASSERT(fSampledTextures[index]);
-    SkASSERT(fSampledTextures[index]->texture());
-    return fSampledTextures[index]->texture();
+    SkASSERT(index < fSampledTextures1.size());
+    SkASSERT(fSampledTextures1[index]);
+    SkASSERT(fSampledTextures1[index]->texture());
+    return fSampledTextures1[index]->texture();
 }
+
 const Sampler* DrawPass::getSampler(size_t index) const {
-    SkASSERT(index < fSamplers.size());
-    SkASSERT(fSamplers[index]);
-    return fSamplers[index].get();
+    SkASSERT(index < fSamplers1.size());
+    SkASSERT(fSamplers1[index]);
+    return fSamplers1[index].get();
 }
 
 } // namespace skgpu::graphite

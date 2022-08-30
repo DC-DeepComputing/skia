@@ -226,6 +226,8 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
     skgpu::BlendEquation equation = blendInfo.fEquation;
     skgpu::BlendCoeff srcCoeff = blendInfo.fSrcBlend;
     skgpu::BlendCoeff dstCoeff = blendInfo.fDstBlend;
+    SkDebugf("using %d %d %d\n", (int) equation, (int) srcCoeff, (int) dstCoeff);
+
     bool blendOn = !skgpu::BlendShouldDisable(equation, srcCoeff, dstCoeff);
 
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?

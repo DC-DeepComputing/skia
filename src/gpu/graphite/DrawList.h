@@ -79,7 +79,7 @@ public:
     int drawCount() const { return fDraws.count(); }
     int renderStepCount() const { return fRenderStepCount; }
 
-private:
+public:
     friend class DrawPass;
 
     struct Draw {

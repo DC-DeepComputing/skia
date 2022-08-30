@@ -187,7 +187,7 @@ public:
         }
         const SkPaintParamsKey& paintParamsKey() const { return fKey; }
 #ifdef SK_GRAPHITE_ENABLED
-        const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+        const skgpu::BlendInfo& blendInfo2() const { return fBlendInfo; }
 #endif
 
     private:
@@ -237,7 +237,7 @@ public:
         return this->getEntry(SkTo<int>(codeSnippetID));
     }
 
-    void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*) const;
+    void getShaderInfo1(SkUniquePaintParamsID, SkShaderInfo*) const;
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
 
