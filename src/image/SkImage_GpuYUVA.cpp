@@ -226,6 +226,15 @@ std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
     return fp;
 }
 
+
+#ifdef SK_GRAPHITE_ENABLED
+std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_GpuYUVA::onAsView(
+        skgpu::graphite::Recorder*,
+        skgpu::graphite::Mipmapped) const {
+    return {};
+}
+#endif
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
