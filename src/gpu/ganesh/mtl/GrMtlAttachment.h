@@ -38,6 +38,7 @@ public:
     static sk_sp<GrMtlAttachment> MakeWrapped(GrMtlGpu* gpu,
                                               SkISize dimensions,
                                               id<MTLTexture>,
+                                              sk_sp<skgpu::MetalAlloc>,
                                               UsageFlags attachmentUsages,
                                               GrWrapCacheable,
                                               std::string_view label);
@@ -75,6 +76,7 @@ private:
                     SkISize dimensions,
                     UsageFlags supportedUsages,
                     id<MTLTexture> texture,
+                    sk_sp<skgpu::MetalAlloc> alloc,
                     SkBudgeted,
                     std::string_view label);
 
@@ -82,6 +84,7 @@ private:
                     SkISize dimensions,
                     UsageFlags supportedUsages,
                     id<MTLTexture> texture,
+                    sk_sp<skgpu::MetalAlloc> alloc,
                     GrWrapCacheable,
                     std::string_view label);
 
@@ -90,6 +93,7 @@ private:
     void onSetLabel() override;
 
     id<MTLTexture> fTexture;
+    sk_sp<skgpu::MetalAlloc> fAlloc;
 };
 
 #endif

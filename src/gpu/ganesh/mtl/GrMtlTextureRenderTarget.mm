@@ -105,20 +105,35 @@ sk_sp<GrMtlTextureRenderTarget> GrMtlTextureRenderTarget::MakeWrappedTextureRend
         GrMtlGpu* gpu,
         SkISize dimensions,
         int sampleCnt,
-        id<MTLTexture> texture,
+        GrMtlTextureInfo& info,
         GrWrapCacheable cacheable) {
+    id<MTLTexture> texture = GrGetMTLTexture(info.fTexture.get());
     SkASSERT(nil != texture);
+    // We don't currently support sampling from a MSAA texture in shaders.
+    if (texture.sampleCount != 1) {
+        return nullptr;
+    }
+
+    const GrMtlCaps& caps = gpu->mtlCaps();
+    MTLPixelFormat format = texture.pixelFormat;
+    if (!caps.isFormatRenderable(format, sampleCnt)) {
+        return nullptr;
+    }
+    sampleCnt = caps.getRenderTargetSampleCount(sampleCnt, format);
+    SkASSERT(sampleCnt);
+
     if (@available(macOS 10.11, iOS 9.0, *)) {
         SkASSERT((MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget) & texture.usage);
     }
+
     GrMipmapStatus mipmapStatus = texture.mipmapLevelCount > 1
                                             ? GrMipmapStatus::kDirty
                                             : GrMipmapStatus::kNotAllocated;
     GrAttachment::UsageFlags textureUsageFlags = GrAttachment::UsageFlags::kTexture |
                                                  GrAttachment::UsageFlags::kColorAttachment;
     sk_sp<GrMtlAttachment> textureAttachment =
-            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture, textureUsageFlags, cacheable,
-                                         /*label=*/"MtlAttachment_TextureAttachment");
+            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture, info.fAlloc, textureUsageFlags,
+                                         cacheable, /*label=*/"MtlAttachment_TextureAttachment");
     if (!textureAttachment) {
         return nullptr;
     }
