@@ -104,13 +104,6 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     int stops = codeSnippetID == SkBuiltInCodeSnippetID::kLinearGradientShader4 ? 4 : 8;
 
-    SkM44 lmInverse;
-    bool wasInverted = gradData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -127,13 +120,6 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     int stops = codeSnippetID == SkBuiltInCodeSnippetID::kRadialGradientShader4 ? 4 : 8;
 
-    SkM44 lmInverse;
-    bool wasInverted = gradData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -150,13 +136,6 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     int stops = codeSnippetID == SkBuiltInCodeSnippetID::kSweepGradientShader4 ? 4 : 8;
 
-    SkM44 lmInverse;
-    bool wasInverted = gradData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -174,13 +153,6 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     int stops = codeSnippetID == SkBuiltInCodeSnippetID::kConicalGradientShader4 ? 4 : 8;
 
-    SkM44 lmInverse;
-    bool wasInverted = gradData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(lmInverse);
     gatherer->write(gradData.fColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
@@ -371,13 +343,6 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
                             SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kImageShader)
 
-    SkMatrix lmInverse;
-    bool wasInverted = imgData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
-    if (!wasInverted) {
-        lmInverse.setIdentity();
-    }
-
-    gatherer->write(SkM44(lmInverse));
     gatherer->write(imgData.fSubset);
     gatherer->write(static_cast<int>(imgData.fTileModes[0]));
     gatherer->write(static_cast<int>(imgData.fTileModes[1]));
