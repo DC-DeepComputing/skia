@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be04a9d_a703d7cf",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-30T17:38:20Z",
+      "side": 1,
+      "message": "Gotcha, that makes sense. The example is helpful.",
+      "parentUuid": "608138a1_5b26c9ee",
+      "range": {
+        "startLine": 899,
+        "startChar": 6,
+        "endLine": 899,
+        "endChar": 17
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60eadf4c_235ddd97",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "So this is a bazel specific function. \u0027select\u0027 allows you to give a list of optional things that bazel will pick one of. It essentially is something like\n    if (A) add foo\n    else if (B) add bar\n    else if (C) add ..\n    else do nothing\n\nmulti_select is more just independent ifs that each can conditionally add something like.\n    if (A) add foo\n    if (B) add bar\n    if (C) add ..\n\nI believe you could think of multi_select as short hand to writing\n    ] + select({\n        A : add foo\n        default : nothing\n    }) + select({\n        B : add bar\n        default : nothing\n    }) + select({\n        C : add ...\n        default : nothing\n    })",
       "parentUuid": "53db3052_359a577a",
+      "range": {
+        "startLine": 1,
+        "startChar": 76,
+        "endLine": 1,
+        "endChar": 88
+      },
+      "revId": "5baf3bc4760c8d503cb92eef0d3421b2fb58205b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc0f514a_bc554b2a",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-30T17:38:20Z",
+      "side": 1,
+      "message": "I see. When I searched \"select_multi\" and \"bazel\" that was not immediately apparent. Makes sense now",
+      "parentUuid": "8d3745c3_59466f4c",
       "range": {
         "startLine": 1,
         "startChar": 76,
