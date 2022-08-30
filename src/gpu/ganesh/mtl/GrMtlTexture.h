@@ -26,7 +26,7 @@ public:
 
     static sk_sp<GrMtlTexture> MakeWrappedTexture(GrMtlGpu*,
                                                   SkISize,
-                                                  id<MTLTexture>,
+                                                  const GrMtlTextureInfo&,
                                                   GrWrapCacheable,
                                                   GrIOType);
 

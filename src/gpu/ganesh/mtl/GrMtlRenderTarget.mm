@@ -48,7 +48,8 @@ GrMtlRenderTarget::GrMtlRenderTarget(GrMtlGpu* gpu,
 sk_sp<GrMtlRenderTarget> GrMtlRenderTarget::MakeWrappedRenderTarget(GrMtlGpu* gpu,
                                                                     SkISize dimensions,
                                                                     int sampleCnt,
-                                                                    id<MTLTexture> texture) {
+                                                                    const GrMtlTextureInfo& info) {
+    id<MTLTexture> texture = GrGetMTLTexture(info.fTexture.get());
     SkASSERT(nil != texture);
     SkASSERT(1 == texture.mipmapLevelCount);
     if (@available(macOS 10.11, iOS 9.0, *)) {
@@ -56,7 +57,7 @@ sk_sp<GrMtlRenderTarget> GrMtlRenderTarget::MakeWrappedRenderTarget(GrMtlGpu* gp
     }
 
     sk_sp<GrMtlAttachment> textureAttachment =
-            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture,
+            GrMtlAttachment::MakeWrapped(gpu, dimensions, texture, info.fAlloc,
                                          GrAttachment::UsageFlags::kColorAttachment,
                                          GrWrapCacheable::kNo,
                                          /*label=*/"MtlAttachment_TextureAttachment");

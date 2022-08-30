@@ -26,7 +26,7 @@ public:
     static sk_sp<GrMtlRenderTarget> MakeWrappedRenderTarget(GrMtlGpu*,
                                                             SkISize,
                                                             int sampleCnt,
-                                                            id<MTLTexture>);
+                                                            const GrMtlTextureInfo&);
 
     ~GrMtlRenderTarget() override;
 
