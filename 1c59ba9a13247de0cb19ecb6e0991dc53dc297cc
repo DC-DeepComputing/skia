@@ -49,6 +49,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa6c9d52_17196fc2",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T21:55:39Z",
+      "side": 1,
+      "message": "Comments need to be updated here and for writeUniforms",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7031d4d8_641e9f60",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T21:55:39Z",
+      "side": 1,
+      "message": "resize(pipelineIndex + 1)?",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54c3031_bb7df46c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T21:55:39Z",
+      "side": 1,
+      "message": "Should we just remove this?",
+      "range": {
+        "startLine": 227,
+        "startChar": 55,
+        "endLine": 227,
+        "endChar": 97
+      },
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3de043d4_9aebf9a7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T21:55:39Z",
+      "side": 1,
+      "message": "This is a bit of a personal opinion but I prefer not to use auto outside of structured bindings or really crazy types; this might be at least as easy to read if we spell out the type here and in the next loop? Also, this may just be my ignorance but why use rvalue references here?",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4eb447f_21d6c29a",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 9
@@ -60,6 +134,30 @@
       "writtenOn": "2022-08-30T18:12:05Z",
       "side": 1,
       "message": "This is a bit of a shift, and we can change back to preserving the inter-pipeline batching/sharing of data.\n\nThe main reason for this change was to reduce how much information we needed to provide at track and lookup/bind time, and reduce the complexity of those lookups. So this switches from a hash-map lookup to an array access.\n\nAssuming that there aren\u0027t that many pipelines and not that many duplicate references to data, this is probably a reasonable trade off for a little bit more GPU memory transfer but faster tracking/recording on the CPU.\n\nWe should be able to go back to the batch system by changing these SkTArrays to SkTHashMaps that take a batch key. We can keep the pipeline index -\u003e batch key lookup external to DrawPassUniformWriter because DrawPass::Make has access to `drawPass-\u003efPipelineDescs[index]` from which we can get to the render step unique ID or the paint ID depending on usage.",
+      "range": {
+        "startLine": 302,
+        "startChar": 4,
+        "endLine": 302,
+        "endChar": 12
+      },
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa5316de_aa044608",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-30T21:55:39Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "b4eb447f_21d6c29a",
       "range": {
         "startLine": 302,
         "startChar": 4,
