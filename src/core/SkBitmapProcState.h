@@ -198,4 +198,8 @@ private:
     SkFractionalInt fX, fY;
 };
 
+namespace sktests {
+    uint32_t pack_clamp(SkFixed f, unsigned max);
+}
+
 #endif
