@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12396f92_06239359",
+        "filename": "include/gpu/vk/GrVkMemoryAllocator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-08-30T17:39:48Z",
+      "side": 1,
+      "message": "Nit: Is this an intentional add?",
+      "revId": "9a40fc55fc8360385eb6da83a635a5553f7b01c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
