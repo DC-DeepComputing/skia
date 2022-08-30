@@ -39,7 +39,7 @@ void SkPaintParamsKeyBuilder::checkReset() {
     SkASSERT(fIsValid);
     SkASSERT(fStack.empty());
 #ifdef SK_GRAPHITE_ENABLED
-    SkASSERT(fBlendInfo == skgpu::BlendInfo());
+    SkASSERT(fBlendInfo1 == skgpu::BlendInfo());
 #endif
 }
 #endif

@@ -21,6 +21,7 @@
 
 namespace {
 
+#if 0
 sk_sp<SkShader> create_gradient_shader(SkRect r,
                                        const std::array<SkColor, 3>& colors,
                                        const std::array<float, 3>& offsets) {
@@ -229,6 +230,7 @@ void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
         dstPaint.setColor(kTransBluish);
     }
 }
+#endif
 
 } // anonymous namespace
 
@@ -259,6 +261,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+#if 0
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
@@ -309,9 +312,31 @@ protected:
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(kTileWidth, 2*kTileHeight,
                                                           kTileWidth, kTileHeight));
 
+#endif
+
         // Bottom-right corner
         {
-            // <add tile here>
+            const SkRect kTile = SkRect::MakeXYWH(kTileWidth, kTileHeight,
+                                                  kTileWidth, kTileHeight);
+
+            const SkRect kClip = SkRect::MakeXYWH(2*kTileWidth-10, 2*kTileHeight-10,
+                                                  kTileWidth+10, kTileHeight+10);
+            SkPaint circlePaint;
+            circlePaint.setColor(SK_ColorBLUE);
+            circlePaint.setBlendMode(SkBlendMode::kSrc);
+
+            canvas->clipRect(kTile);
+            canvas->drawCircle(kTile.center(), kTileWidth/2.0f, circlePaint);
+
+            SkPaint restorePaint;
+            restorePaint.setBlendMode(SkBlendMode::kPlus);
+
+            canvas->saveLayer(nullptr, &restorePaint);
+                circlePaint.setColor(SK_ColorRED);
+                circlePaint.setBlendMode(SkBlendMode::kSrc);
+
+                canvas->drawCircle(kTile.center(), kTileWidth/2.0f, circlePaint);
+            canvas->restore();
         }
     }
 

@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/ImageUtils.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
@@ -156,7 +157,8 @@ private:
 sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            SkBudgeted budgeted,
-                           const SkSurfaceProps& props) {
+                           const SkSurfaceProps& props,
+                           bool addInitialClear) {
     if (!recorder) {
         return nullptr;
     }
@@ -165,13 +167,14 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                                              Protected::kNo,
                                                                              Renderable::kYes);
     sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo, budgeted));
-    return Make(recorder, std::move(target), ii.colorInfo(), props);
+    return Make(recorder, std::move(target), ii.colorInfo(), props, addInitialClear);
 }
 
 sk_sp<Device> Device::Make(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            const SkColorInfo& colorInfo,
-                           const SkSurfaceProps& props) {
+                           const SkSurfaceProps& props,
+                           bool addInitialClear) {
     if (!recorder) {
         return nullptr;
     }
@@ -181,7 +184,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    return sk_sp<Device>(new Device(recorder, std::move(dc)));
+    return sk_sp<Device>(new Device(recorder, std::move(dc), addInitialClear));
 }
 
 // These default tuning numbers for the HybridBoundsManager were chosen from looking at performance
@@ -194,7 +197,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 static constexpr int kGridCellSize = 16;
 static constexpr int kMaxBruteForceN = 64;
 
-Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
+Device::Device(Recorder* recorder, sk_sp<DrawContext> dc, bool addInitialClear)
         : SkBaseDevice(dc->imageInfo(), dc->surfaceProps())
         , fRecorder(recorder)
         , fDC(std::move(dc))
@@ -210,6 +213,10 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         , fDrawsOverlap(false) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
     fRecorder->registerDevice(this);
+
+    if (addInitialClear) {
+        fDC->clear(SkColors::kTransparent);
+    }
 }
 
 Device::~Device() {
@@ -239,7 +246,11 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // modified to support inline subpasses.
     // TODO: onCreateDevice really should return sk_sp<SkBaseDevice>...
     SkSurfaceProps props(this->surfaceProps().flags(), info.fPixelGeometry);
-    return Make(fRecorder, info.fInfo, SkBudgeted::kYes, props).release();
+
+    // Skia's convention is to only clear a device if it is non-opaque.
+    bool addInitialClear = !info.fInfo.isOpaque();
+
+    return Make(fRecorder, info.fInfo, SkBudgeted::kYes, props, addInitialClear).release();
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {
@@ -925,6 +936,54 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawDevice(SkBaseDevice* device,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint& paint) {
+    this->SkBaseDevice::drawDevice(device, sampling, paint);
+}
+
+void Device::drawSpecial(SkSpecialImage* special,
+                         const SkMatrix& localToDevice,
+                         const SkSamplingOptions& sampling,
+                         const SkPaint& paint) {
+    SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
+
+    SkRect src = SkRect::Make(special->subset());
+    SkRect dst = SkRect::MakeWH(special->width(), special->height());
+    dst = localToDevice.mapRect(dst);
+    SkMatrix srcToDst = SkMatrix::RectToRect(src, dst);
+
+    SkMatrix textureMatrix;
+    if (!srcToDst.invert(&textureMatrix)) {
+        return;
+    }
+
+    sk_sp<SkImage> img = sk_make_sp<Image>(special->uniqueID(),
+                                           special->textureProxyView(),
+                                           special->colorInfo());
+    if (!img) {
+        return;
+    }
+
+    sk_sp<SkShader> imgShader = make_img_shader_for_paint(paint,
+                                                          std::move(img),
+                                                          src,
+                                                          SkTileMode::kClamp, SkTileMode::kClamp,
+                                                          sampling,
+                                                          nullptr); //&textureMatrix);
+    if (!imgShader) {
+        return;
+    }
+
+    SkPaint paintWithShader(paint);
+//    paintWithShader.setStyle(SkPaint::kFill_Style);
+    paintWithShader.setShader(std::move(imgShader));
+    paintWithShader.setColor(SK_ColorGREEN);
+    paintWithShader.setPathEffect(nullptr);  // drawSpecial doesn't support path effects
+
+    this->drawRect(dst, paintWithShader);
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -935,7 +994,21 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
-    return nullptr;
+
+    SkIRect finalSubset = subset;
+    TextureProxyView view = fDC->readSurfaceView(fRecorder->priv().caps());
+    if (forceCopy || !view) {
+        // TODO: fill this in. 'forceCopy' is only true for backdrop saveLayers. A non-readable
+        // surface view could happen any time though.
+        return nullptr;
+    }
+
+    return SkSpecialImage::MakeGraphite(fRecorder,
+                                        finalSubset,
+                                        kNeedNewImageUniqueID_SpecialImage,
+                                        std::move(view),
+                                        this->imageInfo().colorInfo(),
+                                        this->surfaceProps());
 }
 
 #if GRAPHITE_TEST_UTILS

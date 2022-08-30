@@ -27,6 +27,7 @@ bool RecordingPriv::addCommands(ResourceProvider* resourceProvider, CommandBuffe
         return false;
     }
     for (size_t i = 0; i < fRecording->fExtraResourceRefs.size(); ++i) {
+        SkDebugf("~~~~~~~~~~~~~~\n");
         commandBuffer->trackResource(fRecording->fExtraResourceRefs[i]);
     }
     return true;
