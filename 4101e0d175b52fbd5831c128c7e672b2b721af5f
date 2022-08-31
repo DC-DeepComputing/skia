@@ -16,6 +16,24 @@
       "message": "Do you want an `else if` here with the old code with a comment about removing it later?",
       "revId": "4101e0d175b52fbd5831c128c7e672b2b721af5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d59b68c2_c9c1da63",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-08-31T17:35:04Z",
+      "side": 1,
+      "message": "Good point, yes. I put that back in.",
+      "parentUuid": "ddf693ad_03e323a5",
+      "revId": "4101e0d175b52fbd5831c128c7e672b2b721af5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
