@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44f9477e_973c6af0",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-31T18:53:48Z",
+      "side": 1,
+      "message": "I intend push up another CL that will replace this textproto with code to create a query result. I\u0027m doing that elsewhere in this CL.",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 24
+      },
+      "revId": "147ffdecdd3c354964e80d7c5900ce33b024b563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
