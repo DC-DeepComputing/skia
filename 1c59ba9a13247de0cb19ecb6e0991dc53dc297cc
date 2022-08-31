@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1aad649_7dbb13c6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dbee0583_3b7a6c21",
+      "range": {
+        "startLine": 114,
+        "startChar": 12,
+        "endLine": 114,
+        "endChar": 20
+      },
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a555ee2_cc71d077",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-30T18:12:05Z",
       "side": 1,
       "message": "This \"no-value\" distinction wasn\u0027t needed before because UniformDataCache::Index reserved 0 for null data. However, the 1+ bit count probably should have been included in the limit (not that we were under it).",
+      "range": {
+        "startLine": 156,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 68
+      },
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e45eef_e1975fe9",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9a555ee2_cc71d077",
       "range": {
         "startLine": 156,
         "startChar": 4,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06c4ae1b_c32b5790",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa6c9d52_17196fc2",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7031d4d8_641e9f60",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-08-30T21:55:39Z",
       "side": 1,
       "message": "resize(pipelineIndex + 1)?",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb818183_26b72031",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "Done, but have to keep the `if (pipelineIndex \u003e\u003d size())` since SkTArray::resize() will shrink if the new count is smaller, which we don\u0027t want.",
+      "parentUuid": "7031d4d8_641e9f60",
       "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -104,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "653db26c_deafcac9",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c54c3031_bb7df46c",
+      "range": {
+        "startLine": 227,
+        "startChar": 55,
+        "endLine": 227,
+        "endChar": 97
+      },
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3de043d4_9aebf9a7",
@@ -117,6 +225,24 @@
       "writtenOn": "2022-08-30T21:55:39Z",
       "side": 1,
       "message": "This is a bit of a personal opinion but I prefer not to use auto outside of structured bindings or really crazy types; this might be at least as easy to read if we spell out the type here and in the next loop? Also, this may just be my ignorance but why use rvalue references here?",
+      "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd6e235f_439e380a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:15:38Z",
+      "side": 1,
+      "message": "I\u0027d read that for auto\u0027s and a for-each loop, the recommended system is auto\u0026\u0026, which avoids most of the issues around accidentally copying items into a local variable.\n\nBut I also agree that in this case it\u0027s clearer to just use the original type, in which case explicit `SkTArray\u003cCpuOrGpuDta\u003e\u0026` handles everything for us.",
+      "parentUuid": "3de043d4_9aebf9a7",
       "revId": "1c59ba9a13247de0cb19ecb6e0991dc53dc297cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
