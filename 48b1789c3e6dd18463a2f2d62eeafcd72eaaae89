@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d638184d_3ccae3da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-31T07:59:23Z",
+      "side": 1,
+      "message": "Kevin:\n\nThe rules of the prior implementation were becoming increasingly complicated to get right as I attempted to properly generate the remaining *.gni files. I decided to switch to this approach which is *way* simpler and easier to grok. Sorry for the large refactor, but I think this is the best approach.",
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
