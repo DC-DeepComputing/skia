@@ -211,6 +211,10 @@ bool GrMtlCommandBuffer::commit(bool waitUntilCompleted) {
     [fCmdBuffer commit];
     if (waitUntilCompleted) {
         this->waitUntilCompleted();
+#ifdef SK_METAL_WAIT_UNTIL_SCHEDULED
+    } else {
+        [fCmdBuffer waitUntilScheduled];
+#endif
     }
 
     if ([fCmdBuffer status] == MTLCommandBufferStatusError) {
