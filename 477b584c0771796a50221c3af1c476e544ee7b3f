@@ -16,6 +16,46 @@
       "message": "Still need approval from Brian (or someone on the short API approval list) to submit.",
       "revId": "477b584c0771796a50221c3af1c476e544ee7b3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8420c41d_ab25d5d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-31T21:17:51Z",
+      "side": 1,
+      "message": "other than a minor tweak to the signature, I\u0027m happy to +1 the API changes",
+      "revId": "477b584c0771796a50221c3af1c476e544ee7b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce53d13_f7434523",
+        "filename": "include/encode/SkWebpEncoder.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-31T21:17:51Z",
+      "side": 1,
+      "message": "Assuming this is meant to prevent changing the frames themselves, we should probably write this as:\n  SkSpan\u003cconst SkEncoder::Frame\u003e src,\n  \nNo reference (they\u0027re cheap to pass by value), and the const applies to the type inside the span.",
+      "range": {
+        "startLine": 61,
+        "startChar": 31,
+        "endLine": 61,
+        "endChar": 67
+      },
+      "revId": "477b584c0771796a50221c3af1c476e544ee7b3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
