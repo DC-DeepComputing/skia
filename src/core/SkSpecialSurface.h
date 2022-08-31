@@ -24,6 +24,7 @@ namespace skgpu::graphite {
 
 class GrBackendFormat;
 class GrRecordingContext;
+class SkBaseDevice;
 class SkBitmap;
 class SkCanvas;
 class SkSpecialImage;
@@ -78,13 +79,6 @@ public:
 #endif
 
     /**
-     * Use and existing SkBitmap as the backing store.
-     */
-    static sk_sp<SkSpecialSurface> MakeFromBitmap(const SkIRect& subset,
-                                                  SkBitmap& bm,
-                                                  const SkSurfaceProps&);
-
-    /**
      *  Return a new CPU-backed surface, with the memory for the pixels automatically
      *  allocated.
      *
@@ -95,13 +89,12 @@ public:
                                               const SkSurfaceProps&);
 
 protected:
-    SkSpecialSurface(const SkIRect& subset, const SkSurfaceProps&);
+    SkSpecialSurface(sk_sp<SkBaseDevice>, const SkIRect& subset);
 
-    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot() = 0;
-
-    std::unique_ptr<SkCanvas> fCanvas;   // initialized by derived classes in ctors
+    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot();
 
 private:
+    std::unique_ptr<SkCanvas> fCanvas;
     const SkSurfaceProps fProps;
     const SkIRect        fSubset;
 };

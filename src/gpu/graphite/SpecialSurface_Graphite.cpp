@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "src/gpu/graphite/Device.h"
@@ -14,15 +15,14 @@ namespace skgpu::graphite {
 
 class SpecialSurface_Graphite : public SkSpecialSurface {
 public:
-    SpecialSurface_Graphite(sk_sp<Device> device, SkIRect subset)
-            : SkSpecialSurface(subset, device->surfaceProps())
-            , fView(device->readSurfaceView()) {
-        SkASSERT(fView);
+    SpecialSurface_Graphite(sk_sp<SkBaseDevice> device, SkIRect subset)
+            : SkSpecialSurface(std::move(device), subset) { //}, device->surfaceProps()) {
 
-        fCanvas = std::make_unique<SkCanvas>(std::move(device));
-        fCanvas->clipRect(SkRect::Make(subset));
+//        fCanvas = std::make_unique<SkCanvas>(std::move(device));
+//        fCanvas->clipRect(SkRect::Make(subset));
     }
 
+#if 0
     sk_sp<SkSpecialImage> onMakeImageSnapshot() override {
         if (!fView) {
             return nullptr;
@@ -37,9 +37,7 @@ public:
                                             fCanvas->imageInfo().colorInfo(),
                                             this->props());
     }
-
-private:
-    TextureProxyView fView;
+#endif
 };
 
 } // namespace skgpu::graphite

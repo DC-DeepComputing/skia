@@ -11,15 +11,31 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkMallocPixelRef.h"
+#include "src/core/SkBitmapDevice.h"
+#include "src/core/SkCanvasPriv.h"
+#include "src/core/SkDevice.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSurfacePriv.h"
 
-SkSpecialSurface::SkSpecialSurface(const SkIRect& subset,
-                                   const SkSurfaceProps& props)
-        : fProps(props.flags(), kUnknown_SkPixelGeometry)
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrRecordingContext.h"
+#include "src/gpu/ganesh/GrColorInfo.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#endif
+
+SkSpecialSurface::SkSpecialSurface(sk_sp<SkBaseDevice> device,
+                                   const SkIRect& subset)
+        : fProps(device->surfaceProps().flags(), kUnknown_SkPixelGeometry)
         , fSubset(subset) {
     SkASSERT(fSubset.width() > 0);
     SkASSERT(fSubset.height() > 0);
+
+    fCanvas = std::make_unique<SkCanvas>(std::move(device));
+    fCanvas->clipRect(SkRect::Make(subset));
+#ifdef SK_IS_BOT
+    fCanvas->clear(SK_ColorRED);  // catch any imageFilter sloppiness
+#endif
 }
 
 sk_sp<SkSpecialImage> SkSpecialSurface::makeImageSnapshot() {
@@ -28,45 +44,31 @@ sk_sp<SkSpecialImage> SkSpecialSurface::makeImageSnapshot() {
     return image;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-#include "include/core/SkMallocPixelRef.h"
+sk_sp<SkSpecialImage> SkSpecialSurface::onMakeImageSnapshot() {
+    fCanvas->restoreToCount(0);
 
-class SkSpecialSurface_Raster : public SkSpecialSurface {
-public:
-    SkSpecialSurface_Raster(const SkImageInfo& info,
-                            sk_sp<SkPixelRef> pr,
-                            const SkIRect& subset,
-                            const SkSurfaceProps& props)
-            : SkSpecialSurface(subset, props) {
-        SkASSERT(info.width() == pr->width() && info.height() == pr->height());
-        fBitmap.setInfo(info, info.minRowBytes());
-        fBitmap.setPixelRef(std::move(pr), 0, 0);
-
-        fCanvas = std::make_unique<SkCanvas>(fBitmap, this->props());
-        fCanvas->clipRect(SkRect::Make(subset));
-#ifdef SK_IS_BOT
-        fCanvas->clear(SK_ColorRED);  // catch any imageFilter sloppiness
-#endif
+    SkBaseDevice* baseDevice = SkCanvasPriv::TopDevice(fCanvas.get());
+    if (!baseDevice) {
+        return nullptr;
     }
 
-    ~SkSpecialSurface_Raster() override { }
+    return baseDevice->snapSpecial(this->subset());
+}
 
+///////////////////////////////////////////////////////////////////////////////
+class SkSpecialSurface_Raster : public SkSpecialSurface {
+public:
+    SkSpecialSurface_Raster(sk_sp<SkBaseDevice> device, SkIRect subset)
+            : SkSpecialSurface(std::move(device), subset) {
+    }
+
+#if 0
 protected:
     sk_sp<SkSpecialImage> onMakeImageSnapshot() override {
         return SkSpecialImage::MakeFromRaster(this->subset(), fBitmap, this->props());
     }
-
-private:
-    SkBitmap fBitmap;
+#endif
 };
-
-sk_sp<SkSpecialSurface> SkSpecialSurface::MakeFromBitmap(const SkIRect& subset, SkBitmap& bm,
-                                                         const SkSurfaceProps& props) {
-    if (subset.isEmpty() || !SkSurfaceValidateRasterInfo(bm.info(), bm.rowBytes())) {
-        return nullptr;
-    }
-    return sk_make_sp<SkSpecialSurface_Raster>(bm.info(), sk_ref_sp(bm.pixelRef()), subset, props);
-}
 
 sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRaster(const SkImageInfo& info,
                                                      const SkSurfaceProps& props) {
@@ -74,36 +76,43 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRaster(const SkImageInfo& info,
         return nullptr;
     }
 
+    const SkIRect subset = SkIRect::MakeSize(info.dimensions());
+
     sk_sp<SkPixelRef> pr = SkMallocPixelRef::MakeAllocate(info, 0);
     if (!pr) {
         return nullptr;
     }
 
-    const SkIRect subset = SkIRect::MakeWH(info.width(), info.height());
+    SkBitmap bitmap;
+    bitmap.setInfo(info, info.minRowBytes());
+    bitmap.setPixelRef(std::move(pr), 0, 0);
 
-    return sk_make_sp<SkSpecialSurface_Raster>(info, std::move(pr), subset, props);
+    sk_sp<SkBaseDevice> device(new SkBitmapDevice(bitmap, props));
+    if (!device) {
+        return nullptr;
+    }
+
+    return sk_make_sp<SkSpecialSurface_Raster>(std::move(device), subset);
 }
 
 #if SK_SUPPORT_GPU
 ///////////////////////////////////////////////////////////////////////////////
-#include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/ganesh/GrColorInfo.h"
-#include "src/gpu/ganesh/GrRecordingContextPriv.h"
-
 class SkSpecialSurface_Gpu : public SkSpecialSurface {
 public:
-    SkSpecialSurface_Gpu(sk_sp<skgpu::v1::Device> device, SkIRect subset)
-            : SkSpecialSurface(subset, device->surfaceProps())
-            , fReadView(device->readSurfaceView()) {
+    SkSpecialSurface_Gpu(sk_sp<SkBaseDevice> device, SkIRect subset)
+            : SkSpecialSurface(std::move(device), subset) {
 
+#if 0
         fCanvas = std::make_unique<SkCanvas>(std::move(device));
         fCanvas->clipRect(SkRect::Make(subset));
 #ifdef SK_IS_BOT
         fCanvas->clear(SK_ColorRED);  // catch any imageFilter sloppiness
 #endif
+#endif
     }
 
 protected:
+#if 0
     sk_sp<SkSpecialImage> onMakeImageSnapshot() override {
         if (!fReadView.asTextureProxy()) {
             return nullptr;
@@ -120,9 +129,7 @@ protected:
                                                      fCanvas->imageInfo().refColorSpace() },
                                                    this->props());
     }
-
-private:
-    GrSurfaceProxyView fReadView;
+#endif
 };
 
 sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRenderTarget(GrRecordingContext* rContext,
