@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc693cc9_0b33290b",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-31T13:48:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fe0b0acc_b56ed314",
+      "range": {
+        "startLine": 361,
+        "startChar": 5,
+        "endLine": 361,
+        "endChar": 26
+      },
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70124cd1_15fb8a35",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-31T12:05:41Z",
       "side": 1,
       "message": "nit: var expectedVars []string",
+      "range": {
+        "startLine": 459,
+        "startChar": 1,
+        "endLine": 459,
+        "endChar": 13
+      },
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa2acd40_87d4f190",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-31T13:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70124cd1_15fb8a35",
       "range": {
         "startLine": 459,
         "startChar": 1,
