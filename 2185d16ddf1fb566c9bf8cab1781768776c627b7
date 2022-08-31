@@ -46,6 +46,30 @@
       },
       "revId": "2185d16ddf1fb566c9bf8cab1781768776c627b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30231d60_f701695b",
+        "filename": "gn/effects_imagefilters.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-31T12:00:37Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "bcc01bd6_2a30af6c",
+      "range": {
+        "startLine": 8,
+        "startChar": 30,
+        "endLine": 8,
+        "endChar": 47
+      },
+      "revId": "2185d16ddf1fb566c9bf8cab1781768776c627b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
