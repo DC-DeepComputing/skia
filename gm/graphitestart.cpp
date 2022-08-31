@@ -16,6 +16,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkColorFilterPriv.h"
+#include "src/shaders/SkImageShader.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
@@ -230,6 +231,28 @@ void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
     }
 }
 
+void draw_quarter(SkCanvas* canvas, sk_sp<SkImage> img, SkRect fullRect,
+                  float offX, float offY) {
+    SkRect imgSubset = SkRect::MakeXYWH(img->width() * offX / 2.0f, img->height() * offY / 2.0f,
+                                        img->width() / 2.0f, img->height() / 2.0f);
+    SkRect rectSubset = SkRect::MakeXYWH(fullRect.fLeft + (fullRect.width() * offX / 2.0f),
+                                         fullRect.fTop + (fullRect.height() * offY / 2.0f),
+                                         fullRect.width() / 2.0f,
+                                         fullRect.height() / 2.0f);
+    rectSubset.inset(1, 1);
+
+    SkMatrix srcToDst = SkMatrix::RectToRect(imgSubset, rectSubset);
+
+    sk_sp<SkShader> s = SkImageShader::MakeSubset(img, imgSubset,
+                                                  SkTileMode::kClamp, SkTileMode::kClamp,
+                                                  SkSamplingOptions(), &srcToDst);
+
+    SkPaint paint;
+    paint.setShader(std::move(s));
+
+    canvas->drawRect(rectSubset, paint);
+}
+
 } // anonymous namespace
 
 namespace skiagm {
@@ -294,7 +317,25 @@ protected:
 
         // Middle-right tile
         {
-            // <add tile here>
+            const SkRect kTile = SkRect::MakeXYWH(2*kTileWidth, kTileHeight,
+                                                  kTileWidth, kTileHeight);
+
+            canvas->clipRect(kTile);
+
+            sk_sp<SkImage> img = GetResourceAsImage("images/mandrill_128.png");
+            img = img->makeRasterImage();
+
+            if (canvas->recorder()) {
+                img = img->makeTextureImage(canvas->recorder());
+            } else if (canvas->recordingContext() &&
+                       canvas->recordingContext()->asDirectContext()) {
+                img = img->makeTextureImage(canvas->recordingContext()->asDirectContext());
+            }
+
+            draw_quarter(canvas, img, kTile, 0, 0);
+            draw_quarter(canvas, img, kTile, 1, 0);
+            draw_quarter(canvas, img, kTile, 0, 1);
+            draw_quarter(canvas, img, kTile, 1, 1);
         }
 
         canvas->restore();
