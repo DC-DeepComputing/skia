@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "781f4b22_74b806bf",
+        "filename": ".clang-format",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T22:15:40Z",
+      "side": 1,
+      "message": "I have no idea why this is such a bad diff. This does not look anything like the diff on my machine. It looks like it got confused by the Cpp and Objc sections.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 23
+      },
+      "revId": "d6b00dbe6cfee540cdbe39125f1eac763bffdd46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac989971_0abc48c6",
+        "filename": ".clang-format",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T22:15:40Z",
+      "side": 1,
+      "message": "I did change this. It should be None, bug Consecutive made SkTDArray.h look better.",
+      "range": {
+        "startLine": 18,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 41
+      },
+      "revId": "d6b00dbe6cfee540cdbe39125f1eac763bffdd46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
