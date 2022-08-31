@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e93e81_fd0c2934",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2851,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T13:08:05Z",
+      "side": 1,
+      "message": "Before this change, sourceBounds had the origin offset included, but the positionMatrix below also has the origin shift in it. So, the source rectangle was being shifted twice. Once I fixed this, in the dftext_blob_persp GM the TranslateWithMatrix::kNo and TranslateWithMatrix::kYes drawing looked more alike.",
+      "range": {
+        "startLine": 2851,
+        "startChar": 4,
+        "endLine": 2851,
+        "endChar": 72
+      },
+      "revId": "f12a4d007d066c2bcde5485da84afff17995b391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
