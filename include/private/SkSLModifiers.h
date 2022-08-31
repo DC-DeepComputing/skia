@@ -67,10 +67,10 @@ struct Modifiers {
     , fFlags(flags) {}
 
     std::string description() const {
-        return fLayout.description() + DescribeFlags(fFlags) + " ";
+        return fLayout.description() + DescribeFlags(fFlags, /*trailingSpace=*/true);
     }
 
-    static std::string DescribeFlags(int flags) {
+    static std::string DescribeFlags(int flags, bool trailingSpace = false) {
         // SkSL extensions
         std::string result;
         if (flags & kES3_Flag) {
@@ -127,7 +127,7 @@ struct Modifiers {
             result += "threadgroup ";
         }
 
-        if (!result.empty()) {
+        if (!trailingSpace && !result.empty()) {
             result.pop_back();
         }
         return result;

@@ -838,6 +838,32 @@ std::string FunctionCall::description() const {
 }
 
 /**
+ * Determines if a passed-in argument has modifiers which are compatible with its associated
+ * function parameter. For instance, a writeonly argument cannot be passed to a function that takes
+ * a readonly parameter, or vice-versa.
+ * Returns zero if all flags are in alignment; if not, returns the desired parameter flags.
+ */
+static std::optional<int> determine_argument_modifier_mismatch(const Expression& arg,
+                                                               const Variable& param) {
+    if (arg.is<VariableReference>()) {
+        // Only textures can be readonly/writeonly, and textures are opaque objects that cannot take
+        // part in complex expressions. Therefore, this check can simply look for variable
+        // references directly, instead of needing to recursively scan into the expression.
+        constexpr int kRelevantFlags = Modifiers::kReadOnly_Flag | Modifiers::kWriteOnly_Flag;
+        const Variable* var = arg.as<VariableReference>().variable();
+        int argFlags = var->modifiers().fFlags & kRelevantFlags;
+        int paramFlags = param.modifiers().fFlags & kRelevantFlags;
+
+        // The argument being passed is a variable marked as readonly and/or writeonly. The
+        // associated function parameter must have those same modifier flags set.
+        if ((argFlags & paramFlags) != argFlags) {
+            return {paramFlags};
+        }
+    }
+    return std::nullopt;
+}
+
+/**
  * Determines the cost of coercing the arguments of a function to the required types. Cost has no
  * particular meaning other than "lower costs are preferred". Returns CoercionCost::Impossible() if
  * the call is not valid.
@@ -856,6 +882,12 @@ static CoercionCost call_cost(const Context& context,
     const Type* ignored;
     if (!function.determineFinalTypes(arguments, &types, &ignored)) {
         return CoercionCost::Impossible();
+    }
+    for (size_t i = 0; i < arguments.size(); i++) {
+        if (determine_argument_modifier_mismatch(*arguments[i], *function.parameters()[i])
+                    .has_value()) {
+            return CoercionCost::Impossible();
+        }
     }
     CoercionCost total = CoercionCost::Free();
     for (size_t i = 0; i < arguments.size(); i++) {
@@ -1001,17 +1033,26 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             return nullptr;
         }
         // Update the refKind on out-parameters, and ensure that they are actually assignable.
-        const Modifiers& paramModifiers = function.parameters()[i]->modifiers();
-        if (paramModifiers.fFlags & Modifiers::kOut_Flag) {
-            const VariableRefKind refKind = paramModifiers.fFlags & Modifiers::kIn_Flag
+        const Variable& param = *function.parameters()[i];
+        if (param.modifiers().fFlags & Modifiers::kOut_Flag) {
+            const VariableRefKind refKind = param.modifiers().fFlags & Modifiers::kIn_Flag
                                                     ? VariableReference::RefKind::kReadWrite
                                                     : VariableReference::RefKind::kPointer;
             if (!Analysis::UpdateVariableRefKind(arguments[i].get(), refKind, context.fErrors)) {
                 return nullptr;
             }
         }
-        // TODO(skia:13609): Make sure that we don't pass writeonly objects to readonly parameters,
-        // or vice-versa.
+        std::optional<int> mismatchedFlags = determine_argument_modifier_mismatch(*arguments[i],
+                                                                                  param);
+        if (mismatchedFlags.has_value()) {
+            context.fErrors->error(
+                    arguments[i]->fPosition,
+                    "argument " + std::to_string(i + 1) + " to '" +
+                    function.description() + "' must be '" +
+                    Modifiers::DescribeFlags(*mismatchedFlags, /*trailingSpace=*/true) +
+                    param.type().description() + "'");
+            return nullptr;
+        }
     }
 
     if (function.isMain()) {
