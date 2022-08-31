@@ -85,6 +85,10 @@ sk_sp<SkShader> SkSpecialImage::asShader(const SkSamplingOptions& sampling,
 }
 
 #if SK_GRAPHITE_ENABLED
+bool SkSpecialImage::isGraphiteBacked() const {
+    return SkToBool(this->textureProxyView());
+}
+
 skgpu::graphite::TextureProxyView SkSpecialImage::textureProxyView() const {
     return this->onTextureProxyView();
 }
@@ -92,7 +96,7 @@ skgpu::graphite::TextureProxyView SkSpecialImage::textureProxyView() const {
 skgpu::graphite::TextureProxyView SkSpecialImage::onTextureProxyView() const {
     // To get here we would need to be trying to retrieve a Graphite-backed resource from
     // either a raster or Ganesh-backed special image. That should never happen.
-    SkASSERT(0);
+//    SkASSERT(0);
     return {};
 }
 #endif
