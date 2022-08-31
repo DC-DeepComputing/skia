@@ -16,6 +16,24 @@
       "message": "*Maybe* we\u0027d just want to keep these? When called from RenderEngine, if one of these calls fail we\u0027ll just abort later on, when we try to use the backend texture and don\u0027t know why it failed.\n\nEither way, another bug has turned up where they\u0027d be useful. (I tried running a test build on go/abtd, but it keeps failing with infra errors. Not sure why the Canary failed - ag/19774568 passed presubmit when run normally.)",
       "revId": "2fd3e8f16acc0f047b626da68280a7ce7c7a9ad7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6afb9385_9988a725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-31T15:08:41Z",
+      "side": 1,
+      "message": "I discussed this with Derek over VC, and he thought keeping them was a good idea.",
+      "parentUuid": "69a15025_14dd4e18",
+      "revId": "2fd3e8f16acc0f047b626da68280a7ce7c7a9ad7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
