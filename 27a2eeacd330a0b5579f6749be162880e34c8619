@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "943c5399_003245e6",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:04:36Z",
+      "side": 0,
+      "message": "We should be able to remove these from GradientData, ImageData, and ShaderData in SkKeyHelpers.h, I think? It would mean we\u0027d have to update all the `addToKey` functions that fill out these data structs too. This would be where we would inject a LocalMatrixShaderBlock that had the local matrix instead.",
+      "range": {
+        "startLine": 108,
+        "startChar": 23,
+        "endLine": 108,
+        "endChar": 44
+      },
+      "revId": "27a2eeacd330a0b5579f6749be162880e34c8619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

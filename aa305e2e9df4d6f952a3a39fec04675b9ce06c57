@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b9c866_d6b66b60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:04:36Z",
+      "side": 1,
+      "message": "This is definitely the right direction and is close; I think we just have to keep the dev2LocalUni around a little longer and add the local matrix steps manually in addToKey(). If we do that, we ought to be able to draw correctly on the gradients_local_perspective GM.",
+      "revId": "aa305e2e9df4d6f952a3a39fec04675b9ce06c57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1c486e0_d39f9cd3",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:04:36Z",
+      "side": 1,
+      "message": "I think we need to keep the dev2LocalUni writing in PaintParams for a little longer, since we\u0027re still relying on the workaround here.\n\nI think we can land all the rest of the clean up that gets rid of preLocal and handles any local matrix transformation using a LocalMatrixShaderBlock. Then after this lands, we go through all the rest of the RenderSteps and have them write to localCoordsVar and delete this workaround all in one last CL.",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 5
+      },
+      "revId": "aa305e2e9df4d6f952a3a39fec04675b9ce06c57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8defc6f6_ed57ad60",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:04:36Z",
+      "side": 1,
+      "message": "it\u0027s a bit more drudgery, but we should probably update these module functions and the generated helper functions to take a `float2 coords` instead. I think they were originaly float4 so they could be multiplied with the matrix conveniently.",
+      "range": {
+        "startLine": 44,
+        "startChar": 25,
+        "endLine": 44,
+        "endChar": 38
+      },
+      "revId": "aa305e2e9df4d6f952a3a39fec04675b9ce06c57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
