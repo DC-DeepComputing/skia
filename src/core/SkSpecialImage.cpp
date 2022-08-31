@@ -186,7 +186,7 @@ public:
         // Ignore the requested color type, the raster backend currently only supports N32
         colorType = kN32_SkColorType;   // TODO: find ways to allow f16
         SkImageInfo info = SkImageInfo::Make(size, colorType, at, sk_ref_sp(colorSpace));
-        return SkSpecialSurface::MakeRaster(info, props);
+        return SkSpecialSurface::MakeRaster1(info, props);
     }
 
     sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const override {

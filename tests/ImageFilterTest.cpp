@@ -341,7 +341,7 @@ static sk_sp<SkSpecialSurface> create_empty_special_surface(GrRecordingContext* 
         return SkSpecialSurface::MakeRenderTarget(rContext, ii, SkSurfaceProps(),
                                                   kTestSurfaceOrigin);
     } else {
-        return SkSpecialSurface::MakeRaster(ii, SkSurfaceProps());
+        return SkSpecialSurface::MakeRaster1(ii, SkSurfaceProps());
     }
 }
 

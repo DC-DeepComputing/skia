@@ -381,12 +381,14 @@ protected:
 
     // Get a view of the entire device's current contents as an image.
     sk_sp<SkSpecialImage> snapSpecial();
+public:
     // Snap the 'subset' contents from this device, possibly as a read-only view. If 'forceCopy'
     // is true then the returned image's pixels must not be affected by subsequent draws into the
     // device. When 'forceCopy' is false, the image can be a view into the device's pixels
     // (avoiding a copy for performance, at the expense of safety). Default returns null.
     virtual sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false);
 
+protected:
     virtual void setImmutable() {}
 
     bool readPixels(const SkPixmap&, int x, int y);
