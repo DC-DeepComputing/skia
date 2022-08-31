@@ -22,6 +22,30 @@
       },
       "revId": "48c8bd4d15460c87d993a66f94a1580e4ee75be7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c3d22a_6347af2e",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-08-31T17:02:19Z",
+      "side": 1,
+      "message": "Added a comment",
+      "parentUuid": "784d51c3_03578279",
+      "range": {
+        "startLine": 463,
+        "startChar": 24,
+        "endLine": 463,
+        "endChar": 32
+      },
+      "revId": "48c8bd4d15460c87d993a66f94a1580e4ee75be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
