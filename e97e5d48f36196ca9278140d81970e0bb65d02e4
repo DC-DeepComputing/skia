@@ -16,6 +16,75 @@
       "message": "I don\u0027t see any perf ramifications from this, good or bad, so far.",
       "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e208a48_c1ad018a",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:55:36Z",
+      "side": 1,
+      "message": "Any value in making this and texIndex half?",
+      "range": {
+        "startLine": 52,
+        "startChar": 41,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc4c76ee_42692a42",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:55:36Z",
+      "side": 1,
+      "message": "I find `!\u003d 0` to be a clearer test when it\u0027s float as a bool, but I don\u0027t feel strongly.",
+      "range": {
+        "startLine": 99,
+        "startChar": 17,
+        "endLine": 99,
+        "endChar": 21
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be3111b0_23d15013",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T19:55:36Z",
+      "side": 1,
+      "message": "Would we get any benefit from using TextureProxyView and having the atlas use an appropriate swizzle? Or does that just complicate the SkSL generation because the swizzle can\u0027t necessarily be encoded in a Sampler and then we end up in a bad place of one RenderStep producing different SkSL\u0027s.",
+      "range": {
+        "startLine": 100,
+        "startChar": 13,
+        "endLine": 103,
+        "endChar": 9
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
