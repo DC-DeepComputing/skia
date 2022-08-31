@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d745a984_f706ba4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T16:47:48Z",
+      "side": 1,
+      "message": "The last bot succeeded but is stuck on uploading images, so submtting.",
+      "revId": "2f8888940b35fb1c347a8683e153b1d99c7639aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
