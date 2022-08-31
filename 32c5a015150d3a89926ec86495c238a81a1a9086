@@ -22,6 +22,30 @@
       },
       "revId": "32c5a015150d3a89926ec86495c238a81a1a9086",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e9fbe0c_a23d285d",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-31T15:02:09Z",
+      "side": 1,
+      "message": "I went ahead and removed this chunk, so that all the changes relevant to musttail will be encapsulated in this CL, for future historians.",
+      "parentUuid": "eb185664_0979ca70",
+      "range": {
+        "startLine": 590,
+        "startChar": 11,
+        "endLine": 590,
+        "endChar": 14
+      },
+      "revId": "32c5a015150d3a89926ec86495c238a81a1a9086",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
