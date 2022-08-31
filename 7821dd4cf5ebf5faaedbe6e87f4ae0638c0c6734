@@ -190,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "068435b8_ca8ad138",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-31T21:12:36Z",
+      "side": 1,
+      "message": "That seems a little weird to me, but the fact that it would pass with `1` makes me feel a little better.",
+      "parentUuid": "9b0a6520_abf6d621",
+      "range": {
+        "startLine": 488,
+        "startChar": 27,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f60e09a5_0a7b8967",
