@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4244ddc_e99d1bd2",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-31T17:13:04Z",
+      "side": 1,
+      "message": "I confirmed with Kevin that this is the right fix.",
+      "revId": "975bf97d1ae3908e4e33199ba19d81d69d5e9884",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
