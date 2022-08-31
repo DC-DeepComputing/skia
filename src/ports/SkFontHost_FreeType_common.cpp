@@ -743,7 +743,7 @@ bool colrv1_configure_skpaint(FT_Face face,
                 SkVector endOffset = startToEnd;
                 endOffset.scale(stops.back());
                 start = start + startOffset;
-                end = end + endOffset;
+                end = start + endOffset;
                 startRadius = startRadius + radiusDiff * stops.front();
                 endRadius = startRadius + radiusDiff * stops.back();
 
