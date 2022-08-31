@@ -157,6 +157,30 @@
       },
       "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef1bc00d_e328e801",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T20:21:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "eec96021_89c9a884",
+      "range": {
+        "startLine": 100,
+        "startChar": 13,
+        "endLine": 103,
+        "endChar": 9
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
