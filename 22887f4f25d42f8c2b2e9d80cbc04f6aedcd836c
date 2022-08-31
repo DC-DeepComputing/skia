@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced3dec6_e2d7ea4a",
+        "filename": "tests/MatrixProcsTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T14:50:07Z",
+      "side": 1,
+      "message": "static constexpr instead of const.",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 9
+      },
+      "revId": "22887f4f25d42f8c2b2e9d80cbc04f6aedcd836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70c1600d_becde122",
+        "filename": "tests/MatrixProcsTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T14:50:07Z",
+      "side": 1,
+      "message": "This is usually written as:\nreturn (rv \u003e\u003e 18) \u0026 ((1\u003c\u003c14) - 1);\n\nThe usual pattern is that the field is moved to the zero bit, and then masked.",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 37
+      },
+      "revId": "22887f4f25d42f8c2b2e9d80cbc04f6aedcd836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03e7a937_a6222777",
+        "filename": "tests/MatrixProcsTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T14:50:07Z",
+      "side": 1,
+      "message": "Move into the body of the test. Consider calling it TestCase when moved into the body.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 2
+      },
+      "revId": "22887f4f25d42f8c2b2e9d80cbc04f6aedcd836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f111b04c_c230a5cf",
+        "filename": "tests/MatrixProcsTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T14:50:07Z",
+      "side": 1,
+      "message": "Move into the body of the test. If it is copied into both bodies you could consider just calling it TestCase.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 2
+      },
+      "revId": "22887f4f25d42f8c2b2e9d80cbc04f6aedcd836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d5f1f2_338d117c",
+        "filename": "tests/MatrixProcsTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-31T14:50:07Z",
+      "side": 1,
+      "message": "Move into the body of the test.",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 2
+      },
+      "revId": "22887f4f25d42f8c2b2e9d80cbc04f6aedcd836c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
