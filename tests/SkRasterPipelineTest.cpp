@@ -586,8 +586,9 @@ public:
     };
 
     static Behavior GrowthBehavior() {
-#if SK_HAS_MUSTTAIL
+#if 0 // SK_HAS_MUSTTAIL
         // Wih the musttail attribute, we expect ALL addresses to match the baseline
+        // NOTE: We had to revert usage of musttail. If we can re-land it, this test needs to know.
         return Behavior::kBaseline;
 #else
     #ifdef SK_DEBUG
