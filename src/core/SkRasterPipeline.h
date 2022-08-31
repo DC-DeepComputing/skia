@@ -123,8 +123,8 @@ struct skcms_TransferFunction;
     M(load_unmasked) M(store_unmasked) M(store_masked)             \
     M(loop_mask)                                                   \
     M(immediate)                                                   \
-    M(add_f)                                                       \
-    M(cmp_flte)
+    M(add_f) M(sub_f) M(mul_f) M(rcp_f)                            \
+    M(cmp_flte) M(sqrt_f) M(cos_f)
 
 // The combined list of all stages:
 #define SK_RASTER_PIPELINE_STAGES_ALL(M) \
