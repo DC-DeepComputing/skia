@@ -166,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0a6520_abf6d621",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-08-31T21:04:33Z",
+      "side": 1,
+      "message": "I am not an expert on libwebp, it may depend on the actual compress logics?\nSet the tolerance to 1 would pass, but set to 0 will fail on Red and Green frames.\n\nUpdated to test with kLossless compression.",
+      "parentUuid": "c0be6fb3_fd46a716",
+      "range": {
+        "startLine": 488,
+        "startChar": 27,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f60e09a5_0a7b8967",
