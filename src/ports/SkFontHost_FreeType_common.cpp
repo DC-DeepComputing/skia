@@ -752,12 +752,12 @@ bool colrv1_configure_skpaint(FT_Face face,
                 }
             }
 
-            // TODO(https://crbug.com/skia/13653): Interpolate a zero radius
-            // circle with manual color interpolation or upgrade the
-            // MakeTwoPointConical shader to understand negative radii.
-            if (startRadius < 0 || endRadius < 0) {
-                paint->setColor(SK_ColorTRANSPARENT);
-                return true;
+            if (SkGraphics::GetVariableColrV1Enabled()) {
+                // When radii become negative through variations or interpolation, convert them to
+                // their absolute value. Resolution as discussed in
+                // https://github.com/googlefonts/colr-gradients-spec/issues/367.
+                startRadius = std::abs(startRadius);
+                endRadius = std::abs(endRadius);
             }
 
             // An opaque color is needed to ensure the gradient is not modulated by alpha.
