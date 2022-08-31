@@ -16,6 +16,75 @@
       "message": "Kevin:\n\nThe rules of the prior implementation were becoming increasingly complicated to get right as I attempted to properly generate the remaining *.gni files. I decided to switch to this approach which is *way* simpler and easier to grok. Sorry for the large refactor, but I think this is the best approach.",
       "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe0b0acc_b56ed314",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-31T12:05:41Z",
+      "side": 1,
+      "message": "I was reminded that https://pkg.go.dev/strings#Builder exists. It\u0027s functionally the same (except for a WriteString method), so it\u0027s your call if you think it fits better here or not.",
+      "range": {
+        "startLine": 361,
+        "startChar": 5,
+        "endLine": 361,
+        "endChar": 26
+      },
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70124cd1_15fb8a35",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-31T12:05:41Z",
+      "side": 1,
+      "message": "nit: var expectedVars []string",
+      "range": {
+        "startLine": 459,
+        "startChar": 1,
+        "endLine": 459,
+        "endChar": 13
+      },
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ca950a_15a0737a",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-31T12:05:41Z",
+      "side": 1,
+      "message": "These types are much more readable than the maps. I like it!",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 45
+      },
+      "revId": "48b1789c3e6dd18463a2f2d62eeafcd72eaaae89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
