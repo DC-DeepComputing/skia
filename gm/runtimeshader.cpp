@@ -19,7 +19,13 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkEffectPriv.h"
+#include "src/core/SkRasterPipeline.h"
+#include "src/core/SkVM.h"
+#include "src/shaders/SkShaderBase.h"
 #include "tools/Resources.h"
+
+#include <algorithm>
 
 enum RT_Flags {
     kAnimate_RTFlag     = 0x1,
@@ -220,6 +226,40 @@ public:
     }
 };
 DEF_GM(return new SpiralRT;)
+
+class FibSphereRT : public RuntimeShaderGM {
+public:
+    FibSphereRT() : RuntimeShaderGM("fib_sphere_rt", {256, 256}, R"(
+        uniform float2 iResolution;
+        uniform float iTime;
+
+        vec4 main(vec2 FC) {
+            vec4 o = vec4(0);
+            vec2 p = vec2(0), c=p, u=FC.xy*2.-iResolution.xy;
+            float a;
+            for (float i=0; i<4e2; i++) {
+                a = i/2e2-1.;
+                p = cos(i*2.4+iTime+vec2(0,11))*sqrt(1.-a*a);
+                c = u/iResolution.y+vec2(p.x,a)/(p.y+2.);
+                o += (cos(i+vec4(0,2,4,0))+1.)/dot(c,c)*(1.-p.y)/3e4;
+            }
+        return o;
+        }
+    )", kAnimate_RTFlag | kBench_RTFlag) {}
+
+    void onDraw(SkCanvas* canvas) override {
+        canvas->clear(0);
+        SkRuntimeShaderBuilder builder(fEffect);
+
+        builder.uniform("iTime") = fSecs;
+        builder.uniform("iResolution")  = SkV2{256, 256};
+
+        SkPaint paint;
+        paint.setShader(builder.makeShader());
+        canvas->drawRect({0, 0, 256, 256}, paint);
+    }
+};
+DEF_GM(return new FibSphereRT;)
 
 // Test case for sampling with both unmodified input coordinates, and explicit coordinates.
 // The first version of skbug.com/11869 suffered a bug where all samples of a child were treated
@@ -1049,4 +1089,314 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
     }
 
     canvas->translate(-150, 50);
+}
+
+/*
+vec4 main(vec2 FC) {
+  vec4 o = vec4(0);
+  vec2 p = vec2(0), c=p, u=FC.xy*2.-iResolution.xy;
+  float a;
+  for (float i=0; i<4e2; i++) {
+    a = i/2e2-1.;
+    p = cos(i*2.4+iTime+vec2(0,11))*sqrt(1.-a*a);
+    c = u/iResolution.y+vec2(p.x,a)/(p.y+2.);
+    o += (cos(i+vec4(0,2,4,0))+1.)/dot(c,c)*(1.-p.y)/3e4;
+  }
+  return o;
+}
+*/
+
+class SkRPStressShader : public SkShaderBase {
+public:
+    SkRPStressShader(float t) : fTime(t) {}
+
+    bool onAppendStages(const SkStageRec& rec) const override {
+        SkRasterPipeline* rp = rec.fPipeline;
+        SkArenaAlloc* alloc = rec.fAlloc;
+        static constexpr int N = SkRasterPipeline_kMaxStride_highp;
+        using RP = SkRasterPipeline;
+
+#define REAL_LOOP 0
+
+        auto imm_ctx = [](float v) {
+            void* ctx = nullptr;
+            memcpy(&ctx, &v, sizeof(v));
+            return ctx;
+        };
+
+        struct Slots {
+            float* base;
+            float* operator[](int i) { return base + i*N; }
+        };
+
+        auto allocSlots = [alloc](int numSlots) {
+            return Slots{alloc->makeArray<float>(numSlots * N)};
+        };
+
+        Slots FC = allocSlots(4),  // 4, because we use store_src
+               o = allocSlots(4),
+               p = allocSlots(2),
+               c = allocSlots(2),
+               u = allocSlots(2),
+               tmp = allocSlots(6);
+
+#if REAL_LOOP
+        Slots i = allocSlots(1),
+              a = allocSlots(1);
+#endif
+
+        auto literal = [alloc](float val) {
+            float* ptr = alloc->makeArray<float>(N);
+            std::fill(ptr, ptr + N, val);
+            return ptr;
+        };
+        auto k2   = literal(2),
+             k11  = literal(11),
+             k256 = literal(256),
+             kInv256 = literal(1.0f/256),
+             kInv30000 = literal(1.0f/30000);
+        auto kTime = literal(fTime);
+
+#if REAL_LOOP
+        auto k1   = literal(1),
+             k2_4 = literal(2.4f),
+             k4   = literal(4),
+             k400 = literal(400),
+             kInv200 = literal(1.0f/200);
+
+        int* jumpToTopOffset = alloc->make<int>();
+        int* jumpToEndOffset = alloc->make<int>();
+#endif
+
+        rp->append(RP::seed_shader);
+        rp->append(RP::store_src, FC[0]);
+
+        rp->append(RP::init_lane_masks);
+        rp->append(RP::immediate, imm_ctx(0.0f));
+        rp->append(RP::store_masked, o[0]);
+        rp->append(RP::store_masked, o[1]);
+        rp->append(RP::store_masked, o[2]);
+        rp->append(RP::store_masked, o[3]);
+
+        rp->append(RP::store_masked, p[0]);
+        rp->append(RP::store_masked, p[1]);
+
+        rp->append(RP::store_masked, c[0]);
+        rp->append(RP::store_masked, c[1]);
+
+        // Init u
+        rp->append(RP::load_unmasked, FC[0]);
+        rp->append(RP::mul_f, k2);
+        rp->append(RP::sub_f, k256);
+        rp->append(RP::store_masked, u[0]);
+
+        rp->append(RP::load_unmasked, FC[1]);
+        rp->append(RP::mul_f, k2);
+        rp->append(RP::sub_f, k256);
+        rp->append(RP::store_masked, u[1]);
+
+#if REAL_LOOP
+        // i = 0
+        rp->append(RP::immediate, imm_ctx(0.0f));
+        rp->append(RP::store_masked, i[0]);
+
+        const int loopTopPC = rp->numStages();
+
+        // i < 4e2
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::cmp_flte, k400);
+        rp->append(RP::loop_mask);
+
+        // All lanes done? Jump to end-of-loop target
+        const int jumpToEndSrcPC = rp->numStages();
+        rp->append(RP::branch_all_zero, jumpToEndOffset);
+#else
+        for (float i = 0.0f; i < 400; i++) {
+#endif
+
+        // a = i/2e2 - 1
+#if REAL_LOOP
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::mul_f, kInv200);
+        rp->append(RP::sub_f, k1);
+        rp->append(RP::store_masked, a[0]);
+#else
+        float a = i/200.0f - 1.0f;
+#endif
+
+        // p = cos(i*2.4+vec2(0,11))*sqrt(1-a*a)
+#if REAL_LOOP
+        rp->append(RP::load_unmasked, a[0]);
+        rp->append(RP::mul_f, a[0]);
+        rp->append(RP::store_unmasked, tmp[0]);
+        rp->append(RP::immediate, imm_ctx(1.0f));
+        rp->append(RP::sub_f, tmp[0]);  // 1 - a*a
+        rp->append(RP::sqrt_f);
+        rp->append(RP::store_unmasked, tmp[0]);  // tmp[0] == sqrt(1-a*a)
+
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::mul_f, k2_4);
+        rp->append(RP::add_f, kTime);
+        rp->append(RP::store_unmasked, tmp[1]);
+        rp->append(RP::add_f, k11);
+        rp->append(RP::store_unmasked, tmp[2]);
+        rp->append(RP::load_unmasked, tmp[1]);
+        rp->append(RP::cos_f);
+        rp->append(RP::mul_f, tmp[0]);
+        rp->append(RP::store_masked, p[0]);
+        rp->append(RP::load_unmasked, tmp[2]);
+        rp->append(RP::cos_f);
+        rp->append(RP::mul_f, tmp[0]);
+        rp->append(RP::store_masked, p[1]);
+#else
+        auto t_0 = literal(sqrtf(1.0f - a*a));
+        rp->append(RP::immediate, imm_ctx(i*2.4f));
+        rp->append(RP::add_f, kTime);
+        rp->append(RP::cos_f);
+        rp->append(RP::mul_f, t_0);
+        rp->append(RP::store_masked, p[0]);
+        rp->append(RP::immediate, imm_ctx(i*2.4f));
+        rp->append(RP::add_f, kTime);
+        rp->append(RP::add_f, k11);
+        rp->append(RP::cos_f);
+        rp->append(RP::mul_f, t_0);
+        rp->append(RP::store_masked, p[1]);
+#endif
+
+        // c = u/iResolution.y + vec2(p.x,a)/(p.y+2)
+        rp->append(RP::load_unmasked, p[1]);
+        rp->append(RP::add_f, k2);
+        rp->append(RP::rcp_f);
+        rp->append(RP::store_unmasked, tmp[0]);  // tmp[0] = 1/(p.y+2)
+        rp->append(RP::load_unmasked, p[0]);
+        rp->append(RP::mul_f, tmp[0]);
+        rp->append(RP::store_unmasked, tmp[1]);  // tmp[1] = p.x/(p.y+2)
+#if REAL_LOOP
+        rp->append(RP::load_unmasked, a[0]);
+#else
+        rp->append(RP::immediate, imm_ctx(a));
+#endif
+        rp->append(RP::mul_f, tmp[0]);
+        rp->append(RP::store_unmasked, tmp[2]);  // tmp[2] = a/(p.y+2)
+
+        rp->append(RP::load_unmasked, u[0]);
+        rp->append(RP::mul_f, kInv256);
+        rp->append(RP::add_f, tmp[1]);
+        rp->append(RP::store_masked, c[0]);
+        rp->append(RP::load_unmasked, u[1]);
+        rp->append(RP::mul_f, kInv256);
+        rp->append(RP::add_f, tmp[2]);
+        rp->append(RP::store_masked, c[1]);
+
+        // o += (cos(i+vec4(0,2,4,0))+1) / dot(c,c) * (1-p.y) / 3e4;
+        rp->append(RP::immediate, imm_ctx(1.0f));
+        rp->append(RP::sub_f, p[1]);
+        rp->append(RP::store_unmasked, tmp[0]);  // tmp[0] == (1 - p.y)
+
+        rp->append(RP::load_unmasked, c[0]);
+        rp->append(RP::mul_f, c[0]);
+        rp->append(RP::store_unmasked, tmp[1]);
+        rp->append(RP::load_unmasked, c[1]);
+        rp->append(RP::mul_f, c[1]);
+        rp->append(RP::add_f, tmp[1]);
+        rp->append(RP::rcp_f);
+        rp->append(RP::store_unmasked, tmp[1]);  // tmp[1] == 1/dot(c,c)
+
+#if REAL_LOOP
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::cos_f);
+        rp->append(RP::add_f, k1);
+        rp->append(RP::store_unmasked, tmp[2]);
+
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::add_f, k2);
+        rp->append(RP::cos_f);
+        rp->append(RP::add_f, k1);
+        rp->append(RP::store_unmasked, tmp[3]);
+
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::add_f, k4);
+        rp->append(RP::cos_f);
+        rp->append(RP::add_f, k1);
+        rp->append(RP::store_unmasked, tmp[4]);
+
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::cos_f);
+        rp->append(RP::add_f, k1);
+        rp->append(RP::store_unmasked, tmp[5]);
+
+        // left-to-right final pass...
+        for (int chan = 0; chan < 4; ++chan) {
+            rp->append(RP::load_unmasked, tmp[2+chan]);
+            rp->append(RP::mul_f, tmp[1]);
+            rp->append(RP::mul_f, tmp[0]);
+            rp->append(RP::mul_f, kInv30000);
+            rp->append(RP::add_f, o[chan]);
+            rp->append(RP::store_masked, o[chan]);
+        }
+#else
+        float cv[4] = {
+            cosf(i + 0.0f) + 1.0f,
+            cosf(i + 2.0f) + 1.0f,
+            cosf(i + 4.0f) + 1.0f,
+            cosf(i + 0.0f) + 1.0f,
+        };
+
+        for (int chan = 0; chan < 4; ++chan) {
+            rp->append(RP::immediate, imm_ctx(cv[chan]));
+            rp->append(RP::mul_f, tmp[1]);
+            rp->append(RP::mul_f, tmp[0]);
+            rp->append(RP::mul_f, kInv30000);
+            rp->append(RP::add_f, o[chan]);
+            rp->append(RP::store_masked, o[chan]);
+        }
+#endif
+
+#if REAL_LOOP
+        // End of loop: i++
+        rp->append(RP::load_unmasked, i[0]);
+        rp->append(RP::add_f, k1);
+        rp->append(RP::store_masked, i[0]);
+
+//        rp->append_stack_rewind();
+
+        // Unconditional branch to start of loop
+        *jumpToTopOffset = loopTopPC - rp->numStages();
+        rp->append(RP::branch, jumpToTopOffset);
+
+        // Our end-of-loop branch target is here:
+        *jumpToEndOffset = rp->numStages() - jumpToEndSrcPC;
+#else
+        }
+#endif
+
+        // Load 'o' into src, to be our final "return value" result
+        rp->append(RP::load_src, o[0]);
+
+        return true;
+    }
+
+    skvm::Color onProgram(skvm::Builder*, skvm::Coord device, skvm::Coord local, skvm::Color paint,
+                          const SkMatrixProvider&, const SkMatrix* localM, const SkColorInfo& dst,
+                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override {
+                            return {};
+    }
+
+    SK_FLATTENABLE_HOOKS(SkRPStressShader)
+
+    float fTime;
+};
+
+sk_sp<SkFlattenable> SkRPStressShader::CreateProc(SkReadBuffer&) {
+    return sk_make_sp<SkRPStressShader>(0.0f);
+}
+
+DEF_SIMPLE_GM(rp_stress, canvas, 256, 256) {
+    static float gTime = 0.0f;
+    canvas->clear(0);
+    SkPaint p;
+    auto shader = sk_make_sp<SkRPStressShader>(gTime);
+    p.setShader(shader);
+    canvas->drawRect({0, 0, 256, 256}, p);
+    gTime = gTime + (1/30.0f);
 }
