@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ad76b7_8b737b02",
+        "filename": "src/gpu/graphite/SpecialImage_Graphite.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:25:33Z",
+      "side": 1,
+      "message": "I wouldn\u0027t worry too hard about this; it should be unnecessary functionality if image filter refactorings go well (and extra unnecessary if we can draw SkSpecialImage entirely at that point).",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 33
+      },
+      "revId": "bc5257f399c7f7efbbc850eb56355f993fa264f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de504deb_8d5b6399",
+        "filename": "src/gpu/graphite/SpecialSurface_Graphite.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:25:33Z",
+      "side": 1,
+      "message": "I think we need to flush the Device\u0027s pending work here, just as if were in its own onMakeImageSnapshot().\n\nFrom that POV, could we structure SkSpecialImage::MakeGraphite() to take an SkImage (and assert it\u0027s an Image_Graphite?)",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 64
+      },
+      "revId": "bc5257f399c7f7efbbc850eb56355f993fa264f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3e1026_39e74a4b",
+        "filename": "src/gpu/graphite/SpecialSurface_Graphite.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T15:25:33Z",
+      "side": 1,
+      "message": "I think this could be auto and not hurt readability.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 34
+      },
+      "revId": "bc5257f399c7f7efbbc850eb56355f993fa264f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
