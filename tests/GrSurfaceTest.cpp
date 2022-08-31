@@ -338,8 +338,7 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApiLeve
                                          nullptr,
                                          {desc.fHeight, desc.fHeight});
 
-                        auto sc = dContext->priv().makeSC(info,
-                                                          combo.fFormat,
+                        auto sc = dContext->priv().makeSC(info, combo.fFormat, {},
                                                           fit,
                                                           kTopLeft_GrSurfaceOrigin,
                                                           renderable);
