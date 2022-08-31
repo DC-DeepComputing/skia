@@ -460,7 +460,7 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                             unicode, textStyle.getFontStyle(), textStyle.getLocale());
 
                     if (typeface == nullptr) {
-                        return;
+                        continue;
                     }
                     fFallbackFonts.set(fontKey, typeface);
                 }
