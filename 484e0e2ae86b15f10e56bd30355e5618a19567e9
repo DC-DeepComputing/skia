@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7511044_59180fca",
+        "filename": "include/gpu/vk/GrVkMemoryAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-31T18:29:48Z",
+      "side": 1,
+      "message": "I think this will break chromium roller when SK_LEGACY_VMA_PROPERTY_FLAGS is defined. Need `flags` to be named still.",
+      "range": {
+        "startLine": 86,
+        "startChar": 40,
+        "endLine": 86,
+        "endChar": 63
+      },
+      "revId": "484e0e2ae86b15f10e56bd30355e5618a19567e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
