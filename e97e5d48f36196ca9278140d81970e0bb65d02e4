@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49617682_ce7095ab",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-31T20:20:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e208a48_c1ad018a",
+      "range": {
+        "startLine": 52,
+        "startChar": 41,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc4c76ee_42692a42",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11eeb40b_6abc89fe",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-31T20:20:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc4c76ee_42692a42",
+      "range": {
+        "startLine": 99,
+        "startChar": 17,
+        "endLine": 99,
+        "endChar": 21
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be3111b0_23d15013",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-08-31T19:55:36Z",
       "side": 1,
       "message": "Would we get any benefit from using TextureProxyView and having the atlas use an appropriate swizzle? Or does that just complicate the SkSL generation because the swizzle can\u0027t necessarily be encoded in a Sampler and then we end up in a bad place of one RenderStep producing different SkSL\u0027s.",
+      "range": {
+        "startLine": 100,
+        "startChar": 13,
+        "endLine": 103,
+        "endChar": 9
+      },
+      "revId": "e97e5d48f36196ca9278140d81970e0bb65d02e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec96021_89c9a884",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-31T20:20:56Z",
+      "side": 1,
+      "message": "The sampler doesn\u0027t store the swizzle so yeah, we\u0027d have to generate two shaders. Which defeats the purpose of trying to combine this into one.",
+      "parentUuid": "be3111b0_23d15013",
       "range": {
         "startLine": 100,
         "startChar": 13,
