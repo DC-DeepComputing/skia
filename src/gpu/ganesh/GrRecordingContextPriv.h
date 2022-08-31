@@ -142,6 +142,7 @@ public:
     // GrRenderable and the GrImageInfo.
     std::unique_ptr<skgpu::v1::SurfaceContext> makeSC(const GrImageInfo&,
                                                       const GrBackendFormat&,
+                                                      std::string_view label,
                                                       SkBackingFit = SkBackingFit::kExact,
                                                       GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
                                                       GrRenderable = GrRenderable::kNo,
@@ -179,7 +180,8 @@ public:
                                                            skgpu::Swizzle readSwizzle,
                                                            skgpu::Swizzle writeSwizzle,
                                                            GrSurfaceOrigin,
-                                                           SkBudgeted);
+                                                           SkBudgeted,
+                                                           std::string_view label);
 
     /**
      * Like the above but uses GetFallbackColorTypeAndFormat to find a fallback color type (and

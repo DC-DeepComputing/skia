@@ -120,6 +120,7 @@ std::unique_ptr<skgpu::v1::SurfaceContext> GrRecordingContextPriv::makeSC(
 std::unique_ptr<skgpu::v1::SurfaceContext> GrRecordingContextPriv::makeSC(
         const GrImageInfo& info,
         const GrBackendFormat& format,
+        std::string_view label,
         SkBackingFit fit,
         GrSurfaceOrigin origin,
         GrRenderable renderable,
@@ -140,7 +141,7 @@ std::unique_ptr<skgpu::v1::SurfaceContext> GrRecordingContextPriv::makeSC(
                                                fit,
                                                budgeted,
                                                isProtected,
-                                               /*label=*/"MakeSurfaceContext");
+                                               label);
     if (!proxy) {
         return nullptr;
     }
@@ -223,7 +224,8 @@ std::unique_ptr<skgpu::v1::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
         skgpu::Swizzle readSwizzle,
         skgpu::Swizzle writeSwizzle,
         GrSurfaceOrigin origin,
-        SkBudgeted budgeted) {
+        SkBudgeted budgeted,
+        std::string_view label) {
 
 #if SK_GPU_V1
     SkASSERT(!dimensions.isEmpty());
@@ -244,7 +246,7 @@ std::unique_ptr<skgpu::v1::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
                 origin,
                 budgeted,
                 SkSurfaceProps(),
-                /*label=*/"MakeCustomConfiguredSurfaceFillContextUsingCustomSwizzles");
+                label);
     }
 
     sk_sp<GrTextureProxy> proxy =
@@ -256,7 +258,7 @@ std::unique_ptr<skgpu::v1::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
                                                fit,
                                                budgeted,
                                                isProtected,
-                                               /*label=*/"MakeCustomConfiguredSurfaceFillContext");
+                                               label);
     if (!proxy) {
         return nullptr;
     }
