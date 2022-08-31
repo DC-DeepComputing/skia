@@ -53,7 +53,8 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeGraphite(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<Device> device = Device::Make(recorder, ii, SkBudgeted::kYes, props);
+    sk_sp<Device> device = Device::Make(recorder, ii, SkBudgeted::kYes, props,
+                                        /* addInitialClear= */ false);
     if (!device) {
         return nullptr;
     }
