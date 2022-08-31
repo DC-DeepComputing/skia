@@ -11,21 +11,37 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSurfacePriv.h"
 
-SkSpecialSurface::SkSpecialSurface(const SkIRect& subset,
+SkSpecialSurface::SkSpecialSurface(sk_sp<SkDevice> device,
+                                   const SkIRect& subset,
                                    const SkSurfaceProps& props)
         : fProps(props.flags(), kUnknown_SkPixelGeometry)
         , fSubset(subset) {
     SkASSERT(fSubset.width() > 0);
     SkASSERT(fSubset.height() > 0);
+
+    fCanvas = std::make_unique<SkCanvas>(std::move(device));
+    fCanvas->clipRect(SkRect::Make(subset));
 }
 
 sk_sp<SkSpecialImage> SkSpecialSurface::makeImageSnapshot() {
     sk_sp<SkSpecialImage> image(this->onMakeImageSnapshot());
     fCanvas.reset();
     return image;
+}
+
+sk_sp<SkSpecialImage> SkSpecialSurface::onMakeImageSnapshot() {
+    fCanvas->restoreToCount(0);
+
+    SkBaseDevice* baseDevice = SkCanvasPriv::TopDevice(fCanvas.get());
+    if (!baseDevice) {
+        return nullptr;
+    }
+
+    return baseDevice->snapSpecial(this->subset());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

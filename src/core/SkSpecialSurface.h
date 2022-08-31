@@ -95,11 +95,11 @@ public:
                                               const SkSurfaceProps&);
 
 protected:
-    SkSpecialSurface(const SkIRect& subset, const SkSurfaceProps&);
+    SkSpecialSurface(sk_sp<SkBaseDevice>, const SkIRect& subset);
 
-    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot() = 0;
+    virtual sk_sp<SkSpecialImage> onMakeImageSnapshot();
 
-    std::unique_ptr<SkCanvas> fCanvas;   // initialized by derived classes in ctors
+    std::unique_ptr<SkCanvas> fCanvas;
 
 private:
     const SkSurfaceProps fProps;
