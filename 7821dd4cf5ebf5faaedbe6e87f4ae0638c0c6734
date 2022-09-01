@@ -214,6 +214,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04538485_19c578d6",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2022-09-01T18:51:26Z",
+      "side": 1,
+      "message": "\u003e That seems a little weird to me, but the fact that it would pass with `1` makes me feel a little better.\n\nWebP lossy (VP8) has a limitation when it comes to chroma samples, the minimum quantizer is 4 so some loss may occur.",
+      "parentUuid": "068435b8_ca8ad138",
+      "range": {
+        "startLine": 488,
+        "startChar": 27,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "7821dd4cf5ebf5faaedbe6e87f4ae0638c0c6734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f60e09a5_0a7b8967",
