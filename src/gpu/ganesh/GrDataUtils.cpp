@@ -667,7 +667,7 @@ bool GrConvertPixels(const GrPixmap& dst, const GrCPixmap& src, bool flipY) {
             steps->apply(&pipeline);
         }
         if (clampGamut) {
-            append_clamp_gamut(&pipeline);
+            append_clamp_gamut(&pipeline);  // remove??
         }
         switch (lumMode) {
             case LumMode::kNone:
