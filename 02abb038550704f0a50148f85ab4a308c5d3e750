@@ -46,6 +46,30 @@
       },
       "revId": "02abb038550704f0a50148f85ab4a308c5d3e750",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2adee20_21c3038d",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T18:15:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7b5bba1_f7c85547",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 20
+      },
+      "revId": "02abb038550704f0a50148f85ab4a308c5d3e750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
