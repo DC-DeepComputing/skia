@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5785fc_3c2aae22",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-01T15:57:20Z",
+      "side": 1,
+      "message": "I\u0027m still concerned about the case in which a font has small glyphs (like `.` and large glyphs (like `M`) and that the small glyph may have a non-zero dimension and the big glyph result in a zero dimension but then this maxDimension is just the dimension of the small glyph with no indication that some large glyph overflowed (and so a smaller size should be tried).\n\nThis strike isn\u0027t the same strike that would have created empty glyphs at large sizes earlier, this one also has this particular matrix attached which in perspective may want to make things bigger.",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "625f8088_bcde74ab",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3067,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-01T15:57:20Z",
+      "side": 1,
+      "message": "Update this comment as well?",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
