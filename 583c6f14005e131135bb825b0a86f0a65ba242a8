@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94d4d7d5_48f0d498",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-01T16:50:33Z",
+      "side": 1,
+      "message": "The largest multiple between `.` and `M` isn\u0027t really limited, since the bounds can be pretty much anything especially with CFF outlines (everything is float). In practice this is generally limited to the range of a 26.6 (or 16.16) fixed point. The units per EM number is just what to divide by to get to a size of 1 (then multiply by the size you want), it\u0027s not actually a square anymore and nothing needs to fit inside it. So there\u0027s really no largest multiple that would really be safe here.\n\nWe\u0027ve never really cared too much about what happens on size overflow before, but here we probably will, so yeah, we will need to plumb that information out of the scaler context and up. So long as we have an issue to track that and a TODO here I\u0027m fine with this.",
+      "parentUuid": "a6b29328_0e040869",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "625f8088_bcde74ab",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 24
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "625f8088_bcde74ab",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dca6200_3dea1f37",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3067,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-01T16:50:33Z",
+      "side": 1,
+      "message": "Not done yet?",
+      "parentUuid": "7b86637a_ccc4052f",
       "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
