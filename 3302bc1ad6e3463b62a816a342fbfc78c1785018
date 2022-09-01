@@ -57,6 +57,30 @@
       },
       "revId": "3302bc1ad6e3463b62a816a342fbfc78c1785018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4117b52_7eaaf657",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-01T15:20:45Z",
+      "side": 1,
+      "message": "Done. I also wanted to re-order the localCoords / shadingSsboIndex parameters, since the shadingSsboIndex is no longer an output parameter, but then for consistency I wanted to re-order them everywhere they both appear, which increased the diff size a bit.",
+      "parentUuid": "707da7d0_bdb8d434",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 47
+      },
+      "revId": "3302bc1ad6e3463b62a816a342fbfc78c1785018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
