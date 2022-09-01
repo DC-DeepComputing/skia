@@ -16,6 +16,23 @@
       "message": "Thanks for reviewing!",
       "revId": "3f148686d2a686b5e4412ee803fb96abf1a42bb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25bacacc_9e9934e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19204
+      },
+      "writtenOn": "2022-09-01T18:19:05Z",
+      "side": 1,
+      "message": "I cannot CQ+2 since I am not a committer, can someone help?",
+      "revId": "3f148686d2a686b5e4412ee803fb96abf1a42bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
