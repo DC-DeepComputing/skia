@@ -1223,7 +1223,7 @@ public:
                   SkPaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer) const override {
         RuntimeShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                       {fEffect, this->getLocalMatrix(), fUniforms});
+                                       {fEffect, fUniforms});
 
         add_children_to_key(fChildren, keyContext, builder, gatherer);
 
