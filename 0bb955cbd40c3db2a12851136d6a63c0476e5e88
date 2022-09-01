@@ -39,6 +39,30 @@
       },
       "revId": "0bb955cbd40c3db2a12851136d6a63c0476e5e88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f17b327_fe4e538d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-01T15:07:28Z",
+      "side": 1,
+      "message": "Oops, I fixed that in the wrong CL. I had meant it to use uint32_t and then uses the same n-data value that is used for uniform indices.\n\nI had thought about using 0 as the \"no-data\" value but that made it harder to consolidate all of the index tracking across other types (in a follow up follow up) that don\u0027t have convenient no-data representations. In those cases, I couldn\u0027t put a dummy value in index 0 and the calling code handles returning a no-data value before trying to insert into the cache.",
+      "parentUuid": "b4518879_1234423d",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 11
+      },
+      "revId": "0bb955cbd40c3db2a12851136d6a63c0476e5e88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
