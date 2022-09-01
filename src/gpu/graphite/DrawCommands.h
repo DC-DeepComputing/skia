@@ -147,6 +147,13 @@ public:
                                            this->copy(textureIndices, numTexSamplers),
                                            this->copy(samplerIndices, numTexSamplers));
     }
+    std::pair<int*, int*>
+    bindDeferredTexturesAndSamplers(int numTexSamplers) {
+        int* textureIndices = fAlloc.makeArrayDefault<int>(numTexSamplers);
+        int* samplerIndices = fAlloc.makeArrayDefault<int>(numTexSamplers);
+        this->add<BindTexturesAndSamplers>(numTexSamplers, textureIndices, samplerIndices);
+        return {textureIndices, samplerIndices};
+    }
 
     void setViewport(const SkRect& viewport,
                      float minDepth = 0,
@@ -224,4 +231,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_DrawPassCommands_DEFINED
-
