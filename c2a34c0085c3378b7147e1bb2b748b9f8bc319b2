@@ -16,6 +16,23 @@
       "message": "I think this is ready for review now.",
       "revId": "c2a34c0085c3378b7147e1bb2b748b9f8bc319b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c0b0100_d287787d",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 3046,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-01T14:34:23Z",
+      "side": 1,
+      "message": "Which subclass of SkScalerContext does this?\n\nEven if they do, this returns the maximum of the glyphs that don\u0027t have a 0 size. If some glyphs are smaller and work and others are larger and get 0s then they won\u0027t be considered?\n\n\nCurrently SkGlyph only supports int16 top and left with uint16 width and height. If these limits are exceeded we do currently zero the metrics (it looks like all implementations now do this). So the max bounds should be more like (-32767, -32767, 65535, 65535), or something like that. If this is what\u0027s actually happening, maybe we need some kind of error code out of SkScalerContext::makeGlyph (maybe we could use a bit from SkGlyph::fScalerContextBits to indicate that the metrics are zero because they don\u0027t fit)? This would also allow to tell the difference between space glyphs that draw nothing for real and oversized glyphs that won\u0027t fit in SkGlyph.\n\nIf there\u0027s something else that\u0027s causing the metrics to get zero\u0027ed (like the underlying library has limits) then we should know about that too and try to work around that (like the SkScalerContext subclass should get the largest size and scale up, we already have the mechanism in place in all of them to do that anyway).",
+      "revId": "c2a34c0085c3378b7147e1bb2b748b9f8bc319b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
