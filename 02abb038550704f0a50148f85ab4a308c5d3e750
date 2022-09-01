@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "653c0801_4d7d1b79",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-01T15:53:34Z",
+      "side": 1,
+      "message": "I guess these are are disjoint, because there\u0027s no idea of a sampled, multi-sampled texture? (The MS thing only applies to attachments, which aren\u0027t sampled)?",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 20
+      },
+      "revId": "02abb038550704f0a50148f85ab4a308c5d3e750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
