@@ -256,7 +256,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     if (is_constant) {
         SkColor4f constantColor;
         SkRasterPipeline_MemoryCtx constantColorPtr = { &constantColor, 0 };
-        colorPipeline->append_gamut_clamp_if_normalized(dst.info());
+        colorPipeline->append_gamut_clamp_if_normalized(dst.info());  // remove
         colorPipeline->append(SkRasterPipeline::store_f32, &constantColorPtr);
         colorPipeline->run(0,0,1,1);
         colorPipeline->reset();
@@ -277,7 +277,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
         // Not all blits can memset, so we need to keep colorPipeline too.
         SkRasterPipeline_<256> p;
         p.extend(*colorPipeline);
-        p.append_gamut_clamp_if_normalized(dst.info());
+        p.append_gamut_clamp_if_normalized(dst.info());  // remove
         blitter->fDstPtr = SkRasterPipeline_MemoryCtx{&blitter->fMemsetColor, 0};
         blitter->append_store(&p);
         p.run(0,0,1,1);
@@ -362,7 +362,7 @@ void SkRasterPipelineBlitter::blitRectWithTrace(int x, int y, int w, int h, bool
     if (!fBlitRect) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());
+        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
         if (fBlend == SkBlendMode::kSrcOver
                 && (fDst.info().colorType() == kRGBA_8888_SkColorType ||
                     fDst.info().colorType() == kBGRA_8888_SkColorType)
@@ -396,7 +396,7 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
     if (!fBlitAntiH) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());
+        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_1_float, &fCurrentCoverage);
             this->append_clip_scale(&p);
@@ -505,7 +505,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     if (mask.fFormat == SkMask::kA8_Format && !fBlitMaskA8) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());
+        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_u8, &fMaskPtr);
             this->append_clip_scale(&p);
@@ -523,7 +523,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     if (mask.fFormat == SkMask::kLCD16_Format && !fBlitMaskLCD16) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());
+        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/true)) {
             // Somewhat unusually, scale_565 needs dst loaded first.
             this->append_load_dst(&p);
@@ -545,7 +545,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
         // This bit is where we differ from kA8_Format:
         p.append(SkRasterPipeline::emboss, &fEmbossCtx);
         // Now onward just as kA8.
-        p.append_gamut_clamp_if_normalized(fDst.info());
+        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_u8, &fMaskPtr);
             this->append_clip_scale(&p);
