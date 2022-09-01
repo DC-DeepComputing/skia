@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6b29328_0e040869",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-01T16:15:52Z",
+      "side": 1,
+      "message": "Ah. That is a good point. Should we go glyph by glyph? So, the largest multiple between a . and an M is the resolution of the M square. So like 2K?\n\nWe could add a bit to the digest to indicate overflow, and pin the dimensions to 65536. All this logic is to allow the matrix to be preconditioned below so that the glyph can fit in the atlas. But this would be a later CL. \n\nThe interesting thing is that I can only generate the 0\u0027s using perspective. With just scaling (pressing up arrow in viewer), the clipping code mistakenly kicks in before we get to really large glyphs.",
+      "parentUuid": "da5785fc_3c2aae22",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "625f8088_bcde74ab",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 24
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-01T15:57:20Z",
       "side": 1,
       "message": "Update this comment as well?",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b86637a_ccc4052f",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3067,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-01T16:15:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "625f8088_bcde74ab",
       "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
