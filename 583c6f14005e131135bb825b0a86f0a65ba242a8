@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36141e71_8ca2e001",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-01T19:29:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94d4d7d5_48f0d498",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "625f8088_bcde74ab",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "Not done yet?",
       "parentUuid": "7b86637a_ccc4052f",
+      "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9af7bf_7de449ea",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3067,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-01T19:29:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dca6200_3dea1f37",
       "revId": "583c6f14005e131135bb825b0a86f0a65ba242a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
