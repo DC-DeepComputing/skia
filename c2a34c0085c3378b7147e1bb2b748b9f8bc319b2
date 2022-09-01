@@ -33,6 +33,24 @@
       "message": "Which subclass of SkScalerContext does this?\n\nEven if they do, this returns the maximum of the glyphs that don\u0027t have a 0 size. If some glyphs are smaller and work and others are larger and get 0s then they won\u0027t be considered?\n\n\nCurrently SkGlyph only supports int16 top and left with uint16 width and height. If these limits are exceeded we do currently zero the metrics (it looks like all implementations now do this). So the max bounds should be more like (-32767, -32767, 65535, 65535), or something like that. If this is what\u0027s actually happening, maybe we need some kind of error code out of SkScalerContext::makeGlyph (maybe we could use a bit from SkGlyph::fScalerContextBits to indicate that the metrics are zero because they don\u0027t fit)? This would also allow to tell the difference between space glyphs that draw nothing for real and oversized glyphs that won\u0027t fit in SkGlyph.\n\nIf there\u0027s something else that\u0027s causing the metrics to get zero\u0027ed (like the underlying library has limits) then we should know about that too and try to work around that (like the SkScalerContext subclass should get the largest size and scale up, we already have the mechanism in place in all of them to do that anyway).",
       "revId": "c2a34c0085c3378b7147e1bb2b748b9f8bc319b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6571813_8f084d7c",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 3046,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-01T15:25:38Z",
+      "side": 1,
+      "message": "When creating SubRuns there are no empty glyphs; those are dropped much higher in the stack. So higher in the drawing stack this can happen if the size is extremely large, but this would result in empty SubRuns.  \n\nI think you are correct about the size max being 65536. I will adjust the code accordingly to use 65536 instead.\n\nI performed the following experiment. I changed scaledemoji to only have the 340 size blob. Then in viewer, use real perspective, and make an extreme keystone. Start pressing the up arrow. I have instrumented to print the matrix, the font size, and the font size * scaleX at 3053. At 3049, I set a flag to true. At 3066 I print the fully precondition matrix, and break if the flat is set.\n\nHere is the output:\n\nBefore precondition:\n[107.6516   0.0000   0.0000][  0.0000 107.6516   0.0000][  0.0000   0.0000   1.0000]\nFont size: 340 Estimate: 36601.5\nAfter precondition:\n[  0.9228   0.0000   0.0000][  0.0000   0.9228   0.0000][  0.0000   0.0000   1.0000]\nBefore precondition:\n[180.2092   0.0000   0.0000][  0.0000 180.2092   0.0000][  0.0000   0.0000   1.0000]\nFont size: 340 Estimate: 61271.1\nIt\u0027s happening\nAfter precondition:\n[  0.9252   0.0000   0.0000][  0.0000   0.9252   0.0000][  0.0000   0.0000   1.0000]\n../../src/text/gpu/SubRunContainer.cpp:3085: fatal error: \"Oh no\n\"\nfish: Job 1, \u0027./out/Debug/viewer --backend...\u0027 terminated by signal SIGILL (Illegal instruction)\n\n\nSo, we get a zero from the max dimension when font size * scaleX (340 * 180.2092) is 61271.1 which is very close to 65536.",
+      "parentUuid": "8c0b0100_d287787d",
+      "revId": "c2a34c0085c3378b7147e1bb2b748b9f8bc319b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
