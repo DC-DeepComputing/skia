@@ -497,14 +497,9 @@ public:
                fTypeKind == TypeKind::kBlender;
     }
 
-    virtual bool isMultisampled() const {
-        SkASSERT(false);
-        return false;
-    }
-
-    virtual bool isSampled() const {
-        SkASSERT(false);
-        return false;
+    virtual TextureAccess textureAccess() const {
+        SkDEBUGFAIL("not a texture type");
+        return TextureAccess::kNone;
     }
 
     bool hasPrecision() const {

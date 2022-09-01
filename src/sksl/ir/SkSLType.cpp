@@ -117,6 +117,10 @@ public:
         return fTargetType.isInterfaceBlock();
     }
 
+    TextureAccess textureAccess() const override {
+        return fTargetType.textureAccess();
+    }
+
     SkSpan<const Type* const> coercibleTypes() const override {
         return fTargetType.coercibleTypes();
     }
@@ -385,12 +389,8 @@ public:
         return fIsArrayed;
     }
 
-    bool isMultisampled() const override {
-        return fTextureAccess == TextureAccess::kMultisample;
-    }
-
-    bool isSampled() const override {
-        return fTextureAccess == TextureAccess::kSample;
+    TextureAccess textureAccess() const override {
+        return fTextureAccess;
     }
 
 private:
@@ -426,12 +426,8 @@ public:
         return fTextureType.isArrayedTexture();
     }
 
-    bool isMultisampled() const override {
-        return fTextureType.isMultisampled();
-    }
-
-    bool isSampled() const override {
-        return fTextureType.isSampled();
+    TextureAccess textureAccess() const override {
+        return fTextureType.textureAccess();
     }
 
 private:
