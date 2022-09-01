@@ -16,6 +16,52 @@
       "message": "John:\n\nI had to do some Bazel build refactoring so that I could pull a subset of various file groups into sksl.gni. I inserted the string \"skslc\" into the new group names, but I\u0027m hoping you can help suggest a better name.\n\nI\u0027ll get another reviewer for this CL - just wanted your input on these group names.",
       "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934ea4cf_783eb28f",
+        "filename": "src/gpu/ganesh/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T14:27:26Z",
+      "side": 1,
+      "message": "Should we bring along the header too?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bce4e21_5243c8c6",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T14:27:26Z",
+      "side": 1,
+      "message": "skslc uses these??",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 0
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
