@@ -22,6 +22,30 @@
       },
       "revId": "02abb038550704f0a50148f85ab4a308c5d3e750",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b5bba1_f7c85547",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T15:56:37Z",
+      "side": 1,
+      "message": "Right, I\u0027m just mapping from what we had into an enum. If we had originally had a \"isSampled\u003dtrue, isMultisampled\u003dtrue\" case, then we would have needed a new access enum (or to use a bitfield)",
+      "parentUuid": "653c0801_4d7d1b79",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 20
+      },
+      "revId": "02abb038550704f0a50148f85ab4a308c5d3e750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
