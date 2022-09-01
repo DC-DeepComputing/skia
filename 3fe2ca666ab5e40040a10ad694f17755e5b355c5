@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05234e98_ede3461a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-09-01T00:06:36Z",
+      "side": 1,
+      "message": "Greg, I have added few more labels. Can you PTAL.",
+      "revId": "3fe2ca666ab5e40040a10ad694f17755e5b355c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
