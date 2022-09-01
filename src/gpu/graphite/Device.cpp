@@ -957,21 +957,15 @@ void Device::drawSpecial(SkSpecialImage* special,
                          const SkPaint& paint) {
     SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
 
-    if (!special->isGraphiteBacked()) {
+    sk_sp<SkImage> img = special->asImage();
+    if (!img) {
         return;
     }
 
     SkRect src = SkRect::Make(special->subset());
     SkRect dst = SkRect::MakeWH(special->width(), special->height());
-    dst = localToDevice.mapRect(dst);
     SkMatrix srcToDst = SkMatrix::RectToRect(src, dst);
-
-    sk_sp<SkImage> img = sk_make_sp<Image>(special->uniqueID(),
-                                           special->textureProxyView(),
-                                           special->colorInfo());
-    if (!img) {
-        return;
-    }
+    SkASSERT(srcToDst.isTranslate());
 
     sk_sp<SkShader> imgShader = make_img_shader_for_paint(paint,
                                                           std::move(img),
@@ -988,7 +982,9 @@ void Device::drawSpecial(SkSpecialImage* special,
     paintWithShader.setShader(std::move(imgShader));
     paintWithShader.setPathEffect(nullptr);  // drawSpecial doesn't support path effects
 
-    this->drawRect(dst, paintWithShader);
+    this->drawGeometry(Transform(SkM44(localToDevice)), Geometry(Shape(dst)),
+                       paintWithShader, kFillStyle,
+                       DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
 }
 
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
