@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8814e5_0377d24c",
+        "filename": "include/gpu/graphite/vk/VulkanBackendContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-01T15:33:12Z",
+      "side": 1,
+      "message": "Typo",
+      "range": {
+        "startLine": 16,
+        "startChar": 74,
+        "endLine": 16,
+        "endChar": 80
+      },
+      "revId": "b5fb5ec7e2a5bb48fdcc6c69f6636a7a458e105b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "044f2272_5dcf95ba",
+        "filename": "include/gpu/graphite/vk/VulkanBackendContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-01T15:33:12Z",
+      "side": 1,
+      "message": "This was changed in MtlBackendContext to be \"The client will create this object and pass it into the Context::MakeMetal factory call when setting up Skia.\"\n\nDo we want to use that new phrasing instead or are we less sure if that assumption will pan out for Vulkan?",
+      "range": {
+        "startLine": 16,
+        "startChar": 82,
+        "endLine": 17,
+        "endChar": 80
+      },
+      "revId": "b5fb5ec7e2a5bb48fdcc6c69f6636a7a458e105b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
