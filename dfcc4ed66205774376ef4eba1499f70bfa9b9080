@@ -128,6 +128,30 @@
       },
       "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d17586a_e3ef3c2a",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T15:36:26Z",
+      "side": 1,
+      "message": "The name `SRCS_SKSLC_FILES` still seems off",
+      "parentUuid": "5035fc29_feabbefd",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 0
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
