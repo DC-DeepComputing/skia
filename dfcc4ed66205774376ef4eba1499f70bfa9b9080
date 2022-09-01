@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a01a392f_301ebb80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-01T13:03:56Z",
+      "side": 1,
+      "message": "John:\n\nI had to do some Bazel build refactoring so that I could pull a subset of various file groups into sksl.gni. I inserted the string \"skslc\" into the new group names, but I\u0027m hoping you can help suggest a better name.\n\nI\u0027ll get another reviewer for this CL - just wanted your input on these group names.",
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
