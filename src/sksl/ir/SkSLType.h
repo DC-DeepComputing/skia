@@ -118,6 +118,12 @@ public:
         kNonnumeric
     };
 
+    enum class TextureAccess : int8_t {
+        kNone,
+        kSample,
+        kMultisample
+    };
+
     Type(const Type& other) = delete;
 
     /** Creates an array type. `columns` may be kUnsizedArray. */
@@ -170,7 +176,7 @@ public:
     /** Create a texture type. */
     static std::unique_ptr<Type> MakeTextureType(const char* name, SpvDim_ dimensions,
                                                  bool isDepth, bool isArrayedTexture,
-                                                 bool isMultisampled, bool isSampled);
+                                                 TextureAccess textureAccess);
 
     /** Create a vector type. */
     static std::unique_ptr<Type> MakeVectorType(std::string_view name, const char* abbrev,
