@@ -140,6 +140,28 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/utils:srcs_skslc_srcs",
 			}}},
 	},
+	{GNI: "gn/utils.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "skia_utils_public",
+			Rules: []string{
+				"//include/utils:public_hdrs",
+				"//include/utils/mac:public_hdrs"}},
+		{Var: "skia_utils_sources",
+			Rules: []string{
+				"//src/utils:core_hdrs",
+				"//src/utils:core_skslc_hdrs",
+				"//src/utils:core_skslc_srcs",
+				"//src/utils:core_srcs",
+				"//src/utils:empty_files",
+				"//src/utils:json_hdrs",
+				"//src/utils:json_srcs",
+				"//src/utils:srcs_skslc_hdrs",
+				"//src/utils:srcs_skslc_srcs",
+				"//src/utils/mac:core_hdrs",
+				"//src/utils/mac:core_srcs",
+				"//src/utils/win:core_hdrs",
+				"//src/utils/win:core_srcs",
+			}}},
+	},
 }
 
 const (

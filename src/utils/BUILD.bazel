@@ -111,6 +111,15 @@ split_srcs_and_hdrs(
     files = SRCS_SKSLC_FILES,
 )
 
+# Not used for Bazel builds. This is for exporting to utils.gni:skia_utils_sources.
+filegroup(
+    name = "empty_files",
+    srcs = [
+        "SkThreadUtils_pthread.cpp",
+        "SkThreadUtils_win.cpp",
+    ],
+)
+
 filegroup(
     name = "srcs",
     srcs = [
