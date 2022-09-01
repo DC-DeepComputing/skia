@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d36ff0a9_d33f0b8f",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T17:09:43Z",
+      "side": 1,
+      "message": "Apparently we never used aliases with textures before, because the isSampled/isMultisampled accessors had been missed.",
+      "range": {
+        "startLine": 120,
+        "startChar": 18,
+        "endLine": 120,
+        "endChar": 31
+      },
+      "revId": "c5a247f72f6678ff4755fe185e721abf14b14b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
