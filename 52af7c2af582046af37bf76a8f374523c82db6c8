@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db557b81_03a3fc50",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-01T14:11:33Z",
+      "side": 1,
+      "message": "Can we lean on SkSpecialImage::asShader() here?",
+      "range": {
+        "startLine": 964,
+        "startChar": 4,
+        "endLine": 981,
+        "endChar": 69
+      },
+      "revId": "52af7c2af582046af37bf76a8f374523c82db6c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
