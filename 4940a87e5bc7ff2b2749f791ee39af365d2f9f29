@@ -105,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3295e0ad_668f0b1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-01T19:17:54Z",
+      "side": 1,
+      "message": "I\u0027ll hold off on C++ review until the Bazel stuff is worked out. But at a glance I don\u0027t see anything obviously off.",
+      "parentUuid": "d7666695_9d951aa0",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00630cd6_d6573c91",
