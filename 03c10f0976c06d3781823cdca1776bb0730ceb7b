@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048b3e80_cb629379",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-01T16:50:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c05cc88_9c85aa07",
+      "range": {
+        "startLine": 20,
+        "startChar": 61,
+        "endLine": 20,
+        "endChar": 67
+      },
+      "revId": "03c10f0976c06d3781823cdca1776bb0730ceb7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5daac219_4390b1c9",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66280637_7474185d",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-01T16:50:58Z",
+      "side": 1,
+      "message": "Yeah. When you use using with namespaces, it will only check identifiers in the current, normal namespace way or with exact matching of any using namespace. I moved Protected from skgpu::graphite to just skgpu in this change. So since we aren\u0027t inside any namespace for this test the compiler is looking for ::Protected and skgpu::graphite::Protected. With the added using we now also look for skgpu::Protected which it finds",
+      "parentUuid": "5daac219_4390b1c9",
+      "range": {
+        "startLine": 20,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "03c10f0976c06d3781823cdca1776bb0730ceb7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "791c0e92_cec237ab",
         "filename": "tools/gpu/vk/VkTestUtils.cpp",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2022-09-01T15:33:12Z",
       "side": 1,
       "message": "Did you mean to change the body of the other CreateVkBackendContext which takes in the new VulkanContext instead of the Gr one?",
+      "range": {
+        "startLine": 456,
+        "startChar": 28,
+        "endLine": 456,
+        "endChar": 52
+      },
+      "revId": "03c10f0976c06d3781823cdca1776bb0730ceb7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eabafd00_b8f069c8",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-01T16:50:58Z",
+      "side": 1,
+      "message": "Yes this is all intended. The new VulkanBackendContext will be our default, supported thing. So all the code for setting up the vulkan context thus is designed to fill out one of those structs. At this point the function that takes a GrVkBackendContext is just a wrapper that can translate the VulkanBackendContext to a GrVkBackendContext. Ideally, if we find spare cycles somewhere, I would love to update all our clients to just use VulkanBAckendContext even for Ganesh and delete GrVkBackendContext.",
+      "parentUuid": "791c0e92_cec237ab",
       "range": {
         "startLine": 456,
         "startChar": 28,
