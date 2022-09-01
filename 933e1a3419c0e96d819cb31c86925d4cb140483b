@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736a812c_395b6040",
+        "filename": "src/sksl/SkSLBuiltinTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T15:48:47Z",
+      "side": 1,
+      "message": "(Ever notice that these are always false?)",
+      "range": {
+        "startLine": 100,
+        "startChar": 43,
+        "endLine": 101,
+        "endChar": 70
+      },
+      "revId": "933e1a3419c0e96d819cb31c86925d4cb140483b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54603e09_c0aebaad",
+        "filename": "src/sksl/SkSLBuiltinTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T15:48:47Z",
+      "side": 1,
+      "message": "Wasn\u0027t sure about this one. Maybe kLoad instead of kNone?",
+      "range": {
+        "startLine": 123,
+        "startChar": 67,
+        "endLine": 123,
+        "endChar": 72
+      },
+      "revId": "933e1a3419c0e96d819cb31c86925d4cb140483b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
