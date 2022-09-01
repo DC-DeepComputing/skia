@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d04122c2_c39bf4f3",
+        "filename": "src/gpu/ganesh/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-01T15:16:40Z",
+      "side": 1,
+      "message": "I added it to the file group (technically a new group: core_skslc_hdrs). I did this elsewhere to keep the headers beside the sources in the Bazel files.\n\nNote: GrMemoryPool.h was not listed skslc_deps, nor were any other headers.",
+      "parentUuid": "934ea4cf_783eb28f",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bce4e21_5243c8c6",
@@ -72,6 +96,30 @@
       "writtenOn": "2022-09-01T14:27:26Z",
       "side": 1,
       "message": "skslc uses these??",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 0
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5035fc29_feabbefd",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-01T15:16:40Z",
+      "side": 1,
+      "message": "Thanks for catching that. Bad comment - fixed.",
+      "parentUuid": "3bce4e21_5243c8c6",
       "range": {
         "startLine": 104,
         "startChar": 0,
