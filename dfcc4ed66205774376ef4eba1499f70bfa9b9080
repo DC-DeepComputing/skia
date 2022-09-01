@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c553cdd1_b45c632c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-01T14:43:31Z",
+      "side": 1,
+      "message": "These group names all SGTM.",
+      "parentUuid": "a01a392f_301ebb80",
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "934ea4cf_783eb28f",
