@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "488dd4cb_00574708",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-01T20:21:53Z",
+      "side": 1,
+      "message": "Ah, yep, Gotcha",
+      "parentUuid": "66280637_7474185d",
+      "range": {
+        "startLine": 20,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "03c10f0976c06d3781823cdca1776bb0730ceb7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "791c0e92_cec237ab",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Yes this is all intended. The new VulkanBackendContext will be our default, supported thing. So all the code for setting up the vulkan context thus is designed to fill out one of those structs. At this point the function that takes a GrVkBackendContext is just a wrapper that can translate the VulkanBackendContext to a GrVkBackendContext. Ideally, if we find spare cycles somewhere, I would love to update all our clients to just use VulkanBAckendContext even for Ganesh and delete GrVkBackendContext.",
       "parentUuid": "791c0e92_cec237ab",
+      "range": {
+        "startLine": 456,
+        "startChar": 28,
+        "endLine": 456,
+        "endChar": 52
+      },
+      "revId": "03c10f0976c06d3781823cdca1776bb0730ceb7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70887dc8_94c21101",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-01T20:21:53Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "eabafd00_b8f069c8",
       "range": {
         "startLine": 456,
         "startChar": 28,
