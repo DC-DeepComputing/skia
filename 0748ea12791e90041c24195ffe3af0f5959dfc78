@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1583ebdf_15f660cd",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-02T15:08:51Z",
+      "side": 1,
+      "message": "Seems fine to me.",
+      "parentUuid": "a4ffc0cc_c2c34765",
+      "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8e11d96_020b6541",
@@ -31,6 +49,47 @@
       "writtenOn": "2022-09-02T14:43:43Z",
       "side": 1,
       "message": "It\u0027s less than trivial, but if you still want to be able to group files within a list (like to preserve mac/win sections) let me know. I do like that separation, but decided it wasn\u0027t worth the effort to preserve them.",
+      "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6eb0565_9fc3b600",
+        "filename": "gn/utils.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-02T15:08:51Z",
+      "side": 1,
+      "message": "If we want actual separation, we should do it at the list level. We could always add lists together for clients if we wanted.",
+      "parentUuid": "b8e11d96_020b6541",
+      "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94ae05db_5c28baac",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-02T15:08:51Z",
+      "side": 1,
+      "message": "Let\u0027s actually delete this from the Chrome and PDFium builds. I\u0027ll send a CL.",
+      "range": {
+        "startLine": 118,
+        "startChar": 9,
+        "endLine": 118,
+        "endChar": 30
+      },
       "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
