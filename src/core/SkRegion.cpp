@@ -13,7 +13,6 @@
 #include "src/core/SkRegionPriv.h"
 #include "src/core/SkSafeMath.h"
 
-#include <algorithm>
 #include <utility>
 
 /* Region Layout
