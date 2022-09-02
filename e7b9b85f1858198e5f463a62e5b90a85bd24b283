@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dd5ebbd_350a6879",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-02T06:29:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddea0246_4985a2b2",
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efd3e425_7b26acbd",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-08-30T17:25:24Z",
       "side": 1,
       "message": "This comment needs more details. e.g. What formats does this apply to?",
+      "range": {
+        "startLine": 338,
+        "startChar": 11,
+        "endLine": 338,
+        "endChar": 32
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d094bed1_3e01cb7e",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-02T06:29:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efd3e425_7b26acbd",
       "range": {
         "startLine": 338,
         "startChar": 11,
@@ -104,6 +146,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92fe4542_6ed3d2d1",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-02T06:29:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c975380_efff1641",
+      "range": {
+        "startLine": 343,
+        "startChar": 8,
+        "endLine": 343,
+        "endChar": 11
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0acc40d4_ece80218",
@@ -117,6 +183,30 @@
       "writtenOn": "2022-08-30T17:25:24Z",
       "side": 1,
       "message": "This needs to be added to `src/codec/SkStubHeifDecoderAPI.h`.",
+      "range": {
+        "startLine": 392,
+        "startChar": 18,
+        "endLine": 392,
+        "endChar": 36
+      },
+      "revId": "e7b9b85f1858198e5f463a62e5b90a85bd24b283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f18e7fe_3933d094",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-02T06:29:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0acc40d4_ece80218",
       "range": {
         "startLine": 392,
         "startChar": 18,
