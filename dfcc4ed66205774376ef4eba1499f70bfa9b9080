@@ -152,6 +152,30 @@
       },
       "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a46c663c_c7b4d263",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-02T12:59:17Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "3d17586a_e3ef3c2a",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 0
+      },
+      "revId": "dfcc4ed66205774376ef4eba1499f70bfa9b9080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
