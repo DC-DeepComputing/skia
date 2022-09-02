@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ffc0cc_c2c34765",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-02T14:43:43Z",
+      "side": 1,
+      "message": "Noticed a file change position in utils.gni which was sorted case insensitive. I decided to modify the tool in this CL, which only impacted core.gni. If you want I can pull this change into a different CL.",
+      "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8e11d96_020b6541",
+        "filename": "gn/utils.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-02T14:43:43Z",
+      "side": 1,
+      "message": "It\u0027s less than trivial, but if you still want to be able to group files within a list (like to preserve mac/win sections) let me know. I do like that separation, but decided it wasn\u0027t worth the effort to preserve them.",
+      "revId": "0748ea12791e90041c24195ffe3af0f5959dfc78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
