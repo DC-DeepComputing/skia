@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061e9c8c_2b5e8bea",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-02T13:38:17Z",
+      "side": 1,
+      "message": "I\u0027d be OK with moving this stuff out to general-case APIs, if we think we might have a need for it. We\u0027d need to add a distinct type name to distinguish between `texture2d\u003chalf, access::sample\u003e` and `texture2d\u003chalf, access::read_write\u003e` but that might be less confusing overall in the long run anyway. Currently it silently changes based on ProgramKind, and someone might see that as a footgun anyway.",
+      "parentUuid": "4543a6a3_e4290424",
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e47e09a0_d525d3c8",
