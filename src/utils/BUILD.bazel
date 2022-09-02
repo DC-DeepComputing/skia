@@ -101,14 +101,23 @@ selects.config_setting_group(
 )
 
 # In separate group to avoid exporting to a *.gni file.
-SRCS_SKSLC_FILES = [
+SKSL_FILES = [
     "SkShaderUtils.cpp",
     "SkShaderUtils.h",
 ]
 
 split_srcs_and_hdrs(
-    name = "srcs_skslc",
-    files = SRCS_SKSLC_FILES,
+    name = "sksl",
+    files = SKSL_FILES,
+)
+
+# Not used for Bazel builds. This is for exporting to utils.gni:skia_utils_sources.
+filegroup(
+    name = "empty_files",
+    srcs = [
+        "SkThreadUtils_pthread.cpp",
+        "SkThreadUtils_win.cpp",
+    ],
 )
 
 filegroup(
@@ -117,7 +126,7 @@ filegroup(
         ":core_srcs",
         ":core_skslc_srcs",
     ] + select({
-        "//src/sksl:needs_sksl": [":srcs_skslc_srcs"],
+        "//src/sksl:needs_sksl": [":sksl_srcs"],
         "//conditions:default": [],
     }) + select({
         ":needs_json": [":json_srcs"],
@@ -132,7 +141,7 @@ filegroup(
         ":core_hdrs",
         ":core_skslc_hdrs",
     ] + select({
-        "//src/sksl:needs_sksl": [":srcs_skslc_hdrs"],
+        "//src/sksl:needs_sksl": [":sksl_hdrs"],
         "//conditions:default": [],
     }) + select({
         ":needs_json": [":json_hdrs"],
