@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be378c87_2f95ce69",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T19:44:59Z",
+      "side": 1,
+      "message": "Aren\u0027t we missing a bunch of fSamplingOptions fields here ?\nIf we\u0027re guaranteed to not be using cubic or anisotropic sampling, can we assert that ?",
+      "revId": "0216bdce14dfcf200afe87d842e62bb10e7e0f6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
