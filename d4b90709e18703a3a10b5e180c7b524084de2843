@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "884c4d5f_12686ff3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "This is taking some time so I\u0027m pushing out some intermediate comments",
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1d6b98_f2c8b421",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "This is in the header already",
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c8ac9a_37375095",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "Can\u0027t we do this in the header?",
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46351f6_aa77327e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "Can we use \u0027*\u0027 here since \u0027next\u0027 will be changed ?",
+      "range": {
+        "startLine": 260,
+        "startChar": 49,
+        "endLine": 260,
+        "endChar": 50
+      },
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a839f029_3d58f599",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "could ?",
+      "range": {
+        "startLine": 261,
+        "startChar": 23,
+        "endLine": 261,
+        "endChar": 28
+      },
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b931587_e50b1ebc",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "What\u0027s going on here ?",
+      "range": {
+        "startLine": 587,
+        "startChar": 51,
+        "endLine": 587,
+        "endChar": 55
+      },
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad67e08_0d8566bd",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "??",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 625,
+        "endChar": 54
+      },
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45c87a5e_72c9ddf8",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T14:17:34Z",
+      "side": 1,
+      "message": "be the ?\nhave the ?",
+      "range": {
+        "startLine": 636,
+        "startChar": 31,
+        "endLine": 636,
+        "endChar": 34
+      },
+      "revId": "d4b90709e18703a3a10b5e180c7b524084de2843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
