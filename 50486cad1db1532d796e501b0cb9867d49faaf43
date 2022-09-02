@@ -33,6 +33,24 @@
       "message": "Do these invalid entries need to be here? (They\u0027d be important if there were functions with signatures that involved multiple generic texture types, right? But none of those exist?)",
       "revId": "50486cad1db1532d796e501b0cb9867d49faaf43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996d9708_75064e95",
+        "filename": "src/sksl/SkSLBuiltinTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-02T18:00:39Z",
+      "side": 1,
+      "message": "Right, if we had a function with `$genTexture2D x, $readableTexture2D y` it would blow up without these. \nTechnically we could eliminate them and nothing would break today, but it\u0027s subtle enough that I think they\u0027re worth having.\n(Broader issue--we don\u0027t support functions taking more than one \"class\" of generic type, e.g. you can\u0027t use both $genType and $mat in one function. But again, that hasn\u0027t come up in practice so we get away with it.)",
+      "parentUuid": "a948146a_ef5f040c",
+      "revId": "50486cad1db1532d796e501b0cb9867d49faaf43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
