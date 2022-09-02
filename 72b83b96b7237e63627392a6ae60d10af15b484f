@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17609e28_611a3a47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8255
+      },
+      "writtenOn": "2022-09-02T15:09:24Z",
+      "side": 1,
+      "message": "Hmmm, it seems that my Chromium repo permissions don\u0027t extend to Skia - so I can\u0027t vote for review... but I\u0027d +2 if I could 😊",
+      "revId": "72b83b96b7237e63627392a6ae60d10af15b484f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
