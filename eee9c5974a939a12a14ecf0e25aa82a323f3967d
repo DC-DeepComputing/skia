@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "146573ef_9805d84b",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-02T13:25:51Z",
+      "side": 1,
+      "message": "That\u0027s right, but we don\u0027t (currently) have any use case for that, do we?\nThe read and write APIs are declared in sksl_compute.",
+      "parentUuid": "da2984ea_17ed54cc",
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e47e09a0_d525d3c8",
         "filename": "src/sksl/ir/SkSLType.h",
         "patchSetId": 3
