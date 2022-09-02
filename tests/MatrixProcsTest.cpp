@@ -76,6 +76,43 @@ DEF_TEST(MatrixProcs_pack_clamp, r) {
     }
 }
 
+DEF_TEST(MatrixProcs_pack_clamp_out_of_range, r) {
+    // See https://crbug.com/1357122
+    struct TestCase {
+        std::string name;
+        SkFixed input;
+        unsigned max;
+        uint32_t expectedOutput;
+    };
+    TestCase tests[] = {
+        {"16000.42 => {0xff, 0x6, 0xff}", SkFloatToFixed(16000.42f), 255, 0x3fd80ff},
+        {"17000.42 => {0xff, 0x6, 0xff}", SkFloatToFixed(17000.42f), 255, 0x3fd80ff},
+        {"18000.42 => {0xff, 0x6, 0xff}", SkFloatToFixed(18000.42f), 255, 0x3fd80ff},
+
+        // This is a sensible result
+        {"16000.42 => {0x3e80, 0x6, 0x3e81}", SkFloatToFixed(16000.42f), (2 << 14) - 1, 0xfa01be81},
+        // These are bigger than 2^14, which is outside the range of our packed integer.
+        // We should not crash or assert in this case.
+        {"17000.42 => {0x268, 0x7, 0x269}", SkFloatToFixed(17000.42f), (2 << 14) - 1, 0x9a18269},
+        {"18000.42 => {0x650, 0x7, 0x651}", SkFloatToFixed(18000.42f), (2 << 14) - 1, 0x19418651},
+        {"32767.90 => {0x3fff,0xf, 0x0}",   SkFloatToFixed(32767.90f), (2 << 14) - 1, 0xffffc000},
+    };
+
+    constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
+
+    for (size_t i = 0; i < NUM_TESTS; i++) {
+        TestCase tc = tests[i];
+        uint32_t rv = sktests::pack_clamp(tc.input, tc.max);
+        uint32_t exp = tc.expectedOutput;
+
+        REPORTER_ASSERT(r, rv == tc.expectedOutput,
+                        "%s | %x != %x | {%x, %x, %x} != {%x, %x, %x}\n",
+                        tc.name.c_str(), rv, exp,
+                        highBits(rv), middleBits(rv), lowBits(rv),
+                        highBits(exp), middleBits(exp), lowBits(exp));
+    }
+}
+
 DEF_TEST(MatrixProcs_pack_repeat, r) {
     struct TestCase {
         std::string name;
