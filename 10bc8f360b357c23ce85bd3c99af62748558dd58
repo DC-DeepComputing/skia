@@ -51,6 +51,29 @@
       "parentUuid": "134a68ad_c52af57d",
       "revId": "10bc8f360b357c23ce85bd3c99af62748558dd58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "634757fc_b56923cf",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-02T18:51:21Z",
+      "side": 1,
+      "message": "\u003e\u003d ?\n\nfReserve \u003d\u003d kMaxCount looks like a valid reserve",
+      "range": {
+        "startLine": 356,
+        "startChar": 34,
+        "endLine": 356,
+        "endChar": 35
+      },
+      "revId": "10bc8f360b357c23ce85bd3c99af62748558dd58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
