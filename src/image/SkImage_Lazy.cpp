@@ -584,10 +584,58 @@ void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const
 #endif // SK_SUPPORT_GPU
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+
+namespace {
+
+SkColorType get_fallback_colortype(const skgpu::graphite::Caps* caps,
+                                   const SkImage* img,
+                                   skgpu::graphite::Mipmapped mipmapped) {
+    using namespace skgpu::graphite;
+
+    SkColorType ct = img->colorType();
+
+    int mipLevelCount = (mipmapped == Mipmapped::kYes) ?
+                        SkMipmap::ComputeLevelCount(img->width(), img->height()) + 1 : 1;
+
+    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipLevelCount, Protected::kNo,
+                                                          Renderable::kNo);
+    if (!textureInfo.isValid()) {
+        ct = kRGBA_8888_SkColorType;
+        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipLevelCount, Protected::kNo,
+                                                         Renderable::kNo);
+    }
+    SkASSERT(textureInfo.isValid());
+    return ct;
+}
+
+} // anonymous namespace
+
 std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Lazy::onAsView(
-        skgpu::graphite::Recorder*,
-        skgpu::graphite::Mipmapped) const {
-    SKGPU_LOG_W("Conversion of Lazy images to Graphite-backed not yet implemented");
+        skgpu::graphite::Recorder* recorder,
+        skgpu::graphite::Mipmapped mipmapped) const {
+    using namespace skgpu::graphite;
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkColorType ct = get_fallback_colortype(caps, this, mipmapped);
+
+    // 2. Ask the generator to natively create one.
+    {
+        ScopedGenerator generator(fSharedGenerator);
+        if (auto view = generator->generateTexture(recorder,
+                                                   this->imageInfo(),
+                                                   {0,0},
+                                                   mipmapped,
+                                                   texGenPolicy)) {
+            installKey(view);
+            return view;
+        }
+    }
+
+//    GrColorType ct = this->colorTypeOfLockTextureProxy(context->priv().caps());
+//    return {this->lockTextureProxyView(context, policy, mipmapped), ct};
     return {};
 }
 #endif
