@@ -326,6 +326,7 @@ void SkRasterPipelineBlitter::append_store(SkRasterPipeline* p) const {
     if (fDst.info().alphaType() == kUnpremul_SkAlphaType) {
         p->append(SkRasterPipeline::unpremul);
     }
+    p->append_01_clamp_if_normalized(fDst.info());
     p->append_store(fDst.info().colorType(), &fDstPtr);
 }
 
@@ -362,7 +363,7 @@ void SkRasterPipelineBlitter::blitRectWithTrace(int x, int y, int w, int h, bool
     if (!fBlitRect) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
+        p.append_01_clamp_if_normalized(fDst.info());  // 01
         if (fBlend == SkBlendMode::kSrcOver
                 && (fDst.info().colorType() == kRGBA_8888_SkColorType ||
                     fDst.info().colorType() == kBGRA_8888_SkColorType)
@@ -396,7 +397,7 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
     if (!fBlitAntiH) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
+        p.append_01_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_1_float, &fCurrentCoverage);
             this->append_clip_scale(&p);
@@ -505,7 +506,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     if (mask.fFormat == SkMask::kA8_Format && !fBlitMaskA8) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
+        p.append_01_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_u8, &fMaskPtr);
             this->append_clip_scale(&p);
@@ -523,7 +524,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     if (mask.fFormat == SkMask::kLCD16_Format && !fBlitMaskLCD16) {
         SkRasterPipeline p(fAlloc);
         p.extend(fColorPipeline);
-        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
+        p.append_01_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/true)) {
             // Somewhat unusually, scale_565 needs dst loaded first.
             this->append_load_dst(&p);
@@ -545,7 +546,7 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
         // This bit is where we differ from kA8_Format:
         p.append(SkRasterPipeline::emboss, &fEmbossCtx);
         // Now onward just as kA8.
-        p.append_gamut_clamp_if_normalized(fDst.info());  // 01
+        p.append_01_clamp_if_normalized(fDst.info());  // 01
         if (SkBlendMode_ShouldPreScaleCoverage(fBlend, /*rgb_coverage=*/false)) {
             p.append(SkRasterPipeline::scale_u8, &fMaskPtr);
             this->append_clip_scale(&p);
