@@ -133,6 +133,8 @@ skia_graphite_sources = [
   "$_src/geom/SubRunData.h",
   "$_src/geom/Transform.cpp",
   "$_src/geom/Transform_graphite.h",
+  "$_src/render/AnalyticRectRenderStep.cpp",
+  "$_src/render/AnalyticRectRenderStep.h",
   "$_src/render/BitmapTextRenderStep.cpp",
   "$_src/render/BitmapTextRenderStep.h",
   "$_src/render/CommonDepthStencilSettings.h",
