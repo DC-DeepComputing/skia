@@ -28,6 +28,14 @@ class SkPicture;
 
 enum class GrImageTexGenPolicy : int;
 
+#if SK_GRAPHITE_ENABLED
+namespace skgpu::graphite {
+    enum class Mipmapped : bool;
+    class Recorder;
+    class TextureProxyView;
+}
+#endif
+
 class SK_API SkImageGenerator {
 public:
     /**
@@ -151,6 +159,13 @@ public:
 
 #endif
 
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView generateTexture(skgpu::graphite::Recorder*,
+                                                      const SkImageInfo&,
+                                                      const SkIPoint& origin,
+                                                      skgpu::graphite::Mipmapped);
+#endif
+
     /**
      *  If the default image decoder system can interpret the specified (encoded) data, then
      *  this returns a new ImageGenerator for it. Otherwise this returns NULL. Either way
@@ -187,7 +202,7 @@ protected:
     virtual bool onGetYUVAPlanes(const SkYUVAPixmaps&) { return false; }
 #if SK_SUPPORT_GPU
     // returns nullptr
-    virtual GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
+    virtual GrSurfaceProxyView onGenerateTexture1(GrRecordingContext*, const SkImageInfo&,
                                                  const SkIPoint&, GrMipmapped, GrImageTexGenPolicy);
 
     // Most internal SkImageGenerators produce textures and views that use kTopLeft_GrSurfaceOrigin.
@@ -195,6 +210,13 @@ protected:
     // GrAHardwareBufferImageGenerator) it should override this function to return the correct
     // origin.
     virtual GrSurfaceOrigin origin() const { return kTopLeft_GrSurfaceOrigin; }
+#endif
+
+#if SK_GRAPHITE_ENABLED
+    virtual skgpu::graphite::TextureProxyView onGenerateTexture(skgpu::graphite::Recorder*,
+                                                                const SkImageInfo&,
+                                                                const SkIPoint& origin,
+                                                                skgpu::graphite::Mipmapped);
 #endif
 
 private:

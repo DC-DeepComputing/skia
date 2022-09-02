@@ -54,17 +54,37 @@ GrSurfaceProxyView SkImageGenerator::generateTexture(GrRecordingContext* ctx,
     if (!SkIRect::MakeWH(fInfo.width(), fInfo.height()).contains(srcRect)) {
         return {};
     }
-    return this->onGenerateTexture(ctx, info, origin, mipmapped, texGenPolicy);
+    return this->onGenerateTexture1(ctx, info, origin, mipmapped, texGenPolicy);
 }
 
-GrSurfaceProxyView SkImageGenerator::onGenerateTexture(GrRecordingContext*,
+GrSurfaceProxyView SkImageGenerator::onGenerateTexture1(GrRecordingContext*,
                                                        const SkImageInfo&,
                                                        const SkIPoint&,
                                                        GrMipmapped,
                                                        GrImageTexGenPolicy) {
     return {};
 }
-#endif
+#endif // SK_SUPPORT_GPU
+
+#if SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/TextureProxyView.h"
+
+skgpu::graphite::TextureProxyView SkImageGenerator::generateTexture(
+        skgpu::graphite::Recorder* recorder,
+        const SkImageInfo& info,
+        const SkIPoint& origin,
+        skgpu::graphite::Mipmapped mipmapped) {
+    return this->onGenerateTexture(recorder, info, origin, mipmapped);
+}
+
+skgpu::graphite::TextureProxyView SkImageGenerator::onGenerateTexture(skgpu::graphite::Recorder*,
+                                                                      const SkImageInfo& info,
+                                                                      const SkIPoint& origin,
+                                                                      skgpu::graphite::Mipmapped) {
+    return {};
+}
+
+#endif // SK_GRAPHITE_ENABLED
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -87,7 +87,7 @@ void GrBackendTextureImageGenerator::ReleaseRefHelper_TextureReleaseProc(void* c
     refHelper->unref();
 }
 
-GrSurfaceProxyView GrBackendTextureImageGenerator::onGenerateTexture(
+GrSurfaceProxyView GrBackendTextureImageGenerator::onGenerateTexture1(
         GrRecordingContext* rContext,
         const SkImageInfo& info,
         const SkIPoint& origin,

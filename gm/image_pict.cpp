@@ -178,7 +178,7 @@ public:
         }
     }
 protected:
-    GrSurfaceProxyView onGenerateTexture(GrRecordingContext* rContext,
+    GrSurfaceProxyView onGenerateTexture1(GrRecordingContext* rContext,
                                          const SkImageInfo& info,
                                          const SkIPoint& origin,
                                          GrMipmapped mipmapped,
