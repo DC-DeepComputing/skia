@@ -51,8 +51,11 @@ public:
         return &fVertices[4*triStrip + 2*hasColors + hasTexCoords];
     }
 
-    // TODO: Add renderers for primitives (rec, rrect, etc.) and atlas draws. May need to add
-    // support for inverse filled strokes (need to check SVG spec if this is a real thing).
+    // Filled and stroked [r]rects and per-edge AA quadrilaterals
+    const Renderer* analyticRect() const { return &fPrimitiveRenderer; }
+
+    // TODO: May need to add support for inverse filled strokes (need to check SVG spec if this is a
+    // real thing).
 
     // Iterate over all available Renderers to combine with specified paint combinations when
     // pre-compiling pipelines.
@@ -87,6 +90,8 @@ private:
 
     Renderer fBitmapText[2]; // bool isA8
     Renderer fSDFText[2];    // bool isLCD
+
+    Renderer fPrimitiveRenderer;
 
     Renderer fVertices[kVerticesCount];
 
