@@ -289,6 +289,7 @@ public:
     void append_store   (SkColorType, const SkRasterPipeline_MemoryCtx*);
 
     void append_gamut_clamp_if_normalized(const SkImageInfo&);
+    void append_01_clamp_if_normalized(const SkImageInfo&);
 
     void append_transfer_function(const skcms_TransferFunction&);
 

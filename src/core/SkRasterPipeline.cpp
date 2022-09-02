@@ -365,6 +365,13 @@ void SkRasterPipeline::append_gamut_clamp_if_normalized(const SkImageInfo& info)
     }
 }
 
+void SkRasterPipeline::append_01_clamp_if_normalized(const SkImageInfo& info) {
+    if (SkColorTypeIsNormalized(info.colorType())) {
+        this->unchecked_append(SkRasterPipeline::clamp_0, nullptr);
+        this->unchecked_append(SkRasterPipeline::clamp_1, nullptr);
+    }
+}
+
 void SkRasterPipeline::append_stack_rewind() {
     if (!fRewindCtx) {
         fRewindCtx = fAlloc->make<SkRasterPipeline_RewindCtx>();
