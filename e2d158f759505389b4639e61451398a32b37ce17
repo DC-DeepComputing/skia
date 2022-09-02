@@ -16,6 +16,29 @@
       "message": "Hi Kevin. PTAL.",
       "revId": "e2d158f759505389b4639e61451398a32b37ce17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b365f00_1cedc2e4",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-02T15:01:55Z",
+      "side": 1,
+      "message": "[\":core_srcs\", \":core_skslc_srcs\", \":skpicture_srcs\"] + select({\n\nSame below.",
+      "range": {
+        "startLine": 456,
+        "startChar": 11,
+        "endLine": 456,
+        "endChar": 70
+      },
+      "revId": "e2d158f759505389b4639e61451398a32b37ce17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
