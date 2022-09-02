@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e81229_08912210",
+        "filename": "platform_tools/android/apps/skottie/skottielib/src/main/java/org/skia/skottie/SkottieRunner.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-09-02T20:10:24Z",
+      "side": 1,
+      "message": "I don\u0027t think you want the default cache size to be 256 bytes.  Why not just leave it be the Skia default unless it is explicitly overridden.",
+      "range": {
+        "startLine": 48,
+        "startChar": 56,
+        "endLine": 48,
+        "endChar": 59
+      },
+      "revId": "43166a45758db3dc8330059e7ae1cd7213ad3a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5269a3e_a2d6cccf",
+        "filename": "platform_tools/android/apps/skottie/skottielib/src/main/java/org/skia/skottie/SkottieRunner.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-09-02T20:10:24Z",
+      "side": 1,
+      "message": "instead of putting it here can you have a method that just acts as setter and a new JNI entry point that sets it directly on the existing instance?",
+      "range": {
+        "startLine": 56,
+        "startChar": 61,
+        "endLine": 56,
+        "endChar": 73
+      },
+      "revId": "43166a45758db3dc8330059e7ae1cd7213ad3a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95af0c52_3279c9b8",
+        "filename": "platform_tools/android/apps/skottie/skottielib/src/main/java/org/skia/skottie/SkottieView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-09-02T20:10:24Z",
+      "side": 1,
+      "message": "seems like this should be a static method so it is clear that it applies to all SkottieView instances.",
+      "revId": "43166a45758db3dc8330059e7ae1cd7213ad3a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a63b712_e85a65f7",
+        "filename": "platform_tools/android/apps/skottie/skottielib/src/main/res/values/attrs.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-09-02T20:10:24Z",
+      "side": 1,
+      "message": "I don\u0027t think this is per skottie view as it is a global setting for all views.  I would advocate that we make it something that the app sets after the view is inflated.",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 28
+      },
+      "revId": "43166a45758db3dc8330059e7ae1cd7213ad3a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
