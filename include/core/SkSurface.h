@@ -336,7 +336,8 @@ public:
                           of raster surface; width, or height, or both, may be zero
         @return           SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
+    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
+                                             SkBudgeted budgeted,
                                              const SkImageInfo& imageInfo) {
 #if SK_SUPPORT_GPU
         if (!imageInfo.width() || !imageInfo.height()) {
@@ -402,7 +403,8 @@ public:
     // the budget.
     static sk_sp<SkSurface> MakeGraphite(skgpu::graphite::Recorder*,
                                          const SkImageInfo& imageInfo,
-                                         const SkSurfaceProps* surfaceProps = nullptr);
+                                         const SkSurfaceProps* surfaceProps = nullptr,
+                                         bool shouldCreateWithMips = false);
 
 
     /**

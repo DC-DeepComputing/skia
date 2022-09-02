@@ -29,6 +29,13 @@ protected:
                                          GrMipmapped, GrImageTexGenPolicy) override;
 #endif
 
+#if SK_GRAPHITE_ENABLED
+    skgpu::graphite::TextureProxyView onGenerateTexture(skgpu::graphite::Recorder*,
+                                                        const SkImageInfo&,
+                                                        const SkIPoint& origin,
+                                                        skgpu::graphite::Mipmapped) override;
+#endif
+
 private:
     sk_sp<SkPicture>    fPicture;
     SkMatrix            fMatrix;
@@ -116,7 +123,7 @@ GrSurfaceProxyView SkPictureImageGenerator::onGenerateTexture(GrRecordingContext
 
     SkMatrix matrix = fMatrix;
     matrix.postTranslate(-origin.x(), -origin.y());
-    surface->getCanvas()->clear(0);
+    surface->getCanvas()->clear(SkColors::kTransparent);
     surface->getCanvas()->drawPicture(fPicture.get(), &matrix, fPaint.getMaybeNull());
     sk_sp<SkImage> image(surface->makeImageSnapshot());
     if (!image) {
@@ -128,4 +135,38 @@ GrSurfaceProxyView SkPictureImageGenerator::onGenerateTexture(GrRecordingContext
              view.asTextureProxy()->mipmapped() == GrMipmapped::kYes);
     return view;
 }
-#endif
+
+#endif // SK_SUPPORT_GPU
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if SK_GRAPHITE_ENABLED
+
+skgpu::graphite::TextureProxyView SkPictureImageGenerator::onGenerateTexture(
+        skgpu::graphite::Recorder* recorder,
+        const SkImageInfo& info,
+        const SkIPoint& origin,
+        skgpu::graphite::Mipmapped mipmapped) {
+    using namespace skgpu::graphite;
+
+    sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder, info, nullptr,
+                                                       mipmapped == Mipmapped::kYes);
+    if (!surface) {
+        return {};
+    }
+
+    SkMatrix matrix = fMatrix;
+    matrix.postTranslate(-origin.x(), -origin.y());
+    surface->getCanvas()->clear(SkColors::kTransparent);
+    surface->getCanvas()->drawPicture(fPicture.get(), &matrix, fPaint.getMaybeNull());
+    sk_sp<SkImage> image(surface->makeImageSnapshot());
+    if (!image) {
+        return {};
+    }
+    auto [view, ct] = as_IB(image)->asView(recorder, mipmapped);
+    SkASSERT(view);
+    SkASSERT(mipmapped == Mipmapped::kNo || view.proxy()->mipmapped() == Mipmapped::kYes);
+    return view;
+}
+
+#endif // SK_GRAPHITE_ENABLED
