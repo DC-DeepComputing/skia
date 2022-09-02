@@ -64,7 +64,7 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
         }
     } else {
         auto clientImageProvider = recorder->clientImageProvider();
-        result = clientImageProvider->findOrCreate(recorder, imageIn, { mipmapped });
+        result = clientImageProvider->findOrCreate1(recorder, imageIn, { mipmapped });
 
         if (!valid_client_provided_image(result.get(), imageIn, { mipmapped })) {
             // The client did not fulfill the ImageProvider contract so drop the image.

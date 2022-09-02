@@ -44,7 +44,7 @@ public:
     // contents as 'image' and meets the requirements, then it can be returned.
     // makeTextureImage can always be called to create an acceptable Graphite-backed image
     // which could then be cached.
-    virtual sk_sp<SkImage> findOrCreate(Recorder* recorder,
+    virtual sk_sp<SkImage> findOrCreate1(Recorder* recorder,
                                         const SkImage* image,
                                         SkImage::RequiredImageProperties) = 0;
 };

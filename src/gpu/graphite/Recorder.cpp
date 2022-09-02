@@ -47,7 +47,7 @@ public:
         return sk_ref_sp(new DefaultImageProvider);
     }
 
-    sk_sp<SkImage> findOrCreate(Recorder* recorder,
+    sk_sp<SkImage> findOrCreate1(Recorder* recorder,
                                 const SkImage* image,
                                 SkImage::RequiredImageProperties) override {
         SkASSERT(!as_IB(image)->isGraphiteBacked());

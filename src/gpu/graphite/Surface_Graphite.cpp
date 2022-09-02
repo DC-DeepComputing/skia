@@ -105,9 +105,13 @@ bool validate_backend_texture(const Caps* caps,
 
 sk_sp<SkSurface> SkSurface::MakeGraphite(Recorder* recorder,
                                          const SkImageInfo& info,
-                                         const SkSurfaceProps* props) {
+                                         const SkSurfaceProps* props,
+                                         bool shouldCreateWithMips) {
+
+    Mipmapped mipmapped = shouldCreateWithMips ? Mipmapped::kYes : Mipmapped::kNo;
 
     sk_sp<Device> device = Device::Make(recorder, info, SkBudgeted::kNo,
+                                        mipmapped,
                                         SkSurfacePropsCopyOrDefault(props),
                                         /* addInitialClear= */ true);
     if (!device) {

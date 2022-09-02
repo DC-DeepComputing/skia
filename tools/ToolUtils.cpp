@@ -653,7 +653,7 @@ class TestingImageProvider : public skgpu::graphite::ImageProvider {
 public:
     ~TestingImageProvider() override {}
 
-    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
+    sk_sp<SkImage> findOrCreate1(skgpu::graphite::Recorder* recorder,
                                 const SkImage* image,
                                 SkImage::RequiredImageProperties requiredProps) override {
         if (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo) {
