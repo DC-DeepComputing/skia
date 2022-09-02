@@ -34,6 +34,24 @@
       "parentUuid": "a45ceae2_b2738607",
       "revId": "d736b8a7b9597f7e2b8aeead44176ca48e197d3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f4ab413_4066b967",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-02T15:42:21Z",
+      "side": 1,
+      "message": "Actually, there is a space reduction from the previous CL. So, things are back to zero.",
+      "parentUuid": "7a8e777e_f5ad8cce",
+      "revId": "d736b8a7b9597f7e2b8aeead44176ca48e197d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
