@@ -32,7 +32,8 @@ public class SkottieView extends FrameLayout {
     private int mBackgroundColor;
     // Repeat follows Animator API, infinite is represented by -1 (see Animator.DURATION_INFINITE)
     private int mRepeatCount;
-
+    // max cache size in bytes
+    private int mMaxCacheSize;
     private static final int BACKING_VIEW_TEXTURE = 0;
     private static final int BACKING_VIEW_SURFACE = 1;
     private final String LOG_TAG = "SkottieView";
@@ -79,6 +80,9 @@ public class SkottieView extends FrameLayout {
         try {
             // set mRepeatCount
             mRepeatCount = a.getInteger(R.styleable.SkottieView_android_repeatCount, 0);
+            // set max cache size
+            mMaxCacheSize = a.getInteger(R.styleable.SkottieView_maxCacheSize,
+                                         SkottieRunner.DEFAULT_MAX_CACHE_SIZE);
             // set backing view and background color
             switch (a.getInteger(R.styleable.SkottieView_backing_view, -1)) {
                 case BACKING_VIEW_TEXTURE:
@@ -146,10 +150,10 @@ public class SkottieView extends FrameLayout {
             }
         }
         if (mBackingView instanceof TextureView) {
-            animation = SkottieRunner.getInstance()
+            animation = SkottieRunner.getInstance(mMaxCacheSize)
                 .createAnimation(((TextureView) mBackingView), inputStream, mBackgroundColor, mRepeatCount);
         } else {
-            animation = SkottieRunner.getInstance()
+            animation = SkottieRunner.getInstance(mMaxCacheSize)
                 .createAnimation(((SurfaceView) mBackingView), inputStream, mBackgroundColor, mRepeatCount);
         }
         // restore config settings from previous animation if needed
@@ -216,5 +220,9 @@ public class SkottieView extends FrameLayout {
 
     public void setBackgroundColor(int colorRGB) {
         mBackgroundColor = colorRGB;
+    }
+
+    public void setMaxCacheSize(int maxCacheSize) {
+        mMaxCacheSize =  maxCacheSize;
     }
 }
