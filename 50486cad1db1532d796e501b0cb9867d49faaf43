@@ -16,6 +16,23 @@
       "message": "For your consideration... this seems cleaner to me but WDYT?",
       "revId": "50486cad1db1532d796e501b0cb9867d49faaf43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a948146a_ef5f040c",
+        "filename": "src/sksl/SkSLBuiltinTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-02T16:39:41Z",
+      "side": 1,
+      "message": "Do these invalid entries need to be here? (They\u0027d be important if there were functions with signatures that involved multiple generic texture types, right? But none of those exist?)",
+      "revId": "50486cad1db1532d796e501b0cb9867d49faaf43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
