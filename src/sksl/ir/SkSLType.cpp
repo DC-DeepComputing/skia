@@ -1012,17 +1012,25 @@ bool Type::isPrivate() const {
     return skstd::starts_with(this->name(), '$');
 }
 
-bool Type::isOrContainsArray() const {
-    if (this->isStruct()) {
-        for (const Field& f : this->fields()) {
-            if (f.fType->isOrContainsArray()) {
+static bool type_is_or_contains(const Type* type, bool (Type::*checkFn)() const) {
+    if (type->isStruct()) {
+        for (const Type::Field& f : type->fields()) {
+            if (type_is_or_contains(f.fType, checkFn)) {
                 return true;
             }
         }
         return false;
     }
 
-    return this->isArray();
+    return (type->*checkFn)();
+}
+
+bool Type::isOrContainsArray() const {
+    return type_is_or_contains(this, &Type::isArray);
+}
+
+bool Type::isOrContainsUnsizedArray() const {
+    return type_is_or_contains(this, &Type::isUnsizedArray);
 }
 
 bool Type::isTooDeeplyNested(int limit) const {
