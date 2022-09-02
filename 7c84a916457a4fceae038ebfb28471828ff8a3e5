@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4095a9d9_ef40c361",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-02T13:36:41Z",
+      "side": 1,
+      "message": "Can this go away then ?",
+      "revId": "7c84a916457a4fceae038ebfb28471828ff8a3e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
