@@ -44,6 +44,8 @@ class SkottieRunner {
     EGLContext mEglContext;
     EGLSurface mPBufferSurface;
     private long mNativeProxy;
+    private int mMaxCacheSize;
+    protected static final int DEFAULT_MAX_CACHE_SIZE = 256;
 
     static {
         System.loadLibrary("skottie_android");
@@ -51,9 +53,16 @@ class SkottieRunner {
     /**
      * Gets SkottieRunner singleton instance.
      */
+    public static synchronized SkottieRunner getInstance(int maxCacheSize) {
+        if (sInstance == null || maxCacheSize != sInstance.mMaxCacheSize) {
+            sInstance = new SkottieRunner(maxCacheSize);
+        }
+        return sInstance;
+    }
+
     public static synchronized SkottieRunner getInstance() {
         if (sInstance == null) {
-            sInstance = new SkottieRunner();
+            sInstance = new SkottieRunner(DEFAULT_MAX_CACHE_SIZE);
         }
         return sInstance;
     }
@@ -101,8 +110,9 @@ class SkottieRunner {
         }
     }
 
-    private SkottieRunner()
+    private SkottieRunner(int maxCacheSize)
     {
+        mMaxCacheSize = maxCacheSize;
         mGLThreadLooper = new HandlerThread("SkottieAnimator");
         mGLThreadLooper.start();
         mGLThread = new Handler(mGLThreadLooper.getLooper());
@@ -216,7 +226,7 @@ class SkottieRunner {
                         + GLUtils.getEGLErrorString(mEgl.eglGetError()));
             }
 
-            mNativeProxy = nCreateProxy();
+            mNativeProxy = nCreateProxy(mMaxCacheSize);
         }
     };
 
@@ -272,7 +282,7 @@ class SkottieRunner {
         }
     }
 
-    private static native long nCreateProxy();
+    private static native long nCreateProxy(int maxCacheSize);
     private static native void nDeleteProxy(long nativeProxy);
 }
 

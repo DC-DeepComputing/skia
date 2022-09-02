@@ -74,7 +74,7 @@ static void release_global_jni_ref(const void* /*data*/, void* context) {
 
 extern "C" JNIEXPORT jlong
 JNICALL
-Java_org_skia_skottie_SkottieRunner_nCreateProxy(JNIEnv *env, jclass clazz) {
+Java_org_skia_skottie_SkottieRunner_nCreateProxy(JNIEnv *env, jclass clazz, jint maxCacheSize) {
     sk_sp<const GrGLInterface> glInterface = GrGLMakeNativeInterface();
     if (!glInterface.get()) {
         return 0;
@@ -86,6 +86,8 @@ Java_org_skia_skottie_SkottieRunner_nCreateProxy(JNIEnv *env, jclass clazz) {
     if (!dContext.get()) {
         return 0;
     }
+
+    dContext->setResourceCacheLimit(maxCacheSize);
 
     SkottieRunner* skottie = new SkottieRunner();
     skottie->mDContext = std::move(dContext);

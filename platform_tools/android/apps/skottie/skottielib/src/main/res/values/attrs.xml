@@ -8,5 +8,6 @@
     <attr name="background_color" format="color"/>
     <attr name="src" format="reference"/>
     <attr name="android:repeatCount" format="integer"/>
+    <attr name="maxCacheSize" format="integer"/>
   </declare-styleable>
 </resources>
