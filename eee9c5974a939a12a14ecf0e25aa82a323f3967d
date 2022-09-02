@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee0b5b7_ef8d6fa1",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-02T14:18:27Z",
+      "side": 1,
+      "message": "I think this is okay for now. We can revisit later if we decide the different defaults for texture2D (and the restriction on fragment shaders) is a problem.",
+      "parentUuid": "061e9c8c_2b5e8bea",
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e47e09a0_d525d3c8",
