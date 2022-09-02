@@ -34,6 +34,24 @@
       "parentUuid": "bdd513f3_ec351a27",
       "revId": "c200a53712d1b3f9b245c9e1df8b57e70dcbab59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8868c47b_befa51fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-02T22:22:46Z",
+      "side": 1,
+      "message": "Yes. It\u0027s a revert of .clang-format changes in http://review.skia.org/576096, plus a new comment.",
+      "parentUuid": "dac433ae_0011216e",
+      "revId": "c200a53712d1b3f9b245c9e1df8b57e70dcbab59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
