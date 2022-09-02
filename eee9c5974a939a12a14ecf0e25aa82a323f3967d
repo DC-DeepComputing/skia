@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da2984ea_17ed54cc",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-02T13:19:46Z",
+      "side": 1,
+      "message": "Is this going to work in non-compute cases? (Compute adds the alias so that texture2D means ReadWriteTexture2D, but if we\u0027re in a fragment shader and someone declares a \u0027readonly texture2D\u0027, this check won\u0027t match, right?",
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e47e09a0_d525d3c8",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-02T13:19:46Z",
+      "side": 1,
+      "message": "nit: \"readonlyTexture2D\"",
+      "range": {
+        "startLine": 539,
+        "startChar": 56,
+        "endLine": 539,
+        "endChar": 74
+      },
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
