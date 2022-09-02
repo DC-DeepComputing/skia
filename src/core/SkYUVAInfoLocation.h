@@ -11,8 +11,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkYUVAInfo.h"
 
-#include <algorithm>
-
 /**
  * The location of Y, U, V, or A values within the planes described by SkYUVAInfo. Computed from a
  * SkYUVAInfo and the set of channels present in a set of pixmaps/textures.

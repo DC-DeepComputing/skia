@@ -6,7 +6,6 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 
-#include <algorithm>
 #include <iterator>
 #include <limits>
 
