@@ -16,6 +16,24 @@
       "message": "Are you sure this doesn\u0027t share among all Ts? Is it being inlined into the type-specific callers? Otherwise I\u0027d expect the linker to smash all of these (identical?) functions together.",
       "revId": "d736b8a7b9597f7e2b8aeead44176ca48e197d3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8e777e_f5ad8cce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-02T15:41:08Z",
+      "side": 1,
+      "message": "It should be able to, but I can\u0027t move it to its own .cpp because it needs the template declaration. I will move it to its own class, and .cpp next CL.\n\n... and I don\u0027t see any space reduction in garrit.",
+      "parentUuid": "a45ceae2_b2738607",
+      "revId": "d736b8a7b9597f7e2b8aeead44176ca48e197d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
