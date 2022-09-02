@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4543a6a3_e4290424",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-02T13:29:21Z",
+      "side": 1,
+      "message": "Ah, I guess that\u0027s true. I know we previously had experimental path renderers that used read/write in fragment shaders.",
+      "parentUuid": "146573ef_9805d84b",
+      "revId": "eee9c5974a939a12a14ecf0e25aa82a323f3967d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e47e09a0_d525d3c8",
