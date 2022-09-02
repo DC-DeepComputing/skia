@@ -16,6 +16,24 @@
       "message": "Maybe add a comment that textures with kSample access ALSO support reading? (At least, that\u0027s my interpretation of the API docs I\u0027ve looked at - it\u0027s really a superset?)",
       "revId": "5c5a9b50611e9cd7f3b2cff9bd11507aaa721112",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f312a9b_d0c6c760",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-02T13:24:42Z",
+      "side": 1,
+      "message": "Yup, that\u0027s what the Metal docs say at least:\n\n`sample — A graphics or kernel function can sample the texture object.\nsample implies the ability to read from a texture with and without a sampler.`",
+      "parentUuid": "3494b72d_cfd879ef",
+      "revId": "5c5a9b50611e9cd7f3b2cff9bd11507aaa721112",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
