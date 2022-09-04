@@ -562,7 +562,6 @@ skia_core_sources = [
   "$_include/private/SkVx.h",
   "$_include/private/SkWeakRefCnt.h",
   "$_include/private/chromium/SkChromeRemoteGlyphCache.h",
-  "$_include/private/chromium/Slug.h",
 ]
 
 skia_pathops_public = [ "$_include/pathops/SkPathOps.h" ]
