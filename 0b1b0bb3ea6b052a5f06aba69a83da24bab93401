@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa894e3_ff5f02d5",
+        "filename": "bazel/exporter_tool/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-06T12:35:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54550707_5388e75a",
+      "range": {
+        "startLine": 71,
+        "startChar": 30,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "revId": "0b1b0bb3ea6b052a5f06aba69a83da24bab93401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2627254_bd87d3c9",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-06T12:19:37Z",
       "side": 1,
       "message": "I\u0027d put this version first, as I would expect it to be the most common.",
+      "range": {
+        "startLine": 132,
+        "startChar": 3,
+        "endLine": 132,
+        "endChar": 16
+      },
+      "revId": "0b1b0bb3ea6b052a5f06aba69a83da24bab93401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b576d27b_52da434d",
+        "filename": "bazel/exporter_tool/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-06T12:35:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2627254_bd87d3c9",
       "range": {
         "startLine": 132,
         "startChar": 3,
