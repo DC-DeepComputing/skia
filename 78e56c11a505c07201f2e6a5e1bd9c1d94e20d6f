@@ -33,6 +33,24 @@
       "message": "I think I\u0027m okay with this, but I\u0027d rather pursue option 3 - are there guards higher up stack that are supposed to prevent this? I have to assume the answer is yes, or this would happen frequently?",
       "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b747321_e40c3c7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-06T13:30:31Z",
+      "side": 1,
+      "message": "I agree. Option 3 seems safer and more correct. I wasn\u0027t sure of the best, most concise way to try to invoke this code from a higher level API. Something like drawRect on the canvas of a raster surface, do you think? The thing that puzzled me was where Clamp Clamp comes in. Is that directly related to \"TileMode\" that\u0027s set somewhere?",
+      "parentUuid": "07e650ce_cb605811",
+      "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
