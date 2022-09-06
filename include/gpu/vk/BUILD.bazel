@@ -11,6 +11,7 @@ filegroup(
         "GrVkExtensions.h",
         "GrVkMemoryAllocator.h",
         "GrVkTypes.h",
+        "VulkanBackendContext.h",
         "VulkanMemoryAllocator.h",
         "VulkanExtensions.h",
         "VulkanTypes.h",
