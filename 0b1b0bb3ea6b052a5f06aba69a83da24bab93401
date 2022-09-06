@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54550707_5388e75a",
+        "filename": "bazel/exporter_tool/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-06T12:19:37Z",
+      "side": 1,
+      "message": "draw_win.cpp ? I see both .cpp and .c used below.",
+      "range": {
+        "startLine": 71,
+        "startChar": 30,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "revId": "0b1b0bb3ea6b052a5f06aba69a83da24bab93401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2627254_bd87d3c9",
+        "filename": "bazel/exporter_tool/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-06T12:19:37Z",
+      "side": 1,
+      "message": "I\u0027d put this version first, as I would expect it to be the most common.",
+      "range": {
+        "startLine": 132,
+        "startChar": 3,
+        "endLine": 132,
+        "endChar": 16
+      },
+      "revId": "0b1b0bb3ea6b052a5f06aba69a83da24bab93401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
