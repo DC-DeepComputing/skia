@@ -16,6 +16,24 @@
       "message": "We could make this real and put it in SkSamplingOptions.h",
       "revId": "2a1bc95f9d1729fa56d6d8a37366637ffca27b80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcfed569_5745911e",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-06T13:53:50Z",
+      "side": 0,
+      "message": "Done, also added the missing kSkMipmapModeCount while I was there.",
+      "parentUuid": "de8622f4_4785b612",
+      "revId": "2a1bc95f9d1729fa56d6d8a37366637ffca27b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

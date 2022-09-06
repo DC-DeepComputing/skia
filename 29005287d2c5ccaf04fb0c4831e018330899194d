@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1f3d3f_26c43fa2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-06T13:53:50Z",
+      "side": 1,
+      "message": "+ Greg for the OWNERS review to SkSamplingOptions.h",
+      "revId": "29005287d2c5ccaf04fb0c4831e018330899194d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a198bc_9b56b02d",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-06T13:53:50Z",
+      "side": 1,
+      "message": "Done, and added a comment about caller\u0027s responsibility for filling out the returned arrays on the new function.",
+      "parentUuid": "f951f052_b475a5d5",
+      "revId": "0216bdce14dfcf200afe87d842e62bb10e7e0f6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be378c87_2f95ce69",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-02T19:44:59Z",
       "side": 1,
       "message": "Aren\u0027t we missing a bunch of fSamplingOptions fields here ?\nIf we\u0027re guaranteed to not be using cubic or anisotropic sampling, can we assert that ?",
+      "revId": "0216bdce14dfcf200afe87d842e62bb10e7e0f6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbfd4273_160d694c",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-06T13:53:50Z",
+      "side": 1,
+      "message": "Asserted that SamplerDesc should never see a cubic resampler. Added a todo to support anisotropy that will be a follow up change.",
+      "parentUuid": "be378c87_2f95ce69",
       "revId": "0216bdce14dfcf200afe87d842e62bb10e7e0f6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
