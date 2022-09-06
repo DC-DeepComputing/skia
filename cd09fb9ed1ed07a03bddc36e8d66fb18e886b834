@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c6f054d_35c8c986",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-06T14:37:29Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/577836 indicates that we won\u0027t need to.",
+      "parentUuid": "90615182_38036834",
+      "revId": "cd09fb9ed1ed07a03bddc36e8d66fb18e886b834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bd89d21_12c762a1",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-09-06T13:58:55Z",
       "side": 1,
       "message": "I couldn\u0027t think of a better prefix than \"impl_\" here as this file already contains vk_hdrs. If you have a preferred name LMK and I\u0027ll use it.",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "cd09fb9ed1ed07a03bddc36e8d66fb18e886b834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fb6214c_25c9bdd1",
+        "filename": "src/gpu/vk/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-06T14:37:29Z",
+      "side": 1,
+      "message": "This seems like a transitional file, so maybe now is the time to try to get rid of it. That research doesn\u0027t need to block this CL if you don\u0027t want it to.",
+      "parentUuid": "1bd89d21_12c762a1",
       "range": {
         "startLine": 9,
         "startChar": 12,
