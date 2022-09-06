@@ -52,8 +52,10 @@ assert '/' in [os.sep, os.altsep]
 def fix_path(p):
   return p.replace(os.sep, os.altsep) if os.altsep else p
 
-# Map short name -> absolute path for all Skia headers.
-headers = {}
+
+# Creates a set of all Skia headers relative to the root Skia directory (assumed to be the
+# current working directory).
+headers = set()
 for root in roots:
   for path, _, files in os.walk(root):
     if not any(snippet in fix_path(path) for snippet in ignorelist):
@@ -63,7 +65,7 @@ for root in roots:
             message = ('Header filename is used more than once!\n- ' + path + '/' + file_name +
                        '\n- ' + headers[file_name])
             assert file_name not in headers, message
-          headers[file_name] = os.path.abspath(os.path.join(path, file_name))
+          headers.add(os.path.relpath(os.path.join(path, file_name), "."))
 
 def to_rewrite():
   if args.sources:
@@ -103,8 +105,8 @@ for file_path in to_rewrite():
       if (len(parts) == 3
           and '#' in parts[0]
           and 'include' in parts[0]
-          and os.path.basename(parts[1]) in headers):
-        header = fix_path(os.path.relpath(headers[os.path.basename(parts[1])], '.'))
+          and parts[1] in headers):
+        header = fix_path(parts[1])
         includes.append(parts[0] + '"%s"' % header + parts[2])
       else:
         for inc in sorted(includes):

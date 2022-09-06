@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2017 Google Inc.
  *
@@ -51,7 +52,7 @@
 
 #ifdef SK_VULKAN
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
-#include "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext_impl.h"
+#include "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.h"
 #endif
 
 class SurfaceParameters {

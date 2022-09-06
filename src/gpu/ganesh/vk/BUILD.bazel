@@ -55,7 +55,7 @@ VK_FILES = [
     "GrVkSamplerYcbcrConversion.cpp",
     "GrVkSamplerYcbcrConversion.h",
     "GrVkSecondaryCBDrawContext.cpp",
-    "GrVkSecondaryCBDrawContext_impl.h",
+    "GrVkSecondaryCBDrawContext.h",
     "GrVkSemaphore.cpp",
     "GrVkSemaphore.h",
     "GrVkTexture.cpp",
