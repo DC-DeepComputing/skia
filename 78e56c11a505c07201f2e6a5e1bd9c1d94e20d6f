@@ -16,6 +16,23 @@
       "message": "Here is one possible solution, but I worry about potential performance impacts of always adding this operation when it is rarely needed.",
       "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07e650ce_cb605811",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-06T13:13:24Z",
+      "side": 1,
+      "message": "I think I\u0027m okay with this, but I\u0027d rather pursue option 3 - are there guards higher up stack that are supposed to prevent this? I have to assume the answer is yes, or this would happen frequently?",
+      "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
