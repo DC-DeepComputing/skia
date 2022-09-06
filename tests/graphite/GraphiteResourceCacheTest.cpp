@@ -170,7 +170,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, context)
     {
         // We don't want the view holding a ref to the Proxy or else we can't send things back to
         // the cache.
-        auto [view, colorType] = as_IB(imageGpu.get())->asView(recorder.get(), Mipmapped::kNo);
+        auto [view, colorType] = as_IB(imageGpu.get())->asView1(recorder.get(), Mipmapped::kNo);
         REPORTER_ASSERT(reporter, view);
         imageProxy = view.proxy();
     }

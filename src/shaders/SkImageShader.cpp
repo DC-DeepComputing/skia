@@ -396,7 +396,7 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
                                                    ? skgpu::graphite::Mipmapped::kYes
                                                    : skgpu::graphite::Mipmapped::kNo;
 
-        auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
+        auto [view, _] = as_IB(imageToDraw)->asView1(keyContext.recorder(), mipmapped);
         imgData.fTextureProxy = view.refProxy();
     }
 #endif

@@ -273,7 +273,7 @@ void SkTable_ColorFilter::addToKey(const SkKeyContext& keyContext,
     if (as_IB(image)->isGraphiteBacked()) {
         skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(image.get());
 
-        auto [view, _] = grImage->asView(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
+        auto [view, _] = grImage->asView1(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
         data.fTextureProxy = view.refProxy();
     }
 #endif
