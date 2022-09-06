@@ -51,6 +51,24 @@
       "parentUuid": "07e650ce_cb605811",
       "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c634bb_3f69d043",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-06T13:38:01Z",
+      "side": 1,
+      "message": "Yes, the clamp-clamp should refer to the tile mode being kClamp for both X and Y. That can be controlled by the tile mode parameters of image-\u003emakeShader(), but if you use a drawImage call, it will implicitly use clamp-clamp (I\u0027m 99% sure of that).\n\nThe original fuzzer repro case might give a clue about how this happened (I\u0027m guessing some crazy matrix on the canvas?)",
+      "parentUuid": "9b747321_e40c3c7d",
+      "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
