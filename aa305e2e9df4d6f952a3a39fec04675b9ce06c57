@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9630999_f26f1241",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-06T18:29:11Z",
+      "side": 1,
+      "message": "True that, I re-added it.",
+      "parentUuid": "b1c486e0_d39f9cd3",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 5
+      },
+      "revId": "aa305e2e9df4d6f952a3a39fec04675b9ce06c57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8defc6f6_ed57ad60",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-31T19:04:36Z",
       "side": 1,
       "message": "it\u0027s a bit more drudgery, but we should probably update these module functions and the generated helper functions to take a `float2 coords` instead. I think they were originaly float4 so they could be multiplied with the matrix conveniently.",
+      "range": {
+        "startLine": 44,
+        "startChar": 25,
+        "endLine": 44,
+        "endChar": 38
+      },
+      "revId": "aa305e2e9df4d6f952a3a39fec04675b9ce06c57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be5d095a_077a30bb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-06T18:29:11Z",
+      "side": 1,
+      "message": "No problem; that\u0027s a good idea. I made this change such that coords is a float2, which now just takes the xy component of sk_FragCoord (which is staying as a float4 for the dev2Local multiplication step).",
+      "parentUuid": "8defc6f6_ed57ad60",
       "range": {
         "startLine": 44,
         "startChar": 25,
