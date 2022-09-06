@@ -69,8 +69,7 @@ struct SkShaderSnippet {
                                                            int entryIndex,
                                                            const SkPaintParamsKey::BlockReader&,
                                                            const std::string& priorStageOutputName,
-                                                           const std::string& fragCoord,
-                                                           const std::string& currentPreLocalName);
+                                                           const std::string& fragCoord);
 
     SkShaderSnippet() = default;
 

@@ -23,6 +23,7 @@
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPaintParamsKey.h"
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -1222,8 +1223,12 @@ public:
     void addToKey(const SkKeyContext& keyContext,
                   SkPaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer) const override {
+        if (gatherer->needsLocalCoords()) {
+            LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+        }
+
         RuntimeShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                       {fEffect, this->getLocalMatrix(), fUniforms});
+                                       {fEffect, fUniforms});
 
         add_children_to_key(fChildren, keyContext, builder, gatherer);
 
