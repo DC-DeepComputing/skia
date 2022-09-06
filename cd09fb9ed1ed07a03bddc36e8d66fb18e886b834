@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "900a8178_4bfbfd85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-06T13:58:55Z",
+      "side": 1,
+      "message": "I think this is the most complicated CL for the switch to exported GNI files. PTAL.",
+      "revId": "cd09fb9ed1ed07a03bddc36e8d66fb18e886b834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90615182_38036834",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-06T13:58:55Z",
+      "side": 1,
+      "message": "These new files are here because the prior gpu.gni file had:\n\n    skia_gpu_sources +\u003d skia_skgpu_v1_sources\n\nand these are the files from `skia_skgpu_v1_sources`. It wouldn\u0027t be that hard to add the ability to generate the line above instead of injecting the files here. I didn\u0027t see the reason to preserve this, but if you\u0027d like me to add it LMK.",
+      "revId": "cd09fb9ed1ed07a03bddc36e8d66fb18e886b834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd89d21_12c762a1",
+        "filename": "src/gpu/vk/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-06T13:58:55Z",
+      "side": 1,
+      "message": "I couldn\u0027t think of a better prefix than \"impl_\" here as this file already contains vk_hdrs. If you have a preferred name LMK and I\u0027ll use it.",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "cd09fb9ed1ed07a03bddc36e8d66fb18e886b834",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
