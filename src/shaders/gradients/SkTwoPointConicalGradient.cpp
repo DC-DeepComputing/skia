@@ -6,10 +6,12 @@
  */
 
 #include "include/private/SkFloatingPoint.h"
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/SkGradientShaderBase.h"
+
 
 #include <utility>
 
@@ -517,8 +519,11 @@ std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProces
 void SkTwoPointConicalGradient::addToKey(const SkKeyContext& keyContext,
                                          SkPaintParamsKeyBuilder* builder,
                                          SkPipelineDataGatherer* gatherer) const {
+    if (gatherer->needsLocalCoords()) {
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+    }
+
     GradientShaderBlocks::GradientData data(kConical_GradientType,
-                                            SkM44(this->getLocalMatrix()),
                                             fCenter1, fCenter2,
                                             fRadius1, fRadius2,
                                             0.0f, 0.0f,
