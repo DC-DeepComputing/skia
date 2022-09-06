@@ -97,7 +97,7 @@ public:
     // a color type. This may be different than the image's color type when the image is not
     // texture-backed and the capabilities of the GPU require a data type conversion to put
     // the data in a texture.
-    std::tuple<GrSurfaceProxyView, GrColorType> asView(
+    std::tuple<GrSurfaceProxyView, GrColorType> asView2(
             GrRecordingContext* context,
             GrMipmapped mipmapped,
             GrImageTexGenPolicy policy = GrImageTexGenPolicy::kDraw) const;
@@ -233,7 +233,6 @@ private:
             const SkRect* subset,
             const SkRect* domain) const = 0;
 #endif
-
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;
 

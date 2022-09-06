@@ -37,7 +37,9 @@
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/TextureUtils.h"
 #endif
 
 // Ref-counted tuple(SkImageGenerator, SkMutex) which allows sharing one generator among N images
@@ -313,7 +315,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
     // the planes.
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView2(rContext, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,
@@ -584,9 +586,106 @@ void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const
 #endif // SK_SUPPORT_GPU
 
 #ifdef SK_GRAPHITE_ENABLED
-sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const {
-    SKGPU_LOG_W("Conversion of Lazy images to Graphite-backed not yet implemented");
-    return nullptr;
+#include "include/gpu/graphite/ImageProvider.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+
+namespace {
+
+SkColorType get_fallback_colortype(const skgpu::graphite::Caps* caps,
+                                   const SkImage* img,
+                                   skgpu::graphite::Mipmapped mipmapped) {
+    using namespace skgpu::graphite;
+
+    SkColorType ct = img->colorType();
+
+    int mipLevelCount = (mipmapped == Mipmapped::kYes) ?
+                        SkMipmap::ComputeLevelCount(img->width(), img->height()) + 1 : 1;
+
+    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipLevelCount, skgpu::Protected::kNo,
+                                                          Renderable::kNo);
+    if (!textureInfo.isValid()) {
+        ct = kRGBA_8888_SkColorType;
+        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipLevelCount, skgpu::Protected::kNo,
+                                                         Renderable::kNo);
+    }
+    SkASSERT(textureInfo.isValid());
+    return ct;
+}
+
+} // anonymous namespace
+
+sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
+                                                RequiredImageProperties requiredProps) const {
+    using namespace skgpu::graphite;
+
+    const Caps* caps = recorder->priv().caps();
+
+    auto clientImageProvider = recorder->clientImageProvider();
+    ImageProvider::Key key(this, requiredProps.fMipmapped);
+
+    // 1. Check the cache for a pre-existing one.
+    {
+        sk_sp<SkImage> cached = clientImageProvider->find1(recorder, key, requiredProps);
+        if (cached) {
+            return cached;
+        } else if (requiredProps.fMipmapped == Mipmapped::kYes) {
+            sk_sp<SkImage> unMipmapped = clientImageProvider->find1(recorder,
+                                                                    key.withOutMipmapping(),
+                                                                    { Mipmapped::kNo });
+            if (unMipmapped && unMipmapped->isTextureBacked()) {
+                sk_sp<SkImage> newImage = unMipmapped->makeTextureImage(recorder, requiredProps);
+                if (newImage) {
+                    // TODO: we could remove 'unMipmapped' from the cache at this point bc
+                    // 'newImage' will always be more usable.
+                    clientImageProvider->insert(recorder, key, newImage);
+                    return newImage;
+                }
+            }
+        }
+    }
+
+    // 2. Ask the generator to natively create one.
+    {
+        ScopedGenerator generator(fSharedGenerator);
+        if (auto view = generator->generateTexture(recorder,
+                                                   this->imageInfo(),
+                                                   {0,0},
+                                                   requiredProps.fMipmapped)) {
+
+            SkASSERT(requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo ||
+                     view.proxy()->mipmapped() == skgpu::graphite::Mipmapped::kYes);
+
+            SkColorType ct = get_fallback_colortype(caps, this, requiredProps.fMipmapped);
+            SkColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
+            sk_sp<SkImage> newImage = sk_make_sp<skgpu::graphite::Image>(std::move(view),
+                                                                         std::move(colorInfo));
+            clientImageProvider->insert(recorder, key, newImage);
+            return newImage;
+        }
+    }
+
+    // 3. Ask the generator to return YUV planes, which the GPU can convert. If we will be mipping
+    //    the texture we skip this step so the CPU generate non-planar MIP maps for us.
+    // TODO: add Graphite YUV support
+
+    // 4. Ask the generator to return a bitmap, which the GPU can convert.
+    if (SkBitmap bitmap; this->getROPixels(nullptr, &bitmap, CachingHint::kDisallow_CachingHint)) {
+        auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, requiredProps.fMipmapped,
+                                                SkBudgeted::kNo);
+        if (!view) {
+            return nullptr;
+        }
+
+        SkASSERT(requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo ||
+                 view.proxy()->mipmapped() == skgpu::graphite::Mipmapped::kYes);
+        SkColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
+        sk_sp<SkImage> newImage = sk_make_sp<skgpu::graphite::Image>(std::move(view),
+                                                                     std::move(colorInfo));
+        clientImageProvider->insert(recorder, key, newImage);
+        return newImage;
+    }
+
+    return {};
 }
 #endif

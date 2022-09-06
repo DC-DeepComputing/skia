@@ -759,7 +759,7 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage* image) {
 
     SkPixmap pm;
     if (image->isTextureBacked()) {
-        auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrMipmapped::kNo);
+        auto [view, ct] = as_IB(image)->asView2(this->recordingContext(), GrMipmapped::kNo);
         SkASSERT(view);
 
         return SkSpecialImage::MakeDeferredFromGpu(fContext.get(),
@@ -888,7 +888,7 @@ void Device::drawImageLattice(const SkImage* image,
                               const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
     auto iter = std::make_unique<SkLatticeIter>(lattice, dst);
-    if (auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrMipmapped::kNo); view) {
+    if (auto [view, ct] = as_IB(image)->asView2(this->recordingContext(), GrMipmapped::kNo); view) {
         GrColorInfo colorInfo(ct, image->alphaType(), image->refColorSpace());
         this->drawViewLattice(std::move(view),
                               std::move(colorInfo),

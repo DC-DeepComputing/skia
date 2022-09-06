@@ -40,13 +40,40 @@ class Recorder;
  */
 class SK_API ImageProvider : public SkRefCnt {
 public:
+    class Key {
+    public:
+        Key(const SkImage* image, Mipmapped mipmapped) {
+            fData = (static_cast<uint64_t>(image->uniqueID()) << 32) |
+                    (mipmapped == Mipmapped::kYes ? 0x1 : 0x0);
+        }
+
+        Key withMipmapping() const { return Key(this->imageID(), Mipmapped::kYes); }
+        Key withOutMipmapping() const { return Key(this->imageID(), Mipmapped::kNo); }
+
+        uint64_t asUInt64() const { return fData; }
+
+    private:
+        Key(uint32_t imageID, Mipmapped mipmapped) {
+            fData = (static_cast<uint64_t>(imageID) << 32) |
+                    (mipmapped == Mipmapped::kYes ? 0x1 : 0x0);
+        }
+
+        uint32_t imageID() const { return fData >> 32; }
+
+        uint64_t fData;
+    };
+
     // If the client's derived class already has a Graphite-backed image that has the same
     // contents as 'image' and meets the requirements, then it can be returned.
     // makeTextureImage can always be called to create an acceptable Graphite-backed image
     // which could then be cached.
-    virtual sk_sp<SkImage> findOrCreate(Recorder* recorder,
-                                        const SkImage* image,
-                                        SkImage::RequiredImageProperties) = 0;
+    virtual sk_sp<SkImage> find1(Recorder*,
+                                Key,
+                                SkImage::RequiredImageProperties) = 0;
+    virtual void insert(Recorder*,
+                        Key,
+                        sk_sp<SkImage> imageToInsert) = 0;
+
 };
 
 } // namespace skgpu::graphite

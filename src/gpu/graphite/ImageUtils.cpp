@@ -63,8 +63,17 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
             sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
         }
     } else {
-        auto clientImageProvider = recorder->clientImageProvider();
-        result = clientImageProvider->findOrCreate(recorder, imageIn, { mipmapped });
+        ImageProvider* clientImageProvider = recorder->clientImageProvider();
+        ImageProvider::Key key(imageIn, mipmapped);
+        result = clientImageProvider->find1(recorder, key, { mipmapped });
+        if (!result) {
+            result = imageIn->makeTextureImage(recorder, { mipmapped });
+            if (!result) {
+                return { nullptr, sampling };
+            }
+
+            clientImageProvider->insert(recorder, key, result);
+        }
 
         if (!valid_client_provided_image(result.get(), imageIn, { mipmapped })) {
             // The client did not fulfill the ImageProvider contract so drop the image.

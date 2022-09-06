@@ -494,7 +494,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
         const SkRect* domain) const {
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView2(rContext, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,

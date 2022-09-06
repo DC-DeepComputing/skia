@@ -38,8 +38,7 @@ namespace skgpu::graphite {
 #define ASSERT_SINGLE_OWNER_PRIV SKGPU_ASSERT_SINGLE_OWNER(fRecorder->singleOwner())
 
 /*
- * The default image provider doesn't perform any conversion so, by default, Graphite won't
- * draw any non-Graphite-backed images.
+ * The default image provider doesn't cache anything.
  */
 class DefaultImageProvider final : public ImageProvider {
 public:
@@ -47,13 +46,11 @@ public:
         return sk_ref_sp(new DefaultImageProvider);
     }
 
-    sk_sp<SkImage> findOrCreate(Recorder* recorder,
-                                const SkImage* image,
-                                SkImage::RequiredImageProperties) override {
-        SkASSERT(!as_IB(image)->isGraphiteBacked());
-
+    sk_sp<SkImage> find1(Recorder*, Key, SkImage::RequiredImageProperties) override {
         return nullptr;
     }
+
+    void insert(Recorder*, Key, sk_sp<SkImage> /* imageToInsert*/) override {}
 
 private:
     DefaultImageProvider() {}

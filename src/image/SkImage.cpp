@@ -314,7 +314,7 @@ void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
 }
 
 #if SK_SUPPORT_GPU
-std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView(GrRecordingContext* context,
+std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView2(GrRecordingContext* context,
                                                                  GrMipmapped mipmapped,
                                                                  GrImageTexGenPolicy policy) const {
     if (!context) {

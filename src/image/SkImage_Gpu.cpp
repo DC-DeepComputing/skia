@@ -308,7 +308,7 @@ sk_sp<SkImage> SkImage_Gpu::onMakeColorTypeAndColorSpace(SkColorType targetCT,
     info = info.makeColorType(ct);
 
     // Draw this image's texture into the SFC.
-    auto [view, _] = this->asView(dContext, GrMipmapped(this->hasMipmaps()));
+    auto [view, _] = this->asView2(dContext, GrMipmapped(this->hasMipmaps()));
     auto texFP = GrTextureEffect::Make(std::move(view), this->alphaType());
     auto colorFP = GrColorSpaceXformEffect::Make(std::move(texFP),
                                                  this->imageInfo().colorInfo(),
@@ -573,7 +573,7 @@ sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
                                          ? GrImageTexGenPolicy::kNew_Uncached_Budgeted
                                          : GrImageTexGenPolicy::kNew_Uncached_Unbudgeted;
     // TODO: Don't flatten YUVA images here. Add mips to the planes instead.
-    auto [view, ct] = as_IB(this)->asView(dContext, mipmapped, policy);
+    auto [view, ct] = as_IB(this)->asView2(dContext, mipmapped, policy);
     if (!view) {
         return nullptr;
     }
@@ -804,7 +804,7 @@ bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
         return false;
     }
 
-    auto [view, ct] = as_IB(image)->asView(direct, GrMipmapped::kNo);
+    auto [view, ct] = as_IB(image)->asView2(direct, GrMipmapped::kNo);
 
     if (!view) {
         return false;
@@ -887,7 +887,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
     }
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView2(rContext, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,

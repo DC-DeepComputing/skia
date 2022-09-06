@@ -125,7 +125,7 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeFromImage(GrRecordingContext* rContext
 
 #if SK_SUPPORT_GPU
     if (rContext) {
-        auto [view, ct] = as_IB(image)->asView(rContext, GrMipmapped::kNo);
+        auto [view, ct] = as_IB(image)->asView2(rContext, GrMipmapped::kNo);
         return MakeDeferredFromGpu(rContext,
                                    subset,
                                    image->uniqueID(),

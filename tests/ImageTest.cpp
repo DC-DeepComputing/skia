@@ -1025,17 +1025,17 @@ static void test_cross_context_image(skiatest::Reporter* reporter, const GrConte
             GrSurfaceProxyView view, otherView, viewSecondRef;
 
             // Any context should be able to borrow the texture at this point
-            std::tie(view, std::ignore) = as_IB(refImg)->asView(dContext, GrMipmapped::kNo);
+            std::tie(view, std::ignore) = as_IB(refImg)->asView2(dContext, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, view);
 
             // But once it's borrowed, no other context should be able to borrow
             otherTestContext->makeCurrent();
-            std::tie(otherView, std::ignore) = as_IB(refImg)->asView(otherCtx, GrMipmapped::kNo);
+            std::tie(otherView, std::ignore) = as_IB(refImg)->asView2(otherCtx, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, !otherView);
 
             // Original context (that's already borrowing) should be okay
             testContext->makeCurrent();
-            std::tie(viewSecondRef, std::ignore) = as_IB(refImg)->asView(dContext,
+            std::tie(viewSecondRef, std::ignore) = as_IB(refImg)->asView2(dContext,
                                                                          GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, viewSecondRef);
 
@@ -1045,7 +1045,7 @@ static void test_cross_context_image(skiatest::Reporter* reporter, const GrConte
             // We released one proxy but not the other from the current borrowing context. Make sure
             // a new context is still not able to borrow the texture.
             otherTestContext->makeCurrent();
-            std::tie(otherView, std::ignore) = as_IB(refImg)->asView(otherCtx, GrMipmapped::kNo);
+            std::tie(otherView, std::ignore) = as_IB(refImg)->asView2(otherCtx, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, !otherView);
 
             // Release second ref from the original context
@@ -1054,7 +1054,7 @@ static void test_cross_context_image(skiatest::Reporter* reporter, const GrConte
 
             // Now we should be able to borrow the texture from the other context
             otherTestContext->makeCurrent();
-            std::tie(otherView, std::ignore) = as_IB(refImg)->asView(otherCtx, GrMipmapped::kNo);
+            std::tie(otherView, std::ignore) = as_IB(refImg)->asView2(otherCtx, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, otherView);
 
             // Release everything
@@ -1097,7 +1097,7 @@ DEF_GPUTEST(SkImage_CrossContextGrayAlphaConfigs, reporter, options, CtsEnforcem
             sk_sp<SkImage> image = SkImage::MakeCrossContextFromPixmap(dContext, pixmap, false);
             REPORTER_ASSERT(reporter, image);
 
-            auto [view, viewCT] = as_IB(image)->asView(dContext, GrMipmapped::kNo);
+            auto [view, viewCT] = as_IB(image)->asView2(dContext, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, view);
             REPORTER_ASSERT(reporter, GrColorTypeToSkColorType(viewCT) == ct);
 
