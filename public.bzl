@@ -1941,7 +1941,7 @@ VULKAN_SRCS = [
     "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.cpp",
     "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
     "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.cpp",
-    "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext_impl.h",
+    "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.h",
     "src/gpu/ganesh/vk/GrVkSemaphore.cpp",
     "src/gpu/ganesh/vk/GrVkSemaphore.h",
     "src/gpu/ganesh/vk/GrVkTexture.cpp",

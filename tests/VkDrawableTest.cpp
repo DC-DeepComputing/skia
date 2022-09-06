@@ -19,7 +19,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkMemory.h"
-#include "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext_impl.h"
+#include "src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "tests/Test.h"

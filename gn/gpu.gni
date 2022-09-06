@@ -600,7 +600,7 @@ skia_vk_sources = [
   "$_src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.cpp",
   "$_src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
   "$_src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.cpp",
-  "$_src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext_impl.h",
+  "$_src/gpu/ganesh/vk/GrVkSecondaryCBDrawContext.h",
   "$_src/gpu/ganesh/vk/GrVkSemaphore.cpp",
   "$_src/gpu/ganesh/vk/GrVkSemaphore.h",
   "$_src/gpu/ganesh/vk/GrVkTexture.cpp",
