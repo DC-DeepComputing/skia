@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
@@ -134,8 +135,11 @@ std::unique_ptr<GrFragmentProcessor> SkRadialGradient::asFragmentProcessor(
 void SkRadialGradient::addToKey(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
                                 SkPipelineDataGatherer* gatherer) const {
+    if (gatherer->needsLocalCoords()) {
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+    }
+
     GradientShaderBlocks::GradientData data(kRadial_GradientType,
-                                            SkM44(this->getLocalMatrix()),
                                             fCenter, { 0.0f, 0.0f },
                                             fRadius, 0.0f,
                                             0.0f, 0.0f,
