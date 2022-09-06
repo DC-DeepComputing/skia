@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204e7306_7f39d5e3",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-06T18:32:01Z",
+      "side": 1,
+      "message": "I feel like we could rename this to `kInputColor` or `kSrcColor` and it would track more closely with the terminology we\u0027ve used elsewhere (in Runtime Effects and Ganesh). WDYT?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "45d586bbaf3fe76b596995c08422a1ed9e4929b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
