@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35f6a3fd_7c735487",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-06T13:47:14Z",
+      "side": 1,
+      "message": "FYI: This produced a performance regression, because we inadvertently altered the sizing heuristic. In the common case, the old code would set the new reserve to:\n\n  (count + 4) + (count + 4)/4\n  \nThe new code changed that to:\n\n  count + (count + 4)/4\n  \nFor small sizes, this often only increases the capacity by 1 or 2, yielding N^2 work for a series of push-back calls. I\u0027m not going to revert - I\u0027ve got a fix-forward that should still be overflow-safe:\n\n  https://skia-review.googlesource.com/c/skia/+/577203",
+      "revId": "81c933079fa6aa8ddb10a818cc64316905f6543d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
