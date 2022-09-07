@@ -68,6 +68,24 @@
       "parentUuid": "842cf215_df443644",
       "revId": "53b72683ead21e4c13065943f44f4e7f8a6d169a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c63ea6c_1dc6889b",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-07T14:48:38Z",
+      "side": 1,
+      "message": "This also tentatively seems to have fixed the issue with textures showing black backgrounds after swapping backends in viewer. At least I couldn\u0027t reproduce it and normally it was very easy to do.",
+      "parentUuid": "7d00c782_028b822e",
+      "revId": "53b72683ead21e4c13065943f44f4e7f8a6d169a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
