@@ -70,6 +70,30 @@
       },
       "revId": "a1c677508744ab6f6481219ce3a38fbb0a294c73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96cd9220_2f3e39d2",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T17:04:32Z",
+      "side": 1,
+      "message": "Fixed. (Source color now uses 0.498 alpha to allow the destination color to blend in.)",
+      "parentUuid": "09b52635_87c10ca3",
+      "range": {
+        "startLine": 562,
+        "startChar": 57,
+        "endLine": 562,
+        "endChar": 82
+      },
+      "revId": "a1c677508744ab6f6481219ce3a38fbb0a294c73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
