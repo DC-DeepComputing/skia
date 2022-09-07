@@ -22,6 +22,30 @@
       },
       "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d0fc878_af0940ff",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-07T14:41:36Z",
+      "side": 1,
+      "message": "From my chats with Brian S (who has been looking at this heavily), I think he also supports #2. But until he lands some of his fixes, I *think* that it might degrade CPU performance for drawAtlas/drawVertices (by interfering with the logic to update the matrix per primitive). For the record - I also prefer #2 - I don\u0027t like that we have two different ways to do the same thing right now.",
+      "parentUuid": "c4cadd99_076292be",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
