@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e197c9dd_ba97c7e1",
+        "filename": "include/sksl/DSLFunction.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:29:52Z",
+      "side": 0,
+      "message": "This was never used.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 0
+      },
+      "revId": "07ba1f081f34f4220cc548c550b32535565cc774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b9c25e9_00aa1f02",
+        "filename": "include/sksl/DSLFunction.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:29:52Z",
+      "side": 0,
+      "message": "Moving `name` to the front disambiguated this call from the variadic template version above, which we previously dodged by chance, because we were passing the Position as a temporary.",
+      "range": {
+        "startLine": 54,
+        "startChar": 74,
+        "endLine": 54,
+        "endChar": 95
+      },
+      "revId": "07ba1f081f34f4220cc548c550b32535565cc774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
