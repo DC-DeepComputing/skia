@@ -23,6 +23,9 @@
 void GrTexture::markMipmapsDirty() {
     if (GrMipmapStatus::kValid == fMipmapStatus) {
         fMipmapStatus = GrMipmapStatus::kDirty;
+#ifdef SK_DEBUG
+        fSlatedForMipmapRegen = true;
+#endif
     }
 }
 
@@ -54,6 +57,9 @@ GrTexture::GrTexture(GrGpu* gpu,
     if (textureType == GrTextureType::kExternal) {
         this->setReadOnly();
     }
+#ifdef SK_DEBUG
+    fSlatedForMipmapRegen = (fMipmapStatus == GrMipmapStatus::kDirty);
+#endif
 }
 
 bool GrTexture::StealBackendTexture(sk_sp<GrTexture> texture,
