@@ -69,6 +69,24 @@
       "parentUuid": "9b747321_e40c3c7d",
       "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6b40fa7_05b864c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-07T13:16:29Z",
+      "side": 1,
+      "message": "Found while spelunking: https://github.com/google/skia/blob/796df2adb550de2decae7605135c9b6473205802/src/shaders/SkImageShader.cpp#L254\n\n    // we want to make sure (fx + SK_Fixed1) never overflows.\n    if (fImage-\u003e width() \u003e 32767 ||\n        fImage-\u003eheight() \u003e 32767) {\n        return nullptr;\n    }",
+      "parentUuid": "47c634bb_3f69d043",
+      "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
