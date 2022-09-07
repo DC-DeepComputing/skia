@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7184ed_165613b5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T20:55:49Z",
+      "side": 1,
+      "message": "So, this could be something like \"kUnusedDstColor\", right ?",
+      "range": {
+        "startLine": 861,
+        "startChar": 55,
+        "endLine": 861,
+        "endChar": 65
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e62328d_b85c820a",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T20:55:49Z",
+      "side": 1,
+      "message": "So this will never used in this case, right?",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37929ace_36df0f14",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T20:55:49Z",
+      "side": 1,
+      "message": "Same here, right?",
+      "range": {
+        "startLine": 965,
+        "startChar": 70,
+        "endLine": 965,
+        "endChar": 83
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac0b8b5_f3124443",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T20:55:49Z",
+      "side": 1,
+      "message": "bitwise ops should work on the SnippetRequirementFlags type",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
