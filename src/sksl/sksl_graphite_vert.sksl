@@ -2,6 +2,9 @@
 
 const float $PI = 3.141592653589793238;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Support functions for tessellating path renderers
+
 // Wang's formula gives the minimum number of evenly spaced (in the parametric sense) line segments
 // that a bezier curve must be chopped into in order to guarantee all lines stay within a distance
 // of "1/precision" pixels from the true curve. Its definition for a bezier curve of degree "n" is
@@ -497,5 +500,115 @@ float2 tessellate_stroked_curve(float edgeID, float maxEdges,
     } else {
         // Normal case. Do the transform after tessellation.
         return affineMatrix * strokeCoord + translate;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Support functions for analytic round rectangles
+
+// Calculate homogenous line equation between the two homogenous points, p0 and p1. Assuming CW
+// winding, this produces normals pointing to the left of the line.
+float3 line_between_points(float3 p0, float3 p1) {
+    return cross(p0, p1);
+}
+
+// Line/point duality, calculate the point of intersection between two homogenous lines.
+float3 line_intersection(float3 l0, float3 l1) {
+    return cross(l0, l1);
+}
+
+// Move a homogenous line 'd' post-divide units along its normal. Assuming CW winding, this outsets
+// the line.
+float3 shift_line_along_normal(float3 line, float distance) {
+    return float3(line.xy, line.z - distance * length(line.xy));
+}
+
+// Calculate homogenous line equation for a line through 'p' with direction 'dir' (i.e. it's normal
+// vector is orthogonal to 'v').
+float3 line_through_point(float3 p, float2 dir) {
+    // TODO: What happens if p.z <= 0? The equation is structured to avoid the division immediately
+    // but geometrically does it still make sense?
+    float c = dir.x*p.y - dir.y*p.x;
+    return float3(dir.y * p.z, -dir.x * p.z, c);
+}
+
+// Calculate the bisecting vector between the normals n0 and n1.
+float2 bisect(float2 n0, float2 n1) {
+    n0 = normalize(n0);
+    n1 = normalize(n1);
+    if (dot(n0, n1) < -0.8) {
+        // Nearly parallel lines, so switch to bisecting vectors orthogonal to the normals, and then
+        // flip so it points in a consistent direction.
+        n0 = float2(-n0.y, n0.x);
+        n1 = float2(n1.y, -n1.x);
+    }
+    return n0 + n1;
+}
+
+// Calculate a new point that's translated 'distance' post-divide units away from 'p' along 'dir'.
+float3 translate_point(float3 p, float2 dir, float distance) {
+    // TODO: Work through this to see if it actually simplifies, it seems a little overkill.
+    // Would something like p + normalize(dir)*distance*p.z work?
+    float3 v = line_through_point(p, dir);
+    float3 offset_perp = shift_line_along_normal(line_through_point(p, v.xy), distance);
+    return line_intersection(v, offset_perp);
+}
+
+// Given a corner index (0->3 specifying TL, TR, BR, or BL), unpacks the rectangle into previous,
+// current, and next vertex positions.
+void unpack_rect_corner(int corner, float4 rect,
+                        out float2 p0, out float2 p1, out float2 p2) {
+    // TODO: Automatically rotate through corners if W or H == 0 (e.g. a line)
+    // TODO: Detect WH == 0 where we are a point.
+    switch(corner) {
+        case 0: // TL
+            p0 = rect.LB;
+            p1 = rect.LT;
+            p2 = rect.RT;
+            break;
+        case 1: // TR
+            p0 = rect.LT;
+            p1 = rect.RT;
+            p2 = rect.RB;
+            break;
+        case 2: // BR
+            p0 = rect.RT;
+            p1 = rect.RB;
+            p2 = rect.LB;
+            break;
+        case 3: // BL
+            p0 = rect.RB;
+            p1 = rect.LB;
+            p2 = rect.LT;
+            break;
+    }
+}
+
+// Given a corner index, unpacks the quadrilateral into previous, current, and next positions.
+void unpack_quad_corner(int corner, float4 xs, float4 ys,
+                        out float2 p0, out float2 p1, out float2 p2) {
+    // TODO: Automatically rotate through indices if adjacent points are equal (e.g. a triangle).
+    // TODO: Detect all points equal to each other (as a point, maybe return a boolean)?
+    switch(corner) {
+        case 0: // TL
+            p0 = float2(xs[3], ys[3]);
+            p1 = float2(xs[0], ys[0]);
+            p2 = float2(xs[1], ys[1]);
+            break;
+        case 1: // TR
+            p0 = float2(xs[0], ys[0]);
+            p1 = float2(xs[1], ys[1]);
+            p2 = float2(xs[2], ys[2]);
+            break;
+        case 2: // BR
+            p0 = float2(xs[1], ys[1]);
+            p1 = float2(xs[2], ys[2]);
+            p2 = float2(xs[3], ys[3]);
+            break;
+        case 3: // BL
+            p0 = float2(xs[2], ys[2]);
+            p1 = float2(xs[3], ys[3]);
+            p2 = float2(xs[0], ys[0]);
+            break;
     }
 }

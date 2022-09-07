@@ -77,10 +77,29 @@ static skvx::float4 loadYRadii(const SkRRect& rrect) {
                         rrect.radii(SkRRect::kLowerLeft_Corner).fY};
 }
 
+// With the current simplified vertex structure, there are 28 vertices forming 32 triangles.
+// The vertices are defined solely by sk_VertexID as follows:
+//   TL:  0|anchor0,  1|anchor1,  2|offset0,  3|offset1,  4|bisector0,  5|bisector1,  6|center
+//   TR:  7|anchor0,  8|anchor1,  9|offset0, 10|offset1, 11|bisector0, 12|bisector1, 13|center
+//   BR: 14|anchor0, 15|anchor1, 16|offset0, 17|offset1, 18|bisector0, 19|bisector1, 20|center
+//   BL: 21|anchor0, 22|anchor1, 23|offset0, 24|offset1, 25|bisector0, 26|bisector1, 27|center
+static size_t indexBufferSize() { return 32 * 3 * sizeof(uint16_t); }
+static void writeIndexBuffer(VertexWriter writer, size_t size) {
+    SkASSERT(indexBufferSize() == size);
+    static constexpr uint16_t kIndices[32*3] = {
+         0, 2, 4,   0, 4, 5,   0, 5, 1,   1, 5, 3,   0, 1, 6,   1, 3, 9,   1, 9, 7,   1, 7, 6,
+         7, 9,11,   7,11,12,   7,12, 8,   8,12,10,   7, 8,13,   8,10,16,   8,16,14,   8,14,13,
+        14,16,18,  14,18,19,  14,19,15,  15,19,17,  14,15,20,  15,17,23,  15,23,21,  15,21,20,
+        21,23,25,  21,25,26,  21,26,22,  22,26,24,  21,22,27,  22,24, 2,  22, 2, 0,  22, 0,27,
+    };
+    writer << kIndices;
+}
+
 AnalyticRRectRenderStep::AnalyticRRectRenderStep()
         : RenderStep("AnalyticRRectRenderStep",
                      "",
-                     Flags::kPerformsShading,
+                     Flags::kPerformsShading |
+                     Flags::kEmitsCoverage,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
                      kDirectDepthGreaterPass,
@@ -94,8 +113,10 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep()
                              {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt},
                              {"maxScale", VertexAttribType::kFloat, SkSLType::kFloat},
                              {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
-                             {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
-                             {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
+                             {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                             {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
+                     /*varyings=*/
+                            {{"edgeDistance", SkSLType::kFloat}}) {}
 
 AnalyticRRectRenderStep::~AnalyticRRectRenderStep() {}
 
@@ -103,15 +124,99 @@ const char* AnalyticRRectRenderStep::vertexSkSL() const {
     return R"(
         float3x3 matrix = float3x3(mat0, mat1, mat2);
 
+        int cornerID = sk_VertexID / 7; // Seven vertices per corner currently
+        int vertexID = sk_VertexID - cornerID * 7; // ID relative to corner structure
+
+        // Each rounded corner can be calculated independently of the others, except to know the
+        // edge vectors coming from the previous corner and going to the next corner. 'p1' is the
+        // vertex of the outer bbox for the current corner, p0 is the previous and p2 is the next,
+        // in CW winding.
+        float2 p0, p1, p2;
+        float2 center;
+
+        float2 cornerRadii = float2(0.0);
+        float strokeRadius = -1.0; // < 0 for fills, 0 for hairlines (1px in device space)
+        float joinLimit = -1.0; // ignored for fills, > 0: miter+join limit, ==0: bevel, <0: round
         if (xRadiiOrFlags.x < -1.0) {
             // Stroked rect or round rect
-        } else if (any(xRadiiOrFlags > 0.0)) {
+            strokeRadius = xRadiiOrFlags.y;
+            joinLimit = xRadiiOrFlags.z;
+            cornerRadii = float2(radiiOrQuadXs[cornerID]);  // strokes require circular corners
+
+            float4 outset = ltrbOrQuadYs.LTRB + float2(-strokeRadius, strokeRadius).xxyy;
+            unpack_rect_corner(cornerID, outset, p0, p1, p2);
+            center = 0.5*outset.LT + 0.5*outset.RB;
+        } else if (any(greaterThan(xRadiiOrFlags, float4(0.0)))) {
             // Filled round rect
+            cornerRadii = float2(xRadiiOrFlags[cornerID], radiiOrQuadXs[cornerID]);
+            unpack_rect_corner(cornerID, ltrbOrQuadYs, p0, p1, p2);
+            center = 0.5*ltrbOrQuadYs.LT + 0.5*ltrbOrQuadYs.RB;
         } else {
             // Per-edge quadrilateral
+            unpack_quad_corner(cornerID, radiiOrQuadXs, ltrbOrQuadYs, p0, p1, p2);
+            center = float2(0.25*radiiOrQuadXs.x + 0.25*radiiOrQuadXs.y +
+                                    0.25*radiiOrQuadXs.z + 0.25*radiiOrQuadXs.w,
+                            0.25*ltrbOrQuadYs.x + 0.25*ltrbOrQuadYs.y +
+                                    0.25*ltrbOrQuadYs.z + 0.25*ltrbOrQuadYs.w);
         }
 
-        // TODO: Implement this
+        // The current vertex structure that this shader produces is the extreme-simplified case
+        // shown in the slide deck in this file's top comment. Each corner has 7 vertices: two
+        // co-located anchors set to p1; two outsets (one per edge); two co-located bisectors; and a
+        // center vertex. The anchors and bisectors are double-upped so that each edge can have a
+        // different distance varying to implement per-edge AA control. The center's distance is
+        // tied to the edge between p1 and p2, so once all corners are processed there are 4 center
+        // vertices, each interpolating distance to one edge.
+        float3 devP0 = matrix * float3(p0, 1.0);
+        float3 devP1 = matrix * float3(p1, 1.0);
+        float3 devP2 = matrix * float3(p2, 1.0);
+
+        // FIXME check cross produce and handle inverting scale factors
+        float3 edge01 = line_between_points(devP0, devP1);
+        float3 edge12 = line_between_points(devP1, devP2);
+
+        float3 vertexPos;
+        if (vertexID == 0 || vertexID == 1) {
+            // Anchor at the outer corner
+            vertexPos = devP0;
+            edgeDistance = 0.5; // TODO: check AA edge flag for id = 0 or id = 1
+        } else if (vertexID == 2) {
+            // Outset from edge01
+            // TODO: should be set to devP1 if edge01 is non-AA
+            float2 n = float2(edge01.y, -edge01.x);
+            vertexPos = line_intersection(line_through_point(devP1, n),
+                                          shift_line_along_normal(edge01, 10.0));
+            edgeDistance = 0.0;
+        } else if (vertexID == 3) {
+            // Outset from edge12
+            // TODO: should be set to devP1 if edge12 is non-AA
+            float2 n = float2(edge12.y, -edge12.x);
+            vertexPos = line_intersection(line_through_point(devP1, n),
+                                          shift_line_along_normal(edge12, 10.0));
+
+            edgeDistance = 0.0;
+        } else if (vertexID == 4 || vertexID == 5) {
+            // Bisector to make sure AA coverage ramp doesn't get cut off for acute angles
+            // TODO: should be set to devP1 if either edge is non-AA
+            float2 n = bisect(edge01.xy, edge12.xy);
+            vertexPos = translate_point(devP1, n, 10.0);
+            edgeDistance = 0.0;
+        } else {
+            // Center vertex, calculate distance to edge12 (the previous corner will define the
+            // central vertex with distance to edge01, since its edge12 == this edge01).
+            vertexPos = matrix * float3(center, 1.0);
+            edgeDistance = dot(vertexPos, edge12);
+        }
+
+        float4 devPosition = float4(vertexPos.xy, depth, vertexPos.z);
+    )";
+}
+
+const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
+    // TODO: May need to reduce upper coverage value for very thin rects
+    // TODO: Provide a flag to calculate distance to curve per-pixel.
+    return R"(
+        outputCoverage = clamp(edgeDistance, 0.0, 1.0);
     )";
 }
 
@@ -121,8 +226,10 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
     SkASSERT(params.geometry().isShape());
     const Shape& shape = params.geometry().shape();
 
-    // TODO: Fill out fixed vertex and index buffer and vertex count per instance.
-    DrawWriter::Instances instance{*writer, {}, {}, 0};
+    BindBufferInfo indices = writer->bufferManager()->getStaticBuffer(BufferType::kIndex,
+                                                                      writeIndexBuffer,
+                                                                      indexBufferSize);
+    DrawWriter::Instances instance{*writer, {}, indices, 32*3};
     auto vw = instance.append(1);
 
     if (params.isStroke()) {
