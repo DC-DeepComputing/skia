@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac0719ab_f7c1a4f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T14:15:54Z",
+      "side": 1,
+      "message": "lg so far but I want to take another pass",
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3270eeed_d2335054",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T14:15:54Z",
+      "side": 1,
+      "message": "// This class maps objects to a dense index which can then be used to look them up later\n\n?",
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d7fdfc_b790bc7c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T14:15:54Z",
+      "side": 1,
+      "message": "With a \u0027*\u0027 since \u0027commandList\u0027 is being changed ?",
+      "range": {
+        "startLine": 150,
+        "startChar": 44,
+        "endLine": 150,
+        "endChar": 45
+      },
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8828160e_0f0889c7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T14:15:54Z",
+      "side": 1,
+      "message": "Same here ?",
+      "range": {
+        "startLine": 373,
+        "startChar": 62,
+        "endLine": 373,
+        "endChar": 63
+      },
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
