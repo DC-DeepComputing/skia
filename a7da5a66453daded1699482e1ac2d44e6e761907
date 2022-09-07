@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a87e32cf_94166aeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-07T19:30:28Z",
+      "side": 1,
+      "message": "I think this LGTM after the naming comment chain is resolved.",
+      "revId": "a7da5a66453daded1699482e1ac2d44e6e761907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

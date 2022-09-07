@@ -22,6 +22,30 @@
       },
       "revId": "45d586bbaf3fe76b596995c08422a1ed9e4929b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2af11c1e_3dda13ec",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-07T19:30:28Z",
+      "side": 1,
+      "message": "Yeah, I like the idea of being consistent with the other naming conventions of Src/Dest, so kInputColor (personally).",
+      "parentUuid": "204e7306_7f39d5e3",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "45d586bbaf3fe76b596995c08422a1ed9e4929b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
