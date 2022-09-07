@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3288ae3_b08f95e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-07T20:24:03Z",
+      "side": 1,
+      "message": "That diff on imageblur2 is interesting. Also fun that gold sees the new imageblur_large as more like the current 8888 than the current 565 (maybe dither?). BlurBigSigma is interesting? Haven\u0027t looked into \"mipmap\" but the slight color change in background seems like one of those awkward \"there isn\u0027t a good grey\" issues with 565.\n\nIn any event, seems fine for how much it is actually used.",
+      "revId": "eda373c7359c992e1f9cd109706e226fb65d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
