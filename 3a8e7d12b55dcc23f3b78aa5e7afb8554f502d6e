@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b9dc79a_fc92796c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-07T15:27:58Z",
+      "side": 1,
+      "message": "lgtm. We can keep an eye on perf after this lands, obviously.",
+      "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
