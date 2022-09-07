@@ -289,7 +289,15 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/gpu/piet:piet_hdrs",
 				"//src/gpu/piet:piet_srcs",
 			}},
-	},
+	}},
+	{GNI: "modules/skcms/skcms.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "skcms_public_headers",
+			Rules: []string{"//modules/skcms:public_hdrs"}},
+		{Var: "skcms_sources",
+			Rules: []string{
+				"//modules/skcms:srcs",
+				"//modules/skcms:textual_hdrs",
+			}}},
 	},
 }
 
