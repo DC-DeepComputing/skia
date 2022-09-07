@@ -935,8 +935,6 @@ static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children
                                              /*primitiveColorBlender=*/false);
         } else {
             // Patch in a "passthrough" child effect that returns the input color as-is.
-            // TODO(skia:13508): if the child is a blender, we should blend the two inputs using
-            // SrcOver, not pass through the source color.
             PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
             builder->endBlock();
         }

@@ -546,16 +546,31 @@ static void test_RuntimeEffect_Shaders(skiatest::Reporter* r, GrRecordingContext
     // Sampling children
     //
 
-    // Sampling a null child should return the paint color
+    // Sampling a null shader should return the paint color
     effect.build("uniform shader child;"
                  "half4 main(float2 p) { return child.eval(p); }");
     effect.child("child") = nullptr;
     effect.test(0xFF00FFFF,
                 [](SkCanvas*, SkPaint* paint) { paint->setColor4f({1.0f, 1.0f, 0.0f, 1.0f}); });
 
-    sk_sp<SkShader> rgbwShader = make_RGBW_shader();
+    // Sampling a null color-filter should return the passed-in color
+    effect.build("uniform colorFilter child;"
+                 "half4 main(float2 p) { return child.eval(half4(1, 1, 0, 1)); }");
+    effect.child("child") = nullptr;
+    effect.test(0xFF00FFFF);
+
+    // Sampling a null blender returns the source color (the dest color is ignored)
+    effect.build("uniform blender child;"
+                 "half4 main(float2 p) {"
+                 "    p -= 0.5;"
+                 "    return child.eval(p.xy01, half4(0.2, 0.4, 0.6, 0.8));"
+                 "}");
+    effect.child("child") = nullptr;
+    effect.test({0xFF000000, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF});
 
     // Sampling a simple child at our coordinates
+    sk_sp<SkShader> rgbwShader = make_RGBW_shader();
+
     effect.build("uniform shader child;"
                  "half4 main(float2 p) { return child.eval(p); }");
     effect.child("child") = rgbwShader;
