@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fa3066e_29572b58",
+        "filename": "src/gpu/ganesh/GrTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:13:29Z",
+      "side": 1,
+      "message": "It seems like this should only set by the regen task.",
+      "revId": "d69a8f8f41ee7d0a749ea9a9ba8905d8cda52c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef1e4211_d676fc61",
+        "filename": "src/gpu/ganesh/GrTextureProxy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:13:29Z",
+      "side": 1,
+      "message": "??",
+      "revId": "d69a8f8f41ee7d0a749ea9a9ba8905d8cda52c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
