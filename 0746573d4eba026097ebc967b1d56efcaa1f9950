@@ -79,6 +79,29 @@
       "message": "bitwise ops should work on the SnippetRequirementFlags type",
       "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b287ee6_8a5ba105",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T20:59:35Z",
+      "side": 1,
+      "message": "... for blenders\n?",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
