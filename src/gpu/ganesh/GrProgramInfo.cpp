@@ -48,6 +48,9 @@ void GrProgramInfo::checkMSAAAndMIPSAreResolved() const {
             // mipmap filter. See skbug.com/7094.
             SkASSERT(tex->mipmapped() != GrMipmapped::kYes || !tex->mipmapsAreDirty());
         }
+
+        SkDEBUGCODE(GrTextureProxy* texProxy = te.view().asTextureProxy();)
+        SkASSERT(!texProxy->slatedForMipmapRegen());
     });
 }
 
