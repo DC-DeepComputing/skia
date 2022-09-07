@@ -159,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c22a3b02_9f83c251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-07T14:42:59Z",
+      "side": 1,
+      "message": "What are the limitations of using the SDL1 interface? It\u0027s been a while since I\u0027ve used SDL.",
+      "parentUuid": "d2334eba_01df7481",
+      "revId": "4940a87e5bc7ff2b2749f791ee39af365d2f9f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00630cd6_d6573c91",
