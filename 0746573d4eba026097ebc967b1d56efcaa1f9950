@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "72fd67ab_fb437832",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:11:30Z",
+      "side": 1,
+      "message": "It seems like that would be useful to explicitly mark intent",
+      "parentUuid": "577ab758_ac9d9ffe",
+      "range": {
+        "startLine": 861,
+        "startChar": 55,
+        "endLine": 861,
+        "endChar": 65
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e62328d_b85c820a",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 4
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Yes. Dest colors are only used by blenders.",
       "parentUuid": "8e62328d_b85c820a",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca243bb_270b260c",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:11:30Z",
+      "side": 1,
+      "message": "So, maybe, change it to /* destColorName */ to signal that it is intentionally unused in this function.",
+      "parentUuid": "bfc7399b_3b363e18",
       "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -202,6 +244,30 @@
       "side": 1,
       "message": "The source/input color is used by both Color Filters and Blenders. (Local Coords is used by Shaders, but neither of the other two.)",
       "parentUuid": "7b287ee6_8a5ba105",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48d6482c_6bdab8cc",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:11:30Z",
+      "side": 1,
+      "message": "Right, but it only a \"source\" color (in the sense that you\u0027re going to apply some blendmode to it) for blenders, right?",
+      "parentUuid": "353ec098_f32fa591",
       "range": {
         "startLine": 59,
         "startChar": 50,
