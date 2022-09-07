@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aedba43c_4ba99593",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-07T14:27:25Z",
+      "side": 1,
+      "message": "In my Skia checkout, this folder doesn\u0027t exist. I believe `skcms.h` is the file you want, and that\u0027s in `modules/skcms`. That\u0027s different from `modules/svg` and `modules/skottie`, so maybe it *should* be in an `include` directory?",
+      "range": {
+        "startLine": 613,
+        "startChar": 28,
+        "endLine": 613,
+        "endChar": 35
+      },
+      "revId": "e2a4f31ebd718dc6a08017f4aa36c743b8e740da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
