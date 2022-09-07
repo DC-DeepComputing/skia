@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06aa5232_a256872c",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:21:12Z",
+      "side": 1,
+      "message": "That\u0027s fine with me but we don\u0027t do that anywhere else in here. e.g. `currentPreLocalExpr` is also ignored by many/most of these functions. Should we do a big cleanup round as a followup?",
+      "parentUuid": "dca243bb_270b260c",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37929ace_36df0f14",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 4
