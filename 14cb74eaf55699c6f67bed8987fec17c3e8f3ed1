@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69ecd45c_6670bc71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-07T22:14:21Z",
+      "side": 1,
+      "message": "This shouldn\u0027t change anything at the moment, since hairlines currently go through the path case, and the path case currently only asks for fill paths (the fFrameWidth is -1). However, fixing the stroke-the-stroke issue will require sometimes asking for this case, which means being able to properly report hairlines.",
+      "revId": "14cb74eaf55699c6f67bed8987fec17c3e8f3ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
