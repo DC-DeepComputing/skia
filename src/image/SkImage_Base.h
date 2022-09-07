@@ -233,7 +233,6 @@ private:
             const SkRect* subset,
             const SkRect* domain) const = 0;
 #endif
-
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;
 
