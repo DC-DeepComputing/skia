@@ -227,6 +227,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6904591_5713a55b",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-07T21:31:53Z",
+      "side": 1,
+      "message": "Sigh - I guess I\u0027ll look into changing SkEnumBitMask. That seems like a requirement of having bit-wise operators on a enum.",
+      "parentUuid": "a1964c08_edc8802f",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b287ee6_8a5ba105",
         "filename": "src/core/SkShaderCodeDictionary.h",
         "patchSetId": 4
