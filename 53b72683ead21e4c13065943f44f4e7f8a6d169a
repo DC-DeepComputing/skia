@@ -33,6 +33,23 @@
       "message": "Swapping to Brian O for the owners review",
       "revId": "53b72683ead21e4c13065943f44f4e7f8a6d169a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842cf215_df443644",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-07T14:33:44Z",
+      "side": 1,
+      "message": "This code isn\u0027t (and wasn\u0027t) doing what - I assume - we intended here. From the comment, I assume we want to put the pointer\u0027s value into the hash. This is actually dereferencing that pointer, and putting the first 8 (or 4, on 32-bit systems) of the TextureProxy object itself into the hash. By my read, that\u0027s just going to be the vtable pointer, so EVERY texture is getting the same hash bits here?",
+      "revId": "53b72683ead21e4c13065943f44f4e7f8a6d169a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
