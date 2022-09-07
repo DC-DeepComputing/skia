@@ -91,6 +91,12 @@ inline SkRuntimeEffect* SkMakeRuntimeEffect(
         SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
         const char* sksl,
         SkRuntimeEffect::Options options = SkRuntimeEffect::Options{}) {
+#if defined(SK_DEBUG)
+    if (SkStrContains(sksl, "//") || SkStrContains(sksl, "    ")) {
+        SkDebugf("Found SkSL snippet that can be minified: \n %s\n", sksl);
+        //SkASSERT(false);
+    }
+#endif
     SkRuntimeEffectPriv::UsePrivateRTShaderModule(&options);
     auto result = make(SkString{sksl}, options);
     SkASSERTF(result.effect, "%s", result.errorText.c_str());
