@@ -40,13 +40,43 @@ class Recorder;
  */
 class SK_API ImageProvider : public SkRefCnt {
 public:
-    // If the client's derived class already has a Graphite-backed image that has the same
-    // contents as 'image' and meets the requirements, then it can be returned.
-    // makeTextureImage can always be called to create an acceptable Graphite-backed image
-    // which could then be cached.
-    virtual sk_sp<SkImage> findOrCreate(Recorder* recorder,
-                                        const SkImage* image,
-                                        SkImage::RequiredImageProperties) = 0;
+    class Key {
+    public:
+        Key(const SkImage* image, Mipmapped mipmapped) {
+            fData = (static_cast<uint64_t>(image->uniqueID()) << 32) |
+                    (mipmapped == Mipmapped::kYes ? 0x1 : 0x0);
+        }
+
+        Key withMipmapping() const { return Key(this->imageID(), Mipmapped::kYes); }
+        Key withOutMipmapping() const { return Key(this->imageID(), Mipmapped::kNo); }
+
+        uint64_t asUInt64() const { return fData; }
+
+    private:
+        Key(uint32_t imageID, Mipmapped mipmapped) {
+            fData = (static_cast<uint64_t>(imageID) << 32) |
+                    (mipmapped == Mipmapped::kYes ? 0x1 : 0x0);
+        }
+
+        uint32_t imageID() const { return fData >> 32; }
+
+        uint64_t fData;
+    };
+
+    // If the client's derived class already has a Graphite-backed image that matches 'key'
+    // and has all of the required properties, then it can be returned.
+    // Note that Graphite requires the returned image to preserve the dimensions, number of
+    // channels and alpha type of the original. The bit depth of the individual changes can be
+    // different.
+    // Wrt the mipmapping requirement, if a image is returned that doesn't meet the mipmapping
+    // requirements then its sampling may be affected.
+    virtual sk_sp<SkImage> find(Recorder*,
+                                Key,
+                                SkImage::RequiredImageProperties) = 0;
+    virtual void insert(Recorder*,
+                         Key,
+                         sk_sp<SkImage>) = 0;
+
 };
 
 } // namespace skgpu::graphite
