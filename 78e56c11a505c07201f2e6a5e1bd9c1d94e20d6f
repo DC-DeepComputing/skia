@@ -87,6 +87,24 @@
       "parentUuid": "47c634bb_3f69d043",
       "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3657675c_df46a1ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-07T15:17:52Z",
+      "side": 1,
+      "message": "I\u0027m giving up on reproducing the bug from higher upstack. I did find the fuzzer was using a big matrix like:\n [1184256.0000   0.0000 592128.0000]\n [  0.0000 400.0000 189.0000]\n [  0.0000   0.0000   1.0000]\n\nBut I was unable to construct an image shader that tickled the overflow quite right.",
+      "parentUuid": "c6b40fa7_05b864c4",
+      "revId": "78e56c11a505c07201f2e6a5e1bd9c1d94e20d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
