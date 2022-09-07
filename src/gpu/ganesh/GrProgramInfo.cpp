@@ -41,6 +41,9 @@ void GrProgramInfo::checkMSAAAndMIPSAreResolved() const {
         GrTexture* tex = te.texture();
         SkASSERT(tex);
 
+        GrTextureProxy* texProxy = te.view().asTextureProxy();
+        SkASSERT_RELEASE(!texProxy->slatedForMipmapRegen());
+
         // Ensure mipmaps were all resolved ahead of time by the DAG.
         if (te.samplerState().mipmapped() == GrMipmapped::kYes &&
             (tex->width() != 1 || tex->height() != 1)) {
