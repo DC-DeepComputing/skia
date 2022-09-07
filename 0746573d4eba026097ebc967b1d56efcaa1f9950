@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "577ab758_ac9d9ffe",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:02:26Z",
+      "side": 1,
+      "message": "If that constant existed, yes.",
+      "parentUuid": "5b7184ed_165613b5",
+      "range": {
+        "startLine": 861,
+        "startChar": 55,
+        "endLine": 861,
+        "endChar": 65
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e62328d_b85c820a",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-07T20:55:49Z",
       "side": 1,
       "message": "So this will never used in this case, right?",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc7399b_3b363e18",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:02:26Z",
+      "side": 1,
+      "message": "Yes. Dest colors are only used by blenders.",
+      "parentUuid": "8e62328d_b85c820a",
       "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "167ad009_ea640dc1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:02:26Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "37929ace_36df0f14",
+      "range": {
+        "startLine": 965,
+        "startChar": 70,
+        "endLine": 965,
+        "endChar": 83
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ac0b8b5_f3124443",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 4
@@ -83,6 +149,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1964c08_edc8802f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:02:26Z",
+      "side": 1,
+      "message": "They generate an `SkEnumBitMask\u003cSnippetRequirementFlags\u003e` which AFAICS isn\u0027t convertible to `SnippetRequirementFlags`. I think our existing code only works because we\u0027ve never put two flags onto a snippet before.",
+      "parentUuid": "2ac0b8b5_f3124443",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b287ee6_8a5ba105",
         "filename": "src/core/SkShaderCodeDictionary.h",
         "patchSetId": 4
@@ -94,6 +178,30 @@
       "writtenOn": "2022-09-07T20:59:35Z",
       "side": 1,
       "message": "... for blenders\n?",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353ec098_f32fa591",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-07T21:02:26Z",
+      "side": 1,
+      "message": "The source/input color is used by both Color Filters and Blenders. (Local Coords is used by Shaders, but neither of the other two.)",
+      "parentUuid": "7b287ee6_8a5ba105",
       "range": {
         "startLine": 59,
         "startChar": 50,
