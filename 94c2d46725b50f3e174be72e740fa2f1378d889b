@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4cadd99_076292be",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-07T14:27:55Z",
+      "side": 1,
+      "message": "It looks like runtime effect shaders also always trigger \"needing local coords\", and the current state of gatherer may not be valid yet since the RTShader block hasn\u0027t been gathered yet.\n\nDigging a bit further into SkShader and SkShaderBase (our internal parent class), it looks like technically every shader can have a local matrix (or at least a pointer/storage for a local matrix), but the behavior is always as if the caller wrapped the main shader in an SkLocalMatrixShader. I believe that SkShaderBase was set up this way so that the being able to transform your shaders didn\u0027t require creating another C++ object on the heap. \n\nBut it leads to some tricky behavior around what the actual program is that you\u0027re defining as you build the SkShader tree up. For instance, chaining multiple SkShader::makeWithLocalMatrix() calls together will optimize the series of transforms into a single SkLocalMatrixShader and the combined matrix, meaning we\u0027ll only have the one local matrix block in the program. On the other hand, the extra local matrix that gradients, images, and runtime shaders define is not accounted for with this. That means an image shader+matrix chained with a makeWithLocalMatrix() sees two separate transform steps.\n\nI think that the Ganesh asFragmentProcessor() gets around this by having the SkLocalMatrixShader not actually add a fragment processor but just apply its transform to the data of its child. With graphite\u0027s key building system, we don\u0027t have that collapsing happen yet. I can see three paths forward:\n\n1. Have the image, gradient, etc. shaders override makeAsALocalMatrix() so that they return a version of themselves with the identity matrix. This should let them integrate with SkLocalMatrixShader\u0027s collapsing of transform shaders.\n2. Remove the local matrix off of SkShaderBase entirely, and all the shaders that accepted an optional local matrix argument would just wrap themselves in SkLocalMatrixShader if it was provided. This moves all transform collapsing logic into SkLocalMatrixShader.\n3. Have the addToKey logic for the local matrix shader be smart and know how to look at its child (or have a child know how to look up at its parent) and apply the transform collapsing directly into the extracted data.\n\nI like #2 because it isolates special logic, but #1 is probably the least invasive. #3 is the trickiest, but has some advantages in integrating with the pre-compilation system. If the precompile options have a series of local matrices, either that code needs to know to collapse them (matching the logic in the real factory) or we need to rely on the key generation to collapse them.\n\nCC\u0027ing Rob and Brian O to weigh in on what the right direction here should be.",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
