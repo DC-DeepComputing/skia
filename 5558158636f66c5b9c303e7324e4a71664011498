@@ -60,6 +60,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2a50425_4d14303b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-07T15:30:34Z",
+      "side": 1,
+      "message": "This comment is no longer using terminology used by the rest of the class; maybe we could say we\u0027re tracking bindings by UniformSsboCache::Index?",
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8828160e_0f0889c7",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 5
@@ -76,6 +93,29 @@
         "startChar": 62,
         "endLine": 373,
         "endChar": 63
+      },
+      "revId": "5558158636f66c5b9c303e7324e4a71664011498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be84d56e_7e576f32",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-07T15:30:34Z",
+      "side": 1,
+      "message": "Nit: outdated comment",
+      "range": {
+        "startLine": 122,
+        "startChar": 13,
+        "endLine": 122,
+        "endChar": 19
       },
       "revId": "5558158636f66c5b9c303e7324e4a71664011498",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
