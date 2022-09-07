@@ -20,63 +20,66 @@ namespace {
 //
 // Returns the normalized difference between a and b, i.e. normalize(a - b), with care taken for
 // if 'a' and/or 'b' have large coordinates.
-static const char* kRobustNormalizeDiffFn = R"(
-float2 robust_normalize_diff(float2 a, float2 b) {
-    float2 diff = a - b;
-    if (diff == float2(0.0)) {
-        return float2(0.0);
-    } else {
-        float invMag = 1.0 / max(abs(diff.x), abs(diff.y));
-        return normalize(invMag * diff);
-    }
-})";
+static const char* kRobustNormalizeDiffFn =
+"float2 robust_normalize_diff(float2 a, float2 b) {"
+    "float2 diff = a - b;"
+    "if (diff == float2(0.0)) {"
+        "return float2(0.0);"
+    "} else {"
+        "float invMag = 1.0 / max(abs(diff.x), abs(diff.y));"
+        "return normalize(invMag * diff);"
+    "}"
+;
 
 // float cosine_between_unit_vectors(float2 a, float2 b) { ...
 //
 // Returns the cosine of the angle between a and b, assuming a and b are unit vectors already.
 // Guaranteed to be between [-1, 1].
-static const char* kCosineBetweenUnitVectorsFn = R"(
-float cosine_between_unit_vectors(float2 a, float2 b) {
+static const char* kCosineBetweenUnitVectorsFn =
+"float cosine_between_unit_vectors(float2 a, float2 b) {"
     // Since a and b are assumed to be normalized, the cosine is equal to the dot product, although
     // we clamp that to ensure it falls within the expected range of [-1, 1].
-    return clamp(dot(a, b), -1.0, 1.0);
-})";
+    "return clamp(dot(a, b), -1.0, 1.0);"
+"}"
+;
 
 
 // float miter_extent(float cosTheta, float miterLimit) { ...
 //
 // Extends the middle radius to either the miter point, or the bevel edge if we surpassed the
 // miter limit and need to revert to a bevel join.
-static const char* kMiterExtentFn = R"(
-float miter_extent(float cosTheta, float miterLimit) {
-    float x = fma(cosTheta, .5, .5);
-    return (x * miterLimit * miterLimit >= 1.0) ? inversesqrt(x) : sqrt(x);
-})";
+static const char* kMiterExtentFn =
+"float miter_extent(float cosTheta, float miterLimit) {"
+    "float x = fma(cosTheta, .5, .5);"
+    "return (x * miterLimit * miterLimit >= 1.0) ? inversesqrt(x) : sqrt(x);"
+"}"
+;
 
 // float num_radial_segments_per_radian(float approxDevStrokeRadius) { ...
 //
 // Returns the number of radial segments required for each radian of rotation, in order for the
 // curve to appear "smooth" as defined by the approximate device-space stroke radius.
-static const char* kNumRadialSegmentsPerRadianFn = R"(
-float num_radial_segments_per_radian(float approxDevStrokeRadius) {
-    return .5 / acos(max(1.0 - (1.0 / PRECISION) / approxDevStrokeRadius, -1.0));
-})";
+static const char* kNumRadialSegmentsPerRadianFn =
+"float num_radial_segments_per_radian(float approxDevStrokeRadius) {"
+    "return .5 / acos(max(1.0 - (1.0 / PRECISION) / approxDevStrokeRadius, -1.0));"
+"}";
 
 // float<N> unchecked_mix(float<N> a, float<N> b, float<N> T) { ...
 //
 // Unlike mix(), this does not return b when t==1. But it otherwise seems to get better
 // precision than "a*(1 - t) + b*t" for things like chopping cubics on exact cusp points.
 // We override this result anyway when t==1 so it shouldn't be a problem.
-static const char* kUncheckedMixFn = R"(
-float unchecked_mix(float a, float b, float T) {
-    return fma(b - a, T, a);
-}
-float2 unchecked_mix(float2 a, float2 b, float T) {
-    return fma(b - a, float2(T), a);
-}
-float4 unchecked_mix(float4 a, float4 b, float4 T) {
-    return fma(b - a, T, a);
-})";
+static const char* kUncheckedMixFn =
+"float unchecked_mix(float a, float b, float T) {"
+    "return fma(b - a, T, a);"
+"}"
+"float2 unchecked_mix(float2 a, float2 b, float T) {"
+    "return fma(b - a, float2(T), a);"
+"}"
+"float4 unchecked_mix(float4 a, float4 b, float4 T) {"
+    "return fma(b - a, T, a);"
+"}"
+;
 
 using skgpu::tess::FixedCountStrokes;
 
@@ -211,10 +214,10 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
         fTessControlArgsUniform = args.fUniformHandler->addUniform(
                 nullptr, kVertex_GrShaderFlag, SkSLType::kFloat3, "tessControlArgs",
                 &tessArgsName);
-        args.fVertBuilder->codeAppendf(R"(
-        float NUM_RADIAL_SEGMENTS_PER_RADIAN = %s.x;
-        float JOIN_TYPE = %s.y;
-        float STROKE_RADIUS = %s.z;)", tessArgsName, tessArgsName, tessArgsName);
+        args.fVertBuilder->codeAppendf(
+        "float NUM_RADIAL_SEGMENTS_PER_RADIAN = %s.x;"
+        "float JOIN_TYPE = %s.y;"
+        "float STROKE_RADIUS = %s.z;", tessArgsName, tessArgsName, tessArgsName);
     } else {
         // The shader does not currently support dynamic hairlines, so this case only needs to
         // configure NUM_RADIAL_SEGMENTS_PER_RADIAN based on the fixed maxScale and per-instance
@@ -224,11 +227,11 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
         fTessControlArgsUniform = args.fUniformHandler->addUniform(
                 nullptr, kVertex_GrShaderFlag, SkSLType::kFloat, "maxScale",
                 &maxScaleName);
-        args.fVertBuilder->codeAppendf(R"(
-        float STROKE_RADIUS = dynamicStrokeAttr.x;
-        float JOIN_TYPE = dynamicStrokeAttr.y;
-        float NUM_RADIAL_SEGMENTS_PER_RADIAN = num_radial_segments_per_radian(
-                %s * STROKE_RADIUS);)", maxScaleName);
+        args.fVertBuilder->codeAppendf(
+        "float STROKE_RADIUS = dynamicStrokeAttr.x;"
+        "float JOIN_TYPE = dynamicStrokeAttr.y;"
+        "float NUM_RADIAL_SEGMENTS_PER_RADIAN = num_radial_segments_per_radian("
+                "%s * STROKE_RADIUS);", maxScaleName);
 
     }
 
@@ -253,65 +256,69 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
     args.fVertBuilder->codeAppendf("float2 TRANSLATE = %s;\n", translateName);
 
     if (shader.hasExplicitCurveType()) {
-        args.fVertBuilder->insertFunction(SkStringPrintf(R"(
-        bool is_conic_curve() { return curveTypeAttr != %g; })",
+        args.fVertBuilder->insertFunction(SkStringPrintf(
+        "bool is_conic_curve() { return curveTypeAttr != %g; }",
             skgpu::tess::kCubicCurveType).c_str());
     } else {
-        args.fVertBuilder->insertFunction(R"(
-        bool is_conic_curve() { return isinf(pts23Attr.w); })");
+        args.fVertBuilder->insertFunction(
+        "bool is_conic_curve() { return isinf(pts23Attr.w); }");
     }
 
     // Tessellation code.
-    args.fVertBuilder->codeAppend(R"(
-    float2 p0=pts01Attr.xy, p1=pts01Attr.zw, p2=pts23Attr.xy, p3=pts23Attr.zw;
-    float2 lastControlPoint = argsAttr.xy;
-    float w = -1;  // w<0 means the curve is an integral cubic.
-    if (is_conic_curve()) {
+    args.fVertBuilder->codeAppend(
+    "float2 p0=pts01Attr.xy, p1=pts01Attr.zw, p2=pts23Attr.xy, p3=pts23Attr.zw;"
+    "float2 lastControlPoint = argsAttr.xy;"
+    "float w = -1;"  // w<0 means the curve is an integral cubic.
+    "if (is_conic_curve()) {"
         // Conics are 3 points, with the weight in p3.
-        w = p3.x;
-        p3 = p2;  // Setting p3 equal to p2 works for the remaining rotational logic.
-    })");
+        "w = p3.x;"
+        "p3 = p2;"  // Setting p3 equal to p2 works for the remaining rotational logic.
+    "}"
+    );
 
     // Emit code to call Wang's formula to determine parametric segments. We do this before
     // transform points for hairlines so that it is consistent with how the CPU tested the control
     // points for chopping.
-    args.fVertBuilder->codeAppend(R"(
+    args.fVertBuilder->codeAppend(
     // Find how many parametric segments this stroke requires.
-    float numParametricSegments;
-    if (w < 0) {
-        if (p0 == p1 && p2 == p3) {
-            numParametricSegments = 1; // a line
-        } else {
-            numParametricSegments = wangs_formula_cubic(PRECISION, p0, p1, p2, p3, AFFINE_MATRIX);
-        }
-    } else {
-        numParametricSegments = wangs_formula_conic(PRECISION,
-                                                    AFFINE_MATRIX * p0,
-                                                    AFFINE_MATRIX * p1,
-                                                    AFFINE_MATRIX * p2, w);
-    })");
+    "float numParametricSegments;"
+    "if (w < 0) {"
+        "if (p0 == p1 && p2 == p3) {"
+            "numParametricSegments = 1;" // a line
+        "} else {"
+            "numParametricSegments = wangs_formula_cubic(PRECISION, p0, p1, p2, p3, AFFINE_MATRIX);"
+        "}"
+    "} else {"
+        "numParametricSegments = wangs_formula_conic(PRECISION,"
+                                                    "AFFINE_MATRIX * p0,"
+                                                    "AFFINE_MATRIX * p1,"
+                                                    "AFFINE_MATRIX * p2, w);"
+    "}"
+    );
 
     if (shader.stroke().isHairlineStyle()) {
         // Hairline case. Transform the points before tessellation. We can still hold off on the
         // translate until the end; we just need to perform the scale and skew right now.
-        args.fVertBuilder->codeAppend(R"(
-        p0 = AFFINE_MATRIX * p0;
-        p1 = AFFINE_MATRIX * p1;
-        p2 = AFFINE_MATRIX * p2;
-        p3 = AFFINE_MATRIX * p3;
-        lastControlPoint = AFFINE_MATRIX * lastControlPoint;)");
+        args.fVertBuilder->codeAppend(
+        "p0 = AFFINE_MATRIX * p0;"
+        "p1 = AFFINE_MATRIX * p1;"
+        "p2 = AFFINE_MATRIX * p2;"
+        "p3 = AFFINE_MATRIX * p3;"
+        "lastControlPoint = AFFINE_MATRIX * lastControlPoint;"
+        );
     }
 
-    args.fVertBuilder->codeAppend(R"(
+    args.fVertBuilder->codeAppend(
     // Find the starting and ending tangents.
-    float2 tan0 = robust_normalize_diff((p0 == p1) ? ((p1 == p2) ? p3 : p2) : p1, p0);
-    float2 tan1 = robust_normalize_diff(p3, (p3 == p2) ? ((p2 == p1) ? p0 : p1) : p2);
-    if (tan0 == float2(0)) {
+    "float2 tan0 = robust_normalize_diff((p0 == p1) ? ((p1 == p2) ? p3 : p2) : p1, p0);"
+    "float2 tan1 = robust_normalize_diff(p3, (p3 == p2) ? ((p2 == p1) ? p0 : p1) : p2);"
+    "if (tan0 == float2(0)) {"
         // The stroke is a point. This special case tells us to draw a stroke-width circle as a
         // 180 degree point stroke instead.
-        tan0 = float2(1,0);
-        tan1 = float2(-1,0);
-    })");
+        "tan0 = float2(1,0);"
+        "tan1 = float2(-1,0);"
+    "}"
+    );
 
     if (args.fShaderCaps->fVertexIDSupport) {
         // If we don't have sk_VertexID support then "edgeID" already came in as a vertex attrib.
