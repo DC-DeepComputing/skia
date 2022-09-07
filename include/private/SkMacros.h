@@ -76,4 +76,6 @@
     friend X operator &(X a, X b); \
     friend X& operator &=(X& a, X b);
 
+#define unlikely(x) __builtin_expect(!!(x), 0)
+
 #endif  // SkMacros_DEFINED
