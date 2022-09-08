@@ -245,6 +245,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30720d29_7de4fb21",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T11:01:53Z",
+      "side": 1,
+      "message": "I _think_ the design goal was that any place which takes a bitmask of enums will use `SkEnumBitMask\u003cSnippetRequirementFlags\u003e` instead of using `SnippetRequirementFlags`. But that\u0027s a guess based on reading existing code, I\u0027m not 100% sure. If we wanted to go through all of our existing code and replace `SnippetRequirementFlags` with `SkEnumBitMask\u003cSnippetRequirementFlags\u003e` it might solve itself.\n\nOf course we could just add a `.value()` accessor to `SkEnumBitMask` but I\u0027m guessing it\u0027s intentionally left out.\n\nWho owns (owned) that class? bungeman? csmartdalton?",
+      "parentUuid": "f6904591_5713a55b",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b287ee6_8a5ba105",
         "filename": "src/core/SkShaderCodeDictionary.h",
         "patchSetId": 4
