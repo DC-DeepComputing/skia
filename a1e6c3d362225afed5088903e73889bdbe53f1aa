@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb5d851_ba5819ff",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-08T20:17:11Z",
+      "side": 1,
+      "message": "Might want to update (or remove) this comment now?",
+      "revId": "a1e6c3d362225afed5088903e73889bdbe53f1aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
