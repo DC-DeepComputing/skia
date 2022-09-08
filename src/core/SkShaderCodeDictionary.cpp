@@ -179,7 +179,8 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
         mainBody += "    float4 coords = dev2LocalUni * sk_FragCoord;\n";
     }
 
-    // TODO: what is the correct initial color to feed in?
+    // Set initial color. This will typically be optimized out by SkSL in favor of the paint
+    // specifying a color with a solid color shader.
     std::string lastOutputVar = "initialColor";
     SkSL::String::appendf(&mainBody, "    half4 %s = half4(0);", lastOutputVar.c_str());
     if (this->needsLocalCoords()) {
