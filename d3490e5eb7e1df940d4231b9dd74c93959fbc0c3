@@ -22,6 +22,30 @@
       },
       "revId": "d3490e5eb7e1df940d4231b9dd74c93959fbc0c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceb4f93c_7b018b33",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T18:53:11Z",
+      "side": 1,
+      "message": "The variable name is an implementation detail. outColor_0 is totally fine with me.\n\nHowever, I think this code is more fragile than before, because we\u0027re now relying on the fact that all keys start with a SolidColor, and also relying on the fact that SolidColor doesn\u0027t use the lastOutputVar. If either of those things changes, we will generate bad SkSL.\n\nI think we\u0027re better off leaving this code exactly as-is, declaring `half4 initialColor \u003d half4(0);` and passing `initialColor` to the first block. In practice, if initialColor is unused, SkSL will just delete it anyway from the final program. If for some reason our keys start with something that looks at the initial color, we\u0027ll at least generate a working program.",
+      "parentUuid": "28cf54ea_db7a5c09",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 7
+      },
+      "revId": "d3490e5eb7e1df940d4231b9dd74c93959fbc0c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
