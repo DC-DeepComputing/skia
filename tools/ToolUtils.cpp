@@ -653,38 +653,23 @@ class TestingImageProvider : public skgpu::graphite::ImageProvider {
 public:
     ~TestingImageProvider() override {}
 
-    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
-                                const SkImage* image,
-                                SkImage::RequiredImageProperties requiredProps) override {
-        if (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo) {
-            // If no mipmaps are required, check to see if we have a mipmapped version anyway -
-            // since it can be used in that case.
-            // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
-            // key, we could remove the hidden non-mipmapped key/image from the cache.
-            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
-            auto result = fCache.find(mipMappedKey);
-            if (result != fCache.end()) {
-                return result->second;
-            }
-        }
-
-        uint64_t key = ((uint64_t)image->uniqueID() << 32) |
-                       (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kYes ? 0x1 : 0x0);
-
-        auto result = fCache.find(key);
+    sk_sp<SkImage> find(skgpu::graphite::Recorder* recorder,
+                        Key key) override {
+        auto result = fCache.find(key.asUInt64());
         if (result != fCache.end()) {
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, requiredProps);
-        if (!newImage) {
-            return nullptr;
-        }
+        return nullptr;
+    }
 
-        auto [iter, success] = fCache.insert({ key, newImage });
+    void insert(skgpu::graphite::Recorder* recorder,
+                Key key,
+                sk_sp<SkImage> imageToInsert) override {
+        SkASSERT(imageToInsert->isTextureBacked());
+
+        SkDEBUGCODE(auto [_, success] =) fCache.insert({ key.asUInt64(), imageToInsert });
         SkASSERT(success);
-
-        return iter->second;
     }
 
 private:
