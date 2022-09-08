@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f59d7a78_ffa495f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-08T13:14:06Z",
+      "side": 1,
+      "message": "Kevin:\n\nI decided to use the same macro/path format as the GNI\u0027s in //gn. So this CL switches from *.gni relative paths to using $_modules/... . All the canary\u0027s are flakey, but I did do a local Chromium/macOS build - which was OK. PTAL.",
+      "revId": "423b89181d453f3f9725fab9fd3f2193a99bc5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
