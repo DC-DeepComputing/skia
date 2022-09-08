@@ -35,7 +35,7 @@ class Caps;
 class Device;
 class DrawBufferManager;
 class GlobalCache;
-class ImageProvider;
+class ImageCache;
 class RecorderPriv;
 class Recording;
 class ResourceProvider;
@@ -54,7 +54,7 @@ struct SK_API RecorderOptions final {
     RecorderOptions(const RecorderOptions&) = default;
     ~RecorderOptions();
 
-    sk_sp<ImageProvider> fImageProvider;
+    sk_sp<ImageCache> fImageCache;
 };
 
 class SK_API Recorder final {
@@ -68,8 +68,8 @@ public:
 
     std::unique_ptr<Recording> snap();
 
-    ImageProvider* clientImageProvider() { return fClientImageProvider.get(); }
-    const ImageProvider* clientImageProvider() const { return fClientImageProvider.get(); }
+    ImageCache* clientImageCache() { return fClientImageCache.get(); }
+    const ImageCache* clientImageCache() const { return fClientImageCache.get(); }
 
     /**
      * Creates a new backend gpu texture matching the dimensions and TextureInfo. If an invalid
@@ -150,7 +150,7 @@ private:
     std::unique_ptr<TokenTracker> fTokenTracker;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
-    sk_sp<ImageProvider> fClientImageProvider;
+    sk_sp<ImageCache> fClientImageCache;
 
     // In debug builds we guard against improper thread handling
     // This guard is passed to the ResourceCache.
