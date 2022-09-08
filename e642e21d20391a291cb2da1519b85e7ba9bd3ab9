@@ -70,6 +70,24 @@
       "parentUuid": "039cc420_0f563be0",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad17c905_146d547d",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T13:49:05Z",
+      "side": 1,
+      "message": "I also started noodling through \"what if we got rid of this bit completely\" but I haven\u0027t fully thought through the consequences. There are definitely going to be ripple effects, hopefully net-positive ones.\n\nMaybe we need to stop inferring \"this is an intrinsic\" and explicitly spell it out. It would be a hassle to implement, but what if every intrinsic had `layout(intrinsicKind\u003d123)` attached?",
+      "parentUuid": "1466747d_a2af6c20",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
