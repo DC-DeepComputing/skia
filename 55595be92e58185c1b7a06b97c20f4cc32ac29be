@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f39503_3b119bcb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T15:01:29Z",
+      "side": 1,
+      "message": "This is now identical to clamp_a. Are the semantic nuances of clamp_gamut and clamp_a worth keeping them separate stages?",
+      "range": {
+        "startLine": 3400,
+        "startChar": 0,
+        "endLine": 3405,
+        "endChar": 1
+      },
+      "revId": "55595be92e58185c1b7a06b97c20f4cc32ac29be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
