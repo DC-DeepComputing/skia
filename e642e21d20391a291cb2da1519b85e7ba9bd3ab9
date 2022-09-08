@@ -196,6 +196,24 @@
       "parentUuid": "a40bf9b5_ce2c22bb",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f0e8d3_82bb0b83",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T14:22:05Z",
+      "side": 1,
+      "message": "Landing this for now since it\u0027s an improvement over what we have today. I left a link to this comment thread on the bug, and I\u0027ll leave the bug open.",
+      "parentUuid": "b8daa9b8_3050ace8",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
