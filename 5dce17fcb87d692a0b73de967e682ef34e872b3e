@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c35a24da_3c2c4990",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-08T13:36:18Z",
+      "side": 1,
+      "message": "Not planning on submitting this -- just need to create a revert CL so that zmo@ can apply it to verify this CL is causing an issue.",
+      "revId": "5dce17fcb87d692a0b73de967e682ef34e872b3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
