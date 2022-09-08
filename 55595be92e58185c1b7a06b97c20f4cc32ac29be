@@ -46,6 +46,30 @@
       },
       "revId": "55595be92e58185c1b7a06b97c20f4cc32ac29be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be279fb8_ff3a7901",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T16:03:24Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "6576308b_3812fec5",
+      "range": {
+        "startLine": 3400,
+        "startChar": 0,
+        "endLine": 3405,
+        "endChar": 1
+      },
+      "revId": "55595be92e58185c1b7a06b97c20f4cc32ac29be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
