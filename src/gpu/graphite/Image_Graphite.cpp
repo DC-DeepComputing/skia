@@ -53,11 +53,22 @@ bool Image::testingOnly_ReadPixels(Context* context,
                             srcY);
 }
 
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
+                                                   sk_sp<SkColorSpace>,
+                                                   GrDirectContext*) const {
+    return nullptr;
+}
+
+sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace>) const {
+    return nullptr;
+}
+
 sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, RequiredImageProperties requiredProps) const {
     SkASSERT(requiredProps.fMipmapped == Mipmapped::kYes && !this->hasMipmaps());
-    // TODO: copy the base layer into a new image that has mip levels
+    // TODO: copy the base layer into a new image that has mip levels. For now we just return
+    // the un-mipmapped version and allow the sampling to be downgraded to linear
     SKGPU_LOG_W("Graphite does not yet allow explicit mipmap level addition");
-    return nullptr;
+    return sk_ref_sp(this);
 }
 
 } // namespace skgpu::graphite
