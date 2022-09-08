@@ -163,6 +163,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea692388_701f86fb",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T14:42:06Z",
+      "side": 1,
+      "message": "Well, that was an example; `fragCoord` is also ignored by most. \nWe should probably bundle these all up into a struct (a la `EmitArgs`).",
+      "parentUuid": "7a227f09_efbba444",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37929ace_36df0f14",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 4
