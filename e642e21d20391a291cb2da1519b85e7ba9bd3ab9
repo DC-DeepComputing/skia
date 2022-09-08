@@ -178,6 +178,24 @@
       "parentUuid": "91ef2ba8_4bcf7ef1",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8daa9b8_3050ace8",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T14:08:45Z",
+      "side": 1,
+      "message": "(... with an extra check for the modifier, I suppose, to handle intrinsics that have side effects, too).",
+      "parentUuid": "a40bf9b5_ce2c22bb",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
