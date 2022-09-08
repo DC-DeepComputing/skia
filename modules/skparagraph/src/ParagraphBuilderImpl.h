@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <tuple>
+#include "include/private/SkTArray.h"
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphBuilder.h"
@@ -95,6 +96,9 @@ protected:
     ParagraphStyle fParagraphStyle;
 
     std::shared_ptr<SkUnicode> fUnicode;
+
+private:
+    SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
 };
 }  // namespace textlayout
 }  // namespace skia
