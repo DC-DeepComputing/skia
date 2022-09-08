@@ -132,6 +132,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3854594d_09e16c44",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T14:18:16Z",
+      "side": 1,
+      "message": "Without weighing in on the vote here, I think we could probably get away with `gatherer-\u003eneedsLocalCoords() || !this-\u003egetLocalMatrix().isIdentity()`... does that work? Presumably factoring the matrix off of SkShaderBase entirely will involve a lot of code shuffling and will need its own followup CL.",
+      "parentUuid": "c1f47d92_c8e4dc75",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdf56414_c35c8760",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 14
