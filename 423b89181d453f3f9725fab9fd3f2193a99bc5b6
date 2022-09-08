@@ -39,6 +39,30 @@
       },
       "revId": "423b89181d453f3f9725fab9fd3f2193a99bc5b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a3df8a_da3531d6",
+        "filename": "modules/skcms/skcms.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-08T14:33:58Z",
+      "side": 1,
+      "message": "Do you think I missed a compile target? I just did a `autoninja -C out/Debug` which build about 83K files.",
+      "parentUuid": "c82f4e74_c90d3abf",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 13
+      },
+      "revId": "423b89181d453f3f9725fab9fd3f2193a99bc5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
