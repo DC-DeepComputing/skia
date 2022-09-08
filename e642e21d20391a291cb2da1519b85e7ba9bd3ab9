@@ -88,6 +88,24 @@
       "parentUuid": "1466747d_a2af6c20",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebc1e634_91f101e1",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T13:52:46Z",
+      "side": 1,
+      "message": "That sounds like a possible fallback (and it would be nice to have that information properly encoded in the IR). I feel like checking for a definition is a possible answer (though I realize it may not work correctly - if we\u0027re parsing at any point between the prototype and definition of a function, we\u0027ll get the wrong answer).",
+      "parentUuid": "ad17c905_146d547d",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
