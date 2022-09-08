@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1520d615_0ffd7521",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T15:35:22Z",
+      "side": 1,
+      "message": "This is a pure cut-paste to move the UniformBindingTracker class up with the other internal classes in DrawPass.cpp.",
+      "revId": "ecf0e9eae542841430999ca5d30ec73031986fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
