@@ -22,6 +22,30 @@
       },
       "revId": "55595be92e58185c1b7a06b97c20f4cc32ac29be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6576308b_3812fec5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3405,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T15:39:51Z",
+      "side": 1,
+      "message": "Yes and no. The lowp version happens to be identical, because the clamp against zero (that\u0027s semantically part of clamp_gamut, but not clamp_a) doesn\u0027t do anything, and is omitted here. In highp, clamp_a just clamps the high end, and clamp_gamut also clamps against zero.\n\nHowever: My next CL makes all of this confusion go away, because it turns out that we never use clamp_0, clamp_1, or clamp_a alone -- they\u0027re always paired. So I\u0027m going to collapse them down to two stages: clamp_01 and clamp_gamut (or maybe clamp_0a?). That will mean fewer stages that exist, fewer stages in pipelines, and no seemingly redundant stages like this.",
+      "parentUuid": "33f39503_3b119bcb",
+      "range": {
+        "startLine": 3400,
+        "startChar": 0,
+        "endLine": 3405,
+        "endChar": 1
+      },
+      "revId": "55595be92e58185c1b7a06b97c20f4cc32ac29be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
