@@ -156,6 +156,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab42c31c_49deae63",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-08T16:08:33Z",
+      "side": 1,
+      "message": "I definitely favor 2) as the long term solution.\n\nIf 1) makes things work better or more easily for Graphite until 2) can be achieved that seems like a fine interim solution that doesn\u0027t radically disrupt the current operation. There is a complication, though: It is technically possible to create a gradient shader with a matrix and then wrap it in a local matrix shader but also continue to hold a ref to the original gradient shader. So I think we\u0027d always have to copy the gradient shader when makeWithLocalMatrix is called and we don\u0027t currently have SkShader copying (serialize/deserialize would be a sneaky way to do it). So perhaps this isn\u0027t really a quicker/simpler fix.\n\nI\u0027d be ok with doing 2) and then dealing with perf fallout on CPU later. I\u0027m not sure anyone is relying on this perf and tracking close to our tip of tree.",
+      "parentUuid": "3854594d_09e16c44",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdf56414_c35c8760",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 14
