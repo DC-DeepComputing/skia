@@ -653,38 +653,41 @@ class TestingImageProvider : public skgpu::graphite::ImageProvider {
 public:
     ~TestingImageProvider() override {}
 
-    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
-                                const SkImage* image,
-                                SkImage::RequiredImageProperties requiredProps) override {
+    sk_sp<SkImage> find(skgpu::graphite::Recorder* recorder,
+                        Key key,
+                        SkImage::RequiredImageProperties requiredProps) override {
         if (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo) {
             // If no mipmaps are required, check to see if we have a mipmapped version anyway -
             // since it can be used in that case.
-            // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
-            // key, we could remove the hidden non-mipmapped key/image from the cache.
-            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
-            auto result = fCache.find(mipMappedKey);
+            Key mipMappedKey = key.withMipmapping();
+            auto result = fCache.find(mipMappedKey.asUInt64());
             if (result != fCache.end()) {
                 return result->second;
             }
         }
 
-        uint64_t key = ((uint64_t)image->uniqueID() << 32) |
-                       (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kYes ? 0x1 : 0x0);
-
-        auto result = fCache.find(key);
+        auto result = fCache.find(key.asUInt64());
         if (result != fCache.end()) {
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, requiredProps);
-        if (!newImage) {
-            return nullptr;
-        }
+        // Note that we are intentionally not messing about w/ mipmapping here. If mipmaps are
+        // required and a cached image doesn't have them we just return null. This will result
+        // in Graphite creating a mipmapped version and inserting it into the cache. Clients
+        // may not want this behavior (i.e., making a copy of the contents of an image in order
+        // to mipmap them) in which case they should return the non-mipmapped version. Graphite
+        // will then reduce the sampling to bilinear.
 
-        auto [iter, success] = fCache.insert({ key, newImage });
+        return nullptr;
+    }
+
+    void insert(skgpu::graphite::Recorder* recorder,
+                Key key,
+                sk_sp<SkImage> imageToInsert) override {
+        SkASSERT(imageToInsert->isTextureBacked());
+
+        auto [_, success] = fCache.insert({ key.asUInt64(), imageToInsert });
         SkASSERT(success);
-
-        return iter->second;
     }
 
 private:
