@@ -31,14 +31,6 @@ class Variable;
 
 struct Modifiers;
 
-// This enum holds every intrinsic supported by SkSL.
-#define SKSL_INTRINSIC(name) k_##name##_IntrinsicKind,
-enum IntrinsicKind : int8_t {
-    kNotIntrinsic = -1,
-    SKSL_INTRINSIC_LIST
-};
-#undef SKSL_INTRINSIC
-
 /**
  * A function declaration (not a definition -- does not contain a body).
  */

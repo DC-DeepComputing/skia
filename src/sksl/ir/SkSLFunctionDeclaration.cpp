@@ -35,17 +35,12 @@
 namespace SkSL {
 
 static IntrinsicKind identify_intrinsic(std::string_view functionName) {
-    #define SKSL_INTRINSIC(name) {#name, k_##name##_IntrinsicKind},
-    static const auto* kAllIntrinsics = new SkTHashMap<std::string_view, IntrinsicKind>{
-        SKSL_INTRINSIC_LIST
-    };
-    #undef SKSL_INTRINSIC
-
     if (skstd::starts_with(functionName, '$')) {
         functionName.remove_prefix(1);
     }
 
-    IntrinsicKind* kind = kAllIntrinsics->find(functionName);
+    const IntrinsicMap& intrinsicMap = GetIntrinsicMap();
+    IntrinsicKind* kind = intrinsicMap.find(functionName);
     return kind ? *kind : kNotIntrinsic;
 }
 
