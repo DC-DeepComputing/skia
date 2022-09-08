@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11cd517d_4875c156",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T19:50:35Z",
+      "side": 0,
+      "message": "Don\u0027t need this any more!",
+      "range": {
+        "startLine": 480,
+        "startChar": 1,
+        "endLine": 483,
+        "endChar": 5
+      },
+      "revId": "ebdf03d7a9a786c627e4f18d9a123efbd8c7bebe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
