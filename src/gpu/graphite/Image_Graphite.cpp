@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
+#include "include/gpu/graphite/ImageCache.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Log.h"
@@ -63,18 +64,45 @@ sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, RequiredImageProperties requ
 
 sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
                                          RequiredImageProperties requiredProps) const {
+    using namespace skgpu::graphite;
+
     if (!recorder) {
         return nullptr;
     }
     if (this->dimensions().area() <= 1) {
-        requiredProps.fMipmapped = skgpu::graphite::Mipmapped::kNo;
+        requiredProps.fMipmapped = Mipmapped::kNo;
     }
 
     if (as_IB(this)->isGraphiteBacked()) {
-        if (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo || this->hasMipmaps()) {
+        if (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps()) {
             const SkImage* image = this;
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
-    return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+
+    ImageCache* clientImageCache = recorder->clientImageCache();
+
+    if (requiredProps.fMipmapped == Mipmapped::kNo) {
+        // If no mipmaps are required, check to see if there is a mipmapped version anyway -
+        // since it can be used in that case.
+        ImageCache::Key key(this, Mipmapped::kYes);
+        sk_sp<SkImage> result = clientImageCache->find(recorder, key);
+        if (result) {
+            return result;
+        }
+    }
+
+    ImageCache::Key key(this, requiredProps.fMipmapped);
+    sk_sp<SkImage> result = clientImageCache->find(recorder, key);
+    if (result) {
+        return result;
+    }
+
+    result = as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+    if (!result) {
+        return nullptr;
+    }
+
+    clientImageCache->insert(recorder, key, result);
+    return result;
 }
