@@ -34,6 +34,24 @@
       "parentUuid": "593dae8a_6ea8d5a0",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "039cc420_0f563be0",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T12:31:40Z",
+      "side": 1,
+      "message": "Thinking about this further--even the SkSLIntrinsicList needs to be taken with a tiny grain of salt, because the SkSLIntrinsicList only has names, not function signatures. That is, `void cos(int x, bool y)` is not an intrinsic even if it shows up in a module and `cos` is in the SkSLIntrinsicList.\n\nI don\u0027t want to overthink this, though, because module code is generally limited in scope, and outside users aren\u0027t allowed to create modules, so it\u0027s okay to have known limitations.",
+      "parentUuid": "2c7a21f5_94099b17",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
