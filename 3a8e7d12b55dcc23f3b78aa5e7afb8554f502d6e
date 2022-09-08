@@ -51,6 +51,24 @@
       "parentUuid": "8b9dc79a_fc92796c",
       "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a490a1a_8178b320",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T13:34:48Z",
+      "side": 1,
+      "message": "Maybe we revert and just tell UBSAN to ignore overflow in this case?",
+      "parentUuid": "7beaac27_c28d32b5",
+      "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
