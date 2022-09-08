@@ -124,6 +124,24 @@
       "parentUuid": "ebc1e634_91f101e1",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea777dfa_a20d2bbe",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T14:00:03Z",
+      "side": 1,
+      "message": "Any writes to a global variable, or calls to other side-effecting functions, are side-effecting.",
+      "parentUuid": "ebc1e634_91f101e1",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
