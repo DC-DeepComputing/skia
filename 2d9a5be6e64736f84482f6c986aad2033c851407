@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ff69e3d_104dc84f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T15:11:45Z",
+      "side": 1,
+      "message": "I trusted the doc comments...... 🙃\n\n    /** Retrieves alpha from the color used when stroking and filling.\n\n        @return  alpha ranging from zero, fully transparent, to 255, fully opaque\n    */\n    float getAlphaf() const { return fColor4f.fA; }",
+      "parentUuid": "c3379325_97ba982c",
+      "range": {
+        "startLine": 449,
+        "startChar": 34,
+        "endLine": 449,
+        "endChar": 82
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09775dc8_a3a3a4dd",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 1
