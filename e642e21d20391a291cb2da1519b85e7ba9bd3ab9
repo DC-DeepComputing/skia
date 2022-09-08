@@ -142,6 +142,24 @@
       "parentUuid": "ebc1e634_91f101e1",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ef2ba8_4bcf7ef1",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T14:03:37Z",
+      "side": 1,
+      "message": "Re Brian: We really like to build the program in a single pass; going back and updating things in the IR is not something we do well. Particularly for Symbols, which aren\u0027t meant to be mutable after they\u0027ve been put in the symbol table (and a FunctionDeclaration is a symbol). I don\u0027t think we want to try and update a FunctionDeclaration that already lives in the symbol table.\n\nIn the short term, if we want to make sure we don\u0027t stumble into this bug again, we have various recourses, from easy to hard:\n- Make it illegal to prototype user functions in modules entirely (very easy, but maybe not tenable long term)\n- If a module function has an intrinsic name, only allow it to be prototyped, not defined. That is, you can prototype `cos(int foo, bool bar)` in the modules, but you can\u0027t provide a definition. This would just fail in the backends (as it would today).\n- Require explicit labeling of intrinsics with their intrinsicKind ID.",
+      "parentUuid": "ea777dfa_a20d2bbe",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
