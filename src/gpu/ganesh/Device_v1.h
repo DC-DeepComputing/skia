@@ -216,7 +216,7 @@ private:
         kNone      = 0,
         kNeedClear = 1 << 0,  //!< Surface requires an initial clear
         kIsOpaque  = 1 << 1,  //!< Hint from client that rendering to this device will be
-        //   opaque even if the config supports alpha.
+                              //!<   opaque even if the config supports alpha.
     };
     GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(DeviceFlags);
 
