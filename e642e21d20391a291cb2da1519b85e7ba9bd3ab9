@@ -160,6 +160,24 @@
       "parentUuid": "ea777dfa_a20d2bbe",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a40bf9b5_ce2c22bb",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T14:08:03Z",
+      "side": 1,
+      "message": "Right. I think what we have here is good for now... What I was proposing doesn\u0027t require mutating the IR at all (ever). We just change the first condition in SkSLFunctionCall::getProperty to be:\n\n    if (property \u003d\u003d Property::kSideEffects) {\n        return this-\u003efunction().definition() !\u003d nullptr;\n    }\n    \nBut like I said - that will give results that change over time (after we see a prototype, but before we see the definition).",
+      "parentUuid": "91ef2ba8_4bcf7ef1",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
