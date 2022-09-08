@@ -477,11 +477,9 @@ bool Parser::functionDeclarationEnd(Position start,
     Position pos = this->rangeFrom(start);
 
     // Conservatively assume that any function with a body has side effects.
-    bool hasFunctionBody = !this->checkNext(Token::Kind::TK_SEMICOLON);
-    if (hasFunctionBody) {
-        modifiers.flags() |= Modifiers::kHasSideEffects_Flag;
-    }
     DSLFunction result(this->text(name), modifiers, type, parameterPointers, pos);
+
+    bool hasFunctionBody = !this->checkNext(Token::Kind::TK_SEMICOLON);
     if (hasFunctionBody) {
         AutoSymbolTable symbols;
         for (DSLParameter* var : parameterPointers) {
