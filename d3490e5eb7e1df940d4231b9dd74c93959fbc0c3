@@ -46,6 +46,30 @@
       },
       "revId": "d3490e5eb7e1df940d4231b9dd74c93959fbc0c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfd25e13_0af5d603",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-08T23:07:31Z",
+      "side": 1,
+      "message": "Yeah, I didn\u0027t like the fragility of relying upon solid color shader being the first key block. I suppose we still would be for correctness, but at least the produced result would be valid SkSL as you said. I will make that change.",
+      "parentUuid": "ceb4f93c_7b018b33",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 7
+      },
+      "revId": "d3490e5eb7e1df940d4231b9dd74c93959fbc0c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

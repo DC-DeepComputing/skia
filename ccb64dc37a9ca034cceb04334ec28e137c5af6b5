@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9481d084_939f3534",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-08T23:07:31Z",
+      "side": 1,
+      "message": "Adding Rob - Question for you about the combination builder. 😊",
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fab5711_f5f63a05",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-08T23:07:31Z",
+      "side": 1,
+      "message": "@Rob - This CL adds a solid color shader block to paint params keys so we can incorporate the paint\u0027s color in SkSL. Does this seem like the correct approach to add the equivalent information to the combination builder\u0027s generated paint params key?",
+      "range": {
+        "startLine": 699,
+        "startChar": 4,
+        "endLine": 702,
+        "endChar": 0
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
