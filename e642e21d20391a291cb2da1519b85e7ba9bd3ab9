@@ -106,6 +106,24 @@
       "parentUuid": "ad17c905_146d547d",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc53cfa_33396ddd",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T13:58:39Z",
+      "side": 1,
+      "message": "Not to throw more wrenches into the works, but does it end up being easier to just look at the parameters to the function definition? Presumably side effects are limited to non-void return type, out or inout parameters, and buffer pointers? I suppose with compute it gets more complicated because you\u0027d have to check the actual body for writes to a storage buffer as well, but that also seems like something that could be bubbled up to the DSLFunction object by visiting the body statements pretty easily.",
+      "parentUuid": "ebc1e634_91f101e1",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
