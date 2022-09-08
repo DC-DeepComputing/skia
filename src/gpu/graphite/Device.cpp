@@ -38,6 +38,7 @@
 #include "include/private/SkImageInfoPriv.h"
 #include "src/core/SkVerticesPriv.h"
 
+#include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"
@@ -443,12 +444,27 @@ void Device::onReplaceClip(const SkIRect& rect) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+static std::optional<SkColor4f> extract_paint_color(const SkPaint& paint) {
+    if (paint.getShader() || paint.getMaskFilter() ||
+        paint.getImageFilter() || !paint.isSrcOver() || paint.getAlphaf() < 255.0f) {
+        return std::nullopt;
+    }
+
+    if (SkColorFilter* filter = paint.getColorFilter()) {
+        // TODO: SkColorSpace support
+        return filter->filterColor4f(paint.getColor4f(), sk_srgb_singleton(), sk_srgb_singleton());
+    }
+
+    return paint.getColor4f();
+}
+
 void Device::drawPaint(const SkPaint& paint) {
-    // TODO: check paint params as well
      if (this->clipIsWideOpen()) {
-        // do fullscreen clear
-        fDC->clear(paint.getColor4f());
-        return;
+        if (std::optional<SkColor4f> color = extract_paint_color(paint)) {
+            // do fullscreen clear
+            fDC->clear(*color);
+            return;
+        }
     }
 
     const Transform& localToDevice = this->localToDeviceTransform();
