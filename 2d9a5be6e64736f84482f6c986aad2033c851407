@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "288a6814_1c28be3e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T14:58:59Z",
+      "side": 1,
+      "message": "Can we put this in the anonymous namespace next to paint_depends_on_dst?",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 447,
+        "endChar": 75
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3379325_97ba982c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T14:58:59Z",
+      "side": 1,
+      "message": "I think we can just use !paint_depends_on_dst() here. That lets kSrc and kClear blend modes get treated as clears (assuming there\u0027s no shader), and also avoids the issue where we had a src-over blend and the color filter mapped an opaque paint color to something with alpha \u003c 1.f.\n\n(also getAlphaf() ranges from [0, 1], getAlpha() is [0, 255])",
+      "range": {
+        "startLine": 449,
+        "startChar": 34,
+        "endLine": 449,
+        "endChar": 82
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95978036_b5b9f13c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T14:58:59Z",
+      "side": 1,
+      "message": "No paint passed to SkDevice draw calls will have an image filter, so this can be removed.\n\nWe can also drop the check on getMaskFilter() because drawPaint() ignores mask filters.",
+      "range": {
+        "startLine": 449,
+        "startChar": 8,
+        "endLine": 449,
+        "endChar": 30
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09775dc8_a3a3a4dd",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 1
@@ -19,6 +88,29 @@
         "startChar": 15,
         "endLine": 455,
         "endChar": 99
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5883b792_0e0e9b9b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-08T14:58:59Z",
+      "side": 1,
+      "message": "Can we add a TODO here that if the paint doesn\u0027t depend on dst, but has a shader that we can reset the DrawContext to use a discard load op. The drawPaint will cover anything else entirely, even though it does require the shader evaluation to do per-pixel colors.",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 463,
+        "endChar": 72
       },
       "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
