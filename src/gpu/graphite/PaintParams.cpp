@@ -63,6 +63,11 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
                         SkPaintParamsKeyBuilder* builder,
                         SkPipelineDataGatherer* gatherer) const {
 
+    // Always start the key with a solid color shader block to set the initial color to the color
+    // stored within the paint.
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, fColor.premul());
+    builder->endBlock();
+
     if (fPrimitiveBlender) {
         as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer,
                                            /*primitiveColorBlender=*/true);
