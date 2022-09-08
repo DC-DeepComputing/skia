@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e609a38_05aea08f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T17:27:28Z",
+      "side": 1,
+      "message": "JS stuff looks fine. bungeman@ can you help by looking at the UTF stuff?",
+      "revId": "aab56de0705134334b34e32ab465c936409fc444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bf5efbd_c398d928",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T17:27:28Z",
+      "side": 1,
+      "message": "Can you clarify this comment that the indexes are relative to the UTF-16 (maybe the WTF-16?) representation of the text?\n\nMaybe explicitly call out the Intl.Segmenter API here as a source for the data.",
+      "range": {
+        "startLine": 996,
+        "startChar": 39,
+        "endLine": 996,
+        "endChar": 46
+      },
+      "revId": "aab56de0705134334b34e32ab465c936409fc444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7c3dd8_540ed9bf",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T17:27:28Z",
+      "side": 1,
+      "message": "This leading | shouldn\u0027t be here or on line 1006.",
+      "range": {
+        "startLine": 1004,
+        "startChar": 32,
+        "endLine": 1004,
+        "endChar": 33
+      },
+      "revId": "aab56de0705134334b34e32ab465c936409fc444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
