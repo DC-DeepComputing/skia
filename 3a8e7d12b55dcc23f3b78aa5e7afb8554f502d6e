@@ -69,6 +69,24 @@
       "parentUuid": "7beaac27_c28d32b5",
       "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebd9a1d_08d6191c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T13:40:33Z",
+      "side": 1,
+      "message": "I think that\u0027s the better option - the overflow isn\u0027t going to cause real issues, if I\u0027m understanding this code correctly (just rendering bugs).",
+      "parentUuid": "0a490a1a_8178b320",
+      "revId": "3a8e7d12b55dcc23f3b78aa5e7afb8554f502d6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
