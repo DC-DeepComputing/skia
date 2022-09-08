@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28cf54ea_db7a5c09",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-08T17:04:05Z",
+      "side": 1,
+      "message": "While this works, it sets the first solid color from the paint to a variable called `outColor_0` (rather than `initialColor` as we had before). Is that sufficiently clear? \n\nIf not, we have some other options that we can consider:\n- Handle the solid shader block first and independently (outside of `emit_glue_code_for_entry`)\n- Add an optional argument on to emit_glue_code_for_entry that allows the caller to override the default naming convention of \"outColor_%d\" (where `d` \u003d the entry index).\n\nLet me know what you think.",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 7
+      },
+      "revId": "d3490e5eb7e1df940d4231b9dd74c93959fbc0c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
