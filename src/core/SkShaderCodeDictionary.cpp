@@ -179,14 +179,11 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
         mainBody += "    float4 coords = dev2LocalUni * sk_FragCoord;\n";
     }
 
-    // TODO: what is the correct initial color to feed in?
-    std::string lastOutputVar = "initialColor";
-    SkSL::String::appendf(&mainBody, "    half4 %s = half4(0);", lastOutputVar.c_str());
     if (this->needsLocalCoords()) {
         // Get the local coordinates varying into float4 format as expected by emit_glue_code.
         mainBody += "float4 outLocalCoords = float4(localCoordsVar, 0.0, 0.0);\n";
     }
-
+    std::string lastOutputVar;
     for (int entryIndex = 0; entryIndex < (int)fBlockReaders.size();) {
         // Emit shader main body code. This never alters the preamble or increases the entry index.
         // TODO - Once RenderSteps that require local coordinates emit them directly to the
