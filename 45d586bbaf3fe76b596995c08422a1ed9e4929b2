@@ -142,6 +142,30 @@
       },
       "revId": "45d586bbaf3fe76b596995c08422a1ed9e4929b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0bf1594_1d6c4779",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-08T14:02:30Z",
+      "side": 1,
+      "message": "Works for me.",
+      "parentUuid": "2da087bf_857846ec",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "45d586bbaf3fe76b596995c08422a1ed9e4929b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
