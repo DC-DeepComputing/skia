@@ -52,6 +52,24 @@
       "parentUuid": "2c7a21f5_94099b17",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1466747d_a2af6c20",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-08T13:45:31Z",
+      "side": 1,
+      "message": "Yeah, as I was reading this, I came to the same conclusion about prototyped module functions. Those are probably less common, but I could see us stumbling into this bug again if someone wants to organize the graphite modules down the road. Is the actual answer: Any function that has a definition? If so, could we just adjust how we do this completely - rather than putting the flag in modifiers like this, change the implementation of FunctionCall::hasProperty here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/ir/SkSLFunctionCall.cpp;l\u003d847;drc\u003da442c20f87b3f20ec085cc20f86938f82b8c6914\n\n???",
+      "parentUuid": "039cc420_0f563be0",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
