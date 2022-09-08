@@ -16,6 +16,24 @@
       "message": "There is existing code that does this for user functions elsewhere, right? Can we remove that other code now?",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c7a21f5_94099b17",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-08T11:15:59Z",
+      "side": 1,
+      "message": "The existing code is here: https://osscs.corp.google.com/skia/skia/+/main:src/sksl/dsl/DSLFunction.cpp;l\u003d40-43;drc\u003d68d6ff9222b6eb0010b76820362ea50751d46739\n\nI tried removing it, but this causes prototyped user functions to be considered pure. This changes our test output in exciting ways; calls to prototyped functions can now be eliminated, making (e.g.) IllegalRecursionComplex a valid program.\n\nI think conceptually keeping both is correct:\n- Any function which is declared with a body is side-effecting\n- Any function in user code is side-effecting\n\nWhich implies:\n- A function without a body in non-user code is non-side-effecting (yes)\n- A prototyped function in module code is non-side-effecting (oops--didn\u0027t realize this until I typed out this note)\n\nI think we could get similar results in a maybe-cleaner way by leveraging the SkSLIntrinsicList. We\u0027ve already got this list of built-in functions, so we could just check against that instead of using this heuristic. But that\u0027s a more significant restructuring and this CL will fix Michael\u0027s immediate issue.",
+      "parentUuid": "593dae8a_6ea8d5a0",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
