@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d25ecd_c7d6fe05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T14:39:15Z",
+      "side": 1,
+      "message": "Lgtm once the G3 issue is resolved.",
+      "revId": "423b89181d453f3f9725fab9fd3f2193a99bc5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c82f4e74_c90d3abf",
@@ -55,6 +72,30 @@
       "side": 1,
       "message": "Do you think I missed a compile target? I just did a `autoninja -C out/Debug` which build about 83K files.",
       "parentUuid": "c82f4e74_c90d3abf",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 13
+      },
+      "revId": "423b89181d453f3f9725fab9fd3f2193a99bc5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b6526b4_746c2d8c",
+        "filename": "modules/skcms/skcms.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-08T14:39:15Z",
+      "side": 1,
+      "message": "I think it\u0027s more likely that I didn\u0027t (don\u0027t) quite understand what rebase_path() does.",
+      "parentUuid": "f9a3df8a_da3531d6",
       "range": {
         "startLine": 8,
         "startChar": 0,
