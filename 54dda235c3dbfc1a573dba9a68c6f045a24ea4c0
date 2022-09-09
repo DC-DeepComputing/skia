@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6231e2b_9590f074",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-09-09T09:18:50Z",
+      "side": 1,
+      "message": "PTAL, merge approval in https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1358471#c9",
+      "revId": "54dda235c3dbfc1a573dba9a68c6f045a24ea4c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
