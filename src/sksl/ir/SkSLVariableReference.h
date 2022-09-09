@@ -67,6 +67,8 @@ public:
     void setRefKind(RefKind refKind);
     void setVariable(const Variable* variable);
 
+    bool hasProperty(Property property) const override;
+
     std::unique_ptr<Expression> clone(Position pos) const override {
         return std::make_unique<VariableReference>(pos, this->variable(), this->refKind());
     }

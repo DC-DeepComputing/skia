@@ -8,7 +8,6 @@
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 
 #include "include/core/SkTypes.h"
-#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLNop.h"
@@ -31,7 +30,7 @@ std::unique_ptr<Statement> ExpressionStatement::Make(const Context& context,
 
     if (context.fConfig->fSettings.fOptimize) {
         // Expression-statements without any side effect can be replaced with a Nop.
-        if (!Analysis::HasSideEffects(*expr)) {
+        if (!expr->hasSideEffects()) {
             return Nop::Make();
         }
     }

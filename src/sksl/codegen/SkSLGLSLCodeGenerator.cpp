@@ -985,7 +985,7 @@ void GLSLCodeGenerator::writeBinaryExpression(const BinaryExpression& b,
                               op.isAssignment() &&
                               left.is<FieldAccess>() &&
                               is_sk_position(left.as<FieldAccess>()) &&
-                              !Analysis::ContainsRTAdjust(right) &&
+                              !right.containsRTAdjust() &&
                               !this->caps().fCanUseFragCoord;
     if (positionWorkaround) {
         this->write("sk_FragCoord_Workaround = (");
@@ -1468,7 +1468,7 @@ void GLSLCodeGenerator::writeDoStatement(const DoStatement& d) {
 }
 
 void GLSLCodeGenerator::writeExpressionStatement(const ExpressionStatement& s) {
-    if (fProgram.fConfig->fSettings.fOptimize && !Analysis::HasSideEffects(*s.expression())) {
+    if (fProgram.fConfig->fSettings.fOptimize && !s.expression()->hasSideEffects()) {
         // Don't emit dead expressions.
         return;
     }

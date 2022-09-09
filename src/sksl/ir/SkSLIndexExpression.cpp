@@ -11,7 +11,6 @@
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkTArray.h"
 #include "include/sksl/SkSLErrorReporter.h"
-#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
@@ -121,7 +120,7 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                         ComponentArray{(int8_t)indexValue});
             }
 
-            if (baseType.isArray() && !Analysis::HasSideEffects(*base)) {
+            if (baseType.isArray() && !base->hasSideEffects()) {
                 // Indexing an constant array constructor with a constant index can just pluck out
                 // the requested value from the array.
                 const Expression* baseExpr = ConstantFolder::GetConstantValueForVariable(*base);
@@ -134,7 +133,7 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                 }
             }
 
-            if (baseType.isMatrix() && !Analysis::HasSideEffects(*base)) {
+            if (baseType.isMatrix() && !base->hasSideEffects()) {
                 // Matrices can be constructed with vectors that don't line up on column boundaries,
                 // so extracting out the values from the constructor can be tricky. Fortunately, we
                 // can reconstruct an equivalent vector using `getConstantValue`. If we

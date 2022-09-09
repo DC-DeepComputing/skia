@@ -76,6 +76,11 @@ public:
         return fIfFalse;
     }
 
+    bool hasProperty(Property property) const override {
+        return this->test()->hasProperty(property) || this->ifTrue()->hasProperty(property) ||
+               this->ifFalse()->hasProperty(property);
+    }
+
     std::unique_ptr<Expression> clone(Position pos) const override {
         return std::make_unique<TernaryExpression>(pos, this->test()->clone(),
                                                    this->ifTrue()->clone(),

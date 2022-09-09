@@ -57,6 +57,10 @@ public:
         return std::string(this->name());
     }
 
+    bool hasProperty(Property property) const override {
+        return false;
+    }
+
 private:
     std::string_view fName;
 
