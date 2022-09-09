@@ -22,6 +22,30 @@
       },
       "revId": "6f4a127c1ba469b810bd776fb1d76dcb054d7611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae65790c_ccede1e6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-09T14:02:16Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t love this, but there were already other internal helpers that used the same convention (trailing underscore), so I went with that. Maybe I\u0027ll rename them all in the future.",
+      "parentUuid": "a09f46ff_1a307499",
+      "range": {
+        "startLine": 1707,
+        "startChar": 5,
+        "endLine": 1707,
+        "endChar": 14
+      },
+      "revId": "6f4a127c1ba469b810bd776fb1d76dcb054d7611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
