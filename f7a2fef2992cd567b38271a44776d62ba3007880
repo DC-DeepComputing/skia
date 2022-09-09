@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f19540c2_30664695",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T20:29:57Z",
+      "side": 0,
+      "message": "FYI: I\u0027m collapsing the set of expression-generator arguments into a struct at http://review.skia.org/579697. This should be a pretty simple merge for whoever lands second, though.",
+      "range": {
+        "startLine": 437,
+        "startChar": 38,
+        "endLine": 437,
+        "endChar": 76
+      },
+      "revId": "f7a2fef2992cd567b38271a44776d62ba3007880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
