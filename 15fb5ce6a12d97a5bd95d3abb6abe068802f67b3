@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adc40566_147c9c7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-09T18:20:05Z",
+      "side": 1,
+      "message": "Reverting this just to make sure it\u0027s not the problem. It\u0027s not that much of a perf win, and it shouldn\u0027t be used as much since the text renderer is handling more of the perspective cases.",
+      "revId": "15fb5ce6a12d97a5bd95d3abb6abe068802f67b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
