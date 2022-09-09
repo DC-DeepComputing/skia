@@ -129,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40073aa0_bad95c04",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-09T15:10:43Z",
+      "side": 1,
+      "message": "Makes sense - relocated this block.",
+      "parentUuid": "5d7daf65_8754a89f",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a588fcea_3f0c7583",
@@ -166,6 +190,30 @@
       "side": 1,
       "message": "If we can do it with a dedicated block, that\u0027s highly preferable to putting dedicated special cases in the SkSL building pass IMO. Having the blocks directly spell out the program to build makes everything clean and simple.",
       "parentUuid": "a588fcea_3f0c7583",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10067a67_4c29c745",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-09T15:10:43Z",
+      "side": 1,
+      "message": "OK, I took at a stab at combining this feedback into a proposed key building outline below. Let me know what you both think.\n\n\u003e \"I don\u0027t think SkShaders logically have an initial color\"\n[Remove / no longer start with solid color shader that is just the paint\u0027s color]\n\n1. if (shader) add shader\n   else add opaque paint color\n\n2. if (primBlender) add blender block\n\n3. paint alpha modulation block \n   ^ Does this step apply even if there is a shader added rather than the paint\u0027s \n   color as a solid color shader? AKA is the alpha value stored in the paint always \n   applied to whatever shader we have? Just confirming.\n\n4. if (color filter) add color filter block\n\n5. if (final blender) add blender block",
+      "parentUuid": "80f30e0e_5e85c482",
       "range": {
         "startLine": 75,
         "startChar": 4,
