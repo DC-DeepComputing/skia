@@ -406,7 +406,6 @@ public:
             skgpu::graphite::Mipmapped = skgpu::graphite::Mipmapped::kNo,
             const SkSurfaceProps* surfaceProps = nullptr);
 
-
     /**
      * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
      * be required to ensure the texture is valid for the lifetime of the returned SkSurface. The
