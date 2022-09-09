@@ -1705,10 +1705,14 @@ auto GrTextBlob::Key::Make(const SkGlyphRunList& glyphRunList,
 
         // Do any runs use direct drawing types?.
         key.fHasSomeDirectSubRuns = false;
+        SkPoint glyphRunListLocation = { glyphRunList.sourceBounds().centerX(),
+                                         glyphRunList.sourceBounds().centerY() };
         for (auto& run : glyphRunList) {
             SkScalar approximateDeviceTextSize =
-                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix);
-            key.fHasSomeDirectSubRuns |= control.isDirect(approximateDeviceTextSize, paint);
+                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix,
+                                                               glyphRunListLocation);
+            key.fHasSomeDirectSubRuns |= control.isDirect(approximateDeviceTextSize, paint,
+                                                          drawMatrix);
         }
 
         if (key.fHasSomeDirectSubRuns) {
