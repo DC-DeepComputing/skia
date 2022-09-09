@@ -16,6 +16,24 @@
       "message": "If we\u0027re ok with the linking backrefs, LGTM.",
       "revId": "c85ad17b97387a3d21743d40e1fe107492bac82e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7ae92ef_d6491740",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-09T17:59:52Z",
+      "side": 1,
+      "message": "Because we only link with lld when building with Bazel, I don\u0027t think the backrefs are an issue. We don\u0027t see the warning externally because we do not build with –warn-backrefs\n\nhttps://lld.llvm.org/ELF/warn_backrefs.html",
+      "parentUuid": "757c60db_211006c7",
+      "revId": "c85ad17b97387a3d21743d40e1fe107492bac82e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
