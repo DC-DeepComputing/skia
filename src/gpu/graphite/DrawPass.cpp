@@ -222,17 +222,22 @@ public:
             // All data blocks for the same pipeline have the same size, so peek the first
             // to determine the total buffer size
             size_t udbSize = cache.lookup(0).fCpuData->size();
+            size_t udbOffset;
+            if (!fUseStorageBuffers) {
+                udbOffset = bufferMgr->alignUniformBlockSize(udbSize);
+            }
             auto [writer, bufferInfo] =
                     fUseStorageBuffers ? bufferMgr->getSsboWriter(udbSize * cache.size())
                                        : bufferMgr->getUniformWriter(udbSize * cache.size());
 
             for (CpuOrGpuData& dataBlock : cache.data()) {
                 SkASSERT(dataBlock.fCpuData->size() == udbSize);
+                //*** need to figure out what to do here -- have to pad out the writer to the offset
                 writer.write(dataBlock.fCpuData->data(), udbSize);
                 // Swap from tracking the CPU data to the location of the GPU data
                 dataBlock.fGpuData = bufferInfo;
                 if (!fUseStorageBuffers) {
-                    bufferInfo.fOffset += udbSize;
+                    bufferInfo.fOffset += udbOffset;
                 } // else keep bufferInfo pointing to the start of the array
             }
         }
