@@ -18,6 +18,12 @@ class Recorder;
 
 class Surface final : public SkSurface_Base {
 public:
+    static sk_sp<SkSurface> MakeGraphite(Recorder* recorder,
+                                         SkBudgeted budgeted,
+                                         const SkImageInfo& info,
+                                         const SkSurfaceProps* props = nullptr,
+                                         bool shouldCreateWithMips = false);
+
     Surface(sk_sp<Device>);
     ~Surface() override;
 

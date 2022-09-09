@@ -33,7 +33,7 @@ Recorder* Surface::onGetRecorder() {
 SkCanvas* Surface::onNewCanvas() { return new SkCanvas(fDevice); }
 
 sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
-    return MakeGraphite(fDevice->recorder(), ii, &this->props());
+    return SkSurface::MakeGraphite(fDevice->recorder(), ii, &this->props());
 }
 
 sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
@@ -77,6 +77,24 @@ GrSemaphoresSubmitted Surface::onFlush(BackendSurfaceAccess,
 }
 #endif
 
+sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
+                                       SkBudgeted budgeted,
+                                       const SkImageInfo& info,
+                                       const SkSurfaceProps* props,
+                                       bool shouldCreateWithMips) {
+
+    Mipmapped mipmapped = shouldCreateWithMips ? Mipmapped::kYes : Mipmapped::kNo;
+
+    sk_sp<Device> device = Device::Make(recorder, info, budgeted, mipmapped,
+                                        SkSurfacePropsCopyOrDefault(props),
+                                        /* addInitialClear= */ true);
+    if (!device) {
+        return nullptr;
+    }
+
+    return sk_make_sp<Surface>(std::move(device));
+}
+
 } // namespace skgpu::graphite
 
 using namespace skgpu::graphite;
@@ -107,18 +125,11 @@ sk_sp<SkSurface> SkSurface::MakeGraphite(Recorder* recorder,
                                          const SkImageInfo& info,
                                          const SkSurfaceProps* props,
                                          bool shouldCreateWithMips) {
-
-    Mipmapped mipmapped = shouldCreateWithMips ? Mipmapped::kYes : Mipmapped::kNo;
-
-    sk_sp<Device> device = Device::Make(recorder, info, SkBudgeted::kNo,
-                                        mipmapped,
-                                        SkSurfacePropsCopyOrDefault(props),
-                                        /* addInitialClear= */ true);
-    if (!device) {
-        return nullptr;
-    }
-
-    return sk_make_sp<Surface>(std::move(device));
+    return skgpu::graphite::Surface::MakeGraphite(recorder,
+                                                  SkBudgeted::kNo,
+                                                  info,
+                                                  props,
+                                                  shouldCreateWithMips);
 }
 
 sk_sp<SkSurface> SkSurface::MakeGraphiteFromBackendTexture(Recorder* recorder,
