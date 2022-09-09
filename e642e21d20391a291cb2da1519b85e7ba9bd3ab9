@@ -214,6 +214,24 @@
       "parentUuid": "b8daa9b8_3050ace8",
       "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54bdbbc7_04d91ad8",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T00:25:50Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/579156",
+      "parentUuid": "58f0e8d3_82bb0b83",
+      "revId": "e642e21d20391a291cb2da1519b85e7ba9bd3ab9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
