@@ -59,7 +59,7 @@ std::tuple<SkStrikeSpec, SkScalar> SkStrikeSpec::MakePath(
 
     // The factor to get from the size stored in the strike to the size needed for
     // the source.
-    SkScalar strikeToSourceScale = pathFont.setupForAsPaths(&pathPaint);
+    SkScalar strikeToSourceScale = 1.0f; //pathFont.setupForAsPaths(&pathPaint);
 
     return {SkStrikeSpec(pathFont, pathPaint, surfaceProps, scalerContextFlags, SkMatrix::I()),
             strikeToSourceScale};
@@ -73,13 +73,13 @@ std::tuple<SkStrikeSpec, SkScalar> SkStrikeSpec::MakeCanonicalized(
     }
 
     const SkFont* canonicalizedFont = &font;
-    SkTLazy<SkFont> pathFont;
+    //SkTLazy<SkFont> pathFont;
     SkScalar strikeToSourceScale = 1;
-    if (ShouldDrawAsPath(canonicalizedPaint, font, SkMatrix::I())) {
-        canonicalizedFont = pathFont.set(font);
-        strikeToSourceScale = pathFont->setupForAsPaths(nullptr);
-        canonicalizedPaint.reset();
-    }
+    //if (ShouldDrawAsPath(canonicalizedPaint, font, SkMatrix::I())) {
+    //    canonicalizedFont = pathFont.set(font);
+    //    strikeToSourceScale = pathFont->setupForAsPaths(nullptr);
+    //    canonicalizedPaint.reset();
+    //}
 
     return {SkStrikeSpec(*canonicalizedFont, canonicalizedPaint, SkSurfaceProps(),
                          SkScalerContextFlags::kFakeGammaAndBoostContrast, SkMatrix::I()),

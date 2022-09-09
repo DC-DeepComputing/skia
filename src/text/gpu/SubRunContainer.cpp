@@ -1001,7 +1001,7 @@ PathOpSubmitter::~PathOpSubmitter() {
     // If we have converted glyph IDs to paths, then clean up the SkPaths.
     if (fPathsAreCreated) {
         for (auto& idOrPath : fIDsOrPaths) {
-            idOrPath.fPath.~SkPath();
+            idOrPath.fPath.fPath.~SkPath();
         }
     }
 }
@@ -1044,6 +1044,10 @@ PathOpSubmitter::submitDraws(SkCanvas* canvas, SkPoint drawOrigin, const SkPaint
     SkPaint runPaint{paint};
     runPaint.setAntiAlias(fIsAntiAliased);
 
+    // The glyph path already has fakebold, subpixel, path effect, and stroke applied.
+    runPaint.setPathEffect(nullptr);
+    runPaint.setStrokeWidth(0);
+
     SkMaskFilterBase* maskFilter = as_MFB(runPaint.getMaskFilter());
 
     // Calculate the matrix that maps the path glyphs from their size in the strike to
@@ -1074,7 +1078,8 @@ PathOpSubmitter::submitDraws(SkCanvas* canvas, SkPoint drawOrigin, const SkPaint
 
             SkAutoCanvasRestore acr(canvas, true);
             canvas->concat(pathMatrix);
-            canvas->drawPath(idOrPath.fPath, runPaint);
+            runPaint.setStroke(idOrPath.fPath.fHairline);
+            canvas->drawPath(idOrPath.fPath.fPath, runPaint);
         }
     } else {
         // Transform the path to device because the deviceMatrix must be unchanged to
@@ -1085,8 +1090,9 @@ PathOpSubmitter::submitDraws(SkCanvas* canvas, SkPoint drawOrigin, const SkPaint
             pathMatrix.postTranslate(pos.x(), pos.y());
 
             SkPath deviceOutline;
-            idOrPath.fPath.transform(pathMatrix, &deviceOutline);
+            idOrPath.fPath.fPath.transform(pathMatrix, &deviceOutline);
             deviceOutline.setIsVolatile(true);
+            runPaint.setStroke(idOrPath.fPath.fHairline);
             canvas->drawPath(deviceOutline, runPaint);
         }
     }

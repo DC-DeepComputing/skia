@@ -82,6 +82,10 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(
             SkPaint pathPaint = paint;
             pathPaint.setAntiAlias(runFont.hasSomeAntiAliasing());
 
+            // The glyph path already has fakebold, subpixel, path effect, and stroke applied.
+            pathPaint.setPathEffect(nullptr);
+            pathPaint.setStrokeWidth(0);
+
             const bool stroking = pathPaint.getStyle() != SkPaint::kFill_Style;
             const bool hairline = pathPaint.getStrokeWidth() == 0;
             const bool needsExactCTM = pathPaint.getShader()     ||
@@ -100,6 +104,7 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(
                                             translate.x(), translate.y());
                         SkAutoCanvasRestore acr(canvas, true);
                         canvas->concat(m);
+                        pathPaint.setStroke(glyph.pathIsHairline());
                         canvas->drawPath(*path, pathPaint);
                     }
                 } else {
@@ -114,6 +119,7 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(
                         SkPath deviceOutline;
                         path->transform(m, &deviceOutline);
                         deviceOutline.setIsVolatile(true);
+                        pathPaint.setStroke(glyph.pathIsHairline());
                         canvas->drawPath(deviceOutline, pathPaint);
                     }
                 }

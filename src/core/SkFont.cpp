@@ -118,6 +118,7 @@ SkFont SkFont::makeWithSize(SkScalar newSize) const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkScalar SkFont::setupForAsPaths(SkPaint* paint) {
+    /*
     constexpr uint32_t flagsToIgnore = kEmbeddedBitmaps_PrivFlag |
                                        kForceAutoHinting_PrivFlag;
 
@@ -135,6 +136,8 @@ SkScalar SkFont::setupForAsPaths(SkPaint* paint) {
     SkScalar textSize = fSize;
     this->setSize(SkIntToScalar(SkFontPriv::kCanonicalTextSizeForPaths));
     return textSize / SkFontPriv::kCanonicalTextSizeForPaths;
+    */
+    return 1.0f;
 }
 
 bool SkFont::hasSomeAntiAliasing() const {

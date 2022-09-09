@@ -124,7 +124,10 @@ union IDOrPath {
     // PathOpSubmitter takes care of destroying the paths.
     ~IDOrPath() {}
     SkGlyphID fGlyphID;
-    SkPath fPath;
+    struct Path {
+        SkPath fPath;
+        bool fHairline;
+    } fPath;
 };
 
 // prepareForDrawableDrawing uses this union to convert glyph ids to drawables.

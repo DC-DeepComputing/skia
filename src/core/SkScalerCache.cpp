@@ -182,7 +182,7 @@ size_t SkScalerCache::glyphIDsToPaths(SkSpan<sktext::IDOrPath> idsOrPaths) {
         auto [glyph, size] = this->glyph(SkPackedGlyphID{idOrPath.fGlyphID});
         increase += size;
         increase += this->preparePath(glyph);
-        new (&idOrPath.fPath) SkPath{*glyph->path()};
+        new (&idOrPath.fPath) sktext::IDOrPath::Path{SkPath{*glyph->path()}, glyph->pathIsHairline()};
     }
     return increase;
 }

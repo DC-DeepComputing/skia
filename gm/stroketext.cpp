@@ -25,77 +25,137 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
-static void test_nulldev(SkCanvas* canvas) {
-    SkBitmap bm;
-    bm.setInfo(SkImageInfo::MakeN32Premul(30, 30));
-    // notice: no pixels mom! be sure we don't crash
-    // https://code.google.com/p/chromium/issues/detail?id=352616
-    SkCanvas c(bm);
+namespace {
 
-    SkBitmap src;
-    src.allocN32Pixels(10, 10);
-    src.eraseColor(SK_ColorRED);
-
-    // ensure we don't crash
-    c.writePixels(src, 0, 0);
-}
-
-static void draw_text_stroked(SkCanvas* canvas, const SkPaint& paint, const SkFont& font,
-                              SkScalar strokeWidth) {
-    SkPaint p(paint);
-    SkPoint loc = { 20, 435 };
-
-    if (strokeWidth > 0) {
-        p.setStyle(SkPaint::kFill_Style);
-        canvas->drawSimpleText("P", 1, SkTextEncoding::kUTF8, loc.fX, loc.fY - 225, font, p);
-        canvas->drawTextBlob(SkTextBlob::MakeFromPosText("P", 1, &loc, font), 0, 0, p);
+class StrokeTextGM : public skiagm::GM {
+public:
+    StrokeTextGM() {
+        //this->setBGColor(0xFFFFFFFF);
     }
 
-    p.setColor(SK_ColorRED);
-    p.setStyle(SkPaint::kStroke_Style);
-    p.setStrokeWidth(strokeWidth);
+private:
+    SkString onShortName() override {
+        return SkString("stroketext");
+    }
 
-    canvas->drawSimpleText("P", 1, SkTextEncoding::kUTF8, loc.fX, loc.fY - 225, font, p);
-    canvas->drawTextBlob(SkTextBlob::MakeFromPosText("P", 1, &loc, font), 0, 0, p);
-}
+    SkISize onISize() override {
+        return SkISize::Make(1200, 480);
+    }
 
-static void draw_text_set(SkCanvas* canvas, const SkPaint& paint, const SkFont& font) {
-    SkAutoCanvasRestore acr(canvas, true);
-
-    draw_text_stroked(canvas, paint, font, 10);
-
-    canvas->translate(200, 0);
-    draw_text_stroked(canvas, paint, font, 0);
-
-    const SkScalar intervals[] = { 20, 10, 5, 10 };
-    const SkScalar phase = 0;
-
-    canvas->translate(200, 0);
-    SkPaint p(paint);
-    p.setPathEffect(SkDashPathEffect::Make(intervals, std::size(intervals), phase));
-    draw_text_stroked(canvas, p, font, 10);
-}
-
-namespace {
     enum {
         kBelowThreshold_TextSize = 255,
         kAboveThreshold_TextSize = 257
     };
+
+    sk_sp<SkTypeface> fTypeface;
+    SkScalar fStrokeWidth[3] = {10, 0, 100};
+
+    bool onGetControls(SkMetaData* controls) override {
+        controls->setScalars("Stroke width", 3, fStrokeWidth);
+        return true;
+    }
+
+    void onSetControls(const SkMetaData& controls) override {
+        int resultSize = 0;
+        controls.findScalars("Stroke width", &resultSize, fStrokeWidth);
+    }
+
+    void onOnceBeforeDraw() override {
+        //fTypeface = ToolUtils::create_portable_typeface();
+        fTypeface = SkTypeface::MakeFromName("Monaco", SkFontStyle());
+    }
+
+    static void test_nulldev(SkCanvas* canvas) {
+        SkBitmap bm;
+        bm.setInfo(SkImageInfo::MakeN32Premul(30, 30));
+        // notice: no pixels mom! be sure we don't crash
+        // https://code.google.com/p/chromium/issues/detail?id=352616
+        SkCanvas c(bm);
+
+        SkBitmap src;
+        src.allocN32Pixels(10, 10);
+        src.eraseColor(SK_ColorRED);
+
+        // ensure we don't crash
+        c.writePixels(src, 0, 0);
+    }
+
+    static void draw_text_stroked(SkCanvas* canvas, const SkPaint& paint, const SkFont& font,
+                                  SkScalar strokeWidth) {
+        SkPaint p(paint);
+
+        static const constexpr char text[] = "life";
+        static const constexpr size_t textSize = std::size(text) - 1;
+
+        SkGlyphID glyph[textSize] = {};
+        int glyphCount = font.textToGlyphs(text, textSize, SkTextEncoding::kUTF8, glyph, textSize);
+
+        SkScalar advances[textSize] = {};
+        font.getWidths(glyph, glyphCount, advances);
+
+        SkPoint current = { 20, 435 };
+        SkPoint loc[textSize] = {};
+        for (size_t i = 0; i < (size_t)glyphCount; ++i) {
+            loc[i] = current;
+            current.fX += advances[i];
+        }
+
+        size_t glyphSize = glyphCount * sizeof(glyph[0]);
+        if (strokeWidth > 0) {
+            p.setStyle(SkPaint::kFill_Style);
+            canvas->drawSimpleText(glyph, glyphSize, SkTextEncoding::kGlyphID,
+                                   loc[0].fX, loc[0].fY - 225, font, p);
+            canvas->drawTextBlob(SkTextBlob::MakeFromPosText(glyph, glyphSize, loc, font,
+                                                             SkTextEncoding::kGlyphID), 0, 0, p );
+        }
+
+        p.setColor(SK_ColorRED);
+        p.setStyle(SkPaint::kStroke_Style);
+        p.setStrokeWidth(strokeWidth);
+
+        canvas->drawSimpleText(glyph, glyphSize, SkTextEncoding::kGlyphID,
+                               loc[0].fX, loc[0].fY - 225, font, p);
+        canvas->drawTextBlob(SkTextBlob::MakeFromPosText(glyph, glyphSize, loc, font,
+                                                         SkTextEncoding::kGlyphID), 0, 0, p);
+    }
+
+    void draw_text_set(SkCanvas* canvas, const SkPaint& paint, const SkFont& font) {
+        SkAutoCanvasRestore acr(canvas, true);
+
+        draw_text_stroked(canvas, paint, font, fStrokeWidth[0]);
+
+        canvas->translate(200, 0);
+        draw_text_stroked(canvas, paint, font, 0);
+
+        const SkScalar intervals[] = { 20, 10, 5, 10 };
+        const SkScalar phase = 0;
+
+        canvas->translate(200, 0);
+        SkPaint p(paint);
+        p.setPathEffect(SkDashPathEffect::Make(intervals, std::size(intervals), phase));
+        draw_text_stroked(canvas, p, font, fStrokeWidth[0]);
+    }
+
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+        if (true) { test_nulldev(canvas); }
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+
+        //SkFont font(ToolUtils::create_portable_typeface(), kBelowThreshold_TextSize);
+        SkFont font(fTypeface, kBelowThreshold_TextSize);
+        draw_text_set(canvas, paint, font);
+
+        canvas->translate(600, 0);
+        font.setSize(kAboveThreshold_TextSize);
+        draw_text_set(canvas, paint, font);
+
+        return DrawResult::kOk;
+    }
+};
+DEF_GM( return new StrokeTextGM; )
+
 }  // namespace
-
-DEF_SIMPLE_GM(stroketext, canvas, 1200, 480) {
-    if (true) { test_nulldev(canvas); }
-
-    SkPaint paint;
-    paint.setAntiAlias(true);
-
-    SkFont font(ToolUtils::create_portable_typeface(), kBelowThreshold_TextSize);
-    draw_text_set(canvas, paint, font);
-
-    canvas->translate(600, 0);
-    font.setSize(kAboveThreshold_TextSize);
-    draw_text_set(canvas, paint, font);
-}
 
 DEF_SIMPLE_GM_CAN_FAIL(stroketext_native, canvas, msg, 650, 420) {
     sk_sp<SkTypeface> ttf = MakeResourceAsTypeface("fonts/Stroking.ttf");
