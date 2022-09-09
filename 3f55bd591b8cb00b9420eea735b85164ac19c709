@@ -16,6 +16,24 @@
       "message": "Is that 1.4k growth in flutter real? I definitely prefer this version, but are we learning there\u0027s room for improvement in how much code ProgramVisitor generates?",
       "revId": "3f55bd591b8cb00b9420eea735b85164ac19c709",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "301d3f9f_4799484b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-09T15:33:38Z",
+      "side": 1,
+      "message": "A quick local test shows that this saves size in x64 skottie_tool.",
+      "parentUuid": "bfe8cc07_8942aa9f",
+      "revId": "3f55bd591b8cb00b9420eea735b85164ac19c709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
