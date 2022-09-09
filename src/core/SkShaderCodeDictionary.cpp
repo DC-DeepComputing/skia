@@ -343,6 +343,13 @@ static std::string append_default_snippet_arguments(const SkShaderInfo& shaderIn
         separator = ", ";
     }
 
+    // Append destination color.
+    if (entry->needsDestColor()) {
+        code += separator;
+        code += args.destColor;
+        separator = ", ";
+    }
+
     // Append fragment coordinates.
     if (entry->needsLocalCoords()) {
         code += separator;
@@ -843,7 +850,10 @@ static constexpr char kGaussianColorFilterName[] = "sk_gaussian_colorfilter";
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr char kPassthroughName[] = "sk_passthrough";
+static constexpr char kPassthroughShaderName[] = "sk_passthrough";
+
+//--------------------------------------------------------------------------------------------------
+static constexpr char kPassthroughBlenderName[] = "blend_src_over";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr SkPaintParamsKey::DataPayloadField kFixedFunctionDataFields[] = {
@@ -1116,15 +1126,26 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kPassthroughShader] = {
-            "Passthrough",
+            "PassthroughShader",
             { },     // no uniforms
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
-            kPassthroughName,
+            kPassthroughShaderName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int)SkBuiltInCodeSnippetID::kPassthroughBlender] = {
+            "PassthroughBlender",
+            {},  // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput | SnippetRequirementFlags::kDestColor,
+            {},  // no samplers
+            kPassthroughBlenderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            {}  // no data payload
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             "SolidColor",
