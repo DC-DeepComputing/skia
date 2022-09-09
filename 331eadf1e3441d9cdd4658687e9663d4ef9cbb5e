@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bccc817_71ff837d",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-09T15:31:45Z",
+      "side": 1,
+      "message": "Nit: In other cases I\u0027ve seen people put the comment first, like:\n`/*\u003dthreadSafe*/false);`. Do we want to align with that or keep this as-is?",
+      "range": {
+        "startLine": 191,
+        "startChar": 64,
+        "endLine": 191,
+        "endChar": 84
+      },
+      "revId": "331eadf1e3441d9cdd4658687e9663d4ef9cbb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66f0799d_a5ac0e36",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-09T15:31:45Z",
+      "side": 1,
+      "message": "Nit: Same as pervious comment",
+      "range": {
+        "startLine": 95,
+        "startChar": 64,
+        "endLine": 95,
+        "endChar": 84
+      },
+      "revId": "331eadf1e3441d9cdd4658687e9663d4ef9cbb5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
