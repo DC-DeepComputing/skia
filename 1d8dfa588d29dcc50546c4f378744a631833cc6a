@@ -16,6 +16,24 @@
       "message": "Cool!\nCan we move more TableColorFilter support into the module as well?",
       "revId": "1d8dfa588d29dcc50546c4f378744a631833cc6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d5ccc02_5a2635ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-09T15:18:17Z",
+      "side": 1,
+      "message": "Yep, PTAL",
+      "parentUuid": "a1112727_de82277d",
+      "revId": "1d8dfa588d29dcc50546c4f378744a631833cc6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
