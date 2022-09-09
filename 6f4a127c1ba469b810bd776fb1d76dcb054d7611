@@ -46,6 +46,30 @@
       },
       "revId": "6f4a127c1ba469b810bd776fb1d76dcb054d7611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c25a09b6_05f335c1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-09T14:03:15Z",
+      "side": 1,
+      "message": "Ack, self consistency is good too.",
+      "parentUuid": "ae65790c_ccede1e6",
+      "range": {
+        "startLine": 1707,
+        "startChar": 5,
+        "endLine": 1707,
+        "endChar": 14
+      },
+      "revId": "6f4a127c1ba469b810bd776fb1d76dcb054d7611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
