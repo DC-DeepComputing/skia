@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff13dcd_49bf5861",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T21:04:39Z",
+      "side": 1,
+      "message": "OK, I found that we do hit this path incidentally in `tileimagefilter`.\nhttps://osscs.corp.google.com/skia/skia/+/main:src/effects/imagefilters/SkColorFilterImageFilter.cpp;l\u003d125-136;drc\u003dab424b5dcdc723cdc25c48e7ca13ca02e94367be\n\nI don\u0027t think it\u0027s much of a thorough test--the only color we put through it is transparent black--but we technically have non-zero coverage. It\u0027s difficult for me to test further since dm runs into other unrelated Graphite errors as I go.",
+      "parentUuid": "09775dc8_a3a3a4dd",
+      "range": {
+        "startLine": 455,
+        "startChar": 15,
+        "endLine": 455,
+        "endChar": 99
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5883b792_0e0e9b9b",
