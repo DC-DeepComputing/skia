@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1112727_de82277d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T14:57:18Z",
+      "side": 1,
+      "message": "Cool!\nCan we move more TableColorFilter support into the module as well?",
+      "revId": "1d8dfa588d29dcc50546c4f378744a631833cc6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
