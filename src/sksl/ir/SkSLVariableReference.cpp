@@ -19,16 +19,6 @@ VariableReference::VariableReference(Position pos, const Variable* variable, Ref
     SkASSERT(this->variable());
 }
 
-bool VariableReference::hasProperty(Property property) const {
-    switch (property) {
-        case Property::kSideEffects:      return false;
-        case Property::kContainsRTAdjust: return this->variable()->name() == "sk_RTAdjust";
-        default:
-            SkASSERT(false);
-            return false;
-    }
-}
-
 std::string VariableReference::description() const {
     return std::string(this->variable()->name());
 }

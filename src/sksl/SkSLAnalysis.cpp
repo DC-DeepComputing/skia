@@ -364,6 +364,69 @@ bool Analysis::ReturnsOpaqueColor(const FunctionDefinition& function) {
     return !visitor.visitProgramElement(function);
 }
 
+bool Analysis::ContainsRTAdjust(const Expression& expr) {
+    class ContainsRTAdjustVisitor : public ProgramVisitor {
+    public:
+        bool visitExpression(const Expression& expr) override {
+            if (expr.is<VariableReference>() &&
+                expr.as<VariableReference>().variable()->name() == Compiler::RTADJUST_NAME) {
+                return true;
+            }
+            return INHERITED::visitExpression(expr);
+        }
+
+        using INHERITED = ProgramVisitor;
+    };
+
+    ContainsRTAdjustVisitor visitor;
+    return visitor.visitExpression(expr);
+}
+
+bool Analysis::HasSideEffects(const Expression& expr) {
+    class HasSideEffectsVisitor : public ProgramVisitor {
+    public:
+        bool visitExpression(const Expression& expr) override {
+            switch (expr.kind()) {
+                case Expression::Kind::kFunctionCall: {
+                    const FunctionCall& call = expr.as<FunctionCall>();
+                    if (call.function().modifiers().fFlags & Modifiers::kHasSideEffects_Flag) {
+                        return true;
+                    }
+                    break;
+                }
+                case Expression::Kind::kPrefix: {
+                    const PrefixExpression& prefix = expr.as<PrefixExpression>();
+                    if (prefix.getOperator().kind() == Operator::Kind::PLUSPLUS ||
+                        prefix.getOperator().kind() == Operator::Kind::MINUSMINUS) {
+                        return true;
+                    }
+                    break;
+                }
+                case Expression::Kind::kBinary: {
+                    const BinaryExpression& binary = expr.as<BinaryExpression>();
+                    if (binary.getOperator().isAssignment()) {
+                        return true;
+                    }
+                    break;
+                }
+                case Expression::Kind::kExternalFunctionCall:
+                case Expression::Kind::kExternalFunctionReference:
+                case Expression::Kind::kPostfix:
+                    return true;
+
+                default:
+                    break;
+            }
+            return INHERITED::visitExpression(expr);
+        }
+
+        using INHERITED = ProgramVisitor;
+    };
+
+    HasSideEffectsVisitor visitor;
+    return visitor.visitExpression(expr);
+}
+
 bool Analysis::DetectVarDeclarationWithoutScope(const Statement& stmt, ErrorReporter* errors) {
     // A variable declaration can create either a lone VarDeclaration or an unscoped Block
     // containing multiple VarDeclaration statements. We need to detect either case.

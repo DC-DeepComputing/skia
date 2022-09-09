@@ -62,7 +62,6 @@ public:
 
     enum class Property {
         kSideEffects,
-        kContainsRTAdjust
     };
 
     Expression(Position pos, Kind kind, const Type* type)
@@ -151,16 +150,6 @@ public:
     };
     virtual ComparisonResult compareConstant(const Expression& other) const {
         return ComparisonResult::kUnknown;
-    }
-
-    virtual bool hasProperty(Property property) const = 0;
-
-    bool hasSideEffects() const {
-        return this->hasProperty(Property::kSideEffects);
-    }
-
-    bool containsRTAdjust() const {
-        return this->hasProperty(Property::kContainsRTAdjust);
     }
 
     virtual CoercionCost coercionCost(const Type& target) const {

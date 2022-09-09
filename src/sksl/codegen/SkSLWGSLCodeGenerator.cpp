@@ -713,7 +713,7 @@ void WGSLCodeGenerator::writeBlock(const Block& b) {
 }
 
 void WGSLCodeGenerator::writeExpressionStatement(const ExpressionStatement& s) {
-    if (s.expression()->hasSideEffects()) {
+    if (Analysis::HasSideEffects(*s.expression())) {
         this->writeExpression(*s.expression(), Precedence::kTopLevel);
         this->write(";");
     }
