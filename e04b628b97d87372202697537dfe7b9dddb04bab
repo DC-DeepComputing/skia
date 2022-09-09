@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f10e99_52c53114",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-09T20:53:05Z",
+      "side": 1,
+      "message": "Does this make sense to you? I think I got all the various intrinsics right. I guess I\u0027ll make sure that I didn\u0027t break any existing GMs on any bots.",
+      "revId": "e04b628b97d87372202697537dfe7b9dddb04bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
