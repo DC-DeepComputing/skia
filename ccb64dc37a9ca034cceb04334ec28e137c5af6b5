@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "157e5b24_2cc057b2",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-09T14:13:45Z",
+      "side": 1,
+      "message": "Actually, I misread your question initially. This part lgtm",
+      "parentUuid": "a8ec2f2c_612df808",
+      "range": {
+        "startLine": 699,
+        "startChar": 4,
+        "endLine": 702,
+        "endChar": 0
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d7daf65_8754a89f",
