@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "399f6543_5ea060bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-09T13:26:11Z",
+      "side": 1,
+      "message": "lgtm. There\u0027s at least one detail that\u0027s missing, but which might be implied or clear to the reader: The things in SkOpts are actually function pointers, and the various Init functions just alter where those functions point (to the specialized versions of the functions).",
+      "revId": "3388fbe44bd0e8dc3d3bb4bf09424b9667291404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
