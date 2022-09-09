@@ -56,6 +56,52 @@
       },
       "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7daf65_8754a89f",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-09T13:37:06Z",
+      "side": 1,
+      "message": "The key doesn\u0027t strictly speaking have to have the exact same block order as the evaluated shader, but it probably clarifies things to keep them consistent. I believe the primitive blender combines the output of the shader (or paint color when there\u0027s no shader) with the primitive color.\n\nThat would suggest it goes below the `if (fShader) {} else {}` block at line 75 below. At that point we have our \"shader\" color set up to be either the SkShader output or the paint color.",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a588fcea_3f0c7583",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-09T13:37:06Z",
+      "side": 1,
+      "message": "This doesn\u0027t quite match how color and paint alpha need to be taken into account (generally, or with a primitive blender). The Skia shading pipeline is\n\n1. eval SkShader or return opaque paint color (rgb1, no need to premul)\n   - I don\u0027t think SkShaders logically have an initial color; GrFPs do because they are used for both shaders and color filters.\n2. eval primitive blender with renderstep color and output of #1\n3. multiply paint alpha with #2\n4. eval SkColorFilter on #3\n5. eval final blender on #4 and dst buffer\u0027s color\n6. eval any mask filter or per-pixel coverage from the renderstep/geometry\n7. src-over blend #5 with dst buffer\u0027s color using #6 as the \"alpha\"\n8. store #7 into dst buffer.\n\nSteps 5-8 diverge when coverage is handled with MSAA, and if the final blending can be handled in fixed function hardware.\n\nGiven the linear flow through steps, I think key building could be set up as \n1. add solid color block\n2. if (shader) add shader block\n3. if (primitive blender) add blender block\n4. if (color filter) add color filter block\n5. if (final blender) add blender block\n\nDuring actual SkSL generation we\u0027d handle moving the paint alpha\u0027s modulation to after the primitive blending. The other option would be to separate paint modulation into its own block and explicitly add it where it\u0027s supposed to be, and then keep the pattern of `if (shader) add shader block else add opaque paint color` at the start of the key building.",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
