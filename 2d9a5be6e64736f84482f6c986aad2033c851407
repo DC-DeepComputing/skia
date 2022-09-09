@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee58860_266b4783",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T16:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "288a6814_1c28be3e",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 447,
+        "endChar": 75
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3379325_97ba982c",
@@ -118,6 +142,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7efea03f_73bca343",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T16:26:27Z",
+      "side": 1,
+      "message": "This required some restructuring of `paint_depends_on_dst` to not require a `PaintParams`, but done.",
+      "parentUuid": "a2a41749_029495f3",
+      "range": {
+        "startLine": 449,
+        "startChar": 34,
+        "endLine": 449,
+        "endChar": 82
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eeaa0d4_d290b20e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T16:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95978036_b5b9f13c",
+      "range": {
+        "startLine": 449,
+        "startChar": 8,
+        "endLine": 449,
+        "endChar": 30
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09775dc8_a3a3a4dd",
@@ -154,6 +226,30 @@
       "writtenOn": "2022-09-08T14:58:59Z",
       "side": 1,
       "message": "Can we add a TODO here that if the paint doesn\u0027t depend on dst, but has a shader that we can reset the DrawContext to use a discard load op. The drawPaint will cover anything else entirely, even though it does require the shader evaluation to do per-pixel colors.",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 463,
+        "endChar": 72
+      },
+      "revId": "2d9a5be6e64736f84482f6c986aad2033c851407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d1442f2_1a2e48c3",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T16:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5883b792_0e0e9b9b",
       "range": {
         "startLine": 463,
         "startChar": 8,
