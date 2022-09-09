@@ -399,6 +399,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4b8b1b_8f790667",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:49:02Z",
+      "side": 1,
+      "message": "This turned out to be easy: http://review.skia.org/579621",
+      "parentUuid": "9959b591_4e658205",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b287ee6_8a5ba105",
