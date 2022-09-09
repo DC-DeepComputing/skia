@@ -1705,10 +1705,14 @@ auto GrTextBlob::Key::Make(const SkGlyphRunList& glyphRunList,
 
         // Do any runs use direct drawing types?.
         key.fHasSomeDirectSubRuns = false;
+        SkPoint glyphRunListLocation = { glyphRunList.sourceBounds().centerX(),
+                                         glyphRunList.sourceBounds().centerY() };
         for (auto& run : glyphRunList) {
             SkScalar approximateDeviceTextSize =
-                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix);
-            key.fHasSomeDirectSubRuns |= control.isDirect(approximateDeviceTextSize, paint);
+                    SkFontPriv::ApproximateTransformedTextSize(run.font(), drawMatrix,
+                                                               glyphRunListLocation);
+            key.fHasSomeDirectSubRuns |= control.isDirect(approximateDeviceTextSize, paint,
+                                                          drawMatrix);
         }
 
         if (key.fHasSomeDirectSubRuns) {
@@ -1802,12 +1806,15 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                 bytesNeededForSubRun, supportBilerpAtlas, positionMatrix, initialLuminance)};
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
+    SkPoint glyphRunListCenter = { glyphRunList.sourceBounds().centerX(),
+                                   glyphRunList.sourceBounds().centerY() };
     for (auto& glyphRun : glyphRunList) {
         painter->processGlyphRun(blob.get(),
                                  glyphRun,
                                  positionMatrix,
                                  paint,
                                  control,
+                                 glyphRunListCenter,
                                  "GrTextBlob",
                                  uniqueID);
     }
@@ -3267,12 +3274,15 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
                                   bytesNeededForSubRun)};
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
+    SkPoint glyphRunListCenter = { glyphRunList.sourceBounds().centerX(),
+                                   glyphRunList.sourceBounds().centerY() };
     for (auto& glyphRun : glyphRunList) {
         painter->processGlyphRun(slug.get(),
                                  glyphRun,
                                  positionMatrix,
                                  paint,
                                  control,
+                                 glyphRunListCenter,
                                  "Make Slug",
                                  uniqueID);
     }

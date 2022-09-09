@@ -278,6 +278,7 @@ void SkGlyphRunListPainter::processGlyphRun(SkGlyphRunPainterInterface* process,
                                             const SkMatrix& drawMatrix,
                                             const SkPaint& runPaint,
                                             const GrSDFTControl& control,
+                                            const SkPoint& listCenter,
                                             const char* tag,
                                             uint64_t uniqueID) {
     #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
@@ -299,15 +300,16 @@ void SkGlyphRunListPainter::processGlyphRun(SkGlyphRunPainterInterface* process,
     const SkFont& runFont = glyphRun.font();
 
     // Only consider using direct or SDFT drawing if not drawing hairlines and not perspective.
-    if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0)
-             && !drawMatrix.hasPerspective()) {
+    if (runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0) {
         SkScalar approximateDeviceTextSize =
-                SkFontPriv::ApproximateTransformedTextSize(runFont, drawMatrix);
+                SkFontPriv::ApproximateTransformedTextSize(runFont, drawMatrix,
+                                                           listCenter);
 
-        if (control.isSDFT(approximateDeviceTextSize, runPaint)) {
+        if (control.isSDFT(approximateDeviceTextSize, runPaint, drawMatrix)) {
             // Process SDFT - This should be the .009% case.
             const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
-                    SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, drawMatrix, control);
+                    SkStrikeSpec::MakeSDFT(runFont, runPaint, fDeviceProps, drawMatrix,
+                                           listCenter, control);
 
             #if defined(SK_TRACE_GLYPH_RUN_PROCESS)
                 msg.appendf("  SDFT case:\n%s", strikeSpec.dump().c_str());
