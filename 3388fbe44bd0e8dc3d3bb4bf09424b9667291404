@@ -33,6 +33,24 @@
       "message": "This seems fine as far as it goes in explaining how this works (with Brian\u0027s comment about how the Inits are updating function pointers).\n\nThe reality of course is that this is all just a cludge around the fact that there is no way cross platform make the linker spit out a PLT so that dynamic linking can select a function symbol based on cpu flags. In other words, this is just manually doing something one might expect a linker to do, if one could properly decorate the internal linker names with the appropriate architecture attributes.",
       "revId": "3388fbe44bd0e8dc3d3bb4bf09424b9667291404",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3efd0654_50c2d45e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-09T15:06:45Z",
+      "side": 1,
+      "message": "I clarified that point a little bit. That detail is also mentioned later in SkOpts.h",
+      "parentUuid": "399f6543_5ea060bc",
+      "revId": "3388fbe44bd0e8dc3d3bb4bf09424b9667291404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
