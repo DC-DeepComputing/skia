@@ -56,3 +56,39 @@ DEF_SIMPLE_GM_BG(overdraw_canvas,       canvas, WIDTH, HEIGHT, SK_ColorWHITE) {
     canvas->drawString("This is some text:", 180, 300, SkFont(), SkPaint());
 }
 
+static sk_sp<SkImage> overdraw_text_grid(SkCanvas* canvas, bool useCTM) {
+    auto surface = canvas->makeSurface(SkImageInfo::MakeA8(256, 512));
+    auto overdraw = SkOverdrawCanvas(surface->getCanvas());
+
+    SkPaint paint;
+    paint.setColor(SK_ColorWHITE);
+
+    for (int n = 1; n <= 20; n++) {
+        const float x = 10.0f;
+        const float y = n * 20.0f;
+
+        for (int i = 0; i < n * 10; i++) {
+            const char* text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (useCTM) {
+                overdraw.save();
+                overdraw.translate(x, y);
+                overdraw.drawString(text, 0, 0, SkFont(), paint);
+                overdraw.restore();
+            } else {
+                overdraw.drawString(text, x, y, SkFont(), paint);
+            }
+        }
+    }
+    return surface->makeImageSnapshot();
+}
+
+// This GM tests the underlying problem from skbug.com/13732. Text drawn through an overdraw
+// canvas would have the CTM applied twice. If everything is working, both images generated should
+// look identical. When the bug was present, the second image would have the lines "double spaced",
+// because the translations were applied twice.
+DEF_SIMPLE_GM_BG(overdraw_text_xform, canvas, 512, 512, SK_ColorBLACK) {
+    SkPaint imgPaint;
+    imgPaint.setColor(SK_ColorWHITE);
+    canvas->drawImage(overdraw_text_grid(canvas, false),   0, 0, SkSamplingOptions{}, &imgPaint);
+    canvas->drawImage(overdraw_text_grid(canvas,  true), 256, 0, SkSamplingOptions{}, &imgPaint);
+}
