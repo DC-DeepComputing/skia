@@ -41,16 +41,18 @@ float $tile(int tm, float f, float min, float max, float normalizer) {
     }
 }
 
-float2 sk_compute_coords(float4 coords,
-                         float4x4 preLocal,
-                         float4 subset,
-                         int tmX,
-                         int tmY,
-                         int imgWidth,
-                         int imgHeight) {
+half4 sk_image_shader(float4 coords,
+                      float4x4 preLocal,
+                      float4 subset,
+                      int tmX,
+                      int tmY,
+                      int imgWidth,
+                      int imgHeight,
+                      sampler2D s) {
     float2 pos = (preLocal * coords).xy;
-    return float2($tile(tmX, pos.x, subset.x, subset.z, float(imgWidth)),
-                  $tile(tmY, pos.y, subset.y, subset.w, float(imgHeight)));
+    pos.x = $tile(tmX, pos.x, subset.x, subset.z, float(imgWidth));
+    pos.y = $tile(tmY, pos.y, subset.y, subset.w, float(imgHeight));
+    return sample(s, pos);
 }
 
 float2 $tile_grad(int tileMode, float2 t) {

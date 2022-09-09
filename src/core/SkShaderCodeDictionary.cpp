@@ -612,42 +612,7 @@ static_assert(1 == static_cast<int>(SkTileMode::kRepeat), "ImageShader code depe
 static_assert(2 == static_cast<int>(SkTileMode::kMirror), "ImageShader code depends on SkTileMode");
 static_assert(3 == static_cast<int>(SkTileMode::kDecal),  "ImageShader code depends on SkTileMode");
 
-static constexpr char kImageShaderName[] = "sk_compute_coords";
-
-// This is _not_ what we want to do.
-// Ideally the "sk_compute_coords" code snippet could just take texture and
-// sampler references and do everything. That is going to take more time to figure out though so,
-// for the sake of expediency, we're generating custom code to do the sampling.
-std::string GenerateImageShaderExpression(const SkShaderInfo& shaderInfo,
-                                          int entryIndex,
-                                          const SkPaintParamsKey::BlockReader& reader,
-                                          const std::string& priorStageOutputName,
-                                          const std::string& fragCoord,
-                                          const std::string& currentPreLocalExpr) {
-#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
-    std::string samplerVarName = reader.entry()->getMangledSamplerName(0, entryIndex);
-
-    // Uniform slot 0 is used to make the preLocalMatrix; it's handled in emit_glue_code_for_entry.
-    std::string subsetName = reader.entry()->getMangledUniformName(shaderInfo, 1, entryIndex);
-    std::string tmXName = reader.entry()->getMangledUniformName(shaderInfo, 2, entryIndex);
-    std::string tmYName = reader.entry()->getMangledUniformName(shaderInfo, 3, entryIndex);
-    std::string imgWidthName = reader.entry()->getMangledUniformName(shaderInfo, 4, entryIndex);
-    std::string imgHeightName = reader.entry()->getMangledUniformName(shaderInfo, 5, entryIndex);
-
-    return SkSL::String::printf("sample(%s, %s(%s, %s, %s, %s, %s, %s, %s))",
-                                samplerVarName.c_str(),
-                                reader.entry()->fStaticFunctionName,
-                                fragCoord.c_str(),
-                                currentPreLocalExpr.c_str(),
-                                subsetName.c_str(),
-                                tmXName.c_str(),
-                                tmYName.c_str(),
-                                imgWidthName.c_str(),
-                                imgHeightName.c_str());
-#else
-    return priorStageOutputName;
-#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
-}
+static constexpr char kImageShaderName[] = "sk_image_shader";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr SkUniform kBlendShaderUniforms[] = {
@@ -1323,7 +1288,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords,
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
-            GenerateImageShaderExpression,
+            GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
