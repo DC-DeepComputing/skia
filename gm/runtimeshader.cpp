@@ -9,6 +9,8 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkFont.h"
+#include "include/core/SkOverdrawCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSize.h"
@@ -17,6 +19,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/utils/SkNWayCanvas.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "tools/Resources.h"
@@ -936,4 +939,46 @@ DEF_SIMPLE_GM(local_matrix_shader_rt, canvas, 256, 256) {
     paint.setShader(rte->makeShader(nullptr, &imgShader, 1)->makeWithLocalMatrix(lm));
     canvas->drawRect(r, paint);
     canvas->restore();
+}
+
+static void draw_text(SkCanvas* canvas, int count, bool useCTM) {
+    SkPaint paint;
+    paint.setColor(SK_ColorWHITE);
+
+    for (int n = 1; n <= count; n++) {
+        for (int i = 0; i < n; i++) {
+            const float x = 10.0f;
+            const float y = n * 20.0f;
+
+            const char* text = "this is a string";
+            if (!useCTM) {
+                canvas->drawString(text, x, y, SkFont(nullptr, 12), paint);
+            } else {
+                canvas->save();
+                canvas->translate(x, y);
+                canvas->drawString(text, 0, 0, SkFont(nullptr, 12), paint);
+                canvas->restore();
+            }
+        }
+    }
+}
+
+static void draw_overdraw_text_grid(SkCanvas* canvas, bool useCTM) {
+    canvas->drawColor(SK_ColorBLACK);
+
+    auto surface = canvas->makeSurface(SkImageInfo::MakeA8(256, 512));
+    auto overdraw = SkOverdrawCanvas(surface->getCanvas());
+    draw_text(&overdraw, 20, useCTM);
+
+    SkPaint imgPaint;
+    imgPaint.setColor(SK_ColorWHITE);
+    canvas->drawImage(surface->makeImageSnapshot(), 0, 0, SkSamplingOptions{}, &imgPaint);
+}
+
+DEF_SIMPLE_GM(clark_kent_direct, canvas, 256, 256) {
+    draw_overdraw_text_grid(canvas, /*useCTM=*/false);
+}
+
+DEF_SIMPLE_GM(clark_kent_ctm, canvas, 256, 256) {
+    draw_overdraw_text_grid(canvas, /*useCTM=*/true);
 }
