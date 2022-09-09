@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cf4ac74_32997816",
+        "filename": "src/core/SkPictureImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-09T18:41:57Z",
+      "side": 1,
+      "message": "From my question yesterday about errors/warnings, this seems to fall into the error pile? Like this is bad if we fail to make a surface right? Compared to maybe its bad \"Warning\" level?",
+      "range": {
+        "startLine": 153,
+        "startChar": 18,
+        "endLine": 153,
+        "endChar": 19
+      },
+      "revId": "db16013b1b3d82fe7afec9f9cdfe8f6dcdbdc695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
