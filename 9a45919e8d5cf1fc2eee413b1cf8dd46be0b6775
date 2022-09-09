@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ec67e3_5c024617",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-09T15:59:40Z",
+      "side": 1,
+      "message": "nit: I feel like surfaceProps is one of the more unused fields on surfaces, should we keep it at the end of the defaults?",
+      "range": {
+        "startLine": 405,
+        "startChar": 41,
+        "endLine": 405,
+        "endChar": 75
+      },
+      "revId": "9a45919e8d5cf1fc2eee413b1cf8dd46be0b6775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4e0836a_59cd8ce4",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-09T15:59:40Z",
+      "side": 1,
+      "message": "should we use our Mipmapped enum here instead of a bool?",
+      "range": {
+        "startLine": 406,
+        "startChar": 41,
+        "endLine": 406,
+        "endChar": 74
+      },
+      "revId": "9a45919e8d5cf1fc2eee413b1cf8dd46be0b6775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
