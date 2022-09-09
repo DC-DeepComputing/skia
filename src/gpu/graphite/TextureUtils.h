@@ -14,7 +14,9 @@
 
 class SkBitmap;
 enum SkColorType : int;
+class SkImage;
 struct SkImageInfo;
+struct SkImage::RequiredImageProperties;
 
 namespace skgpu::graphite {
 
@@ -26,6 +28,11 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
                                                               const SkBitmap& bitmap,
                                                               Mipmapped mipmapped,
                                                               SkBudgeted budgeted);
+
+sk_sp<SkImage> Foo(Recorder* recorder,
+                   const SkBitmap& bitmap,
+                   SkBudgeted budgeted,
+                   SkImage::RequiredImageProperties requiredProps);
 
 using FlushPendingWorkCallback = std::function<void()>;
 
