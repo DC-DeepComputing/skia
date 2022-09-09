@@ -34,6 +34,24 @@
       "parentUuid": "bfe8cc07_8942aa9f",
       "revId": "3f55bd591b8cb00b9420eea735b85164ac19c709",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8550d7cd_bad3c65d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T15:35:29Z",
+      "side": 1,
+      "message": "Codesize has this version as -1K. I have no idea where the Android sizes come from sometimes; they seem very arbitrary.",
+      "parentUuid": "301d3f9f_4799484b",
+      "revId": "3f55bd591b8cb00b9420eea735b85164ac19c709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
