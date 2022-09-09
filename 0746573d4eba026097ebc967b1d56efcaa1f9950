@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e75c00a_9966ee3c",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:40:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72fd67ab_fb437832",
+      "range": {
+        "startLine": 861,
+        "startChar": 55,
+        "endLine": 861,
+        "endChar": 65
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e62328d_b85c820a",
@@ -197,6 +221,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7eed4c_db96b107",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:40:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56cc4a9b_e6118413",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37929ace_36df0f14",
@@ -234,6 +276,30 @@
       "side": 1,
       "message": "Yes.",
       "parentUuid": "37929ace_36df0f14",
+      "range": {
+        "startLine": 965,
+        "startChar": 70,
+        "endLine": 965,
+        "endChar": 83
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4b2e22_373ba2ab",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:40:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "167ad009_ea640dc1",
       "range": {
         "startLine": 965,
         "startChar": 70,
@@ -315,6 +381,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9959b591_4e658205",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:40:37Z",
+      "side": 1,
+      "message": "I\u0027ll try to clean this up in a followup if it\u0027s not too invasive.",
+      "parentUuid": "30720d29_7de4fb21",
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b287ee6_8a5ba105",
@@ -376,6 +460,30 @@
       "side": 1,
       "message": "Right, but it only a \"source\" color (in the sense that you\u0027re going to apply some blendmode to it) for blenders, right?",
       "parentUuid": "353ec098_f32fa591",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "0746573d4eba026097ebc967b1d56efcaa1f9950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad86d059_2435be3a",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-09T19:40:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48d6482c_6bdab8cc",
       "range": {
         "startLine": 59,
         "startChar": 50,
