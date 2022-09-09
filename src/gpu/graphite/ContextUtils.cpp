@@ -322,24 +322,24 @@ std::string GetSkSLVS(const RenderStep* step,
     sksl += EmitVaryings(step, "out", defineShadingSsboIndexVarying, defineLocalCoordsVarying);
 
     // Vertex shader function declaration
-    sksl += "void main() {";
+    sksl += "void main() {\n";
     // Create stepLocalCoords which render steps can write to.
-    sksl += "float2 stepLocalCoords = float2(0);";
+    sksl += "float2 stepLocalCoords = float2(0);\n";
     // Vertex shader body
     sksl += step->vertexSkSL();
     sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + devPosition.ww * rtAdjust.zw,"
-            "                     devPosition.zw);";
+            "                     devPosition.zw);\n";
 
     if (defineShadingSsboIndexVarying) {
         // Assign SSBO index value to the SSBO index varying
-        SkSL::String::appendf(&sksl, "shadingSsboIndexVar = %s;", step->ssboIndex());
+        SkSL::String::appendf(&sksl, "shadingSsboIndexVar = %s;\n", step->ssboIndex());
     }
 
     if (defineLocalCoordsVarying) {
         // Assign Render Step's stepLocalCoords to the localCoordsVar varying.
-        sksl += "localCoordsVar = stepLocalCoords;";
+        sksl += "localCoordsVar = stepLocalCoords;\n";
     }
-    sksl += "}";
+    sksl += "}\n";
 
     return sksl;
 }
