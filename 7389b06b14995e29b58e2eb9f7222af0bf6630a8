@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd7dc2be_d279f37a",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-12T14:29:56Z",
+      "side": 1,
+      "message": "You need to add this to public_hdrs and srcs also",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 46
+      },
+      "revId": "7389b06b14995e29b58e2eb9f7222af0bf6630a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
