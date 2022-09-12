@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15c78f3c_ab22332f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T13:08:55Z",
+      "side": 1,
+      "message": "Happy to change it, but I\u0027m not sure what you would prefer?",
+      "parentUuid": "ab11a3e7_48ad12b1",
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9519d43c_2bfea1d4",
         "filename": "src/core/SkShaderCodeDictionary.h",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-12T13:06:48Z",
       "side": 1,
       "message": "\u0027fPriorStageOutput\u0027 ? Here and in following 3 ?",
+      "range": {
+        "startLine": 70,
+        "startChar": 25,
+        "endLine": 70,
+        "endChar": 26
+      },
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5408ac06_0c7304e3",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T13:08:55Z",
+      "side": 1,
+      "message": "We are no longer supposed to use leading f for pure structs. \"Types that are predominantly meant for direct field access don’t need f-decoration.\" https://skia.org/docs/dev/contrib/style/#naming",
+      "parentUuid": "9519d43c_2bfea1d4",
       "range": {
         "startLine": 70,
         "startChar": 25,
