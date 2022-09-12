@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab11a3e7_48ad12b1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-12T13:06:48Z",
+      "side": 1,
+      "message": "This formatting isn\u0027t so clear",
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9519d43c_2bfea1d4",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-12T13:06:48Z",
+      "side": 1,
+      "message": "\u0027fPriorStageOutput\u0027 ? Here and in following 3 ?",
+      "range": {
+        "startLine": 70,
+        "startChar": 25,
+        "endLine": 70,
+        "endChar": 26
+      },
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
