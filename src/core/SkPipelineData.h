@@ -96,7 +96,7 @@ private:
 class SkPipelineDataGatherer {
 public:
 #ifdef SK_GRAPHITE_ENABLED
-    SkPipelineDataGatherer(skgpu::graphite::Layout layout);
+    SkPipelineDataGatherer(skgpu::graphite::Layout layout, uint32_t minAlignment);
 #endif
 
     void reset();

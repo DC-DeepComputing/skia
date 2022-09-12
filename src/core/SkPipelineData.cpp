@@ -10,8 +10,9 @@
 #include "src/core/SkShaderCodeDictionary.h"
 
 #ifdef SK_GRAPHITE_ENABLED
-SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::graphite::Layout layout)
-        : fUniformManager(layout)
+SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::graphite::Layout layout,
+                                               uint32_t minAlignment)
+        : fUniformManager(layout, minAlignment)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
 }
 #endif

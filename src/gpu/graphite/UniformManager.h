@@ -56,7 +56,9 @@ protected:
 
 class UniformManager : public UniformOffsetCalculator {
 public:
-    UniformManager(Layout layout) : UniformOffsetCalculator(layout, /*startingOffset=*/0) {}
+    UniformManager(Layout layout, uint32_t minBlockAlignment = 0)
+            : UniformOffsetCalculator(layout, /*startingOffset=*/0)
+            , fMinBlockAlignment(minBlockAlignment) {}
 
     SkUniformDataBlock finishUniformDataBlock();
     size_t size() const { return fStorage.size(); }
@@ -90,6 +92,7 @@ private:
 
     SkTDArray<char> fStorage;
     uint32_t fReqAlignment = 0;
+    uint32_t fMinBlockAlignment = 0;
 };
 
 } // namespace skgpu

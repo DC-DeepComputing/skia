@@ -549,7 +549,8 @@ size_t UniformOffsetCalculator::calculateOffset(SkSLType type, unsigned int coun
 }
 
 SkUniformDataBlock UniformManager::finishUniformDataBlock() {
-    size_t size = SkAlignTo(fStorage.count(), fReqAlignment);
+    size_t alignment = std::max(fReqAlignment, fMinBlockAlignment);
+    size_t size = SkAlignTo(fStorage.count(), alignment);
     size_t paddingSize = size - fStorage.count();
     char* padding = fStorage.append(paddingSize);
     memset(padding, 0, paddingSize);

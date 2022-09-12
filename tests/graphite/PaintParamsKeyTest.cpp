@@ -166,7 +166,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(PaintParamsKeyTest, reporter, context) {
     auto dict = keyContext.dict();
 
     SkPaintParamsKeyBuilder builder(dict);
-    SkPipelineDataGatherer gatherer(Layout::kMetal);
+    SkPipelineDataGatherer gatherer(Layout::kMetal, 0);
 
     for (auto s : { SkShaderType::kSolidColor,
                     SkShaderType::kLinearGradient,

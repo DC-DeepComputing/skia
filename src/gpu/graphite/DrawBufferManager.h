@@ -36,7 +36,6 @@ public:
     // 'unusedBytes' is less than the 'requiredBytes' to the original allocation.
     void returnVertexBytes(size_t unusedBytes);
 
-
     // Get the shared static buffer filled with contents computed by the InitializeBufferFn.
     // Both InitializeBufferFn and BufferSizeFn should be static functions since their addresses are
     // used in the static buffer's internal unique keys.
