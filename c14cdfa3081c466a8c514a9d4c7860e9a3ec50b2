@@ -16,6 +16,24 @@
       "message": "So I know there was talk about removing the goal, but are we definitely giving up on the plan to share these snippets/code dictionary with Raster? I believe that is the reason this wasn\u0027t Graphite only to begin with.",
       "revId": "c14cdfa3081c466a8c514a9d4c7860e9a3ec50b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ab27ed_d11e1adb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T15:36:49Z",
+      "side": 1,
+      "message": "The current plan is to eliminate SkVM completely, if at all possible, and to switch back to Raster Pipeline everywhere.",
+      "parentUuid": "d4d63469_b47e8716",
+      "revId": "c14cdfa3081c466a8c514a9d4c7860e9a3ec50b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
