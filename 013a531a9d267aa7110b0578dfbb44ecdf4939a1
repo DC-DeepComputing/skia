@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bb57682_33f0cc0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-12T13:34:22Z",
+      "side": 1,
+      "message": "Hi Jim, Ben reviewed the original, but he\u0027s out. This version fixes issues on a variety of GPU configs where A8 isn\u0027t renderable. (By always using CPU to do the draw - same as the other existing overdraw GM).",
+      "revId": "013a531a9d267aa7110b0578dfbb44ecdf4939a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
