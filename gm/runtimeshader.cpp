@@ -937,3 +937,54 @@ DEF_SIMPLE_GM(local_matrix_shader_rt, canvas, 256, 256) {
     canvas->drawRect(r, paint);
     canvas->restore();
 }
+
+DEF_SIMPLE_GM(null_child_rt, canvas, 150, 50) {
+    using ChildPtr = SkRuntimeEffect::ChildPtr;
+
+    // Expect the paint color as-is (purple)
+    {
+        const SkString kEvalShader{R"(
+            uniform shader s;
+            half4 main(float2 p) { return s.eval(p); }
+        )"};
+        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalShader, {});
+        SkASSERT(rtShader);
+
+        SkPaint paint;
+        ChildPtr children[1] = {ChildPtr{sk_sp<SkShader>{nullptr}}};
+        paint.setShader(rtShader->makeShader(/*uniforms=*/nullptr, children));
+        paint.setColor(SkColorSetARGB(0xFF, 0x80, 0x00, 0x80));
+        canvas->drawRect({0, 0, 48, 48}, paint);
+    }
+    // Expect the paint color as-is (purple)
+    {
+        const SkString kEvalColorFilter{R"(
+            uniform colorFilter cf;
+            half4 main(half4 c) { return cf.eval(c); }
+        )"};
+        auto [rtColorFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalColorFilter, {});
+        SkASSERT(rtColorFilter);
+
+        SkPaint paint;
+        ChildPtr children[1] = {ChildPtr{sk_sp<SkColorFilter>{nullptr}}};
+        paint.setColorFilter(rtColorFilter->makeColorFilter(/*uniforms=*/nullptr, children));
+        paint.setColor(SkColorSetARGB(0xFF, 0x80, 0x00, 0x80));
+        canvas->drawRect({50, 0, 98, 48}, paint);
+    }
+
+    // Expect a 50% mix of red and the blue paint color (resulting in purple)
+    {
+        const SkString kEvalBlender{R"(
+            uniform blender b;
+            half4 main(half4 s, half4 d) { return b.eval(half4(0.5, 0, 0, 0.5), s); }
+        )"};
+        auto [rtBlender, error] = SkRuntimeEffect::MakeForBlender(kEvalBlender, {});
+        SkASSERT(rtBlender);
+
+        SkPaint paint;
+        ChildPtr children[1] = {ChildPtr{sk_sp<SkBlender>{nullptr}}};
+        paint.setBlender(rtBlender->makeBlender(/*uniforms=*/nullptr, children));
+        paint.setColor(SkColorSetARGB(0xFF, 0x00, 0x00, 0xFF));
+        canvas->drawRect({100, 0, 148, 48}, paint);
+    }
+}
