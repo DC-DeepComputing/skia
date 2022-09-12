@@ -222,6 +222,30 @@
       },
       "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7698b50_466e210d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T18:00:21Z",
+      "side": 1,
+      "message": "The initial color can be used when a shader is set. \n1- A runtime shader can be declared as `half4 main(float2 coords, half4 color)` and this exposes the color directly.\n2- Even if the color isn\u0027t accessed directly, evaluating a null child shader will return the previous-stage color, which can be the initial color.\n\nHere\u0027s an example of the null child case that I just made: http://review.skia.org/580014",
+      "parentUuid": "10067a67_4c29c745",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
