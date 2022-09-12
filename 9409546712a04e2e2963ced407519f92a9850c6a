@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2553365_57a26206",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-12T19:38:06Z",
+      "side": 1,
+      "message": "I think we\u0027d want to use either requiredUniformBufferAlignment or requiredStorageBufferAlignment here depending on whether storageBufferPreferred() is true.",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac07196_d7fbd948",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-12T19:38:06Z",
+      "side": 1,
+      "message": "Suggestion -- I think we can just initialize fReqAlignment to minBlockAlignment here and we wouldn\u0027t need a new field.",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
