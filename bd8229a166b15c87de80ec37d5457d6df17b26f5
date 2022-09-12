@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4667e5c5_e1f1a135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-12T17:02:44Z",
+      "side": 1,
+      "message": "I\u0027m now thinking that it would be better to add the Metal/MtlMemoryAllocator to Graphite and start using the interfaces internally there. That would let me pick at implementing an allocator in my free time and see what needs to be done regarding MTLFence and other synchronization. If that pans out and it\u0027s still needed in Ganesh then it could be ported back.",
+      "parentUuid": "ed62f6a8_4d9cbb5d",
+      "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b382b527_a306a852",
