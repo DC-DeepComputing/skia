@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d7ae3a8_4a2b51ee",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-12T21:38:17Z",
+      "side": 1,
+      "message": "I seem to recall that there was a reason to keep one gatherer but I can\u0027t remember what it is. But I agree that if we use the UniformManager to manage the block size we\u0027ll need two since renderstep and paint uniforms might have different alignments.\n\nI think Intel should support SSBOs since Metal in general does, but not sure on the access question. The layout of the data in memory should be the same, I\u0027d think. Where we put the data in the buffer should be how it looks on the GPU.",
+      "parentUuid": "c2553365_57a26206",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ac07196_d7fbd948",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 2
@@ -72,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49678f99_3cb3d9fb",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-12T21:38:17Z",
+      "side": 1,
+      "message": "UniformManager::reset() currently sets fReqAlignment back to 0. We\u0027d still need another variable to track what it should reset to.",
+      "parentUuid": "0ac07196_d7fbd948",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd275e3d_4442e69e",
         "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
         "patchSetId": 2
@@ -83,6 +119,30 @@
       "writtenOn": "2022-09-12T21:03:41Z",
       "side": 1,
       "message": "The error message seemed to suggest 32, and not 256. Are there cases where we can tighten this alignment up to 32 instead, since that\u0027s a big reduction from 256?",
+      "range": {
+        "startLine": 230,
+        "startChar": 45,
+        "endLine": 230,
+        "endChar": 46
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7771a35_17793bf9",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-12T21:38:17Z",
+      "side": 1,
+      "message": "I need to look into that. On my Mac it\u0027s 256. I think John has a discrete GPU which may provide a tighter packing.",
+      "parentUuid": "bd275e3d_4442e69e",
       "range": {
         "startLine": 230,
         "startChar": 45,
