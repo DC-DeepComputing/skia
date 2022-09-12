@@ -117,3 +117,49 @@ private:
 
 DEF_GM( return new BitmapPremulGM; )
 }  // namespace skiagm
+
+static constexpr int kBoxSize     = 31;
+static constexpr int kPadding     = 5;
+
+static sk_sp<SkImage> make_out_of_gamut_image(SkColorType ct) {
+    SkBitmap bmp;
+    // Odd dimensions so that we hit the different implementation in the SIMD tail handling
+    bmp.allocPixels(SkImageInfo::Make(31, 31, ct, kPremul_SkAlphaType));
+    for (int y = 0; y < 31; ++y) {
+        for (int x = 0; x < 31; ++x) {
+            *bmp.getAddr32(x, y) = (0x40000000 | ((x * 8) << 8) | ((y * 8) << 0));
+        }
+    }
+    return bmp.asImage();
+}
+
+DEF_SIMPLE_GM(image_out_of_gamut, canvas, 256, 256) {
+    // This GM draws an image with out-of-gamut colors (RGB > A). Historically, Skia assumed this
+    // was impossible, and contained numerous asserts and optimizations that would break if the
+    // rule were violated. With color spaces and/or SkSL shaders (among other things), it's no
+    // longer reasonable to make this claim. In an attempt to catch issues with as many blitters
+    // as possible, this draws both RGBA and BGRA, with various other settings.
+
+    // Sigh, there are SO many problems here. SkPMSrcOver is broken, because SkAlphaMulQ is broken.
+    // That's used ~everywhere, and making it correct is going to be much harder/slower.
+    canvas->clear(SK_ColorGRAY);
+
+    auto rgba = make_out_of_gamut_image(kRGBA_8888_SkColorType),
+         bgra = make_out_of_gamut_image(kBGRA_8888_SkColorType);
+
+    auto next_col = [canvas]() { canvas->translate(kBoxSize + kPadding, 0); };
+    auto next_row = [canvas]() {
+        canvas->restore();
+        canvas->translate(0, kBoxSize + kPadding);
+        canvas->save();
+    };
+
+    canvas->translate(kPadding, kPadding);
+    canvas->save();
+
+    // Simple case
+    canvas->drawImage(rgba, 0, 0); next_col();
+    canvas->drawImage(bgra, 0, 0);
+
+    next_row();
+}
