@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "965c4a09_08ae34bb",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T13:52:53Z",
+      "side": 1,
+      "message": "Done, although I kept the args.fPriorStageOutput stuff on the same line intentionally; it\u0027s tied to the same format specifier (%.*s) and they must travel together, so I think it\u0027s valuable to group them visually.",
+      "parentUuid": "6c25e07a_ba3f436d",
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9519d43c_2bfea1d4",
@@ -115,6 +133,30 @@
       "side": 1,
       "message": "Well, that\u0027s probably not \"no longer supposed to\" and more \"one can omit them if one can\u0027t be bothered\"",
       "parentUuid": "5408ac06_0c7304e3",
+      "range": {
+        "startLine": 70,
+        "startChar": 25,
+        "endLine": 70,
+        "endChar": 26
+      },
+      "revId": "cc74e179ae174abb323c260ff3521952dd84545a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bc50429_ac113b88",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T13:52:53Z",
+      "side": 1,
+      "message": "Added f prefixes",
+      "parentUuid": "018a5779_79503a9a",
       "range": {
         "startLine": 70,
         "startChar": 25,
