@@ -22,6 +22,30 @@
       },
       "revId": "93f018d6cca174ca5465eb81c3eb947445e72399",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34ca279f_968520f3",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-12T16:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73fecec4_7601113c",
+      "range": {
+        "startLine": 58,
+        "startChar": 57,
+        "endLine": 58,
+        "endChar": 60
+      },
+      "revId": "93f018d6cca174ca5465eb81c3eb947445e72399",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
