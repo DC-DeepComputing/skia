@@ -76,7 +76,7 @@ struct SkShaderSnippet {
 
     SkShaderSnippet(const char* name,
                     SkSpan<const SkUniform> uniforms,
-                    SnippetRequirementFlags snippetRequirementFlags,
+                    SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     GenerateExpressionForSnippetFn expressionGenerator,
@@ -107,7 +107,7 @@ struct SkShaderSnippet {
 
     const char* fName = nullptr;
     SkSpan<const SkUniform> fUniforms;
-    SnippetRequirementFlags fSnippetRequirementFlags;
+    SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags{SnippetRequirementFlags::kNone};
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     GenerateExpressionForSnippetFn fExpressionGenerator = nullptr;
@@ -133,7 +133,7 @@ public:
     void add(const SkPaintParamsKey::BlockReader& reader) {
         fBlockReaders.push_back(reader);
     }
-    void addFlags(SnippetRequirementFlags flags) {
+    void addFlags(SkEnumBitMask<SnippetRequirementFlags> flags) {
         fSnippetRequirementFlags |= flags;
     }
     bool needsLocalCoords() const {
@@ -223,7 +223,8 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
-    SnippetRequirementFlags getSnippetRequirementFlags(SkBuiltInCodeSnippetID id) const {
+    SkEnumBitMask<SnippetRequirementFlags> getSnippetRequirementFlags(
+            SkBuiltInCodeSnippetID id) const {
         return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
     }
 
@@ -261,7 +262,7 @@ private:
     int addUserDefinedSnippet(
             const char* name,
             SkSpan<const SkUniform> uniforms,
-            SnippetRequirementFlags snippetRequirementFlags,
+            SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
             SkSpan<const SkTextureAndSampler> texturesAndSamplers,
             const char* functionName,
             SkShaderSnippet::GenerateExpressionForSnippetFn expressionGenerator,
