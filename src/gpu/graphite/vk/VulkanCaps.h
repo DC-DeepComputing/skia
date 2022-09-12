@@ -10,9 +10,10 @@
 
 #include "src/gpu/graphite/Caps.h"
 
+#include "include/gpu/vk/VulkanTypes.h"
+
 namespace skgpu::graphite {
 struct ContextOptions;
-
 
 class VulkanCaps final : public Caps {
 public:
