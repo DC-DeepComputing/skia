@@ -6,6 +6,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "modules/skparagraph/include/DartTypes.h"
+#include "modules/skparagraph/include/FontRastrSettings.h"
 #include "modules/skparagraph/include/TextStyle.h"
 
 #include <stddef.h>
@@ -90,6 +91,9 @@ struct ParagraphStyle {
     const StrutStyle& getStrutStyle() const { return fStrutStyle; }
     void setStrutStyle(StrutStyle strutStyle) { fStrutStyle = std::move(strutStyle); }
 
+    const FontRastrSettings& getFontRastrSettings() const { return fFontRastrSettings; }
+    void setFontRastrSettings(FontRastrSettings fontRastrSettings) { fFontRastrSettings = fontRastrSettings; }
+
     const TextStyle& getTextStyle() const { return fDefaultTextStyle; }
     void setTextStyle(const TextStyle& textStyle) { fDefaultTextStyle = textStyle; }
 
@@ -136,6 +140,7 @@ private:
     TextHeightBehavior fTextHeightBehavior;
     bool fHintingIsOn;
     bool fReplaceTabCharacters;
+    FontRastrSettings fFontRastrSettings;
 };
 }  // namespace textlayout
 }  // namespace skia
