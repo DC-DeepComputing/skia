@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be9c260_25f2bfee",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T15:45:46Z",
+      "side": 1,
+      "message": "I prefer the existing way; it\u0027s just a hint to the reader \"this half4(1) is unused, it\u0027s just here to fill in the slot with something.\" It\u0027s all right there in a three-line span that you can take in at a glance. Needing to jump to the top of the file to see the value decreases skimmability, and it also IMO gives the arbitrary constant more weight than it deserves. This is just an arbitrary number that we don\u0027t expect will ever be accessed. It\u0027s not a file-wide mandate with important meaning.\n\n(FWIW, my expectation is that the SkSL compiler will eliminate this entirely... most functions are small and will be inlined, and at that point, unreferenced params melt away.)",
+      "parentUuid": "c9232b68_11f654d3",
+      "revId": "8275b9e5750178aec5693e7d859cc5a1b5b4b476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50226393_a3022c23",
