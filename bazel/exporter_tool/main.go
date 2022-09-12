@@ -347,6 +347,15 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_unicode_runtime_icu_sources",
 			Rules: []string{"//modules/skunicode/src:runtime_srcs"}},
 	}},
+	{GNI: "modules/skcms/skcms.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "skcms_public_headers",
+			Rules: []string{"//modules/skcms:public_hdrs"}},
+		{Var: "skcms_sources",
+			Rules: []string{
+				"//modules/skcms:srcs",
+				"//modules/skcms:textual_hdrs",
+			}},
+	}},
 }
 
 const (
