@@ -16,6 +16,69 @@
       "message": "Your recent CLs made me remember this one. This at least gets an interface in place that Graphite can use. It\u0027s based on the D3D allocator setup.\n",
       "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed62f6a8_4d9cbb5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-12T13:18:25Z",
+      "side": 1,
+      "message": "Sorry this got lost in reviews. Do we really want to land this CL with public setter right now? Do we have the support internally to handle all the types of heap allocations a client might do?\n\nMaybe we just add the memory allocator abstraction internally to GrMtlGpu for now? Or even hold off until we find someone who is requesting this type of thing? If we decide to implement our own heap allocator for metal I certainly see sharing that code between the different versions, but I don\u0027t think that alone requires a flexible memory allocator interface.",
+      "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b382b527_a306a852",
+        "filename": "include/gpu/mtl/MetalMemoryAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-12T13:18:25Z",
+      "side": 1,
+      "message": "skgpu_MetalMemoryAllocator",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 28
+      },
+      "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98983244_09bc7887",
+        "filename": "include/gpu/mtl/MetalMemoryAllocator.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-12T13:18:25Z",
+      "side": 1,
+      "message": "Why Metal and not Mtl? I know vulkan is using Vulkan but that\u0027s because we can\u0027t use Vk since that\u0027s what the spec uses. Since all our other graphite things are Mtl is there a reason not to continue that?",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "bd8229a166b15c87de80ec37d5457d6df17b26f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
