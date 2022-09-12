@@ -180,6 +180,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32f12c30_b6826350",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-12T15:34:29Z",
+      "side": 1,
+      "message": "Alright, I think we should plan on moving Skia towards 2), where all local matrix control is encapsulated within SkLocalMatrixShader. I looked briefly into doing this today and it ends up being a pretty invasive change given how integrated SkShaderBase\u0027s local matrix field is with raster pipeline, context, SkVM, and FP creation is. I think 2) will let a lot of this logic become much simpler.\n\nFor the time being, I think Graphite should move forward as if 2) will happen soon, and not worry too much about paint keys that have a local matrix block followed by an image shader that also, temporarily, adds its own local matrix block.  We can easily delete that second block once images/gradients/runtime effects don\u0027t have a local matrix. For now, we can just update our check on their addToKey() implementations to only add the local matrix block if their transform is not identity.",
+      "parentUuid": "ab42c31c_49deae63",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdf56414_c35c8760",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 14
