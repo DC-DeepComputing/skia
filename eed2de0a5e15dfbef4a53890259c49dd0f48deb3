@@ -22,6 +22,30 @@
       },
       "revId": "eed2de0a5e15dfbef4a53890259c49dd0f48deb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eba1cab0_3f3c3e1f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-12T15:54:46Z",
+      "side": 1,
+      "message": "Good point, the spaces aren\u0027t important and cost bytes. I can shave those off.",
+      "parentUuid": "168e5e53_7d160ea5",
+      "range": {
+        "startLine": 165,
+        "startChar": 20,
+        "endLine": 165,
+        "endChar": 25
+      },
+      "revId": "eed2de0a5e15dfbef4a53890259c49dd0f48deb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
