@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb0a13f_d6f95c2f",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-12T20:48:15Z",
+      "side": 0,
+      "message": "This is needed when SK_SUPPORT_LEGACY_EMBOSSMASKFILTER is defined (android uses that still)",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "9b6c963350e000d916cc084738c62617ffae357e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
