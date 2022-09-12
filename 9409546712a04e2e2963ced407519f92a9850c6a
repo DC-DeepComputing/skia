@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "031c979f_05ce728c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-12T21:03:41Z",
+      "side": 1,
+      "message": "So this fix was exactly how I\u0027d initially thought it should be, but my big comment has me actually wondering if we need the SsboTracker\u0027s alignment logic when writing uniforms to handle this extra padding.",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2553365_57a26206",
@@ -20,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f119ed6_5658050e",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-12T21:03:41Z",
+      "side": 1,
+      "message": "We could make two gatherers, one for the paint uniforms and one for the renderstep uniforms. The current plan is that paints use ssbo\u0027s when possible, and renderstep\u0027s will always use uniform buffers for their bespoke uniforms. The common draw data will go into ssbos under the same cases that the paint data goes into ssbos.\n\nAlternatively, we use the max alignment requirement. But this got me thinking about the impacts of this approach (which was how I\u0027d imagined we\u0027d do it because I liked the idea of data and size being safe for use in arrays regardless of alignment requirements).\n\nOn Intel that requires 256 byte alignment for uniform bindings, this triggers because we pack the data as if it could be an array of Foo\u0027s for SSBO use and assume the buffer binding\u0027s alignment is \u003c\u003d the uniform component alignment. When we can\u0027t use SSBOs and we always have to bind, we\u0027re always going to use at least 256 bytes per uniform block. But assuming intel supports storage buffers, does it allow accessing SSBO elements that have their element alignment \u003c 256 so long as the start of the buffer is preserved? Otherwise we may get out of sync with how the GPU accesses a Foo* array, since we will have padded between elements and it will not have.",
+      "parentUuid": "c2553365_57a26206",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ac07196_d7fbd948",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 2
@@ -31,6 +66,29 @@
       "writtenOn": "2022-09-12T19:38:06Z",
       "side": 1,
       "message": "Suggestion -- I think we can just initialize fReqAlignment to minBlockAlignment here and we wouldn\u0027t need a new field.",
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd275e3d_4442e69e",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-12T21:03:41Z",
+      "side": 1,
+      "message": "The error message seemed to suggest 32, and not 256. Are there cases where we can tighten this alignment up to 32 instead, since that\u0027s a big reduction from 256?",
+      "range": {
+        "startLine": 230,
+        "startChar": 45,
+        "endLine": 230,
+        "endChar": 46
+      },
       "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
