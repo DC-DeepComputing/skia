@@ -10,7 +10,7 @@
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkMathPriv.h"
-#include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/graphite/ContextPriv.h"

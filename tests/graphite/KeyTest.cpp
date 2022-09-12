@@ -8,7 +8,7 @@
 #include "tests/Test.h"
 
 #include "src/core/SkPaintParamsKey.h"
-#include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 #include "src/gpu/graphite/ContextPriv.h"
 

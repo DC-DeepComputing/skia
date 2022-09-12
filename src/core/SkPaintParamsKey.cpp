@@ -9,7 +9,7 @@
 
 #include <cstring>
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 using DataPayloadType  = SkPaintParamsKey::DataPayloadType;
 using DataPayloadField = SkPaintParamsKey::DataPayloadField;

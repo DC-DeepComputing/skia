@@ -14,7 +14,6 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -27,6 +26,7 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 #ifdef SK_METAL
 #include "src/gpu/graphite/mtl/MtlTrampoline.h"

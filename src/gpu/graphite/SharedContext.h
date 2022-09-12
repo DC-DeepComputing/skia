@@ -13,9 +13,9 @@
 #include "include/core/SkSize.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 namespace skgpu {
 class SingleOwner;

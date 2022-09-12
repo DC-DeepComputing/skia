@@ -7,7 +7,7 @@
 
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
-#include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 #ifdef SK_GRAPHITE_ENABLED
 SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::graphite::Layout layout)

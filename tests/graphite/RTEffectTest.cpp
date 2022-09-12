@@ -12,8 +12,8 @@
 #include "include/gpu/graphite/Context.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkRuntimeEffectPriv.h"
-#include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/SkShaderCodeDictionary.h"
 
 using namespace skgpu::graphite;
 
