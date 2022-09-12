@@ -22,6 +22,30 @@
       },
       "revId": "484e0e2ae86b15f10e56bd30355e5618a19567e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73dbcfd3_c65783d0",
+        "filename": "include/gpu/vk/GrVkMemoryAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-12T13:09:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a7511044_59180fca",
+      "range": {
+        "startLine": 86,
+        "startChar": 40,
+        "endLine": 86,
+        "endChar": 63
+      },
+      "revId": "484e0e2ae86b15f10e56bd30355e5618a19567e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
