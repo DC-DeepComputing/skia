@@ -46,6 +46,30 @@
       },
       "revId": "d270e4306881fae1221f9a3e247b4abb8fdeb180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b47606_6a874bcc",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T18:49:06Z",
+      "side": 1,
+      "message": "Actually, I retested just to be sure, and now it works. Previously I\u0027m sure it didn\u0027t, but I\u0027ve removed all that code.\nThe tests still don\u0027t pass, but they do draw.",
+      "parentUuid": "87ee90d0_863ffec1",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 23
+      },
+      "revId": "d270e4306881fae1221f9a3e247b4abb8fdeb180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
