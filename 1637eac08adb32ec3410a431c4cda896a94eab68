@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74946772_79a82f31",
+        "filename": "gm/tilemodes_subset.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T19:28:17Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure that if you pass 0 for rowBytes into allocPixels, it will do a tight/minimal allocation.",
+      "revId": "1637eac08adb32ec3410a431c4cda896a94eab68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4837b581_3afcf66d",
+        "filename": "gm/tilemodes_subset.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T19:28:17Z",
+      "side": 1,
+      "message": "// anonymous namespace ?",
+      "range": {
+        "startLine": 96,
+        "startChar": 6,
+        "endLine": 96,
+        "endChar": 15
+      },
+      "revId": "1637eac08adb32ec3410a431c4cda896a94eab68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
