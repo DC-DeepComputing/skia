@@ -16,6 +16,24 @@
       "message": "This one is newly broken since the GM is now getting further along.",
       "revId": "119df33edd390aa1234bf2a444eabd71d9c92248",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0a50bd2_1158a0c6",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 9
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-13T16:45:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b49dd636_8111da08",
+      "revId": "119df33edd390aa1234bf2a444eabd71d9c92248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
