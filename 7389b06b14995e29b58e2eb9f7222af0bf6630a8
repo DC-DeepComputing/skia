@@ -22,6 +22,30 @@
       },
       "revId": "7389b06b14995e29b58e2eb9f7222af0bf6630a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baab776e_1051f92e",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-09-13T11:26:30Z",
+      "side": 1,
+      "message": "I tried all filegroups, but still not working. I just went with three filegroups that duplicate the skia_cc_library files.",
+      "parentUuid": "cd7dc2be_d279f37a",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 46
+      },
+      "revId": "7389b06b14995e29b58e2eb9f7222af0bf6630a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
