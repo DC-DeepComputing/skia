@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c6b730_eaa5a16d",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-13T21:09:40Z",
+      "side": 1,
+      "message": "I find it odd that this is inside a method that doesn\u0027t do anything else. This is done at compile-time, so there\u0027s no need to even call this method. According to https://en.cppreference.com/w/cpp/language/static_assert:\n\n\u003e A static assert declaration may appear at namespace and block scope (as a block declaration) and inside a class body (as a member declaration).\n\nOftentimes I put this next to where it\u0027s used, but it sounds like this can just be at the top of the cpp file?",
+      "range": {
+        "startLine": 379,
+        "startChar": 18,
+        "endLine": 379,
+        "endChar": 38
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0d0d82_0ec7a053",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-13T21:09:40Z",
+      "side": 1,
+      "message": "No need to call (or even have) this method.",
+      "range": {
+        "startLine": 411,
+        "startChar": 4,
+        "endLine": 413,
+        "endChar": 27
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
