@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba241780_653a3b18",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Not sure what you mean here, these are the only two SkFilterModes.",
+      "parentUuid": "99c7a01d_aac4d674",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e50f9550_0f988ad2",
         "filename": "gm/tilemode_subset.cpp",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-09-13T17:15:55Z",
       "side": 1,
       "message": "Syntax for file-local anonymous namespace functions is: make_ringed_image.\n\nHere and below",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52646e70_0c076a7d",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e50f9550_0f988ad2",
       "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "816dc2c0_cb8512d0",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afb5f523_34f3c07b",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94979441_fec4245e",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-09-13T17:06:22Z",
       "side": 1,
       "message": "Can\u0027t you do something like:\n  bitmap.erase(kRingColor);\n  bitmap.erase(kCheckColor1, {1, 1, 2, 2});\n  bitmap.erase(kCheckColor2, {1, 2, 2, 3});\n  // etc\n?\nIt seems like it would be clearer and less fraught.",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bac7f32_2e32e9f3",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94979441_fec4245e",
       "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +181,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dd320b_493cfca6",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6b8f5fb_6fb77e3f",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 20
+      },
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2acad29b_9efd9709",
@@ -122,6 +218,24 @@
       "writtenOn": "2022-09-13T17:15:55Z",
       "side": 1,
       "message": "It looks like we usually pass this around as const\u0026",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f4883ff_72019c03",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2acad29b_9efd9709",
       "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -143,6 +257,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7914388b_a65741a0",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddcf8ac1_5a86716a",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41607fbc_b24eb446",
@@ -156,6 +288,30 @@
       "writtenOn": "2022-09-13T17:15:55Z",
       "side": 1,
       "message": "This could probably be a kPad/kPadding constant",
+      "range": {
+        "startLine": 93,
+        "startChar": 45,
+        "endLine": 93,
+        "endChar": 47
+      },
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bcfdeff_06925115",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41607fbc_b24eb446",
       "range": {
         "startLine": 93,
         "startChar": 45,
@@ -189,6 +345,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20a724fd_f3088c1f",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5e25caf_89324e1a",
+      "range": {
+        "startLine": 121,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 10
+      },
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c880910_80172660",
@@ -206,6 +386,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3705a44c_42350975",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c880910_80172660",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6604d3d1_1ca6c88c",
@@ -219,6 +417,24 @@
       "writtenOn": "2022-09-13T17:06:22Z",
       "side": 1,
       "message": "I guess this should be tilemodes_subset.cpp to match the others",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734c0ea0_28f8a1ae",
+        "filename": "gn/gm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T18:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6604d3d1_1ca6c88c",
       "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
