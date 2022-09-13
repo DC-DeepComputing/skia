@@ -56,7 +56,7 @@ private:
 enum class SnippetRequirementFlags : uint32_t {
     kNone = 0x0,
     kLocalCoords = 0x1,
-    kPriorStageOutput = 0x2,  // AKA the "input" color, or the "source" color for a blender
+    kPriorStageOutput = 0x2,  // AKA the "source" color
     kDestColor = 0x4,
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
@@ -66,22 +66,19 @@ struct SkShaderSnippet {
                                                   int* entryIndex,
                                                   const SkPaintParamsKey::BlockReader&,
                                                   std::string* preamble);
-    struct Args {
-        std::string_view fPriorStageOutput;
-        std::string_view fDestColor;
-        std::string_view fFragCoord;
-        std::string_view fPreLocalMatrix;
-    };
     using GenerateExpressionForSnippetFn = std::string (*)(const SkShaderInfo& shaderInfo,
                                                            int entryIndex,
                                                            const SkPaintParamsKey::BlockReader&,
-                                                           const Args& args);
+                                                           const std::string& priorStageOutputName,
+                                                           const std::string& destColorName,
+                                                           const std::string& fragCoord,
+                                                           const std::string& currentPreLocalName);
 
     SkShaderSnippet() = default;
 
     SkShaderSnippet(const char* name,
                     SkSpan<const SkUniform> uniforms,
-                    SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
+                    SnippetRequirementFlags snippetRequirementFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     GenerateExpressionForSnippetFn expressionGenerator,
@@ -115,7 +112,7 @@ struct SkShaderSnippet {
 
     const char* fName = nullptr;
     SkSpan<const SkUniform> fUniforms;
-    SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags{SnippetRequirementFlags::kNone};
+    SnippetRequirementFlags fSnippetRequirementFlags;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     GenerateExpressionForSnippetFn fExpressionGenerator = nullptr;
@@ -141,7 +138,7 @@ public:
     void add(const SkPaintParamsKey::BlockReader& reader) {
         fBlockReaders.push_back(reader);
     }
-    void addFlags(SkEnumBitMask<SnippetRequirementFlags> flags) {
+    void addFlags(SnippetRequirementFlags flags) {
         fSnippetRequirementFlags |= flags;
     }
     bool needsLocalCoords() const {
@@ -231,8 +228,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
-    SkEnumBitMask<SnippetRequirementFlags> getSnippetRequirementFlags(
-            SkBuiltInCodeSnippetID id) const {
+    SnippetRequirementFlags getSnippetRequirementFlags(SkBuiltInCodeSnippetID id) const {
         return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
     }
 
@@ -270,7 +266,7 @@ private:
     int addUserDefinedSnippet(
             const char* name,
             SkSpan<const SkUniform> uniforms,
-            SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
+            SnippetRequirementFlags snippetRequirementFlags,
             SkSpan<const SkTextureAndSampler> texturesAndSamplers,
             const char* functionName,
             SkShaderSnippet::GenerateExpressionForSnippetFn expressionGenerator,

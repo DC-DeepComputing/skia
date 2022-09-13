@@ -437,7 +437,7 @@ func runBloatyDiff(ctx context.Context, stripPath, bloatyPath, binaryName string
 		Args: []string{
 			binaryWithPatchWithNoSymbols,
 			"--debug-file=" + binaryWithPatchWithSymbols,
-			"-d", "symbols", "-n", "0", "-s", "file",
+			"-d", "compileunits,symbols", "-n", "0", "-s", "file",
 			"--",
 			binaryWithNoPatchWithNoSymbols,
 			"--debug-file=" + binaryWithNoPatchWithSymbols,

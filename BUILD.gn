@@ -165,10 +165,38 @@ template("opts") {
 
 is_x86 = current_cpu == "x64" || current_cpu == "x86"
 
+opts("none") {
+  enabled = !is_x86 && current_cpu != "arm" && current_cpu != "arm64"
+  sources = skia_opts.none_sources
+  cflags = []
+}
+
+opts("armv7") {
+  enabled = current_cpu == "arm"
+  sources = skia_opts.armv7_sources + skia_opts.neon_sources
+  cflags = []
+}
+
+opts("arm64") {
+  enabled = current_cpu == "arm64"
+  sources = skia_opts.arm64_sources
+  cflags = []
+}
+
 opts("crc32") {
   enabled = current_cpu == "arm64"
   sources = skia_opts.crc32_sources
   cflags = [ "-march=armv8-a+crc" ]
+}
+
+opts("sse2") {
+  enabled = is_x86
+  sources = skia_opts.sse2_sources
+  if (!is_clang && is_win) {
+    defines = [ "SK_CPU_SSE_LEVEL=SK_CPU_SSE_LEVEL_SSE2" ]
+  } else {
+    cflags = [ "-msse2" ]
+  }
 }
 
 opts("ssse3") {
@@ -178,6 +206,16 @@ opts("ssse3") {
     defines = [ "SK_CPU_SSE_LEVEL=SK_CPU_SSE_LEVEL_SSSE3" ]
   } else {
     cflags = [ "-mssse3" ]
+  }
+}
+
+opts("sse41") {
+  enabled = is_x86
+  sources = skia_opts.sse41_sources
+  if (!is_clang && is_win) {
+    defines = [ "SK_CPU_SSE_LEVEL=SK_CPU_SSE_LEVEL_SSE41" ]
+  } else {
+    cflags = [ "-msse4.1" ]
   }
 }
 
@@ -856,11 +894,7 @@ optional("gpu_shared") {
   sources = skia_shared_gpu_sources + skia_sksl_gpu_sources
 
   if (skia_use_vulkan) {
-    public_defines += [ "SK_VULKAN" ]
     sources += skia_shared_vk_sources
-    if (skia_enable_vulkan_debug_layers) {
-      public_defines += [ "SK_ENABLE_VK_LAYERS" ]
-    }
     if (skia_use_vma) {
       public_deps += [ "third_party/vulkanmemoryallocator" ]
     }
@@ -933,7 +967,11 @@ optional("gpu") {
   }
 
   if (skia_use_vulkan) {
+    public_defines += [ "SK_VULKAN" ]
     sources += skia_vk_sources
+    if (skia_enable_vulkan_debug_layers) {
+      public_defines += [ "SK_ENABLE_VK_LAYERS" ]
+    }
     if (is_fuchsia) {
       if (using_fuchsia_sdk) {
         public_deps += [ "$fuchsia_sdk_root/pkg:vulkan" ]
@@ -1137,7 +1175,7 @@ optional("graphite") {
     }
   }
   if (skia_use_vulkan) {
-    sources += skia_graphite_vk_sources
+    public_defines += [ "SK_VULKAN" ]
   }
 }
 
@@ -1307,6 +1345,8 @@ skia_component("skia") {
 
   deps = [
     ":android_utils",
+    ":arm64",
+    ":armv7",
     ":avif",
     ":avx",
     ":crc32",
@@ -1318,12 +1358,15 @@ skia_component("skia") {
     ":jpeg_encode",
     ":jpegxl_decode",
     ":ndk_images",
+    ":none",
     ":piet",
     ":png_decode",
     ":png_encode",
     ":raw",
     ":skvm_jit",
     ":skx",
+    ":sse2",
+    ":sse41",
     ":sse42",
     ":ssse3",
     ":webp_decode",
@@ -1508,9 +1551,14 @@ skia_static_library("pathkit") {
   configs = skia_library_configs
 
   deps = [
+    ":arm64",
+    ":armv7",
     ":avx",
     ":crc32",
     ":hsw",
+    ":none",
+    ":sse2",
+    ":sse41",
     ":sse42",
     ":ssse3",
   ]

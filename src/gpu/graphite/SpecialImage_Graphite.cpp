@@ -10,7 +10,6 @@
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "src/gpu/graphite/Image_Graphite.h"
-#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/shaders/SkImageShader.h"
 
 namespace skgpu::graphite {
@@ -125,9 +124,7 @@ public:
         colorType = colorSpace && colorSpace->gammaIsLinear() ? kRGBA_F16_SkColorType
                                                               : kRGBA_8888_SkColorType;
         SkImageInfo info = SkImageInfo::Make(size, colorType, at, sk_ref_sp(colorSpace));
-        // The user never gets a direct ref to this surface (nor its snapped image) so it must be
-        // budgeted
-        return Surface::MakeGraphite(fRecorder, info, SkBudgeted::kYes);
+        return SkSurface::MakeGraphite(fRecorder, info, nullptr);
     }
 
 private:

@@ -21,7 +21,7 @@
 #include <android/hardware_buffer.h>
 #endif
 
-#if SK_SUPPORT_GPU && defined(SK_METAL)
+#ifdef SK_METAL
 #include "include/gpu/mtl/GrMtlTypes.h"
 #endif
 
@@ -396,17 +396,14 @@ public:
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
-    /**
-     * In Graphite, while clients hold a ref on an SkSurface, the backing gpu object does _not_
-     * count against the budget. Once an SkSurface is freed, the backing gpu object may or may
-     * not become a scratch (i.e., reusable) resource but, if it does, it will be counted against
-     * the budget.
-     */
-    static sk_sp<SkSurface> MakeGraphite(
-            skgpu::graphite::Recorder*,
-            const SkImageInfo& imageInfo,
-            skgpu::graphite::Mipmapped = skgpu::graphite::Mipmapped::kNo,
-            const SkSurfaceProps* surfaceProps = nullptr);
+    // In Graphite, while clients hold a ref on an SkSurface, the backing gpu object does _not_
+    // count against the budget. Once an SkSurface is freed, the backing gpu object may or may
+    // not become a scratch (i.e., reusable) resouce but, if it does, it will be counted against
+    // the budget.
+    static sk_sp<SkSurface> MakeGraphite(skgpu::graphite::Recorder*,
+                                         const SkImageInfo& imageInfo,
+                                         const SkSurfaceProps* surfaceProps = nullptr);
+
 
     /**
      * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
@@ -429,7 +426,7 @@ public:
 
 #endif // SK_GRAPHITE_ENABLED
 
-#if SK_SUPPORT_GPU && defined(SK_METAL)
+#ifdef SK_METAL
     /** Creates SkSurface from CAMetalLayer.
         Returned SkSurface takes a reference on the CAMetalLayer. The ref on the layer will be
         released when the SkSurface is destroyed.

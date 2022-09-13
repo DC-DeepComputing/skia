@@ -25,12 +25,6 @@
 #include "tools/AutoreleasePool.h"
 #if USE_OPENGL_BACKEND
 #include "dawn/native/OpenGLBackend.h"
-#elif defined(SK_BUILD_FOR_MAC)
-#include "dawn/native/MetalBackend.h"
-#elif defined(SK_BUILD_FOR_WIN)
-#include "dawn/native/D3D12Backend.h"
-#elif defined(SK_BUILD_FOR_UNIX)
-#include "dawn/native/VulkanBackend.h"
 #endif
 
 #if defined(SK_BUILD_FOR_MAC) && USE_OPENGL_BACKEND
@@ -113,9 +107,7 @@ public:
         } else {
             wgpu::BackendType type;
 #if USE_OPENGL_BACKEND
-            type = wgpu::BackendType::OpenGL;
-            dawn::native::opengl::AdapterDiscoveryOptions adapterOptions(
-                    static_cast<WGPUBackendType>(type));
+            dawn::native::opengl::AdapterDiscoveryOptions adapterOptions;
             adapterOptions.getProc = reinterpret_cast<void*(*)(const char*)>(
 #if defined(SK_BUILD_FOR_UNIX)
                 glXGetProcAddress
@@ -125,23 +117,20 @@ public:
                 ProcGetter::getProcAddress
 #endif
             );
-#else  // !USE_OPENGL_BACKEND
+            instance->DiscoverAdapters(&adapterOptions);
+            type = wgpu::BackendType::OpenGL;
+#else
+            instance->DiscoverDefaultAdapters();
 #if defined(SK_BUILD_FOR_MAC)
             type = wgpu::BackendType::Metal;
-            dawn::native::metal::AdapterDiscoveryOptions adapterOptions;
 #elif defined(SK_BUILD_FOR_WIN)
             type = wgpu::BackendType::D3D12;
-            dawn::native::d3d12::AdapterDiscoveryOptions adapterOptions;
 #elif defined(SK_BUILD_FOR_UNIX)
             type = wgpu::BackendType::Vulkan;
-            dawn::native::vulkan::AdapterDiscoveryOptions adapterOptions;
 #endif
-#endif  // USE_OPENGL_BACKEND
-            instance->DiscoverAdapters(&adapterOptions);
+#endif
             device = createDevice(*instance, type);
-            if (device) {
-                device.SetUncapturedErrorCallback(PrintDeviceError, 0);
-            }
+            device.SetUncapturedErrorCallback(PrintDeviceError, 0);
         }
         if (!device) {
             return nullptr;

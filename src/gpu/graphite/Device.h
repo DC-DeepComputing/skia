@@ -44,7 +44,6 @@ public:
     static sk_sp<Device> Make(Recorder*,
                               const SkImageInfo&,
                               SkBudgeted,
-                              Mipmapped,
                               const SkSurfaceProps&,
                               bool addInitialClear);
     static sk_sp<Device> Make(Recorder*,

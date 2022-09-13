@@ -134,8 +134,6 @@ skia_graphite_sources = [
   "$_src/geom/SubRunData.h",
   "$_src/geom/Transform.cpp",
   "$_src/geom/Transform_graphite.h",
-  "$_src/render/AnalyticRRectRenderStep.cpp",
-  "$_src/render/AnalyticRRectRenderStep.h",
   "$_src/render/BitmapTextRenderStep.cpp",
   "$_src/render/BitmapTextRenderStep.h",
   "$_src/render/CommonDepthStencilSettings.h",
@@ -190,15 +188,6 @@ skia_graphite_mtl_sources = [
   "$_src/mtl/MtlTypesPriv.mm",
   "$_src/mtl/MtlUtils.h",
   "$_src/mtl/MtlUtils.mm",
-]
-
-skia_graphite_vk_sources = [
-  "$_src/vk/VulkanCaps.cpp",
-  "$_src/vk/VulkanCaps.h",
-  "$_src/vk/VulkanResourceProvider.cpp",
-  "$_src/vk/VulkanResourceProvider.h",
-  "$_src/vk/VulkanSharedContext.cpp",
-  "$_src/vk/VulkanSharedContext.h",
 ]
 
 skia_graphite_piet_sources = [

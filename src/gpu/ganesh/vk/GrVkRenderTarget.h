@@ -16,7 +16,6 @@
 #include "src/gpu/ganesh/vk/GrVkRenderPass.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
 
-class GrVkCaps;
 class GrVkFramebuffer;
 class GrVkGpu;
 class GrVkImageView;

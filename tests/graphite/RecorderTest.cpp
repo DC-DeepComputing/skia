@@ -19,11 +19,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(RecorderDevicePtrTest, reporter, context) {
 
     SkImageInfo info = SkImageInfo::Make({16, 16}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<Device> device1 = Device::Make(recorder.get(),
-                                         info,
-                                         SkBudgeted::kYes,
-                                         Mipmapped::kNo,
-                                         SkSurfaceProps(),
+    sk_sp<Device> device1 = Device::Make(recorder.get(), info, SkBudgeted::kYes, SkSurfaceProps(),
                                          /* addInitialClear= */ true);
 
     REPORTER_ASSERT(reporter, device1->recorder() == recorder.get());
@@ -34,23 +30,11 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(RecorderDevicePtrTest, reporter, context) {
     REPORTER_ASSERT(reporter, !recorder->deviceIsRegistered(devPtr));
 
     // Test adding multiple devices
-    device1 = Device::Make(recorder.get(),
-                           info,
-                           SkBudgeted::kYes,
-                           Mipmapped::kNo,
-                           SkSurfaceProps(),
+    device1 = Device::Make(recorder.get(), info, SkBudgeted::kYes, SkSurfaceProps(),
                            /* addInitialClear= */ true);
-    sk_sp<Device> device2 = Device::Make(recorder.get(),
-                                         info,
-                                         SkBudgeted::kYes,
-                                         Mipmapped::kNo,
-                                         SkSurfaceProps(),
+    sk_sp<Device> device2 = Device::Make(recorder.get(), info, SkBudgeted::kYes, SkSurfaceProps(),
                                          /* addInitialClear= */ true);
-    sk_sp<Device> device3 = Device::Make(recorder.get(),
-                                         info,
-                                         SkBudgeted::kYes,
-                                         Mipmapped::kNo,
-                                         SkSurfaceProps(),
+    sk_sp<Device> device3 = Device::Make(recorder.get(), info, SkBudgeted::kYes, SkSurfaceProps(),
                                          /* addInitialClear= */ true);
     REPORTER_ASSERT(reporter, device1->recorder() == recorder.get());
     REPORTER_ASSERT(reporter, device2->recorder() == recorder.get());

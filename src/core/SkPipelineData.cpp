@@ -34,7 +34,7 @@ void SkPipelineDataGatherer::checkReset() {
 }
 #endif // SK_DEBUG
 
-void SkPipelineDataGatherer::addFlags(SkEnumBitMask<SnippetRequirementFlags> flags) {
+void SkPipelineDataGatherer::addFlags(SnippetRequirementFlags flags) {
     fSnippetRequirementFlags |= flags;
 }
 
