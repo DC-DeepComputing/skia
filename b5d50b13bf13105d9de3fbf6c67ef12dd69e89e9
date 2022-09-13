@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ab052ed_a3efe853",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T19:28:43Z",
+      "side": 1,
+      "message": "Doesn\u0027t matter - I got my answer later on in the code",
+      "parentUuid": "ba241780_653a3b18",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e50f9550_0f988ad2",
