@@ -242,6 +242,14 @@ struct BlendModeBlock {
                            SkBlendMode);
 };
 
+struct BlendModeDestProvidedBlock {
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           SkBlendMode,
+                           const SkPMColor4f&);
+};
+
 struct PrimitiveBlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,

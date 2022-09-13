@@ -11,6 +11,8 @@
 #include "include/core/SkBlender.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
+// TODO SkPMColor4f, or just SkColor?
+#include "include/private/SkColorData.h"
 
 #include <optional>
 
@@ -63,8 +65,11 @@ public:
     // evaluation with the back buffer.
     virtual void addToKey(const SkKeyContext&,
                           SkPaintParamsKeyBuilder*,
+                          SkPipelineDataGatherer*) const;
+    virtual void addToKey(const SkKeyContext&,
+                          SkPaintParamsKeyBuilder*,
                           SkPipelineDataGatherer*,
-                          bool primitiveColorBlender) const;
+                          const SkPMColor4f& primitiveColorBlender) const;
 #endif
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
