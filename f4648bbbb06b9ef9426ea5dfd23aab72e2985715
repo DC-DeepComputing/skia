@@ -33,6 +33,24 @@
       "message": "I think it\u0027s safe to disregard the failing codesize tasks. They are failing because they don\u0027t have the GN argument you just added when trying to build ToT",
       "revId": "f4648bbbb06b9ef9426ea5dfd23aab72e2985715",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "148e30f3_d8f2c7d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-13T16:17:24Z",
+      "side": 1,
+      "message": "Thanks, submitted",
+      "parentUuid": "7c104129_83dcc0e8",
+      "revId": "f4648bbbb06b9ef9426ea5dfd23aab72e2985715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
