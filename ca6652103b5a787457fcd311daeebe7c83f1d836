@@ -16,6 +16,98 @@
       "message": "Going ahead and throwing you on to this CL while CQ is running so you can start taking a peek.",
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7c91416_c7b4e967",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:33:10Z",
+      "side": 1,
+      "message": "I think you can use `value_or` to simplify this\n\n\n    std::optional\u003cSkBlendMode\u003e bm \u003d as_BB(this)-\u003easBlendMode();\n    BlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value_or(SkBlendMode::kSrcOver));\n    builder-\u003eendBlock();",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 0
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f41bf581_93877f00",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:33:10Z",
+      "side": 1,
+      "message": "`std::string_view destColor \u003d destColorProvided ? args.fDestColor : \"half4(1)\";`",
+      "range": {
+        "startLine": 908,
+        "startChar": 4,
+        "endLine": 908,
+        "endChar": 90
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3f92b15_d147a3d1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:33:10Z",
+      "side": 1,
+      "message": "`%.*s`",
+      "range": {
+        "startLine": 910,
+        "startChar": 46,
+        "endLine": 910,
+        "endChar": 48
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3c08432_c4532a47",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:33:10Z",
+      "side": 1,
+      "message": "`(int)destColor.size(), destColor.data()`",
+      "range": {
+        "startLine": 914,
+        "startChar": 32,
+        "endLine": 914,
+        "endChar": 49
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
