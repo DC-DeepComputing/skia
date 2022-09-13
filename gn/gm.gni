@@ -385,6 +385,7 @@ gm_sources = [
   "$_gm/thinstrokedrects.cpp",
   "$_gm/tiledscaledbitmap.cpp",
   "$_gm/tileimagefilter.cpp",
+  "$_gm/tilemode_subset.cpp",
   "$_gm/tilemodes.cpp",
   "$_gm/tilemodes_alpha.cpp",
   "$_gm/tilemodes_scaled.cpp",
