@@ -594,6 +594,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
 
     SkStrokeRec stroke(paint);
 
+#ifdef SK_ENABLE_OPTIMIZE_SIZE // change to ifndef
     if (stroke.isFillStyle() && !paint.getMaskFilter() && !paint.getPathEffect()) {
         // For axis-aligned filled DRRects, just draw a regular rrect with inner clipped out using a
         // coverage FP instead of using path rendering.
@@ -614,6 +615,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
             return;
         }
     }
+#endif
 
     SkPath path;
     path.setIsVolatile(true);
