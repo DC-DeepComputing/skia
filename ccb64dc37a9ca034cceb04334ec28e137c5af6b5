@@ -270,6 +270,30 @@
       },
       "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bb994c6_bcebb21f",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-13T17:28:42Z",
+      "side": 1,
+      "message": "I understand. I just kicked off a CL which adds a blend(source,dest) block \u0026 snippet (adding you on it once it passes CQ): https://skia-review.googlesource.com/c/skia/+/580417\n\nI will update this CL shortly to incorporate those, and I will keep the solid color shader that is just the paint\u0027s color at the beginning for the case #2 you referenced.",
+      "parentUuid": "7550b173_51844dd6",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
