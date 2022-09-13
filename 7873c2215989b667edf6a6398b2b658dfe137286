@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26def1e_196a41d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-13T14:20:23Z",
+      "side": 1,
+      "message": "Few questions, otherwise LGTM",
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4049ab4_967db200",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-13T14:20:23Z",
+      "side": 1,
+      "message": "Incomplete comment",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 39,
+        "endChar": 53
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c09124c_fed1d7d2",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-13T14:20:23Z",
+      "side": 1,
+      "message": "Should fImageUsageFlags be compared here as well?",
+      "range": {
+        "startLine": 38,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 51
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4003e0d5_dda01826",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-13T14:20:23Z",
+      "side": 1,
+      "message": "Nit: Is this line change intentional as the only change in this file?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 0
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
