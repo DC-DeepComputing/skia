@@ -132,6 +132,12 @@ Token Parser::nextRawToken() {
                 token.fKind = Token::Kind::TK_IDENTIFIER;  // reduces additional follow-up errors
                 break;
 
+            case Token::Kind::TK_BAD_IDENTIFIER:
+                this->error(token, "identifiers with multiple underscores in a row "
+                                   "are not permitted");
+                token.fKind = Token::Kind::TK_IDENTIFIER;  // reduces additional follow-up errors
+                break;
+
             case Token::Kind::TK_BAD_OCTAL:
                 this->error(token, "'" + std::string(this->text(token)) +
                                    "' is not a valid octal number");

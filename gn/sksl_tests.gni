@@ -266,6 +266,7 @@ sksl_error_tests = [
   "/sksl/errors/UndeclaredFunction.rts",
   "/sksl/errors/UndefinedFunction.rts",
   "/sksl/errors/UndefinedSymbol.rts",
+  "/sksl/errors/Underscores.rts",
   "/sksl/errors/UniformVarWithInitializerExpression.rts",
   "/sksl/errors/UnknownDivideByZero.sksl",
   "/sksl/errors/UnscopedVariableInDoWhile.sksl",

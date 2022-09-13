@@ -56,6 +56,7 @@ struct Token {
         TK_ES3,
         TK_THREADGROUP,
         TK_RESERVED,
+        TK_BAD_IDENTIFIER,
         TK_IDENTIFIER,
         TK_DIRECTIVE,
         TK_LPAREN,
@@ -112,9 +113,7 @@ struct Token {
 
     Token() {}
     Token(Kind kind, int32_t offset, int32_t length)
-            : fKind(kind)
-            , fOffset(offset)
-            , fLength(length) {}
+            : fKind(kind), fOffset(offset), fLength(length) {}
 
     Kind fKind = Kind::TK_NONE;
     int32_t fOffset = -1;

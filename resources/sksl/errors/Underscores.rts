@@ -1,0 +1,24 @@
+int _u_n_d_e_r_s_c_o_r_e_s_;
+int a_r_e_;
+int _c_o_o_l;
+
+int __two_underscores_at_the_front;
+int two_underscores__in_the_middle;
+int two_underscores_at_the_end__;
+int __; // two underscores in isolation
+
+int three___underscores;
+
+struct two_underscores__in_a_typename {
+    int two_underscores__in_a_struct_variable;
+};
+
+/*%%*
+int __two_underscores_at_the_front;
+int two_underscores__in_the_middle;
+int two_underscores_at_the_end__;
+int __; // two underscores in isolation
+int three___underscores;
+struct two_underscores__in_a_typename {
+    int two_underscores__in_a_struct_variable;
+*%%*/
