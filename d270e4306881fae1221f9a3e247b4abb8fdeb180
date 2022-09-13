@@ -22,6 +22,30 @@
       },
       "revId": "d270e4306881fae1221f9a3e247b4abb8fdeb180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87ee90d0_863ffec1",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T18:44:37Z",
+      "side": 1,
+      "message": "Without this, the code never actually paints anything (no shaders get compiled).",
+      "parentUuid": "83739c04_5c252fa4",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 23
+      },
+      "revId": "d270e4306881fae1221f9a3e247b4abb8fdeb180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
