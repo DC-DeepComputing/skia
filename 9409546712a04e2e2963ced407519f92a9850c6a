@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7833127e_ae40a7fb",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-13T13:37:10Z",
+      "side": 1,
+      "message": "Yeah, what you\u0027re proposing is what I originally planned. However, I\u0027m not clear what you mean by \u0027this\u0027 in \u0027I think we should stick with this\u0027. And by elements do you mean data blocks or individual uniforms?",
+      "parentUuid": "204a5381_737933fa",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 62
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2553365_57a26206",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 2
