@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07316339_3739d958",
+        "filename": "gm/tilemodes_subset.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T20:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74946772_79a82f31",
+      "revId": "1637eac08adb32ec3410a431c4cda896a94eab68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4837b581_3afcf66d",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-13T19:28:17Z",
       "side": 1,
       "message": "// anonymous namespace ?",
+      "range": {
+        "startLine": 96,
+        "startChar": 6,
+        "endLine": 96,
+        "endChar": 15
+      },
+      "revId": "1637eac08adb32ec3410a431c4cda896a94eab68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08650f10_e36ac951",
+        "filename": "gm/tilemodes_subset.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-13T20:08:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4837b581_3afcf66d",
       "range": {
         "startLine": 96,
         "startChar": 6,
