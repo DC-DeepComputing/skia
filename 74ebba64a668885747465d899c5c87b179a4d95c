@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd688f8_66453100",
+        "filename": "tools/gpu/dawn/DawnTestContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-13T01:13:25Z",
+      "side": 1,
+      "message": "This fixes some bitrot. I\u0027m not sure if the `USE_OPENGL_BACKEND` flag ever worked but while this now compiles it didn\u0027t actually work on my NVIDIA system (I get a segfault in libc during OpenGL version query). We\u0027re not using the OpenGL backend afaik so I\u0027m not going to dwell on it.",
+      "range": {
+        "startLine": 116,
+        "startChar": 12,
+        "endLine": 118,
+        "endChar": 56
+      },
+      "revId": "74ebba64a668885747465d899c5c87b179a4d95c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
