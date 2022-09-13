@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c4cd602_a45a33fc",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:39:58Z",
+      "side": 1,
+      "message": "(If we need to use the shaded color, never mind)",
+      "parentUuid": "f574af0a_7f5b13ba",
+      "range": {
+        "startLine": 664,
+        "startChar": 5,
+        "endLine": 677,
+        "endChar": 29
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f41bf581_93877f00",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 9
