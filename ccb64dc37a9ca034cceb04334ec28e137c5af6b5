@@ -246,6 +246,30 @@
       },
       "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7550b173_51844dd6",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-13T17:26:19Z",
+      "side": 1,
+      "message": "BTW: we decided to eliminate the #1 case above (`half4 main(float2 coords, half4 color)`) since that was kind of a Ganesh legacy thing, and in practice only got used in a few places. (skia:13737) \n\nThe #2 case is still possible. You can see it via the upper left square in the null_child_rt test slide (the test case I mentioned yesterday)",
+      "parentUuid": "a7698b50_466e210d",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
