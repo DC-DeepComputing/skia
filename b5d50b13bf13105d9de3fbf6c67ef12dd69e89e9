@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b76248d_f96df265",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T17:06:22Z",
+      "side": 1,
+      "message": "Sorry - I keep getting distracted",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99c7a01d_aac4d674",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T17:06:22Z",
+      "side": 1,
+      "message": "So, we\u0027re going to expand this in follow ups, right?",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb5f523_34f3c07b",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T17:06:22Z",
+      "side": 1,
+      "message": "You should probably use SkColors::kRed, kBlack, kWhite",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94979441_fec4245e",
+        "filename": "gm/tilemode_subset.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T17:06:22Z",
+      "side": 1,
+      "message": "Can\u0027t you do something like:\n  bitmap.erase(kRingColor);\n  bitmap.erase(kCheckColor1, {1, 1, 2, 2});\n  bitmap.erase(kCheckColor2, {1, 2, 2, 3});\n  // etc\n?\nIt seems like it would be clearer and less fraught.",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6604d3d1_1ca6c88c",
+        "filename": "gn/gm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-13T17:06:22Z",
+      "side": 1,
+      "message": "I guess this should be tilemodes_subset.cpp to match the others",
+      "revId": "b5d50b13bf13105d9de3fbf6c67ef12dd69e89e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
