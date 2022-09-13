@@ -872,6 +872,10 @@ std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
 static constexpr SkUniform kShaderBasedBlenderUniforms[] = {
         { "blendMode", SkSLType::kInt },
 };
+static constexpr SkUniform kShaderBasedBlenderDestProvidedUniforms[] = {
+        { "blendMode", SkSLType::kInt    },
+        { "destColor", SkSLType::kFloat4 },
+};
 
 static constexpr char kBlendHelperName[] = "sk_blend";
 
@@ -884,18 +888,30 @@ std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo& shaderInfo,
                                                  const SkPaintParamsKey::BlockReader& reader,
                                                  const SkShaderSnippet::Args& args) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
-    SkASSERT(reader.entry()->fUniforms.size() == 1);
-    SkASSERT(reader.numDataPayloadFields() == 0);
+    // TODO: Update comments.
+    bool destColorProvided = reader.entry()->needsDestColor();
+
+    if (destColorProvided) {
+        SkASSERT(reader.entry()->fUniforms.size() == 2);
+        SkASSERT(reader.numDataPayloadFields() == 0);
+    } else {
+        SkASSERT(reader.entry()->fUniforms.size() == 1);
+        SkASSERT(reader.numDataPayloadFields() == 0);
+    }
+
 
     std::string uniformName = reader.entry()->getMangledUniformName(shaderInfo, 0, entryIndex);
 
     // TODO: emit function to perform dest read into preamble, and replace half(1) with that call
     // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
     // src+dest blends within the shader, not for blends against the destination surface.)
-    return SkSL::String::printf("%s(%s, %.*s, half4(1))",
+    std::string destColor = destColorProvided ? std::string(args.fDestColor) : "half4(1)";
+
+    return SkSL::String::printf("%s(%s, %.*s, %s)",
                                 reader.entry()->fStaticFunctionName,
                                 uniformName.c_str(),
-                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data());
+                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
+                                destColor.c_str());
 #else
     return std::string(args.fPriorStageOutput);
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
@@ -1330,6 +1346,18 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             "ShaderBasedBlender",
             SkSpan(kShaderBasedBlenderUniforms),
             SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kBlendHelperName,
+            GenerateShaderBasedBlenderExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    // TODO - Make child of ShaderBasedBlender.
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlenderDestProvided] = {
+            "ShaderBasedBlenderDestProvided",
+            SkSpan(kShaderBasedBlenderDestProvidedUniforms),
+            SnippetRequirementFlags::kDestColor,
             { },     // no samplers
             kBlendHelperName,
             GenerateShaderBasedBlenderExpression,
