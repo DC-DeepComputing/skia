@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83739c04_5c252fa4",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-13T18:23:01Z",
+      "side": 1,
+      "message": "delete all this, it does nothing. The onReadPixels will snap the recording and insert into the context and submit with a cpu sync for you.",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 23
+      },
+      "revId": "d270e4306881fae1221f9a3e247b4abb8fdeb180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
