@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5af42f49_d0b665cb",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-13T15:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4049ab4_967db200",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 39,
+        "endChar": 53
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c09124c_fed1d7d2",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3acc59f_5a8691aa",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-13T15:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c09124c_fed1d7d2",
+      "range": {
+        "startLine": 38,
+        "startChar": 15,
+        "endLine": 39,
+        "endChar": 51
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4003e0d5_dda01826",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-09-13T14:20:23Z",
       "side": 1,
       "message": "Nit: Is this line change intentional as the only change in this file?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 0
+      },
+      "revId": "7873c2215989b667edf6a6398b2b658dfe137286",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bf3b111_1c3a3b71",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-13T15:20:13Z",
+      "side": 1,
+      "message": "I had originally made a change to this file then removed it. But while in the file saw the extra \\n so might as well clean it up.",
+      "parentUuid": "4003e0d5_dda01826",
       "range": {
         "startLine": 15,
         "startChar": 0,
