@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6725c541_b1b48009",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2022-09-13T22:59:58Z",
+      "side": 1,
+      "message": "From chat: This is a backwards incompatible change in SKSL. Can the invalid identifiers just be mangled somehow (just for GLSL) instead?",
+      "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
