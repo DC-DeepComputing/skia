@@ -372,7 +372,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				skip(ALL, "gm", ALL, "encode")
 				skip(ALL, "gm", ALL, "jpg-color-cube")
 			}
-			configs = []string{"grmtl"}
+                        if (b.extraConfig("Metal")) {
+			        configs = []string{"grmtl"}
+                        }
 		}
 
 		// ANGLE bot *only* runs the angle configs

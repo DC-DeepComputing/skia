@@ -151,7 +151,9 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 		}
 
 		if b.extraConfig("Graphite") {
-			configs = []string{"grmtl"}
+                        if (b.extraConfig("Metal")) {
+			        configs = []string{"grmtl"}
+                        }
 		}
 
 		if b.os("ChromeOS") {
