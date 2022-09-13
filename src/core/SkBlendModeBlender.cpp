@@ -67,20 +67,28 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #ifdef SK_ENABLE_SKSL
 void SkBlenderBase::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
-                             SkPipelineDataGatherer* gatherer,
-                             bool primitiveColorBlender) const {
-
+                             SkPipelineDataGatherer* gatherer) const {
     std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode();
-    // If there is no primitive blender, do not default to any type of blending - just ignore it
-    // entirely.
-    if (primitiveColorBlender && !bm.has_value()) { return; }
 
-    if (primitiveColorBlender) {
-        PrimitiveBlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
-    } else if (bm.has_value()) {
+    if (bm.has_value()) {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
     } else {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+    }
+    builder->endBlock();
+}
+
+// Override which includes a provided destination color (as opposed to a destination color
+// determined by the current color on the surface).
+void SkBlenderBase::addToKey(const SkKeyContext& keyContext,
+                             SkPaintParamsKeyBuilder* builder,
+                             SkPipelineDataGatherer* gatherer,
+                             const SkPMColor4f& destColor) const {
+    std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode();
+
+    if (bm.has_value()) {
+        BlendModeDestProvidedBlock::BeginBlock(keyContext, builder, gatherer, bm.value(),
+                                               destColor);
     }
     builder->endBlock();
 }

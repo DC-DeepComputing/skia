@@ -83,6 +83,8 @@ static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
         updatedMatrix += entry->getMangledUniformName(shaderInfo, 0, entryIndex);
         args.fPreLocalMatrix = updatedMatrix;
     }
+    // TODO - Add paint alpha here?
+    args.fDestColor =
 
     return entry->fExpressionGenerator(shaderInfo, entryIndex, reader, args);
 }
@@ -872,6 +874,49 @@ std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
 static constexpr SkUniform kShaderBasedBlenderUniforms[] = {
         { "blendMode", SkSLType::kInt },
 };
+//TODO - Move? Even needed?
+// static constexpr SkUniform kShaderBasedBlenderUniforms[] = {
+//         { "blendMode", SkSLType::kInt },
+// };
+// void GenerateShaderBasedDestColorProvidedBlenderPreamble(const SkShaderInfo& shaderInfo,
+//         int* entryIndex,
+//         const SkPaintParamsKey::BlockReader& reader,
+//         std::string* preamble) {
+// #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+//     const SkShaderSnippet* entry = reader.entry();
+//     SkASSERT(entry->fNumChildren == 0);
+
+//     // Advance over the parent entry.
+//     int curEntryIndex = *entryIndex;
+//     *entryIndex += 1;
+
+//     // // Evaluate inner child.
+//     // static constexpr char kUnusedDestColor[] = "half4(1)";
+//     // std::string innerColor = emit_expression_for_entry(shaderInfo, *entryIndex, {"inColor",
+//     //                                                    kUnusedDestColor, "coords", "preLocal"});
+
+//     // // Emit preamble code for inner child.
+//     // emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+//     // // Evaluate outer child.
+//     // std::string outerColor = emit_expression_for_entry(shaderInfo, *entryIndex, {innerColor,
+//     //                                                    kUnusedDestColor, "coords", "preLocal"});
+
+//     // // Emit preamble code for outer child.
+//     // emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+//     // Create a helper function that invokes the inner expression, then passes that result to the
+//     // outer expression, and returns the composed result.
+//     std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, curEntryIndex);
+//     SkSL::String::appendf(
+//             preamble,
+//             "half4 %s(half4 inColor, half4 destColor, float4 coords, float4x4 preLocal) {"
+//                 "return %s;"
+//             "}",
+//             helperFnName.c_str(),
+//             outerColor.c_str());
+// #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+// }
 
 static constexpr char kBlendHelperName[] = "sk_blend";
 
@@ -892,10 +937,16 @@ std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo& shaderInfo,
     // TODO: emit function to perform dest read into preamble, and replace half(1) with that call
     // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
     // src+dest blends within the shader, not for blends against the destination surface.)
-    return SkSL::String::printf("%s(%s, %.*s, half4(1))",
+
+    // TODO: Update this comment ^
+    bool destColorProvided = reader.entry()->needsDestColor();
+    std::string destColor = destColorProvided ? std::string(args.fDestColor) : "half4(1)";
+
+    return SkSL::String::printf("%s(%s, %.*s, %s)",
                                 reader.entry()->fStaticFunctionName,
                                 uniformName.c_str(),
-                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data());
+                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
+                                destColor.c_str());
 #else
     return std::string(args.fPriorStageOutput);
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
@@ -1330,6 +1381,18 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             "ShaderBasedBlender",
             SkSpan(kShaderBasedBlenderUniforms),
             SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kBlendHelperName,
+            GenerateShaderBasedBlenderExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    // TODO - Make child of ShaderBasedBlender.
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlenderDestProvided] = {
+            "ShaderBasedBlenderDestProvided",
+            SkSpan(kShaderBasedBlenderUniforms),
+            SnippetRequirementFlags::kDestColor,
             { },     // no samplers
             kBlendHelperName,
             GenerateShaderBasedBlenderExpression,

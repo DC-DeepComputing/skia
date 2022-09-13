@@ -11,6 +11,8 @@
 #include "include/core/SkBlender.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
+// TODO SkPMColor4f, or just SkColor?
+#include "include/private/SkColorData.h"
 
 #include <optional>
 
@@ -62,9 +64,12 @@ public:
     // with the paint's color. When false, the blender is acting to blend the result of the paint
     // evaluation with the back buffer.
     virtual void addToKey(const SkKeyContext&,
-                          SkPaintParamsKeyBuilder*,
-                          SkPipelineDataGatherer*,
-                          bool primitiveColorBlender) const;
+                        SkPaintParamsKeyBuilder*,
+                        SkPipelineDataGatherer*) const;
+    virtual void addToKey(const SkKeyContext&,
+                        SkPaintParamsKeyBuilder*,
+                        SkPipelineDataGatherer*,
+                        const SkPMColor4f& primitiveColorBlender) const;
 #endif
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
