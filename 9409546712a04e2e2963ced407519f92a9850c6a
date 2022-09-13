@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "204a5381_737933fa",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-13T00:49:59Z",
+      "side": 1,
+      "message": "Another alternative that would let us keep UniformManager unchanged (with the behavior that it produces a block of data matching internal alignment only), is to update udbSize here like:\n\n   if (!fUseStorageBuffers) { udbSize \u003d SkAlignTo(udbSize, caps-\u003eminUniformBufferAlignment()) }\n   \nand then down in the for loop in the if case where we add udbSize to the buffer binding offset, we also add a call to \n\n    writer.skip(udbSize - dataBlock.fCpuData-\u003edata())\n    \nAnd assuming that the only time we need to account for storage buffer alignment is at the first binding and not between elements, this extra work would only done for the UBO case and doesn\u0027t extend to many other files.\n\nOn the other hand, if SSBOs also have the alignment between elements match the initial alignment, I think we should stick with this so that the data size is self-sufficient in all cases.",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 62
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2553365_57a26206",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 2
