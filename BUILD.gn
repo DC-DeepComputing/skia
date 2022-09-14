@@ -144,7 +144,7 @@ skia_library_configs = [
 
 # Use for CPU-specific Skia code that needs particular compiler flags.
 template("opts") {
-  if (invoker.enabled) {
+  if (invoker.enabled && !skia_enable_optimize_size) {
     skia_source_set(target_name) {
       visibility = [ ":*" ]
       check_includes = false
