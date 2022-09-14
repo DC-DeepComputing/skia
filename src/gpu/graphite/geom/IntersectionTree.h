@@ -52,7 +52,7 @@ private:
     template<SplitType kSplitType> class TreeNode;
     class LeafNode;
 
-    constexpr static int kTreeNodeSize = 16 + sizeof(Node*) * 2;
+    constexpr static int kTreeNodeSize = 4 + sizeof(Node*) * 2;
     constexpr static int kLeafNodeSize = 16 + (2 + 64) * sizeof(Rect);
     constexpr static int kPadSize = 256;  // For footers and alignment.
     SkArenaAlloc fArena{kLeafNodeSize + kTreeNodeSize + kPadSize*2};
