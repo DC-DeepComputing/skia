@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa01197_0ed84f39",
+        "filename": "src/gpu/ganesh/SkGr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-14T19:12:09Z",
+      "side": 1,
+      "message": "Unrelated to this change, but \"table\" could be:\n    GrSkSLFP::IgnoreOptFlags(std::move(te))\n\nThat would ensure that the PreservesOpaqueInput flag is still present, even when the texture effect doesn\u0027t have it.",
+      "range": {
+        "startLine": 420,
+        "startChar": 35,
+        "endLine": 420,
+        "endChar": 48
+      },
+      "revId": "4a9b2ff97495ba3fc8f68d8c16a31e87a5243365",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
