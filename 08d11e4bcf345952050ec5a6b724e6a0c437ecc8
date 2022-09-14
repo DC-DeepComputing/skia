@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d84de979_32e7fb4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-14T13:39:29Z",
+      "side": 1,
+      "message": "Okay I\u0027ve updated the CL with a fix to our clear loads. I think I also removed/disabled most of the workarounds we were using in the test. At this point we are failing 5 tests. The output from the current CL looks like the following. My gut tells me know its the specific test cases that are failing and not a more general issue. So hopefully you can look into whats common with those test cases:\n\nstart unit test  SkRuntimeEffectSimple_Graphite\ntest 1\ntest 2\ntest3\ntest 4\n\n\nFAILURE: ../../tests/SkRuntimeEffectTest.cpp:393\t\nExpected: [ 7f0000ff 7f0000ff 7f0000ff 7f0000ff ]\nGot     : [ ff6020ff ff6020ff ff6020ff ff6020ff ]\nSkSL:\nuniform int4 gColor; half4 main(float2 p) { return half4(gColor) / 255.0; }\n [SkRuntimeEffectSimple_Graphite]: Runtime effect didn\u0027t match expectations\n\ntest 5\ntest 6\ntest 7\ntest 8\ntest9\ntest 10\ntest 11\n\n\nFAILURE: ../../tests/SkRuntimeEffectTest.cpp:393\t\nExpected: [ ff00ffff ff00ffff ff00ffff ff00ffff ]\nGot     : [ ff000000 ff0000ff ff00ff00 ff00ffff ]\nSkSL:\nuniform shader child;half4 main(float2 p) { return child.eval(p); }\n [SkRuntimeEffectSimple_Graphite]: Runtime effect didn\u0027t match expectations\n\ntest 12\ntest 13\n\n\nFAILURE: ../../tests/SkRuntimeEffectTest.cpp:393\t\nExpected: [ ff000000 ff00007f ff007f00 ff007f7f ]\nGot     : [ ff008080 ff0080ff ff00ff80 ff00ffff ]\nSkSL:\nuniform blender child;half4 main(float2 p) {    float4 src \u003d float4(p - 0.5, 0, 1) * 0.498;    return child.eval(src, half4(0, 0, 0, 1));}\n [SkRuntimeEffectSimple_Graphite]: Runtime effect didn\u0027t match expectations\n\ntest 14\n\n\nFAILURE: ../../tests/SkRuntimeEffectTest.cpp:393\t\nExpected: [ ff0000ff ff00ff00 ffff0000 ffffffff ]\nGot     : [ ff0000ff ff0000ff ff0000ff ff0000ff ]\nSkSL:\nuniform shader child;half4 main(float2 p) { return child.eval(p); }\n [SkRuntimeEffectSimple_Graphite]: Runtime effect didn\u0027t match expectations\n\ntest 15\n\n\nFAILURE: ../../tests/SkRuntimeEffectTest.cpp:393\t\nExpected: [ ff0000ff ffff0000 ff00ff00 ffffffff ]\nGot     : [ ff0000ff ff0000ff ff0000ff ff0000ff ]\nSkSL:\nuniform shader child;half4 main(float2 p) { return child.eval(p.yx); }\n [SkRuntimeEffectSimple_Graphite]: Runtime effect didn\u0027t match expectations\n\ntest 16\ntest17\ndone  unit test  SkRuntimeEffectSimple_Graphite",
+      "revId": "08d11e4bcf345952050ec5a6b724e6a0c437ecc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
