@@ -16,6 +16,24 @@
       "message": "From chat: This is a backwards incompatible change in SKSL. Can the invalid identifiers just be mangled somehow (just for GLSL) instead?",
       "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92207e3a_5fbcdc97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T00:20:18Z",
+      "side": 1,
+      "message": "Yes, that\u0027d be possible. Brian, WDYT? In theory I really like just rejecting them at the source but Chinmay does have a very valid concern about breaking existing clients. (Although in practice those clients were probably already getting errors, if they ever used GLSL?)",
+      "parentUuid": "6725c541_b1b48009",
+      "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
