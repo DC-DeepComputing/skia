@@ -39,16 +39,17 @@ def perf_steps(api):
   api.flavor.create_clean_device_dir(
         api.flavor.device_dirs.dm_dir)
 
+  # We expect this to be a bunch of folders that contain a data.json and optionally
+  # an images/ subfolder with image assets required.
   lottie_files = api.file.listdir(
       'list lottie files', api.flavor.host_dirs.lotties_dir,
-      test_data=['lottie1.json', 'lottie(test)\'!2.json', 'lottie 3!.json',
-                 'LICENSE'])
+      test_data=['skottie_asset_000', 'skottie_asset_001', 'skottie_asset_002'])
   perf_results = {}
   # Run DM on each lottie file and parse the trace files.
   for idx, lottie_file in enumerate(lottie_files):
-    lottie_filename = api.path.basename(lottie_file)
-    if not lottie_filename.endswith('.json'):
-      continue
+    lottie_name = api.path.basename(lottie_file)
+    lottie_folder = api.path.join(api.flavor.device_dirs.lotties_dir,
+                                  lottie_name)
 
     trace_output_path = api.flavor.device_path_join(
         api.flavor.device_dirs.dm_dir, '%s.json' % (idx + 1))
@@ -56,14 +57,14 @@ def perf_steps(api):
     dm_args = [
       'dm',
       '--resourcePath', api.flavor.device_dirs.resource_dir,
-      '--lotties', api.flavor.device_dirs.lotties_dir,
+      '--lotties', lottie_folder,
       '--src', 'lottie',
       '--nonativeFonts',
       '--verbose',
       '--traceMatch', 'skottie',  # recipe can OOM without this.
       '--trace', trace_output_path,
       '--match', get_trace_match(
-          lottie_filename, 'Android' in api.properties['buildername']),
+          'data.json', 'Android' in api.properties['buildername']),
     ]
     if api.vars.builder_cfg.get('cpu_or_gpu') == 'GPU':
       dm_args.extend(['--config', 'gles', '--nocpu'])
@@ -76,8 +77,11 @@ def perf_steps(api):
     if not trace_file_content and trace_test_data:
       trace_file_content = trace_test_data
 
-    perf_results[lottie_filename] = {
-        'gles': parse_trace(trace_file_content, lottie_filename, api),
+    key = 'gles'
+    if api.vars.builder_cfg.get('cpu_or_gpu') == 'CPU':
+        key = '8888'
+    perf_results[lottie_name] = {
+        key: parse_trace(trace_file_content, lottie_name, api),
     }
     api.flavor.remove_file_on_device(trace_output_path)
 
@@ -273,11 +277,11 @@ def GenTests(api):
                      dm_json_test_data=dm_json_test_data,
                      path_config='kitchen',
                      swarm_out_dir='[SWARM_OUT_DIR]') +
-      api.step_data('parse lottie(test)\'!2.json trace',
+      api.step_data('parse skottie_asset_000 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie1.json trace',
+      api.step_data('parse skottie_asset_001 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie 3!.json trace',
+      api.step_data('parse skottie_asset_002 trace',
                     api.json.output(parse_trace_json))
   )
   yield (
@@ -290,11 +294,11 @@ def GenTests(api):
                      dm_json_test_data=dm_json_test_data,
                      path_config='kitchen',
                      swarm_out_dir='[SWARM_OUT_DIR]') +
-      api.step_data('parse lottie(test)\'!2.json trace',
+      api.step_data('parse skottie_asset_000 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie1.json trace',
+      api.step_data('parse skottie_asset_001 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie 3!.json trace',
+      api.step_data('parse skottie_asset_002 trace',
                     api.json.output(parse_trace_json))
   )
   yield (
@@ -307,11 +311,11 @@ def GenTests(api):
                      dm_json_test_data=dm_json_test_data,
                      path_config='kitchen',
                      swarm_out_dir='[SWARM_OUT_DIR]') +
-      api.step_data('parse lottie(test)\'!2.json trace',
+      api.step_data('parse skottie_asset_000 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie1.json trace',
+      api.step_data('parse skottie_asset_001 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie 3!.json trace',
+      api.step_data('parse skottie_asset_002 trace',
                     api.json.output(parse_trace_json))
   )
   yield (
@@ -324,7 +328,7 @@ def GenTests(api):
                      dm_json_test_data=dm_json_test_data,
                      path_config='kitchen',
                      swarm_out_dir='[SWARM_OUT_DIR]') +
-      api.step_data('parse lottie 3!.json trace',
+      api.step_data('parse skottie_asset_000 trace',
                     api.json.output(parse_trace_json), retcode=1)
   )
   yield (
@@ -344,10 +348,10 @@ def GenTests(api):
                      patch_issue=1234,
                      gerrit_project='skia',
                      gerrit_url='https://skia-review.googlesource.com/') +
-      api.step_data('parse lottie(test)\'!2.json trace',
+      api.step_data('parse skottie_asset_000 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie1.json trace',
+      api.step_data('parse skottie_asset_001 trace',
                     api.json.output(parse_trace_json)) +
-      api.step_data('parse lottie 3!.json trace',
+      api.step_data('parse skottie_asset_002 trace',
                     api.json.output(parse_trace_json))
   )
