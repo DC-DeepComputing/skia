@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e451d5_b59a88ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-14T18:10:59Z",
+      "side": 1,
+      "message": "This is one of the last RenderSteps that needed to perform its transformations on the GPU so that both device and local coords are easily available in the vertex shader.",
+      "revId": "841db882a19c47cefcdb4df4e528eeca50f17836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
