@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7f5aaf3_d383f7f7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-14T16:19:29Z",
+      "side": 1,
+      "message": "\u0027this\u0027 referred to the current CL, and elements referred to data blocks / the type indexable by the SSBO index. I figured that the between-element alignment had to match the initial alignment, it would keep things simple to have UniformManager be the only place responsible for aligning/padding.\n\nMy gut says that consecutive data blocks accessed by ssbo index do not need to have the higher initial alignment required for the buffer binding, so I think your original plan is what we should try.",
+      "parentUuid": "7833127e_ae40a7fb",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 62
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2553365_57a26206",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 2
