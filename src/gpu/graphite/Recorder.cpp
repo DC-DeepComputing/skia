@@ -10,7 +10,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/gpu/graphite/ImageProvider.h"
+#include "include/gpu/graphite/ImageCache.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkRuntimeEffectDictionary.h"
@@ -38,13 +38,12 @@ namespace skgpu::graphite {
 #define ASSERT_SINGLE_OWNER_PRIV SKGPU_ASSERT_SINGLE_OWNER(fRecorder->singleOwner())
 
 /*
- * The default image provider doesn't perform any conversion so, by default, Graphite won't
- * draw any non-Graphite-backed images.
+ * The default image cache doesn't cache anything.
  */
-class DefaultImageProvider final : public ImageProvider {
+class DefaultImageCache final : public ImageCache {
 public:
-    static sk_sp<DefaultImageProvider> Make() {
-        return sk_ref_sp(new DefaultImageProvider);
+    static sk_sp<DefaultImageCache> Make() {
+        return sk_ref_sp(new DefaultImageCache);
     }
 
     sk_sp<SkImage> findOrCreate(Recorder* recorder,
@@ -56,7 +55,7 @@ public:
     }
 
 private:
-    DefaultImageProvider() {}
+    DefaultImageCache() {}
 };
 
 /**************************************************************************************************/
@@ -85,9 +84,9 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
         , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
 
-    fClientImageProvider = options.fImageProvider;
-    if (!fClientImageProvider) {
-        fClientImageProvider = DefaultImageProvider::Make();
+    fClientImageCache = options.fImageCache;
+    if (!fClientImageCache) {
+        fClientImageCache = DefaultImageCache::Make();
     }
 
     fResourceProvider = fSharedContext->makeResourceProvider(this->singleOwner());

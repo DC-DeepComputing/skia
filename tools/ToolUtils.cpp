@@ -32,7 +32,7 @@
 #include <cstring>
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "include/gpu/graphite/ImageProvider.h"
+#include "include/gpu/graphite/ImageCache.h"
 #include <unordered_map>
 #endif
 
@@ -644,14 +644,14 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #ifdef SK_GRAPHITE_ENABLED
 
-// Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
+// Currently, we give each new Recorder its own ImageCache. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
 // TODO: Hook up to listener system?
-// TODO: add testing of a single ImageProvider passed to multiple recorders
-class TestingImageProvider : public skgpu::graphite::ImageProvider {
+// TODO: add testing of a single ImageCache passed to multiple recorders
+class TestingImageCache : public skgpu::graphite::ImageCache {
 public:
-    ~TestingImageProvider() override {}
+    ~TestingImageCache() override {}
 
     sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
                                 const SkImage* image,
@@ -694,7 +694,7 @@ private:
 skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
     skgpu::graphite::RecorderOptions options;
 
-    options.fImageProvider.reset(new TestingImageProvider);
+    options.fImageCache.reset(new TestingImageCache);
 
     return options;
 }
