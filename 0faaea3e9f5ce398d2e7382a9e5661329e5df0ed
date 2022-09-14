@@ -34,6 +34,23 @@
       "parentUuid": "6725c541_b1b48009",
       "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9484da68_d3e940b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T00:23:51Z",
+      "side": 1,
+      "message": "Another potential concern: http://screen/53oWZh8tm5Ux2wG\n\n+2.67K in Lexer table data. Probably better off just leaving the lexer tables alone and identifying the broken identifiers in code with `skstd::string_view::contains`.",
+      "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
