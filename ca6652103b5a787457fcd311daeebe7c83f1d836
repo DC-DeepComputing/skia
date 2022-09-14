@@ -346,6 +346,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd5872e_cfdd57b0",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T14:36:44Z",
+      "side": 1,
+      "message": "Oh, if we do a BlendColorFilter, could we just have the render step assign to that source color uniform?",
+      "parentUuid": "4d0c3364_e6847da3",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
