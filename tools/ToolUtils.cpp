@@ -644,11 +644,11 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #ifdef SK_GRAPHITE_ENABLED
 
-// Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
+// Currently, we give each new Recorder its own ImageCache. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
 // TODO: Hook up to listener system?
-// TODO: add testing of a single ImageProvider passed to multiple recorders
+// TODO: add testing of a single ImageCache passed to multiple recorders
 class TestingImageProvider : public skgpu::graphite::ImageProvider {
 public:
     ~TestingImageProvider() override {}

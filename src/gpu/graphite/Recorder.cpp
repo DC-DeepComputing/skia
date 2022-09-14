@@ -38,8 +38,7 @@ namespace skgpu::graphite {
 #define ASSERT_SINGLE_OWNER_PRIV SKGPU_ASSERT_SINGLE_OWNER(fRecorder->singleOwner())
 
 /*
- * The default image provider doesn't perform any conversion so, by default, Graphite won't
- * draw any non-Graphite-backed images.
+ * The default image provider doesn't cache anything.
  */
 class DefaultImageProvider final : public ImageProvider {
 public:
