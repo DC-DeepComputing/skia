@@ -32,7 +32,7 @@
 #include <cstring>
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "include/gpu/graphite/ImageProvider.h"
+#include "include/gpu/graphite/ImageCache.h"
 #include <unordered_map>
 #endif
 
@@ -644,47 +644,32 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #ifdef SK_GRAPHITE_ENABLED
 
-// Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
+// Currently, we give each new Recorder its own ImageCache. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
 // TODO: Hook up to listener system?
-// TODO: add testing of a single ImageProvider passed to multiple recorders
-class TestingImageProvider : public skgpu::graphite::ImageProvider {
+// TODO: add testing of a single ImageCache passed to multiple recorders
+class TestingImageCache : public skgpu::graphite::ImageCache {
 public:
-    ~TestingImageProvider() override {}
+    ~TestingImageCache() override {}
 
-    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
-                                const SkImage* image,
-                                SkImage::RequiredImageProperties requiredProps) override {
-        if (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo) {
-            // If no mipmaps are required, check to see if we have a mipmapped version anyway -
-            // since it can be used in that case.
-            // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
-            // key, we could remove the hidden non-mipmapped key/image from the cache.
-            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
-            auto result = fCache.find(mipMappedKey);
-            if (result != fCache.end()) {
-                return result->second;
-            }
-        }
-
-        uint64_t key = ((uint64_t)image->uniqueID() << 32) |
-                       (requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kYes ? 0x1 : 0x0);
-
-        auto result = fCache.find(key);
+    sk_sp<SkImage> find(skgpu::graphite::Recorder* recorder,
+                        Key key) override {
+        auto result = fCache.find(key.asUInt64());
         if (result != fCache.end()) {
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, requiredProps);
-        if (!newImage) {
-            return nullptr;
-        }
+        return nullptr;
+    }
 
-        auto [iter, success] = fCache.insert({ key, newImage });
+    void insert(skgpu::graphite::Recorder* recorder,
+                Key key,
+                sk_sp<SkImage> imageToInsert) override {
+        SkASSERT(imageToInsert->isTextureBacked());
+
+        SkDEBUGCODE(auto [_, success] =) fCache.insert({ key.asUInt64(), imageToInsert });
         SkASSERT(success);
-
-        return iter->second;
     }
 
 private:
@@ -694,7 +679,7 @@ private:
 skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
     skgpu::graphite::RecorderOptions options;
 
-    options.fImageProvider.reset(new TestingImageProvider);
+    options.fImageCache.reset(new TestingImageCache);
 
     return options;
 }
