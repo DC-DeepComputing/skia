@@ -14,8 +14,10 @@
 namespace {
 
 // We require that the user returns a Graphite-backed image that preserves the dimensions, channels
-// and alpha type of the original image. Additionally, it must satisfy the mipmap requirements.
-// The bit depth of the individual channels can change (e.g., 4444 -> 8888 is allowed).
+// and alpha type of the original image. The bit depth of the individual channels can change
+// (e.g., 4444 -> 8888 is allowed).
+// Wrt mipmapping, the returned image can have different mipmap settings than the original. If
+// mipmapping was requested but not returned, the sampling level will be reduced to linear.
 bool valid_client_provided_image(const SkImage* clientProvided,
                                  const SkImage* original,
                                  SkImage::RequiredImageProperties requiredProps) {
@@ -32,8 +34,7 @@ bool valid_client_provided_image(const SkImage* clientProvided,
         return false;
     }
 
-    return requiredProps.fMipmapped == skgpu::graphite::Mipmapped::kNo ||
-           clientProvided->hasMipmaps();
+    return true;
 }
 
 } // anonymous namespace
