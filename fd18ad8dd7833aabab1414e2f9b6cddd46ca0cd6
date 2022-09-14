@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "099856a4_8aa99307",
+        "filename": "include/gpu/graphite/ImageProvider.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-14T20:04:58Z",
+      "side": 1,
+      "message": "Is it worth clarify the drop mips to linear, vs fully dropping draw here?",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3913eb4_c7106bf0",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-14T20:04:58Z",
+      "side": 1,
+      "message": "You shouldn\u0027t have to do any of this. This is all done in the onReadPixels call.",
+      "range": {
+        "startLine": 201,
+        "startChar": 1,
+        "endLine": 210,
+        "endChar": 54
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faea0273_e14d9eb7",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-14T20:04:58Z",
+      "side": 1,
+      "message": "This would require some level of scale to read off the first mip level (i.e. not the base level), right? I don\u0027t see this scale happening anywhere.",
+      "range": {
+        "startLine": 254,
+        "startChar": 75,
+        "endLine": 255,
+        "endChar": 66
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
