@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b51c72d_74ace7fd",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T21:27:27Z",
+      "side": 1,
+      "message": "nit: we\u0027re trying to avoid unnecessary whitespace in these now",
+      "range": {
+        "startLine": 166,
+        "startChar": 38,
+        "endLine": 166,
+        "endChar": 42
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
