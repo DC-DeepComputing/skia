@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e0fe1d_a2d8d221",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T13:38:55Z",
+      "side": 1,
+      "message": "Nice and clean, thanks for the suggestion",
+      "parentUuid": "d7c91416_c7b4e967",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 0
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f574af0a_7f5b13ba",
@@ -111,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88120c98_7cdadc6e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T13:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f41bf581_93877f00",
+      "range": {
+        "startLine": 908,
+        "startChar": 4,
+        "endLine": 908,
+        "endChar": 90
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3f92b15_d147a3d1",
@@ -124,6 +172,30 @@
       "writtenOn": "2022-09-13T17:33:10Z",
       "side": 1,
       "message": "`%.*s`",
+      "range": {
+        "startLine": 910,
+        "startChar": 46,
+        "endLine": 910,
+        "endChar": 48
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f40c263a_ac3db9f4",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T13:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3f92b15_d147a3d1",
       "range": {
         "startLine": 910,
         "startChar": 46,
@@ -157,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bff4235_383ce1ad",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T13:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c08432_c4532a47",
+      "range": {
+        "startLine": 914,
+        "startChar": 32,
+        "endLine": 914,
+        "endChar": 49
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de7e4785_1511c70c",
@@ -170,6 +266,30 @@
       "writtenOn": "2022-09-13T17:39:31Z",
       "side": 1,
       "message": "If the paint has a shader, do we want to used the shaded color here? It seems like `fColor` only works in the solid color case.",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ba379f_1cf0ccc7",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T13:38:55Z",
+      "side": 1,
+      "message": "Ah, I see. My understanding is that if the paint has a shader, we would need to use the shaded color here.\n\nSo I guess what I actually need to do is not take in a dest color here (which gets written as a uniform as it\u0027s implemented now) and instead just let the SkSL pass in the variable or value it wants as the dest into the blend_with_dest_provided snippet. Does that sound reasonable?",
+      "parentUuid": "de7e4785_1511c70c",
       "range": {
         "startLine": 74,
         "startChar": 74,
