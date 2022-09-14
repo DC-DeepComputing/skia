@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67204e43_939e445a",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-14T19:54:25Z",
+      "side": 1,
+      "message": "I had missed this before, and didn\u0027t notice until I was adding the matrix multiply, but Skia\u0027s 2D -\u003e 3D model is that a local position is always (x,y,0,1). The only way to get a non-zero Z value, or a non-1 W value is if the transform matrix modifies those. This lets use reason about draws with the same transform in 2D instead of always needing Z and W as well.",
+      "range": {
+        "startLine": 91,
+        "startChar": 66,
+        "endLine": 91,
+        "endChar": 70
+      },
+      "revId": "e3583ae73e3c4a9c0ae21931ada40210dc87a342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17fd2d01_f08b820d",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-14T19:54:25Z",
+      "side": 1,
+      "message": "We\u0027d been uploading a depth value to the uniform but we weren\u0027t putting it into `devPosition` so the actual GPU data used in the depth test wouldn\u0027t necessarily match what we were expecting. This could have lead to weird ordering artifacts when multiple drawVertices() calls overlapped, but my guess is we don\u0027t  have GMs that really test for that.",
+      "range": {
+        "startLine": 92,
+        "startChar": 12,
+        "endLine": 92,
+        "endChar": 34
+      },
+      "revId": "e3583ae73e3c4a9c0ae21931ada40210dc87a342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33b1cc1e_d0eb32f0",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-14T19:54:25Z",
+      "side": 1,
+      "message": "I decided that while I was modifying what was being written, it was a good time to try consolidating the different writeVertices configurations.",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 37
+      },
+      "revId": "e3583ae73e3c4a9c0ae21931ada40210dc87a342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
