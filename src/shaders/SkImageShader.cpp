@@ -15,6 +15,7 @@
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkMipmapAccessor.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkVM.h"
@@ -22,6 +23,7 @@
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkTransformShader.h"
+
 
 #ifdef SK_ENABLE_SKSL
 
@@ -382,8 +384,11 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 void SkImageShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {
-    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
-                                        this->getLocalMatrix());
+    if (gatherer->needsLocalCoords() || !this->getLocalMatrix().isIdentity) {
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+    }
+
+    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
 
 #ifdef SK_GRAPHITE_ENABLED
     auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
