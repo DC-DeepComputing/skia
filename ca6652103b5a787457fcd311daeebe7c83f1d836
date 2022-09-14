@@ -322,6 +322,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0c3364_e6847da3",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T14:35:06Z",
+      "side": 1,
+      "message": "Okay, I see what you mean. The BlendColorFilterBlock takes in a source color at block creation from PaintParams though, whereas the source color would need to come from the render step\u0027s SkSL (from RenderStep::fragmentColorSkSL(), which assigns to a `primitiveColor` variable).\n\nSuch that we get a block that can take in both a source color (primitive color from render step) and a dest color (priorStageOutput) for the blend.\n\nDoes that mean we would need the Args struct to store a fSrcColor as opposed to fDestColor, since fDestColor would be the prior-stage output? Or did I over-complicate it and think myself into a circle? 😊",
+      "parentUuid": "1f4340df_4172a199",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
