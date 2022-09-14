@@ -370,6 +370,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "029f790b_a503d2be",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T14:37:47Z",
+      "side": 1,
+      "message": "What do you mean by \"The BlendColorFilterBlock takes in a source color at block creation from PaintParams\"?\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/core/SkKeyHelpers.h;l\u003d196;drc\u003df172cd146979d4c67229c13afa0e5f6ea14738e9\n\nIt looks like it takes a `BlendColorFilterData` which lets you specify any blend-mode and color4f. I don\u0027t understand how it\u0027s tied to PaintParams.",
+      "parentUuid": "4d0c3364_e6847da3",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
