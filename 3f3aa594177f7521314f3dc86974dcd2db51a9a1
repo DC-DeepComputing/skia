@@ -24,6 +24,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f79c7fb0_f46c15d2",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-14T05:11:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31c6b730_eaa5a16d",
+      "range": {
+        "startLine": 379,
+        "startChar": 18,
+        "endLine": 379,
+        "endChar": 38
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab3c93a4_6d42bfda",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-14T05:11:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31c6b730_eaa5a16d",
+      "range": {
+        "startLine": 379,
+        "startChar": 18,
+        "endLine": 379,
+        "endChar": 38
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e0d0d82_0ec7a053",
@@ -37,6 +85,54 @@
       "writtenOn": "2022-09-13T21:09:40Z",
       "side": 1,
       "message": "No need to call (or even have) this method.",
+      "range": {
+        "startLine": 411,
+        "startChar": 4,
+        "endLine": 413,
+        "endChar": 27
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e9b7f2f_8a202afa",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-14T05:11:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0d0d82_0ec7a053",
+      "range": {
+        "startLine": 411,
+        "startChar": 4,
+        "endLine": 413,
+        "endChar": 27
+      },
+      "revId": "3f3aa594177f7521314f3dc86974dcd2db51a9a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05011454_0ac09e19",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 18644
+      },
+      "writtenOn": "2022-09-14T05:11:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0d0d82_0ec7a053",
       "range": {
         "startLine": 411,
         "startChar": 4,
