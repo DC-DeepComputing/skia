@@ -394,6 +394,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbf7b928_f68f6c2e",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T15:13:29Z",
+      "side": 1,
+      "message": "I mean that when I use `BlendColorFilterData::BeginBlock` from within `PaintParams::toKey` to capture the primitive blending step, I would need to create \u0026 pass in `BlendColorFilterData` containing both the blend mode (known, since paint params has access to the primitive blender as a member attribute) and a source color (not known at this point, since that will be determined by emitted information from the render step during `SkShaderCodeDictionary`\u0027s `SkShaderInfo::toSkSL`; `step-\u003efragmentColorSkSL()`). \n\nIs it a viable option to simply assign `BlendColorFilterData`\u0027s source color \"later\" from within the fragment shader?",
+      "parentUuid": "029f790b_a503d2be",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
