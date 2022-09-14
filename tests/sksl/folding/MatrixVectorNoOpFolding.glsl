@@ -104,5 +104,5 @@ bool test_no_op_vec4_X_mat4_b() {
     return v == vec4(-4.0, -8.0, -12.0, -16.0);
 }
 vec4 main() {
-    return ((((test_no_op_mat2_X_vec2_b() && test_no_op_mat3_X_vec3_b()) && test_no_op_mat4_X_vec4_b()) && test_no_op_vec2_X_mat2_b()) && test_no_op_vec3_X_mat3_b()) && test_no_op_vec4_X_mat4_b() ? colorGreen : colorRed;
+    return ((((test_Xno_Xop_Xmat2_XX_Xvec2_Xb() && test_Xno_Xop_Xmat3_XX_Xvec3_Xb()) && test_Xno_Xop_Xmat4_XX_Xvec4_Xb()) && test_Xno_Xop_Xvec2_XX_Xmat2_Xb()) && test_Xno_Xop_Xvec3_XX_Xmat3_Xb()) && test_Xno_Xop_Xvec4_XX_Xmat4_Xb() ? colorGreen : colorRed;
 }

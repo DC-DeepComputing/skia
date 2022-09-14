@@ -118,5 +118,5 @@ bool test_no_op_mat4_X_scalar_b() {
     return mm == z;
 }
 vec4 main() {
-    return ((((test_no_op_scalar_X_mat2_b() && test_no_op_scalar_X_mat3_b()) && test_no_op_scalar_X_mat4_b()) && test_no_op_mat2_X_scalar_b()) && test_no_op_mat3_X_scalar_b()) && test_no_op_mat4_X_scalar_b() ? colorGreen : colorRed;
+    return ((((test_Xno_Xop_Xscalar_XX_Xmat2_Xb() && test_Xno_Xop_Xscalar_XX_Xmat3_Xb()) && test_Xno_Xop_Xscalar_XX_Xmat4_Xb()) && test_Xno_Xop_Xmat2_XX_Xscalar_Xb()) && test_Xno_Xop_Xmat3_XX_Xscalar_Xb()) && test_Xno_Xop_Xmat4_XX_Xscalar_Xb() ? colorGreen : colorRed;
 }
