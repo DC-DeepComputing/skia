@@ -204,6 +204,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d92f59f_c0148302",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T20:13:33Z",
+      "side": 1,
+      "message": "Thank you everyone for weighing in. I updated the addToKey() methods in the image, gradient, and runtime shaders to check if the local matrix is an identity matrix as John suggested.",
+      "parentUuid": "32f12c30_b6826350",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdf56414_c35c8760",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 14
@@ -262,6 +286,24 @@
       "writtenOn": "2022-09-08T14:13:21Z",
       "side": 1,
       "message": "nit: remove extra blank line",
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06921c5f_f912b40c",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-14T20:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29d4a19b_8ab0d5dc",
       "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
