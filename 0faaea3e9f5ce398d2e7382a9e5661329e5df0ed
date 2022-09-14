@@ -51,6 +51,42 @@
       "message": "Another potential concern: http://screen/53oWZh8tm5Ux2wG\n\n+2.67K in Lexer table data. Probably better off just leaving the lexer tables alone and identifying the broken identifiers in code with `skstd::string_view::contains`.",
       "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5baec395_b1228639",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T15:16:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9484da68_d3e940b5",
+      "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68eea98f_2b4254a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T15:16:46Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/580587",
+      "parentUuid": "92207e3a_5fbcdc97",
+      "revId": "0faaea3e9f5ce398d2e7382a9e5661329e5df0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
