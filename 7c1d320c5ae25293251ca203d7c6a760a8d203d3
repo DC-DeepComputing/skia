@@ -22,6 +22,29 @@
       },
       "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f32a98e5_366a9db0",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-14T21:28:59Z",
+      "side": 1,
+      "message": "Should this just be `coords` now?\nCheck out the `spiral_rt` slide.",
+      "range": {
+        "startLine": 646,
+        "startChar": 67,
+        "endLine": 646,
+        "endChar": 96
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
