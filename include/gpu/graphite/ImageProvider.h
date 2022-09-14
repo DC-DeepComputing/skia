@@ -22,7 +22,7 @@ class Recorder;
  * it will call ImageProvider::findOrCreate. The client's derived version of this class should
  * return a Graphite-backed version of the provided SkImage that meets the specified
  * requirements. If the requirements are not met by the returned image, Graphite
- * will draw opaque red.
+ * will drop the draw.
  *
  * Note: by default, Graphite will not perform any caching of images
  *
@@ -31,7 +31,7 @@ class Recorder;
  *   client to handle any required thread synchronization. This is not limited to just
  *   restricting access to whatever map a derived class may have but extends to ensuring
  *   that an image created on one Recorder has had its creation work submitted before it
- *   is used by any work submitted by another Recorder. Please note, this requirement
+ *   is used by any work submitted by another Recording. Please note, this requirement
  *   (re the submission of creation work and image usage on different threads) is common to all
  *   graphite SkImages and isn't unique to SkImages returned by the ImageProvider.
  *
