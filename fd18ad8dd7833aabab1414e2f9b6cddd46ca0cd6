@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1ec5c85_a7a14eeb",
+        "filename": "include/gpu/graphite/ImageProvider.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T13:37:08Z",
+      "side": 1,
+      "message": "Hopefully clarified.",
+      "parentUuid": "099856a4_8aa99307",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3913eb4_c7106bf0",
         "filename": "tests/graphite/ImageProviderTest.cpp",
         "patchSetId": 27
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-14T20:04:58Z",
       "side": 1,
       "message": "You shouldn\u0027t have to do any of this. This is all done in the onReadPixels call.",
+      "range": {
+        "startLine": 201,
+        "startChar": 1,
+        "endLine": 210,
+        "endChar": 54
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb38093_2cbda682",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T13:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3913eb4_c7106bf0",
       "range": {
         "startLine": 201,
         "startChar": 1,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-09-14T20:04:58Z",
       "side": 1,
       "message": "This would require some level of scale to read off the first mip level (i.e. not the base level), right? I don\u0027t see this scale happening anywhere.",
+      "range": {
+        "startLine": 254,
+        "startChar": 75,
+        "endLine": 255,
+        "endChar": 66
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b9c9af_1d826b35",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T13:37:08Z",
+      "side": 1,
+      "message": "The drawImageRect call in \u0027check_img\u0027 should be drawing a 32x32 image into a 16x16 rectangle.",
+      "parentUuid": "faea0273_e14d9eb7",
       "range": {
         "startLine": 254,
         "startChar": 75,
