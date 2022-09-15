@@ -351,3 +351,21 @@ func (b *taskBuilder) usesNode() {
 	b.asset("node")
 	b.addToPATH("node/node/bin")
 }
+
+func (b *taskBuilder) needsLottiesWithAssets() {
+	// This CIPD package was made by hand with the following invocation:
+	//   cipd create -name skia/internal/lotties_with_assets -in ./lotties/ -tag version:2
+	//   cipd acl-edit skia/internal/lotties_with_assets -reader group:project-skia-external-task-accounts
+	//   cipd acl-edit skia/internal/lotties_with_assets -reader user:pool-skia@chromium-swarm.iam.gserviceaccount.com
+	// Where lotties is a hand-selected set of lottie animations and (optionally) assets used in
+	// them (e.g. fonts, images).
+	// Each test case is in its own folder, with a data.json file and an optional images/ subfolder
+	// with any images/fonts/etc loaded by the animation.
+	// Note: If you are downloading the existing package to update them, remove the CIPD-generated
+	// .cipdpkg subfolder before trying to re-upload it.
+	b.cipd(&specs.CipdPackage{
+		Name:    "skia/internal/lotties_with_assets",
+		Path:    "lotties_with_assets",
+		Version: "version:2",
+	})
+}

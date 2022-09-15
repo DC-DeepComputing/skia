@@ -50,7 +50,8 @@ class ChromebookFlavor(ssh.SSHFlavor):
         'scp -r %s %s' % (src, dest), shell=True).decode('utf-8'))
     """, args=[src, dest], infra_step=True)
 
-  def copy_directory_contents_to_device(self, host_path, device_path):
+  def copy_directory_contents_to_device(self, host_path, device_path,
+                                        unused_glob_pattern):
     self._copy_dir(host_path, self.scp_device_path(device_path))
 
   def copy_directory_contents_to_host(self, device_path, host_path):

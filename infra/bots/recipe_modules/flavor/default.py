@@ -56,7 +56,8 @@ class DefaultFlavor(object):
     """Like os.path.join(), but for paths on a connected device."""
     return self.m.path.join(*args)
 
-  def copy_directory_contents_to_device(self, host_dir, device_dir):
+  def copy_directory_contents_to_device(self, host_dir, device_dir,
+                                        unused_glob_pattern):
     """Like shutil.copytree(), but for copying to a connected device."""
     # For "normal" builders who don't have an attached device, we expect
     # host_dir and device_dir to be the same.

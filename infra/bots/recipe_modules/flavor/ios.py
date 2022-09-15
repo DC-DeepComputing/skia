@@ -142,7 +142,8 @@ time.sleep(2)
   def copy_file_to_device(self, host, device):
     self._run_ios_script('push_file', host, device)
 
-  def copy_directory_contents_to_device(self, host, device):
+  def copy_directory_contents_to_device(self, host, device,
+                                        unused_glob_pattern):
     self._run_ios_script('push_if_needed', host, device)
 
   def copy_directory_contents_to_host(self, device, host):

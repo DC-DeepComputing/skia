@@ -142,17 +142,17 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 #### **class [SkiaFlavorApi](/infra/bots/recipe_modules/flavor/api.py#55)([RecipeApi][recipe_engine/wkt/RecipeApi]):**
 
-&mdash; **def [cleanup\_steps](/infra/bots/recipe_modules/flavor/api.py#125)(self):**
+&mdash; **def [cleanup\_steps](/infra/bots/recipe_modules/flavor/api.py#127)(self):**
 
-&mdash; **def [copy\_directory\_contents\_to\_device](/infra/bots/recipe_modules/flavor/api.py#81)(self, host_dir, device_dir):**
+&mdash; **def [copy\_directory\_contents\_to\_device](/infra/bots/recipe_modules/flavor/api.py#81)(self, host_dir, device_dir, glob_pattern='\*'):**
 
-&mdash; **def [copy\_directory\_contents\_to\_host](/infra/bots/recipe_modules/flavor/api.py#84)(self, device_dir, host_dir):**
+&mdash; **def [copy\_directory\_contents\_to\_host](/infra/bots/recipe_modules/flavor/api.py#86)(self, device_dir, host_dir):**
 
-&mdash; **def [copy\_file\_to\_device](/infra/bots/recipe_modules/flavor/api.py#87)(self, host_path, device_path):**
+&mdash; **def [copy\_file\_to\_device](/infra/bots/recipe_modules/flavor/api.py#89)(self, host_path, device_path):**
 
-&mdash; **def [create\_clean\_device\_dir](/infra/bots/recipe_modules/flavor/api.py#93)(self, path):**
+&mdash; **def [create\_clean\_device\_dir](/infra/bots/recipe_modules/flavor/api.py#95)(self, path):**
 
-&mdash; **def [create\_clean\_host\_dir](/infra/bots/recipe_modules/flavor/api.py#90)(self, path):**
+&mdash; **def [create\_clean\_host\_dir](/infra/bots/recipe_modules/flavor/api.py#92)(self, path):**
 
 &mdash; **def [device\_path\_join](/infra/bots/recipe_modules/flavor/api.py#78)(self, \*args):**
 
@@ -160,11 +160,11 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 Return a flavor utils object specific to the given builder.
 
-&mdash; **def [install](/infra/bots/recipe_modules/flavor/api.py#102)(self, skps=False, images=False, lotties=False, svgs=False, resources=False, mskps=False, texttraces=False):**
+&mdash; **def [install](/infra/bots/recipe_modules/flavor/api.py#104)(self, skps=False, images=False, lotties=False, svgs=False, resources=False, mskps=False, texttraces=False):**
 
-&mdash; **def [read\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#96)(self, path, \*\*kwargs):**
+&mdash; **def [read\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#98)(self, path, \*\*kwargs):**
 
-&mdash; **def [remove\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#99)(self, path):**
+&mdash; **def [remove\_file\_on\_device](/infra/bots/recipe_modules/flavor/api.py#101)(self, path):**
 
 &mdash; **def [setup](/infra/bots/recipe_modules/flavor/api.py#69)(self, app_name):**
 
@@ -458,13 +458,13 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 PYTHON_VERSION_COMPATIBILITY: PY3
 
-&mdash; **def [RunSteps](/infra/bots/recipes/perf_skottietrace.py#219)(api):**
+&mdash; **def [RunSteps](/infra/bots/recipes/perf_skottietrace.py#228)(api):**
 
-&mdash; **def [get\_trace\_match](/infra/bots/recipes/perf_skottietrace.py#128)(lottie_filename, is_android):**
+&mdash; **def [get\_trace\_match](/infra/bots/recipes/perf_skottietrace.py#137)(lottie_filename, is_android):**
 
 Returns the DM regex to match the specified lottie file name.
 
-&mdash; **def [parse\_trace](/infra/bots/recipes/perf_skottietrace.py#143)(trace_json, lottie_filename, api):**
+&mdash; **def [parse\_trace](/infra/bots/recipes/perf_skottietrace.py#152)(trace_json, lottie_filename, api):**
 
 parse_trace parses the specified trace JSON.
 
