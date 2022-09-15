@@ -9,6 +9,7 @@
 #define GrFPArgs_DEFINED
 
 #include "include/core/SkMatrix.h"
+#include "src/shaders/SkShaderBase.h"
 
 class GrColorInfo;
 class GrRecordingContext;
@@ -27,40 +28,42 @@ struct GrFPArgs {
         SkASSERT(fContext);
     }
 
-    class WithPreLocalMatrix;
+    class AppendLocalMatrix;
 
     GrFPArgs withNewMatrixProvider(const SkMatrixProvider& provider) const {
         GrFPArgs newArgs(fContext, provider, fDstColorInfo, fSurfaceProps);
-        newArgs.fPreLocalMatrix = fPreLocalMatrix;
+        newArgs.fLocalMatrix = fLocalMatrix;
         return newArgs;
     }
 
     GrRecordingContext* fContext;
     const SkMatrixProvider& fMatrixProvider;
 
-    const SkMatrix* fPreLocalMatrix  = nullptr;
+    const SkMatrix* fLocalMatrix = nullptr;
 
     const GrColorInfo* fDstColorInfo;
 
     const SkSurfaceProps& fSurfaceProps;
 };
 
-class GrFPArgs::WithPreLocalMatrix final : public GrFPArgs {
+// Use this to augment a passed in GrFPArgs with an additional local matrix from the current level
+// concatenated in order to invoke a child effect.
+class GrFPArgs::AppendLocalMatrix final : public GrFPArgs {
 public:
-    WithPreLocalMatrix(const GrFPArgs& args, const SkMatrix& lm) : INHERITED(args) {
-        if (!lm.isIdentity()) {
-            if (fPreLocalMatrix) {
-                fStorage.setConcat(lm, *fPreLocalMatrix);
-                fPreLocalMatrix = fStorage.isIdentity() ? nullptr : &fStorage;
+    AppendLocalMatrix(const GrFPArgs& args, const SkMatrix& childLM) : INHERITED(args) {
+        if (!childLM.isIdentity()) {
+            if (fLocalMatrix) {
+                fStorage = SkShaderBase::ConcatLocalMatrices(*fLocalMatrix, childLM);
+                fLocalMatrix = fStorage.isIdentity() ? nullptr : &fStorage;
             } else {
-                fPreLocalMatrix = &lm;
+                fLocalMatrix = &childLM;
             }
         }
     }
 
 private:
-    WithPreLocalMatrix(const WithPreLocalMatrix&) = delete;
-    WithPreLocalMatrix& operator=(const WithPreLocalMatrix&) = delete;
+    AppendLocalMatrix(const AppendLocalMatrix&) = delete;
+    AppendLocalMatrix& operator=(const AppendLocalMatrix&) = delete;
 
     SkMatrix fStorage;
 

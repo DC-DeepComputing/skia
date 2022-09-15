@@ -78,9 +78,9 @@ static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
         SkASSERT(entry->fUniforms.front().type() == SkSLType::kFloat4x4);
 
         // Multiply in this entry's pre-local coordinate matrix.
-        updatedMatrix = std::string(args.fPreLocalMatrix);
+        updatedMatrix = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
         updatedMatrix += "*";
-        updatedMatrix += entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+        updatedMatrix += std::string(args.fPreLocalMatrix);
         args.fPreLocalMatrix = updatedMatrix;
     }
 
