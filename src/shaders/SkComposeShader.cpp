@@ -17,6 +17,7 @@
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/shaders/SkShaderBase.h"
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
@@ -30,7 +31,7 @@ struct LocalMatrixStageRec final : public SkStageRec {
         : INHERITED(rec) {
         if (!lm.isIdentity()) {
             if (fLocalM) {
-                fStorage.setConcat(lm, *fLocalM);
+                fStorage = SkShaderBase::ConcatLocalMatrices(*rec.fLocalM, lm);
                 fLocalM = fStorage.isIdentity() ? nullptr : &fStorage;
             } else {
                 fLocalM = &lm;
@@ -195,7 +196,7 @@ skvm::Color SkShader_Blend::onProgram(skvm::Builder* p,
 
 std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
         const GrFPArgs& orig_args) const {
-    GrFPArgs::WithPreLocalMatrix args(orig_args, this->getLocalMatrix());
+    GrFPArgs::ConcatLocalMatrix args(orig_args, this->getLocalMatrix());
     auto fpA = as_SB(fDst)->asFragmentProcessor(args);
     auto fpB = as_SB(fSrc)->asFragmentProcessor(args);
     if (!fpA || !fpB) {

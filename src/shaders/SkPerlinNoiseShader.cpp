@@ -535,10 +535,13 @@ SkShaderBase::Context* SkPerlinNoiseShaderImpl::onMakeContext(const ContextRec& 
 
 static inline SkMatrix total_matrix(const SkShaderBase::ContextRec& rec,
                                     const SkShaderBase& shader) {
-    SkMatrix matrix = SkMatrix::Concat(*rec.fMatrix, shader.getLocalMatrix());
+    SkMatrix matrix;
     if (rec.fLocalMatrix) {
-        matrix.preConcat(*rec.fLocalMatrix);
+        matrix = SkShaderBase::ConcatLocalMatrices(*rec.fLocalMatrix, shader.getLocalMatrix());
+    } else {
+        matrix = shader.getLocalMatrix();
     }
+    matrix.postConcat(*rec.fMatrix);
 
     return matrix;
 }
@@ -923,7 +926,7 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
         const GrFPArgs& args) const {
     SkASSERT(args.fContext);
 
-    const auto localMatrix = this->totalLocalMatrix(args.fPreLocalMatrix);
+    const auto localMatrix = this->totalLocalMatrix(args.fLocalMatrix);
     const auto paintMatrix = SkMatrix::Concat(args.fMatrixProvider.localToDevice(), *localMatrix);
 
     // Either we don't stitch tiles, either we have a valid tile size
