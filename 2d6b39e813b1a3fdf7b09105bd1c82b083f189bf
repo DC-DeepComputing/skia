@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af94c02_1e7afed8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T20:36:00Z",
+      "side": 1,
+      "message": "Once this and https://skia-review.googlesource.com/c/skia/+/580421 land, we can switch over to using stepLocalCoords directly in the vertex shader and get rid of the dev2Local uniform hack.",
+      "revId": "2d6b39e813b1a3fdf7b09105bd1c82b083f189bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
