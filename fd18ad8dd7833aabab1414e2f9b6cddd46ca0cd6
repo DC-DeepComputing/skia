@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09faed11_25cbd813",
+        "filename": "include/gpu/graphite/ImageProvider.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T16:36:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1ec5c85_a7a14eeb",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3913eb4_c7106bf0",
