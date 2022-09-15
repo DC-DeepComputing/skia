@@ -16,7 +16,11 @@
 #include "src/core/SkMipmapBuilder.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tests/TestUtils.h"
+#include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+#include <stdio.h>
+#include "include/encode/SkPngEncoder.h"
 
 using namespace skgpu::graphite;
 
@@ -85,13 +89,15 @@ sk_sp<SkImage> create_raster_backed_image_with_mipmaps(Recorder*) {
 
 /* 2 */
 sk_sp<SkImage> create_gpu_backed_image_no_mipmaps(Recorder* recorder) {
-    sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
+        sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
+//    sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
     return raster->makeTextureImage(recorder, { Mipmapped::kNo });
 }
 
 /* 3 */
 sk_sp<SkImage> create_gpu_backed_image_with_mipmaps(Recorder* recorder) {
-    sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
+    sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
+//    sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
     return raster->makeTextureImage(recorder, { Mipmapped::kYes });
 }
 
@@ -182,7 +188,7 @@ bool check_img(skiatest::Reporter* reporter,
                 : SkSamplingOptions(SkFilterMode::kLinear);
 
         canvas->drawImageRect(imageToDraw,
-                              SkRect::MakeWH(kSurfaceSize.width(), kSurfaceSize.height()),
+                              SkRect::MakeWH(kImageSize.width(), kImageSize.height()),
                               sampling);
 
         // For now, we cast and call directly into Surface. Once we have a better idea of
@@ -219,8 +225,16 @@ bool check_img(skiatest::Reporter* reporter,
                        expectedColor.fR-diffs[0], expectedColor.fG-diffs[1],
                        expectedColor.fB-diffs[2], expectedColor.fA-diffs[3]);
             });
-    static constexpr float kTol[] = {0, 0, 0, 0};
-    CheckSolidPixels(expectedColor, pm, kTol, error);
+//    static constexpr float kTol[] = {0, 0, 0, 0};
+//    CheckSolidPixels(expectedColor, pm, kTol, error);
+
+    char name[256];
+    snprintf(name, 256, "/Users/robertphillips/src/bugs/%s-%s.png", testcase,
+             (mipmapped == Mipmapped::kYes) ? "with" : "without");
+    name[255] = '\0';
+
+    SkFILEWStream writer(name);
+    SkPngEncoder::Encode(&writer, pm, SkPngEncoder::Options());
 
     return true;
 }
