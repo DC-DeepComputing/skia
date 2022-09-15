@@ -54,8 +54,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//include/core:precompile_public_hdrs"}},
 		{Var: "skia_precompile_sources",
 			Rules: []string{
-				"//src/core:precompile_hdrs",
-				"//src/core:precompile_srcs",
+				"//src/gpu/graphite:precompile_hdrs",
+				"//src/gpu/graphite:precompile_srcs",
 			}},
 		{Var: "skia_skpicture_public",
 			Rules: []string{"//include/core:skpicture_public_hdrs"}},

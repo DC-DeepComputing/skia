@@ -4,7 +4,7 @@ licenses(["notice"])
 
 exports_files_legacy()
 
-# Mapped to skia_precompile_public variable in //gn/core.gni.
+# Mapped to skia_precompile_public variable in //gn/graphite.gni.
 filegroup(
     name = "precompile_public_hdrs",
     srcs = [

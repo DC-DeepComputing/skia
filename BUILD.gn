@@ -1394,7 +1394,7 @@ skia_component("skia") {
     }
   }
 
-  if (skia_enable_precompile) {
+  if (skia_enable_precompile && skia_enable_graphite) {
     public += skia_precompile_public
     sources += skia_precompile_sources
   }
