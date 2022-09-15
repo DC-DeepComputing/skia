@@ -29,19 +29,19 @@ def RunSteps(api):
   # Check out code.
   bot_update = True
   checkout_root = api.checkout.default_checkout_root
-  ignore_trybot = False
+  skip_patch = False
 
   if 'NoDEPS' in api.properties['buildername']:
     bot_update = False
     checkout_root = api.path['start_dir']
   if 'NoPatch' in api.vars.builder_name:
-    ignore_trybot = True
+    skip_patch = True
     checkout_root = api.path['start_dir']
 
   if bot_update:
     api.checkout.bot_update(
         checkout_root=checkout_root,
-        ignore_trybot=ignore_trybot)
+        skip_patch=skip_patch)
 
     if 'NoPatch' in api.vars.builder_name:
       # The CodeSize-* family of tasks compute size diffs between the binaries produced by
