@@ -688,12 +688,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/mskp",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/mskp/*",
+    "name": "ls [START_DIR]/mskp/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/mskp/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/mskp/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/mskp/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -703,7 +703,7 @@
       "/opt/infra-android/tools/adb",
       "push",
       "--sync",
-      "[START_DIR]/mskp/bar.jpg",
+      "[START_DIR]/mskp/apple/banana.jpg",
       "[START_DIR]/mskp/foo.png",
       "/sdcard/revenge_of_the_skiabot/mskp"
     ],
@@ -714,7 +714,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/mskp/* /sdcard/revenge_of_the_skiabot/mskp"
+    "name": "push --sync [START_DIR]/mskp/** /sdcard/revenge_of_the_skiabot/mskp"
   },
   {
     "cmd": [

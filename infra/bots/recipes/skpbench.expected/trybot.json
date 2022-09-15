@@ -209,12 +209,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/skp",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/skp/*",
+    "name": "ls [START_DIR]/skp/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -224,7 +224,7 @@
       "/usr/bin/adb.1.0.35",
       "push",
       "--sync",
-      "[START_DIR]/skp/bar.jpg",
+      "[START_DIR]/skp/apple/banana.jpg",
       "[START_DIR]/skp/foo.png",
       "/sdcard/revenge_of_the_skiabot/skps"
     ],
@@ -235,7 +235,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/skp/* /sdcard/revenge_of_the_skiabot/skps"
+    "name": "push --sync [START_DIR]/skp/** /sdcard/revenge_of_the_skiabot/skps"
   },
   {
     "cmd": [

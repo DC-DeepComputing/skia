@@ -592,12 +592,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/skia/resources",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/skia/resources/*",
+    "name": "ls [START_DIR]/skia/resources/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -607,7 +607,7 @@
       "/opt/infra-android/tools/adb",
       "push",
       "--sync",
-      "[START_DIR]/skia/resources/bar.jpg",
+      "[START_DIR]/skia/resources/apple/banana.jpg",
       "[START_DIR]/skia/resources/foo.png",
       "/sdcard/revenge_of_the_skiabot/resources"
     ],
@@ -618,7 +618,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/skia/resources/* /sdcard/revenge_of_the_skiabot/resources"
+    "name": "push --sync [START_DIR]/skia/resources/** /sdcard/revenge_of_the_skiabot/resources"
   },
   {
     "cmd": [
@@ -786,12 +786,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/skp",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/skp/*",
+    "name": "ls [START_DIR]/skp/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -801,7 +801,7 @@
       "/opt/infra-android/tools/adb",
       "push",
       "--sync",
-      "[START_DIR]/skp/bar.jpg",
+      "[START_DIR]/skp/apple/banana.jpg",
       "[START_DIR]/skp/foo.png",
       "/sdcard/revenge_of_the_skiabot/skps"
     ],
@@ -812,7 +812,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/skp/* /sdcard/revenge_of_the_skiabot/skps"
+    "name": "push --sync [START_DIR]/skp/** /sdcard/revenge_of_the_skiabot/skps"
   },
   {
     "cmd": [
@@ -1076,12 +1076,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/skimage",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/skimage/*",
+    "name": "ls [START_DIR]/skimage/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -1091,7 +1091,7 @@
       "/opt/infra-android/tools/adb",
       "push",
       "--sync",
-      "[START_DIR]/skimage/bar.jpg",
+      "[START_DIR]/skimage/apple/banana.jpg",
       "[START_DIR]/skimage/foo.png",
       "/sdcard/revenge_of_the_skiabot/images"
     ],
@@ -1102,7 +1102,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/skimage/* /sdcard/revenge_of_the_skiabot/images"
+    "name": "push --sync [START_DIR]/skimage/** /sdcard/revenge_of_the_skiabot/images"
   },
   {
     "cmd": [
@@ -1286,12 +1286,12 @@
       "/path/to/tmp/json",
       "glob",
       "[START_DIR]/svg",
-      "*"
+      "**"
     ],
     "infra_step": true,
-    "name": "ls [START_DIR]/svg/*",
+    "name": "ls [START_DIR]/svg/**",
     "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/bar.jpg@@@",
+      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/apple/banana.jpg@@@",
       "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/foo.png@@@",
       "@@@STEP_LOG_END@glob@@@"
     ]
@@ -1301,7 +1301,7 @@
       "/opt/infra-android/tools/adb",
       "push",
       "--sync",
-      "[START_DIR]/svg/bar.jpg",
+      "[START_DIR]/svg/apple/banana.jpg",
       "[START_DIR]/svg/foo.png",
       "/sdcard/revenge_of_the_skiabot/svgs"
     ],
@@ -1312,7 +1312,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push --sync [START_DIR]/svg/* /sdcard/revenge_of_the_skiabot/svgs"
+    "name": "push --sync [START_DIR]/svg/** /sdcard/revenge_of_the_skiabot/svgs"
   },
   {
     "cmd": [
