@@ -418,6 +418,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08464ae9_c90ec148",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-15T18:58:59Z",
+      "side": 1,
+      "message": "So I needed to look at a diagram of the paint flow that Brian Salomon sent out a few months ago to fully understand the flow:\n \nhttps://docs.google.com/presentation/d/1vFlrDxBhAvygDeoyDlWLmOC6JQtp1wVlSXyq0LlUItA/edit?resourcekey\u003d0-VSsIdNzu-J4m5tJzbmKMrQ#slide\u003did.g10541deba55_0_255\n\nThe primitive blend step takes in as inputs:\n- \"S\": the output from the shader/paint-color stage (the \"priorStageOutput\")\n- \"D\": the \"primitive color\"\n- \"blend\": the blend mode\n\nThe diagram isn\u0027t clear about the source of the primitive color, so I looked at SkVertices.h: https://osscs.corp.google.com/skia/skia/+/main:include/core/SkVertices.h;l\u003d122;drc\u003de49703faf265828903464f6a80a33e60f622cef0\n\nfColors says it has \"[vertexCount] or null\" elements. That makes me think that you get to set the primitive color on a per-vertex basis. So, if the primitive color is  used, it would need to be a varying, not a uniform.\n\nAfter looking at all of this stuff, I agree, `BlendColorFilterData` doesn\u0027t work, since it requires:\n- the output from the shader/paint-color stage (the \"priorStageOutput\")\n- a solid color uniform\n- blend mode (known)\n\nAlthough this is close, it\u0027s not a match. We can\u0027t represent the primitive color with a solid-color uniform since a uniform can\u0027t change on a per-vertex basis. So I guess we\u0027ll need to implement a new blend block which supports this.\n\n@michaelludwig, did I get this right? As you can see, I\u0027m not super familiar with the primitive blend stage.",
+      "parentUuid": "bbf7b928_f68f6c2e",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
