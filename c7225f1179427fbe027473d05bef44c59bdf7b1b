@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a171937_33efe2de",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T14:26:52Z",
+      "side": 1,
+      "message": "nit: I guess all the \"// no *\" comments should line up with all the rest",
+      "revId": "c7225f1179427fbe027473d05bef44c59bdf7b1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
