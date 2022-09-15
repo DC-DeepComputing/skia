@@ -9,11 +9,11 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 
-#include "include/core/SkCombinationBuilder.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "src/core/SkFactoryFunctions.h"
-#include "src/core/SkPrecompile.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/FactoryFunctions.h"
+#include "src/gpu/graphite/Precompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
 #include <array>
@@ -25,7 +25,7 @@ namespace {
 // For an entirely empty combination builder, both solid color shader and kSrcOver options
 // will be added
 void empty_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
 }
@@ -33,7 +33,7 @@ void empty_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 // It is expected that the builder will supply a default solid color shader if no other shader
 // option is provided
 void no_shader_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     builder.addOption(SkBlendMode::kSrcOver);
 
@@ -43,9 +43,9 @@ void no_shader_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* rep
 // It is expected that the builder will supply a default kSrcOver blend mode if no other
 // options are added
 void no_blend_mode_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
-    builder.addOption(SkShaderType::kSolidColor);
+    builder.addOption(ShaderType::kSolidColor);
 
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
 }
@@ -232,7 +232,7 @@ void runtime_effect_test(SkShaderCodeDictionary* dict, skiatest::Reporter* repor
 }
 
 void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     static constexpr int kMinNumStops = 4;
     static constexpr int kMaxNumStops = 8;
@@ -249,22 +249,22 @@ void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
     //  |- {4} 4-built-in-blend-modes {4}
 
     // first, shaders. First top-level option (sweepGrad_0)
-    [[maybe_unused]] auto sweepGrad_0 = builder.addOption(SkShaderType::kSweepGradient,
+    [[maybe_unused]] auto sweepGrad_0 = builder.addOption(ShaderType::kSweepGradient,
                                                           kMinNumStops, kMaxNumStops);
 
     // Second top-level option (blendShader_0)
-    auto blendShader_0 = builder.addOption(SkShaderType::kBlendShader);
+    auto blendShader_0 = builder.addOption(ShaderType::kBlendShader);
 
     // first child slot of blendShader_0
     {
         // first option (linearGrad_0)
         [[maybe_unused]] auto linearGrad_0 = blendShader_0.addChildOption(
-                0, SkShaderType::kLinearGradient,
+                0, ShaderType::kLinearGradient,
                 kMinNumStops, kMaxNumStops);
 
         // second option (solid_0)
         [[maybe_unused]] auto solid_0 = blendShader_0.addChildOption(0,
-                                                                     SkShaderType::kSolidColor);
+                                                                     ShaderType::kSolidColor);
     }
 
     // second child slot of blendShader_0
@@ -272,36 +272,36 @@ void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
         // first option (linearGrad_1)
         {
             [[maybe_unused]] auto linearGrad_1 = blendShader_0.addChildOption(
-                    1, SkShaderType::kLinearGradient,
+                    1, ShaderType::kLinearGradient,
                     kMinNumStops, kMaxNumStops);
         }
 
         // second option (blendShader_1)
         {
-            auto blendShader_1 = blendShader_0.addChildOption(1, SkShaderType::kBlendShader);
+            auto blendShader_1 = blendShader_0.addChildOption(1, ShaderType::kBlendShader);
 
             // nested: first child slot of blendShader_1
             {
                 // first option (radialGrad_0)
                 [[maybe_unused]] auto radialGrad_0 = blendShader_1.addChildOption(
-                        0, SkShaderType::kRadialGradient,
+                        0, ShaderType::kRadialGradient,
                         kMinNumStops, kMaxNumStops);
 
                 // second option (solid_1)
                 [[maybe_unused]] auto solid_1 = blendShader_1.addChildOption(
-                        0, SkShaderType::kSolidColor);
+                        0, ShaderType::kSolidColor);
             }
 
             // nested: second child slot of blendShader_1
             {
-                SkTileModePair tilingOptions[] = {
+                TileModePair tilingOptions[] = {
                         { SkTileMode::kRepeat, SkTileMode::kRepeat },
                         { SkTileMode::kClamp,  SkTileMode::kClamp }
                 };
 
                 // only option (imageShader_0)
                 [[maybe_unused]] auto imageShader_0 = blendShader_1.addChildOption(
-                        1, SkShaderType::kImage, tilingOptions);
+                        1, ShaderType::kImage, tilingOptions);
             }
         }
     }
@@ -317,11 +317,11 @@ void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 
 #ifdef SK_DEBUG
 void epoch_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     // Check that epochs are updated upon builder reset
     {
-        SkCombinationOption solid_0 = builder.addOption(SkShaderType::kSolidColor);
+        CombinationOption solid_0 = builder.addOption(ShaderType::kSolidColor);
 
         int optionEpoch = CombinationBuilderTestAccess::Epoch(solid_0);
         REPORTER_ASSERT(reporter, optionEpoch == CombinationBuilderTestAccess::Epoch(builder));
