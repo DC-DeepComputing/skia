@@ -222,6 +222,30 @@
       },
       "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9b6fac8_578187ad",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-15T14:24:16Z",
+      "side": 1,
+      "message": "Yup, my MBP has a Radeon 5300M.",
+      "parentUuid": "e7771a35_17793bf9",
+      "range": {
+        "startLine": 230,
+        "startChar": 45,
+        "endLine": 230,
+        "endChar": 46
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
