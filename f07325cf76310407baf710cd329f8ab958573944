@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d36b7f5_d0282de7",
+        "filename": "src/sksl/ir/SkSLExpression.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-15T14:25:38Z",
+      "side": 0,
+      "message": "I like using the more consistent analysis pass for this logic, but now it\u0027s distant from compareConstant. Although, looking at the code, is the assertion from this comment (that the two functions have to be implemented in tandem) still true? Seems like compareConstant is now safe in all cases?",
+      "revId": "f07325cf76310407baf710cd329f8ab958573944",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
