@@ -24,7 +24,7 @@
 #endif
 
 #ifdef SK_ENABLE_PRECOMPILE
-#include "include/core/SkCombinationBuilder.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 #endif
 
 #include <new>

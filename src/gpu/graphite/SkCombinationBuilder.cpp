@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkCombinationBuilder.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"

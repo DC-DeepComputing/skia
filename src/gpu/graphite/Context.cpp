@@ -7,12 +7,12 @@
 
 #include "include/gpu/graphite/Context.h"
 
-#include "include/core/SkCombinationBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/RefCntedCallback.h"

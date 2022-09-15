@@ -8,7 +8,7 @@
 #ifndef CombinationBuilderTestAccess_DEFINED
 #define CombinationBuilderTestAccess_DEFINED
 
-#include "include/core/SkCombinationBuilder.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 #include "include/private/SkUniquePaintParamsID.h"
 
 

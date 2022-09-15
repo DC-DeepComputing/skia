@@ -10,13 +10,13 @@
 #ifdef SK_GRAPHITE_ENABLED
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCombinationBuilder.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkShader.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"

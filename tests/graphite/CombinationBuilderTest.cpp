@@ -9,11 +9,11 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 
-#include "include/core/SkCombinationBuilder.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "src/core/SkFactoryFunctions.h"
-#include "src/core/SkPrecompile.h"
+#include "include/gpu/graphite/SkCombinationBuilder.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/SkFactoryFunctions.h"
+#include "src/gpu/graphite/SkPrecompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
 #include <array>

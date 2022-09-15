@@ -9,9 +9,9 @@
 
 #ifdef SK_ENABLE_PRECOMPILE
 
-#include "src/core/SkFactoryFunctions.h"
+#include "src/gpu/graphite/SkFactoryFunctions.h"
 
-#include "src/core/SkPrecompile.h"
+#include "src/gpu/graphite/SkPrecompile.h"
 
 // TODO: wrap this in an  SK_PRECOMPILE check
 
