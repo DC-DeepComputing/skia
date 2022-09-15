@@ -466,6 +466,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "959b6df0_436f7f32",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-15T21:12:51Z",
+      "side": 1,
+      "message": "I think 4 different variations is fine; the biggest challenge becomes  naming/commenting them really well, so that a future reader understands why we need four :)",
+      "parentUuid": "14008534_cbdc839d",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
