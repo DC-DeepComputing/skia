@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4291da58_6b112be5",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "485be9be_1ba1a72a",
+      "range": {
+        "startLine": 692,
+        "startChar": 39,
+        "endLine": 692,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd75675a_659d376c",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7994e7dc_221b489b",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "I see, thank you for the explanation, that makes sense. Removed this part of the if statement at all relevant locations.",
+      "parentUuid": "fd75675a_659d376c",
+      "range": {
+        "startLine": 1226,
+        "startChar": 12,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4cbe20f_a63b918d",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-09-15T13:53:29Z",
       "side": 1,
       "message": "We need to add some logic here to call `builder-\u003eendBlock()` a second time to close the LocalMatrixShaderBlock if we\u0027d wrapped the main block in one. I propose adding a local `const bool needsLocalMatrixBlock \u003d !this-\u003egetLocalMatrix().isIdentity()` and then the first if becomes `if (needsLocalMatrixBlock) { BeginBlock... }` and at the end after we end the RuntimeShaderBlock we have a `if (needsLocalMatrixBlock) builder-\u003eendBlock()`.",
+      "range": {
+        "startLine": 1236,
+        "startChar": 8,
+        "endLine": 1236,
+        "endChar": 28
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3222159_7e6dbd55",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4cbe20f_a63b918d",
       "range": {
         "startLine": 1236,
         "startChar": 8,
@@ -134,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "620a8f75_37914fe3",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Ah right, from the discussion in the SkSL chat. Got it.",
+      "parentUuid": "84001e69_aa4ad425",
+      "range": {
+        "startLine": 166,
+        "startChar": 38,
+        "endLine": 166,
+        "endChar": 42
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f32a98e5_366a9db0",
@@ -147,6 +243,30 @@
       "writtenOn": "2022-09-14T21:28:59Z",
       "side": 1,
       "message": "Should this just be `coords` now?\nCheck out the `spiral_rt` slide.",
+      "range": {
+        "startLine": 646,
+        "startChar": 67,
+        "endLine": 646,
+        "endChar": 96
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfbd744d_3f005daa",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Good call. Per our conversation I updated runtime shaders to no longer require \u0026 write a local matrix uniform for graphite and changed this to `coords`.",
+      "parentUuid": "f32a98e5_366a9db0",
       "range": {
         "startLine": 646,
         "startChar": 67,
@@ -180,6 +300,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "208807ab_9d6688f1",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7dcc3c5_8dc0f170",
+      "range": {
+        "startLine": 386,
+        "startChar": 8,
+        "endLine": 386,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "752675c0_4d7d06f4",
@@ -193,6 +337,30 @@
       "writtenOn": "2022-09-15T13:53:29Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 116,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6c8a52_5a719417",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "752675c0_4d7d06f4",
       "range": {
         "startLine": 116,
         "startChar": 8,
@@ -226,6 +394,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc0633a4_40f7d39c",
+        "filename": "src/shaders/gradients/SkRadialGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27c8eda0_206d1b1b",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6f470fe_c4570011",
@@ -239,6 +431,30 @@
       "writtenOn": "2022-09-15T13:53:29Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ebd4874_05c02922",
+        "filename": "src/shaders/gradients/SkSweepGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6f470fe_c4570011",
       "range": {
         "startLine": 183,
         "startChar": 8,
@@ -266,6 +482,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "971e1f0a_3dee8479",
+        "filename": "src/shaders/gradients/SkTwoPointConicalGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "951ea30c_c570a38a",
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c3306a5_fadb0b26",
@@ -279,6 +513,30 @@
       "writtenOn": "2022-09-15T13:53:29Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 522,
+        "startChar": 8,
+        "endLine": 522,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cae92cd9_9d782e06",
+        "filename": "src/shaders/gradients/SkTwoPointConicalGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c3306a5_fadb0b26",
       "range": {
         "startLine": 522,
         "startChar": 8,

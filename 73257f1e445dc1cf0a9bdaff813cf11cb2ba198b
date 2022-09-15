@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15edbeb1_054dceaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "Alright, I addressed the existing comments and deleted some special handling around runtime shaders that related to prepending a local matrix uniform.",
+      "revId": "73257f1e445dc1cf0a9bdaff813cf11cb2ba198b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "addd6121_afa11c8c",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-15T17:10:06Z",
+      "side": 1,
+      "message": "After speaking with John, we may be able to have a single RuntimeEffectBlock that shaders and color filters both use since the only difference appears to be that runtime shaders required a local matrix, which is no longer the case. They now are encapsulated in local matrix shaders. This work would be done in a follow-up CL.",
+      "range": {
+        "startLine": 693,
+        "startChar": 41,
+        "endLine": 693,
+        "endChar": 62
+      },
+      "revId": "73257f1e445dc1cf0a9bdaff813cf11cb2ba198b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
