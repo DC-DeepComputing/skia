@@ -442,6 +442,30 @@
       },
       "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14008534_cbdc839d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T20:31:52Z",
+      "side": 1,
+      "message": "That sounds right, unless you can generalize the blend block to let you define where to get each of the colors more flexibly (e.g. the color attachment (true dest color), the prior stage output, a uniform, or the primitive color varying), then we need blocks that correspond explicitly to the different pairings of src/dst sources. I believe we care about:\n\n - D \u003d color attachment, S \u003d priorStageOutput (for SkPaint::getBlender())\n - D \u003d shader output A, S \u003d shader output B (for SkShaders::Blend())\n - D \u003d priorStageOutput, S \u003d color uniform (for SkColorFilters::Blend())\n - D \u003d primitiveColor, S \u003d priorStageOutput (for drawVertices, drawAtlas, etc.)\n \nWith only 4 options it\u0027s not unreasonable to just have 4 different variations, or we could have an enum for blend src/dst \"source\" that covers these cases and provides the context in the key for us to build the right sksl.",
+      "parentUuid": "08464ae9_c90ec148",
+      "range": {
+        "startLine": 74,
+        "startChar": 74,
+        "endLine": 74,
+        "endChar": 81
+      },
+      "revId": "ca6652103b5a787457fcd311daeebe7c83f1d836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
