@@ -7,10 +7,10 @@
 
 #include "include/gpu/graphite/Context.h"
 
-#include "include/core/SkCombinationBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -125,7 +125,7 @@ SkBlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     return fSharedContext->shaderCodeDictionary()->addUserDefinedBlender(std::move(effect));
 }
 
-void Context::precompile(SkCombinationBuilder* combinationBuilder) {
+void Context::precompile(CombinationBuilder* combinationBuilder) {
     ASSERT_SINGLE_OWNER
 
     combinationBuilder->buildCombinations(

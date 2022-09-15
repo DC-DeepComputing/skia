@@ -20,13 +20,16 @@
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
 
-enum class SkShaderType : uint32_t;
 class SkData;
 class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
 class SkRuntimeEffect;
 class SkUniquePaintParamsID;
 class SkKeyContext;
+
+namespace skgpu::graphite {
+enum class SkShaderType : uint32_t;
+}
 
 // The KeyHelpers can be used to manually construct an SkPaintParamsKey
 

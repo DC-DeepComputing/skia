@@ -17,8 +17,6 @@
 
 #include <memory>
 
-class SkBlenderID;
-class SkCombinationBuilder;
 class SkRuntimeEffect;
 
 namespace skgpu { struct VulkanBackendContext; }
@@ -26,6 +24,7 @@ namespace skgpu { struct VulkanBackendContext; }
 namespace skgpu::graphite {
 
 class BackendTexture;
+class CombinationBuilder;
 class Context;
 class ContextPriv;
 class GlobalCache;
@@ -34,6 +33,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class SkBlenderID;
 
 class SK_API Context final {
 public:
@@ -69,7 +69,7 @@ public:
     // TODO: add "SkColorFilterID addUserDefinedColorFilter(sk_sp<SkRuntimeEffect>)" here
     SkBlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
 
-    void precompile(SkCombinationBuilder*);
+    void precompile(CombinationBuilder*);
 #endif
 
     /**

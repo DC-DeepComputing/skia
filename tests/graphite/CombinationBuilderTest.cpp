@@ -9,11 +9,11 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 
-#include "include/core/SkCombinationBuilder.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "src/core/SkFactoryFunctions.h"
-#include "src/core/SkPrecompile.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/FactoryFunctions.h"
+#include "src/gpu/graphite/Precompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
 #include <array>
@@ -25,7 +25,7 @@ namespace {
 // For an entirely empty combination builder, both solid color shader and kSrcOver options
 // will be added
 void empty_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
 }
@@ -33,7 +33,7 @@ void empty_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 // It is expected that the builder will supply a default solid color shader if no other shader
 // option is provided
 void no_shader_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     builder.addOption(SkBlendMode::kSrcOver);
 
@@ -43,7 +43,7 @@ void no_shader_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* rep
 // It is expected that the builder will supply a default kSrcOver blend mode if no other
 // options are added
 void no_blend_mode_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     builder.addOption(SkShaderType::kSolidColor);
 
@@ -232,7 +232,7 @@ void runtime_effect_test(SkShaderCodeDictionary* dict, skiatest::Reporter* repor
 }
 
 void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     static constexpr int kMinNumStops = 4;
     static constexpr int kMaxNumStops = 8;
@@ -317,7 +317,7 @@ void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 
 #ifdef SK_DEBUG
 void epoch_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    SkCombinationBuilder builder(dict);
+    CombinationBuilder builder(dict);
 
     // Check that epochs are updated upon builder reset
     {

@@ -24,7 +24,7 @@
 #endif
 
 #ifdef SK_ENABLE_PRECOMPILE
-#include "include/core/SkCombinationBuilder.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 #endif
 
 #include <new>
@@ -961,8 +961,9 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
                                        dataPayloadExpectations);
 }
 
-#ifdef SK_ENABLE_PRECOMPILE
-SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
+#if defined(SK_ENABLE_PRECOMPILE) && defined(SK_GRAPHITE_ENABLED)
+skgpu::graphite::SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(
+            sk_sp<SkRuntimeEffect> effect) {
     if (!effect) {
         return {};
     }
@@ -980,10 +981,10 @@ SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect>
                                                     GenerateDefaultPreamble,
                                                     kNoChildren,
                                                     /*dataPayloadExpectations=*/{});
-    return SkBlenderID(codeSnippetID);
+    return skgpu::graphite::SkBlenderID(codeSnippetID);
 }
 
-const SkShaderSnippet* SkShaderCodeDictionary::getEntry(SkBlenderID id) const {
+const SkShaderSnippet* SkShaderCodeDictionary::getEntry(skgpu::graphite::SkBlenderID id) const {
     return this->getEntry(id.asUInt());
 }
 

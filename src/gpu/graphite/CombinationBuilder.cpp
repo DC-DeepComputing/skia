@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkCombinationBuilder.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
@@ -35,23 +35,24 @@ enum class UnusedShaderType { SHADER_TYPES(MAKE_ENUM) };
 #undef MAKE_ENUM
 static constexpr int kUnusedShaderTypeCount = static_cast<int>(UnusedShaderType::kBlendShader) + 1;
 
-#define STATIC_ASSERT(T) static_assert((int) SkShaderType::k##T == (int) UnusedShaderType::k##T);
+#define STATIC_ASSERT(T) static_assert((int) skgpu::graphite::SkShaderType::k##T == \
+                                       (int) UnusedShaderType::k##T);
    SHADER_TYPES(STATIC_ASSERT)
 #undef STATIC_ASSERT
 
-static_assert(kSkShaderTypeCount == kUnusedShaderTypeCount);
+static_assert(skgpu::graphite::kSkShaderTypeCount == kUnusedShaderTypeCount);
 
 //--------------------------------------------------------------------------------------------------
 namespace {
 
-int tm_pair_to_index(SkTileModePair tileModes) {
+int tm_pair_to_index(skgpu::graphite::SkTileModePair tileModes) {
     static_assert(kSkTileModeCount <= 4);
 
     return (int) tileModes.fX << 2 | (int) tileModes.fY;
 }
 
 #ifdef SK_DEBUG
-SkTileModePair index_to_tm_pair(int index) {
+skgpu::graphite::SkTileModePair index_to_tm_pair(int index) {
     static_assert(kSkTileModeCount <= 4);
     SkASSERT(index < 16);
 
@@ -65,9 +66,9 @@ void add_indent(int indent) {
     SkDebugf("%*c", indent, ' ');
 }
 
-const char* type_to_str(SkShaderType type) {
+const char* type_to_str(skgpu::graphite::SkShaderType type) {
     switch (type) {
-#define CASE(T) case SkShaderType::k##T: return #T;
+#define CASE(T) case skgpu::graphite::SkShaderType::k##T: return #T;
         SHADER_TYPES(CASE)
 #undef CASE
     }
@@ -80,6 +81,8 @@ const char* type_to_str(SkShaderType type) {
 } // anonymous namespace
 
 //--------------------------------------------------------------------------------------------------
+
+namespace skgpu::graphite {
 
 // The base class for all the objects stored in the arena
 // The base option object consists of some number of child slots each of which is an array of
@@ -510,17 +513,17 @@ int SkCombinationOption::numChildSlots() const { return fDataInArena->numSlots()
 SkDEBUGCODE(int SkCombinationOption::epoch() const { return fDataInArena->epoch(); })
 
 //--------------------------------------------------------------------------------------------------
-SkCombinationBuilder::SkCombinationBuilder(SkShaderCodeDictionary* dict)
+CombinationBuilder::CombinationBuilder(SkShaderCodeDictionary* dict)
         : fDictionary(dict) {
     fArena = std::make_unique<SkArenaAllocWithReset>(64);
     this->reset();
 }
 
-SkCombinationBuilder::~SkCombinationBuilder() = default;
+CombinationBuilder::~CombinationBuilder() = default;
 
 
 template<typename T, typename... Args>
-SkOption* SkCombinationBuilder::allocInArena(Args&&... args) {
+SkOption* CombinationBuilder::allocInArena(Args&&... args) {
     SkOption* arenaObject = fArena->make<T>(T{{ T::kType, T::kNumChildSlots },
                                               std::forward<Args>(args)... });
     if (!arenaObject) {
@@ -539,19 +542,19 @@ SkOption* SkCombinationBuilder::allocInArena(Args&&... args) {
     return arenaObject;
 }
 
-void SkCombinationBuilder::addOption(SkBlendMode bm) {
+void CombinationBuilder::addOption(SkBlendMode bm) {
     SkASSERT(fDictionary->isValidID((int) bm));
 
     fBlendModes |= (0x1 << (int) bm);
 }
 
-void SkCombinationBuilder::addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
+void CombinationBuilder::addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
     for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
         this->addOption((SkBlendMode) i);
     }
 }
 
-void SkCombinationBuilder::addOption(BlendModeGroup group) {
+void CombinationBuilder::addOption(BlendModeGroup group) {
     switch (group) {
         case BlendModeGroup::kPorterDuff:
             this->addOption(SkBlendMode::kClear, SkBlendMode::kScreen);
@@ -568,13 +571,13 @@ void SkCombinationBuilder::addOption(BlendModeGroup group) {
     }
 }
 
-void SkCombinationBuilder::addOption(SkBlenderID id) {
+void CombinationBuilder::addOption(SkBlenderID id) {
     SkASSERT(fDictionary->isValidID(id.asUInt()));
 
     fBlenders.add(id);
 }
 
-SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType) {
+SkOption* CombinationBuilder::addOptionInternal(SkShaderType shaderType) {
 
     // TODO: Can we use the X macro trick here to collapse this
     switch (shaderType) {
@@ -589,8 +592,8 @@ SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType) {
     }
 }
 
-SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType,
-                                                  int minNumStops, int maxNumStops) {
+SkOption* CombinationBuilder::addOptionInternal(SkShaderType shaderType,
+                                                int minNumStops, int maxNumStops) {
 
     // TODO: Can we use the X macro trick here to collapse this
     switch (shaderType) {
@@ -607,8 +610,8 @@ SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType,
     }
 }
 
-SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType,
-                                                  SkSpan<SkTileModePair> tileModes) {
+SkOption* CombinationBuilder::addOptionInternal(SkShaderType shaderType,
+                                                SkSpan<SkTileModePair> tileModes) {
 
     // TODO: Can we use the X macro trick here to collapse this
     switch (shaderType) {
@@ -619,7 +622,7 @@ SkOption* SkCombinationBuilder::addOptionInternal(SkShaderType shaderType,
     }
 }
 
-SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType) {
+SkCombinationOption CombinationBuilder::addOption(SkShaderType shaderType) {
 
     SkOption* newOption = this->addOptionInternal(shaderType);
     if (newOption) {
@@ -629,8 +632,8 @@ SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType) {
     return { this, newOption };
 }
 
-SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType,
-                                                    int minNumStops, int maxNumStops) {
+SkCombinationOption CombinationBuilder::addOption(SkShaderType shaderType,
+                                                  int minNumStops, int maxNumStops) {
 
     SkOption* newOption = this->addOptionInternal(shaderType, minNumStops, maxNumStops);
     if (newOption) {
@@ -640,8 +643,8 @@ SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType,
     return { this, newOption };
 }
 
-SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType,
-                                                    SkSpan<SkTileModePair> tileModes) {
+SkCombinationOption CombinationBuilder::addOption(SkShaderType shaderType,
+                                                  SkSpan<SkTileModePair> tileModes) {
 
     SkOption* newOption = this->addOptionInternal(shaderType, tileModes);
     if (newOption) {
@@ -651,7 +654,7 @@ SkCombinationOption SkCombinationBuilder::addOption(SkShaderType shaderType,
     return { this, newOption };
 }
 
-void SkCombinationBuilder::reset() {
+void CombinationBuilder::reset() {
     fShaderOptions.reset();
     fBlendModes = 0;
     fBlenders.reset();
@@ -659,7 +662,7 @@ void SkCombinationBuilder::reset() {
     SkDEBUGCODE(++fEpoch;)
 }
 
-int SkCombinationBuilder::numShaderCombinations() const {
+int CombinationBuilder::numShaderCombinations() const {
     int numShaderCombinations = 0;
     for (SkOption* s : fShaderOptions) {
         numShaderCombinations += s->numCombinations();
@@ -669,7 +672,7 @@ int SkCombinationBuilder::numShaderCombinations() const {
     return numShaderCombinations ? numShaderCombinations : 1;
 }
 
-int SkCombinationBuilder::numBlendModeCombinations() const {
+int CombinationBuilder::numBlendModeCombinations() const {
     int numBlendModeCombinations = SkPopCount(fBlendModes) + fBlenders.count();
 
     // If no blend mode options are specified the builder will add kSrcOver as an option
@@ -677,7 +680,7 @@ int SkCombinationBuilder::numBlendModeCombinations() const {
 }
 
 #ifdef SK_DEBUG
-void SkCombinationBuilder::dump() const {
+void CombinationBuilder::dump() const {
     for (SkOption* s : fShaderOptions) {
         s->dump();
         SkDebugf("\n");
@@ -685,9 +688,9 @@ void SkCombinationBuilder::dump() const {
 }
 #endif
 
-void SkCombinationBuilder::createKey(const SkKeyContext& keyContext,
-                                     int desiredCombination,
-                                     SkPaintParamsKeyBuilder* keyBuilder) {
+void CombinationBuilder::createKey(const SkKeyContext& keyContext,
+                                   int desiredCombination,
+                                   SkPaintParamsKeyBuilder* keyBuilder) {
     SkDEBUGCODE(keyBuilder->checkReset();)
     SkASSERT(desiredCombination < this->numCombinations());
 
@@ -719,7 +722,7 @@ void SkCombinationBuilder::createKey(const SkKeyContext& keyContext,
 
 }
 
-void SkCombinationBuilder::buildCombinations(
+void CombinationBuilder::buildCombinations(
         SkShaderCodeDictionary* dict,
         const std::function<void(SkUniquePaintParamsID)>& func) {
     SkKeyContext keyContext(dict);
@@ -744,3 +747,5 @@ void SkCombinationBuilder::buildCombinations(
         func(entry->uniqueID());
     }
 }
+
+} // namespace skgpu::graphite

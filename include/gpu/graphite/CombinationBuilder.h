@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkCombinationBuilder_DEFINED
-#define SkCombinationBuilder_DEFINED
+#ifndef skgpu_graphite_CombinationBuilder_DEFINED
+#define skgpu_graphite_CombinationBuilder_DEFINED
 
 #include "include/core/SkTypes.h"
 
@@ -22,16 +22,17 @@
 #include "include/private/SkTHash.h"
 
 class SkArenaAllocWithReset;
-class SkCombinationBuilder;
 class SkKeyContext;
-class SkOption;
 class SkPaintParamsKeyBuilder;
 class SkShaderCodeDictionary;
 class SkUniquePaintParamsID;
+class CombinationBuilderTestAccess;
 
 namespace skgpu::graphite {
+
+class CombinationBuilder;
 class Context;
-}
+class SkOption;
 
 enum class SkShaderType : uint32_t {
     kSolidColor,
@@ -74,8 +75,8 @@ public:
     }
 
 private:
-    friend class SkShaderCodeDictionary;     // for ctor and asUInt access
-    friend class SkCombinationBuilder;       // for asUInt access
+    friend class ::SkShaderCodeDictionary;     // for ctor and asUInt access
+    friend class CombinationBuilder;         // for asUInt access
 
     SkBlenderID(uint32_t id) : fID(id) {}
 
@@ -88,7 +89,7 @@ private:
 // object is frequently returned. This allows options to be added, recursively, to the
 // previously added options.
 // Note: SkCombinationOptions are stable memory-wise so, once returned, they are valid
-// until SkCombinationBuilder::reset is called.
+// until CombinationBuilder::reset is called.
 class SkCombinationOption {
 public:
     SkCombinationOption addChildOption(int childIndex, SkShaderType);
@@ -102,10 +103,10 @@ public:
     bool isValid() const { return fDataInArena; }
 
 private:
-    friend class SkCombinationBuilder; // for ctor
-    friend class CombinationBuilderTestAccess;
+    friend class CombinationBuilder; // for ctor
+    friend class ::CombinationBuilderTestAccess;
 
-    SkCombinationOption(SkCombinationBuilder* builder, SkOption* dataInArena)
+    SkCombinationOption(CombinationBuilder* builder, SkOption* dataInArena)
             : fBuilder(builder)
             , fDataInArena(dataInArena) {}
 
@@ -113,11 +114,11 @@ private:
     int numChildSlots() const;
     SkDEBUGCODE(int epoch() const;)
 
-    SkCombinationBuilder* fBuilder;
+    CombinationBuilder* fBuilder;
     SkOption* fDataInArena;
 };
 
-class SkCombinationBuilder {
+class CombinationBuilder {
 public:
     enum class BlendModeGroup {
         kPorterDuff,         // [ kClear .. kScreen ]
@@ -126,8 +127,8 @@ public:
         kAll
     };
 
-    SkCombinationBuilder(SkShaderCodeDictionary*);
-    ~SkCombinationBuilder();
+    CombinationBuilder(SkShaderCodeDictionary*);
+    ~CombinationBuilder();
 
     // Blend Modes
     void addOption(SkBlendMode);
@@ -147,7 +148,7 @@ public:
 private:
     friend class skgpu::graphite::Context;     // for access to 'buildCombinations'
     friend class SkCombinationOption;          // for 'addOptionInternal' and 'arena'
-    friend class CombinationBuilderTestAccess; // for 'num*Combinations' and 'epoch'
+    friend class ::CombinationBuilderTestAccess; // for 'num*Combinations' and 'epoch'
 
     int numShaderCombinations() const;
     int numBlendModeCombinations() const;
@@ -186,6 +187,8 @@ private:
     SkDEBUGCODE(int fEpoch = 0;)
 };
 
+} // namespace skgpu::graphite
+
 #endif // SK_ENABLE_PRECOMPILE
 
-#endif // SkCombinationBuilder_DEFINED
+#endif // skgpu_graphite_CombinationBuilder_DEFINED

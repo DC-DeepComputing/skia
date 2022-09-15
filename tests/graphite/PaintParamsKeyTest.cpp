@@ -10,12 +10,12 @@
 #ifdef SK_GRAPHITE_ENABLED
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkCombinationBuilder.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkShader.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkKeyContext.h"
@@ -110,7 +110,7 @@ SkUniquePaintParamsID create_key(Context* context,
                                  SkBlendMode blendMode) {
     SkShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    SkCombinationBuilder combinationBuilder(context->priv().shaderCodeDictionary());
+    CombinationBuilder combinationBuilder(context->priv().shaderCodeDictionary());
 
     switch (shaderType) {
         case SkShaderType::kSolidColor:
