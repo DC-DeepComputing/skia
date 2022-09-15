@@ -140,6 +140,30 @@
       },
       "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6271fae_66caec81",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-15T15:17:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5b9c9af_1d826b35",
+      "range": {
+        "startLine": 254,
+        "startChar": 75,
+        "endLine": 255,
+        "endChar": 66
+      },
+      "revId": "fd18ad8dd7833aabab1414e2f9b6cddd46ca0cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
