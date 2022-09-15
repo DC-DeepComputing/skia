@@ -241,6 +241,7 @@ SKIA_PUBLIC_HDRS = [
 
 # All platform-independent sources and private headers.
 BASE_SRCS_ALL = [
+    "include/core/SkOpenTypeSVGDecoder.h",
     "include/private/SingleOwner.h",
     "include/private/SkBitmaskEnum.h",
     "include/private/SkChecksum.h",
@@ -289,6 +290,14 @@ BASE_SRCS_ALL = [
     "include/private/SkUniquePaintParamsID.h",
     "include/private/SkVx.h",
     "include/private/SkWeakRefCnt.h",
+    "include/private/gpu/ganesh/GrTypesPriv.h",
+    "include/private/gpu/ganesh/GrGLTypesPriv.h",
+    "include/private/gpu/ganesh/GrMockTypesPriv.h",
+    "include/private/chromium/Slug.h",
+    "include/private/gpu/ganesh/GrImageContext.h",
+    "include/private/gpu/ganesh/GrContext_Base.h",
+    "include/private/chromium/SkChromeRemoteGlyphCache.h",
+    "include/private/gpu/ganesh/GrMtlTypesPriv.h",
     "src/android/SkAndroidFrameworkUtils.cpp",
     "src/android/SkAnimatedImage.cpp",
     "src/core/Sk4px.h",
@@ -301,6 +310,7 @@ BASE_SRCS_ALL = [
     "src/core/SkAlphaRuns.cpp",
     "src/core/SkAnalyticEdge.cpp",
     "src/core/SkAnalyticEdge.h",
+    "src/core/SkEnumBitMask.h",
     "src/core/SkAnnotation.cpp",
     "src/core/SkAnnotationKeys.h",
     "src/core/SkAntiRun.h",
@@ -645,6 +655,7 @@ BASE_SRCS_ALL = [
     "src/core/SkThreadID.cpp",
     "src/core/SkTime.cpp",
     "src/core/SkTraceEvent.h",
+    "src/core/SkBitmapProcState.h",
     "src/core/SkTraceEventCommon.h",
     "src/core/SkTypeface.cpp",
     "src/core/SkTypefaceCache.cpp",
@@ -1219,6 +1230,15 @@ BASE_SRCS_ALL = [
     "src/images/SkWebpEncoder.cpp",
     "src/lazy/SkDiscardableMemoryPool.cpp",
     "src/lazy/SkDiscardableMemoryPool.h",
+    "src/opts/SkBitmapProcState_opts.h",
+    "src/opts/SkBlitMask_opts.h",
+    "src/opts/SkBlitRow_opts.h",
+    "src/opts/SkChecksum_opts.h",
+    "src/opts/SkRasterPipeline_opts.h",
+    "src/opts/SkSwizzler_opts.h",
+    "src/opts/SkUtils_opts.h",
+    "src/opts/SkVM_opts.h",
+    "src/opts/SkXfermode_opts.h",
     "src/pathops/SkAddIntersections.cpp",
     "src/pathops/SkAddIntersections.h",
     "src/pathops/SkDConicLineIntersection.cpp",
@@ -1354,6 +1374,7 @@ BASE_SRCS_ALL = [
     "src/sfnt/SkPanose.h",
     "src/sfnt/SkSFNTHeader.h",
     "src/sfnt/SkTTCFHeader.h",
+    "src/shaders/SkBitmapProcShader.h",
     "src/shaders/SkColorFilterShader.cpp",
     "src/shaders/SkColorFilterShader.h",
     "src/shaders/SkColorShader.cpp",
@@ -1665,6 +1686,21 @@ BASE_SRCS_ALL = [
     "src/xps/SkXPSDocument.cpp",
 ]
 
+TEXTUAL_HDRS = [
+    "src/sksl/generated/sksl_compute.dehydrated.sksl",
+    "src/sksl/generated/sksl_frag.dehydrated.sksl",
+    "src/sksl/generated/sksl_gpu.dehydrated.sksl",
+    "src/sksl/generated/sksl_graphite_frag.dehydrated.sksl",
+    "src/sksl/generated/sksl_graphite_vert.dehydrated.sksl",
+    "src/sksl/generated/sksl_public.dehydrated.sksl",
+    "src/sksl/generated/sksl_rt_shader.dehydrated.sksl",
+    "src/sksl/generated/sksl_shared.dehydrated.sksl",
+    "src/sksl/generated/sksl_vert.dehydrated.sksl",
+    # Included by GrGLMakeNativeInterface_android.cpp
+    "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+    "src/gpu/ganesh/gl/egl/GrGLMakeNativeInterface_egl.cpp",
+]
+
 base_gl_srcs = [
     "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.cpp",
     "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.h",
@@ -1817,8 +1853,12 @@ PORTS_SRCS_IOS = [
     "src/ports/SkScalerContext_mac_ct.h",
     "src/ports/SkTypeface_mac_ct.cpp",
     "src/ports/SkTypeface_mac_ct.h",
+    "src/utils/mac/SkCGBase.h",
+    "src/utils/mac/SkCGGeometry.h",
     "src/utils/mac/SkCreateCGImageRef.cpp",
     "src/utils/mac/SkCTFont.cpp",
+    "src/utils/mac/SkCTFont.h",
+    "src/utils/mac/SkUniqueCFRef.h",
 ]
 
 PORTS_SRCS_FUCHSIA = [
@@ -1865,6 +1905,33 @@ PORTS_SRCS_WASM = [
 ]
 GL_SRCS_WASM = GL_SRCS_UNIX_EGL
 
+MTL_HDRS = [
+    "src/gpu/ganesh/mtl/GrMtlAttachment.h",
+    "src/gpu/ganesh/mtl/GrMtlBuffer.h",
+    "src/gpu/ganesh/mtl/GrMtlCaps.h",
+    "src/gpu/ganesh/mtl/GrMtlCommandBuffer.h",
+    "src/gpu/ganesh/mtl/GrMtlCppUtil.h",
+    "src/gpu/ganesh/mtl/GrMtlDepthStencil.h",
+    "src/gpu/ganesh/mtl/GrMtlFramebuffer.h",
+    "src/gpu/ganesh/mtl/GrMtlGpu.h",
+    "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.h",
+    "src/gpu/ganesh/mtl/GrMtlPipeline.h",
+    "src/gpu/ganesh/mtl/GrMtlPipelineState.h",
+    "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.h",
+    "src/gpu/ganesh/mtl/GrMtlPipelineStateDataManager.h",
+    "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h",
+    "src/gpu/ganesh/mtl/GrMtlRenderTarget.h",
+    "src/gpu/ganesh/mtl/GrMtlResourceProvider.h",
+    "src/gpu/ganesh/mtl/GrMtlSampler.h",
+    "src/gpu/ganesh/mtl/GrMtlSemaphore.h",
+    "src/gpu/ganesh/mtl/GrMtlTexture.h",
+    "src/gpu/ganesh/mtl/GrMtlTextureRenderTarget.h",
+    "src/gpu/ganesh/mtl/GrMtlTrampoline.h",
+    "src/gpu/ganesh/mtl/GrMtlUniformHandler.h",
+    "src/gpu/ganesh/mtl/GrMtlUtil.h",
+    "src/gpu/ganesh/mtl/GrMtlVaryingHandler.h",
+]
+
 MTL_SRCS = [
     "src/gpu/ganesh/mtl/GrMtlAttachment.mm",
     "src/gpu/ganesh/mtl/GrMtlBuffer.mm",
@@ -1874,9 +1941,9 @@ MTL_SRCS = [
     "src/gpu/ganesh/mtl/GrMtlFramebuffer.mm",
     "src/gpu/ganesh/mtl/GrMtlGpu.mm",
     "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+    "src/gpu/ganesh/mtl/GrMtlPipelineState.mm",
     "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.mm",
     "src/gpu/ganesh/mtl/GrMtlPipelineStateDataManager.mm",
-    "src/gpu/ganesh/mtl/GrMtlPipelineState.mm",
     "src/gpu/ganesh/mtl/GrMtlRenderTarget.mm",
     "src/gpu/ganesh/mtl/GrMtlResourceProvider.mm",
     "src/gpu/ganesh/mtl/GrMtlSampler.mm",
@@ -2125,18 +2192,26 @@ SKPARAGRAPH_LIB_HDRS = [
 
 SKPARAGRAPH_LIB_SRCS = [
     "modules/skparagraph/src/Decorations.cpp",
+    "modules/skparagraph/src/Decorations.h",
     "modules/skparagraph/src/FontArguments.cpp",
     "modules/skparagraph/src/FontCollection.cpp",
+    "modules/skparagraph/src/Iterators.h",
     "modules/skparagraph/src/OneLineShaper.cpp",
+    "modules/skparagraph/src/OneLineShaper.h",
     "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+    "modules/skparagraph/src/ParagraphBuilderImpl.h",
     "modules/skparagraph/src/ParagraphCache.cpp",
     "modules/skparagraph/src/ParagraphImpl.cpp",
+    "modules/skparagraph/src/ParagraphImpl.h",
     "modules/skparagraph/src/ParagraphStyle.cpp",
     "modules/skparagraph/src/Run.cpp",
+    "modules/skparagraph/src/Run.h",
     "modules/skparagraph/src/TextLine.cpp",
+    "modules/skparagraph/src/TextLine.h",
     "modules/skparagraph/src/TextShadow.cpp",
     "modules/skparagraph/src/TextStyle.cpp",
     "modules/skparagraph/src/TextWrapper.cpp",
+    "modules/skparagraph/src/TextWrapper.h",
     "modules/skparagraph/src/TypefaceFontProvider.cpp",
 ]
 
@@ -2423,8 +2498,8 @@ SVG_LIB_SRCS = [
     "modules/svg/src/SkSVGFilter.cpp",
     "modules/svg/src/SkSVGGradient.cpp",
     "modules/svg/src/SkSVGImage.cpp",
-    "modules/svg/src/SkSVGLinearGradient.cpp",
     "modules/svg/src/SkSVGLine.cpp",
+    "modules/svg/src/SkSVGLinearGradient.cpp",
     "modules/svg/src/SkSVGMask.cpp",
     "modules/svg/src/SkSVGNode.cpp",
     "modules/svg/src/SkSVGOpenTypeSVGDecoder.cpp",
@@ -2438,6 +2513,7 @@ SVG_LIB_SRCS = [
     "modules/svg/src/SkSVGStop.cpp",
     "modules/svg/src/SkSVGSVG.cpp",
     "modules/svg/src/SkSVGText.cpp",
+    "modules/svg/src/SkSVGTextPriv.h",
     "modules/svg/src/SkSVGTransformableNode.cpp",
     "modules/svg/src/SkSVGUse.cpp",
     "modules/svg/src/SkSVGValue.cpp",
