@@ -25,12 +25,14 @@ class Context;
 // adding any necessary copy commands to Recorder
 std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder,
                                                               const SkBitmap& bitmap,
+                                                              sk_sp<SkMipmap> mipmaps,
                                                               Mipmapped mipmapped,
                                                               SkBudgeted budgeted);
 
 sk_sp<SkImage> MakeFromBitmap(Recorder*,
                               const SkColorInfo&,
                               const SkBitmap&,
+                              sk_sp<SkMipmap>,
                               SkBudgeted,
                               SkImage::RequiredImageProperties);
 

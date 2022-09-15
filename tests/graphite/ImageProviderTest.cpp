@@ -16,7 +16,13 @@
 #include "src/core/SkMipmapBuilder.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tests/TestUtils.h"
+#include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+#if 0
+#include <stdio.h>
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 using namespace skgpu::graphite;
 
@@ -85,13 +91,15 @@ sk_sp<SkImage> create_raster_backed_image_with_mipmaps(Recorder*) {
 
 /* 2 */
 sk_sp<SkImage> create_gpu_backed_image_no_mipmaps(Recorder* recorder) {
-    sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
+        sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
+//    sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
     return raster->makeTextureImage(recorder, { Mipmapped::kNo });
 }
 
 /* 3 */
 sk_sp<SkImage> create_gpu_backed_image_with_mipmaps(Recorder* recorder) {
-    sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
+    sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
+//    sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
     return raster->makeTextureImage(recorder, { Mipmapped::kYes });
 }
 
@@ -210,6 +218,16 @@ bool check_img(skiatest::Reporter* reporter,
             });
     static constexpr float kTol[] = {0, 0, 0, 0};
     CheckSolidPixels(expectedColor, pm, kTol, error);
+
+#if 0
+    char name[256];
+    snprintf(name, 256, "/Users/robertphillips/src/bugs/%s-%s.png", testcase,
+             (mipmapped == Mipmapped::kYes) ? "with" : "without");
+    name[255] = '\0';
+
+    SkFILEWStream writer(name);
+    SkPngEncoder::Encode(&writer, pm, SkPngEncoder::Options());
+#endif
 
     return true;
 }

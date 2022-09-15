@@ -613,6 +613,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
         return skgpu::graphite::MakeFromBitmap(recorder,
                                                this->imageInfo().colorInfo(),
                                                bitmap,
+                                               nullptr,
                                                SkBudgeted::kNo,
                                                requiredProps);
     }
