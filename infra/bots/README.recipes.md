@@ -89,14 +89,14 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 Fail if git is not obtained from CIPD.
 
-&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#48)(self, checkout_root, gclient_cache=None, ignore_trybot=False):**
+&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#48)(self, checkout_root, gclient_cache=None, skip_patch=False):**
 
 Run the steps to obtain a checkout using bot_update.
 
 Args:
   checkout_root: Root directory where the code will be synced.
   gclient_cache: Optional, directory of the gclient cache.
-  ignore_trybot: Ignore changelist/patchset when syncing the Skia repo.
+  skip_patch: Ignore changelist/patchset when syncing the Skia repo.
 
 &emsp; **@property**<br>&mdash; **def [default\_checkout\_root](/infra/bots/recipe_modules/checkout/api.py#15)(self):**
 

@@ -46,13 +46,13 @@ if 'cipd_bin_packages' not in git:
       return self.m.properties['revision']
 
   def bot_update(self, checkout_root, gclient_cache=None,
-                 ignore_trybot=False):
+                 skip_patch=False):
     """Run the steps to obtain a checkout using bot_update.
 
     Args:
       checkout_root: Root directory where the code will be synced.
       gclient_cache: Optional, directory of the gclient cache.
-      ignore_trybot: Ignore changelist/patchset when syncing the Skia repo.
+      skip_patch: Ignore changelist/patchset when syncing the Skia repo.
     """
     self.assert_git_is_from_cipd()
     if not gclient_cache:
@@ -79,6 +79,7 @@ if 'cipd_bin_packages' not in git:
     main.managed = False
     main.url = main_repo
     main.revision = self.m.properties.get('revision') or 'origin/main'
+    main.revision += '~1'
     m = gclient_cfg.got_revision_mapping
     m[main_name] = 'got_revision'
     patch_root = main_name
@@ -99,7 +100,7 @@ if 'cipd_bin_packages' not in git:
     # Run bot_update.
     patch_refs = None
     patch_ref = self.m.properties.get('patch_ref')
-    if patch_ref and not ignore_trybot:
+    if patch_ref and not skip_patch:
       patch_refs = ['%s@%s:%s' % (self.m.properties['patch_repo'],
                                   self.m.properties['revision'],
                                   patch_ref)]
