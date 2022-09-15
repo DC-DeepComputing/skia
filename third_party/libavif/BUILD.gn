@@ -22,6 +22,7 @@ third_party("libavif") {
     "AVIF_LIBYUV_ENABLED=1",
   ]
 
+  # Only build sources needed for decoding.
   sources = [
     "../externals/libavif/src/alpha.c",
     "../externals/libavif/src/avif.c",
@@ -38,5 +39,13 @@ third_party("libavif") {
     "../externals/libavif/src/scale.c",
     "../externals/libavif/src/stream.c",
     "../externals/libavif/src/utils.c",
+
+    # Not used by Skia
+    # "../externals/libavif/src/codec_aom.c",
+    # "../externals/libavif/src/codec_dav1d.c",
+    # "../externals/libavif/src/codec_rav1e.c", # Only for encoding
+    # "../externals/libavif/src/codec_svt.c",
+    # "../externals/libavif/src/reformat_libsharpyuv.c", # Only for encoding (RGB to YUV conversion)
+    # "../externals/libavif/src/write.c",                # Only for encoding
   ]
 }

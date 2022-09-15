@@ -227,9 +227,8 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
 
     rgbImage.pixels = static_cast<uint8_t*>(dst);
     rgbImage.rowBytes = dstRowBytes;
-    rgbImage.chromaUpsampling = AVIF_CHROMA_UPSAMPLING_FASTEST;
 
-    result = avifImageYUVToRGB(fAvifDecoder->image, &rgbImage);
+    result = avifImageYUVToRGB(fAvifDecoder->image, &rgbImage, AVIF_CHROMA_UPSAMPLING_NEAREST);
     if (result != AVIF_RESULT_OK) {
         return kInvalidInput;
     }
