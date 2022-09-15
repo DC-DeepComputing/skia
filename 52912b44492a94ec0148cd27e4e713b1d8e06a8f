@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f63719a3_79201fd8",
+        "filename": "include/gpu/graphite/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T22:17:49Z",
+      "side": 1,
+      "message": "Is this right ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "52912b44492a94ec0148cd27e4e713b1d8e06a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fafbf7c0_9ec3bbfe",
+        "filename": "src/gpu/graphite/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-15T22:17:49Z",
+      "side": 1,
+      "message": "Same here ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "52912b44492a94ec0148cd27e4e713b1d8e06a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
