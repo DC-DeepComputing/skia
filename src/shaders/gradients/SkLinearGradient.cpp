@@ -7,7 +7,6 @@
 
 #include "src/shaders/gradients/SkLinearGradient.h"
 
-
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
@@ -113,8 +112,12 @@ std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
 void SkLinearGradient::addToKey(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
                                 SkPipelineDataGatherer* gatherer) const {
+    const bool needsLocalMatrixBlock = !this->getLocalMatrix().isIdentity();
+    if (needsLocalMatrixBlock) {
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+    }
+
     GradientShaderBlocks::GradientData data(kLinear_GradientType,
-                                            SkM44(this->getLocalMatrix()),
                                             fStart, fEnd,
                                             0.0f, 0.0f,
                                             0.0f, 0.0f,
@@ -125,6 +128,9 @@ void SkLinearGradient::addToKey(const SkKeyContext& keyContext,
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();
+    if (needsLocalMatrixBlock) {
+        builder->endBlock();
+    }
 }
 #endif
 
