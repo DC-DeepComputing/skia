@@ -1,6 +1,92 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dbef616_d369aa50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "modulo simplifying the if conditions in the addToKey() blocks and closing the new localmatrixblocks, this seems good to me.",
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "485be9be_1ba1a72a",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "nit: alignment.",
+      "range": {
+        "startLine": 692,
+        "startChar": 39,
+        "endLine": 692,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd75675a_659d376c",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "This part of the if shouldn\u0027t be needed. The gatherer\u0027s needsLocalCoords() aggregates whether or not the whole paint needs the local coords to be sent from the RenderStep\u0027s vertex shader to the root of the paint\u0027s code in the fragment shader.\n\nShaders and their snippets either use the coords they are invoked with or they don\u0027t (e.g. solid color, or a color filter wrapped as a shader); this state/behavior is what gets collected by the gatherer, but when we\u0027re in the specific addToKeys() of the shader types that do use local coords we can just assume the gatherer will report that local coords are needed once the key is complete.\n\nIn these cases, the local coords are always used, we\u0027re just optionally adding the matrix transform to the coord before the image or gradient are evaluated.",
+      "range": {
+        "startLine": 1226,
+        "startChar": 12,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4cbe20f_a63b918d",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "We need to add some logic here to call `builder-\u003eendBlock()` a second time to close the LocalMatrixShaderBlock if we\u0027d wrapped the main block in one. I propose adding a local `const bool needsLocalMatrixBlock \u003d !this-\u003egetLocalMatrix().isIdentity()` and then the first if becomes `if (needsLocalMatrixBlock) { BeginBlock... }` and at the end after we end the RuntimeShaderBlock we have a `if (needsLocalMatrixBlock) builder-\u003eendBlock()`.",
+      "range": {
+        "startLine": 1236,
+        "startChar": 8,
+        "endLine": 1236,
+        "endChar": 28
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b51c72d_74ace7fd",
@@ -14,6 +100,30 @@
       "writtenOn": "2022-09-14T21:27:27Z",
       "side": 1,
       "message": "nit: we\u0027re trying to avoid unnecessary whitespace in these now",
+      "range": {
+        "startLine": 166,
+        "startChar": 38,
+        "endLine": 166,
+        "endChar": 42
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84001e69_aa4ad425",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "for context, it turns out that the white space inside the SkSL strings adds up to a non-trivial amount of binary size once we\u0027re compiled",
+      "parentUuid": "2b51c72d_74ace7fd",
       "range": {
         "startLine": 166,
         "startChar": 38,
@@ -42,6 +152,138 @@
         "startChar": 67,
         "endLine": 646,
         "endChar": 96
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7dcc3c5_8dc0f170",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 386,
+        "startChar": 8,
+        "endLine": 386,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "752675c0_4d7d06f4",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 116,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27c8eda0_206d1b1b",
+        "filename": "src/shaders/gradients/SkRadialGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f470fe_c4570011",
+        "filename": "src/shaders/gradients/SkSweepGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 40
+      },
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951ea30c_c570a38a",
+        "filename": "src/shaders/gradients/SkTwoPointConicalGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "nit: extra line",
+      "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c3306a5_fadb0b26",
+        "filename": "src/shaders/gradients/SkTwoPointConicalGradient.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-15T13:53:29Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 522,
+        "startChar": 8,
+        "endLine": 522,
+        "endChar": 40
       },
       "revId": "7c1d320c5ae25293251ca203d7c6a760a8d203d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
