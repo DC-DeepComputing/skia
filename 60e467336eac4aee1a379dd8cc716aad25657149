@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec879565_05eef7bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-15T14:14:08Z",
+      "side": 1,
+      "message": "Brian, WDYT? Slight code size savings and gets rid of one more hand-rolled tree walk.",
+      "revId": "60e467336eac4aee1a379dd8cc716aad25657149",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
