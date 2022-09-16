@@ -251,4 +251,142 @@ sk_sp<skottie::ExternalLayer> ExternalAnimationPrecompInterceptor::onLoadPrecomp
                 : nullptr;
 }
 
+/**
+ * An implementation of ResourceProvider designed for Lottie template asset substitution (images,
+ * audio, etc)
+ */
+class SlottableResourceProvider final : public skresources::ResourceProvider {
+public:
+    SlottableResourceProvider() {}
+
+    sk_sp<SkData> load(const char /*path*/[], const char slot_name[]) const override {
+        return fAssetMap.at(slot_name);
+    }
+
+    sk_sp<skresources::ImageAsset> loadImageAsset(const char /*resource_path*/[],
+                                                  const char slot_name[],
+                                                  const char /*resource_id*/[]) const override {
+        if (auto data = this->load(nullptr, slot_name)) {
+            return skresources::MultiFrameImageAsset::Make(data, true);
+        }
+        return nullptr;
+    }
+
+private:
+    std::unordered_map<std::string, sk_sp<SkData>> fAssetMap;
+
+    friend class SlotManager;
+};
+
+/**
+ * An implementation of PropertyObserver designed for Lottie template property substitution (color,
+ * text, etc)
+ *
+ * PropertyObserver looks for slottable nodes then manipulates their PropertyValue on the fly
+ *
+ * TODO: on the fly value setting only works if value setting happens before parsing is done,
+ *       if not, we have to hold onto node handles and set values later
+ */
+class SlottablePropertyObserver final : public skottie::PropertyObserver {
+public:
+    SlottablePropertyObserver() {}
+
+    void onColorProperty(const char node_name[],
+                         const LazyHandle<skottie::ColorPropertyHandle>& c) override {
+        for (auto& i : fColorMap) {
+            SkDebugf("slotting %s\n", node_name);
+            auto slotID = i.first;
+            auto& slotGroup = i.second;
+            if (node_name == slotID) {
+                // add the Handle to the list of Handles to be updated
+                slotGroup.second.push_back(c());
+            }
+        }
+    }
+
+    void onTextProperty(const char node_name[],
+                        const LazyHandle<skottie::TextPropertyHandle>& t) override {
+        for (auto& i : fTextMap) {
+            auto slotID = i.first;
+            auto& slotGroup = i.second;
+            if (node_name == slotID) {
+                // add the Handle to the list of Handles to be updated
+                slotGroup.second.push_back(t());
+            }
+        }
+    }
+
+    void onAnimationBuilt() override {
+        for (auto& i : fColorMap) {
+            auto& slotGroup = i.second;
+            auto value = slotGroup.first;
+            auto& slots = slotGroup.second;
+            for (auto& slot : slots) {
+                slot->set(value);
+            }
+        }
+
+        for (auto& i : fTextMap) {
+            auto& slotGroup = i.second;
+            auto text = slotGroup.first;
+            auto& slots = slotGroup.second;
+            for (auto& slot : slots) {
+                auto value = slot->get();
+                value.fText = SkString(text);
+                slot->set(value);
+            }
+        }
+    }
+
+    void onOpacityProperty(const char[],
+                           const LazyHandle<skottie::OpacityPropertyHandle>&) override {}
+
+    void onTransformProperty(const char[],
+                             const LazyHandle<skottie::TransformPropertyHandle>&) override {}
+
+    void onEnterNode(const char[], PropertyObserver::NodeType) override {}
+    void onLeavingNode(const char[], PropertyObserver::NodeType) override {}
+private:
+    // pairs of values to sets of Handles to apply the values to
+    template <typename V, typename H>
+    using SlotValueGrouping = std::pair<V, std::vector<std::unique_ptr<H>>>;
+
+    using SlotID = std::string;
+
+    std::unordered_map<SlotID, SlotValueGrouping<skottie::ColorPropertyValue,
+                                                 skottie::ColorPropertyHandle>> fColorMap;
+    std::unordered_map<SlotID, SlotValueGrouping<std::string,
+                                                 skottie::TextPropertyHandle>>  fTextMap;
+
+    friend class SlotManager;
+};
+
+SlotManager::SlotManager() {
+    fResourceProvider = sk_make_sp<SlottableResourceProvider>();
+    fPropertyObserver = sk_make_sp<SlottablePropertyObserver>();
+}
+
+SlotManager::~SlotManager() = default;
+
+// TODO: consider having a generic setSlotMethod that is overloaded by PropertyValue type
+void SlotManager::setColorSlot(std::string slotID, int color) {
+    fPropertyObserver->fColorMap[slotID].first = SkColor(color);
+}
+
+void SlotManager::setTextSlot(std::string slotID, std::string text) {
+    fPropertyObserver->fTextMap[slotID].first = text;
+}
+
+void SlotManager::setImageSlot(std::string slotID, sk_sp<SkData> data) {
+    fResourceProvider->fAssetMap[slotID] = data;
+}
+
+sk_sp<skresources::ResourceProvider> SlotManager::getResourceProvider() {
+    return fResourceProvider;
+}
+
+sk_sp<skottie::PropertyObserver> SlotManager::getPropertyObserver() {
+    return fPropertyObserver;
+}
+
 } // namespace skottie_utils
