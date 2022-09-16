@@ -211,6 +211,16 @@ bool check_img(skiatest::Reporter* reporter,
     static constexpr float kTol[] = {0, 0, 0, 0};
     CheckSolidPixels(expectedColor, pm, kTol, error);
 
+#if 0
+    char name[256];
+    snprintf(name, 256, "/Users/robertphillips/src/bugs/%s-%s.png", testcase,
+             (mipmapped == Mipmapped::kYes) ? "with" : "without");
+    name[255] = '\0';
+
+    SkFILEWStream writer(name);
+    SkPngEncoder::Encode(&writer, pm, SkPngEncoder::Options());
+#endif
+
     return true;
 }
 
@@ -228,7 +238,7 @@ void run_test(skiatest::Reporter* reporter,
               SkSpan<TestCase> testcases) {
 
     for (auto t : testcases) {
-        for (auto mm : { Mipmapped::kNo, Mipmapped::kYes }) {
+        for (auto mm : { /* Mipmapped::kNo, */ Mipmapped::kYes }) {
             sk_sp<SkImage> image = t.fFactory(recorder);
 
             check_img(reporter, context, recorder, image.get(), mm,
@@ -260,7 +270,7 @@ void run_test(skiatest::Reporter* reporter,
 //
 //    3) Graphite-backed w/ mipmaps
 //                    drawn w/o mipmapping    --> drawn (yellow)
-//                    drawn w/ mipmapping     --> drawn (red)    !! not working right now !!
+//                    drawn w/ mipmapping     --> drawn (red)
 //
 //    4) picture-backed image
 //                    drawn w/o mipmapping    --> dropped draw (blue)
@@ -275,9 +285,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Default, reporter, con
         { "0", create_raster_backed_image_no_mipmaps,   { kBackgroundColor, kBackgroundColor } },
         { "1", create_raster_backed_image_with_mipmaps, { kBackgroundColor, kBackgroundColor } },
         { "2", create_gpu_backed_image_no_mipmaps,      { kBaseImageColor,  kBaseImageColor } },
-        // mipmaps don't appear to be working in Graphite quite yet. The mipmap option in test
-        // 3 should be 'kFirstMipLevelColor'
-        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor,  kBaseImageColor } },
+        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor,  kFirstMipLevelColor } },
         { "4", create_picture_backed_image,             { kBackgroundColor, kBackgroundColor } },
         { "5", create_bitmap_generator_backed_image,    { kBackgroundColor, kBackgroundColor }  },
     };
@@ -295,7 +303,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Default, reporter, con
 //
 //    1) raster-backed image w/ mipmaps
 //                    drawn w/o mipmapping    --> drawn (yellow) - auto-converted
-//                    drawn w/ mipmapping     --> drawn (red) - auto-converted    !! not working !!
+//                    drawn w/ mipmapping     --> drawn (red) - auto-converted
 //
 //    2) Graphite-backed w/o mipmaps
 //                    drawn w/o mipmapping    --> drawn (yellow)
@@ -303,7 +311,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Default, reporter, con
 //
 //    3) Graphite-backed w/ mipmaps
 //                    drawn w/o mipmapping    --> drawn (yellow)
-//                    drawn w/ mipmapping     --> drawn (red)    !! not working right now !!
+//                    drawn w/ mipmapping     --> drawn (red)
 //
 //    4) picture-backed image
 //                    drawn w/o mipmapping    --> drawn (yellow) - auto-converted
@@ -316,13 +324,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Default, reporter, con
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Testing, reporter, context) {
     TestCase testcases[] = {
         { "0", create_raster_backed_image_no_mipmaps,   { kBaseImageColor, kBaseImageColor } },
-        // mipmaps don't appear to be working in Graphite quite yet. The mipmap option in test
-        // 1 should be 'kFirstMipLevelColor'
-        { "1", create_raster_backed_image_with_mipmaps, { kBaseImageColor, kBaseImageColor } },
+        { "1", create_raster_backed_image_with_mipmaps, { kBaseImageColor, kFirstMipLevelColor } },
         { "2", create_gpu_backed_image_no_mipmaps,      { kBaseImageColor, kBaseImageColor } },
-        // mipmaps don't appear to be working in Graphite quite yet. The mipmap option in test
-        // 3 should be 'kFirstMipLevelColor'
-        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor, kBaseImageColor } },
+        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor, kFirstMipLevelColor } },
         { "4", create_picture_backed_image,             { kBaseImageColor, kBaseImageColor } },
         { "5", create_bitmap_generator_backed_image,    { kBaseImageColor, kBaseImageColor } },
     };
