@@ -68,6 +68,30 @@
       },
       "revId": "e3583ae73e3c4a9c0ae21931ada40210dc87a342",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae3069f_6355485b",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-16T14:01:37Z",
+      "side": 1,
+      "message": "Nice, looks good. Also helpful for me to see the changes for my learning.",
+      "parentUuid": "33b1cc1e_d0eb32f0",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 37
+      },
+      "revId": "e3583ae73e3c4a9c0ae21931ada40210dc87a342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
