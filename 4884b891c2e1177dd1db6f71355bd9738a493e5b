@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75513984_7da124b9",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T14:26:38Z",
+      "side": 1,
+      "message": "leaving as as",
+      "parentUuid": "04baad1f_4370221f",
+      "range": {
+        "startLine": 203,
+        "startChar": 66,
+        "endLine": 203,
+        "endChar": 72
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e13f820_b070a295",
@@ -126,6 +150,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0525e590_b607e8fc",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T14:26:38Z",
+      "side": 1,
+      "message": "going with michaels constexpr suggestion.",
+      "parentUuid": "aee0ddec_4230a182",
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f1409a7_e38375b1",
         "filename": "src/gpu/graphite/geom/IntersectionTree.h",
         "patchSetId": 10
@@ -137,6 +179,30 @@
       "writtenOn": "2022-09-16T13:25:05Z",
       "side": 1,
       "message": "The ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 12
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe868d1_3f0d69af",
+        "filename": "src/gpu/graphite/geom/IntersectionTree.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T14:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f1409a7_e38375b1",
       "range": {
         "startLine": 55,
         "startChar": 7,
