@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a1685c_0dfcc2c4",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-16T16:50:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f8260f2_24905454",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 10
+      },
+      "revId": "caae33eb16cb23badd83110ec2bd835b10d3c567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dea41e9_16dd844a",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-16T16:15:21Z",
       "side": 1,
       "message": "Can we replace `mix(x, 0, y)` with `x * (1 - y)` for 0 \u003c\u003d y \u003c\u003d 1?",
+      "range": {
+        "startLine": 90,
+        "startChar": 16,
+        "endLine": 90,
+        "endChar": 59
+      },
+      "revId": "caae33eb16cb23badd83110ec2bd835b10d3c567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df97f3c2_9836d1d2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-16T16:50:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1dea41e9_16dd844a",
       "range": {
         "startLine": 90,
         "startChar": 16,
