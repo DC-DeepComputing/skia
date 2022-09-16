@@ -78,8 +78,9 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
   def device_path_join(self, *args):
     return self._f.device_path_join(*args)
 
-  def copy_directory_contents_to_device(self, host_dir, device_dir):
-    return self._f.copy_directory_contents_to_device(host_dir, device_dir)
+  def copy_directory_contents_to_device(self, host_dir, device_dir, **kwargs):
+    return self._f.copy_directory_contents_to_device(host_dir, device_dir,
+                                                     **kwargs)
 
   def copy_directory_contents_to_host(self, device_dir, host_dir):
     return self._f.copy_directory_contents_to_host(device_dir, host_dir)
