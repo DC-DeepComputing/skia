@@ -308,3 +308,104 @@ $pure float cross_length_2d(float2 a, float2 b) {
 $pure half cross_length_2d(half2 a, half2 b) {
     return determinant(half2x2(a, b));
 }
+
+// Color conversion functions used in gradient interpolation, based on
+// https://www.w3.org/TR/css-color-4/#color-conversion-code
+$pure half3 $css_D65_to_D50(half3 XYZ) {
+    // Bradford chromatic adaptation from D65 to D50
+    const half3x3 M = half3x3(
+         1.0479298208405488,    0.022946793341019088,  -0.05019222954313557,
+         0.029627815688159344,  0.990434484573249,     -0.01707382502938514,
+        -0.009243058152591178,  0.015055144896577895,   0.7518742899580008
+    );
+
+    return M * XYZ;
+}
+
+$pure half3 $css_D50_to_D65(half3 XYZ) {
+    // Bradford chromatic adaptation from D50 to D65
+    const half3x3 M = half3x3(
+         0.9554734527042182,   -0.023098536874261423,  0.0632593086610217,
+        -0.028369706963208136,  1.0099954580058226,    0.021041398966943008,
+         0.012314001688319899, -0.020507696433477912,  1.3303659366080753
+    );
+
+    return M * XYZ;
+}
+
+$pure half3 $css_Lab_to_XYZ(half3 Lab) {
+    const half k = 24389 / 27.0;
+    const half e = 216 / 24389.0;
+
+    half3 f;
+    f[1] = (Lab[0] + 16) / 116;
+    f[0] = (Lab[1] / 500) + f[1];
+    f[2] = f[1] - (Lab[2] / 200);
+
+    half3 f_cubed = pow(f, half3(3));
+
+    half3 xyz = half3(
+        f_cubed[0] > e ? f_cubed[0] : (116 * f[0] - 16) / k,
+        Lab[0] > k * e ? f_cubed[1] : Lab[0] / k,
+        f_cubed[2] > e ? f_cubed[2] : (116 * f[2] - 16) / k
+    );
+
+    const half3 D50 = half3(0.3457 / 0.3585, 1.0, (1.0 - 0.3457 - 0.3585) / 0.3585);
+    return xyz * D50;
+}
+
+$pure half3 $css_LCH_to_Lab(half3 LCH) {
+    return half3(
+        LCH[0],
+        LCH[1] * cos(radians(LCH[2])),
+        LCH[1] * sin(radians(LCH[2]))
+    );
+}
+
+$pure half3 $css_OKLab_to_XYZ(half3 OKLab) {
+    const half3x3 LMStoXYZ = half3x3(
+         1.2268798733741557,  -0.5578149965554813,  0.28139105017721583,
+        -0.04057576262431372,  1.1122868293970594, -0.07171106666151701,
+        -0.07637294974672142, -0.4214933239627914,  1.5869240244272418
+    );
+    const half3x3 OKLabToLMS = half3x3(
+        0.99999999845051981432,  0.39633779217376785678,   0.21580375806075880339,
+        1.0000000088817607767,  -0.1055613423236563494,   -0.063854174771705903402,
+        1.0000000546724109177,  -0.089484182094965759684, -1.2914855378640917399
+    );
+    half3 LMSnl = OKLabToLMS * OKLab;
+    return LMStoXYZ * pow(LMSnl, half3(3));
+}
+
+$pure half3 $css_OKLCH_to_OKLab(half3 OKLCH) {
+    return half3(
+        OKLCH[0],
+        OKLCH[1] * cos(radians(OKLCH[2])),
+        OKLCH[1] * sin(radians(OKLCH[2]))
+    );
+}
+
+$pure half3 $css_hsl_to_sRGB(half3 hsl) {
+    hsl.x = mod(hsl.x, 360);
+    if (hsl.x < 0) {
+        hsl.x += 360;
+    }
+
+    hsl.yz /= 100;
+
+    half3 k = mod(half3(0, 8, 4) + hsl.x/30, 12);
+    half a = hsl.y * min(hsl.z, 1 - hsl.z);
+    return hsl.z - a * max(min(min(k - 3, 9 - k), 1), -1);
+}
+
+$pure half3 $css_hwb_to_sRGB(half3 hwb) {
+    hwb.yz /= 100;
+    if (hwb.y + hwb.z >= 1) {
+        half gray = hwb.y / (hwb.y + hwb.z);
+        return half3(gray);
+    }
+    half3 rgb = $css_hsl_to_sRGB(half3(hwb.x, 100, 50));
+    rgb *= (1 - hwb.y - hwb.z);
+    rgb += hwb.y;
+    return rgb;
+}
