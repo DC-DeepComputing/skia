@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db6c6cd_1445eefc",
+        "filename": "infra/bots/recipe_modules/build/examples/full.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-16T14:16:09Z",
+      "side": 1,
+      "message": "If we\u0027re bringing up swift shader, we might need to look into emulating sk_VertexID. Last I remember, Chris was running into issues with swiftshader because their multi-threaded VS executation meant they couldn\u0027t actually produce coherent values. This was handled explicitly in the tessellation path shaders to also work on ES2 devices, but I\u0027m hopeful we could just have a single static buffer of \"vertex ids\" that we can bind separately from the rest of the vertex data and automatically sync up with the sk_VertexID literal.\n\nThis is more an FYI since it\u0027ll be a bit before we get any expected results.",
+      "range": {
+        "startLine": 48,
+        "startChar": 37,
+        "endLine": 48,
+        "endChar": 57
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bc4b324_29cbdc7d",
@@ -79,6 +102,24 @@
       "side": 1,
       "message": "That obviously requires the assert you suggested above, but I\u0027m not really sure why we need to restrict ourselves to that. In practice I think that is probably always true, but technically not required by any spec.\n\nDo you not like the if check every time in this loop? If not I could rewrite this like which maybe makes it a little cleaner?\n    size_t szKey \u003d size;\n    builder[1] \u003d (uint32_t) szKey;\n    for (int i \u003d 1; i \u003c kSizeKeyNum32DataCnt; ++i) {\n        szKey \u003d szKey \u003e\u003e 32;\n        builder[i+1] \u003d (uint32_t) szKey;\n    }",
       "parentUuid": "9e13f820_b070a295",
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee0ddec_4230a182",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-16T14:16:09Z",
+      "side": 1,
+      "message": "alternatively I think we can make it be `if constexpr` in this case.",
+      "parentUuid": "3f0e7dea_04960811",
       "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
