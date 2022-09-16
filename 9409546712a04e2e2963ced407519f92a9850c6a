@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc4339ea_18c79d9a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-16T19:17:30Z",
+      "side": 1,
+      "message": "I agree that ssbo blocks shouldn\u0027t need the higher alignment. Updated based on comments.",
+      "parentUuid": "a7f5aaf3_d383f7f7",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 62
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2553365_57a26206",
@@ -238,6 +262,30 @@
       "side": 1,
       "message": "Yup, my MBP has a Radeon 5300M.",
       "parentUuid": "e7771a35_17793bf9",
+      "range": {
+        "startLine": 230,
+        "startChar": 45,
+        "endLine": 230,
+        "endChar": 46
+      },
+      "revId": "9409546712a04e2e2963ced407519f92a9850c6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53aaab4_d4dbd392",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-16T19:17:30Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me how to detect the tighter packing. In the current feature set table Apple now shows 32 Byte alignment for Mac2 when using Metal 3, but detecting Mac with Family \u003e\u003d 2 doesn\u0027t work (my MacMini has Mac Family 2). I\u0027m leaving it at 256 for now until I can track down a previous Feature Set Table (thanks Apple).",
+      "parentUuid": "d9b6fac8_578187ad",
       "range": {
         "startLine": 230,
         "startChar": 45,
