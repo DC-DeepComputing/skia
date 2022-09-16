@@ -601,6 +601,7 @@ static constexpr SkUniform kImageShaderUniforms[] = {
         { "tilemodeY",   SkSLType::kInt },
         { "imgWidth",    SkSLType::kInt },
         { "imgHeight",   SkSLType::kInt },
+        { "filterMode",  SkSLType::kInt },
 };
 
 static constexpr SkTextureAndSampler kISTexturesAndSamplers[] = {
@@ -611,6 +612,11 @@ static_assert(0 == static_cast<int>(SkTileMode::kClamp),  "ImageShader code depe
 static_assert(1 == static_cast<int>(SkTileMode::kRepeat), "ImageShader code depends on SkTileMode");
 static_assert(2 == static_cast<int>(SkTileMode::kMirror), "ImageShader code depends on SkTileMode");
 static_assert(3 == static_cast<int>(SkTileMode::kDecal),  "ImageShader code depends on SkTileMode");
+
+static_assert(0 == static_cast<int>(SkFilterMode::kNearest),
+              "ImageShader code depends on SkFilterMode");
+static_assert(1 == static_cast<int>(SkFilterMode::kLinear),
+              "ImageShader code depends on SkFilterMode");
 
 static constexpr char kImageShaderName[] = "sk_image_shader";
 

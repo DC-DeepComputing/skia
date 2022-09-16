@@ -36,8 +36,8 @@ float $tile(int tm, float f, float low, float high) {
         float tmp = mod(f - low, length2);
         return (mix(tmp, length2 - tmp, step(length, tmp)) + low);
     } else { // kClampToBorder
-        // For now, just clamp.
-        return clamp(f, low, high);
+        // Clamp to border is handled later.
+        return f;
     }
 }
 
@@ -48,8 +48,34 @@ half4 sk_image_shader(float4 coords,
                       int tmY,
                       int imgWidth,
                       int imgHeight,
+                      int filterMode,
                       sampler2D s) {
+    const int kClamp         = 0;
+    const int kRepeat        = 1;
+    const int kMirrorRepeat  = 2;
+    const int kClampToBorder = 3;
+
+    const int kFilterNearest = 0;
+    const int kFilterLinear  = 1;
+
     float2 pos = (preLocal * coords).xy;
+
+    // Do hard-edge shader transitions to the border color for kClampToBorder and kFilterNearest at
+    // the subset boundaries. Snap the input coordinates to nearest neighbor before comparing to the
+    // subset rect, to avoid GPU interpolation errors. See https://crbug.com/skia/10403.
+    if (tmX == kClampToBorder && filterMode == kFilterNearest) {
+        float snappedX = floor(pos.x) + 0.5;
+        if (snappedX < subset.x || snappedX > subset.z) {
+            return half4(0);
+        }
+    }
+    if (tmY == kClampToBorder && filterMode == kFilterNearest) {
+        float snappedY = floor(pos.y) + 0.5;
+        if (snappedY < subset.y || snappedY > subset.w) {
+            return half4(0);
+        }
+    }
+
     pos.x = $tile(tmX, pos.x, subset.x, subset.z);
     pos.y = $tile(tmY, pos.y, subset.y, subset.w);
 
@@ -57,7 +83,22 @@ half4 sk_image_shader(float4 coords,
     // texel boundaries.
     float4 insetClamp = float4(floor(subset.xy) + 0.5, ceil(subset.zw) - 0.5);
     float2 clampedPos = clamp(pos, insetClamp.xy, insetClamp.zw);
-    return sample(s, clampedPos / float2(imgWidth, imgHeight));
+    float4 color = sample(s, clampedPos / float2(imgWidth, imgHeight));
+
+    // Remember the amount the coord moved for clamping. This will be used to implement shader-based
+    // filtering for kRepeat and kClampToBorder.
+    float2 error = pos - clampedPos;
+
+    // Do soft edge shader filtering against the border color for kClampToBorder and kFilterLinear
+    // using the error values calculated above.
+    if (tmX == kClampToBorder && filterMode == kFilterLinear) {
+        color = mix(color, float4(0), min(abs(error.x), 1));
+    }
+    if (tmY == kClampToBorder && filterMode == kFilterLinear) {
+        color = mix(color, float4(0), min(abs(error.y), 1));
+    }
+
+    return half4(color);
 }
 
 float2 $tile_grad(int tileMode, float2 t) {
