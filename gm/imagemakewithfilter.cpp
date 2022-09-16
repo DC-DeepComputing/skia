@@ -284,8 +284,8 @@ protected:
 
         // These need to be GPU-backed when on the GPU to ensure that the image filters use the GPU
         // code paths (otherwise they may choose to do CPU filtering then upload)
-        sk_sp<SkImage> mainImage = ToolUtils::MakeTextureImage(canvas, fMainImage);
-        sk_sp<SkImage> auxImage = ToolUtils::MakeTextureImage(canvas, fAuxImage);
+        sk_sp<SkImage> mainImage = ToolUtils::MakeTextureImage1(canvas, fMainImage);
+        sk_sp<SkImage> auxImage = ToolUtils::MakeTextureImage1(canvas, fAuxImage);
         if (!mainImage || !auxImage) {
             return DrawResult::kFail;
         }

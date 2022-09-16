@@ -41,7 +41,7 @@ static sk_sp<SkImage> create_image(SkCanvas* destCanvas) {
     stroke.setColor(0xff008800);
     srcCanvas->drawRect(kSrcImageClip.makeInset(kStrokeWidth / 2, kStrokeWidth / 2), stroke);
 
-    return ToolUtils::MakeTextureImage(destCanvas, srcSurface->makeImageSnapshot());
+    return ToolUtils::MakeTextureImage1(destCanvas, srcSurface->makeImageSnapshot());
 }
 
 /*

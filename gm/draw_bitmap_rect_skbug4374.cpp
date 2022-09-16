@@ -15,7 +15,7 @@
 
 // https://bug.skia.org/4374
 DEF_SIMPLE_GM(draw_bitmap_rect_skbug4734, canvas, 64, 64) {
-    auto img = ToolUtils::MakeTextureImage(canvas, GetResourceAsImage("images/randPixels.png"));
+    auto img = ToolUtils::MakeTextureImage1(canvas, GetResourceAsImage("images/randPixels.png"));
     if (img) {
         SkRect rect = SkRect::Make(img->bounds());
         rect.inset(0.5, 1.5);

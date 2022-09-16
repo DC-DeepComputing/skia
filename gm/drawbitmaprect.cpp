@@ -123,14 +123,14 @@ static void bitmapsubsetproc(SkCanvas* canvas, sk_sp<SkImage> image,
 
     SkBitmap subset;
     if (bm.extractSubset(&subset, srcR)) {
-        sk_sp<SkImage> subsetImg = ToolUtils::MakeTextureImage(canvas, subset.asImage());
+        sk_sp<SkImage> subsetImg = ToolUtils::MakeTextureImage1(canvas, subset.asImage());
         canvas->drawImageRect(subsetImg, dstR, sampling, paint);
     }
 }
 
 static void imageproc(SkCanvas* canvas, sk_sp<SkImage> image, const SkBitmap&, const SkIRect& srcR,
                       const SkRect& dstR, const SkSamplingOptions& sampling, const SkPaint* paint) {
-    sk_sp<SkImage> tmp = ToolUtils::MakeTextureImage(canvas, std::move(image));
+    sk_sp<SkImage> tmp = ToolUtils::MakeTextureImage1(canvas, std::move(image));
     canvas->drawImageRect(tmp, SkRect::Make(srcR), dstR, sampling, paint,
                           SkCanvas::kStrict_SrcRectConstraint);
 }
@@ -177,7 +177,7 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         if (!fImage || !fImage->isValid(canvas->recordingContext())) {
-            fImage = ToolUtils::MakeTextureImage(canvas,
+            fImage = ToolUtils::MakeTextureImage1(canvas,
                                                  makebm(canvas, &fLargeBitmap, gBmpSize, gBmpSize));
             if (!fImage) {
                 *errorMsg = "Image creation failed";
@@ -246,7 +246,7 @@ protected:
             SkIRect srcRect;
             SkPaint maskPaint;
             SkBitmap bm = make_chessbm(5, 5);
-            sk_sp<SkImage> img = ToolUtils::MakeTextureImage(canvas, bm.asImage());
+            sk_sp<SkImage> img = ToolUtils::MakeTextureImage1(canvas, bm.asImage());
 
             srcRect.setXYWH(1, 1, 3, 3);
             maskPaint.setMaskFilter(SkMaskFilter::MakeBlur(

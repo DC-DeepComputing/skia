@@ -41,7 +41,7 @@ static sk_sp<SkImage> make_image(SkCanvas* rootCanvas) {
     surface->getCanvas()->drawLine(kSize * .50f, kSize * .25f, kSize * .50f, kSize * .75f, p);
 
     sk_sp<SkImage> img = surface->makeImageSnapshot();
-    return ToolUtils::MakeTextureImage(rootCanvas, std::move(img));
+    return ToolUtils::MakeTextureImage1(rootCanvas, std::move(img));
 }
 
 DEF_SIMPLE_GM(localmatrixshader_nested, canvas, 450, 1200) {

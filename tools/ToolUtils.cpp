@@ -531,7 +531,7 @@ void sniff_paths(const char filepath[], std::function<PathSniffCallback> callbac
 }
 
 #if SK_SUPPORT_GPU
-sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
+sk_sp<SkImage> MakeTextureImage1(SkCanvas* canvas, sk_sp<SkImage> orig) {
     if (!orig) {
         return nullptr;
     }
@@ -551,7 +551,7 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
     }
 #if defined(SK_GRAPHITE_ENABLED)
     else if (canvas->recorder()) {
-        return orig->makeTextureImage(canvas->recorder());
+        return orig->makeTextureImage(canvas->recorder(), true);
     }
 #endif
 
@@ -676,7 +676,7 @@ public:
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, requiredProps);
+        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, true, requiredProps);
         if (!newImage) {
             return nullptr;
         }

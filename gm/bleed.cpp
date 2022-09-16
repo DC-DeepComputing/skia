@@ -101,7 +101,7 @@ std::tuple<sk_sp<SkImage>, SkRect> make_ringed_image(SkCanvas* canvas, int width
         scanline[x] = kOuterRingColor;
     }
     bitmap.setImmutable();
-    return { ToolUtils::MakeTextureImage(canvas, bitmap.asImage()),
+    return { ToolUtils::MakeTextureImage1(canvas, bitmap.asImage()),
              SkRect::Make({2, 2, width - 2, height - 2})};
 }
 

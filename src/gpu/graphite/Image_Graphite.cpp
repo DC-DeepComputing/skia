@@ -78,7 +78,7 @@ std::unique_ptr<GrFragmentProcessor> Image::onAsFragmentProcessor(
 }
 #endif
 
-sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, RequiredImageProperties requiredProps) const {
+sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, bool foo, RequiredImageProperties requiredProps) const {
     SkASSERT(requiredProps.fMipmapped == Mipmapped::kYes && !this->hasMipmaps());
     // TODO: copy the base layer into a new image that has mip levels. For now we just return
     // the un-mipmapped version and allow the sampling to be downgraded to linear
@@ -89,6 +89,7 @@ sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, RequiredImageProperties requ
 } // namespace skgpu::graphite
 
 sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
+                                         bool foo,
                                          RequiredImageProperties requiredProps) const {
     using namespace skgpu::graphite;
 
@@ -105,5 +106,5 @@ sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
-    return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+    return as_IB(this)->onMakeTextureImage(recorder, foo, requiredProps);
 }

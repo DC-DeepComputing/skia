@@ -94,7 +94,7 @@ protected:
             SkIRect subRect = SkIRect::MakeLTRB(0, startItem * itemHeight,
                                                bmp.width(), bmp.height());
             SkRect dstRect = SkRect::MakeWH(SkIntToScalar(bmp.width()), 10.f * itemHeight);
-            canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, bmp.asImage()),
+            canvas->drawImageRect(ToolUtils::MakeTextureImage1(canvas, bmp.asImage()),
                                   SkRect::Make(subRect), dstRect,
                                   SkSamplingOptions(SkFilterMode::kLinear), nullptr,
                                   SkCanvas::kStrict_SrcRectConstraint);

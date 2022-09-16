@@ -867,7 +867,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Gpu::onAsView(
 }
 
 #ifdef SK_GRAPHITE_ENABLED
-sk_sp<SkImage> SkImage_Gpu::onMakeTextureImage(skgpu::graphite::Recorder*,
+sk_sp<SkImage> SkImage_Gpu::onMakeTextureImage(skgpu::graphite::Recorder*, bool foo,
                                                SkImage::RequiredImageProperties) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;

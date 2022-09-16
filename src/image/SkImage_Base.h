@@ -183,6 +183,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     virtual sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
+                                              bool foo,
                                               RequiredImageProperties) const = 0;
 #endif
 

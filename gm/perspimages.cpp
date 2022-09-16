@@ -84,7 +84,7 @@ protected:
                         SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLinear),
                         SkSamplingOptions(SkCubicResampler::Mitchell())}) {
                         for (const auto& origImage : fImages) {
-                            sk_sp<SkImage> img = ToolUtils::MakeTextureImage(canvas, origImage);
+                            sk_sp<SkImage> img = ToolUtils::MakeTextureImage1(canvas, origImage);
                             if (img) {
                                 canvas->save();
                                 canvas->concat(m);

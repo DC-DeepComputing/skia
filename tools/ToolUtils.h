@@ -307,7 +307,7 @@ using PathSniffCallback = void(const SkMatrix&, const SkPath&, const SkPaint&);
 void sniff_paths(const char filepath[], std::function<PathSniffCallback>);
 
 #if SK_SUPPORT_GPU
-sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig);
+sk_sp<SkImage> MakeTextureImage1(SkCanvas* canvas, sk_sp<SkImage> orig);
 #endif
 
 // Initialised with a font, this class can be called to setup GM UI with sliders for font

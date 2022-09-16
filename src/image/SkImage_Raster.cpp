@@ -166,7 +166,7 @@ private:
                                                                const SkRect*) const override;
 #endif
 #ifdef SK_GRAPHITE_ENABLED
-    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
+    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*, bool foo,
                                       RequiredImageProperties) const override;
 #endif
 
@@ -504,7 +504,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
-sk_sp<SkImage> SkImage_Raster::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
+sk_sp<SkImage> SkImage_Raster::onMakeTextureImage(skgpu::graphite::Recorder* recorder, bool foo,
                                                   RequiredImageProperties requiredProps) const {
     return skgpu::graphite::MakeFromBitmap(recorder,
                                            this->imageInfo().colorInfo(),

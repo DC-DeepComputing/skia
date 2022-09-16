@@ -49,7 +49,7 @@ static void makebm(SkBitmap* bm, SkColorType ct, int w, int h) {
 static void setup(SkCanvas* canvas, SkPaint* paint, const SkBitmap& bm, SkFilterMode fm,
                   SkTileMode tmx, SkTileMode tmy) {
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bm);
-    img = ToolUtils::MakeTextureImage(canvas, std::move(img));
+    img = ToolUtils::MakeTextureImage1(canvas, std::move(img));
     paint->setShader(img->makeShader(tmx, tmy, SkSamplingOptions(fm)));
 }
 

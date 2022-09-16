@@ -591,7 +591,7 @@ void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const
  *  1. Ask the generator to natively create one
  *  2. Ask the generator to return RGB(A) data, which the GPU can convert
  */
-sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
+sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recorder, bool foo,
                                                 RequiredImageProperties requiredProps) const {
     using namespace skgpu::graphite;
 

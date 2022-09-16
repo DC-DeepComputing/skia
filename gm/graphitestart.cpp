@@ -30,7 +30,7 @@ sk_sp<SkShader> create_gradient_shader(SkRect r,
                                         SkTileMode::kClamp);
 }
 
-sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTileMode tmY) {
+sk_sp<SkShader> create_image_shader(SkTileMode tmX, SkTileMode tmY) {
     SkBitmap bitmap;
 
     {
@@ -59,24 +59,21 @@ sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTile
     }
 
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
-    img = ToolUtils::MakeTextureImage(destCanvas, std::move(img));
-
     return img->makeShader(tmX, tmY, SkSamplingOptions());
 }
 
-sk_sp<SkShader> create_blend_shader(SkCanvas* destCanvas, SkBlendMode bm) {
+sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
     constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
 
     sk_sp<SkShader> dst = SkShaders::Color(kTransYellow, nullptr);
     return SkShaders::Blend(bm,
                             std::move(dst),
-                            create_image_shader(destCanvas,
-                                                SkTileMode::kRepeat, SkTileMode::kRepeat));
+                            create_image_shader(SkTileMode::kRepeat, SkTileMode::kRepeat));
 }
 
 void draw_image_shader_tile(SkCanvas* canvas, SkRect clipRect) {
     SkPaint p;
-    p.setShader(create_image_shader(canvas, SkTileMode::kClamp, SkTileMode::kRepeat));
+    p.setShader(create_image_shader(SkTileMode::kClamp, SkTileMode::kRepeat));
 
     SkPath path;
     path.moveTo(1,   1);
@@ -286,7 +283,7 @@ protected:
         // Middle-middle tile
         {
             SkPaint p;
-            p.setShader(create_blend_shader(canvas, SkBlendMode::kModulate));
+            p.setShader(create_blend_shader(SkBlendMode::kModulate));
 
             SkRect r = SkRect::MakeXYWH(kTileWidth, kTileHeight, kTileWidth, kTileHeight);
             canvas->drawRect(r.makeInset(1.0f, 1.0f), p);

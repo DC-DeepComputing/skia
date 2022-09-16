@@ -91,7 +91,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         if (nullptr == fImage) {
-            fImage = ToolUtils::MakeTextureImage(canvas, makebm(gSurfaceSize, gSurfaceSize));
+            fImage = ToolUtils::MakeTextureImage1(canvas, makebm(gSurfaceSize, gSurfaceSize));
         }
 
         const SkRect dstRect = { 0, 0, SkIntToScalar(64), SkIntToScalar(64)};

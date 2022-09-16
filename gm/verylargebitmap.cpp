@@ -55,7 +55,7 @@ typedef sk_sp<SkImage> (*ImageMakerProc)(int width, int height, SkColor colors[2
 
 static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2],
                        ImageMakerProc proc) {
-    sk_sp<SkImage> image = ToolUtils::MakeTextureImage(canvas, proc(width, height, colors));
+    sk_sp<SkImage> image = ToolUtils::MakeTextureImage1(canvas, proc(width, height, colors));
     if (!image) {
         return;
     }

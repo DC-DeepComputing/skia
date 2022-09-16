@@ -36,7 +36,7 @@ using namespace skgpu::graphite;
 
 namespace {
 
-sk_sp<SkImage> make_image(Recorder* recorder) {
+sk_sp<SkImage> make_image() {
     SkImageInfo info = SkImageInfo::Make(32, 32, SkColorType::kRGBA_8888_SkColorType,
                                          kPremul_SkAlphaType);
 
@@ -44,9 +44,7 @@ sk_sp<SkImage> make_image(Recorder* recorder) {
     bitmap.allocPixels(info);
     bitmap.eraseColor(SK_ColorBLACK);
 
-    sk_sp<SkImage> img = bitmap.asImage();
-
-    return img->makeTextureImage(recorder);
+    return bitmap.asImage();
 }
 
 std::tuple<SkPaint, int> create_paint(Recorder* recorder,
@@ -85,7 +83,7 @@ std::tuple<SkPaint, int> create_paint(Recorder* recorder,
         }
         case ShaderType::kImage: {
             ++numTextures;
-            s = SkImageShader::Make(make_image(recorder), tm, tm,
+            s = SkImageShader::Make(make_image(), tm, tm,
                                     SkSamplingOptions(), nullptr);
             break;
         }

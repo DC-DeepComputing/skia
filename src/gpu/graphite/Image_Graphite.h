@@ -80,7 +80,7 @@ private:
     }
 #endif
 
-    sk_sp<SkImage> onMakeTextureImage(Recorder*, RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeTextureImage(Recorder*, bool foo, RequiredImageProperties) const override;
 
     TextureProxyView fTextureProxyView;
 };

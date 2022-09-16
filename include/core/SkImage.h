@@ -1173,6 +1173,7 @@ public:
         @return                         created SkImage, or nullptr
     */
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
+                                    bool foo,
                                     RequiredImageProperties = {}) const;
 #endif
 

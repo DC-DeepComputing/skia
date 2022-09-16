@@ -75,9 +75,9 @@ static void test_surface(SkCanvas* canvas, SkSurface* surf, bool usePaint) {
         SkASSERT(imgR == imgR2);
     }
 
-    imgR = ToolUtils::MakeTextureImage(canvas, std::move(imgR));
+    imgR = ToolUtils::MakeTextureImage1(canvas, std::move(imgR));
     draw_contents(surf, SK_ColorGREEN);
-    sk_sp<SkImage> imgG = ToolUtils::MakeTextureImage(canvas, surf->makeImageSnapshot());
+    sk_sp<SkImage> imgG = ToolUtils::MakeTextureImage1(canvas, surf->makeImageSnapshot());
 
     // since we've drawn after we snapped imgR, imgG will be a different obj unless the
     // gpu context has been abandoned (in which case they will both be null)

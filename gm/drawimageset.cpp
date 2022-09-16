@@ -339,7 +339,7 @@ private:
                 SkPaint entryPaint = paint;
                 entryPaint.setAlphaf(fSet[i].fAlpha * paint.getAlphaf());
                 sk_sp<SkImage> orig = sk_ref_sp(const_cast<SkImage*>(fSet[i].fImage.get()));
-                canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, std::move(orig)),
+                canvas->drawImageRect(ToolUtils::MakeTextureImage1(canvas, std::move(orig)),
                                       fSet[i].fSrcRect, fSet[i].fDstRect,
                                       SkSamplingOptions(), &entryPaint,
                                       SkCanvas::kFast_SrcRectConstraint);

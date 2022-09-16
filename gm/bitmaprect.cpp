@@ -34,7 +34,7 @@ static sk_sp<SkImage> make_image(SkCanvas* destCanvas) {
     paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp));
     tmpCanvas->drawCircle(32, 32, 32, paint);
 
-    return ToolUtils::MakeTextureImage(destCanvas, surf->makeImageSnapshot());
+    return ToolUtils::MakeTextureImage1(destCanvas, surf->makeImageSnapshot());
 }
 
 class DrawBitmapRect2 : public skiagm::GM {
@@ -153,7 +153,7 @@ protected:
         SkRect srcR = { 0.5f, 0.5f, 2.5f, 2.5f };
         SkRect dstR = { 100, 100, 300, 200 };
 
-        canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, bitmap.asImage()),
+        canvas->drawImageRect(ToolUtils::MakeTextureImage1(canvas, bitmap.asImage()),
                               srcR, dstR, SkSamplingOptions(),
                               nullptr, SkCanvas::kStrict_SrcRectConstraint);
     }
@@ -182,7 +182,7 @@ static sk_sp<SkImage> make_big_bitmap(SkCanvas* canvas) {
         }
     }
     bitmap.setImmutable();
-    return ToolUtils::MakeTextureImage(canvas, bitmap.asImage());
+    return ToolUtils::MakeTextureImage1(canvas, bitmap.asImage());
 }
 
 // This GM attempts to reveal any issues we may have when the GPU has to

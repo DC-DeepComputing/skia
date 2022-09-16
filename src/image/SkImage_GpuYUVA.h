@@ -62,6 +62,7 @@ private:
 
 #ifdef SK_GRAPHITE_ENABLED
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
+                                      bool foo,
                                       RequiredImageProperties) const override;
 #endif
 

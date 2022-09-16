@@ -182,13 +182,13 @@ protected:
         if (!fInitialized) {
             draw_color_bm(&fColorBitmap, squareLength);
             sk_sp<SkImage> img = SkImage::MakeFromBitmap(fColorBitmap);
-            img = ToolUtils::MakeTextureImage(canvas, std::move(img));
+            img = ToolUtils::MakeTextureImage1(canvas, std::move(img));
             fColorBitmapShader = img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
                                                  SkSamplingOptions(), SkMatrix::I());
 
             draw_alpha8_bm(&fAlpha8Bitmap, squareLength);
             img = SkImage::MakeFromBitmap(fAlpha8Bitmap);
-            img = ToolUtils::MakeTextureImage(canvas, std::move(img));
+            img = ToolUtils::MakeTextureImage1(canvas, std::move(img));
             fAlpha8BitmapShader = fAlpha8Bitmap.makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
                                                            SkSamplingOptions(), SkMatrix::I());
 

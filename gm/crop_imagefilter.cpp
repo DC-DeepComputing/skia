@@ -181,7 +181,7 @@ void draw_example(
     {
         SkRect clippedContentBounds;
         if (clippedContentBounds.intersect(contentBounds, kExampleBounds)) {
-            auto contentImage = ToolUtils::MakeTextureImage(
+            auto contentImage = ToolUtils::MakeTextureImage1(
                     canvas, image->makeSubset(clippedContentBounds.roundOut()));
             if (contentImage) {
                 SkPaint tiledPaint;
@@ -209,7 +209,7 @@ void draw_example(
         canvas->clipRect(outputBounds);
         canvas->saveLayer(hintContent ? &contentBounds : nullptr, &layerPaint);
 
-        auto tmp = ToolUtils::MakeTextureImage(canvas, image);
+        auto tmp = ToolUtils::MakeTextureImage1(canvas, image);
         canvas->drawImageRect(tmp, contentBounds, contentBounds,
                               SkSamplingOptions(SkFilterMode::kLinear), nullptr,
                               SkCanvas::kFast_SrcRectConstraint);
