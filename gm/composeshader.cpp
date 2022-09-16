@@ -76,7 +76,7 @@ protected:
     sk_sp<SkShader> fShader;
 
 private:
-    typedef GM INHERITED ;
+    using INHERITED = GM;
 };
 DEF_GM( return new ComposeShaderGM; )
 
@@ -123,7 +123,7 @@ protected:
     }
 
 private:
-    typedef GM INHERITED ;
+    using INHERITED = GM;
 };
 DEF_GM( return new ComposeShaderAlphaGM; )
 
