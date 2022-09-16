@@ -22,6 +22,30 @@
       },
       "revId": "761e2b7a925b83308d821b15bfcd4f76fd281f4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00fa7eb7_5d4ed2bf",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-16T14:26:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cece531f_5676d8c0",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 1
+      },
+      "revId": "761e2b7a925b83308d821b15bfcd4f76fd281f4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
