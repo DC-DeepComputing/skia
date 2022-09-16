@@ -23603,9 +23603,9 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
-          "name": "skia/bots/lottie-samples",
-          "path": "lottie-samples",
-          "version": "version:2"
+          "name": "skia/internal/lotties_with_assets",
+          "path": "lotties_with_assets",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -27442,11 +27442,6 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
-          "name": "skia/bots/lottie-samples",
-          "path": "lottie-samples",
-          "version": "version:2"
-        },
-        {
           "name": "skia/bots/skimage",
           "path": "skimage",
           "version": "version:47"
@@ -27460,6 +27455,11 @@
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
+        },
+        {
+          "name": "skia/internal/lotties_with_assets",
+          "path": "lotties_with_assets",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -28363,11 +28363,6 @@
           "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
         },
         {
-          "name": "skia/bots/lottie-samples",
-          "path": "lottie-samples",
-          "version": "version:2"
-        },
-        {
           "name": "skia/bots/mesa_intel_driver_linux",
           "path": "mesa_intel_driver_linux",
           "version": "version:15"
@@ -28386,6 +28381,11 @@
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
+        },
+        {
+          "name": "skia/internal/lotties_with_assets",
+          "path": "lotties_with_assets",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -29072,7 +29072,7 @@
         {
           "name": "skia/internal/lotties_with_assets",
           "path": "lotties_with_assets",
-          "version": "version:1"
+          "version": "version:3"
         }
       ],
       "command": [
@@ -31687,7 +31687,7 @@
         {
           "name": "skia/internal/lotties_with_assets",
           "path": "lotties_with_assets",
-          "version": "version:1"
+          "version": "version:3"
         }
       ],
       "command": [
@@ -31758,7 +31758,7 @@
         {
           "name": "skia/internal/lotties_with_assets",
           "path": "lotties_with_assets",
-          "version": "version:1"
+          "version": "version:3"
         }
       ],
       "command": [
