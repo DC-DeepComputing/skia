@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "571a3c2c_95cd3980",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-16T18:33:25Z",
+      "side": 1,
+      "message": "Is Graphite\u0027s ContextTypeCnt necessarily going to be the same as Ganesh\u0027s GrContextFactory::kContextTypeCnt? Why not redefine our own in `tools/graphite/ContextFactory.h`?",
+      "range": {
+        "startLine": 94,
+        "startChar": 36,
+        "endLine": 94,
+        "endChar": 52
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feeda954_f9483266",
+        "filename": "tools/graphite/vk/VulkanTestContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-16T18:33:25Z",
+      "side": 1,
+      "message": "Will `grVk` always be in this macro with that Ganesh-style naming convention?",
+      "range": {
+        "startLine": 55,
+        "startChar": 12,
+        "endLine": 55,
+        "endChar": 16
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b3df15_77acc623",
+        "filename": "tools/graphite/vk/VulkanTestContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-16T18:33:25Z",
+      "side": 1,
+      "message": "Rename to get rid of \"gr\" if possible. I also don\u0027t quite see where this is defined?",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 23
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
