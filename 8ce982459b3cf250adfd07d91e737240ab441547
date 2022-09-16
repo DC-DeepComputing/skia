@@ -94,6 +94,30 @@
       },
       "revId": "8ce982459b3cf250adfd07d91e737240ab441547",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10ff469_db56e805",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-16T15:33:06Z",
+      "side": 1,
+      "message": "As long as we can make them private (like John said above), I would say share as much as possible. They\u0027re all mapping to the same CPU-side enum after all.",
+      "parentUuid": "661b3e21_ee10af80",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "8ce982459b3cf250adfd07d91e737240ab441547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
