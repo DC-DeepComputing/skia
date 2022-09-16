@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc4b324_29cbdc7d",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-16T13:25:05Z",
+      "side": 1,
+      "message": "wdyt about just asserting that sizeof(size_t) is a multiple of 4 ?",
+      "range": {
+        "startLine": 203,
+        "startChar": 66,
+        "endLine": 203,
+        "endChar": 72
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e13f820_b070a295",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-16T13:25:05Z",
+      "side": 1,
+      "message": "wdyt about just \"uint32_t* p \u003d \u0026size\" and then \"builder[i+1] \u003d p[i];\" ?",
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f1409a7_e38375b1",
+        "filename": "src/gpu/graphite/geom/IntersectionTree.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-16T13:25:05Z",
+      "side": 1,
+      "message": "The ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 12
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
