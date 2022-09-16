@@ -22,6 +22,30 @@
       },
       "revId": "8ce982459b3cf250adfd07d91e737240ab441547",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d6be36a_6ac4a38e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-16T15:23:55Z",
+      "side": 1,
+      "message": "Sharing is possible (make them global) but this also makes them accessible to user code outside of the module (e.g. a Runtime Effect could see them). Keeping them local is probably the better choice.",
+      "parentUuid": "3e79e786_18b21f50",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "8ce982459b3cf250adfd07d91e737240ab441547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
