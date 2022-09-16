@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66631139_cb58ac3e",
+        "filename": "infra/bots/recipes/sync_and_compile.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-16T18:51:41Z",
+      "side": 1,
+      "message": "multiple parents",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 46,
+        "endChar": 23
+      },
+      "revId": "684cba787bead412f4780f1787093fce02d661ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
