@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96945a7e_7560274d",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T18:47:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "571a3c2c_95cd3980",
+      "range": {
+        "startLine": 94,
+        "startChar": 36,
+        "endLine": 94,
+        "endChar": 52
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feeda954_f9483266",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "655942d1_262e3aa8",
+        "filename": "tools/graphite/vk/VulkanTestContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T18:47:44Z",
+      "side": 1,
+      "message": "Updated to use local instead of gr. I just added gr to distinguish it from the vulkan api calls of the same name (i.e. VkFoo). But changed the gr to local so now the function calls are all localVkFoo.",
+      "parentUuid": "feeda954_f9483266",
+      "range": {
+        "startLine": 55,
+        "startChar": 12,
+        "endLine": 55,
+        "endChar": 16
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02b3df15_77acc623",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-09-16T18:33:25Z",
       "side": 1,
       "message": "Rename to get rid of \"gr\" if possible. I also don\u0027t quite see where this is defined?",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 23
+      },
+      "revId": "c1c7b56ebef98bf6ac17f745c71698a236ac22f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f323310f_04d5cede",
+        "filename": "tools/graphite/vk/VulkanTestContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T18:47:44Z",
+      "side": 1,
+      "message": "It is defined with the macro at line 52 and 65.",
+      "parentUuid": "02b3df15_77acc623",
       "range": {
         "startLine": 77,
         "startChar": 4,
