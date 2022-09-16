@@ -114,7 +114,9 @@ class AndroidFlavor(default.DefaultFlavor):
                  fail_build_on_failure=False)
 
     with self.m.context(cwd=self.m.path['start_dir'].join('skia')):
-      with self.m.env({'ADB_VENDOR_KEYS': self.ADB_PUB_KEY}):
+      with self.m.env({'ADB_VENDOR_KEYS': self.ADB_PUB_KEY,
+        # https://developer.android.com/studio/command-line/variables#adb_trace
+                       'ADB_TRACE': 'all'}):
         return self.m.run.with_retry(self.m.step, title, attempts,
                                      cmd=[self.ADB_BINARY]+list(cmd),
                                      between_attempts_fn=wait_for_device,
@@ -559,12 +561,18 @@ time.sleep(60)
   def copy_file_to_device(self, host, device):
     self._adb('push %s %s' % (host, device), 'push', host, device)
 
-  def copy_directory_contents_to_device(self, host, device):
+  def copy_directory_contents_to_device(self, host, device, use_sync=True):
     contents = self.m.file.glob_paths('ls %s/*' % host,
                                       host, '*',
                                       test_data=['foo.png', 'bar.jpg'])
-    args = ['--sync'] + contents + [device]
-    self._adb('push --sync %s/* %s' % (host, device), 'push', *args)
+    args = []
+    s = ''
+    if use_sync:
+      args.append('--sync')
+      s = '--sync'
+    args += contents
+    args.append(device)
+    self._adb('push %s %s/* %s' % (s, host, device), 'push', *args)
 
   def copy_directory_contents_to_host(self, device, host):
     # TODO(borenet): When all of our devices are on Android 6.0 and up, we can
