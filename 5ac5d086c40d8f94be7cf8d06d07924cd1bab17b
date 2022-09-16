@@ -16,6 +16,23 @@
       "message": "Hey! Could we run tests against this changes?",
       "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dd64734_03d460f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19014
+      },
+      "writtenOn": "2022-09-16T13:58:47Z",
+      "side": 1,
+      "message": "Hey! Can you take a quick look on this changes and run test against of it?",
+      "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
