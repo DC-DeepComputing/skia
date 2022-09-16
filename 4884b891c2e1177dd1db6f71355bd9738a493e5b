@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04baad1f_4370221f",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T13:34:50Z",
+      "side": 1,
+      "message": "see comment below",
+      "parentUuid": "5bc4b324_29cbdc7d",
+      "range": {
+        "startLine": 203,
+        "startChar": 66,
+        "endLine": 203,
+        "endChar": 72
+      },
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e13f820_b070a295",
         "filename": "src/gpu/graphite/ResourceProvider.cpp",
         "patchSetId": 10
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-16T13:25:05Z",
       "side": 1,
       "message": "wdyt about just \"uint32_t* p \u003d \u0026size\" and then \"builder[i+1] \u003d p[i];\" ?",
+      "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0e7dea_04960811",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-16T13:34:50Z",
+      "side": 1,
+      "message": "That obviously requires the assert you suggested above, but I\u0027m not really sure why we need to restrict ourselves to that. In practice I think that is probably always true, but technically not required by any spec.\n\nDo you not like the if check every time in this loop? If not I could rewrite this like which maybe makes it a little cleaner?\n    size_t szKey \u003d size;\n    builder[1] \u003d (uint32_t) szKey;\n    for (int i \u003d 1; i \u003c kSizeKeyNum32DataCnt; ++i) {\n        szKey \u003d szKey \u003e\u003e 32;\n        builder[i+1] \u003d (uint32_t) szKey;\n    }",
+      "parentUuid": "9e13f820_b070a295",
       "revId": "4884b891c2e1177dd1db6f71355bd9738a493e5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
