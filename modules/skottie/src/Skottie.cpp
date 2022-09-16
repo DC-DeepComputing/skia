@@ -150,6 +150,9 @@ AnimationBuilder::AnimationInfo AnimationBuilder::parse(const skjson::ObjectValu
     auto animators = ascope.release();
     fStats->fAnimatorCount = animators.size();
 
+    if (fPropertyObserver) {
+        fPropertyObserver->onAnimationBuilt();
+    }
     return { sksg::Scene::Make(std::move(root)), std::move(animators) };
 }
 

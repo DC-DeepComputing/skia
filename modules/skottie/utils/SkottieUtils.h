@@ -11,6 +11,7 @@
 #include "modules/skottie/include/ExternalLayer.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
+#include "modules/sksg/include/SkSGNode.h"
 
 #include <memory>
 #include <string>
@@ -126,6 +127,28 @@ private:
     const SkString                             fPrefix;
 };
 
+class SlottableResourceProvider;
+class SlottablePropertyObserver;
+/**
+ * Helper class to wrap a Skottie focused implementation of ResourceProvider and PropertyObserver
+ * to help manage 'slots' (properties and assets intended by the author to be swapped).
+ */
+class SlotManager {
+public:
+    SlotManager();
+    ~SlotManager();
+
+    void setColorSlot(std::string, int);
+    void setTextSlot(std::string, std::string);
+    void setImageSlot(std::string, sk_sp<SkData>);
+
+    sk_sp<skresources::ResourceProvider> getResourceProvider();
+    sk_sp<skottie::PropertyObserver>     getPropertyObserver();
+
+private:
+    sk_sp<SlottableResourceProvider> fResourceProvider;
+    sk_sp<SlottablePropertyObserver> fPropertyObserver;
+};
 
 } // namespace skottie_utils
 
