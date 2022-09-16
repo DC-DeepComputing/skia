@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42492bcc_16e61b4c",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-16T18:35:50Z",
+      "side": 1,
+      "message": "The CL should not be merged with these changes (it breaks the tracking tests).\nTo test the slot manager, render `skottie-text-animator-1.json` in viewer.",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
