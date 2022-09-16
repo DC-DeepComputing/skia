@@ -15,10 +15,6 @@
 
 namespace {
 
-#define ACQUIRE_VK_PROC(name, device)                                               \
-    f##name = reinterpret_cast<PFN_vk##name>(getProc("vk" #name, nullptr, device)); \
-    SkASSERT(f##name)
-
 class VkTestContextImpl : public sk_gpu_test::VkTestContext {
 public:
     static VkTestContext* Create(VkTestContext* sharedContext) {
@@ -94,6 +90,10 @@ protected:
             if (fDebugCallback != VK_NULL_HANDLE) {
                 fDestroyDebugReportCallbackEXT(fVk.fInstance, fDebugCallback, nullptr);
             }
+#else
+            // Surpress unused private member variable warning
+            (void)fDebugCallback;
+            (void)fDestroyDebugReportCallbackEXT;
 #endif
             grVkDestroyInstance(fVk.fInstance, nullptr);
             delete fExtensions;
