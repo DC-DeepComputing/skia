@@ -19,6 +19,7 @@ namespace skgpu::graphite {
 
 sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& context,
                                                const ContextOptions& options) {
+    SkDebugf("MAKING VULKAN SHARED CONTEXT\n");
     if (context.fInstance == VK_NULL_HANDLE ||
         context.fPhysicalDevice == VK_NULL_HANDLE ||
         context.fDevice == VK_NULL_HANDLE ||
