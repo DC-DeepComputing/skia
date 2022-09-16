@@ -93,6 +93,30 @@
       },
       "revId": "caae33eb16cb23badd83110ec2bd835b10d3c567",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04f0357_78be58b4",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-16T17:17:42Z",
+      "side": 1,
+      "message": "Now that I see it, `color *\u003d` feels slightly more idiomatic",
+      "parentUuid": "df97f3c2_9836d1d2",
+      "range": {
+        "startLine": 90,
+        "startChar": 16,
+        "endLine": 90,
+        "endChar": 59
+      },
+      "revId": "caae33eb16cb23badd83110ec2bd835b10d3c567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
