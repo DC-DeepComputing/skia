@@ -17,6 +17,12 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
+//#include "tools/Resources.h"
+
+#if 0
+#include <stdio.h>
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 using namespace skgpu::graphite;
 
@@ -85,12 +91,14 @@ sk_sp<SkImage> create_raster_backed_image_with_mipmaps(Recorder*) {
 
 /* 2 */
 sk_sp<SkImage> create_gpu_backed_image_no_mipmaps(Recorder* recorder) {
+//        sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
     sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
     return raster->makeTextureImage(recorder, { Mipmapped::kNo });
 }
 
 /* 3 */
 sk_sp<SkImage> create_gpu_backed_image_with_mipmaps(Recorder* recorder) {
+//    sk_sp<SkImage> raster = GetResourceAsImage("images/mandrill_128.png");
     sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
     return raster->makeTextureImage(recorder, { Mipmapped::kYes });
 }
@@ -211,6 +219,16 @@ bool check_img(skiatest::Reporter* reporter,
     static constexpr float kTol[] = {0, 0, 0, 0};
     CheckSolidPixels(expectedColor, pm, kTol, error);
 
+#if 0
+    char name[256];
+    snprintf(name, 256, "/Users/robertphillips/src/bugs/%s-%s.png", testcase,
+             (mipmapped == Mipmapped::kYes) ? "with" : "without");
+    name[255] = '\0';
+
+    SkFILEWStream writer(name);
+    SkPngEncoder::Encode(&writer, pm, SkPngEncoder::Options());
+#endif
+
     return true;
 }
 
@@ -228,7 +246,7 @@ void run_test(skiatest::Reporter* reporter,
               SkSpan<TestCase> testcases) {
 
     for (auto t : testcases) {
-        for (auto mm : { Mipmapped::kNo, Mipmapped::kYes }) {
+        for (auto mm : { /* Mipmapped::kNo, */ Mipmapped::kYes }) {
             sk_sp<SkImage> image = t.fFactory(recorder);
 
             check_img(reporter, context, recorder, image.get(), mm,
@@ -272,14 +290,14 @@ void run_test(skiatest::Reporter* reporter,
 //
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(ImageProviderTest_Graphite_Default, reporter, context) {
     TestCase testcases[] = {
-        { "0", create_raster_backed_image_no_mipmaps,   { kBackgroundColor, kBackgroundColor } },
-        { "1", create_raster_backed_image_with_mipmaps, { kBackgroundColor, kBackgroundColor } },
-        { "2", create_gpu_backed_image_no_mipmaps,      { kBaseImageColor,  kBaseImageColor } },
+//        { "0", create_raster_backed_image_no_mipmaps,   { kBackgroundColor, kBackgroundColor } },
+//        { "1", create_raster_backed_image_with_mipmaps, { kBackgroundColor, kBackgroundColor } },
+//        { "2", create_gpu_backed_image_no_mipmaps,      { kBaseImageColor,  kBaseImageColor } },
         // mipmaps don't appear to be working in Graphite quite yet. The mipmap option in test
         // 3 should be 'kFirstMipLevelColor'
-        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor,  kBaseImageColor } },
-        { "4", create_picture_backed_image,             { kBackgroundColor, kBackgroundColor } },
-        { "5", create_bitmap_generator_backed_image,    { kBackgroundColor, kBackgroundColor }  },
+        { "3", create_gpu_backed_image_with_mipmaps,    { kBaseImageColor,  kFirstMipLevelColor } },
+//        { "4", create_picture_backed_image,             { kBackgroundColor, kBackgroundColor } },
+//        { "5", create_bitmap_generator_backed_image,    { kBackgroundColor, kBackgroundColor }  },
     };
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
