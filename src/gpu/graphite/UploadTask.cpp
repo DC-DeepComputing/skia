@@ -114,6 +114,10 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
 
         // copy data into the buffer, skipping any trailing bytes
         const char* src = (const char*)levels[currentMipLevel].fPixels;
+
+        SkDebugf("level %d: 0x%x\n", currentMipLevel,
+                 *((unsigned int*)src));
+
         writer.write(mipOffset, src, rowBytes, trimRowBytes, currentHeight);
 
         copyData[currentMipLevel].fBufferOffset = baseOffset + mipOffset;

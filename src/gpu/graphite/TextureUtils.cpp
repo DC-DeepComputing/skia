@@ -29,6 +29,7 @@ namespace skgpu::graphite {
 
 std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder,
                                                               const SkBitmap& bitmap,
+                                                              sk_sp<SkMipmap> mipmapsIn,
                                                               Mipmapped mipmapped,
                                                               SkBudgeted budgeted) {
     // Adjust params based on input and Caps
@@ -74,7 +75,8 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
         texels[0].fPixels = bmpToUpload.getPixels();
         texels[0].fRowBytes = bmpToUpload.rowBytes();
     } else {
-        mipmaps.reset(SkMipmap::Build(bmpToUpload.pixmap(), nullptr));
+        mipmaps = SkToBool(mipmapsIn) ? mipmapsIn
+                                      : sk_ref_sp(SkMipmap::Build(bmpToUpload.pixmap(), nullptr));
         if (!mipmaps) {
             return {};
         }
@@ -88,6 +90,10 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
         for (int i = 1; i < mipLevelCount; ++i) {
             SkMipmap::Level generatedMipLevel;
             mipmaps->getLevel(i - 1, &generatedMipLevel);
+
+            SkColor c = generatedMipLevel.fPixmap.getColor(0, 0);
+            SkDebugf("level %d: 0x%x\n", i, c);
+
             texels[i].fPixels = generatedMipLevel.fPixmap.addr();
             texels[i].fRowBytes = generatedMipLevel.fPixmap.rowBytes();
             SkASSERT(texels[i].fPixels);
@@ -115,10 +121,11 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
 sk_sp<SkImage> MakeFromBitmap(Recorder* recorder,
                               const SkColorInfo& colorInfo,
                               const SkBitmap& bitmap,
+                              sk_sp<SkMipmap> mipmaps,
                               SkBudgeted budgeted,
                               SkImage::RequiredImageProperties requiredProps) {
-    auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, requiredProps.fMipmapped,
-                                            budgeted);
+    auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, std::move(mipmaps),
+                                            requiredProps.fMipmapped, budgeted);
     if (!view) {
         return nullptr;
     }
