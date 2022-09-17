@@ -217,11 +217,16 @@ void SkShader_Blend::addToKey(const SkKeyContext& keyContext,
     // TODO: add blender support
     SkASSERT(!fBlender);
 
-    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, { fMode });
-
-    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
+    SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(fMode);
+    if (!porterDuffConstants.empty()) {
+        PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                               {porterDuffConstants});
+    } else {
+        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, {fMode});
+    }
 
     as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
+    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
 
     builder->endBlock();
 }
