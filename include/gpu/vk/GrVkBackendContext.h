@@ -43,7 +43,7 @@ struct VkPhysicalDeviceFeatures2;
 // (either by deleting the struct or manually releasing the refs) before the underlying vulkan
 // device and instance are destroyed.
 struct SK_API GrVkBackendContext {
-    VkInstance                          fInstance;
+    VkInstance                          fInstance = VK_NULL_HANDLE;
     VkPhysicalDevice                    fPhysicalDevice;
     VkDevice                            fDevice;
     VkQueue                             fQueue;

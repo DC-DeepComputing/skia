@@ -28,7 +28,17 @@ template <class T> class SkTInternalLList {
 public:
     SkTInternalLList() {}
 
-    void reset() {
+    void reset(bool reset = true) {
+#ifdef SK_DEBUG
+        if (reset) {
+            T* next = nullptr;
+            for (T* t = fHead; t != nullptr; t = next) {
+                next = t->fNext;
+                t->fNext = t->fPrev = nullptr;
+                t->fList = nullptr;
+            }
+        }
+#endif
         fHead = nullptr;
         fTail = nullptr;
     }
