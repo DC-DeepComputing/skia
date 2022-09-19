@@ -39,6 +39,30 @@
       },
       "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00871b56_ee004388",
+        "filename": "src/gpu/Blend.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-19T15:47:44Z",
+      "side": 1,
+      "message": "This would be for mid-shader blend ops, like SkShaders::Blend. (Not blending against the canvas.)",
+      "parentUuid": "2f9f5954_998574be",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 21
+      },
+      "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
