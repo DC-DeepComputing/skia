@@ -34,6 +34,29 @@
       "parentUuid": "c4eff16f_913d8ab8",
       "revId": "7183b47fbd9fb879ec9769500db39aba7f78211c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7e46d04_cfe651c2",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T14:40:25Z",
+      "side": 1,
+      "message": "Maybe spell out row and column here. Initially I didn\u0027t know what this was.",
+      "range": {
+        "startLine": 468,
+        "startChar": 17,
+        "endLine": 468,
+        "endChar": 18
+      },
+      "revId": "7183b47fbd9fb879ec9769500db39aba7f78211c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
