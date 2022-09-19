@@ -37,6 +37,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1157beb_3d4899a5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-19T19:00:11Z",
+      "side": 1,
+      "message": "nit: these have been removed, update comment",
+      "range": {
+        "startLine": 149,
+        "startChar": 48,
+        "endLine": 149,
+        "endChar": 73
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbac0ac_f5fdce65",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-19T19:00:11Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be removed?",
+      "range": {
+        "startLine": 378,
+        "startChar": 64,
+        "endLine": 378,
+        "endChar": 83
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ab2253f_a24a34da",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 22
