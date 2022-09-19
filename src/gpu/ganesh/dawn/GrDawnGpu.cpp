@@ -644,10 +644,14 @@ static wgpu::Texture get_dawn_texture_from_surface(GrSurface* src) {
 bool GrDawnGpu::onCopySurface(GrSurface* dst,
                               GrSurface* src,
                               const SkIRect& srcRect,
-                              const SkIPoint& dstPoint) {
+                              const SkIRect& dstRect,
+                              GrSamplerState::Filter) {
     wgpu::Texture srcTexture = get_dawn_texture_from_surface(src);
     wgpu::Texture dstTexture = get_dawn_texture_from_surface(dst);
     if (!srcTexture || !dstTexture) {
+        return false;
+    }
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
         return false;
     }
 
@@ -657,7 +661,7 @@ bool GrDawnGpu::onCopySurface(GrSurface* dst,
     srcTextureView.texture = srcTexture;
     srcTextureView.origin = {(uint32_t) srcRect.x(), (uint32_t) srcRect.y(), 0};
     dstTextureView.texture = dstTexture;
-    dstTextureView.origin = {(uint32_t) dstPoint.x(), (uint32_t) dstPoint.y(), 0};
+    dstTextureView.origin = {(uint32_t) dstRect.x(), (uint32_t) dstRect.y(), 0};
 
     wgpu::Extent3D copySize = {width, height, 1};
     this->getCopyEncoder().CopyTextureToTexture(&srcTextureView, &dstTextureView, &copySize);

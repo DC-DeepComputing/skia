@@ -299,11 +299,7 @@ bool GrCaps::canCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src
     if (dst->backendFormat() != src->backendFormat()) {
         return false;
     }
-    // TODO(michaelludwig): Update caps to query for scaling copy support
-    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
-        return false;
-    }
-    return this->onCanCopySurface(dst, src, srcRect, dstRect.topLeft());
+    return this->onCanCopySurface(dst, src, srcRect, dstRect);
 }
 
 bool GrCaps::validateSurfaceParams(const SkISize& dimensions, const GrBackendFormat& format,

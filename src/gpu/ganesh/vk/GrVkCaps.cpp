@@ -204,7 +204,7 @@ bool GrVkCaps::canCopyAsResolve(VkFormat dstFormat, int dstSampleCnt, bool dstHa
 }
 
 bool GrVkCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                                const SkIRect& srcRect, const SkIRect& dstRect) const {
     if (src->isProtected() == GrProtected::kYes && dst->isProtected() != GrProtected::kYes) {
         return false;
     }
@@ -267,12 +267,19 @@ bool GrVkCaps::onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy*
     SkAssertResult(dst->backendFormat().asVkFormat(&dstFormat));
     SkAssertResult(src->backendFormat().asVkFormat(&srcFormat));
 
-    return this->canCopyImage(dstFormat, dstSampleCnt, dstHasYcbcr,
-                              srcFormat, srcSampleCnt, srcHasYcbcr) ||
-           this->canCopyAsBlit(dstFormat, dstSampleCnt, dstIsLinear, dstHasYcbcr,
-                               srcFormat, srcSampleCnt, srcIsLinear, srcHasYcbcr) ||
-           this->canCopyAsResolve(dstFormat, dstSampleCnt, dstHasYcbcr,
-                                  srcFormat, srcSampleCnt, srcHasYcbcr);
+    // Only blits support scaling, but since we've already clamped the src and dst rects,
+    // the dimensions of the scaled blit aren't important to know if it's allowed.
+    const bool copyScales = srcRect.width() != dstRect.width() ||
+                            srcRect.height() != dstRect.height();
+    if (!copyScales && (this->canCopyImage(dstFormat, dstSampleCnt, dstHasYcbcr,
+                                           srcFormat, srcSampleCnt, srcHasYcbcr) ||
+                        this->canCopyAsResolve(dstFormat, dstSampleCnt, dstHasYcbcr,
+                                               srcFormat, srcSampleCnt, srcHasYcbcr))) {
+        return true;
+    }
+    return this->canCopyAsBlit(dstFormat, dstSampleCnt, dstIsLinear, dstHasYcbcr,
+                               srcFormat, srcSampleCnt, srcIsLinear, srcHasYcbcr);
+
 }
 
 template<typename T> T* get_extension_feature_struct(const VkPhysicalDeviceFeatures2& features,
