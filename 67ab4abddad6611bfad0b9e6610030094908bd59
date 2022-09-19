@@ -16,6 +16,41 @@
       "message": "I believe Ganesh also doesn\u0027t use the \u0027origin\u0027 feature but I don\u0027t know if it would be worth it to remove it from Ganesh.",
       "revId": "67ab4abddad6611bfad0b9e6610030094908bd59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e0a9d94_2fcde1dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-19T17:04:02Z",
+      "side": 1,
+      "message": "So from what I can tell, Ganesh does use the origin in its various onGenerateTexture implementations as well as supporting subsetting. Why do we not think that will be needed in Graphite?",
+      "parentUuid": "54258512_11b3be4b",
+      "revId": "67ab4abddad6611bfad0b9e6610030094908bd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb6263a3_d0d67800",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-19T17:04:02Z",
+      "side": 1,
+      "message": "So from",
+      "revId": "67ab4abddad6611bfad0b9e6610030094908bd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
