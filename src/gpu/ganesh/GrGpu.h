@@ -810,7 +810,7 @@ private:
 
     // overridden by backend specific derived class to perform the copy surface
     virtual bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                               const SkIPoint& dstPoint) = 0;
+                               const SkIRect& dstRect, GrSamplerState::Filter) = 0;
 
     virtual GrOpsRenderPass* onGetOpsRenderPass(
             GrRenderTarget* renderTarget,

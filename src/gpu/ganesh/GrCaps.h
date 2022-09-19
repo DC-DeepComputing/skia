@@ -636,7 +636,7 @@ private:
     virtual void onDumpJSON(SkJSONWriter*) const {}
     virtual bool onSurfaceSupportsWritePixels(const GrSurface*) const = 0;
     virtual bool onCanCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                                  const SkIRect& srcRect, const SkIPoint& dstPoint) const = 0;
+                                  const SkIRect& srcRect, const SkIRect& dstRect) const = 0;
     virtual GrBackendFormat onGetDefaultBackendFormat(GrColorType) const = 0;
 
     // Backends should implement this if they have any extra requirements for use of window

@@ -644,10 +644,14 @@ static wgpu::Texture get_dawn_texture_from_surface(GrSurface* src) {
 bool GrDawnGpu::onCopySurface(GrSurface* dst,
                               GrSurface* src,
                               const SkIRect& srcRect,
-                              const SkIPoint& dstPoint) {
+                              const SkIRect& dstRect,
+                              GrSamplerState::Filter) {
     wgpu::Texture srcTexture = get_dawn_texture_from_surface(src);
     wgpu::Texture dstTexture = get_dawn_texture_from_surface(dst);
     if (!srcTexture || !dstTexture) {
+        return false;
+    }
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
         return false;
     }
 

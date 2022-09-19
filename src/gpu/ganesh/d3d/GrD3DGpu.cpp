@@ -428,8 +428,10 @@ static int get_surface_sample_cnt(GrSurface* surf) {
 }
 
 bool GrD3DGpu::onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                   const SkIPoint& dstPoint) {
-
+                             const SkIRect& dstRect, GrSamplerState::Filter) {
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        return false;
+    }
     if (src->isProtected() && !dst->isProtected()) {
         SkDebugf("Can't copy from protected memory to non-protected");
         return false;
