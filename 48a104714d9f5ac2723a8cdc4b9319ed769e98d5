@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9e4a760_9e9fa729",
+        "filename": "src/core/SkBitmapProcState.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-19T15:51:17Z",
+      "side": 0,
+      "message": "Was this doing anything before? It got over-written right away?",
+      "revId": "48a104714d9f5ac2723a8cdc4b9319ed769e98d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
