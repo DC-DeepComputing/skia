@@ -111,18 +111,17 @@ bool SurfaceFillContext::blitTexture(GrSurfaceProxyView view,
                                      const SkIPoint& dstPoint) {
     SkASSERT(view.asTextureProxy());
     SkIRect clippedSrcRect;
-    SkIPoint clippedDstPoint;
-    if (!GrClipSrcRectAndDstPoint(this->dimensions(),
-                                  view.dimensions(),
-                                  srcRect,
-                                  dstPoint,
-                                  &clippedSrcRect,
-                                  &clippedDstPoint)) {
+    SkIRect dstRect = SkIRect::MakePtSize(dstPoint, srcRect.size());
+    if (!GrClipSrcRectAndDstRect(this->dimensions(),
+                                 view.dimensions(),
+                                 srcRect,
+                                 dstRect,
+                                 &clippedSrcRect,
+                                 &dstRect)) {
         return false;
     }
 
     auto fp = GrTextureEffect::Make(std::move(view), kUnknown_SkAlphaType);
-    auto dstRect = SkIRect::MakePtSize(clippedDstPoint, clippedSrcRect.size());
     auto srcRectF = SkRect::Make(clippedSrcRect);
     this->fillRectToRectWithFP(srcRectF, dstRect, std::move(fp));
     return true;
