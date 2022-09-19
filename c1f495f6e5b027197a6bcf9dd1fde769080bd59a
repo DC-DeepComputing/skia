@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "656aa0d6_c0722519",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T15:48:33Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be something more like \"blendConstants\" ?",
+      "range": {
+        "startLine": 619,
+        "startChar": 11,
+        "endLine": 619,
+        "endChar": 18
+      },
+      "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f9f5954_998574be",
         "filename": "src/gpu/Blend.cpp",
         "patchSetId": 4
@@ -60,6 +83,29 @@
         "startChar": 11,
         "endLine": 99,
         "endChar": 21
+      },
+      "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc438e1_a6c940b6",
+        "filename": "src/gpu/Blend.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T15:48:33Z",
+      "side": 1,
+      "message": "blend constants ?",
+      "range": {
+        "startLine": 193,
+        "startChar": 80,
+        "endLine": 193,
+        "endChar": 93
       },
       "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
