@@ -75,7 +75,6 @@ struct GradientShaderBlocks {
         // This ctor is used when extracting information from PaintParams. It must provide
         // enough data to generate the uniform data the selected code snippet will require.
         GradientData(SkShader::GradientType,
-                     const SkM44& localMatrix,
                      SkPoint point0, SkPoint point1,
                      float radius0, float radius1,
                      float bias, float scale,
@@ -86,7 +85,6 @@ struct GradientShaderBlocks {
 
         bool operator==(const GradientData& rhs) const {
             return fType == rhs.fType &&
-                   fLocalMatrix == rhs.fLocalMatrix &&
                    fPoints[0] == rhs.fPoints[0] &&
                    fPoints[1] == rhs.fPoints[1] &&
                    fRadii[0] == rhs.fRadii[0] &&
@@ -102,7 +100,6 @@ struct GradientShaderBlocks {
 
         // Layout options.
         SkShader::GradientType fType;
-        SkM44                  fLocalMatrix;
         SkPoint                fPoints[2];
         float                  fRadii[2];
 
@@ -146,13 +143,11 @@ struct ImageShaderBlock {
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,
-                  SkRect subset,
-                  const SkMatrix& localMatrix);
+                  SkRect subset);
 
         SkSamplingOptions fSampling;
         SkTileMode fTileModes[2];
         SkRect fSubset;
-        const SkMatrix& fLocalMatrix;
 
 #ifdef SK_GRAPHITE_ENABLED
         // TODO: Currently this is only filled in when we're generating the key from an actual
@@ -280,7 +275,6 @@ struct RuntimeShaderBlock {
 
         // This ctor is used when extracting information from PaintParams.
         ShaderData(sk_sp<const SkRuntimeEffect> effect,
-                   const SkMatrix& localMatrix,
                    sk_sp<const SkData> uniforms);
 
         bool operator==(const ShaderData& rhs) const;
@@ -288,7 +282,6 @@ struct RuntimeShaderBlock {
 
         // Runtime shader data.
         sk_sp<const SkRuntimeEffect> fEffect;
-        SkMatrix                     fLocalMatrix;
         sk_sp<const SkData>          fUniforms;
     };
 
