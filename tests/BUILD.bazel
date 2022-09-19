@@ -1,0 +1,29 @@
+load("//bazel:macros.bzl", "skia_cc_library", "skia_cc_test")
+
+skia_cc_library(
+    name = "test_harness",
+    testonly = True,
+    srcs = [
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "//tools/flags",
+    ],
+    hdrs = [
+        "CtsEnforcement.h",
+        "Test.h",
+    ],
+    deps = [
+        "//:skia_internal",
+        "//tools:registry",
+    ],
+)
+
+skia_cc_test(
+    name = "MatrixProcs",
+    size = "small",
+    srcs = ["MatrixProcsTest.cpp"],
+    deps = [
+        ":test_harness",
+        "//:skia_internal",
+    ],
+)

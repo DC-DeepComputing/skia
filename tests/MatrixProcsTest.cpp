@@ -277,3 +277,31 @@ DEF_TEST(MatrixProcs_unpack_int, r) {
         SkASSERT(tc.expectedUpperBound == lowBits(tc.input));
     }
 }
+
+class BazelReporter : public skiatest::Reporter {
+public:
+    void reportFailed(const skiatest::Failure& failure) override {
+            SkDebugf("FAIL: %s\n", failure.toString().c_str());
+            fFailed = true;
+    }
+    bool allowExtendedTest() const override { return false; }
+    bool verbose() const override { return false; }
+    bool ok() { return !fFailed; }
+private:
+    bool fFailed = false;
+};
+
+int main() {
+    BazelReporter reporter;
+    for (skiatest::Test test : skiatest::TestRegistry::Range()) {
+        SkDebugf("Running %s\n", test.fName);
+        test.run(&reporter);
+        SkDebugf("\tDone\n");
+    }
+    if (reporter.ok()) {
+        SkDebugf("PASS\n");
+        return 0;
+    }
+    SkDebugf("FAIL\n");
+    return 1;
+}
