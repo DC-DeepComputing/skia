@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af708fe3_a128f8af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T14:29:31Z",
+      "side": 1,
+      "message": "Maybe add a unit test to make sure all the blending works out ?",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36a30400_29c037fc",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T14:29:31Z",
+      "side": 1,
+      "message": "Can these be like $kTileModeClamp ? To emphasize their constantiness.",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bbe2aba_f7d613b6",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T14:29:31Z",
+      "side": 1,
+      "message": "I guess, spell these out since we don\u0027t have an SkTileMode type to clarify ?",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
