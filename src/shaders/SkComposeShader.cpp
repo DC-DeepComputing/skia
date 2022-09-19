@@ -63,7 +63,7 @@ public:
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
     void addToKey(const SkKeyContext&,
                   SkPaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
@@ -210,18 +210,26 @@ std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
 }
 #endif
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
+
+#include "src/gpu/Blend.h"
+
 void SkShader_Blend::addToKey(const SkKeyContext& keyContext,
                               SkPaintParamsKeyBuilder* builder,
                               SkPipelineDataGatherer* gatherer) const {
     // TODO: add blender support
     SkASSERT(!fBlender);
 
-    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, { fMode });
-
-    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
+    SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(fMode);
+    if (!porterDuffConstants.empty()) {
+        PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                               {porterDuffConstants});
+    } else {
+        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, {fMode});
+    }
 
     as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
+    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
 
     builder->endBlock();
 }
