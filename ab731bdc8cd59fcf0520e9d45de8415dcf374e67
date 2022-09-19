@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b573346_9b92cdca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-19T17:11:09Z",
+      "side": 1,
+      "message": "You were right that CanvasKit was not using SkOpts at all.",
+      "revId": "ab731bdc8cd59fcf0520e9d45de8415dcf374e67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
