@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cd416e_8e1bf5cf",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-19T17:01:16Z",
+      "side": 1,
+      "message": "Is this part of the comment a remnant of some ancient, deleted feature?",
+      "range": {
+        "startLine": 177,
+        "startChar": 13,
+        "endLine": 177,
+        "endChar": 28
+      },
+      "revId": "267a2c8504f814b4e7a447ac76ccec7e831e3239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9c1b1133_11eab968",
