@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "23e86963_2fac31da",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-19T17:16:51Z",
+      "side": 1,
+      "message": "Ah, thanks for tracking that down. I was unclear about what postLocalMatrix was referring to. Removed it from the comment.",
+      "parentUuid": "66c82c58_1ef4941a",
+      "range": {
+        "startLine": 177,
+        "startChar": 13,
+        "endLine": 177,
+        "endChar": 28
+      },
+      "revId": "267a2c8504f814b4e7a447ac76ccec7e831e3239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9c1b1133_11eab968",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 1
