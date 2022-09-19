@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54258512_11b3be4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-19T14:49:43Z",
+      "side": 1,
+      "message": "I believe Ganesh also doesn\u0027t use the \u0027origin\u0027 feature but I don\u0027t know if it would be worth it to remove it from Ganesh.",
+      "revId": "67ab4abddad6611bfad0b9e6610030094908bd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
