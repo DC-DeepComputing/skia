@@ -85,7 +85,7 @@ public:
                            const SkIRect& srcRect, const SkIPoint& dstPoint);
 
     bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                       const SkIPoint& dstPoint) override;
+                       const SkIRect& dstRect, GrSamplerState::Filter) override;
 
 #if GR_METAL_SDK_VERSION >= 230
     id<MTLBinaryArchive> binaryArchive() const SK_API_AVAILABLE(macos(11.0), ios(14.0)) {

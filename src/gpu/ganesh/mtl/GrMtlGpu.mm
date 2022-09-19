@@ -1248,8 +1248,12 @@ void GrMtlGpu::copySurfaceAsBlit(GrSurface* dst, GrSurface* src,
 }
 
 bool GrMtlGpu::onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                             const SkIPoint& dstPoint) {
+                             const SkIRect& dstRect, GrSamplerState::Filter) {
     SkASSERT(!src->isProtected() && !dst->isProtected());
+
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        return false;
+    }
 
     GrMtlAttachment* dstAttachment;
     GrMtlAttachment* srcAttachment;
@@ -1295,6 +1299,7 @@ bool GrMtlGpu::onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcR
     int dstSampleCnt = dstAttachment->sampleCount();
     int srcSampleCnt = srcAttachment->sampleCount();
 
+    const SkIPoint dstPoint = dstRect.topLeft();
     if (this->mtlCaps().canCopyAsResolve(dstFormat, dstSampleCnt,
                                          srcFormat, srcSampleCnt,
                                          SkToBool(srcRT), src->dimensions(),
