@@ -64,7 +64,7 @@ std::string SkShaderSnippet::getMangledSamplerName(int samplerIdx, int mangleId)
 
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 
-// Returns an expression to invoke this entry, passing along an updated pre-local matrix.
+// Returns an expression to invoke this entry, passing along an updated local matrix.
 static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
                                              int entryIndex,
                                              SkShaderSnippet::Args args) {
@@ -73,15 +73,21 @@ static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
 
     std::string updatedMatrix;
     if (entry->needsLocalCoords()) {
-        // The snippet requested local coordinates; the pre-local matrix must be its first uniform.
+        // The snippet requested local coordinates; the local matrix must be its first uniform.
         SkASSERT(entry->fUniforms.size() >= 1);
         SkASSERT(entry->fUniforms.front().type() == SkSLType::kFloat4x4);
 
-        // Multiply in this entry's pre-local coordinate matrix.
-        updatedMatrix = std::string(args.fPreLocalMatrix);
+        // Multiply in this entry's local coordinate matrix.
+#ifdef SK_LEGACY_LOCAL_MATRIX_CONCAT
+        updatedMatrix = std::string(args.fLocalMatrix);
         updatedMatrix += "*";
         updatedMatrix += entry->getMangledUniformName(shaderInfo, 0, entryIndex);
-        args.fPreLocalMatrix = updatedMatrix;
+#else
+        updatedMatrix = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+        updatedMatrix += "*";
+        updatedMatrix += std::string(args.fLocalMatrix);
+#endif
+        args.fLocalMatrix = updatedMatrix;
     }
 
     return entry->fExpressionGenerator(shaderInfo, entryIndex, reader, args);
@@ -356,7 +362,7 @@ static std::string append_default_snippet_arguments(const SkShaderInfo& shaderIn
         separator = ", ";
 
         if (i == 0 && entry->needsLocalCoords()) {
-            code += args.fPreLocalMatrix;
+            code += args.fLocalMatrix;
         } else {
             code += entry->getMangledUniformName(shaderInfo, i, entryIndex);
         }
@@ -453,7 +459,7 @@ std::string GenerateDefaultExpression(const SkShaderInfo& shaderInfo,
                                   (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
                                   (int)args.fDestColor.size(),        args.fDestColor.data(),
                                   (int)args.fFragCoord.size(),        args.fFragCoord.data(),
-                                  (int)args.fPreLocalMatrix.size(),   args.fPreLocalMatrix.data());
+                                  (int)args.fLocalMatrix.size(),      args.fLocalMatrix.data());
     }
 #else
     return std::string(args.fPriorStageOutput);
@@ -767,7 +773,7 @@ std::string GenerateRuntimeShaderExpression(const SkShaderInfo& shaderInfo,
                                 (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
                                 (int)args.fDestColor.size(),        args.fDestColor.data(),
                                 (int)args.fFragCoord.size(),        args.fFragCoord.data(),
-                                (int)args.fPreLocalMatrix.size(),   args.fPreLocalMatrix.data());
+                                (int)args.fLocalMatrix.size(),      args.fLocalMatrix.data());
 #else
     return std::string(args.fPriorStageOutput);
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
