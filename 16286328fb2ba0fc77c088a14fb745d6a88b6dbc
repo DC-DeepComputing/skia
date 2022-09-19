@@ -16,6 +16,46 @@
       "message": "Is there anything else that needs to change before this can merge in? I fixed the merge conflict with main (just the dehydrated SkSL file).",
       "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81888062_b2997c9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-19T18:56:19Z",
+      "side": 1,
+      "message": "Everything that\u0027s been done LGTM, but we do need to update the actual local matrix shader snippet to transform the coords before it samples its child. The existing snippet was always just a no-op because every other snippet was re-doing the local matrix snippet\u0027s work it was responsible for.\n\nI\u0027d be okay landing this and fixing local matrices to work again as a follow up, but I\u0027ll let others weigh in too.",
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ab2253f_a24a34da",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-19T18:56:19Z",
+      "side": 1,
+      "message": "I think we need to have special handling for invoking the local matrix shader block. The default snippet generator lifts out calling `sample` on its children so that it can just provide their values as variable references, but it can only do this because it assumes it can pass its `coords` value unmodified to its child.\n\nWith how transforms had been being applied at the child leaves with the preLocalMatrix argument, the local matrix shader snippet\u0027s SkSL didn\u0027t do anything and it\u0027s behavior was being re-implemented by all the other snippets.\n\nWe need to generate SkSL that\u0027s along the lines of\n\n    return child.sample((localMatrixUni * coords.xy01).xy);\n    \nI\u0027m open to landing this change (and breaking local matrix behavior briefly), and then handling the local matrix snippet in a follow-up CL. This CL is already pretty big and would be nice to land all of its cleanup.",
+      "range": {
+        "startLine": 1206,
+        "startChar": 12,
+        "endLine": 1207,
+        "endChar": 36
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
