@@ -17,8 +17,8 @@ $15 = [get].result (int, L5)
 $16 = x (int, L5)
 $17 = [get].result (int, L5)
 $18 = [get].result (int, L5)
-F0 = half4 main(float2 pos)
-F1 = int get(int x)
+F0 =  half4 main(float2 pos)
+F1 =  int get(int x)
 
 17 registers, 64 instructions:
 0	r0 = uniform32 ptr0 0

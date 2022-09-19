@@ -35,7 +35,7 @@ $33 = a_mul_b (int, L41)
 $34 = b_mul_a (int, L42)
 $35 = c_mul_d (float, L45)
 $36 = d_mul_c (float, L46)
-F0 = half4 main(float2 xy)
+F0 =  half4 main(float2 xy)
 
 13 registers, 62 instructions:
 0	r0 = uniform32 ptr0 0

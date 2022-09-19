@@ -42,11 +42,11 @@ $40 = i (int, L20)
 $41 = [index_out_of_bounds_checked].result (float, L27)
 $42 = sum (float, L28)
 $43 = f (float, L29)
-F0 = float4 main(float2 xy)
-F1 = float index_by_literal()
-F2 = float index_by_loop()
-F3 = float index_by_complex_loop()
-F4 = float index_out_of_bounds_checked()
+F0 =  float4 main(float2 xy)
+F1 =  float index_by_literal()
+F2 =  float index_by_loop()
+F3 =  float index_by_complex_loop()
+F4 =  float index_out_of_bounds_checked()
 
 54 registers, 231 instructions:
 0	r0 = uniform32 ptr0 0

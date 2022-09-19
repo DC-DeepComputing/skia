@@ -7,8 +7,8 @@ $5 = [main].result (float4 : slot 3/4, L11)
 $6 = [main].result (float4 : slot 4/4, L11)
 $7 = xy (float2 : slot 1/2, L11)
 $8 = xy (float2 : slot 2/2, L11)
-F0 = float4 main(float2 xy)
-F1 = void init_globals()
+F0 =  float4 main(float2 xy)
+F1 =  void init_globals()
 
 8 registers, 33 instructions:
 0	r0 = uniform32 ptr0 0
