@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec6d9f0e_d0174ed4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-19T15:14:36Z",
+      "side": 1,
+      "message": "At patch set 1 this isn\u0027t really ready yet, but it does fix the related issue. The alternative to something like this is for SetupForAsPaths to also remove the fake bold request and return if it does (along with the scale) and then to pass the fake bold through everything and apply the path effect later.",
+      "revId": "4b122d37aa5683106447810d0c3b634a4ea85f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
