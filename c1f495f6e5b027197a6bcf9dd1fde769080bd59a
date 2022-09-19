@@ -16,6 +16,29 @@
       "message": "egdaniel@ for OWNERS (or full review, if you want to)",
       "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f9f5954_998574be",
+        "filename": "src/gpu/Blend.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-19T15:45:59Z",
+      "side": 1,
+      "message": "I\u0027m not aware enough of the blend shaders so hopefully you can shed some light. What does it mean to use the built0in blend_XXXX function? Is this still going through shader blending or is this trying to do hardware blending?",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 21
+      },
+      "revId": "c1f495f6e5b027197a6bcf9dd1fde769080bd59a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
