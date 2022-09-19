@@ -138,7 +138,7 @@ private:
     }
 
     bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                       const SkIPoint& dstPoint) override {
+                       const SkIRect& dstRect, GrSamplerState::Filter) override {
         return true;
     }
 
