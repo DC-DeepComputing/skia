@@ -251,4 +251,102 @@ sk_sp<skottie::ExternalLayer> ExternalAnimationPrecompInterceptor::onLoadPrecomp
                 : nullptr;
 }
 
+/**
+ * An implementation of ResourceProvider designed for Lottie template asset substitution (images,
+ * audio, etc)
+ */
+class SlotManager::SlottableResourceProvider final : public skresources::ResourceProvider {
+public:
+    SlottableResourceProvider() {}
+
+    sk_sp<skresources::ImageAsset> loadImageAsset(const char /*resource_path*/[],
+                                                  const char slot_name[],
+                                                  const char /*resource_id*/[]) const override {
+        return fImageAssetMap.at(slot_name);
+    }
+
+private:
+    std::unordered_map<std::string, sk_sp<skresources::ImageAsset>> fImageAssetMap;
+
+    friend class SlotManager;
+};
+
+/**
+ * An implementation of PropertyObserver designed for Lottie template property substitution (color,
+ * text, etc)
+ *
+ * PropertyObserver looks for slottable nodes then manipulates their PropertyValue on the fly
+ *
+ */
+class SlotManager::SlottablePropertyObserver final : public skottie::PropertyObserver {
+public:
+    SlottablePropertyObserver() {}
+
+    void onColorProperty(const char node_name[],
+                         const LazyHandle<skottie::ColorPropertyHandle>& c) override {
+        for (auto& i : fColorMap) {
+            auto slotID = i.first;
+            if (node_name == slotID) {
+                c()->set(SkColor(i.second));
+            }
+        }
+    }
+
+    void onTextProperty(const char node_name[],
+                        const LazyHandle<skottie::TextPropertyHandle>& t) override {
+        for (auto& i : fTextMap) {
+            auto slotID = i.first;
+            if (node_name == slotID) {
+                auto value = t()->get();
+                value.fText = i.second;
+                t()->set(value);
+            }
+        }
+    }
+
+    void onOpacityProperty(const char[],
+                           const LazyHandle<skottie::OpacityPropertyHandle>&) override {}
+
+    void onTransformProperty(const char[],
+                             const LazyHandle<skottie::TransformPropertyHandle>&) override {}
+
+    void onEnterNode(const char[], PropertyObserver::NodeType) override {}
+    void onLeavingNode(const char[], PropertyObserver::NodeType) override {}
+private:
+    using SlotID = std::string;
+
+    std::unordered_map<SlotID, skottie::ColorPropertyValue> fColorMap;
+    std::unordered_map<SlotID, SkString>                    fTextMap;
+
+    friend class SlotManager;
+};
+
+SlotManager::SlotManager() {
+    fResourceProvider = sk_make_sp<SlottableResourceProvider>();
+    fPropertyObserver = sk_make_sp<SlottablePropertyObserver>();
+}
+
+SlotManager::~SlotManager() = default;
+
+// TODO: consider having a generic setSlotMethod that is overloaded by PropertyValue type
+void SlotManager::setColorSlot(std::string slotID, SkColor color) {
+    fPropertyObserver->fColorMap[slotID] = color;
+}
+
+void SlotManager::setTextStringSlot(std::string slotID, SkString text) {
+    fPropertyObserver->fTextMap[slotID] = text;
+}
+
+void SlotManager::setImageSlot(std::string slotID, sk_sp<skresources::ImageAsset> img) {
+    fResourceProvider->fImageAssetMap[slotID] = img;
+}
+
+sk_sp<skresources::ResourceProvider> SlotManager::getResourceProvider() {
+    return fResourceProvider;
+}
+
+sk_sp<skottie::PropertyObserver> SlotManager::getPropertyObserver() {
+    return fPropertyObserver;
+}
+
 } // namespace skottie_utils

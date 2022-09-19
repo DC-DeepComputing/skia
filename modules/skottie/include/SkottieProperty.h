@@ -138,6 +138,7 @@ public:
                                      const LazyHandle<TransformPropertyHandle>&);
     virtual void onEnterNode(const char node_name[], NodeType node_type);
     virtual void onLeavingNode(const char node_name[], NodeType node_type);
+    virtual void onAnimationBuilt();
 };
 
 } // namespace skottie

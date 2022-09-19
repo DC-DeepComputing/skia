@@ -136,4 +136,6 @@ void PropertyObserver::onEnterNode(const char node_name[], NodeType) {}
 
 void PropertyObserver::onLeavingNode(const char node_name[], NodeType) {}
 
+void PropertyObserver::onAnimationBuilt() {}
+
 }  // namespace skottie

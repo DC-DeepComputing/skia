@@ -365,11 +365,18 @@ void SkottieSlide::load(SkScalar w, SkScalar h) {
 
     fTransformTracker = sk_make_sp<TransformTracker>();
 
+    skottie_utils::SlotManager mng;
+    mng.setColorSlot("White Solid 4", SkColor(0xFFFF00FF));
+    mng.setTextStringSlot("Foo Bar Baz", SkString("Hello"));
+    mng.setTextStringSlot("Foo Bar Baz 2", SkString("Hello"));
+    mng.setTextStringSlot("Foo Bar Baz 3", SkString("Hello"));
+
+    mng.setImageSlot("asset_0", nullptr);
     fAnimation      = builder
             .setLogger(logger)
             .setResourceProvider(std::move(resource_provider))
             .setPrecompInterceptor(std::move(precomp_interceptor))
-            .setPropertyObserver(fTransformTracker)
+            .setPropertyObserver(mng.getPropertyObserver())
             .makeFromFile(fPath.c_str());
     fAnimationStats = builder.getStats();
     fWinSize        = SkSize::Make(w, h);
