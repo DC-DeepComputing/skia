@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07ff1225_c0c5e5a0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-19T14:54:48Z",
+      "side": 1,
+      "message": "If we change style here, we ought to update the other modules to match. We have constants in this style in a few other places.\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/sksl_graphite_vert.sksl;l\u003d16-19;drc\u003d132b8b1ea69042572e3512c5c3da3272dec0bc29\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/sksl_gpu.sksl;l\u003d148-150;drc\u003d27a2eeacd330a0b5579f6749be162880e34c8619",
+      "parentUuid": "36a30400_29c037fc",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bbe2aba_f7d613b6",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 5
