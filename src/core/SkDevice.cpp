@@ -388,13 +388,17 @@ bool SkBaseDevice::peekPixels(SkPixmap* pmap) {
 
 #include "src/core/SkUtils.h"
 
-// TODO: This does not work for arbitrary shader DAGs (when there is no single leaf local matrix).
-// What we really need is proper post-LM plumbing for shaders.
 static sk_sp<SkShader> make_post_inverse_lm(const SkShader* shader, const SkMatrix& m) {
     SkMatrix inverse;
     if (!shader || !m.invert(&inverse)) {
         return nullptr;
     }
+
+#ifndef SK_LEGACY_LOCAL_MATRIX_CONCAT
+    return shader->makeWithLocalMatrix(inverse);
+#else
+    // Legacy impl for old concat order. This does not work for arbitrary shader DAGs (when there is
+    // no single leaf local matrix).
 
     // Normal LMs pre-compose.  In order to push a post local matrix, we shoot for
     // something along these lines (where all new components are pre-composed):
@@ -422,6 +426,7 @@ static sk_sp<SkShader> make_post_inverse_lm(const SkShader* shader, const SkMatr
 
     // Note: since we unfurled the shader above, we don't need to apply an outer_lm inverse
     return shader->makeWithLocalMatrix(lm_inv * inverse * lm * outer_lm);
+#endif
 }
 
 void SkBaseDevice::drawGlyphRunList(SkCanvas* canvas,
