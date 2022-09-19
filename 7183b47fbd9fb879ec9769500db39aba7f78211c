@@ -16,6 +16,24 @@
       "message": "The android failure from before appears unrelated, the android canary passes on this CL (barring infra issues not detecting it\u0027s finished, and the android CQ skipping some try jobs, the try jobs that had failed are now green).\n\nThe biggest changes to the original are enforcing IWYU now, and no longer using SkTreatAsSprite since that fails to round-trip from float to int if the values are large enough, which could trigger stack overflows when resolving the deferred transformation image for legacy code.T",
       "revId": "7183b47fbd9fb879ec9769500db39aba7f78211c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d1210b_04cea0d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-19T14:35:07Z",
+      "side": 1,
+      "message": "And I confirmed that this new code does not trigger the stack overflow on the fuzzer test case.",
+      "parentUuid": "c4eff16f_913d8ab8",
+      "revId": "7183b47fbd9fb879ec9769500db39aba7f78211c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
