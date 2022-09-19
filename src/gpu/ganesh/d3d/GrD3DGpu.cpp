@@ -428,8 +428,10 @@ static int get_surface_sample_cnt(GrSurface* surf) {
 }
 
 bool GrD3DGpu::onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                   const SkIPoint& dstPoint) {
-
+                             const SkIRect& dstRect, GrSamplerState::Filter) {
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        return false;
+    }
     if (src->isProtected() && !dst->isProtected()) {
         SkDebugf("Can't copy from protected memory to non-protected");
         return false;
@@ -460,6 +462,7 @@ bool GrD3DGpu::onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcR
     DXGI_FORMAT dstFormat = dstTexResource->dxgiFormat();
     DXGI_FORMAT srcFormat = srcTexResource->dxgiFormat();
 
+    const SkIPoint dstPoint = dstRect.topLeft();
     if (this->d3dCaps().canCopyAsResolve(dstFormat, dstSampleCnt, srcFormat, srcSampleCnt)) {
         this->copySurfaceAsResolve(dst, src, srcRect, dstPoint);
         return true;
