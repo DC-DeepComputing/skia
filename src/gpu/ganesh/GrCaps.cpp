@@ -291,7 +291,7 @@ bool GrCaps::surfaceSupportsWritePixels(const GrSurface* surface) const {
 }
 
 bool GrCaps::canCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src,
-                            const SkIRect& srcRect, const SkIPoint& dstPoint) const {
+                            const SkIRect& srcRect, const SkIRect& dstRect) const {
     if (dst->readOnly()) {
         return false;
     }
@@ -299,7 +299,11 @@ bool GrCaps::canCopySurface(const GrSurfaceProxy* dst, const GrSurfaceProxy* src
     if (dst->backendFormat() != src->backendFormat()) {
         return false;
     }
-    return this->onCanCopySurface(dst, src, srcRect, dstPoint);
+    // TODO(michaelludwig): Update caps to query for scaling copy support
+    if (srcRect.width() != dstRect.width() || srcRect.height() != dstRect.height()) {
+        return false;
+    }
+    return this->onCanCopySurface(dst, src, srcRect, dstRect.topLeft());
 }
 
 bool GrCaps::validateSurfaceParams(const SkISize& dimensions, const GrBackendFormat& format,

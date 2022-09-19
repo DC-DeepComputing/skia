@@ -108,7 +108,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest, reporter, ctxInfo, CtsEnfor
             dContext->priv().drawingManager()->newCopyRenderTask(srcSC->asSurfaceProxyRef(),
                                                                  SkIRect::MakeWH(10, 10),
                                                                  dstSC->asSurfaceProxyRef(),
-                                                                 {0, 0},
+                                                                 SkIRect::MakeWH(10, 10),
+                                                                 GrSamplerState::Filter::kNearest,
                                                                  kTopLeft_GrSurfaceOrigin);
 
     if (!task) {

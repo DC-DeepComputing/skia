@@ -1056,14 +1056,16 @@ sk_sp<GrRenderTask> SurfaceContext::copy(sk_sp<GrSurfaceProxy> src,
         return nullptr;
     }
 
-    if (!caps->canCopySurface(this->asSurfaceProxy(), src.get(), srcRect, dstPoint)) {
+    SkIRect dstRect = SkIRect::MakePtSize(dstPoint, srcRect.size());
+    if (!caps->canCopySurface(this->asSurfaceProxy(), src.get(), srcRect, dstRect)) {
         return nullptr;
     }
 
     return this->drawingManager()->newCopyRenderTask(std::move(src),
                                                      srcRect,
                                                      this->asSurfaceProxyRef(),
-                                                     dstPoint,
+                                                     dstRect,
+                                                     GrSamplerState::Filter::kNearest,
                                                      this->origin());
 }
 

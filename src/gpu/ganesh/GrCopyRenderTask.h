@@ -9,6 +9,7 @@
 #define GrCopyRenderTask_DEFINED
 
 #include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrSamplerState.h"
 
 class GrCopyRenderTask final : public GrRenderTask {
 public:
@@ -20,7 +21,8 @@ public:
                                     sk_sp<GrSurfaceProxy> src,
                                     SkIRect srcRect,
                                     sk_sp<GrSurfaceProxy> dst,
-                                    SkIPoint dstPoint,
+                                    SkIRect dstRect,
+                                    GrSamplerState::Filter filter,
                                     GrSurfaceOrigin);
 
 private:
@@ -28,7 +30,8 @@ private:
                      sk_sp<GrSurfaceProxy> src,
                      SkIRect srcRect,
                      sk_sp<GrSurfaceProxy> dst,
-                     SkIPoint dstPoint,
+                     SkIRect dstRect,
+                     GrSamplerState::Filter filter,
                      GrSurfaceOrigin);
 
     void onMakeSkippable() override { fSrc.reset(); }
@@ -48,7 +51,8 @@ private:
 
     sk_sp<GrSurfaceProxy> fSrc;
     SkIRect fSrcRect;
-    SkIPoint fDstPoint;
+    SkIRect fDstRect;
+    GrSamplerState::Filter fFilter;
     GrSurfaceOrigin fOrigin;
 };
 
