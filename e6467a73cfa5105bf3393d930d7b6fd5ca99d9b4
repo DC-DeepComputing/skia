@@ -1,6 +1,247 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "04553aa3_910a8a94",
+        "filename": "modules/skottie/include/SkottieProperty.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "nit: move impl to .cpp, like the others.",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a1a76f_2f75b39b",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "This is used as a general fallback for multiple resource types (images, fonts).  Since we\u0027re only dealing with image assets for now, we can leave it out (and move the asset lookup logic to loadImageAsset).",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 5
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a3584e_f2942725",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "If we store ImageAssets, we can return them directly here.",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 272,
+        "endChar": 23
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "989ae7dc_da08eee4",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "In my experience, STL containers are more bloated than Skia containers.  Might be interesting to see if swapping for SkTHashMap reduces the binary size (follow up).",
+      "range": {
+        "startLine": 276,
+        "startChar": 4,
+        "endLine": 276,
+        "endChar": 22
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc6b664_2e8a8433",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "This is not setting the property on the fly, but saving the handle to set everything up at the end of animation parsing -- right?\n\nCan we try the on-the-fly approach first (also to match code comments):\n\n    if (auto slot \u003d fTextMap.find(node_name) !\u003d fTextMap.end()) {\n        auto handle \u003d t();\n        \n        auto txt \u003d t.get();\n        txt.fText \u003d slot.second;\n        t.set(txt);\n    }\n    \nThen 1) we don\u0027t need to store handles in maps anymore and 2) we can remove onAnimationBuilt().",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 9
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d2db3f2_6d1535fc",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "We can make these class-private -- move the forward declaration to SlotManager.",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 32
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71065889_34b5210f",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "final : public SkRefCnt\n\n(let\u0027s make this ref-countable, to facilitate storing/sharing if needed)",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ffee98b_64347d79",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "SkColor",
+      "range": {
+        "startLine": 141,
+        "startChar": 35,
+        "endLine": 141,
+        "endChar": 38
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58edf4b2_f56bf57d",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "I suspect clients will want to update more than just the string value -- but not all the text props.  That would require some mechanism to track which TextPropertyValue fields have been specified, and we\u0027ll cross that bridge when we get there.\n\nFor now, I suggest qualifying the name to avoid having to rename later:\n\n    setTextStringSlot(std::string, SkString)",
+      "range": {
+        "startLine": 142,
+        "startChar": 9,
+        "endLine": 142,
+        "endChar": 20
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e08bc9b2_e75ad4ec",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "We ultimately store an SkString value, so instead of converting on the fly and possibly creating a bunch of SkStrings, we should make the client pass one here for the value.  \n\n(SkString copying is cheap, as the actual string data is shared)",
+      "range": {
+        "startLine": 142,
+        "startChar": 34,
+        "endLine": 142,
+        "endChar": 45
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06cb512a_d46b7930",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-19T15:21:59Z",
+      "side": 1,
+      "message": "Clients should pass ImageAssets instead of SkData.  That way we can support external codecs (for video, etc), while SkData forces decoding within Skottie, with the built-in image codecs.",
+      "range": {
+        "startLine": 143,
+        "startChar": 35,
+        "endLine": 143,
+        "endChar": 48
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "42492bcc_16e61b4c",
