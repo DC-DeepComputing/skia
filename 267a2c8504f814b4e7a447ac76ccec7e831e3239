@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c82c58_1ef4941a",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-19T17:04:16Z",
+      "side": 1,
+      "message": "Yup: https://skia-review.googlesource.com/c/skia/+/276098",
+      "parentUuid": "74cd416e_8e1bf5cf",
+      "range": {
+        "startLine": 177,
+        "startChar": 13,
+        "endLine": 177,
+        "endChar": 28
+      },
+      "revId": "267a2c8504f814b4e7a447ac76ccec7e831e3239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9c1b1133_11eab968",
