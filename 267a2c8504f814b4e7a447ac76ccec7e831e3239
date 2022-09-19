@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1b1133_11eab968",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-19T16:26:32Z",
+      "side": 1,
+      "message": "There are a few places other than this that we\u0027d have to change to swap the order, but this covers most of it. Graphite concats matrices in shader code, RSXform text does some gymnastics to work around LM order, and I think Florin found something similar in Skottie. Otherwise, it\u0027s just adjusting GMs that explicitly test for the current order.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 51
+      },
+      "revId": "267a2c8504f814b4e7a447ac76ccec7e831e3239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
