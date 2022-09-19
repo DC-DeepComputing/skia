@@ -1,5 +1,46 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b92ecef_539b310b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-19T19:38:49Z",
+      "side": 1,
+      "message": "IIUC the change, we now emit \"inline\" but take care to omit noinline and sk_has_side_effects, so we are still not re-emitting certain flags. Maybe update the commit message with that detail?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "7345065a7c1feeaeed7099b31736381c23fa9d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e517984_6d519f64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-19T19:38:49Z",
+      "side": 1,
+      "message": "LGTM % one question about the commit message",
+      "revId": "7345065a7c1feeaeed7099b31736381c23fa9d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
