@@ -204,7 +204,7 @@ private:
                               size_t offset) override;
 
     bool onCopySurface(GrSurface* dst, GrSurface* src, const SkIRect& srcRect,
-                       const SkIPoint& dstPoint) override;
+                       const SkIRect& dstRect, GrSamplerState::Filter) override;
 
     bool onRegenerateMipMapLevels(GrTexture*) override;
 
