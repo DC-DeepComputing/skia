@@ -16,6 +16,24 @@
       "message": "I think this is okay, although it\u0027s going to be a bit of a trap if someone has a build with both optimize_size and compile_sksl_tests, right? We could check that in GN and throw an error, but I suppose everyone will hit it at most once?",
       "revId": "1fb95ab62f96b4d3067f17c2917a3ac6376f05a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0344057e_043d3193",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-19T17:39:26Z",
+      "side": 1,
+      "message": "I\u0027m not sure there\u0027s an error we can present that would be more compelling than seeing a CL with 250 changed tests. I\u0027m not necessarily opposed to adding code for this if you want it to be super explicit though.\n\n(This is what such a CL would look like: http://review.skia.org/569744)",
+      "parentUuid": "e3e4bbde_e7b490d0",
+      "revId": "1fb95ab62f96b4d3067f17c2917a3ac6376f05a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
