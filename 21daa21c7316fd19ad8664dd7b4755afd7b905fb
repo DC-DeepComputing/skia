@@ -16,6 +16,98 @@
       "message": "John, the only change I made besides nits from when we talked is that I added defined(SK_GRAPHITE_ENABLED) \u0026\u0026 defined(SK_ENABLE_SKSL) around the preamble.",
       "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433e0f53_dbbcb7a1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T17:35:12Z",
+      "side": 1,
+      "message": "nit: alignment",
+      "range": {
+        "startLine": 561,
+        "startChar": 33,
+        "endLine": 561,
+        "endChar": 39
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85dd6f7c_c1df7913",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T17:35:12Z",
+      "side": 1,
+      "message": "I think this can just be \"half(1)\" and then we don\u0027t need the kDestColor flag in the snippet entry. The local matrix shader only wraps other shaders, so should never need to forward a real dest color to its child.",
+      "range": {
+        "startLine": 574,
+        "startChar": 67,
+        "endLine": 574,
+        "endChar": 76
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00051840_dcecd9f9",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T17:35:12Z",
+      "side": 1,
+      "message": "Can we add to this comment that this helper function meets the requirements for use with GenerateDefaultExpression, so there\u0027s no need to have a separate special GenerateLocalMatrixExpression?",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 582,
+        "endChar": 57
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ad443e_30bedacf",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T17:35:12Z",
+      "side": 1,
+      "message": "See note about about remove kDestColor, but can we also get rid of kPriorStageOutput? I\u0027m not familiar enough with how that flag is used in this code generation to know right away, but it could be the cause of the crashes in null_child_rt?",
+      "range": {
+        "startLine": 1238,
+        "startChar": 13,
+        "endLine": 1239,
+        "endChar": 50
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
