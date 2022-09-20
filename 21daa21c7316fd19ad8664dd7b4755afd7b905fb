@@ -108,6 +108,30 @@
       },
       "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8cddc5a_224f9d0a",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T17:53:10Z",
+      "side": 1,
+      "message": "The crashes in null_child_rt are not related. It\u0027s accessing `fsUniforms` and `dev2LocalUni` when they don\u0027t exist: http://screen/94Hjj6y5sxFea6P",
+      "parentUuid": "99ad443e_30bedacf",
+      "range": {
+        "startLine": 1238,
+        "startChar": 13,
+        "endLine": 1239,
+        "endChar": 50
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
