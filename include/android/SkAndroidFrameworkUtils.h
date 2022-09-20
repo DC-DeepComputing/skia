@@ -54,6 +54,12 @@ public:
      *  @return SkCanvas that was found in the innermost SkPaintFilterCanvas.
      */
     static SkCanvas* getBaseWrappedCanvas(SkCanvas* canvas);
+
+    /**
+     * Skia will change the order in which local matrices concatenate. In order to not break Android
+     * apps targeting older API levels we offer this function to use the legacy concatenation order.
+     */
+    static void UseLegacyLocalMatrixConcatenation();
 };
 
 #endif // SK_BUILD_FOR_ANDROID_ANDROID
