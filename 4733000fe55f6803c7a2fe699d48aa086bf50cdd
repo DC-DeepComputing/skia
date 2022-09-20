@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bea31e8_f4f8646c",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-20T18:41:56Z",
+      "side": 1,
+      "message": "I think this throws an exception if the key is not present (and we don\u0027t build with exceptions enabled).\n\nWe should handle that case gracefully:\n\n    const auto it \u003d fImageAssetMap.find(slot_name);\n    return it \u003d\u003d fImageAssetMap.end() ? nullptr : it.second;",
+      "range": {
+        "startLine": 265,
+        "startChar": 30,
+        "endLine": 265,
+        "endChar": 32
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccb7f92_a1ed2863",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-20T18:41:56Z",
+      "side": 1,
+      "message": "Is this the same a regular map lookup by key?  Would something like this work instead?\n\n    const auto it \u003d fColorMap.find(node_name);\n    if (it !\u003d fColorMap.end()) {\n        c()-\u003eset(it.second);\n    }",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d84e45_b38ec20c",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-20T18:41:56Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 38
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f456be3_5896afaf",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-20T18:41:56Z",
+      "side": 1,
+      "message": "nit: std::move(text)",
+      "range": {
+        "startLine": 328,
+        "startChar": 42,
+        "endLine": 328,
+        "endChar": 46
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c164f1fb_de35098d",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-20T18:41:56Z",
+      "side": 1,
+      "message": "nit: std::move(img)",
+      "range": {
+        "startLine": 332,
+        "startChar": 48,
+        "endLine": 332,
+        "endChar": 51
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
