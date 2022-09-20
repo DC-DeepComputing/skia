@@ -85,6 +85,30 @@
       },
       "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d372a8f7_08de7f69",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:11:07Z",
+      "side": 1,
+      "message": "In fact delete `sk_local_matrix_shader` entirely now that we\u0027re no longer calling it.",
+      "parentUuid": "acbbb1c4_2a79207a",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
