@@ -47,4 +47,9 @@ SkCanvas* SkAndroidFrameworkUtils::getBaseWrappedCanvas(SkCanvas* canvas) {
     }
     return result;
 }
+
+void SkAndroidFrameworkUtils::UseLegacyLocalMatrixConcatenation() {
+    // Nothing to do yet.
+}
+
 #endif // SK_BUILD_FOR_ANDROID_FRAMEWORK
