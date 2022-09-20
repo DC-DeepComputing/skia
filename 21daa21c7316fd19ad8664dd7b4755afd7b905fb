@@ -173,6 +173,30 @@
       },
       "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ebd08d0_599b53f3",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T18:20:09Z",
+      "side": 1,
+      "message": "Oof, it looks like both EmitPaintParamsUniforms() and EmitPaintParamsStorageBuffer() could trigger this because they check `if (!have_uniforms(readers)) {\n        return {};\n    }` at the beginning, but then later on add the extra dev2Local uniform. I think that if check should be `!have_uniforms(readers) \u0026\u0026 !needsLocalCoords`",
+      "parentUuid": "82f8c2f6_255b1f8e",
+      "range": {
+        "startLine": 1238,
+        "startChar": 13,
+        "endLine": 1239,
+        "endChar": 50
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
