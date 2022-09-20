@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf13e94_2165e218",
+        "filename": "src/utils/SkParse.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-20T16:56:57Z",
+      "side": 1,
+      "message": "maxAbsValue ?",
+      "range": {
+        "startLine": 145,
+        "startChar": 12,
+        "endLine": 145,
+        "endChar": 25
+      },
+      "revId": "115913301c328de8504569d3250d86611cf26d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a703240_917af1ca",
+        "filename": "src/utils/SkParse.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-20T16:56:57Z",
+      "side": 1,
+      "message": "Add {} around this return ?",
+      "revId": "115913301c328de8504569d3250d86611cf26d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2244d6e1_8895c178",
+        "filename": "tests/SVGDeviceTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-20T16:56:57Z",
+      "side": 1,
+      "message": "We should probably use std::to_string to create this",
+      "range": {
+        "startLine": 615,
+        "startChar": 48,
+        "endLine": 615,
+        "endChar": 59
+      },
+      "revId": "115913301c328de8504569d3250d86611cf26d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e85501ef_5d338282",
+        "filename": "tests/SVGDeviceTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-20T16:56:57Z",
+      "side": 1,
+      "message": "This one too",
+      "range": {
+        "startLine": 618,
+        "startChar": 48,
+        "endLine": 618,
+        "endChar": 59
+      },
+      "revId": "115913301c328de8504569d3250d86611cf26d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
