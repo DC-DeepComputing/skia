@@ -10,7 +10,6 @@ OpMemberName %_UniformBuffer 0 "colorGreen"
 OpName %_entrypoint_v "_entrypoint_v"
 OpName %main "main"
 OpName %x "x"
-OpName %y "y"
 OpName %z "z"
 OpDecorate %sk_Clockwise BuiltIn FrontFacing
 OpDecorate %sk_FragColor RelaxedPrecision
@@ -22,7 +21,7 @@ OpDecorate %_UniformBuffer Block
 OpDecorate %10 Binding 0
 OpDecorate %10 DescriptorSet 0
 OpDecorate %_arr_int_int_1 ArrayStride 16
-OpDecorate %39 RelaxedPrecision
+OpDecorate %38 RelaxedPrecision
 %bool = OpTypeBool
 %_ptr_Input_bool = OpTypePointer Input %bool
 %sk_Clockwise = OpVariable %_ptr_Input_bool Input
@@ -59,14 +58,11 @@ OpFunctionEnd
 %24 = OpFunctionParameter %_ptr_Function_v2float
 %25 = OpLabel
 %x = OpVariable %_ptr_Function__arr_int_int_1 Function
-%y = OpVariable %_ptr_Function_int Function
 %z = OpVariable %_ptr_Function_int Function
-OpStore %y %int_0
 OpStore %z %int_0
-OpStore %y %int_0
-%35 = OpAccessChain %_ptr_Function_int %x %int_0
-%36 = OpLoad %int %35
-%37 = OpAccessChain %_ptr_Uniform_v4float %10 %int_0
-%39 = OpLoad %v4float %37
-OpReturnValue %39
+%34 = OpAccessChain %_ptr_Function_int %x %int_0
+%35 = OpLoad %int %34
+%36 = OpAccessChain %_ptr_Uniform_v4float %10 %int_0
+%38 = OpLoad %v4float %36
+OpReturnValue %38
 OpFunctionEnd
