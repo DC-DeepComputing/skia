@@ -49,6 +49,10 @@ SkCanvas* SkAndroidFrameworkUtils::getBaseWrappedCanvas(SkCanvas* canvas) {
     return result;
 }
 
+<<<<<<< PATCH SET (dbd070 Method to use old matrix concat for apps targeting earlier A)
+void SkAndroidFrameworkUtils::UseLegacyLocalMatrixConcatenation() {
+    // Nothing to do yet.
+=======
 bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
                                                       LinearGradientInfo* info) {
     SkASSERT(shader);
@@ -69,6 +73,7 @@ bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
         info->fGradientFlags = baseInfo->fGradientFlags;
     }
     return true;
+>>>>>>> BASE      (a49192 Separate sk_sp and bare ptr SkMesh[Specification] getters)
 }
 
 #endif // SK_BUILD_FOR_ANDROID_FRAMEWORK
