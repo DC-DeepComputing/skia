@@ -97,3 +97,8 @@ build:enforce_iwyu --features=skia_enforce_iwyu --cc_output_directory_tag=iwyu \
                    --with_harfbuzz --with_icu \
                    --enable_sksl_tracing \
                    --enable_svg_canvas --enable_pdf_backend
+
+
+build:for_tests --include_decoder=png_decode_codec --enable_gpu_test_utils \
+                --action_env=DISPLAY=:1
+build:gl_testing --config=for_tests --gpu_backend=gl_backend --cc_output_directory_tag=gl_testing

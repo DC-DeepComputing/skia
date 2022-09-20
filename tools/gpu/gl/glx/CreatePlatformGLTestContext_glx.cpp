@@ -87,7 +87,7 @@ static Display* get_display() {
     };
     static std::unique_ptr<AutoDisplay> ad;
     static SkOnce once;
-    once([] { ad = std::make_unique<AutoDisplay>(); });
+    once([] { SkDebugf("AutoDisplay\n"); ad = std::make_unique<AutoDisplay>(); });
     return ad->display();
 }
 
@@ -110,7 +110,7 @@ GLXGLTestContext::GLXGLTestContext(GrGLStandard forcedGpuAPI, GLXGLTestContext* 
     // We cross our fingers that this is the first X call in the program and that if the application
     // is actually threaded that this succeeds.
     static SkOnce gOnce;
-    gOnce([] { XInitThreads(); });
+    gOnce([] { SkDebugf("XInitThreads\n"); XInitThreads(); });
 
     fDisplay = get_display();
 

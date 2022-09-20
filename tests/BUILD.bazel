@@ -1,0 +1,53 @@
+load("//bazel:macros.bzl", "skia_cc_library", "skia_cc_test")
+
+skia_cc_library(
+    name = "test_harness",
+    testonly = True,
+    srcs = [
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "//tools/flags",
+    ],
+    hdrs = [
+        "CtsEnforcement.h",
+        "Test.h",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["GPUTest.h"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        "//:skia_internal",
+        "//tools:registry",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["//tools/gpu:utils"],
+        "//conditions:default": [],
+    }),
+)
+
+skia_cc_test(
+    name = "MatrixProcs",
+    size = "small",
+    srcs = [
+        "BazelTestRunner.cpp",
+        "MatrixProcsTest.cpp",
+    ],
+    deps = [
+        ":test_harness",
+        "//:skia_internal",
+    ],
+)
+
+skia_cc_test(
+    name = "GPUDrawPathTest",
+    size = "small",
+    srcs = [
+        "BazelTestRunner.cpp",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["GpuDrawPathTest.cpp"],
+        "//conditions:default": [],
+    }),
+    deps = [
+        ":test_harness",
+        "//:skia_internal",
+    ],
+)
