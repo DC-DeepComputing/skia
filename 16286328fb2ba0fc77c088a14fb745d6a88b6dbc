@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48548a1b_286f06b2",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T14:09:13Z",
+      "side": 1,
+      "message": "dev2Local is still present in `PaintParams.cpp` and used on line 160 of this file, but I deleted the portion about the prelocal matrices 👍",
+      "parentUuid": "e1157beb_3d4899a5",
+      "range": {
+        "startLine": 149,
+        "startChar": 48,
+        "endLine": 149,
+        "endChar": 73
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bbac0ac_f5fdce65",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-09-19T19:00:11Z",
       "side": 1,
       "message": "Shouldn\u0027t this be removed?",
+      "range": {
+        "startLine": 378,
+        "startChar": 64,
+        "endLine": 378,
+        "endChar": 83
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8243598a_d1be3305",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T14:09:13Z",
+      "side": 1,
+      "message": "You\u0027re absolutely right.",
+      "parentUuid": "8bbac0ac_f5fdce65",
       "range": {
         "startLine": 378,
         "startChar": 64,
@@ -117,6 +165,30 @@
       "writtenOn": "2022-09-19T19:01:12Z",
       "side": 1,
       "message": "Merge damage??",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 29
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb2dca99_790397a0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 22
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T14:09:13Z",
+      "side": 1,
+      "message": "Yep, you got it. Thank you!",
+      "parentUuid": "10895a8f_679b85e3",
       "range": {
         "startLine": 53,
         "startChar": 4,
