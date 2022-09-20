@@ -16,6 +16,24 @@
       "message": "Ben (and others on CC), do you have any insight as to why the linker was not failing? Are there any flags we can add to make it fail louder if a symlink does not exist?",
       "revId": "0c16c625c368d9272d112166c212012b44d361ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95de0d78_51f67a52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-20T20:51:15Z",
+      "side": 1,
+      "message": "The libx11-dev itself contains the headers and such (see https://packages.debian.org/sid/amd64/libx11-dev/filelist ), but does not provide any .so files (as you point out the one .so is actually a symlink). It does provide a .a file which appears to be a real file. This package then depends on other packages for which it provides those headers. (See https://packages.debian.org/sid/libx11-dev .) Is it possible the linker was finding the .a file to find the data to make the link work? It looks like linkers with -lfoo will look for libfoo.so preferentially (unless -static is specified) but failing that they will look for a libfoo.a.",
+      "parentUuid": "c984f18e_c22417b1",
+      "revId": "0c16c625c368d9272d112166c212012b44d361ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
