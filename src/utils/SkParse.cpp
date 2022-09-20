@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkTo.h"
 #include "include/utils/SkParse.h"
 
 #include <cstdlib>
+#include <limits>
 #include <string>
 
 static inline bool is_between(int c, int min, int max)
@@ -139,7 +141,7 @@ const char* SkParse::FindS32(const char str[], int32_t* value)
     SkASSERT(str);
     str = skip_ws(str);
 
-    int sign = 0;
+    int sign = 1;
     if (*str == '-')
     {
         sign = -1;
@@ -149,14 +151,26 @@ const char* SkParse::FindS32(const char str[], int32_t* value)
     if (!is_digit(*str))
         return nullptr;
 
-    int n = 0;
+    int64_t n = 0;
     while (is_digit(*str))
     {
         n = 10*n + *str - '0';
+        if (n > std::numeric_limits<int>::max()) {
+            // abs(INT_MIN) > abs(INT_MAX)
+            if (sign < 0) {
+                if (n > -static_cast<int64_t>(std::numeric_limits<int>::min())) {
+                    return nullptr;
+                }
+            } else {
+                return nullptr;
+            }
+        }
+
         str += 1;
     }
-    if (value)
-        *value = (n ^ sign) - sign;
+    if (value) {
+        *value = SkToS32(sign*n);
+    }
     return str;
 }
 
