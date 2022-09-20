@@ -687,6 +687,11 @@ public:
      */
     sk_sp<SkImage> makeImageSnapshot(const SkIRect& bounds);
 
+    sk_sp<SkImage> makeImageSnapshotNoCopy();
+
+    sk_sp<SkImage> makeImageSnapshotCopy();
+
+
     /** Draws SkSurface contents to canvas, with its top-left corner at (x, y).
 
         If SkPaint paint is not nullptr, apply SkColorFilter, alpha, SkImageFilter, and SkBlendMode.

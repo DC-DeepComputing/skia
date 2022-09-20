@@ -151,7 +151,7 @@ void Context::precompile(CombinationBuilder* combinationBuilder) {
 
 #endif // SK_ENABLE_PRECOMPILE
 
-void Context::deleteBackendTexture(BackendTexture& texture) {
+void Context::deleteBackendTexture1(BackendTexture& texture) {
     ASSERT_SINGLE_OWNER
 
     if (!texture.isValid() || texture.backend() != this->backend()) {

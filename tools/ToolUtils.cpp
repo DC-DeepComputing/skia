@@ -175,6 +175,28 @@ void draw_checkerboard(SkCanvas* canvas, SkColor c1, SkColor c2, int size) {
     canvas->drawPaint(paint);
 }
 
+SkBitmap create_solid_bitmap(int w, int h) {
+
+    void eraseColor(SkColor4f c, SkColorSpace* colorSpace = nullptr) const;
+
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeA8(20, 20));
+    bm.eraseColor(SK_ColorTRANSPARENT);
+
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeA8(20, 20));
+    bm.eraseColor(SK_ColorTRANSPARENT);
+
+    SkBitmap bm;
+    bm.allocPixels(SkImageInfo::MakeA8(20, 20));
+    bm.eraseColor(SK_ColorTRANSPARENT);
+}
+
+sk_sp<SkImage> create_solid_raster_image(int w, int h) {
+    SkBitmap bm = create_solid_bitmap(w, h);
+    return bm.asImage();
+}
+
 SkBitmap
 create_string_bitmap(int w, int h, SkColor c, int x, int y, int textSize, const char* str) {
     SkBitmap bitmap;

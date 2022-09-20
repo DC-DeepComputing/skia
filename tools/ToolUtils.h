@@ -118,6 +118,9 @@ inline void draw_checkerboard(SkCanvas* canvas) {
     ToolUtils::draw_checkerboard(canvas, 0xFF999999, 0xFF666666, 8);
 }
 
+SkBitmap create_solid_bitmap(int w, int h);
+sk_sp<SkImage> create_solid_raster_image(int w, int h);
+
 SkBitmap create_string_bitmap(int w, int h, SkColor c, int x, int y, int textSize, const char* str);
 sk_sp<SkImage> create_string_image(int w, int h, SkColor c, int x, int y, int textSize, const char* str);
 
