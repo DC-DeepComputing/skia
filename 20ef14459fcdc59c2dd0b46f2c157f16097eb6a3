@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "278d9132_3baa128a",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T16:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "669a6a8e_260ce054",
+      "range": {
+        "startLine": 411,
+        "startChar": 67,
+        "endLine": 411,
+        "endChar": 73
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22abd6a3_813817f6",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-09-20T14:32:53Z",
       "side": 1,
       "message": "nit: Not your fault, but this comment had fallen out of date. The right param list would be\n\n`half4 inColor, half4 destColor, float2 pos`",
+      "range": {
+        "startLine": 442,
+        "startChar": 35,
+        "endLine": 442,
+        "endChar": 48
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02f9758a_6feb1aa5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T16:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22abd6a3_813817f6",
       "range": {
         "startLine": 442,
         "startChar": 35,
@@ -101,6 +149,30 @@
       "side": 1,
       "message": "In fact delete `sk_local_matrix_shader` entirely now that we\u0027re no longer calling it.",
       "parentUuid": "acbbb1c4_2a79207a",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e09566f_0c64e805",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T16:24:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d372a8f7_08de7f69",
       "range": {
         "startLine": 15,
         "startChar": 0,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bfbe8a6_2983e559",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T16:24:06Z",
+      "side": 1,
+      "message": "John, the only change I made besides nits from when we talked is that I added defined(SK_GRAPHITE_ENABLED) \u0026\u0026 defined(SK_ENABLE_SKSL) around the preamble.",
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

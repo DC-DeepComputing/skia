@@ -178,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adaa3215_4bd205ea",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T16:24:06Z",
+      "side": 1,
+      "message": "Alright, John and I got on a call and tested out a local matrix preamble implementation that works for `GM_local_matrix_shader_rt`. The SkSL output for `GM_localmatrixshader_nested` looks as expected, but the results do not - we suspect this is caused by logic other than that we\u0027ve added for the local matrix shader.",
+      "parentUuid": "2f3d766f_24c64b04",
+      "range": {
+        "startLine": 1206,
+        "startChar": 12,
+        "endLine": 1207,
+        "endChar": 36
+      },
+      "revId": "16286328fb2ba0fc77c088a14fb745d6a88b6dbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10895a8f_679b85e3",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 22
