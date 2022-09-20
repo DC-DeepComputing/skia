@@ -33,6 +33,29 @@
       "message": "Ping",
       "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92437ce7_0d8bb0e3",
+        "filename": "include/gpu/mtl/MtlMemoryAllocator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-20T17:07:46Z",
+      "side": 1,
+      "message": "So maybe this is just a dumb thing for anyone to do, but what happens if some client tries to make a MtlMemoryAllocator subclass in some cpp file. Their subclass would not have the two virtuals below to implement. Then the client passes that memory allocator into Skia via Context::MakeMetal. How would we know they gave us a sub class of the memory allocator that doesn\u0027t actually have valid virtual functions?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
