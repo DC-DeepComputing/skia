@@ -609,4 +609,15 @@ DEF_TEST(SVGDevice_color_shader, reporter) {
     REPORTER_ASSERT(reporter, !strcmp(fill, "yellow"));
 }
 
+DEF_TEST(SVGDevice_parse_minmax, reporter) {
+    int val;
+
+    REPORTER_ASSERT(reporter, SkParse::FindS32("2147483647", &val));   // INT_MAX
+    REPORTER_ASSERT(reporter, val == std::numeric_limits<int>::max());
+    REPORTER_ASSERT(reporter, !SkParse::FindS32("2147483648", &val));
+    REPORTER_ASSERT(reporter, SkParse::FindS32("-2147483648", &val));  // INT_MIN
+    REPORTER_ASSERT(reporter, val == std::numeric_limits<int>::min());
+    REPORTER_ASSERT(reporter, !SkParse::FindS32("-2147483649", &val));
+}
+
 #endif
