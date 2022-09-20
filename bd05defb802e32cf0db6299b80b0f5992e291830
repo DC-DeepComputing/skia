@@ -56,6 +56,30 @@
       },
       "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba40ae6a_54b5e273",
+        "filename": "include/gpu/mtl/MtlMemoryAllocator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-20T19:12:44Z",
+      "side": 1,
+      "message": "I can add a static assert there. I think the ultimate solution is to use MetalCPP.",
+      "parentUuid": "92437ce7_0d8bb0e3",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
