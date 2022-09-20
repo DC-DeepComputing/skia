@@ -517,8 +517,12 @@ std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProces
 void SkTwoPointConicalGradient::addToKey(const SkKeyContext& keyContext,
                                          SkPaintParamsKeyBuilder* builder,
                                          SkPipelineDataGatherer* gatherer) const {
+    const bool needsLocalMatrixBlock = !this->getLocalMatrix().isIdentity();
+    if (needsLocalMatrixBlock) {
+        LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, this->getLocalMatrix());
+    }
+
     GradientShaderBlocks::GradientData data(kConical_GradientType,
-                                            SkM44(this->getLocalMatrix()),
                                             fCenter1, fCenter2,
                                             fRadius1, fRadius2,
                                             0.0f, 0.0f,
@@ -529,6 +533,9 @@ void SkTwoPointConicalGradient::addToKey(const SkKeyContext& keyContext,
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();
+    if (needsLocalMatrixBlock) {
+        builder->endBlock();
+    }
 }
 #endif
 
