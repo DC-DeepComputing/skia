@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e35be26_c7d24bec",
+        "filename": "modules/skottie/include/SkottieProperty.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04553aa3_910a8a94",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1a1a76f_2f75b39b",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62861fa_ffd009f1",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1a1a76f_2f75b39b",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 5
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00a3584e_f2942725",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-09-19T15:21:59Z",
       "side": 1,
       "message": "If we store ImageAssets, we can return them directly here.",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 272,
+        "endChar": 23
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa5820e_286507c6",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00a3584e_f2942725",
       "range": {
         "startLine": 269,
         "startChar": 0,
@@ -110,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "634816d2_3d3085e2",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Just tested, you can in fact set properties on the fly, the ordering works out. Switched to the new approach and updated the docs.",
+      "parentUuid": "8dc6b664_2e8a8433",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 9
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d2db3f2_6d1535fc",
@@ -123,6 +213,30 @@
       "writtenOn": "2022-09-19T15:21:59Z",
       "side": 1,
       "message": "We can make these class-private -- move the forward declaration to SlotManager.",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 32
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a7fabc_0dd87032",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d2db3f2_6d1535fc",
       "range": {
         "startLine": 129,
         "startChar": 0,
@@ -152,6 +266,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c996be9_6a6128e0",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Ran into an issue of trying to call unref on the forward declared classes. Make sure my impl of this inheritance is correct.",
+      "parentUuid": "71065889_34b5210f",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ffee98b_64347d79",
         "filename": "modules/skottie/utils/SkottieUtils.h",
         "patchSetId": 2
@@ -163,6 +295,30 @@
       "writtenOn": "2022-09-19T15:21:59Z",
       "side": 1,
       "message": "SkColor",
+      "range": {
+        "startLine": 141,
+        "startChar": 35,
+        "endLine": 141,
+        "endChar": 38
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "709bc0ad_eaf30d24",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ffee98b_64347d79",
       "range": {
         "startLine": 141,
         "startChar": 35,
@@ -219,6 +375,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d73b721a_0790d80b",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e08bc9b2_e75ad4ec",
+      "range": {
+        "startLine": 142,
+        "startChar": 34,
+        "endLine": 142,
+        "endChar": 45
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c1d1bbb_70a0c8ac",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58edf4b2_f56bf57d",
+      "range": {
+        "startLine": 142,
+        "startChar": 9,
+        "endLine": 142,
+        "endChar": 20
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06cb512a_d46b7930",
@@ -232,6 +436,30 @@
       "writtenOn": "2022-09-19T15:21:59Z",
       "side": 1,
       "message": "Clients should pass ImageAssets instead of SkData.  That way we can support external codecs (for video, etc), while SkData forces decoding within Skottie, with the built-in image codecs.",
+      "range": {
+        "startLine": 143,
+        "startChar": 35,
+        "endLine": 143,
+        "endChar": 48
+      },
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8882acef_dfd675d9",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:09:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06cb512a_d46b7930",
       "range": {
         "startLine": 143,
         "startChar": 35,
