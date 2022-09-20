@@ -282,6 +282,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "053deb3c_4b0c7e80",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-20T14:24:49Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "1c996be9_6a6128e0",
+      "revId": "e6467a73cfa5105bf3393d930d7b6fd5ca99d9b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ffee98b_64347d79",
