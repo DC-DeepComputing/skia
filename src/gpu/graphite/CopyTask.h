@@ -34,7 +34,13 @@ public:
 
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
-private:
+#ifdef SK_DEBUG
+    void dump() const override {
+        SkDebugf("CopyTextureToBufferTask\n");
+    }
+#endif
+
+    private:
     CopyTextureToBufferTask(sk_sp<Texture>,
                             SkIRect srcRect,
                             sk_sp<Buffer>,

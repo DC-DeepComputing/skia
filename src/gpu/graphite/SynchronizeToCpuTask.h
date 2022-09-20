@@ -31,7 +31,13 @@ public:
 
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
-private:
+#ifdef SK_DEBUG
+    void dump() const override {
+        SkDebugf("SynchronizeToCpuTask\n");
+    }
+#endif
+
+    private:
     explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}
 
     sk_sp<Buffer> fBuffer;

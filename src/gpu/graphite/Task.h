@@ -28,6 +28,10 @@ public:
     // Returns true on success; false on failure.
     virtual bool addCommands(ResourceProvider*, CommandBuffer*) = 0;
 
+#ifdef SK_DEBUG
+    virtual void dump() const = 0;
+#endif
+
 protected:
     Task();
 

@@ -39,6 +39,12 @@ public:
 
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
+#ifdef SK_DEBUG
+    void dump() const override {
+        SkDebugf("RenderPassTask\n");
+    }
+#endif
+
 private:
     RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                    const RenderPassDesc&,

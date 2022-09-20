@@ -28,6 +28,10 @@ public:
 
     void reset();
 
+#ifdef SK_DEBUG
+    void dump() const;
+#endif
+
 protected:
 private:
     std::vector<sk_sp<Task>> fTasks;

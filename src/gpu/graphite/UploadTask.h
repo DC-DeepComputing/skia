@@ -101,7 +101,13 @@ public:
 
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
-private:
+#ifdef SK_DEBUG
+    void dump() const override {
+        SkDebugf("UploadTask\n");
+    }
+#endif
+
+    private:
     UploadTask(std::vector<UploadInstance>);
     UploadTask(const UploadInstance&);
 
