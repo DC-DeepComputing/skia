@@ -128,6 +128,30 @@
       },
       "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469871c6_9c99c02b",
+        "filename": "include/gpu/mtl/MtlMemoryAllocator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-20T20:09:19Z",
+      "side": 1,
+      "message": "\"This is the best I can do\" means wrapping the entire class in #ifdef __OBJC__.",
+      "parentUuid": "01d226e6_16e9780e",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
