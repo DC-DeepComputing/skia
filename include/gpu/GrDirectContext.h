@@ -60,6 +60,13 @@ public:
     static sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface>);
     static sk_sp<GrDirectContext> MakeGL(const GrContextOptions&);
     static sk_sp<GrDirectContext> MakeGL();
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    // For now we are just exposing the option to make a protected GL context to the android
+    // framework since the use is still very fragile and works only for their specific use patterns.
+    static sk_sp<GrDirectContext> MakeGLAndroidFramework(sk_sp<const GrGLInterface>,
+                                                         const GrContextOptions&,
+                                                         GrProtected);
+#endif
 #endif
 
 #ifdef SK_VULKAN
@@ -147,6 +154,9 @@ public:
      *
      * The typical use case for this function is that the underlying 3D context was lost and further
      * API calls may crash.
+     *
+     * This call is not valid to be made inside ReleaseProcs passed into SkSurface or SkImages. The
+     * call will simply fail (and assert in debug) if it is called while inside a ReleaseProc.
      *
      * For Vulkan, even if the device becomes lost, the VkQueue, VkDevice, or VkInstance used to
      * create the context must be kept alive even after abandoning the context. Those objects must
@@ -852,6 +862,9 @@ protected:
     GrDirectContext* asDirectContext() override { return this; }
 
 private:
+    static sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface>, const GrContextOptions&,
+                                         GrProtected);
+
     // This call will make sure out work on the GPU is finished and will execute any outstanding
     // asynchronous work (e.g. calling finished procs, freeing resources, etc.) related to the
     // outstanding work on the gpu. The main use currently for this function is when tearing down or
@@ -875,6 +888,10 @@ private:
     sk_sp<GrGpu>                              fGpu;
     std::unique_ptr<GrResourceCache>          fResourceCache;
     std::unique_ptr<GrResourceProvider>       fResourceProvider;
+
+    // This is set before we start calling ReleaseProcs from GrSurfaces. When this is set to true
+    // we will not allow abandonContext calls to be made on the context.
+    bool                                    fInsideReleaseProc = false;
 
     bool                                    fDidTestPMConversions;
     // true if the PM/UPM conversion succeeded; false otherwise

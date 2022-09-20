@@ -144,11 +144,7 @@ private:
     // ensure it isn't called until GPU work related to the resource is completed.
     virtual void onSetRelease(sk_sp<skgpu::RefCntedCallback>) {}
 
-    void invokeReleaseProc() {
-        // Depending on the ref count of fReleaseHelper this may or may not actually trigger the
-        // ReleaseProc to be called.
-        fReleaseHelper.reset();
-    }
+    void invokeReleaseProc();
 
     SkISize                    fDimensions;
     GrInternalSurfaceFlags     fSurfaceFlags;

@@ -112,6 +112,11 @@ public:
         return this->context()->fMappedBufferManager.get();
     }
 
+    void setInsideReleaseProc(bool inside) {
+        SkASSERT(inside != this->context()->fInsideReleaseProc);
+        this->context()->fInsideReleaseProc = inside;
+    }
+
 #if GR_TEST_UTILS
     /** Reset GPU stats */
     void resetGpuStats() const;
