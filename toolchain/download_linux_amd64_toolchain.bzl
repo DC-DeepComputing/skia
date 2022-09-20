@@ -47,6 +47,11 @@ debs_to_install = [
         "url": "https://ftp.debian.org/debian/pool/main/libx/libx11/libx11-dev_1.7.2-1_amd64.deb",
     },
     {
+        # From https://packages.debian.org/bullseye/amd64/libx11-6/download
+        "sha256": "086bd667fc07369472a923da015d182bb0c15a72228a5c0e6ddbcbeaab70acd2",
+        "url": "https://ftp.debian.org/debian/pool/main/libx/libx11/libx11-6_1.7.2-1_amd64.deb",
+    },
+    {
         # From https://packages.debian.org/bullseye/all/x11proto-dev/download
         "sha256": "d5568d587d9ad2664c34c14b0ac538ccb3c567e126ee5291085a8de704a565f5",
         "url": "https://ftp.debian.org/debian/pool/main/x/xorgproto/x11proto-dev_2020.1-1_all.deb",
@@ -86,6 +91,11 @@ debs_to_install = [
         "sha256": "5a50549948bc4363eab32b1083dad2165402c3628f2ee85e9a32563228cc61c1",
         "url": "https://ftp.debian.org/debian/pool/main/libg/libglvnd/libglx-dev_1.3.2-1_amd64.deb",
     },
+    {
+        # From https://packages.debian.org/bullseye/amd64/libglx0/download
+        "sha256": "cb642200f7e28e6dbb4075110a0b441880eeec35c8a00a2198c59c53309e5e17",
+        "url": "https://ftp.debian.org/debian/pool/main/libg/libglvnd/libglx0_1.3.2-1_amd64.deb",
+    },
     # This provides libGL.so for us to link against.
     {
         # From https://packages.debian.org/bullseye/amd64/libgl1/download
@@ -97,6 +107,11 @@ debs_to_install = [
         # From https://packages.debian.org/bullseye/amd64/libx11-xcb-dev/download
         "sha256": "80a2413ace2a0a073f2472059b9e589737cbf8a336fb6862684a5811bf640aa3",
         "url": "https://ftp.debian.org/debian/pool/main/libx/libx11/libx11-xcb-dev_1.7.2-1_amd64.deb",
+    },
+    {
+        # From https://packages.debian.org/bullseye/amd64/libxcb1/download
+        "sha256": "d5e0f047ed766f45eb7473947b70f9e8fddbe45ef22ecfd92ab712c0671a93ac",
+        "url": "https://ftp.debian.org/debian/pool/main/libx/libxcb/libxcb1_1.14-3_amd64.deb",
     },
     # This is used to make sure we include only the headers we need. This corresponds to
     # IWYU version 0.17, which uses Clang 13, like we compile with.
