@@ -174,7 +174,7 @@ public:
 
     // Returns the total local matrix for this shader:
     //
-    //   M = shaderLocalMatrix x outerLocalMatrix
+    //   M = outerLocalMatrix x this->getLocalMatrix()
     //
     SkTCopyOnFirstWrite<SkMatrix> totalLocalMatrix(const SkMatrix* outerLocalMatrix) const;
 
@@ -228,7 +228,11 @@ public:
 #endif
 
     static SkMatrix ConcatLocalMatrices(const SkMatrix& parentLM, const SkMatrix& childLM) {
+#ifdef SK_LEGACY_LOCAL_MATRIX_CONCAT
         return SkMatrix::Concat(childLM, parentLM);
+#else
+        return SkMatrix::Concat(parentLM, childLM);
+#endif
     }
 
 protected:
