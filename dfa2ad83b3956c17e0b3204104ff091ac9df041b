@@ -16,6 +16,236 @@
       "message": "Thanks for looking at this CL.",
       "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f27a9fc5_32af71e5",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "nit, optional: `sizeofT` feels equivalent and would avoid the strange capitalization here",
+      "range": {
+        "startLine": 30,
+        "startChar": 48,
+        "endLine": 30,
+        "endChar": 53
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d3838e_5c316cbe",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "up to you: the standard library usually calls this function `assign`",
+      "range": {
+        "startLine": 30,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 12
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce122af3_a950b11f",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "tiny nit: each statement should be on its own line",
+      "range": {
+        "startLine": 34,
+        "startChar": 33,
+        "endLine": 34,
+        "endChar": 84
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4383b90_b892b20e",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "up to you: the standard library usually calls this function `data`",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d766fb8_e50a7055",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "http://go/cstyle#Structs_vs._Tuples \n\n\"Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names.\" \n\nConsider something like `private: struct StorageInfo { int count, reserve };`",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1928c153_1abbb5ec",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "tiny nit, optional: the brace form is uncommon in Skia, and makes this code feel like it\u0027s doing something clever/interesting when it\u0027s really just initializing to a default value. Consider `void* fStorage \u003d nullptr;`",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "766c01bb_a2518d2b",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "Is this a necessary part of the change or just a separate tweak?\nI feel like the original `swap/reset` was simpler; it\u0027ll probably generate nearly equivalent code and it is less reliant on the internals of the class.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 50
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6df746_c57323ff",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "Do we get more savings if we just call `fStorage.array\u003cT\u003e()` directly instead of calling `this-\u003earray()`?",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 58
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f2a5173_1ed616bc",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "Can we `\u003d default` this instead of providing it? (I\u0027m not sure, but it\u0027d be nice if it just works)",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e8dc58_176d5a2c",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T16:47:14Z",
+      "side": 1,
+      "message": "nit: extra line",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 0
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
