@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57e54c26_28529466",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-20T15:21:46Z",
+      "side": 1,
+      "message": "This version uses the actual SkSL, so we can benchmark SkVM",
+      "revId": "35404b6b3de400087135931c5d156fd58aa3cf5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b6fd59_194b8eec",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-20T15:21:46Z",
+      "side": 1,
+      "message": "REAL_LOOP \u003d\u003d 1 : Uses the branch stages to do the looping within RP\nREAL_LOOP \u003d\u003d 0 : Unrolls everything, which lets us simplify/hoist a bit",
+      "revId": "35404b6b3de400087135931c5d156fd58aa3cf5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
