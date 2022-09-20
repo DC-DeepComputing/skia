@@ -8,6 +8,7 @@
 #include "include/utils/SkParse.h"
 
 #include <cstdlib>
+#include <limits>
 #include <string>
 
 static inline bool is_between(int c, int min, int max)
@@ -152,6 +153,11 @@ const char* SkParse::FindS32(const char str[], int32_t* value)
     int n = 0;
     while (is_digit(*str))
     {
+        static constexpr int kMax = std::numeric_limits<int>::max() / 10 - 1;
+        if (n > kMax) {
+            return nullptr;
+        }
+
         n = 10*n + *str - '0';
         str += 1;
     }
