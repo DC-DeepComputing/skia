@@ -104,6 +104,30 @@
       },
       "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d226e6_16e9780e",
+        "filename": "include/gpu/mtl/MtlMemoryAllocator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-20T20:08:23Z",
+      "side": 1,
+      "message": "I think this is the best I can do without wrapping this in something that will require a lot of translation back and forth. When adding this in the MtlBackendContext we\u0027ll have to be careful to use a forward def and not to include the header there.",
+      "parentUuid": "ae813d77_99a6abc8",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "bd05defb802e32cf0db6299b80b0f5992e291830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
