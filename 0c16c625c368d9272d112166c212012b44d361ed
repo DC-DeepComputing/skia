@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c984f18e_c22417b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-20T18:40:41Z",
+      "side": 1,
+      "message": "Ben (and others on CC), do you have any insight as to why the linker was not failing? Are there any flags we can add to make it fail louder if a symlink does not exist?",
+      "revId": "0c16c625c368d9272d112166c212012b44d361ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
