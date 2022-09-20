@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2cb95ad_d20eb5fa",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 852,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-20T14:16:55Z",
+      "side": 0,
+      "message": "given this parameter was unused, I don\u0027t expect this to impact CanvasKit (which uses this code to handle lazy loading of things like \u003cimg\u003e and \u003cvideo\u003e)",
+      "range": {
+        "startLine": 852,
+        "startChar": 57,
+        "endLine": 852,
+        "endChar": 63
+      },
+      "revId": "626fd305119171d75fc8cbac3264aec06b658844",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
