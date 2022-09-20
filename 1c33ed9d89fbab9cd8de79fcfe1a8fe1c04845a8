@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94899d6a_b543c9d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-20T18:14:23Z",
+      "side": 1,
+      "message": "I added a unit test for decal + nearest, but did you have something specific in mind for linear filtering? (and could the test file I have here could be useful for other tests?)",
+      "parentUuid": "af708fe3_a128f8af",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36a30400_29c037fc",
@@ -53,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27d3b50d_9b0d996c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-20T18:14:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07ff1225_c0c5e5a0",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bbe2aba_f7d613b6",
@@ -66,6 +102,24 @@
       "writtenOn": "2022-09-19T14:29:31Z",
       "side": 1,
       "message": "I guess, spell these out since we don\u0027t have an SkTileMode type to clarify ?",
+      "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6a7f04a_7723c876",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-20T18:14:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bbe2aba_f7d613b6",
       "revId": "1c33ed9d89fbab9cd8de79fcfe1a8fe1c04845a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
