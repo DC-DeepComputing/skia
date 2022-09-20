@@ -2,11 +2,23 @@ void increment(inout float a, inout float b, inout float c) {
     a++, b++, c++;
 }
 
+float userfunc(float v) {
+    return v + 1;
+}
+
 half4 main(float2 coords) {
     float a = 1, b = 2, c = 3;
     if (false) {
         a++, b++, c++;
     }
+
+    a = 77.0;
+    b = 77.0;
+    a = sin(c);
+    b = sin(c);
+    a = userfunc(c);
+    b = userfunc(c);
+
     for (int x=0; x<1; ++x) {
         continue;
         increment(a, b, c);
