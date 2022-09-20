@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77fb57ee_65a9a98e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T18:00:30Z",
+      "side": 1,
+      "message": "1 comment response, working on a solution but here\u0027s my current thinking.",
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "433e0f53_dbbcb7a1",
@@ -124,6 +141,30 @@
       "side": 1,
       "message": "The crashes in null_child_rt are not related. It\u0027s accessing `fsUniforms` and `dev2LocalUni` when they don\u0027t exist: http://screen/94Hjj6y5sxFea6P",
       "parentUuid": "99ad443e_30bedacf",
+      "range": {
+        "startLine": 1238,
+        "startChar": 13,
+        "endLine": 1239,
+        "endChar": 50
+      },
+      "revId": "21daa21c7316fd19ad8664dd7b4755afd7b905fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f8c2f6_255b1f8e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-20T18:00:30Z",
+      "side": 1,
+      "message": "Yep, I\u0027m looking into this a bit. It looks like `ssboIndex()` in the check below (from `SkShaderCodeDictionary.cpp`) evaluates to true, but in `ContextUtils`, `EmitPaintParamsStorageBuffer` can return an empty string if the readers have no uniforms. So despite ssboIndex() being true, the dev2LocalUni matrix is not recorded.\n\n```\n    if (!this-\u003eneedsLocalCoords()) {\n        mainBody +\u003d \"float4 coords \u003d sk_FragCoord;\";\n    } else if (this-\u003essboIndex()) { // \u003c-- here\n        SkSL::String::appendf(\n                \u0026mainBody,\n                \"float4 coords \u003d %s * sk_FragCoord;\",\n                skgpu::graphite::EmitStorageBufferAccess(\"fs\", this-\u003essboIndex(), \"dev2LocalUni\")\n                        .c_str());\n    } else {\n        mainBody +\u003d \"float4 coords \u003d dev2LocalUni * sk_FragCoord;\";\n    }\n```",
+      "parentUuid": "a8cddc5a_224f9d0a",
       "range": {
         "startLine": 1238,
         "startChar": 13,
