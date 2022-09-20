@@ -84,7 +84,7 @@ public:
      * Otherwise this will delete/release the backend object that is wrapped in the BackendTexture.
      * The BackendTexture will be reset to an invalid state and should not be used again.
      */
-    void deleteBackendTexture(BackendTexture&);
+    void deleteBackendTexture1(BackendTexture&);
 
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();

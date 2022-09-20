@@ -68,7 +68,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(BackendTextureTest, reporter, context) {
 
     // Test that deleting is safe from the Context or a different Recorder.
     texture1 = recorder->createBackendTexture(kSize, info);
-    context->deleteBackendTexture(texture1);
+    context->deleteBackendTexture1(texture1);
 
     auto recorder2 = context->makeRecorder();
     texture1 = recorder->createBackendTexture(kSize, info);
