@@ -16,6 +16,75 @@
       "message": "Working on the custom local matrix shader preamble / expression as a follow-up CL, but here\u0027s a round of other changes.",
       "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669a6a8e_260ce054",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T14:32:53Z",
+      "side": 1,
+      "message": "nit: `float2`",
+      "range": {
+        "startLine": 411,
+        "startChar": 67,
+        "endLine": 411,
+        "endChar": 73
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22abd6a3_813817f6",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T14:32:53Z",
+      "side": 1,
+      "message": "nit: Not your fault, but this comment had fallen out of date. The right param list would be\n\n`half4 inColor, half4 destColor, float2 pos`",
+      "range": {
+        "startLine": 442,
+        "startChar": 35,
+        "endLine": 442,
+        "endChar": 48
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acbbb1c4_2a79207a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-20T14:32:53Z",
+      "side": 1,
+      "message": "I think this comment describes how things used to work, but is out of date now; let\u0027s delete it.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "20ef14459fcdc59c2dd0b46f2c157f16097eb6a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
