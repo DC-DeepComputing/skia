@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58852137_1803d567",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T20:32:59Z",
+      "side": 1,
+      "message": "In the next CL this gets used by SurfaceContext::rescaleInto(), and initial bot runs suggest Intel Iris has some problems with it, and there\u0027s on layout test result that looks problematic in chrome. I will try and convert that to a unit test in that CL.",
+      "parentUuid": "45b31158_ae0e5ffc",
+      "revId": "4e6e39ea2f2a83ed939066f73740c8e8f18f12df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33963779_0aedb4d1",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-09-20T14:20:38Z",
       "side": 1,
       "message": "Here and a bunch of other places can be rewritten as the more pithy\n srcRect.size() !\u003d dstRect.size()",
+      "revId": "4e6e39ea2f2a83ed939066f73740c8e8f18f12df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e667339_9135198a",
+        "filename": "src/gpu/ganesh/d3d/GrD3DCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T20:32:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33963779_0aedb4d1",
       "revId": "4e6e39ea2f2a83ed939066f73740c8e8f18f12df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f46110bd_61cef97a",
+        "filename": "src/gpu/ganesh/d3d/GrD3DCaps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T20:32:59Z",
+      "side": 1,
+      "message": "I\u0027ve updated onCopySurface and onCanCopySurface to be dst,dstRect,src,srcRect since the rest of the copy API seemed to prefer dst,src argument order (vs. src,dst).\n\nThis is in this CL, but this change\u0027s parent is where dstRect was introduced. Previously it had been an SkIPoint dstPoint. I think it\u0027s easier to have the re-ordering in this CL since it already is touching all the virtuals (and the parent did not).",
+      "parentUuid": "e5a4edbe_66fdcba9",
+      "revId": "4e6e39ea2f2a83ed939066f73740c8e8f18f12df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "caa28846_578a76d2",
@@ -82,6 +136,30 @@
       "writtenOn": "2022-09-20T14:20:38Z",
       "side": 1,
       "message": "copyAsDraw() or rm () from copyAsBlit?",
+      "range": {
+        "startLine": 3630,
+        "startChar": 29,
+        "endLine": 3630,
+        "endChar": 39
+      },
+      "revId": "4e6e39ea2f2a83ed939066f73740c8e8f18f12df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fbc7c0_d56f04d4",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 3630,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-20T20:32:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "caa28846_578a76d2",
       "range": {
         "startLine": 3630,
         "startChar": 29,
