@@ -13,9 +13,7 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     Outputs _out;
     (void)_out;
     array<int, 1> x;
-    int y = 0;
     int z = 0;
-    (0, x[y = z]);
     _out.sk_FragColor = _uniforms.colorGreen;
     return _out;
 }
