@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTypes.h"
+#include "tests/GPUTest.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -15,10 +15,10 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
-#include "tests/Test.h"
 
 #include <initializer_list>
 
