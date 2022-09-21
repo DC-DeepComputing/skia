@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7eca424_d195137b",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-21T17:07:21Z",
+      "side": 1,
+      "message": "I paged a bit more of this back into my head and I think you are right.",
+      "parentUuid": "c6724b6c_510e4b66",
+      "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "168c4586_c896415a",
