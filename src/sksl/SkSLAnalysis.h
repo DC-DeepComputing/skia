@@ -17,6 +17,7 @@
 
 namespace SkSL {
 
+class BinaryExpression;
 class Context;
 class ErrorReporter;
 class Expression;
@@ -110,6 +111,11 @@ std::unique_ptr<ProgramUsage> GetUsage(const LoadedModule& module, const ParsedM
 
 bool StatementWritesToVariable(const Statement& stmt, const Variable& var);
 
+/**
+ * Returns true if the expression can be assigned-into. Pass `info` if you want to know the
+ * VariableReference that will be written to. Pass `errors` to report an error for expressions that
+ * are not actually writable.
+ */
 struct AssignmentInfo {
     VariableReference* fAssignedVar = nullptr;
 };
