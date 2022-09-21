@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16bcab42_b77566a3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-21T22:24:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f93def0_0fe514eb",
+      "range": {
+        "startLine": 57,
+        "startChar": 22,
+        "endLine": 58,
+        "endChar": 35
+      },
+      "revId": "9d2ae8c39258d478d2381e566bf45ff520d9b1b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37f2f04c_b4198e40",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-21T21:36:59Z",
       "side": 1,
       "message": "\"is\"?",
+      "range": {
+        "startLine": 92,
+        "startChar": 62,
+        "endLine": 92,
+        "endChar": 69
+      },
+      "revId": "9d2ae8c39258d478d2381e566bf45ff520d9b1b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0801d3_b13860b9",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-21T22:24:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f2f04c_b4198e40",
       "range": {
         "startLine": 92,
         "startChar": 62,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e2a201d_485cb1c2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-21T22:24:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d075acfa_d0f30417",
+      "range": {
+        "startLine": 97,
+        "startChar": 52,
+        "endLine": 97,
+        "endChar": 58
+      },
+      "revId": "9d2ae8c39258d478d2381e566bf45ff520d9b1b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed800269_ff76e91f",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-09-21T21:36:59Z",
       "side": 1,
       "message": "All the checks for $kFilterModeLinear can be combined into one group.\n\n```\nif (filterMode \u003d\u003d $kFilterModeLinear) {\n    bool sampleExtraX \u003d tileModeX \u003d\u003d $kTileModeRepeat \u0026\u0026 error.x !\u003d 0;\n    bool sampleExtraY \u003d tileModeY \u003d\u003d $kTileModeRepeat \u0026\u0026 error.y !\u003d 0;\n    if (sampleExtraX || sampleExtraY) {\n       ...\n    }\n    if (tileModeX \u003d\u003d $kTileModeDecal) {\n       ...\n    }\n    if (tileModeY \u003d\u003d $kTileModeDecal) {\n       ...\n    }\n}\n```",
+      "range": {
+        "startLine": 99,
+        "startChar": 1,
+        "endLine": 104,
+        "endChar": 0
+      },
+      "revId": "9d2ae8c39258d478d2381e566bf45ff520d9b1b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc2f0b0_215d9164",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-21T22:24:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed800269_ff76e91f",
       "range": {
         "startLine": 99,
         "startChar": 1,
