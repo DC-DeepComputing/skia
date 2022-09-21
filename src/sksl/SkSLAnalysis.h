@@ -17,6 +17,7 @@
 
 namespace SkSL {
 
+class BinaryExpression;
 class Context;
 class ErrorReporter;
 class Expression;
@@ -110,11 +111,23 @@ std::unique_ptr<ProgramUsage> GetUsage(const LoadedModule& module, const ParsedM
 
 bool StatementWritesToVariable(const Statement& stmt, const Variable& var);
 
+/**
+ * Returns true if the expression can be assigned-into. Pass `info` if you want to know the
+ * VariableReference that will be written to. Pass `errors` to report an error for expressions that
+ * are not actually writable.
+ */
 struct AssignmentInfo {
     VariableReference* fAssignedVar = nullptr;
 };
 bool IsAssignable(Expression& expr, AssignmentInfo* info = nullptr,
                   ErrorReporter* errors = nullptr);
+
+/**
+ * If the passed-in expression is a binary assignment expression like `a = 1` or `a += sin(b)`,
+ * returns the VariableReference that will be written to. For other types of expressions, returns
+ * null. Complex expressions that contain inner assignments, like `(a = b) * 2`, will return null.
+ */
+VariableReference* IsAssignmentIntoVariable(BinaryExpression& binary);
 
 /**
  * Updates the `refKind` field of the VariableReference at the top level of `expr`.

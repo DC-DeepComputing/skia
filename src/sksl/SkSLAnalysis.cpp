@@ -467,6 +467,16 @@ bool Analysis::IsAssignable(Expression& expr, AssignmentInfo* info, ErrorReporte
     return IsAssignableVisitor{errors ? errors : &unusedErrors}.visit(expr, info);
 }
 
+VariableReference* Analysis::IsAssignmentIntoVariable(BinaryExpression& binary) {
+    if (binary.getOperator().isAssignment()) {
+        Analysis::AssignmentInfo assignmentInfo;
+        if (Analysis::IsAssignable(*binary.left(), &assignmentInfo, /*errors=*/nullptr)) {
+            return assignmentInfo.fAssignedVar;
+        }
+    }
+    return nullptr;
+}
+
 bool Analysis::UpdateVariableRefKind(Expression* expr,
                                      VariableReference::RefKind kind,
                                      ErrorReporter* errors) {
@@ -476,8 +486,8 @@ bool Analysis::UpdateVariableRefKind(Expression* expr,
     }
     if (!info.fAssignedVar) {
         if (errors) {
-            errors->error(expr->fPosition, "can't assign to expression '" + expr->description() +
-                    "'");
+            errors->error(expr->fPosition,
+                          "can't assign to expression '" + expr->description() + "'");
         }
         return false;
     }
