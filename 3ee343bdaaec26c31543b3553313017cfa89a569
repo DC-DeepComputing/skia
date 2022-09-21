@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a00c2656_3d42ad6c",
+        "filename": "tests/Test.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-21T13:56:23Z",
+      "side": 1,
+      "message": "Discussion thread: https://chat.google.com/room/AAAAGFlf6VQ/I6WqOevHDMM\n\nAs far as I could tell, the two booleans I replaced were *never* both set to true.  From what I understand, Graphite tests differ somewhat from Ganesh tests because of the need for a graphite::Context anyway.",
+      "parentUuid": "74a38e64_0fc7b5d8",
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5505381_53cf3c6f",
         "filename": "tests/Test.h",
         "patchSetId": 3
@@ -72,6 +90,30 @@
       "writtenOn": "2022-09-21T13:41:40Z",
       "side": 1,
       "message": "Should this be !\u003d? Like we want to assert that no CPU test is included",
+      "range": {
+        "startLine": 61,
+        "startChar": 37,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd238f3a_e63f044a",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-21T13:56:23Z",
+      "side": 1,
+      "message": "Done. Good catch.",
+      "parentUuid": "b466b232_c40d7899",
       "range": {
         "startLine": 61,
         "startChar": 37,
