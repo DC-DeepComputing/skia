@@ -16,6 +16,28 @@
 #include <new>
 #include <utility>
 
+
+class SkTHashStorage {
+public:
+    // How many entries are in the table?
+    int count() const { return fCount; }
+
+    // How many slots does the table contain? (Note that unlike an array, hash tables might grow
+    // before reaching 100% capacity.)
+    int capacity() const { return fCapacity; }
+
+protected:
+    // Increments the slot index in round-robin fashion.
+    int next(int index) const {
+        index--;
+        if (index < 0) { index += fCapacity; }
+        return index;
+    }
+
+    int fCount    = 0;
+    int fCapacity = 0;
+};
+
 // Before trying to use SkTHashTable, look below to see if SkTHashMap or SkTHashSet works for you.
 // They're easier to use, usually perform the same, and have fewer sharp edges.
 
@@ -26,7 +48,7 @@
 // If the key is large and stored inside T, you may want to make K a const&.
 // Similarly, if T is large you might want it to be a pointer.
 template <typename T, typename K, typename Traits = T>
-class SkTHashTable {
+class SkTHashTable : public SkTHashStorage {
 public:
     SkTHashTable()  = default;
     ~SkTHashTable() = default;
@@ -59,13 +81,6 @@ public:
 
     // Clear the table.
     void reset() { *this = SkTHashTable(); }
-
-    // How many entries are in the table?
-    int count() const { return fCount; }
-
-    // How many slots does the table contain? (Note that unlike an array, hash tables can grow
-    // before reaching 100% capacity.)
-    int capacity() const { return fCapacity; }
 
     // Approximately how many bytes of memory do we use beyond sizeof(*this)?
     size_t approxBytesUsed() const { return fCapacity * sizeof(Slot); }
@@ -314,12 +329,6 @@ private:
         }
     }
 
-    int next(int index) const {
-        index--;
-        if (index < 0) { index += fCapacity; }
-        return index;
-    }
-
     static uint32_t Hash(const K& key) {
         uint32_t hash = Traits::Hash(key) & 0xffffffff;
         return hash ? hash : 1;  // We reserve hash 0 to mark empty.
@@ -408,8 +417,6 @@ private:
         } val;
     };
 
-    int fCount    = 0,
-        fCapacity = 0;
     SkAutoTArray<Slot> fSlots;
 };
 
