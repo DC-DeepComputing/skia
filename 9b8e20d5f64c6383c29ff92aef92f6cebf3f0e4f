@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "878fda5f_77aa9ae0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-21T14:09:50Z",
+      "side": 1,
+      "message": "Trying to reduce the number of special knobs that people need to remember to do local size-optimized builds.",
+      "revId": "9b8e20d5f64c6383c29ff92aef92f6cebf3f0e4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
