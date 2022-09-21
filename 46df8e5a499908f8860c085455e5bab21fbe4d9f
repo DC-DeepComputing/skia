@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a608a2_561886e4",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-21T15:28:14Z",
+      "side": 1,
+      "message": "This logic was meant to preserve the original behavior where the copies would never go outside src and dst.\n\nI am wondering if we should update it to just make sure we never go outside dst? glBlitFramebuffer and the vulkan equivalent are defined to use kClamp if the src coordinates go beyond the src content, and draw fallbacks can be used when those aren\u0027t available.\n\nThe main benefit of this is that we can assume that the full dstRect content is filled in by the copy. Even before, if srcRect is clipped, the dstRect shrinks to leave some pixels unfilled by the copy. Since this happens inside the copy task, and doesn\u0027t fail the task, nothing gets bubbled up to the caller to indicate that some extra region of dst needs to be cleared/initialized.\n\nWhat do others think?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
