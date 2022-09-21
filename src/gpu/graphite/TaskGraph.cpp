@@ -41,4 +41,12 @@ void TaskGraph::reset() {
     fTasks.clear();
 }
 
+#ifdef SK_DEBUG
+void TaskGraph::dump() const {
+    for (const sk_sp<Task>& task : fTasks) {
+        task->dump();
+    }
+}
+#endif
+
 } // namespace skgpu::graphite

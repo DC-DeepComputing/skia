@@ -42,6 +42,12 @@ public:
     bool prepareResources(ResourceProvider*, const SkRuntimeEffectDictionary*) override;
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
+#ifdef SK_DEBUG
+    void dump() const override {
+        SkDebugf("ComputePassTask\n");
+    }
+#endif
+
 private:
     ComputePassTask(std::vector<ResourceBinding> bindings,
                     const ComputePipelineDesc&,
