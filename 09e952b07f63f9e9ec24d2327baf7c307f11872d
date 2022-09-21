@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75e52a99_f3ec9c7b",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-21T14:30:02Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think we need this",
+      "revId": "09e952b07f63f9e9ec24d2327baf7c307f11872d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
