@@ -1541,7 +1541,7 @@ public:
 
         fGrid.setCount(fHCount*fVCount);
         for (int i = 0; i < fGrid.count(); ++i) {
-            fGrid[i].reset();
+            fGrid[i].reset(false);
         }
 
         return true;
