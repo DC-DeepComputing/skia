@@ -314,7 +314,7 @@ static void test_clone(skiatest::Reporter* r, const char* testFile, int flags) {
 }
 
 static void test_rehydrate(skiatest::Reporter* r, const char* testFile, int flags) {
-    SkString shaderString = load_source(r, testFile, "");
+    SkString shaderString = load_source(r, testFile, /*permutationSuffix=*/"");
     if (shaderString.isEmpty()) {
         return;
     }
@@ -322,11 +322,14 @@ static void test_rehydrate(skiatest::Reporter* r, const char* testFile, int flag
     SkSL::ProgramSettings settings;
     // TODO(skia:11209): Can we just put the correct #version in the source files that need this?
     settings.fMaxVersionAllowed = is_strict_es2(flags) ? SkSL::Version::k100 : SkSL::Version::k300;
-    // Inlining causes problems because it can create expressions like bool(1) that can't be
-    // directly instantiated. After a dehydrate/recycle pass, that expression simply becomes "true"
-    // due to optimization - which is fine, but would cause us to fail an equality comparison. We
-    // disable inlining to avoid this issue.
-    settings.fInlineThreshold = 0;
+
+    // Optimization causes problems because it can create IR patterns that can't be directly
+    // created with Make. For instance, the inliner can create an expression like `bool(1)` that
+    // can't be directly instantiated (this would compile to `true`), and dead-variable elimination
+    // can create empty blocks (which would normally compile to `Nop`). A dehydrate/rehydrate pass
+    // will optimize those quirks away--which is fine, but would cause us to fail an equality
+    // comparison. We disable the optimizer here to avoid this issue.
+    settings.fOptimize = false;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(
             SkSL::ProgramKind::kRuntimeShader, shaderString.c_str(), settings);
     if (!program) {
@@ -343,9 +346,12 @@ static void test_rehydrate(skiatest::Reporter* r, const char* testFile, int flag
                                 stream.str().length());
     std::unique_ptr<SkSL::Program> rehydrated = rehydrator.program();
     REPORTER_ASSERT(r, rehydrated->description() == program->description(),
-            "Mismatch between original and dehydrated/rehydrated:\n-- Original:\n%s\n"
-            "-- Rehydrated:\n%s", program->description().c_str(),
-            rehydrated->description().c_str());
+                    "%s: Mismatch between original and dehydrated/rehydrated:\n"
+                    "-- Original:\n%s\n"
+                    "-- Rehydrated:\n%s",
+                    testFile,
+                    program->description().c_str(),
+                    rehydrated->description().c_str());
 }
 
 #define SKSL_TEST(flags, ctsEnforcement, name, path)                                       \
