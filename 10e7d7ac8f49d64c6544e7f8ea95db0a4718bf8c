@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f7ea5a_d13f0013",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T15:35:51Z",
+      "side": 1,
+      "message": "So I did end up adding a wrapper class around the ReleaseProc in GrSurface. The downside to this is that we are only checking for the abandoned context when this is released from a GrSurface or associated resources ref\u0027d on a command buffer. The check does not happen if say we failing the factory to wrap a backend texture.\n\nFor those reasons, I actually did try to just make a new forked class from RefCntedCallback that we could use all the way through the stack. However, the issue was in PromiseImages where we still add ReleaseProcs but we don\u0027t have a GrDirectContext to add to it. The current RefCntedCallback on promise images has a ref held both on the SkImage itself and the eventually created GrSurface once it is fulfilled. Given that, I also couldn\u0027t do a lazy setting of a GrContext on the object because it is possible that GrContext is deleted before the promise SkImage and we have no way to invalidate that.\n\nWith this approach we at least will catch the 99% cases of where the release proc gets called, and to be honest I think there is less danger of bad things happen if abandonContext does end up getting called while we\u0027re still in the factory functions.",
+      "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
