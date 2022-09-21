@@ -12,9 +12,16 @@
 #include "src/core/SkTraceEvent.h"
 #include "tests/CtsEnforcement.h"
 #include "tools/Registry.h"
+
+#if SK_GPU_V1
 #include "tools/gpu/GrContextFactory.h"
+#endif
+
+struct GrContextOptions;
 
 namespace skgpu::graphite { class Context; }
+
+namespace sk_gpu_test { class ContextInfo; }
 
 namespace skiatest {
 
@@ -144,7 +151,11 @@ private:
 
 using TestRegistry = sk_tools::Registry<Test>;
 
+#if SK_GPU_V1
 using GrContextFactoryContextType = sk_gpu_test::GrContextFactory::ContextType;
+#else
+using GrContextFactoryContextType = nullptr_t;
+#endif
 
 typedef void GrContextTestFn(Reporter*, const sk_gpu_test::ContextInfo&);
 typedef bool GrContextTypeFilterFn(GrContextFactoryContextType);
