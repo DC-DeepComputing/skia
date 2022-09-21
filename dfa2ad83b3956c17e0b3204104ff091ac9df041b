@@ -64,6 +64,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f5f9add_ebb8a909",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f27a9fc5_32af71e5",
+      "range": {
+        "startLine": 30,
+        "startChar": 48,
+        "endLine": 30,
+        "endChar": 53
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa1a2113_dc657481",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83d3838e_5c316cbe",
+      "range": {
+        "startLine": 30,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 12
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce122af3_a950b11f",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-09-20T16:47:14Z",
       "side": 1,
       "message": "tiny nit: each statement should be on its own line",
+      "range": {
+        "startLine": 34,
+        "startChar": 33,
+        "endLine": 34,
+        "endChar": 84
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e526bfa_f5ef64ca",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce122af3_a950b11f",
       "range": {
         "startLine": 34,
         "startChar": 33,
@@ -110,6 +182,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d162011_12387eaa",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4383b90_b892b20e",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c28f53b_9bf09838",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4383b90_b892b20e",
+      "range": {
+        "startLine": 36,
+        "startChar": 7,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d766fb8_e50a7055",
@@ -123,6 +243,30 @@
       "writtenOn": "2022-09-20T16:47:14Z",
       "side": 1,
       "message": "http://go/cstyle#Structs_vs._Tuples \n\n\"Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names.\" \n\nConsider something like `private: struct StorageInfo { int count, reserve };`",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b617cb20_083657c1",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "I don\u0027t see how this improves readability or improves safety. The code that produces and uses the result is nearly the same. The rule above argues about using .second or get\u003c1\u003e(). This code never used the accessors. Done anyway.",
+      "parentUuid": "1d766fb8_e50a7055",
       "range": {
         "startLine": 38,
         "startChar": 4,
@@ -156,6 +300,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48e0fa72_dc60b6b8",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "The braces are better because it shows there is no silent casting happening. When other methods are used, you have to reason about the different silent casts that can happen.",
+      "parentUuid": "1928c153_1abbb5ec",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "766c01bb_a2518d2b",
@@ -169,6 +337,30 @@
       "writtenOn": "2022-09-20T16:47:14Z",
       "side": 1,
       "message": "Is this a necessary part of the change or just a separate tweak?\nI feel like the original `swap/reset` was simpler; it\u0027ll probably generate nearly equivalent code and it is less reliant on the internals of the class.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 50
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f67ccc5_8ae379e0",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "When thinking about lifetimes, I find reasoning about swaps hard. Here the lifetime of storage is clear. Swaps were a hack from a bygone era to get move-like behavior.",
+      "parentUuid": "766c01bb_a2518d2b",
       "range": {
         "startLine": 84,
         "startChar": 0,
@@ -202,6 +394,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9bf155e_4da63c46",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "I did not measure any. \n../bloaty/build/bloaty -v -n 0 --demangle\u003dfull -d sections,symbols  new_skottie_tool.stripped --debug-file\u003dnew_skottie_tool | grep \"SkTDStorage::array\"\n\nreturns nothing.",
+      "parentUuid": "af6df746_c57323ff",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 58
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f2a5173_1ed616bc",
@@ -225,6 +441,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5948d96c_fb121e99",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done. This is a nice simplification.",
+      "parentUuid": "2f2a5173_1ed616bc",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e8dc58_176d5a2c",
@@ -238,6 +478,30 @@
       "writtenOn": "2022-09-20T16:47:14Z",
       "side": 1,
       "message": "nit: extra line",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 0
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90180209_160d2cf6",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T13:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3e8dc58_176d5a2c",
       "range": {
         "startLine": 82,
         "startChar": 0,
