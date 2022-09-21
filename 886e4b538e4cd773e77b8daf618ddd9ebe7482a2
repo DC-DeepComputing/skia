@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca81318_e5ad2e99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T14:31:14Z",
+      "side": 1,
+      "message": "Lots of 100 char limits that need to be fixed up with name change",
+      "revId": "886e4b538e4cd773e77b8daf618ddd9ebe7482a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42877759_19ecedf7",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T14:31:14Z",
+      "side": 1,
+      "message": "this went back :(",
+      "range": {
+        "startLine": 61,
+        "startChar": 38,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "886e4b538e4cd773e77b8daf618ddd9ebe7482a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
