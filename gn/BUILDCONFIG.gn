@@ -36,6 +36,7 @@ declare_args() {
 }
 declare_args() {
   is_debug = !is_official_build
+  skia_enable_optimize_size = false
 }
 
 assert(!(is_debug && is_official_build))
