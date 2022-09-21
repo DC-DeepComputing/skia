@@ -43,8 +43,9 @@ public:
     virtual GrBackendFormat backendFormat() const = 0;
 
     void setRelease(sk_sp<skgpu::RefCntedCallback> releaseHelper) {
-        this->onSetRelease(releaseHelper);
-        fReleaseHelper = std::move(releaseHelper);
+        SkASSERT(this->getContext());
+        fReleaseHelper.reset(new RefCntedReleaseProc(std::move(releaseHelper), this->getContext()));
+        this->onSetRelease(fReleaseHelper);
     }
 
     // These match the definitions in SkImage, from whence they came.
@@ -89,6 +90,21 @@ public:
         SkASSERT(this->asRenderTarget());
         fSurfaceFlags |= GrInternalSurfaceFlags::kFramebufferOnly;
     }
+
+    class RefCntedReleaseProc : public SkNVRefCnt<RefCntedReleaseProc> {
+    public:
+        RefCntedReleaseProc(sk_sp<skgpu::RefCntedCallback> callback, GrDirectContext* directContext)
+                : fCallback(std::move(callback))
+                , fDirectContext(directContext) {
+            SkASSERT(fCallback && fDirectContext);
+        }
+
+        ~RefCntedReleaseProc();
+
+    private:
+        sk_sp<skgpu::RefCntedCallback> fCallback;
+        GrDirectContext* fDirectContext;
+    };
 
 protected:
     void setGLRTFBOIDIs0() {
@@ -142,7 +158,7 @@ private:
 
     // Unmanaged backends (e.g. Vulkan) may want to specially handle the release proc in order to
     // ensure it isn't called until GPU work related to the resource is completed.
-    virtual void onSetRelease(sk_sp<skgpu::RefCntedCallback>) {}
+    virtual void onSetRelease(sk_sp<RefCntedReleaseProc>) {}
 
     void invokeReleaseProc() {
         // Depending on the ref count of fReleaseHelper this may or may not actually trigger the
@@ -153,7 +169,7 @@ private:
     SkISize                    fDimensions;
     GrInternalSurfaceFlags     fSurfaceFlags;
     GrProtected                fIsProtected;
-    sk_sp<skgpu::RefCntedCallback>  fReleaseHelper;
+    sk_sp<RefCntedReleaseProc> fReleaseHelper;
 
     using INHERITED = GrGpuResource;
 };

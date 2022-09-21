@@ -7,6 +7,7 @@
 
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrSurface.h"
@@ -53,6 +54,15 @@ size_t GrSurface::ComputeSize(const GrBackendFormat& format,
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
+GrSurface::RefCntedReleaseProc::~RefCntedReleaseProc() {
+    // We ref the context so that the client can't delete it while inside the ReleaseProc
+    fDirectContext->ref();
+    fDirectContext->priv().setInsideReleaseProc(true);
+    fCallback.reset();
+    fDirectContext->priv().setInsideReleaseProc(false);
+    fDirectContext->unref();
+}
 
 void GrSurface::onRelease() {
     this->invokeReleaseProc();

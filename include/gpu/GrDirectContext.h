@@ -148,6 +148,9 @@ public:
      * The typical use case for this function is that the underlying 3D context was lost and further
      * API calls may crash.
      *
+     * This call is not valid to be made inside ReleaseProcs passed into SkSurface or SkImages. The
+     * call will simply fail (and assert in debug) if it is called while inside a ReleaseProc.
+     *
      * For Vulkan, even if the device becomes lost, the VkQueue, VkDevice, or VkInstance used to
      * create the context must be kept alive even after abandoning the context. Those objects must
      * live for the lifetime of the context object itself. The reason for this is so that
@@ -875,6 +878,10 @@ private:
     sk_sp<GrGpu>                              fGpu;
     std::unique_ptr<GrResourceCache>          fResourceCache;
     std::unique_ptr<GrResourceProvider>       fResourceProvider;
+
+    // This is set before we start calling ReleaseProcs from GrSurfaces. When this is set to true
+    // we will not allow abandonContext calls to be made on the context.
+    int                                     fInsideReleaseProcCnt = 0;
 
     bool                                    fDidTestPMConversions;
     // true if the PM/UPM conversion succeeded; false otherwise
