@@ -33,6 +33,24 @@
       "message": "Moving this here seems to be iffy in relation to `skia_enable_optimize_size` also being used to set `SK_ENABLE_OPTIMIZE_SIZE` in `BUILD.gn`? For example Flutter I think uses our `BUILD.gn` but not our `BUILDCONFIG.gn` (I think) so that might be an issue? In general things defined here are interesting because the names have turned into a loose ad-hoc contract that various gn builds happen to use. Things like `is_debug` work because, for example, Flutter also sets it [0]. Chromium also sets it [1] but that\u0027s less interesting to us since Chromium doesn\u0027t use our `BUILD.gn` either. In any event, I\u0027m concerned about putting this here (or normalizing putting anything here) because of the knock on effect on things like setting `SK_ENABLE_OPTIMIZE_SIZE`.\n\nOn the other hand this is always the first thing gn loads and `skia.gni` implicitly depends on it (and things like `is_debug`). So I\u0027m not sure immediately of a better way to do this. Mostly just want to point out that putting any args in here that aren\u0027t either 1) common or 2) used in only this file can be more complicated than it looks.\n\n[0] https://github.com/flutter/buildroot/blob/eda318a9392c1feb0ecd3ed469462f64f8c8a09c/build/config/BUILDCONFIG.gn#L133\n\n[1] https://chromium.googlesource.com/chromium/src/+/2df617dfa564774d2d9df21fee156cb0aa93d188/build/config/BUILDCONFIG.gn#158",
       "revId": "9b8e20d5f64c6383c29ff92aef92f6cebf3f0e4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ef20ef_17628520",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-21T16:45:18Z",
+      "side": 1,
+      "message": "Yeah, the Flutter Canary is failing to `gn gen` with\n\n```\nGenerating GN files in: out/host_debug_unopt\nERROR at //third_party/skia/BUILD.gn:45:7: Undefined identifier\n  if (skia_enable_optimize_size) {\n      ^------------------------\nSee //flutter/shell/testing/BUILD.gn:36:5: which caused the file to be included.\n    \"//third_party/skia\",\n    ^-------------------\n```\n\nbecause the Flutter build isn\u0027t using our `BUILDCONFIG.gn` but is using their own which does not declare `skia_enable_optimize_size` as an arg so it isn\u0027t there in our `BUILD.gn` (which Flutter does use).",
+      "parentUuid": "ed0abf35_c1a7c7f9",
+      "revId": "9b8e20d5f64c6383c29ff92aef92f6cebf3f0e4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
