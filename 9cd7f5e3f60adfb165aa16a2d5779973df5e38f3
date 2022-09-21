@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f4c4806_65de50bc",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T22:26:18Z",
+      "side": 1,
+      "message": "`float2(extraCoordX, clampedPos.y) / imgSize`\n\n(And the same approach for the other two below)",
+      "range": {
+        "startLine": 108,
+        "startChar": 40,
+        "endLine": 109,
+        "endChar": 79
+      },
+      "revId": "9cd7f5e3f60adfb165aa16a2d5779973df5e38f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
