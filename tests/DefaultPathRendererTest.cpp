@@ -130,7 +130,7 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
     }
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(DefaultPathRendererTest,
+DEF_GANESH_TEST_FOR_CONTEXTS(DefaultPathRendererTest,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
                          ctxInfo,

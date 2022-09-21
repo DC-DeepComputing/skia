@@ -26,7 +26,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap) {
     return result;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

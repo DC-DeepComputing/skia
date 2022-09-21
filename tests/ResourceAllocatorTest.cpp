@@ -210,7 +210,7 @@ static void non_overlap_test(skiatest::Reporter* reporter, GrDirectContext* dCon
     REPORTER_ASSERT(reporter, expectedResult == doTheBackingStoresMatch);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -337,7 +337,7 @@ static void draw(GrRecordingContext* rContext) {
     c->clear(SK_ColorBLACK);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorStressTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorStressTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -422,7 +422,7 @@ static void memory_budget_test(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, alloc.makeBudgetHeadroom() == test.fShouldFit);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

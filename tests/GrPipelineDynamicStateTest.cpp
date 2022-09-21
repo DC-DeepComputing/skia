@@ -187,7 +187,7 @@ private:
 };
 }  // anonymous namespace
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
