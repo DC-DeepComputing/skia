@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77dcec1c_fc189ea0",
+        "filename": "include/private/SkFloatingPoint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-21T21:16:28Z",
+      "side": 1,
+      "message": "I think this comment meant to say:\n   ... vs. floorf(float + 0.5)\nor something along those lines?",
+      "range": {
+        "startLine": 60,
+        "startChar": 21,
+        "endLine": 60,
+        "endChar": 35
+      },
+      "revId": "fa1964ae6b34989c352ec46e593da0bb0f3c5e32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
