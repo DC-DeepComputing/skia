@@ -476,8 +476,8 @@ bool Analysis::UpdateVariableRefKind(Expression* expr,
     }
     if (!info.fAssignedVar) {
         if (errors) {
-            errors->error(expr->fPosition, "can't assign to expression '" + expr->description() +
-                    "'");
+            errors->error(expr->fPosition,
+                          "can't assign to expression '" + expr->description() + "'");
         }
         return false;
     }

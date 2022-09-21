@@ -21,6 +21,7 @@ namespace SkSL {
 
 class Context;
 class Type;
+class VariableReference;
 
 /**
  * A binary operation.
@@ -83,6 +84,13 @@ public:
     Operator getOperator() const {
         return fOperator;
     }
+
+    /**
+     * If the expression is an assignment like `a = 1` or `a += sin(b)`, returns the
+     * VariableReference that will be written to. For other types of expressions, returns null.
+     * Complex expressions that contain inner assignments, like `(a = b) * 2`, will return null.
+     */
+    VariableReference* isAssignmentIntoVariable();
 
     std::unique_ptr<Expression> clone(Position pos) const override;
 

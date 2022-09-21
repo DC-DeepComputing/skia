@@ -10,7 +10,6 @@
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkTHash.h"
-#include "include/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -49,11 +48,8 @@ static bool eliminate_dead_local_variables(const Context& context,
             if (expr->is<BinaryExpression>()) {
                 // Search for expressions of the form `deadVar = anyExpression`.
                 BinaryExpression& binary = expr->as<BinaryExpression>();
-                if (binary.getOperator().isAssignment()) {
-                    Analysis::AssignmentInfo assignmentInfo;
-                    SkAssertResult(Analysis::IsAssignable(*binary.left(), &assignmentInfo,
-                                                          /*errors=*/nullptr));
-                    if (fDeadVariables.contains(assignmentInfo.fAssignedVar->variable())) {
+                if (VariableReference* assignedVar = binary.isAssignmentIntoVariable()) {
+                    if (fDeadVariables.contains(assignedVar->variable())) {
                         // Replace `deadVar = anyExpression` with `anyExpression`.
                         fUsage->remove(binary.left().get());
                         expr = std::move(binary.right());
