@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bcd212f_ea26df11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T16:44:43Z",
+      "side": 1,
+      "message": "Yeah there\u0027s a lot of odd things in how we pass in contexts today. Like all the normal image/surface factories for backend textures take an rContext but will fail if the rContext is not a dContext. So like I\u0027m not sure why we even changed them to not just take a dContext. But yeah the fact that PromiseImages just take a ThreadSafeProxy which as you said has no access to a dContext makes it not really feasible to do things with it in a clean way.",
+      "parentUuid": "13744855_2e25ff93",
+      "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81d80386_cb76ddca",
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6724b6c_510e4b66",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T16:44:43Z",
+      "side": 1,
+      "message": "Don\u0027t we already not allow accessing the context from multiple threads at the same time? And clearly I would think unreffing a resource (directly from a GrSurface or command buffer) would be considered \"context accesses\" and thus should always be single threaded. At least that was thought here, but I could be wrong.",
+      "parentUuid": "81d80386_cb76ddca",
+      "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "168c4586_c896415a",
         "filename": "src/gpu/ganesh/GrSurface.h",
         "patchSetId": 2
@@ -66,6 +102,24 @@
       "writtenOn": "2022-09-21T16:16:49Z",
       "side": 1,
       "message": "Would it be bad if this were sk_sp\u003c\u003e rather than ref/unref in the ~?",
+      "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39822f51_6c8b71a1",
+        "filename": "src/gpu/ganesh/GrSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T16:44:43Z",
+      "side": 1,
+      "message": "Sure",
+      "parentUuid": "168c4586_c896415a",
       "revId": "10e7d7ac8f49d64c6544e7f8ea95db0a4718bf8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
