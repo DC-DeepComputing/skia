@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252d5a3e_de6b1f83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5700
+      },
+      "writtenOn": "2022-09-21T17:41:37Z",
+      "side": 1,
+      "message": "Brian, could you update this CL so it does its checks in a release build *without* dcheck_always_on\u003dtrue? If that\u0027s not possible please tell me and I\u0027ll rebuild.",
+      "revId": "6f883bc68d93ad0d4388b5c4dafe1233b497a37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
