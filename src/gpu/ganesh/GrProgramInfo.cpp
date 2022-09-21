@@ -36,23 +36,24 @@ void GrProgramInfo::checkAllInstantiated() const {
     });
 }
 
+
+#endif
+
 void GrProgramInfo::checkMSAAAndMIPSAreResolved() const {
     this->pipeline().visitTextureEffects([](const GrTextureEffect& te) {
         GrTexture* tex = te.texture();
-        SkASSERT(tex);
+        SkASSERT_RELEASE(tex);
 
         // Ensure mipmaps were all resolved ahead of time by the DAG.
         if (te.samplerState().mipmapped() == GrMipmapped::kYes &&
             (tex->width() != 1 || tex->height() != 1)) {
             // Ensure that all proxys that need mipmap regeneration have received them.
             GrTextureProxy* texProxy = te.view().asTextureProxy();
-            SkASSERT(!texProxy->slatedForMipmapRegen());
+            SkASSERT_RELEASE(!texProxy->slatedForMipmapRegen());
 
             // There are some cases where we might be given a non-mipmapped texture with a
             // mipmap filter. See skbug.com/7094.
-            SkASSERT(tex->mipmapped() != GrMipmapped::kYes || !tex->mipmapsAreDirty());
+            SkASSERT_RELEASE(tex->mipmapped() != GrMipmapped::kYes || !tex->mipmapsAreDirty());
         }
     });
 }
-
-#endif

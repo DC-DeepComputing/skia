@@ -88,8 +88,8 @@ public:
 #ifdef SK_DEBUG
     void validate(bool flushTime) const;
     void checkAllInstantiated() const;
-    void checkMSAAAndMIPSAreResolved() const;
 #endif
+    void checkMSAAAndMIPSAreResolved() const;
 
 private:
     int                                   fNumSamples;

@@ -52,13 +52,13 @@ public:
     // been instantiated or not.
     GrMipmapped proxyMipmapped() const { return fMipmapped; }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
     // TODO: Added to verify that task order for mipmaps and rendering is correct
     // Could be removed once verified.
     bool slatedForMipmapRegen() { return fSlatedForMipmapRegen; }
     void needsMipmapRegen() { fSlatedForMipmapRegen = true; }
     void mipmapsRegenerated() { fSlatedForMipmapRegen = false; }
-#endif
+//#endif
 
     GrTextureType textureType() const { return this->backendFormat().textureType(); }
 
@@ -190,7 +190,7 @@ private:
     SkDEBUGCODE(const GrMipmapStatus fInitialMipmapStatus;)
     // TODO: Tracking to see if mipmap regen occurs in the correct task order
     // Could be removed once verified.
-    SkDEBUGCODE(bool fSlatedForMipmapRegen = false;)
+    bool fSlatedForMipmapRegen = false;
 
     bool             fSyncTargetKey = true;  // Should target's unique key be sync'ed with ours.
 

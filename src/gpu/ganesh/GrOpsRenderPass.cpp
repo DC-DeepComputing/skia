@@ -83,8 +83,8 @@ void GrOpsRenderPass::bindPipeline(const GrProgramInfo& programInfo, const SkRec
         }
     }
     programInfo.checkAllInstantiated();
-    programInfo.checkMSAAAndMIPSAreResolved();
 #endif
+    programInfo.checkMSAAAndMIPSAreResolved();
 
     this->resetActiveBuffers();
 
