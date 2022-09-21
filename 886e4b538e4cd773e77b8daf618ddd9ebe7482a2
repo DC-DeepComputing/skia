@@ -39,6 +39,30 @@
       },
       "revId": "886e4b538e4cd773e77b8daf618ddd9ebe7482a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b3beb8_9b9e0adc",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-21T14:44:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42877759_19ecedf7",
+      "range": {
+        "startLine": 61,
+        "startChar": 38,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "886e4b538e4cd773e77b8daf618ddd9ebe7482a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
