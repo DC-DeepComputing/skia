@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a6f7e2_2a3a6d28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T19:02:09Z",
+      "side": 1,
+      "message": "PTAL. Added SK_SPI so the symbols show up for Windows.",
+      "revId": "dfd4e66574f77f7c7f3101caad0508fa76dc69f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
