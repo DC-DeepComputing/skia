@@ -26,7 +26,7 @@ static void testing_submitted_proc(void* ctx, bool success) {
     *info->fSuccess = success;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

@@ -824,7 +824,7 @@ static void test_path(GrRecordingContext* rContext,
     pr.drawPath(args);
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(TriangulatingPathRendererTests,
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(TriangulatingPathRendererTests,
                              reporter,
                              ctxInfo,
                              CtsEnforcement::kNever) {

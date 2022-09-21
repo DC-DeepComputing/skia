@@ -279,7 +279,7 @@ static void test_compressed_data_init(GrDirectContext* dContext,
     dContext->deleteBackendTexture(backendTex);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(CompressedBackendAllocationTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(CompressedBackendAllocationTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

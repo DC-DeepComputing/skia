@@ -309,7 +309,7 @@ DEF_TEST(ExtendedSkColorTypeTests_raster, reporter) {
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ExtendedSkColorTypeTests_gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ExtendedSkColorTypeTests_gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

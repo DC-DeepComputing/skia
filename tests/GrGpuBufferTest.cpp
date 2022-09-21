@@ -169,7 +169,7 @@ private:
     friend class ::GrOp;
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -326,7 +326,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

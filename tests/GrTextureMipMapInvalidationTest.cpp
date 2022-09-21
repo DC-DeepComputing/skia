@@ -16,7 +16,7 @@
 #include "tools/gpu/ProxyUtils.h"
 
 // Tests that MIP maps are created and invalidated as expected when drawing to and from GrTextures.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrTextureMipMapInvalidationTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextureMipMapInvalidationTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -73,7 +73,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrTextureMipMapInvalidationTest,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
