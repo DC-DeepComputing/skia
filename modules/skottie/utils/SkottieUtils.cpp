@@ -262,7 +262,15 @@ public:
     sk_sp<skresources::ImageAsset> loadImageAsset(const char /*resource_path*/[],
                                                   const char slot_name[],
                                                   const char /*resource_id*/[]) const override {
+        SkDebugf("seeking slot (%s)\n", slot_name);
+        for (auto& i : fImageAssetMap) {
+            auto slotID = i.first;
+            SkDebugf("key: (%s)\n", slotID.c_str());
+            SkDebugf("str compare: %d\n", strcmp(slot_name, slotID.c_str()));
+            return i.second;
+        }
         const auto it = fImageAssetMap.find(slot_name);
+        if(it != fImageAssetMap.end()) {SkDebugf("found it");}
         return it == fImageAssetMap.end() ? nullptr : it->second;
     }
 

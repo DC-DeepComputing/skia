@@ -21,6 +21,7 @@
 #include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
+#include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
@@ -270,6 +271,119 @@ private:
     const DecoratorRec*        fDecoratorSelect = &kDecorators[0];
 };
 
+// Holds a pointer to a slot manager and the list of slots for the UI widget to track
+class SkottieSlide::SlotManagerWrapper : public SkRefCnt {
+public:
+    SlotManagerWrapper(sk_sp<skresources::ResourceProvider> rp, sk_sp<SkottieSlide> ss) {
+        fResourceProvider = rp;
+        fSlotManager = sk_make_sp<skottie_utils::SlotManager>();
+        fSkottieSlide = ss;
+    }
+
+
+    void renderUI() {
+        if (ImGui::Begin("Slot Manager", nullptr)) {
+            ImGui::Text("Color Slots");
+            for (auto& cSlot : fColorSlots) {
+                ImGui::InputText("SlotID", cSlot.first.data(), cSlot.first.size());
+                ImGui::ColorEdit4("Color", cSlot.second.data());
+            }
+            if(ImGui::Button("+ Color")) {
+                std::string s("slot_id");
+                s.resize(256);
+                fColorSlots.push_back(std::pair<std::string, std::array<float, 4>>(s, {1.0f, 1.0f, 1.0f, 1.0f}));
+            }
+
+            ImGui::Text("Text Slots");
+            for (auto& tSlot : fTextStringSlots) {
+                ImGui::InputText("SlotID", tSlot.first.data(), tSlot.first.size());
+                ImGui::InputText("Text", tSlot.second.data(), tSlot.second.size());
+            }
+            if (ImGui::Button("+ Text")) {
+                std::string s("slot_id");
+                s.resize(256);
+                std::string t("slot text");
+                t.resize(256);
+                std::pair<std::string, std::string> p(s, t);
+                fTextStringSlots.push_back(std::pair<std::string, std::string>(s, t));
+            }
+
+            ImGui::Text("Image Slots");
+            for (auto& iSlot : fImageSlots) {
+                ImGui::InputText("SlotID", iSlot.first.data(), iSlot.first.size());
+                if (ImGui::BeginCombo("Resource", iSlot.second.data())) {
+                    for (const auto& res : fResList) {
+                        if (ImGui::Selectable(res.c_str(), false)) {
+                            iSlot.second = res.c_str();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+            }
+            if (ImGui::Button("+ Image")) {
+                std::string s("slot_id");
+                s.resize(256);
+                fImageSlots.push_back(std::pair<std::string, std::string>(s, std::string()));
+            }
+
+            if (ImGui::Button("Apply Slots")) {
+                this->pushSlots();
+            }
+
+        }
+        ImGui::End();
+    }
+
+    void pushSlots() {
+        for(auto& s : fColorSlots) {
+            s.first.shrink_to_fit();
+            fSlotManager->setColorSlot(s.first, SkColor4f{s.second[0], s.second[1],
+                                                          s.second[2], s.second[3]}.toSkColor());
+        }
+        for(auto& s : fTextStringSlots) {
+            s.first.shrink_to_fit();
+            s.second.shrink_to_fit();
+            fSlotManager->setTextStringSlot(s.first, SkString(s.second));
+        }
+        for(auto& s : fImageSlots) {
+            s.second.shrink_to_fit();
+            SkDebugf("pushing img %s\n", s.first.c_str());
+            auto img = fResourceProvider->loadImageAsset("images/", s.second.c_str(), nullptr);
+            if (img) {
+                fSlotManager->setImageSlot(s.first, img);
+            }
+        }
+        auto dims = fSkottieSlide->getDimensions();
+        fSkottieSlide->load(dims.width(), dims.height());
+    }
+
+    void prepareImageAssetList(const char* dirname) {
+        SkOSFile::Iter iter(dirname, ".png");
+        for (SkString file; iter.next(&file); ) {
+            fResList.push_back(file);
+        }
+    }
+
+    sk_sp<skresources::ResourceProvider> getResourceProvider() {
+        return fSlotManager->getResourceProvider();
+    }
+
+    sk_sp<skottie::PropertyObserver> getPropertyObserver() {
+        return fSlotManager->getPropertyObserver();
+    }
+private:
+    sk_sp<skottie_utils::SlotManager> fSlotManager;
+    sk_sp<skresources::ResourceProvider> fResourceProvider;
+    std::vector<SkString> fResList;
+
+    sk_sp<SkottieSlide> fSkottieSlide;
+
+    std::vector<std::pair<std::string, std::array<float, 4>>>   fColorSlots;
+    std::vector<std::pair<std::string, std::string>>            fTextStringSlots;
+    std::vector<std::pair<std::string, std::string>>            fImageSlots;
+
+};
+
 static void draw_stats_box(SkCanvas* canvas, const skottie::Animation::Builder::Stats& stats) {
     static constexpr SkRect kR = { 10, 10, 280, 120 };
     static constexpr SkScalar kTextSize = 20;
@@ -364,13 +478,26 @@ void SkottieSlide::load(SkScalar w, SkScalar h) {
                                                                            kInterceptPrefix);
 
     fTransformTracker = sk_make_sp<TransformTracker>();
+    if (!fSlotManagerWrapper) {
+        fSlotManagerWrapper = sk_make_sp<SlotManagerWrapper>(resource_provider, sk_ref_sp(this));
+    }
+    fSlotManagerWrapper->prepareImageAssetList(GetResourcePath("skottie/images").c_str());
 
-    fAnimation      = builder
-            .setLogger(logger)
-            .setResourceProvider(std::move(resource_provider))
-            .setPrecompInterceptor(std::move(precomp_interceptor))
-            .setPropertyObserver(fTransformTracker)
-            .makeFromFile(fPath.c_str());
+    if (fShowSlotManager && fSlotManagerWrapper) {
+       fAnimation      = builder
+                .setLogger(logger)
+                .setResourceProvider(fSlotManagerWrapper->getResourceProvider())
+                .setPrecompInterceptor(std::move(precomp_interceptor))
+                .setPropertyObserver(fSlotManagerWrapper->getPropertyObserver())
+                .makeFromFile(fPath.c_str());
+    } else {
+        fAnimation      = builder
+                .setLogger(logger)
+                .setResourceProvider(std::move(resource_provider))
+                .setPrecompInterceptor(std::move(precomp_interceptor))
+                .setPropertyObserver(fTransformTracker)
+                .makeFromFile(fPath.c_str());
+    }
     fAnimationStats = builder.getStats();
     fWinSize        = SkSize::Make(w, h);
     fTimeBase       = 0; // force a time reset
@@ -444,6 +571,11 @@ void SkottieSlide::draw(SkCanvas* canvas) {
         if (fShowUI) {
             this->renderUI();
         }
+        if (fShowSlotManager) {
+            // not able to track layers with a PropertyObserver while using SM's PropertyObserver
+            fShowTrackerUI = false;
+            fSlotManagerWrapper->renderUI();
+        }
         if (fShowTrackerUI) {
             fTransformTracker->renderUI();
         }
@@ -495,6 +627,8 @@ bool SkottieSlide::onChar(SkUnichar c) {
     case 'T':
         fShowTrackerUI = !fShowTrackerUI;
         return true;
+    case 'M':
+        fShowSlotManager = !fShowSlotManager;
     }
 
     return INHERITED::onChar(c);
