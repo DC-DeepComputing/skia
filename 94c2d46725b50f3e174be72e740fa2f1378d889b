@@ -250,6 +250,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8f26d2_cbc14e80",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-21T16:56:21Z",
+      "side": 1,
+      "message": "I have a semi-working version of 2). Ganesh and CPU work. I still need to test/fix deserializing SKPs that include LMs for leaf shaders. I\u0027m going to hold off on working on the Graphite part of it until after this lands.",
+      "parentUuid": "a7f51594_c6d12e8d",
+      "range": {
+        "startLine": 1226,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 43
+      },
+      "revId": "94c2d46725b50f3e174be72e740fa2f1378d889b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdf56414_c35c8760",
