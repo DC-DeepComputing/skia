@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfab0329_02b574f0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T22:32:27Z",
+      "side": 1,
+      "message": "We call `abs(error.something)` a bunch of times below (seven?). Maybe we should have\n\n```\n  float2 absoluteError \u003d abs(error);\n```",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 101,
+        "endChar": 2
+      },
+      "revId": "9cd7f5e3f60adfb165aa16a2d5779973df5e38f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f4c4806_65de50bc",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
