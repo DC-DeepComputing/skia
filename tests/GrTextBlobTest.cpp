@@ -49,7 +49,7 @@ bool check_for_black(const SkBitmap& bm) {
     return false;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrTextBlobScaleAnimation,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextBlobScaleAnimation,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -80,7 +80,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrTextBlobScaleAnimation,
 }
 
 // Test extreme positions for all combinations of positions, origins, and translation matrices.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrTextBlobMoveAround,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextBlobMoveAround,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

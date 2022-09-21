@@ -1297,15 +1297,16 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     cleanup_resources(srcHelper.get(), dstHelper.get(), buffer);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_CPU_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_CPU_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kCPU, DstType::kVulkan, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_Vulkan_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_Vulkan_Vulkan, reporter, options,
+                CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kVulkan, DstType::kVulkan, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_Vulkan_Vulkan_Syncs,
+DEF_GANESH_TEST(VulkanHardwareBuffer_Vulkan_Vulkan_Syncs,
             reporter,
             options,
             CtsEnforcement::kApiLevel_T) {
@@ -1313,31 +1314,34 @@ DEF_GPUTEST(VulkanHardwareBuffer_Vulkan_Vulkan_Syncs,
 }
 
 #if defined(SK_GL)
-DEF_GPUTEST(VulkanHardwareBuffer_EGL_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kEGL, DstType::kVulkan, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_CPU_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_CPU_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kCPU, DstType::kEGL, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_EGL_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kEGL, DstType::kEGL, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_Vulkan_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_Vulkan_EGL, reporter, options, CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kVulkan, DstType::kEGL, false);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_EGL_EGL_Syncs, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_EGL_Syncs, reporter, options,
+                CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kEGL, DstType::kEGL, true);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_Vulkan_EGL_Syncs, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_Vulkan_EGL_Syncs, reporter, options,
+                CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kVulkan, DstType::kEGL, true);
 }
 
-DEF_GPUTEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs, reporter, options,
+                CtsEnforcement::kApiLevel_T) {
     run_test(reporter, options, SrcType::kEGL, DstType::kVulkan, true);
 }
 #endif

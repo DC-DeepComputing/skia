@@ -49,7 +49,7 @@ static void destroy_instance(skgpu::VulkanGetProc getProc, VkInstance inst) {
 // If the extension VK_EXT_GLOBAL_PRIORITY is supported, this test just tries to create a VkDevice
 // using the various global priorities. The test passes if no errors are reported or the test
 // doesn't crash.
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(VulkanPriorityExtension,
+DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VulkanPriorityExtension,
                                reporter,
                                context_info,
                                CtsEnforcement::kApiLevel_T) {

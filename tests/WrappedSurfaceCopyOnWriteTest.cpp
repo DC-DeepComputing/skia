@@ -20,7 +20,7 @@
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/ProxyUtils.h"
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
                              reporter,
                              ctxInfo,
                              CtsEnforcement::kApiLevel_T) {
@@ -82,7 +82,8 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
 }
 
 // Make sure GrCopyRenderTasks's skip actually skips the copy.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest, reporter, ctxInfo,
+                                       CtsEnforcement::kNever) {
     GrDirectContext* dContext = ctxInfo.directContext();
 
     GrImageInfo info(GrColorType::kRGBA_8888,
@@ -133,7 +134,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest, reporter, ctxInfo, CtsEnfor
 #if SK_GPU_V1
 
 // Make sure OpsTask are skippable
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     GrDirectContext* dContext = ctxInfo.directContext();
 
     GrImageInfo ii(GrColorType::kRGBA_8888, kPremul_SkAlphaType, /*color space*/ nullptr, 10, 10);

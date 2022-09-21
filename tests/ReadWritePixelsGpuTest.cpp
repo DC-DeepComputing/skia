@@ -480,7 +480,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -522,7 +522,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
     }
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(ReadPixels_InvalidRowBytes_Gpu,
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ReadPixels_InvalidRowBytes_Gpu,
                              reporter,
                              ctxInfo,
                              CtsEnforcement::kApiLevel_T) {
@@ -541,7 +541,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(ReadPixels_InvalidRowBytes_Gpu,
     }
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(WritePixels_InvalidRowBytes_Gpu,
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WritePixels_InvalidRowBytes_Gpu,
                              reporter,
                              ctxInfo,
                              CtsEnforcement::kApiLevel_T) {
@@ -579,7 +579,7 @@ static void async_callback(void* c, std::unique_ptr<const SkImage::AsyncReadResu
     context->fCalled = true;
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -651,7 +651,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -704,7 +704,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels,
     }
 }
 
-DEF_GPUTEST(AsyncReadPixelsContextShutdown, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(AsyncReadPixelsContextShutdown, reporter, options, CtsEnforcement::kApiLevel_T) {
     const auto ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                       SkColorSpace::MakeSRGB());
     enum class ShutdownSequence {
@@ -1074,7 +1074,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -1119,7 +1119,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixels,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -1269,7 +1269,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
 // Tests a bug found in OOP-R canvas2d in Chrome. The GPU backend would incorrectly not bind
 // buffer 0 to GL_PIXEL_PACK_BUFFER before a glReadPixels() that was supposed to read into
 // client memory if a GrDirectContext::resetContext() occurred.
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(GLReadPixelsUnbindPBO,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(GLReadPixelsUnbindPBO,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {

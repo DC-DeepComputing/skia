@@ -759,14 +759,14 @@ static void test_1(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap2());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_1(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache1Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -803,14 +803,14 @@ static void test_2(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap2());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache2View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache2View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_2(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache2Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache2Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -841,14 +841,14 @@ static void test_3(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap1());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache3View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache3View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_3(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache3Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache3Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -881,14 +881,14 @@ static void test_4(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap2());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_4(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -926,7 +926,7 @@ static void test_4_5(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, helper.snap1());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_5View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_5View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -934,7 +934,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_5View,
              &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_5Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_5Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -972,7 +972,7 @@ static void test_4_75(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, helper.stats()->fNumSWCreations == 0);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_75View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_75View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -980,7 +980,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_75View,
               &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_75Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache4_75Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1017,14 +1017,14 @@ static void test_5(GrDirectContext* dContext, skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache5View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache5View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_5(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache5Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache5Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1066,14 +1066,14 @@ static void test_6(GrDirectContext* dContext, skiatest::Reporter* reporter,
                                               /*hits*/ 1, /*misses*/ 1, /*refs*/ 0, kNoID));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache6View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache6View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_6(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache6Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache6Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1116,14 +1116,14 @@ static void test_7(GrDirectContext* dContext, skiatest::Reporter* reporter,
     ddl2 = nullptr;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache7View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache7View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_7(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache7Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache7Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1167,14 +1167,14 @@ static void test_8(GrDirectContext* dContext, skiatest::Reporter* reporter,
     ddl2 = nullptr;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache8View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache8View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_8(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache8Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache8Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1218,14 +1218,14 @@ static void test_9(GrDirectContext* dContext, skiatest::Reporter* reporter,
     ddl2 = nullptr;
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache9View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache9View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_9(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache9Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache9Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1298,7 +1298,7 @@ static void test_10(GrDirectContext* dContext, skiatest::Reporter* reporter,
                                               /*hits*/ 2, /*misses*/ 2, /*refs*/ 0, kNoID));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache10View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache10View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1308,7 +1308,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache10View,
 // To enable test_10 with verts would require a bit more work, namely:
 //    have a different # of verts based on size
 //    also pass in a gpuSize function to 'test_10'
-//DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache10Verts, reporter, ctxInfo) {
+//DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache10Verts, reporter, ctxInfo) {
 //    test_10(ctxInfo.directContext(), reporter, &TestHelper::addVertAccess, &TestHelper::checkVert);
 //}
 
@@ -1348,14 +1348,14 @@ static void test_11(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, helper.numCacheEntries() == 0);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache11View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache11View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_11(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache11Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache11Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1404,14 +1404,14 @@ static void test_12(GrDirectContext* dContext, skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, helper.numCacheEntries() == 0);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache12View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache12View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_12(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache12Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache12Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1455,14 +1455,14 @@ static void test_13(GrDirectContext* dContext, skiatest::Reporter* reporter,
                                               /*hits*/ 0, /*misses*/ 2, /*refs*/ 0, kNoID));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache13View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache13View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
     test_13(ctxInfo.directContext(), reporter, &TestHelper::addViewAccess, &TestHelper::checkView);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache13Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache13Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1471,7 +1471,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache13Verts,
 
 // Case 14: Test out mixing & matching view & vertex data w/ recycling of the cache entries to
 //          wring out the anonymous union code. This is mainly for the MSAN bot's consumption.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache14, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache14, reporter, ctxInfo,
+                                       CtsEnforcement::kNever) {
     constexpr int kBestPrimeNumber = 73; // palindromic in binary
     SkRandom rand(kBestPrimeNumber);
 
@@ -1544,7 +1545,7 @@ static void test_15(GrDirectContext* dContext, skiatest::Reporter* reporter,
     helper.checkImage(reporter, std::move(ddl2));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache15View,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache15View,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1552,7 +1553,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache15View,
             create_view_key);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache15Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache15Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -1570,7 +1571,7 @@ static bool newer_is_always_better(SkData* /* incumbent */, SkData* /* challenge
     return true;
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {

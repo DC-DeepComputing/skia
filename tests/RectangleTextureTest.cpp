@@ -117,7 +117,7 @@ static void test_copy_to_surface(skiatest::Reporter* reporter,
 }
 
 #ifdef SK_GL
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {

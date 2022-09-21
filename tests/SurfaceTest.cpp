@@ -91,7 +91,7 @@ DEF_TEST(SurfaceEmpty, reporter) {
     REPORTER_ASSERT(reporter, nullptr == SkSurface::MakeRasterDirect(info, nullptr, 0));
 
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceEmpty_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceEmpty_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -100,7 +100,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceEmpty_Gpu,
                     SkSurface::MakeRenderTarget(ctxInfo.directContext(), SkBudgeted::kNo, info));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -190,7 +190,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrContext_maxSurfaceSamplesForColorType,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_maxSurfaceSamplesForColorType,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -257,7 +257,7 @@ DEF_TEST(SurfaceCanvasPeek, reporter) {
         test_canvas_peek(reporter, surface, requestInfo, true);
     }
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceCanvasPeek_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceCanvasPeek_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -287,7 +287,7 @@ DEF_TEST(SurfaceSnapshotAlphaType, reporter) {
         }
     }
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceSnapshotAlphaType_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceSnapshotAlphaType_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -325,7 +325,7 @@ static void test_backend_rendertarget_access_copy_on_write(
                               (snap1 == snap2));
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendSurfaceAccessCopyOnWrite_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceBackendSurfaceAccessCopyOnWrite_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -374,7 +374,7 @@ static void test_backend_unique_id(skiatest::Reporter* reporter, SkSurface* surf
 }
 
 // No CPU test.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendHandleAccessIDs_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceBackendHandleAccessIDs_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -393,7 +393,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendHandleAccessIDs_Gpu,
 }
 
 // No CPU test.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -411,7 +411,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceAbandonPostFlush_Gpu,
     // the object at the right time.
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBackendAccessAbandoned_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceBackendAccessAbandoned_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -498,7 +498,7 @@ static void test_copy_on_write(skiatest::Reporter* reporter, SkSurface* surface)
 DEF_TEST(SurfaceCopyOnWrite, reporter) {
     test_copy_on_write(reporter, create_surface().get());
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceCopyOnWrite_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceCopyOnWrite_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -521,7 +521,7 @@ static void test_writable_after_snapshot_release(skiatest::Reporter* reporter,
 DEF_TEST(SurfaceWriteableAfterSnapshotRelease, reporter) {
     test_writable_after_snapshot_release(reporter, create_surface().get());
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWriteableAfterSnapshotRelease_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceWriteableAfterSnapshotRelease_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -570,7 +570,7 @@ static void test_crbug263329(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, imageProxy(image3.get()) != imageProxy(image1.get()));
     REPORTER_ASSERT(reporter, imageProxy(image2.get()) != imageProxy(image1.get()));
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceCRBug263329_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceCRBug263329_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -588,7 +588,7 @@ DEF_TEST(SurfaceGetTexture, reporter) {
     surface->notifyContentWillChange(SkSurface::kDiscard_ContentChangeMode);
     REPORTER_ASSERT(reporter, !as_IB(image)->isTextureBacked());
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfacepeekTexture_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfacepeekTexture_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -617,7 +617,8 @@ static SkBudgeted is_budgeted(SkImage* image, GrRecordingContext* rc) {
     return sk_gpu_test::GetTextureImageProxy(image, rc)->isBudgeted();
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceBudget, reporter, ctxInfo, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceBudget, reporter, ctxInfo,
+                                       CtsEnforcement::kApiLevel_T) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(8,8);
     GrDirectContext* dContext = ctxInfo.directContext();
     for (auto budgeted : { SkBudgeted::kNo, SkBudgeted::kYes }) {
@@ -668,7 +669,7 @@ DEF_TEST(SurfaceNoCanvas, reporter) {
         }
     }
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceNoCanvas_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceNoCanvas_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -825,7 +826,7 @@ static void test_surface_context_clear(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {
@@ -929,7 +930,7 @@ static void test_surface_draw_partially(
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfacePartialDraw_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfacePartialDraw_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -957,7 +958,7 @@ struct ReleaseChecker {
     }
 };
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -1026,7 +1027,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu,
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceAttachStencil_Gpu,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SurfaceAttachStencil_Gpu,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {
@@ -1061,7 +1062,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceAttachStencil_Gpu,
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReplaceSurfaceBackendTexture,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReplaceSurfaceBackendTexture,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -1183,7 +1184,8 @@ DEF_TEST(OverdrawSurface_Raster, r) {
     test_overdraw_surface(r, surface.get());
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(OverdrawSurface_Gpu, r, ctxInfo, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(OverdrawSurface_Gpu, r, ctxInfo,
+                                       CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
     sk_sp<SkSurface> surface = create_gpu_surface(context);
     test_overdraw_surface(r, surface.get());

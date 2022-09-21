@@ -16,7 +16,7 @@
 
 #ifdef SK_GL
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {

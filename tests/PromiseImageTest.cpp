@@ -115,7 +115,8 @@ static void check_all_done(skiatest::Reporter* reporter,
                                    ReleaseBalanceExpectation::kBalanced);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTest, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest, reporter, ctxInfo,
+                                       CtsEnforcement::kNever) {
     const int kWidth = 10;
     const int kHeight = 10;
 
@@ -189,7 +190,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTest, reporter, ctxInfo, CtsEnfor
     ctx->deleteBackendTexture(backendTex);
 }
 
-DEF_GPUTEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::kNever) {
     const int kWidth = 10;
     const int kHeight = 10;
 
@@ -269,7 +270,7 @@ DEF_GPUTEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::kNev
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {
@@ -354,7 +355,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
 }
 
 // Test case where promise image fulfill returns nullptr.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kNever) {

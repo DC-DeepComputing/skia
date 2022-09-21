@@ -18,7 +18,7 @@
 
 // The gradient shader will use the texture strip atlas if it has too many colors. Make sure
 // abandoning the context works.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerGradientTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerGradientTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
@@ -51,7 +51,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerGradientTest,
 }
 
 // The table color filter uses the texture strip atlas. Make sure abandoning the context works.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerColorFilterTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerColorFilterTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
