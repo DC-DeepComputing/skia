@@ -208,7 +208,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
 
 // Basic test to make sure we can import an AHardwareBuffer into an SkImage and draw it into a
 // surface.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_BasicDrawTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_BasicDrawTest,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {
@@ -278,7 +278,7 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_ImportAsSurface,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_ImportAsSurface,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {

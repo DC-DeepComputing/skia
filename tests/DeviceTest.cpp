@@ -75,7 +75,7 @@ DEF_TEST(SpecialImage_BitmapDevice, reporter) {
 }
 #endif
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_GPUDevice,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialImage_GPUDevice,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

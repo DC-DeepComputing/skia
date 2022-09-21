@@ -237,7 +237,7 @@ static void test_write_read(Encoding contextEncoding, Encoding writeEncoding, En
 
 // Test all combinations of writePixels/readPixels where the surface context/write source/read dst
 // are sRGB, linear, or untagged RGBA_8888.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

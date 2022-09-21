@@ -32,7 +32,7 @@ DEF_TEST(ImageIsOpaqueTest, reporter) {
     check_isopaque(reporter, surfaceOpaque, true);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageIsOpaqueTest_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageIsOpaqueTest_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

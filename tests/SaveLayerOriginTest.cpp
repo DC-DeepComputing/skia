@@ -95,7 +95,7 @@ static void run_test(skiatest::Reporter* reporter,
     context->deleteBackendTexture(beTexture);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SaveLayerOrigin,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SaveLayerOrigin,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {

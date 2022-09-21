@@ -2059,7 +2059,7 @@ static void disable_tessellation_atlas(GrContextOptions* options) {
     options->fAvoidStencilBuffers = true;
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(ClipStack_SWMask,
+DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
                          r,
                          ctxInfo,

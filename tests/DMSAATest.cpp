@@ -84,7 +84,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(DMSAA_preserve_contents,
+DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
                          ctxInfo,
@@ -119,7 +119,7 @@ static void require_dst_reads(GrContextOptions* options) {
     options->fSuppressFramebufferFetch = true;
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read,
+DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
                          ctxInfo,
@@ -146,7 +146,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read,
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
+DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
                          ctxInfo,
@@ -174,7 +174,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
     check_sdc_color(reporter, sdc.get(), dContext, dstColor);
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
+DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
                          ctxInfo,
@@ -208,7 +208,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
 // This test is used to test for crbug.com/1241134. The bug appears on Adreno5xx devices with OS
 // PQ3A. It does not repro on the earlier PPR1 version since the extend blend func extension was not
 // present on the older driver.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

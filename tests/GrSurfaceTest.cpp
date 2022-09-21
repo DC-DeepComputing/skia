@@ -30,7 +30,7 @@
 
 // Tests that GrSurface::asTexture(), GrSurface::asRenderTarget(), and static upcasting of texture
 // and render targets to GrSurface all work as expected.
-DEF_GPUTEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
+DEF_GANESH_TEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
     auto context = ctxInfo.directContext();
     auto resourceProvider = context->priv().resourceProvider();
 
@@ -94,7 +94,7 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
 
 // This test checks that the isFormatTexturable and isFormatRenderable are
 // consistent with createTexture's result.
-DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
                              reporter,
                              ctxInfo,
                              CtsEnforcement::kApiLevel_T) {
@@ -226,7 +226,7 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
 
 // For each context, set it to always clear the textures and then run through all the
 // supported formats checking that the textures are actually cleared
-DEF_GPUTEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApiLevel_T) {
     GrContextOptions options = baseOptions;
     options.fClearAllTextures = true;
 
@@ -364,7 +364,7 @@ DEF_GPUTEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApiLeve
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {

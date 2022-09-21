@@ -81,7 +81,7 @@ DEF_TEST(Blend_byte_multiply, r) {
 }
 
 // Tests blending to a surface with no texture available.
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(ES2BlendWithNoTexture,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(ES2BlendWithNoTexture,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {

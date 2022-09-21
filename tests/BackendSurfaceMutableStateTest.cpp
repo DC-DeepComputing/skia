@@ -21,7 +21,7 @@
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
 
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
+DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
                                reporter,
                                ctxInfo,
                                CtsEnforcement::kApiLevel_T) {

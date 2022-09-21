@@ -35,7 +35,7 @@ static void check_instantiation_status(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, tProxy->isInstantiated() == wrappedExpectation);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceDrawContextTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceDrawContextTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

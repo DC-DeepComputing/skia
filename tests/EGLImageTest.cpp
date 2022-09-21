@@ -43,7 +43,7 @@ static void cleanup(GLTestContext* glctx0,
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
+DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
                                       reporter,
                                       ctxInfo,
                                       CtsEnforcement::kApiLevel_T) {

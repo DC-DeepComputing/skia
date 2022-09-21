@@ -23,7 +23,7 @@
 
 #include <utility>
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(AdvancedBlendTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(AdvancedBlendTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
