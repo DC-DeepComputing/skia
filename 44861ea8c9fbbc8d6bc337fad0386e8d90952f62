@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ffa76b8_35bdd108",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T22:43:28Z",
+      "side": 1,
+      "message": "Jim, I was wondering if you could assist with this? Greg and I tried debugging this for a while. On my Intel Mac, we need to recreate the SkSurface after each call to `onReadPixels` or we get the wrong results back. On Greg\u0027s M1 Mac, it works without this line.",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 62
+      },
+      "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
