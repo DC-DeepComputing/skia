@@ -20,6 +20,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df627a22_e082621c",
+        "filename": "tests/Test.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T13:55:31Z",
+      "side": 1,
+      "message": "Currently I believe the fNeedsGpu triggers RunWithGPUTestContexts. This creates tests that are passed in GrContexts which only work with Ganesh. Similarly the RunWithGraphiteTestContexts makes an skgpu::graphite::Context which only works with Graphite. So in the current system those should stay distinct. Now down the line we may come up with a new system that allows for tests that could work on either Graphite or Ganesh. If/When such a thing happens I think we\u0027d add a kGPU TestType here which means any GPU backend works.",
+      "parentUuid": "74a38e64_0fc7b5d8",
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5505381_53cf3c6f",
+        "filename": "tests/Test.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T13:55:31Z",
+      "side": 1,
+      "message": "Lets rename this to Ganesh instead of GPU",
+      "range": {
+        "startLine": 116,
+        "startChar": 12,
+        "endLine": 116,
+        "endChar": 15
+      },
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b466b232_c40d7899",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 3
