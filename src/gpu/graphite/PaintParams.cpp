@@ -68,11 +68,13 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
                                            /*primitiveColorBlender=*/true);
     }
 
+    // Even if we have a shader, we need to supply the paint color as the prior-stage output.
+    // In particular, evaluating a null shader from a RuntimeEffect will return the paint color.
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, fColor.premul());
+    builder->endBlock();
+
     if (fShader) {
         as_SB(fShader)->addToKey(keyContext, builder, gatherer);
-    } else {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, fColor.premul());
-        builder->endBlock();
     }
 
     if (fColorFilter) {
