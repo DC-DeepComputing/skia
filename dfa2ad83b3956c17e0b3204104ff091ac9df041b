@@ -537,6 +537,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47cca616_76b523cb",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-21T14:02:21Z",
+      "side": 1,
+      "message": "Turns out this doesn\u0027t work. Restored original code.",
+      "parentUuid": "5948d96c_fb121e99",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e8dc58_176d5a2c",
