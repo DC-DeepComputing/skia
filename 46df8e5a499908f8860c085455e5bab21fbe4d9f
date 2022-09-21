@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b8b232d_83da80aa",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-21T16:07:51Z",
+      "side": 1,
+      "message": "size !\u003d size?",
+      "range": {
+        "startLine": 303,
+        "startChar": 7,
+        "endLine": 303,
+        "endChar": 82
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4a608a2_561886e4",
         "filename": "src/gpu/ganesh/geometry/GrRect.h",
         "patchSetId": 4
@@ -19,6 +42,53 @@
         "startChar": 0,
         "endLine": 47,
         "endChar": 63
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1f76cd7_d6c35afd",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-21T16:07:51Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we just should have a new function that operates on float rects. This seems a little less well defined. We\u0027re assuming we should round out both rects which could change the scale factors. If the in/out rects were float then the caller could decide whether and how to integralize.",
+      "parentUuid": "e4a608a2_561886e4",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d947ffe_e3f8051b",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-21T16:07:51Z",
+      "side": 1,
+      "message": "extra space",
+      "range": {
+        "startLine": 53,
+        "startChar": 43,
+        "endLine": 53,
+        "endChar": 44
       },
       "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
