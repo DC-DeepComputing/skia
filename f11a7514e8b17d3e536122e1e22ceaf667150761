@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f625f5a7_e8ca0a98",
+        "filename": "tests/AdvancedBlendTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-21T15:08:38Z",
+      "side": 1,
+      "message": "Sorry to be the bearing of annoying nits, but all these also need aligning. You may be able to use clang format to auto do it for you.",
+      "range": {
+        "startLine": 27,
+        "startChar": 36,
+        "endLine": 29,
+        "endChar": 65
+      },
+      "revId": "f11a7514e8b17d3e536122e1e22ceaf667150761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
