@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92e0bbff_8fce15a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T19:57:49Z",
+      "side": 1,
+      "message": "Is there any way we can get it down to just `--config\u003dgl` to be closer to DM? Or does that conflict with other config flags?",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "341946088f4f6ee9d1cca97bf86ce2f46dd513a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a094f3_16dd5a97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T19:57:49Z",
+      "side": 1,
+      "message": "This is great progress!",
+      "revId": "341946088f4f6ee9d1cca97bf86ce2f46dd513a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cd69166_54712a11",
+        "filename": "tests/BazelTestRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T19:57:49Z",
+      "side": 1,
+      "message": "If you add an equals sign (`/*sync\u003d*/`), then clang-tidy will make sure your argument comments are actually correct.",
+      "range": {
+        "startLine": 88,
+        "startChar": 52,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "341946088f4f6ee9d1cca97bf86ce2f46dd513a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
