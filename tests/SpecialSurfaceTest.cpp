@@ -50,7 +50,7 @@ DEF_TEST(SpecialSurface_Raster, reporter) {
     test_surface(surf, reporter, 0);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialSurface_Gpu1,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialSurface_Gpu1,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

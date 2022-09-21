@@ -187,7 +187,7 @@ DEF_TEST(SpecialImage_Image_Legacy, reporter) {
     test_specialimage_image(reporter);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

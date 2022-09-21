@@ -101,7 +101,7 @@ DEF_TEST(PremulAlphaRoundTrip, reporter) {
 
     test_premul_alpha_roundtrip(reporter, surf.get());
 }
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

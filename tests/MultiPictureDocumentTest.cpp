@@ -316,7 +316,7 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
 // Expected behavior is that the callback is called while the AHardwareBuffer is still valid and the
 // images are copied so .close() can still access them.
 // Confirm deserialized file contains images with correct data.
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
                                    reporter,
                                    ctx_info,
                                    CtsEnforcement::kApiLevel_T) {

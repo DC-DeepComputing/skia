@@ -52,7 +52,7 @@ static bool params_valid(const GrGLTextureParameters& parameters, const GrGLCaps
     return caps->useSamplerObjects() == sampler_params_invalid(parameters);
 }
 
-DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLTextureParameters,
+DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLTextureParameters,
                                 reporter,
                                 ctxInfo,
                                 CtsEnforcement::kApiLevel_T) {
