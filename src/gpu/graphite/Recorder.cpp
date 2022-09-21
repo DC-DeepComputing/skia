@@ -119,6 +119,8 @@ std::unique_ptr<Recording> Recorder::snap() {
         device->flushPendingWorkToRecorder();
     }
 
+    fGraph->dump();
+
     // TODO: fulfill all promise images in the TextureDataCache here
     // TODO: create all the samplers needed in the TextureDataCache here
 
