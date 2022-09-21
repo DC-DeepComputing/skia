@@ -16,6 +16,23 @@
       "message": "Derek or Brian, can you review the API changes?",
       "revId": "e8fb03876db22b2c94bd651501d4be991d4607b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "372adafe_0c8d4ac9",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-21T17:06:03Z",
+      "side": 1,
+      "message": "Are these values mirroring something internal to HEIF? I only ask because it\u0027s somewhat strange to have flag-like values for something where each choice is mutually exclusive. (In other words, the values on these could just be 0, 1, 2, 3, 4, right?)",
+      "revId": "e8fb03876db22b2c94bd651501d4be991d4607b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
