@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74a38e64_0fc7b5d8",
+        "filename": "tests/Test.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-09-21T13:45:17Z",
+      "side": 1,
+      "message": "Greg, may have a more informed opinion here, but this doesn\u0027t seem right to me.  I expected that `fNeedsGpu` tests are not Ganesh specific, but should pass on all GPU devices both Ganesh AND Graphite.\n\nGreg what are your long term plans around this?",
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b466b232_c40d7899",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 3
