@@ -93,6 +93,41 @@ half4 sk_image_shader(float4 coords,
     // filtering for repeat and decal tiling.
     half2 error = half2(pos - clampedPos);
 
+    // Do 1 or 3 more texture reads depending on whether both x and y tiling modes are repeat and
+    // whether we're near a single subset edge or a corder. Then blend the multiple reads using the
+    // error values calculated above.
+    bool sampleExtraX = filterMode == $kFilterModeLinear && tileModeX == $kTileModeRepeat &&
+                        error.x != 0;
+    bool sampleExtraY = filterMode == $kFilterModeLinear && tileModeY == $kTileModeRepeat &&
+                        error.y != 0;
+    if (sampleExtraX || sampleExtraY) {
+        float extraCoordX;
+        float extraCoordY;
+        half4 extraColorX;
+        half4 extraColorY;
+        if (sampleExtraX) {
+            extraCoordX = error.x > 0 ? insetClamp.x : insetClamp.z;
+            extraColorX = sample(s, float2(extraCoordX / float(imgWidth),
+                                           clampedPos.y / float(imgHeight)));
+        }
+        if (sampleExtraY) {
+            extraCoordY = error.y > 0 ? insetClamp.y : insetClamp.w;
+            extraColorY = sample(s, float2(clampedPos.x / float(imgWidth),
+                                           extraCoordY / float(imgHeight)));
+        }
+        if (sampleExtraX && sampleExtraY) {
+            half4 extraColorXY = sample(s, float2(extraCoordX / float(imgWidth),
+                                                  extraCoordY / float(imgHeight)));
+            color = mix(mix(color, extraColorX, abs(error.x)),
+                        mix(extraColorY, extraColorXY, abs(error.x)),
+                        abs(error.y));
+        } else if (sampleExtraX) {
+            color = mix(color, extraColorX, abs(error.x));
+        } else if (sampleExtraY) {
+            color = mix(color, extraColorY, abs(error.y));
+        }
+    }
+
     // Do soft edge shader filtering for decal tiling and linear filtering using the error values
     // calculated above.
     if (tileModeX == $kTileModeDecal && filterMode == $kFilterModeLinear) {
