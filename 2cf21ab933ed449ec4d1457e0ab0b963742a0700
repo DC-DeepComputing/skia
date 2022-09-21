@@ -16,6 +16,23 @@
       "message": "Thanks for the quick review!",
       "revId": "2cf21ab933ed449ec4d1457e0ab0b963742a0700",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b48ae5b4_f19204f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T13:14:07Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "2cf21ab933ed449ec4d1457e0ab0b963742a0700",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

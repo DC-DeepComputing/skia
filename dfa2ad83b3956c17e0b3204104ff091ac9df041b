@@ -324,6 +324,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "583bcee5_b3d17776",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T13:14:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "48e0fa72_dc60b6b8",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "766c01bb_a2518d2b",
@@ -371,6 +395,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e057c6f_06f0a140",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T13:14:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0f67ccc5_8ae379e0",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 50
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af6df746_c57323ff",
@@ -408,6 +456,30 @@
       "side": 1,
       "message": "I did not measure any. \n../bloaty/build/bloaty -v -n 0 --demangle\u003dfull -d sections,symbols  new_skottie_tool.stripped --debug-file\u003dnew_skottie_tool | grep \"SkTDStorage::array\"\n\nreturns nothing.",
       "parentUuid": "af6df746_c57323ff",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 58
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64be946_943d0950",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T13:14:07Z",
+      "side": 1,
+      "message": "SGTM then; hiding the `\u003cT\u003e` everywhere is a win.",
+      "parentUuid": "f9bf155e_4da63c46",
       "range": {
         "startLine": 333,
         "startChar": 0,
