@@ -129,7 +129,7 @@ static void cleanup_test(skiatest::Reporter* reporter) {
     }
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PinnedImageTest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

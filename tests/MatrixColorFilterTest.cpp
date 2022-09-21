@@ -15,7 +15,7 @@
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(MatrixColorFilter_TransparentBlack,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(MatrixColorFilter_TransparentBlack,
                                    reporter,
                                    info,
                                    CtsEnforcement::kApiLevel_T) {

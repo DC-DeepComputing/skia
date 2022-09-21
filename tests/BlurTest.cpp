@@ -418,7 +418,7 @@ DEF_TEST(BlurAsABlur, reporter) {
 
 // This exercises the problem discovered in crbug.com/570232. The return value from
 // SkBlurMask::BoxBlur wasn't being checked in SkBlurMaskFilter.cpp::GrRRectBlurEffect::Create
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SmallBoxBlurBug, reporter, ctxInfo, CtsEnforcement::kNever) {
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SmallBoxBlurBug, reporter, ctxInfo, CtsEnforcement::kNever) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(128, 128);
     auto surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(), SkBudgeted::kNo, info));
     SkCanvas* canvas = surface->getCanvas();
@@ -541,7 +541,7 @@ DEF_TEST(BlurZeroSigma, reporter) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BlurMaskBiggerThanDest,
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlurMaskBiggerThanDest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {

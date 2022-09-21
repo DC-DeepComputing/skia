@@ -719,7 +719,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
     }
 }
 
-DEF_GPUTEST(ColorTypeBackendAllocationTest, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(ColorTypeBackendAllocationTest, reporter, options, CtsEnforcement::kApiLevel_T) {
     for (int t = 0; t < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++t) {
         auto type = static_cast<sk_gpu_test::GrContextFactory::ContextType>(t);
         if (!sk_gpu_test::GrContextFactory::IsRenderingContext(type)) {
@@ -747,7 +747,7 @@ DEF_GPUTEST(ColorTypeBackendAllocationTest, reporter, options, CtsEnforcement::k
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef SK_GL
 
-DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
+DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
                                 reporter,
                                 ctxInfo,
                                 CtsEnforcement::kApiLevel_T) {
@@ -905,7 +905,7 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
 
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
+DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                                reporter,
                                ctxInfo,
                                CtsEnforcement::kApiLevel_T) {
