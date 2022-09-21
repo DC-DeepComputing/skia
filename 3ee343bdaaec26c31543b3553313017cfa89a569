@@ -77,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ca7aca5_622884e8",
+        "filename": "tests/Test.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-21T14:02:02Z",
+      "side": 1,
+      "message": "That\u0027s coming in a follow-up CL.",
+      "parentUuid": "d5505381_53cf3c6f",
+      "range": {
+        "startLine": 116,
+        "startChar": 12,
+        "endLine": 116,
+        "endChar": 15
+      },
+      "revId": "3ee343bdaaec26c31543b3553313017cfa89a569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b466b232_c40d7899",
