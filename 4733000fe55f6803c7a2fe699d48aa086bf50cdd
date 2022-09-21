@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93cf91f7_456c84a1",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-21T14:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bea31e8_f4f8646c",
+      "range": {
+        "startLine": 265,
+        "startChar": 30,
+        "endLine": 265,
+        "endChar": 32
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ccb7f92_a1ed2863",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-20T18:41:56Z",
       "side": 1,
       "message": "Is this the same a regular map lookup by key?  Would something like this work instead?\n\n    const auto it \u003d fColorMap.find(node_name);\n    if (it !\u003d fColorMap.end()) {\n        c()-\u003eset(it.second);\n    }",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4750f30_e4e4ebaf",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-21T14:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ccb7f92_a1ed2863",
       "range": {
         "startLine": 287,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5084b488_71b5ee4c",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-21T14:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43d84e45_b38ec20c",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 38
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f456be3_5896afaf",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "927b0958_6ec663bf",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-21T14:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f456be3_5896afaf",
+      "range": {
+        "startLine": 328,
+        "startChar": 42,
+        "endLine": 328,
+        "endChar": 46
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c164f1fb_de35098d",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-09-20T18:41:56Z",
       "side": 1,
       "message": "nit: std::move(img)",
+      "range": {
+        "startLine": 332,
+        "startChar": 48,
+        "endLine": 332,
+        "endChar": 51
+      },
+      "revId": "4733000fe55f6803c7a2fe699d48aa086bf50cdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f309abe4_4fc7f9f3",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-21T14:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c164f1fb_de35098d",
       "range": {
         "startLine": 332,
         "startChar": 48,
