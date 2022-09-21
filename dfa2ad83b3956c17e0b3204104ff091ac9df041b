@@ -561,6 +561,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97c6a25_8397c9f5",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-21T14:11:49Z",
+      "side": 1,
+      "message": "Womp womp. I wonder where it\u0027s documented what `operator\u003d(T\u0026\u0026) \u003d default` generates. I looked on cppreference and couldn\u0027t find out what it makes, just that it can be done.",
+      "parentUuid": "47cca616_76b523cb",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "dfa2ad83b3956c17e0b3204104ff091ac9df041b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e8dc58_176d5a2c",
