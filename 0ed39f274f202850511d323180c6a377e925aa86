@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db180b33_ee60b551",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-22T14:36:07Z",
+      "side": 1,
+      "message": "Rob: is there a better way to determine if a shader will use prior-stage output? AFAICS it\u0027s not a trivial problem to solve; we have to create a key just to inspect it. And unfortunately, we need to know the answer BEFORE inserting the shader into the key. (If we could create key portions out-of-order and then combine them, we could avoid doing the work twice.)\n\nOr: technically, we could just always emit the solid color, even if it\u0027s unused. It burns one half4 uniform in the case where we have a shader that ignores the prior-stage. (I tried this approach as well, and it broke some CombinationBuilder tests, but I wasn\u0027t sure how that code worked.)",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "0ed39f274f202850511d323180c6a377e925aa86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
