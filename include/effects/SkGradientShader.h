@@ -62,10 +62,41 @@ public:
     struct Interpolation {
         enum class InPremul : bool { kNo = false, kYes = true };
 
-        InPremul fInPremul = InPremul::kNo;
+        enum class ColorSpace : uint8_t {
+            // Default Skia behavior: interpolate in the color space of the destination surface
+            kDestination,
+
+            // https://www.w3.org/TR/css-color-4/#interpolation-space
+            kXYZD65,
+            kXYZD50,
+            kSRGBLinear,
+            kLab,
+            kOKLab,
+            kLCH,
+            kOKLCH,
+            kSRGB,
+            kHSL,
+            kHWB,
+        };
+
+        enum class HueMethod : uint8_t {
+            // https://www.w3.org/TR/css-color-4/#hue-interpolation
+            kShorter,
+            kLonger,
+            kIncreasing,
+            kDecreasing,
+        };
+
+        InPremul fInPremul     = InPremul::kNo;
+
+        // fHueMethod is only relevant if fColorSpace is LCH, OKLCH, HSL, or HWB
+        ColorSpace fColorSpace = ColorSpace::kDestination;
+        HueMethod fHueMethod   = HueMethod::kShorter;
 
         static Interpolation FromFlags(uint32_t flags) {
-            return {flags & kInterpolateColorsInPremul_Flag ? InPremul::kYes : InPremul::kNo};
+            return {flags & kInterpolateColorsInPremul_Flag ? InPremul::kYes : InPremul::kNo,
+                    ColorSpace::kDestination,
+                    HueMethod::kShorter};
         }
     };
 
