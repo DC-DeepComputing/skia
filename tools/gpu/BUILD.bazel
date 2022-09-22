@@ -42,7 +42,10 @@ skia_cc_library(
     hdrs = [
         "GrContextFactory.h",
     ],
-    visibility = ["//modules/skottie:__pkg__"],
+    visibility = [
+        "//modules/skottie:__pkg__",
+        "//tests:__pkg__",
+    ],
     deps = ["//:skia_internal"] + select_multi({
         "//src/gpu:gl_backend": [
             "//tools/gpu/gl:deps",
