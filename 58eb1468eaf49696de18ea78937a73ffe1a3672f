@@ -16,6 +16,24 @@
       "message": "This lgtm. Leon, I know you originally asked for the new enum to be behind a flag -- are you okay with having it always present, even when it does nothing?",
       "revId": "58eb1468eaf49696de18ea78937a73ffe1a3672f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da6bcb45_9ca8252d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-22T20:39:25Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m fine with that, given that it causes problems to have the flag. I don\u0027t see another way to make it Android-only.",
+      "parentUuid": "8d0a2cbb_24ac0b5f",
+      "revId": "58eb1468eaf49696de18ea78937a73ffe1a3672f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
