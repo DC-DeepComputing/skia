@@ -230,7 +230,7 @@ sk_sp<SkFlattenable> SkTwoPointConicalGradient::CreateProc(SkReadBuffer& buffer)
     }
     return SkGradientShader::MakeTwoPointConical(c1, r1, c2, r2, desc.fColors,
                                                  std::move(desc.fColorSpace), desc.fPos,
-                                                 desc.fCount, desc.fTileMode, desc.fGradFlags,
+                                                 desc.fCount, desc.fTileMode, desc.fInterpolation,
                                                  desc.fLocalMatrix);
 }
 
