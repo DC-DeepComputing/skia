@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ad30a77_1a0806dc",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-22T20:37:29Z",
+      "side": 0,
+      "message": "This flag doesn\u0027t exist at ToT.",
+      "range": {
+        "startLine": 31,
+        "startChar": 42,
+        "endLine": 31,
+        "endChar": 69
+      },
+      "revId": "ff37365c47f87dd74d301f31e4d61a2d15ebecd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
