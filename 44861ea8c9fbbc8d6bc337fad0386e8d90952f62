@@ -214,6 +214,30 @@
       },
       "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f630e1a_fb70b3f9",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-22T22:08:22Z",
+      "side": 1,
+      "message": "I\u0027ve moved skia:13761 over to you so that it doesn\u0027t slip between the cracks, but it will be hard to debug without a Mac that has a Radeon 5300M (or similar generation GPU), so I figure I\u0027ll probably be helping test any workarounds.\n\nI put a list of the things we tried/didn\u0027t try on the bug, to the best of my recollection.",
+      "parentUuid": "37bb1dcf_ded2c046",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 62
+      },
+      "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
