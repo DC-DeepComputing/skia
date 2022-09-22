@@ -70,6 +70,30 @@
       },
       "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "133b2fb4_7a00c57d",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-22T15:24:12Z",
+      "side": 1,
+      "message": "Tried it on an Intel MacMini with both the integrated GPU and an external Radeon RX 580 and I couldn\u0027t duplicate it.",
+      "parentUuid": "12352344_14f8353d",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 62
+      },
+      "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
