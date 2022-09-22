@@ -72,7 +72,6 @@ static bool eliminate_dead_local_variables(const Context& context,
                 const Variable* var = &varDecl.var();
                 ProgramUsage::VariableCounts* counts = fUsage->fVariableCounts.find(var);
                 SkASSERT(counts);
-                SkASSERT(counts->fDeclared);
                 if (CanEliminate(var, *counts)) {
                     fDeadVariables.add(var);
                     if (var->initialValue()) {
@@ -114,7 +113,7 @@ static bool eliminate_dead_local_variables(const Context& context,
         }
 
         static bool CanEliminate(const Variable* var, const ProgramUsage::VariableCounts& counts) {
-            return counts.fDeclared && !counts.fRead && var->storage() == VariableStorage::kLocal;
+            return !counts.fRead && var->storage() == VariableStorage::kLocal;
         }
 
         bool fMadeChanges = false;
