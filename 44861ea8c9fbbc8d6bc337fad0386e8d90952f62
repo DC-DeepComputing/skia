@@ -190,6 +190,30 @@
       },
       "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bb1dcf_ded2c046",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-22T20:58:06Z",
+      "side": 1,
+      "message": "Let\u0027s make sure we figure out a workaround for this in graphite for this. This sounds like a bug which will break many things. Out of curiousity, this you try not doing the load of the single target into MSAA. Normally this would be wrong but since we\u0027re using src blend it probably is fine if we have random data in the msaa buffer to start.",
+      "parentUuid": "948eb6a1_59a9a404",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 62
+      },
+      "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
