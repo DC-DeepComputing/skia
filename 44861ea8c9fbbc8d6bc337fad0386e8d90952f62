@@ -22,6 +22,30 @@
       },
       "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd1652c5_fd27b8eb",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-22T13:31:13Z",
+      "side": 1,
+      "message": "This is more just pondering/discussion and less suggestions on what to do.\n\nI\u0027m worried if we just leave this TODO as is here, it will just never get looked at. But maybe that\u0027s fine in the sense that this test is now able to test specifically what it wants to test?\n\nIs it best to limit the workaround only to intel macs on metal graphite? I assume this test passes fine on intel metel ganesh? Or is it best to land the test without a workaround and just have the test skipped? Mostly curious what others thoughts are for the general approach of how to handle workarounds for one specific bot in our tests?\n\nSide note, did we confirm that this fails the intel bots without the workarounds?",
+      "parentUuid": "1ffa76b8_35bdd108",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 62
+      },
+      "revId": "44861ea8c9fbbc8d6bc337fad0386e8d90952f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
