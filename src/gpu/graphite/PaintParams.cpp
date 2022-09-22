@@ -14,6 +14,7 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkPipelineData.h"
+#include "src/core/SkShaderCodeDictionary.h"
 #include "src/core/SkUniform.h"
 #include "src/shaders/SkShaderBase.h"
 
@@ -59,20 +60,45 @@ sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; 
 
 sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
 
+static bool key_needs_paint_color(const SkKeyContext& keyContext,
+                                  SkPaintParamsKeyBuilder* builder,
+                                  SkShader* shader) {
+    // If there's no shader, the paint color is always used.
+    if (!shader) {
+        return true;
+    }
+
+    // Convert the shader to a temporary key (without actually gathering data).
+    as_SB(shader)->addToKey(keyContext, builder, /*gatherer=*/nullptr);
+
+    // Convert the temporary key to an SkShaderInfo; this identifies all the snippets' requirements.
+    SkPaintParamsKey key = builder->lockAsKey();
+    SkShaderInfo shaderInfo;
+    key.toShaderInfo(keyContext.dict(), &shaderInfo);
+
+    // If any of the shader's snippets use the prior-stage output, we will need the paint color.
+    return shaderInfo.needsPriorStageOutput();
+}
+
 void PaintParams::toKey(const SkKeyContext& keyContext,
                         SkPaintParamsKeyBuilder* builder,
                         SkPipelineDataGatherer* gatherer) const {
+    // We perform the paint-color check before starting to build the key, so we can use `builder` as
+    // a scratchpad.
+    bool needsPaintColor = key_needs_paint_color(keyContext, builder, fShader.get());
 
     if (fPrimitiveBlender) {
         as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer,
                                            /*primitiveColorBlender=*/true);
     }
 
-    if (fShader) {
-        as_SB(fShader)->addToKey(keyContext, builder, gatherer);
-    } else {
+    if (needsPaintColor) {
         SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, fColor.premul());
         builder->endBlock();
+    }
+
+    if (fShader) {
+        as_SB(fShader)->addToKey(keyContext, builder, gatherer);
     }
 
     if (fColorFilter) {
