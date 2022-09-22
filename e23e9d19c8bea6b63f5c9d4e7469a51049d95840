@@ -16,6 +16,23 @@
       "message": "Thoughts on API? (Naming, etc...). I\u0027d like to get something like this in place before I add all the other kruft. (You can see what the two new enums will look like in the follow-up CL, even though they\u0027re not connected to anything).",
       "revId": "e23e9d19c8bea6b63f5c9d4e7469a51049d95840",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d10936b7_7229c90d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T21:00:32Z",
+      "side": 1,
+      "message": "I haven\u0027t looked at these modifications in depth, but Rob had been working on moving every builtin shader factory to be in the SkShaders wrapper: https://skia-review.googlesource.com/c/skia/+/569980",
+      "revId": "e23e9d19c8bea6b63f5c9d4e7469a51049d95840",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
