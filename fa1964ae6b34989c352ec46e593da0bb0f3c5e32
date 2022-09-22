@@ -22,6 +22,30 @@
       },
       "revId": "fa1964ae6b34989c352ec46e593da0bb0f3c5e32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b672c40_5f033b8f",
+        "filename": "include/private/SkFloatingPoint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T13:34:20Z",
+      "side": 1,
+      "message": "I updated to make the comment more round focused, but I think the performance trend was more general (e.g. just floor vs floorf), which is why I\u0027d not included the extra operations.\n\nFor the historical record, on my workstation, rounding 256 random floats was timed at\n - 384ns for (float)floor((double)f + 0.5)\n - 416ns for floorf(f + 0.5f)\n - 430ns for std::round(f)\n \nI liked the idea of just using an existing round() function since it should handle all the corner cases, and it\u0027s not that significant a difference compared to floorf(f + 0.5f). However, we\u0027ve had round towards positive infinity (even for negative numbers) whereas std::round is away from 0. Switching to the double floor+0.5 version keeps our rounding direction consistent, handles the corner cases I\u0027m aware of, and seems to net us a bit of performance. If we get regressions on other hardware, I propose we just move to std::round, or roundf.",
+      "parentUuid": "77dcec1c_fc189ea0",
+      "range": {
+        "startLine": 60,
+        "startChar": 21,
+        "endLine": 60,
+        "endChar": 35
+      },
+      "revId": "fa1964ae6b34989c352ec46e593da0bb0f3c5e32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
