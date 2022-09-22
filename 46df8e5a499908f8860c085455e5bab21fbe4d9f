@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac98fd1d_06a9331b",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T14:31:39Z",
+      "side": 1,
+      "message": "After thinking through Brian\u0027s comment and my first comment, I think we should:\n1. Keep GrClipSrcRectAndDstPoint as-is\n2. Add a GrClipSrcRectAndDstRect that works on floating point\n3. Update the copy() APIs and GrCopyTask to require that srcRect and dstRect are already contained in the surfaces.\n4. Callers will use the appropriate function from 1 or 2 to meet 3\u0027s requirements and they can handle rounding, or what to do if dstRect would shrink and they needed to fill.\n\nWhile there\u0027s some benefit to using copies to clamp the srcRect sampling and fill out dstRect, it\u0027s only available on some platforms, and gut-feeling says it\u0027s where driver bugs will lie. And the scaling use case that this will be used for in backdrop filters and rescaleInto() construct srcRect and dstRect such that they shouldn\u0027t be getting clipped anyways.\n\n -\u003e So that could also mean we don\u0027t even bother adding GrClipSrcRectAndDstRect at this time, and just change where GrCliPSrcRectAndDstPoint is called so that rescaleInto() can just provide it\u0027s valid rects directly?",
+      "parentUuid": "b1f76cd7_d6c35afd",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d947ffe_e3f8051b",
         "filename": "src/gpu/ganesh/geometry/GrRect.h",
         "patchSetId": 4
