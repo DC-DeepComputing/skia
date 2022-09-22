@@ -15,7 +15,7 @@ import subprocess
 import tempfile
 
 
-BRANCH = "release/10.x"
+BRANCH = "llvmorg-15.0.1"
 
 
 def create_asset(target_dir):
