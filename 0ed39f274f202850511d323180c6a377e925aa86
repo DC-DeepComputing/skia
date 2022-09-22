@@ -22,6 +22,30 @@
       },
       "revId": "0ed39f274f202850511d323180c6a377e925aa86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a65ff61d_d2478bd6",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-22T20:45:12Z",
+      "side": 1,
+      "message": "From talking with Michael, he thinks the better option is just to always provide the paint color, but also (separate from this CL) there were some bigger ideas about restructuring the key building process to focus more on children and to use the prior-stage much less. I\u0027ll fix up this CL later to just always supply the paint, and try to figure out how to make the CombinationBuilder tests agree.",
+      "parentUuid": "db180b33_ee60b551",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "0ed39f274f202850511d323180c6a377e925aa86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
