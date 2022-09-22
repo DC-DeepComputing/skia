@@ -147,6 +147,9 @@ public:
     bool needsLocalCoords() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
     }
+    bool needsPriorStageOutput() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
+    }
     const SkPaintParamsKey::BlockReader& blockReader(int index) const {
         return fBlockReaders[index];
     }
