@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a37618ab_6de16dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-22T16:47:35Z",
+      "side": 1,
+      "message": "This is failing a bunch of tests on the bots. e.g. in https://logs.chromium.org/logs/skia/5d7dd3ff8703d511/+/steps/dm/0/stdout, I see\n\n```\nCaught signal 11 [Segmentation fault] (386MB RAM, peak 772MB), was running:\n\nCaught signal 11 [Segmentation fault] (386MB RAM, peak 772MB), was running:\n\tvk gm  encode-srgb-jpg\nLikely culprit:\n\tvk gm  encode-srgb-jpg\n\tvk gm  encode-srgb-jpg\nLikely culprit:\n\tvk gm  encode-srgb-jpg\nSegmentation fault \n+ \u003e/data/local/tmp/rc \n+ echo 139\n```\n\nI am able to reproduce locally. In a debugger, I get a little bit more info:\n\n```\nscroggo@scroggo-linux691:/usr/local/google/skia$ ninja -C out/Default/ dm \u0026\u0026 ./out/Default/dm --src gm --match encode-srgb-jpg\nninja: Entering directory `out/Default/\u0027\n[79/79] link dm\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\n1 srcs * 2 sinks + 0 tests \u003d\u003d 2 tasks\ndm: ../../modules/skcms/skcms.cc:2545: size_t bytes_per_pixel(skcms_PixelFormat): Assertion `false\u0027 failed.\n\nCaught signal 6 [Aborted] (127MB RAM, peak 127MB), was running:\n\tgl gm  encode-srgb-jpg\n\t8888 gm  encode-srgb-jpg\nLikely culprit:\n\t8888 gm  encode-srgb-jpg\n```\n\nThe `fmt` is `1379083017`, which doesn\u0027t seem right. I don\u0027t see how this change could cause that.\n\nIf I run with `--threads 0`, `dm` runs cleanly without crashing. So presumably there\u0027s some kind of threading problem.",
+      "revId": "e8fb03876db22b2c94bd651501d4be991d4607b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "372adafe_0c8d4ac9",
         "filename": "include/codec/SkCodec.h",
         "patchSetId": 6
