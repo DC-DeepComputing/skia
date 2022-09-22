@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff99f4e_3201376f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T18:29:54Z",
+      "side": 1,
+      "message": "The other CL https://skia-review.googlesource.com/c/skia/+/583583 has landed and appears to be okay, so this should be ready. PS2 has the fixes from the reverted version.",
+      "revId": "79a71f51bbbdf53acd1745210b4901636161306e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
