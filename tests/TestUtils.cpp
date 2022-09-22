@@ -210,6 +210,58 @@ bool ComparePixels(const GrCPixmap& a,
     return true;
 }
 
+bool ComparePixels(const SkPixmap& a,
+                   const SkPixmap& b,
+                   const float tolRGBA[4],
+                   std::function<ComparePixmapsErrorReporter>& error) {
+    if (a.dimensions() != b.dimensions()) {
+        static constexpr float kEmptyDiffs[4] = {};
+        error(-1, -1, kEmptyDiffs);
+        return false;
+    }
+
+    SkAlphaType floatAlphaType = a.alphaType();
+    // If one is premul and the other is unpremul we do the comparison in premul space.
+    if ((a.alphaType() == kPremul_SkAlphaType   || b.alphaType() == kPremul_SkAlphaType) &&
+        (a.alphaType() == kUnpremul_SkAlphaType || b.alphaType() == kUnpremul_SkAlphaType)) {
+        floatAlphaType = kPremul_SkAlphaType;
+    }
+    sk_sp<SkColorSpace> floatCS;
+    if (SkColorSpace::Equals(a.colorSpace(), b.colorSpace())) {
+        floatCS = a.refColorSpace();
+    } else {
+        floatCS = SkColorSpace::MakeSRGBLinear();
+    }
+    SkImageInfo floatInfo = SkImageInfo::Make(a.dimensions(),
+                                              kRGBA_F32_SkColorType,
+                                              floatAlphaType,
+                                              std::move(floatCS));
+    SkBitmap floatA, floatB;
+    floatA.allocPixels(floatInfo);
+    floatB.allocPixels(floatInfo);
+    SkAssertResult(SkConvertPixels(floatInfo, floatA.getPixels(), floatA.rowBytes(),
+                                   a.info(), a.addr(), a.rowBytes()));
+    SkAssertResult(SkConvertPixels(floatInfo, floatB.getPixels(), floatB.rowBytes(),
+                                   b.info(), b.addr(), b.rowBytes()));
+
+    SkASSERT(floatA.rowBytes() == floatB.rowBytes());
+    auto at = [rb = floatA.rowBytes()](const void* base, int x, int y) {
+        return SkTAddOffset<const float>(base, y*rb + x*sizeof(float)*4);
+    };
+
+    for (int y = 0; y < floatA.height(); ++y) {
+        for (int x = 0; x < floatA.width(); ++x) {
+            const float* rgbaA = at(floatA.getPixels(), x, y);
+            const float* rgbaB = at(floatB.getPixels(), x, y);
+            if (!compare_colors(x, y, rgbaA, rgbaB, tolRGBA, error)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
 bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
                       const float tolRGBA[4],

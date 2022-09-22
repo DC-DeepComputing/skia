@@ -43,8 +43,7 @@ bool BipmapToBase64DataURI(const SkBitmap& bitmap, SkString* dst);
 using ComparePixmapsErrorReporter = void(int x, int y, const float diffs[4]);
 
 /**
- * Compares pixels pointed to by 'a' with 'infoA' and rowBytesA to pixels pointed to by 'b' with
- * 'infoB' and 'rowBytesB'.
+ * Compares pixels pointed to by 'a' to pixels pointed to by 'b'. GrCPixmap version.
  *
  * If the pixmaps have different dimensions error is called with negative coordinate values and
  * zero diffs and no comparisons are made.
@@ -63,6 +62,28 @@ using ComparePixmapsErrorReporter = void(int x, int y, const float diffs[4]);
  */
 bool ComparePixels(const GrCPixmap& a,
                    const GrCPixmap& b,
+                   const float tolRGBA[4],
+                   std::function<ComparePixmapsErrorReporter>& error);
+/**
+ * Compares pixels pointed to by 'a' to pixels pointed to by 'b'. SkPixmap version.
+ *
+ * If the pixmaps have different dimensions error is called with negative coordinate values and
+ * zero diffs and no comparisons are made.
+ *
+ * Before comparison pixels are converted to a common color type, alpha type, and color space.
+ * The color type is always 32 bit float. The alpha type is premul if one of the pixmaps is
+ * premul and the other is unpremul. The color space is linear sRGB if the pixmaps have
+ * different colorspaces, otherwise their common color space is used.
+ *
+ * 'tolRGBA' expresses the allowed difference between pixels in the comparison space per channel. If
+ * pixel components differ more than by 'tolRGBA' in absolute value in any channel then 'error' is
+ * called with the coordinate and difference in the comparison space (B - A).
+ *
+ * The function quits after a single error is reported and returns false if 'error' was called and
+ * true otherwise.
+ */
+bool ComparePixels(const SkPixmap& a,
+                   const SkPixmap& b,
                    const float tolRGBA[4],
                    std::function<ComparePixmapsErrorReporter>& error);
 
