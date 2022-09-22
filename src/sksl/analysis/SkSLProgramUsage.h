@@ -25,7 +25,6 @@ class Variable;
 class ProgramUsage {
 public:
     struct VariableCounts {
-        int fDeclared = 0;
         int fRead = 0;
         int fWrite = 0;
     };
