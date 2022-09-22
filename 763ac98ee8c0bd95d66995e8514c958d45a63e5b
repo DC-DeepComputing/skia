@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88ff606_037c6fcd",
+        "filename": "resources/sksl/inliner/TrivialArgumentsInlineDirectly.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T20:53:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ebffc2ae_7531fe54",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 13
+      },
+      "revId": "763ac98ee8c0bd95d66995e8514c958d45a63e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26bb5f16_3893c095",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-21T15:01:10Z",
       "side": 1,
       "message": "Once again, almost the entire test vanishes without these guards: https://skia-review.googlesource.com/c/skia/+/582822/1/tests/sksl/shared/Assignment.glsl",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 13
+      },
+      "revId": "763ac98ee8c0bd95d66995e8514c958d45a63e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29b3c9f5_44a4481c",
+        "filename": "resources/sksl/shared/Assignment.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-22T20:53:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "26bb5f16_3893c095",
       "range": {
         "startLine": 44,
         "startChar": 4,
