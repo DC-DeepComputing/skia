@@ -31,6 +31,14 @@ int SkTDStorage::assign(const void* src, int count, size_t sizeOfT) {
     return count;
 }
 
+int SkTDStorage::reserve(int oldReserve, size_t newReserve, size_t sizeOfT) {
+    SkASSERT_RELEASE(SkTFitsIn<int>(newReserve));
+    if (oldReserve < SkToInt(newReserve)) {
+        this->resizeStorageToAtLeast(SkToInt(newReserve), sizeOfT);
+    }
+    return SkToInt(newReserve);
+}
+
 int SkTDStorage::resizeStorageToAtLeast(int count, size_t sizeOfT) {
     SkASSERT(count > 0);
     // Establish the maximum number of elements that includes a valid count for end. In the
