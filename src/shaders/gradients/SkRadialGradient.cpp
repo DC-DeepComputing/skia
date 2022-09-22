@@ -164,7 +164,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     if (radius < 0) {
         return nullptr;
     }
-    if (!SkGradientShaderBase::ValidGradient(colors, pos, colorCount, mode)) {
+    if (!SkGradientShaderBase::ValidGradient(colors, colorCount, mode, interpolation)) {
         return nullptr;
     }
     if (1 == colorCount) {
