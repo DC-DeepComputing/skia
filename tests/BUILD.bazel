@@ -1,0 +1,46 @@
+load("//bazel:macros.bzl", "skia_cc_library")
+load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
+
+skia_cc_library(
+    name = "test_harness",
+    testonly = True,
+    srcs = [
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "//tools/flags",
+    ],
+    hdrs = [
+        "CtsEnforcement.h",
+        "Test.h",
+    ],
+    deps = [
+        "//:skia_internal",
+        "//tools:registry",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["//tools/gpu:utils"],
+        "//conditions:default": [],
+    }),
+)
+
+CPU_ONLY_TESTS = [
+    "MatrixProcsTest.cpp",
+]
+
+# These files have tests requiring a Ganesh backend, and optionally, tests only for the CPU.
+# The mock Ganesh backend is always available; the other ones depend on the compile flags used
+# to invoke the tests see //bazel/buildrc for these configurations.
+GANESH_TESTS = [
+    "GpuDrawPathTest.cpp",
+]
+
+# These macros generates one test target per file listed in the passed in list. The test target
+# has the name of the file, with the .cpp extension removed.
+skia_cpu_tests(
+    harness = ":test_harness",
+    tests = CPU_ONLY_TESTS,
+)
+
+skia_ganesh_tests(
+    harness = ":test_harness",
+    tests = GANESH_TESTS,
+)
