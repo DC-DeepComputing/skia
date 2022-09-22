@@ -123,7 +123,7 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
     if (!pts || !SkScalarIsFinite((pts[1] - pts[0]).length())) {
         return nullptr;
     }
-    if (!SkGradientShaderBase::ValidGradient(colors, pos, colorCount, mode)) {
+    if (!SkGradientShaderBase::ValidGradient(colors, colorCount, mode, interpolation)) {
         return nullptr;
     }
     if (1 == colorCount) {
