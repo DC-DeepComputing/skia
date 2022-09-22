@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20ad50d6_c0fc8614",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-22T13:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfab0329_02b574f0",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 101,
+        "endChar": 2
+      },
+      "revId": "9cd7f5e3f60adfb165aa16a2d5779973df5e38f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f4c4806_65de50bc",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-21T22:26:18Z",
       "side": 1,
       "message": "`float2(extraCoordX, clampedPos.y) / imgSize`\n\n(And the same approach for the other two below)",
+      "range": {
+        "startLine": 108,
+        "startChar": 40,
+        "endLine": 109,
+        "endChar": 79
+      },
+      "revId": "9cd7f5e3f60adfb165aa16a2d5779973df5e38f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "020670a3_43f77be7",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-22T13:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f4c4806_65de50bc",
       "range": {
         "startLine": 108,
         "startChar": 40,
