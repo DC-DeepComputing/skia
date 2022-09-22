@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3559d4a9_7cb10f18",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-22T21:02:43Z",
+      "side": 1,
+      "message": "As you noticed, I\u0027m about to add new options to gradient factories: https://skia-review.googlesource.com/c/skia/+/583958/4\n\nSo we\u0027re definitely overlapping here a bit. I also wondered (because my CL adds yet another factory) about using default args for the flags and local matrix. That seems like an easy win to land first?",
+      "parentUuid": "1ed79f25_267fe41f",
+      "range": {
+        "startLine": 163,
+        "startChar": 51,
+        "endLine": 163,
+        "endChar": 56
+      },
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52ceaa67_beaf6cbb",
         "filename": "include/core/SkShader.h",
         "patchSetId": 9
