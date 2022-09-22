@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e13aba_79ea4c0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-22T14:55:20Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "c0fa68fc25b920d64089744d492118a0c535503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee2f45db_142c1cb1",
+        "filename": "src/gpu/graphite/ContextPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-22T14:55:20Z",
+      "side": 1,
+      "message": "I thought about adding an accessor for QueueManager instead but this would be less typing in the cases we\u0027d need it.",
+      "range": {
+        "startLine": 38,
+        "startChar": 9,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "c0fa68fc25b920d64089744d492118a0c535503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ac2358_b1df945a",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-22T14:55:20Z",
+      "side": 1,
+      "message": "This isn\u0027t as public as it was in GrGpu and with the \u0027#if\u0027 it seems fairly clear it\u0027s testing only.",
+      "range": {
+        "startLine": 34,
+        "startChar": 17,
+        "endLine": 34,
+        "endChar": 29
+      },
+      "revId": "c0fa68fc25b920d64089744d492118a0c535503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
