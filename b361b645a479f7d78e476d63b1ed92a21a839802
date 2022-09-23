@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1ce1534_31c9ecdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T15:00:21Z",
+      "side": 1,
+      "message": "Looks like a pretty modest savings (48 bytes) but there\u0027s no reason to have two, regardless.",
+      "revId": "b361b645a479f7d78e476d63b1ed92a21a839802",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
