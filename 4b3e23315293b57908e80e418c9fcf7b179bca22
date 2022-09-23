@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c282814_b612e8e2",
+        "filename": "resources/sksl/errors/BadModifiers.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T13:12:37Z",
+      "side": 0,
+      "message": "We were actually over-reporting this error. The source contains `sk_has_side_effects` four times, but we reported it five times. Double-reporting would occur when sk_has_side_effects was applied to a function parameter. This is fixed in the $pure side (where we no longer need to handle it specially in the parser).",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "4b3e23315293b57908e80e418c9fcf7b179bca22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
