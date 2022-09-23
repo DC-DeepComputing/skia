@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5922c14c_833af4cc",
+        "filename": "tests/GrFinishedFlushTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-23T15:20:50Z",
+      "side": 1,
+      "message": "affected",
+      "range": {
+        "startLine": 160,
+        "startChar": 71,
+        "endLine": 160,
+        "endChar": 79
+      },
+      "revId": "e26bcac0135ceaa12d0d02fb5dacc52d54f443f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
