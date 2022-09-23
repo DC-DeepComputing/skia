@@ -111,10 +111,9 @@ sk_cfp<id<MTLLibrary>> MtlCompileShaderLibrary(const MtlSharedContext* sharedCon
                                                const std::string& msl,
                                                ShaderErrorHandler* errorHandler) {
     TRACE_EVENT0("skia.shaders", "driver_compile_shader");
-    auto nsSource = [[NSString alloc] initWithBytesNoCopy:const_cast<char*>(msl.c_str())
-                                                   length:msl.size()
-                                                 encoding:NSUTF8StringEncoding
-                                             freeWhenDone:NO];
+    auto nsSource = [[NSString alloc] initWithBytes:const_cast<char*>(msl.c_str())
+                                             length:msl.size()
+                                           encoding:NSUTF8StringEncoding];
     MTLCompileOptions* options = [[MTLCompileOptions alloc] init];
     // array<> is supported in MSL 2.0 on MacOS 10.13+ and iOS 11+,
     // and in MSL 1.2 on iOS 10+ (but not MacOS).
