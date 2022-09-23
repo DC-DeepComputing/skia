@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e324bbc_2e76e356",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-23T17:01:23Z",
+      "side": 1,
+      "message": "Note there are some gold changes, the largest of which appear to be related to gradients. Is that a blocker to landing or are they ok?",
+      "parentUuid": "8d8120a9_169b72cd",
+      "revId": "5ec1839c759840fbabfb373d44b422dbefabe7f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6fd99c3_c40bc99c",
         "filename": "tools/xsan.supp",
         "patchSetId": 11
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-23T16:48:52Z",
       "side": 1,
       "message": "Alternate solution to the suppression file (so that we continue to get build dependencies) would be:\n\n    #pragma clang diagnostic push\n    #pragma clang diagnostic ignored \"-Wunknown-pragmas\"\n    ...\n    #pragma clang diagnostic pop\n\nI don\u0027t feel real strongly about it, but if someone ever does want to change this file, they will need to know about the lack of dependency, so at a minimum, I\u0027d add a comment to this file saying that changes here should be accompanied by ... something else?",
+      "revId": "5ec1839c759840fbabfb373d44b422dbefabe7f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c91fad11_c8f35d83",
+        "filename": "tools/xsan.supp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-23T17:01:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6fd99c3_c40bc99c",
       "revId": "5ec1839c759840fbabfb373d44b422dbefabe7f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
