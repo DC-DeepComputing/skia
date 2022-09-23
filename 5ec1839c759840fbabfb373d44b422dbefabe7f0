@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d900e0c7_6795f68c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-23T18:03:24Z",
+      "side": 1,
+      "message": "I have a suspicion that those are related to the same issues I hit with skcms. I\u0027d suggest adding some code to the config(\"default\") section of gn/skia/BUILD.gn:\n\n    if (is_clang) {\n      cflags +\u003d [ \"-ffp-contract\u003doff\" ]\n    }\n    \nIt\u0027s not strictly necessary, but I have a feeling it will eliminate (most) of the diffs.",
+      "parentUuid": "4e324bbc_2e76e356",
+      "revId": "5ec1839c759840fbabfb373d44b422dbefabe7f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6fd99c3_c40bc99c",
         "filename": "tools/xsan.supp",
         "patchSetId": 11
