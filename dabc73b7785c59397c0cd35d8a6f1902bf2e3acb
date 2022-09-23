@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "037ee0e5_04e92fe9",
+        "filename": "resources/skottie/skottie-text-animator-1.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-09-23T14:51:11Z",
+      "side": 1,
+      "message": "I changed this animation to test the one to many prop setting. Is it okay to keep it like this or would this break a different test?",
+      "revId": "dabc73b7785c59397c0cd35d8a6f1902bf2e3acb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
