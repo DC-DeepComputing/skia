@@ -137,6 +137,56 @@ int bittst(const uint8_t data[], int bitOffset) {
     return lowBit & 1;
 }
 
+
+SkColor lerpSkColor(SkColor c0, SkColor c1, float t) {
+    const auto c0_4f = Sk4f_fromL32(c0), c1_4f = Sk4f_fromL32(c1),
+               c_4f = c0_4f + (c1_4f - c0_4f) * t;
+
+    return Sk4f_toL32(c_4f);
+};
+
+enum TruncateStops {
+  TruncateStart,
+  TruncateEnd
+};
+
+/* Truncate a vector of color stops at a previously computed stop position and insert at that
+ * position the color interpolated between the surrounding stops. */
+void truncateToStopInterpolating(SkScalar zeroRadiusColorStop,
+                                         std::vector<SkColor>& colors,
+                                         std::vector<SkScalar>& stops,
+                                         TruncateStops truncateStops) {
+    SkASSERT(zeroRadiusColorStop > 0.f && zeroRadiusColorStop < 1.f);
+    SkASSERT(stops.size() > 1u);
+    size_t afterIndex = 0;
+    if (truncateStops == TruncateStart) {
+        afterIndex =
+                std::lower_bound(stops.begin(), stops.end(), zeroRadiusColorStop) - stops.begin();
+    } else {
+        afterIndex =
+                std::upper_bound(stops.begin(), stops.end(), zeroRadiusColorStop) - stops.begin();
+    }
+
+    SkColor beforeColor = colors[afterIndex - 1];
+    SkColor afterColor = colors[afterIndex];
+    SkColor lerpColor = lerpSkColor(beforeColor,
+                             afterColor,
+                             (zeroRadiusColorStop - stops[afterIndex - 1]) /
+                                     (stops[afterIndex] - stops[afterIndex - 1]));
+
+    if (truncateStops == TruncateStart) {
+        stops.erase(stops.begin(), stops.begin() + afterIndex);
+        colors.erase(colors.begin(), colors.begin() + afterIndex);
+        stops.insert(stops.begin(), 0);
+        colors.insert(colors.begin(), lerpColor);
+    } else {
+        stops.erase(stops.begin() + afterIndex, stops.end());
+        colors.erase(colors.begin() + afterIndex, colors.end());
+        stops.insert(stops.end(), 1);
+        colors.insert(colors.end(), lerpColor);
+    }
+};
+
 /**
  *  Copies a FT_Bitmap into an SkMask with the same dimensions.
  *
@@ -756,11 +806,62 @@ bool colrv1_configure_skpaint(FT_Face face,
             }
 
             if (SkGraphics::GetVariableColrV1Enabled()) {
-                // When radii become negative through variations or interpolation, convert them to
-                // their absolute value. Resolution as discussed in
-                // https://github.com/googlefonts/colr-gradients-spec/issues/367.
-                startRadius = std::abs(startRadius);
-                endRadius = std::abs(endRadius);
+
+
+              if (tileMode == SkTileMode::kClamp) {
+                if (startRadius < 0) {
+                    // Compute color stop position where radius is = 0.  After the scaling of stop
+                    // positions to the normal 0,1 range that we have done above, the  size
+                    // of the radius as a function of the color stops is: r(x) = r0 + x*(r1-r0) S
+                    // Solving this function for r(x) = 0, we get: x = -r0 / (r1-r0)
+                    SkScalar zeroRadiusColorStop = -startRadius / (endRadius - startRadius);
+
+                    startRadius = 0.f;
+                    truncateToStopInterpolating(zeroRadiusColorStop, colors, stops, TruncateStart);
+
+                    SkVector startEndDiff = end - start;
+                    startEndDiff.scale(zeroRadiusColorStop);
+                    start = start + startEndDiff;
+                }
+
+                if (endRadius < 0) {
+                    SkScalar zeroRadiusColorStop = -startRadius / (endRadius - startRadius);
+                    endRadius = 0.f;
+                    truncateToStopInterpolating(zeroRadiusColorStop, colors, stops, TruncateEnd);
+                    SkVector startEndDiff = end - start;
+                    startEndDiff.scale(1 - zeroRadiusColorStop);
+                    end = end - startEndDiff;
+                }
+              } else {
+                if (startRadius < 0 || endRadius < 0) {
+                    // Project to new circles where both radii are positive. Resolution as discussed
+                    // in https://github.com/googlefonts/colr-gradients-spec/issues/367.
+                    SkVector startToEnd = end - start;
+                    SkScalar radiusDiff = endRadius - startRadius;
+                    SkScalar tileModeFactor = tileMode == SkTileMode::kMirror ? 2.0f : 1.0f;
+                    startToEnd.scale(tileModeFactor);
+
+                    if ( startRadius < 0 ) {
+                      while ( startRadius < 0 ) {
+                        startRadius += tileModeFactor * radiusDiff;
+                        endRadius += tileModeFactor * radiusDiff;
+                        start += startToEnd;
+                        end += startToEnd;
+                      }
+                    }
+
+                    if ( endRadius < 0 ) {
+                      while ( endRadius < 0 ) {
+                        startRadius -= radiusDiff;
+                        endRadius -= radiusDiff;
+                        start -= startToEnd;
+                        end -= startToEnd;
+                      }
+                    }
+
+                }
+              }
+
             } else if (startRadius < 0 || endRadius < 0) {
                 // TODO(drott): Remove else part when variable COLRv1 becomes the default.
                 paint->setColor(SK_ColorTRANSPARENT);
