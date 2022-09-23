@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e7622fa_09759450",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-23T17:08:08Z",
+      "side": 1,
+      "message": "Leon for the new SkAndroidFrameworkUtils API.\n\nAndroid-side change: https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/base/+/20034694",
+      "revId": "7218b4c04f98d45d6b537aac3990e7bb82b5f3e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ede2a97_18019704",
+        "filename": "include/android/SkAndroidFrameworkUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-23T17:08:08Z",
+      "side": 1,
+      "message": "The use case for Android is to convert colors for dark mode. It currently only handles linear gradients with \u003c\u003d 10 stops. I wonder it might be better to offer a function that converts colors (possibly with passed in function) and returns a new gradient. It could handle more gradient types, stop counts, and float colors with less API exposure. But that\u0027d be a behavior change for another day.",
+      "revId": "7218b4c04f98d45d6b537aac3990e7bb82b5f3e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
