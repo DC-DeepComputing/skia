@@ -78,13 +78,7 @@ struct Swizzle final : public Expression {
                                                        this->components()));
     }
 
-    std::string description() const override {
-        std::string result = this->base()->description() + ".";
-        for (int x : this->components()) {
-            result += "xyzw"[x];
-        }
-        return result;
-    }
+    std::string description(OperatorPrecedence) const override;
 
 private:
     Swizzle(Position pos, const Type* type, std::unique_ptr<Expression> base,

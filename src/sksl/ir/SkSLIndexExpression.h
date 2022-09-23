@@ -73,9 +73,7 @@ struct IndexExpression final : public Expression {
                                                                &this->type()));
     }
 
-    std::string description() const override {
-        return this->base()->description() + "[" + this->index()->description() + "]";
-    }
+    std::string description(OperatorPrecedence) const override;
 
     using INHERITED = Expression;
 

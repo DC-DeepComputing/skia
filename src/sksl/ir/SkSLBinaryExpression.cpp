@@ -260,10 +260,14 @@ std::unique_ptr<Expression> BinaryExpression::clone(Position pos) const {
                                               &this->type());
 }
 
-std::string BinaryExpression::description() const {
-    return "(" + this->left()->description() +
-                 this->getOperator().operatorName() +
-                 this->right()->description() + ")";
+std::string BinaryExpression::description(OperatorPrecedence p) const {
+    OperatorPrecedence operatorPrecedence = this->getOperator().getBinaryPrecedence();
+    bool needsParens = (operatorPrecedence >= p);
+    return std::string(needsParens ? "(" : "") +
+           this->left()->description(operatorPrecedence) +
+           this->getOperator().operatorName() +
+           this->right()->description(operatorPrecedence) +
+           std::string(needsParens ? ")" : "");
 }
 
 VariableReference* BinaryExpression::isAssignmentIntoVariable() {

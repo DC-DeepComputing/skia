@@ -21,6 +21,7 @@ namespace SkSL {
 
 class AnyConstructor;
 class Context;
+enum class OperatorPrecedence : uint8_t;
 
 /**
  * Abstract supertype of all expressions.
@@ -177,6 +178,13 @@ public:
      * Returns a clone at the same position.
      */
     std::unique_ptr<Expression> clone() const { return this->clone(fPosition); }
+
+    /**
+     * Returns a description of the expression.
+     */
+    std::string description() const final;
+    virtual std::string description(OperatorPrecedence p) const = 0;
+
 
 private:
     const Type* fType;

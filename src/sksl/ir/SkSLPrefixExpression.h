@@ -58,9 +58,7 @@ public:
                                                   this->operand()->clone());
     }
 
-    std::string description() const override {
-        return this->getOperator().operatorName() + this->operand()->description();
-    }
+    std::string description(OperatorPrecedence p) const override;
 
 private:
     Operator fOperator;

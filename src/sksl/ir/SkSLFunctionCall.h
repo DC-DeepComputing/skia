@@ -72,7 +72,7 @@ public:
 
     std::unique_ptr<Expression> clone(Position pos) const override;
 
-    std::string description() const override;
+    std::string description(OperatorPrecedence) const override;
 
 private:
     const FunctionDeclaration& fFunction;

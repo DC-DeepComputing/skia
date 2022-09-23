@@ -82,10 +82,7 @@ public:
                                                    this->ifFalse()->clone());
     }
 
-    std::string description() const override {
-        return "(" + this->test()->description() + " ? " + this->ifTrue()->description() + " : " +
-               this->ifFalse()->description() + ")";
-    }
+    std::string description(OperatorPrecedence p) const override;
 
 private:
     std::unique_ptr<Expression> fTest;

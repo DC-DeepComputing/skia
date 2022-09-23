@@ -84,10 +84,7 @@ public:
                                              this->ownerKind());
     }
 
-    std::string description() const override {
-        return this->base()->description() + "." +
-               std::string(this->base()->type().fields()[this->fieldIndex()].fName);
-    }
+    std::string description(OperatorPrecedence) const override;
 
 private:
     int fFieldIndex;
