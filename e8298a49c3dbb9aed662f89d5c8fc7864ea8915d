@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d136158d_07dfe7e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-23T18:58:00Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure what\u0027s going on here. I keep getting these ASAN-related security bugs from Chrome saying this string is going out of scope. It doesn\u0027t look it should based on the code and the stacktrace. I believe started happening because of your recent CL, https://skia-review.googlesource.com/c/skia/+/575516, which started using the synchronous call instead of the async call with a timeout. But I\u0027d expect it would happen even with the async call. I\u0027m pretty sure this will fix it, but it really doesn\u0027t seem necessary.",
+      "revId": "e8298a49c3dbb9aed662f89d5c8fc7864ea8915d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
