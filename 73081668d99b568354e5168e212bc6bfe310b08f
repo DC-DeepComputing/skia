@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d16739_3950650c",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T20:35:03Z",
+      "side": 1,
+      "message": "clamp?",
+      "range": {
+        "startLine": 398,
+        "startChar": 23,
+        "endLine": 398,
+        "endChar": 30
+      },
+      "revId": "73081668d99b568354e5168e212bc6bfe310b08f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
