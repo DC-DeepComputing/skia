@@ -33,6 +33,29 @@
       "message": "I haven\u0027t looked at these modifications in depth, but Rob had been working on moving every builtin shader factory to be in the SkShaders wrapper: https://skia-review.googlesource.com/c/skia/+/569980",
       "revId": "e23e9d19c8bea6b63f5c9d4e7469a51049d95840",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37339b42_b1935ea8",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-23T13:08:56Z",
+      "side": 1,
+      "message": "I\u0027m not sure I like this better, but another options would be:\n struct InterpolationOptions {\n     enum class InPrmeul : bool { ...\n     \nSlight benefit is it comes along with InterpolationOptions if you have a using of the latter",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 71
+      },
+      "revId": "e23e9d19c8bea6b63f5c9d4e7469a51049d95840",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
