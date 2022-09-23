@@ -61,9 +61,7 @@ public:
                                                    this->getOperator());
     }
 
-    std::string description() const override {
-        return this->operand()->description() + this->getOperator().operatorName();
-    }
+    std::string description(OperatorPrecedence) const override;
 
 private:
     std::unique_ptr<Expression> fOperand;
