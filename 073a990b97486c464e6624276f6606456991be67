@@ -16,6 +16,24 @@
       "message": "This got me wondering about unrefAll. There are three uses, and they all seem unnecessary. One is a GM that\u0027s just ridiculous, and should simply be an array of sk_sp. The other two ... should also just be arrays of sk_sp - nothing is in high-traffic code.",
       "revId": "073a990b97486c464e6624276f6606456991be67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "913c531a_94b67223",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-23T20:46:59Z",
+      "side": 0,
+      "message": "Yep. Their days are numbered.",
+      "parentUuid": "2a990e67_72ffa045",
+      "revId": "073a990b97486c464e6624276f6606456991be67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
