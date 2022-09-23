@@ -74,6 +74,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a8db3402_a128e000",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T15:02:47Z",
+      "side": 1,
+      "message": "If we\u0027re tracking DM, then `--config\u003dgrmtl` means Graphite+Metal. None of the other flags exist yet but `--config\u003dgrgl` would follow the pattern. (Gurgle?)",
+      "parentUuid": "d271e37a_042662d6",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "341946088f4f6ee9d1cca97bf86ce2f46dd513a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d8a094f3_16dd5a97",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
