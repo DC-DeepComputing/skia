@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0286ff0d_91830d08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-09-23T15:10:55Z",
+      "side": 1,
+      "message": "Sorry that was meant to be in support of the comments about GrClipSrcRectAndDstRect (plus the rest of the change). I\u0027ll wait till that change has actually updated to put the +1 back :)",
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b8b232d_83da80aa",
