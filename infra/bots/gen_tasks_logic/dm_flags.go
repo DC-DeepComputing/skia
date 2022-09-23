@@ -1264,6 +1264,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~async_rescale_and_read")
 	}
 
+	match = nil
+	match = append(match, "FinishedAsyncProcWhenAbandonedTest")
+
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
 		args = append(args, skipped...)

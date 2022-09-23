@@ -124,13 +124,17 @@ void GrDirectContext::resetContext(uint32_t state) {
 }
 
 void GrDirectContext::abandonContext() {
+    SkDebugf("start abandon context\n");
     if (INHERITED::abandoned()) {
+        SkDebugf("abandon  return 1\n");
         return;
     }
 
     if (fInsideReleaseProcCnt) {
         SkDEBUGFAIL("Calling GrDirectContext::abandonContext() while inside a ReleaseProc is not "
                     "allowed");
+        SkDebugf("abandon  return 2\n");
+
         return;
     }
 
@@ -154,6 +158,8 @@ void GrDirectContext::abandonContext() {
         fSmallPathAtlasMgr->reset();
     }
     fAtlasManager->freeAll();
+    SkDebugf("abandon  return 3\n");
+
 }
 
 bool GrDirectContext::abandoned() {
