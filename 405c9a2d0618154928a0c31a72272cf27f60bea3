@@ -16,6 +16,29 @@
       "message": "This one does not save space, but reduces API surface.",
       "revId": "405c9a2d0618154928a0c31a72272cf27f60bea3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04410e8_d657baac",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T15:17:07Z",
+      "side": 1,
+      "message": "Not really related to this CL, but these should probably be `pop_back` to mirror `push_back` (push/pop/top is meant for stacks in the standard)",
+      "range": {
+        "startLine": 268,
+        "startChar": 13,
+        "endLine": 273,
+        "endChar": 12
+      },
+      "revId": "405c9a2d0618154928a0c31a72272cf27f60bea3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
