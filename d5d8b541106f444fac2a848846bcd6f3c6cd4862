@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d157c012_face20dc",
+        "filename": "resources/sksl/errors/OverloadedBuiltin.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T18:38:20Z",
+      "side": 1,
+      "message": "This is the cost of fixing `description()` to not strip modifiers; I think it\u0027s worth it",
+      "range": {
+        "startLine": 24,
+        "startChar": 37,
+        "endLine": 24,
+        "endChar": 42
+      },
+      "revId": "d5d8b541106f444fac2a848846bcd6f3c6cd4862",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
