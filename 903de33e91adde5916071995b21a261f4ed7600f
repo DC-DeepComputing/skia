@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d75aad1_1e0ad6c0",
+        "filename": "include/sksl/SkSLOperator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-23T16:57:35Z",
+      "side": 1,
+      "message": "This allows us to forward-declare `OperatorPrecedence` so that we don\u0027t need to #include it from SkSLExpression. We used `Operator::Precedence` rarely enough that I didn\u0027t bother with having a type alias.",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 29
+      },
+      "revId": "903de33e91adde5916071995b21a261f4ed7600f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
