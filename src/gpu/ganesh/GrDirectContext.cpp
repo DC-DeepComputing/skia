@@ -127,13 +127,13 @@ void GrDirectContext::abandonContext() {
     if (INHERITED::abandoned()) {
         return;
     }
-
+#if 1
     if (fInsideReleaseProcCnt) {
         SkDEBUGFAIL("Calling GrDirectContext::abandonContext() while inside a ReleaseProc is not"
                     "allowed");
         return;
     }
-
+#endif
 
     INHERITED::abandonContext();
 
