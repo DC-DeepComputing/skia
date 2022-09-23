@@ -62,6 +62,13 @@ public:
     static sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface>);
     static sk_sp<GrDirectContext> MakeGL(const GrContextOptions&);
     static sk_sp<GrDirectContext> MakeGL();
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    // For now we are just exposing the option to make a protected GL context to the android
+    // framework since the use is still very fragile and works only for their specific use patterns.
+    static sk_sp<GrDirectContext> MakeGLAndroidFramework(sk_sp<const GrGLInterface>,
+                                                         const GrContextOptions&,
+                                                         GrProtected);
+#endif
 #endif
 
 #ifdef SK_VULKAN
@@ -859,6 +866,9 @@ protected:
     GrDirectContext* asDirectContext() override { return this; }
 
 private:
+    static sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface>, const GrContextOptions&,
+                                         GrProtected);
+
     // This call will make sure out work on the GPU is finished and will execute any outstanding
     // asynchronous work (e.g. calling finished procs, freeing resources, etc.) related to the
     // outstanding work on the gpu. The main use currently for this function is when tearing down or

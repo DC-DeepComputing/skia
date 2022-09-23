@@ -380,7 +380,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<GrGpu> GrGLGpu::Make(sk_sp<const GrGLInterface> interface, const GrContextOptions& options,
-                           GrDirectContext* direct) {
+                           GrDirectContext* direct, GrProtected isProtected) {
     if (!interface) {
         interface = GrGLMakeNativeInterface();
         if (!interface) {
@@ -394,10 +394,15 @@ sk_sp<GrGpu> GrGLGpu::Make(sk_sp<const GrGLInterface> interface, const GrContext
     if (!glContext) {
         return nullptr;
     }
-    return sk_sp<GrGpu>(new GrGLGpu(std::move(glContext), direct));
+    if (isProtected == GrProtected::kYes && !glContext->caps()->supportsProtected()) {
+        return nullptr;
+    }
+    return sk_sp<GrGpu>(new GrGLGpu(std::move(glContext), direct, isProtected));
 }
 
-GrGLGpu::GrGLGpu(std::unique_ptr<GrGLContext> ctx, GrDirectContext* dContext)
+GrGLGpu::GrGLGpu(std::unique_ptr<GrGLContext> ctx,
+                 GrDirectContext* dContext,
+                 GrProtected isProtected)
         : GrGpu(dContext)
         , fGLContext(std::move(ctx))
         , fProgramCache(new ProgramCache(dContext->priv().options().fRuntimeProgramCacheSize))
@@ -405,7 +410,8 @@ GrGLGpu::GrGLGpu(std::unique_ptr<GrGLContext> ctx, GrDirectContext* dContext)
         , fTempSrcFBOID(0)
         , fTempDstFBOID(0)
         , fStencilClearFBOID(0)
-        , fFinishCallbacks(this) {
+        , fFinishCallbacks(this)
+        , fIsProtected(isProtected) {
     SkASSERT(fGLContext);
     // Clear errors so we don't get confused whether we caused an error.
     this->clearErrorsAndCheckForOOM();
@@ -1493,6 +1499,18 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
     SkASSERT(texDesc.fFormat != GrGLFormat::kUnknown);
     SkASSERT(!GrGLFormatIsCompressed(texDesc.fFormat));
 
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    // TODO: We are just blindly creating all textures as protected if the GL GrDirectContext was
+    // created as protected. We currently have no checks higher up that these textures aren't being
+    // used for things like read backs or draws to unprotected surfaces. However, for the current
+    // use cases in the Android framework this is fine as they don't hit those cases. We should go
+    // back and make this system more safe with checks and truly be tracking the required protected
+    // use through all the proxies. This would also allow us to not create protected textures when
+    // not needed.
+    bool useProtected = isProtected == GrProtected::kYes || fIsProtected == GrProtected::kYes;
+    isProtected = useProtected ? GrProtected::kYes : GrProtected::kNo;
+#endif
+
     texDesc.fID = this->createTexture(dimensions, texDesc.fFormat, texDesc.fTarget, renderable,
                                       &initialState, mipLevelCount, isProtected, label);
 
@@ -1849,7 +1867,7 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
     }
 
     if (GrProtected::kYes == isProtected) {
-        if (this->glCaps().supportsProtected()) {
+        if (this->glCaps().supportsProtected() && this->glCaps().formatSupportsTexStorage(format)) {
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));

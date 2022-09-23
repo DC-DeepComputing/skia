@@ -1007,19 +1007,33 @@ SkString GrDirectContext::dump() const {
 #ifdef SK_GL
 
 /*************************************************************************************************/
+sk_sp<GrDirectContext> GrDirectContext::MakeGL(sk_sp<const GrGLInterface> glInterface,
+                                               const GrContextOptions& options) {
+    return MakeGL(std::move(glInterface), options, GrProtected::kNo);
+}
+
 sk_sp<GrDirectContext> GrDirectContext::MakeGL(sk_sp<const GrGLInterface> glInterface) {
     GrContextOptions defaultOptions;
-    return MakeGL(std::move(glInterface), defaultOptions);
+    return MakeGL(std::move(glInterface), defaultOptions, GrProtected::kNo);
 }
 
 sk_sp<GrDirectContext> GrDirectContext::MakeGL(const GrContextOptions& options) {
-    return MakeGL(nullptr, options);
+    return MakeGL(nullptr, options, GrProtected::kNo);
 }
 
 sk_sp<GrDirectContext> GrDirectContext::MakeGL() {
     GrContextOptions defaultOptions;
-    return MakeGL(nullptr, defaultOptions);
+    return MakeGL(nullptr, defaultOptions, GrProtected::kNo);
 }
+
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+sk_sp<GrDirectContext> GrDirectContext::MakeGLAndroidFramework(
+        sk_sp<const GrGLInterface> glInterface,
+        const GrContextOptions& options,
+        GrProtected isProtected) {
+    return MakeGL(std::move(glInterface), options, isProtected);
+}
+#endif
 
 #if GR_TEST_UTILS
 GrGLFunction<GrGLGetErrorFn> make_get_error_with_random_oom(GrGLFunction<GrGLGetErrorFn> original) {
@@ -1051,7 +1065,8 @@ GrGLFunction<GrGLGetErrorFn> make_get_error_with_random_oom(GrGLFunction<GrGLGet
 #endif
 
 sk_sp<GrDirectContext> GrDirectContext::MakeGL(sk_sp<const GrGLInterface> glInterface,
-                                               const GrContextOptions& options) {
+                                               const GrContextOptions& options,
+                                               GrProtected isProtected) {
     sk_sp<GrDirectContext> direct(new GrDirectContext(GrBackendApi::kOpenGL, options));
 #if GR_TEST_UTILS
     if (options.fRandomGLOOM) {
@@ -1065,7 +1080,7 @@ sk_sp<GrDirectContext> GrDirectContext::MakeGL(sk_sp<const GrGLInterface> glInte
         glInterface = std::move(copy);
     }
 #endif
-    direct->fGpu = GrGLGpu::Make(std::move(glInterface), options, direct.get());
+    direct->fGpu = GrGLGpu::Make(std::move(glInterface), options, direct.get(), isProtected);
     if (!direct->init()) {
         return nullptr;
     }

@@ -35,7 +35,8 @@ class Swizzle;
 
 class GrGLGpu final : public GrGpu {
 public:
-    static sk_sp<GrGpu> Make(sk_sp<const GrGLInterface>, const GrContextOptions&, GrDirectContext*);
+    static sk_sp<GrGpu> Make(sk_sp<const GrGLInterface>, const GrContextOptions&, GrDirectContext*,
+                             GrProtected);
     ~GrGLGpu() override;
 
     void disconnect(DisconnectType) override;
@@ -222,7 +223,7 @@ public:
     void didDrawTo(GrRenderTarget*);
 
 private:
-    GrGLGpu(std::unique_ptr<GrGLContext>, GrDirectContext*);
+    GrGLGpu(std::unique_ptr<GrGLContext>, GrDirectContext*, GrProtected);
 
     // GrGpu overrides
     GrBackendTexture onCreateBackendTexture(SkISize dimensions,
@@ -805,6 +806,8 @@ private:
     // since we defer calling flush until submit time. When we call submitToGpu if this is true then
     // we call glFlush and reset this to false.
     bool fNeedsGLFlush = false;
+
+    GrProtected fIsProtected;
 
     SkDEBUGCODE(bool fIsExecutingCommandBuffer_DebugOnly = false);
 
