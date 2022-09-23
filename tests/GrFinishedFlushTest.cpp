@@ -163,10 +163,12 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    SkDebugf("test 1\n");
     auto dContext = ctxInfo.directContext();
 
     SkImageInfo info =
             SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkDebugf("test 2\n");
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeFromInfo(dContext,
                                                                  info,
@@ -175,6 +177,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
     if (!mbet) {
         return;
     }
+    SkDebugf("test 3\n");
 
     auto surface = SkSurface::MakeFromBackendTexture(
             dContext,
@@ -186,12 +189,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
             /*surface props*/ nullptr,
             sk_gpu_test::ManagedBackendTexture::ReleaseProc,
             mbet->releaseContext(nullptr, nullptr));
+    SkDebugf("test 4\n");
 
     if (!surface) {
         return;
     }
+
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorGREEN);
+    SkDebugf("test 5\n");
 
     // To trigger bug we must have a finish callback that abanonds the context before an asyc
     // read callbck on the same command buffer. So we add the abandon callback first and flush
@@ -201,6 +207,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
     flushInfo.fFinishedContext = dContext;
 
     dContext->flush(flushInfo);
+    SkDebugf("test 6\n");
 
     surface->asyncRescaleAndReadPixels(info,
                                        SkIRect::MakeWH(8, 8),
@@ -208,8 +215,12 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
                                        SkImage::RescaleMode::kNearest,
                                        async_callback,
                                        nullptr);
+    SkDebugf("test 7\n");
 
     surface.reset();
+    SkDebugf("test 8\n");
 
     dContext->flushAndSubmit(/*syncCpu=*/true);
+    SkDebugf("test 9\n");
+
 }

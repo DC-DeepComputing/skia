@@ -4128,7 +4128,10 @@ GrFence SK_WARN_UNUSED_RESULT GrGLGpu::insertFence() {
 }
 
 bool GrGLGpu::waitSync(GrGLsync sync, uint64_t timeout, bool flush) {
+    SkDebugf("waitSync 1\n");
     if (this->glCaps().fenceType() == GrGLCaps::FenceType::kNVFence) {
+        SkDebugf("waitSync 2\n");
+
         GrGLuint nvFence = static_cast<GrGLuint>(reinterpret_cast<intptr_t>(sync));
         if (!timeout) {
             if (flush) {
@@ -4144,9 +4147,11 @@ bool GrGLGpu::waitSync(GrGLsync sync, uint64_t timeout, bool flush) {
         GL_CALL(FinishFence(nvFence));
         return true;
     } else {
+        SkDebugf("waitSync 3\n");
         GrGLbitfield flags = flush ? GR_GL_SYNC_FLUSH_COMMANDS_BIT : 0;
         GrGLenum result;
         GL_CALL_RET(result, ClientWaitSync(sync, flags, timeout));
+        SkDebugf("waitSync 4\n");
         return (GR_GL_CONDITION_SATISFIED == result || GR_GL_ALREADY_SIGNALED == result);
     }
 }
