@@ -134,7 +134,6 @@ void GrDirectContext::abandonContext() {
         return;
     }
 
-
     INHERITED::abandonContext();
 
     // We need to make sure all work is finished on the gpu before we start releasing resources.
