@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98d7dc4f_cad34e01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-23T20:32:18Z",
+      "side": 1,
+      "message": "I guess the one caveat here is that Rob\u0027s going to move everything to SkShaders, at which point \u0027Interpolation\u0027 is probably too vague. So maybe I name it GradientInterpolation now, in anticipation of a future home?",
+      "revId": "064c2cfbae7acac4bcc02b0d3841134a2f9213c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
