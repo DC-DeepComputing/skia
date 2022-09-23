@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a990e67_72ffa045",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-23T20:42:26Z",
+      "side": 0,
+      "message": "This got me wondering about unrefAll. There are three uses, and they all seem unnecessary. One is a GM that\u0027s just ridiculous, and should simply be an array of sk_sp. The other two ... should also just be arrays of sk_sp - nothing is in high-traffic code.",
+      "revId": "073a990b97486c464e6624276f6606456991be67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
