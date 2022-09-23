@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6228325a_5e2cdfda",
+        "filename": "include/core/SkShader.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-23T19:50:08Z",
+      "side": 1,
+      "message": "I\u0027m definitely going to cause some rebase pain for this CL, but I\u0027m going ahead and landing https://skia-review.googlesource.com/c/skia/+/583965 (uses default args for flags and local matrix). I\u0027ve also got my follow-up CL linked above, where I\u0027m now adding the color space include, and some new stuff for interpolation. We\u0027ll see who wins the race on that one. 😜",
+      "parentUuid": "3559d4a9_7cb10f18",
+      "range": {
+        "startLine": 163,
+        "startChar": 51,
+        "endLine": 163,
+        "endChar": 56
+      },
+      "revId": "dd5c3c06c186e0bc9067d5a7600d2084b7a860f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52ceaa67_beaf6cbb",
         "filename": "include/core/SkShader.h",
         "patchSetId": 9
