@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd02b545_8cf3837f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-23T18:50:04Z",
+      "side": 1,
+      "message": "\"We no longer add tools/xsan.supp\" - this is great news!",
+      "revId": "cceb76fea4278562232452f8a2e492c72a6fc9ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
