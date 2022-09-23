@@ -54,6 +54,33 @@ public:
      *  @return SkCanvas that was found in the innermost SkPaintFilterCanvas.
      */
     static SkCanvas* getBaseWrappedCanvas(SkCanvas* canvas);
+
+    /**
+     *  If the shader represents a linear gradient ShaderAsAGradient returns
+     *  true and if info is not null, asAGradient populates info with
+     *  the relevant (see below) parameters for the gradient.  fColorCount
+     *  is both an input and output parameter.  On input, it indicates how
+     *  many entries in fColors and fColorOffsets can be used, if they are
+     *  non-NULL.  After asAGradient has run, fColorCount indicates how
+     *  many color-offset pairs there are in the gradient.  If there is
+     *  insufficient space to store all of the color-offset pairs, fColors
+     *  and fColorOffsets will not be altered.  fColorOffsets specifies
+     *  where on the range of 0 to 1 to transition to the given color.
+     *  fPoints represent the endpoints of the gradient.
+     */
+    struct LinearGradientInfo {
+        int         fColorCount    = 0;        //!< In-out parameter, specifies passed size
+                                               //   of fColors/fColorOffsets on input, and
+                                               //   actual number of colors/offsets on
+                                               //   output.
+        SkColor*    fColors        = nullptr;  //!< The colors in the gradient.
+        SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        SkPoint     fPoint[2];                 //!< Type specific, see above.
+        SkTileMode  fTileMode;
+        uint32_t    fGradientFlags = 0;        //!< see SkGradientShader::Flags
+    };
+
+    static bool ShaderAsALinearGradient(sk_sp<SkShader> shader, const GradientInfo*);
 };
 
 #endif // SK_BUILD_FOR_ANDROID_ANDROID
