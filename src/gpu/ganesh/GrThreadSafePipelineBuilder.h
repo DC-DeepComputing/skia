@@ -9,6 +9,7 @@
 #define GrThreadSafePipelineBuilder_Base_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "include/gpu/GrConfig.h"
 #include <atomic>
 
