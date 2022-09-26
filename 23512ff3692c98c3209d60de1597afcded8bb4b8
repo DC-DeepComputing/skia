@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af9a545d_6b9dd32e",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T18:55:05Z",
+      "side": 1,
+      "message": "Ah. I didn\u0027t know we called the dtors. I agree about the wording. I think with MEM_MOVE \u003d true, that this was a work-alike to SkTDArray.",
+      "parentUuid": "39d28a94_d7ac8c2e",
+      "range": {
+        "startLine": 428,
+        "startChar": 41,
+        "endLine": 428,
+        "endChar": 63
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a5c6291_d203b4b5",
