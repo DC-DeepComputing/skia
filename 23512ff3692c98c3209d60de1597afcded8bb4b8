@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d929ffe_27611529",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-09-26T18:53:46Z",
+      "side": 1,
+      "message": "Yeah, I was somewhat hesitant and tried to tweak the verbiage a bit.  Removed for now, but I don\u0027t have a strong opinion if others feel differently.",
+      "parentUuid": "39d28a94_d7ac8c2e",
+      "range": {
+        "startLine": 428,
+        "startChar": 41,
+        "endLine": 428,
+        "endChar": 63
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a5c6291_d203b4b5",
         "filename": "include/private/SkTemplates.h",
         "patchSetId": 8
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "`std::is_trivially_copyable` shouldn\u0027t be in the comment since it isn\u0027t part of the API of this type. It\u0027s just an implementation detail hack for now.",
       "parentUuid": "4a5c6291_d203b4b5",
+      "range": {
+        "startLine": 429,
+        "startChar": 1,
+        "endLine": 429,
+        "endChar": 2
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cf78b83_fa63d1f5",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-09-26T18:53:46Z",
+      "side": 1,
+      "message": "Moved to a regular code comment.",
+      "parentUuid": "d290c2e6_57a5d3ce",
       "range": {
         "startLine": 429,
         "startChar": 1,
