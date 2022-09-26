@@ -13,6 +13,10 @@ build --remote_upload_local_results=false
 # This tells Bazel that the host platform can use the hermetic toolchain. This is a small lie until
 # Windows support is added.
 build --host_platform=//bazel/platform:host_with_hermetic_toolchain
+# Linux users (the only platform where we support remote builds currently) can add the following
+# line (uncommented) to //bazel/user/buildrc to allow interchangeable operation between local
+# operations and remote operations.
+# build --host_platform=//bazel/platform:linux_x64_hermetic
 
 # Register our toolchains. We do this here, and not in WORKSPACE.bazel because
 # --extra_toolchains has priority over register_toolchains and we conditionally add some toolchains
@@ -136,8 +140,6 @@ build:linux_rbe --config=remote
 # if at all.
 build:linux_rbe --extra_toolchains=//bazel/rbe/gce_linux/java:all
 build:linux_rbe --extra_toolchains=//bazel/rbe/gce_linux/config:cc-toolchain
-# Make the RBE platform available for selection as an Execution platform.
-build:linux_rbe --extra_execution_platforms=//bazel/rbe:gce_linux_platform
 
 # Import our specified build configurations
 # https://docs.bazel.build/versions/main/best-practices.html#using-the-bazelrc-file
