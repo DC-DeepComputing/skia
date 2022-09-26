@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecd6daa1_1101e878",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3634deb1_b1fc3c43",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 39
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a1eaac0_969ec7ce",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a91be380_4ef95fb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9a1eaac0_969ec7ce",
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7117e01_a1c239c2",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "Based on the comments here, I wasn\u0027t sure whether this would truncate the array or not. I read through the code and I think would be more clear, please confirm that it summarizes the behavior correctly.\n\n    // Resizes the array to store exactly `newCount` elements. \n    //\n    // This never shrinks the allocation, and it may increase the allocation by\n    // more than is strictly required, based on a private growth heuristic.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 37
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a0eb53_563fd03f",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7117e01_a1c239c2",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bdc629d_feaa067a",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b95b8122_f7793651",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 1
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f400438_0dab9bdc",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "nit: This comment might make more sense inside the function code. When skimming the function declarations I don\u0027t think this is something I need to think about.",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 61
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "236d7498_0dd2e7b8",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f400438_0dab9bdc",
       "range": {
         "startLine": 59,
         "startChar": 4,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "854c57b5_892d94ec",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b65881c3_44a6ca16",
+      "range": {
+        "startLine": 70,
+        "startChar": 10,
+        "endLine": 70,
+        "endChar": 29
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b4d554a_7a876844",
@@ -146,6 +284,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "`safeCountChange` seems like a misleading name for a function which aborts on failure. I feel like `updateCountOrDie` describes it a little more accurately?",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 23
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c52160_81b2d665",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b4d554a_7a876844",
       "range": {
         "startLine": 80,
         "startChar": 8,
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e19b68bf_b1d105f1",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fa2d229a_c9b56a61",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 0
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6382f02_9744509a",
@@ -192,6 +378,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "Curious: Why SK_ALWAYS_INLINE specifically here and on `append` but not elsewhere? Did it matter? Other places seem equally valid, like `data()` or `operator[]`.",
+      "range": {
+        "startLine": 192,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 20
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fda3d7c8_8971b9d1",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "This was part of an experiment. data() and operator[] don\u0027t need it because they were always inlined. append() was 10 bytes, and was not inlining causing 30 bytes of .em_frame data for 10 bytes of code.",
+      "parentUuid": "d6382f02_9744509a",
       "range": {
         "startLine": 192,
         "startChar": 4,
@@ -225,6 +435,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdee58ee_15e494dd",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Because fStorage.push_back returns void*.",
+      "parentUuid": "b324a229_6db69e54",
+      "range": {
+        "startLine": 265,
+        "startChar": 38,
+        "endLine": 265,
+        "endChar": 89
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9623019_d6228953",
@@ -238,6 +472,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "A range-based loop is an awesome replacement here.\n\nBut, can\u0027t we just use `T*`? It feels like we shouldn\u0027t need to use `auto` to represent the template type, and it feels a little dangerous (what about CV-qualifications, etc)",
+      "range": {
+        "startLine": 277,
+        "startChar": 13,
+        "endLine": 277,
+        "endChar": 18
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc5b7cd_eb30b53a",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9623019_d6228953",
       "range": {
         "startLine": 277,
         "startChar": 13,
@@ -317,6 +575,78 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4bc0c52_6cbb8e55",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4c1c586_38122e43",
+      "range": {
+        "startLine": 103,
+        "startChar": 40,
+        "endLine": 103,
+        "endChar": 42
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bebd4457_765e65a9",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6206831_fb21d6ef",
+      "range": {
+        "startLine": 103,
+        "startChar": 54,
+        "endLine": 103,
+        "endChar": 59
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de50000e_da922cbf",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dce2e0c_6a7da36f",
+      "range": {
+        "startLine": 103,
+        "startChar": 63,
+        "endLine": 103,
+        "endChar": 66
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cc67ef5_b3f0c822",
@@ -330,6 +660,30 @@
       "writtenOn": "2022-09-23T21:59:36Z",
       "side": 1,
       "message": "\u0027Avoid \"Yoda-style\" comparisons\u0027 (http://go/no-yoda)\n\n`count \u003e\u003d 0`",
+      "range": {
+        "startLine": 108,
+        "startChar": 8,
+        "endLine": 108,
+        "endChar": 17
+      },
+      "revId": "78653afe5caec602a466f5917835d4389e23cac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0cc2a09_73aba0b8",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cc67ef5_b3f0c822",
       "range": {
         "startLine": 108,
         "startChar": 8,

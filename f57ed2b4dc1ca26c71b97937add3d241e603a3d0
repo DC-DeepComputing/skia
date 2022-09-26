@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3a3f274_105f0e53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T13:25:49Z",
+      "side": 1,
+      "message": "In this patch, I moved the calculation for block growth from resize() to reserve(). This is the behavior of the original code.",
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
