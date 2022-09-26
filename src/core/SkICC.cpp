@@ -67,10 +67,52 @@ static constexpr uint32_t kCopyrightTagHeader[7] {
 };
 
 static constexpr uint32_t kTAG_desc = SkSetFourByteTag('d', 'e', 's', 'c');
+static constexpr uint32_t kTAG_cicp = SkSetFourByteTag('c', 'i', 'c', 'p');
+static constexpr uint32_t kTAG_cicp_Bytes = 12;
 static constexpr uint32_t kTAG_XYZ_Bytes = 20;
 static constexpr uint32_t kTAG_TRC_Bytes = 40;
 static constexpr uint32_t kTAG_wtpt = SkSetFourByteTag('w', 't', 'p', 't');
 static constexpr uint32_t kTAG_cprt = SkSetFourByteTag('c', 'p', 'r', 't');
+
+static constexpr uint32_t kCICPPrimariesSRGB = 1;
+static constexpr uint32_t kCICPPrimariesP3 = 12;
+static constexpr uint32_t kCICPPrimariesRec2020 = 9;
+
+static constexpr uint32_t kCICPTrfnSRGB = 1;
+static constexpr uint32_t kCICPTrfn2Dot2 = 4;
+static constexpr uint32_t kCICPTrfnLinear = 8;
+static constexpr uint32_t kCICPTrfnPQ = 16;
+static constexpr uint32_t kCICPTrfnHLG = 18;
+
+static const char* cicp_primaries_name(uint32_t cicp_primaries) {
+    switch (cicp_primaries) {
+        case kCICPPrimariesSRGB:
+            return "sRGB";
+        case kCICPPrimariesP3:
+            return "Display P3";
+        case kCICPPrimariesRec2020:
+            return "Rec2020";
+        default:
+            return nullptr;
+    }
+}
+
+static const char* cicp_trfn_name(uint32_t cicp_trfn) {
+    switch (cicp_trfn) {
+        case kCICPTrfnSRGB:
+            return "sRGB";
+        case kCICPTrfnLinear:
+            return "Linear";
+        case kCICPTrfn2Dot2:
+            return "2.2";
+        case kCICPTrfnPQ:
+            return "PQ";
+        case kCICPTrfnHLG:
+            return "HLG";
+        default:
+            return nullptr;
+    }
+}
 
 static constexpr uint32_t kICCHeader[kICCHeaderSize / 4]{
         0,                                    // Size of the profile (computed)
@@ -187,95 +229,105 @@ static bool nearly_equal(const skcms_Matrix3x3& u, const skcms_Matrix3x3& v) {
     return true;
 }
 
-// Return nullptr if the color profile doen't have a special name.
-const char* get_color_profile_description(const skcms_TransferFunction& fn,
-                                          const skcms_Matrix3x3& toXYZD50) {
-    bool srgb_xfer = nearly_equal(fn, SkNamedTransferFn::kSRGB);
-    bool srgb_gamut = nearly_equal(toXYZD50, SkNamedGamut::kSRGB);
-    if (srgb_xfer && srgb_gamut) {
-        return "sRGB";
+static uint32_t get_cicp_primaries(const skcms_Matrix3x3& toXYZD50) {
+    if (nearly_equal(toXYZD50, SkNamedGamut::kSRGB)) {
+        return kCICPPrimariesSRGB;
+    } else if (nearly_equal(toXYZD50, SkNamedGamut::kDisplayP3)) {
+        return kCICPPrimariesP3;
+    } else if (nearly_equal(toXYZD50, SkNamedGamut::kRec2020)) {
+        return kCICPPrimariesRec2020;
     }
-    bool line_xfer = nearly_equal(fn, SkNamedTransferFn::kLinear);
-    if (line_xfer && srgb_gamut) {
-        return "Linear Transfer with sRGB Gamut";
-    }
-    bool twoDotTwo = nearly_equal(fn, SkNamedTransferFn::k2Dot2);
-    if (twoDotTwo && srgb_gamut) {
-        return "2.2 Transfer with sRGB Gamut";
-    }
-    if (twoDotTwo && nearly_equal(toXYZD50, SkNamedGamut::kAdobeRGB)) {
-        return "AdobeRGB";
-    }
-    bool display_p3 = nearly_equal(toXYZD50, SkNamedGamut::kDisplayP3);
-    if (srgb_xfer || line_xfer) {
-        if (srgb_xfer && display_p3) {
-            return "sRGB Transfer with Display P3 Gamut";
-        }
-        if (line_xfer && display_p3) {
-            return "Linear Transfer with Display P3 Gamut";
-        }
-        bool rec2020 = nearly_equal(toXYZD50, SkNamedGamut::kRec2020);
-        if (srgb_xfer && rec2020) {
-            return "sRGB Transfer with Rec-BT-2020 Gamut";
-        }
-        if (line_xfer && rec2020) {
-            return "Linear Transfer with Rec-BT-2020 Gamut";
-        }
-    }
-    return nullptr;
+    return 0;
 }
 
-static void get_color_profile_tag(char dst[kICCDescriptionTagSize],
-                                  const skcms_TransferFunction& fn,
-                                  const skcms_Matrix3x3& toXYZD50) {
-    SkASSERT(dst);
-    if (const char* description = get_color_profile_description(fn, toXYZD50)) {
-        SkASSERT(strlen(description) < kICCDescriptionTagSize);
+static uint32_t get_cicp_trfn(const skcms_TransferFunction& fn) {
+    switch (classify_transfer_fn(fn)) {
+        case Bad_TF:
+            return 0;
+        case sRGBish_TF:
+            if (nearly_equal(fn, SkNamedTransferFn::kSRGB)) {
+                return kCICPTrfnSRGB;
+            } else if (nearly_equal(fn, SkNamedTransferFn::k2Dot2)) {
+                return kCICPTrfn2Dot2;
+            } else if (nearly_equal(fn, SkNamedTransferFn::kLinear)) {
+                return kCICPTrfnLinear;
+            }
+            break;
+        case PQish_TF:
+            return kCICPTrfnPQ;
+            break;
+        case HLGish_TF:
+            return kCICPTrfnHLG;
+            break;
+        case HLGinvish_TF:
+            return 0;
+    }
+    return 0;
+}
 
-        // Without these extra (), GCC would warn us something like
-        //    ... sepecified bound 44 equals destination size ...
-        // which, yeah, is exactly what we're trying to do, copy the string
-        // and zero the rest of the destination if any.  Sheesh.
-        (strncpy(dst, description, kICCDescriptionTagSize));
-        // "If the length of src is less than n, strncpy() writes additional
-        // null bytes to dest to ensure that a total of n bytes are written."
+static sk_sp<SkData> write_desc_tag(const skcms_TransferFunction& fn,
+                                    const skcms_Matrix3x3& toXYZD50,
+                                    uint32_t cicp_trfn,
+                                    uint32_t cicp_primaries) {
+    // Look up names from CICP tags.
+    const char* primaries_name = cicp_primaries_name(cicp_primaries);
+    const char* trfn_name = cicp_trfn_name(cicp_trfn);
+
+    char desc[kICCDescriptionTagSize];
+    if (trfn_name && primaries_name) {
+        if (cicp_trfn == kCICPPrimariesSRGB && cicp_primaries == kCICPTrfnSRGB) {
+            snprintf(desc, kICCDescriptionTagSize, "sRGB");
+        } else {
+            snprintf(desc,
+                     kICCDescriptionTagSize,
+                     "%s Transfer with %s Gamut",
+                     trfn_name,
+                     primaries_name);
+        }
     } else {
-        memcpy(dst, kDescriptionTagBodyPrefix, sizeof(kDescriptionTagBodyPrefix));
+        memcpy(desc, kDescriptionTagBodyPrefix, sizeof(kDescriptionTagBodyPrefix));
         SkMD5 md5;
         md5.write(&toXYZD50, sizeof(toXYZD50));
         static_assert(sizeof(fn) == sizeof(float) * 7, "packed");
         md5.write(&fn, sizeof(fn));
         SkMD5::Digest digest = md5.finish();
-        char* ptr = dst + sizeof(kDescriptionTagBodyPrefix);
+        char* ptr = desc + sizeof(kDescriptionTagBodyPrefix);
         for (unsigned i = 0; i < sizeof(SkMD5::Digest); ++i) {
             uint8_t byte = digest.data[i];
             *ptr++ = SkHexadecimalDigits::gUpper[byte >> 4];
             *ptr++ = SkHexadecimalDigits::gUpper[byte & 0xF];
         }
-        SkASSERT(ptr == dst + kICCDescriptionTagSize);
+        SkASSERT(ptr == desc + kICCDescriptionTagSize);
     }
-}
 
-sk_sp<SkData> write_desc_tag(const skcms_TransferFunction& fn, const skcms_Matrix3x3& toXYZD50) {
     sk_sp<SkData> result =
-            SkData::MakeUninitialized(sizeof(kDescriptionTagHeader) + kDescriptionTagBodySize);
+            SkData::MakeZeroInitialized(sizeof(kDescriptionTagHeader) + kDescriptionTagBodySize);
     uint8_t* ptr = reinterpret_cast<uint8_t*>(result->writable_data());
     memcpy(ptr, kDescriptionTagHeader, sizeof(kDescriptionTagHeader));
     ptr += sizeof(kDescriptionTagHeader);
-    {
-        char colorProfileTag[kICCDescriptionTagSize];
-        get_color_profile_tag(colorProfileTag, fn, toXYZD50);
-
-        // ASCII --> big-endian UTF-16.
-        for (size_t i = 0; i < kICCDescriptionTagSize; i++) {
-            *ptr++ = 0;
-            *ptr++ = colorProfileTag[i];
-        }
+    // ASCII --> big-endian UTF-16.
+    for (size_t i = 0; i < kICCDescriptionTagSize; i++) {
+        *ptr++ = 0;
+        *ptr++ = desc[i];
     }
     return result;
 }
 
-sk_sp<SkData> write_cprt_tag() {
+static sk_sp<SkData> write_cicp_tag(uint32_t primaries, uint32_t trfn) {
+    sk_sp<SkData> result = SkData::MakeUninitialized(kTAG_cicp_Bytes);
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(result->writable_data());
+    *reinterpret_cast<uint32_t*>(ptr) = SkEndian_SwapBE32(kTAG_cicp);
+    ptr += sizeof(uint32_t);
+    *reinterpret_cast<uint32_t*>(ptr) = 0;
+    ptr += sizeof(uint32_t);
+    ptr[0] = primaries;
+    ptr[1] = trfn;
+    ptr[2] = 0;  // RGB matrix
+    ptr[3] = 1;  // Full range
+    return result;
+}
+
+static sk_sp<SkData> write_cprt_tag() {
     sk_sp<SkData> result =
             SkData::MakeUninitialized(sizeof(kCopyrightTagHeader) + sizeof(kCopyrightTagBody));
     uint8_t* ptr = reinterpret_cast<uint8_t*>(result->writable_data());
@@ -287,26 +339,46 @@ sk_sp<SkData> write_cprt_tag() {
 }
 
 sk_sp<SkData> SkWriteICCProfile(const skcms_TransferFunction& fn, const skcms_Matrix3x3& toXYZD50) {
-    // We can't encode HDR transfer functions in ICC
-    // TODO(crbug.com/1366315): Use CICP tag for HDR transfer functions.
+    // Compute the CICP primaries and transfer function, if they can be
+    // identified.
+    uint32_t cicp_primaries = get_cicp_primaries(toXYZD50);
+    uint32_t cicp_trfn = get_cicp_trfn(fn);
     if (classify_transfer_fn(fn) != sRGBish_TF) {
-        return nullptr;
+        // Non-sRGB-ish transfer functions can only be represented by CICP. IF
+        // the transfer function is not sRGB-ish, and we don't have a CICP
+        // representation, then fail.
+        if (!cicp_primaries || !cicp_trfn) {
+            return nullptr;
+        }
     }
+
     std::vector<std::pair<uint32_t, sk_sp<SkData>>> tags;
 
     // Compute profile description tag
-    tags.emplace_back(kTAG_desc, write_desc_tag(fn, toXYZD50));
+    tags.emplace_back(kTAG_desc, write_desc_tag(fn, toXYZD50, cicp_trfn, cicp_primaries));
 
     // Compute XYZ tags
     tags.emplace_back(kTAG_rXYZ, write_xyz_tag(toXYZD50, 0));
     tags.emplace_back(kTAG_gXYZ, write_xyz_tag(toXYZD50, 1));
     tags.emplace_back(kTAG_bXYZ, write_xyz_tag(toXYZD50, 2));
 
-    // Compute TRC tags. Use empty data to indicate that the entry should use
-    // the previous tag's data.
-    tags.emplace_back(kTAG_rTRC, write_trc_tag(fn));
-    tags.emplace_back(kTAG_gTRC, SkData::MakeEmpty());
-    tags.emplace_back(kTAG_bTRC, SkData::MakeEmpty());
+    // If this is an HLG or PQ profile, include a CICP tag.
+    if (cicp_trfn == kCICPTrfnPQ || cicp_trfn == kCICPTrfnHLG) {
+        tags.emplace_back(kTAG_cicp, write_cicp_tag(cicp_primaries, cicp_trfn));
+
+        // Use sRGB as the transfer function.
+        // TODO(https://crbug.com/1366315): Provide a LUT based transform to
+        // perform tone mapping.
+        tags.emplace_back(kTAG_rTRC, write_trc_tag(SkNamedTransferFn::kSRGB));
+        // Use empty data to indicate that the entry should use the previous tag's
+        // data.
+        tags.emplace_back(kTAG_gTRC, SkData::MakeEmpty());
+        tags.emplace_back(kTAG_bTRC, SkData::MakeEmpty());
+    } else {
+        tags.emplace_back(kTAG_rTRC, write_trc_tag(fn));
+        tags.emplace_back(kTAG_gTRC, SkData::MakeEmpty());
+        tags.emplace_back(kTAG_bTRC, SkData::MakeEmpty());
+    }
 
     // Compute white point tag (must be D50)
     tags.emplace_back(kTAG_wtpt, write_wtpt_tag());
