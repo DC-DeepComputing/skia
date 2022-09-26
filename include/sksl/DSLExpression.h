@@ -128,7 +128,7 @@ public:
      */
     DSLExpression operator[](DSLExpression index);
 
-    DSLExpression operator()(SkTArray<DSLExpression> args, Position pos = {});
+    DSLExpression operator()(SkTArray<DSLExpression, true> args, Position pos = {});
 
     DSLExpression operator()(ExpressionArray args, Position pos = {});
 
@@ -233,5 +233,8 @@ DSLExpression operator--(DSLExpression expr, int);
 } // namespace dsl
 
 } // namespace SkSL
+
+template <>
+struct sk_is_trivially_relocatable<SkSL::dsl::DSLExpression> : std::true_type {};
 
 #endif
