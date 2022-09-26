@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d288c826_572693a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-26T20:33:34Z",
+      "side": 1,
+      "message": "OK. Chatted with Rob, and the move to SkShaders is\u0027t urgent, so I\u0027d like to push ahead with these changes. How do people feel about the name/API?",
+      "revId": "e1641af2970a83d8deee859f05190291df48c650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
