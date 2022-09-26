@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "39d28a94_d7ac8c2e",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-26T18:21:30Z",
+      "side": 1,
+      "message": "I think this kind of comment would be less clear. If one did want to make such a statement the entire comment would need to be more like \"Trait for identifying types which may be copied via memcpy and no need for destructors called, for container optimizations.\" Though this is actually too broad (and inaccurate) since \"copy\" is too strong. In some sense we\u0027re not making a copy but simply changing the address of the object.\n\nWe do in fact call the destructors when we actually free the elements, and a comment like this seems to imply that this might not need to be done with such types. But it does need to be done.\n\nIn other words, I don\u0027t want to add this wording to this comment.",
+      "parentUuid": "745a833a_f939cfdc",
+      "range": {
+        "startLine": 428,
+        "startChar": 41,
+        "endLine": 428,
+        "endChar": 63
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a5c6291_d203b4b5",
         "filename": "include/private/SkTemplates.h",
         "patchSetId": 8
@@ -101,6 +125,30 @@
       "writtenOn": "2022-09-26T18:19:36Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "4a5c6291_d203b4b5",
+      "range": {
+        "startLine": 429,
+        "startChar": 1,
+        "endLine": 429,
+        "endChar": 2
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d290c2e6_57a5d3ce",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-26T18:21:30Z",
+      "side": 1,
+      "message": "`std::is_trivially_copyable` shouldn\u0027t be in the comment since it isn\u0027t part of the API of this type. It\u0027s just an implementation detail hack for now.",
       "parentUuid": "4a5c6291_d203b4b5",
       "range": {
         "startLine": 429,
