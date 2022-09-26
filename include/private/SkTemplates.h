@@ -425,11 +425,13 @@ template<size_t N, typename C> constexpr auto SkMakeArray(C c)
 }
 
 /**
- * Trait for identifying types which are relocatable via memcpy, for container optimizations.
+ * Trait for identifying types which are relocatable via memcpy, and do not require destructors run
+ * when the old storage is freed (for container optimizations).
  *
+ * Use std::is_trivially_copyable as a proxy for sk_is_trivially_relocatable if not explicitly
+ * set for a class.
  */
-// TODO: default to std::is_trivially_copyable when possible.
 template <typename T>
-struct sk_is_trivially_relocatable : std::false_type {};
+struct sk_is_trivially_relocatable : std::is_trivially_copyable<T> {};
 
 #endif
