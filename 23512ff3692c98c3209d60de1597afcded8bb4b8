@@ -18,6 +18,52 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "745a833a_f939cfdc",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T17:30:18Z",
+      "side": 1,
+      "message": ", and do not need destructors run when memory is freed.",
+      "range": {
+        "startLine": 428,
+        "startChar": 41,
+        "endLine": 428,
+        "endChar": 63
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a5c6291_d203b4b5",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-26T17:30:18Z",
+      "side": 1,
+      "message": "Use std::is_trivially_copyable as a proxy for sk_is_trivially_relocatable if not explicitly set for a class.",
+      "range": {
+        "startLine": 429,
+        "startChar": 1,
+        "endLine": 429,
+        "endChar": 2
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4e2cf32b_eadafafd",
