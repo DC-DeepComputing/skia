@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5696c90c_b471f7e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-26T16:13:17Z",
+      "side": 1,
+      "message": "I\u0027m going to go ahead and land. As is framework still uses the SkShader API. If the SkAndroidFrameworkUtils interface needs adjustment that can be iterated on after landing. It\u0027s unused today.",
+      "revId": "e4224dffb4f24eb22e68bb1f4fec5b09c8430d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
