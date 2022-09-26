@@ -687,6 +687,37 @@ public:
      */
     sk_sp<SkImage> makeImageSnapshot(const SkIRect& bounds);
 
+#ifdef SK_GRAPHITE_ENABLED
+    /**
+     * This is an experimental API - it should not be used right now.
+     *
+     * In this API, SkSurface no longer supports copy-on-write behavior. Instead, when snapping
+     * an image, the client must explicitly indicate if a copy should be made. These two calls
+     * shouldn't be intermixed with legacy API calls. In both of the below calls the resource
+     * backing the surface will never change.
+     *
+     * The NoCopy variant, by default, abandons the surface from which the image is snapped.
+     * Following calls to any SkSurface and SkCanvas methods will fail (and a warning will be
+     * logged).
+     *
+     * When the surface is _not_ abandoned, the NoCopy variant has some major ramifications
+     * for the mutability of the returned SkImage. Since the originating surface and the
+     * returned image share the same backing, care must be taken by the client to ensure that
+     * the contents of the image reflect the desired contents when it is consumed by the gpu.
+     * Note: if the backing GPU buffer isn't textureable this method will return null. Graphite
+     * will not attempt to make a copy.
+     * Note: rather obviously, the mipmapping of the image will match that of the source surface.
+     *
+     * The Copy variant is the only one to allow subsetting and the addition of mipmaps (since
+     * we're already making a copy).
+     */
+    sk_sp<SkImage> experimental_makeImageSnapshotNoCopy(bool abandonSurface = true);
+
+    sk_sp<SkImage> experimental_makeImageSnapshotCopy(const SkIRect* subset = nullptr,
+                                                      skgpu::graphite::Mipmapped mipmapped =
+                                                              skgpu::graphite::Mipmapped::kNo);
+#endif
+
     /** Draws SkSurface contents to canvas, with its top-left corner at (x, y).
 
         If SkPaint paint is not nullptr, apply SkColorFilter, alpha, SkImageFilter, and SkBlendMode.

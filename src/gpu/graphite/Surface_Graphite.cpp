@@ -50,6 +50,34 @@ sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
     return sk_sp<Image>(new Image(std::move(srcView), ii.colorInfo()));
 }
 
+sk_sp<SkImage> Surface::onNewImageSnapshotNoCopy(bool abandonSurface) {
+    TextureProxyView srcView = fDevice->readSurfaceView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(std::move(srcView), this->imageInfo().colorInfo()));
+}
+
+sk_sp<SkImage> Surface::onNewImageSnapshotCopy(const SkIRect* subset,
+                                               Mipmapped mipmapped) {
+    // TODO: it seems like this won't work w/ non-textureable wrapped surfaces
+    TextureProxyView srcView = fDevice->readSurfaceView();
+
+    SkIRect rect = subset ? *subset : SkIRect::MakeSize(this->imageInfo().dimensions());
+    srcView = TextureProxyView::Copy(fDevice->recorder(),
+                                     std::move(srcView),
+                                     mipmapped,
+                                     rect,
+                                     SkBackingFit::kExact,
+                                     SkBudgeted::kNo);     // client will get a ref on the image
+    if (!srcView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(std::move(srcView), this->imageInfo().colorInfo()));
+}
+
 void Surface::onWritePixels(const SkPixmap& pixmap, int x, int y) {
     fDevice->writePixels(pixmap, x, y);
 }
