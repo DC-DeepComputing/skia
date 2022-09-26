@@ -64,10 +64,15 @@
 #endif
 
 #ifdef SKSL_STANDALONE
-#define REHYDRATE 0
-#include <fstream>
+    // SkSL modules are loaded from disk
+    #define REHYDRATE 0
+    #include <fstream>
+#elif defined(SK_ENABLE_OPTIMIZE_SIZE)
+    // SkSL modules are loaded from minified, embedded source
+    #define REHYDRATE 0
 #else
-#define REHYDRATE 1
+    // SkSL modules are loaded from dehydrated, embedded IR
+    #define REHYDRATE 1
 #endif
 
 namespace SkSL {
@@ -190,7 +195,7 @@ static LoadedModule load_dehydrated_module(SkSL::Compiler* compiler,
     return LoadedModule{rehydrator.symbolTable(), rehydrator.elements()};
 }
 
-#else
+#else  // !REHYDRATE
 
 // Performs safe eliminations on module code. We can't eliminate anything at global scope, but
 // it is safe to optimize away dead code and variables inside functions.
@@ -214,9 +219,6 @@ bool eliminate_dead_code_from_loaded_module(SkSL::Compiler* compiler,
         // Removing dead variables may cause more variables to become unreferenced. Try again.
     }
 
-    // Save space by eliminating empty statements from the code.
-    Transform::EliminateEmptyStatements(module);
-
     // Note that we intentionally don't attempt to eliminate unreferenced global variables or
     // functions here, since those can be referenced by the finished program even if they're
     // unreferenced now. We also don't run the inliner to avoid growing the program; that is handled
@@ -228,7 +230,9 @@ bool eliminate_dead_code_from_loaded_module(SkSL::Compiler* compiler,
 static LoadedModule compile_module(SkSL::Compiler* compiler,
                                    const char* moduleName,
                                    std::string text,
-                                   const ParsedModule& baseModule) {
+                                   std::shared_ptr<SymbolTable> base) {
+    ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
+
     // Built-in modules always use default program settings.
     ProgramSettings settings;
     SkSL::Parser parser{compiler, settings, ProgramKind::kModule, std::move(text)};
@@ -238,6 +242,20 @@ static LoadedModule compile_module(SkSL::Compiler* compiler,
     eliminate_dead_code_from_loaded_module(compiler, module, baseModule);
     return module;
 }
+
+#if defined(SK_ENABLE_OPTIMIZE_SIZE)
+
+// Compiles a module from an embedded, minified SkSL source file.
+static LoadedModule compile_module(SkSL::Compiler* compiler,
+                                   ProgramKind kind,
+                                   SkSpan<const uint8_t> textSpan,
+                                   std::shared_ptr<SymbolTable> base) {
+    SkASSERT(!textSpan.empty());
+    std::string text{reinterpret_cast<const char*>(textSpan.data()), textSpan.size()};
+    return compile_module(compiler, kind, "module", std::move(text), std::move(base));
+}
+
+#elif SKSL_STANDALONE
 
 // Compiles a module from an SkSL source file on disk, and prepares it for dehydration.
 static LoadedModule compile_module_for_dehydration(SkSL::Compiler* compiler,
@@ -251,11 +269,16 @@ static LoadedModule compile_module_for_dehydration(SkSL::Compiler* compiler,
         SK_ABORT("Error reading %s\n", path);
     }
 
-    ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
-    return compile_module(compiler, path, std::move(text), baseModule);
+    LoadedModule module = compile_module(compiler, path, std::move(text), std::move(base));
+
+    // Make the rehydrated module smaller by eliminating empty statements from the code.
+    Transform::EliminateEmptyStatements(module);
+
+    return module;
 }
 
-#endif
+#endif  // SKSL_STANDALONE
+#endif  // REHYDRATE
 
 LoadedModule Compiler::loadModule(ModuleData data,
                                   ModifiersPool& modifiersPool,
@@ -269,6 +292,8 @@ LoadedModule Compiler::loadModule(ModuleData data,
 
 #if REHYDRATE
     return load_dehydrated_module(this, data.fData, std::move(base));
+#elif defined(SK_ENABLE_OPTIMIZE_SIZE)
+    return compile_module(this, data.fData, std::move(base));
 #else
     return compile_module_for_dehydration(this, data.fPath, std::move(base));
 #endif
