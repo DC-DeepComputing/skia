@@ -22,6 +22,30 @@
       },
       "revId": "a4d400427b5fc1e96957b3c90246f0899182baed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc6b4bd1_d4e4cbf2",
+        "filename": ".bazelrc",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-26T16:52:44Z",
+      "side": 1,
+      "message": "Unlikely (and you probably meant $HOME/.bazelrc, right?).\n\nThe point of this bazel/user/buildrc file (https://github.com/google/skia/blob/main/bazel/user/README.md) is to have Skia-specific settings. Since we define this platform in Skia-land, users do not want it in their general Bazel settings, as it will break other Bazel projects.",
+      "parentUuid": "36e0c46d_ff23c8de",
+      "range": {
+        "startLine": 21,
+        "startChar": 24,
+        "endLine": 21,
+        "endChar": 45
+      },
+      "revId": "a4d400427b5fc1e96957b3c90246f0899182baed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
