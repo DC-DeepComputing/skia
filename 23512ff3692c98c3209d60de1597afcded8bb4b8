@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e2cf32b_eadafafd",
+        "filename": "include/sksl/DSLExpression.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-09-26T17:21:42Z",
+      "side": 1,
+      "message": "DSLExpression is trivially relocatable but not trivially copyable (stores std::unique_ptr).  Explicit tagging is required for the .cpp definition to infer the same SkTArray type as the updated declaration above.",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 81
+      },
+      "revId": "23512ff3692c98c3209d60de1597afcded8bb4b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
