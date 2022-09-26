@@ -33,6 +33,397 @@
       "message": "PTAL",
       "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d275f8_89fb8e4a",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "No yoda: `fCount \u003e 0`",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 27
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe35815_23f21a19",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`a.size()`\n\n(At which point, maybe best to use `a.size()` throughout for consistency?)",
+      "range": {
+        "startLine": 128,
+        "startChar": 62,
+        "endLine": 128,
+        "endChar": 83
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6273c43_86d66db8",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`this-\u003esize()`",
+      "range": {
+        "startLine": 150,
+        "startChar": 34,
+        "endLine": 150,
+        "endChar": 58
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfdad31c_c03056c5",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "up to you: could replace `this-\u003edata()[XXXXX]` with `this-\u003egetAt(XXXXX)` throughout. Might be easier to read.\n\n(Also, IMO it might be a good idea to rename `getAt` to `at` to better match the standard, but that\u0027s not for this CL.)",
+      "range": {
+        "startLine": 161,
+        "startChar": 15,
+        "endLine": 161,
+        "endChar": 28
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ccd2e9_6ed7e93f",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "Should probably be `begin()` to mirror the change on L222. (Of course it\u0027s all the same in reality since we don\u0027t have an iterator type.)",
+      "range": {
+        "startLine": 227,
+        "startChar": 44,
+        "endLine": 227,
+        "endChar": 48
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a9216d2_c11ad4d8",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "It was this way all along, but as long as we\u0027re here, let\u0027s wrap this block in a scope for safety: \n```\nif (elem) {\n    *elem \u003d (*this)[this-\u003ecount() - 1];\n}\n```",
+      "range": {
+        "startLine": 238,
+        "startChar": 17,
+        "endLine": 238,
+        "endChar": 18
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56aaa0c3_4f80b95a",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "style nit: we generally keep system header #includes in a separate block below our own #includes",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 18
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e9b973_137d9681",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`SkASSERT(count \u003e\u003d 0);`",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 1
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72ae757f_c0efd3d3",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`SKASSERT(newCount \u003e\u003d 0);`",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 2
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be847df_bbb033a5",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "We must set `fStorage \u003d nullptr;` here. \n`~SkTDStorage` calls `sk_free` without checking the reserve count and could double-free.",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 26
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13c1a00a_5d5dcb81",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "Along with the existing assert, we should guard against negative counts and indices.\n`SkASSERT(index \u003e\u003d 0);`\n`SkASSERT(count \u003e\u003d 0);`",
+      "range": {
+        "startLine": 107,
+        "startChar": 1,
+        "endLine": 107,
+        "endChar": 2
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d93af5f1_dedca28c",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "We should guard against wild index values.\n`SkASSERT(index \u003e\u003d 0 \u0026\u0026 index \u003c fCount);`",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 1
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efbb3bfc_ce96674c",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "Consider an argument comment for clarity: `/*index\u003d*/0`",
+      "range": {
+        "startLine": 143,
+        "startChar": 24,
+        "endLine": 143,
+        "endChar": 25
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4f308d0_59886d85",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "Consider labeling: `/*count\u003d*/1`",
+      "range": {
+        "startLine": 155,
+        "startChar": 40,
+        "endLine": 155,
+        "endChar": 41
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b571bc3b_2421c2bb",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`count \u003e\u003d 0`",
+      "range": {
+        "startLine": 160,
+        "startChar": 13,
+        "endLine": 160,
+        "endChar": 23
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed4ecbaa_6300770c",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "`count \u003e 0`",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 17
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24748043_b1bb99ad",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T17:22:34Z",
+      "side": 1,
+      "message": "It took me a second to understand why this was true.\n\"Because fCount and delta are both signed 32-bit ints, the sum of ...\"",
+      "range": {
+        "startLine": 193,
+        "startChar": 7,
+        "endLine": 193,
+        "endChar": 10
+      },
+      "revId": "f57ed2b4dc1ca26c71b97937add3d241e603a3d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
