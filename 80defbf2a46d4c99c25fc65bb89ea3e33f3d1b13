@@ -16,6 +16,23 @@
       "message": "ptal! next step CICP data!",
       "revId": "80defbf2a46d4c99c25fc65bb89ea3e33f3d1b13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9102095f_4ec61958",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-26T15:11:34Z",
+      "side": 1,
+      "message": "I realize that we don\u0027t have any unit tests of this API. (Though it is indirectly tested with our round-trip encode/decode tests, so I\u0027m not real worried).",
+      "revId": "80defbf2a46d4c99c25fc65bb89ea3e33f3d1b13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
