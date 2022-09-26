@@ -30,6 +30,13 @@ skia_cc_library(
     ],
 )
 
+skia_cc_library(
+    name = "registry",
+    hdrs = ["Registry.h"],
+    visibility = ["//tests:__subpackages__"],
+    deps = ["//:skia_internal"],
+)
+
 py_binary(
     name = "embed_resources",
     srcs = ["embed_resources.py"],

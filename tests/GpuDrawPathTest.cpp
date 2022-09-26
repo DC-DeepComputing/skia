@@ -4,21 +4,25 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
-#include "include/core/SkTypes.h"
-
-#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathEffect.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/gpu/GrDirectContext.h"
-#include "src/gpu/ganesh/geometry/GrStyledShape.h"
-#include "tests/Test.h"
+#include "tests/CtsEnforcement.h"
 
 #include <initializer_list>
 

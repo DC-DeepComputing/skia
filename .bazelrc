@@ -2,6 +2,7 @@
 # This forces Bazel's C++ rules use platforms to select toolchains instead of the default
 # --crosstool_top, --compiler, etc.
 build --incompatible_enable_cc_toolchain_resolution
+build --incompatible_strict_action_env=true
 
 # We do not want Bazel to detect any C++ toolchains on the local machine
 # https://github.com/bazelbuild/bazel/blob/4ccc21f2f089971e5f4032397764a4be3549c40a/tools/cpp/cc_configure.bzl#L47
