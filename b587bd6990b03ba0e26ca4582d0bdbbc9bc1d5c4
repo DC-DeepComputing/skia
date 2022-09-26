@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3956eca0_483a47ca",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-26T21:40:02Z",
+      "side": 1,
+      "message": "This previously rejected discard statements on all but fragment programs. Is it possible now for a vertex or compute program to reference a module function that contains a discard statement? Is that something we should guard against?",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 75
+      },
+      "revId": "b587bd6990b03ba0e26ca4582d0bdbbc9bc1d5c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
