@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ae7fce_8b06d6c9",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-26T13:57:35Z",
+      "side": 1,
+      "message": "Would be nice to have a test for that. I was absolutely sure I had this fix already :(",
+      "revId": "2d9b691e5c6c80b7ed9247c9b91045e47a6ee28f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
