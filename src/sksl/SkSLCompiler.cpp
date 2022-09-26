@@ -98,17 +98,17 @@ public:
 
 class AutoProgramConfig {
 public:
-    AutoProgramConfig(std::shared_ptr<Context>& context, ProgramConfig* config)
-            : fContext(context.get())
-            , fOldConfig(fContext->fConfig) {
-        fContext->fConfig = config;
+    AutoProgramConfig(Context& context, ProgramConfig* config)
+            : fContext(context)
+            , fOldConfig(context.fConfig) {
+        fContext.fConfig = config;
     }
 
     ~AutoProgramConfig() {
-        fContext->fConfig = fOldConfig;
+        fContext.fConfig = fOldConfig;
     }
 
-    Context* fContext;
+    Context& fContext;
     ProgramConfig* fOldConfig;
 };
 
@@ -173,51 +173,112 @@ const ParsedModule& Compiler::moduleForProgramKind(ProgramKind kind) {
     SkUNREACHABLE;
 }
 
+#if REHYDRATE
+
+// Loads a module from dehydrated IR data.
+static LoadedModule load_dehydrated_module(SkSL::Compiler* compiler,
+                                           SkSpan<const uint8_t> data,
+                                           std::shared_ptr<SymbolTable> base) {
+    SkASSERT(!data.empty());
+
+    ProgramConfig config;
+    config.fIsBuiltinCode = true;
+    config.fKind = ProgramKind::kModule;
+
+    AutoProgramConfig autoConfig(compiler->context(), &config);
+    Rehydrator rehydrator(*compiler, data, std::move(base));
+    return LoadedModule{rehydrator.symbolTable(), rehydrator.elements()};
+}
+
+#else
+
+// Performs safe eliminations on module code. We can't eliminate anything at global scope, but
+// it is safe to optimize away dead code and variables inside functions.
+bool eliminate_dead_code_from_loaded_module(SkSL::Compiler* compiler,
+                                            LoadedModule& module,
+                                            const ParsedModule& base) {
+    SkASSERT(compiler->errorCount() == 0);
+
+    // Create a temporary program configuration with default settings.
+    ProgramConfig config;
+    config.fIsBuiltinCode = true;
+    config.fKind = ProgramKind::kModule;
+    AutoProgramConfig autoConfig(compiler->context(), &config);
+
+    std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
+
+    // Remove any unreachable code.
+    Transform::EliminateUnreachableCode(module, usage.get());
+
+    while (Transform::EliminateDeadLocalVariables(compiler->context(), module, usage.get())) {
+        // Removing dead variables may cause more variables to become unreferenced. Try again.
+    }
+
+    // Save space by eliminating empty statements from the code.
+    Transform::EliminateEmptyStatements(module);
+
+    // Note that we intentionally don't attempt to eliminate unreferenced global variables or
+    // functions here, since those can be referenced by the finished program even if they're
+    // unreferenced now. We also don't run the inliner to avoid growing the program; that is handled
+    // in `optimizeModuleAfterLoading`.
+    return compiler->errorCount() == 0;
+}
+
+// Compiles a module from source.
+static LoadedModule compile_module(SkSL::Compiler* compiler,
+                                   const char* moduleName,
+                                   std::string text,
+                                   const ParsedModule& baseModule) {
+    // Built-in modules always use default program settings.
+    ProgramSettings settings;
+    SkSL::Parser parser{compiler, settings, ProgramKind::kModule, std::move(text)};
+    LoadedModule module = parser.moduleInheritingFrom(baseModule);
+    SkASSERTF(compiler->errorCount() == 0,
+              "Unexpected errors compiling %s\n\n%s\n", moduleName, compiler->errorText().c_str());
+    eliminate_dead_code_from_loaded_module(compiler, module, baseModule);
+    return module;
+}
+
+// Compiles a module from an SkSL source file on disk, and prepares it for dehydration.
+static LoadedModule compile_module_for_dehydration(SkSL::Compiler* compiler,
+                                                   const char* path,
+                                                   std::shared_ptr<SymbolTable> base) {
+    SkASSERT(path);
+
+    std::ifstream in(path);
+    std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
+    if (in.rdstate()) {
+        SK_ABORT("Error reading %s\n", path);
+    }
+
+    ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
+    return compile_module(compiler, path, std::move(text), baseModule);
+}
+
+#endif
+
 LoadedModule Compiler::loadModule(ModuleData data,
                                   ModifiersPool& modifiersPool,
                                   std::shared_ptr<SymbolTable> base) {
     SkASSERT(base);
+    SkASSERT(this->errorCount() == 0);
+
     // Modules are shared and cannot rely on shader caps.
     AutoShaderCaps autoCaps(fContext, nullptr);
     AutoModifiersPool autoPool(fContext, &modifiersPool);
 
 #if REHYDRATE
-    ProgramConfig config;
-    config.fIsBuiltinCode = true;
-    config.fKind = ProgramKind::kModule;
-    AutoProgramConfig autoConfig(fContext, &config);
-    SkASSERT(!data.fData.empty());
-    Rehydrator rehydrator(*this, data.fData, std::move(base));
-    LoadedModule module = {rehydrator.symbolTable(), rehydrator.elements()};
+    return load_dehydrated_module(this, data.fData, std::move(base));
 #else
-    SkASSERT(this->errorCount() == 0);
-    SkASSERT(data.fPath);
-    std::ifstream in(data.fPath);
-    std::string text{std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()};
-    if (in.rdstate()) {
-        printf("error reading %s\n", data.fPath);
-        abort();
-    }
-    ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
-    // Built-in modules always use default program settings.
-    ProgramSettings settings;
-    LoadedModule module = Parser(this, settings, ProgramKind::kModule, std::move(text))
-                                  .moduleInheritingFrom(baseModule);
-    if (this->errorCount()) {
-        printf("Unexpected errors: %s\n", this->fErrorText.c_str());
-        SkDEBUGFAILF("%s %s\n", data.fPath, this->fErrorText.c_str());
-    }
-    this->optimizeModuleForDehydration(module, baseModule);
+    return compile_module_for_dehydration(this, data.fPath, std::move(base));
 #endif
-
-    return module;
 }
 
 ParsedModule Compiler::parseModule(ModuleData data,
                                    const ParsedModule& base,
                                    ModifiersPool& modifiersPool) {
     LoadedModule module = this->loadModule(data, modifiersPool, base.fSymbols);
-    this->optimizeRehydratedModule(module, base, modifiersPool);
+    this->optimizeModuleAfterLoading(module, base, modifiersPool);
 
     // For modules that just declare (but don't define) intrinsic functions, there will be no new
     // program elements. In that case, we can share our parent's element map:
@@ -358,9 +419,9 @@ std::unique_ptr<Expression> Compiler::convertIdentifier(Position pos, std::strin
     }
 }
 
-bool Compiler::optimizeRehydratedModule(LoadedModule& module,
-                                        const ParsedModule& base,
-                                        ModifiersPool& modifiersPool) {
+bool Compiler::optimizeModuleAfterLoading(LoadedModule& module,
+                                          const ParsedModule& base,
+                                          ModifiersPool& modifiersPool) {
 #ifdef SK_ENABLE_OPTIMIZE_SIZE
     // We don't have an inliner, so there's nothing to do.
     return true;
@@ -371,7 +432,7 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module,
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = ProgramKind::kModule;
-    AutoProgramConfig autoConfig(fContext, &config);
+    AutoProgramConfig autoConfig(this->context(), &config);
     AutoModifiersPool autoPool(fContext, &modifiersPool);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
@@ -385,34 +446,6 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module,
     }
     return this->errorCount() == 0;
 #endif
-}
-
-bool Compiler::optimizeModuleForDehydration(LoadedModule& module, const ParsedModule& base) {
-    SkASSERT(!this->errorCount());
-
-    // Create a temporary program configuration with default settings.
-    ProgramConfig config;
-    config.fIsBuiltinCode = true;
-    config.fKind = ProgramKind::kModule;
-    AutoProgramConfig autoConfig(fContext, &config);
-
-    std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
-
-    // Remove any unreachable code.
-    Transform::EliminateUnreachableCode(module, usage.get());
-
-    while (Transform::EliminateDeadLocalVariables(*fContext, module, usage.get())) {
-        // Removing dead variables may cause more variables to become unreferenced. Try again.
-    }
-
-    // Save space by eliminating empty statements from the code.
-    Transform::EliminateEmptyStatements(module);
-
-    // Note that we intentionally don't attempt to eliminate unreferenced global variables or
-    // functions here, since those can be referenced by the finished program even if they're
-    // unreferenced now. We also don't run the inliner to avoid growing the program; that is done in
-    // `optimizeRehydratedModule` above.
-    return this->errorCount() == 0;
 }
 
 bool Compiler::optimize(Program& program) {
