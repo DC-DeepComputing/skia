@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7f96468_c06d8fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-26T18:25:46Z",
+      "side": 1,
+      "message": "It seems unfortunate to require full type definitions for declarations of SkTArray (and std::vector gets away with this because std generally requires all template types to be complete) since it means I can\u0027t have a public class with a private SkTArray of a private type. Ah well, we should do a better job of hiding internals in public types anyway.",
+      "revId": "ee1f1dfa5ae8f1fa342d8f3fff5587404d2edd46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
