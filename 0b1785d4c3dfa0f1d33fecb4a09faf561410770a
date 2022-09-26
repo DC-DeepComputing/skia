@@ -33,6 +33,23 @@
       "message": "Nice find.",
       "revId": "0b1785d4c3dfa0f1d33fecb4a09faf561410770a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea3e540d_6c969114",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-26T18:20:55Z",
+      "side": 1,
+      "message": "I need to do this for Graphite as well, but I may want to tweak it so that 565 black ends up as transparent black instead.",
+      "revId": "0b1785d4c3dfa0f1d33fecb4a09faf561410770a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
