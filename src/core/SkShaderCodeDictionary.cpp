@@ -206,6 +206,9 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
+        mainBody += "if (all((outputCoverage.rgb <= half3(0)))) {"
+                    "    discard_fragment();"
+                    "}";
         SkSL::String::appendf(&mainBody, "sk_FragColor = %s * outputCoverage;",
                               lastOutputVar.c_str());
     } else {
