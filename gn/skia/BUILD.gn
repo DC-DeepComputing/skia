@@ -624,7 +624,7 @@ config("optimize") {
 
         # We currently use bloaty 1.0 on the CI. Newer versions of Bloaty do not
         # seem to handle newer DWARF data as well.
-        "-gdwarf-3",
+        "-gdwarf-4",
       ]
     } else {
       cflags = [ "-O3" ]
