@@ -269,6 +269,11 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
         case ProgramKind::kGeneric:
             // No rules apply here
             break;
+
+        case ProgramKind::kModule:
+            errors.error(pos, "modules cannot have a 'main' function");
+            return false;
+
         case ProgramKind::kFragment:
         case ProgramKind::kGraphiteFragment: {
             bool validParams = (parameters.size() == 0) ||

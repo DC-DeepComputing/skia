@@ -99,8 +99,7 @@ ResultCode processCommand(const std::vector<std::string>& paths) {
             return ResultCode::kInputError;
         }
 
-        modules.push_front(compiler.loadModule(SkSL::ProgramKind::kFragment,
-                                               SkSL::Compiler::MakeModulePath(modulePath.c_str()),
+        modules.push_front(compiler.loadModule(SkSL::Compiler::MakeModulePath(modulePath.c_str()),
                                                SkSL::ModuleLoader::Get().coreModifiers(),
                                                /*base=*/inheritedSymbols));
         inheritedSymbols = modules.front().fSymbols;

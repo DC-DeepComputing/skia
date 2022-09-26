@@ -123,6 +123,10 @@ struct ProgramConfig {
         return "";
     }
 
+    static bool IsModule(ProgramKind kind) {
+        return kind == ProgramKind::kModule;
+    }
+
     static bool IsFragment(ProgramKind kind) {
         return kind == ProgramKind::kFragment ||
                kind == ProgramKind::kGraphiteFragment;
