@@ -16,6 +16,7 @@ namespace SkSL {
  * SkSL supports several different program kinds.
  */
 enum class ProgramKind : int8_t {
+    kModule,
     kFragment,
     kVertex,
     kCompute,

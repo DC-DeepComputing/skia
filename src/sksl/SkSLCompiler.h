@@ -59,7 +59,6 @@ struct ShaderCaps;
 class SymbolTable;
 
 struct LoadedModule {
-    ProgramKind                                  fKind;
     std::shared_ptr<SymbolTable>                 fSymbols;
     std::vector<std::unique_ptr<ProgramElement>> fElements;
 };
@@ -193,11 +192,12 @@ public:
         return ModuleData{/*fPath=*/nullptr, data};
     }
 
-    LoadedModule loadModule(ProgramKind kind, ModuleData data, ModifiersPool& modifiersPool,
+    LoadedModule loadModule(ModuleData data,
+                            ModifiersPool& modifiersPool,
                             std::shared_ptr<SymbolTable> base);
-    ParsedModule parseModule(ProgramKind kind, ModuleData data, const ParsedModule& base,
+    ParsedModule parseModule(ModuleData data,
+                             const ParsedModule& base,
                              ModifiersPool& modifiersPool);
-
     const ParsedModule& moduleForProgramKind(ProgramKind kind);
 
 private:

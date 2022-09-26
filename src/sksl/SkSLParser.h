@@ -170,8 +170,10 @@ private:
                                                      const dsl::DSLModifiers& modifiers);
 
     bool allowUnsizedArrays() {
-        return ProgramConfig::IsCompute(fKind) || ProgramConfig::IsFragment(fKind) ||
-               ProgramConfig::IsVertex(fKind);
+        return ProgramConfig::IsCompute(fKind) ||
+               ProgramConfig::IsFragment(fKind) ||
+               ProgramConfig::IsVertex(fKind) ||
+               ProgramConfig::IsModule(fKind);
     }
 
     bool parseArrayDimensions(Position pos, dsl::DSLType* type);

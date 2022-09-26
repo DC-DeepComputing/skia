@@ -168,12 +168,12 @@ const ParsedModule& Compiler::moduleForProgramKind(ProgramKind kind) {
         case ProgramKind::kMeshVertex:           return m.loadPublicModule(this);           break;
         case ProgramKind::kMeshFragment:         return m.loadPublicModule(this);           break;
         case ProgramKind::kGeneric:              return m.loadPublicModule(this);           break;
+        case ProgramKind::kModule:               /* fallthrough to unreachable */           break;
     }
     SkUNREACHABLE;
 }
 
-LoadedModule Compiler::loadModule(ProgramKind kind,
-                                  ModuleData data,
+LoadedModule Compiler::loadModule(ModuleData data,
                                   ModifiersPool& modifiersPool,
                                   std::shared_ptr<SymbolTable> base) {
     SkASSERT(base);
@@ -184,11 +184,11 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
 #if REHYDRATE
     ProgramConfig config;
     config.fIsBuiltinCode = true;
-    config.fKind = kind;
+    config.fKind = ProgramKind::kModule;
     AutoProgramConfig autoConfig(fContext, &config);
     SkASSERT(!data.fData.empty());
     Rehydrator rehydrator(*this, data.fData, std::move(base));
-    LoadedModule module = {kind, rehydrator.symbolTable(), rehydrator.elements()};
+    LoadedModule module = {rehydrator.symbolTable(), rehydrator.elements()};
 #else
     SkASSERT(this->errorCount() == 0);
     SkASSERT(data.fPath);
@@ -201,7 +201,7 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
     // Built-in modules always use default program settings.
     ProgramSettings settings;
-    LoadedModule module = Parser(this, settings, kind, std::move(text))
+    LoadedModule module = Parser(this, settings, ProgramKind::kModule, std::move(text))
                                   .moduleInheritingFrom(baseModule);
     if (this->errorCount()) {
         printf("Unexpected errors: %s\n", this->fErrorText.c_str());
@@ -213,11 +213,10 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
     return module;
 }
 
-ParsedModule Compiler::parseModule(ProgramKind kind,
-                                   ModuleData data,
+ParsedModule Compiler::parseModule(ModuleData data,
                                    const ParsedModule& base,
                                    ModifiersPool& modifiersPool) {
-    LoadedModule module = this->loadModule(kind, data, modifiersPool, base.fSymbols);
+    LoadedModule module = this->loadModule(data, modifiersPool, base.fSymbols);
     this->optimizeRehydratedModule(module, base, modifiersPool);
 
     // For modules that just declare (but don't define) intrinsic functions, there will be no new
@@ -371,7 +370,7 @@ bool Compiler::optimizeRehydratedModule(LoadedModule& module,
     // Create a temporary program configuration with default settings.
     ProgramConfig config;
     config.fIsBuiltinCode = true;
-    config.fKind = module.fKind;
+    config.fKind = ProgramKind::kModule;
     AutoProgramConfig autoConfig(fContext, &config);
     AutoModifiersPool autoPool(fContext, &modifiersPool);
 
@@ -394,7 +393,7 @@ bool Compiler::optimizeModuleForDehydration(LoadedModule& module, const ParsedMo
     // Create a temporary program configuration with default settings.
     ProgramConfig config;
     config.fIsBuiltinCode = true;
-    config.fKind = module.fKind;
+    config.fKind = ProgramKind::kModule;
     AutoProgramConfig autoConfig(fContext, &config);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
