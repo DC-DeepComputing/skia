@@ -33,6 +33,23 @@
       "message": "Hey! Can you take a quick look on this changes and run test against of it?",
       "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a16f37c4_78d4abdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-26T13:53:22Z",
+      "side": 1,
+      "message": "Thank you, Pavel, in one or another way or form your suggested fix will be added soon to SkParagraph code. However, we need to make sure we meet Flutter expectation on that API first since the Flutter is our main focus. \nI will try to make it happen as soon as possible.",
+      "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
