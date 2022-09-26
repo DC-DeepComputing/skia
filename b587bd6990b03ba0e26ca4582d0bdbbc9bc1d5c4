@@ -22,6 +22,30 @@
       },
       "revId": "b587bd6990b03ba0e26ca4582d0bdbbc9bc1d5c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "719b626a_8f81613f",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-26T22:40:49Z",
+      "side": 1,
+      "message": "This was always possible; we never guarded against it--modules have been compiled as `kFragment`. \n\nI experimented at head to confirm it: http://review.skia.org/584957 \n\nHowever, I did find that we did have one accidental safeguard against this--if gn arg `skia_compile_sksl_tests \u003d true` was enabled, we\u0027d catch the error while building tests. This wasn\u0027t an intentional safeguard at all, it just happened to work. Let me think this over some more. I might be able to put better safeguards in.",
+      "parentUuid": "3956eca0_483a47ca",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 75
+      },
+      "revId": "b587bd6990b03ba0e26ca4582d0bdbbc9bc1d5c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
