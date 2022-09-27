@@ -69,6 +69,29 @@
       "parentUuid": "f7584b54_74aa7c37",
       "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84d58985_0467d489",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-27T17:55:52Z",
+      "side": 1,
+      "message": "Is a null `src` expected or reasonable when count is nonzero?\nIf not:\n\n```\nif (count \u003e 0) {\n    SkASSERT(src);\n    memcpy(...);\n}\n```",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
