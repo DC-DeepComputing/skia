@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cdc7f1d_5971b947",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-27T22:09:47Z",
+      "side": 1,
+      "message": "Driveby comment: Summarize why it is getting replaced (less code size, less complexity, faster, all three?) or link to the CLs that already say this.",
+      "revId": "48875fd2aa67e7567358eb0abeb85fa39fb5f3e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
