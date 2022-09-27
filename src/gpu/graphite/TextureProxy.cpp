@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkRect.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 
@@ -48,6 +49,16 @@ sk_sp<Texture> TextureProxy::refTexture() const {
 
 const Texture* TextureProxy::texture() const {
     return fTexture.get();
+}
+
+sk_sp<TextureProxy> TextureProxy::Copy(Recorder* recorder,
+                                       sk_sp<TextureProxy> src,
+                                       Mipmapped mipmapped,
+                                       SkIRect srcRect,
+                                       SkBackingFit fit,
+                                       SkBudgeted budgeted) {
+
+    return nullptr;
 }
 
 #ifdef SK_DEBUG

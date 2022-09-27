@@ -12,8 +12,11 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
 
+struct SkIRect;
+
 namespace skgpu::graphite {
 
+class Recorder;
 class ResourceProvider;
 class Texture;
 
@@ -34,6 +37,13 @@ public:
     bool isInstantiated() const { return SkToBool(fTexture); }
     sk_sp<Texture> refTexture() const;
     const Texture* texture() const;
+
+    static sk_sp<TextureProxy> Copy(Recorder*,
+                                    sk_sp<TextureProxy>,
+                                    Mipmapped,
+                                    SkIRect srcRect,
+                                    SkBackingFit,
+                                    SkBudgeted);
 
 private:
 #ifdef SK_DEBUG
