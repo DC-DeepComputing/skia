@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8cadd51_6d94389e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-27T18:58:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d82f905a_8a735384",
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0f48654_f8a9f8ee",
@@ -94,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a67113d3_8906b432",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-27T18:58:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f6460993_e8c5977e",
+      "range": {
+        "startLine": 49,
+        "startChar": 10,
+        "endLine": 49,
+        "endChar": 21
+      },
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84d58985_0467d489",
@@ -107,6 +149,30 @@
       "writtenOn": "2022-09-27T17:55:52Z",
       "side": 1,
       "message": "Is a null `src` expected or reasonable when count is nonzero?\nIf not:\n\n```\nif (count \u003e 0) {\n    SkASSERT(src);\n    memcpy(...);\n}\n```",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae6f7e91_fb586f6f",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-27T18:58:24Z",
+      "side": 1,
+      "message": "I think the count and src is safer.",
+      "parentUuid": "84d58985_0467d489",
       "range": {
         "startLine": 50,
         "startChar": 0,
