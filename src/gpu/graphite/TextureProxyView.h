@@ -83,8 +83,13 @@ public:
                                  SkIRect srcRect,
                                  SkBackingFit fit,
                                  SkBudgeted budgeted) {
-        // TODO
-        return {};
+        sk_sp<TextureProxy> copy = TextureProxy::Copy(recorder,
+                                                      src.refProxy(),
+                                                      mipmapped,
+                                                      srcRect,
+                                                      fit,
+                                                      budgeted);
+        return { std::move(copy), src.swizzle() };
     }
 
     static TextureProxyView Copy(Recorder* recorder,
@@ -111,4 +116,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_TextureProxyView_DEFINED
-
