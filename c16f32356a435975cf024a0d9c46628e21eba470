@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9823ed92_8fd048bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-27T19:49:36Z",
+      "side": 1,
+      "message": "There\u0027s still issues with LCD text -- the blend modes are not set up correctly. Bug filed:",
+      "revId": "c16f32356a435975cf024a0d9c46628e21eba470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c27f551d_ba51b236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-27T19:49:36Z",
+      "side": 1,
+      "message": "This almost fixes LCD text -- currently it\u0027s using the wrong blend mode. Bug has been filed: https://skbug.com/13773",
+      "revId": "c16f32356a435975cf024a0d9c46628e21eba470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
