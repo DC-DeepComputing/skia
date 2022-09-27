@@ -65,6 +65,11 @@
         "Build-Debian10-Clang-arm-OptimizeForSize-Android"
       ]
     },
+    "Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch": {
+      "tasks": [
+        "Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch"
+      ]
+    },
     "Build-Debian10-Clang-arm-Release-Android": {
       "tasks": [
         "Build-Debian10-Clang-arm-Release-Android"
@@ -977,6 +982,11 @@
     "CodeSize-skottie_tool_cpu-Debian10-Clang-x86_64-OptimizeForSize": {
       "tasks": [
         "CodeSize-skottie_tool_cpu-Debian10-Clang-x86_64-OptimizeForSize"
+      ]
+    },
+    "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {
+      "tasks": [
+        "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android"
       ]
     },
     "CodeSize-skottie_tool_gpu-Debian10-Clang-x86_64-OptimizeForSize": {
@@ -4236,6 +4246,121 @@
       "max_attempts": 2,
       "outputs": [
         "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch": {
+      "caches": [
+        {
+          "name": "git",
+          "path": "cache/git"
+        },
+        {
+          "name": "git_cache",
+          "path": "cache/git_cache"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        },
+        {
+          "name": "work",
+          "path": "cache/work"
+        }
+      ],
+      "casSpec": "run-recipe",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:2@2.36.0-rc2.chromium.8"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "skia/bots/android_ndk_linux",
+          "path": "android_ndk_linux",
+          "version": "version:16"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "sync_and_compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"build_nopatch\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build_nopatch"
       ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
@@ -21345,8 +21470,6 @@
         "version:1",
         "--bloaty_binary",
         "bloaty/bloaty",
-        "--strip_binary",
-        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -21356,7 +21479,9 @@
         "--patch_set",
         "<(PATCHSET)",
         "--patch_server",
-        "<(CODEREVIEW_SERVER)"
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "binutils_linux_x64/strip"
       ],
       "dependencies": [
         "Build-Debian10-Clang-x86_64-OptimizeForSize",
@@ -21419,8 +21544,6 @@
         "version:1",
         "--bloaty_binary",
         "bloaty/bloaty",
-        "--strip_binary",
-        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -21430,7 +21553,9 @@
         "--patch_set",
         "<(PATCHSET)",
         "--patch_server",
-        "<(CODEREVIEW_SERVER)"
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "binutils_linux_x64/strip"
       ],
       "dependencies": [
         "Build-Debian10-Clang-x86_64-OptimizeForSize",
@@ -21493,8 +21618,6 @@
         "version:1",
         "--bloaty_binary",
         "bloaty/bloaty",
-        "--strip_binary",
-        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -21504,7 +21627,9 @@
         "--patch_set",
         "<(PATCHSET)",
         "--patch_server",
-        "<(CODEREVIEW_SERVER)"
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "binutils_linux_x64/strip"
       ],
       "dependencies": [
         "Build-Debian10-Clang-x86_64-OptimizeForSize",
@@ -21567,8 +21692,6 @@
         "version:1",
         "--bloaty_binary",
         "bloaty/bloaty",
-        "--strip_binary",
-        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -21578,11 +21701,87 @@
         "--patch_set",
         "<(PATCHSET)",
         "--patch_server",
-        "<(CODEREVIEW_SERVER)"
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "binutils_linux_x64/strip"
       ],
       "dependencies": [
         "Build-Debian10-Clang-x86_64-OptimizeForSize",
         "Build-Debian10-Clang-x86_64-OptimizeForSize-NoPatch",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highmem-2",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "execution_timeout_ns": 1200000000000,
+      "io_timeout_ns": 1200000000000,
+      "max_attempts": 1,
+      "service_account": "skia-external-codesize@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {
+      "caches": [
+        {
+          "name": "work",
+          "path": "cache/work"
+        }
+      ],
+      "casSpec": "empty",
+      "cipd_packages": [
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        },
+        {
+          "name": "skia/bots/android_ndk_linux",
+          "path": "android_ndk_linux",
+          "version": "version:16"
+        },
+        {
+          "name": "skia/bots/bloaty",
+          "path": "bloaty",
+          "version": "version:1"
+        }
+      ],
+      "command": [
+        "./codesize",
+        "--local=false",
+        "--project_id",
+        "skia-swarming-bots",
+        "--task_id",
+        "<(TASK_ID)",
+        "--task_name",
+        "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android",
+        "--compile_task_name",
+        "Build-Debian10-Clang-arm-OptimizeForSize-Android",
+        "--compile_task_name_no_patch",
+        "Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch",
+        "--binary_name",
+        "skottie_tool_gpu",
+        "--bloaty_cipd_version",
+        "version:1",
+        "--bloaty_binary",
+        "bloaty/bloaty",
+        "--repo",
+        "<(REPO)",
+        "--revision",
+        "<(REVISION)",
+        "--patch_issue",
+        "<(ISSUE)",
+        "--patch_set",
+        "<(PATCHSET)",
+        "--patch_server",
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "android_ndk_linux/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-strip"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-arm-OptimizeForSize-Android",
+        "Build-Debian10-Clang-arm-OptimizeForSize-Android_NoPatch",
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
@@ -21641,8 +21840,6 @@
         "version:1",
         "--bloaty_binary",
         "bloaty/bloaty",
-        "--strip_binary",
-        "binutils_linux_x64/strip",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -21652,7 +21849,9 @@
         "--patch_set",
         "<(PATCHSET)",
         "--patch_server",
-        "<(CODEREVIEW_SERVER)"
+        "<(CODEREVIEW_SERVER)",
+        "--strip_binary",
+        "binutils_linux_x64/strip"
       ],
       "dependencies": [
         "Build-Debian10-Clang-x86_64-OptimizeForSize",
