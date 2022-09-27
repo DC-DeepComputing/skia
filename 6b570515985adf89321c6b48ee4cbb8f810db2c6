@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8053f067_6f6edc1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T15:09:09Z",
+      "side": 1,
+      "message": "What are your thoughts on just replacing the rehydrator completely. I know we talked about the \"stable\" binary format, but no one is using it, and it wasn\u0027t actually stable. Seems like having one less code-path to worry about (and test) is a big win here.",
+      "revId": "6b570515985adf89321c6b48ee4cbb8f810db2c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c1e3174_1a390099",
