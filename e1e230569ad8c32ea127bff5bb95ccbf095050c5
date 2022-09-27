@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b169e40_c914234e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-09-27T07:05:36Z",
+      "side": 1,
+      "message": "ptal -- this continues moving in the direction of dynamically generating the profile data. The next patch will (probably) generate the LUTs for tone mapping.",
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
