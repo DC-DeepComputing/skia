@@ -181,6 +181,30 @@
       },
       "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b99539_59e6b01b",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-27T19:00:07Z",
+      "side": 1,
+      "message": "Guarding against both is fine, but when someone asks to copy 5 entries from null, I would like to get an assertion in debug, even if we guard against it in release.",
+      "parentUuid": "ae6f7e91_fb586f6f",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
