@@ -463,21 +463,6 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
     return SkSamplingOptions(filter, sampling.mipmap);
 }
 
-static SkMatrix tweak_inv_matrix(SkFilterMode filter, SkMatrix matrix) {
-    // See skia:4649 and the GM image_scale_aligned.
-    if (filter == SkFilterMode::kNearest) {
-        if (matrix.getScaleX() >= 0) {
-            matrix.setTranslateX(nextafterf(matrix.getTranslateX(),
-                                            floorf(matrix.getTranslateX())));
-        }
-        if (matrix.getScaleY() >= 0) {
-            matrix.setTranslateY(nextafterf(matrix.getTranslateY(),
-                                            floorf(matrix.getTranslateY())));
-        }
-    }
-    return matrix;
-}
-
 bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
@@ -519,12 +504,9 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     if (updater) {
         updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
     } else {
-        if (!sampling.useCubic) {
-            // TODO: can tweak_sampling sometimes for cubic too when B=0
-            if (rec.fMatrixProvider.localToDeviceHitsPixelCenters()) {
-                sampling = tweak_sampling(sampling, sampleM);
-            }
-            sampleM = tweak_inv_matrix(sampling.filter, sampleM);
+        // TODO: can tweak_sampling sometimes for cubic too when B=0
+        if (!sampling.useCubic && rec.fMatrixProvider.localToDeviceHitsPixelCenters()) {
+            sampling = tweak_sampling(sampling, sampleM);
         }
         p->append_matrix(alloc, sampleM);
     }
@@ -774,12 +756,9 @@ skvm::Color SkImageShader::makeProgram(
     auto [upper, upperInv] = access->level();
     upperInv.preConcat(baseInv);
     // If we are using a coordShader, then we can't make guesses about the state of the matrix.
-    if (!sampling.useCubic && !coordShader) {
-        // TODO: can tweak_sampling sometimes for cubic too when B=0
-        if (matrices.localToDeviceHitsPixelCenters()) {
-            sampling = tweak_sampling(sampling, upperInv);
-        }
-        upperInv = tweak_inv_matrix(sampling.filter, upperInv);
+    // TODO: can tweak_sampling sometimes for cubic too when B=0
+    if (!sampling.useCubic && !coordShader && matrices.localToDeviceHitsPixelCenters()) {
+        sampling = tweak_sampling(sampling, upperInv);
     }
 
     SkPixmap lowerPixmap;
