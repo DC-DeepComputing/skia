@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05221d98_9143c9b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-27T22:19:33Z",
+      "side": 1,
+      "message": "I added the AVX512 job to help test the effects of https://skia-review.googlesource.com/c/skia/+/580962/",
+      "revId": "5fafdd21ec6054608cfcfc8a72879b2de546fe3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
