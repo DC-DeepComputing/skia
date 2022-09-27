@@ -73,6 +73,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6460993_e8c5977e",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-27T17:57:07Z",
+      "side": 1,
+      "message": "This method name is misleading, we should make it something more like `resizeToFit`. It\u0027s not specific to shrinking. (Not necessarily for this CL, but maybe?)",
+      "range": {
+        "startLine": 49,
+        "startChar": 10,
+        "endLine": 49,
+        "endChar": 21
+      },
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84d58985_0467d489",
         "filename": "src/core/SkTDArray.cpp",
         "patchSetId": 1
