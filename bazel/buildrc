@@ -75,8 +75,10 @@ build:ck_full_webgl2_debug --config=canvaskit_full --config=ck_webgl2 --config=d
 build:ck_full_cpu_release --config=canvaskit_full --config=ck_cpu --config=release
 build:ck_full_cpu_debug --config=canvaskit_full --config=ck_cpu --config=debug
 # TODO(kjlubick) We should be able to configure testing on Chrome or Firefox with this.
-build:ck_full_webgl2_release_chrome --config=ck_full_webgl2_release
+build:ck_full_cpu_debug_chrome --config=ck_full_cpu_debug
 build:ck_full_cpu_release_chrome --config=ck_full_cpu_release
+build:ck_full_webgl2_debug_chrome --config=ck_full_webgl2_debug
+build:ck_full_webgl2_release_chrome --config=ck_full_webgl2_release
 
 # We only want to enforce IWYU on debug builds because we have some things that are only
 # necessary to include in debug mode (e.g. SkDEBUGCODE), but very rarely something that is
