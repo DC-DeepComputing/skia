@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02a251c9_1c26b575",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-27T14:42:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b8b232d_83da80aa",
+      "range": {
+        "startLine": 303,
+        "startChar": 7,
+        "endLine": 303,
+        "endChar": 82
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4a608a2_561886e4",
@@ -136,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22e6ef45_d43f3d5e",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-27T14:42:22Z",
+      "side": 1,
+      "message": "PTAL, GrClipSrcRectAndDstRect is gone and we\u0027re just using the original GrClipSrcRectAndDstPoint logic. The calls have been moved to higher, above GrCopyRenderTask so that we can have copy vs. copy-scaled differences in logic later on.\n\nSurfaceContext::copy() will handle clipping of the src rect to the dst, and the same goes for SurfaceFillContext::blitTexture(). But GrDrawingManager::newCopyTask and lower have been updated to require the srcRect and dstRect to be contained in the surface dimensions already.\n\nWith the next CL updating the signature of a lot of lower-level copy-related functions to be (dst, dstRect, src, srcRect), I updated the signatures of GrClipSrcRectAndDstPoint, newCopyTask etc. to follow that same convention. Call sites look a little weird now that there\u0027s still a mix of ordering conventions but that will become consistent in the next CL.",
+      "parentUuid": "6a07d215_54977113",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d947ffe_e3f8051b",
@@ -149,6 +197,30 @@
       "writtenOn": "2022-09-21T16:07:51Z",
       "side": 1,
       "message": "extra space",
+      "range": {
+        "startLine": 53,
+        "startChar": 43,
+        "endLine": 53,
+        "endChar": 44
+      },
+      "revId": "46df8e5a499908f8860c085455e5bab21fbe4d9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0eabc28_94c49084",
+        "filename": "src/gpu/ganesh/geometry/GrRect.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-09-27T14:42:22Z",
+      "side": 1,
+      "message": "GrClipSrcRectAndDstRect is removed now.",
+      "parentUuid": "2d947ffe_e3f8051b",
       "range": {
         "startLine": 53,
         "startChar": 43,
