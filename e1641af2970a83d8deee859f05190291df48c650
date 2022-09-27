@@ -16,6 +16,24 @@
       "message": "OK. Chatted with Rob, and the move to SkShaders is\u0027t urgent, so I\u0027d like to push ahead with these changes. How do people feel about the name/API?",
       "revId": "e1641af2970a83d8deee859f05190291df48c650",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae1342a_284be5ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-27T13:04:22Z",
+      "side": 1,
+      "message": "I like it!",
+      "parentUuid": "d288c826_572693a5",
+      "revId": "e1641af2970a83d8deee859f05190291df48c650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
