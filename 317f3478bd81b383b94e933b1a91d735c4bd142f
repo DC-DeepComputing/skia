@@ -16,6 +16,24 @@
       "message": "Do we have unit tests for SkTDArray et all? Could we add some that would have caught this?",
       "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7584b54_74aa7c37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-27T17:13:49Z",
+      "side": 1,
+      "message": "I don\u0027t think that SkTDArray has unit tests. But it should. I have one more big revision for SkTDArray. I can add unit tests to that.",
+      "parentUuid": "d0f48654_f8a9f8ee",
+      "revId": "317f3478bd81b383b94e933b1a91d735c4bd142f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
