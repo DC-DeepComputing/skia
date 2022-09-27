@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1e3174_1a390099",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-27T00:51:58Z",
+      "side": 1,
+      "message": "Even though this module _applies_ to runtime effects, it must be allowed to do things a runtime effect can\u0027t do (specifically `layout(builtin\u003d...)` is used).",
+      "range": {
+        "startLine": 243,
+        "startChar": 80,
+        "endLine": 243,
+        "endChar": 89
+      },
+      "revId": "6b570515985adf89321c6b48ee4cbb8f810db2c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
