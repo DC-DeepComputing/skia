@@ -7,6 +7,10 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkRect.h"
+#include "src/core/SkMipmap.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 
@@ -48,6 +52,41 @@ sk_sp<Texture> TextureProxy::refTexture() const {
 
 const Texture* TextureProxy::texture() const {
     return fTexture.get();
+}
+
+sk_sp<TextureProxy> TextureProxy::Copy(Recorder* recorder,
+                                       sk_sp<TextureProxy> src,
+                                       Mipmapped mipmapped,
+                                       SkIRect srcRect,
+                                       SkBackingFit fit,
+                                       SkBudgeted budgeted) {
+
+    if (!srcRect.intersect(SkIRect::MakeSize(src->dimensions()))) {
+        return nullptr;
+    }
+
+    const TextureInfo& textureInfo = src->textureInfo();
+
+#if 0
+    const Caps* caps = recorder->priv().caps();
+
+    int mipLevelCount = (mipmapped == Mipmapped::kYes)
+                        ? SkMipmap::ComputeLevelCount(srcRect.width(), srcRect.height()) + 1
+                        : 1;
+
+    auto textureInfo = caps->getDefaultSampledTextureInfo(src.textureInfo(),
+                                                          mipLevelCount,
+                                                          src->textureInfo().isProtected(),
+                                                          Renderable::kYes);
+#endif
+    if (!textureInfo.isValid()) {
+        return nullptr;
+    }
+
+    sk_sp<TextureProxy> dst(new TextureProxy(srcRect.size(), textureInfo, budgeted));
+
+
+    return nullptr;
 }
 
 #ifdef SK_DEBUG
