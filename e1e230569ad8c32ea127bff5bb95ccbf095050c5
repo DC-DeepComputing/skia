@@ -100,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc86842_019566e8",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T21:36:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "014442c4_659450f0",
+      "range": {
+        "startLine": 29,
+        "startChar": 26,
+        "endLine": 29,
+        "endChar": 36
+      },
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cb2e1ee_4216331d",
@@ -131,6 +155,24 @@
       "side": 1,
       "message": "Done. Also renamed this function to \"write_para_tag\".",
       "parentUuid": "8cb2e1ee_4216331d",
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c38e72a_f1d50993",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T21:36:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1b302345_0df45043",
       "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -172,6 +214,30 @@
       "side": 1,
       "message": "In the next patch, I actually explicitly replace all PQish and HLGish transfer functions with the version that maps to [0, 1]. For now i\u0027ve put in a comment.",
       "parentUuid": "b2533895_1cbda547",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 18
+      },
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "732a32bf_aa4bd67b",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T21:36:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "91d07b67_cd1f26d6",
       "range": {
         "startLine": 183,
         "startChar": 0,
