@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f59c4d54_13b40079",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-27T17:33:32Z",
+      "side": 1,
+      "message": "Heh, usually I manually remove this hack, but it\u0027s fine to leave it in as well.",
+      "revId": "7dc9cd94e7524804aedd7293e9165a1636494bf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
