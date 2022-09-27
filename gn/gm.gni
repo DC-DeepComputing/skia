@@ -340,6 +340,7 @@ gm_sources = [
   "$_gm/simplerect.cpp",
   "$_gm/skbug1719.cpp",
   "$_gm/skbug_12212.cpp",
+  "$_gm/skbug_13760.cpp",
   "$_gm/skbug_257.cpp",
   "$_gm/skbug_4868.cpp",
   "$_gm/skbug_5321.cpp",
