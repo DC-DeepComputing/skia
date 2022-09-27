@@ -619,17 +619,22 @@ config("optimize") {
   } else {
     if (skia_enable_optimize_size) {
       cflags = [ "-Oz" ]
+
+      # build IDs are required for Bloaty if we want to use strip to ignore debug symbols.
+      # https://github.com/google/bloaty/blob/master/doc/using.md#debugging-stripped-binaries
+      ldflags = [ "-Wl,--build-id=sha1" ]
     } else {
       cflags = [ "-O3" ]
+      ldflags = []
     }
     if (is_mac || is_ios) {
-      ldflags = [ "-dead_strip" ]
+      ldflags += [ "-dead_strip" ]
     } else if (!is_wasm) {
       cflags += [
         "-fdata-sections",
         "-ffunction-sections",
       ]
-      ldflags = [ "-Wl,--gc-sections" ]
+      ldflags += [ "-Wl,--gc-sections" ]
     }
   }
 }
