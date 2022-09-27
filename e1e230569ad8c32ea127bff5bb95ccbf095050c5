@@ -16,6 +16,86 @@
       "message": "ptal -- this continues moving in the direction of dynamically generating the profile data. The next patch will (probably) generate the LUTs for tone mapping.",
       "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d6f5f2_a19484a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T14:35:15Z",
+      "side": 1,
+      "message": "I think we should add some tests to tests/ICCTest.cpp (just some simple round-trip stuff to encode and then parse).",
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be83f923_37b7bd15",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T14:35:15Z",
+      "side": 1,
+      "message": "We should tick this to 4.4 (at least if we\u0027re including CICP, but probably easiest to just do it unconditionally).",
+      "range": {
+        "startLine": 29,
+        "startChar": 26,
+        "endLine": 29,
+        "endChar": 36
+      },
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cb2e1ee_4216331d",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T14:35:15Z",
+      "side": 1,
+      "message": "Now that we don\u0027t have the top-level guard, I\u0027d add:\n\n    SkASSERT(skcms_TransferFunction_isSRGBish(\u0026fn))",
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2533895_1cbda547",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-27T14:35:15Z",
+      "side": 1,
+      "message": "These are interesting ... skcms can represent any TF with the same basic form as PQ or HLG (including inverse-PQ, which can use the same math as PQ). It\u0027s a little strange to just map them all to the canonical CICP values, but there may not be a better solution (in practice, the actual values are going to vary a bit depending on what luminance range / SDR white point people are using). Maybe just add a comment that we\u0027re ignoring that information?",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 18
+      },
+      "revId": "e1e230569ad8c32ea127bff5bb95ccbf095050c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
