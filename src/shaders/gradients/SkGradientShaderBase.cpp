@@ -16,6 +16,8 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+#include <cmath>
+
 enum GradientSerializationFlags {
     // Bits 29:31 used for various boolean flags
     kHasPosition_GSF          = 0x80000000,
@@ -623,20 +625,198 @@ bool SkGradientShaderBase::onAsLuminanceColor(SkColor* lum) const {
     return true;
 }
 
+static sk_sp<SkColorSpace> intermediate_color_space(SkGradientShader::Interpolation::ColorSpace cs,
+                                                    SkColorSpace* dst) {
+    using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
+    switch (cs) {
+        case ColorSpace::kDestination: return sk_ref_sp(dst);
+
+        // The CSS spec lets you pick any of these three, but from the standpoint of gradient
+        // interpolation, they all produce identical results. Interpolating in ANY linear RGB
+        // space, regardless of white point, gives the same answer.
+        case ColorSpace::kXYZD65:
+        case ColorSpace::kXYZD50:
+        case ColorSpace::kSRGBLinear: return SkColorSpace::MakeSRGBLinear();
+
+        case ColorSpace::kSRGB:
+        case ColorSpace::kHSL:
+        case ColorSpace::kHWB: return SkColorSpace::MakeSRGB();
+
+        case ColorSpace::kLab:
+        case ColorSpace::kLCH:
+            // Conversion to Lab (and LCH) starts with XYZD50
+            return SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kXYZ);
+
+        case ColorSpace::kOKLab:
+        case ColorSpace::kOKLCH: {
+            skcms_Matrix3x3 d65_to_d50;
+            SkAssertResult(skcms_AdaptToXYZD50(0.3127f, 0.3290f, &d65_to_d50));
+            return SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, d65_to_d50);
+        }
+    }
+    SkUNREACHABLE;
+}
+
+typedef SkPMColor4f (*ConvertColorProc)(SkPMColor4f);
+
+static SkPMColor4f srgb_to_hsl(SkPMColor4f rgb) {
+    float mx = std::max({rgb.fR, rgb.fG, rgb.fB});
+    float mn = std::min({rgb.fR, rgb.fG, rgb.fB});
+    float hue = 0, sat = 0, light = (mn + mx) / 2;
+    float d = mx - mn;
+
+    if (d != 0) {
+        sat = (light == 0 || light == 1) ? 0 : (mx - light) / std::min(light, 1 - light);
+        if (mx == rgb.fR) {
+            hue = (rgb.fG - rgb.fB) / d + (rgb.fG < rgb.fB ? 6 : 0);
+        } else if (mx == rgb.fG) {
+            hue = (rgb.fB - rgb.fR) / d + 2;
+        } else {
+            hue = (rgb.fR - rgb.fG) / d + 4;
+        }
+
+        hue *= 60;
+    }
+    return { hue, sat * 100, light * 100, rgb.fA };
+}
+
+static SkPMColor4f srgb_to_hwb(SkPMColor4f rgb) {
+    SkPMColor4f hsl = srgb_to_hsl(rgb);
+    float white =     std::min({rgb.fR, rgb.fG, rgb.fB});
+    float black = 1 - std::max({rgb.fR, rgb.fG, rgb.fB});
+    return { hsl.fR, white * 100, black * 100, rgb.fA };
+}
+
+static SkPMColor4f xyzd50_to_lab(SkPMColor4f xyz) {
+    constexpr float D50[3] = { 0.3457f / 0.3585f, 1.0f, (1.0f - 0.3457f - 0.3585f) / 0.3585f };
+
+    constexpr float e = 216.0f / 24389;
+    constexpr float k = 24389.0f / 27;
+
+    SkPMColor4f f;
+    for (int i = 0; i < 3; ++i) {
+        float v = xyz[i] / D50[i];
+        f[i] = (v > e) ? std::cbrtf(v) : (k * v + 16) / 116;
+    }
+
+    return { (116 * f[1]) - 16, 500 * (f[0] - f[1]), 200 * (f[1] - f[2]), xyz.fA };
+}
+
+static SkPMColor4f xyzd50_to_lch(SkPMColor4f xyz) {
+    SkPMColor4f Lab = xyzd50_to_lab(xyz);
+    float hue = sk_float_radians_to_degrees(atan2f(Lab[2], Lab[1]));
+    return {Lab[0],
+            sqrtf(Lab[1] * Lab[1] + Lab[2] * Lab[2]),
+            hue >= 0 ? hue : hue + 360,
+            xyz.fA};
+}
+
+static SkPMColor4f xyzd65_to_oklab(SkPMColor4f xyz) {
+    constexpr SkM44 XYZtoLMS(0.8190224432164319,   0.3619062562801221,  -0.12887378261216414, 0,
+                             0.0329836671980271,   0.9292868468965546,   0.03614466816999844, 0,
+                             0.048177199566046255, 0.26423952494422764,  0.6335478258136937,  0,
+                             0, 0, 0, 1);
+    constexpr SkM44 LMStoOKLab(0.2104542553,   0.7936177850,  -0.0040720468, 0,
+                               1.9779984951,  -2.4285922050,   0.4505937099, 0,
+                               0.0259040371,   0.7827717662,  -0.8086757660, 0,
+                               0, 0, 0, 1);
+    SkV3 LMS = XYZtoLMS * SkV3{xyz[0], xyz[1], xyz[2]};
+    LMS.x = std::cbrtf(LMS.x);
+    LMS.y = std::cbrtf(LMS.y);
+    LMS.z = std::cbrtf(LMS.z);
+    SkV3 OKLab = LMStoOKLab * LMS;
+    return { OKLab.x, OKLab.y, OKLab.z, xyz.fA };
+}
+
+static SkPMColor4f xyzd65_to_oklch(SkPMColor4f xyz) {
+    SkPMColor4f OKLab = xyzd65_to_oklab(xyz);
+    float hue = sk_float_radians_to_degrees(atan2f(OKLab[2], OKLab[1]));
+    return {OKLab[0],
+            sqrtf(OKLab[1] * OKLab[1] + OKLab[2] * OKLab[2]),
+            hue >= 0 ? hue : hue + 360,
+            xyz.fA};
+}
+
+static SkPMColor4f premul_hsl(SkPMColor4f hsl) {
+    return { hsl.fR, hsl.fG * hsl.fA, hsl.fB * hsl.fA, hsl.fA };
+}
+
+static SkPMColor4f premul_lch(SkPMColor4f lch) {
+    return { lch.fR * lch.fA, lch.fG * lch.fA, lch.fB, lch.fA };
+}
+
+static SkPMColor4f premul_rgb(SkPMColor4f rgb) {
+    return { rgb.fR * rgb.fA, rgb.fG * rgb.fA, rgb.fB * rgb.fA, rgb.fA };
+}
+
+// Given `colors` in `src` color space, an interpolated space, and a `dst` color space,
+// we are doing several things:
+// 1) Pick an `intermediate` SkColorSpace that is "closest" to our interpolated space. If the
+//    interpolation specifies kDestination, or some other RGB color space, then `intermediate`
+//    is exact.
+// 2) Transform all colors to `intermediate`
+// 3) If the actual interpolated space is not representable as an SkColorSpace (LAB, HSL, etc...),
+//    transform the colors to that space.
+// 4) If premul interpolation is requested, apply that as well.
 SkColor4fXformer::SkColor4fXformer(const SkColor4f* colors, int colorCount,
                                    const SkGradientShader::Interpolation& interpolation,
                                    SkColorSpace* src, SkColorSpace* dst) {
-    fColors.reset(colorCount);
+    using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
 
+    const bool interpolateInPremul =
+            interpolation.fInPremul == SkGradientShader::Interpolation::InPremul::kYes;
+    fIntermediateColorInfo =
+            SkColorInfo(kRGBA_F32_SkColorType,
+                        interpolateInPremul ? kPremul_SkAlphaType : kUnpremul_SkAlphaType,
+                        intermediate_color_space(interpolation.fColorSpace, dst));
+
+    // Transform to the intermediate color space
+    // TODO(skia:13108): If the intermediate space is also the dst, we could do any premul here,
+    //                   as an optimization.
     auto info = SkImageInfo::Make(colorCount, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType);
 
-    auto dstInfo = info.makeColorSpace(sk_ref_sp(dst));
+    auto dstInfo = info.makeColorSpace(fIntermediateColorInfo.refColorSpace());
     auto srcInfo = info.makeColorSpace(sk_ref_sp(src));
-    if (interpolation.fInPremul == SkGradientShader::Interpolation::InPremul::kYes) {
-        dstInfo = dstInfo.makeAlphaType(kPremul_SkAlphaType);
-    }
+
+    fColors.reset(colorCount);
     SkAssertResult(SkConvertPixels(dstInfo, fColors.begin(), info.minRowBytes(),
                                    srcInfo, colors         , info.minRowBytes()));
+
+    // Transform to the interpolated color space (if it's not an SkColorSpace)
+    ConvertColorProc convert = nullptr;
+    switch (interpolation.fColorSpace) {
+        case ColorSpace::kHSL:   convert = srgb_to_hsl;     break;
+        case ColorSpace::kHWB:   convert = srgb_to_hwb;     break;
+        case ColorSpace::kLab:   convert = xyzd50_to_lab;   break;
+        case ColorSpace::kLCH:   convert = xyzd50_to_lch;   break;
+        case ColorSpace::kOKLab: convert = xyzd65_to_oklab; break;
+        case ColorSpace::kOKLCH: convert = xyzd65_to_oklch; break;
+        default: break;
+    }
+
+    if (convert) {
+        for (int i = 0; i < colorCount; ++i) {
+            fColors[i] = convert(fColors[i]);
+        }
+    }
+
+    // Apply premultiplication
+    ConvertColorProc premul = nullptr;
+    if (interpolateInPremul) {
+        switch (interpolation.fColorSpace) {
+            case ColorSpace::kHSL:
+            case ColorSpace::kHWB:   premul = premul_hsl; break;
+            case ColorSpace::kLCH:
+            case ColorSpace::kOKLCH: premul = premul_lch; break;
+            default:                 premul = premul_rgb; break;
+        }
+    }
+
+    if (premul) {
+        for (int i = 0; i < colorCount; ++i) {
+            fColors[i] = premul(fColors[i]);
+        }
+    }
 }
 
 SkColorConverter::SkColorConverter(const SkColor* colors, int count) {
