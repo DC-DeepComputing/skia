@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65cade79_f9126d92",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-28T15:24:08Z",
+      "side": 1,
+      "message": "Nice.",
+      "range": {
+        "startLine": 183,
+        "startChar": 29,
+        "endLine": 183,
+        "endChar": 56
+      },
+      "revId": "fb65eb8cc2b446f0f58869d1de6fbe662cefeabc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
