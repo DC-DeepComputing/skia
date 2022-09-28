@@ -311,6 +311,27 @@ sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps
     return SkSurface::MakeGraphite(fRecorder, ii, Mipmapped::kNo, &props);
 }
 
+TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) {
+    this->flushPendingWorkToRecorder();
+
+    TextureProxyView srcView = this->readSurfaceView();
+    if (!srcView) {
+        // TODO: need to handle the case where this device's target isn't texturable
+        return {};
+    }
+
+    SkIRect rect = subset ? *subset : SkIRect::MakeSize(this->imageInfo().dimensions());
+    sk_sp<TextureProxy> copy = TextureProxy::Copy(this->recorder(),
+                                                  srcView.refProxy(),
+                                                  this->imageInfo().colorType(),
+                                                  mipmapped,
+                                                  rect,
+                                                  SkBackingFit::kExact,
+                                                  SkBudgeted::kNo);
+
+    return { std::move(copy), srcView.swizzle() };
+}
+
 bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
     // We have no access to a context to do a read pixels here.
     return false;
