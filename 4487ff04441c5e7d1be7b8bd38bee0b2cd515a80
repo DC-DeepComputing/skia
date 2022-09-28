@@ -69,6 +69,30 @@
       },
       "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa4e9474_f847abd0",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T22:13:34Z",
+      "side": 1,
+      "message": "OK, LGTM!",
+      "parentUuid": "95596023_06c15134",
+      "range": {
+        "startLine": 244,
+        "startChar": 8,
+        "endLine": 244,
+        "endChar": 21
+      },
+      "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
