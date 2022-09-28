@@ -2280,6 +2280,7 @@ if (skia_enable_tools) {
         "modules/skottie",
         "modules/skottie:utils",
         "modules/svg",
+        ":fontmgr_custom",
       ]
     }
     test_app("dm") {
@@ -2308,6 +2309,7 @@ if (skia_enable_tools) {
         "modules/skottie",
         "modules/skottie:utils",
         "modules/svg",
+        ":fontmgr_custom",
       ]
     }
     test_app("sorttoy") {
@@ -2371,6 +2373,7 @@ if (skia_enable_tools) {
       "modules/skparagraph",
       "modules/skshaper",
       "modules/svg",
+      ":fontmgr_custom",
     ]
   }
 
@@ -2534,6 +2537,7 @@ if (skia_enable_tools) {
       "modules/skottie:fuzz",
       "modules/skparagraph",
       "modules/svg",
+      ":fontmgr_custom",
     ]
   }
 
@@ -2914,6 +2918,7 @@ if (skia_enable_tools) {
         "modules/svg",
         "//third_party/imgui",
         "//third_party/rive",
+        ":fontmgr_custom",
       ]
       if (skia_use_vulkan) {
         deps += [
