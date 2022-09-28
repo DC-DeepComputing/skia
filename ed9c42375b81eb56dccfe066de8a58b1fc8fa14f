@@ -135,6 +135,30 @@
       },
       "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c90ac7_7b6dd1e8",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T20:08:57Z",
+      "side": 1,
+      "message": "Ah, I forgot that\u0027s not public API. Never mind. I saw Florin\u0027s version and it looks great.",
+      "parentUuid": "823c1d63_1afe0598",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
