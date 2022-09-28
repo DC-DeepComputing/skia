@@ -15,5 +15,6 @@ skia_cc_library(
         "//modules/skunicode",
         "@harfbuzz",
         "@icu",
+        "//:fontmgr_nodeps",
     ],
 )

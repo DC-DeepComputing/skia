@@ -29,6 +29,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_use_icu &&
       "../..:skia",
       "../skshaper",
       "../skunicode",
+      "../..:fontmgr_nodeps",
     ]
   }
 

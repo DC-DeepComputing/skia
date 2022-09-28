@@ -348,6 +348,7 @@ optional("android_utils") {
 }
 
 optional("fontmgr_nodeps") {
+  visibility = [ "./*" ]
   enabled = true
   public = [ "include/ports/SkFontMgr_nodeps.h" ]
   sources = [ "src/ports/SkFontMgr_nodeps.cpp" ]
@@ -1327,7 +1328,6 @@ skia_component("skia") {
     ":avx",
     ":crc32",
     ":fontmgr_factory",
-    ":fontmgr_nodeps",
     ":gif",
     ":heif",
     ":hsw",
