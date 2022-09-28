@@ -16,6 +16,23 @@
       "message": "I was reading through the [text_overview.md](https://skia.org/docs/dev/design/text_overview/) dev docs and came across a small typo, decided to do a quick drive by spell check of all .md files under the `site/docs` to get familiar with the code review process.",
       "revId": "0aa7dc90875bc47a21c65c3700e873bc169b65cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d8a640_e77a2804",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19284
+      },
+      "writtenOn": "2022-09-28T18:11:28Z",
+      "side": 1,
+      "message": "Adding reviewer based on Gerrit suggested reviewers. Let me know if this should be handled by someone else.",
+      "revId": "0aa7dc90875bc47a21c65c3700e873bc169b65cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
