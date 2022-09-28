@@ -7,8 +7,14 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkRect.h"
+#include "src/core/SkMipmap.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
+
+#include "src/gpu/graphite/CopyTask.h"
 
 namespace skgpu::graphite {
 
@@ -48,6 +54,44 @@ sk_sp<Texture> TextureProxy::refTexture() const {
 
 const Texture* TextureProxy::texture() const {
     return fTexture.get();
+}
+
+sk_sp<TextureProxy> TextureProxy::Copy(Recorder* recorder,
+                                       sk_sp<TextureProxy> src,
+                                       SkColorType colorType,
+                                       Mipmapped mipmapped,
+                                       SkIRect srcRect,
+                                       SkBackingFit /* fit */,
+                                       SkBudgeted budgeted) {
+
+    SkASSERT(SkIRect::MakeSize(src->dimensions()).contains(srcRect));
+
+    const Caps* caps = recorder->priv().caps();
+
+    int mipLevelCount = (mipmapped == Mipmapped::kYes)
+                            ? SkMipmap::ComputeLevelCount(srcRect.width(), srcRect.height()) + 1
+                            : 1;
+
+    auto textureInfo = caps->getDefaultSampledTextureInfo(colorType,
+                                                          mipLevelCount,
+                                                          src->textureInfo().isProtected(),
+                                                          Renderable::kNo);
+    if (!textureInfo.isValid()) {
+        return nullptr;
+    }
+
+    sk_sp<TextureProxy> dst(new TextureProxy(srcRect.size(), textureInfo, budgeted));
+
+    sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(std::move(src),
+                                                                              srcRect,
+                                                                              dst,
+                                                                              {0, 0});
+    if (!copyTask) {
+        return nullptr;
+    }
+
+    recorder->priv().add(std::move(copyTask));
+    return dst;
 }
 
 #ifdef SK_DEBUG
