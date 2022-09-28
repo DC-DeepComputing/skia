@@ -123,7 +123,7 @@ static constexpr char SKSL_MINIFIED_sksl_shared[] =
 " xyz=half3(f_cubed.x>e?f_cubed.x:(116.*f.x-16.)/k,lab.x>8.000001?f_cubed.y:"
 "lab.x/k,f_cubed.z>e?f_cubed.z:(116.*f.z-16.)/k);const half3 D50=half3(.9642956"
 ",1.,.825104535);return xyz*D50;}$pure half3 $css_lch_to_lab(half3 lch){return"
-" half3(lch.x,lch.y*cos(radians(lch.z)),lch.y*sin(radians(lch.z)));}$export $pure"
+" half3(lch.z,lch.y*cos(radians(lch.x)),lch.y*sin(radians(lch.x)));}$export $pure"
 " half3 $css_lch_to_xyz(half3 lch){return $css_lab_to_xyz($css_lch_to_lab(lch"
 "));}$export $pure half3 $css_oklab_to_linear_srgb(half3 oklab){half l_=(oklab"
 ".x+.396337777*oklab.y)+.215803757*oklab.z;half m_=(oklab.x-.105561346*oklab"
