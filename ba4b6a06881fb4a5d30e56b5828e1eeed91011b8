@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "152db2b5_553f5c6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-09-28T17:36:23Z",
+      "side": 1,
+      "message": "ptal -- this produces very pretty results for exporting HDR images. The actual tone mapping function (compute_tone_map_gain) is fairly well isolated, and could potentially be turned into an argument to specify to the function.\n\nBTW, I see that there is a failure on the Windows bots, but I can\u0027t figure out what the failure is (it might not be compiling ... but I don\u0027t see the actual failure). Can you point me to it?",
+      "revId": "ba4b6a06881fb4a5d30e56b5828e1eeed91011b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
