@@ -26,6 +26,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_use_icu &&
     public = skparagraph_public
     sources = skparagraph_sources
     deps = [
+      "../..:fontmgr_nodeps",
       "../..:skia",
       "../skshaper",
       "../skunicode",
