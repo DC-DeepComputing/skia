@@ -464,6 +464,9 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
 }
 
 static SkMatrix tweak_inv_matrix(SkFilterMode filter, SkMatrix matrix) {
+#ifndef SK_LEGACY_NEAREST_SAMPLE_MATRIX_TWEAK
+    return matrix;
+#endif
     // See skia:4649 and the GM image_scale_aligned.
     if (filter == SkFilterMode::kNearest) {
         if (matrix.getScaleX() >= 0) {
