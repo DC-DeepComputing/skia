@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c588b9d5_3e468fe0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T13:42:55Z",
+      "side": 1,
+      "message": "I added the assert because if you have a debug build and skia_enable_optimize_size, the compile and link flags are not set at all.\nhttps://github.com/google/skia/blob/2d45cb9b66f1b4241226e8bce9333de283a2be5d/gn/BUILDCONFIG.gn#L182-L187\n\nI think it is error prone to let both of those be set, mainly because is_debug is true by default. I forgot this and was puzzled why -Oz was not being set.\n\nIf a dev does need a debug build with the macro, then they can set is_debug\u003dtrue and set the macro in defines (or extra_cflags) as they set up their GN args.",
+      "parentUuid": "6158f763_3ff52b16",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3defddc6_33d4312c",
         "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
         "patchSetId": 8
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-28T13:30:04Z",
       "side": 1,
       "message": "Does doing `b.extraConfig(\"Android\")` work instead?",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ebe3769_23e16643",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T13:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3defddc6_33d4312c",
       "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-09-28T13:30:04Z",
       "side": 1,
       "message": "nit: ./codesize is technically not an arg, you could instead do something like \nb.cmd \u003d append([]string{\"./codesize\"}, args...)\nif you want",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a43c18e_0b9370a4",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 1499,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T13:42:55Z",
+      "side": 1,
+      "message": "I renamed the variable instead to cmd. The suggestion given felt a bit clunky and less clear.",
+      "parentUuid": "7d184d45_bcfcfc56",
       "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
