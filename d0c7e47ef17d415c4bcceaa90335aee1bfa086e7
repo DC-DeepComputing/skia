@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7f5f478_43e8d161",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-28T15:12:07Z",
+      "side": 1,
+      "message": "We don\u0027t have a kInt2 ?",
+      "revId": "d0c7e47ef17d415c4bcceaa90335aee1bfa086e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bc32550_3b81253f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-28T15:12:07Z",
+      "side": 1,
+      "message": "Do you think these checks actually buy us any perf ?",
+      "range": {
+        "startLine": 100,
+        "startChar": 61,
+        "endLine": 100,
+        "endChar": 73
+      },
+      "revId": "d0c7e47ef17d415c4bcceaa90335aee1bfa086e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
