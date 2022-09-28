@@ -235,6 +235,11 @@ $pure $es3 $genHType fwidth($genHType p);
 $pure half4  unpremul(half4  color) { return half4 (color.rgb / max(color.a, 0.0001), color.a); }
 $pure float4 unpremul(float4 color) { return float4(color.rgb / max(color.a, 0.0001), color.a); }
 
+// Similar, but used for polar-space CSS colors
+$pure half4  $unpremul_polar(half4 color) {
+    return half4(color.r, color.gb / max(color.a, 0.0001), color.a);
+}
+
 // Convert RGBA -> HSLA (including unpremul).
 //
 // Based on work by Sam Hocevar, Emil Persson, and Ian Taylor [1][2][3].  High-level ideas:
@@ -322,11 +327,12 @@ $export $pure half3 $css_lab_to_xyz(half3 lab) {
 }
 
 // Also used by oklch -> oklab
+// NOTE: This assume the input is actually hcl
 $pure half3 $css_lch_to_lab(half3 lch) {
     return half3(
-        lch[0],
-        lch[1] * cos(radians(lch[2])),
-        lch[1] * sin(radians(lch[2]))
+        lch[2],
+        lch[1] * cos(radians(lch[0])),
+        lch[1] * sin(radians(lch[0]))
     );
 }
 

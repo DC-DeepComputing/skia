@@ -1085,7 +1085,7 @@ DEF_SIMPLE_GM(gradients_interesting, canvas, 640, 1300) {
 //   Hue modes
 //   Varying number of stops
 //   Tilemodes (eg, border handling, decal)
-DEF_SIMPLE_GM_BG(gradients_color_space, canvas, 110, 155, SK_ColorGRAY) {
+DEF_SIMPLE_GM_BG(gradients_color_space, canvas, 300, 255, SK_ColorGRAY) {
     using CS = SkGradientShader::Interpolation::ColorSpace;
 
     struct Config {
