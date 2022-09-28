@@ -89,6 +89,20 @@ def skia_cc_binary(name, copts = DEFAULT_COPTS, linkopts = DEFAULT_LINKOPTS, **k
     """
     native.cc_binary(name = name, copts = copts, linkopts = linkopts, **kwargs)
 
+def skia_cc_test(name, copts = DEFAULT_COPTS, **kwargs):
+    """A wrapper around cc_test for Skia C++ tests.
+
+    This lets us provide compiler flags (copts) consistently to the Skia build (e.g. //:skia_public)
+    and builds which depend on those targets (e.g. things in //tools or //modules).
+
+    Args:
+        name: the name of the underlying test.
+        copts: Flags which should be passed to the C++ compiler. By default, we use DEFAULT_COPTS
+            from //bazel/copts.bzl.
+        **kwargs: All the normal arguments that cc_test takes.
+    """
+    native.cc_test(name = name, copts = copts, **kwargs)
+
 def skia_cc_library(name, copts = DEFAULT_COPTS, **kwargs):
     """A wrapper around cc_library for Skia C++ libraries.
 
