@@ -59,6 +59,13 @@ class SymbolTable;
 struct LoadedModule {
     std::shared_ptr<SymbolTable>                 fSymbols;
     std::vector<std::unique_ptr<ProgramElement>> fElements;
+
+    /**
+     * Converts a compiled LoadedModule (containing symbols and ProgramElements) into a ParsedModule
+     * (containing a BuiltinMap, useful for looking up symbols quickly by name). `fElements` in this
+     * LoadedModule will be cleared.
+     */
+    ParsedModule parse(const ParsedModule& base);
 };
 
 /**
@@ -176,7 +183,8 @@ public:
         return fSymbolTable;
     }
 
-    ParsedModule compileModule(ProgramKind kind,
+    // Compiles the module, returning its SymbolTable and ProgramElements.
+    LoadedModule compileModule(ProgramKind kind,
                                const char* moduleName,
                                std::string moduleSource,
                                const ParsedModule& base,
