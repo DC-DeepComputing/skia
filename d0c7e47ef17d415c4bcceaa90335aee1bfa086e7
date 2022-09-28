@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce6beae2_3e75f37d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T15:24:43Z",
+      "side": 1,
+      "message": "Within the shader it is only ever used in a float context. It used to be ints but every usage was wrapped in a cast.",
+      "parentUuid": "c7f5f478_43e8d161",
+      "revId": "d0c7e47ef17d415c4bcceaa90335aee1bfa086e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bc32550_3b81253f",
