@@ -39,6 +39,30 @@
       },
       "revId": "647da25c831c23b050ad2d06c8e8a6aedaa0823d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32f4107b_54ffb182",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T19:57:17Z",
+      "side": 1,
+      "message": "It\u0027s not ideal, no, but it\u0027s historically how we have always done it (skslc and SkSLPrecompile have both always passed kFragment when compiling a module). In practice, a symbol like `sk_ThreadPosition` is defined in the compute module itself; it\u0027s not a true intrinsic, so that one would be fine. The problem comes about with statements like `discard`, or features like unsized-array, which really are gated on program kind. That is where you\u0027d see an issue.\n\nIn practice, as I discovered earlier, if you violate the program-kind rules in a module, it will be caught and reported at golden-test generation time even if it\u0027s not caught here. \n\nI can cut a bug to investigate this further but I\u0027m not sure there\u0027s much value-add compared to finishing the minifier.",
+      "parentUuid": "e9af4ae8_805e44de",
+      "range": {
+        "startLine": 91,
+        "startChar": 39,
+        "endLine": 91,
+        "endChar": 67
+      },
+      "revId": "647da25c831c23b050ad2d06c8e8a6aedaa0823d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
