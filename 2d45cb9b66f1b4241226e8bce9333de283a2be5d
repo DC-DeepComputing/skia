@@ -16,6 +16,24 @@
       "message": "Is this magnitude of performance regression expected?\n\nhttps://perf.skia.org/e/?begin\u003d1664317147\u0026end\u003d1664384153\u0026keys\u003dX9d26564a840e8af0f9b564414380a080\u0026selected\u003dcommit%3D62603%26name%3D%252Carch%253Darm%252Cbench_type%253Dtracing%252Ccompiler%253DClang%252Cconfig%253Dgles%252Cconfiguration%253DOptimizeForSize%252Ccpu_or_gpu%253DGPU%252Ccpu_or_gpu_value%253DMali400MP2%252Cextra_config%253DAndroid_SkottieTracing%252Cmodel%253DAndroidOne%252Cos%253DAndroid%252Csource_type%253Dskottie%252Csub_result%253Dframe_avg_us%252Ctest%253Dmap_animation_edit%252C\u0026xbaroffset\u003d62603",
       "revId": "2d45cb9b66f1b4241226e8bce9333de283a2be5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5283f08f_2fdd0320",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T18:47:26Z",
+      "side": 1,
+      "message": "I certainly didn\u0027t expect on this big. However, we need to keep this CL because previously we had been measuring the wrong build; it was not actually optimized for size.",
+      "parentUuid": "00b91f77_b00e8c87",
+      "revId": "2d45cb9b66f1b4241226e8bce9333de283a2be5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
