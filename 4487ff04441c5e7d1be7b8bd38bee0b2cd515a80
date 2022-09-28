@@ -45,6 +45,30 @@
       },
       "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95596023_06c15134",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-28T22:12:13Z",
+      "side": 1,
+      "message": "The calling code always clamps to [1..20] (line 492).  Also note the assert above that ensures octaves is larger than the first threshold (0) -- so the loop should always return.",
+      "parentUuid": "0e4ad54c_4c95d33d",
+      "range": {
+        "startLine": 244,
+        "startChar": 8,
+        "endLine": 244,
+        "endChar": 21
+      },
+      "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
