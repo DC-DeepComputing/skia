@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46a83cc5_424de079",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T22:07:35Z",
+      "side": 1,
+      "message": "`kLoopBins`",
+      "range": {
+        "startLine": 227,
+        "startChar": 29,
+        "endLine": 227,
+        "endChar": 38
+      },
+      "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e4ad54c_4c95d33d",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T22:07:35Z",
+      "side": 1,
+      "message": "If the calling code passes octaves \u003c\u003d 0, this can be reached, and it was previously safe.\n \n`return std::size(gLoopBins) - 1];` to match existing behavior",
+      "range": {
+        "startLine": 244,
+        "startChar": 8,
+        "endLine": 244,
+        "endChar": 21
+      },
+      "revId": "4487ff04441c5e7d1be7b8bd38bee0b2cd515a80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
