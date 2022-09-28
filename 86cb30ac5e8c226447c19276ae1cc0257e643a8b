@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a319a990_2011b73d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-09-28T17:23:18Z",
+      "side": 1,
+      "message": "Code looks the same to me. I just want to make sure you have a plan for landing. I see you\u0027ve added a topic here; that\u0027s actually not the right place to do it. Make sure you have approval for the other Android changes before submitting this one. Then once this lands, and any in-progress Skia-to-Android rolls complete, a new roll will start up including this CL. That CL will be in Android\u0027s external/skia, and that needs to be updated to have the same topic as the others. (Or the others can take its topic.)",
+      "revId": "86cb30ac5e8c226447c19276ae1cc0257e643a8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
