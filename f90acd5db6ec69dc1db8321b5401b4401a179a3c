@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6158f763_3ff52b16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-09-28T13:28:34Z",
+      "side": 1,
+      "message": "But won\u0027t we need a way for devs to locally enable the macro (SK_ENABLE_OPTIMIZE_SIZE) to debug any issues that come up that are specific to our size optimized decisions? Is there a notion of a warning in GN (and warning as error for the bots)?",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
