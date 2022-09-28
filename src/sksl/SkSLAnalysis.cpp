@@ -118,24 +118,6 @@ protected:
     using INHERITED = ProgramVisitor;
 };
 
-// Visitor that searches through the program for references to a particular builtin variable
-class BuiltinVariableVisitor : public ProgramVisitor {
-public:
-    BuiltinVariableVisitor(int builtin) : fBuiltin(builtin) {}
-
-    bool visitExpression(const Expression& e) override {
-        if (e.is<VariableReference>()) {
-            const VariableReference& var = e.as<VariableReference>();
-            return var.variable()->modifiers().fLayout.fBuiltin == fBuiltin;
-        }
-        return INHERITED::visitExpression(e);
-    }
-
-    int fBuiltin;
-
-    using INHERITED = ProgramVisitor;
-};
-
 // Visitor that searches for child calls from a function other than main()
 class SampleOutsideMainVisitor : public ProgramVisitor {
 public:
@@ -334,8 +316,13 @@ SampleUsage Analysis::GetSampleUsage(const Program& program,
 }
 
 bool Analysis::ReferencesBuiltin(const Program& program, int builtin) {
-    BuiltinVariableVisitor visitor(builtin);
-    return visitor.visit(program);
+    SkASSERT(program.fUsage);
+    for (const auto& [variable, counts] : program.fUsage->fVariableCounts) {
+        if (counts.fRead > 0 && variable->modifiers().fLayout.fBuiltin == builtin) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Analysis::ReferencesSampleCoords(const Program& program) {
