@@ -422,7 +422,7 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkASSERT(fETC1Image && fBC1Image);
+         SkASSERT(fETC1Image && fBC1Image);
 
         this->drawImage(canvas, fETC1Image.get(), kPad, kPad);
         this->drawImage(canvas, fBC1Image.get(), kImgWidthHeight + 2 * kPad, kPad);
