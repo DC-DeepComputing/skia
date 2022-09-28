@@ -201,8 +201,7 @@ sk_sp<SkRuntimeEffect> make_noise_effect(unsigned loops, const char* filter, con
     return std::move(result.effect);
 }
 
-template <unsigned LOOPS, NoiseFilter FILTER, NoiseFractal FRACTAL>
-sk_sp<SkRuntimeEffect> noise_effect() {
+sk_sp<SkRuntimeEffect> noise_effect(unsigned loops, NoiseFilter filter, NoiseFractal fractal) {
     static constexpr char const* gFilters[] = {
         gFilterNearestSkSL,
         gFilterLinearSkSL,
@@ -216,13 +215,13 @@ sk_sp<SkRuntimeEffect> noise_effect() {
         gFractalTurbulentSharpSkSL
     };
 
-    static_assert(static_cast<size_t>(FILTER)  < std::size(gFilters));
-    static_assert(static_cast<size_t>(FRACTAL) < std::size(gFractals));
+    SkASSERT(static_cast<size_t>(filter)  < std::size(gFilters));
+    SkASSERT(static_cast<size_t>(fractal) < std::size(gFractals));
 
     static const SkRuntimeEffect* effect =
-            make_noise_effect(LOOPS,
-                              gFilters[static_cast<size_t>(FILTER)],
-                              gFractals[static_cast<size_t>(FRACTAL)])
+            make_noise_effect(loops,
+                              gFilters[static_cast<size_t>(filter)],
+                              gFractals[static_cast<size_t>(fractal)])
             .release();
 
     SkASSERT(effect);
@@ -244,39 +243,37 @@ public:
     SG_ATTRIBUTE(Persistence    , float       , fPersistence    )
 
 private:
-    template <NoiseFilter FI, NoiseFractal FR>
-    sk_sp<SkRuntimeEffect> getEffect() const {
+    sk_sp<SkRuntimeEffect> getEffect(NoiseFilter filter, NoiseFractal fractal) const {
         // Bin the loop counter based on the number of octaves (range: [1..20]).
         // Low complexities are common, so we maximize resolution for the low end.
-        if (fOctaves > 8) return noise_effect<20, FI, FR>();
-        if (fOctaves > 4) return noise_effect< 8, FI, FR>();
-        if (fOctaves > 3) return noise_effect< 4, FI, FR>();
-        if (fOctaves > 2) return noise_effect< 3, FI, FR>();
-        if (fOctaves > 1) return noise_effect< 2, FI, FR>();
+        if (fOctaves > 8) return noise_effect(20, filter, fractal);
+        if (fOctaves > 4) return noise_effect( 8, filter, fractal);
+        if (fOctaves > 3) return noise_effect( 4, filter, fractal);
+        if (fOctaves > 2) return noise_effect( 3, filter, fractal);
+        if (fOctaves > 1) return noise_effect( 2, filter, fractal);
 
-        return noise_effect<1, FI, FR>();
+        return noise_effect(1, filter, fractal);
     }
 
-    template <NoiseFilter FI>
-    sk_sp<SkRuntimeEffect> getEffect() const {
+    sk_sp<SkRuntimeEffect> getEffect(NoiseFilter filter) const {
         switch (fFractal) {
             case NoiseFractal::kBasic:
-                return this->getEffect<FI, NoiseFractal::kBasic>();
+                return this->getEffect(filter, NoiseFractal::kBasic);
             case NoiseFractal::kTurbulentBasic:
-                return this->getEffect<FI, NoiseFractal::kTurbulentBasic>();
+                return this->getEffect(filter, NoiseFractal::kTurbulentBasic);
             case NoiseFractal::kTurbulentSmooth:
-                return this->getEffect<FI, NoiseFractal::kTurbulentSmooth>();
+                return this->getEffect(filter, NoiseFractal::kTurbulentSmooth);
             case NoiseFractal::kTurbulentSharp:
-                return this->getEffect<FI, NoiseFractal::kTurbulentSharp>();
+                return this->getEffect(filter, NoiseFractal::kTurbulentSharp);
         }
         SkUNREACHABLE;
     }
 
     sk_sp<SkRuntimeEffect> getEffect() const {
         switch (fFilter) {
-            case NoiseFilter::kNearest   : return this->getEffect<NoiseFilter::kNearest>();
-            case NoiseFilter::kLinear    : return this->getEffect<NoiseFilter::kLinear>();
-            case NoiseFilter::kSoftLinear: return this->getEffect<NoiseFilter::kSoftLinear>();
+            case NoiseFilter::kNearest   : return this->getEffect(NoiseFilter::kNearest);
+            case NoiseFilter::kLinear    : return this->getEffect(NoiseFilter::kLinear);
+            case NoiseFilter::kSoftLinear: return this->getEffect(NoiseFilter::kSoftLinear);
         }
         SkUNREACHABLE;
     }
