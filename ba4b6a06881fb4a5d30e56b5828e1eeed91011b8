@@ -16,6 +16,29 @@
       "message": "ptal -- this produces very pretty results for exporting HDR images. The actual tone mapping function (compute_tone_map_gain) is fairly well isolated, and could potentially be turned into an argument to specify to the function.\n\nBTW, I see that there is a failure on the Windows bots, but I can\u0027t figure out what the failure is (it might not be compiling ... but I don\u0027t see the actual failure). Can you point me to it?",
       "revId": "ba4b6a06881fb4a5d30e56b5828e1eeed91011b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe0e3a0_06de001a",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-28T18:12:41Z",
+      "side": 1,
+      "message": "This is what MSVC is complaining about (conversion from double to float). Just need to add the \u0027f\u0027 suffix.",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 45
+      },
+      "revId": "ba4b6a06881fb4a5d30e56b5828e1eeed91011b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
