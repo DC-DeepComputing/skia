@@ -81,6 +81,30 @@
       },
       "revId": "d0c7e47ef17d415c4bcceaa90335aee1bfa086e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29718b4_5d33966c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-28T16:09:15Z",
+      "side": 1,
+      "message": "Actually never mind; we do the sample here:\nhttps://crsrc.org/c/third_party/skia/src/gpu/ganesh/effects/GrTextureEffect.cpp;l\u003d641\nregardless of whether the error is non-zero. I\u0027ll take the check out in this CL.",
+      "parentUuid": "75af560a_a764d07a",
+      "range": {
+        "startLine": 100,
+        "startChar": 61,
+        "endLine": 100,
+        "endChar": 73
+      },
+      "revId": "d0c7e47ef17d415c4bcceaa90335aee1bfa086e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
