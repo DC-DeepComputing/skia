@@ -2371,6 +2371,7 @@ if (skia_enable_tools) {
       "modules/skparagraph",
       "modules/skshaper",
       "modules/svg",
+      ":fontmgr_custom",
     ]
   }
 
@@ -2534,6 +2535,7 @@ if (skia_enable_tools) {
       "modules/skottie:fuzz",
       "modules/skparagraph",
       "modules/svg",
+      ":fontmgr_custom",
     ]
   }
 
