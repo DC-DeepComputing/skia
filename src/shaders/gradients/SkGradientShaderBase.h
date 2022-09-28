@@ -10,6 +10,7 @@
 
 #include "include/effects/SkGradientShader.h"
 
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
@@ -178,6 +179,7 @@ struct SkColor4fXformer {
                      SkColorSpace* src, SkColorSpace* dst);
 
     SkSTArray<4, SkPMColor4f, true> fColors;
+    SkColorInfo                     fIntermediateColorInfo;
 };
 
 struct SkColorConverter {
