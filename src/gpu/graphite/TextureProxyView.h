@@ -79,20 +79,28 @@ public:
     // the same swizzle as the src view.
     static TextureProxyView Copy(Recorder* recorder,
                                  TextureProxyView src,
+                                 SkColorType colorType,
                                  Mipmapped mipmapped,
                                  SkIRect srcRect,
                                  SkBackingFit fit,
                                  SkBudgeted budgeted) {
-        // TODO
-        return {};
+        sk_sp<TextureProxy> copy = TextureProxy::Copy(recorder,
+                                                      src.refProxy(),
+                                                      colorType,
+                                                      mipmapped,
+                                                      srcRect,
+                                                      fit,
+                                                      budgeted);
+        return { std::move(copy), src.swizzle() };
     }
 
     static TextureProxyView Copy(Recorder* recorder,
                                  TextureProxyView src,
+                                 SkColorType colorType,
                                  Mipmapped mipmapped,
                                  SkBackingFit fit,
                                  SkBudgeted budgeted) {
-        return TextureProxyView::Copy(recorder, src, mipmapped,
+        return TextureProxyView::Copy(recorder, src, colorType, mipmapped,
                                       SkIRect::MakeSize(src.proxy()->dimensions()),
                                       fit, budgeted);
     }
@@ -111,4 +119,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_TextureProxyView_DEFINED
-
