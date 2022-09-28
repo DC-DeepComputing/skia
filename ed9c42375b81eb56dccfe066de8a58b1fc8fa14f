@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9743481_3c5f27ec",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-28T18:31:08Z",
+      "side": 1,
+      "message": "The change breaks the singleton pattern: this will now cache the very first effect, and (incorrectly) reuse the same result for all other inputs.\n\nI recall there was some talk about whether caching at this level is needed at all, as SkSL may handle it internally.  Brian, do you think it\u0027s still worth caching the effect, or should we just build on the fly?  I can run some local tests to see the perf impact.",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
