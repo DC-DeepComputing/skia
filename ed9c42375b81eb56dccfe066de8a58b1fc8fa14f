@@ -177,6 +177,30 @@
       },
       "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17c3f42_151aa68a",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T20:10:27Z",
+      "side": 1,
+      "message": "Florin\u0027s cached version is now merged into here (so we don\u0027t lose our discussion history when this lands).",
+      "parentUuid": "65c90ac7_7b6dd1e8",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
