@@ -227,8 +227,7 @@ ParsedModule Compiler::compileModule(ProgramKind kind,
                 break;
             }
             default:
-                printf("Unsupported element: %s\n", element->description().c_str());
-                SkASSERT(false);
+                SkDEBUGFAILF("Unsupported element: %s\n", element->description().c_str());
                 break;
         }
     }
