@@ -22,6 +22,30 @@
       },
       "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a8f9ae_935d5757",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-28T18:38:08Z",
+      "side": 1,
+      "message": "We won\u0027t be caching this internally, and I\u0027d guess that you\u0027re seeing performance wins from this. I\u0027d suggest running the test locally, though. John and I were also talking about using something like the internal sksl modules for the skottie code, which would lend itself to a different pattern here. That\u0027s a more radical change, though (and we don\u0027t have a way to supply \"external\" modules, any module code today is baked into the sksl compiler).",
+      "parentUuid": "a9743481_3c5f27ec",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
