@@ -111,6 +111,30 @@
       },
       "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "823c1d63_1afe0598",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-28T20:07:48Z",
+      "side": 1,
+      "message": "I don\u0027t think we can use GrSkSLFP::Specialize, because that\u0027s operating at the FP level. This code is using public Skia API (SkShader, etc), and can actually run on CPU, too.\n\nI do think the non-thread-safe cache rework is fine, though.",
+      "parentUuid": "769722a9_c5cacb20",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
