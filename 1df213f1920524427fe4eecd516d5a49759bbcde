@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31d79e4_80d95b64",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "I\u0027m confused that this says \"before\" and not \"after\"... we just applied the offset on the previous line.",
+      "range": {
+        "startLine": 148,
+        "startChar": 7,
+        "endLine": 148,
+        "endChar": 35
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58cad924_eb0eec2d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "`float4 finalColor;`",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 22
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58a75d0d_f2bf2ac7",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "`half4 yColor \u003d 0;`",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 25
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f87f5be2_e903b9be",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "`yColor +\u003d wx[x] * $sample_image(...);`",
+      "range": {
+        "startLine": 159,
+        "startChar": 12,
+        "endLine": 159,
+        "endChar": 25
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3310fd27_1c90bc40",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "`finalColor +\u003d wy[y] * yColor;`",
+      "range": {
+        "startLine": 162,
+        "startChar": 8,
+        "endLine": 165,
+        "endChar": 39
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4c153e7_8f046ad6",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "`return half4(finalColor);`",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 36
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "090ad461_9f3b1617",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T21:52:06Z",
+      "side": 1,
+      "message": "Consider `return (useCubic !\u003d 0) ? ... : ...`",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 5
+      },
+      "revId": "1df213f1920524427fe4eecd516d5a49759bbcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
