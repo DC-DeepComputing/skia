@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c191ec_e14c2ea0",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-28T18:08:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e21929f7_214c9fa9",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 42
+      },
+      "revId": "a59f069880046d88ed30f74e130868ab20deeaf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bd73012_0e5b63b6",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-28T17:31:50Z",
       "side": 1,
       "message": "const \u0026?",
+      "range": {
+        "startLine": 46,
+        "startChar": 36,
+        "endLine": 46,
+        "endChar": 43
+      },
+      "revId": "a59f069880046d88ed30f74e130868ab20deeaf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4d37d88_ee3137cd",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-28T18:08:00Z",
+      "side": 1,
+      "message": "We stopped doing that for SkIRects. Apparently, it almost always goes in registers.",
+      "parentUuid": "0bd73012_0e5b63b6",
       "range": {
         "startLine": 46,
         "startChar": 36,
