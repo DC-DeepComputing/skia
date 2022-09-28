@@ -7,8 +7,14 @@
 
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include "include/core/SkRect.h"
+#include "src/core/SkMipmap.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
+
+#include "src/gpu/graphite/CopyTask.h"
 
 namespace skgpu::graphite {
 
@@ -48,6 +54,65 @@ sk_sp<Texture> TextureProxy::refTexture() const {
 
 const Texture* TextureProxy::texture() const {
     return fTexture.get();
+}
+
+sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
+                                       SkISize dimensions,
+                                       SkColorType colorType,
+                                       Mipmapped mipmapped,
+                                       Protected isProtected,
+                                       Renderable renderable,
+                                       SkBudgeted budgeted) {
+    if (dimensions.width() < 1 || dimensions.height() < 1) {
+        return nullptr;
+    }
+
+    int mipLevelCount = (mipmapped == Mipmapped::kYes)
+                        ? SkMipmap::ComputeLevelCount(dimensions.width(), dimensions.height()) + 1
+                        : 1;
+
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(colorType,
+                                                                 mipLevelCount,
+                                                                 isProtected,
+                                                                 renderable);
+    if (!textureInfo.isValid()) {
+        return nullptr;
+    }
+
+    return sk_make_sp<TextureProxy>(dimensions, textureInfo, budgeted);
+}
+
+sk_sp<TextureProxy> TextureProxy::Copy(Recorder* recorder,
+                                       sk_sp<TextureProxy> src,
+                                       SkColorType colorType,
+                                       Mipmapped mipmapped,
+                                       SkIRect srcRect,
+                                       SkBackingFit /* fit */,
+                                       SkBudgeted budgeted) {
+
+    SkASSERT(SkIRect::MakeSize(src->dimensions()).contains(srcRect));
+
+    sk_sp<TextureProxy> dst = TextureProxy::Make(recorder->priv().caps(),
+                                                 srcRect.size(),
+                                                 colorType,
+                                                 mipmapped,
+                                                 src->textureInfo().isProtected(),
+                                                 Renderable::kNo,
+                                                 budgeted);
+    if (!dst) {
+        return nullptr;
+    }
+
+    sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(std::move(src),
+                                                                              srcRect,
+                                                                              dst,
+                                                                              {0, 0});
+    if (!copyTask) {
+        return nullptr;
+    }
+
+    recorder->priv().add(std::move(copyTask));
+    return dst;
 }
 
 #ifdef SK_DEBUG

@@ -203,23 +203,17 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    if (ii.dimensions().width() < 1 || ii.dimensions().height() < 1) {
+    sk_sp<TextureProxy> target = TextureProxy::Make(recorder->priv().caps(),
+                                                    ii.dimensions(),
+                                                    ii.colorType(),
+                                                    mipmapped,
+                                                    Protected::kNo,
+                                                    Renderable::kYes,
+                                                    budgeted);
+    if (!target) {
         return nullptr;
     }
 
-    int mipLevelCount = (mipmapped == Mipmapped::kYes)
-                            ? SkMipmap::ComputeLevelCount(ii.width(), ii.height()) + 1
-                            : 1;
-
-    auto textureInfo = recorder->priv().caps()->getDefaultSampledTextureInfo(ii.colorType(),
-                                                                             mipLevelCount,
-                                                                             Protected::kNo,
-                                                                             Renderable::kYes);
-    if (!textureInfo.isValid()) {
-        return nullptr;
-    }
-
-    sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo, budgeted));
     return Make(recorder, std::move(target), ii.colorInfo(), props, addInitialClear);
 }
 
@@ -309,6 +303,26 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
     return SkSurface::MakeGraphite(fRecorder, ii, Mipmapped::kNo, &props);
+}
+
+TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) {
+    this->flushPendingWorkToRecorder();
+
+    TextureProxyView srcView = this->readSurfaceView();
+    if (!srcView) {
+        return {};
+    }
+
+    SkIRect rect = subset ? *subset : SkIRect::MakeSize(this->imageInfo().dimensions());
+    sk_sp<TextureProxy> copy = TextureProxy::Copy(this->recorder(),
+                                                  srcView.refProxy(),
+                                                  this->imageInfo().colorType(),
+                                                  mipmapped,
+                                                  rect,
+                                                  SkBackingFit::kExact,
+                                                  SkBudgeted::kNo);
+
+    return { std::move(copy), srcView.swizzle() };
 }
 
 bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
