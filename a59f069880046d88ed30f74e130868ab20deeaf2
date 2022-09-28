@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e21929f7_214c9fa9",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-28T17:31:50Z",
+      "side": 1,
+      "message": "Should this happen in createCopy()? Seems like we\u0027d need it prior to adding the copy task in any case.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 42
+      },
+      "revId": "a59f069880046d88ed30f74e130868ab20deeaf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd73012_0e5b63b6",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-28T17:31:50Z",
+      "side": 1,
+      "message": "const \u0026?",
+      "range": {
+        "startLine": 46,
+        "startChar": 36,
+        "endLine": 46,
+        "endChar": 43
+      },
+      "revId": "a59f069880046d88ed30f74e130868ab20deeaf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
