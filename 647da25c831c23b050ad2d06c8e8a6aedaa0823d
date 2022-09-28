@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a3e2fd_ada78ce4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-28T19:51:29Z",
+      "side": 1,
+      "message": "lgtm % one comment",
+      "revId": "647da25c831c23b050ad2d06c8e8a6aedaa0823d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9af4ae8_805e44de",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-09-28T19:51:29Z",
+      "side": 1,
+      "message": "Is it OK to compile all modules as a fragment program? IIRC we don\u0027t explicitly reject constructs like `sk_ThreadPosition` (which only makes sense in a compute shader) in vertex/fragment programs until we reach the codegen backends, so I\u0027m guessing this is OK.\n\nIt might make sense to add a comment here to that end. Alternately we may want to come up with a plan to compile a module with the appropriate program kind (maybe based on file extensions in the future) if my assumption above is wrong.",
+      "range": {
+        "startLine": 91,
+        "startChar": 39,
+        "endLine": 91,
+        "endChar": 67
+      },
+      "revId": "647da25c831c23b050ad2d06c8e8a6aedaa0823d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
