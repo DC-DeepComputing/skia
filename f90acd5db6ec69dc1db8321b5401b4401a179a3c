@@ -16,6 +16,40 @@
       "message": "But won\u0027t we need a way for devs to locally enable the macro (SK_ENABLE_OPTIMIZE_SIZE) to debug any issues that come up that are specific to our size optimized decisions? Is there a notion of a warning in GN (and warning as error for the bots)?",
       "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3defddc6_33d4312c",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-09-28T13:30:04Z",
+      "side": 1,
+      "message": "Does doing `b.extraConfig(\"Android\")` work instead?",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d184d45_bcfcfc56",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 1499,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-09-28T13:30:04Z",
+      "side": 1,
+      "message": "nit: ./codesize is technically not an arg, you could instead do something like \nb.cmd \u003d append([]string{\"./codesize\"}, args...)\nif you want",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
