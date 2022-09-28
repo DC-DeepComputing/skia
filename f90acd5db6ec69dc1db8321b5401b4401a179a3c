@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c1ff0b1_a6b0c4dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-09-28T15:15:02Z",
+      "side": 1,
+      "message": "I added that step to the error message.",
+      "parentUuid": "c588b9d5_3e468fe0",
+      "revId": "f90acd5db6ec69dc1db8321b5401b4401a179a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3defddc6_33d4312c",
