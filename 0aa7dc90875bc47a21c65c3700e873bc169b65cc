@@ -33,6 +33,23 @@
       "message": "Adding reviewer based on Gerrit suggested reviewers. Let me know if this should be handled by someone else.",
       "revId": "0aa7dc90875bc47a21c65c3700e873bc169b65cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9fd009c_a722f59f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-09-28T18:15:53Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "0aa7dc90875bc47a21c65c3700e873bc169b65cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
