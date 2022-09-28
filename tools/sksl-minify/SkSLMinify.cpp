@@ -71,6 +71,16 @@ static bool maybe_identifier(char c) {
     return std::isalnum(c) || c == '$' || c == '_';
 }
 
+static SkSL::ParsedModule compile_and_parse(SkSL::Compiler* compiler,
+                                            SkSL::ProgramKind kind,
+                                            const char* moduleName,
+                                            std::string moduleSource,
+                                            const SkSL::ParsedModule& base,
+                                            SkSL::ModifiersPool& modifiersPool) {
+    return compiler->compileModule(kind, moduleName, std::move(moduleSource), base, modifiersPool)
+            .parse(base);
+}
+
 static std::list<SkSL::ParsedModule> compile_module_list(SkSpan<const std::string> paths) {
     // Load in each input as a module, from right to left.
     // Each module inherits the symbols from its parent module.
@@ -90,12 +100,12 @@ static std::list<SkSL::ParsedModule> compile_module_list(SkSpan<const std::strin
         // TODO(skia:13778): We don't know the module's ProgramKind here, so we always pass
         // kFragment. For minification purposes, the ProgramKind doesn't really make a difference
         // as long as it doesn't limit what we can do.
-        compiledModules.push_front(
-                compiler.compileModule(SkSL::ProgramKind::kFragment,
-                                       modulePath->c_str(),
-                                       std::move(moduleSource),
-                                       compiledModules.front(),
-                                       SkSL::ModuleLoader::Get().coreModifiers()));
+        compiledModules.push_front(compile_and_parse(&compiler,
+                                                     SkSL::ProgramKind::kFragment,
+                                                     modulePath->c_str(),
+                                                     std::move(moduleSource),
+                                                     compiledModules.front(),
+                                                     SkSL::ModuleLoader::Get().coreModifiers()));
     }
     return compiledModules;
 }
