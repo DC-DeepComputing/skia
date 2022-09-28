@@ -36,18 +36,33 @@ sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
     return SkSurface::MakeGraphite(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
 }
 
-sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
-    SkImageInfo ii = subset ? this->imageInfo().makeDimensions(subset->size())
-                            : this->imageInfo();
+sk_sp<SkImage> Surface::createCopy(const SkIRect* subset, Mipmapped mipmapped) {
+    fDevice->flushPendingWorkToRecorder();
 
-    // TODO: we need to resolve Graphite's Surface/Image story then expand the handling
-    // in here.
+    // TODO: it seems like this won't work w/ non-textureable wrapped surfaces (we need a
+    // SurfaceProxyView).
     TextureProxyView srcView = fDevice->readSurfaceView();
+
+    SkIRect rect = subset ? *subset : SkIRect::MakeSize(this->imageInfo().dimensions());
+    srcView = TextureProxyView::Copy(fDevice->recorder(),
+                                     std::move(srcView),
+                                     this->imageInfo().colorType(),
+                                     mipmapped,
+                                     rect,
+                                     SkBackingFit::kExact,
+                                     SkBudgeted::kNo);     // client will get a ref on the image
     if (!srcView) {
         return nullptr;
     }
 
-    return sk_sp<Image>(new Image(std::move(srcView), ii.colorInfo()));
+    return sk_sp<Image>(new Image(std::move(srcView), this->imageInfo().colorInfo()));
+}
+
+
+sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
+    TextureProxyView srcView = fDevice->readSurfaceView();
+
+    return this->createCopy(subset, srcView.mipmapped());
 }
 
 void Surface::onWritePixels(const SkPixmap& pixmap, int x, int y) {

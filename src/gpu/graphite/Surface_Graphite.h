@@ -51,6 +51,8 @@ public:
 #endif
 
 private:
+    sk_sp<SkImage> createCopy(const SkIRect* subset, Mipmapped);
+
     sk_sp<Device> fDevice;
 };
 
