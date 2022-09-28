@@ -70,6 +70,30 @@
       },
       "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "769722a9_c5cacb20",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-28T19:27:13Z",
+      "side": 1,
+      "message": "Brian, what do you think about using GrSkSLFP::Specialize here? I haven\u0027t looked at this closely yet but it seems like we could make one omni-effect and use specialization to pick the filter/fractal type.",
+      "parentUuid": "3c2aebbe_1ebda2a6",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 16
+      },
+      "revId": "ed9c42375b81eb56dccfe066de8a58b1fc8fa14f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
