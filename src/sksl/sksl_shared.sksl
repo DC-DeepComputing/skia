@@ -322,11 +322,12 @@ $export $pure half3 $css_lab_to_xyz(half3 lab) {
 }
 
 // Also used by oklch -> oklab
+// NOTE: This assume the input is actually hcl
 $pure half3 $css_lch_to_lab(half3 lch) {
     return half3(
-        lch[0],
-        lch[1] * cos(radians(lch[2])),
-        lch[1] * sin(radians(lch[2]))
+        lch[2],
+        lch[1] * cos(radians(lch[0])),
+        lch[1] * sin(radians(lch[0]))
     );
 }
 

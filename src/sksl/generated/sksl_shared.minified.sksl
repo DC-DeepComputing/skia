@@ -110,7 +110,7 @@ static constexpr char SKSL_MINIFIED_sksl_shared[] =
 " g=pow(d,half3(3.));half3 h=half3(g.x>.008856452?g.x:(116.*d.x-16.)/903.2963"
 ",a.x>8.000001?g.y:a.x/903.2963,g.z>.008856452?g.z:(116.*d.z-16.)/903.2963);"
 "return h*half3(.9642956,1.,.825104535);}$pure half3 $a(half3 a){return half3"
-"(a.x,a.y*cos(radians(a.z)),a.y*sin(radians(a.z)));}$pure half3 $css_lch_to_xyz"
+"(a.z,a.y*cos(radians(a.x)),a.y*sin(radians(a.x)));}$pure half3 $css_lch_to_xyz"
 "(half3 a){return $css_lab_to_xyz($a(a));}$pure half3 $css_oklab_to_linear_srgb"
 "(half3 a){half b=(a.x+.396337777*a.y)+.215803757*a.z;half c=(a.x-.105561346"
 "*a.y)-.06385417*a.z;half d=(a.x-.08948418*a.y)-1.29148555*a.z;half e=(b*b)*"
