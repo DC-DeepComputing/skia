@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
+#include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
@@ -33,6 +34,11 @@ static const int kGradientTextureSize = 256;
 
 // NOTE: signature takes raw pointers to the color/pos arrays and a count to make it easy for
 // MakeColorizer to transparently take care of hard stops at the end points of the gradient.
+// TODO(skia:13108): This code is totally wrong when using a non-destination interpolation space.
+// We need to plumb the interpolation information to the gradient cache, and actually do the work
+// to convert back to destination space before filling out the bitmap (otherwise we might have
+// values that don't fit in 8888). This will also mean that the top-level colorizer factory will
+// need to return whether or not the interpolated -> dst transform is still necessary.
 static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(const SkPMColor4f* colors,
         const SkScalar* positions, int count, bool premul, const GrFPArgs& args) {
     static GrGradientBitmapCache gCache(kMaxNumCachedGradientBitmaps, kGradientTextureSize);
@@ -668,6 +674,58 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
                                 GrSkSLFP::Specialize<int>(useFloorAbsWorkaround));
 }
 
+static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
+        std::unique_ptr<GrFragmentProcessor> gradient,
+        SkGradientShader::Interpolation::ColorSpace interpolatedCS,
+        const SkColorInfo& intermediateInfo,
+        const GrColorInfo& dstInfo) {
+    using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
+
+    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
+        "uniform int colorSpace;"    // specialized
+
+        "half4 main(half4 color) {"
+            "switch (colorSpace) {"
+                "case 4: color.rgb = $css_lab_to_xyz(color.rgb); break;"
+                "case 5: color.rgb = $css_oklab_to_linear_srgb(color.rgb); break;"
+                "case 6: color.rgb = $css_lch_to_xyz(color.rgb); break;"
+                "case 7: color.rgb = $css_oklch_to_linear_srgb(color.rgb); break;"
+                "case 9: color.rgb = $css_hsl_to_srgb(color.rgb); break;"
+                "case 10: color.rgb = $css_hwb_to_srgb(color.rgb); break;"
+            "}"
+            "return color;"
+        "}"
+    );
+
+    switch (interpolatedCS) {
+        case ColorSpace::kLab:
+        case ColorSpace::kOKLab:
+        case ColorSpace::kLCH:
+        case ColorSpace::kOKLCH:
+        case ColorSpace::kHSL:
+        case ColorSpace::kHWB:
+            gradient = GrSkSLFP::Make(effect, "GradientCS", std::move(gradient),
+                                      GrSkSLFP::OptFlags::kAll,
+                                      "colorSpace",
+                                      GrSkSLFP::Specialize<int>(static_cast<int>(interpolatedCS)));
+            break;
+        default:
+            break;
+    }
+
+    // Now transform from intermediate to destination color space. Normally, we'd just pass dstInfo
+    // to the transform effect. However, if someone is rendering to a non-color managed surface
+    // (nullptr dst color space), and they chose to interpolate in any of the exotic spaces, that
+    // transform would do nothing, and leave the colors in whatever intermediate space we chose.
+    // That could even be something like XYZ, which will produce nonsense. So, in this particular
+    // case, we break Skia's rules, and treat a null destination as sRGB.
+    GrColorInfo dstOrSrgb = dstInfo.colorSpace() ? dstInfo
+                                                 : GrColorInfo(dstInfo.colorType(),
+                                                               dstInfo.alphaType(),
+                                                               SkColorSpace::MakeSRGB());
+    return GrColorSpaceXformEffect::Make(std::move(gradient), intermediateInfo, dstOrSrgb);
+}
+
 namespace GrGradientShader {
 
 // Combines the colorizer and layout with an appropriately configured top-level effect based on the
@@ -766,7 +824,9 @@ std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& 
             break;
     }
 
-    return gradient;
+    // If interpolated space is different than destination, wrap the colorizer in a conversion here.
+    return make_interpolated_to_dst(std::move(gradient), shader.fInterpolation.fColorSpace,
+                                    xformedColors.fIntermediateColorInfo, *args.fDstColorInfo);
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
