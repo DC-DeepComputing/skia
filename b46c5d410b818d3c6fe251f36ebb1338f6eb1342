@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "633d30aa_0c8fa81d",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-09-29T22:19:53Z",
+      "side": 1,
+      "message": "I think you can just remove this whole \u0027if\u0027 statement.",
+      "range": {
+        "startLine": 932,
+        "startChar": 0,
+        "endLine": 935,
+        "endChar": 5
+      },
+      "revId": "b46c5d410b818d3c6fe251f36ebb1338f6eb1342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
