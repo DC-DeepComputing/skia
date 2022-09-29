@@ -11,8 +11,12 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
+half blend_color_luminance_Qhh3(half3 color);
 half blend_color_saturation_Qhh3(half3 color);
 half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst);
+half blend_color_luminance_Qhh3(half3 color) {
+    return dot(half3(0.30000001192092896h, 0.5899999737739563h, 0.10999999940395355h), color);
+}
 half blend_color_saturation_Qhh3(half3 color) {
     return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);
 }
@@ -28,8 +32,8 @@ half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst) {
         l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : half3(0.0h);
         r = dsa;
     }
-    half _4_lum = dot(half3(0.30000001192092896h, 0.5899999737739563h, 0.10999999940395355h), r);
-    half3 _5_result = (_4_lum - dot(half3(0.30000001192092896h, 0.5899999737739563h, 0.10999999940395355h), l)) + l;
+    half _4_lum = blend_color_luminance_Qhh3(r);
+    half3 _5_result = (_4_lum - blend_color_luminance_Qhh3(l)) + l;
     half _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
     half _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
     if (_6_minComp < 0.0h && _4_lum != _6_minComp) {
