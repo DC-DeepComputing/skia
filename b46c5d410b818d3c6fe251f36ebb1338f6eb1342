@@ -22,6 +22,30 @@
       },
       "revId": "b46c5d410b818d3c6fe251f36ebb1338f6eb1342",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da5378c0_590f05ab",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-09-29T22:38:50Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "633d30aa_0c8fa81d",
+      "range": {
+        "startLine": 932,
+        "startChar": 0,
+        "endLine": 935,
+        "endChar": 5
+      },
+      "revId": "b46c5d410b818d3c6fe251f36ebb1338f6eb1342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
