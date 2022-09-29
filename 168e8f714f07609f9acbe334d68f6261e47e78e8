@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9aae48b_d69acf77",
+        "filename": "src/sksl/transform/SkSLEliminateEmptyStatements.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T19:48:41Z",
+      "side": 1,
+      "message": "Here\u0027s the original code \nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/transform/SkSLEliminateEmptyStatements.cpp;drc\u003d8ccbeeebc34d80ac9525dfcca122d196bbbb0630\n\nI moved the recursion up to the top of the visitor instead of the bottom, but in practice I don\u0027t think it mattered much. (In this new order, you could theoretically delete a block that had been fully emptied of statements, but in practice this doesn\u0027t happen in our modules.)",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 40
+      },
+      "revId": "168e8f714f07609f9acbe334d68f6261e47e78e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
