@@ -33,6 +33,213 @@
       "message": "Hold off. There is another perf bug I need to fix.",
       "revId": "484ba863b625244702e985b6d6962201d5e57e17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be79f5f_5669f0c9",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "Isn\u0027t it different because it replaces the existing data, instead of appending past it?",
+      "range": {
+        "startLine": 60,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 15
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f67eee7f_db52bb44",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "\"to the index to\" is very confusing without quotes. Maybe it should be named `dstIndex` or something.\n\nAlso, this description should be more clear about what happens to the array as a whole. Are the existing elements at `to` (or `dstIndex`) overwritten? Is the array truncated at the end of the moved tail?",
+      "range": {
+        "startLine": 96,
+        "startChar": 79,
+        "endLine": 96,
+        "endChar": 95
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4ec0721_1fd25ba9",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "Please note that this will overwrite existing elements, as opposed to moving them forward (or something else)",
+      "range": {
+        "startLine": 99,
+        "startChar": 42,
+        "endLine": 99,
+        "endChar": 43
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01977c21_85d8dc86",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "Is there any reason not to just have `this-\u003edata() + this-\u003esize()`?\n(Is this here because `nullptr + 0` is UB? Can the compiler flatten this out somehow?)",
+      "range": {
+        "startLine": 166,
+        "startChar": 28,
+        "endLine": 166,
+        "endChar": 80
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0695013f_90297044",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "nit: add blank line",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 1
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d9f177_799eaf5e",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "Should we swap the `fSizeOfT` as well?\n\nI guess for `SkTDArray` we\u0027ll always have the same `T`, but if we ever use this class elsewhere, ignoring `fSizeOfT` here could bite us. At the very least, if we don\u0027t swap it, we should assert that it matches. (IMO the cost of swapping is almost zero, we\u0027ve already got those cachelines lit up and ready to go.)",
+      "range": {
+        "startLine": 54,
+        "startChar": 2,
+        "endLine": 54,
+        "endChar": 3
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e620ec44_5f427c9e",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "Should we early out if fReserve already \u003d\u003d fCount?",
+      "range": {
+        "startLine": 92,
+        "startChar": 4,
+        "endLine": 92,
+        "endChar": 21
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d75b69e_ad27b1fd",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "It would be simpler to assert `count \u003e\u003d 0` on its own line.",
+      "range": {
+        "startLine": 105,
+        "startChar": 27,
+        "endLine": 105,
+        "endChar": 49
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1e1d9b_4c00ae7c",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T17:38:57Z",
+      "side": 1,
+      "message": "nit: add blank line between functions (here and below)",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 1
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
