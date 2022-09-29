@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3434ec14_f7f1ebf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-29T16:53:41Z",
+      "side": 1,
+      "message": "This is the last in the big rearrangement CLs. I had to add two spurious files in order to make some definitions visible to SkTDArray. The next CLs will be API cleanup.",
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
