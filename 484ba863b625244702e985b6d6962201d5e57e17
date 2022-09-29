@@ -247,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "649101b9_aeca732c",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-29T19:37:30Z",
+      "side": 1,
+      "message": "It dropped about 30 bytes off the .text portion. So, it seems like a win.",
+      "parentUuid": "53d56a6c_c808457d",
+      "range": {
+        "startLine": 166,
+        "startChar": 28,
+        "endLine": 166,
+        "endChar": 80
+      },
+      "revId": "484ba863b625244702e985b6d6962201d5e57e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0695013f_90297044",
