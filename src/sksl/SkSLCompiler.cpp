@@ -340,6 +340,12 @@ bool Compiler::optimizeModuleAfterLoading(ProgramKind kind,
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = kind;
+
+#if SKSL_STANDALONE
+    // When minifying code, we never want the inliner to increase code size.
+    config.fSettings.fInlineThreshold = 0;
+#endif
+
     AutoProgramConfig autoConfig(this->context(), &config);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
