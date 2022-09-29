@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "977b00b4_ac93bfc9",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-29T14:03:27Z",
+      "side": 0,
+      "message": "This is now available in iOS.",
+      "range": {
+        "startLine": 565,
+        "startChar": 4,
+        "endLine": 565,
+        "endChar": 31
+      },
+      "revId": "561a5e202c7911fa14a5691bd07ac139e8e8c701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
