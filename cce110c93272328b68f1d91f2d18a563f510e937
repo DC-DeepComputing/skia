@@ -51,6 +51,24 @@
       "parentUuid": "557ebc64_ed765ff3",
       "revId": "cce110c93272328b68f1d91f2d18a563f510e937",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "263bb4c9_1652dff9",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-29T15:33:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78ef40cd_29e0926f",
+      "revId": "cce110c93272328b68f1d91f2d18a563f510e937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
