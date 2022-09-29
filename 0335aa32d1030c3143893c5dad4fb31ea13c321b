@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2056b32e_92415a76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-29T19:42:37Z",
+      "side": 1,
+      "message": "Hmmm... I was sure that the build would fail due to \"src/core/SkBitmapCache.cpp\" being included and wanting discardable memory. But this only removes only the pool and building in the _none implementations. In particular this leaves in the \"src/core/SkDiscardableMemory.h\" needed to compile and the build already isn\u0027t setting `SK_USE_DISCARDABLE_SCALEDIMAGECACHE` which would require an actual implementation. I suppose this is fine then, though a bit confusing (though no less confusing that everything working before).",
+      "revId": "0335aa32d1030c3143893c5dad4fb31ea13c321b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
