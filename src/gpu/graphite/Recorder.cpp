@@ -183,6 +183,20 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
     return fResourceProvider->createBackendTexture(dimensions, info);
 }
 
+
+bool Recorder::updateBackendTexture(const BackendTexture& texture,
+                                    const SkColor4f& color) {
+    ASSERT_SINGLE_OWNER
+
+    if (!texture.isValid() || texture.backend() != this->backend()) {
+        return false;
+    }
+
+    return fGpu->clearBackendTexture(backendTexture, std::move(finishedCallback), color.array());
+
+    return true;
+}
+
 void Recorder::deleteBackendTexture(BackendTexture& texture) {
     ASSERT_SINGLE_OWNER
 
