@@ -931,7 +931,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				d["gpu"] = gpu
 				if b.parts["cpu_or_gpu_value"] == "IntelIrisXe" {
 					// The Intel Iris Xe devices have not updated.
-					d["os"] = "Windows-10-19043"
+					d["os"] = "Windows-10-19044"
 				}
 			} else if b.isLinux() {
 				gpu, ok := map[string]string{
