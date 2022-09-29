@@ -1144,4 +1144,8 @@ SKSL_INT Type::convertArraySize(const Context& context, Position arrayPos,
     return static_cast<int>(count);
 }
 
+std::string Type::Field::description() const {
+    return fModifiers.description() + fType->displayName() + " " + std::string(fName) + ";";
+}
+
 }  // namespace SkSL

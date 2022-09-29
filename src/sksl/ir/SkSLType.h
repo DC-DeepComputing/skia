@@ -76,14 +76,12 @@ public:
     inline static constexpr int kUnsizedArray = -1;
     struct Field {
         Field(Position pos, Modifiers modifiers, std::string_view name, const Type* type)
-        : fPosition(pos)
-        , fModifiers(modifiers)
-        , fName(name)
-        , fType(std::move(type)) {}
+                : fPosition(pos)
+                , fModifiers(modifiers)
+                , fName(name)
+                , fType(type) {}
 
-        std::string description() const {
-            return fType->displayName() + " " + std::string(fName) + ";";
-        }
+        std::string description() const;
 
         Position fPosition;
         Modifiers fModifiers;
