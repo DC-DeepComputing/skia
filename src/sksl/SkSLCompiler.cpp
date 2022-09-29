@@ -342,6 +342,7 @@ bool Compiler::optimizeModuleAfterLoading(ProgramKind kind,
     ProgramConfig config;
     config.fIsBuiltinCode = true;
     config.fKind = kind;
+
     AutoProgramConfig autoConfig(this->context(), &config);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module, base);
