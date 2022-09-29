@@ -16,6 +16,24 @@
       "message": "What are your thoughts on making some of this behavior (particularly the tone-mapping, which seems fairly chrome-specific?) pluggable? Can we let the caller supply a std::function for clut construction, or soemthing like that, and then have a large chunk of the math be supplied by chrome (vs. the mechanical aspects of the table building, that could live here)?",
       "revId": "25af8b8f47411a2b7d2d80dc8ee39dbb54834ed6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e23e2b35_dde7ecb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-09-29T22:53:45Z",
+      "side": 1,
+      "message": "That seems like quite a reasonable way for things to go.\n\nIf we do expose an API for this, the API will ultimately end up being \"pass an skcms_ICCProfile\" (or maybe an skcms_ICCProfile where all the data is represented as floats).\n\nThis is because, while I happen to just be using a 17x17x17 LUT here, there are lots of people trying to do clever-er things, which would take advantage of the full A/B/M curves and matrix, and might be much more (space) efficient. Just having some simple function callback for clut construction won\u0027t be enough.\n\nI think that the long-term way that we will end up doing this will be to\n- Move the functionality of SkWriteICCProfile into an skcms method that takes an skcms_ICCProfile\n- Maybe add some \"nice-ities\" to skcms_ICCProfile (like representing LUTs and curvs as floats instead of fixed-point, and just specify an argument saying \"this will serialize to 8 bit\")\n- Delete SkWriteICCProfile\nAt that point, skia will neither decide the tone mapping (that will be Chrome), nor write the ICC profile (that will be skcms).\n\nBut that\u0027s a bit of a big lift, and I worry that we\u0027ll lose momentum on this (and potentially just never end up doing it) if we don\u0027t make this short-term compromise (which in this case would be growing the skia code, which ultimately I think will shrink back to nonexistence as its pushed out to skcms and Chrome).",
+      "parentUuid": "5a570770_7d1199b8",
+      "revId": "25af8b8f47411a2b7d2d80dc8ee39dbb54834ed6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
