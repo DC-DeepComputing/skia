@@ -56,6 +56,14 @@ void FindAndDeclareBuiltinVariables(Program& program);
 void EliminateUnreachableCode(LoadedModule& module, ProgramUsage* usage);
 void EliminateUnreachableCode(Program& program);
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
+/**
+ * Eliminates empty statements in a module (Nops, or blocks holding only Nops). Not implemented for
+ * Programs because Nops are harmless, but they waste space in long-lived module IR.
+ */
+void EliminateEmptyStatements(LoadedModule& module);
+#endif
+
 /**
  * Eliminates functions in a program which are never called. Returns true if any changes were made.
  */
