@@ -22,6 +22,30 @@
       },
       "revId": "765c3a0d8bcfb23057913f791e6ca9c2bf4d5a37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c31e25_74b7ee8e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-09-29T15:16:40Z",
+      "side": 1,
+      "message": "If we do that I don\u0027t think we can use x and y to index into wx and wy.",
+      "parentUuid": "8812392a_d87c9f92",
+      "range": {
+        "startLine": 154,
+        "startChar": 9,
+        "endLine": 154,
+        "endChar": 12
+      },
+      "revId": "765c3a0d8bcfb23057913f791e6ca9c2bf4d5a37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
