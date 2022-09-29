@@ -18,6 +18,7 @@
 #include "src/sksl/SkSLModuleLoader.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/transform/SkSLTransform.h"
 
 #include <cctype>
 #include <fstream>
@@ -100,6 +101,8 @@ static std::optional<SkSL::LoadedModule> compile_module_list(SkSpan<const std::s
                                               std::move(moduleSource),
                                               modules.front(),
                                               SkSL::ModuleLoader::Get().coreModifiers());
+        // We eliminate empty statements to avoid runs of `;;;;;;`.
+        SkSL::Transform::EliminateEmptyStatements(loadedModule);
     }
     return loadedModule;
 }
