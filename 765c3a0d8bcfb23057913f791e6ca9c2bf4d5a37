@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8812392a_d87c9f92",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-29T15:11:46Z",
+      "side": 1,
+      "message": "Use `float` for both loop indices.\n\nThis turns the `float2(x,y)` below into a simple compound constructor instead of a cast.",
+      "range": {
+        "startLine": 154,
+        "startChar": 9,
+        "endLine": 154,
+        "endChar": 12
+      },
+      "revId": "765c3a0d8bcfb23057913f791e6ca9c2bf4d5a37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
