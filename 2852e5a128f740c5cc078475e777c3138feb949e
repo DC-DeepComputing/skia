@@ -16,6 +16,23 @@
       "message": "The first version (PS2) relied on changes to our GN files, which felt more brittle for clients with different build systems. PS3 does the same thing entirely based on the define. This approach also demonstrates how we might fine-tune the approach (eg, include some specializations, but not all).",
       "revId": "2852e5a128f740c5cc078475e777c3138feb949e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94446b3_71bfeb4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-29T14:21:56Z",
+      "side": 1,
+      "message": "The first version (PS2) relied on changes to our GN files, which felt more brittle for clients with different build systems. PS3 does the same thing entirely based on the define. This approach also demonstrates how we might fine-tune the approach (eg, include some specializations, but not all).",
+      "revId": "2852e5a128f740c5cc078475e777c3138feb949e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
