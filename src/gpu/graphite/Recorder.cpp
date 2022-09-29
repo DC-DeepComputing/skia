@@ -27,6 +27,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/TaskGraph.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
+#include "src/gpu/graphite/UploadTask.h"
 #include "src/gpu/graphite/text/AtlasManager.h"
 #include "src/image/SkImage_Base.h"
 #include "src/text/gpu/StrikeCache.h"
@@ -181,6 +182,29 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
         return {};
     }
     return fResourceProvider->createBackendTexture(dimensions, info);
+}
+
+bool Recorder::updateBackendTexture(const BackendTexture& texture,
+                                    const SkColor4f& color) {
+    ASSERT_SINGLE_OWNER
+
+    if (!texture.isValid() || texture.backend() != this->backend()) {
+        return false;
+    }
+
+#if 0
+    UploadInstance upload = UploadInstance::Make(this,
+                                                 sk_sp<TextureProxy> targetProxy,
+                                                 SkColorType colorType,
+                                                 const std::vector<MipLevel>& levels,
+                                                 const SkIRect& dstRect);
+
+    sk_sp<Task> uploadTask = UploadTask::Make(upload);
+#endif
+
+//    return fGpu->clearBackendTexture(backendTexture, std::move(finishedCallback), color.array());
+
+    return true;
 }
 
 void Recorder::deleteBackendTexture(BackendTexture& texture) {

@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -78,11 +79,14 @@ public:
      * if it succeeded or not.
      *
      * If this does return a valid BackendTexture, the caller is required to use
-     * Recorder::deleteBackendTexture or Context::deleteBAckendTexture to delete the texture. It is
+     * Recorder::deleteBackendTexture or Context::deleteBackendTexture to delete the texture. It is
      * safe to use the Context that created this Recorder or any other Recorder created from the
      * same Context to call deleteBackendTexture.
      */
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
+
+    bool updateBackendTexture(const BackendTexture&,
+                              const SkColor4f& color);
 
     /**
      * Called to delete the passed in BackendTexture. This should only be called if the
