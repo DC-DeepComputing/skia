@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc383b8_c6758ed3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-09-29T19:56:17Z",
+      "side": 1,
+      "message": "Maybe add one overarching TODO to implement these methods defined in the header where we just return false? Just looking at the header, it looks like the methods are actually overridden in a meaningful way.\n\nIf the implementations are coming shortly though then no big deal.",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 17
+      },
+      "revId": "5f3d866b3bae34f5e0968c26f05a3aea9d67e4ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
