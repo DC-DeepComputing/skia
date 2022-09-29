@@ -33,6 +33,24 @@
       "message": "We can\u0027t use the same trick w/ this and have kMTLPixelFormatBC1_RGBA ?",
       "revId": "cce110c93272328b68f1d91f2d18a563f510e937",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78ef40cd_29e0926f",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-09-29T14:44:11Z",
+      "side": 1,
+      "message": "There\u0027s no point in this case -- it\u0027s only available in the Mac SDK and can be used in code at all times on Mac. In the other cases the enum is in the SDK but can only be used with certain OS combinations.",
+      "parentUuid": "557ebc64_ed765ff3",
+      "revId": "cce110c93272328b68f1d91f2d18a563f510e937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
