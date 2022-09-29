@@ -73,10 +73,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ComputeTaskTest, reporter, context) {
     desc.fLocalDispatchSize = WorkgroupSize(kProblemSize, 1, 1);
 
     // Record the compute pass task.
-    recorder->priv().add(ComputePassTask::Make(std::move(bindings), pipelineDesc, desc));
+    recorder->priv().add2(ComputePassTask::Make(std::move(bindings), pipelineDesc, desc));
 
     // Ensure the output buffer is synchronized to the CPU once the GPU submission has finished.
-    recorder->priv().add(SynchronizeToCpuTask::Make(outputBuffer));
+    recorder->priv().add2(SynchronizeToCpuTask::Make(outputBuffer));
 
     // Submit the work and wait for it to complete.
     std::unique_ptr<Recording> recording = recorder->snap();

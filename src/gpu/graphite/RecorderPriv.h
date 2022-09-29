@@ -19,7 +19,7 @@ class TextureProxy;
 
 class RecorderPriv {
 public:
-    void add(sk_sp<Task>);
+    void add2(sk_sp<Task>);
     void flushTrackedDevices();
 
     const Caps* caps() const { return fRecorder->fSharedContext->caps(); }

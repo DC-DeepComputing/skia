@@ -506,7 +506,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
 #ifdef SK_GRAPHITE_ENABLED
 sk_sp<SkImage> SkImage_Raster::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
                                                   RequiredImageProperties requiredProps) const {
-    return skgpu::graphite::MakeFromBitmap(recorder,
+    return skgpu::graphite::MakeFromBitmap1(recorder,
                                            this->imageInfo().colorInfo(),
                                            fBitmap,
                                            this->refMips(),

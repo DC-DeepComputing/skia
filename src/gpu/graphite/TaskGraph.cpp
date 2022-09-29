@@ -12,7 +12,7 @@ namespace skgpu::graphite {
 TaskGraph::TaskGraph() {}
 TaskGraph::~TaskGraph() {}
 
-void TaskGraph::add(sk_sp<Task> task) {
+void TaskGraph::add1(sk_sp<Task> task) {
     fTasks.emplace_back(std::move(task));
 }
 

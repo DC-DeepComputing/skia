@@ -108,13 +108,13 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(
             recorder, proxy, ct, texels, SkIRect::MakeSize(bmpToUpload.dimensions()));
-    recorder->priv().add(UploadTask::Make(upload));
+    recorder->priv().add2(UploadTask::Make(upload));
 
     Swizzle swizzle = caps->getReadSwizzle(ct, textureInfo);
     return {{std::move(proxy), swizzle}, ct};
 }
 
-sk_sp<SkImage> MakeFromBitmap(Recorder* recorder,
+sk_sp<SkImage> MakeFromBitmap1(Recorder* recorder,
                               const SkColorInfo& colorInfo,
                               const SkBitmap& bitmap,
                               sk_sp<SkMipmap> mipmaps,
@@ -177,8 +177,8 @@ bool ReadPixelsHelper(FlushPendingWorkCallback&& flushPendingWork,
     }
 
     flushPendingWork();
-    recorder->priv().add(std::move(copyTask));
-    recorder->priv().add(std::move(syncTask));
+    recorder->priv().add2(std::move(copyTask));
+    recorder->priv().add2(std::move(syncTask));
 
     std::unique_ptr<Recording> recording = recorder->snap();
     if (!recording) {

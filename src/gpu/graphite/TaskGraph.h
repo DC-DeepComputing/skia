@@ -20,7 +20,7 @@ public:
     TaskGraph();
     ~TaskGraph();
 
-    void add(sk_sp<Task>);
+    void add1(sk_sp<Task>);
 
     // Returns true on success; false on failure
     bool prepareResources(ResourceProvider*, const SkRuntimeEffectDictionary*);

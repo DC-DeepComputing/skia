@@ -29,7 +29,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder*,
                                                               Mipmapped,
                                                               SkBudgeted);
 
-sk_sp<SkImage> MakeFromBitmap(Recorder*,
+sk_sp<SkImage> MakeFromBitmap1(Recorder*,
                               const SkColorInfo&,
                               const SkBitmap&,
                               sk_sp<SkMipmap>,

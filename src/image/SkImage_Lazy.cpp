@@ -613,7 +613,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
 
     // 2. Ask the generator to return a bitmap, which the GPU can convert.
     if (SkBitmap bitmap; this->getROPixels(nullptr, &bitmap, CachingHint::kDisallow_CachingHint)) {
-        return skgpu::graphite::MakeFromBitmap(recorder,
+        return skgpu::graphite::MakeFromBitmap1(recorder,
                                                this->imageInfo().colorInfo(),
                                                bitmap,
                                                nullptr,

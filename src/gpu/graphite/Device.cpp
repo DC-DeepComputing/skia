@@ -336,7 +336,7 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
         return {};
     }
 
-    this->recorder()->priv().add(std::move(copyTask));
+    this->recorder()->priv().add2(std::move(copyTask));
 
     return { std::move(dest), srcView.swizzle() };
 }
@@ -1010,7 +1010,7 @@ void Device::flushPendingWorkToRecorder() {
 
     auto uploadTask = fDC->snapUploadTask(fRecorder);
     if (uploadTask) {
-        fRecorder->priv().add(std::move(uploadTask));
+        fRecorder->priv().add2(std::move(uploadTask));
     }
 
 #ifdef SK_ENABLE_PIET_GPU
@@ -1023,7 +1023,7 @@ void Device::flushPendingWorkToRecorder() {
     fClip.recordDeferredClipDraws();
     auto drawTask = fDC->snapRenderPassTask(fRecorder);
     if (drawTask) {
-        fRecorder->priv().add(std::move(drawTask));
+        fRecorder->priv().add2(std::move(drawTask));
     }
 
     // Reset accumulated state tracking since everything that it referred to has been moved into
