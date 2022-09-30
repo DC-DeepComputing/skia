@@ -28,3 +28,10 @@ filegroup(
     ],
     visibility = ["//tools:__subpackages__"],
 )
+
+filegroup(
+    name = "test_empty_typeface",
+    testonly = True,
+    srcs = ["TestEmptyTypeface.h"],
+    visibility = ["//tests:__pkg__"],
+)
