@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "330e171e_924212b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-30T21:01:30Z",
+      "side": 1,
+      "message": "CL description needs to be updated, but code looks ok",
+      "revId": "23b0396b03953cad3cf2478c5dd6eeeaa6e7fc20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
