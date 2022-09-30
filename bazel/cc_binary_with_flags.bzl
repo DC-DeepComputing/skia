@@ -35,6 +35,7 @@ _string_list_flags = [
 
 # These are the flags that we support setting via set_flags
 _flags = _bool_flags + _string_flags + _string_list_flags
+L
 
 def _flag_transition_impl(settings, attr):
     rv = {}
