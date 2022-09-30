@@ -58,8 +58,7 @@ const char* alphatype_name(SkAlphaType at) {
         case kPremul_SkAlphaType:   return "Premul";
         case kUnpremul_SkAlphaType: return "Unpremul";
     }
-    SkASSERT(false);
-    return "unexpected alphatype";
+    SkUNREACHABLE;
 }
 
 const char* colortype_name(SkColorType ct) {
@@ -88,8 +87,7 @@ const char* colortype_name(SkColorType ct) {
         case kR16G16B16A16_unorm_SkColorType: return "R16G16B16A16_unorm";
         case kR8_unorm_SkColorType:           return "R8_unorm";
     }
-    SkASSERT(false);
-    return "unexpected colortype";
+    SkUNREACHABLE;
 }
 
 const char* colortype_depth(SkColorType ct) {
@@ -109,17 +107,16 @@ const char* colortype_depth(SkColorType ct) {
         case kRGB_101010x_SkColorType:        return "101010";
         case kBGR_101010x_SkColorType:        return "101010";
         case kGray_8_SkColorType:             return "G8";
-        case kRGBA_F16Norm_SkColorType:       return "F16Norm";  // TODO: "F16"?
+        case kRGBA_F16Norm_SkColorType:       return "F16Norm";
         case kRGBA_F16_SkColorType:           return "F16";
         case kRGBA_F32_SkColorType:           return "F32";
         case kR8G8_unorm_SkColorType:         return "88";
         case kR16G16_unorm_SkColorType:       return "1616";
         case kR16G16_float_SkColorType:       return "F16F16";
         case kR16G16B16A16_unorm_SkColorType: return "16161616";
-        case kR8_unorm_SkColorType:           return "8";
+        case kR8_unorm_SkColorType:           return "R8";
     }
-    SkASSERT(false);
-    return "unexpected colortype";
+    SkUNREACHABLE;
 }
 
 const char* tilemode_name(SkTileMode mode) {
@@ -129,8 +126,7 @@ const char* tilemode_name(SkTileMode mode) {
         case SkTileMode::kMirror: return "mirror";
         case SkTileMode::kDecal:  return "decal";
     }
-    SkASSERT(false);
-    return "unexpected tilemode";
+    SkUNREACHABLE;
 }
 
 SkColor color_to_565(SkColor color) {
@@ -175,8 +171,39 @@ void draw_checkerboard(SkCanvas* canvas, SkColor c1, SkColor c2, int size) {
     canvas->drawPaint(paint);
 }
 
-SkBitmap
-create_string_bitmap(int w, int h, SkColor c, int x, int y, int textSize, const char* str) {
+int make_pixmaps(SkColorType ct,
+                 bool withMips,
+                 const SkColor4f colors[6],
+                 SkPixmap pixmaps[6],
+                 std::unique_ptr<char[]>* mem) {
+
+    int levelSize = 32;
+    int numMipLevels = withMips ? 6 : 1;
+    size_t size = 0;
+    SkImageInfo ii[6];
+    size_t rowBytes[6];
+    for (int level = 0; level < numMipLevels; ++level) {
+        ii[level] = SkImageInfo::Make(levelSize, levelSize, ct, kUnpremul_SkAlphaType);
+        rowBytes[level] = ii[level].minRowBytes();
+        // Make sure we test row bytes that aren't tight.
+        if (!(level % 2)) {
+            rowBytes[level] += (level + 1)*SkColorTypeBytesPerPixel(ii[level].colorType());
+        }
+        size += rowBytes[level]*ii[level].height();
+        levelSize /= 2;
+    }
+    mem->reset(new char[size]);
+    char* addr = mem->get();
+    for (int level = 0; level < numMipLevels; ++level) {
+        pixmaps[level].reset(ii[level], addr, rowBytes[level]);
+        addr += rowBytes[level]*ii[level].height();
+        pixmaps[level].erase(colors[level]);
+    }
+    return numMipLevels;
+}
+
+SkBitmap create_string_bitmap(int w, int h, SkColor c, int x, int y, int textSize,
+                              const char* str) {
     SkBitmap bitmap;
     bitmap.allocN32Pixels(w, h);
     SkCanvas canvas(bitmap);
