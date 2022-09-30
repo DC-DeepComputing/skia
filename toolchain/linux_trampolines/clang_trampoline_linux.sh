@@ -27,6 +27,7 @@ supported_files_or_dirs=(
   "src/svg/"
   "src/utils/"
   "tools/debugger/"
+  "tests/"
 )
 
 function opted_in_to_IWYU_checks() {
