@@ -15,7 +15,7 @@
 
 class GrRecordingContext;
 
-namespace skgpu::v1 {
+namespace skgpu::ganesh {
 
 class AtlasTextOp final : public GrMeshDrawOp {
 public:
@@ -100,7 +100,7 @@ public:
     inline static constexpr int kMaskTypeCount = static_cast<int>(MaskType::kLast) + 1;
 
 #if GR_TEST_UTILS
-    static GrOp::Owner CreateOpTestingOnly(skgpu::v1::SurfaceDrawContext*,
+    static GrOp::Owner CreateOpTestingOnly(v1::SurfaceDrawContext*,
                                            const SkPaint&,
                                            const SkFont&,
                                            const SkMatrixProvider&,
@@ -247,6 +247,6 @@ private:
     using INHERITED = GrMeshDrawOp;
 };
 
-} // namespace skgpu::v1
+} // namespace skgpu::ganesh
 
 #endif // AtlasTextOp_DEFINED
