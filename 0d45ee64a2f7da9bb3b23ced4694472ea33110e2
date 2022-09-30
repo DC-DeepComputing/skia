@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dc2aeaa_71f6b986",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T16:02:34Z",
+      "side": 1,
+      "message": "Don\u0027t need an `optional` for this since it\u0027s always present. The declaration of `SkFontMgr_New_Empty()` could be in `SkFontMgr.h` and the implementation could be in `SkFontMgr.cpp`. (Also the `SkFontMgr::RefDefault` implementation could use this.)",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6501a90_6c57657e",
+        "filename": "src/ports/SkFontMgr_nodeps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T16:02:34Z",
+      "side": 1,
+      "message": "This should be `SkFontMgr_Empty`. `SkFontMgr_Custom_Empty` was named that way so that an actual `SkFontMgr_Empty` could be introduced. The implementation detail that it has no dependencies isn\u0027t really relevant, there is also `FontMgr` in `TestFontMgr.cpp` which technically has no dependencies outside of Skia either but provides several \"system\" fonts.",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4a1c66e_1ccb2863",
+        "filename": "src/ports/SkFontMgr_nodeps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T16:02:34Z",
+      "side": 1,
+      "message": "If you\u0027re making a new one each time, then this should be `SkFontMgr_New_Empty`",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
