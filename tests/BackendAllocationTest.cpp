@@ -34,6 +34,11 @@
 #include "src/gpu/ganesh/mtl/GrMtlCppUtil.h"
 #endif
 
+#ifdef SK_DIRECT3D
+#include "include/private/gpu/ganesh/GrD3DTypesMinimal.h"
+//#include "include/gpu/d3d/GrD3DTypes.h"
+#endif
+
 using sk_gpu_test::ManagedBackendTexture;
 
 // Test wrapping of GrBackendObjects in SkSurfaces and SkImages (non-static since used in Mtl test)
@@ -131,7 +136,9 @@ static bool isBGRA8(const GrBackendFormat& format) {
         case GrBackendApi::kVulkan: {
 #ifdef SK_VULKAN
             VkFormat vkFormat;
-            format.asVkFormat(&vkFormat);
+            if (!format.asVkFormat(&vkFormat)) {
+                return false;
+            }
             return vkFormat == VK_FORMAT_B8G8R8A8_UNORM;
 #else
             return false;
@@ -143,20 +150,28 @@ static bool isBGRA8(const GrBackendFormat& format) {
 #else
             return false;
 #endif
-        case GrBackendApi::kDirect3D:
+        case GrBackendApi::kDirect3D: {
 #ifdef SK_DIRECT3D
-            return false; // TODO
+            DXGI_FORMAT d3dFormat;
+            if (!format.asDxgiFormat(&d3dFormat)) {
+                return false;
+            }
+            return d3dFormat == DXGI_FORMAT_B8G8R8A8_UNORM;
 #else
             return false;
 #endif
-        case GrBackendApi::kDawn:
+        }
+        case GrBackendApi::kDawn: {
 #ifdef SK_DAWN
             wgpu::TextureFormat dawnFormat;
-            format.asDawnFormat(&dawnFormat);
+            if (!format.asDawnFormat(&dawnFormat)) {
+                return false;
+            }
             return dawnFormat == wgpu::TextureFormat::BGRA8Unorm;
 #else
             return false;
 #endif
+        }
         case GrBackendApi::kMock: {
             SkImage::CompressionType compression = format.asMockCompressionType();
             if (compression != SkImage::CompressionType::kNone) {
@@ -193,7 +208,7 @@ static bool isRGB(const GrBackendFormat& format) {
         case GrBackendApi::kDawn:
             return false;
         case GrBackendApi::kMock:
-            return false;  // No GrColorType::kRGB_888
+            return format.asMockColorType() == GrColorType::kRGB_888;
     }
     SkUNREACHABLE;
 }
@@ -431,37 +446,6 @@ static void check_mipmaps(GrDirectContext* dContext,
     }
 }
 
-static int make_pixmaps(SkColorType skColorType,
-                        GrMipmapped mipmapped,
-                        const SkColor4f colors[6],
-                        SkPixmap pixmaps[6],
-                        std::unique_ptr<char[]>* mem) {
-    int levelSize = 32;
-    int numMipLevels = mipmapped == GrMipmapped::kYes ? 6 : 1;
-    size_t size = 0;
-    SkImageInfo ii[6];
-    size_t rowBytes[6];
-    for (int level = 0; level < numMipLevels; ++level) {
-        ii[level] = SkImageInfo::Make(levelSize, levelSize, skColorType, kUnpremul_SkAlphaType);
-        rowBytes[level] = ii[level].minRowBytes();
-        // Make sure we test row bytes that aren't tight.
-        if (!(level % 2)) {
-            rowBytes[level] += (level + 1)*SkColorTypeBytesPerPixel(ii[level].colorType());
-        }
-        size += rowBytes[level]*ii[level].height();
-        levelSize /= 2;
-    }
-    mem->reset(new char[size]);
-    char* addr = mem->get();
-    for (int level = 0; level < numMipLevels; ++level) {
-        pixmaps[level].reset(ii[level], addr, rowBytes[level]);
-        addr += rowBytes[level]*ii[level].height();
-        pixmaps[level].erase(colors[level]);
-        levelSize /= 2;
-    }
-    return numMipLevels;
-}
-
 // Test initialization of GrBackendObjects using SkPixmaps
 static void test_pixmap_init(GrDirectContext* dContext,
                              skiatest::Reporter* reporter,
@@ -476,16 +460,17 @@ static void test_pixmap_init(GrDirectContext* dContext,
                              GrRenderable renderable) {
     SkPixmap pixmaps[6];
     std::unique_ptr<char[]> memForPixmaps;
-    SkColor4f colors[6] = {
-        { 1.0f, 0.0f, 0.0f, 1.0f }, // R
-        { 0.0f, 1.0f, 0.0f, 0.9f }, // G
-        { 0.0f, 0.0f, 1.0f, 0.7f }, // B
-        { 0.0f, 1.0f, 1.0f, 0.5f }, // C
-        { 1.0f, 0.0f, 1.0f, 0.3f }, // M
-        { 1.0f, 1.0f, 0.0f, 0.2f }, // Y
+    constexpr SkColor4f kColors[6] = {
+            { 1.0f, 0.0f, 0.0f, 1.0f }, // R
+            { 0.0f, 1.0f, 0.0f, 0.9f }, // G
+            { 0.0f, 0.0f, 1.0f, 0.7f }, // B
+            { 0.0f, 1.0f, 1.0f, 0.5f }, // C
+            { 1.0f, 0.0f, 1.0f, 0.3f }, // M
+            { 1.0f, 1.0f, 0.0f, 0.2f }, // Y
     };
 
-    int numMipLevels = make_pixmaps(skColorType, mipmapped, colors, pixmaps, &memForPixmaps);
+    int numMipLevels = ToolUtils::make_pixmaps(skColorType, mipmapped == GrMipmapped::kYes,
+                                               kColors, pixmaps, &memForPixmaps);
     SkASSERT(numMipLevels);
 
     sk_sp<ManagedBackendTexture> mbet = create(dContext, pixmaps, numMipLevels, origin, renderable);
@@ -499,7 +484,7 @@ static void test_pixmap_init(GrDirectContext* dContext,
         return;
     }
 
-    auto checkBackendTexture = [&](SkColor4f colors[6]) {
+    auto checkBackendTexture = [&](const SkColor4f colors[6]) {
         GrColorType grColorType = SkColorTypeToGrColorType(skColorType);
         if (mipmapped == GrMipmapped::kYes) {
             SkColor4f expectedColors[6] = {
@@ -520,9 +505,9 @@ static void test_pixmap_init(GrDirectContext* dContext,
                              reporter, "pixmap");
     };
 
-    checkBackendTexture(colors);
+    checkBackendTexture(kColors);
 
-    SkColor4f colorsNew[6] = {
+    constexpr SkColor4f kColorsNew[6] = {
         {1.0f, 1.0f, 0.0f, 0.2f},  // Y
         {1.0f, 0.0f, 0.0f, 1.0f},  // R
         {0.0f, 1.0f, 0.0f, 0.9f},  // G
@@ -530,7 +515,8 @@ static void test_pixmap_init(GrDirectContext* dContext,
         {0.0f, 1.0f, 1.0f, 0.5f},  // C
         {1.0f, 0.0f, 1.0f, 0.3f},  // M
     };
-    make_pixmaps(skColorType, mipmapped, colorsNew, pixmaps, &memForPixmaps);
+    ToolUtils::make_pixmaps(skColorType, mipmapped == GrMipmapped::kYes,
+                            kColorsNew, pixmaps, &memForPixmaps);
 
     // Upload new data and make sure everything still works
     dContext->updateBackendTexture(mbet->texture(),
@@ -540,7 +526,7 @@ static void test_pixmap_init(GrDirectContext* dContext,
                                    ManagedBackendTexture::ReleaseProc,
                                    mbet->releaseContext());
 
-    checkBackendTexture(colorsNew);
+    checkBackendTexture(kColorsNew);
 }
 
 enum class VkLayout {
