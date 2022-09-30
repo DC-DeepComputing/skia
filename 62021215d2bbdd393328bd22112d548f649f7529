@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8c736170_7c467e0e",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-09-30T14:55:31Z",
+      "side": 1,
+      "message": "One option (to reduce future changes) would be to put a \"using namespace skgpu::ganesh\" right above this line.",
+      "revId": "62021215d2bbdd393328bd22112d548f649f7529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a268aa28_5ef9fc39",
         "filename": "src/gpu/ganesh/ops/AtlasTextOp.cpp",
         "patchSetId": 10
