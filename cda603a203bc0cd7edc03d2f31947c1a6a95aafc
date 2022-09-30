@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26dd34bb_d04885d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-30T21:00:12Z",
+      "side": 1,
+      "message": "To be honest I do not understand what happened. I cannot even look at the history because my office computer rebooted out of sudden just about that time and the history was lost...",
+      "revId": "cda603a203bc0cd7edc03d2f31947c1a6a95aafc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
