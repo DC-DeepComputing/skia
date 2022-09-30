@@ -52,6 +52,24 @@
       "parentUuid": "e6e2bfcb_a78d36a6",
       "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa70d369_5330d434",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T15:48:53Z",
+      "side": 1,
+      "message": "Starting with `%.6g` and working our way up to `%.9g` until we get an exact round-trip match seems to have done the trick.",
+      "parentUuid": "cd228908_20dedf73",
+      "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
