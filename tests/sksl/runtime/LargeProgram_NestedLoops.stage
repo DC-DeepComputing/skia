@@ -14,5 +14,5 @@ half4 main(float2 xy)
 			}
 		}
 	}
-	return half4(half4(0.0));
+	return half4(half4(0.));
 }

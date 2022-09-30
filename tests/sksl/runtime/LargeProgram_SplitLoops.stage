@@ -22,5 +22,5 @@ half4 main(float2 xy)
 {
 	int i = 0;
 	a_0(i);
-	return half4(half4(0.0));
+	return half4(half4(0.));
 }

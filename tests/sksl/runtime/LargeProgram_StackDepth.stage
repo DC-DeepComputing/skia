@@ -8,6 +8,6 @@ half4 main(float2 xy)
 }
 void f2_0()
 {
-	color_0 = half4(1.0);
+	color_0 = half4(1.);
 	false;
 }

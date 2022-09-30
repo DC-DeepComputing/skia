@@ -10,7 +10,7 @@ bool test_same_types_0(bool eq, float f1, float v2, float f3, float f4, float f5
 bool test_diff_types_0(bool eq, float f1, float v2, float f3, float f4, float f5, float f6);
 bool test_same_types_0(bool eq, float f1, float v2, float f3, float f4, float f5, float f6)
 {
-	float one = float(colorGreen.x + 1.0);
+	float one = float(colorGreen.x + 1.);
 	S_0 a[2];
 	a[0].f1 = f1;
 	a[0].v2 = float2(v2, f3);
@@ -25,7 +25,7 @@ bool test_same_types_0(bool eq, float f1, float v2, float f3, float f4, float f5
 }
 bool test_diff_types_0(bool eq, float f1, float v2, float f3, float f4, float f5, float f6)
 {
-	float two = float(colorGreen.x + 2.0);
+	float two = float(colorGreen.x + 2.);
 	S_0 a[2];
 	a[0].f1 = f1;
 	a[0].v2 = float2(v2, f3);
@@ -44,15 +44,15 @@ float4 main(float2 coords)
 	float NAN2 = float(colorGreen.z / colorGreen.x);
 	float ZP = float(colorGreen.x * colorGreen.z);
 	float ZM = float(-colorGreen.x * colorGreen.z);
-	float F42 = float(colorGreen.y * 42.0);
-	float F43 = float(colorGreen.y * 43.0);
-	float F44 = float(colorGreen.y * 44.0);
-	float F45 = float(colorGreen.y * 45.0);
-	float F46 = float(colorGreen.y * 46.0);
-	float F47 = float(colorGreen.y * 47.0);
+	float F42 = float(colorGreen.y * 42.);
+	float F43 = float(colorGreen.y * 43.);
+	float F44 = float(colorGreen.y * 44.);
+	float F45 = float(colorGreen.y * 45.);
+	float F46 = float(colorGreen.y * 46.);
+	float F47 = float(colorGreen.y * 47.);
 	bool EQ = true;
 	bool NE = false;
-	float _0_one = float(colorGreen.x + 1.0);
+	float _0_one = float(colorGreen.x + 1.);
 	S_0 _1_a[2];
 	_1_a[0].f1 = F42;
 	_1_a[0].v2 = float2(ZM, ZP);

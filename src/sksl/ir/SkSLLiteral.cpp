@@ -1,0 +1,47 @@
+/*
+ * Copyright 2022 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "include/private/SkStringView.h"
+#include "src/sksl/ir/SkSLLiteral.h"
+
+namespace SkSL {
+
+std::string Literal::description(OperatorPrecedence) const {
+    if (this->type().isBoolean()) {
+        return fValue ? "true" : "false";
+    }
+    if (this->type().isInteger()) {
+        return std::to_string(this->intValue());
+    }
+    // Attempt to find a compact, but accurate, representation of this float value.
+    std::string text;
+    float value = this->floatValue();
+    for (int width = 6; width <= 9; ++width) {
+        text = SkSL::String::printf("%.*g", width, value);
+        if (std::stof(text) == value) {
+            break;
+        }
+    }
+    // %.9g should be enough precision to match any float input.
+    // https://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/
+    SkASSERT(std::stof(text) == value);
+
+    // %g might not emit a decimal point, but we need one to distinguish floats from ints.
+    if (!skstd::contains(text, '.') && !skstd::contains(text, 'e')) {
+        text.push_back('.');
+    }
+    if (skstd::starts_with(text, "0.") && text.size() >= 3) {
+        // `0.5` can be represented more succinctly as `.5`.
+        text.erase(0, 1);
+    } else if (skstd::starts_with(text, "-0.") && text.size() >= 4) {
+        // `-0.5` can be represented more succinctly as `-.5`.
+        text.erase(1, 1);
+    }
+    return text;
+}
+
+}  // namespace SkSL
