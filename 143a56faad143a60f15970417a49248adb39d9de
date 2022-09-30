@@ -1,0 +1,250 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3910f7ad_e9b93675",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Most of this is formatting stuff, but the math looks more or less what I would expect. Playing around with this in viewer and sliding all the sliders seems to do what I expect, at least, though I\u0027m not 100% sure I\u0027ve looked at all the possible interesting cases.",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47068ea_3990cf18",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "I think there should be a comment here that this lerp is doing a linear interpolation on logarithmic values of brightness per channel but should be the same lerp done by the gradient shader which may be different. Now, we\u0027re at the moment usually drawing into an N32 surface for which this is true (the gradients are always too dark in the middle), but if we ever wanted to change that this would also need to be re-visited. However, with glyphs as drawables this may not always be the case anymore, and gradients may draw differently depending on the destination (I hadn\u0027t considered this before with glyphs as drawables, but I should go think about it now).",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a893ccd1_84bd8d2a",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "nit: four spaces",
+      "range": {
+        "startLine": 435,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 2
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55f35dd_b49f0dda",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 442,
+        "startChar": 33,
+        "endLine": 442,
+        "endChar": 41
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82abe126_56183dd8",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Not a nit: Can\u0027t dereference `std::vector::end()`. I think we want `*(stops.end()-1)`?\n\n\nnit: I rather prefer this like\n\n```\nif (stops.size \u003c\u003d 1u) ||\n   (zeroRadiusStop \u003c *stops.begin() || *(stops.end()-1) \u003c zeroRadiusStop)\n{\n```\n\nTo make it obvious that even if there were no stops (I suppose we could `SkASSERT` at least one stop) this would just return, as well as make it obvious that this is a range check for `zeroRadiusStop` being outside the `stops` range. And when the `if` predicate is split across multiple lines I just find it easier to read if the `{` is on its own line so I can scan for where the predicate ends without getting confused.",
+      "range": {
+        "startLine": 446,
+        "startChar": 8,
+        "endLine": 447,
+        "endChar": 42
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c2dd207_f267beeb",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Renaming `zeroRadiusColorStop` to `zeroRadiusStop` would make more things fit on lines. Also, the other stops here don\u0027t have \"color\" in the name so it\u0027s also consistent.",
+      "range": {
+        "startLine": 454,
+        "startChar": 61,
+        "endLine": 454,
+        "endChar": 80
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85bfc3b9_66daf817",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "I think the assignment and parallelism is easier to spot here if this is all like\n\n```\nconst size_t afterIndex \u003d (truncateStops \u003d\u003d TruncateStart)\n    ? std::lower_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin()\n    : std::upper_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin();\n```",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f357b7b7_b5a42ac4",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Might want to give this last parameter a name (even if just `t`) so this all fits on one line and a bit easier to scan. Actually, only `t` needs to be named here for everything to fit nicely (`beforeColor` and `afterColor` don\u0027t need names and can be inlined). Also, `t` should be marked `const float` when calculated so I don\u0027t need to consider if it\u0027s going to change later (it really does go out of scope immediately, but it\u0027s ugly to actually put the braces in to denote that).",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdd6fd72_d6995290",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "nit: with previous line?",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2f9153_f6e767f0",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Here again, renaming this to `zeroRadiusStop` makes things fit on lines nicely.",
+      "range": {
+        "startLine": 831,
+        "startChar": 33,
+        "endLine": 831,
+        "endChar": 52
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f6c493_95595418",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "`zeroRadiusStop`",
+      "range": {
+        "startLine": 843,
+        "startChar": 33,
+        "endLine": 843,
+        "endChar": 52
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "796d710b_d9cd55d1",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T17:09:33Z",
+      "side": 1,
+      "message": "Something like\n\n`0.f \u003c\u003d factorZeroCrossing \u0026\u0026 factorZeroCrossing \u003c\u003d 1.0f`\n\nmakes it more obvious that this is testing that `factorZeroCrossing` is in this range.\n\nIn fact, this formatting is tortuous, partially because we\u0027re so far indented here. May be worth pulling this out into a\n\n`bool inRange \u003d 0.f \u003c\u003d factorZeroCrossing \u0026\u0026 factorZeroCrossing \u003c\u003d 1.0f`\n\nso that the `direction` calculation all fits on one line.",
+      "range": {
+        "startLine": 885,
+        "startChar": 33,
+        "endLine": 885,
+        "endChar": 88
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
