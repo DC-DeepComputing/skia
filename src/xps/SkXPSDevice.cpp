@@ -1274,7 +1274,7 @@ static HRESULT close_figure(const SkTDArray<XPS_SEGMENT_TYPE>& segmentTypes,
     // even if the counts are all 0.
     if (!segmentTypes.empty() && !segmentData.empty() && !segmentStrokes.empty()) {
         // Add the segment data to the figure.
-        HRM(figure->SetSegments(segmentTypes.count(), segmentData.count(),
+        HRM(figure->SetSegments(segmentTypes.size(), segmentData.size(),
                                 segmentTypes.begin(), segmentData.begin(), segmentStrokes.begin()),
             "Could not set path segments.");
     }
@@ -1306,9 +1306,9 @@ HRESULT SkXPSDevice::addXpsPathGeometry(
                     HR(close_figure(segmentTypes, segmentData, segmentStrokes,
                                     stroke, fill,
                                     xpsFigure.get() , xpsFigures));
-                    segmentTypes.rewind();
-                    segmentData.rewind();
-                    segmentStrokes.rewind();
+                    segmentTypes.clear();
+                    segmentData.clear();
+                    segmentStrokes.clear();
                     xpsFigure.reset();
                 }
                 // Define the start point.
