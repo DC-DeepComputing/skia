@@ -33,6 +33,24 @@
       "message": "IIRC this does show up on Chrome perf bots.",
       "revId": "8170ec27c6617f980e19d666d84cedf480b2a5d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1931515c_8f869e2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-30T12:33:31Z",
+      "side": 1,
+      "message": "I\u0027m not surprised - I expect some amount of regression. I\u0027m hoping it\u0027s small enough that I can make the case to remove it, regardless.",
+      "parentUuid": "28ca51f3_80176a73",
+      "revId": "8170ec27c6617f980e19d666d84cedf480b2a5d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
