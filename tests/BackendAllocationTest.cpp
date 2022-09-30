@@ -34,6 +34,11 @@
 #include "src/gpu/ganesh/mtl/GrMtlCppUtil.h"
 #endif
 
+#ifdef SK_DIRECT3D
+#include "include/private/gpu/ganesh/GrD3DTypesMinimal.h"
+//#include "include/gpu/d3d/GrD3DTypes.h"
+#endif
+
 using sk_gpu_test::ManagedBackendTexture;
 
 // Test wrapping of GrBackendObjects in SkSurfaces and SkImages (non-static since used in Mtl test)
@@ -131,7 +136,9 @@ static bool isBGRA8(const GrBackendFormat& format) {
         case GrBackendApi::kVulkan: {
 #ifdef SK_VULKAN
             VkFormat vkFormat;
-            format.asVkFormat(&vkFormat);
+            if (!format.asVkFormat(&vkFormat)) {
+                return false;
+            }
             return vkFormat == VK_FORMAT_B8G8R8A8_UNORM;
 #else
             return false;
@@ -143,20 +150,28 @@ static bool isBGRA8(const GrBackendFormat& format) {
 #else
             return false;
 #endif
-        case GrBackendApi::kDirect3D:
+        case GrBackendApi::kDirect3D: {
 #ifdef SK_DIRECT3D
-            return false; // TODO
+            DXGI_FORMAT d3dFormat;
+            if (!format.asDxgiFormat(&d3dFormat)) {
+                return false;
+            }
+            return d3dFormat == DXGI_FORMAT_B8G8R8A8_UNORM;
 #else
             return false;
 #endif
-        case GrBackendApi::kDawn:
+        }
+        case GrBackendApi::kDawn: {
 #ifdef SK_DAWN
             wgpu::TextureFormat dawnFormat;
-            format.asDawnFormat(&dawnFormat);
+            if (!format.asDawnFormat(&dawnFormat)) {
+                return false;
+            }
             return dawnFormat == wgpu::TextureFormat::BGRA8Unorm;
 #else
             return false;
 #endif
+        }
         case GrBackendApi::kMock: {
             SkImage::CompressionType compression = format.asMockCompressionType();
             if (compression != SkImage::CompressionType::kNone) {
@@ -193,7 +208,7 @@ static bool isRGB(const GrBackendFormat& format) {
         case GrBackendApi::kDawn:
             return false;
         case GrBackendApi::kMock:
-            return false;  // No GrColorType::kRGB_888
+            return format.asMockColorType() == GrColorType::kRGB_888;
     }
     SkUNREACHABLE;
 }
