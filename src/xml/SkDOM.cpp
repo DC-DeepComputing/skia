@@ -202,7 +202,7 @@ protected:
     void flushAttributes() {
         SkASSERT(fLevel > 0);
 
-        int attrCount = fAttrs.count();
+        int attrCount = fAttrs.size();
 
         SkDOMAttr* attrs = fAlloc->makeArrayDefault<SkDOMAttr>(attrCount);
         SkDOM::Node* node = fAlloc->make<SkDOM::Node>();
@@ -248,7 +248,7 @@ protected:
 
         SkDOM::Node* parent;
 
-        fParentStack.pop(&parent);
+        fParentStack.pop_back(&parent);
 
         SkDOM::Node* child = parent->fFirstChild;
         SkDOM::Node* prev = nullptr;
