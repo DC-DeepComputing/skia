@@ -12,12 +12,12 @@ float index_clamped_out_of_bounds_0()
 }
 float4 main(float2 xy)
 {
-	float _0_sum = 0.0;
+	float _0_sum = 0.;
 	for (int _1_i = 0;_1_i < 4; ++_1_i) 
 	{
 		_0_sum += u2[_1_i];
 	}
-	float _2_prod = 1.0;
+	float _2_prod = 1.;
 	for (int _3_i = 0;_3_i < 4; ++_3_i) 
 	{
 		_2_prod *= u3[_3_i < 2 ? 0 : _3_i];

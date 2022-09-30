@@ -11,7 +11,7 @@ bool test_same_structs_0(bool eq, float f1, float f2, float f3);
 bool test_diff_structs_0(bool eq, float f1, float f2, float f3);
 bool test_same_structs_0(bool eq, float f1, float f2, float f3)
 {
-	float one = float(colorGreen.x + 1.0);
+	float one = float(colorGreen.x + 1.);
 	S_0 a;
 	a.f1 = f1;
 	a.f2 = f2;
@@ -24,7 +24,7 @@ bool test_same_structs_0(bool eq, float f1, float f2, float f3)
 }
 bool test_diff_structs_0(bool eq, float f1, float f2, float f3)
 {
-	float two = float(colorGreen.x + 2.0);
+	float two = float(colorGreen.x + 2.);
 	S_0 a;
 	a.f1 = f1;
 	a.f2 = f2;
@@ -41,12 +41,12 @@ float4 main(float2 coords)
 	float NAN2 = float(colorGreen.z / colorGreen.x);
 	float ZP = float(colorGreen.x * colorGreen.z);
 	float ZM = float(-colorGreen.x * colorGreen.z);
-	float F42 = float(colorGreen.y * 42.0);
-	float F43 = float(colorGreen.y * 43.0);
-	float F44 = float(colorGreen.y * 44.0);
+	float F42 = float(colorGreen.y * 42.);
+	float F43 = float(colorGreen.y * 43.);
+	float F44 = float(colorGreen.y * 44.);
 	bool EQ = true;
 	bool NE = false;
-	float _0_one = float(colorGreen.x + 1.0);
+	float _0_one = float(colorGreen.x + 1.);
 	S_0 _1_a;
 	_1_a.f1 = F42;
 	_1_a.f2 = ZM;
