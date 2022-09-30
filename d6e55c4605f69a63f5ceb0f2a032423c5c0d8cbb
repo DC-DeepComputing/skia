@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f31fb9_debcf777",
+        "filename": "tests/sksl/runtime/ArrayIndexing.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "3.7",
+      "range": {
+        "startLine": 34,
+        "startChar": 42,
+        "endLine": 34,
+        "endChar": 52
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5c13131_2bebaabb",
+        "filename": "tests/sksl/runtime/ArrayIndexing.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "-2.3",
+      "range": {
+        "startLine": 34,
+        "startChar": 17,
+        "endLine": 34,
+        "endChar": 27
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7594b3d4_e2c0f84b",
+        "filename": "tests/sksl/runtime/LoopFloat.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "0.6",
+      "range": {
+        "startLine": 56,
+        "startChar": 32,
+        "endLine": 56,
+        "endChar": 43
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94122830_4479c703",
+        "filename": "tests/sksl/runtime/LoopFloat.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "0.123",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 27
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e8daf5c_d84f5283",
+        "filename": "tests/sksl/runtime/LoopFloat.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "0.111",
+      "range": {
+        "startLine": 56,
+        "startChar": 50,
+        "endLine": 56,
+        "endChar": 61
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27de02ff_753e0e58",
+        "filename": "tests/sksl/runtime/LoopFloat.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:34:20Z",
+      "side": 1,
+      "message": "1.725",
+      "range": {
+        "startLine": 60,
+        "startChar": 14,
+        "endLine": 60,
+        "endChar": 24
+      },
+      "revId": "d6e55c4605f69a63f5ceb0f2a032423c5c0d8cbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
