@@ -99,16 +99,7 @@ public:
         return fValue;
     }
 
-    std::string description(OperatorPrecedence) const override {
-        if (this->type().isFloat()) {
-            return skstd::to_string(this->floatValue());
-        }
-        if (this->type().isInteger()) {
-            return std::to_string(this->intValue());
-        }
-        SkASSERT(this->type().isBoolean());
-        return fValue ? "true" : "false";
-    }
+    std::string description(OperatorPrecedence) const override;
 
     ComparisonResult compareConstant(const Expression& other) const override {
         if (!other.is<Literal>() || this->type().numberKind() != other.type().numberKind()) {
