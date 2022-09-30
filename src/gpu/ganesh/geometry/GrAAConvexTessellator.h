@@ -69,7 +69,7 @@ private:
     class CandidateVerts {
     public:
         void setReserve(int numPts) { fPts.reserve(numPts); }
-        void rewind() { fPts.rewind(); }
+        void rewind() { fPts.clear(); }
 
         int numPts() const { return fPts.count(); }
 
@@ -129,7 +129,7 @@ private:
     class Ring {
     public:
         void setReserve(int numPts) { fPts.reserve(numPts); }
-        void rewind() { fPts.rewind(); }
+        void rewind() { fPts.clear(); }
 
         int numPts() const { return fPts.count(); }
 
