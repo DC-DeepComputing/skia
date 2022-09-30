@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f053b90_c64c00e2",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-30T17:30:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1dc2aeaa_71f6b986",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6501a90_6c57657e",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bb7185a_98c25c7f",
+        "filename": "src/ports/SkFontMgr_nodeps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-30T17:30:06Z",
+      "side": 1,
+      "message": "I found SkEmptyFontMgr in SkFontMgr that is exactly what I need.",
+      "parentUuid": "c6501a90_6c57657e",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4a1c66e_1ccb2863",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-09-30T16:02:34Z",
       "side": 1,
       "message": "If you\u0027re making a new one each time, then this should be `SkFontMgr_New_Empty`",
+      "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4361bb5_1a4ba4a8",
+        "filename": "src/ports/SkFontMgr_nodeps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-09-30T17:30:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4a1c66e_1ccb2863",
       "revId": "0d45ee64a2f7da9bb3b23ced4694472ea33110e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
