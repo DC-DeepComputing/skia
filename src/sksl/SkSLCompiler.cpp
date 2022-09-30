@@ -353,6 +353,10 @@ bool Compiler::optimizeModuleAfterLoading(ProgramKind kind,
         // Removing dead variables may cause more variables to become unreferenced. Try again.
     }
 
+    while (Transform::EliminateDeadGlobalVariables(this->context(), module, usage.get(),
+                                                   /*onlyPrivateGlobals=*/true)) {
+        // Removing dead variables may cause more variables to become unreferenced. Try again.
+    }
     // Note that we intentionally don't attempt to eliminate unreferenced global variables or
     // functions here, since those can be referenced by the finished program even if they're
     // unreferenced now.
