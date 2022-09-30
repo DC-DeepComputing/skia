@@ -16,6 +16,29 @@
       "message": "Brian needs to sign off on two public API files.",
       "revId": "5876cc2bd2b78e301ed3fc2c50351ebb4fa31c52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb08687d_397bc383",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T21:34:02Z",
+      "side": 1,
+      "message": "tiny nit: indenting",
+      "range": {
+        "startLine": 701,
+        "startChar": 45,
+        "endLine": 701,
+        "endChar": 46
+      },
+      "revId": "5876cc2bd2b78e301ed3fc2c50351ebb4fa31c52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
