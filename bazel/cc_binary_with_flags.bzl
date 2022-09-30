@@ -58,7 +58,7 @@ def _flag_transition_impl(settings, attr):
                 rv[key] = flag_setting  # we know flag_setting is a string (e.g. the default).
         elif key in _bool_flags:
             if type(flag_setting) == "list":
-                rv[key] = flag_setting[0] == "True"
+                rv[key] = flag_setting[0].lower() == "true"
             else:
                 rv[key] = flag_setting  # flag_setting will be a boolean, the default
     return rv
