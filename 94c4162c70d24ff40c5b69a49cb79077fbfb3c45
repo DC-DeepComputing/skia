@@ -16,6 +16,24 @@
       "message": "Are we worried about losing information here? I think .7g isn\u0027t enough to guarantee round-trip results (even on a particular machine). See the following two articles:\n\nhttps://randomascii.wordpress.com/2012/03/08/float-precisionfrom-zero-to-100-digits-2/\n  -and-\nhttps://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/",
       "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e2bfcb_a78d36a6",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:20:09Z",
+      "side": 1,
+      "message": "In theory, %.9g is the perfect format string for round-tripping values safely. However, in practice, both %.9g and %.8g introduced nonsense rounding-error data and re-bloated the values. With %.7g we actually get input that looks like the original program.\n\nMaybe if `Literal::description()` used `%.9g` as well...? I could experiment with that.\n\n%.8g: http://screen/4muehFbAcXx38py\n\n%.9g: http://screen/4Vo2WpLauNeDSJZ",
+      "parentUuid": "ebdb2c68_6e60e53d",
+      "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
