@@ -58,19 +58,19 @@ static GrOp::Owner create_op(GrDirectContext* dContext, SkRect rect,
     quad.fLocal = GrQuad(rect);
     quad.fEdgeFlags = isAA ? GrQuadAAFlags::kAll : GrQuadAAFlags::kNone;
 
-    return skgpu::v1::TextureOp::Make(dContext,
-                                      proxyView,
-                                      kPremul_SkAlphaType,
-                                      nullptr,
-                                      GrSamplerState::Filter::kNearest,
-                                      GrSamplerState::MipmapMode::kNone,
-                                      {1.f, 1.f, 1.f, 1.f},
-                                      skgpu::v1::TextureOp::Saturate::kYes,
-                                      SkBlendMode::kSrcOver,
-                                      isAA ? GrAAType::kCoverage
-                                           : GrAAType::kNone,
-                                      &quad,
-                                      nullptr);
+    return skgpu::ganesh::TextureOp::Make(dContext,
+                                          proxyView,
+                                          kPremul_SkAlphaType,
+                                          nullptr,
+                                          GrSamplerState::Filter::kNearest,
+                                          GrSamplerState::MipmapMode::kNone,
+                                          {1.f, 1.f, 1.f, 1.f},
+                                          skgpu::ganesh::TextureOp::Saturate::kYes,
+                                          SkBlendMode::kSrcOver,
+                                          isAA ? GrAAType::kCoverage
+                                               : GrAAType::kNone,
+                                          &quad,
+                                          nullptr);
 }
 
 // This unit test exercises the crbug.com/1112259 case.
