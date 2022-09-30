@@ -134,7 +134,7 @@ DRAW(DrawPaint, drawPaint(r.paint));
 DRAW(DrawPath, drawPath(r.path, r.paint));
 DRAW(DrawPatch, drawPatch(r.cubics, r.colors, r.texCoords, r.bmode, r.paint));
 DRAW(DrawPicture, drawPicture(r.picture.get(), &r.matrix, r.paint));
-DRAW(DrawPoints, drawPoints(r.mode, r.count, r.pts, r.paint));
+DRAW(DrawPoints, drawPoints(r.mode, r.size, r.pts, r.paint));
 DRAW(DrawRRect, drawRRect(r.rrect, r.paint));
 DRAW(DrawRect, drawRect(r.rect, r.paint));
 DRAW(DrawRegion, drawRegion(r.region, r.paint));
@@ -145,7 +145,7 @@ DRAW(DrawSlug, drawSlug(r.slug.get()));
 // Turn draw into a nop.
 template <> void Draw::draw(const DrawSlug&) {}
 #endif
-DRAW(DrawAtlas, drawAtlas(r.atlas.get(), r.xforms, r.texs, r.colors, r.count, r.mode, r.sampling,
+DRAW(DrawAtlas, drawAtlas(r.atlas.get(), r.xforms, r.texs, r.colors, r.size, r.mode, r.sampling,
                           r.cull, r.paint));
 DRAW(DrawVertices, drawVertices(r.vertices, r.bmode, r.paint));
 DRAW(DrawShadowRec, private_draw_shadow_rec(r.path, r.rec));
@@ -154,7 +154,7 @@ DRAW(DrawAnnotation, drawAnnotation(r.rect, r.key.c_str(), r.value.get()));
 DRAW(DrawEdgeAAQuad, experimental_DrawEdgeAAQuad(
         r.rect, r.clip, r.aa, r.color, r.mode));
 DRAW(DrawEdgeAAImageSet, experimental_DrawEdgeAAImageSet(
-        r.set.get(), r.count, r.dstClips, r.preViewMatrices, r.sampling, r.paint, r.constraint));
+        r.set.get(), r.size, r.dstClips, r.preViewMatrices, r.sampling, r.paint, r.constraint));
 
 #undef DRAW
 
@@ -360,7 +360,7 @@ private:
     Bounds popSaveBlock() {
         // We're done the Save block.  Apply the block's bounds to all control ops inside it.
         SaveBounds sb;
-        fSaveStack.pop(&sb);
+        fSaveStack.pop_back(&sb);
 
         while (sb.controlOps --> 0) {
             this->popControl(sb.bounds);
@@ -383,7 +383,7 @@ private:
     void popControl(const Bounds& bounds) {
         fBounds[fControlIndices.back()] = bounds;
         fMeta  [fControlIndices.back()].isDraw = false;
-        fControlIndices.pop();
+        fControlIndices.pop_back();
     }
 
     void updateSaveBounds(const Bounds& bounds) {
@@ -532,7 +532,7 @@ private:
     }
 
     bool adjustForSaveLayerPaints(SkRect* rect, int savesToIgnore = 0) const {
-        for (int i = fSaveStack.count() - 1 - savesToIgnore; i >= 0; i--) {
+        for (int i = fSaveStack.size() - 1 - savesToIgnore; i >= 0; i--) {
             SkMatrix inverse;
             if (!fSaveStack[i].ctm.invert(&inverse)) {
                 return false;

@@ -471,12 +471,12 @@ static void test_good_uniforms(skiatest::Reporter* r) {
                        static_cast<int>(expected.type));
                 return;
             }
-            if (actual.count != expected.count) {
+            if (actual.size != expected.size) {
                 ERRORF(r,
                        "Uniform %s: Actual count (%d) does not match expected count (%d)",
                        name.c_str(),
-                       actual.count,
-                       expected.count);
+                       actual.size,
+                       expected.size);
                 return;
             }
             if (actual.flags != expected.flags) {

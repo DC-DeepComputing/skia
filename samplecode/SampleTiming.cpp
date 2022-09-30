@@ -46,7 +46,7 @@ struct TimingSample : public Sample {
                                   SkCanvas::kStrict_SrcRectConstraint);
             auto elapsed = std::chrono::steady_clock::now() - start;
 
-            cost[y][x] = elapsed.count();
+            cost[y][x] = elapsed.size();
             min = std::min(min, cost[y][x]);
             max = std::max(max, cost[y][x]);
         }
@@ -80,7 +80,7 @@ struct TimingSample : public Sample {
                                                       SkCanvas::kStrict_SrcRectConstraint);
                 auto elapsed = std::chrono::steady_clock::now() - start;
 
-                cost[y][x] = elapsed.count();
+                cost[y][x] = elapsed.size();
                 min = std::min(min, cost[y][x]);
                 max = std::max(max, cost[y][x]);
             }

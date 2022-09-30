@@ -139,13 +139,13 @@ void DebugCanvas::addDrawCommand(DrawCommand* command) { fCommandVector.push_bac
 
 void DebugCanvas::draw(SkCanvas* canvas) {
     if (!fCommandVector.empty()) {
-        this->drawTo(canvas, fCommandVector.count() - 1);
+        this->drawTo(canvas, fCommandVector.size() - 1);
     }
 }
 
 void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
     SkASSERT(!fCommandVector.empty());
-    SkASSERT(index < fCommandVector.count());
+    SkASSERT(index < fCommandVector.size());
 
     int saveCount = originalCanvas->save();
 
@@ -257,7 +257,7 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
             }
             paint.setColor(kTotalBounds);
             finalCanvas->drawRect(childrenBounds[i].fBounds, paint);
-            for (int j = 0; j < childrenBounds[i].fOps.count(); j++) {
+            for (int j = 0; j < childrenBounds[i].fOps.size(); j++) {
                 const GrAuditTrail::OpInfo::Op& op = childrenBounds[i].fOps[j];
                 if (op.fClientID != index) {
                     paint.setColor(kOtherOpBounds);
@@ -274,13 +274,13 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
 }
 
 void DebugCanvas::deleteDrawCommandAt(int index) {
-    SkASSERT(index < fCommandVector.count());
+    SkASSERT(index < fCommandVector.size());
     delete fCommandVector[index];
     fCommandVector.remove(index);
 }
 
 DrawCommand* DebugCanvas::getDrawCommandAt(int index) const {
-    SkASSERT(index < fCommandVector.count());
+    SkASSERT(index < fCommandVector.size());
     return fCommandVector[index];
 }
 
@@ -633,7 +633,7 @@ void DebugCanvas::didSetM44(const SkM44& matrix) {
 }
 
 void DebugCanvas::toggleCommand(int index, bool toggle) {
-    SkASSERT(index < fCommandVector.count());
+    SkASSERT(index < fCommandVector.size());
     fCommandVector[index]->setVisible(toggle);
 }
 

@@ -140,9 +140,9 @@ void GrAuditTrail::fullReset() {
 
 template <typename T>
 void GrAuditTrail::JsonifyTArray(SkJSONWriter& writer, const char* name, const T& array) {
-    if (array.count()) {
+    if (array.size()) {
         writer.beginArray(name);
-        for (int i = 0; i < array.count(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             // Handle sentinel nullptrs
             if (array[i]) {
                 array[i]->toJson(writer);

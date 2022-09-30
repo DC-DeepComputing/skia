@@ -149,13 +149,12 @@ public:
     bool empty() const { return fStorage.empty(); }
 
     // Return the number of elements in the array
-    int count() const { return fStorage.size(); }
-    int size()  const { return fStorage.size(); }
+    int size() const { return fStorage.size(); }
 
      // Return the total number of elements allocated.
      // reserved() - count() gives you the number of elements you can add
      // without causing an allocation.
-    int reserved() const { return fStorage.capacity(); }
+    int capacity() const { return fStorage.capacity(); }
 
     // return the number of bytes in the array: count * sizeof(T)
     size_t bytes() const { return fStorage.size_bytes(); }
@@ -176,8 +175,6 @@ public:
         return this->data()[index];
     }
 
-    T& getAt(int index) { return (*this)[index]; }
-
     const T& back() const {
         SkASSERT(this->size() > 0);
         return this->data()[this->size() - 1];
@@ -191,7 +188,7 @@ public:
         fStorage.reset();
     }
 
-    void rewind() {
+    void clear() {
         fStorage.clear();
     }
 
@@ -199,7 +196,7 @@ public:
      // If the array does not have space for count elements, it will increase
      // the storage allocated to some amount greater than that required.
      // It will never shrink the storage.
-    void setCount(int count) {
+    void resize(int count) {
         fStorage.resize(count);
     }
 
@@ -246,7 +243,7 @@ public:
         *reinterpret_cast<T*>(fStorage.push_back()) = v;
     }
 
-    void pop(T* elem = nullptr) {
+    void pop_back(T* elem = nullptr) {
         if (elem != nullptr) {
             *elem = this->back();
         }
