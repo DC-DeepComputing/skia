@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526ee657_99cfe1d4",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T19:17:01Z",
+      "side": 1,
+      "message": "It\u0027s frustrating we can\u0027t use C++20 and make SkRefCntBase constexpr by making the constructor and destructor `constexpr` (though then the destructor must always be empty and not have the debug assert). If we did that then this could be a `static constexpr SkEmptyFontMgr;` and we could just ref it and return it. This is all possible because SkEmptyFontMgr is stateless (aside from needing to support the reference count).\n\nSince we\u0027re stuck with C++17 we can\u0027t make this `constexpr`, but this can all safely be\n\n```\n    static SkEmptyFontMgr singleton;\n    return sk_ref_sp(\u0026singleton);\n```\n\nWhich should initialize the singleton thread safely the first time this is called.",
+      "revId": "a9cea18f0b820e277e456814e650a7adccf9c5d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da173ab5_56e082ea",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T19:17:01Z",
+      "side": 1,
+      "message": "`SkFontMgr_Get_Empty()`",
+      "range": {
+        "startLine": 169,
+        "startChar": 41,
+        "endLine": 169,
+        "endChar": 69
+      },
+      "revId": "a9cea18f0b820e277e456814e650a7adccf9c5d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
