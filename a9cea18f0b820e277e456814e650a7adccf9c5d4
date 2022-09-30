@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8322d8c0_457a59bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-09-30T20:42:50Z",
+      "side": 1,
+      "message": "I think you applied the changes needed in this CL to the follow up CL.",
+      "revId": "a9cea18f0b820e277e456814e650a7adccf9c5d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "526ee657_99cfe1d4",
