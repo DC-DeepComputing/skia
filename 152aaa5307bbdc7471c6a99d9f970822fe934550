@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da24e17_a2d439e3",
+        "filename": "tools/flags/CommandLineFlags.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T21:02:38Z",
+      "side": 1,
+      "message": "I\u0027m guessing we don\u0027t actually want to change this to `size_t`, right?",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 11
+      },
+      "revId": "152aaa5307bbdc7471c6a99d9f970822fe934550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5240eea7_3b9be139",
+        "filename": "tools/flags/CommandLineFlags.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T21:02:38Z",
+      "side": 1,
+      "message": "(Not for this CL, but should be `empty`.)",
+      "range": {
+        "startLine": 137,
+        "startChar": 13,
+        "endLine": 137,
+        "endChar": 20
+      },
+      "revId": "152aaa5307bbdc7471c6a99d9f970822fe934550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
