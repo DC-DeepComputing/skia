@@ -16,6 +16,24 @@
       "message": "I changed this animation to test the one to many prop setting. Is it okay to keep it like this or would this break a different test?",
       "revId": "dabc73b7785c59397c0cd35d8a6f1902bf2e3acb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7669e5d4_3969ad9e",
+        "filename": "resources/skottie/skottie-text-animator-1.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "I think we only care about rendering this one, so the name doesn\u0027t matter.  It should be fine.",
+      "parentUuid": "037ee0e5_04e92fe9",
+      "revId": "dabc73b7785c59397c0cd35d8a6f1902bf2e3acb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

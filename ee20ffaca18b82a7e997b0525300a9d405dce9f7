@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bab7d428_7d801ed7",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "Does this have to be ref-counted (shared ownership)?  If not we should make it a plain class (or inherit from SkNonCopyable) and store a unique_ptr instead.",
+      "range": {
+        "startLine": 275,
+        "startChar": 48,
+        "endLine": 275,
+        "endChar": 56
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d727dc1_92f53b4e",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "nit: field initializer lists are nicer, and then we can make these const in the declaration.  Also move smart pointers.\n\n    SlotManagerWrapper(...)\n        : fSlotManager(sk_make_sp...)\n        , fResourceProvider(std::move(rp))\n        , fSkottieSlide(std::move(ss))\n    {}\n    \n    ...\n    const sk_sp\u003cSlotManager\u003e fSlotManager;\n    ...",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 27
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1833679_841c75d4",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "nit: since id just tracks the vector index, we could replace with an index-based loop\n\n    for (size_t i \u003d 0; i \u003c fColorSlots.size(); ++i) {\n        ...\n    }\n    \nThen we don\u0027t have to remember to reset the id between loops, etc.\n\nSame for the other loops.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 45
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3e00ffe_ed441af4",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "nit: would std::make_pair work instead?  I think it would look less verbose, here and everywhere below.",
+      "range": {
+        "startLine": 298,
+        "startChar": 38,
+        "endLine": 298,
+        "endChar": 81
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69971a46_261d489a",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "not used",
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31a8466_01dfd37f",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "If we\u0027re making a copy below, it should be shrunk by default?\n\nI think we can drop this and make the iterator type const auto\u0026.",
+      "range": {
+        "startLine": 352,
+        "startChar": 12,
+        "endLine": 352,
+        "endChar": 36
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c720466_c9be371f",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "A-ha!  I bet it\u0027s because the default std::string hash looks at the full string content (hashes size() chars), and doesn\u0027t stop at the first null -- so it includes the \\0 padding at the end from resize().  Initializing a copy from c_str() trims all the padding.  So if you print it out they will look the same, but they are really different as hash keys.\n\nIt might be cleaner to use std::array\u003cchar, kBufferLen\u003e for ImGui buffers, and just create std::strings on the fly (looks like we have to make copies anyway).  That way we don\u0027t have to muck with resize and worry about hashing issues, and can prolly also skip shrink_to_fits.",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 368,
+        "endChar": 26
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db85c83d_8f135071",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T14:06:58Z",
+      "side": 1,
+      "message": "The problem with storing an sk_sp here is it keeps the slide reference count alive.  So when Viewer unrefs a SkottieSlide, its ref count doesn\u0027t go to zero and it effectively leaks.\n\nSince SkottieSlide owns the wrapper, and is guaranteed to outlive it, it should be fine to store a raw pointer instead (to avoid the refence leak).",
+      "range": {
+        "startLine": 399,
+        "startChar": 4,
+        "endLine": 399,
+        "endChar": 23
+      },
+      "revId": "ee20ffaca18b82a7e997b0525300a9d405dce9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
