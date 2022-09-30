@@ -16,6 +16,23 @@
       "message": "This code only supports linear gradients, and is anywhere from 2x to 4x faster than RP. It\u0027s also:\n  - Enforcing inconsistent clamping rules (compared to the other backends)\n  - Fairly inflexible as I try to adjust color space management of gradients\n  - Doing optimizations that feel like foot-guns w.r.t SkPaint semantics (pre-scaling stops by paint alpha!?)\n  - 11-12k of code",
       "revId": "8170ec27c6617f980e19d666d84cedf480b2a5d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ca51f3_80176a73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-09-30T12:01:05Z",
+      "side": 1,
+      "message": "IIRC this does show up on Chrome perf bots.",
+      "revId": "8170ec27c6617f980e19d666d84cedf480b2a5d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
