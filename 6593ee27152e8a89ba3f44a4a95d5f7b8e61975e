@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a6c58a_13fdbff6",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-30T15:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb6baf0c_3c0de525",
+      "range": {
+        "startLine": 133,
+        "startChar": 60,
+        "endLine": 133,
+        "endChar": 62
+      },
+      "revId": "6593ee27152e8a89ba3f44a4a95d5f7b8e61975e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "192e6caa_9b866567",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-30T15:39:17Z",
       "side": 1,
       "message": "nit: please fix indent",
+      "range": {
+        "startLine": 148,
+        "startChar": 60,
+        "endLine": 148,
+        "endChar": 61
+      },
+      "revId": "6593ee27152e8a89ba3f44a4a95d5f7b8e61975e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590674d9_5254c69c",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-09-30T15:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "192e6caa_9b866567",
       "range": {
         "startLine": 148,
         "startChar": 60,
