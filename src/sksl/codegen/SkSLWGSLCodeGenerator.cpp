@@ -832,12 +832,8 @@ void WGSLCodeGenerator::writeFieldAccess(const FieldAccess& f) {
 
 void WGSLCodeGenerator::writeLiteral(const Literal& l) {
     const Type& type = l.type();
-    if (type.isFloat()) {
-        this->write(skstd::to_string(l.floatValue()));
-        return;
-    }
-    if (type.isBoolean()) {
-        this->write(l.boolValue() ? "true" : "false");
+    if (type.isFloat() || type.isBoolean()) {
+        this->write(l.description(OperatorPrecedence::kTopLevel));
         return;
     }
     SkASSERT(type.isInteger());
