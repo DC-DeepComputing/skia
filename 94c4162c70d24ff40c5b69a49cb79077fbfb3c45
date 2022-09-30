@@ -34,6 +34,24 @@
       "parentUuid": "ebdb2c68_6e60e53d",
       "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd228908_20dedf73",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-09-30T14:37:49Z",
+      "side": 1,
+      "message": "I tried updating `Literal::description()` to %.9g and it\u0027s still showing rounding-error data: http://review.skia.org/586279\n\nIt might be related to how we mix and match doubles and floats in our literal handling.\n\nAt any rate, I\u0027m open to other ideas if you think this is important to nail down; in practice %.7g seems to pass through the user intent pretty well though, IMO.",
+      "parentUuid": "e6e2bfcb_a78d36a6",
+      "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
