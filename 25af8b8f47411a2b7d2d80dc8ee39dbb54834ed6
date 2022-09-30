@@ -34,6 +34,24 @@
       "parentUuid": "5a570770_7d1199b8",
       "revId": "25af8b8f47411a2b7d2d80dc8ee39dbb54834ed6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "378eada1_d53173c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-30T15:04:17Z",
+      "side": 1,
+      "message": "Right. I\u0027m okay with it, as long as we commit to finding a way to recover this. I agree that just having a proper writer for skcms_ICCProfile in skcms makes more sense, anyway.\n\nI am going to want to see what the code-size delta is for this change (Skia is currently fighting hard to reduce size, so we\u0027re actively monitoring it).",
+      "parentUuid": "e23e2b35_dde7ecb4",
+      "revId": "25af8b8f47411a2b7d2d80dc8ee39dbb54834ed6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
