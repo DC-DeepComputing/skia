@@ -1,4 +1,4 @@
-const half r_0 = 0.0;
+const half r_0 = 0.;
 noinline half opt_barrier_0(const half x);
 half2 compute_ba_0(const half2 rg);
 noinline half opt_barrier_0(const half x)
@@ -11,6 +11,6 @@ half2 compute_ba_0(const half2 rg)
 }
 half4 main(float2 xy)
 {
-	const half g = 1.0;
-	return half4(half4(opt_barrier_0(r_0), 1.0, compute_ba_0(half2(0.0, opt_barrier_0(g)))));
+	const half g = 1.;
+	return half4(half4(opt_barrier_0(r_0), 1., compute_ba_0(half2(0., opt_barrier_0(g)))));
 }

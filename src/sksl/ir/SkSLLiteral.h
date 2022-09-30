@@ -8,6 +8,7 @@
 #ifndef SKSL_FLOATLITERAL
 #define SKSL_FLOATLITERAL
 
+#include "include/private/SkStringView.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -101,7 +102,13 @@ public:
 
     std::string description(OperatorPrecedence) const override {
         if (this->type().isFloat()) {
-            return skstd::to_string(this->floatValue());
+            std::string result = SkSL::String::printf("%.9g", this->value());
+            if (!skstd::contains(result, '.') &&
+                !skstd::contains(result, 'e') &&
+                !skstd::contains(result, 'E')) {
+                result.push_back('.');
+            }
+            return result;
         }
         if (this->type().isInteger()) {
             return std::to_string(this->intValue());

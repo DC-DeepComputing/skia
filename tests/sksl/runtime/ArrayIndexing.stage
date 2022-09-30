@@ -12,7 +12,7 @@ float index_by_literal_0()
 }
 float index_by_loop_0()
 {
-	float sum = 0.0;
+	float sum = 0.;
 	for (int i = 3;i >= 0; --i) 
 	{
 		sum += u2[i];
@@ -21,7 +21,7 @@ float index_by_loop_0()
 }
 float index_by_complex_loop_0()
 {
-	float prod = 1.0;
+	float prod = 1.;
 	for (int i = 0;i < 4; ++i) 
 	{
 		prod *= u3[i < 2 ? 0 : i];
@@ -30,10 +30,10 @@ float index_by_complex_loop_0()
 }
 float index_out_of_bounds_checked_0()
 {
-	float sum = 0.0;
-	for (float f = -2.2999999523162842;f < 17.0; f += 3.7000000476837158) 
+	float sum = 0.;
+	for (float f = -2.29999995;f < 17.; f += 3.70000005) 
 	{
-		if (f > 0.0 && f < 16.0) 
+		if (f > 0. && f < 16.) 
 		{
 			sum -= u4[int(f)];
 		}
