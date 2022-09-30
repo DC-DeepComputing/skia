@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebdb2c68_6e60e53d",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-09-30T12:36:32Z",
+      "side": 1,
+      "message": "Are we worried about losing information here? I think .7g isn\u0027t enough to guarantee round-trip results (even on a particular machine). See the following two articles:\n\nhttps://randomascii.wordpress.com/2012/03/08/float-precisionfrom-zero-to-100-digits-2/\n  -and-\nhttps://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/",
+      "revId": "94c4162c70d24ff40c5b69a49cb79077fbfb3c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
