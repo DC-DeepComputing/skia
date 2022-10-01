@@ -9,6 +9,8 @@
 #include "include/private/SkStringView.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 
+#include <cstdlib>
+
 namespace SkSL {
 
 std::string Literal::description(OperatorPrecedence) const {
@@ -18,19 +20,17 @@ std::string Literal::description(OperatorPrecedence) const {
     if (this->type().isInteger()) {
         return std::to_string(this->intValue());
     }
+
     // Attempt to find a compact, but accurate, representation of this float value.
-    std::string text;
+    // %.7g does a good job of roundtripping most values, while stripping off noise at the end.
     float value = this->floatValue();
-    for (int width = 6; width <= 9; ++width) {
-        text = SkSL::String::printf("%.*g", width, value);
-        // We can't use stof here, because it can throw out-of-rangle for some inputs like FLT_MIN.
-        if ((float)std::stod(text) == value) {
-            break;
-        }
+    std::string text = SkSL::String::printf("%.7g", value);
+    if (std::strtof(text.c_str(), nullptr) != value) {
+        // %.9g should be enough precision to match any float input.
+        // https://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/
+        text = SkSL::String::printf("%.9g", value);
+        SkASSERT(std::strtof(text.c_str(), nullptr) == value);
     }
-    // %.9g should be enough precision to match any float input.
-    // https://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/
-    SkASSERT(std::stof(text) == value);
 
     // %g might not emit a decimal point, but we need one to distinguish floats from ints.
     if (!skstd::contains(text, '.') && !skstd::contains(text, 'e')) {
