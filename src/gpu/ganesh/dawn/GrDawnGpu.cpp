@@ -939,6 +939,10 @@ sk_sp<GrDawnProgram> GrDawnGpu::getOrCreateRenderPipeline(
     sk_sp<GrDawnProgram> program = GrDawnProgramBuilder::Build(
         this, rt, programInfo, colorFormat,
         hasDepthStencil, stencilFormat, &desc);
+    if (!program) {
+        return nullptr;
+    }
+
     fRenderPipelineCache.insert(desc, program);
     return program;
 }
@@ -1018,6 +1022,9 @@ std::string GrDawnGpu::SkSLToSPIRV(const char* shaderString,
 }
 
 wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource) {
+    if (spirvSource.empty()) {
+        return nullptr;
+    }
     wgpu::ShaderModuleSPIRVDescriptor desc;
     desc.codeSize = spirvSource.size() / 4;
     desc.code = reinterpret_cast<const uint32_t*>(spirvSource.c_str());
@@ -1025,5 +1032,6 @@ wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource)
     wgpu::ShaderModuleDescriptor smDesc;
     smDesc.nextInChain = &desc;
 
-    return fDevice.CreateShaderModule(&smDesc);
+    wgpu::ShaderModule module = fDevice.CreateShaderModule(&smDesc);
+    return module;
 }
