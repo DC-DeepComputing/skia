@@ -168,7 +168,6 @@ private:
     Program::Inputs fInputs;
 
     friend class dsl::DSLCore;
-    friend class dsl::DSLWriter;
 };
 
 } // namespace SkSL

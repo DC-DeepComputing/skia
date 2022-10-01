@@ -241,9 +241,6 @@ private:
     static OverrideFlag sOptimizer;
     static OverrideFlag sInliner;
 
-    friend class AutoSource;
-    friend class ::SkSLCompileBench;
-    friend class Parser;
     friend class ThreadContext;
     friend class dsl::DSLCore;
 };

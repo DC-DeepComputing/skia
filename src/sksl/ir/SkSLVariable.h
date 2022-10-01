@@ -135,10 +135,6 @@ private:
     bool fBuiltin;
 
     using INHERITED = Symbol;
-
-    friend class dsl::DSLCore;
-    friend class dsl::DSLFunction;
-    friend class VariableReference;
 };
 
 } // namespace SkSL
