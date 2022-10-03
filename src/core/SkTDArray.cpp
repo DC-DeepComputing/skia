@@ -150,6 +150,10 @@ void* SkTDStorage::append() {
     return this->insert(fCount);
 }
 
+void* SkTDStorage::append(int n) {
+    return this->insert(fCount, n, nullptr);
+}
+
 void* SkTDStorage::append(const void* src, int count) {
     return this->insert(fCount, count, src);
 }
