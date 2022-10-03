@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab4fe11f_0cee3b6f",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Comment added, hope that captures what you had in mind.",
+      "parentUuid": "b47068ea_3990cf18",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a893ccd1_84bd8d2a",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 9
@@ -48,6 +66,30 @@
       "writtenOn": "2022-09-30T17:09:33Z",
       "side": 1,
       "message": "nit: four spaces",
+      "range": {
+        "startLine": 435,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 2
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2c0f634_af22608b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a893ccd1_84bd8d2a",
       "range": {
         "startLine": 435,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7540fccf_5406f508",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Aligned with arguments in the line above.",
+      "parentUuid": "a55f35dd_b49f0dda",
+      "range": {
+        "startLine": 442,
+        "startChar": 33,
+        "endLine": 442,
+        "endChar": 41
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82abe126_56183dd8",
@@ -94,6 +160,30 @@
       "writtenOn": "2022-09-30T17:09:33Z",
       "side": 1,
       "message": "Not a nit: Can\u0027t dereference `std::vector::end()`. I think we want `*(stops.end()-1)`?\n\n\nnit: I rather prefer this like\n\n```\nif (stops.size \u003c\u003d 1u) ||\n   (zeroRadiusStop \u003c *stops.begin() || *(stops.end()-1) \u003c zeroRadiusStop)\n{\n```\n\nTo make it obvious that even if there were no stops (I suppose we could `SkASSERT` at least one stop) this would just return, as well as make it obvious that this is a range check for `zeroRadiusStop` being outside the `stops` range. And when the `if` predicate is split across multiple lines I just find it easier to read if the `{` is on its own line so I can scan for where the predicate ends without getting confused.",
+      "range": {
+        "startLine": 446,
+        "startChar": 8,
+        "endLine": 447,
+        "endChar": 42
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b09658_5ad70307",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "No longer dereferencing `.end()` and reformatted. You start to sound like Werner a bit :-p (just the side of me trolling that just wants to let everything be handled by some autoformatting to save time).",
+      "parentUuid": "82abe126_56183dd8",
       "range": {
         "startLine": 446,
         "startChar": 8,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "564ef5d6_a6625c1d",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "SGTM, good suggestion.",
+      "parentUuid": "4c2dd207_f267beeb",
+      "range": {
+        "startLine": 454,
+        "startChar": 61,
+        "endLine": 454,
+        "endChar": 80
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85bfc3b9_66daf817",
@@ -140,6 +254,24 @@
       "writtenOn": "2022-09-30T17:09:33Z",
       "side": 1,
       "message": "I think the assignment and parallelism is easier to spot here if this is all like\n\n```\nconst size_t afterIndex \u003d (truncateStops \u003d\u003d TruncateStart)\n    ? std::lower_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin()\n    : std::upper_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin();\n```",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce0c69f_506cbc4f",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Ack, looks better.",
+      "parentUuid": "85bfc3b9_66daf817",
       "revId": "143a56faad143a60f15970417a49248adb39d9de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -161,6 +293,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e76489_79f4964c",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f357b7b7_b5a42ac4",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdd6fd72_d6995290",
@@ -178,6 +328,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b2cd7ff_fad1704b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdd6fd72_d6995290",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be2f9153_f6e767f0",
@@ -191,6 +359,30 @@
       "writtenOn": "2022-09-30T17:09:33Z",
       "side": 1,
       "message": "Here again, renaming this to `zeroRadiusStop` makes things fit on lines nicely.",
+      "range": {
+        "startLine": 831,
+        "startChar": 33,
+        "endLine": 831,
+        "endChar": 52
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ca16e83_305d8a20",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be2f9153_f6e767f0",
       "range": {
         "startLine": 831,
         "startChar": 33,
@@ -224,6 +416,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b0a3a2_fcba0700",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0f6c493_95595418",
+      "range": {
+        "startLine": 843,
+        "startChar": 33,
+        "endLine": 843,
+        "endChar": 52
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "796d710b_d9cd55d1",
@@ -237,6 +453,30 @@
       "writtenOn": "2022-09-30T17:09:33Z",
       "side": 1,
       "message": "Something like\n\n`0.f \u003c\u003d factorZeroCrossing \u0026\u0026 factorZeroCrossing \u003c\u003d 1.0f`\n\nmakes it more obvious that this is testing that `factorZeroCrossing` is in this range.\n\nIn fact, this formatting is tortuous, partially because we\u0027re so far indented here. May be worth pulling this out into a\n\n`bool inRange \u003d 0.f \u003c\u003d factorZeroCrossing \u0026\u0026 factorZeroCrossing \u003c\u003d 1.0f`\n\nso that the `direction` calculation all fits on one line.",
+      "range": {
+        "startLine": 885,
+        "startChar": 33,
+        "endLine": 885,
+        "endChar": 88
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "331c1e7b_487a6b99",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T09:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "796d710b_d9cd55d1",
       "range": {
         "startLine": 885,
         "startChar": 33,
