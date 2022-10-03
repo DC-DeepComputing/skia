@@ -154,6 +154,9 @@ bool ReadPixelsHelper(FlushPendingWorkCallback&& flushPendingWork,
     SkASSERT(srcTexture);
 
     size_t size = dstRowBytes * dstInfo.height();
+    SkDebugf("readback size: %zu*%d -- %zu - %d %d %d %d\n",
+             dstRowBytes, dstInfo.height(),
+             size, srcX, srcY, dstInfo.width(), dstInfo.height());
     sk_sp<Buffer> dstBuffer = resourceProvider->findOrCreateBuffer(size,
                                                                    BufferType::kXferGpuToCpu,
                                                                    PrioritizeGpuReads::kNo);

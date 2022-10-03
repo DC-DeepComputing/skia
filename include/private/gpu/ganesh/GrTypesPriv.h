@@ -536,7 +536,7 @@ GR_MAKE_BITFIELD_CLASS_OPS(GpuPathRenderers)
  * where they appear in memory. In other words the first component listed is in the low bits and
  * the last component in the high bits.
  */
-enum class GrColorType {
+enum class GrColorType : int {
     kUnknown,
     kAlpha_8,
     kBGR_565,
