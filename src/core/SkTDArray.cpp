@@ -147,6 +147,9 @@ void* SkTDStorage::prepend() {
 }
 
 void* SkTDStorage::append() {
+    if (fCount < fReserve) {
+        return this->address(fCount++);
+    }
     return this->insert(fCount);
 }
 
