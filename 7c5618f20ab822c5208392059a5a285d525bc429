@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "210f317a_bd8ae7b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-10-03T14:02:45Z",
+      "side": 1,
+      "message": "What might those be? Android also uses the PDF backend, so I hope this doesn\u0027t introduce backwards compatibility issues.",
+      "range": {
+        "startLine": 14,
+        "startChar": 33,
+        "endLine": 15,
+        "endChar": 19
+      },
+      "revId": "7c5618f20ab822c5208392059a5a285d525bc429",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
