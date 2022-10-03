@@ -137,6 +137,7 @@ int bittst(const uint8_t data[], int bitOffset) {
     return lowBit & 1;
 }
 
+
 /**
  *  Copies a FT_Bitmap into an SkMask with the same dimensions.
  *
@@ -422,6 +423,56 @@ inline SkColorType SkColorType_for_SkMaskFormat(SkMask::Format format) {
 #ifdef TT_SUPPORT_COLRV1
 
 const uint16_t kForegroundColorPaletteIndex = 0xFFFF;
+
+// This linear interpolation is used for calculating a truncated color line in special edge cases.
+// This interpolation needs to be kept in sync with what the gradient shader would normally do when
+// truncating and drawing color lines. When drawing into N32 surfaces, this is expected to be true.
+// If that changes, or if we support other color spaces in CPAL tables at some point, this needs to
+// be looked at.
+SkColor lerpSkColor(SkColor c0, SkColor c1, float t) {
+    const auto c0_4f = Sk4f_fromL32(c0), c1_4f = Sk4f_fromL32(c1),
+               c_4f = c0_4f + (c1_4f - c0_4f) * t;
+
+    return Sk4f_toL32(c_4f);
+};
+
+enum TruncateStops {
+    TruncateStart,
+    TruncateEnd
+};
+
+// Truncate a vector of color stops at a previously computed stop position and insert at that
+// position the color interpolated between the surrounding stops.
+void truncateToStopInterpolating(SkScalar zeroRadiusStop,
+                                 std::vector<SkColor>& colors,
+                                 std::vector<SkScalar>& stops,
+                                 TruncateStops truncateStops) {
+    if (stops.size() <= 1u ||
+        zeroRadiusStop < *stops.begin() || zeroRadiusStop > *(stops.end() - 1))
+    {
+        return;
+    }
+
+    size_t afterIndex = (truncateStops == TruncateStart)
+        ? std::lower_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin()
+        : std::upper_bound(stops.begin(), stops.end(), zeroRadiusStop) - stops.begin();
+
+    const float t = (zeroRadiusStop - stops[afterIndex - 1]) /
+                    (stops[afterIndex] - stops[afterIndex - 1]);
+    SkColor lerpColor = lerpSkColor(colors[afterIndex - 1], colors[afterIndex], t);
+
+    if (truncateStops == TruncateStart) {
+        stops.erase(stops.begin(), stops.begin() + afterIndex);
+        colors.erase(colors.begin(), colors.begin() + afterIndex);
+        stops.insert(stops.begin(), 0);
+        colors.insert(colors.begin(), lerpColor);
+    } else {
+        stops.erase(stops.begin() + afterIndex, stops.end());
+        colors.erase(colors.begin() + afterIndex, colors.end());
+        stops.insert(stops.end(), 1);
+        colors.insert(colors.end(), lerpColor);
+    }
+};
 
 struct OpaquePaintHasher {
   size_t operator()(const FT_OpaquePaint& opaquePaint) {
@@ -756,11 +807,86 @@ bool colrv1_configure_skpaint(FT_Face face,
             }
 
             if (SkGraphics::GetVariableColrV1Enabled()) {
-                // When radii become negative through variations or interpolation, convert them to
-                // their absolute value. Resolution as discussed in
+                if (startRadius == endRadius && startRadius < 0) {
+                    paint->setColor(SK_ColorTRANSPARENT);
+                    return true;
+                }
+
+                // Implementation below as resolution discussed in
                 // https://github.com/googlefonts/colr-gradients-spec/issues/367.
-                startRadius = std::abs(startRadius);
-                endRadius = std::abs(endRadius);
+                // Truncate to interpolated color for mode pad, otherwise calculate positive
+                // projected circles.
+                if (tileMode == SkTileMode::kClamp) {
+                    SkVector startToEnd = end - start;
+                    SkScalar radiusDiff = endRadius - startRadius;
+                    if (startRadius < 0) {
+                        // Compute color stop position where radius is = 0.  After the scaling of
+                        // stop positions to the normal 0,1 range that we have done above, the size
+                        // of the radius as a function of the color stops is: r(x) = r0 + x*(r1-r0)
+                        // Solving this function for r(x) = 0, we get: x = -r0 / (r1-r0)
+                        SkScalar zeroRadiusStop = -startRadius / (endRadius - startRadius);
+
+                        startRadius = 0.f;
+                        truncateToStopInterpolating(zeroRadiusStop, colors, stops, TruncateStart);
+
+                        SkVector startEndDiff = end - start;
+                        startEndDiff.scale(zeroRadiusStop);
+                        start = start + startEndDiff;
+                    }
+
+                    if (endRadius < 0) {
+                        SkScalar zeroRadiusStop = -startRadius / (endRadius - startRadius);
+                        endRadius = 0.f;
+                        truncateToStopInterpolating(zeroRadiusStop, colors, stops, TruncateEnd);
+                        SkVector startEndDiff = end - start;
+                        startEndDiff.scale(1 - zeroRadiusStop);
+                        end = end - startEndDiff;
+                    }
+
+                    // If both radii have become negative, we need to produce a single color cone,
+                    // otherwise the shader colors the whole plane in a single color when two radii
+                    // are specified as 0.
+                    if (startRadius == 0 && endRadius == 0) {
+                        if (radiusDiff > 0) {
+                            end = start + startToEnd;
+                            endRadius = radiusDiff;
+                            colors.erase(colors.begin(), colors.end() - 1);
+                            stops.erase(stops.begin(), stops.end() - 1);
+                        } else {
+                            start -= startToEnd;
+                            startRadius = -radiusDiff;
+                            colors.erase(colors.begin() + 1, colors.end());
+                            stops.erase(stops.begin() + 1, stops.end());
+                        }
+                    }
+                } else {
+                    if (startRadius < 0 || endRadius < 0) {
+                        auto roundIntegerMultiple = [](SkScalar factorZeroCrossing,
+                                                       SkTileMode tileMode) {
+                            int roundedMultiple = factorZeroCrossing > 0
+                                                          ? ceilf(factorZeroCrossing)
+                                                          : floorf(factorZeroCrossing) - 1;
+                            if (tileMode == SkTileMode::kMirror && roundedMultiple % 2 != 0) {
+                                roundedMultiple += roundedMultiple < 0 ? -1 : 1;
+                            }
+                            return roundedMultiple;
+                        };
+
+                        SkVector startToEnd = end - start;
+                        SkScalar radiusDiff = endRadius - startRadius;
+                        SkScalar factorZeroCrossing = (startRadius / (startRadius - endRadius));
+                        bool inRange = 0.f <= factorZeroCrossing && factorZeroCrossing <= 1.0f;
+                        SkScalar direction = inRange && radiusDiff < 0 ? -1.0f : 1.0f;
+                        SkScalar circleProjectionFactor =
+                                roundIntegerMultiple(factorZeroCrossing * direction, tileMode);
+                        startToEnd.scale(circleProjectionFactor);
+                        startRadius += circleProjectionFactor * radiusDiff;
+                        endRadius += circleProjectionFactor * radiusDiff;
+                        start += startToEnd;
+                        end += startToEnd;
+                    }
+                }
+
             } else if (startRadius < 0 || endRadius < 0) {
                 // TODO(drott): Remove else part when variable COLRv1 becomes the default.
                 paint->setColor(SK_ColorTRANSPARENT);
