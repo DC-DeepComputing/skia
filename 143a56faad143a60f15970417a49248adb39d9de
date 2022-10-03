@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "773ba05f_2009fc47",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T14:20:23Z",
+      "side": 1,
+      "message": "Yeah, that looks good.",
+      "parentUuid": "ab4fe11f_0cee3b6f",
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a893ccd1_84bd8d2a",
@@ -184,6 +202,30 @@
       "side": 1,
       "message": "No longer dereferencing `.end()` and reformatted. You start to sound like Werner a bit :-p (just the side of me trolling that just wants to let everything be handled by some autoformatting to save time).",
       "parentUuid": "82abe126_56183dd8",
+      "range": {
+        "startLine": 446,
+        "startChar": 8,
+        "endLine": 447,
+        "endChar": 42
+      },
+      "revId": "143a56faad143a60f15970417a49248adb39d9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "448b2390_a92532f2",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T14:20:23Z",
+      "side": 1,
+      "message": "Yeah, we\u0027re both old guys working on creaky old codebases and need to maintain other people\u0027s code :-).",
+      "parentUuid": "25b09658_5ad70307",
       "range": {
         "startLine": 446,
         "startChar": 8,

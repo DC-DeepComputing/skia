@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e4cfbe_2ce61a48",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T14:20:23Z",
+      "side": 1,
+      "message": "nit: (and you really don\u0027t have to) I just like to use `\u003c` consistently in these cases so that this looks like\n\n`zeroRadiusStop \u003c *stops.begin() || *(stops.end() - 1) \u003c zeroRadiusStop`\n\nso that it\u0027s easy to see that there is a range being tested against and we\u0027re testing if the value is outside that range. Seems common enough there should be some sugar for it, but see https://groups.google.com/a/isocpp.org/g/std-proposals/c/y1nzQy5W-Pw .",
+      "range": {
+        "startLine": 458,
+        "startChar": 8,
+        "endLine": 458,
+        "endChar": 78
+      },
+      "revId": "dc295030042b6eae58169b3ad76449f71578b7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c61b15af_bfac6a52",
@@ -14,6 +37,24 @@
       "writtenOn": "2022-10-03T13:30:00Z",
       "side": 1,
       "message": "I had to move the truncation below the condition of both radii having become zero. Otherwise, the color line would have been modified and truncated at the time of computing the artificial cone - which then leads to incorrect color selections for that cone. Test expectation comment and values updated.",
+      "revId": "dc295030042b6eae58169b3ad76449f71578b7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22bcd94d_0d37b478",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T14:20:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c61b15af_bfac6a52",
       "revId": "dc295030042b6eae58169b3ad76449f71578b7a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
