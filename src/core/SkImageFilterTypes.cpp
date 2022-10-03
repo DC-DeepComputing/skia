@@ -216,6 +216,8 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
         return {};
     }
 
+    SkDebugf("applyCrop: %d %d %d %d\n", crop.left(), crop.top(), crop.right(), crop.bottom());
+
     if (crop.contains(fLayerBounds)) {
         // The original crop does not affect the image (although the context's desired output might)
         // We can tighten fLayerBounds to tightBounds without resolving the image, regardless of the
@@ -223,6 +225,7 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
         // TODO(michaelludwig): If the crop would use mirror or repeat, the above isn't true.
         FilterResult restrictedOutput = *this;
         SkAssertResult(restrictedOutput.fLayerBounds.intersect(ctx.desiredOutput()));
+        SkDebugf("restricted crop\n");
         return restrictedOutput;
     } else {
         // The crop modifies the effective image. If the transform is axis-aligned, we can apply the
@@ -236,6 +239,9 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
             return {};
         }
 
+        SkDebugf("tight crop bounds: %d %d %d %d\n",
+                tightBounds.left(), tightBounds.top(), tightBounds.right(), tightBounds.bottom());
+
         // TODO(michaelludwig): If we get to the point where all filter results track bounds in
         // floating point, then we can extend this case to any S+T transform.
         LayerSpace<SkIPoint> origin;
@@ -245,8 +251,10 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
                                                                     originShift.y(),
                                                                     tightBounds.width(),
                                                                     tightBounds.height()));
+            SkDebugf("integer translate for crop: %d %d\n", origin.x(), origin.y());
             return {std::move(subsetImage), tightBounds.topLeft()};
         } else {
+            SkDebugf("resolving crop to new image :(\n");
             return this->resolve(tightBounds);
         }
     }
@@ -335,6 +343,7 @@ void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
         // TODO: This intersection only applies when the tile mode is kDecal.
         fLayerBounds = LayerSpace<SkIRect>::Empty();
     }
+    SkDebugf("concatTransform new layer bounds %d %d %d %d\n", fLayerBounds.left(), fLayerBounds.top(), fLayerBounds.right(), fLayerBounds.bottom());
 }
 
 FilterResult FilterResult::resolve(const LayerSpace<SkIRect>& dstBounds) const {

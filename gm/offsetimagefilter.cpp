@@ -62,6 +62,8 @@ protected:
             sk_sp<SkImageFilter> tileInput(SkImageFilters::Image(image));
             SkScalar dx = SkIntToScalar(i*5);
             SkScalar dy = SkIntToScalar(i*10);
+            SkDebugf("offset image filter %f, %f cropped by [%d %d %d %d]\n",
+                dx, dy, cropRect.fLeft, cropRect.fTop, cropRect.fRight, cropRect.fBottom);
             paint.setImageFilter(SkImageFilters::Offset(dx, dy, std::move(tileInput), &cropRect));
             DrawClippedImage(canvas, image.get(), paint, 1, cropRect);
             canvas->translate(SkIntToScalar(image->width() + MARGIN), 0);

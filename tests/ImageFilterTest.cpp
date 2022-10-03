@@ -489,12 +489,15 @@ static void test_cropRects(skiatest::Reporter* reporter, GrRecordingContext* rCo
 
     for (int i = 0; i < filters.count(); ++i) {
         SkImageFilter* filter = filters.getFilter(i);
-        SkIPoint offset;
         SkImageFilter_Base::Context ctx(SkMatrix::I(), SkIRect::MakeWH(100, 100), nullptr,
                                         kN32_SkColorType, nullptr, srcImg.get());
-        sk_sp<SkSpecialImage> resultImg(as_IFB(filter)->filterImage(ctx).imageAndOffset(&offset));
-        REPORTER_ASSERT(reporter, resultImg, "%s", filters.getName(i));
-        REPORTER_ASSERT(reporter, offset.fX == 20 && offset.fY == 30, "%s", filters.getName(i));
+        skif::FilterResult result = as_IFB(filter)->filterImage(ctx);
+        REPORTER_ASSERT(reporter, result, "%s", filters.getName(i));
+        // The filter result must be contained within the requested crop rect. It may be a subset of
+        // the crop rect if the filter DAG detected pixel areas that can be handled by applying
+        // a tile mode (e.g. kDecal) to a smaller image.
+        SkIRect resultRect = SkIRect(result.layerBounds());
+        REPORTER_ASSERT(reporter, cropRect.contains(resultRect), "%s", filters.getName(i));
     }
 }
 
