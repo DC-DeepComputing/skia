@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e02fffd7_cff695a2",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T17:45:05Z",
+      "side": 0,
+      "message": "Given the calls to `mix` I believe these snippets will have the same result without the branches.\n\nAs I mentioned in the issue description for skia:13786, an alternative is to provide a sampleGrad with explicit gradients if we feel that we must keep the conditionals here. I don\u0027t have a good sense for whether having these conditionals is actually ever improving performance.",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67b9b14_ee8ef9ad",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T17:45:05Z",
+      "side": 1,
+      "message": "If the proposal in https://github.com/gpuweb/gpuweb/issues/3489 is approved then we could also fix this by forcing `TexIndex` here to be flat. There is a debate on whether flat interpolants can always be assumed to be uniform within an invocation unit. As of today, tint doesn\u0027t consider them to be uniform.",
+      "range": {
+        "startLine": 69,
+        "startChar": 57,
+        "endLine": 69,
+        "endChar": 82
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
