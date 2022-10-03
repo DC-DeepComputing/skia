@@ -52,6 +52,9 @@ public:
     // Release all tracked Resources
     void releaseResources();
 
+    // If any work is needed to create new resources for a fresh command buffer do that here.
+    virtual bool setNewCommandBufferResources() { return true; }
+
     void addFinishedProc(sk_sp<RefCntedCallback> finishedProc);
     void callFinishedProcs(bool success);
 
@@ -91,6 +94,8 @@ protected:
     CommandBuffer();
 
 private:
+    virtual void resetCommandBuffer() = 0;
+
     virtual bool onAddRenderPass(const RenderPassDesc&,
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
