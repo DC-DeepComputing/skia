@@ -6,7 +6,6 @@
  */
 
 #include "include/sksl/SkSLErrorReporter.h"
-#include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -17,10 +16,9 @@
 #include <memory>
 
 DEF_TEST(SkSLTypeLimits, r) {
-    GrShaderCaps caps;
     SkSL::TestingOnly_AbortErrorReporter errors;
     SkSL::BuiltinTypes types;
-    SkSL::Context context(types, &caps, errors);
+    SkSL::Context context(types, nullptr, errors);
 
     using int_limits = std::numeric_limits<int32_t>;
     REPORTER_ASSERT(r, context.fTypes.fInt->minimumValue() == int_limits::lowest());
