@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ead5e812_dbc97bd6",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-03T18:37:30Z",
+      "side": 1,
+      "message": "I suspect we use this code on GPUs that don\u0027t support flat interpolation at all so we may need something slightly more complex than just changing this to kMust.",
+      "parentUuid": "d67b9b14_ee8ef9ad",
+      "range": {
+        "startLine": 69,
+        "startChar": 57,
+        "endLine": 69,
+        "endChar": 82
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66202d95_52291c65",
         "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
         "patchSetId": 1
