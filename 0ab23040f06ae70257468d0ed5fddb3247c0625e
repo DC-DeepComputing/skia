@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9febd49f_5c9ad5ae",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T13:08:40Z",
+      "side": 1,
+      "message": "Let\u0027s also put in stod and stold (same exact thing with double and long double).\nhttps://en.cppreference.com/w/cpp/string/basic_string/stof",
+      "range": {
+        "startLine": 370,
+        "startChar": 12,
+        "endLine": 370,
+        "endChar": 16
+      },
+      "revId": "0ab23040f06ae70257468d0ed5fddb3247c0625e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
