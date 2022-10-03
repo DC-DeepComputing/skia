@@ -205,7 +205,7 @@ public:
     }
 
     T* append() {
-        return static_cast<T*>(fStorage.append());
+        return static_cast<T*>(fStorage.push_back());
     }
     T* append(int count, const T* src = nullptr) {
         return reinterpret_cast<T*>(fStorage.append(src, count));
@@ -239,7 +239,7 @@ public:
     }
 
     // routines to treat the array like a stack
-    void push_back(const T& v) { *reinterpret_cast<T*>(fStorage.push_back()) = v; }
+    void push_back(const T& v) { *static_cast<T*>(fStorage.push_back()) = v; }
     void pop_back() { fStorage.pop_back(); }
 
     void deleteAll() {
