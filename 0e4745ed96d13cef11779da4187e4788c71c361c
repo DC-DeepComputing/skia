@@ -39,6 +39,29 @@
       },
       "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66202d95_52291c65",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T17:49:04Z",
+      "side": 1,
+      "message": "There\u0027s definitely a benefit if the GPU can avoid actually fetching samples, right?\nIt\u0027s a bigger change, but before landing anything, can we try doing the `sampleGrad` version? dfdx/dfdy ought to be very inexpensive AFAIK, but multiple samples have the potential to cost performance.",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 96
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
