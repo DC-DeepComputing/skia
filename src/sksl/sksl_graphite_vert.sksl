@@ -108,13 +108,13 @@ $pure float num_radial_segments_per_radian(float approxDevStrokeRadius) {
 // Unlike mix(), this does not return b when t==1. But it otherwise seems to get better
 // precision than "a*(1 - t) + b*t" for things like chopping cubics on exact cusp points.
 // We override this result anyway when t==1 so it shouldn't be a problem.
-$pure float unchecked_mix(float a, float b, float T) {
+$pure float $unchecked_mix(float a, float b, float T) {
     return fma(b - a, T, a);
 }
-$pure float2 unchecked_mix(float2 a, float2 b, float T) {
+$pure float2 $unchecked_mix(float2 a, float2 b, float T) {
     return fma(b - a, float2(T), a);
 }
-$pure float4 unchecked_mix(float4 a, float4 b, float4 T) {
+$pure float4 $unchecked_mix(float4 a, float4 b, float4 T) {
     return fma(b - a, T, a);
 }
 
@@ -459,17 +459,17 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         float T = max(parametricT, radialT);
 
         // Evaluate the cubic at T. Use De Casteljau's for its accuracy and stability.
-        float2 ab = unchecked_mix(p0, p1, T);
-        float2 bc = unchecked_mix(p1, p2, T);
-        float2 cd = unchecked_mix(p2, p3, T);
-        float2 abc = unchecked_mix(ab, bc, T);
-        float2 bcd = unchecked_mix(bc, cd, T);
-        float2 abcd = unchecked_mix(abc, bcd, T);
+        float2 ab = $unchecked_mix(p0, p1, T);
+        float2 bc = $unchecked_mix(p1, p2, T);
+        float2 cd = $unchecked_mix(p2, p3, T);
+        float2 abc = $unchecked_mix(ab, bc, T);
+        float2 bcd = $unchecked_mix(bc, cd, T);
+        float2 abcd = $unchecked_mix(abc, bcd, T);
 
         // Evaluate the conic weight at T.
-        float u = unchecked_mix(1.0, w, T);
+        float u = $unchecked_mix(1.0, w, T);
         float v = w + 1 - u;  // == mix(w, 1, T)
-        float uv = unchecked_mix(u, v, T);
+        float uv = $unchecked_mix(u, v, T);
 
         // If we went with T=parametricT, then update the tangent. Otherwise leave it at the radial
         // tangent found previously. (In the event that parametricT == radialT, we keep the radial
