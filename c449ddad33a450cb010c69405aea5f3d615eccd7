@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fedd619b_78141f89",
+        "filename": "src/pathops/SkOpEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T16:42:38Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 53,
+        "startChar": 32,
+        "endLine": 53,
+        "endChar": 36
+      },
+      "revId": "c449ddad33a450cb010c69405aea5f3d615eccd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19267b40_ba1cb173",
+        "filename": "src/pathops/SkOpEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T16:42:38Z",
+      "side": 1,
+      "message": "As long as we\u0027re here, `back()`",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "c449ddad33a450cb010c69405aea5f3d615eccd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
