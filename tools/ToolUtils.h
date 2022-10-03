@@ -35,6 +35,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #endif
 
+enum class GrColorType : int;
 class SkBitmap;
 class SkCanvas;
 class SkFontStyle;
@@ -118,10 +119,24 @@ inline void draw_checkerboard(SkCanvas* canvas) {
     ToolUtils::draw_checkerboard(canvas, 0xFF999999, 0xFF666666, 8);
 }
 
+/** Create pixmaps to initialize a 32x32 image w/ or w/o mipmaps.
+ *  Returns the number of levels (either 1 or 6). The mipmap levels will be colored as
+ *  specified in 'colors'
+ */
+int make_pixmaps(SkColorType,
+                 bool withMips,
+                 const SkColor4f colors[6],
+                 SkPixmap pixmaps[6],
+                 std::unique_ptr<char[]>* mem);
+
+// Ugly - create an Sk-version
+/** Return the color we expect if we store 'orig' in 'ct' converted back to SkColor4f. */
+SkColor4f get_expected_color(SkColor4f orig, GrColorType ct);
+
 SkBitmap create_string_bitmap(int w, int h, SkColor c, int x, int y, int textSize, const char* str);
 sk_sp<SkImage> create_string_image(int w, int h, SkColor c, int x, int y, int textSize, const char* str);
 
-// If the canvas does't make a surface (e.g. recording), make a raster surface
+// If the canvas doesn't make a surface (e.g. recording), make a raster surface
 sk_sp<SkSurface> makeSurface(SkCanvas*, const SkImageInfo&, const SkSurfaceProps* = nullptr);
 
 // A helper for inserting a drawtext call into a SkTextBlobBuilder
