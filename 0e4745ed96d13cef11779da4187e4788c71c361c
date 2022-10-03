@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2755d071_4e1970b8",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T19:02:58Z",
+      "side": 1,
+      "message": "brianosman@ mentioned that the atlas effects don\u0027t rely on mipped textures, so I can explore the \"sampleLod with mip level 0\" approach for this snippet here, which avoids the non-uniform call site issue.",
+      "parentUuid": "ead5e812_dbc97bd6",
+      "range": {
+        "startLine": 69,
+        "startChar": 57,
+        "endLine": 69,
+        "endChar": 82
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66202d95_52291c65",
         "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
         "patchSetId": 1
@@ -144,6 +168,30 @@
       "side": 1,
       "message": "If we only do a single sample, there isn\u0027t anything to parallelize, right?",
       "parentUuid": "6d1494ee_2236aeda",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 96
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a4bee99_1b63745a",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T19:02:58Z",
+      "side": 1,
+      "message": "Right, I was worried about the case where all branches would be executed regardless but I\u0027m not sure if that\u0027s a concern.\n\nbrianosman@ mentioned that the atlas effects don\u0027t rely on mipped textures, so I can explore the \"sampleLod with mip level 0\" approach for this snippet here and I can pursue the sampleGrad approach for texture effect.",
+      "parentUuid": "40c0cf3c_fe357573",
       "range": {
         "startLine": 91,
         "startChar": 43,

@@ -34,6 +34,24 @@
       "parentUuid": "e02fffd7_cff695a2",
       "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89a0771_6ba183e9",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T19:02:58Z",
+      "side": 0,
+      "message": "That\u0027s good to know. From jamesgk@\u0027s comment it sounds like graphite went the route of not branching on non-uniforms. Let me know if I should further explore using `sampleGrad` for this case.",
+      "parentUuid": "af1a7eb7_4e764a80",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
