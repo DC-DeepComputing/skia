@@ -62,6 +62,30 @@
       },
       "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d1494ee_2236aeda",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-03T18:00:28Z",
+      "side": 1,
+      "message": "I\u0027m curious how newer GPUs handle this. In theory avoiding unnecessary texture lookups should improve performance but there is also the issue of divergence s.t. IIUC putting the texture fetches in branches forces the GPU to serialize their execution whereas several textures could be fetched in parallel if they are outside the branches?\n\nI\u0027m happy to pursue the sampleGrad route as well and compare the two approaches. IWBN to get a side-by-side comparison of the two on older and newer hardware.",
+      "parentUuid": "66202d95_52291c65",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 96
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
