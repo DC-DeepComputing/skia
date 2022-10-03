@@ -22,6 +22,30 @@
       },
       "revId": "7c5618f20ab822c5208392059a5a285d525bc429",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27da0e53_eeb9bf74",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-03T14:33:16Z",
+      "side": 1,
+      "message": "Looking again I see I should have said XPS and SVG, not PDF. The issue was that if you had a LocalMatrixShader wrapping a GradientShader the XPS and SVG backends would discover the gradient via the public query but then only get the local matrix from the GradientShader and not consider the matrix of the LMS\u0027s matrix. The SkShaderBase::asGradient query returns the full local matrix.",
+      "parentUuid": "210f317a_bd8ae7b9",
+      "range": {
+        "startLine": 14,
+        "startChar": 33,
+        "endLine": 15,
+        "endChar": 19
+      },
+      "revId": "7c5618f20ab822c5208392059a5a285d525bc429",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
