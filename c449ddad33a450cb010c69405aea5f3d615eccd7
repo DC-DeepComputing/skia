@@ -45,6 +45,54 @@
       },
       "revId": "c449ddad33a450cb010c69405aea5f3d615eccd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4319610_92cb93cf",
+        "filename": "src/pathops/SkOpEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-03T16:45:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19267b40_ba1cb173",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "c449ddad33a450cb010c69405aea5f3d615eccd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0999cdfa_b0ab8b90",
+        "filename": "src/pathops/SkOpEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-03T16:45:25Z",
+      "side": 1,
+      "message": "Thanks for the catch.",
+      "parentUuid": "fedd619b_78141f89",
+      "range": {
+        "startLine": 53,
+        "startChar": 32,
+        "endLine": 53,
+        "endChar": 36
+      },
+      "revId": "c449ddad33a450cb010c69405aea5f3d615eccd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
