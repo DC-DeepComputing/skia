@@ -11,6 +11,7 @@
 #include "src/gpu/ganesh/GrDrawOpAtlas.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
@@ -87,15 +88,23 @@ static void append_multitexture_lookup(GrGeometryProcessor::ProgramImpl::EmitArg
         return;
     }
 
-    // conditionally load from the indexed texture sampler
-    for (int i = 0; i < numTextureSamplers-1; ++i) {
-        args.fFragBuilder->codeAppendf("if (%s == %d) { %s = ", texIdx.fsIn(), i, colorName);
+    // Look up all texture samplers first. There is no benefit to sampling them only in branches
+    // since texIdx is non-uniform across invocations and having sample calls in branches leads to
+    // non-uniform control flow.
+    args.fFragBuilder->codeAppendf("{ ");
+    for (int i = 0; i < numTextureSamplers; ++i) {
+        args.fFragBuilder->codeAppendf("half4 texLookupValue%d = ", i);
         args.fFragBuilder->appendTextureLookup(args.fTexSamplers[i], coordName);
-        args.fFragBuilder->codeAppend("; } else ");
+        args.fFragBuilder->codeAppendf(";");
     }
-    args.fFragBuilder->codeAppendf("{ %s = ", colorName);
-    args.fFragBuilder->appendTextureLookup(args.fTexSamplers[numTextureSamplers - 1], coordName);
-    args.fFragBuilder->codeAppend("; }");
+
+    // conditionally assign the right sample value based on the index.
+    for (int i = 0; i < numTextureSamplers - 1; ++i) {
+        args.fFragBuilder->codeAppendf(
+                "if (%s == %d) { %s = texLookupValue%d; } else ", texIdx.fsIn(), i, colorName, i);
+    }
+    args.fFragBuilder->codeAppendf(
+            "{ %s = texLookupValue%d; } }", colorName, numTextureSamplers - 1);
 }
 
 #endif

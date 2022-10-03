@@ -654,33 +654,23 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
         // on whether both modes are kRepeat and whether we're near a single subset edge
         // or a corner. Then blend the multiple reads using the err values calculated
         // above.
-        const char* ifStr = "if";
         if (repeatLinearFilterX && repeatLinearFilterY) {
             auto repeatLinearReadXY = read("float2(repeatCoordX, repeatCoordY)");
             fb->codeAppendf(
-                    "if (errX != 0 && errY != 0) {"
-                    "    errX = abs(errX);"
-                    "    textureColor = mix(mix(textureColor, %s, errX),"
-                    "                       mix(%s, %s, errX),"
-                    "                       abs(errY));"
-                    "}",
-                    repeatLinearReadX.c_str(), repeatLinearReadY.c_str(),
+                    "textureColor = mix(mix(textureColor, %s, abs(errX)),"
+                    "                   mix(%s, %s, abs(errX)),"
+                    "                   abs(errY));",
+                    repeatLinearReadX.c_str(),
+                    repeatLinearReadY.c_str(),
                     repeatLinearReadXY.c_str());
-            ifStr = "else if";
         }
         if (repeatLinearFilterX) {
-            fb->codeAppendf(
-                    "%s (errX != 0) {"
-                    "    textureColor = mix(textureColor, %s, abs(errX));"
-                    "}",
-                    ifStr, repeatLinearReadX.c_str());
+            fb->codeAppendf("textureColor = mix(textureColor, %s, abs(errX));",
+                            repeatLinearReadX.c_str());
         }
         if (repeatLinearFilterY) {
-            fb->codeAppendf(
-                    "%s (errY != 0) {"
-                    "    textureColor = mix(textureColor, %s, abs(errY));"
-                    "}",
-                    ifStr, repeatLinearReadY.c_str());
+            fb->codeAppendf("textureColor = mix(textureColor, %s, abs(errY));",
+                            repeatLinearReadY.c_str());
         }
 
         // Do soft edge shader filtering against border color for kClampToBorderFilter using
