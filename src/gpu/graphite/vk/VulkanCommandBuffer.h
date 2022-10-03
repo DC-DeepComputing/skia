@@ -28,6 +28,9 @@ private:
                         const VulkanSharedContext* sharedContext,
                         VulkanResourceProvider* resourceProvider);
 
+    // TODO: Implement this
+    void onResetCommandBuffer() override {}
+
     // TODO: The virtuals in this class have not yet been implemented as we still haven't
     // implemented the objects they use.
     bool onAddRenderPass(const RenderPassDesc&,
