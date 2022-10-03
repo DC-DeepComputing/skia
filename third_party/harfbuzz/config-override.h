@@ -9,3 +9,5 @@ using hb_mutex_impl_t = std::mutex;
 #define hb_mutex_impl_lock(M)   (M)->lock ()
 #define hb_mutex_impl_unlock(M) (M)->unlock ()
 #define hb_mutex_impl_finish(M) HB_STMT_START { (M)->~hb_mutex_impl_t(); } HB_STMT_END
+
+#undef HB_NO_VAR
