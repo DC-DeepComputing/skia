@@ -452,16 +452,33 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
         }
 
         // Generates a string to read at a coordinate, normalizing coords if necessary.
-        auto read = [&](const char* coord) {
-            SkString result;
+        auto normCoordExpr = [&](const char* coord) {
             SkString normCoord;
             if (idims) {
                 normCoord.printf("(%s) * %s", coord, idims);
             } else {
                 normCoord = coord;
             }
-            fb->appendTextureLookup(&result, fSamplerHandle, normCoord.c_str());
+            return normCoord;
+        };
+        auto read = [&](const char* coord) {
+            SkString result;
+            fb->appendTextureLookup(&result, fSamplerHandle, normCoordExpr(coord).c_str());
             return result;
+        };
+
+        // If supported, sample using explicit derivatives in non-uniform control flow to prevent
+        // undefined behavior.
+        bool useExplicitLod = args.fShaderCaps->fExplicitTextureLodSupport &&
+                              args.fShaderCaps->fShaderDerivativeSupport;
+        auto readExplicitLodIfSupported = [&](const char* coord, const char* ddx, const char* ddy) {
+            if (useExplicitLod) {
+                SkString result;
+                fb->appendTextureLookupExplicitGrad(
+                        &result, fSamplerHandle, normCoordExpr(coord).c_str(), ddx, ddy);
+                return result;
+            }
+            return read(coord);
         };
 
         // Implements coord wrapping for kRepeat and kMirrorRepeat
@@ -638,7 +655,14 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
             if (repeatLinearFilterX) {
                 fb->codeAppendf("float repeatCoordX = errX > 0 ? %s.x : %s.z;",
                                 clampName, clampName);
-                repeatLinearReadX = read("float2(repeatCoordX, clampedCoord.y)");
+                fb->codeAppendf("float2 linearFilterXCoords = %s;",
+                                normCoordExpr("float2(repeatCoordX, clampedCoord.y)").c_str());
+                if (useExplicitLod) {
+                    fb->codeAppendf("float2 dLinearReadXdX = dFdx(linearFilterXCoords);");
+                    fb->codeAppendf("float2 dLinearReadXdY = dFdy(linearFilterXCoords);");
+                }
+                repeatLinearReadX = readExplicitLodIfSupported(
+                        "linearFilterXCoords", "dLinearReadXdX", "dLinearReadXdY");
             }
         }
         if (repeatLinearFilterY || m[1] == ShaderMode::kClampToBorder_Filter) {
@@ -646,7 +670,14 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
             if (repeatLinearFilterY) {
                 fb->codeAppendf("float repeatCoordY = errY > 0 ? %s.y : %s.w;",
                                 clampName, clampName);
-                repeatLinearReadY = read("float2(clampedCoord.x, repeatCoordY)");
+                fb->codeAppendf("float2 linearFilterYCoords = %s;",
+                                normCoordExpr("float2(clampedCoord.x, repeatCoordY)").c_str());
+                if (useExplicitLod) {
+                    fb->codeAppendf("float2 dLinearReadYdX = dFdx(linearFilterYCoords);");
+                    fb->codeAppendf("float2 dLinearReadYdY = dFdy(linearFilterYCoords);");
+                }
+                repeatLinearReadY = readExplicitLodIfSupported(
+                        "linearFilterYCoords", "dLinearReadYdX", "dLinearReadYdY");
             }
         }
 
@@ -656,7 +687,14 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
         // above.
         const char* ifStr = "if";
         if (repeatLinearFilterX && repeatLinearFilterY) {
-            auto repeatLinearReadXY = read("float2(repeatCoordX, repeatCoordY)");
+            fb->codeAppendf("float2 linearFilterXYCoords = %s;",
+                            normCoordExpr("float2(repeatCoordX, repeatCoordY)").c_str());
+            if (useExplicitLod) {
+                fb->codeAppendf("float2 dLinearReadXYdX = dFdx(linearFilterXYCoords);");
+                fb->codeAppendf("float2 dLinearReadXYdY = dFdy(linearFilterXYCoords);");
+            }
+            auto repeatLinearReadXY = readExplicitLodIfSupported(
+                    "linearFilterXYCoords", "dLinearReadXYdX", "dLinearReadXYdY");
             fb->codeAppendf(
                     "if (errX != 0 && errY != 0) {"
                     "    errX = abs(errX);"
