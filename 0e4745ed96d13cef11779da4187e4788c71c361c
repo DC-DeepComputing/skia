@@ -86,6 +86,30 @@
       },
       "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40c0cf3c_fe357573",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T18:04:37Z",
+      "side": 1,
+      "message": "If we only do a single sample, there isn\u0027t anything to parallelize, right?",
+      "parentUuid": "6d1494ee_2236aeda",
+      "range": {
+        "startLine": 91,
+        "startChar": 43,
+        "endLine": 91,
+        "endChar": 96
+      },
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
