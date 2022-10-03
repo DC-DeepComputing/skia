@@ -57,6 +57,24 @@
       "parentUuid": "c61b15af_bfac6a52",
       "revId": "dc295030042b6eae58169b3ad76449f71578b7a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75841c1_4d58451a",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T14:32:51Z",
+      "side": 1,
+      "message": "Ah, this is what you were referring to when you stated not to land this yet. Read these comments in the wrong order.",
+      "parentUuid": "22bcd94d_0d37b478",
+      "revId": "dc295030042b6eae58169b3ad76449f71578b7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
