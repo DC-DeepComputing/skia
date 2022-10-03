@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7aab48a_20782d81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-03T18:19:23Z",
+      "side": 1,
+      "message": "Thank you for the heads up! I believe this is exactly what Rob commented on in https://skia-review.googlesource.com/c/skia/+/583616/comment/2bc32550_3b81253f/ -- we ended up removing any branching on non-uniforms. I can confirm that the logic without this branching still produces correct results, but not sure what the impact on performance is.",
+      "parentUuid": "23f21ac2_2ceb86a0",
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d67b9b14_ee8ef9ad",
