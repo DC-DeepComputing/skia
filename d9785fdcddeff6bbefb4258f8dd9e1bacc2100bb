@@ -70,6 +70,24 @@
       "parentUuid": "c89a0771_6ba183e9",
       "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95633e3_b7f057cb",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T19:33:09Z",
+      "side": 0,
+      "message": "For sure, if we know there\u0027s no mipmaps and can just pass LOD0, we should just use sampleLod.",
+      "parentUuid": "57b54fe6_7043cb94",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
