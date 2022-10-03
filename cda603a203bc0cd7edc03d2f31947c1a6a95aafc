@@ -16,6 +16,23 @@
       "message": "To be honest I do not understand what happened. I cannot even look at the history because my office computer rebooted out of sudden just about that time and the history was lost...",
       "revId": "cda603a203bc0cd7edc03d2f31947c1a6a95aafc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "512087ca_6aa154fa",
+        "filename": "include/core/SkFontMgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-03T14:47:08Z",
+      "side": 1,
+      "message": "I\u0027m curious: What\u0027s the use-case for this? Also, this is definitely non-standard Skia naming. It\u0027s using both CamelCase and snake_case. Plus, it\u0027s a factory for the enclosed type, so we wouldn\u0027t usually re-state the type name.\n\nI\u0027d expect this to be called MakeEmpty() (or possibly RefEmpty, to keep it consistent with RefDefault above)?",
+      "revId": "cda603a203bc0cd7edc03d2f31947c1a6a95aafc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
