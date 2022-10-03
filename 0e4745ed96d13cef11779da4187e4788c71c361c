@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23f21ac2_2ceb86a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-03T17:46:45Z",
+      "side": 1,
+      "message": "James, you adopted some of this code for Graphite, so you might want to keep in sync with it if there are changes.",
+      "revId": "0e4745ed96d13cef11779da4187e4788c71c361c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d67b9b14_ee8ef9ad",
         "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
         "patchSetId": 1
