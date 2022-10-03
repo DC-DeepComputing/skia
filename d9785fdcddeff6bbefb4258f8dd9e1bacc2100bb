@@ -52,6 +52,24 @@
       "parentUuid": "af1a7eb7_4e764a80",
       "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57b54fe6_7043cb94",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-03T19:11:56Z",
+      "side": 0,
+      "message": "If you\u0027re implementing the sampleGrad approach for the other case anyway then that would work here as well. This is only ever used when the sampler has filter set to bilerp, no mipmapping, no aniso.\n\nAlso, is textureLod maybe slightly more efficient than tetureGrad?",
+      "parentUuid": "c89a0771_6ba183e9",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
