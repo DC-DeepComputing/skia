@@ -34,6 +34,24 @@
       "parentUuid": "d06ddf56_d718eb47",
       "revId": "e4eeacea1def38a25929b0f1b9fdb67dd7f7edc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "909027dd_b0f7183b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-03T14:33:12Z",
+      "side": 1,
+      "message": "That\u0027s now resolved and was fixed with fixing the truncation in the pad case.",
+      "parentUuid": "00381e98_aa6f1b2c",
+      "revId": "e4eeacea1def38a25929b0f1b9fdb67dd7f7edc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
