@@ -11,9 +11,16 @@
 
 #include <utility>
 
-SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT) : fSizeOfT{sizeOfT} {
+SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT)
+        : fSizeOfT{sizeOfT}
+        , fStorage{count > 0 ? static_cast<std::byte*>(sk_malloc_throw(this->bytes(count)))
+                             : nullptr}
+        , fReserve{count}
+        , fCount{count} {
     SkASSERT(src || count == 0);
-    this->assign(src, count);
+    if (count > 0) {
+        this->copySrc(0, src, count);
+    }
 }
 
 SkTDStorage::SkTDStorage(const SkTDStorage& that)
@@ -21,7 +28,12 @@ SkTDStorage::SkTDStorage(const SkTDStorage& that)
 
 SkTDStorage& SkTDStorage::operator=(const SkTDStorage& that) {
     if (this != &that) {
-        this->assign(that.fStorage, that.fCount);
+        fCount = that.fCount;
+        if (that.fCount > fReserve) {
+            fReserve = that.fReserve;
+            fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, this->bytes(fReserve)));
+        }
+        this->copySrc(0, that.fStorage, that.fCount);
     }
     return *this;
 }
