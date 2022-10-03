@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d50fc8_cc7b21da",
+        "filename": "tests/MeshTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T21:24:10Z",
+      "side": 1,
+      "message": "Mostly curious, did something warn about this? `auto` with destructuring like this is difficult to understand, since the `auto` here resolves to the type of the thing to be destructured (here a `std::tuple\u003cconst Uniform, const std::vector\u003cSkMeshSpecification::Uniform\u003e` with whatever attributes or ref qualifiers are added) and then the types of the identifiers (here `actual` and `expected`) are inferred from that and are always lvalue references (this change does not affect that). `SkMakeZip` will return an rvalue so either `const auto\u0026` or `auto\u0026\u0026` will work. `const auto\u0026\u0026` works but seems strange since it does not affect the constness of `actual` and `expected` (they\u0027re const either way because the tuple template types are const). It\u0027s just surprising to see a const rvalue reference (though they can be useful for method overload selection).",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a837bb_c3d72e8b",
+        "filename": "tests/SkSLTypeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-03T21:24:10Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is handled well? I see several places in the code where `SkSL::Context::fCaps` is used without checking for nullptr (though there is at least one place where it is?). In particular `GLSLCodeGenerator::caps()` appears to assume it can return what the caps pointer points at as a reference. I suppose it may work out for this one test, but maybe something should be asserting that this isn\u0027t nullptr?",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
