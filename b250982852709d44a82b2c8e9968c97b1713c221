@@ -22,6 +22,30 @@
       },
       "revId": "b250982852709d44a82b2c8e9968c97b1713c221",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94392c25_9d87eb5c",
+        "filename": "src/sksl/generated/sksl_shared.minified.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-04T17:03:55Z",
+      "side": 1,
+      "message": "Good point, we could strip it out during minification. I\u0027ll tackle that in the followup.",
+      "parentUuid": "8d734a95_41678ea6",
+      "range": {
+        "startLine": 111,
+        "startChar": 37,
+        "endLine": 111,
+        "endChar": 43
+      },
+      "revId": "b250982852709d44a82b2c8e9968c97b1713c221",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
