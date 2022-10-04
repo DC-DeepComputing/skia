@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3a9be04_e6eb2727",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T19:59:29Z",
+      "side": 1,
+      "message": "Maybe this should be defined as\n\n```\ntemplate\u003ctypename, typename \u003d void\u003e\nstruct sk_has_trivially_relocatable_member : std::false_type {};\n\ntemplate\u003ctypename T\u003e\nstruct sk_has_trivially_relocatable_member\u003cT, std::void_t\u003ctypename T::sk_is_trivially_relocatable\u003e\u003e : typename T::sk_is_trivially_relocatable {};\n\nstruct sk_is_trivially_relocatable : std::disjunction\u003c\n     std::is_trivially_copyable\u003cT\u003e, sk_has_trivially_relocatable_member\u003cT\u003e\n\u003e{};\n```\n\nso that types can do something like\n\n```\nclass Foo { using sk_is_trivially_relocatable \u003d std::true_type; }\n```\nor something like that.",
+      "revId": "cbb6e30e7975a7006a14265768aa13543efe5990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4f0028_ff0c8750",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T19:59:29Z",
+      "side": 1,
+      "message": "I know this is all done right here inline, but it would be nice to put the full `sk_is_trivially_relocatable` thing here (the class stating that it is trivially relocatable) so that we can eventually remove the bool template parameter. Though this is a pain due to the inner class thing.\n\nMaybe because of the inner class thing we should add a way for the class itself to just directly state a trait type. This is the motivation for the comment on SkTemplates.h.",
+      "revId": "cbb6e30e7975a7006a14265768aa13543efe5990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
