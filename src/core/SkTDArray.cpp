@@ -147,7 +147,23 @@ void* SkTDStorage::prepend() {
 }
 
 void* SkTDStorage::append() {
-    return this->insert(fCount);
+    if (fReserve > fCount) {
+        return this->address(fCount++);
+    }
+    return append(1);
+}
+
+void* SkTDStorage::append(int count) {
+    const int oldCount = fCount;
+    if (count > 0) {
+        if (fReserve - fCount >= count) {
+            fCount += count;
+        } else {
+            const int newCount = this->calculateSizeOrDie(count);
+            this->resize(newCount);
+        }
+    }
+    return this->address(oldCount);
 }
 
 void* SkTDStorage::append(const void* src, int count) {
