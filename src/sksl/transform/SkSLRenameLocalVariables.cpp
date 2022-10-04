@@ -6,9 +6,11 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkSLSymbol.h"
+#include "include/private/SkStringView.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
@@ -34,10 +36,14 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
 
     class VariableRenamer : public ProgramWriter {
     public:
-        VariableRenamer(Context& context, ProgramUsage* usage) : fContext(context), fUsage(usage) {}
+        VariableRenamer(Context& context,
+                        ProgramUsage* usage,
+                        std::shared_ptr<SymbolTable> symbolBase)
+                : fContext(context), fUsage(usage), fSymbolTableStack({std::move(symbolBase)}) {}
 
         static std::string FindShortNameForSymbol(const Symbol* sym,
-                                                  const SymbolTable* symbolTable) {
+                                                  const SymbolTable* symbolTable,
+                                                  std::string namePrefix) {
             static constexpr std::string_view kLetters[] = {
                     "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
                     "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
@@ -46,15 +52,16 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
 
             // Try any single-letter option.
             for (std::string_view letter : kLetters) {
-                if ((*symbolTable)[letter] == nullptr) {
-                    return std::string(letter);
+                std::string name = namePrefix + std::string(letter);
+                if ((*symbolTable)[name] == nullptr) {
+                    return name;
                 }
             }
 
             // Try every two-letter option.
             for (std::string_view letterA : kLetters) {
                 for (std::string_view letterB : kLetters) {
-                    std::string name = std::string(letterA) + std::string(letterB);
+                    std::string name = namePrefix + std::string(letterA) + std::string(letterB);
                     if ((*symbolTable)[name] == nullptr) {
                         return name;
                     }
@@ -66,21 +73,36 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
             return std::string(sym->name());
         }
 
-        void minifyName(const Symbol* sym) {
+        void minifyVariableName(const Variable* var) {
             // Look for a new name for this symbol.
             // Note: we always rename _every_ variable, even ones with single-letter names. This is
             // a safeguard: if we claimed a name like `i`, and then the program itself contained an
             // `i` later on, in a nested SymbolTable, the two names would clash. By always renaming
             // everything, we can ignore that problem.
             SymbolTable* symbols = fSymbolTableStack.back().get();
-            std::string shortName = FindShortNameForSymbol(sym, symbols);
+            std::string shortName = FindShortNameForSymbol(var, symbols, "");
+            SkASSERT(symbols->getMutableSymbol(shortName) == nullptr);
 
             // Update the symbol's name.
-            SkASSERT(symbols->getMutableSymbol(shortName) == nullptr);
-            Symbol* mutableSym = symbols->getMutableSymbol(sym->name());
-            SkASSERT(mutableSym == sym);
+            Symbol* mutableSym = symbols->getMutableSymbol(var->name());
+            SkASSERT(mutableSym == var);
             const std::string* ownedName = symbols->takeOwnershipOfString(std::move(shortName));
             symbols->renameSymbol(mutableSym, *ownedName);
+        }
+
+        void minifyPrivateFunctionName(const FunctionDeclaration* funcDecl) {
+            // Look for a new name for this function.
+            SymbolTable* symbols = fSymbolTableStack.back().get();
+            std::string shortName = FindShortNameForSymbol(funcDecl, symbols, "$");
+            SkASSERT(symbols->getMutableSymbol(shortName) == nullptr);
+
+            if (shortName.size() < funcDecl->name().size()) {
+                // Update the function's name. (If the function has overloads, this will rename all
+                // of them at once.)
+                Symbol* mutableSym = symbols->getMutableSymbol(funcDecl->name());
+                const std::string* ownedName = symbols->takeOwnershipOfString(std::move(shortName));
+                symbols->renameSymbol(mutableSym, *ownedName);
+            }
         }
 
         bool visitProgramElement(ProgramElement& elem) override {
@@ -88,12 +110,19 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
                 // This transform only looks at function definitions.
                 return false;
             }
-            // Minify the names of each function parameter.
+
+            // If the function is private, minify its name.
             const FunctionDefinition& def = elem.as<FunctionDefinition>();
+            if (skstd::starts_with(def.declaration().name(), '$') &&
+                !(def.declaration().modifiers().fFlags & Modifiers::kExport_Flag)) {
+                this->minifyPrivateFunctionName(&def.declaration());
+            }
+
+            // Minify the names of each function parameter.
             Analysis::SymbolTableStackBuilder symbolTableStackBuilder(def.body().get(),
                                                                       &fSymbolTableStack);
             for (const Variable* param : def.declaration().parameters()) {
-                this->minifyName(param);
+                this->minifyVariableName(param);
             }
             return INHERITED::visitProgramElement(elem);
         }
@@ -104,7 +133,7 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
             if (stmt->is<VarDeclaration>()) {
                 // Minify the variable's name.
                 VarDeclaration& decl = stmt->as<VarDeclaration>();
-                this->minifyName(&decl.var());
+                this->minifyVariableName(&decl.var());
             }
 
             return INHERITED::visitStatementPtr(stmt);
@@ -116,7 +145,7 @@ void Transform::RenameLocalVariables(Context& context, LoadedModule& module, Pro
         using INHERITED = ProgramWriter;
     };
 
-    VariableRenamer visitor{context, usage};
+    VariableRenamer visitor{context, usage, module.fSymbols};
 
     for (std::unique_ptr<ProgramElement>& pe : module.fElements) {
         visitor.visitProgramElement(*pe);
