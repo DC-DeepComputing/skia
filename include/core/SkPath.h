@@ -1875,4 +1875,7 @@ private:
     friend class FuzzPath; // for legacy access to validateRef
 };
 
+template <>
+struct sk_is_trivially_relocatable<SkPath> : std::true_type {};
+
 #endif

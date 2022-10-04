@@ -151,4 +151,8 @@ constexpr Swizzle Swizzle::Concat(const Swizzle& a, const Swizzle& b) {
 }
 
 } // namespace skgpu
+
+template <>
+struct sk_is_trivially_relocatable<skgpu::Swizzle> : std::true_type {};
+
 #endif

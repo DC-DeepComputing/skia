@@ -527,7 +527,7 @@ struct ShapedRun {
     SkVector fAdvance;
 };
 struct ShapedLine {
-    SkTArray<ShapedRun> runs;
+    SkTArray<ShapedRun, true> runs;
     SkVector fAdvance = { 0, 0 };
 };
 
@@ -608,7 +608,7 @@ void emit(SkUnicode* unicode, const ShapedLine& line, SkShaper::RunHandler* hand
 }
 
 struct ShapedRunGlyphIterator {
-    ShapedRunGlyphIterator(const SkTArray<ShapedRun>& origRuns)
+    ShapedRunGlyphIterator(const SkTArray<ShapedRun, true>& origRuns)
         : fRuns(&origRuns), fRunIndex(0), fGlyphIndex(0)
     { }
 
@@ -626,7 +626,7 @@ struct ShapedRunGlyphIterator {
     }
 
     ShapedGlyph* next() {
-        const SkTArray<ShapedRun>& runs = *fRuns;
+        const SkTArray<ShapedRun, true>& runs = *fRuns;
         SkASSERT(fRunIndex < runs.count());
         SkASSERT(fGlyphIndex < runs[fRunIndex].fNumGlyphs);
 
@@ -642,14 +642,14 @@ struct ShapedRunGlyphIterator {
     }
 
     ShapedGlyph* current() {
-        const SkTArray<ShapedRun>& runs = *fRuns;
+        const SkTArray<ShapedRun, true>& runs = *fRuns;
         if (fRunIndex >= runs.count()) {
             return nullptr;
         }
         return &runs[fRunIndex].fGlyphs[fGlyphIndex];
     }
 
-    const SkTArray<ShapedRun>* fRuns;
+    const SkTArray<ShapedRun, true>* fRuns;
     int fRunIndex;
     size_t fGlyphIndex;
 };
@@ -1017,7 +1017,7 @@ void ShapeThenWrap::wrap(char const * const utf8, size_t utf8Bytes,
                          SkScalar width,
                          RunHandler* handler) const
 {
-    SkTArray<ShapedRun> runs;
+    SkTArray<ShapedRun, true> runs;
 {
     if (!fLineBreakIterator->setText(utf8, utf8Bytes)) {
         return;
@@ -1230,7 +1230,7 @@ void ShapeDontWrapOrReorder::wrap(char const * const utf8, size_t utf8Bytes,
                                   RunHandler* handler) const
 {
     sk_ignore_unused_variable(width);
-    SkTArray<ShapedRun> runs;
+    SkTArray<ShapedRun, true> runs;
 
     const char* utf8Start = nullptr;
     const char* utf8End = utf8;

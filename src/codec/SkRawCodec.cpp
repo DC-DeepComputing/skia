@@ -57,6 +57,9 @@
 #include "src/piex.h"
 #include "src/piex_types.h"
 
+template <>
+struct sk_is_trivially_relocatable<dng_exception> : std::true_type {};
+
 namespace {
 
 // Calculates the number of tiles of tile_size that fit into the area in vertical and horizontal

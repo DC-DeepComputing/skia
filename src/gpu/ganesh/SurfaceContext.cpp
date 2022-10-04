@@ -713,7 +713,7 @@ private:
         sk_sp<GrGpuBuffer> fMappedBuffer;
         size_t fRowBytes;
     };
-    SkSTArray<3, Plane> fPlanes;
+    SkSTArray<3, Plane, true> fPlanes;
     GrDirectContext::DirectContextID fIntendedRecipient;
 };
 

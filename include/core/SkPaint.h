@@ -704,4 +704,7 @@ private:
     friend class SkPaintPriv;
 };
 
+template <>
+struct sk_is_trivially_relocatable<SkPaint> : std::true_type {};
+
 #endif
