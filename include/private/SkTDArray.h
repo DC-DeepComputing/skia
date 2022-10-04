@@ -64,18 +64,12 @@ public:
     // Insertion routines
     void* prepend();
     void* append();
-    void* append(const void* src, int count);
+    void* append(int count);
+    void* append(int count, const void* src);
     void* insert(int index);
+    void* insert(int count, int index);
     void* insert(int index, int count, const void* src);
 
-    // Stack routines
-    void* push_back() {
-        if (fCount < fReserve) {
-            return this->address(fCount++);
-        } else {
-            return this->append();
-        }
-    }
     void pop_back() {
         SkASSERT(fCount > 0);
         fCount--;
@@ -207,13 +201,19 @@ public:
     T* append() {
         return static_cast<T*>(fStorage.append());
     }
-    T* append(int count, const T* src = nullptr) {
-        return reinterpret_cast<T*>(fStorage.append(src, count));
+
+    T* append(int count) {
+        return reinterpret_cast<T*>(fStorage.append(count));
+    }
+
+    T* append(int count, const T* src) {
+        return reinterpret_cast<T*>(fStorage.append(count, src));
     }
 
     T* insert(int index) {
         return reinterpret_cast<T*>(fStorage.insert(index));
     }
+
     T* insert(int index, int count, const T* src = nullptr) {
         return reinterpret_cast<T*>(fStorage.insert(index, count, src));
     }
@@ -239,7 +239,7 @@ public:
     }
 
     // routines to treat the array like a stack
-    void push_back(const T& v) { *reinterpret_cast<T*>(fStorage.push_back()) = v; }
+    void push_back(const T& v) { *reinterpret_cast<T*>(fStorage.append()) = v; }
     void pop_back() { fStorage.pop_back(); }
 
     void deleteAll() {

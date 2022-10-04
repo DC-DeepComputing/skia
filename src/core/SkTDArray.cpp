@@ -143,34 +143,51 @@ void SkTDStorage::assign(const void* src, int count) {
 }
 
 void* SkTDStorage::prepend() {
-    return this->insert(/*index=*/0);
+    return this->insert(1, /*index=*/0);
 }
 
 void* SkTDStorage::append() {
-    return this->insert(fCount);
+    return this->insert(1, /*index=*/fCount);
 }
 
-void* SkTDStorage::append(const void* src, int count) {
-    return this->insert(fCount, count, src);
+void* SkTDStorage::append(int count) {
+    return this->insert(count, /*index=*/fCount);
 }
 
 void* SkTDStorage::insert(int index) {
-    return this->insert(index, /*count=*/1, nullptr);
+    return this->insert(1, index);
+}
+
+void* SkTDStorage::insert(int count, int index) {
+    SkASSERT(0 <= index && index <= fCount);
+    SkASSERT(count >= 0);
+    if (count > 0) {
+        const int oldCount = fCount;
+        // Read this as the overflow safe version of fCount + count < fReserve.
+        if (fReserve - fCount >= count) {
+            fCount += count;
+        } else {
+            const int newCount = this->calculateSizeOrDie(count);
+            this->resize(newCount);
+        }
+        this->moveTail(index + count, index, oldCount);
+    }
+    return this->address(index);
+}
+
+void* SkTDStorage::append(int count, const void* src) {
+    return this->insert(fCount, count, src);
 }
 
 void* SkTDStorage::insert(int index, int count, const void* src) {
     SkASSERT(0 <= index && index <= fCount);
     SkASSERT(count >= 0);
 
-    if (count > 0) {
-        const int oldCount = fCount;
-        const int newCount = this->calculateSizeOrDie(count);
-        this->resize(newCount);
-        this->moveTail(index + count, index, oldCount);
+    this->insert(count, index);
 
-        if (src != nullptr) {
-            this->copySrc(index, src, count);
-        }
+    if (src != nullptr) {
+        SkASSERT(count > 0);
+        this->copySrc(index, src, count);
     }
 
     return this->address(index);
@@ -197,7 +214,7 @@ int SkTDStorage::calculateSizeOrDie(int delta) {
 void SkTDStorage::moveTail(int to, int tailStart, int tailEnd) {
     SkASSERT(0 <= to && to <= fCount);
     SkASSERT(0 <= tailStart && tailStart <= tailEnd && tailEnd <= fCount);
-    if (to != tailStart && tailStart != tailEnd) {
+    if (tailStart != tailEnd && to != tailStart) {
         this->copySrc(to, this->address(tailStart), tailEnd - tailStart);
     }
 }

@@ -963,7 +963,7 @@ wgpu::Sampler GrDawnGpu::getOrCreateSampler(GrSamplerState samplerState) {
         desc.mipmapFilter = to_dawn_mipmap_mode(samplerState.mipmapMode());
     }
     wgpu::Sampler sampler = device().CreateSampler(&desc);
-    fSamplers.insert(std::pair<GrSamplerState, wgpu::Sampler>(samplerState, sampler));
+    fSamplers.insert(std::pair<GrSamplerState, wgpu::Sampler>(samplerState, sampler), 0, nullptr);
     return sampler;
 }
 
