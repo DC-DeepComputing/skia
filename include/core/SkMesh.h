@@ -32,19 +32,24 @@ namespace SkSL { struct Program; }
  * vertex program that produces a user-defined set of varyings, a fragment program that ingests
  * the interpolated varyings and produces local coordinates and optionally a color.
  *
- * The signature of the vertex program must be:
+ * If there are varyings then the signature of the vertex program must be:
  *   float2 main(Attributes, out Varyings)
- * where the return value is a local position that will be transformed by SkCanvas's matrix.
+ * where the return value is a local position that will be transformed by SkCanvas's matrix. If
+ * there are no varyings then it must be:
+ *   float2 main(Attributes)
  *
- * The signature of the fragment program must be either:
- *   (float2|void) main(Varyings)
- * or
- *   (float2|void) main(Varyings, out (half4|float4) color)
+ * The signature of the fragment program must be one of
+ *   (float2|void) main(Varyings) or (float2|void) main(Varyings, out (half4|float4) color)
+ * when there are varyings or one of
+ *   void main() or void main(out (half4|float4) color)
+ * when there are no varyings. If the return type is float2 then the return value will be used as
+ * the local coordinates that access SkPaint's SkShader. If the return type is void then the
+ * interpolated position from vertex shader return is used as the local coordinate. If the color
+ * variant is used it will be blended with SkShader (or SkPaint color in absence of a shader)
+ * using the SkBlender provided to the SkCanvas draw call.
  *
- * where the return value is the local coordinates that will be used to access SkShader. If the
- * return type is void then the interpolated position from vertex shader return is used as the local
- * coordinate. If the color variant is used it will be blended with SkShader (or SkPaint color in
- * absence of a shader) using the SkBlender provided to the SkCanvas draw call.
+ * An empty fragment shader string is implicitly converted to "void main() {}" if there are no
+ * varyings and "void main(Varyings) {}" if there are varyings.
  *
  * The vertex and fragment programs may both contain uniforms. Uniforms with the same name are
  * assumed to be shared between stages. It is an error to specify uniforms in the vertex and

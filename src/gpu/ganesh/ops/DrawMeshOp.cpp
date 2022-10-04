@@ -247,10 +247,14 @@ private:
             }
 
             // Call the user's vert function.
-            vertBuilder->codeAppendf("%s varyings;",
-                                     vsCallbacks.getMangledName("Varyings").c_str());
-            vertBuilder->codeAppendf("float2 pos = %s(attributes, varyings);",
-                                     userVertName.c_str());
+            if (SkMeshSpecificationPriv::Varyings(*mgp.fSpec).empty()) {
+                vertBuilder->codeAppendf("float2 pos = %s(attributes);", userVertName.c_str());
+            } else {
+                vertBuilder->codeAppendf("%s varyings;",
+                                         vsCallbacks.getMangledName("Varyings").c_str());
+                vertBuilder->codeAppendf("float2 pos = %s(attributes, varyings);",
+                                         userVertName.c_str());
+            }
 
             // Unpack the varyings from the struct into individual varyings.
             std::vector<GrGLSLVarying> varyings;
@@ -293,13 +297,15 @@ private:
                                                 &fsCallbacks);
 
             // Pack the varyings into a struct to call the user's frag code.
-            fragBuilder->codeAppendf("%s varyings;",
-                                     fsCallbacks.getMangledName("Varyings").c_str());
-            i = 0;
-            for (const auto& varying : SkMeshSpecificationPriv::Varyings(*mgp.fSpec)) {
-                fragBuilder->codeAppendf("varyings.%s = %s;",
-                                         varying.name.c_str(),
-                                         varyings[i++].vsOut());
+            if (!varyings.empty()) {
+                fragBuilder->codeAppendf("%s varyings;",
+                                         fsCallbacks.getMangledName("Varyings").c_str());
+                i = 0;
+                for (const auto& varying : SkMeshSpecificationPriv::Varyings(*mgp.fSpec)) {
+                    fragBuilder->codeAppendf("varyings.%s = %s;",
+                                             varying.name.c_str(),
+                                             varyings[i++].vsOut());
+                }
             }
             SkMeshSpecificationPriv::ColorType meshColorType =
                     SkMeshSpecificationPriv::GetColorType(*mgp.fSpec);
@@ -316,9 +322,10 @@ private:
                 localCoordAssignment = "float2 local =";
             }
             if (meshColorType == SkMeshSpecificationPriv::ColorType::kNone) {
-                fragBuilder->codeAppendf("%s %s(varyings);",
+                fragBuilder->codeAppendf("%s %s(%s);",
                                          localCoordAssignment.c_str(),
-                                         userFragName.c_str());
+                                         userFragName.c_str(),
+                                         varyings.empty() ? "" : "varyings");
                 SkASSERT(uniformColorName);
                 fragBuilder->codeAppendf("%s = %s;", args.fOutputColor, uniformColorName);
             } else {
@@ -332,9 +339,10 @@ private:
                     fragBuilder->codeAppendf("half4 color;");
                 }
 
-                fragBuilder->codeAppendf("%s %s(varyings, color);",
+                fragBuilder->codeAppendf("%s %s(%scolor);",
                                          localCoordAssignment.c_str(),
-                                         userFragName.c_str());
+                                         userFragName.c_str(),
+                                         varyings.empty() ? "" : "varyings, ");
                 // We ignore the user's color if analysis told us to emit a specific color. The user
                 // color might be float4 and we expect a half4 in the colorspace helper.
                 const char* color = uniformColorName ? uniformColorName : "half4(color)";
@@ -672,7 +680,12 @@ static SkMeshSpecification* make_vertices_spec(bool hasColors, bool hasTex) {
     std::vector<Varying> varyings;
     attributes.reserve(2);
 
-    SkString vs("float2 main(Attributes a, out Varyings v) {\n");
+    SkString vs("float2 main(Attributes a");
+    if (hasTex || hasColors) {
+        vs.append(", out Varyings v");
+    }
+    vs.append(") {\n");
+
     SkString fs(hasTex ? "float2 " : "void ");
 
     if (hasColors) {
@@ -683,8 +696,10 @@ static SkMeshSpecification* make_vertices_spec(bool hasColors, bool hasTex) {
         fs += "main(Varyings v, out float4 color) {\n"
               "color = float4(v.color.bgr*v.color.a, v.color.a);\n";
         size += 4;
-    } else {
+    } else if (hasTex) {
         fs += "main(Varyings v) {\n";
+    } else {
+        fs += "main() {\n";
     }
 
     if (hasTex) {
