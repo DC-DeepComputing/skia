@@ -16,6 +16,24 @@
       "message": "Do we produce an error if you declare two overloads with different modifiers? If not, what happens if you write:\n\n    $export float $foo(float) { ... }\n            int   $foo(int) { ... }",
       "revId": "73d5d92d5d4bf3fb368e5f37f559ef44e0b99c59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbbf89da_f2707084",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-04T20:19:47Z",
+      "side": 1,
+      "message": "We do produce such an error, but only when parameter lists match; different return values and modifiers are allowed for different parameter sets.\n\n(Some functions like `mix` do need different modifiers on different parameter sets... some are `$es3` and others are not.)\n\nIn this scenario you would actually get `$foo` renamed across the board, because `minifyPrivateFunctionName` renames the entire overload chain as soon as it finds a private non-exported function. You need to flag every overload with `$export` or exporting won\u0027t work. Not ideal but it\u0027s not _that_ bad?",
+      "parentUuid": "c76bf599_63975b2d",
+      "revId": "73d5d92d5d4bf3fb368e5f37f559ef44e0b99c59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
