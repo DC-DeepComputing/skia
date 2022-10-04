@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77008d20_6d85fac9",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 39
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T19:16:37Z",
+      "side": 1,
+      "message": "This shouldn\u0027t depend on fontmgr_fontconfig.\n\nThe SkFontConfigInterface_direct.cpp depends directly on FontConfig (and typeface_freetype).\n\nThe SkFontConfigInterface_direct_factory.cpp would depend on SkFontConfigInterface_direct.cpp similarly to the other fontmgr factories depend on their fontmgr. Note that this is not a fotmgr factory but a different thing.\n\nIn particular SkFontConfigInterface.cpp and SkFontMgr_FontConfigInterface.cpp do not depend on FontConfig (or FreeType). The only reason for the existence of this mess is for these two to not depend directly on FontConfig.\n\nFor the time being I\u0027m fine with a comment that this needs to be split up and at least replacing \":fontmgr_fontconfig\" with a direct dependency on FontConfig. I think this is the way our gn build currently works. However, that only works because we don\u0027t share any of our gn build rules with any user that actually builds or uses this.",
+      "revId": "ad7f9098f9678000acce4fe6eb1559533dd54115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2cc4f5c_ff0159d0",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 39
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T19:16:37Z",
+      "side": 1,
+      "message": "Sorry about this file, the FCI bits should probably go into a separate file. In fact it looks like this is incorrect in our gn build as well, where this file is added as a test when the FontConfig SkFonMgr is enabled, but we don\u0027t actually check to see if the FCI stuff is actually enabled (that part of the test should go in a file which that target brings in). I\u0027ll see about fixing that up first.\n\nThat being said, it isn\u0027t clear here when this is being run (is enabled). This test obviously states that it needs these dependencies, but what about platforms where FontConfig isn\u0027t available?",
+      "revId": "ad7f9098f9678000acce4fe6eb1559533dd54115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
