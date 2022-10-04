@@ -133,14 +133,71 @@ static const Varying kValidVaryings[] = {
 };
 
 static void test_good(skiatest::Reporter* r) {
-    for (const auto& validFS : kValidFSes) {
-        if (!check_for_success(r,
-                               kValidAttrs,
-                               kValidStride,
-                               kValidVaryings,
-                               kValidVS,
-                               validFS)) {
-            return;
+    static constexpr const char* kNoVaryingVSes[] {
+            "float2 main(Attributes) { return float2(10); }",
+    };
+    static constexpr const char* kNoVaryingFSes[]{
+            "void main(out half4 color) { color = half4(1); }",
+            "void main(out float4 color) { color = float4(1); }",
+            "void main() {}",
+            "",  // implies "void main() {}"
+    };
+
+
+    for (const auto& validNoVaryingVS : kNoVaryingVSes) {
+        for (const auto& validNoVaryingFS : kNoVaryingFSes) {
+            if (!check_for_success(r,
+                                   kValidAttrs,
+                                   kValidStride,
+                                   /*varyings=*/{},
+                                   SkString(validNoVaryingVS),
+                                   SkString(validNoVaryingFS))) {
+                return;
+            }
+            // These good shaders should fail if there actually are varyings.
+            if (!check_for_failure(r,
+                                   kValidAttrs,
+                                   kValidStride,
+                                   kValidVaryings,
+                                   SkString(validNoVaryingVS),
+                                   SkString(validNoVaryingFS))) {
+                return;
+            }
+        }
+    }
+
+    static constexpr const char* kVaryingVSes[] {
+            "float2 main(Attributes, out Varyings v) { return float2(10); }",
+    };
+    static constexpr const char* kVaryingFSes[]{
+            "float2 main(Varyings) { return float2(10); }",
+            "void main(Varyings, out half4 color) { color = half4(1); }",
+            "void main(Varyings, out float4 color) { color = float4(1); }",
+            "float2 main(Varyings, out half4 color) { color = half4(1); return float2(10); }",
+            "float2 main(Varyings, out float4 color) { color = float4(1); return float2(10); }",
+            "void main(Varyings) {}",
+            "",  // implies "void main(Varyings) {}"
+    };
+
+    for (const auto& validVaryingVS : kVaryingVSes) {
+        for (const auto& validVaryingFS : kVaryingFSes) {
+            if (!check_for_success(r,
+                                   kValidAttrs,
+                                   kValidStride,
+                                   kValidVaryings,
+                                   SkString(validVaryingVS),
+                                   SkString(validVaryingFS))) {
+                return;
+            }
+            // These good shaders should fail if there actually are no varyings.
+            if (!check_for_failure(r,
+                                   kValidAttrs,
+                                   kValidStride,
+                                   /*varyings=*/{},
+                                   SkString(validVaryingVS),
+                                   SkString(validVaryingFS))) {
+                return;
+            }
         }
     }
 }
@@ -152,7 +209,6 @@ static void test_bad_sig(skiatest::Reporter* r) {
             "float3 main(Attributes attrs, out Varyings v)",         // bad return
             "float2 main(inout Attributes attrs, out Varyings v)",   // inout Attributes
             "float2 main(Attributes attrs, inout Varyings v)",       // inout Varyings
-            "float2 main(Attributes attrs)",                         // no Varyings
             "float2 main(out Varyings)",                             // no Attributes
             "float2 main(out Varyings, in Attributes)",              // wrong param order
             "float2 main(Attributes attrs, out Varyings v, float2)"  // extra arg
@@ -164,7 +220,6 @@ static void test_bad_sig(skiatest::Reporter* r) {
             "half2 main(Varyings v)",               // bad return
             "float2 main(in Attributes v)",         // wrong param type
             "float2 main(out Varyings attrs)",      // out Varyings
-            "float2 main()",                        // no args
             "float2 main(Attributes attrs, float)"  // extra arg
     };
 
@@ -561,15 +616,7 @@ static void test_no_main(skiatest::Reporter* r) {
         return;
     }
 
-    // Empty FS
-    if (!check_for_failure(r,
-                           kValidAttrs,
-                           kValidStride,
-                           kValidVaryings,
-                           kValidVS,
-                           SkString{})) {
-        return;
-    }
+    // We don't check an empty FS because in our API it implies a default main function.
 
     // VS with helper function but no main
     if (!check_for_failure(r,
@@ -588,16 +635,6 @@ static void test_zero_attrs(skiatest::Reporter* r) {
                       SkSpan<Attribute>(),
                       kValidStride,
                       kValidVaryings,
-                      kValidVS,
-                      kValidFSes[0]);
-}
-
-static void test_zero_varyings(skiatest::Reporter* r) {
-    // Varyings are not required.
-    check_for_success(r,
-                      kValidAttrs,
-                      kValidStride,
-                      SkSpan<Varying>(),
                       kValidVS,
                       kValidFSes[0]);
 }
@@ -793,7 +830,6 @@ DEF_TEST(MeshSpec, reporter) {
     test_bad_uniforms(reporter);
     test_no_main(reporter);
     test_zero_attrs(reporter);
-    test_zero_varyings(reporter);
     test_bad_strides(reporter);
     test_bad_offsets(reporter);
     test_too_many_attrs(reporter);

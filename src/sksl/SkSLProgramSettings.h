@@ -143,7 +143,16 @@ struct ProgramConfig {
                 kind == ProgramKind::kRuntimeBlender ||
                 kind == ProgramKind::kPrivateRuntimeShader ||
                 kind == ProgramKind::kMeshVertex ||
-                kind == ProgramKind::kMeshFragment);
+                kind == ProgramKind::kMeshFragment ||
+                kind == ProgramKind::kMeshVertexNoVaryings ||
+                kind == ProgramKind::kMeshFragmentNoVaryings);
+    }
+
+    static bool IsMesh(ProgramKind kind) {
+        return (kind == ProgramKind::kMeshVertex ||
+                kind == ProgramKind::kMeshFragment ||
+                kind == ProgramKind::kMeshVertexNoVaryings ||
+                kind == ProgramKind::kMeshFragmentNoVaryings);
     }
 };
 

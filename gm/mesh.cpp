@@ -480,6 +480,100 @@ private:
 
 DEF_GM(return new MeshColorSpaceGM;)
 
+class MeshNoVaryingsGM : public skiagm::GM {
+public:
+    MeshNoVaryingsGM() {}
+
+protected:
+    using Attribute = SkMeshSpecification::Attribute;
+
+    SkISize onISize() override { return {130, 490}; }
+
+    void onOnceBeforeDraw() override {
+        static const Attribute kAttributes[]{
+                {Attribute::Type::kFloat2, 0, SkString{"pos"}},
+        };
+        static const SkString kVS[] {
+                SkString{R"(float2 main(in Attributes attributes) {
+                                return attributes.pos;
+                            })"},
+                SkString{R"(float2 main(in Attributes attributes) {
+                                return attributes.pos;
+                            })"},
+        };
+        static const SkString kFS[] {
+                SkString{""},
+                SkString{"void main(out float4 color) { color = float4(1, .5, .5, 1); }"}
+        };
+        for (const auto& fs : kFS) {
+            for (const auto& vs : kVS) {
+                auto [spec, error] = SkMeshSpecification::Make(kAttributes,
+                                                               sizeof(Vertex),
+                                                               /*varyings=*/{},
+                                                               vs,
+                                                               fs);
+                if (!spec) {
+                    SkDebugf("%s\n", error.c_str());
+                }
+                fSpecs.push_back(std::move(spec));
+            }
+        }
+        SkColor colors[] = {SK_ColorMAGENTA, SK_ColorCYAN};
+        float r = std::min(kRect.width(), kRect.height())/2.f;
+        fShader = SkGradientShader::MakeRadial(kRect.center(),
+                                               r,
+                                               colors,
+                                               /*pos=*/nullptr,
+                                               2,
+                                               SkTileMode::kMirror);
+
+        fVB = SkMesh::MakeVertexBuffer(nullptr, kQuad, sizeof(kQuad));
+    }
+
+    SkString onShortName() override { return SkString("mesh_no_varyings"); }
+
+    DrawResult onDraw(SkCanvas* canvas, SkString* error) override {
+        for (const auto& spec : fSpecs) {
+            SkMesh mesh = SkMesh::Make(spec,
+                                       SkMesh::Mode::kTriangleStrip,
+                                       fVB,
+                                       /*vertexCount= */ 4,
+                                       /*vertexOffset=*/ 0,
+                                       /*uniforms=    */ nullptr,
+                                       kRect);
+
+            SkPaint paint;
+            paint.setShader(fShader);
+            SkBlendMode mode = SkBlendMode::kModulate;
+            canvas->drawMesh(mesh, SkBlender::Mode(mode), paint);
+            canvas->translate(0, kRect.height() + 10);
+        }
+        return DrawResult::kOk;
+    }
+
+private:
+    struct Vertex {
+        SkPoint pos;
+    };
+
+    static constexpr auto kRect = SkRect::MakeLTRB(10, 10, 120, 120);
+
+    static constexpr Vertex kQuad[] {
+            {{kRect.left() , kRect.top()   }},
+            {{kRect.right(), kRect.top()   }},
+            {{kRect.left() , kRect.bottom()}},
+            {{kRect.right(), kRect.bottom()}},
+    };
+
+    sk_sp<SkMesh::VertexBuffer> fVB;
+
+    std::vector<sk_sp<SkMeshSpecification>> fSpecs;
+
+    sk_sp<SkShader> fShader;
+};
+
+DEF_GM(return new MeshNoVaryingsGM;)
+
 class MeshUniformsGM : public skiagm::GM {
 public:
     MeshUniformsGM() { this->onAnimate(0); }

@@ -9,7 +9,6 @@
 
 #include "include/private/SkSLLayout.h"
 #include "include/private/SkSLModifiers.h"
-#include "include/private/SkSLProgramKind.h"
 #include "include/private/SkSLString.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLPosition.h"
@@ -191,9 +190,8 @@ void VarDeclaration::ErrorCheck(const Context& context,
         context.fErrors->error(pos,
                 "variables of type '" + baseType->displayName() + "' must be uniform");
     }
-    if (baseType->isEffectChild() && (context.fConfig->fKind == ProgramKind::kMeshVertex ||
-                                      context.fConfig->fKind == ProgramKind::kMeshFragment)) {
-        context.fErrors->error(pos, "effects are not permitted in custom mesh shaders");
+    if (baseType->isEffectChild() && ProgramConfig::IsMesh(context.fConfig->fKind)) {
+        context.fErrors->error(pos, "effects are not permitted in mesh shaders");
     }
     if (modifiers.fLayout.fFlags & Layout::kColor_Flag) {
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
