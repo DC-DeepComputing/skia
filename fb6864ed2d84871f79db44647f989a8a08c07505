@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50fe5e0e_cee558b5",
+        "filename": "tests/MeshTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T14:50:28Z",
+      "side": 1,
+      "message": "Yeah, clang is wrong here. See https://quuxplusone.github.io/blog/2020/08/26/wrange-loop-analysis/ . It looks like the reason our gn build doesn\u0027t get this incorrect warning is that I turned it off in https://skia-review.googlesource.com/c/skia/+/372816 . Looking at this change, this warning may have been fixed not to do this in Clang 13 and later. So this is likely an issue with using an old compiler.\n\nIt looks like https://skia-review.googlesource.com/c/skia/+/562336 did cary over the comment and enabling of `-Wrange-loop-construct`, however it did not actually pull over the `-Wno-range-loop-analysis` which is why we were adding back `-Wrange-loop-construct` (without the `range-loop-bind-reference` warning). I would prefer to fix `bazel/copts.bzl` (by adding `-Wno-range-loop-analysis` right before re-adding `-Wrange-loop-construct`, along with the associated comment) instead of making this change. The warning is mind poison on an already difficult to understand bit of the language,",
+      "parentUuid": "99a00448_6de51b40",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27a837bb_c3d72e8b",
         "filename": "tests/SkSLTypeTest.cpp",
         "patchSetId": 2
