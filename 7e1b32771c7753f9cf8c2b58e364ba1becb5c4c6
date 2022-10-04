@@ -65,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01629d45_4d5b2f52",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-04T18:44:23Z",
+      "side": 1,
+      "message": "Ah, good catch, I had forgotten these can be used interchangeably.\n\nI only added the traits for a single case of SkTArray\u003cSkTArray...\u003e\u003e somewhere in PDF, so not important at all.  Removed.",
+      "parentUuid": "eac3b377_9b638e24",
+      "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2a99d92_215563e0",
