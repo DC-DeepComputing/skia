@@ -196,9 +196,17 @@ sk_sp<SkSpecialImage> FilterResult::imageAndOffset(SkIPoint* offset) const {
     // TODO: When there are other tile modes than kDecal, imageAndOffset needs to apply them even if
     // the transform is representable as an offset.
     if (is_nearly_integer_translation(fTransform, &origin)) {
-        // Nothing to resolve
-        *offset = SkIPoint(origin);
-        return fImage;
+        // This is similar to the integer-translate case of applyCrop(), except that it can also
+        // apply any soft-cropping from desired output effects on fLayerBounds (which are a request
+        // for minimum content, not a hard maximum like a regular crop).
+        LayerSpace<IVector> originShift = fLayerBounds.topLeft() - origin;
+        auto subsetImage = fImage->makeSubset(SkIRect::MakeXYWH(originShift.x(),
+                                                                originShift.y(),
+                                                                fLayerBounds.width(),
+                                                                fLayerBounds.height()));
+
+        *offset = SkIPoint(fLayerBounds.topLeft());
+        return subsetImage;
     } else {
         // Legacy fallback requires us to produce a new image that matches this FilterResult but
         // has no new properties legacy code can't handle.
@@ -331,10 +339,12 @@ void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
     }
     fSamplingOptions = newSampling;
     fTransform.postConcat(transform);
-    // Rebuild the layer bounds and then restrict to the current desired output.
-    fLayerBounds = fTransform.mapRect(LayerSpace<SkRect>(SkRect::MakeIWH(fImage->width(),
-                                                                         fImage->height())))
-                             .roundOut();
+    // Rebuild the layer bounds and then restrict to the current desired output. The original value
+    // of fLayerBounds includes the image mapped by the original fTransform as well as any
+    // accumulated soft crops from desired outputs of prior stages. To prevent discarding that info,
+    // we map fLayerBounds by the additional transform, instead of re-mapping the image bounds.
+    fLayerBounds = transform.mapRect(LayerSpace<SkRect>(fLayerBounds)).roundOut();
+
     if (!fLayerBounds.intersect(desiredOutput)) {
         // The transformed output doesn't touch the desired, so it would just be transparent black.
         // TODO: This intersection only applies when the tile mode is kDecal.
