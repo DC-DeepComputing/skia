@@ -88,6 +88,24 @@
       "parentUuid": "57b54fe6_7043cb94",
       "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5931affe_2fc2420b",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-04T13:24:51Z",
+      "side": 0,
+      "message": "Brian, is it true that this is only used without mipmapping? Line 632-635 suggests that we set repeatLinearFilterX and Y if the mode is kRepeat_Linear_Mipmap?",
+      "parentUuid": "b95633e3_b7f057cb",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
