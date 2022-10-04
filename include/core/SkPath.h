@@ -1767,6 +1767,8 @@ private:
     uint8_t                        fFillType    : 2;
     uint8_t                        fIsVolatile  : 1;
 
+    static_assert(sk_is_trivially_relocatable<decltype(fPathRef)>::value);
+
     /** Resets all fields other than fPathRef to their initial 'empty' values.
      *  Assumes the caller has already emptied fPathRef.
      *  On Android increments fGenerationID without reseting it.
@@ -1874,5 +1876,8 @@ private:
     friend class ForceIsRRect_Private; // unit test isRRect
     friend class FuzzPath; // for legacy access to validateRef
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkPath> : std::true_type {};
 
 #endif

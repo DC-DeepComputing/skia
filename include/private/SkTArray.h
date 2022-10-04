@@ -596,6 +596,8 @@ private:
     uint32_t fCount      : 31;
     uint32_t fReserved   :  1;
     uint32_t fAllocCount : 31;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fItemArray)>::value);
 };
 
 template <typename T, bool M> static inline void swap(SkTArray<T, M>& a, SkTArray<T, M>& b) {
@@ -651,5 +653,13 @@ public:
         return *this;
     }
 };
+
+// SkTArrays are always trivially relocatable.
+template <typename T, bool MEM_MOVE>
+struct sk_is_trivially_relocatable<SkTArray<T, MEM_MOVE>> : std::true_type {};
+
+// SkSTArrays are never trivially relocatable (pointer to internal storage).
+template <int N, typename T, bool MEM_MOVE>
+struct sk_is_trivially_relocatable<SkSTArray<N, T, MEM_MOVE>> : std::false_type {};
 
 #endif

@@ -701,7 +701,19 @@ private:
         uint32_t fBitfieldsUInt;
     };
 
+    static_assert(sk_is_trivially_relocatable<decltype(fPathEffect)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fShader)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fMaskFilter)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fColorFilter)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fImageFilter)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fBlender)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fColor4f)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fBitfields)>::value);
+
     friend class SkPaintPriv;
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkPaint> : std::true_type {};
 
 #endif
