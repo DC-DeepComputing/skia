@@ -118,18 +118,25 @@ get_fs_color_type_and_local_coords(const SkSL::Program& fsProgram) {
             const SkSL::FunctionDefinition& defn = elem->as<SkSL::FunctionDefinition>();
             const SkSL::FunctionDeclaration& decl = defn.declaration();
             if (decl.isMain()) {
+                SkMeshSpecificationPriv::ColorType ct = ColorType::kNone;
 
-                SkMeshSpecificationPriv::ColorType ct;
-                SkASSERT(decl.parameters().size() == 1 || decl.parameters().size() == 2);
+                auto getCT = [&](const SkSL::Type& type) {
+                    if (type.matches(*fsProgram.fContext->fTypes.fHalf4)) {
+                        return ColorType::kHalf4;
+                    }
+                    if (type.matches(*fsProgram.fContext->fTypes.fFloat4)) {
+                        return ColorType::kFloat4;
+                    }
+                    return ColorType::kNone;
+                };
+
+                SkASSERT(decl.parameters().size() <= 2);
                 if (decl.parameters().size() == 1) {
-                    ct = ColorType::kNone;
-                } else {
-                    const SkSL::Type& paramType = decl.parameters()[1]->type();
-                    SkASSERT(paramType.matches(*fsProgram.fContext->fTypes.fHalf4) ||
-                             paramType.matches(*fsProgram.fContext->fTypes.fFloat4));
-                    ct = paramType.matches(*fsProgram.fContext->fTypes.fHalf4)
-                                 ? ColorType::kHalf4
-                                 : ColorType::kFloat4;
+                    ct = getCT(decl.parameters()[0]->type());
+                } else if (decl.parameters().size() == 2) {
+                    // Should be attrs, color.
+                    ct = getCT(decl.parameters()[1]->type());
+                    SkASSERT(ct != ColorType::kNone);
                 }
 
                 const SkSL::Type& returnType = decl.returnType();
@@ -265,9 +272,13 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       size_t vertexStride,
                                                       SkSpan<const Varying> varyings,
                                                       const SkString& vs,
-                                                      const SkString& fs,
+                                                      const SkString& origFS,
                                                       sk_sp<SkColorSpace> cs,
                                                       SkAlphaType at) {
+    SkString fs = origFS;
+    if (origFS.isEmpty()) {
+        fs = varyings.empty() ? "void main() {}" : "void main(Varyings) {}";
+    }
     SkString attributesStruct("struct Attributes {\n");
     for (const auto& a : attributes) {
         attributesStruct.appendf("  %s %s;\n", attribute_type_string(a.type), a.name.c_str());
@@ -278,11 +289,11 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
     for (const auto& v : varyings) {
         varyingStruct.appendf("  %s %s;\n", varying_type_string(v.type), v.name.c_str());
     }
-    // Throw in an unused variable to avoid an empty struct, which is illegal.
-    if (varyings.empty()) {
-        varyingStruct.append("  bool _empty_;\n");
-    }
     varyingStruct.append("};\n");
+    // Varyings are optional and an empty struct is illegal.
+    if (varyings.empty()) {
+        varyingStruct.reset();
+    }
 
     SkString fullVS;
     fullVS.append(varyingStruct.c_str());
@@ -340,9 +351,15 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     SkSL::ProgramSettings settings;
     settings.fUseMemoryPool = false;
 
+    auto vertexKind   = SkSL::ProgramKind::kMeshVertex;
+    auto fragmentKind = SkSL::ProgramKind::kMeshFragment;
+    if (varyings.empty()) {
+        vertexKind   = SkSL::ProgramKind::kMeshVertexNoVaryings;
+        fragmentKind = SkSL::ProgramKind::kMeshFragmentNoVaryings;
+    }
     // TODO(skia:11209): Add SkCapabilities to the API, check against required version.
     std::unique_ptr<SkSL::Program> vsProgram = compiler.convertProgram(
-            SkSL::ProgramKind::kMeshVertex,
+            vertexKind,
             std::string(vs.c_str()),
             settings);
     if (!vsProgram) {
@@ -363,7 +380,7 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     }
 
     std::unique_ptr<SkSL::Program> fsProgram = compiler.convertProgram(
-            SkSL::ProgramKind::kMeshFragment,
+            fragmentKind,
             std::string(fs.c_str()),
             settings);
 

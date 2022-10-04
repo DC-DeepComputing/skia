@@ -6,6 +6,10 @@ Milestone 108
 -------------
   * SkShader::asAGradient() has been removed.
   * SkMesh and SkMeshSpecification has separate sk_sp and bare ptr getters for ref counted types.
+  * SkMeshSpecification can generate a default fragment shader when passed an empty string. This
+    is useful in cases when a mesh will be drawn with a constant color paint or when shading the
+    mesh using default local coordinates derived from vertex positions. Also, if there are no
+    varyings then the Varying struct must be omitted from the vertex and fragment shader.
 
 * * *
 

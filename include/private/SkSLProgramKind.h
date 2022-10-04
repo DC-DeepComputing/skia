@@ -21,12 +21,14 @@ enum class ProgramKind : int8_t {
     kCompute,
     kGraphiteFragment,
     kGraphiteVertex,
-    kRuntimeColorFilter,    // Runtime effect only suitable as SkColorFilter
-    kRuntimeShader,         //   "       "     "      "     "  SkShader
-    kRuntimeBlender,        //   "       "     "      "     "  SkBlender
-    kPrivateRuntimeShader,  // Runtime shader with public restrictions lifted
-    kMeshVertex,            // Vertex   portion of a custom mesh
-    kMeshFragment,          // Fragment  "      "  "  "     "
+    kRuntimeColorFilter,      // Runtime effect only suitable as SkColorFilter
+    kRuntimeShader,           //   "       "     "      "     "  SkShader
+    kRuntimeBlender,          //   "       "     "      "     "  SkBlender
+    kPrivateRuntimeShader,    // Runtime shader with public restrictions lifted
+    kMeshVertex,              // Vertex   portion of a mesh when there are attributes
+    kMeshFragment,            // Fragment "       "  " "    "    "     "   "
+    kMeshVertexNoVaryings,    // Vertex   portion of a mesh when there are no attributes
+    kMeshFragmentNoVaryings,  // Fragment "       "  " "    "    "     "   " "
     kGeneric,
 };
 

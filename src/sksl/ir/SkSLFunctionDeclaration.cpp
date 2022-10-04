@@ -112,8 +112,7 @@ static bool check_parameters(const Context& context,
 
         if (isMain) {
             if (ProgramConfig::IsRuntimeEffect(context.fConfig->fKind) &&
-                context.fConfig->fKind != ProgramKind::kMeshFragment &&
-                context.fConfig->fKind != ProgramKind::kMeshVertex) {
+                !ProgramConfig::IsMesh(context.fConfig->fKind)) {
                 // We verify that the signature is fully correct later. For now, if this is a
                 // runtime effect of any flavor, a float2 param is supposed to be the coords, and a
                 // half4/float parameter is supposed to be the input or destination color:
@@ -246,7 +245,19 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
                 return false;
             }
             if (!(parameters.size() == 2 && paramIsInAttributes(0) && paramIsOutVaryings(1))) {
-                errors.error(pos, "'main' parameters must be (Attributes, out Varyings");
+                errors.error(pos, "'main' parameters must be (Attributes, out Varyings)");
+                return false;
+            }
+            break;
+        }
+        case ProgramKind::kMeshVertexNoVaryings: {
+            // float2 main(Attributes)
+            if (!returnType.matches(*context.fTypes.fFloat2)) {
+                errors.error(pos, "'main' must return: 'vec2' or 'float2'");
+                return false;
+            }
+            if (!(parameters.size() == 1 && paramIsInAttributes(0))) {
+                errors.error(pos, "'main' parameters must be (Attributes)");
                 return false;
             }
             break;
@@ -262,6 +273,18 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
             if (!((parameters.size() == 1 && paramIsInVaryings(0)) ||
                   (parameters.size() == 2 && paramIsInVaryings(0) && paramIsOutColor(1)))) {
                 errors.error(pos, "'main' parameters must be (Varyings, (out (half4|float4))?)");
+                return false;
+            }
+            break;
+        }
+        case ProgramKind::kMeshFragmentNoVaryings: {
+            // void main() -or- void main(out half4|float4)
+            if (!returnType.matches(*context.fTypes.fVoid)) {
+                errors.error(pos, "'main' must return 'void'");
+                return false;
+            }
+            if (!((parameters.size() == 0) || (parameters.size() == 1 && paramIsOutColor(0)))) {
+                errors.error(pos, "'main' parameters must be ((out (half4|float4))?)");
                 return false;
             }
             break;
