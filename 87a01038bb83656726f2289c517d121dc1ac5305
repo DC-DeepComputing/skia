@@ -16,6 +16,23 @@
       "message": "I\u0027m wondering if we\u0027re marking GrTextures as having dirty mip levels for cases that the higher level proxy is correctly recognizing don\u0027t require regen. Right now we mark an RT/Tex as dirty if it is ever the target of a GrGLOpRenderPass (b/c GrGLGpu::beginCommandBuffer calls GrGLGpu::flushRenderTarget).",
       "revId": "87a01038bb83656726f2289c517d121dc1ac5305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6382d8a_68f62000",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2095,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-04T17:45:37Z",
+      "side": 1,
+      "message": "Should this come after the next line ?",
+      "revId": "87a01038bb83656726f2289c517d121dc1ac5305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
