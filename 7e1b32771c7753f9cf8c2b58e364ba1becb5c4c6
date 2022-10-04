@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dec71252_3e3507ff",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-04T17:31:03Z",
+      "side": 1,
+      "message": "Let me know what you think of this style of asserting for all non-primitive fields.  It\u0027s quite verbose, but it does \"prove\" the trait (and hopefully helps reviewing).\n\nI can remove if too much.",
+      "range": {
+        "startLine": 704,
+        "startChar": 0,
+        "endLine": 711,
+        "endChar": 76
+      },
+      "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
