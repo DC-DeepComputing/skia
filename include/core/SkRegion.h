@@ -9,6 +9,7 @@
 #define SkRegion_DEFINED
 
 #include "include/core/SkRect.h"
+#include "include/private/SkTemplates.h"
 
 class SkPath;
 class SkRgnBuilder;
@@ -629,6 +630,9 @@ private:
     SkIRect     fBounds;
     RunHead*    fRunHead;
 
+    static_assert(sk_is_trivially_relocatable<decltype(fBounds)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fRunHead)>::value);
+
     void freeRuns();
 
     /**
@@ -668,5 +672,8 @@ private:
     friend class SkRgnBuilder;
     friend class SkFlatRegion;
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkRegion> : std::true_type {};
 
 #endif

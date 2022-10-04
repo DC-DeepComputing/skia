@@ -596,6 +596,8 @@ private:
     uint32_t fCount      : 31;
     uint32_t fReserved   :  1;
     uint32_t fAllocCount : 31;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fItemArray)>::value);
 };
 
 template <typename T, bool M> static inline void swap(SkTArray<T, M>& a, SkTArray<T, M>& b) {

@@ -276,6 +276,17 @@ private:
     uint8_t         fStart; // Restricted to rrects and simpler, so this will be < 8
     bool            fCW;
     bool            fInverted;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fPoint)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fRect)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fRRect)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fPath)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fArc)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fLine)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fType)>::value);
 };
+
+template <>
+struct sk_is_trivially_relocatable<GrShape> : std::true_type {};
 
 #endif
