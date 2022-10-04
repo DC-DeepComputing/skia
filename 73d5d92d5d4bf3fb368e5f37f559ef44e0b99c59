@@ -34,6 +34,24 @@
       "parentUuid": "c76bf599_63975b2d",
       "revId": "73d5d92d5d4bf3fb368e5f37f559ef44e0b99c59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc3bd98_2b233170",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-04T20:40:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fbbf89da_f2707084",
+      "revId": "73d5d92d5d4bf3fb368e5f37f559ef44e0b99c59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
