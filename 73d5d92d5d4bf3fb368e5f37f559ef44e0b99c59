@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c76bf599_63975b2d",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-04T20:13:42Z",
+      "side": 1,
+      "message": "Do we produce an error if you declare two overloads with different modifiers? If not, what happens if you write:\n\n    $export float $foo(float) { ... }\n            int   $foo(int) { ... }",
+      "revId": "73d5d92d5d4bf3fb368e5f37f559ef44e0b99c59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -22,6 +22,30 @@
       },
       "revId": "6d86a3c38374d4c1b403aad295e9edb727ae7881",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8f30bd_8837ac5d",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-04T20:13:42Z",
+      "side": 0,
+      "message": "Probably left over from some earlier DSL stuff, where we\u0027d rewire the declaration and definition at a later point in time?",
+      "parentUuid": "205fd1d6_dab6bfe6",
+      "range": {
+        "startLine": 130,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 11
+      },
+      "revId": "6d86a3c38374d4c1b403aad295e9edb727ae7881",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
