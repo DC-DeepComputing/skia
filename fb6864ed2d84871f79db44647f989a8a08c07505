@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99a00448_6de51b40",
+        "filename": "tests/MeshTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-04T11:51:45Z",
+      "side": 1,
+      "message": "tests/MeshTest.cpp:460:26: error: loop variable \u0027[actual, expected]\u0027 binds to a temporary value produced by a range of type \u0027SkZip\u003cconst SkRuntimeEffect::Uniform, const SkRuntimeEffect::Uniform\u003e\u0027 [-Werror,-Wrange-loop-bind-reference]\n        for (const auto\u0026 [actual, expected] : SkMakeZip(uniforms, c.expectations)) \n\nI also find this a bit hard to read, but this seemed like the smallest fix and it made the compiler happy.",
+      "parentUuid": "f3d50fc8_cc7b21da",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27a837bb_c3d72e8b",
         "filename": "tests/SkSLTypeTest.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-03T21:24:10Z",
       "side": 1,
       "message": "I\u0027m not sure this is handled well? I see several places in the code where `SkSL::Context::fCaps` is used without checking for nullptr (though there is at least one place where it is?). In particular `GLSLCodeGenerator::caps()` appears to assume it can return what the caps pointer points at as a reference. I suppose it may work out for this one test, but maybe something should be asserting that this isn\u0027t nullptr?",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c18d75_8f29b727",
+        "filename": "tests/SkSLTypeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-04T11:51:45Z",
+      "side": 1,
+      "message": "Since this test creates a SkSL::BuiltinTypes, passes it into a context, and then tests the BuiltInTypes as a field on the context, I just removed the context (and the error reporter. No more wild nulls possibly running around and hopefully a clearer test.",
+      "parentUuid": "27a837bb_c3d72e8b",
       "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
