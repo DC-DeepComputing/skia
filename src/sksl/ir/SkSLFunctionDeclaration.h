@@ -67,7 +67,7 @@ public:
         fIntrinsicKind = kNotIntrinsic;
     }
 
-    void setNextOverload(const FunctionDeclaration* overload) {
+    void setNextOverload(FunctionDeclaration* overload) {
         SkASSERT(!overload || overload->name() == this->name());
         fNextOverload = overload;
     }
@@ -100,6 +100,10 @@ public:
         return fNextOverload;
     }
 
+    FunctionDeclaration* mutableNextOverload() const {
+        return fNextOverload;
+    }
+
     std::string mangledName() const;
 
     std::string description() const override;
@@ -128,7 +132,7 @@ public:
 
 private:
     mutable const FunctionDefinition* fDefinition;
-    const FunctionDeclaration* fNextOverload = nullptr;
+    FunctionDeclaration* fNextOverload = nullptr;
     const Modifiers* fModifiers;
     std::vector<Variable*> fParameters;
     const Type* fReturnType;
