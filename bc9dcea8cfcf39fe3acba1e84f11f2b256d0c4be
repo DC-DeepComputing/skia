@@ -16,6 +16,52 @@
       "message": "Need this for Graphite\u0027s AsyncReadPixels.",
       "revId": "bc9dcea8cfcf39fe3acba1e84f11f2b256d0c4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "436e1766_1a4228d6",
+        "filename": "src/gpu/ClientMappedBufferManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-04T17:24:15Z",
+      "side": 1,
+      "message": "update the comment?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 91
+      },
+      "revId": "bc9dcea8cfcf39fe3acba1e84f11f2b256d0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17bbcf1b_d03580f0",
+        "filename": "src/gpu/ganesh/GrClientMappedBufferManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-04T17:24:15Z",
+      "side": 1,
+      "message": "rm?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 23
+      },
+      "revId": "bc9dcea8cfcf39fe3acba1e84f11f2b256d0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
