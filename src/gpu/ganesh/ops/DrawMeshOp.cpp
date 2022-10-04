@@ -525,6 +525,9 @@ private:
 
             size_t voffset = 0;
             size_t ioffset = 0;
+
+            static_assert(sk_is_trivially_relocatable<decltype(vb)>::value);
+            static_assert(sk_is_trivially_relocatable<decltype(ib)>::value);
         };
 
         sk_sp<SkVertices> fVertices;
@@ -533,13 +536,16 @@ private:
             SkMatrix fViewMatrix;
             MeshData fMeshData;
         };
+
+        static_assert(sk_is_trivially_relocatable<decltype(fVertices)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(fViewMatrix)>::value);
     };
 
     Helper                     fHelper;
     sk_sp<SkMeshSpecification> fSpecification;
     bool                       fIgnoreSpecColor = false;
     GrPrimitiveType            fPrimitiveType;
-    SkSTArray<1, Mesh>         fMeshes;
+    SkSTArray<1, Mesh, true>   fMeshes;
     sk_sp<GrColorSpaceXform>   fColorSpaceXform;
     SkPMColor4f                fColor; // Used if no color from spec or analysis overrides.
     SkMatrix                   fViewMatrix;

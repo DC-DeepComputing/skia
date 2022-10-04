@@ -259,6 +259,8 @@ private:
     };
     sk_sp<Rec> fRec;
 
+    static_assert(sk_is_trivially_relocatable<decltype(fRec)>::value);
+
 #ifdef SK_DEBUG
     const SkString& validate() const;
 #else
@@ -267,6 +269,9 @@ private:
 
     static const Rec gEmptyRec;
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkString> : std::true_type {};
 
 /// Creates a new string and writes into it using a printf()-style format.
 SkString SkStringPrintf(const char* format, ...) SK_PRINTF_LIKE(1, 2);

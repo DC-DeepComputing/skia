@@ -432,4 +432,7 @@ template <typename T>
 // Use std::is_trivially_copyable as a default, if not explicitly specialized for a type.
 struct sk_is_trivially_relocatable : std::is_trivially_copyable<T> {};
 
+template <typename T>
+struct sk_is_trivially_relocatable<std::unique_ptr<T>> : std::true_type {};
+
 #endif

@@ -523,6 +523,8 @@ private:
     uint8_t     fEdging;
     uint8_t     fHinting;
 
+    static_assert(sk_is_trivially_relocatable<decltype(fTypeface)>::value);
+
     SkScalar setupForAsPaths(SkPaint*);
     bool hasSomeAntiAliasing() const;
 
@@ -531,5 +533,8 @@ private:
     friend class SkStrikeSpec;
     friend class SkRemoteGlyphCacheTest;
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkFont> : std::true_type {};
 
 #endif

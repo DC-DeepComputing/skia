@@ -141,7 +141,14 @@ private:
     sk_sp<GrSurfaceProxy> fProxy;
     GrSurfaceOrigin fOrigin = kTopLeft_GrSurfaceOrigin;
     skgpu::Swizzle fSwizzle;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fProxy)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fOrigin)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fSwizzle)>::value);
 };
+
+template <>
+struct sk_is_trivially_relocatable<GrSurfaceProxyView> : std::true_type {};
 
 #endif
 
