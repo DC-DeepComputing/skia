@@ -22,6 +22,64 @@
       },
       "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd9fb0fc_154b1559",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T18:33:44Z",
+      "side": 1,
+      "message": "Yeah, here we\u0027re manually doing the compiler\u0027s job of checking transitively. I like this. The only downside being that this list needs to be manually maintained instead of the compiler just checking the types of the members.",
+      "parentUuid": "dec71252_3e3507ff",
+      "range": {
+        "startLine": 704,
+        "startChar": 0,
+        "endLine": 711,
+        "endChar": 76
+      },
+      "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eac3b377_9b638e24",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T18:33:44Z",
+      "side": 1,
+      "message": "That\u0027s not true. An SkSTArray *is a* SkTArray and so neither is trivially relocatable. SkTArray has `fOwnMemory` to indicate internally at runtime if the pointer is internal or not. While we normally think of `fOwnMemory` only being set to `false` through one of the protected constructors, it can also happen through use of swap or the move constructor. Note that SkSTArray is a SkTArray and as such an SkSTArray\u0026 can be passed to an SkTArray\u0026 parameter. The reality is that SkTArray isn\u0027t generally trivially relocatable as it is. If we wanted it to be we would need to separate it from SkSTArray first.\n\n```\nvoid doit(SkCanvas* canvas, SkTArray\u003cint\u003e\u0026\u0026 a) {\n    SkTArray b(std::move(a));\n    // do stuff with b, which has an internal pointer\n}\n\nvoid main() {\n    SkSTArray\u003c5, int\u003e a;\n    a.push_back(1);\n    doit(canvas, std::move(a));\n}\n```",
+      "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a99d92_215563e0",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-04T18:33:44Z",
+      "side": 1,
+      "message": "While this should generally be true, we should at least have big blinking lights here that we\u0027re asserting something about how the std implements both `unique_ptr` and `default_delete`.",
+      "revId": "7e1b32771c7753f9cf8c2b58e364ba1becb5c4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
