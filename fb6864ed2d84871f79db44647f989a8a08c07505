@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6908421_538a30fc",
+        "filename": "tests/MeshTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-04T15:36:06Z",
+      "side": 1,
+      "message": "Strange, our Bazel build does use clang 13.0.0. copts.bzl fixed",
+      "parentUuid": "50fe5e0e_cee558b5",
+      "revId": "fb6864ed2d84871f79db44647f989a8a08c07505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27a837bb_c3d72e8b",
