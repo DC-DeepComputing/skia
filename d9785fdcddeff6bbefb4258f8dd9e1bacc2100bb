@@ -106,6 +106,24 @@
       "parentUuid": "b95633e3_b7f057cb",
       "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2a06f6_281e59e0",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-04T13:28:12Z",
+      "side": 0,
+      "message": "Oh shoot. You\u0027re right. I thought I had gotten rid of that but now I remember that we needed it for edge cases in YUV images :( Sorry!",
+      "parentUuid": "5931affe_2fc2420b",
+      "revId": "d9785fdcddeff6bbefb4258f8dd9e1bacc2100bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
