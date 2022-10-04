@@ -641,6 +641,8 @@ bool MtlCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
             return false;
         }
 
+        SkDebugf("command encoder %d\n", i);
+
         blitCmdEncoder->copyFromBuffer(mtlBuffer,
                                        copyData[i].fBufferOffset,
                                        copyData[i].fBufferRowBytes,

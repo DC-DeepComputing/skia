@@ -65,6 +65,9 @@ public:
                         id<MTLTexture> texture,
                         SkIRect dstRect,
                         unsigned int dstLevel) {
+        SkDebugf("copyFromBuffer %d - @%zu %zux%d %d LT %d %d\n", dstLevel, bufferOffset, bufferRowBytes, dstRect.height(), dstRect.width(),
+                 dstRect.left(), dstRect.top());
+
         [(*fCommandEncoder) copyFromBuffer: buffer
                               sourceOffset: bufferOffset
                          sourceBytesPerRow: bufferRowBytes
