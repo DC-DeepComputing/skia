@@ -5,6 +5,14 @@ licenses(["notice"])
 exports_files_legacy()
 
 filegroup(
+    name = "discardable_memory_pool",
+    srcs = select({
+        "//src/lazy:use_default_global_memory_pool_true": ["SkDiscardableMemory_none.cpp"],
+        "//conditions:default": [],
+    }),
+)
+
+filegroup(
     name = "typeface_freetype",
     srcs = [
         "SkFontHost_FreeType.cpp",
@@ -180,6 +188,7 @@ filegroup(
 filegroup(
     name = "srcs",
     srcs = [
+        ":discardable_memory_pool",
         ":fontmgr",
         ":fontmgr_factory",
         ":global_init",
