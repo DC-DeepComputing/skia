@@ -36,6 +36,18 @@ void test_color_init(GrDirectContext*,
                      GrMipmapped,
                      GrRenderable);
 
+void test_pixmap_init(GrDirectContext*,
+                      skiatest::Reporter*,
+                      std::function<sk_sp<ManagedBackendTexture>(GrDirectContext*,
+                                                                 const SkPixmap srcData[],
+                                                                 int numLevels,
+                                                                 GrSurfaceOrigin,
+                                                                 GrRenderable)> create,
+                      SkColorType,
+                      GrSurfaceOrigin,
+                      GrMipmapped,
+                      GrRenderable);
+
 DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
     const GrMtlCaps* mtlCaps = static_cast<const GrMtlCaps*>(dContext->priv().caps());
@@ -49,6 +61,7 @@ DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
         SkColor4f        fColor;
     } combinations[] = {
         { GrColorType::kRGBA_8888,        MTLPixelFormatRGBA8Unorm,      SkColors::kRed       },
+
         { GrColorType::kRGBA_8888_SRGB,   MTLPixelFormatRGBA8Unorm_sRGB, SkColors::kRed       },
 
         // In this configuration (i.e., an RGB_888x colortype with an RGBA8 backing format),
@@ -169,6 +182,44 @@ DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
                     };
                     test_color_init(dContext, reporter, createWithColorMtd, combo.fColorType,
                                     combo.fColor, mipmapped, renderable);
+                }
+
+                for (auto origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
+                    SkColorType skColorType = GrColorTypeToSkColorType(combo.fColorType);
+                    if (skColorType == kUnknown_SkColorType) {
+                        break;
+                    }
+
+                    auto createWithSrcDataMtd = [](GrDirectContext* dContext,
+                                                   const SkPixmap srcData[],
+                                                   int numLevels,
+                                                   GrSurfaceOrigin origin,
+                                                   GrRenderable renderable) {
+                        SkASSERT(srcData && numLevels);
+                        auto mbet = ManagedBackendTexture::MakeWithData(dContext,
+                                                                        srcData,
+                                                                        numLevels,
+                                                                        origin,
+                                                                        renderable,
+                                                                        GrProtected::kNo);
+#ifdef SK_DEBUG
+                        {
+                            auto format = dContext->defaultBackendFormat(srcData[0].colorType(),
+                                                                         renderable);
+                            SkASSERT(format == mbet->texture().getBackendFormat());
+                        }
+#endif
+                        return mbet;
+                    };
+
+                    test_pixmap_init(dContext,
+                                     reporter,
+                                     createWithSrcDataMtd,
+                                     skColorType,
+                                     origin,
+                                     mipmapped,
+                                     renderable);
+
                 }
             }
         }

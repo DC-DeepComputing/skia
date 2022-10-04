@@ -36,6 +36,9 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
         return nullptr;
     }
 
+    SkDebugf("------------ making texture w/ %d miplevels %d %d\n", info.numMipLevels(),
+             dimensions.width(), dimensions.height());
+
     sk_cfp<MTLTextureDescriptor*> desc([[MTLTextureDescriptor alloc] init]);
     (*desc).textureType = (info.numSamples() > 1) ? MTLTextureType2DMultisample : MTLTextureType2D;
     (*desc).pixelFormat = (MTLPixelFormat)mtlSpec.fFormat;
@@ -119,4 +122,3 @@ void MtlTexture::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-
