@@ -801,8 +801,27 @@ std::optional<DSLParameter> Parser::parameter(size_t paramIndex) {
         paramText = this->text(name);
         paramPos = this->position(name);
     } else {
-        std::string anonymousName = String::printf("_skAnonymousParam%zu", paramIndex);
-        paramText = *CurrentSymbolTable()->takeOwnershipOfString(std::move(anonymousName));
+        // Cheap memory-saving trick: we avoid allocating a variable name for anonymous parameters
+        // in the common case by hard-coding the first few names.
+        switch (paramIndex) {
+            case 0:
+                paramText = "_skAnonymousParam0";
+                break;
+            case 1:
+                paramText = "_skAnonymousParam1";
+                break;
+            case 2:
+                paramText = "_skAnonymousParam2";
+                break;
+            case 3:
+                paramText = "_skAnonymousParam3";
+                break;
+            default: {
+                std::string anonymousName = String::printf("_skAnonymousParam%zu", paramIndex);
+                paramText = *CurrentSymbolTable()->takeOwnershipOfString(std::move(anonymousName));
+                break;
+            }
+        }
         paramPos = this->rangeFrom(pos);
     }
     if (!this->parseArrayDimensions(pos, &type)) {
