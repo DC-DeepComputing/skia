@@ -27,7 +27,6 @@ public:
             , fCropRect(cropRect) {
         SkASSERT(cropRect.isFinite());
         SkASSERT(cropRect.isSorted());
-        SkASSERT(!cropRect.isEmpty());
     }
 
     SkRect computeFastBounds(const SkRect& bounds) const override;
@@ -66,7 +65,7 @@ private:
 } // end namespace
 
 sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect, sk_sp<SkImageFilter> input) {
-    if (rect.isEmpty() || !rect.isFinite()) {
+    if (!rect.isFinite()) {
         return nullptr;
     }
     return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, std::move(input)));
@@ -94,6 +93,11 @@ void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context) const {
     skif::LayerSpace<SkIRect> cropBounds = this->cropRect(context.mapping());
+    if (cropBounds.isEmpty()) {
+        // Don't bother evaluating the input filter if the crop wouldn't show anything
+        return {};
+    }
+
     skif::FilterResult childOutput = this->filterInput(0, context);
     // While filterInput() adjusts the context passed to our child filter to account for the
     // crop rect and desired output, 'childOutput' does not necessarily fit that exactly. Calling
