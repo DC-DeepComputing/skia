@@ -352,4 +352,10 @@ static inline bool SkShouldPostMessageToBus(const UniqueKeyInvalidatedMessage& m
 
 } // namespace skgpu
 
+template <>
+struct sk_is_trivially_relocatable<skgpu::UniqueKey> : std::true_type {};
+
+template <>
+struct sk_is_trivially_relocatable<skgpu::UniqueKeyInvalidatedMessage> : std::true_type {};
+
 #endif // skgpu_ResourceKey_DEFINED

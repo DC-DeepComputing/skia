@@ -539,7 +539,7 @@ private:
     sk_sp<SkMeshSpecification> fSpecification;
     bool                       fIgnoreSpecColor = false;
     GrPrimitiveType            fPrimitiveType;
-    SkSTArray<1, Mesh>         fMeshes;
+    SkSTArray<1, Mesh, true>   fMeshes;
     sk_sp<GrColorSpaceXform>   fColorSpaceXform;
     SkPMColor4f                fColor; // Used if no color from spec or analysis overrides.
     SkMatrix                   fViewMatrix;
