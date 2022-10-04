@@ -25,6 +25,9 @@ struct GrVertexChunk {
     int fBase;  // baseVertex or baseInstance, depending on the use case.
 };
 
+template <>
+struct sk_is_trivially_relocatable<GrVertexChunk> : std::true_type {};
+
 // Represents an array of GrVertexChunks.
 //
 // We only preallocate 1 chunk because if the array needs to grow, then we're also allocating a

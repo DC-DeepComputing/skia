@@ -94,7 +94,7 @@ private:
     };
 
     std::unique_ptr<AutoElement>    fRootElement;
-    SkTArray<ClipRec>               fClipStack;
+    SkTArray<ClipRec, true>         fClipStack;
 
     using INHERITED = SkClipStackDevice;
 };

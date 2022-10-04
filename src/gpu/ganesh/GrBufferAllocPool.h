@@ -158,7 +158,7 @@ private:
 #endif
     size_t fBytesInUse = 0;
 
-    SkTArray<BufferBlock> fBlocks;
+    SkTArray<BufferBlock, true> fBlocks;
     sk_sp<CpuBufferCache> fCpuBufferCache;
     sk_sp<GrCpuBuffer> fCpuStagingBuffer;
     GrGpu* fGpu;

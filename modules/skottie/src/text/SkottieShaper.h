@@ -166,4 +166,7 @@ private:
 
 } // namespace skottie
 
+template <>
+struct sk_is_trivially_relocatable<skottie::Shaper::RunRec> : std::true_type {};
+
 #endif // SkottieShaper_DEFINED

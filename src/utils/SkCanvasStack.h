@@ -66,7 +66,7 @@ private:
         std::unique_ptr<SkCanvas> ownedCanvas;
     };
 
-    SkTArray<CanvasData> fCanvasData;
+    SkTArray<CanvasData, true> fCanvasData;
 
     using INHERITED = SkNWayCanvas;
 };

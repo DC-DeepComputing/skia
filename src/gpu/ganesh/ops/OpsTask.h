@@ -275,7 +275,7 @@ private:
     GrXferBarrierFlags fRenderPassXferBarriers = GrXferBarrierFlags::kNone;
 
     // For ops/opsTask we have mean: 5 stdDev: 28
-    SkSTArray<25, OpChain> fOpChains;
+    SkSTArray<25, OpChain, true> fOpChains;
 
     sk_sp<GrArenas> fArenas;
     SkDEBUGCODE(int fNumClips;)

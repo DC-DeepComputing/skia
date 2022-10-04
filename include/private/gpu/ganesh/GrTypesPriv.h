@@ -137,6 +137,9 @@ struct GrMipLevel {
     sk_sp<SkData> fOptionalStorage;
 };
 
+template <>
+struct sk_is_trivially_relocatable<GrMipLevel> : std::true_type {};
+
 enum class GrSemaphoreWrapType {
     kWillSignal,
     kWillWait,

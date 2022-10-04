@@ -526,6 +526,12 @@ struct ShapedRun {
     size_t fNumGlyphs;
     SkVector fAdvance;
 };
+} // namespace
+
+template <>
+struct sk_is_trivially_relocatable<ShapedRun> : std::true_type {};
+
+namespace {
 struct ShapedLine {
     SkTArray<ShapedRun> runs;
     SkVector fAdvance = { 0, 0 };
