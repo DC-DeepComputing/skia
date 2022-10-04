@@ -1137,6 +1137,16 @@ optional("graphite") {
     sources += skia_graphite_piet_sources
   }
 
+  if (skia_use_dawn) {
+    public_defines += [ "SK_DAWN" ]
+    sources += skia_graphite_dawn_sources
+
+    # public_deps += [ "//third_party/externals/dawn/include/dawn:cpp_headers" ]
+    deps += [
+      "//third_party/externals/dawn/src/dawn:cpp",
+      "//third_party/externals/dawn/src/dawn:proc",
+    ]
+  }
   if (skia_use_metal) {
     public_defines += [ "SK_METAL" ]
     sources += skia_graphite_mtl_sources
@@ -2780,6 +2790,14 @@ if (skia_enable_tools) {
       } else if (is_mac) {
         if (dawn_enable_metal) {
           sources += [ "tools/sk_app/mac/DawnMTLWindowContext_mac.mm" ]
+        }
+        if (skia_enable_graphite) {
+          sources +=
+              [ "tools/sk_app/mac/GraphiteDawnMetalWindowContext_mac.mm" ]
+          sources += [ "tools/sk_app/GraphiteDawnMetalWindowContext.mm" ]
+          sources += [ "tools/sk_app/GraphiteDawnMetalWindowContext.h" ]
+          sources += [ "tools/sk_app/GraphiteDawnWindowContext.cpp" ]
+          sources += [ "tools/sk_app/GraphiteDawnWindowContext.h" ]
         }
       }
     }
