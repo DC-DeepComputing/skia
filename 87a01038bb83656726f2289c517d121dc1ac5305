@@ -33,6 +33,24 @@
       "message": "Should this come after the next line ?",
       "revId": "87a01038bb83656726f2289c517d121dc1ac5305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f0156f_9fa1a323",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2095,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-04T18:44:52Z",
+      "side": 1,
+      "message": "I moved it to after the glClear call because that is when we actually \"did write\".",
+      "parentUuid": "b6382d8a_68f62000",
+      "revId": "87a01038bb83656726f2289c517d121dc1ac5305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
