@@ -119,4 +119,3 @@ void MtlTexture::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-

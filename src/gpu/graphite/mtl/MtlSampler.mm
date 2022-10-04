@@ -117,4 +117,3 @@ void MtlSampler::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-
