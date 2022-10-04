@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c0b57af_d04213b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-04T17:03:17Z",
+      "side": 1,
+      "message": "Need this for Graphite\u0027s AsyncReadPixels.",
+      "revId": "bc9dcea8cfcf39fe3acba1e84f11f2b256d0c4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

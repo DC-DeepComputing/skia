@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d285b4_2f85fa66",
+        "filename": "src/gpu/ganesh/GrClientMappedBufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-04T17:03:17Z",
+      "side": 1,
+      "message": "Tried to include this as part of the template but SkMessageBus wasn\u0027t having any part of it.",
+      "range": {
+        "startLine": 24,
+        "startChar": 5,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "a78ca14b17248d4923ae6c507f95efb3d072896d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
