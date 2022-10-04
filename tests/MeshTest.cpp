@@ -457,7 +457,7 @@ static void test_good_uniforms(skiatest::Reporter* r) {
                    desc.c_str());
             return;
         }
-        for (const auto&& [actual, expected] : SkMakeZip(uniforms, c.expectations)) {
+        for (const auto& [actual, expected] : SkMakeZip(uniforms, c.expectations)) {
             std::string name = std::string(actual.name);
             if (name != expected.name) {
                 ERRORF(r,
