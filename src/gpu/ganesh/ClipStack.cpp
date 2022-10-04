@@ -334,7 +334,7 @@ GrSurfaceProxyView render_sw_mask(GrRecordingContext* context,
 
         // Since this will be rendered on another thread, make a copy of the elements in case
         // the clip stack is modified on the main thread
-        using Uploader = GrTDeferredProxyUploader<SkTArray<skgpu::v1::ClipStack::Element>>;
+        using Uploader = GrTDeferredProxyUploader<SkTArray<skgpu::v1::ClipStack::Element, true>>;
         std::unique_ptr<Uploader> uploader = std::make_unique<Uploader>(count);
         for (int i = 0; i < count; ++i) {
             uploader->data().push_back(*(elements[i]));

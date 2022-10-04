@@ -194,6 +194,8 @@ public:
 
     private:
         sk_sp<SkFlattenable> fChild;
+
+        static_assert(sk_is_trivially_relocatable<decltype(fChild)>::value);
     };
 
     sk_sp<SkShader> makeShader(sk_sp<const SkData> uniforms,
@@ -324,6 +326,9 @@ private:
 
     uint32_t fFlags;  // Flags
 };
+
+template <>
+struct sk_is_trivially_relocatable<SkRuntimeEffect::ChildPtr> : std::true_type {};
 
 /** Base class for SkRuntimeShaderBuilder, defined below. */
 class SkRuntimeEffectBuilder {

@@ -32,6 +32,8 @@ public:
     struct RunRec {
         SkFont fFont;
         size_t fSize;
+
+        static_assert(sk_is_trivially_relocatable<decltype(fFont)>::value);
     };
 
     struct ShapedGlyphs {
@@ -165,5 +167,8 @@ private:
 };
 
 } // namespace skottie
+
+template <>
+struct sk_is_trivially_relocatable<skottie::Shaper::RunRec> : std::true_type {};
 
 #endif // SkottieShaper_DEFINED
