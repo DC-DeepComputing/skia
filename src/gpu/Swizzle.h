@@ -67,6 +67,8 @@ private:
     static constexpr char IToC(int idx);
 
     uint16_t fKey;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fKey)>::value);
 };
 
 constexpr Swizzle::Swizzle(const char c[4])
@@ -151,4 +153,8 @@ constexpr Swizzle Swizzle::Concat(const Swizzle& a, const Swizzle& b) {
 }
 
 } // namespace skgpu
+
+template <>
+struct sk_is_trivially_relocatable<skgpu::Swizzle> : std::true_type {};
+
 #endif

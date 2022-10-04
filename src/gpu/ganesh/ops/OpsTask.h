@@ -221,6 +221,9 @@ private:
         private:
             GrOp::Owner fHead{nullptr};
             GrOp* fTail{nullptr};
+
+            static_assert(sk_is_trivially_relocatable<decltype(fHead)>::value);
+            static_assert(sk_is_trivially_relocatable<decltype(fTail)>::value);
         };
 
         void validate() const;
@@ -235,6 +238,11 @@ private:
         GrDstProxyView fDstProxyView;
         GrAppliedClip* fAppliedClip;
         SkRect fBounds;
+
+        static_assert(sk_is_trivially_relocatable<decltype(fProcessorAnalysis)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(fDstProxyView)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(fAppliedClip)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(fBounds)>::value);
     };
 
     void onMakeSkippable() override;
@@ -275,7 +283,7 @@ private:
     GrXferBarrierFlags fRenderPassXferBarriers = GrXferBarrierFlags::kNone;
 
     // For ops/opsTask we have mean: 5 stdDev: 28
-    SkSTArray<25, OpChain> fOpChains;
+    SkSTArray<25, OpChain, true> fOpChains;
 
     sk_sp<GrArenas> fArenas;
     SkDEBUGCODE(int fNumClips;)

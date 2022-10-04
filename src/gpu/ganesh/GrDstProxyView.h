@@ -62,6 +62,13 @@ private:
     GrSurfaceProxyView       fProxyView;
     SkIPoint                 fOffset = {0, 0};
     GrDstSampleFlags         fDstSampleFlags = GrDstSampleFlags::kNone;
+
+    static_assert(sk_is_trivially_relocatable<decltype(fProxyView)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fOffset)>::value);
+    static_assert(sk_is_trivially_relocatable<decltype(fDstSampleFlags)>::value);
 };
+
+template <>
+struct sk_is_trivially_relocatable<GrDstProxyView> : std::true_type {};
 
 #endif

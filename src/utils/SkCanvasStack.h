@@ -64,9 +64,13 @@ private:
         SkIPoint origin;
         SkRegion requiredClip;
         std::unique_ptr<SkCanvas> ownedCanvas;
+
+        static_assert(sk_is_trivially_relocatable<decltype(origin)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(requiredClip)>::value);
+        static_assert(sk_is_trivially_relocatable<decltype(ownedCanvas)>::value);
     };
 
-    SkTArray<CanvasData> fCanvasData;
+    SkTArray<CanvasData, true> fCanvasData;
 
     using INHERITED = SkNWayCanvas;
 };

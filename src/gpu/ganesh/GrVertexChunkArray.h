@@ -23,7 +23,12 @@ struct GrVertexChunk {
     sk_sp<const GrBuffer> fBuffer;
     int fCount = 0;
     int fBase;  // baseVertex or baseInstance, depending on the use case.
+
+    static_assert(sk_is_trivially_relocatable<decltype(fBuffer)>::value);
 };
+
+template <>
+struct sk_is_trivially_relocatable<GrVertexChunk> : std::true_type {};
 
 // Represents an array of GrVertexChunks.
 //

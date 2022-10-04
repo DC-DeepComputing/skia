@@ -91,10 +91,12 @@ private:
     struct ClipRec {
         std::unique_ptr<AutoElement> fClipPathElem;
         uint32_t                     fGenID;
+
+        static_assert(sk_is_trivially_relocatable<decltype(fClipPathElem)>::value);
     };
 
     std::unique_ptr<AutoElement>    fRootElement;
-    SkTArray<ClipRec>               fClipStack;
+    SkTArray<ClipRec, true>         fClipStack;
 
     using INHERITED = SkClipStackDevice;
 };

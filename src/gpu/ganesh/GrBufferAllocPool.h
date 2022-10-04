@@ -146,6 +146,8 @@ private:
     struct BufferBlock {
         size_t fBytesFree;
         sk_sp<GrBuffer> fBuffer;
+
+        static_assert(sk_is_trivially_relocatable<decltype(fBuffer)>::value);
     };
 
     bool createBlock(size_t requestSize);
@@ -158,7 +160,7 @@ private:
 #endif
     size_t fBytesInUse = 0;
 
-    SkTArray<BufferBlock> fBlocks;
+    SkTArray<BufferBlock, true> fBlocks;
     sk_sp<CpuBufferCache> fCpuBufferCache;
     sk_sp<GrCpuBuffer> fCpuStagingBuffer;
     GrGpu* fGpu;
