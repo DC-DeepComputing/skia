@@ -964,9 +964,16 @@ optional("gpu") {
     public_defines += [ "SK_DAWN" ]
     sources += skia_dawn_sources
 
-    # When building for WASM, the WebGPU headers are provided by Emscripten. For native builds we
-    # have to depend on Dawn directly.
-    if (!skia_use_webgpu) {
+    if (skia_use_webgpu) {
+      # Translate SkSL->SPIR-V output to WGSL using tint when creating shader programs.
+      public_defines += [ "SK_DAWN_USE_WGSL" ]
+      deps += [
+        "//third_party/externals/dawn/src/tint:libtint",
+        "//third_party/externals/spirv-tools:spvtools_val",
+      ]
+    } else {
+      # When building for WASM, the WebGPU headers are provided by Emscripten. For native builds we
+      # have to depend on Dawn directly.
       public_deps += [ "//third_party/externals/dawn/include/dawn:cpp_headers" ]
       deps += [
         "//third_party/externals/dawn/src/dawn:cpp",

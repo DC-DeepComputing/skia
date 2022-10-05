@@ -1204,6 +1204,7 @@ cc_library(
     defines = [
         # From From dawn/src/tint/BUILD.gn:tint_public_config, using the options
         # set by Skia in //build_overrides/tint.gni
+        # TODO: how to disable these for tint tests and dawn separately?
         "TINT_BUILD_SPV_READER=1",
         "TINT_BUILD_SPV_WRITER=1",
         "TINT_BUILD_WGSL_READER=1",

@@ -37,6 +37,10 @@
 #include "src/core/SkMipmap.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#ifdef SK_DAWN_USE_WGSL
+#include "tint/tint.h"
+#endif
+
 #if !defined(SK_BUILD_FOR_WIN)
 #include <unistd.h>
 #endif // !defined(SK_BUILD_FOR_WIN)
@@ -1025,9 +1029,35 @@ wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource)
     if (spirvSource.empty()) {
         return nullptr;
     }
+#ifdef SK_DAWN_USE_WGSL
+    const uint32_t* spirvWords = reinterpret_cast<const uint32_t*>(spirvSource.c_str());
+
+    // TODO(armansito): IWBN if the tint SPIR-V reader accepted a raw pointer (or something like
+    // std::span) instead of a std::vector, which requires a copy from `spirvSource`.
+    const std::vector<uint32_t> spirvParserInput(spirvWords, spirvWords + spirvSource.size() / 4);
+    tint::Program program(tint::reader::spirv::Parse(spirvParserInput));
+    if (program.Diagnostics().count() > 0) {
+        tint::diag::Formatter diagFormatter;
+        std::string diagOutput = diagFormatter.format(program.Diagnostics());
+        auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
+        errorHandler->compileError("SPIR-V source", diagOutput.c_str());
+        return nullptr;
+    }
+
+    tint::writer::wgsl::Result result = tint::writer::wgsl::Generate(&program, {});
+    if (!result.success) {
+        auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
+        errorHandler->compileError("SPIR-V to WGSL", result.error.c_str());
+        return nullptr;
+    }
+
+    wgpu::ShaderModuleWGSLDescriptor desc;
+    desc.source = result.wgsl.c_str();
+#else
     wgpu::ShaderModuleSPIRVDescriptor desc;
     desc.codeSize = spirvSource.size() / 4;
     desc.code = reinterpret_cast<const uint32_t*>(spirvSource.c_str());
+#endif
 
     wgpu::ShaderModuleDescriptor smDesc;
     smDesc.nextInChain = &desc;
