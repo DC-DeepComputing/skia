@@ -3,6 +3,86 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae618edc_7d1f2315",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-05T18:31:08Z",
+      "side": 1,
+      "message": "I think I understand why we don\u0027t forward to factories here (too many variations), but making constructors public seems to undermine the factory pattern.\n\nMaybe befriending LMS to other shaders is more benign for the public API?",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbaded96_c2aa858c",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-05T18:31:08Z",
+      "side": 1,
+      "message": "Probably better in a follow-up, but totalLocalMatrix() seems to add no value at this point - can we get rid of it?",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00475be2_4d7d4bcc",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-05T18:31:08Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 190,
+        "startChar": 33,
+        "endLine": 190,
+        "endChar": 45
+      },
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "063e738e_5709e9f1",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-05T18:31:08Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 192,
+        "startChar": 67,
+        "endLine": 192,
+        "endChar": 79
+      },
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7db8b6d_10d70158",
         "filename": "src/shaders/SkTransformShader.cpp",
         "patchSetId": 6
