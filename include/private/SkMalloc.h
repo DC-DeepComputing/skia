@@ -9,6 +9,7 @@
 #define SkMalloc_DEFINED
 
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 
 #include "include/core/SkTypes.h"
@@ -19,7 +20,9 @@
 
 
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
-SK_API extern void sk_free(void*);
+static inline void sk_free(void* p) {
+    free(p);
+}
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
