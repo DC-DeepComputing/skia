@@ -16,6 +16,24 @@
       "message": "Hmm. Does this mean that if I do a local release build with skia_compile_tests set to true, I\u0027m going to get local changes to the tests/ directory? That seems undesirable.",
       "revId": "4dc02ea28b05cd4d925168e622fdacf8a5024885",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1117db0a_80a83348",
+        "filename": "resources/sksl/errors/OverloadedBuiltin.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-05T15:51:10Z",
+      "side": 1,
+      "message": "Yes, I think it would mean that.\n\nOptions:\n- we could rewrite this error message\n- we could remove the parameter names off `cos` in sksl_shared to fix this specific case\n- we could remove the parameter names off every prototype in sksl_shared/sksl_gpu/sksl_compute (and reduce this CL down to just the changes around _skAnonymousParamN handling)\n\nWDYT?",
+      "parentUuid": "3170c964_062a3e6b",
+      "revId": "4dc02ea28b05cd4d925168e622fdacf8a5024885",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
