@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2633a05a_92f90415",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T17:09:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acaccc46_855b4f65",
+      "revId": "5fdc8abbd77c2195ff1ae593593629c84eac4ba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29f02d21_504d46eb",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3e57a95_477c7878",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T17:09:57Z",
+      "side": 1,
+      "message": "Our filegroups don\u0027t let us pass dependencies along transitively. Added some notes around to indicate that.",
+      "parentUuid": "29f02d21_504d46eb",
+      "revId": "5fdc8abbd77c2195ff1ae593593629c84eac4ba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71491ac7_695de02b",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-10-05T15:36:26Z",
       "side": 1,
       "message": "I know there doesn\u0027t seem to be any better way to do this, but boy does it drive me crazy when a language makes one use `COMEFROM` [0].\n\n[0] https://en.wikipedia.org/wiki/COMEFROM",
+      "revId": "5fdc8abbd77c2195ff1ae593593629c84eac4ba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077957d0_8f3945db",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 40
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T17:09:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71491ac7_695de02b",
       "revId": "5fdc8abbd77c2195ff1ae593593629c84eac4ba5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
