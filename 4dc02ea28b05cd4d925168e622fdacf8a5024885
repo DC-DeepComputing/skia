@@ -34,6 +34,24 @@
       "parentUuid": "3170c964_062a3e6b",
       "revId": "4dc02ea28b05cd4d925168e622fdacf8a5024885",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "253f0a5f_f093ea67",
+        "filename": "resources/sksl/errors/OverloadedBuiltin.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-05T15:52:34Z",
+      "side": 1,
+      "message": "One more:\n- we could change these sorts of error messages to never show parameter names",
+      "parentUuid": "1117db0a_80a83348",
+      "revId": "4dc02ea28b05cd4d925168e622fdacf8a5024885",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
