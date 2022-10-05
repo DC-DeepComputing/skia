@@ -648,11 +648,14 @@ static sk_sp<SkColorSpace> intermediate_color_space(SkGradientShader::Interpolat
             return SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kXYZ);
 
         case ColorSpace::kOKLab:
-        case ColorSpace::kOKLCH: {
-            skcms_Matrix3x3 d65_to_d50;
-            SkAssertResult(skcms_AdaptToXYZD50(0.3127f, 0.3290f, &d65_to_d50));
-            return SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, d65_to_d50);
-        }
+        case ColorSpace::kOKLCH:
+            // The "standard" conversion to these spaces starts with XYZD65. That requires extra
+            // effort to conjure. The author also has reference code for going directly from linear
+            // sRGB, so we use that.
+            // TODO(skia:13108): Even better would be to have an LMS color space, because the first
+            // part of the conversion is a matrix multiply, which could be absorbed into the
+            // color space xform.
+            return SkColorSpace::MakeSRGBLinear();
     }
     SkUNREACHABLE;
 }
@@ -711,30 +714,29 @@ static SkPMColor4f xyzd50_to_lch(SkPMColor4f xyz) {
             xyz.fA};
 }
 
-static SkPMColor4f xyzd65_to_oklab(SkPMColor4f xyz) {
-    constexpr SkM44 XYZtoLMS(0.8190224432164319,   0.3619062562801221,  -0.12887378261216414, 0,
-                             0.0329836671980271,   0.9292868468965546,   0.03614466816999844, 0,
-                             0.048177199566046255, 0.26423952494422764,  0.6335478258136937,  0,
-                             0, 0, 0, 1);
-    constexpr SkM44 LMStoOKLab(0.2104542553,   0.7936177850,  -0.0040720468, 0,
-                               1.9779984951,  -2.4285922050,   0.4505937099, 0,
-                               0.0259040371,   0.7827717662,  -0.8086757660, 0,
-                               0, 0, 0, 1);
-    SkV3 LMS = XYZtoLMS * SkV3{xyz[0], xyz[1], xyz[2]};
-    LMS.x = std::cbrtf(LMS.x);
-    LMS.y = std::cbrtf(LMS.y);
-    LMS.z = std::cbrtf(LMS.z);
-    SkV3 OKLab = LMStoOKLab * LMS;
-    return { OKLab.x, OKLab.y, OKLab.z, xyz.fA };
+// https://bottosson.github.io/posts/oklab/#converting-from-linear-srgb-to-oklab
+static SkPMColor4f lin_srgb_to_oklab(SkPMColor4f rgb) {
+    float l = 0.4122214708f * rgb.fR + 0.5363325363f * rgb.fG + 0.0514459929f * rgb.fB;
+	float m = 0.2119034982f * rgb.fR + 0.6806995451f * rgb.fG + 0.1073969566f * rgb.fB;
+	float s = 0.0883024619f * rgb.fR + 0.2817188376f * rgb.fG + 0.6299787005f * rgb.fB;
+    l = std::cbrtf(l);
+    m = std::cbrtf(m);
+    s = std::cbrtf(s);
+    return {
+        0.2104542553f*l + 0.7936177850f*m - 0.0040720468f*s,
+        1.9779984951f*l - 2.4285922050f*m + 0.4505937099f*s,
+        0.0259040371f*l + 0.7827717662f*m - 0.8086757660f*s,
+        rgb.fA
+    };
 }
 
-static SkPMColor4f xyzd65_to_oklch(SkPMColor4f xyz) {
-    SkPMColor4f OKLab = xyzd65_to_oklab(xyz);
+static SkPMColor4f lin_srgb_to_oklch(SkPMColor4f rgb) {
+    SkPMColor4f OKLab = lin_srgb_to_oklab(rgb);
     float hue = sk_float_radians_to_degrees(atan2f(OKLab[2], OKLab[1]));
     return {OKLab[0],
             sqrtf(OKLab[1] * OKLab[1] + OKLab[2] * OKLab[2]),
             hue >= 0 ? hue : hue + 360,
-            xyz.fA};
+            rgb.fA};
 }
 
 static SkPMColor4f premul_hsl(SkPMColor4f hsl) {
@@ -785,12 +787,12 @@ SkColor4fXformer::SkColor4fXformer(const SkColor4f* colors, int colorCount,
     // Transform to the interpolated color space (if it's not an SkColorSpace)
     ConvertColorProc convert = nullptr;
     switch (interpolation.fColorSpace) {
-        case ColorSpace::kHSL:   convert = srgb_to_hsl;     break;
-        case ColorSpace::kHWB:   convert = srgb_to_hwb;     break;
-        case ColorSpace::kLab:   convert = xyzd50_to_lab;   break;
-        case ColorSpace::kLCH:   convert = xyzd50_to_lch;   break;
-        case ColorSpace::kOKLab: convert = xyzd65_to_oklab; break;
-        case ColorSpace::kOKLCH: convert = xyzd65_to_oklch; break;
+        case ColorSpace::kHSL:   convert = srgb_to_hsl;       break;
+        case ColorSpace::kHWB:   convert = srgb_to_hwb;       break;
+        case ColorSpace::kLab:   convert = xyzd50_to_lab;     break;
+        case ColorSpace::kLCH:   convert = xyzd50_to_lch;     break;
+        case ColorSpace::kOKLab: convert = lin_srgb_to_oklab; break;
+        case ColorSpace::kOKLCH: convert = lin_srgb_to_oklch; break;
         default: break;
     }
 
