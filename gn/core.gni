@@ -421,6 +421,7 @@ skia_core_sources = [
   "$_src/core/SkSurfaceCharacterization.cpp",
   "$_src/core/SkSurfacePriv.h",
   "$_src/core/SkSwizzle.cpp",
+  "$_src/core/SkTArray.cpp",
   "$_src/core/SkTBlockList.h",
   "$_src/core/SkTDArray.cpp",
   "$_src/core/SkTDPQueue.h",
