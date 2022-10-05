@@ -10,6 +10,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAConstraintLayoutManager.h>
+#import <QuartzCore/CAMetalLayer.h>
+
+#include <iostream>
 
 using sk_app::DisplayParams;
 using sk_app::window_context_factory::MacWindowInfo;
@@ -26,12 +29,13 @@ public:
     bool onInitializeContext() override;
     void onDestroyContext() override;
     void onSwapBuffers() override;
-    DawnSwapChainImplementation createSwapChainImplementation(int width, int height,
-        const DisplayParams& params) override;
     void resize(int w, int h) override;
 
 private:
+    bool resizeInternal();
+
     NSView*              fMainView;
+    CAMetalLayer*        fMetalLayer;
 
     using INHERITED = GraphiteDawnWindowContext;
 };
@@ -43,8 +47,10 @@ GraphiteDawnMetalWindowContext_mac::GraphiteDawnMetalWindowContext_mac(const Mac
 
     // any config code here (particularly for msaa)?
 
-    // TODO: use real size of the window.
-    this->initializeContext(1, 1);
+    CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
+    CGSize backingSize = fMainView.bounds.size;
+    this->initializeContext(backingSize.width * backingScaleFactor,
+                            backingSize.height * backingScaleFactor);
 }
 
 GraphiteDawnMetalWindowContext_mac::~GraphiteDawnMetalWindowContext_mac() {
@@ -54,54 +60,79 @@ GraphiteDawnMetalWindowContext_mac::~GraphiteDawnMetalWindowContext_mac() {
 bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
 
-    // fMetalLayer = [CAMetalLayer layer];
-    // fMetalLayer.device = fDevice.get();
-    // fMetalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
+    auto device = createDevice(wgpu::BackendType::Metal);
+    if (!device)
+        return false;
 
-    // // resize ignores the passed values and uses the fMainView directly.
-    // this->resize(0, 0);
+    // Create a CAMetalLayer that covers the whole window that will be passed to
+    // CreateSurface.
+    fMetalLayer = [CAMetalLayer layer];
+    fMainView.wantsLayer = YES;
+    fMainView.layer = fMetalLayer;
 
-    // BOOL useVsync = fDisplayParams.fDisableVsync ? NO : YES;
-    // fMetalLayer.displaySyncEnabled = useVsync;  // TODO: need solution for 10.12 or lower
-    // fMetalLayer.layoutManager = [CAConstraintLayoutManager layoutManager];
-    // fMetalLayer.autoresizingMask = kCALayerHeightSizable | kCALayerWidthSizable;
-    // fMetalLayer.contentsGravity = kCAGravityTopLeft;
-    // fMetalLayer.magnificationFilter = kCAFilterNearest;
-    // fMetalLayer.framebufferOnly = false;
-    // NSColorSpace* cs = fMainView.window.colorSpace;
-    // fMetalLayer.colorspace = cs.CGColorSpace;
+    // Adjust fMetalLayer size based on window size.
+    this->resizeInternal();
 
-    // fMainView.layer = fMetalLayer;
-    // fMainView.wantsLayer = YES;
+    wgpu::SurfaceDescriptorFromMetalLayer surfaceChainedDesc;
+    surfaceChainedDesc.layer = fMetalLayer;
+    wgpu::SurfaceDescriptor surfaceDesc;
+    surfaceDesc.nextInChain = &surfaceChainedDesc;
+
+    auto surface = wgpu::Instance(fInstance->Get()).CreateSurface(&surfaceDesc);
+    if (!surface)
+        return false;
+
+    wgpu::SwapChainDescriptor swapChainDesc;
+    swapChainDesc.usage = wgpu::TextureUsage::RenderAttachment;
+    swapChainDesc.format = fSwapChainFormat;
+    swapChainDesc.width = fWidth;
+    swapChainDesc.height = fHeight;
+    swapChainDesc.presentMode = wgpu::PresentMode::Fifo;
+    swapChainDesc.implementation = 0;
+    auto swapChain = device.CreateSwapChain(surface, &swapChainDesc);
+    if (!swapChain)
+        return false;
+
+    fDevice = std::move(device);
+    fSurface = std::move(surface);
+    fSwapChain = std::move(swapChain);
 
     return true;
 }
 
 void GraphiteDawnMetalWindowContext_mac::onDestroyContext() {
-    // fMainView.layer = nil;
-    // fMainView.wantsLayer = NO;
+    fMetalLayer = nil;
+    fMainView.layer = nil;
+    fMainView.wantsLayer = NO;
 }
 
 void GraphiteDawnMetalWindowContext_mac::onSwapBuffers() {
-}
-
-DawnSwapChainImplementation GraphiteDawnMetalWindowContext_mac::createSwapChainImplementation(
-    int width, int height, const DisplayParams& params) {
-    return {};
+    fSwapChain.Present();
 }
 
 void GraphiteDawnMetalWindowContext_mac::resize(int w, int h) {
-    // CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
-    // CGSize backingSize = fMainView.bounds.size;
-    // backingSize.width *= backingScaleFactor;
-    // backingSize.height *= backingScaleFactor;
-
-    // fMetalLayer.drawableSize = backingSize;
-    // fMetalLayer.contentsScale = backingScaleFactor;
-
-    // fWidth = backingSize.width;
-    // fHeight = backingSize.height;
+    if (!this->resizeInternal())
+        return;
+    fSwapChain.Configure(fSwapChainFormat, wgpu::TextureUsage::RenderAttachment, fWidth, fHeight);
 }
+
+bool GraphiteDawnMetalWindowContext_mac::resizeInternal() {
+    CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
+    CGSize backingSize = fMainView.bounds.size;
+    backingSize.width *= backingScaleFactor;
+    backingSize.height *= backingScaleFactor;
+
+    fMetalLayer.drawableSize = backingSize;
+    fMetalLayer.contentsScale = backingScaleFactor;
+
+    if (fWidth == backingSize.width && fHeight == backingSize.height)
+        return false;
+
+    fWidth = backingSize.width;
+    fHeight = backingSize.height;
+    return true;
+}
+
 
 }  // anonymous namespace
 
@@ -109,7 +140,7 @@ namespace sk_app {
 namespace window_context_factory {
 
 std::unique_ptr<WindowContext> MakeGraphiteDawnMetalForMac(const MacWindowInfo& info,
-                                                       const DisplayParams& params) {
+                                                           const DisplayParams& params) {
     std::unique_ptr<WindowContext> ctx(new GraphiteDawnMetalWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;

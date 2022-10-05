@@ -35,33 +35,39 @@ void GraphiteDawnWindowContext::initializeContext(int width, int height) {
 
     fWidth = width;
     fHeight = height;
-    onInitializeContext();
+
+    if (!onInitializeContext())
+        return;
+
+    SkASSERT(fDevice);
+    SkASSERT(fSurface);
+    SkASSERT(fSwapChain);
 
     fContext = GrDirectContext::MakeDawn(fDevice, fDisplayParams.fGrContextOptions);
     if (!fContext) {
         return;
     }
     fDevice.SetUncapturedErrorCallback(PrintDeviceError, 0);
-
-    // TODO: create swapchain.
 }
 
-GraphiteDawnWindowContext::~GraphiteDawnWindowContext() {
-}
+GraphiteDawnWindowContext::~GraphiteDawnWindowContext() = default;
 
 void GraphiteDawnWindowContext::destroyContext() {
-    if (!fDevice.Get()) {
+    if (!fDevice.Get())
         return;
-    }
 
     this->onDestroyContext();
 
-    fContext.reset();
+    fSkSurface = nullptr;
+    fContext = nullptr;
+    fSwapChain = nullptr;
+    fSurface = nullptr;
     fDevice = nullptr;
+    fInstance = nullptr;
 }
 
 sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
-    return fSurface;
+    return fSkSurface;
 }
 
 void GraphiteDawnWindowContext::swapBuffers() {
