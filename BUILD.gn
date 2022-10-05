@@ -1544,6 +1544,7 @@ skia_static_library("pathkit") {
     "src/core/SkStroke.cpp",
     "src/core/SkStrokeRec.cpp",
     "src/core/SkStrokerPriv.cpp",
+    "src/core/SkTArray.cpp",
     "src/core/SkTDArray.cpp",
     "src/core/SkThreadID.cpp",
     "src/core/SkUtils.cpp",
