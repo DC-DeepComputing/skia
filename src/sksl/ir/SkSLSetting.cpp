@@ -12,6 +12,7 @@
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 
@@ -50,6 +51,11 @@ static const CapsLookupTable& caps_lookup_table() {
 std::unique_ptr<Expression> Setting::Convert(const Context& context, Position pos,
                                              const std::string_view& name) {
     SkASSERT(context.fConfig);
+
+    if (ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
+        context.fErrors->error(pos, "name 'sk_Caps' is reserved");
+        return nullptr;
+    }
 
     const CapsPtr* capsPtr = caps_lookup_table().find(name);
     if (!capsPtr) {
