@@ -16,6 +16,23 @@
       "message": "PTAL, I believe I fixed the WASM GM build",
       "revId": "5c562246ce2c767c9661a2e23130ee2e9ef9400a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796cb447_8ed29569",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-10-05T21:13:22Z",
+      "side": 1,
+      "message": "+1 for the Bazel side of things. Did not review the actual effects on the build.",
+      "revId": "5c562246ce2c767c9661a2e23130ee2e9ef9400a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
