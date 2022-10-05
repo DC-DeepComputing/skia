@@ -52,9 +52,7 @@ public:
      */
     SkImage* isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const;
 
-    bool isAImage() const {
-        return this->isAImage(nullptr, (SkTileMode*)nullptr) != nullptr;
-    }
+    bool isAImage() const { return this->isAImage(nullptr, (SkTileMode*)nullptr) != nullptr; }
 
     // TODO(skbug.com/8941): Have Android use SkAndroidFrameworkUtils, move types to SkShaderBase,
     // and delete asAGradient().
