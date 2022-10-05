@@ -22,7 +22,9 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
@@ -369,14 +371,271 @@ bool Device::readPixels(Context* context,
                             srcY);
 }
 
+// Need to define this for Graphite.
+// Main sticking point is tracking mapped buffer and being able to release it.
+// Might need equivalent of DirectContextID. Maybe RecorderID? Not sure how that
+// works with existing Recorder id.
+//
+// Don't be afraid to write something new...
+#if 0
+class SurfaceContext::AsyncReadResult : public SkImage::AsyncReadResult {
+public:
+    AsyncReadResult(GrDirectContext::DirectContextID intendedRecipient)
+        : fIntendedRecipient(intendedRecipient) {
+    }
+
+    ~AsyncReadResult() override {
+        for (int i = 0; i < fPlanes.count(); ++i) {
+            fPlanes[i].releaseMappedBuffer(fIntendedRecipient);
+        }
+    }
+
+    int count() const override { return fPlanes.count(); }
+    const void* data(int i) const override { return fPlanes[i].data(); }
+    size_t rowBytes(int i) const override { return fPlanes[i].rowBytes(); }
+
+    bool addTransferResult(const PixelTransferResult& result,
+                           SkISize dimensions,
+                           size_t rowBytes,
+                           GrClientMappedBufferManager* manager) {
+        SkASSERT(!result.fTransferBuffer->isMapped());
+        const void* mappedData = result.fTransferBuffer->map();
+        if (!mappedData) {
+            return false;
+        }
+        if (result.fPixelConverter) {
+            size_t size = rowBytes*dimensions.height();
+            sk_sp<SkData> data = SkData::MakeUninitialized(size);
+            result.fPixelConverter(data->writable_data(), mappedData);
+            this->addCpuPlane(std::move(data), rowBytes);
+            result.fTransferBuffer->unmap();
+        } else {
+            manager->insert(result.fTransferBuffer);
+            this->addMappedPlane(mappedData, rowBytes, std::move(result.fTransferBuffer));
+        }
+        return true;
+    }
+
+    void addCpuPlane(sk_sp<SkData> data, size_t rowBytes) {
+        SkASSERT(data);
+        SkASSERT(rowBytes > 0);
+        fPlanes.emplace_back(std::move(data), rowBytes);
+    }
+
+private:
+    void addMappedPlane(const void* data, size_t rowBytes, sk_sp<GrGpuBuffer> mappedBuffer) {
+        SkASSERT(data);
+        SkASSERT(rowBytes > 0);
+        SkASSERT(mappedBuffer);
+        SkASSERT(mappedBuffer->isMapped());
+        fPlanes.emplace_back(std::move(mappedBuffer), rowBytes);
+    }
+
+    class Plane {
+    public:
+        Plane(sk_sp<GrGpuBuffer> buffer, size_t rowBytes)
+                : fMappedBuffer(std::move(buffer)), fRowBytes(rowBytes) {}
+        Plane(sk_sp<SkData> data, size_t rowBytes) : fData(std::move(data)), fRowBytes(rowBytes) {}
+
+        Plane(const Plane&) = delete;
+        Plane(Plane&&) = default;
+
+        ~Plane() { SkASSERT(!fMappedBuffer); }
+
+        Plane& operator=(const Plane&) = delete;
+        Plane& operator=(Plane&&) = default;
+
+        void releaseMappedBuffer(GrDirectContext::DirectContextID intendedRecipient) {
+            if (fMappedBuffer) {
+                GrClientMappedBufferManager::BufferFinishedMessageBus::Post(
+                        {std::move(fMappedBuffer), intendedRecipient});
+            }
+        }
+
+        const void* data() const {
+            if (fMappedBuffer) {
+                SkASSERT(!fData);
+                SkASSERT(fMappedBuffer->isMapped());
+                return fMappedBuffer->map();
+            }
+            SkASSERT(fData);
+            return fData->data();
+        }
+
+        size_t rowBytes() const { return fRowBytes; }
+
+    private:
+        sk_sp<SkData> fData;
+        sk_sp<GrGpuBuffer> fMappedBuffer;
+        size_t fRowBytes;
+    };
+    SkSTArray<3, Plane> fPlanes;
+    GrDirectContext::DirectContextID fIntendedRecipient;
+};
+#endif
+
 void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                        SkIRect srcRect,
                                        RescaleGamma rescaleGamma,
                                        RescaleMode rescaleMode,
                                        ReadPixelsCallback callback,
                                        ReadPixelsContext context) {
-    // TODO: implement for Graphite
-    callback(context, nullptr);
+#if 0
+    // From Device
+    auto* sdc = fSurfaceDrawContext.get();
+    // Context TODO: Elevate direct context requirement to public API.
+    auto dContext = sdc->recordingContext()->asDirectContext();
+
+    // From SurfaceContext
+    if (!dContext) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+    auto rt = this->asRenderTargetProxy();
+    if (rt && rt->wrapsVkSecondaryCB()) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+    if (rt && rt->framebufferOnly()) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+//* Don't need this, only using SkColorType
+//    auto dstCT = SkColorTypeToGrColorType(info.colorType());
+//    if (dstCT == GrColorType::kUnknown) {
+//        callback(callbackContext, nullptr);
+//        return;
+//    }
+
+    // Check for rescale
+    bool needsRescale = srcRect.size() != info.dimensions()               ||
+                        this->origin() == kBottomLeft_GrSurfaceOrigin     ||
+                        this->colorInfo().alphaType() != info.alphaType() ||
+                        !SkColorSpace::Equals(this->colorInfo().colorSpace(), info.colorSpace());
+
+    // if we're not scaling, colorType and format come from the current surface
+    // otherwise they come from the SkImageInfo input
+    auto colorTypeOfFinalContext = this->colorInfo().colorType();
+    auto backendFormatOfFinalContext = this->asSurfaceProxy()->backendFormat();
+    if (needsRescale) {
+        colorTypeOfFinalContext = dstCT;
+        backendFormatOfFinalContext =
+                this->caps()->getDefaultBackendFormat(dstCT, GrRenderable::kYes);
+    }
+
+    //*** we do all this in transfer pixels -- needed?
+    // check to see if we can read this format
+    auto readInfo = this->caps()->supportedReadPixelsColorType(colorTypeOfFinalContext,
+                                                               backendFormatOfFinalContext,
+                                                               dstCT);
+    // Fail if we can't read from the source surface's color type.
+    if (readInfo.fColorType == GrColorType::kUnknown) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+    // Fail if read color type does not have all of dstCT's color channels and those missing color
+    // channels are in the src.
+    uint32_t dstChannels = GrColorTypeChannelFlags(dstCT);
+    uint32_t legalReadChannels = GrColorTypeChannelFlags(readInfo.fColorType);
+    uint32_t srcChannels = GrColorTypeChannelFlags(this->colorInfo().colorType());
+    if ((~legalReadChannels & dstChannels) & srcChannels) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+    //*** to here
+
+    // get the context we're going to read from
+    // either is the current surfaceContext or one we create when we rescale.
+    // (not sure what to do for Graphite -- just create a new TextureProxy?)
+    std::unique_ptr<SurfaceFillContext> tempFC;
+    int x = srcRect.fLeft;
+    int y = srcRect.fTop;
+    if (needsRescale) {
+        tempFC = this->rescale(info, kTopLeft_GrSurfaceOrigin, srcRect, rescaleGamma, rescaleMode);
+        if (!tempFC) {
+            callback(callbackContext, nullptr);
+            return;
+        }
+        SkASSERT(SkColorSpace::Equals(tempFC->colorInfo().colorSpace(), info.colorSpace()));
+        SkASSERT(tempFC->origin() == kTopLeft_GrSurfaceOrigin);
+        x = y = 0;
+    }
+    auto srcCtx = tempFC ? tempFC.get() : this;
+
+    // Now in SurfaceContext::readPixels()
+    SkASSERT(rect.fLeft >= 0 && rect.fRight <= this->width());
+    SkASSERT(rect.fTop >= 0 && rect.fBottom <= this->height());
+
+    // Can't read from protected surface
+    if (!dContext || this->asSurfaceProxy()->isProtected() == GrProtected::kYes) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+    GrClientMappedBufferManager* mappedBufferManager = dContext->priv().clientMappedBufferManager();
+
+    auto transferResult = this->transferPixels(SkColorTypeToGrColorType(colorType), rect);
+
+    if (!transferResult.fTransferBuffer) {
+        auto ii = SkImageInfo::Make(rect.size(), colorType, this->colorInfo().alphaType(),
+                                    this->colorInfo().refColorSpace());
+        static const GrDirectContext::DirectContextID kInvalid;
+        auto result = std::make_unique<AsyncReadResult>(kInvalid);
+        GrPixmap pm = GrPixmap::Allocate(ii);
+        result->addCpuPlane(pm.pixelStorage(), pm.rowBytes());
+
+        SkIPoint pt{rect.fLeft, rect.fTop};
+        if (!this->readPixels(dContext, pm, pt)) {
+            callback(callbackContext, nullptr);
+            return;
+        }
+        callback(callbackContext, std::move(result));
+        return;
+    }
+
+    // Need a way to pass a FinishContext to result
+    struct FinishContext {
+        ReadPixelsCallback* fClientCallback;
+        ReadPixelsContext fClientContext;
+        SkISize fSize;
+        SkColorType fColorType;
+        size_t fBufferAlignment;
+        GrClientMappedBufferManager* fMappedBufferManager;
+        PixelTransferResult fTransferResult;
+    };
+    // Assumption is that the caller would like to flush. We could take a parameter or require an
+    // explicit flush from the caller. We'd have to have a way to defer attaching the finish
+    // callback to GrGpu until after the next flush that flushes our op list, though.
+    auto* finishContext = new FinishContext{callback,
+                                            callbackContext,
+                                            rect.size(),
+                                            colorType,
+                                            this->caps()->transferBufferRowBytesAlignment(),
+                                            mappedBufferManager,
+                                            std::move(transferResult)};
+    auto finishCallback = [](GrGpuFinishedContext c) {
+        const auto* context = reinterpret_cast<const FinishContext*>(c);
+        GrClientMappedBufferManager* manager = context->fMappedBufferManager;
+        auto result = std::make_unique<AsyncReadResult>(manager->owningDirectContext());
+        size_t rowBytes =
+                SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
+                          context->fBufferAlignment);
+        if (!result->addTransferResult(context->fTransferResult, context->fSize, rowBytes,
+                                       manager)) {
+            result.reset();
+        }
+        (*context->fClientCallback)(context->fClientContext, std::move(result));
+        delete context;
+    };
+    GrFlushInfo flushInfo;
+    flushInfo.fFinishedContext = finishContext;
+    flushInfo.fFinishedProc = finishCallback;
+
+    dContext->priv().flushSurface(this->asSurfaceProxy(),
+                                  SkSurface::BackendSurfaceAccess::kNoAccess,
+                                  flushInfo);
+#endif
 }
 
 void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
@@ -389,6 +648,76 @@ void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                              ReadPixelsContext context) {
     // TODO: implement for Graphite
     callback(context, nullptr);
+}
+
+Device::PixelTransferResult Device::transferPixels(SkColorType dstCT,
+                                                   const SkIRect& srcRect) {
+    SkASSERT(srcRect.fLeft >= 0 && srcRect.fRight <= this->width());
+    SkASSERT(srcRect.fTop >= 0 && srcRect.fBottom <= this->height());
+// TODO?
+//    auto rtProxy = this->asRenderTargetProxy();
+//    if (rtProxy && rtProxy->wrapsVkSecondaryCB()) {
+//        return {};
+//    }
+
+    TextureProxy* target = fDC->target();
+    const Caps* caps = fRecorder->priv().caps();
+    Caps::SupportedRead supportedRead =
+            caps->supportedReadPixelsColorType(fDC->imageInfo().colorType(),
+                                               target->textureInfo(), dstCT);
+    // Fail if read color type does not have all of dstCT's color channels and those missing color
+    // channels are in the src.
+    uint32_t dstChannels = SkColorTypeChannelFlags(dstCT);
+    uint32_t legalReadChannels = SkColorTypeChannelFlags(supportedRead.fColorType);
+    uint32_t srcChannels = SkColorTypeChannelFlags(fDC->imageInfo().colorType());
+    if ((~legalReadChannels & dstChannels) & srcChannels) {
+        return {};
+    }
+
+    if (!supportedRead.fOffsetAlignmentForTransferBuffer) {
+        return {};
+    }
+
+    size_t rowBytes = caps->getAlignedTextureDataRowBytes(
+                              SkColorTypeBytesPerPixel(supportedRead.fColorType) * srcRect.width());
+    size_t size = rowBytes * srcRect.height();
+    // By using kStream_GrAccessPattern here, we are not able to cache and reuse the buffer for
+    // multiple reads. Switching to kDynamic_GrAccessPattern would allow for this, however doing
+    // so causes a crash in a chromium test. See skbug.com/11297
+    sk_sp<Buffer> buffer = fRecorder->priv().resourceProvider()->findOrCreateBuffer(
+            size,
+            BufferType::kXferCpuToGpu,
+            PrioritizeGpuReads::kNo);
+    if (!buffer) {
+        return {};
+    }
+
+    // Set up copy task
+    sk_sp<CopyTextureToBufferTask> copyTask = CopyTextureToBufferTask::Make(sk_ref_sp(target),
+                                                                            srcRect,
+                                                                            buffer,
+                                                                            /*bufferOffset=*/0,
+                                                                            rowBytes);
+    if (!copyTask) {
+        return {};
+    }
+    fRecorder->priv().add(std::move(copyTask));
+
+    PixelTransferResult result;
+    result.fTransferBuffer = std::move(buffer);
+/* TODO: color conversion
+    auto at = this->colorInfo().alphaType();
+    if (supportedRead.fColorType != dstCT) {
+        result.fPixelConverter = [w = rect.width(), h = rect.height(), dstCT, supportedRead, at](
+                void* dst, const void* src) {
+            GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
+            GrImageInfo dstInfo(dstCT,                    at, nullptr, w, h);
+            GrConvertPixels( GrPixmap(dstInfo, dst, dstInfo.minRowBytes()),
+                            GrCPixmap(srcInfo, src, srcInfo.minRowBytes()));
+        };
+    }
+ */
+    return result;
 }
 
 bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
@@ -408,8 +737,10 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     const Caps* caps = fRecorder->priv().caps();
 
     // TODO: canvas2DFastPath?
-    // TODO: check that surface supports writePixels
     // TODO: handle writePixels as draw if needed (e.g., canvas2DFastPath || !supportsWritePixels)
+    if (!caps->textureSupportsWritePixels(target)) {
+        return false;
+    }
 
     // TODO: check for flips and conversions and either handle here or pass info to UploadTask
 

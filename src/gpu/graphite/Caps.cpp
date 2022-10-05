@@ -11,6 +11,7 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkImageInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
@@ -54,6 +55,46 @@ bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInf
     // (can be handled by setting up the colorTypeInfo instead?)
 
     return SkToBool(this->getColorTypeInfo(ct, info));
+}
+
+bool Caps::textureSupportsWritePixels(const TextureProxy* proxy) const {
+    // TODO: yeah, the proxy doesn't have this info
+    // What happens if we instantiate and it's readonly then?
+    return /*proxy->readOnly() ? false :*/ this->onTextureSupportsWritePixels(proxy);
+}
+
+Caps::SupportedRead Caps::supportedReadPixelsColorType(SkColorType srcColorType,
+                                                       const TextureInfo& srcTextureInfo,
+                                                       SkColorType dstColorType) const {
+    SupportedRead read = this->onSupportedReadPixelsColorType(srcColorType, srcTextureInfo,
+                                                              dstColorType);
+
+    // There are known problems with 24 vs 32 bit BPP with this color type. Just fail for now if
+    // using a transfer buffer.
+    if (read.fColorType == kRGB_888x_SkColorType) {
+        read.fOffsetAlignmentForTransferBuffer = 0;
+    }
+    // It's very convenient to access 1 byte-per-channel 32 bit color types as uint32_t on the CPU.
+    // Make those aligned reads out of the buffer even if the underlying API doesn't require it.
+    auto channelFlags = SkColorTypeChannelFlags(read.fColorType);
+    if ((channelFlags == kRGBA_SkColorChannelFlags || channelFlags == kRGB_SkColorChannelFlags ||
+         channelFlags == kAlpha_SkColorChannelFlag || channelFlags == kGray_SkColorChannelFlag) &&
+        SkColorTypeBytesPerPixel(read.fColorType) == 4) {
+        switch (read.fOffsetAlignmentForTransferBuffer & 0b11) {
+            // offset alignment already a multiple of 4
+            case 0:
+                break;
+            // offset alignment is a multiple of 2 but not 4.
+            case 2:
+                read.fOffsetAlignmentForTransferBuffer *= 2;
+                break;
+            // offset alignment is not a multiple of 2.
+            default:
+                read.fOffsetAlignmentForTransferBuffer *= 4;
+                break;
+        }
+    }
+    return read;
 }
 
 skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) const {
