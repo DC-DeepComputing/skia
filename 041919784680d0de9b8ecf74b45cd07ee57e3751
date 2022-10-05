@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe6da26_034ce223",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Do uses this as a superclass.",
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49bd6666_c434bf99",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "add:\nint size() const;\nint capacity() const;\nbool ownsMemory const;\n\nTry to make this class self contained.",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 18
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ec02027_5468c9ae",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Consider void* fItemArray\nint fCount;\nuint32_t fReserve : 31;\nuint32_t fOwnMemory : 1;\n\nWith this fCount does not need any masking to access, and I think it is accessed more frequently than fReserve.\n\nSo, with the old order when accessing fReserve it will have to be masked with 0x7ffffff, which is a big instruction. Now it is a logical shift right by 1 which is a small instruction.",
+      "range": {
+        "startLine": 37,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 30
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9342650c_4c229934",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "fReserved is often used to mean the amount of memory allocated. Changed to fUnused.",
+      "range": {
+        "startLine": 39,
+        "startChar": 13,
+        "endLine": 39,
+        "endChar": 22
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0030e311_ae7e41f2",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Consider changing to fReserve to match SkTDArray.",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 24
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47653250_e6e0bb78",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Can this just be a member instead of sub classing?",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 36
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "286ab638_c365c3c2",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Change items to data().",
+      "range": {
+        "startLine": 73,
+        "startChar": 19,
+        "endLine": 73,
+        "endChar": 31
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a59fb3bd_82273219",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "T* data() { return static_cast\u003cT*\u003e(fStorage.data()).",
+      "range": {
+        "startLine": 384,
+        "startChar": 4,
+        "endLine": 384,
+        "endChar": 39
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21e28c88_4ab84527",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "Move this to SkTArrayBase and rename to void* data().",
+      "range": {
+        "startLine": 479,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 72
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbade73f_91b97c9a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T21:10:22Z",
+      "side": 1,
+      "message": "It seems like this is SkTArrayBase::doRealloc.",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 605,
+        "endChar": 26
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
