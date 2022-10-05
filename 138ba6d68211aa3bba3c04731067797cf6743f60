@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e1da62b_78f16a73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-05T18:07:58Z",
+      "side": 1,
+      "message": "I moved these over to sksl_rt_shader, because I only need to access them from (internally authored) gradient runtime FPs. In theory I could just put them directly in GrGradientShader, but this nets a tiny bit of code-size from the minification. On that point: These are going to need $export, I guess?",
+      "revId": "138ba6d68211aa3bba3c04731067797cf6743f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
