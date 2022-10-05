@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9022c9b8_bb089f30",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 39
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T12:48:14Z",
+      "side": 1,
+      "message": "Removed dependency on fontmgr_fontcongi. Direct dependency on font_config is encoded below in uses_fontconfig.",
+      "parentUuid": "77008d20_6d85fac9",
+      "revId": "ad7f9098f9678000acce4fe6eb1559533dd54115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2cc4f5c_ff0159d0",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-04T19:16:37Z",
       "side": 1,
       "message": "Sorry about this file, the FCI bits should probably go into a separate file. In fact it looks like this is incorrect in our gn build as well, where this file is added as a test when the FontConfig SkFonMgr is enabled, but we don\u0027t actually check to see if the FCI stuff is actually enabled (that part of the test should go in a file which that target brings in). I\u0027ll see about fixing that up first.\n\nThat being said, it isn\u0027t clear here when this is being run (is enabled). This test obviously states that it needs these dependencies, but what about platforms where FontConfig isn\u0027t available?",
+      "revId": "ad7f9098f9678000acce4fe6eb1559533dd54115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "276a673f_424855b3",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 39
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T12:48:14Z",
+      "side": 1,
+      "message": "Done. Since it passes on Linux, I\u0027m not going to worry about that too much right now. I added a comment with the idea I have for ignoring certain tests on certain platforms (an extension of limit_to which is already demonstrated here).",
+      "parentUuid": "a2cc4f5c_ff0159d0",
       "revId": "ad7f9098f9678000acce4fe6eb1559533dd54115",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
