@@ -5,10 +5,10 @@ uniform vec4 colorRed;
 struct S {
     int i;
 };
-vec4 fnGreen_h4bf2(bool b, vec2 _skAnonymousParam1) {
+vec4 fnGreen_h4bf2(bool b, vec2 ) {
     return colorGreen;
 }
-vec4 fnRed_h4ifS(int _skAnonymousParam0, float f, S _skAnonymousParam2) {
+vec4 fnRed_h4ifS(int , float f, S ) {
     return colorRed;
 }
 vec4 main() {
