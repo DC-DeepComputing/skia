@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a02d2e79_c4e86391",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-05T17:42:35Z",
+      "side": 1,
+      "message": "Hi Greg, Is this change good for landing? so we don\u0027t need to maintain too many change locally.",
+      "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
