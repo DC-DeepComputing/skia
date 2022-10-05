@@ -80,7 +80,7 @@ void SkTDStorage::reserve(int newReserve) {
         if (kMaxCount - newReserve > 4) {
             // Add 1/4 more than we need. Add 4 to ensure this grows by at least 1. Pin to
             // kMaxCount if no room for 1/4 growth.
-            int growth = 4 + ((newReserve + 4) >> 2);
+            int growth = 4 + ((newReserve + 4) / 3);
             // Read this line as: if (count + growth < kMaxCount) { ... }
             // It's rewritten to avoid signed integer overflow.
             if (kMaxCount - newReserve > growth) {
