@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "665950dd_82f8177f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-05T20:49:33Z",
+      "side": 1,
+      "message": "PTAL, I believe I fixed the WASM GM build",
+      "revId": "5c562246ce2c767c9661a2e23130ee2e9ef9400a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
