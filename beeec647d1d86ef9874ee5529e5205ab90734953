@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00cf24c4_30658368",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-05T16:14:14Z",
+      "side": 1,
+      "message": "I think this can be updated a little since this at least shouldn\u0027t apply to such classes anymore.",
+      "revId": "beeec647d1d86ef9874ee5529e5205ab90734953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
