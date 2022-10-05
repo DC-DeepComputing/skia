@@ -517,9 +517,8 @@ private:
             if (n > 255) {
                 n = 255;
             }
-            uint8_t* ptr = data.append(2);
-            ptr[0] = n;
-            ptr[1] = alpha;
+            data.push_back(n);
+            data.push_back(alpha);
             count -= n;
         } while (count > 0);
     }
