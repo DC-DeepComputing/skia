@@ -223,6 +223,30 @@
       },
       "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1728faee_b59c812f",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-05T21:18:06Z",
+      "side": 1,
+      "message": "The only reason it and everything is duplicated is due to the `this-\u003emove(newItemArray);` line. The `doRealloc` in the cpp here is a kind of manual specialization of this `MEM_MOVE` is true. It would probably be best to just template `doRealloc` on a bool and then instantiate both in the cpp file.",
+      "parentUuid": "cbade73f_91b97c9a",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 605,
+        "endChar": 26
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
