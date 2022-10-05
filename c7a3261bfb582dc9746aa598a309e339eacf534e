@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba45759_02ad09a5",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-05T19:18:14Z",
+      "side": 1,
+      "message": "Forwarding to factories would kind of defeat the ability to later put these in the same allocation (or at least complicate it).\n\nI considered friending but went with making the constructors class-level-public since none of these SkShaderBase subclasses are actually in the public API and we already have SkShaderBase subclasses in private headers with public constructors, e.g.:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/shaders/SkColorFilterShader.h;l\u003d18?q\u003dSkColorFilterSha\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F\n\nI don\u0027t feel strongly about this, though.",
+      "parentUuid": "ae618edc_7d1f2315",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cbaded96_c2aa858c",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37041ba0_34222e06",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-05T19:18:14Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s on my list for follow ups",
+      "parentUuid": "cbaded96_c2aa858c",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00475be2_4d7d4bcc",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-10-05T18:31:08Z",
       "side": 1,
       "message": "nit: typo",
+      "range": {
+        "startLine": 190,
+        "startChar": 33,
+        "endLine": 190,
+        "endChar": 45
+      },
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1c2f95_291edd61",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-05T19:18:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00475be2_4d7d4bcc",
       "range": {
         "startLine": 190,
         "startChar": 33,
@@ -81,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d913d3_902e9b21",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-05T19:18:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "063e738e_5709e9f1",
+      "range": {
+        "startLine": 192,
+        "startChar": 67,
+        "endLine": 192,
+        "endChar": 79
+      },
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7db8b6d_10d70158",
@@ -94,6 +178,24 @@
       "writtenOn": "2022-10-05T18:02:01Z",
       "side": 1,
       "message": "Are these two changes correct/safe? (If the shader *is* a LMS, then we need to know if that matrix has perspective, because we are going to incorporate it into the the total matrix we compute in update, right?)",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fc137f3_2b1eb8d5",
+        "filename": "src/shaders/SkTransformShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-05T19:18:14Z",
+      "side": 1,
+      "message": "Oh good point. fixed.",
+      "parentUuid": "f7db8b6d_10d70158",
       "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
