@@ -16,6 +16,52 @@
       "message": "In addition, this is slightly faster.",
       "revId": "cf60374f6d71db83f92a06142f42f5e6b010617a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc107fb_9e50a96d",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-05T22:10:31Z",
+      "side": 1,
+      "message": "Let\u0027s be consistent with http://review.skia.org/587542 and use void*",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "revId": "cf60374f6d71db83f92a06142f42f5e6b010617a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45001523_45f7ba47",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-05T22:10:31Z",
+      "side": 1,
+      "message": "Is this any different than\n`*this \u003d SkTDStorage{that.data(), that.size(), fSizeOfT};`\n?\nSeems simpler to just assign directly if we can.",
+      "range": {
+        "startLine": 39,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "cf60374f6d71db83f92a06142f42f5e6b010617a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
