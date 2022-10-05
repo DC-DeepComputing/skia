@@ -146,8 +146,21 @@ void* SkTDStorage::prepend() {
     return this->insert(/*index=*/0);
 }
 
-void* SkTDStorage::append() {
-    return this->insert(fCount);
+void SkTDStorage::append() {
+    if (fCount < fReserve) {
+        fCount++;
+    } else {
+        this->insert(fCount);
+    }
+}
+
+void SkTDStorage::append(int count) {
+    // Read as: if (fCount + count <= fReserve) {...}. This is a UB safe way to avoid the add.
+    if (fReserve - fCount >= count) {
+        fCount += count;
+    } else {
+        this->insert(fCount, count, nullptr);
+    }
 }
 
 void* SkTDStorage::append(const void* src, int count) {
