@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3170c964_062a3e6b",
+        "filename": "resources/sksl/errors/OverloadedBuiltin.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-05T15:39:36Z",
+      "side": 1,
+      "message": "Hmm. Does this mean that if I do a local release build with skia_compile_tests set to true, I\u0027m going to get local changes to the tests/ directory? That seems undesirable.",
+      "revId": "4dc02ea28b05cd4d925168e622fdacf8a5024885",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
