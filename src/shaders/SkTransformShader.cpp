@@ -38,7 +38,7 @@ skvm::Coord SkTransformShader::applyMatrix(
 
     x = dot(0);
     y = dot(1);
-    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    fProcessingAsPerspective = matrix.hasPerspective();
     if (fProcessingAsPerspective) {
         x = x * (1.0f / dot(2));
         y = y * (1.0f / dot(2));
@@ -48,7 +48,7 @@ skvm::Coord SkTransformShader::applyMatrix(
 }
 
 void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const {
-    fProcessingAsPerspective = matrix.hasPerspective() || fShader.getLocalMatrix().hasPerspective();
+    fProcessingAsPerspective = matrix.hasPerspective();
     if (fProcessingAsPerspective) {
         p->append(SkRasterPipeline::matrix_perspective, fMatrixStorage);
     } else {
