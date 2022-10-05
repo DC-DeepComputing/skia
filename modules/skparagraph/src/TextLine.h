@@ -118,6 +118,9 @@ public:
     SkScalar metricsWithoutMultiplier(TextHeightBehavior correction);
     void shiftVertically(SkScalar shift) { fOffset.fY += shift; }
 
+    void setAscentStyle(LineMetricStyle style) { fAscentStyle = style; }
+    void setDescentStyle(LineMetricStyle style) { fDescentStyle = style; }
+
     bool endsWithHardLineBreak() const;
 
 private:

@@ -3818,6 +3818,89 @@ private:
     using INHERITED = Sample;
 };
 
+class ParagraphViewLast : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewLast"); }
+    void onDrawContent(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextDirection(TextDirection::kLtr);
+        TextStyle text_style;
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(14.0);
+        SkPaint paint;
+        paint.setColor(SK_ColorBLUE);
+        text_style.setBackgroundColor(paint);
+        TextStyle text_style1;
+        text_style1.setColor(SK_ColorBLACK);
+        text_style1.setFontFamilies({SkString("Roboto")});
+        text_style1.setFontSize(30);
+        text_style1.setHeight(3.0);
+        text_style1.setHeightOverride(true);
+        paint.setColor(SK_ColorRED);
+        text_style1.setBackgroundColor(paint);
+        StrutStyle strut_style;
+        strut_style.setFontSize(30);
+        strut_style.setHeight(3.0);
+        strut_style.setHeightOverride(true);
+        strut_style.setFontFamilies({SkString("Roboto")});
+
+        auto draw = [&](const char* text, bool test = false) {
+            if (test) {
+                paragraph_style.setTextHeightBehavior(TextHeightBehavior::kDisableAll);
+                strut_style.setStrutEnabled(true);
+                paragraph_style.setStrutStyle(strut_style);
+            } else {
+                paragraph_style.setTextHeightBehavior(TextHeightBehavior::kAll);
+                strut_style.setStrutEnabled(false);
+                paragraph_style.setStrutStyle(strut_style);
+            }
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            if (test) {
+                builder.pushStyle(text_style1);
+            } else {
+                builder.pushStyle(text_style);
+            }
+            builder.addText(text);
+            builder.pop();
+            auto paragraph = builder.Build();
+            paragraph->layout(width());
+            paragraph->paint(canvas, 0, 0);
+            if (test) {
+                auto boxes = paragraph->getRectsForRange(0, 12, RectHeightStyle::kMax, RectWidthStyle::kTight);
+                for (auto& box : boxes) {
+                    SkPaint paint;
+                    paint.setColor(SK_ColorGREEN);
+                    paint.setStyle(SkPaint::kStroke_Style);
+                    paint.setAntiAlias(true);
+                    paint.setStrokeWidth(2);
+                    canvas->drawRect(box.rect, paint);
+                }
+            }
+            canvas->translate(0, paragraph->getHeight());
+        };
+
+        /*
+Background: -0.406250:16.000000 16.406250 16.000000
+
+Background: -43.000000:47.000000 90.000000 47.000000
+Background: 0.000000:90.000000 90.000000 90.000000
+Background: 0.425781:90.425781 90.000000 79.000000
+
+Background: -0.406250:16.000000 16.406250 16.000000
+         */
+        draw("+++++++++++++++++++");
+        draw("AAA\nBBB\nCCC", true);
+        draw("===================");
+    }
+private:
+    using INHERITED = Sample;
+};
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3885,4 +3968,4 @@ DEF_SAMPLE(return new ParagraphView63();)
 DEF_SAMPLE(return new ParagraphView64();)
 DEF_SAMPLE(return new ParagraphView65();)
 DEF_SAMPLE(return new ParagraphView66();)
-
+DEF_SAMPLE(return new ParagraphViewLast();)
