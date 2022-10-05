@@ -63,19 +63,17 @@ public:
 
     // Insertion routines
     void* prepend();
-    void* append();
+    void append() {
+        if (fCount < fReserve) {
+            fCount++;
+        } else {
+            this->insert(fCount);
+        }
+    }
     void* append(const void* src, int count);
     void* insert(int index);
     void* insert(int index, int count, const void* src);
 
-    // Stack routines
-    void* push_back() {
-        if (fCount < fReserve) {
-            return this->address(fCount++);
-        } else {
-            return this->append();
-        }
-    }
     void pop_back() {
         SkASSERT(fCount > 0);
         fCount--;
@@ -205,7 +203,8 @@ public:
     }
 
     T* append() {
-        return static_cast<T*>(fStorage.append());
+        fStorage.append();
+        return this->end() - 1;
     }
     T* append(int count, const T* src = nullptr) {
         return static_cast<T*>(fStorage.append(src, count));
@@ -239,7 +238,10 @@ public:
     }
 
     // routines to treat the array like a stack
-    void push_back(const T& v) { *static_cast<T*>(fStorage.push_back()) = v; }
+    void push_back(const T& v) {
+        this->append();
+        this->back() = v;
+    }
     void pop_back() { fStorage.pop_back(); }
 
     void deleteAll() {

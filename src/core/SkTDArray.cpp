@@ -146,10 +146,6 @@ void* SkTDStorage::prepend() {
     return this->insert(/*index=*/0);
 }
 
-void* SkTDStorage::append() {
-    return this->insert(fCount);
-}
-
 void* SkTDStorage::append(const void* src, int count) {
     return this->insert(fCount, count, src);
 }
