@@ -39,15 +39,14 @@ protected:
     virtual void onDestroyContext() = 0;
     virtual void onSwapBuffers() = 0;
     virtual GrSurfaceOrigin getRTOrigin() const { return kTopLeft_GrSurfaceOrigin; }
-    virtual DawnSwapChainImplementation createSwapChainImplementation( int width, int height,
-        const DisplayParams& params) = 0;
 
-    sk_sp<SkSurface>              fSurface;
-    DawnSwapChainImplementation   fSwapChainImplementation;
-    wgpu::TextureFormat           fSwapChainFormat;
-    wgpu::SwapChain               fSwapChain;
-    wgpu::Device                  fDevice;
+    wgpu::TextureFormat                     fSwapChainFormat;
     std::unique_ptr<dawn::native::Instance> fInstance;
+    wgpu::Device                            fDevice;
+    wgpu::Surface                           fSurface;
+    DawnSwapChainImplementation             fSwapChainImplementation;
+    wgpu::SwapChain                         fSwapChain;
+    sk_sp<SkSurface>                        fSkSurface;
 };
 
 }   // namespace sk_app
