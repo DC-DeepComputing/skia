@@ -16,6 +16,24 @@
       "message": "I made this helper not so much because it code-shares the null/identity check but because I\u0027m anticipating that we may get a perf-regression report and this gives us a pinch point to try allocation sharing between the LMS and it\u0027s proxy.\n\nSpeaking of \"proxy\", I\u0027m not sure I\u0027m crazy about the use of the word proxy in this class (and this function I added). It seems backwards to me. To my mind the LMS is the proxy to the real shader.",
       "revId": "10cb914f066ea9e370f8b327df1dd6dd0ce0b041",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "022e0241_b9041a1d",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-05T18:02:01Z",
+      "side": 1,
+      "message": "Agreed about proxy. MakeWrapped? Of course, the member variable is already called proxy, so maybe the poorly named ship has sailed?",
+      "parentUuid": "0badc731_f713b763",
+      "revId": "10cb914f066ea9e370f8b327df1dd6dd0ce0b041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

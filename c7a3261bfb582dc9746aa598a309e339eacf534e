@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7db8b6d_10d70158",
+        "filename": "src/shaders/SkTransformShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-05T18:02:01Z",
+      "side": 1,
+      "message": "Are these two changes correct/safe? (If the shader *is* a LMS, then we need to know if that matrix has perspective, because we are going to incorporate it into the the total matrix we compute in update, right?)",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
