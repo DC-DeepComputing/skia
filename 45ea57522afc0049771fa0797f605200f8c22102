@@ -22,6 +22,30 @@
       },
       "revId": "45ea57522afc0049771fa0797f605200f8c22102",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1da491_358bcad3",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T20:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26b4b6cb_7891ca44",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 69
+      },
+      "revId": "45ea57522afc0049771fa0797f605200f8c22102",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
