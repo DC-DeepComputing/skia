@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef5b8bbb_e8aa3f3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-05T16:52:48Z",
+      "side": 1,
+      "message": "In addition, this is slightly faster.",
+      "revId": "cf60374f6d71db83f92a06142f42f5e6b010617a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
