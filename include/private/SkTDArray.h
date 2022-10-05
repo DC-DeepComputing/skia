@@ -57,10 +57,6 @@ public:
     // Removes the entry at 'index' and replaces it with the last array element
     void removeShuffle(int index);
 
-    // assign copies over existing data. If fReserve < count, then fReserve = count, and does not
-    // include the growth factor.
-    void assign(const void* src, int count);
-
     // Insertion routines
     void* prepend();
     void* append();
