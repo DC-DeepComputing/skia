@@ -38,19 +38,22 @@ public:
     void swap(SkTDStorage& that);
 
     // Size routines
-    bool empty() const { return fCount == 0; }
-    void clear() { fCount = 0; }
-    int size() const { return fCount; }
-    void resize(int newCount);
-    size_t size_bytes() const { return this->bytes(fCount); }
+    bool empty() const { return fSize == 0; }
+    void clear() {
+        fEnd -= this->bytes(fSize);
+        fSize = 0;
+    }
+    int size() const { return fSize; }
+    void resize(int size);
+    size_t size_bytes() const { return this->bytes(fSize); }
 
     // Capacity routines
-    int capacity() const { return fReserve; }
-    void reserve(int newReserve);
+    int capacity() const { return fCapacity; }
+    void reserve(int capacity);
     void shrink_to_fit();
 
-    std::byte* data() { return fStorage; }
-    const std::byte* data() const { return fStorage; }
+    void* end() { return fEnd; }
+    const void* end() const { return fEnd; }
 
     // Deletion routines
     void erase(int index, int count);
@@ -59,26 +62,27 @@ public:
 
     // assign copies over existing data. If fReserve < count, then fReserve = count, and does not
     // include the growth factor.
-    void assign(const void* src, int count);
+    void assign(int count, const void* src);
 
     // Insertion routines
     void* prepend();
-    void* append();
-    void* append(const void* src, int count);
+    void* append() {
+        if (fSize < fCapacity) {
+            fSize++;
+            return std::exchange(fEnd, fEnd + fSizeOfT);
+        }
+        return append(1, nullptr);
+    }
+
+    void* append(int count, const void* src);
     void* insert(int index);
     void* insert(int index, int count, const void* src);
 
     // Stack routines
-    void* push_back() {
-        if (fCount < fReserve) {
-            return this->address(fCount++);
-        } else {
-            return this->append();
-        }
-    }
     void pop_back() {
-        SkASSERT(fCount > 0);
-        fCount--;
+        SkASSERT(fSize > 0);
+        fSize--;
+        fEnd -= fSizeOfT;
     }
 
     friend bool operator==(const SkTDStorage& a, const SkTDStorage& b);
@@ -87,8 +91,12 @@ public:
     }
 
 private:
-    size_t bytes(int n) const { return SkToSizeT(n * fSizeOfT); }
-    std::byte* address(int n) { return this->data() + this->bytes(n); }
+    void* data() { return this->address(0); }
+    const void* data() const { return this->address(0); }
+    ptrdiff_t bytes(int n) const { return static_cast<ptrdiff_t>(n * fSizeOfT); }
+    void* address(int n) { return fEnd + this->bytes(n - fSize); }
+    const void* address(int n) const { return fEnd + this->bytes(n - fSize); }
+    void realloc(int capacity);
 
     // Adds delta to fCount. Crash if outside [0, INT_MAX]
     int calculateSizeOrDie(int delta);
@@ -101,9 +109,9 @@ private:
     void copySrc(int dstIndex, const void* src, int count);
 
     const int fSizeOfT;
-    std::byte* fStorage{nullptr};
-    int fReserve{0};  // size of the allocation in fArray (#elements)
-    int fCount{0};    // logical number of elements (fCount <= fReserve)
+    std::byte* fEnd{nullptr};
+    int fCapacity{0};  // size of the allocation in fArray (#elements)
+    int fSize{0};    // logical number of elements (fCount <= fReserve)
 };
 
 static inline void swap(SkTDStorage& a, SkTDStorage& b) {
@@ -159,12 +167,12 @@ public:
     // return the number of bytes in the array: count * sizeof(T)
     size_t size_bytes() const { return fStorage.size_bytes(); }
 
-    T*       data() { return reinterpret_cast<T*>(fStorage.data()); }
-    const T* data() const { return reinterpret_cast<const T*>(fStorage.data()); }
+    T*       data() { return this->end() - this->size(); }
+    const T* data() const { return this->end() - this->size(); }
     T*       begin() { return this->data(); }
     const T* begin() const { return this->data(); }
-    T*       end() { return this->data() + this->size(); }
-    const T* end() const { return this->data() + this->size(); }
+    T*       end() { return static_cast<T*>(fStorage.end()); }
+    const T* end() const { return static_cast<const T*>(fStorage.end()); }
 
     T& operator[](int index) {
         SkASSERT(index < this->size());
@@ -177,11 +185,11 @@ public:
 
     const T& back() const {
         SkASSERT(this->size() > 0);
-        return this->data()[this->size() - 1];
+        return *(this->end() - 1);
     }
     T& back() {
         SkASSERT(this->size() > 0);
-        return this->data()[this->size() - 1];
+        return *(this->end() - 1);
     }
 
     void reset() {
@@ -208,7 +216,7 @@ public:
         return static_cast<T*>(fStorage.append());
     }
     T* append(int count, const T* src = nullptr) {
-        return reinterpret_cast<T*>(fStorage.append(src, count));
+        return reinterpret_cast<T*>(fStorage.append(count, src));
     }
 
     T* insert(int index) {
@@ -239,7 +247,10 @@ public:
     }
 
     // routines to treat the array like a stack
-    void push_back(const T& v) { *reinterpret_cast<T*>(fStorage.push_back()) = v; }
+    void push_back(const T& v) {
+        void* slot = fStorage.append();
+        *reinterpret_cast<T*>(slot) = v;
+    }
     void pop_back() { fStorage.pop_back(); }
 
     void deleteAll() {
