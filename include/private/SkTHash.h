@@ -16,6 +16,32 @@
 #include <new>
 #include <utility>
 
+class SkTHashTableSlotBase {
+public:
+    SkTHashTableSlotBase() = default;
+
+    bool has_value() const { return fHash != 0; }
+    explicit operator bool() const { return this->has_value(); }
+    bool empty() const { return !this->has_value(); }
+
+    uint32_t fHash = 0;
+};
+
+static inline int SkHashTableFindNextPopulatedSlot(const SkTHashTableSlotBase* firstSlot,
+                                                   int start,
+                                                   int capacity,
+                                                   int sizeOfSlot) {
+    const unsigned char* rawPtr = (const unsigned char*)firstSlot;
+
+    for (int i = start; i < capacity; i++) {
+        const auto* curSlot = (const SkTHashTableSlotBase*)(rawPtr + sizeOfSlot * i);
+        if (curSlot->has_value()) {
+            return i;
+        }
+    }
+    return capacity;
+}
+
 // Before trying to use SkTHashTable, look below to see if SkTHashMap or SkTHashSet works for you.
 // They're easier to use, usually perform the same, and have fewer sharp edges.
 
@@ -232,22 +258,13 @@ public:
 private:
     // Finds the first non-empty slot for an iterator.
     int firstPopulatedSlot() const {
-        for (int i = 0; i < fCapacity; i++) {
-            if (fSlots[i].has_value()) {
-                return i;
-            }
-        }
-        return fCapacity;
+        return SkHashTableFindNextPopulatedSlot(fSlots.get(), /*start=*/0, fCapacity, sizeof(Slot));
     }
 
     // Increments an iterator's slot.
     int nextPopulatedSlot(int currentSlot) const {
-        for (int i = currentSlot + 1; i < fCapacity; i++) {
-            if (fSlots[i].has_value()) {
-                return i;
-            }
-        }
-        return fCapacity;
+        return SkHashTableFindNextPopulatedSlot(fSlots.get(), currentSlot + 1, fCapacity,
+                                                sizeof(Slot));
     }
 
     // Reads from an iterator's slot.
@@ -325,7 +342,7 @@ private:
         return hash ? hash : 1;  // We reserve hash 0 to mark empty.
     }
 
-    class Slot {
+    class Slot : public SkTHashTableSlotBase {
     public:
         Slot() = default;
         ~Slot() { this->reset(); }
@@ -388,18 +405,12 @@ private:
             return *this;
         }
 
-        bool has_value() const { return fHash != 0; }
-        explicit operator bool() const { return this->has_value(); }
-        bool empty() const { return !this->has_value(); }
-
         void reset() {
             if (fHash) {
                 fVal.fStorage.~T();
                 fHash = 0;
             }
         }
-
-        uint32_t fHash = 0;
 
     private:
         union Storage {
