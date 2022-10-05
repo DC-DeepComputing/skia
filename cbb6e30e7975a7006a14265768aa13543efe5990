@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a16e06c3_b3722624",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-05T15:43:53Z",
+      "side": 1,
+      "message": "Nice!  I had a similar idea (have types declare themselves as trivially relocatable, as opposed to being tagged externally), but was lacking the metaprogramming chops to pull it off.\n\nThanks for the pointers, done.",
+      "parentUuid": "e3a9be04_e6eb2727",
+      "revId": "cbb6e30e7975a7006a14265768aa13543efe5990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa4f0028_ff0c8750",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-04T19:59:29Z",
       "side": 1,
       "message": "I know this is all done right here inline, but it would be nice to put the full `sk_is_trivially_relocatable` thing here (the class stating that it is trivially relocatable) so that we can eventually remove the bool template parameter. Though this is a pain due to the inner class thing.\n\nMaybe because of the inner class thing we should add a way for the class itself to just directly state a trait type. This is the motivation for the comment on SkTemplates.h.",
+      "revId": "cbb6e30e7975a7006a14265768aa13543efe5990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f22433_04784dfd",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-05T15:43:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa4f0028_ff0c8750",
       "revId": "cbb6e30e7975a7006a14265768aa13543efe5990",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
