@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/mtl/MtlQueueManager.h"
 
+#include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
@@ -50,8 +51,8 @@ public:
     bool isFinished() override {
         return static_cast<MtlCommandBuffer*>(this->commandBuffer())->isFinished();
     }
-    void waitUntilFinished(const SharedContext* context) override {
-        return static_cast<MtlCommandBuffer*>(this->commandBuffer())->waitUntilFinished(context);
+    void waitUntilFinished() override {
+        return static_cast<MtlCommandBuffer*>(this->commandBuffer())->waitUntilFinished();
     }
 };
 
