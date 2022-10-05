@@ -328,6 +328,7 @@ CORE_FILES = [
     "SkSurfaceCharacterization.cpp",
     "SkSurfacePriv.h",
     "SkSwizzle.cpp",
+    "SkTArray.cpp",
     "SkTBlockList.h",
     "SkTDArray.cpp",
     "SkTDPQueue.h",

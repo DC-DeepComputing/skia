@@ -638,6 +638,7 @@ BASE_SRCS_ALL = [
     "src/core/SkSurfaceCharacterization.cpp",
     "src/core/SkSurfacePriv.h",
     "src/core/SkSwizzle.cpp",
+    "src/core/SkTArray.cpp",
     "src/core/SkTBlockList.h",
     "src/core/SkTDArray.cpp",
     "src/core/SkTDPQueue.h",
