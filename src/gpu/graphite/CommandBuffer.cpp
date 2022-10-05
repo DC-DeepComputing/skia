@@ -28,6 +28,8 @@ void CommandBuffer::releaseResources() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     fTrackedResources.reset();
+
+    this->resetCommandBuffer();
 }
 
 void CommandBuffer::resetCommandBuffer() {
