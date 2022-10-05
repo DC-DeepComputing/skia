@@ -11,9 +11,18 @@
 
 #include <utility>
 
-SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT) : fSizeOfT{sizeOfT} {
-    SkASSERT(src || count == 0);
-    this->assign(src, count);
+SkTDStorage::SkTDStorage(int sizeOfT) : fSizeOfT{sizeOfT} {}
+
+SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT)
+        : fSizeOfT{sizeOfT}
+        , fStorage{count > 0 ? static_cast<std::byte*>(sk_malloc_throw(this->bytes(count)))
+                             : nullptr}
+        , fReserve{count}
+        , fCount{count} {
+    if (count > 0) {
+        SkASSERT(src != nullptr);
+        this->copySrc(0, src, count);
+    }
 }
 
 SkTDStorage::SkTDStorage(const SkTDStorage& that)
@@ -21,18 +30,17 @@ SkTDStorage::SkTDStorage(const SkTDStorage& that)
 
 SkTDStorage& SkTDStorage::operator=(const SkTDStorage& that) {
     if (this != &that) {
-        this->assign(that.fStorage, that.fCount);
+        SkTDStorage tmp{that.data(), that.size(), fSizeOfT};
+        *this = std::move(tmp);
     }
     return *this;
 }
 
 SkTDStorage::SkTDStorage(SkTDStorage&& that)
         : fSizeOfT{that.fSizeOfT}
-        , fStorage(that.fStorage)
+        , fStorage(std::exchange(that.fStorage, nullptr))
         , fReserve{that.fReserve}
-        , fCount{that.fCount} {
-    that.fStorage = nullptr;
-}
+        , fCount{that.fCount} {}
 
 SkTDStorage& SkTDStorage::operator=(SkTDStorage&& that) {
     if (this != &that) {
@@ -128,18 +136,6 @@ void SkTDStorage::removeShuffle(int index) {
     const int newCount = this->calculateSizeOrDie(-1);
     this->moveTail(index, fCount - 1, fCount);
     this->resize(newCount);
-}
-
-void SkTDStorage::assign(const void* src, int count) {
-    fCount = count;
-    if (fReserve < fCount) {
-        // This looks like shrinking, but it allocates exactly fCount elements instead of
-        // padding by adding the growth factor.
-        this->shrink_to_fit();
-    }
-    if (count > 0) {
-        this->copySrc(/*dstIndex=*/0, src, count);
-    }
 }
 
 void* SkTDStorage::prepend() {
