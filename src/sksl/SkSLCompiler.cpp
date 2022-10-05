@@ -356,6 +356,9 @@ bool Compiler::optimizeModuleBeforeMinifying(ProgramKind kind,
     // Replace constant variables with their literal values to save space.
     Transform::ReplaceConstVarsWithLiterals(module, usage.get());
 
+    // Replace `sk_Caps.rewriteMatrixVectorMultiply ? A : B` in the output with `B`.
+    Transform::EliminateTernaryOnSkCapsRewriteMatrixVectorMultiply(module, usage.get());
+
     // Remove any unreachable code.
     Transform::EliminateUnreachableCode(module, usage.get());
 

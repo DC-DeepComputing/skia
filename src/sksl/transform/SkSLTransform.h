@@ -81,6 +81,13 @@ bool EliminateDeadGlobalVariables(const Context& context,
                                   bool onlyPrivateGlobals);
 bool EliminateDeadGlobalVariables(Program& program);
 
+/**
+ * Eliminates ternary expressions on `sk_Caps.rewriteMatrixVectorMultiply ? A : B`, keeping the
+ * false-expression of the ternary (the not-rewritten version, "B" in this example). This saves
+ * space in minified programs.
+ */
+void EliminateTernaryOnSkCapsRewriteMatrixVectorMultiply(LoadedModule& module, ProgramUsage* usage);
+
 /** Renames private functions and function-local variables to minimize code size. */
 void RenamePrivateSymbols(Context& context, LoadedModule& module, ProgramUsage* usage);
 
