@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0cb6548_183e9caf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-06T22:31:05Z",
+      "side": 1,
+      "message": "There are other correctness issues I discovered with range selectors vs empty lines, and I have a larger fix coming up (https://skia-review.googlesource.com/c/skia/+/588737).",
+      "revId": "c042b97b30f7e8a40d3c0ac7a04c704d79c8b851",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b54b448f_78eead80",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-06T22:31:05Z",
+      "side": 1,
+      "message": "kaboom",
+      "range": {
+        "startLine": 685,
+        "startChar": 42,
+        "endLine": 685,
+        "endChar": 82
+      },
+      "revId": "c042b97b30f7e8a40d3c0ac7a04c704d79c8b851",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
