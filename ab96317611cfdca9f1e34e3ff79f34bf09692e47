@@ -110,6 +110,30 @@
       },
       "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f986efcb_b2b9e017",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-06T18:46:42Z",
+      "side": 1,
+      "message": "Adding the SkShaders::Color call here seems fine to me.",
+      "parentUuid": "60806035_04050977",
+      "range": {
+        "startLine": 65,
+        "startChar": 26,
+        "endLine": 65,
+        "endChar": 27
+      },
+      "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
