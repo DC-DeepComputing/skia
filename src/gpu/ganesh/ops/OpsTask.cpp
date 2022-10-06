@@ -555,9 +555,13 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
 
     GrAttachment* stencil = nullptr;
     if (proxy->needsStencil()) {
+        SkDebugf("DEBUG: proxy needs stencil can use stencil= %d %d\n",
+                 proxy->canUseStencil(caps),
+                 fUsesMSAASurface);
         SkASSERT(proxy->canUseStencil(caps));
         if (!flushState->resourceProvider()->attachStencilAttachment(renderTarget,
                                                                      fUsesMSAASurface)) {
+            SkDebugf("DEBUG: rt number of samples= %d\n", renderTarget->numSamples());
             SkDebugf("WARNING: failed to attach a stencil buffer. Rendering will be skipped.\n");
             return false;
         }
