@@ -60,7 +60,6 @@ void update_backend_texture(Recorder* recorder,
     SkASSERT(kSize == pixmaps[0].dimensions());
 
     recorder->updateBackendTexture(backendTex, pixmaps, numMipLevels);
-
 }
 
 BackendTexture create_backend_texture(skiatest::Reporter* reporter,
