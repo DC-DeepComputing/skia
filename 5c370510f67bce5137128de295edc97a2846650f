@@ -22,6 +22,30 @@
       },
       "revId": "5c370510f67bce5137128de295edc97a2846650f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca4bb7f_0e8c70be",
+        "filename": "src/sksl/sksl_rt_shader.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-06T15:31:36Z",
+      "side": 1,
+      "message": "Unlike the usual optimization where you hoist things to the uniform prep, no. Here, we have CPU code that does (eg) XYZ_to_OKLab to each the color stop. Then we lerp the color stops, and finally run OKLab_to_XYZ in the shader. But the last part of XYZ_to_OKLab (and the corresponding first part of OKLab_to_XYZ) is a matrix multiply, which doesn\u0027t alter the lerp. So we can just cut it out on both ends, and get the same answer.",
+      "parentUuid": "f52e90b0_2d211d37",
+      "range": {
+        "startLine": 6,
+        "startChar": 7,
+        "endLine": 6,
+        "endChar": 15
+      },
+      "revId": "5c370510f67bce5137128de295edc97a2846650f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
