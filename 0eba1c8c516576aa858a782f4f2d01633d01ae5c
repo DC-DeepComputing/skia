@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd4706f_69706ace",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-06T16:39:11Z",
+      "side": 1,
+      "message": "Done - removed",
+      "parentUuid": "6f404f6c_391b6ea2",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 15
+      },
+      "revId": "0eba1c8c516576aa858a782f4f2d01633d01ae5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63b97d70_bfdc92fe",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-06T14:46:32Z",
       "side": 1,
       "message": "I know we have the REPORTER_ASSERT in wrap_backend_texture that the image was created, but even if that fails this will then continue trying to use the image. I think its probably better for us to check that the image is not null so we can continue on with this test (and other tests) without crashing.",
+      "range": {
+        "startLine": 207,
+        "startChar": 31,
+        "endLine": 207,
+        "endChar": 36
+      },
+      "revId": "0eba1c8c516576aa858a782f4f2d01633d01ae5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6015bf17_5f7ae4d2",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-06T16:39:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63b97d70_bfdc92fe",
       "range": {
         "startLine": 207,
         "startChar": 31,
