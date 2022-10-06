@@ -16,6 +16,24 @@
       "message": "This is probably fine. But now I\u0027m even more confused - aren\u0027t we going to get the ternary injection again when we load the module anyway? Previously, would we get it twice? (sk_Caps.rewrite ? long_form : sk_Caps.rewrite ? long_form : A*B) ???",
       "revId": "5dc3bf02e73fe6a2a0afaaf37b5557737db7413d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3805c99c_e83fc355",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T00:40:14Z",
+      "side": 1,
+      "message": "Well, when we\u0027re not compiling a module, we know the caps values and can resolve the expression immediately. However, you\u0027ve convinced me that using this caps value in a module is always a bad idea. PTAL http://review.skia.org/588044",
+      "parentUuid": "92a91f29_7c046214",
+      "revId": "5dc3bf02e73fe6a2a0afaaf37b5557737db7413d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
