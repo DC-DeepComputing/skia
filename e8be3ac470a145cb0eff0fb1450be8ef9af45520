@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "246541fa_dd06c62f",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T17:01:53Z",
+      "side": 1,
+      "message": "Maybe we should rename to `RuntimeEffectBlock`?",
+      "range": {
+        "startLine": 1061,
+        "startChar": 8,
+        "endLine": 1061,
+        "endChar": 26
+      },
+      "revId": "e8be3ac470a145cb0eff0fb1450be8ef9af45520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
