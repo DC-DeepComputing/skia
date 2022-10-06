@@ -8,6 +8,8 @@
 #ifndef SkTypes_DEFINED
 #define SkTypes_DEFINED
 
+#include <iostream>
+
 /** \file SkTypes.h
 */
 
@@ -555,6 +557,8 @@ template <typename T> static constexpr bool SkIsAlignPtr(T x) {
  */
 static inline constexpr size_t SkAlignTo(size_t x, size_t alignment) {
     // The same as alignment && SkIsPow2(value), w/o a dependency cycle.
+    if (!(alignment && (alignment & (alignment - 1)) == 0))
+        std::cerr << " alignment=" << alignment << std::endl;
     SkASSERT(alignment && (alignment & (alignment - 1)) == 0);
     return (x + alignment - 1) & ~(alignment - 1);
 }
