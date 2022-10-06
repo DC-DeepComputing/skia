@@ -128,7 +128,7 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
         currentHeight = std::max(1, currentHeight/2);
     }
 
-    ATRACE_ANDROID_FRAMEWORK("Upload %sTexture [%ux%u]",
+    SkDebugf("Upload %sTexture [%ux%u]\n",
                              mipLevelCount > 1 ? "MipMap " : "",
                              dstRect.width(), dstRect.height());
 
@@ -144,6 +144,7 @@ bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
         SKGPU_LOG_E("Could not instantiate texture proxy for UploadTask!");
         return false;
     }
+
     return true;
 }
 

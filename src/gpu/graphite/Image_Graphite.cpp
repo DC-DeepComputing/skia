@@ -179,7 +179,7 @@ sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
+    sk_sp<TextureProxy> proxy(new TextureProxy(texture));
 
     skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
     TextureProxyView view(std::move(proxy), swizzle);
