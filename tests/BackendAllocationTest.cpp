@@ -135,7 +135,9 @@ static bool isBGRA8(const GrBackendFormat& format) {
         case GrBackendApi::kVulkan: {
 #ifdef SK_VULKAN
             VkFormat vkFormat;
-            format.asVkFormat(&vkFormat);
+            if (!format.asVkFormat(&vkFormat)) {
+                return false;
+            }
             return vkFormat == VK_FORMAT_B8G8R8A8_UNORM;
 #else
             return false;
@@ -159,7 +161,9 @@ static bool isBGRA8(const GrBackendFormat& format) {
         case GrBackendApi::kDawn: {
 #ifdef SK_DAWN
             wgpu::TextureFormat dawnFormat;
-            format.asDawnFormat(&dawnFormat);
+            if (!format.asDawnFormat(&dawnFormat)) {
+                return false;
+            }
             return dawnFormat == wgpu::TextureFormat::BGRA8Unorm;
 #else
             return false;
