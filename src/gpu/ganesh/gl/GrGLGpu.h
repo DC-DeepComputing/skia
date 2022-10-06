@@ -284,6 +284,7 @@ private:
     int getCompatibleStencilIndex(GrGLFormat format);
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat& format) override {
+        SkDebugf("DEBUG:  getPreferredStencilFormat  for Gr format %d \n", format.asGLFormat());
         int idx = this->getCompatibleStencilIndex(format.asGLFormat());
         if (idx < 0) {
             return {};

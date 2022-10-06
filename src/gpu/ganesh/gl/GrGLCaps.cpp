@@ -4791,13 +4791,17 @@ int GrGLCaps::getRenderTargetSampleCount(int requestedCount, GrGLFormat format) 
 int GrGLCaps::maxRenderTargetSampleCount(GrGLFormat format) const {
     const FormatInfo& info = this->getFormatInfo(format);
     const auto& table = info.fColorSampleCounts;
+    SkDebugf("DEBUG: maxRenderTargetSampleCount2 = %d\n", __LINE__);
     if (table.empty()) {
         return 0;
     }
+    SkDebugf("DEBUG: maxRenderTargetSampleCount2 = %d\n", __LINE__);
     int count = table[table.size() - 1];
+    SkDebugf("DEBUG: maxRenderTargetSampleCount2 = %d\n", __LINE__);
     if (fDriverBugWorkarounds.max_msaa_sample_count_4) {
         count = std::min(count, 4);
     }
+    SkDebugf("DEBUG: maxRenderTargetSampleCount2 = %d\n", __LINE__);
     return count;
 }
 

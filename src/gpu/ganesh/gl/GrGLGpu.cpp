@@ -1683,10 +1683,12 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
     static const int kSize = 16;
     SkASSERT(this->glCaps().canFormatBeFBOColorAttachment(format));
 
+    SkDebugf("DEBUG: getCompatibleStencilIndex \n");
     if (!this->glCaps().hasStencilFormatBeenDeterminedForFormat(format)) {
         // Default to unsupported, set this if we find a stencil format that works.
         int firstWorkingStencilFormatIndex = -1;
 
+        SkDebugf("DEBUG: getCompatibleStencilIndex for Gr format %d \n", format);
         GrGLuint colorID = this->createTexture({kSize, kSize}, format, GR_GL_TEXTURE_2D,
                                                GrRenderable::kYes,
                                                nullptr,
@@ -1718,12 +1720,14 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
             GL_CALL(BindRenderbuffer(GR_GL_RENDERBUFFER, sbRBID));
             for (int i = 0; i < stencilFmtCnt && sbRBID; ++i) {
                 GrGLFormat sFmt = this->glCaps().stencilFormats()[i];
-                GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
-                        GR_GL_RENDERBUFFER, GrGLFormatToEnum(sFmt), kSize, kSize));
+                SkDebugf("DEBUG: testing format stencil for Gr format %d \n", sFmt);
+                GrGLenum error = GL_ALLOC_CALL(RenderbufferStorageMultisample(
+                        GR_GL_RENDERBUFFER, 8, GrGLFormatToEnum(sFmt), kSize, kSize));
                 if (error == GR_GL_NO_ERROR) {
                     GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
                                                     GR_GL_STENCIL_ATTACHMENT,
                                                     GR_GL_RENDERBUFFER, sbRBID));
+                    SkDebugf("DEBUG: attaching stencil with sb %d \n", sbRBID);
                     if (GrGLFormatIsPackedDepthStencil(sFmt)) {
                         GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
                                                         GR_GL_DEPTH_ATTACHMENT,
@@ -1735,9 +1739,9 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
                     }
                     GrGLenum status;
                     GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
-                    if (status == GR_GL_FRAMEBUFFER_COMPLETE) {
+                    if (status == GR_GL_FRAMEBUFFER_COMPLETE &&
+                        firstWorkingStencilFormatIndex == -1) {
                         firstWorkingStencilFormatIndex = i;
-                        break;
                     }
                     GL_CALL(FramebufferRenderbuffer(GR_GL_FRAMEBUFFER,
                                                     GR_GL_STENCIL_ATTACHMENT,
@@ -1754,6 +1758,7 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
         GL_CALL(DeleteTextures(1, &colorID));
         this->bindFramebuffer(GR_GL_FRAMEBUFFER, 0);
         this->deleteFramebuffer(fb);
+        SkDebugf("DEBUG: first working format %d \n", format);
         fGLContext->caps()->setStencilFormatIndexForFormat(format, firstWorkingStencilFormatIndex);
     }
     return this->glCaps().getStencilFormatIndexForFormat(format);

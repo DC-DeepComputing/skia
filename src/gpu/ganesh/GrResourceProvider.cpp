@@ -666,25 +666,34 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
 
     GrAttachment* stencil = rt->getStencilAttachment(useMSAASurface);
     if (stencil) {
+        SkDebugf("DEBUG: found stencil inside existing rt \n");
         SkASSERT(stencil->numSamples() == num_stencil_samples(rt, useMSAASurface, *this->caps()));
         return true;
     }
 
+    SkDebugf("DEBUG: rt didnt have stencil so creating it\n");
     if (!rt->wasDestroyed() && rt->canAttemptStencilAttachment(useMSAASurface)) {
         skgpu::UniqueKey sbKey;
 
+        SkDebugf("DEBUG: creating stencil it\n");
 #if 0
         if (this->caps()->oversizedStencilSupport()) {
             width  = SkNextPow2(width);
             height = SkNextPow2(height);
         }
 #endif
+        SkDebugf("DEBUG: rt backend format looking for stencil %d \n",
+                 rt->backendFormat().asGLFormat());
         GrBackendFormat stencilFormat = this->gpu()->getPreferredStencilFormat(rt->backendFormat());
         if (!stencilFormat.isValid()) {
             return false;
         }
+        SkDebugf("DEBUG: stencil format %d tow  \n", stencilFormat.asGLFormat());
+
+        SkDebugf("DEBUG: stencil format as gl= %X \n", stencilFormat.asGLFormatEnum());
         GrProtected isProtected = rt->isProtected() ? GrProtected::kYes : GrProtected::kNo;
         int numStencilSamples = num_stencil_samples(rt, useMSAASurface, *this->caps());
+        SkDebugf("DEBUG: stencil num samples %d \n", numStencilSamples);
         GrAttachment::ComputeSharedAttachmentUniqueKey(
                 *this->caps(), stencilFormat, rt->dimensions(),
                 GrAttachment::UsageFlags::kStencilAttachment, numStencilSamples, GrMipmapped::kNo,
@@ -694,6 +703,10 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
             // Need to try and create a new stencil
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
                                                               numStencilSamples);
+            SkDebugf("DEBUG: skey stencil num samples %d %d %d \n",
+                     rt->backendFormat().asGLFormatEnum(),
+                     rt->dimensions().width(),
+                     numStencilSamples);
             if (!keyedStencil) {
                 return false;
             }
