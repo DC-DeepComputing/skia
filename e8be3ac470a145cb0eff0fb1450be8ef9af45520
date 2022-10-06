@@ -22,6 +22,30 @@
       },
       "revId": "e8be3ac470a145cb0eff0fb1450be8ef9af45520",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a50edab_4a742e94",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-06T19:16:28Z",
+      "side": 1,
+      "message": "Good idea! Done.",
+      "parentUuid": "246541fa_dd06c62f",
+      "range": {
+        "startLine": 1061,
+        "startChar": 8,
+        "endLine": 1061,
+        "endChar": 26
+      },
+      "revId": "e8be3ac470a145cb0eff0fb1450be8ef9af45520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
