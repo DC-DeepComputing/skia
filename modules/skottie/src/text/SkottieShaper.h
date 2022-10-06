@@ -71,6 +71,9 @@ public:
         // not required to render the Result.
         float                 fScale = 1.0f;
 
+        // Total number of lines.
+        size_t                fLineCount = 0;
+
         SkRect computeVisualBounds() const;
     };
 
