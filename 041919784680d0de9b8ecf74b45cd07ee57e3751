@@ -271,6 +271,30 @@
       },
       "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e1f826_52f9780f",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-06T13:38:28Z",
+      "side": 1,
+      "message": "But everything above and below the this-\u003emove() can be common code untemplated code. This routine then just uses the common code with the this-\u003emove() sandwiched inbetween.",
+      "parentUuid": "d402e7aa_5e4b4663",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 605,
+        "endChar": 26
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
