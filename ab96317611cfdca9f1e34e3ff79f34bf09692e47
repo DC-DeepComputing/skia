@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42047dbd_f1d49ce5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-06T14:23:26Z",
+      "side": 1,
+      "message": "This CL\u0027s goal should be accomplished, with the other primitive blending feedback found here to be addressed in another CL. Let me know what you think.",
+      "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

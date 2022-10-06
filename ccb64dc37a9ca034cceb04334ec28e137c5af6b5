@@ -294,6 +294,30 @@
       },
       "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc0090bc_fb287f2a",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-06T14:23:26Z",
+      "side": 1,
+      "message": "Okay, in the interest of getting the main functionality of this CL merged in sooner rather than later (initial color \u003d paint color, and adding the alpha modulation step) I am going to change the primitive blending block as needed in a different CL (WIP; https://skia-review.googlesource.com/c/skia/+/580417).",
+      "parentUuid": "1bb994c6_bcebb21f",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "ccb64dc37a9ca034cceb04334ec28e137c5af6b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
