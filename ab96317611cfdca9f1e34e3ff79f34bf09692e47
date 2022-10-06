@@ -16,6 +16,29 @@
       "message": "This CL\u0027s goal should be accomplished, with the other primitive blending feedback found here to be addressed in another CL. Let me know what you think.",
       "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83620c55_f166514a",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T14:24:26Z",
+      "side": 1,
+      "message": "I think this should be RGB1 (100% opacity)",
+      "range": {
+        "startLine": 68,
+        "startChar": 69,
+        "endLine": 68,
+        "endChar": 84
+      },
+      "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
