@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d281544_fd9cb9e1",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-06T14:21:47Z",
+      "side": 1,
+      "message": "Using a single append (times in ms): 20.8, 20.7, 20.8\nUsing a specialized append: 20.6, 20.5, 20.5",
+      "parentUuid": "03919f0f_12b9d8d3",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 1
+      },
+      "revId": "f402d2458472139e99055f8e7cf6c81c8bc136f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3feab102_2fe273d5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-06T14:03:33Z",
       "side": 1,
       "message": "`SkASSERT(count \u003e\u003d 0);`",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 2
+      },
+      "revId": "f402d2458472139e99055f8e7cf6c81c8bc136f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "202136a3_b14f5666",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-06T14:21:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3feab102_2fe273d5",
       "range": {
         "startLine": 158,
         "startChar": 0,
