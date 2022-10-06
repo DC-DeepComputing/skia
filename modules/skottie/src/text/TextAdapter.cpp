@@ -490,11 +490,23 @@ void TextAdapter::buildDomainMaps(const Shaper::Result& shape_result) {
         }
 
         if (frag.fLineIndex != line) {
-            SkASSERT(frag.fLineIndex == line + 1);
+            SkASSERT(frag.fLineIndex > line);
+            SkASSERT(frag.fLineIndex < shape_result.fLineCount);
+
+            // Commit pending line frags.
             fMaps.fLinesMap.push_back({line_start, i - line_start, line_advance, line_ascent});
-            line = frag.fLineIndex;
             line_start = i;
             line_advance = line_ascent = 0;
+            line++;
+
+            // The shaping engine does not emit fragments for empty lines, but for line mapping we
+            // we do need exact line info.  Backfill map entries for any intermediate/missing
+            // empty lines.
+            fMaps.fLinesMap.insert(fMaps.fLinesMap.end(),
+                                   frag.fLineIndex - line,
+                                   {line_start, 0, 0, 0,});
+
+            line = frag.fLineIndex;
         }
 
         line_advance += frag.fAdvance;
@@ -506,8 +518,19 @@ void TextAdapter::buildDomainMaps(const Shaper::Result& shape_result) {
     }
 
     if (i > line_start) {
+        // Commit any remaining line frags.
         fMaps.fLinesMap.push_back({line_start, i - line_start, line_advance, line_ascent});
+        line++;
+        line_start = i;
     }
+
+    // Similarly to leading empty lines, add entries for any trailing empty lines.
+    SkASSERT(line <= shape_result.fLineCount);
+    fMaps.fLinesMap.insert(fMaps.fLinesMap.end(),
+                           shape_result.fLineCount - line,
+                           {line_start, 0, 0, 0,});
+
+    SkASSERT(fMaps.fLinesMap.size() == shape_result.fLineCount);
 }
 
 void TextAdapter::setText(const TextValue& txt) {
@@ -672,7 +695,7 @@ void TextAdapter::onSync() {
         float total_tracking = 0;
 
         // Only compute these when needed.
-        if (fRequiresLineAdjustments) {
+        if (fRequiresLineAdjustments && line_span.fCount) {
             for (size_t i = line_span.fOffset; i < line_span.fOffset + line_span.fCount; ++i) {
                 const auto& props = buf[i].props;
                 total_spacing  += props.line_spacing;
