@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e6e9bc_4b2c6ea1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T20:40:41Z",
+      "side": 1,
+      "message": "just the gn updates then lgtm",
+      "revId": "4dfaa59d8e1bdf25b40efced321a12f8d8e4fa2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc3e5948_ae9b98fc",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T20:40:41Z",
+      "side": 1,
+      "message": "I think this may need to be a public_defines. Also does this need to guarded by if (!skia_use_webgpu) like in the normal ganesh gpu config?",
+      "range": {
+        "startLine": 861,
+        "startChar": 4,
+        "endLine": 861,
+        "endChar": 8
+      },
+      "revId": "4dfaa59d8e1bdf25b40efced321a12f8d8e4fa2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d535d207_f3bcc8ec",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T20:40:41Z",
+      "side": 1,
+      "message": "Remove this",
+      "range": {
+        "startLine": 976,
+        "startChar": 0,
+        "endLine": 976,
+        "endChar": 35
+      },
+      "revId": "4dfaa59d8e1bdf25b40efced321a12f8d8e4fa2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eebeeae_f6f92a6d",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T20:40:41Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 983,
+        "startChar": 2,
+        "endLine": 986,
+        "endChar": 7
+      },
+      "revId": "4dfaa59d8e1bdf25b40efced321a12f8d8e4fa2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
