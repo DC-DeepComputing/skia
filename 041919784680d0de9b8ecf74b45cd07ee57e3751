@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ec47fcd_a3d4bcd1",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-06T14:39:28Z",
+      "side": 1,
+      "message": "Both fCount and fAllocCount are accessed frequently, so it would make sense to apply the same treatment.  Maybe adding a separate word for flags is a reasonable trade off?\n\nThe original intent was to split off type-independent code while minimizing the size of the change -- not to rework SkTArray.\n\nThere certainly are refactoring opportunities, but it\u0027s wise to keep those separate.\n\nLet me take another pass, and see which parts make sense and which don\u0027t.",
+      "parentUuid": "1ec02027_5468c9ae",
+      "range": {
+        "startLine": 37,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 30
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9342650c_4c229934",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 5
@@ -77,6 +101,30 @@
       "writtenOn": "2022-10-05T21:10:22Z",
       "side": 1,
       "message": "fReserved is often used to mean the amount of memory allocated. Changed to fUnused.",
+      "range": {
+        "startLine": 39,
+        "startChar": 13,
+        "endLine": 39,
+        "endChar": 22
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87755059_0e70f2ad",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-06T14:39:28Z",
+      "side": 1,
+      "message": "This is a flag tracking whether the last allocation was made on behalf of a reserve call from the user (in which case we don\u0027t shrink on element removal).  fUnused does not seem like a good name, maybe fUserReserved or something?",
+      "parentUuid": "9342650c_4c229934",
       "range": {
         "startLine": 39,
         "startChar": 13,
@@ -287,6 +335,30 @@
       "side": 1,
       "message": "But everything above and below the this-\u003emove() can be common code untemplated code. This routine then just uses the common code with the this-\u003emove() sandwiched inbetween.",
       "parentUuid": "d402e7aa_5e4b4663",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 605,
+        "endChar": 26
+      },
+      "revId": "041919784680d0de9b8ecf74b45cd07ee57e3751",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315e3eb4_17b8914c",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-06T14:39:28Z",
+      "side": 1,
+      "message": "Interestingly, all my attempts at code sharing yielded smaller bin size savings (13-15k vs. 18k).\n\nBut maybe optimizing for some arbitrary compiler/build-flags configuration at the expense of readability and maintenance is not such a great idea (especially since as John pointed out in chat other build configs yield wildly different results).\n\nI will update.",
+      "parentUuid": "39e1f826_52f9780f",
       "range": {
         "startLine": 582,
         "startChar": 0,
