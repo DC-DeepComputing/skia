@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "981b95e3_6447d3a2",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-06T16:59:47Z",
+      "side": 1,
+      "message": "Ah, good point, these are all private, lgtm!",
+      "parentUuid": "2ba45759_02ad09a5",
+      "revId": "c7a3261bfb582dc9746aa598a309e339eacf534e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cbaded96_c2aa858c",
         "filename": "src/shaders/SkShader.cpp",
         "patchSetId": 6
