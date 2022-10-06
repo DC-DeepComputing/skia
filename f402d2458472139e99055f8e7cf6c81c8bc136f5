@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03919f0f_12b9d8d3",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T14:03:33Z",
+      "side": 1,
+      "message": "Does this specialized version for `count\u003d\u003d1` matter?\nIt seems like `append(1)` would be equally efficient in practice. Both lead to `fCount+\u003dcount` or `insert(fCount, count, nullptr)`. The range check is slightly simpler but I\u0027m not convinced it matters...",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 1
+      },
+      "revId": "f402d2458472139e99055f8e7cf6c81c8bc136f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3feab102_2fe273d5",
+        "filename": "src/core/SkTDArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T14:03:33Z",
+      "side": 1,
+      "message": "`SkASSERT(count \u003e\u003d 0);`",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 2
+      },
+      "revId": "f402d2458472139e99055f8e7cf6c81c8bc136f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
