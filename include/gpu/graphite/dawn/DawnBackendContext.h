@@ -16,8 +16,8 @@ namespace skgpu::graphite {
 // backend. The client will create this object and pass it into the Context::MakeDawn factory call
 // when setting up Skia.
 struct SK_API DawnBackendContext {
-    wgpu::Device device;
-    wgpu::Queue queue;
+    wgpu::Device fDevice;
+    wgpu::Queue fQueue;
 };
 
 } // namespace skgpu::graphite
