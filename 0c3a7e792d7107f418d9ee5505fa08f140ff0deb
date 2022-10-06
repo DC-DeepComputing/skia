@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e888340_1fe9d583",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-06T19:42:29Z",
+      "side": 1,
+      "message": "As much as I don\u0027t like complicating Paragraph API there is not much we can do otherwise.\nI am curious to see the other implementation of ParagraphPainter (for Impeller).",
+      "revId": "0c3a7e792d7107f418d9ee5505fa08f140ff0deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
