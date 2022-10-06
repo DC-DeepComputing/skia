@@ -16,6 +16,98 @@
       "message": "Hi Greg, Is this change good for landing? so we don\u0027t need to maintain too many change locally.",
       "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95b56a28_c5b908a8",
+        "filename": "BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T14:06:01Z",
+      "side": 1,
+      "message": "can you move the public_define and deps here into :gpu_shared so they can be shared with with ganesh",
+      "range": {
+        "startLine": 1122,
+        "startChar": 4,
+        "endLine": 1127,
+        "endChar": 5
+      },
+      "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e81e328a_e707716f",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T14:06:01Z",
+      "side": 1,
+      "message": "Lets keep this unimplemented and do this in a different CL that starts to fill out the command buffer.",
+      "range": {
+        "startLine": 65,
+        "startChar": 24,
+        "endLine": 65,
+        "endChar": 35
+      },
+      "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3b6ed6c_c0caebef",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T14:06:01Z",
+      "side": 1,
+      "message": "Though these are things that probably will be needed, its a little weird to add them all without implementations especially when they aren\u0027t virtuals need for a stub class. Lets remove all these and revisit them when we are actually filling out the command buffers draw support",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 26
+      },
+      "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c7f32fd_ad13ffbb",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-06T14:06:01Z",
+      "side": 1,
+      "message": "All these window context classes should all be their own CLs",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 56
+      },
+      "revId": "19af33b9a8b0c92c27c5a2845ad58eb21798e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
