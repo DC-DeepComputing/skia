@@ -137,6 +137,7 @@ public:
     int getRenderTargetSampleCount(int requestedCount, GrGLFormat) const;
 
     int maxRenderTargetSampleCount(const GrBackendFormat& format) const override {
+        SkDebugf("DEBUG: maxRenderTargetSampleCount= %p\n", this);
         return this->maxRenderTargetSampleCount(format.asGLFormat());
     }
     int maxRenderTargetSampleCount(GrGLFormat) const;
