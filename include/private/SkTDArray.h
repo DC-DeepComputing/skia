@@ -81,6 +81,10 @@ private:
     size_t bytes(int n) const { return SkToSizeT(n * fSizeOfT); }
     void* address(int n) { return fStorage + this->bytes(n); }
 
+    // fReserve and fStorage should only be set using the following routines.
+    void realloc(int newReserve);
+    void free();
+
     // Adds delta to fCount. Crash if outside [0, INT_MAX]
     int calculateSizeOrDie(int delta);
 

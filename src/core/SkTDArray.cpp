@@ -19,9 +19,8 @@ SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT)
         , fCount{count} {
     if (count > 0) {
         SkASSERT(src != nullptr);
-        size_t storageSize = this->bytes(count);
-        fStorage = static_cast<std::byte*>(sk_malloc_throw(storageSize));
-        memcpy(fStorage, src, storageSize);
+        this->realloc(count);
+        memcpy(fStorage, src, this->bytes(count));
     }
 }
 
@@ -102,22 +101,18 @@ void SkTDStorage::reserve(int newReserve) {
             }
         }
 
-        fReserve = expandedReserve;
-        size_t newStorageSize = this->bytes(fReserve);
-        fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, newStorageSize));
+        this->realloc(expandedReserve);
     }
 }
 
 void SkTDStorage::shrink_to_fit() {
     if (fReserve != fCount) {
-        fReserve = fCount;
         // Because calling realloc with size of 0 is implementation defined, force to a good state
         // by freeing fStorage.
-        if (fReserve > 0) {
-            fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, this->bytes(fReserve)));
+        if (fCount > 0) {
+            this->realloc(fCount);
         } else {
-            sk_free(fStorage);
-            fStorage = nullptr;
+            this->free();
         }
     }
 }
@@ -195,6 +190,18 @@ void* SkTDStorage::insert(int index, int count, const void* src) {
 bool operator==(const SkTDStorage& a, const SkTDStorage& b) {
     return a.size() == b.size() &&
            (a.size() == 0 || !memcmp(a.data(), b.data(), a.bytes(a.size())));
+}
+
+void SkTDStorage::realloc(int newReserve) {
+    SkASSERT(newReserve >= 0);
+    fReserve = newReserve;
+    fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, this->bytes(fReserve)));
+}
+
+void SkTDStorage::free() {
+    fReserve = 0;
+    sk_free(fStorage);
+    fStorage = nullptr;
 }
 
 int SkTDStorage::calculateSizeOrDie(int delta) {
