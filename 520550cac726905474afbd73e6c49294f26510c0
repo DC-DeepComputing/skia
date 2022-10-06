@@ -16,6 +16,24 @@
       "message": "It\u0027s very interesting to me that marking the texture as dirty in beginCommandBuffer() when there is a color clear actually fixes this test in WebGL/WASM. I\u0027m wondering if it holds a clue to the Chrome issue. From my local testing on GL it seems like it shouldn\u0027t matter. The texture begins life \"dirty\" and calls to mark it dirty effectively are no-ops and then it gets \"resolved\" during export to GrBackendTexture. Moreover, the code that actually checks and does the resolve isn\u0027t even looking at the GrTexture state, just the proxy state. I\u0027m going to look into why this is different in WebGL.",
       "revId": "520550cac726905474afbd73e6c49294f26510c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3dfd2fc_0b5fdd68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-06T15:12:59Z",
+      "side": 1,
+      "message": "I got to the bottom of this. The key different is that in CK we clear all textures. Here is what was happening:\n\n1) We create a deferred proxy backing the SkSurface\u0027s RT/Tex. This proxy starts with its status as dirty.\n2) during flush we instantiate the proxy with a texture. Since we clear all the levels to zero GrGpu marks the texture as clean.\n3) We flush actual GPU work. The original version of this change did not mark the texture itself as dirty in beginCommandBuffer when it was cleared so it remains clean\n4) The proxy is still marked dirty and GrDrawingManager::flushSurfaces() does call GrGpu::regenerateMipMapLevels() but that becomes a no-op because the texture itself is still marked clean.\n\nWith the fix in this reland we do mark the texture as dirty in step 3. This two-level status tracking is pretty fragile.",
+      "parentUuid": "1f223e2f_c38f345a",
+      "revId": "520550cac726905474afbd73e6c49294f26510c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
