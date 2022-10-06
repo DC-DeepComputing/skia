@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52e90b0_2d211d37",
+        "filename": "src/sksl/sksl_rt_shader.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T14:21:10Z",
+      "side": 1,
+      "message": "Do you mean by adding in?",
+      "range": {
+        "startLine": 6,
+        "startChar": 7,
+        "endLine": 6,
+        "endChar": 15
+      },
+      "revId": "5c370510f67bce5137128de295edc97a2846650f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
