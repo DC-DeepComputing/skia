@@ -34,6 +34,24 @@
       "parentUuid": "92a91f29_7c046214",
       "revId": "5dc3bf02e73fe6a2a0afaaf37b5557737db7413d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "716b1339_c5a6fd60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-06T01:19:28Z",
+      "side": 1,
+      "message": "Oh, you\u0027re right, we\u0027d minify to `(sk_Caps.rewrite? stuff : m*v)` and then load to `(sk_Caps.rewrite? stuff : (sk_Caps.rewrite? stuff : m*v))`. If the shared element got emitted directly into the program, it\u0027d get written out as `(false? stuff : (false? stuff : m*v))`. If it was inlined, the whole mess would flatten into `B` but otherwise... oof, we\u0027d be relying on GLSL to eliminate that mess.",
+      "parentUuid": "3805c99c_e83fc355",
+      "revId": "5dc3bf02e73fe6a2a0afaaf37b5557737db7413d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
