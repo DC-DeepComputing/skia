@@ -89,6 +89,7 @@ static void fuzz_path_deserialize(sk_sp<SkData>);
 static void fuzz_region_deserialize(sk_sp<SkData>);
 static void fuzz_region_set_path(sk_sp<SkData>);
 static void fuzz_skdescriptor_deserialize(sk_sp<SkData>);
+static void fuzz_skmeshspecification(sk_sp<SkData>);
 static void fuzz_skp(sk_sp<SkData>);
 static void fuzz_skruntimeeffect(sk_sp<SkData>);
 static void fuzz_sksl2glsl(sk_sp<SkData>);
@@ -234,6 +235,10 @@ static int fuzz_file(SkString path, SkString type) {
         return 0;
     }
 #endif
+    if (type.equals("skmeshspecification")) {
+        fuzz_skmeshspecification(bytes);
+        return 0;
+    }
     if (type.equals("skp")) {
         fuzz_skp(bytes);
         return 0;
@@ -763,6 +768,13 @@ void FuzzImageFilterDeserialize(sk_sp<SkData> bytes);
 static void fuzz_filter_fuzz(sk_sp<SkData> bytes) {
     FuzzImageFilterDeserialize(bytes);
     SkDebugf("[terminated] filter_fuzz didn't crash!\n");
+}
+
+bool FuzzSkMeshSpecification(sk_sp<SkData> bytes);
+
+static void fuzz_skmeshspecification(sk_sp<SkData> bytes) {
+    FuzzSkMeshSpecification(bytes);
+    SkDebugf("[terminated] SkMeshSpecification::Make didn't crash!\n");
 }
 
 bool FuzzSkRuntimeEffect(sk_sp<SkData> bytes);
