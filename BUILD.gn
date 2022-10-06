@@ -856,6 +856,14 @@ optional("gpu_shared") {
     public_defines += [ "SK_GRAPHITE_ENABLED" ]
   }
 
+  if (skia_use_dawn) {
+    public_defines += [ "SK_DAWN" ]
+    deps += [
+      "//third_party/externals/dawn/src/dawn:cpp",
+      "//third_party/externals/dawn/src/dawn:proc",
+    ]
+  }
+
   if (skia_use_direct3d) {
     # Must be defined when 'skia_sksl_gpu_sources' is built, even if the rest of skia_use_direct3d
     # is handled only in the 'gpu' component.
@@ -1118,6 +1126,9 @@ optional("graphite") {
     sources += skia_graphite_piet_sources
   }
 
+  if (skia_use_dawn) {
+    sources += skia_graphite_dawn_sources
+  }
   if (skia_use_metal) {
     public_defines += [ "SK_METAL" ]
     sources += skia_graphite_mtl_sources
