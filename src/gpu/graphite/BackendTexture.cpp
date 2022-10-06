@@ -9,7 +9,14 @@
 
 namespace skgpu::graphite {
 
-BackendTexture::~BackendTexture() {}
+BackendTexture::~BackendTexture() {
+#ifdef SK_DAWN
+    if (this->backend() == BackendApi::kDawn) {
+        // Release reference.
+        fDawnTexture = nullptr;
+    }
+#endif
+}
 
 BackendTexture::BackendTexture(const BackendTexture& that) {
     *this = that;
@@ -27,6 +34,11 @@ BackendTexture& BackendTexture::operator=(const BackendTexture& that) {
     fInfo = that.fInfo;
 
     switch (that.backend()) {
+#ifdef SK_DAWN
+        case BackendApi::kDawn:
+            fDawnTexture = that.fDawnTexture;
+            break;
+#endif
 #ifdef SK_METAL
         case BackendApi::kMetal:
             fMtlTexture = that.fMtlTexture;
@@ -70,6 +82,25 @@ bool BackendTexture::operator==(const BackendTexture& that) const {
     }
     return true;
 }
+
+#ifdef SK_DAWN
+BackendTexture::BackendTexture(SkISize dimensions,
+                               wgpu::TextureView texture,
+                               uint32_t sampleCount,
+                               uint32_t levelCount,
+                               wgpu::TextureFormat format,
+                               wgpu::TextureUsage usage)
+        : fDimensions(dimensions)
+        , fInfo(DawnTextureInfo(sampleCount, levelCount, format, usage))
+        , fDawnTexture(std::move(texture)) {}
+
+wgpu::TextureView BackendTexture::getDawnTexture() const {
+    if (this->isValid() && this->backend() == BackendApi::kDawn) {
+        return fDawnTexture;
+    }
+    return {};
+}
+#endif
 
 #ifdef SK_METAL
 BackendTexture::BackendTexture(SkISize dimensions, MtlHandle mtlTexture)
