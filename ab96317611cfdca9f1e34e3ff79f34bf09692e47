@@ -63,6 +63,53 @@
       },
       "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4561a004_e4bbac9a",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-06T14:52:23Z",
+      "side": 1,
+      "message": "You\u0027re absolutely right - made the color opaque before passing it in.",
+      "parentUuid": "878b76e3_d9628882",
+      "range": {
+        "startLine": 68,
+        "startChar": 69,
+        "endLine": 68,
+        "endChar": 84
+      },
+      "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60806035_04050977",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-06T14:52:23Z",
+      "side": 1,
+      "message": "@robertphillips@google.com - was there a reason we were not creating a solid color shader here before? I noticed in `CombinationBuilder.cpp` that we have this logic: ```    // Supply a default solid color shader if no other shader option is provided\n    if (fShaderOptions.empty()) {\n        this-\u003eaddOption(ShaderType::kSolidColor);\n    }```\nBut this is not hit in the case of the solid color shader, so one never seems to get added.",
+      "range": {
+        "startLine": 65,
+        "startChar": 26,
+        "endLine": 65,
+        "endChar": 27
+      },
+      "revId": "ab96317611cfdca9f1e34e3ff79f34bf09692e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
