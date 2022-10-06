@@ -76,6 +76,19 @@ bool SkImage::readPixels(const SkImageInfo& dstInfo, void* dstPixels,
 }
 #endif
 
+void SkImage::asyncReadPixels(const SkImageInfo& info,
+                              const SkIRect& srcRect,
+                              ReadPixelsCallback callback,
+                              ReadPixelsContext context) const {
+    if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) ||
+        !SkImageInfoIsValid(info)) {
+        callback(context, nullptr);
+        return;
+    }
+    as_IB(this)->onAsyncReadPixels(
+            info, srcRect, callback, context);
+}
+
 void SkImage::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                         const SkIRect& srcRect,
                                         RescaleGamma rescaleGamma,
