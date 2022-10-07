@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67bb03e_aa00f2dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T16:16:35Z",
+      "side": 1,
+      "message": "Ok, that gets into asking what a \"line\" is (and why Shaper doesn\u0027t handle formatting). It depends on if you interpret `\\r` as a \"line break\" or \"end of line\". I usually read it as a \"line break\" implying that there is a new line after it (even if empty). If it just means \"end of line\" then there is no new line until there is further content. What I see here is\n\nline 1 \"\"\n`\\r`\nline 2 \"\"\n`\\r`\nline 3 \"\"\n`\\r`\nline 4 \"foo\"\n`\\r`\nline 5 \"\"\n`\\r`\nline 6 \"\"\n\nIf it isn\u0027t interpreted this way then it seems rather awkward to have a last empty line if one wants one. It means adding a `\\r\\r` at the end to get one empty line to force the actual last line (or penultimate line?) to be \"non-empty\" by virtue of being \"ended\" by the actual final `\\r`.",
+      "parentUuid": "32d50b81_bc44e1ed",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "715cfc26_9e9b2675",
@@ -90,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11cf91f2_773fadf0",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T16:16:35Z",
+      "side": 1,
+      "message": "Properly reporting when (or if) SkShaper returns an empty line would be a fix, would it not?",
+      "parentUuid": "4c2dfcc3_fc34eb1e",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d402b39_2742cc32",
         "filename": "modules/skottie/src/text/TextAdapter.cpp",
         "patchSetId": 9
@@ -119,6 +155,24 @@
       "side": 1,
       "message": "Hmm, the second insert arg is the number of elements to add -- so if we\u0027re passing 0 I assume STL won\u0027t add any?",
       "parentUuid": "0d402b39_2742cc32",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcfb8d41_91c6f8a2",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T16:16:35Z",
+      "side": 1,
+      "message": "Oh, right misread what was happening here, this should add zero elements.\n\nStill, it takes a lot of reading to figure out which empty lines are being added here (the ones after the previous known line and before the line of the frag just found) to understand why the last set of lines (which isn\u0027t between anything) needs to be added separately.",
+      "parentUuid": "7c2c63d0_93ec0f7b",
       "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
