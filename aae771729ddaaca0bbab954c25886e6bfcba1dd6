@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "715cfc26_9e9b2675",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T14:17:41Z",
+      "side": 1,
+      "message": "The test letters should do a quick bounce just as the selector passes over (kinda like LottieWeb does, but without the jitter): https://skottie.skia.org/d7c7aaa5e881fdf4dfef7d9748292142?h\u003d500\u0026l\u003dtrue\u0026w\u003d500",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
