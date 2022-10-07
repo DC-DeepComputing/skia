@@ -16,6 +16,24 @@
       "message": "What would happen if we rounded up for sizeof(T)\u003d\u003d2? 4? Always?",
       "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "273604e4_fd50af70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-07T14:29:35Z",
+      "side": 1,
+      "message": "Turns out there are very few instances of sizeof(T) \u003d\u003d 2 or 4. sizeof(T) \u003d\u003d 1 is used frequently for verbs in paths, and AA information for clipping. Adding the branches for 2, and 4 slowed down execution compared to only handling sizeof(T) \u003d\u003d 1.\n\nI measured the handling 1, 2 and 4 compared to only handling 1.",
+      "parentUuid": "205db8ec_95c3828e",
+      "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
