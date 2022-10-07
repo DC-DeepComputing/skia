@@ -12,6 +12,10 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/TextureInfo.h"
 
+#ifdef SK_DAWN
+#include "include/gpu/graphite/dawn/DawnTypes.h"
+#endif
+
 #ifdef SK_METAL
 #include "include/gpu/graphite/mtl/MtlTypes.h"
 #endif
@@ -25,6 +29,12 @@ namespace skgpu::graphite {
 class BackendTexture {
 public:
     BackendTexture() {}
+#ifdef SK_DAWN
+    BackendTexture(wgpu::Texture texture);
+    BackendTexture(SkISize dimensions,
+                   wgpu::TextureView textureView,
+                   const DawnTextureInfo& info);
+#endif
 #ifdef SK_METAL
     // The BackendTexture will not call retain or release on the passed in MtlHandle. Thus the
     // client must keep the MtlHandle valid until they are no longer using the BackendTexture.
@@ -47,6 +57,10 @@ public:
 
     const TextureInfo& info() const { return fInfo; }
 
+#ifdef SK_DAWN
+    wgpu::Texture getDawnTexture() const;
+    wgpu::TextureView getDawnTextureView() const;
+#endif
 #ifdef SK_METAL
     MtlHandle getMtlTexture() const;
 #endif
@@ -56,6 +70,12 @@ private:
     TextureInfo fInfo;
 
     union {
+#ifdef SK_DAWN
+        struct {
+            wgpu::Texture fDawnTexture;
+            wgpu::TextureView fDawnTextureView;
+        };
+#endif
 #ifdef SK_METAL
         MtlHandle fMtlTexture;
 #endif
