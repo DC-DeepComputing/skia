@@ -52,6 +52,24 @@
       "parentUuid": "f2643a87_95a711e7",
       "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a101541_60679882",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-07T17:00:33Z",
+      "side": 1,
+      "message": "Yeah, I guess it boils down to whether \"foo\\r\" is one line or two (is the implicit newline suppressed immediately after an \\r).  I get your point re \u0027\\r\u0027 though, that\u0027s a sane position.\n\nLet me double-check what AE does, this fix might be incorrect after all.",
+      "parentUuid": "85d7d517_a066bf10",
+      "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
