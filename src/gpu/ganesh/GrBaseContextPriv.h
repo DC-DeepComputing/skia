@@ -34,8 +34,14 @@ public:
 
     GrContextOptions::ShaderErrorHandler* getShaderErrorHandler() const;
 
+    ~GrBaseContextPriv() {
+        SkDebugf("deleted base context\n");
+    }
+
 protected:
-    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
+    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {
+        SkDebugf("set fContext to %p\n", context);
+    }
 
     GrContext_Base* fContext;
 
