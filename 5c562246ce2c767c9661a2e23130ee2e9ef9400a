@@ -33,6 +33,23 @@
       "message": "+1 for the Bazel side of things. Did not review the actual effects on the build.",
       "revId": "5c562246ce2c767c9661a2e23130ee2e9ef9400a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722adbb5_c06aea60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-07T11:55:27Z",
+      "side": 1,
+      "message": "See also http://cl/479132711",
+      "revId": "5c562246ce2c767c9661a2e23130ee2e9ef9400a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
