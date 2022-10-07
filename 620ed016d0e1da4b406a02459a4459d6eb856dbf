@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3922df42_cd353504",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T19:10:10Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "620ed016d0e1da4b406a02459a4459d6eb856dbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a7bb7bb_227f49f5",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T19:10:10Z",
+      "side": 1,
+      "message": "Will be used in GL.",
+      "revId": "620ed016d0e1da4b406a02459a4459d6eb856dbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a813c0ef_0265d23d",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T19:10:10Z",
+      "side": 1,
+      "message": "Will be used in GL.",
+      "range": {
+        "startLine": 759,
+        "startChar": 62,
+        "endLine": 759,
+        "endChar": 74
+      },
+      "revId": "620ed016d0e1da4b406a02459a4459d6eb856dbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
