@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37d8e978_ae6b5c14",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-07T19:03:51Z",
+      "side": 1,
+      "message": "I added both `wgpu::Texture` and `wgpu::TextureView` in this class, and we will make sure only one of it can be non null. So dawn implementation should be able to use the non null one here. WDYT?",
+      "parentUuid": "2e7af053_7af10cdc",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "25523bb79055f8a5e5de372fb827d290723639e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5157703e_53debcfd",
         "filename": "include/gpu/graphite/BackendTexture.h",
         "patchSetId": 7
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-07T17:08:00Z",
       "side": 1,
       "message": "So I think instead of passing all this stuff in here separately, we should pass in a DawnTextureInfo struct. This can then directly initialize the fInfo on the BackendTexture. Metal is a little unique in that we don\u0027t pass in a MtlTextureInfo directly, but that is only because in Metal you can query all the properties directly off the MtlTextureInfo",
+      "range": {
+        "startLine": 35,
+        "startChar": 18,
+        "endLine": 38,
+        "endChar": 43
+      },
+      "revId": "25523bb79055f8a5e5de372fb827d290723639e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce8a296_bd0c382c",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-07T19:03:51Z",
+      "side": 1,
+      "message": "Done\n\nActually, we can query all properties from `wgpu::Texture` as well, but not `wgpu::TextureView`. Add another ctor for `wgpu::Texture`",
+      "parentUuid": "5157703e_53debcfd",
       "range": {
         "startLine": 35,
         "startChar": 18,
@@ -77,6 +125,30 @@
       "writtenOn": "2022-10-07T17:08:00Z",
       "side": 1,
       "message": "So with Dawn and all of others Skia\u0027s backends, with this approach we\u0027re going to end up having two sets of calls that are setting up all the backend objects. Without know a whole lot about Dawn I feel like we should be able to have a shared set of code between say Graphite Metal and Graphite Dawn Metal for setting up all the metal window stuff. Then just slightly different glue code to pass it all into Skia correctly.\n\nI\u0027m a little torn here on what to do. I know Dawn has some extra helpers in it to that setup and manage a Dawn swapchain for you. This is a path that\u0027s worth testing for clients who do use Dawn through the entire stack. However, there are clients of Skia who we may use our Dawn backend with, but their internals don\u0027t use Dawn but directly setup all the objects natively. So I think we do also need to make sure that we are able to support and test those code paths as well.",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 15
+      },
+      "revId": "25523bb79055f8a5e5de372fb827d290723639e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ccfad13_c3de4869",
+        "filename": "tools/sk_app/mac/GraphiteDawnMetalWindowContext_mac.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-07T19:03:51Z",
+      "side": 1,
+      "message": "dawn is integrated with glfw, `wgpu::glfw::SetupWindowAndGetSurfaceDescriptor()` can be used to create `wgpu::Surface` and `wgpu::SwapChain` on most platforms (but glfw doesnt support Android, maybe not support IOS as well). See the implementation of `wgpu::glfw::SetupWindowAndGetSurfaceDescriptor()`, seems we only need to create an extra `CAMetalLayer` for creating `wgpu::Surface` for Metal. For Windows, X11 and Wayland, `wgpu::Surface` can just be created from the native Window directly. Seems it is not too bad.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/glfw/utils.cpp;l\u003d50;bpv\u003d1;bpt\u003d1",
+      "parentUuid": "e22f8c53_94ddeba6",
       "range": {
         "startLine": 65,
         "startChar": 4,
