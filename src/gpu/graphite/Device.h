@@ -24,6 +24,7 @@ namespace sktext::gpu { class AtlasSubRun; }
 
 namespace skgpu::graphite {
 
+class Buffer;
 class BoundsManager;
 class Clip;
 class Context;
@@ -216,6 +217,20 @@ private:
                          SkPoint drawOrigin,
                          const SkPaint& paint,
                          sk_sp<SkRefCnt> subRunStorage);
+
+    // Inserts a transfer, part of the implementation of asyncRescaleAndReadPixels and
+    // asyncRescaleAndReadPixelsYUV420().
+    struct PixelTransferResult {
+        using ConversionFn = void(void* dst, const void* mappedBuffer);
+        // If null then the transfer could not be performed. Otherwise this buffer will contain
+        // the pixel data when the transfer is complete.
+        sk_sp<Buffer> fTransferBuffer;
+        // If this is null then the transfer buffer will contain the data in the requested
+        // color type. Otherwise, when the transfer is done this must be called to convert
+        // from the transfer buffer's color type to the requested color type.
+        std::function<ConversionFn> fPixelConverter;
+    };
+    PixelTransferResult transferPixels(SkColorType colorType, const SkIRect& rect);
 
     // Returns the Renderer to draw the shape in the given style. If SkStrokeRec is a
     // stroke-and-fill, this returns the Renderer used for the fill portion and it can be assumed
