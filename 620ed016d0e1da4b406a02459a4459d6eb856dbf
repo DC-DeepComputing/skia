@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72dcffd8_820c5ef9",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T20:46:17Z",
+      "side": 1,
+      "message": "I was waffling on this one so let\u0027s try TextureInfo. Looks like Ganesh only uses properties that would go in there to make the decision.",
+      "parentUuid": "28a4929c_063f1aae",
+      "range": {
+        "startLine": 94,
+        "startChar": 44,
+        "endLine": 94,
+        "endChar": 63
+      },
+      "revId": "620ed016d0e1da4b406a02459a4459d6eb856dbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d319be25_8bf97c25",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-07T19:25:35Z",
       "side": 1,
       "message": "Do we think this is still beneficial to do in the textureSupportsReadPixel call? Like instead if we just returned false here, the calling code could always query if the texture can be sampled in a draw or copyable itself (and it probably does need to do those checks anyways to know which of the two code paths to take).",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 23
+      },
+      "revId": "620ed016d0e1da4b406a02459a4459d6eb856dbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a5c982_ab3b9654",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T20:46:17Z",
+      "side": 1,
+      "message": "Initially I thought it\u0027d be more efficient to make the decision here, but thinking about it further it seems like we\u0027d be repeating logic used to determine if a surface is copyable/samplable and it\u0027d be good to centralize that. It also matches how supportsWritePixels is handled. This may need tweaking when GL comes into the picture, we\u0027ll see.",
+      "parentUuid": "d319be25_8bf97c25",
       "range": {
         "startLine": 104,
         "startChar": 0,
