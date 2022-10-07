@@ -408,7 +408,11 @@ Shaper::Result ShapeImpl(const SkString& txt, const Shaper::TextDesc& desc,
             line_start = ptr;
         }
     }
-    rbuilder.shapeLine(line_start, ptr);
+
+    // Consume remainig chars after the last explicit line break.
+    if (line_start != ptr) {
+        rbuilder.shapeLine(line_start, ptr);
+    }
 
     return rbuilder.finalize(shaped_size);
 }
