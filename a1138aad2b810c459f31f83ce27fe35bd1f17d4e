@@ -69,6 +69,24 @@
       "message": "Thanks for the quick review!",
       "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d96c7e0_fe85be50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-07T15:10:13Z",
+      "side": 1,
+      "message": "I didn\u0027t try (fSizeOfT \u003c\u003d 2). I tried more specific ones for 2, and 4 so that the resulting memory allocation was a multiple of 16 bytes. Rounding the capacity to a multiple of 16 would change the initial allocation from 14 bytes to 32 bytes when fSizeOfT \u003d\u003d 2. I can give \u003c\u003d2 a try.",
+      "parentUuid": "04eef076_3c4f2352",
+      "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
