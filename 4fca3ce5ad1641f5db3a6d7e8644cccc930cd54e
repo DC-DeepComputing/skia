@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8597a85d_74486a7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T14:54:56Z",
+      "side": 1,
+      "message": "This improves some vertical align layout cases (bottom alignment in particular).\n\nIt may require guarding for client rebaseline.",
+      "revId": "4fca3ce5ad1641f5db3a6d7e8644cccc930cd54e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
