@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc7542b_7a387798",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-10-07T14:33:33Z",
+      "side": 1,
+      "message": "It does locally, but I am not seeing a Gold bubble on the CL 🤔",
+      "parentUuid": "9d9c4ad7_352ee50c",
+      "revId": "d3bf44f19109f562b5ae226ef9be3a21d29f7caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b25adcbe_ec4a7885",
