@@ -642,41 +642,73 @@ static void test_bad_offsets(skiatest::Reporter* r) {
         static const Attribute kAttributes[] {
                 {Attribute::Type::kFloat4,  1, SkString{"var"}},
         };
-        if (!check_for_failure(r,
-                               kAttributes,
-                               32,
-                               kValidVaryings,
-                               kValidVS,
-                               kValidFSes[0])) {
-            return;
-        }
+        check_for_failure(r,
+                          kAttributes,
+                          32,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
     }
     {  // straddles stride boundary
         static const Attribute kAttributes[] {
                 {Attribute::Type::kFloat4,   0, SkString{"var"}},
-                {Attribute::Type::kFloat2,  16, SkString{"var"}},
+                {Attribute::Type::kFloat2,  16, SkString{"var2"}},
         };
-        if (!check_for_failure(r,
-                               kAttributes,
-                               20,
-                               kValidVaryings,
-                               kValidVS,
-                               kValidFSes[0])) {
-            return;
-        }
+        check_for_failure(r,
+                          kAttributes,
+                          20,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
     }
     {  // straddles stride boundary with attempt to overflow
         static const Attribute kAttributes[] {
                 {Attribute::Type::kFloat, std::numeric_limits<size_t>::max() - 3, SkString{"var"}},
         };
-        if (!check_for_failure(r,
-                               kAttributes,
-                               4,
-                               kValidVaryings,
-                               kValidVS,
-                               kValidFSes[0])) {
-            return;
-        }
+        check_for_failure(r,
+                          kAttributes,
+                          4,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
+    }
+    {  // overlapping (completely)
+        static const Attribute kAttributes[] {
+                {Attribute::Type::kFloat4,  0, SkString{"var"}},
+                {Attribute::Type::kFloat4,  0, SkString{"var2"}},
+        };
+        check_for_failure(r,
+                          kAttributes,
+                          /*stride=*/32,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
+    }
+    {  // overlapping (subspan)
+        static const Attribute kAttributes[] {
+                {Attribute::Type::kFloat4,  0,  SkString{"var"}},
+                {Attribute::Type::kFloat,   4,  SkString{"var2"}},
+                {Attribute::Type::kFloat,   8,  SkString{"var3"}},
+                {Attribute::Type::kFloat,   12, SkString{"var4"}},
+        };
+        check_for_failure(r,
+                          kAttributes,
+                          /*stride=*/32,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
+    }
+    {  // overlapping (partial)
+        static const Attribute kAttributes[] {
+                {Attribute::Type::kFloat4,  0,  SkString{"var"}},
+                {Attribute::Type::kFloat4,  8,  SkString{"var2"}},
+        };
+        check_for_failure(r,
+                          kAttributes,
+                          /*stride=*/32,
+                          kValidVaryings,
+                          kValidVS,
+                          kValidFSes[0]);
     }
 }
 
