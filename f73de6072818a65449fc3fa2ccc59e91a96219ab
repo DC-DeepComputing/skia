@@ -70,6 +70,24 @@
       "parentUuid": "85d7d517_a066bf10",
       "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "577deb2e_90fe6b8c",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-07T17:10:05Z",
+      "side": 1,
+      "message": "Oh yeah, AE agrees that \"foo\\r\" is two lines.  Closing.",
+      "parentUuid": "7a101541_60679882",
+      "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
