@@ -84,6 +84,16 @@ private:
 
     size_t getTransferBufferAlignment(size_t bytesPerPixel) const override;
 
+    bool textureSupportsWritePixels(const TextureProxy*) const override;
+    TextureReadPixelsSupport textureSupportsReadPixels(const TextureProxy*) const override;
+
+    SkColorType supportedWritePixelsColorType(SkColorType dstColorType,
+                                              const TextureInfo& dstTextureInfo,
+                                              SkColorType srcColorType) const override;
+    SkColorType supportedReadPixelsColorType(SkColorType srcColorType,
+                                             const TextureInfo& srcTextureInfo,
+                                             SkColorType dstColorType) const override;
+
     MTLStorageMode getDefaultMSAAStorageMode(Discardable discardable) const;
 
     struct FormatInfo {
