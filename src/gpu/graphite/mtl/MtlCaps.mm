@@ -700,6 +700,78 @@ size_t MtlCaps::getTransferBufferAlignment(size_t bytesPerPixel) const {
     return std::max(bytesPerPixel, getMinBufferAlignment());
 }
 
+bool MtlCaps::onTextureSupportsWritePixels(const TextureProxy* proxy) const {
+//    if (auto rt = surface->asRenderTarget()) {
+//        return proxy->numSamples() <= 1 && SkToBool(surface->asTexture());
+//    }
+    return true;
+}
+
+Caps::TextureReadPixelsSupport MtlCaps::textureSupportsReadPixels(const TextureProxy* proxy) const {
+/* TODO
+    if (auto tex = static_cast<const GrMtlTexture*>(surface->asTexture())) {
+        // We disallow reading back directly from compressed textures.
+        if (GrMtlFormatIsCompressed(tex->attachment()->mtlFormat())) {
+            return SurfaceReadPixelsSupport::kCopyToTexture2D;
+        }
+    }
+
+    if (auto mtlRT = static_cast<const GrMtlRenderTarget*>(surface->asRenderTarget())) {
+        if (mtlRT->numSamples() > 1 && !mtlRT->resolveAttachment()) {
+            return SurfaceReadPixelsSupport::kCopyToTexture2D;
+        }
+    }
+*/
+    return TextureReadPixelsSupport::kSupported;
+}
+
+Caps::SupportedWrite MtlCaps::supportedWritePixelsColorType(SkColorType dstColorType,
+                                                            //**** needed?
+                                                            const TextureInfo& dstTextureInfo,
+                                                            SkColorType srcColorType) const {
+    // Metal requires the destination offset for copyFromTexture to be a multiple of the textures
+    // pixels size.
+    size_t offsetAlignment = SkColorTypeBytesPerPixel(dstColorType);
+
+    //*** this seems pointless maybe?
+    const FormatInfo& info = this->getFormatInfo(this->getFormatFromColorType(dstColorType));
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const auto& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == dstColorType) {
+            return {dstColorType, offsetAlignment};
+        }
+    }
+    return {kUnknown_SkColorType, 0};
+}
+
+Caps::SupportedRead MtlCaps::onSupportedReadPixelsColorType(SkColorType srcColorType,
+                                                            const TextureInfo& srcTextureInfo,
+                                                            SkColorType dstColorType) const {
+/*
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkImage::CompressionType::kNone) {
+#ifdef SK_BUILD_FOR_IOS
+        // Reading back to kRGB_888x doesn't work on Metal/iOS (skbug.com/9839)
+        return { kUnknown_SkColorType, 0 };
+#else
+        return { SkCompressionTypeIsOpaque(compression) ? kRGB_888x_SkColorType
+                                                        : kRGBA_8888_SkColorType, 0 };
+#endif
+    }
+*/
+    // Metal requires the destination offset for copyFromTexture to be a multiple of the textures
+    // pixels size.
+    size_t offsetAlignment = SkColorTypeBytesPerPixel(srcColorType);
+    const FormatInfo& info = this->getFormatInfo(this->getFormatFromColorType(srcColorType));
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const auto& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == srcColorType) {
+            return {srcColorType, offsetAlignment};
+        }
+    }
+    return {kUnknown_SkColorType, 0};
+}
+
 // There are only a few possible valid sample counts (1, 2, 4, 8, 16). So we can key on those 5
 // options instead of the actual sample value.
 uint32_t samples_to_key(uint32_t numSamples) {
