@@ -313,6 +313,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     }
 
     auto render_image = [](SkCanvas* canvas) {
+        SkDebugf("render_image %p\n", canvas);
         canvas->clear(SK_ColorBLUE);
         SkPaint paint;
         paint.setColor(SK_ColorRED);
@@ -323,6 +324,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         canvas->drawRect(SkRect::MakeXYWH(10.f,30.f,10.f,10.f), paint);
         paint.setColor(SK_ColorCYAN);
         canvas->drawRect(SkRect::MakeXYWH(30.f,30.f,10.f,10.f), paint);
+        SkDebugf("render_image finished\n");
     };
 
     static constexpr int kSize = 50;
@@ -334,20 +336,24 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     std::function<sk_sp<SkImage>()> imageFactories[] = {
         // Create sw raster image.
         [bmp] {
+            SkDebugf("bmp factory\n");
             return bmp.asImage();
         },
         // Create encoded image.
         [bmp] {
+            SkDebugf("encoded bitmap factory\n");
             auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kPNG, 100);
             return SkImage::MakeFromEncoded(std::move(src));
         },
         // Create YUV encoded image.
         [bmp] {
+            SkDebugf("encoded YUV factory\n");
             auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kJPEG, 100);
             return SkImage::MakeFromEncoded(std::move(src));
         },
         // Create a picture image.
         [render_image] {
+            SkDebugf("Skpicture factory\n");
             SkPictureRecorder recorder;
             SkCanvas* canvas = recorder.beginRecording(SkIntToScalar(kSize), SkIntToScalar(kSize));
             render_image(canvas);
@@ -358,10 +364,12 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         },
         // Create a texture image
         [rContext, render_image]() -> sk_sp<SkImage> {
+            SkDebugf("render target factory\n");
             auto surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
                                                      SkImageInfo::MakeS32(kSize, kSize,
                                                                           kPremul_SkAlphaType)));
             if (!surface) {
+                SkDebugf("no surface\n");
                 return nullptr;
             }
             render_image(surface->getCanvas());
@@ -373,14 +381,18 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     canvas->translate(kPad, kPad);
     for (const auto& factory : imageFactories) {
         sk_sp<SkImage> image(factory());
+        SkDebugf("factory finished: %p\n", image.get());
         if (image) {
             sk_sp<SkImage> texImage(image->makeTextureImage(dContext));
+            SkDebugf("makeTextureImage finished: %p\n", texImage.get());
             if (texImage) {
                 canvas->drawImage(texImage, 0, 0);
+                SkDebugf("drawImage returned\n");
             }
         }
         canvas->translate(kSize + kPad, 0);
     }
+    SkDebugf("new_texture_image done\n");
 }
 
 static void draw_pixmap(SkCanvas* canvas, const SkPixmap& pm, SkScalar x, SkScalar y) {

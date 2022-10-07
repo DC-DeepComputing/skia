@@ -40,6 +40,15 @@
     #define SK_END_REQUIRE_DENSE
 #endif
 
+#if defined(__clang__) && (__has_feature(leak_sanitizer) || __has_feature(address_sanitizer))
+    #include <sanitizer/lsan_interface.h>
+
+    // https://github.com/llvm/llvm-project/blob/10a35632d55bb05004fe3d0c2d4432bb74897ee7/compiler-rt/include/sanitizer/lsan_interface.h#L26
+    #define SK_INTENTIONALLY_LEAKED(X) __lsan_ignore_object(X)
+#else
+    #define SK_INTENTIONALLY_LEAKED(X) ((void)0)
+#endif
+
 #define SK_INIT_TO_AVOID_WARNING    = 0
 
 ////////////////////////////////////////////////////////////////////////////////
