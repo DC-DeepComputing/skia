@@ -84,6 +84,40 @@ private:
 
     size_t getTransferBufferAlignment(size_t bytesPerPixel) const override;
 
+    /**
+     * Backends may have restrictions on what types of textures support Device::writePixels().
+     * If this returns false then the caller should implement a fallback where a temporary texture
+     * is created, pixels are written to it, and then that is copied or drawn into the the surface.
+     */
+    bool textureSupportsWritePixels(const TextureProxy*) const override;
+
+    /**
+     * Backends may have restrictions on what types of textures support Device::readPixels(). We may
+     * either be able to read directly from the texture, read from a copy of the texture, or not
+     * read at all.
+     */
+    TextureReadPixelsSupport textureSupportsReadPixels(const TextureProxy*) const override;
+
+    /**
+     * Given a dst pixel config and a src color type what color type must the caller coax the
+     * the data into in order to use writePixels.
+     */
+    SkColorType supportedWritePixelsColorType(SkColorType dstColorType,
+                                              const TextureInfo& dstTextureInfo,
+                                              SkColorType srcColorType) const override;
+
+    /**
+     * Given a src surface's color type and its texture info as well as a color type the caller
+     * would like read into, this provides a legal color type that the caller can use for
+     * readPixels. The returned color type may differ from the passed dstColorType, in
+     * which case the caller must convert the read pixel data (see GrConvertPixels). When converting
+     * to dstColorType the swizzle in the returned struct should be applied. The caller must check
+     * the returned color type for kUnknown.
+     */
+    SkColorType supportedReadPixelsColorType(SkColorType srcColorType,
+                                             const TextureInfo& srcTextureInfo,
+                                             SkColorType dstColorType) const override;
+
     MTLStorageMode getDefaultMSAAStorageMode(Discardable discardable) const;
 
     struct FormatInfo {
