@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e71867_3d077e81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-07T00:12:54Z",
+      "side": 1,
+      "message": "lgtm, for prioritizing correctness. Added one spot where I think we should add a TODO",
+      "revId": "55f469c332b5a1c1d565a644611711d291fa4b9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9db3d1f3_fd550ace",
+        "filename": "src/gpu/graphite/CombinationBuilder.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-07T00:12:54Z",
+      "side": 1,
+      "message": "Is there no color filter combination implementation yet? Might be good to add a TODO here so that when that is added, we also remember to have the alpha-multiply CF get added to the key builder.",
+      "revId": "55f469c332b5a1c1d565a644611711d291fa4b9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf010fbd_cc0c8456",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-07T00:12:54Z",
+      "side": 1,
+      "message": "This will probably be a slight performance regression because we\u0027re doing an extra heap allocation every draw call. I think that\u0027s fine for now, since we get the correct behavior and enforce the effect we need, but when we revisit our key generation I think it\u0027ll be worth coming up with a way of including this uniform data w/o having to create an SkColorFilter each time.",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 71
+      },
+      "revId": "55f469c332b5a1c1d565a644611711d291fa4b9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
