@@ -34,6 +34,24 @@
       "parentUuid": "205db8ec_95c3828e",
       "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04eef076_3c4f2352",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-07T14:34:31Z",
+      "side": 1,
+      "message": "`if (fSizeOfT \u003c\u003d 2)` was slower than `if (fSizeOfT \u003d\u003d 1)`??\nThat\u0027s unexpected.",
+      "parentUuid": "273604e4_fd50af70",
+      "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
