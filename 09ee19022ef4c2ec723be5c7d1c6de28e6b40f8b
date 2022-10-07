@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1825ae7_87164131",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-07T10:08:33Z",
+      "side": 1,
+      "message": "Next step is the purge...",
+      "revId": "09ee19022ef4c2ec723be5c7d1c6de28e6b40f8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
