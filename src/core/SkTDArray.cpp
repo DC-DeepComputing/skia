@@ -102,6 +102,10 @@ void SkTDStorage::reserve(int newReserve) {
             }
         }
 
+        if (fSizeOfT == 1) {
+            expandedReserve = (expandedReserve + 15) & ~15;
+        }
+
         fReserve = expandedReserve;
         size_t newStorageSize = this->bytes(fReserve);
         fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, newStorageSize));
