@@ -16,6 +16,29 @@
       "message": "LGTM!",
       "revId": "ecf0f63167fea9e6cf18512db8ba218bb073731a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b389c52c_8e67d4a5",
+        "filename": "include/gpu/GpuTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T21:01:34Z",
+      "side": 1,
+      "message": "Is the plan to replace GrBackendApi with this?",
+      "range": {
+        "startLine": 22,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "ecf0f63167fea9e6cf18512db8ba218bb073731a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
