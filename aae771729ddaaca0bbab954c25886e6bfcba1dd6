@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7792f94d_d01ff7ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T17:40:51Z",
+      "side": 1,
+      "message": "You are correct, that input should produce 6 lines according to AE too.  I\u0027ll update the description.",
+      "parentUuid": "d67bb03e_aa00f2dc",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "715cfc26_9e9b2675",
@@ -120,6 +138,24 @@
       "side": 1,
       "message": "Properly reporting when (or if) SkShaper returns an empty line would be a fix, would it not?",
       "parentUuid": "4c2dfcc3_fc34eb1e",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ade9ece_2cc18a24",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T17:40:51Z",
+      "side": 1,
+      "message": "We do have structured error/warning logging (to report missing glyphs, etc), that would be the proper channel to report such errors.\n\nRefactored based on your idea, I think it\u0027s a much cleaner change.",
+      "parentUuid": "11cf91f2_773fadf0",
       "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
