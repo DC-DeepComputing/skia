@@ -406,28 +406,36 @@ sk_sp<const SkCapabilities> SkSurface_Gpu::onCapabilities() {
 sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext,
                                              const SkSurfaceCharacterization& c,
                                              SkBudgeted budgeted) {
+    SkDebugf("Inside MakeRenderTarget: %p\n", rContext);
     if (!rContext || !c.isValid()) {
+        SkDebugf("invalid context/ characterization\n");
         return nullptr;
     }
 
     if (c.usesGLFBO0()) {
         // If we are making the surface we will never use FBO0.
+        SkDebugf("fbo0\n");
         return nullptr;
     }
 
     if (c.vulkanSecondaryCBCompatible()) {
+        SkDebugf("secondary CB\n");
         return nullptr;
     }
 
+    SkDebugf("createDevice calling\n");
     auto device = rContext->priv().createDevice(budgeted, c.imageInfo(), SkBackingFit::kExact,
                                                 c.sampleCount(), GrMipmapped(c.isMipMapped()),
                                                 c.isProtected(), c.origin(), c.surfaceProps(),
                                                 skgpu::v1::Device::InitContents::kClear);
+    SkDebugf("createDevice returned %p\n", device.get());
     if (!device) {
+        SkDebugf("no device\n");
         return nullptr;
     }
 
     sk_sp<SkSurface> result = sk_make_sp<SkSurface_Gpu>(std::move(device));
+    SkDebugf("surface gpu %p\n", result.get());
 #ifdef SK_DEBUG
     if (result) {
         SkASSERT(result->isCompatible(c));
