@@ -683,8 +683,10 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         if (!stencilFormat.isValid()) {
             return false;
         }
+
         GrProtected isProtected = rt->isProtected() ? GrProtected::kYes : GrProtected::kNo;
         int numStencilSamples = num_stencil_samples(rt, useMSAASurface, *this->caps());
+        SkDebugf("DEBUG: creating a stencil for  %d \n", numStencilSamples);
         GrAttachment::ComputeSharedAttachmentUniqueKey(
                 *this->caps(), stencilFormat, rt->dimensions(),
                 GrAttachment::UsageFlags::kStencilAttachment, numStencilSamples, GrMipmapped::kNo,
@@ -692,6 +694,8 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         auto keyedStencil = this->findByUniqueKey<GrAttachment>(sbKey);
         if (!keyedStencil) {
             // Need to try and create a new stencil
+            SkDebugf("DEBUG: creating a stencil for target format  %d \n",
+                     rt->backendFormat().asGLFormat());
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
                                                               numStencilSamples);
             if (!keyedStencil) {

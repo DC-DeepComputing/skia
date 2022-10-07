@@ -67,12 +67,14 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
     // we do this "if" so that we don't call the multisample
     // version on a GL that doesn't have an MSAA extension.
     if (sampleCnt > 1) {
+        SkDebugf("DEBUG: making stencil with msaa  \n");
         if (!renderbuffer_storage_msaa(gpu, sampleCnt, glFmt, dimensions.width(),
                                        dimensions.height())) {
             GL_CALL(DeleteRenderbuffers(1, &rbID));
             return nullptr;
         }
     } else {
+        SkDebugf("DEBUG: creating a stencil without msaa \n");
         GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
                 GR_GL_RENDERBUFFER, glFmt, dimensions.width(), dimensions.height()));
         if (error != GR_GL_NO_ERROR) {
@@ -81,6 +83,9 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         }
     }
 
+    SkDebugf("DEBUG: no error on stencil creation w=%d h=%d \n",
+             dimensions.width(),
+             dimensions.height());
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,

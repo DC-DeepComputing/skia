@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 
+#include "include/config/SkUserConfig.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkTypes.h"
@@ -1718,6 +1719,12 @@ int GrGLGpu::getCompatibleStencilIndex(GrGLFormat format) {
             GL_CALL(BindRenderbuffer(GR_GL_RENDERBUFFER, sbRBID));
             for (int i = 0; i < stencilFmtCnt && sbRBID; ++i) {
                 GrGLFormat sFmt = this->glCaps().stencilFormats()[i];
+
+                if (sFmt == GrGLFormat::kSTENCIL_INDEX8) {
+                    SkDebugf("DEBUG: Intentionally skipping stencil8 format \n");
+                    continue;
+                }
+
                 GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
                         GR_GL_RENDERBUFFER, GrGLFormatToEnum(sFmt), kSize, kSize));
                 if (error == GR_GL_NO_ERROR) {
