@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d9c4ad7_352ee50c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T14:21:57Z",
+      "side": 1,
+      "message": "If the new image looks right to you, I\u0027m all for it.",
+      "revId": "d3bf44f19109f562b5ae226ef9be3a21d29f7caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b25adcbe_ec4a7885",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T14:21:57Z",
+      "side": 1,
+      "message": "nit: remove",
+      "range": {
+        "startLine": 798,
+        "startChar": 34,
+        "endLine": 798,
+        "endChar": 36
+      },
+      "revId": "d3bf44f19109f562b5ae226ef9be3a21d29f7caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
