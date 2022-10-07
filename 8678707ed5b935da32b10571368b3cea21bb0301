@@ -46,6 +46,30 @@
       },
       "revId": "8678707ed5b935da32b10571368b3cea21bb0301",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67881f9d_278e17ed",
+        "filename": "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-07T20:31:04Z",
+      "side": 1,
+      "message": "Checked with the team, they support Swiftshader but not real GPUs. If we go this route, it would likely mean that we are also fuzz testing all of Swiftshader when we paint.",
+      "parentUuid": "71fa546d_85443256",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 72
+      },
+      "revId": "8678707ed5b935da32b10571368b3cea21bb0301",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
