@@ -27,6 +27,7 @@ filegroup(
         "SkImageGeneratorCG.h",
         "SkImageGeneratorNDK.h",
         "SkImageGeneratorWIC.h",
+        "SkFontMgr_directory.h",  # TODO(kjlubick) Remove this when http://cl/479630324 lands
         ":fontmgr",
     ] + select({
         "@platforms//os:macos": ["SkCFObject.h"],
