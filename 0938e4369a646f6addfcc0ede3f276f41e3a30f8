@@ -39,6 +39,30 @@
       },
       "revId": "0938e4369a646f6addfcc0ede3f276f41e3a30f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b81d6236_af8f9d64",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T20:55:33Z",
+      "side": 1,
+      "message": "This is pretty much only for D3D.",
+      "parentUuid": "8eba1605_e294efb7",
+      "range": {
+        "startLine": 182,
+        "startChar": 11,
+        "endLine": 182,
+        "endChar": 40
+      },
+      "revId": "0938e4369a646f6addfcc0ede3f276f41e3a30f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
