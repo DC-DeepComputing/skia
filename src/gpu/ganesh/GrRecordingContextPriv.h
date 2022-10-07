@@ -209,8 +209,14 @@ public:
             GrSurfaceOrigin,
             sk_sp<skgpu::RefCntedCallback> releaseHelper);
 
+    ~GrRecordingContextPriv() {
+        SkDebugf("deleted GrRecordingContextPriv\n");
+    }
+
 protected:
-    explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {}
+    explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {
+        SkDebugf("made GrRecordingContextPriv\n");
+    }
 
 private:
     GrRecordingContextPriv(const GrRecordingContextPriv&) = delete;
@@ -228,6 +234,8 @@ private:
 inline GrRecordingContextPriv GrRecordingContext::priv() { return GrRecordingContextPriv(this); }
 
 inline const GrRecordingContextPriv GrRecordingContext::priv () const {  // NOLINT(readability-const-return-type)
+    SkDebugf("about to return GrRecordingContextPriv for %p\n", this);
+    SkDebugf(" accessing this just because: %d\n", (int) this->backend());
     return GrRecordingContextPriv(const_cast<GrRecordingContext*>(this));
 }
 
