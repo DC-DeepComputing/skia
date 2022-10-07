@@ -39,6 +39,30 @@
       },
       "revId": "170ec9b1c81d15a051211587ea27974445875f88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db1b695_aa297954",
+        "filename": "src/image/SkImage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-07T14:50:39Z",
+      "side": 1,
+      "message": "Done, and updated the other cases as well.",
+      "parentUuid": "a6eea536_f166eda1",
+      "range": {
+        "startLine": 83,
+        "startChar": 18,
+        "endLine": 83,
+        "endChar": 55
+      },
+      "revId": "170ec9b1c81d15a051211587ea27974445875f88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
