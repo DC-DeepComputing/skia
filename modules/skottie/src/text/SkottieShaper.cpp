@@ -241,6 +241,8 @@ public:
             }
         }
 
+        fResult.fLineCount = fLineCount;
+
         return std::move(fResult);
     }
 
@@ -408,6 +410,9 @@ Shaper::Result ShapeImpl(const SkString& txt, const Shaper::TextDesc& desc,
             line_start = ptr;
         }
     }
+
+    // TODO(fmalita): this emits an extraneous line when the text ends with an explicit line break.
+    // Fixing may require client rebaselines.
     rbuilder.shapeLine(line_start, ptr);
 
     return rbuilder.finalize(shaped_size);
