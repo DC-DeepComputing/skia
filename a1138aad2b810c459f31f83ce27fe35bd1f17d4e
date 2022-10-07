@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "205db8ec_95c3828e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-07T14:21:23Z",
+      "side": 1,
+      "message": "What would happen if we rounded up for sizeof(T)\u003d\u003d2? 4? Always?",
+      "revId": "a1138aad2b810c459f31f83ce27fe35bd1f17d4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
