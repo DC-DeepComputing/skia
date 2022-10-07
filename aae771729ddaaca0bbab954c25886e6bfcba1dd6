@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d50b81_bc44e1ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T15:48:06Z",
+      "side": 1,
+      "message": "\"foo\\r\" is one line, so there should be 5 total lines in that example, right?\n\n(at the moment we\u0027re actually getting the what you describe due to trailing empty line issue I\u0027m fixing here: https://skia-review.googlesource.com/c/skia/+/588996)",
+      "parentUuid": "93538733_0f949960",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "715cfc26_9e9b2675",
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c2dfcc3_fc34eb1e",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T15:48:06Z",
+      "side": 1,
+      "message": "I think that should work, I can look into it if you think it\u0027s cleaner.\n\nOne case that may be different is empty lines emitted by SkShaper due to errors (not sure whether that\u0027s possible).  Back-filling would handle that fine.",
+      "parentUuid": "d5aec801_574fe3bd",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d402b39_2742cc32",
         "filename": "modules/skottie/src/text/TextAdapter.cpp",
         "patchSetId": 9
@@ -65,6 +101,24 @@
       "writtenOn": "2022-10-07T15:35:36Z",
       "side": 1,
       "message": "This comment should state that it is filling in the empty lines between the just committed (previously pending) frags and the new frag just found.\n\nThough shouldn\u0027t this only be done if there are any? If the next frag is on the next line then there aren\u0027t any missing lines to add? It looks like this might add an extra 0 sized line between each consecutive lines with content?",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c2c63d0_93ec0f7b",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-07T15:48:06Z",
+      "side": 1,
+      "message": "Hmm, the second insert arg is the number of elements to add -- so if we\u0027re passing 0 I assume STL won\u0027t add any?",
+      "parentUuid": "0d402b39_2742cc32",
       "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
