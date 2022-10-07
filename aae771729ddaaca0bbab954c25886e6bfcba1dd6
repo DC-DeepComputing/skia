@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "93538733_0f949960",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T15:35:36Z",
+      "side": 1,
+      "message": "This seems odd?  It looks like there are six lines here but only five entries? The offsets here are (I think) into the fragment list, which would imply something more like\n\n```\n{0, 0}\n{0, 0}\n{0, 0}\n{0, 3}\n{3, 0}\n{3, 0}\n```\n\nbut is the idea to ignore a final empty line?",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "715cfc26_9e9b2675",
@@ -14,6 +31,57 @@
       "writtenOn": "2022-10-07T14:17:41Z",
       "side": 1,
       "message": "The test letters should do a quick bounce just as the selector passes over (kinda like LottieWeb does, but without the jitter): https://skottie.skia.org/d7c7aaa5e881fdf4dfef7d9748292142?h\u003d500\u0026l\u003dtrue\u0026w\u003d500",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5aec801_574fe3bd",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T15:35:36Z",
+      "side": 1,
+      "message": "So here you run into an empty line and send it off to the skottie shaper as an empty line. `shapeLine` the notices that this is empty and then calls `beginLine` and `commitLine`. The `commitLine` keeps track of the line count in `ResultBuilder::fLineCount`. (The line count was already being kept in the ResultBuilder.) `commitLine` when it outputs things (which creates fragments) passes along the current line so that the fragment is aware of the line it is on. This change then puts this `ResultBuilder::fLineCount` into the new `skottie::Shaper::Result::fLineCount`.\n\nThis change (at PS9) then uses this information by going over the fragments and adding in any lines missing, using `skottie::Shaper::Result::fLineCount` to know how many might be missing at the end.\n\nI was going to suggest that maybe the when building the result that there be an extra `addEmptyLine` which could be called here which adds the empty fragment. I suppose that\u0027s a bit less performant since it would need to be created, but I think would simplify things since then there would be a fragment for every line.",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d402b39_2742cc32",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T15:35:36Z",
+      "side": 1,
+      "message": "This comment should state that it is filling in the empty lines between the just committed (previously pending) frags and the new frag just found.\n\nThough shouldn\u0027t this only be done if there are any? If the next frag is on the next line then there aren\u0027t any missing lines to add? It looks like this might add an extra 0 sized line between each consecutive lines with content?",
+      "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5da3a26_33ac8571",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T15:35:36Z",
+      "side": 1,
+      "message": "Similarly, this seems like it may always add a zero sized extra line at the end if the last line has content.",
       "revId": "aae771729ddaaca0bbab954c25886e6bfcba1dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
