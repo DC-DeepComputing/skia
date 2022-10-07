@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbc65558_785198f1",
+        "filename": "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-07T18:38:02Z",
+      "side": 1,
+      "message": "BTW this will only work on GPU. CPU just drops drawMesh().",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 72
+      },
+      "revId": "8678707ed5b935da32b10571368b3cea21bb0301",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
