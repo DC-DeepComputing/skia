@@ -84,8 +84,10 @@ protected:
      */
     const GrContextOptions& options() const;
 
+public:
     const GrCaps* caps() const;
     sk_sp<const GrCaps> refCaps() const;
+protected:
 
     virtual GrImageContext* asImageContext() { return nullptr; }
     virtual GrRecordingContext* asRecordingContext() { return nullptr; }

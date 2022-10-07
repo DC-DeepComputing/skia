@@ -32,7 +32,11 @@ const GrContextOptions& GrContext_Base::options() const {
     return fThreadSafeProxy->priv().options();
 }
 
-const GrCaps* GrContext_Base::caps() const { return fThreadSafeProxy->priv().caps(); }
+const GrCaps* GrContext_Base::caps() const {
+    SkDebugf("thread safe proxy = %p\n", fThreadSafeProxy.get());
+    SkDebugf("thread safe proxy caps =%p \n", fThreadSafeProxy->priv().caps());
+
+ return fThreadSafeProxy->priv().caps(); }
 sk_sp<const GrCaps> GrContext_Base::refCaps() const { return fThreadSafeProxy->priv().refCaps(); }
 
 GrBackendFormat GrContext_Base::defaultBackendFormat(SkColorType skColorType,

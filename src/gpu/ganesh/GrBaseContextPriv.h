@@ -34,8 +34,12 @@ public:
 
     GrContextOptions::ShaderErrorHandler* getShaderErrorHandler() const;
 
+    ~GrBaseContextPriv() {
+    }
+
 protected:
-    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
+    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {
+    }
 
     GrContext_Base* fContext;
 
