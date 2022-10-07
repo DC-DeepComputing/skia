@@ -39,6 +39,30 @@
       },
       "revId": "ecf0f63167fea9e6cf18512db8ba218bb073731a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1210358a_40fc98f1",
+        "filename": "include/gpu/GpuTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-07T21:07:07Z",
+      "side": 1,
+      "message": "I definitely wouldn\u0027t be opposed to it. But it is also a decent sized rename so not high priority to do it. This at least unblocks any other classes that may use BackendApi to be shareable with graphite and ganesh.",
+      "parentUuid": "b389c52c_8e67d4a5",
+      "range": {
+        "startLine": 22,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "ecf0f63167fea9e6cf18512db8ba218bb073731a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
