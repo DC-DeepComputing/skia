@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0e28f52_c8eeff87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-07T17:46:35Z",
+      "side": 1,
+      "message": "oops. Forthcoming dark mode gradient CTS test caught this.",
+      "revId": "740c0e1c1e5f0dc45ae970dc3c866b2a0ccebc31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
