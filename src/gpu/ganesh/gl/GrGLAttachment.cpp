@@ -33,15 +33,21 @@ static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
     GrGLenum error;
     switch (gpu->glCaps().msFBOType()) {
         case GrGLCaps::kStandard_MSFBOType:
+            SkDebugf("DEBUG: making stencil with RenderbufferStorageMultisample %d \n",
+                     sampleCount);
             error = GL_ALLOC_CALL(RenderbufferStorageMultisample(
                     GR_GL_RENDERBUFFER, sampleCount, format, width, height));
             break;
         case GrGLCaps::kES_Apple_MSFBOType:
+            SkDebugf("DEBUG: making stencil with RenderbufferStorageMultisampleES2APPLE %d \n",
+                     sampleCount);
             error = GL_ALLOC_CALL(RenderbufferStorageMultisampleES2APPLE(
                     GR_GL_RENDERBUFFER, sampleCount, format, width, height));
             break;
         case GrGLCaps::kES_EXT_MsToTexture_MSFBOType:
         case GrGLCaps::kES_IMG_MsToTexture_MSFBOType:
+            SkDebugf("DEBUG: making stencil with RenderbufferStorageMultisampleES2APPLE %d \n",
+                     sampleCount);
             error = GL_ALLOC_CALL(RenderbufferStorageMultisampleES2EXT(
                     GR_GL_RENDERBUFFER, sampleCount, format, width, height));
             break;
@@ -67,12 +73,17 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
     // we do this "if" so that we don't call the multisample
     // version on a GL that doesn't have an MSAA extension.
     if (sampleCnt > 1) {
+        SkDebugf("DEBUG: making stencil with msaa %d  %d %d\n",
+                 format,
+                 dimensions.width(),
+                 dimensions.height());
         if (!renderbuffer_storage_msaa(gpu, sampleCnt, glFmt, dimensions.width(),
                                        dimensions.height())) {
             GL_CALL(DeleteRenderbuffers(1, &rbID));
             return nullptr;
         }
     } else {
+        SkDebugf("DEBUG: creating a stencil without msaa \n");
         GrGLenum error = GL_ALLOC_CALL(RenderbufferStorage(
                 GR_GL_RENDERBUFFER, glFmt, dimensions.width(), dimensions.height()));
         if (error != GR_GL_NO_ERROR) {
@@ -81,6 +92,9 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         }
     }
 
+    SkDebugf("DEBUG: no error on stencil creation w=%d h=%d \n",
+             dimensions.width(),
+             dimensions.height());
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
