@@ -16,6 +16,24 @@
       "message": "So on \"\\r\" (two empty lines) the loop above kicks out one empty line and then this used to kick out the last empty line but now does not. Interestingly on \"\" this used to kick out the one (empty) line. However, something like \"foo\\r\" used to get \"foo\" on a line, then the next time around the above kicked out a line on the `\\r` and then this kicked out another empty line (which is what this is trying to fix). So this just seems to move the problem around.\n\nThis seems to interpret `\\r` as a \"line end\" and not as a \"line break\". That is unexpected. If that is the case (because that\u0027s what AE does) then this should be heavily documented (here and in the documentation). This is really surprising behavior for anyone who does want to end with empty lines.",
       "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2643a87_95a711e7",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-07T16:46:05Z",
+      "side": 1,
+      "message": "Wait, I misread that again... ugh.",
+      "parentUuid": "eccc0edb_edc273ba",
+      "revId": "f73de6072818a65449fc3fa2ccc59e91a96219ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
