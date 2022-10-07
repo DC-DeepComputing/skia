@@ -51,7 +51,8 @@ enum class OperatorKind : uint8_t {
     BITWISEXOREQ,
     PLUSPLUS,
     MINUSMINUS,
-    COMMA
+    COMMA,
+    LASTOPERATOR = COMMA
 };
 
 enum class OperatorPrecedence : uint8_t {
