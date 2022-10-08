@@ -87,14 +87,17 @@ static void append_multitexture_lookup(GrGeometryProcessor::ProgramImpl::EmitArg
         return;
     }
 
-    // conditionally load from the indexed texture sampler
+    // Conditionally load from the indexed texture sampler. We intentionally sample without implicit
+    // derivatives to avoid undefined behavior in branches (and satisfy Dawn's uniformity analysis).
+    // Atlas textures are not mipped so it's OK to always use mip-level 0.
     for (int i = 0; i < numTextureSamplers-1; ++i) {
         args.fFragBuilder->codeAppendf("if (%s == %d) { %s = ", texIdx.fsIn(), i, colorName);
-        args.fFragBuilder->appendTextureLookup(args.fTexSamplers[i], coordName);
+        args.fFragBuilder->appendTextureLookupExplicitLod(args.fTexSamplers[i], coordName, "0.0");
         args.fFragBuilder->codeAppend("; } else ");
     }
     args.fFragBuilder->codeAppendf("{ %s = ", colorName);
-    args.fFragBuilder->appendTextureLookup(args.fTexSamplers[numTextureSamplers - 1], coordName);
+    args.fFragBuilder->appendTextureLookupExplicitLod(
+            args.fTexSamplers[numTextureSamplers - 1], coordName, "0.0");
     args.fFragBuilder->codeAppend("; }");
 }
 
