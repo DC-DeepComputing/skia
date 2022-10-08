@@ -10,8 +10,16 @@
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include "fuzz/Fuzz.h"
+#include "fuzz/oss_fuzz/FuzzSkSLShared.h"
 
-bool FuzzSKSL2SPIRV(sk_sp<SkData> bytes) {
+bool FuzzSKSL2SPIRV(SkSpan<const uint8_t> data) {
+    // Clean up the fuzzer input by stripping control characters and replacing high-ASCII characters
+    // with SkSL tokens.
+    SkString sksl;
+    TransformInputToSkSL(&data, &sksl,
+                         ControlCharacterBehavior::kRemove,
+                         HighBitBehavior::kReplaceWithToken);
+
     SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
 
@@ -22,15 +30,18 @@ bool FuzzSKSL2SPIRV(sk_sp<SkData> bytes) {
     settings.fRTFlipSet     = 0;
     settings.fRTFlipBinding = 0;
 
-    std::unique_ptr<SkSL::Program> program = compiler.convertProgram(
-                                                    SkSL::ProgramKind::kFragment,
-                                                    std::string((const char*) bytes->data(),
-                                                                bytes->size()),
-                                                    settings);
+    std::unique_ptr<SkSL::Program> program = compiler.convertProgram(SkSL::ProgramKind::kFragment,
+                                                                     std::string(sksl.c_str()),
+                                                                     settings);
     std::string output;
     if (!program || !compiler.toSPIRV(*program, &output)) {
         return false;
     }
+    return true;
+}
+
+bool FuzzSKSL2SPIRV(sk_sp<SkData> fuzz) {
+    FuzzSKSL2SPIRV(SkSpan(fuzz->bytes(), fuzz->size()));
     return true;
 }
 
@@ -39,8 +50,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 3000) {
         return 0;
     }
-    auto bytes = SkData::MakeWithoutCopy(data, size);
-    FuzzSKSL2SPIRV(bytes);
+    FuzzSKSL2SPIRV(SkSpan<const uint8_t>(data, size));
     return 0;
 }
 #endif

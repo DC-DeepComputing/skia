@@ -2476,6 +2476,8 @@ if (skia_enable_tools) {
       "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
       "fuzz/oss_fuzz/FuzzSkParagraph.cpp",
       "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
+      "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+      "fuzz/oss_fuzz/FuzzSkSLShared.h",
       "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
       "tools/UrlDataManager.cpp",
       "tools/debugger/DebugCanvas.cpp",
@@ -3302,22 +3304,38 @@ if (skia_enable_tools) {
     }
 
     libfuzzer_app("sksl2glsl") {
-      sources = [ "fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
     libfuzzer_app("sksl2spirv") {
-      sources = [ "fuzz/oss_fuzz/FuzzSKSL2SPIRV.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSKSL2SPIRV.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
     libfuzzer_app("sksl2metal") {
-      sources = [ "fuzz/oss_fuzz/FuzzSKSL2Metal.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSKSL2Metal.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
     libfuzzer_app("sksl2pipeline") {
-      sources = [ "fuzz/oss_fuzz/FuzzSKSL2Pipeline.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSKSL2Pipeline.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
@@ -3332,12 +3350,20 @@ if (skia_enable_tools) {
     }
 
     libfuzzer_app("skruntimeeffect") {
-      sources = [ "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
     libfuzzer_app("skmeshspecification") {
-      sources = [ "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp" ]
+      sources = [
+        "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.cpp",
+        "fuzz/oss_fuzz/FuzzSkSLShared.h",
+      ]
       deps = []
     }
 
