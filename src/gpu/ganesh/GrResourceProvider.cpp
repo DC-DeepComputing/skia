@@ -653,8 +653,10 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(const void* data,
 
 static int num_stencil_samples(const GrRenderTarget* rt, bool useMSAASurface, const GrCaps& caps) {
     int numSamples = rt->numSamples();
+    SkDebugf("DEBUG: creating a stencil rt samples %d %d\n", numSamples, useMSAASurface);
     if (numSamples == 1 && useMSAASurface) {  // Are we using dynamic msaa?
         numSamples = caps.internalMultisampleCount(rt->backendFormat());
+        SkDebugf("DEBUG: creating a stencil redo %d\n", numSamples);
         SkASSERT(numSamples > 1);  // Caller must ensure dmsaa is supported before trying to use it.
     }
     return numSamples;
@@ -683,8 +685,10 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         if (!stencilFormat.isValid()) {
             return false;
         }
+
         GrProtected isProtected = rt->isProtected() ? GrProtected::kYes : GrProtected::kNo;
         int numStencilSamples = num_stencil_samples(rt, useMSAASurface, *this->caps());
+        SkDebugf("DEBUG: creating a stencil for  %d \n", numStencilSamples);
         GrAttachment::ComputeSharedAttachmentUniqueKey(
                 *this->caps(), stencilFormat, rt->dimensions(),
                 GrAttachment::UsageFlags::kStencilAttachment, numStencilSamples, GrMipmapped::kNo,
@@ -692,6 +696,9 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         auto keyedStencil = this->findByUniqueKey<GrAttachment>(sbKey);
         if (!keyedStencil) {
             // Need to try and create a new stencil
+            SkDebugf("DEBUG: creating a stencil for target format  %d rt samples %d\n",
+                     rt->backendFormat().asGLFormat(),
+                     rt->numSamples());
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
                                                               numStencilSamples);
             if (!keyedStencil) {
