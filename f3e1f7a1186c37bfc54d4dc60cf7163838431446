@@ -81,6 +81,30 @@
       },
       "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e07103_b682ab38",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T21:38:38Z",
+      "side": 1,
+      "message": "No, setting this to true should not cause multiple `_factory.cpp`. Setting this to true will make some `optional` `_factory` targets available (the target will be non-empty) but nothing will depend on it and drag it into the build. In the gn build it\u0027s the `fontmgr_factory` target which is depended on by other targets, and it depends on whatever target `skia_fontmgr_factory` is set to.\n\nIn fact, I\u0027m still not sure why this change, this was correct. The issue is that `canvaskit_bindings.cpp` blindly always uses `SkFontMgr_New_Custom_Data` instead of `SkFontMgr_New_Custom_Empty` when in this case. Also, fixing that means you don\u0027t need the rest of this change.",
+      "parentUuid": "dcf828cd_4732b035",
+      "range": {
+        "startLine": 133,
+        "startChar": 53,
+        "endLine": 133,
+        "endChar": 91
+      },
+      "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
