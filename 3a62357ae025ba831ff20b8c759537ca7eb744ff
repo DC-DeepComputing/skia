@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a45230b_7185d3d8",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-10T16:27:41Z",
+      "side": 1,
+      "message": "Does this need a fallback for when a device doesn\u0027t support GLSL ES 3.0? `textureLod` is not present in ES 1.0.",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 98
+      },
+      "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
