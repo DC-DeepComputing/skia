@@ -17,6 +17,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTime.h"
+#include "include/private/SkPathRef.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkCpu.h"
 #include "src/core/SkGeometry.h"
@@ -47,6 +48,15 @@ void SkGraphics::PurgeAllCaches() {
     SkGraphics::PurgeFontCache();
     SkGraphics::PurgeResourceCache();
     SkImageFilter_Base::PurgeCache();
+    SkPathRef::PurgeCache();
+}
+
+void SkGraphics::SetPathCacheLimit(size_t bytes) {
+    SkPathRef::SetPathCacheLimit(bytes);
+}
+
+void SkGraphics::PurgePathCache() {
+    SkPathRef::PurgeCache();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -7,14 +7,30 @@
 
 #include "include/private/SkPathRef.h"
 
+#include <vector>
+
 #include "include/core/SkPath.h"
 #include "include/core/SkRRect.h"
+#include "include/private/SkMutex.h"
 #include "include/private/SkOnce.h"
 #include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkBuffer.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkSafeMath.h"
+
+size_t gMaxPoolSizeBytes = 0;
+size_t gCurrentPoolSizeBytes = 0;
+
+static std::vector<SkPathRef*>& ref_pool() {
+    static std::vector<SkPathRef*> pool;
+    return pool;
+}
+
+static SkMutex& ref_pool_mutex() {
+    static SkMutex mutex;
+    return mutex;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 SkPathRef::Editor::Editor(sk_sp<SkPathRef>* pathRef,
@@ -75,6 +91,19 @@ SkPathRef::~SkPathRef() {
 static SkPathRef* gEmpty = nullptr;
 
 SkPathRef* SkPathRef::CreateEmpty() {
+    SkPathRef* reusedRef = nullptr;
+    {
+        SkAutoMutexExclusive l(ref_pool_mutex());
+        auto& pool = ref_pool();
+        if (!pool.empty()) {
+            reusedRef = pool.back();
+            pool.pop_back();
+            gCurrentPoolSizeBytes -= reusedRef->sizeInBytesEstimate();
+        }
+    }
+    if (reusedRef) {
+        return SkRef(reusedRef);
+    }
     static SkOnce once;
     once([]{
         gEmpty = new SkPathRef;
@@ -302,6 +331,11 @@ uint32_t SkPathRef::writeSize() const {
     return uint32_t(5 * sizeof(uint32_t) +
                     fVerbs.size_bytes() + fPoints.size_bytes() + fConicWeights.size_bytes() +
                     sizeof(SkRect));
+}
+
+size_t SkPathRef::sizeInBytesEstimate() const {
+    return sizeof(this) + fVerbs.capacity() * sizeof(uint8_t) +
+      fPoints.capacity() * sizeof(SkPoint) + fConicWeights.capacity() * sizeof(SkScalar);
 }
 
 void SkPathRef::copy(const SkPathRef& ref,
@@ -701,6 +735,51 @@ bool SkPathRef::dataMatchesVerbs() const {
            info.points      == fPoints.size()  &&
            info.weights     == fConicWeights.size();
 }
+
+void SkPathRef::SetPathCacheLimit(size_t bytes) {
+    {
+        SkAutoMutexExclusive l(ref_pool_mutex());
+        if (gMaxPoolSizeBytes == bytes) {
+            return;
+        }
+        const size_t old_cache_size = gMaxPoolSizeBytes;
+        gMaxPoolSizeBytes = bytes;
+        if (old_cache_size < gMaxPoolSizeBytes) {
+            return;
+        }
+    }
+    // When shrinking the size, purge everything.
+    PurgeCache();
+}
+
+void SkPathRef::PurgeCache() {
+    std::vector<SkPathRef*> to_delete;
+    {
+        SkAutoMutexExclusive l(ref_pool_mutex());
+        std::swap(to_delete, ref_pool());
+    }
+    for (SkPathRef* ref : to_delete) {
+        ref->deleteRecycled();
+    }
+}
+
+bool SkPathRefRefCountedTraits::Recycle(SkPathRef* value) {
+    SkAutoMutexExclusive l(ref_pool_mutex());
+    const size_t numBytesForPath = value->sizeInBytesEstimate();
+    if (numBytesForPath + gCurrentPoolSizeBytes >= gMaxPoolSizeBytes) {
+        return false;  // Not recycled, false means `value` will be deleted.
+    }
+    gCurrentPoolSizeBytes += numBytesForPath;
+    ref_pool().push_back(value);
+    value->commonReset();
+    value->fPoints.resize(0);
+    value->fVerbs.resize(0);
+    value->fConicWeights.resize(0);
+    SkDEBUGCODE(value->validate();)
+    SkASSERT(numBytesForPath == value->sizeInBytesEstimate());
+    return true;  // Indicates `value` was recycled and not deleted.
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkPathEdgeIter::SkPathEdgeIter(const SkPath& path) {

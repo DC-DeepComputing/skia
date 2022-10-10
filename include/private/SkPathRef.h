@@ -62,7 +62,15 @@ SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t verbs[], int count);
  * logical verb or the last verb in memory).
  */
 
-class SK_API SkPathRef final : public SkNVRefCnt<SkPathRef> {
+class SkPathRef;
+
+// Enables recycling of SkPathRefs when the ref count reaches zero. Recyling
+// only happens if the patch cache is enabled.
+struct SkPathRefRefCountedTraits {
+    static bool Recycle(SkPathRef* value);
+};
+
+class SK_API SkPathRef final : public SkNVRefCnt<SkPathRef, SkPathRefRefCountedTraits> {
 public:
     SkPathRef(SkTDArray<SkPoint> points, SkTDArray<uint8_t> verbs, SkTDArray<SkScalar> weights,
               unsigned segmentMask)
@@ -330,6 +338,12 @@ public:
      */
     uint32_t writeSize() const;
 
+    /**
+     * Returns an estimate of the number of bytes used by this SkPathRef. This
+     * may not be exact, but is a close approximation.
+     */
+    size_t sizeInBytesEstimate() const;
+
     void interpolate(const SkPathRef& ending, SkScalar weight, SkPathRef* out) const;
 
     /**
@@ -346,7 +360,19 @@ public:
     bool isValid() const;
     SkDEBUGCODE(void validate() const { SkASSERT(this->isValid()); } )
 
+    /**
+     * Sets the size of the patch cache, in bytes.
+     */
+    static void SetPathCacheLimit(size_t bytes);
+
+    /**
+     * Empties the path cache.
+     */
+    static void PurgeCache();
+
 private:
+    friend struct SkPathRefRefCountedTraits;
+
     enum SerializationOffsets {
         kLegacyRRectOrOvalStartIdx_SerializationShift = 28, // requires 3 bits, ignored.
         kLegacyRRectOrOvalIsCCW_SerializationShift = 27,    // requires 1 bit, ignored.
@@ -402,10 +428,8 @@ private:
         SkDEBUGCODE(this->validate();)
     }
 
-    /** Resets the path ref with verbCount verbs and pointCount points, all uninitialized. Also
-     *  allocates space for reserveVerb additional verbs and reservePoints additional points.*/
-    void resetToSize(int verbCount, int pointCount, int conicCount,
-                     int reserveVerbs = 0, int reservePoints = 0) {
+    /** Called when resetting and/or recycling this SkPathRef. */
+    void commonReset() {
         SkDEBUGCODE(this->validate();)
         this->callGenIDChangeListeners();
         fBoundsIsDirty = true;      // this also invalidates fIsFinite
@@ -414,7 +438,13 @@ private:
         fSegmentMask = 0;
         fIsOval = false;
         fIsRRect = false;
+    }
 
+    /** Resets the path ref with verbCount verbs and pointCount points, all uninitialized. Also
+     *  allocates space for reserveVerb additional verbs and reservePoints additional points.*/
+    void resetToSize(int verbCount, int pointCount, int conicCount,
+                     int reserveVerbs = 0, int reservePoints = 0) {
+        commonReset();
         fPoints.reserve(pointCount + reservePoints);
         fPoints.resize(pointCount);
         fVerbs.reserve(verbCount + reserveVerbs);

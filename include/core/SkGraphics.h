@@ -116,6 +116,16 @@ public:
     static void PurgeAllCaches();
 
     /**
+     *  Specify the max number of bytes that should be used by the path cache.
+     */
+    static void SetPathCacheLimit(size_t bytes);
+
+    /**
+     * Frees all memory from the path cache.
+     */
+    static void PurgePathCache();
+
+    /**
      *  Applications with command line options may pass optional state, such
      *  as cache sizes, here, for instance:
      *  font-cache-limit=12345678
