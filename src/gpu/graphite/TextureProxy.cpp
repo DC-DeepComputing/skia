@@ -78,6 +78,11 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
     return sk_make_sp<TextureProxy>(dimensions, textureInfo, budgeted);
 }
 
+sk_sp<TextureProxy> TextureProxy::Make(LazyInstantiateCallback&&,
+                                       SkISize dimensions) {
+    return nullptr;
+}
+
 #ifdef SK_DEBUG
 void TextureProxy::validateTexture(const Texture* texture) {
     SkASSERT(fDimensions == texture->dimensions());
