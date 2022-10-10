@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77febeef_47dd825f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T20:29:00Z",
+      "side": 1,
+      "message": "Note that the `ShaperTest.cpp` file was previously listed and built in the Bazel build. However, that only really worked because the file was effectively always a mostly empty file (everything was always `ifdef`ed out). This adds a `BUILD.bazel` listing the files much like `modules/skparagraph/tests/BUILD.bazel` but these are not actually built or run yet.",
+      "revId": "24851aa753b8573d346d3810f3f81b060c4f28d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
