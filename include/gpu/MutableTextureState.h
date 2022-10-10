@@ -14,6 +14,8 @@
 #include "include/private/gpu/vk/VulkanTypesPriv.h"
 #endif
 
+#include <new>
+
 class GrVkGpu;
 
 namespace skgpu {

@@ -10,6 +10,8 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 
+#include <atomic>
+
 namespace skgpu {
 
 class VulkanMutableTextureState {
