@@ -16,6 +16,24 @@
       "message": "Is this an indicator about how this should be fixed? If the shaper gets empty input should the behavior be to just call beginLine then endLine? I can\u0027t remember why empty input is bad for the shaper, though I suppose it shouldn\u0027t be. If shaper did something sane here, would that allow the `commit_proc` to do the right thing?",
       "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d203b0ce_dbb87ab5",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T16:20:20Z",
+      "side": 1,
+      "message": "Hmmm... I think this has been fixed since https://skia-review.googlesource.com/c/skia/+/252929 some time ago? It looks like the behavior generally should be to call `beginLine`, `commitRunInfo` (to indicate there are no runs, seems fine since the implementation here is to do nothing), then `endLine`.\n\nHowever, it looks like maybe the test currently never runs? It appears to all be `ifdef`ed out based on `SKSHAPER_IMPLEMENTATION` which is never set for this test? This test should be moved under `modules/skshaper` and put in its own target enabled by the module being built.",
+      "parentUuid": "d87fa346_65c06336",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
