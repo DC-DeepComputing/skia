@@ -51,8 +51,8 @@ private:
 
     size_t getTransferBufferAlignment(size_t bytesPerPixel) const override { return 0; }
 
-    bool supportsWritePixels(const TextureProxy*) const override { return false; }
-    bool supportsReadPixels(const TextureProxy*) const override { return false; }
+    bool supportsWritePixels(const TextureInfo&) const override { return false; }
+    bool supportsReadPixels(const TextureInfo&) const override { return false; }
 
     SkColorType supportedWritePixelsColorType(SkColorType dstColorType,
                                               const TextureInfo& dstTextureInfo,
