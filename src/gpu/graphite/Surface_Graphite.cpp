@@ -42,7 +42,20 @@ sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
         return nullptr;
     }
 
-    srcView = fDevice->createCopy(subset, srcView.mipmapped());
+    return this->onNewImageSnapshotCopy(subset, srcView.mipmapped());
+}
+
+sk_sp<SkImage> Surface::onNewImageSnapshotNoCopy(bool abandonSurface) {
+    TextureProxyView srcView = fDevice->readSurfaceView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(std::move(srcView), this->imageInfo().colorInfo()));
+}
+
+sk_sp<SkImage> Surface::onNewImageSnapshotCopy(const SkIRect* subset, Mipmapped mipmapped) {
+    TextureProxyView srcView = fDevice->createCopy(subset, mipmapped);
     if (!srcView) {
         return nullptr;
     }

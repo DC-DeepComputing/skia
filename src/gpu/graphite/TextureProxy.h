@@ -47,6 +47,27 @@ public:
                                     Renderable,
                                     SkBudgeted);
 
+    /**
+     * Specifies the expected properties of the Texture returned by a lazy instantiation
+     * callback.
+     */
+    struct LazySurfaceDesc {
+        SkISize fDimensions;
+        TextureInfo fTextureInfo;
+        SkBudgeted fBudgeted;
+
+//        Renderable fRenderable;
+
+        bool fIsVolatile;
+    };
+
+    using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*,
+                                                                  const LazySurfaceDesc&)>;
+
+    static sk_sp<TextureProxy> Make(LazyInstantiateCallback&&,
+                                    SkISize dimensions);
+
+
 private:
 #ifdef SK_DEBUG
     void validateTexture(const Texture*);
@@ -58,6 +79,8 @@ private:
     SkBudgeted fBudgeted;
 
     sk_sp<Texture> fTexture;
+
+    LazyInstantiateCallback fLazyInstantiateCallback;
 };
 
 } // namepsace skgpu::graphite

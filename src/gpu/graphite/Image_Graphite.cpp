@@ -157,6 +157,140 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
 }
 
+sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(Recorder* recorder,
+                                                     SkISize dimensions,
+                                                     TextureInfo textureInfo,
+                                                     GraphitePromiseImageFulfillProc fulfillProc,
+                                                     GraphitePromiseImageContext fulfillContext) {
+    SkASSERT(!dimensions.isEmpty());
+
+    if (!fulfillProc) {
+        return nullptr;
+    }
+
+#if 0
+    if (mipmapped == Mipmapped::kYes &&
+        GrTextureTypeHasRestrictedSampling(backendFormat.textureType())) {
+        // It is invalid to have a GL_TEXTURE_EXTERNAL or GL_TEXTURE_RECTANGLE and have mips as
+        // well.
+        return nullptr;
+    }
+#endif
+
+    /**
+     * This class is the lazy instantiation callback for promise images. It manages calling the
+     * client's Fulfill, Release, and Done procs. It attempts to reuse a GrTexture instance in
+     * cases where the client provides the same SkPromiseImageTexture as Fulfill results for
+     * multiple SkImages. The created GrTexture is given a key based on a unique ID associated with
+     * the SkPromiseImageTexture.
+     *
+     * A key invalidation message is installed on the SkPromiseImageTexture so that the GrTexture
+     * is deleted once it can no longer be used to instantiate a proxy.
+     */
+    class PromiseLazyInstantiateCallback {
+    public:
+        PromiseLazyInstantiateCallback(GraphitePromiseImageFulfillProc fulfillProc,
+                                       GraphitePromiseImageContext fulfillContext)
+                : fFulfillProc(fulfillProc), fFulfillContext(fulfillContext) {
+        }
+
+        PromiseLazyInstantiateCallback(PromiseLazyInstantiateCallback&&) = default;
+        PromiseLazyInstantiateCallback(const PromiseLazyInstantiateCallback&) {
+            // Because we get wrapped in std::function we must be copyable. But we should never
+            // be copied.
+            SkASSERT(false);
+        }
+        PromiseLazyInstantiateCallback& operator=(PromiseLazyInstantiateCallback&&) = default;
+        PromiseLazyInstantiateCallback& operator=(const PromiseLazyInstantiateCallback&) {
+            SkASSERT(false);
+            return *this;
+        }
+
+        sk_sp<Texture> operator()(ResourceProvider* resourceProvider,
+                                  const TextureProxy::LazySurfaceDesc& desc) {
+
+            if (fTexture && !desc.fIsVolatile /*== Volatile::kNo*/) {
+                return fTexture;
+            }
+
+            if (fFulfillProcFailed) {
+                return nullptr;
+            }
+
+            BackendTexture backendTexture = fFulfillProc(fFulfillContext);
+            if (!backendTexture.isValid()) {
+                fFulfillProcFailed = true;
+                return nullptr;
+            }
+
+            if (fTexture) {
+//                fTexture->reWrap(backendTexture);
+            } else {
+                fTexture = resourceProvider->createWrappedTexture(backendTexture);
+            }
+            if (!fTexture) {
+                return nullptr;
+            }
+
+            return fTexture;
+        }
+
+    private:
+        GraphitePromiseImageFulfillProc fFulfillProc;
+        GraphitePromiseImageContext fFulfillContext;
+        sk_sp<Texture> fTexture;
+        bool fFulfillProcFailed = false;
+
+    } callback(fulfillProc, fulfillContext);
+
+    return TextureProxy::Make(std::move(callback),
+                              dimensions);
+}
+
+sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(Recorder* recorder,
+                                                   const TextureInfo& textureInfo,
+                                                   SkISize dimensions,
+                                                   const SkColorInfo& colorInfo,
+                                                   Volatile isVolatile,
+                                                   GraphitePromiseImageFulfillProc fulfillProc,
+                                                   GraphitePromiseImageContext fulfillContext) {
+
+    if (!recorder) {
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkImageInfo info = SkImageInfo::Make(dimensions, colorInfo);
+    if (!SkImageInfoIsValid(info)) {
+        return nullptr;
+    }
+
+
+#if 0
+    if (!threadSafeProxy->priv().caps()->areColorTypeAndFormatCompatible(grColorType,
+                                                                         backendFormat)) {
+        return nullptr;
+    }
+
+    auto proxy = SkImage_GpuBase::MakePromiseImageLazyProxy(threadSafeProxy.get(),
+                                                            dimensions,
+                                                            backendFormat,
+                                                            mipmapped,
+                                                            textureFulfillProc,
+                                                            std::move(releaseHelper));
+    if (!proxy) {
+        return nullptr;
+    }
+#endif
+
+    sk_sp<TextureProxy> proxy(new TextureProxy(dimensions, textureInfo, SkBudgeted::kNo));
+
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(colorInfo.colorType(), textureInfo);
+    TextureProxyView view(std::move(proxy), swizzle);
+    return sk_make_sp<Image>(view, colorInfo);
+}
+
 sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
                                                        const BackendTexture& backendTex,
                                                        SkColorType ct,
