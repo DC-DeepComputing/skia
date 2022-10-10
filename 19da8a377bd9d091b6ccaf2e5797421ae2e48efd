@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e4a44b5_fc254f16",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-10T20:38:29Z",
+      "side": 1,
+      "message": "Is this part actually necessary? I thought this is the behavior you\u0027d get by throwing if you didn\u0027t try to catch.",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 12
+      },
+      "revId": "19da8a377bd9d091b6ccaf2e5797421ae2e48efd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
