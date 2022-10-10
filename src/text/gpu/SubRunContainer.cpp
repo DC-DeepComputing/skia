@@ -2333,35 +2333,6 @@ bool has_some_antialiasing(const SkFont& font ) {
 
 #if SK_SUPPORT_GPU
 
-static std::tuple<AtlasTextOp::MaskType, uint32_t, bool> calculate_sdf_parameters(
-        const skgpu::v1::SurfaceDrawContext& sdc,
-        const SkMatrix& drawMatrix,
-        bool useLCDText,
-        bool isAntiAliased) {
-    const GrColorInfo& colorInfo = sdc.colorInfo();
-    const SkSurfaceProps& props = sdc.surfaceProps();
-    bool isBGR = SkPixelGeometryIsBGR(props.pixelGeometry());
-    bool isLCD = useLCDText && SkPixelGeometryIsH(props.pixelGeometry());
-    using MT = AtlasTextOp::MaskType;
-    MT maskType = !isAntiAliased ? MT::kAliasedDistanceField
-                  : isLCD ? (isBGR ? MT::kLCDBGRDistanceField
-                                          : MT::kLCDDistanceField)
-                                 : MT::kGrayscaleDistanceField;
-
-    bool useGammaCorrectDistanceTable = colorInfo.isLinearlyBlended();
-    uint32_t DFGPFlags = drawMatrix.isSimilarity() ? kSimilarity_DistanceFieldEffectFlag : 0;
-    DFGPFlags |= drawMatrix.isScaleTranslate() ? kScaleOnly_DistanceFieldEffectFlag : 0;
-    DFGPFlags |= useGammaCorrectDistanceTable ? kGammaCorrect_DistanceFieldEffectFlag : 0;
-    DFGPFlags |= MT::kAliasedDistanceField == maskType ? kAliased_DistanceFieldEffectFlag : 0;
-    DFGPFlags |= drawMatrix.hasPerspective() ? kPerspective_DistanceFieldEffectFlag : 0;
-
-    if (isLCD) {
-        DFGPFlags |= kUseLCD_DistanceFieldEffectFlag;
-        DFGPFlags |= MT::kLCDBGRDistanceField == maskType ? kBGR_DistanceFieldEffectFlag : 0;
-    }
-    return {maskType, DFGPFlags, useGammaCorrectDistanceTable};
-}
-
 #endif  // SK_SUPPORT_GPU
 
 class SDFTSubRun final : public SubRun, public AtlasSubRun {
@@ -2394,9 +2365,14 @@ public:
 
         auto glyphVector = GlyphVector::Make(std::move(strikePromise), accepted.get<0>(), alloc);
 
+        using Edging = SkFont::Edging;
+        const Edging edging = runFont.getEdging();
+        const bool useLCDText = edging == Edging::kSubpixelAntiAlias;
+        const bool isAntiAliased =
+                edging == Edging::kAntiAlias || edging == Edging::kSubpixelAntiAlias;
         return alloc->makeUnique<SDFTSubRun>(
-                runFont.getEdging() == SkFont::Edging::kSubpixelAntiAlias,
-                has_some_antialiasing(runFont),
+                useLCDText,
+                isAntiAliased,
                 matrixRange,
                 std::move(vertexFiller),
                 std::move(glyphVector));
@@ -2462,7 +2438,7 @@ public:
             const SkPaint& paint,
             sk_sp<SkRefCnt>&& subRunStorage,
             skgpu::v1::SurfaceDrawContext* sdc) const override {
-        SkASSERT(this->glyphCount() != 0);
+        SkASSERT(glyphCount() != 0);
 
         const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
@@ -2470,8 +2446,26 @@ public:
         SkPMColor4f drawingColor =
                 calculate_colors(sdc, paint, viewMatrix, MaskFormat::kA8, &grPaint);
 
-        auto [maskType, DFGPFlags, useGammaCorrectDistanceTable] =
-                calculate_sdf_parameters(*sdc, drawMatrix, fUseLCDText, fAntiAliased);
+        const GrColorInfo& colorInfo = (*sdc).colorInfo();
+        const SkSurfaceProps& props = (*sdc).surfaceProps();
+        bool isBgr = SkPixelGeometryIsBGR(props.pixelGeometry());
+        bool isLcd = fUseLCDText && SkPixelGeometryIsH(props.pixelGeometry());
+        using MT = AtlasTextOp::MaskType;
+        MT maskType = !fAntiAliased ? MT::kAliasedDistanceField
+                      : isLcd       ? (isBgr ? MT::kLCDBGRDistanceField : MT::kLCDDistanceField)
+                                    : MT::kGrayscaleDistanceField;
+
+        bool useGammaCorrectDistanceTable = colorInfo.isLinearlyBlended();
+        uint32_t DFGPFlags = drawMatrix.isSimilarity() ? kSimilarity_DistanceFieldEffectFlag : 0;
+        DFGPFlags |= drawMatrix.isScaleTranslate() ? kScaleOnly_DistanceFieldEffectFlag : 0;
+        DFGPFlags |= useGammaCorrectDistanceTable ? kGammaCorrect_DistanceFieldEffectFlag : 0;
+        DFGPFlags |= MT::kAliasedDistanceField == maskType ? kAliased_DistanceFieldEffectFlag : 0;
+        DFGPFlags |= drawMatrix.hasPerspective() ? kPerspective_DistanceFieldEffectFlag : 0;
+
+        if (isLcd) {
+            DFGPFlags |= kUseLCD_DistanceFieldEffectFlag;
+            DFGPFlags |= MT::kLCDBGRDistanceField == maskType ? kBGR_DistanceFieldEffectFlag : 0;
+        }
 
         auto geometry = AtlasTextOp::Geometry::Make(*this,
                                                     drawMatrix,
@@ -2485,8 +2479,8 @@ public:
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
                                                  maskType,
                                                  true,
-                                                 this->glyphCount(),
-                                                 this->deviceRect(drawMatrix, drawOrigin),
+                                                 glyphCount(),
+                                                 deviceRect(drawMatrix, drawOrigin),
                                                  SkPaintPriv::ComputeLuminanceColor(paint),
                                                  useGammaCorrectDistanceTable,
                                                  DFGPFlags,
