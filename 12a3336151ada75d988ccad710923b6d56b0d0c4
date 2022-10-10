@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ec6a75a_8ee721ad",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-10T19:52:16Z",
+      "side": 1,
+      "message": "This is an accurate observation. It\u0027s a trade-off of \"do more builds\" to get \"make sure our minimal builds work on their own\". I think it\u0027s worth paying.\n\nIt is certainly something to keep an eye on, especially as we get to actually executing these on devices where sending the binaries is expensive timewise (e.g. Android).",
+      "parentUuid": "ae861b41_6f5bb144",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70f98a9c_0b447ecb",
         "filename": "tests/tests.bzl",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2022-10-10T19:46:24Z",
       "side": 1,
       "message": "Would it be possible to add a target with this name that depends on the tests that are created? I was just interested in running all the `pdf_tests` and was surprised it didn\u0027t work.",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d86ac7cc_23fd87fc",
+        "filename": "tests/tests.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-10T19:52:16Z",
+      "side": 1,
+      "message": "I can look into making a test group (if such a thing exists).",
+      "parentUuid": "70f98a9c_0b447ecb",
       "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
