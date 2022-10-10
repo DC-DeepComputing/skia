@@ -369,8 +369,7 @@ public:
         When SkImage is no longer referenced, context releases texture memory
         asynchronously.
 
-        GrBackendTexture created from pixmap is uploaded to match SkSurface created with
-        dstColorSpace. SkColorSpace of SkImage is determined by pixmap.colorSpace().
+        SkColorSpace of SkImage is determined by pixmap.colorSpace().
 
         SkImage is returned referring to GPU back-end if context is not nullptr,
         format of data is recognized and supported, and if context supports moving
@@ -381,7 +380,6 @@ public:
         @param context                GPU context
         @param pixmap                 SkImageInfo, pixel address, and row bytes
         @param buildMips              create SkImage as mip map if true
-        @param dstColorSpace          range of colors of matching SkSurface on GPU
         @param limitToMaxTextureSize  downscale image to GPU maximum texture size, if necessary
         @return                       created SkImage, or nullptr
     */
