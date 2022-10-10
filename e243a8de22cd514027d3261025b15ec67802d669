@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "236682ee_1356b8d2",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2368,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-10T15:57:20Z",
+      "side": 1,
+      "message": "Fix indent ?",
+      "revId": "e243a8de22cd514027d3261025b15ec67802d669",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
