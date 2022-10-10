@@ -257,15 +257,23 @@ public:
 
             // The calls above perform bookkeeping, but they do not add any fragments (since there
             // are no runs to commit).
-            // Line-based range selectors do require accurate indexing information even for empty
-            // lines though -- so we inject empty fragments solely for line index tracking.
-            fResult.fFragments.push_back({
-                Shaper::ShapedGlyphs(),
-                {0,0},
-                0, 0,
-                fLineCount - 1,
-                false
-            });
+            //
+            // Certain Skottie features (line-based range selectors) do require accurate indexing
+            // information even for empty lines though -- so we inject empty fragments solely for
+            // line index tracking.
+            //
+            // Note: we don't add empty fragments in consolidated mode because 1) consolidated mode
+            // assumes there is single result fragment and 2) kFragmentGlyphs is always enabled for
+            // cases where line index tracking is relevant.
+            if (fDesc.fFlags & Shaper::Flags::kFragmentGlyphs) {
+                fResult.fFragments.push_back({
+                    Shaper::ShapedGlyphs(),
+                    {fBox.x(),fBox.y()},
+                    0, 0,
+                    fLineCount - 1,
+                    false
+                });
+            }
 
             return;
         }
