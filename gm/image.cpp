@@ -312,6 +312,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         return;
     }
 
+    SkDebugf("rinitial ecording canvas: %p %p\n", rContext, dContext);
     auto render_image = [](SkCanvas* canvas) {
         canvas->clear(SK_ColorBLUE);
         SkPaint paint;
@@ -331,7 +332,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     SkCanvas bmpCanvas(bmp);
     render_image(&bmpCanvas);
 
-    std::function<sk_sp<SkImage>()> imageFactories[] = {
+    std::array<std::function<sk_sp<SkImage>()>, 5> imageFactories = {
         // Create sw raster image.
         [bmp] {
             return bmp.asImage();
@@ -358,9 +359,13 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         },
         // Create a texture image
         [rContext, render_image]() -> sk_sp<SkImage> {
+            SkDebugf("render target factory\n");
+            SkDebugf("about to call MakeRenderTarget: %p\n", rContext);
+            // SkDebugf("canvas context: %p\n", canvas->recordingContext());
             auto surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
                                                      SkImageInfo::MakeS32(kSize, kSize,
                                                                           kPremul_SkAlphaType)));
+            SkDebugf("render target returned %p\n", surface.get());
             if (!surface) {
                 return nullptr;
             }
@@ -372,7 +377,10 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     constexpr SkScalar kPad = 5.f;
     canvas->translate(kPad, kPad);
     for (const auto& factory : imageFactories) {
+        SkDebugf("recording context before factory: %p %p\n", rContext, dContext);
+        SkDebugf("canvas context before factory: %p\n", canvas->recordingContext());
         sk_sp<SkImage> image(factory());
+        SkDebugf("factory finished: %p\n", image.get());
         if (image) {
             sk_sp<SkImage> texImage(image->makeTextureImage(dContext));
             if (texImage) {
@@ -381,6 +389,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         }
         canvas->translate(kSize + kPad, 0);
     }
+    SkDebugf("new_texture_image done\n");
 }
 
 static void draw_pixmap(SkCanvas* canvas, const SkPixmap& pm, SkScalar x, SkScalar y) {
