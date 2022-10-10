@@ -34,6 +34,24 @@
       "parentUuid": "d87fa346_65c06336",
       "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3944f46_56cdf0f1",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T16:22:23Z",
+      "side": 1,
+      "message": "And I see that `SkShaper_primitive` does not output an empty line when passed nothing. That should probably be fixed.",
+      "parentUuid": "d203b0ce_dbb87ab5",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
