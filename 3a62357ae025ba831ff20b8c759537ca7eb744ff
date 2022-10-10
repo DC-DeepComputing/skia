@@ -94,6 +94,30 @@
       },
       "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0962ecf_d60eb910",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-10T18:42:01Z",
+      "side": 1,
+      "message": "ES2 does allow mipmapping for POT textures. Does that make the control flow non-uniform? (Note that Skia does use mipmapping at all unless ES3 or GL_OES_texture_npot is available).",
+      "parentUuid": "557f3238_e373ce3a",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 98
+      },
+      "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
