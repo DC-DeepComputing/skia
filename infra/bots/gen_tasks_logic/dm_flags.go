@@ -1157,6 +1157,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~Programs") // skia:7849
 	}
 
+	if (b.model("Kevin")) {
+		//match = append(match, "_image")
+	}
+
 	if b.model("TecnoSpark3Pro", "Wembley") {
 		// skia:9814
 		match = append(match, "~Programs")

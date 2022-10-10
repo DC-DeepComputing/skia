@@ -475,27 +475,40 @@ static bool validate_backend_texture(const GrCaps* caps, const GrBackendTexture&
     return true;
 }
 
+extern bool gPrintLog;
 sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext, SkBudgeted budgeted,
                                              const SkImageInfo& info, int sampleCount,
                                              GrSurfaceOrigin origin, const SkSurfaceProps* props,
                                              bool shouldCreateWithMips) {
+    if (gPrintLog) SkDebugf("Other MakeRenderTarget...\n");
     if (!rContext) {
+        if (gPrintLog) SkDebugf("no context\n");
         return nullptr;
     }
     sampleCount = std::max(1, sampleCount);
     GrMipmapped mipmapped = shouldCreateWithMips ? GrMipmapped::kYes : GrMipmapped::kNo;
-
+    if (gPrintLog) SkDebugf("sampleCOunt = %d, mipmapped = %d\n", sampleCount, (int) mipmapped);
+    if (gPrintLog) SkDebugf("directly access caps: %p\n", rContext->caps());
+    if (gPrintLog) SkDebugf("context priv for %p\n", rContext);
+    (void) rContext->priv();
+    if (gPrintLog) SkDebugf("context caps %p\n", rContext->priv().caps());
+    if (gPrintLog) SkDebugf("mipmap support? %d\n", rContext->priv().caps()->mipmapSupport());
     if (!rContext->priv().caps()->mipmapSupport()) {
         mipmapped = GrMipmapped::kNo;
     }
-
+    if (gPrintLog) SkDebugf("checked for mipmap support\n");
+    if (gPrintLog) SkDebugf("surface props: %p\n", props);
+    auto p = SkSurfacePropsCopyOrDefault(props);
+    if (gPrintLog) SkDebugf("about to call createDevice\n");
     auto device = rContext->priv().createDevice(budgeted, info, SkBackingFit::kExact,
                                                 sampleCount, mipmapped, GrProtected::kNo, origin,
-                                                SkSurfacePropsCopyOrDefault(props),
+                                                p,
                                                 skgpu::v1::Device::InitContents::kClear);
+    if (gPrintLog) SkDebugf("device is %p\n", device.get());
     if (!device) {
         return nullptr;
     }
+    if (gPrintLog) SkDebugf("returning surface\n");
     return sk_make_sp<SkSurface_Gpu>(std::move(device));
 }
 

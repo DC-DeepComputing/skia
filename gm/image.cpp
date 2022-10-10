@@ -306,13 +306,17 @@ DEF_GM( return new ScalePixelsGM; )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool gPrintLog = false;
 DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     auto dContext = rContext->asDirectContext();
     if (!dContext) {
         return;
     }
+        gPrintLog = true;
 
+        SkDebugf("rinitial ecording canvas: %p %p\n", rContext, dContext);
     auto render_image = [](SkCanvas* canvas) {
+        SkDebugf("render_image %p\n", canvas);
         canvas->clear(SK_ColorBLUE);
         SkPaint paint;
         paint.setColor(SK_ColorRED);
@@ -323,6 +327,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
         canvas->drawRect(SkRect::MakeXYWH(10.f,30.f,10.f,10.f), paint);
         paint.setColor(SK_ColorCYAN);
         canvas->drawRect(SkRect::MakeXYWH(30.f,30.f,10.f,10.f), paint);
+        SkDebugf("render_image finished\n");
     };
 
     static constexpr int kSize = 50;
@@ -334,20 +339,24 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     std::function<sk_sp<SkImage>()> imageFactories[] = {
         // Create sw raster image.
         [bmp] {
+            SkDebugf("bmp factory\n");
             return bmp.asImage();
         },
         // Create encoded image.
         [bmp] {
+            SkDebugf("encoded bitmap factory\n");
             auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kPNG, 100);
             return SkImage::MakeFromEncoded(std::move(src));
         },
         // Create YUV encoded image.
         [bmp] {
+            SkDebugf("encoded YUV factory\n");
             auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kJPEG, 100);
             return SkImage::MakeFromEncoded(std::move(src));
         },
         // Create a picture image.
         [render_image] {
+            SkDebugf("Skpicture factory\n");
             SkPictureRecorder recorder;
             SkCanvas* canvas = recorder.beginRecording(SkIntToScalar(kSize), SkIntToScalar(kSize));
             render_image(canvas);
@@ -357,13 +366,22 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
                                             SkImage::BitDepth::kU8, srgbColorSpace);
         },
         // Create a texture image
-        [rContext, render_image]() -> sk_sp<SkImage> {
-            auto surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
-                                                     SkImageInfo::MakeS32(kSize, kSize,
-                                                                          kPremul_SkAlphaType)));
+        [rContext, render_image, canvas]() -> sk_sp<SkImage> {
+            SkDebugf("render target factory\n");
+            SkDebugf("image info\n");
+            SkImageInfo info = SkImageInfo::MakeS32(kSize, kSize, kPremul_SkAlphaType);
+            SkDebugf("about to call MakeRenderTarget: %p\n", rContext);
+            SkDebugf("canvas context: %p\n", canvas->recordingContext());
+            auto surface = SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes, info);
+            // auto surface(SkSurface::MakeRenderTarget(rContext, SkBudgeted::kYes,
+            //                                          SkImageInfo::MakeS32(kSize, kSize,
+            //                                                               kPremul_SkAlphaType)));
+            SkDebugf("render target returned %p\n", surface.get());
             if (!surface) {
+                SkDebugf("no surface\n");
                 return nullptr;
             }
+            SkDebugf("getting canvas from surface\n");
             render_image(surface->getCanvas());
             return surface->makeImageSnapshot();
         }
@@ -372,15 +390,22 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     constexpr SkScalar kPad = 5.f;
     canvas->translate(kPad, kPad);
     for (const auto& factory : imageFactories) {
+        SkDebugf("recording context before factory: %p %p\n", rContext, dContext);
+        SkDebugf("canvas context before factory: %p\n", canvas->recordingContext());
         sk_sp<SkImage> image(factory());
+        SkDebugf("factory finished: %p\n", image.get());
         if (image) {
             sk_sp<SkImage> texImage(image->makeTextureImage(dContext));
+            SkDebugf("makeTextureImage finished: %p\n", texImage.get());
             if (texImage) {
                 canvas->drawImage(texImage, 0, 0);
+                SkDebugf("drawImage returned\n");
             }
         }
         canvas->translate(kSize + kPad, 0);
     }
+    SkDebugf("new_texture_image done\n");
+    gPrintLog = false;
 }
 
 static void draw_pixmap(SkCanvas* canvas, const SkPixmap& pm, SkScalar x, SkScalar y) {
