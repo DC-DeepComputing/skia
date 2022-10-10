@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa2b5c39_d665095c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2544,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-10T16:30:39Z",
+      "side": 1,
+      "message": "nit: 100 char limit",
+      "range": {
+        "startLine": 2544,
+        "startChar": 96,
+        "endLine": 2544,
+        "endChar": 105
+      },
+      "revId": "faf4c7a66366525b550783869460eed36dee1085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
