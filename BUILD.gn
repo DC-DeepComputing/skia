@@ -2127,6 +2127,7 @@ if (skia_enable_tools) {
       "experimental/sktext:tests",
       "modules/skottie:tests",
       "modules/skparagraph:tests",
+      "modules/skshaper:tests",
       "modules/sksg:tests",
       "modules/skshaper",
       "modules/svg:tests",

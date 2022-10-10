@@ -3,7 +3,7 @@
 
 #include "tests/Test.h"
 
-#if defined(SKSHAPER_IMPLEMENTATION) && !defined(SK_BUILD_FOR_GOOGLE3)
+#if !defined(SK_BUILD_FOR_GOOGLE3)
 
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
