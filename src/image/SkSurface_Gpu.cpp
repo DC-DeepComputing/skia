@@ -484,14 +484,13 @@ sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext* rContext, SkBud
     }
     sampleCount = std::max(1, sampleCount);
     GrMipmapped mipmapped = shouldCreateWithMips ? GrMipmapped::kYes : GrMipmapped::kNo;
-
     if (!rContext->priv().caps()->mipmapSupport()) {
         mipmapped = GrMipmapped::kNo;
     }
-
+    auto p = SkSurfacePropsCopyOrDefault(props);
     auto device = rContext->priv().createDevice(budgeted, info, SkBackingFit::kExact,
                                                 sampleCount, mipmapped, GrProtected::kNo, origin,
-                                                SkSurfacePropsCopyOrDefault(props),
+                                                p,
                                                 skgpu::v1::Device::InitContents::kClear);
     if (!device) {
         return nullptr;

@@ -209,6 +209,7 @@ public:
             GrSurfaceOrigin,
             sk_sp<skgpu::RefCntedCallback> releaseHelper);
 
+
 protected:
     explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {}
 
