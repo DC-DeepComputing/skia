@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d87fa346_65c06336",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T15:48:05Z",
+      "side": 1,
+      "message": "Is this an indicator about how this should be fixed? If the shaper gets empty input should the behavior be to just call beginLine then endLine? I can\u0027t remember why empty input is bad for the shaper, though I suppose it shouldn\u0027t be. If shaper did something sane here, would that allow the `commit_proc` to do the right thing?",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
