@@ -11,6 +11,7 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkImageInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
