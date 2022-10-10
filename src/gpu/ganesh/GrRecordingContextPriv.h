@@ -25,6 +25,8 @@ namespace skgpu::v1 {
     class SurfaceFillContext;
 }
 
+extern bool gPrintLog;
+
 /** Class that exposes methods on GrRecordingContext that are only intended for use internal to
     Skia. This class is purely a privileged window into GrRecordingContext. It should never have
     additional data members or virtual methods. */
@@ -209,8 +211,14 @@ public:
             GrSurfaceOrigin,
             sk_sp<skgpu::RefCntedCallback> releaseHelper);
 
+    ~GrRecordingContextPriv() {
+        if (gPrintLog) SkDebugf("~GrRecorderingContextPriv\n");
+    }
+
 protected:
-    explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {}
+    explicit GrRecordingContextPriv(GrRecordingContext* rContext) : GrImageContextPriv(rContext) {
+        if (gPrintLog) SkDebugf("GrRecordingContextPriv %p\n", rContext);
+    }
 
 private:
     GrRecordingContextPriv(const GrRecordingContextPriv&) = delete;
@@ -228,6 +236,8 @@ private:
 inline GrRecordingContextPriv GrRecordingContext::priv() { return GrRecordingContextPriv(this); }
 
 inline const GrRecordingContextPriv GrRecordingContext::priv () const {  // NOLINT(readability-const-return-type)
+    SkDebugf("about to return GrRecordingContextPriv for %p\n", this);
+    SkDebugf(" accessing this just because: %d\n", (int) this->backend());
     return GrRecordingContextPriv(const_cast<GrRecordingContext*>(this));
 }
 

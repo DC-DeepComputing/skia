@@ -11,6 +11,8 @@
 #include "include/gpu/GrContextOptions.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"
 
+extern bool gPrintLog;
+
 /** Class that exposes methods on GrContext_Base that are only intended for use internal to Skia.
     This class is purely a privileged window into GrContext_Base. It should never have
     additional data members or virtual methods. */
@@ -34,8 +36,18 @@ public:
 
     GrContextOptions::ShaderErrorHandler* getShaderErrorHandler() const;
 
+    ~GrBaseContextPriv() {
+        if (gPrintLog) {
+            SkDebugf("~GrBaseContextPriv\n");
+        }
+    }
+
 protected:
-    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {}
+    explicit GrBaseContextPriv(GrContext_Base* context) : fContext(context) {
+        if (gPrintLog) {
+            SkDebugf("GrBaseContextPriv %p\n", context);
+        }
+    }
 
     GrContext_Base* fContext;
 

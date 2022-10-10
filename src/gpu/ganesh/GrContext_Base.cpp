@@ -13,6 +13,8 @@
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 
+extern bool gPrintLog;
+
 GrContext_Base::GrContext_Base(sk_sp<GrContextThreadSafeProxy> proxy)
         : fThreadSafeProxy(std::move(proxy)) {
 }
@@ -32,7 +34,11 @@ const GrContextOptions& GrContext_Base::options() const {
     return fThreadSafeProxy->priv().options();
 }
 
-const GrCaps* GrContext_Base::caps() const { return fThreadSafeProxy->priv().caps(); }
+const GrCaps* GrContext_Base::caps() const {
+    if (gPrintLog) SkDebugf("thread safe proxy = %p\n", fThreadSafeProxy.get());
+    if (gPrintLog) SkDebugf("thread safe proxy caps =%p \n", fThreadSafeProxy->priv().caps());
+
+ return fThreadSafeProxy->priv().caps(); }
 sk_sp<const GrCaps> GrContext_Base::refCaps() const { return fThreadSafeProxy->priv().refCaps(); }
 
 GrBackendFormat GrContext_Base::defaultBackendFormat(SkColorType skColorType,
