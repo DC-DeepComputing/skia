@@ -219,7 +219,9 @@ private:
                  SkRect* bounds) const final {
         SkIRect pixelBounds = GetPixelIBounds(*bounds, GrAA(aa != GrAAType::kNone));
         Effect effect = this->apply(&out->hardClip(), &pixelBounds);
-        bounds->intersect(SkRect::Make(pixelBounds));
+        // Silence the return, since bounds is only used if effect is not kClippedOut, in which
+        // case intersect() returns true.
+        (void) bounds->intersect(SkRect::Make(pixelBounds));
         return effect;
     }
 };
