@@ -118,6 +118,30 @@
       },
       "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69de8194_484fd7c4",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-10T18:46:00Z",
+      "side": 1,
+      "message": "ES2 can be evaluated on hardware without any control flow; for loops are unrolled, both sides of if statements are evaluated (results from the false side are discarded), you can\u0027t read arrays from a non-constant index, etc. AFAIK ES2 shouldn\u0027t ever be in a place where the gradient for a sample call can\u0027t be determined.",
+      "parentUuid": "d0962ecf_d60eb910",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 98
+      },
+      "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
