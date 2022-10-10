@@ -116,14 +116,17 @@ skia_wasm_lib("canvaskit") {
   if (skia_canvaskit_include_viewer) {
     deps += [ ":viewer_wasm" ]
   }
-  if (skia_canvaskit_enable_embedded_font) {
-    deps += [ ":create_notomono_cpp" ]
-  }
 
   sources = [
     "WasmCommon.h",
     "canvaskit_bindings.cpp",
   ]
+  if (skia_canvaskit_enable_embedded_font) {
+    deps += [ ":create_notomono_cpp" ]
+  } else {
+    sources += [ "fonts/no_builtin_fonts.cpp" ]
+  }
+
   if (skia_canvaskit_enable_paragraph) {
     sources += [
       "paragraph_bindings.cpp",
