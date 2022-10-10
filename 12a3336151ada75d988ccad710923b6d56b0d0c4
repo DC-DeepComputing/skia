@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3d5de7_ac01b0db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T19:46:24Z",
+      "side": 1,
+      "message": "Some random observations I recently made while using this.",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae861b41_6f5bb144",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T19:46:24Z",
+      "side": 1,
+      "message": "Because these flags are set here, all the `PDF_TESTS` are run against a different build (built from scratch) of all of `libskia_internal.a` (all source files appear to be recompiled from scratch, there appears to be no sharing, these are in `bin/_objs/skia_internal`). When building a test with a different set of flags there will be a separate directory under `bazel-out/` each with its own complete build of the objects listed in `libskia_internal.a` (in addition to it\u0027s own build of the sources from the test framework target and the tests themselves). I discovered this while attempting to run all of the tests and wondered why it was taking so long, and it turned out I had 9 complete builds of Skia.\n\nIn the gn build we\u0027ve been building a maximalist everything included libskia build and running all enabled tests against that. This is doing things the other way around and stating that each set of tests builds the minimal libskia exactly as it needs it. This is a more bazel thing to do and is probably a better test to ensure that the dependencies are actually correct, but it\u0027s a lot of building. I realize that most will just say \"well, distribute the build over more machines!\" but Skia has many more of these optional bits to add to the tests and I have a general concern about doing more work than necessary.\n\nWith Android we have the follow on issue of every set of tests (currently per source test file) statically linking in `libskia_internal.a`, so usually at least ~8MB per test. In addition to that each one of these `skia_cpu_tests` with a different set of `flags` currently has a different `libskia_internal.a` so we cannot currently share those either.",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f98a9c_0b447ecb",
+        "filename": "tests/tests.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-10T19:46:24Z",
+      "side": 1,
+      "message": "Would it be possible to add a target with this name that depends on the tests that are created? I was just interested in running all the `pdf_tests` and was surprised it didn\u0027t work.",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
