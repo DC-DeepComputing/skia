@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbf52fbd_466dc914",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-10T19:42:47Z",
+      "side": 1,
+      "message": "Good catch. I forgot to add it before upload.",
+      "parentUuid": "efff6a8d_51d6f176",
+      "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df04781e_4aaeb138",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-10-10T19:38:54Z",
       "side": 1,
       "message": "It looks like what you\u0027re trying to do here is always use the `custom_embedded` but just give it no system fonts. If so, does `skia_enable_fontmgr_custom_empty` ever get set to `true` now? It is slightly smaller by some tiny amount since it doesn\u0027t have the small amount of code to load up the embedded data.",
+      "range": {
+        "startLine": 133,
+        "startChar": 53,
+        "endLine": 133,
+        "endChar": 91
+      },
+      "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcf828cd_4732b035",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-10T19:42:47Z",
+      "side": 1,
+      "message": "It does not get set to true. I was worried about setting it to true because then multiple _factory.cpp might included into the build (Assuming I\u0027m reading the BUILD.gn correctly).",
+      "parentUuid": "df04781e_4aaeb138",
       "range": {
         "startLine": 133,
         "startChar": 53,
