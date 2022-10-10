@@ -52,6 +52,24 @@
       "parentUuid": "d203b0ce_dbb87ab5",
       "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e2204d_4a9c7b48",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-10T16:23:58Z",
+      "side": 1,
+      "message": "It would take care of the calls immediately below, but it would not be sufficient since we don\u0027t even call commit_proc unless there are some line runs.\n\nI guess we could try to push everything down, maybe all the way to commit_proc by passing in fLineRuns instead of calling for each run.\n\nIt\u0027ll take some tweaking in several places, and since this code is already overly complex I\u0027m inclined to land the isolated quick fix for now.",
+      "parentUuid": "d87fa346_65c06336",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
