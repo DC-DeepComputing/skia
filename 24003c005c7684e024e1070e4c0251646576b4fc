@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b9b0cf6_c2b4e6fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-10T22:26:12Z",
+      "side": 1,
+      "message": "This reland is ready to be looked at. Diff against patch set 1 to see the changes.",
+      "revId": "24003c005c7684e024e1070e4c0251646576b4fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
