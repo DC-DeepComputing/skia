@@ -3,18 +3,20 @@
 
 #include "tests/Test.h"
 
-#if defined(SKSHAPER_IMPLEMENTATION) && !defined(SK_BUILD_FOR_GOOGLE3)
+#if !defined(SK_BUILD_FOR_GOOGLE3)
 
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTo.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "tools/Resources.h"
 
+#include <cinttypes>
 #include <cstdint>
 #include <memory>
 
@@ -22,14 +24,16 @@ namespace {
 struct RunHandler final : public SkShaper::RunHandler {
     const char* fResource;
     skiatest::Reporter* fReporter;
+    const char* fUtf8;
+    size_t fUtf8Size;
     std::unique_ptr<SkGlyphID[]> fGlyphs;
     std::unique_ptr<SkPoint[]> fPositions;
     std::unique_ptr<uint32_t[]> fClusters;
     SkShaper::RunHandler::Range fRange;
     unsigned fGlyphCount = 0;
 
-    RunHandler(const char* resource, skiatest::Reporter* reporter)
-        : fResource(resource), fReporter(reporter) {}
+    RunHandler(const char* resource, skiatest::Reporter* reporter, const char* utf8,size_t utf8Size)
+        : fResource(resource), fReporter(reporter), fUtf8(utf8), fUtf8Size(utf8Size) {}
 
     void beginLine() override {}
     void runInfo(const SkShaper::RunHandler::RunInfo& info) override {}
@@ -50,11 +54,33 @@ struct RunHandler final : public SkShaper::RunHandler {
         REPORTER_ASSERT(fReporter, fGlyphCount == info.glyphCount, "%s", fResource);
         REPORTER_ASSERT(fReporter, fRange.begin() == info.utf8Range.begin(), "%s", fResource);
         REPORTER_ASSERT(fReporter, fRange.size() == info.utf8Range.size(), "%s", fResource);
+        if (!(fRange.begin() + fRange.size() <= fUtf8Size)) {
+            REPORTER_ASSERT(fReporter, fRange.begin() + fRange.size() <= fUtf8Size, "%s",fResource);
+            return;
+        }
         for (unsigned i = 0; i < fGlyphCount; ++i) {
             REPORTER_ASSERT(fReporter, fClusters[i] >= fRange.begin(),
                             "%s %u %u", fResource, i, fGlyphCount);
-            REPORTER_ASSERT(fReporter, fClusters[i] <  fRange.end(),
-                            "%s %u %u", fResource, i, fGlyphCount);
+            if (!(fClusters[i] <  fRange.end())) {
+                SkString familyName;
+                SkString postscriptName;
+                SkTypeface* typeface = info.fFont.getTypeface();
+                int ttcIndex = 0;
+                size_t fontSize = 0;
+                if (typeface) {
+                    typeface->getFamilyName(&familyName);
+                    typeface->getPostScriptName(&postscriptName);
+                    std::unique_ptr<SkStreamAsset> stream = typeface->openStream(&ttcIndex);
+                    if (stream) {
+                        fontSize = stream->getLength();
+                    }
+                }
+                REPORTER_ASSERT(fReporter, fClusters[i] < fRange.end(),
+                    "%" PRIu32 " < %zu %s i:%u glyphCount:%u font: %s %s %d %zu input: \"%.*s\"\n",
+                    fClusters[i], fRange.end(), fResource, i, fGlyphCount,
+                    familyName.c_str(), postscriptName.c_str(), ttcIndex, fontSize,
+                    (int)fRange.size(), fUtf8 + fRange.begin());
+            }
         }
     }
     void commitLine() override {}
@@ -69,7 +95,7 @@ void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
 
     constexpr float kWidth = 400;
     SkFont font(SkTypeface::MakeDefault());
-    RunHandler rh(name, reporter);
+    RunHandler rh(name, reporter, (const char*)data->data(), data->size());
     shaper->shape((const char*)data->data(), data->size(), font, true, kWidth, &rh);
 
     constexpr SkFourByteTag latn = SkSetFourByteTag('l','a','t','n');
