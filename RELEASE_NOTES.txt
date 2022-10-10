@@ -6,6 +6,7 @@ Milestone 108
 -------------
   * SkShader::asAGradient() has been removed.
   * SkMesh and SkMeshSpecification has separate sk_sp and bare ptr getters for ref counted types.
+  * Add SK_WARN_UNUSED_RESULT to SkRect and SkIRect::intersect().
 
 * * *
 
