@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "878bd9f8_aee14f9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-10T15:05:37Z",
+      "side": 1,
+      "message": "Should fix these diffs: https://lottie-gold.skia.org/search?blame\u003d001000008974\u0026corpus\u003dlottie",
+      "revId": "86e33fffc665015a8c76c6c75dedac80b70db4b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f314b78_ae5f79a3",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-10T15:05:37Z",
+      "side": 1,
+      "message": "Probably not important if we\u0027re not emitting these in consolidated mode, but updating anyway to be consistent with https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skottie/src/text/SkottieShaper.cpp;drc\u003d0331237b7b7874250c7f82094cd460cc55154b1c;l\u003d335",
+      "range": {
+        "startLine": 271,
+        "startChar": 21,
+        "endLine": 271,
+        "endChar": 38
+      },
+      "revId": "86e33fffc665015a8c76c6c75dedac80b70db4b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
