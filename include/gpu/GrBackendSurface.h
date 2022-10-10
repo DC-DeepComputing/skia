@@ -8,6 +8,11 @@
 #ifndef GrBackendSurface_DEFINED
 #define GrBackendSurface_DEFINED
 
+// This include of GrBackendSurfaceMutableState is not needed here, but some clients were depending
+// on the include here instead of including it themselves. Adding this back here until we can fix
+// up clients so it can be removed.
+#include "include/gpu/GrBackendSurfaceMutableState.h"
+
 #include "include/gpu/GrSurfaceInfo.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/MutableTextureState.h"
