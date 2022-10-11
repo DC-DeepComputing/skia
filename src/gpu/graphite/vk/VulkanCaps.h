@@ -13,8 +13,15 @@
 namespace skgpu::graphite {
 struct ContextOptions;
 
+/**
+ * Stores some capabilities of a Vk backend.
+ */
 class VulkanCaps final : public Caps {
 public:
+    /**
+     * Creates a VkCaps where nothing is supported. The init function should be called to fill out
+     * the caps.
+     */
     VulkanCaps();
     ~VulkanCaps() override;
 
@@ -64,6 +71,53 @@ private:
                                              SkColorType dstColorType) const override {
         return kUnknown_SkColorType;
     }
+
+    bool fMustSyncCommandBuffersWithQueue = false;
+    bool fShouldAlwaysUseDedicatedImageMemory = false;
+
+    bool fAvoidUpdateBuffers = false;
+
+    bool fSupportsSwapchain = false;
+
+    bool fSupportsPhysicalDeviceProperties2 = false;
+    bool fSupportsMemoryRequirements2 = false;
+    bool fSupportsBindMemory2 = false;
+    bool fSupportsMaintenance1 = false;
+    bool fSupportsMaintenance2 = false;
+    bool fSupportsMaintenance3 = false;
+
+    bool fSupportsDedicatedAllocation = false;
+    bool fSupportsExternalMemory = false;
+    bool fSupportsAndroidHWBExternalMemory = false;
+
+    bool fSupportsYcbcrConversion = false;
+
+    bool fSupportsProtectedMemory = false;
+
+    bool fSupportsDRMFormatModifiers = false;
+
+    bool fPreferPrimaryOverSecondaryCommandBuffers = true;
+    bool fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments = false;
+
+    bool fMustUseCoherentHostVisibleMemory = false;
+    bool fGpuOnlyBuffersMorePerformant = false;
+    bool fShouldPersistentlyMapCpuToGpuBuffers = true;
+
+    /**
+     * TODO - Do we still cap the max render tasks at 100 before doing a submission? Meaning, should
+     * we still default this to 100?
+     */
+    int fMaxPerPoolCachedSecondaryCommandBuffers = 100;
+
+    uint32_t fMaxInputAttachmentDescriptors = 0;
+
+    float fMaxSamplerAnisotropy = 1.f;
+
+    bool fMustLoadFullImageWithDiscardableMSAA = false;
+    bool fSupportsDiscardableMSAAForDMSAA = true;
+    bool fSupportsMemorylessAttachments = false;
+
+    uint32_t fMaxDrawIndirectDrawCount = 0;
 };
 
 } // namespace skgpu::graphite
