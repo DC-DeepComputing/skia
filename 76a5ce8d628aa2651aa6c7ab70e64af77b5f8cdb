@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2544ba8a_a57ff3d6",
+        "filename": "include/sksl/DSLBlock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-11T17:01:52Z",
+      "side": 1,
+      "message": "Can this be defaulted like the move constructor above?",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "76a5ce8d628aa2651aa6c7ab70e64af77b5f8cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
