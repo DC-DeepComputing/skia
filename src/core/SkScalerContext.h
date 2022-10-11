@@ -368,6 +368,10 @@ protected:
      */
     virtual bool generateAdvance(SkGlyph* glyph) = 0;
 
+
+    static bool GenerateMetricsFromPath(SkGlyph* glyph, const SkPath& path, SkMask::Format format,
+        bool verticalLCD, bool a8FromLCD, bool hairline);
+
     /** Generates the contents of glyph.fWidth, fHeight, fTop, fLeft,
      *  as well as fAdvanceX and fAdvanceY if not already set.
      *  The fMaskFormat will already be set to a requested format but may be changed.
@@ -383,6 +387,10 @@ protected:
      *  generateMetrics will be called before generateImage.
      */
     virtual void generateImage(const SkGlyph& glyph) = 0;
+    static void GenerateImageFromPath(const SkMask& mask, const SkPath& path,
+        const SkMaskGamma::PreBlend& maskPreBlend,
+        bool doBGR, bool verticalLCD, bool a8FromLCD,
+        bool hairline);
 
     /** Sets the passed path to the glyph outline.
      *  If this cannot be done the path is set to empty;
@@ -427,12 +435,11 @@ private:
     // calling generateImage.
     bool fGenerateImageFromPath;
 
-    /** Returns false if the glyph has no path at all. */
     void internalGetPath(SkGlyph&, SkArenaAlloc*);
     SkGlyph internalMakeGlyph(SkPackedGlyphID, SkMask::Format, SkArenaAlloc*);
 
-    // SkMaskGamma::PreBlend converts linear masks to gamma correcting masks.
 protected:
+    // SkMaskGamma::PreBlend converts linear masks to gamma correcting masks.
     // Visible to subclasses so that generateImage can apply the pre-blend directly.
     const SkMaskGamma::PreBlend fPreBlend;
 };
