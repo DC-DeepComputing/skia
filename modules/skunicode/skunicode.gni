@@ -7,6 +7,7 @@ skia_unicode_public = [ "$_modules/skunicode/include/SkUnicode.h" ]
 
 skia_unicode_sources = [
   "$_modules/skunicode/src/SkUnicode.cpp",
+  "$_modules/skunicode/src/SkUnicodeBidi.cpp",
   "$_modules/skunicode/src/SkUnicode_client.cpp",
   "$_modules/skunicode/src/SkUnicode_icu.cpp",
   "$_modules/skunicode/src/SkUnicode_icu.h",
@@ -14,6 +15,7 @@ skia_unicode_sources = [
 
 skia_unicode_no_icu = [
   "$_modules/skunicode/src/SkUnicode.cpp",
+  "$_modules/skunicode/src/SkUnicodeBidi.cpp",
   "$_modules/skunicode/src/SkUnicode_client.cpp",
 ]
 

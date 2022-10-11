@@ -423,7 +423,7 @@ SkTArray<int32_t> ShapedText::getVisualOrder(SkUnicode* unicode, RunIndex startR
         runLevels[runLevelsIndex++] = fLogicalRuns[runIndex].bidiLevel();
     }
     SkASSERT(runLevelsIndex == numRuns);
-    unicode->reorderVisual(runLevels.data(), numRuns, results.data());
+    SkUnicode::reorderVisualRuns(runLevels.data(), numRuns, results.data());
     return results;
 }
 

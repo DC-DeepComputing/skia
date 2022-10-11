@@ -293,12 +293,6 @@ public:
     SkString toUpper(const SkString& str) override {
         return fClient->toUpper(str);
     }
-
-    void reorderVisual(const BidiLevel runLevels[],
-                       int levelsCount,
-                       int32_t logicalFromVisual[]) override {
-        return fClient->reorderVisual(runLevels, levelsCount, logicalFromVisual);
-    }
 private:
     friend class SkBidiIterator_test;
     friend class SkBreakIterator_test;

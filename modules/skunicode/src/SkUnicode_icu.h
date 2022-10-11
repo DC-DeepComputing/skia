@@ -30,7 +30,6 @@
     SKICU_FUNC(ubidi_getLength)       \
     SKICU_FUNC(ubidi_getLevelAt)      \
     SKICU_FUNC(ubidi_openSized)       \
-    SKICU_FUNC(ubidi_reorderVisual)   \
     SKICU_FUNC(ubidi_setPara)         \
     SKICU_FUNC(ubrk_close)            \
     SKICU_FUNC(ubrk_current)          \
