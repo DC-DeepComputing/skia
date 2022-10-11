@@ -2432,10 +2432,10 @@ static struct TestDesc tests[] = {
     TEST(fuzz763_378a_1),
 };
 
-static const size_t testCount = std::size(tests);
+static const size_t gTestCount = std::size(tests);
 
 static bool runReverse = false;
 
 DEF_TEST(PathOpsFuzz763, reporter) {
-    RunTestSet(reporter, tests, testCount, firstTest, skipTest, stopTest, runReverse);
+    RunTestSet(reporter, tests, gTestCount, firstTest, skipTest, stopTest, runReverse);
 }

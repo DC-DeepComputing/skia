@@ -9474,7 +9474,7 @@ static struct TestDesc tests[] = {
     TEST(cubicOp1d),
 };
 
-static const size_t testCount = std::size(tests);
+static const size_t gTestCount = std::size(tests);
 
 static struct TestDesc subTests[] = {
     TEST(loops47i),
@@ -9495,7 +9495,7 @@ DEF_TEST(PathOpsOp, reporter) {
     if (runSubTests && runSubTestsFirst) {
         RunTestSet(reporter, subTests, subTestCount, firstSubTest, nullptr, stopTest, runReverse);
     }
-    RunTestSet(reporter, tests, testCount, firstTest, skipTest, stopTest, runReverse);
+    RunTestSet(reporter, tests, gTestCount, firstTest, skipTest, stopTest, runReverse);
     if (runSubTests && !runSubTestsFirst) {
         RunTestSet(reporter, subTests, subTestCount, firstSubTest, nullptr, stopTest, runReverse);
     }

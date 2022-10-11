@@ -9914,7 +9914,7 @@ static TestDesc tests[] = {
     TEST(testLine1),
 };
 
-static const size_t testCount = std::size(tests);
+static const size_t gTestCount = std::size(tests);
 
 static TestDesc subTests[] = {
     TEST(fuzz994s_3414),
@@ -9933,7 +9933,7 @@ DEF_TEST(PathOpsSimplify, reporter) {
     if (runSubTests && runSubTestsFirst) {
         RunTestSet(reporter, subTests, subTestCount, firstSubTest, nullptr, stopTest, runReverse);
     }
-    RunTestSet(reporter, tests, testCount, firstTest, skipTest, stopTest, runReverse);
+    RunTestSet(reporter, tests, gTestCount, firstTest, skipTest, stopTest, runReverse);
     if (runSubTests && !runSubTestsFirst) {
         RunTestSet(reporter, subTests, subTestCount, firstSubTest, nullptr, stopTest, runReverse);
     }

@@ -335,9 +335,9 @@ static TestDesc tests[] = {
     TEST(tiger_threaded),
 };
 
-static const size_t testCount = std::size(tests);
+static const size_t gTestCount = std::size(tests);
 static bool runReverse = false;
 
 DEF_TEST(PathOpsTiger, reporter) {
-    RunTestSet(reporter, tests, testCount, firstTest, skipTest, stopTest, runReverse);
+    RunTestSet(reporter, tests, gTestCount, firstTest, skipTest, stopTest, runReverse);
 }
