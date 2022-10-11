@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1332d50c_ce8e4416",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1886,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T20:26:14Z",
+      "side": 0,
+      "message": "Noticed while I\u0027m in the neighborhood: Metal return statements look different now, so this wasn\u0027t matching anything. Fixed.",
+      "range": {
+        "startLine": 1886,
+        "startChar": 40,
+        "endLine": 1886,
+        "endChar": 41
+      },
+      "revId": "7cca605771628e1ab86cf34b007b6b8181cfee07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
