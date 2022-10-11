@@ -1106,9 +1106,6 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
         case Type::TypeKind::kSampler: {
             // Subpass inputs should use the Texture type, not a Sampler.
             SkASSERT(type->dimensions() != SpvDimSubpassData);
-            if (SpvDimBuffer == type->dimensions()) {
-                fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
-            }
             SpvId imageTypeId = this->getType(type->textureType(), layout);
             if (imageTypeId == NA) {
                 fContext.fErrors->error(type->fPosition,
@@ -1127,6 +1124,9 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
             }
             SpvId floatTypeId = this->getType(*fContext.fTypes.fFloat, layout);
             int sampled = (type->textureAccess() == Type::TextureAccess::kSample) ? 1 : 2;
+            if (type->dimensions() == SpvDimBuffer && sampled != 2) {
+                fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
+            }
             return this->writeInstruction(SpvOpTypeImage,
                                           Words{Word::Result(),
                                                 floatTypeId,
@@ -1478,11 +1478,21 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         }
         case kTextureGrad_SpecialIntrinsic: {
             SpvOp_ op = SpvOpImageSampleExplicitLod;
+
+            const Type& arg0Type = arguments[0]->type();
+            if (arg0Type.dimensions() == SpvDimRect) {
+                fContext.fErrors->error(
+                        c.fPosition,
+                        "unsupported texture dimensions: '" + arg0Type.displayName() + "'");
+                return NA;
+            }
+
             SkASSERT(arguments.size() == 4);
-            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SkASSERT(arg0Type.dimensions() == SpvDim2D);
             SkASSERT(arguments[1]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[2]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[3]->type().matches(*fContext.fTypes.fFloat2));
+
             SpvId type = this->getType(callType);
             SpvId sampler = this->writeExpression(*arguments[0], out);
             SpvId uv = this->writeExpression(*arguments[1], out);
