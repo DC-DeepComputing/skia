@@ -70,6 +70,24 @@
       "parentUuid": "d87fa346_65c06336",
       "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36a1e76e_37a2b0dc",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-11T15:45:02Z",
+      "side": 1,
+      "message": "Yeah, I think we need a TODO here about how it would be nice for this whole block not to exist, but other than that this is fine while we try to work out the issues with doing so.",
+      "parentUuid": "47e2204d_4a9c7b48",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
