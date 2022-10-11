@@ -552,7 +552,11 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
 
         "half4 main(float2 coord) {"
             "half4 t = gradLayout.eval(coord);"
-            "half4 outColor;"
+            // Assign the default color (which may involve a texture sample) in non-uniform control
+            // flow. It is possible for `t` to have coordinates outside borders in which case it
+            // the color will be overwritten by one of the branches below. Always sample from (x,
+            // 0), discarding y, since the layout FP can use y as a side-channel.
+            "half4 outColor = colorizer.eval(t.x0);"
 
             // If t.x is below 0, use the left border color without invoking the child processor.
             // If any t.x is above 1, use the right border color. Otherwise, t is in the [0, 1]
@@ -565,10 +569,6 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
                 "outColor = leftBorderColor;"
             "} else if (t.x > 1.0) {"
                 "outColor = rightBorderColor;"
-            "} else {"
-                // Always sample from (x, 0), discarding y, since the layout FP can use y as a
-                // side-channel.
-                "outColor = colorizer.eval(t.x0);"
             "}"
             "if (bool(makePremul)) {"
                 "outColor.rgb *= outColor.a;"
