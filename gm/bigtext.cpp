@@ -61,3 +61,18 @@ private:
 };
 
 DEF_GM(return new BigTextGM;)
+
+// This exercises the case where the glyph is sufficiently large that we should just draw with a
+// path, but if we incorrectly query the platform scaler context, it can report that the glyph has
+// empty bounds (because it's too big to smooth as an image). Seeing empty bounds, we would
+// incorrectly discard the glyph before we let path rendering handle it. See crbug.com/1370488
+DEF_SIMPLE_GM(bigtext_crbug_1370488, canvas, 512, 512) {
+    auto typeface = SkTypeface::MakeFromName("Times New Roman", SkFontStyle::Normal());
+    SkFont font(typeface, 12.f);
+
+    canvas->translate(-250.f, 300.f);
+    canvas->scale(437.5f, 437.5f);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    canvas->drawString("S", 0.f, 0.f, font, paint);
+}

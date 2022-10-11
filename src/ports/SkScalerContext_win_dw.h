@@ -44,7 +44,8 @@ private:
         static const constexpr value_type PNG     = 1 << 1;
         static const constexpr value_type SVG     = 2 << 1;
         static const constexpr value_type COLR    = 3 << 1;
-        static const constexpr value_type FormatMask = 0x3 << 1;
+        static const constexpr value_type GLYF    = 4 << 1;
+        static const constexpr value_type FormatMask = 0x7 << 1;
     };
 
     static void BilevelToBW(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph);
