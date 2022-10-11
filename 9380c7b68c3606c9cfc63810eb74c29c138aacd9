@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c11174fe_0717a7db",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "nit: There should be a std::string constructor that just takes a char* and handles the \\0 lookup for us.  So I think you could use std::string(s.first.data()).\n\nOr better yet, try to pass s.first.data() directly to setColorSlot and see if it makes a string on the fly .",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e458d7_7201922e",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38901fb6_c633a07f",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94fe1231_e0e2e770",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "Looks like we\u0027re always initializing fSlotManagerWrapper above, I don\u0027t think we need this.",
+      "range": {
+        "startLine": 493,
+        "startChar": 28,
+        "endLine": 493,
+        "endChar": 47
+      },
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3b0db6f_ebd7299d",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "nit: let\u0027s factor the common bits out\n\n    builder.setLogger(...)\n           .setPrecommInterceptor(...);\n    \n    if (fShowSlotManager) {\n     ...\n    } else {\n     ...\n    }\n    \n    fAnimation \u003d builder.makeFromFile(...);",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 507,
+        "endChar": 5
+      },
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3de3ff50_330d0251",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-10-11T19:39:38Z",
+      "side": 1,
+      "message": "return true here (to signal that the event was handled)",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
