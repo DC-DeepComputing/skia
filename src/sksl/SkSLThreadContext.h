@@ -42,9 +42,11 @@ class DSLCore;
  */
 class ThreadContext {
 public:
-    ThreadContext(SkSL::Compiler* compiler,  SkSL::ProgramKind kind,
-              const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
-
+    ThreadContext(SkSL::Compiler* compiler,
+                  SkSL::ProgramKind kind,
+                  const SkSL::ProgramSettings& settings,
+                  const SkSL::ParsedModule& module,
+                  bool isModule);
     ~ThreadContext();
 
     /**

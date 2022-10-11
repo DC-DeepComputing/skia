@@ -8,16 +8,16 @@
 #ifndef SKSL_PARSEDMODULE
 #define SKSL_PARSEDMODULE
 
+#include "src/sksl/SkSLBuiltinMap.h"
 #include <memory>
 
 namespace SkSL {
 
-class BuiltinMap;
 class SymbolTable;
 
 struct ParsedModule {
-    std::shared_ptr<SymbolTable>      fSymbols;
-    std::shared_ptr<const BuiltinMap> fElements;
+    const std::shared_ptr<SymbolTable> symbols() const { return fBuiltins->symbolTable(); }
+    std::shared_ptr<const BuiltinMap> fBuiltins;
 };
 
 } //namespace SkSL
