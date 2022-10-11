@@ -272,10 +272,27 @@ sk_sp<SkTypeface> SkMakeTypefaceFromCTFont(CTFontRef font) {
 }
 
 static bool find_dict_CGFloat(CFDictionaryRef dict, CFStringRef name, CGFloat* value) {
-    CFNumberRef num;
-    return CFDictionaryGetValueIfPresent(dict, name, (const void**)&num)
-        && CFNumberIsFloatType(num)
-        && CFNumberGetValue(num, kCFNumberCGFloatType, value);
+    // macOS 13 bug: For non-system fonts with 0-valued traits,
+    // `kCFBooleanFalse` is used instead of a `CFNumberRef` of 0. See
+    // https://crbug.com/1372420. Filed as FB11673021.
+    CFTypeRef num;
+    if (!CFDictionaryGetValueIfPresent(dict, name, &num)) {
+        return false;
+    }
+
+    CFTypeID typeId = CFGetTypeID(num);
+    if (typeId != CFNumberGetTypeID() && typeId != CFBooleanGetTypeID()) {
+        return false;
+    }
+
+    if (num == kCFBooleanFalse) {
+        *value = 0;
+        return true;
+    }
+
+    CFNumberRef numNumber = static_cast<CFNumberRef>(num);
+    return CFNumberIsFloatType(numNumber)
+        && CFNumberGetValue(numNumber, kCFNumberCGFloatType, value);
 }
 
 template <typename S, typename D, typename C> struct LinearInterpolater {

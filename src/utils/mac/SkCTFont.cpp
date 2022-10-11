@@ -388,19 +388,32 @@ SkCTFontWeightMapping& SkCTFontGetDataFontWeightMapping() {
             }
             CFDictionaryRef fontTraitsDict = static_cast<CFDictionaryRef>(traitsRef.get());
 
+            // macOS 13 bug: For non-system fonts with 0-valued traits,
+            // `kCFBooleanFalse` is used instead of a `CFNumberRef` of 0. See
+            // https://crbug.com/1372420. Filed as FB11673021.
+
             CFTypeRef weightRef;
             if (!CFDictionaryGetValueIfPresent(fontTraitsDict, kCTFontWeightTrait, &weightRef) ||
-                !weightRef ||
-                CFGetTypeID(weightRef) != CFNumberGetTypeID())
+                !weightRef)
             {
                 return;
             }
-            CGFloat weight;
-            CFNumberRef weightNumber = static_cast<CFNumberRef>(weightRef);
-            if (!CFNumberIsFloatType(weightNumber) ||
-                !CFNumberGetValue(weightNumber, kCFNumberCGFloatType, &weight))
+
+            CFTypeID typeId = CFGetTypeID(weightRef);
+            if (typeId != CFNumberGetTypeID() && typeId != CFBooleanGetTypeID())
             {
                 return;
+            }
+
+            CGFloat weight = 0;
+            if (weightRef != kCFBooleanFalse)
+            {
+                CFNumberRef weightNumber = static_cast<CFNumberRef>(weightRef);
+                if (!CFNumberIsFloatType(weightNumber) ||
+                    !CFNumberGetValue(weightNumber, kCFNumberCGFloatType, &weight))
+                {
+                    return;
+                }
             }
 
             dataFontWeights[i] = weight;
