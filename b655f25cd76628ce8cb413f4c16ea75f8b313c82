@@ -70,6 +70,24 @@
       "parentUuid": "6cb8740d_f18b49d2",
       "revId": "b655f25cd76628ce8cb413f4c16ea75f8b313c82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d71ba59d_27f32d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-11T20:34:03Z",
+      "side": 1,
+      "message": "I agree with John. Using a stack backed array structure is probably the right call to replace the verbs and points arrays in the PathRef. In general, I think that SkTDArray\u0027s use of realloc makes it faster than std::vector. But having 5-6 verbs, and 5-6 points in the SkSTArray would be the best approach.",
+      "parentUuid": "58f1ccfe_7ded6f77",
+      "revId": "b655f25cd76628ce8cb413f4c16ea75f8b313c82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
