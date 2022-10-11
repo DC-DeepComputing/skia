@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f307710e_23dd6710",
+        "filename": "include/core/SkICC.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:40:13Z",
+      "side": 1,
+      "message": "the parameter name is grid16_lab",
+      "range": {
+        "startLine": 23,
+        "startChar": 72,
+        "endLine": 23,
+        "endChar": 79
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c642793_fa32ab5f",
+        "filename": "include/core/SkICC.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:40:13Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 27,
+        "startChar": 39,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10cf3b88_804c81df",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:40:13Z",
+      "side": 1,
+      "message": "I was going to suggest that there\u0027s a better name for this, based on the actual encoding type in the spec. That led me to re-discover a rabbit hole of Lab stuff, so I\u0027m not sure the math here is technically correct.\n\nFixed point Lab values use a different range, depending on which TAG they\u0027re in. Relevant paragraph from `10.10 lut16Type`:\n\n    For colour values that are in the PCSLAB colour space on the PCS side of\n    the tag, this tag uses the legacy 16-bit PCSLAB encoding defined in Tables\n    42 and 43, not the 16-bit PCSLAB encoding defined in 6.3.4.2. This encoding\n    is retained for backwards compatibility with profile version 2. The PCSLAB\n    L* values have a different encoding than the PCSLAB a* and PCSLAB b* values.\n    \nAh, wait - are we only using this to build PCSLAB values in an mAB or mBA tag? I\u0027m getting myself confused - the legacy encoding may only be for one-dimensional LUTs?",
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d815c18_45d503a1",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:40:13Z",
+      "side": 1,
+      "message": "Find-replace goof. 😊",
+      "range": {
+        "startLine": 610,
+        "startChar": 38,
+        "endLine": 610,
+        "endChar": 40
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
