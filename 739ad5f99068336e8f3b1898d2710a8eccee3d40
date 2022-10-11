@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4badd8b9_2f03be78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-11T18:19:25Z",
+      "side": 1,
+      "message": "Sorry, I\u0027m not familiar with the history here. I did notice a comment in the code along the lines of prefer std::vector in new code [1]. Wouldn\u0027t using std::vector result in similar code bloat?\n\n[1] - https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/SkTDArray.h;drc\u003d540492fa028e7efb0dd846dadfc7bcb843939d66;l\u003d108 .",
+      "parentUuid": "b9dd4094_76794ca5",
+      "revId": "739ad5f99068336e8f3b1898d2710a8eccee3d40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fec56c94_2de498e1",
