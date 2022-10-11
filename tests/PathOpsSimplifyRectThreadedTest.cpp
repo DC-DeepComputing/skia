@@ -9,6 +9,7 @@
 #include "include/private/SkMacros.h"
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsThreadedCommon.h"
+#include "tests/Test.h"
 
 // four rects, of four sizes
 // for 3 smaller sizes, tall, wide

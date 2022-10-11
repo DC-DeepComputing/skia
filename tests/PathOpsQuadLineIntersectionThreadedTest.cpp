@@ -12,6 +12,7 @@
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsTestCommon.h"
 #include "tests/PathOpsThreadedCommon.h"
+#include "tests/Test.h"
 
 #include <utility>
 

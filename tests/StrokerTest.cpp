@@ -12,6 +12,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStrokerPriv.h"
 #include "src/pathops/SkPathOpsCubic.h"
+#include "src/pathops/SkPathOpsQuad.h"
 #include "tests/PathOpsCubicIntersectionTestData.h"
 #include "tests/PathOpsQuadIntersectionTestData.h"
 #include "tests/Test.h"

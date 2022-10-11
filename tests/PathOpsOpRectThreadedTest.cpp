@@ -5,9 +5,12 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkString.h"
+#include "src/pathops/SkPathOpsDebug.h"
 #include "tests/PathOpsDebug.h"
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsThreadedCommon.h"
+#include "tests/Test.h"
+
 #include <atomic>
 
 // four rects, of four sizes

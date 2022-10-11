@@ -9,6 +9,7 @@
 #include "include/utils/SkRandom.h"
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/SubsetPath.h"
+#include "tests/Test.h"
 
 #define DEBUG_SIMPLIFY_FAILS 0
 
