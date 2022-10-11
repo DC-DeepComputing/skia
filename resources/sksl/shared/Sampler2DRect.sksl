@@ -1,7 +1,10 @@
 layout(binding=0) uniform sampler2DRect t;
 half4 main(float2 coords)
 {
-    return sample(t, coords);
+    half4 c = half4(1);
+    c *= sample(t, coords);
+    c *= sampleGrad(t, coords, dFdx(coords), dFdy(coords));
+    return c;
 }
 
 // This test is expected to report different results based on the backends.
