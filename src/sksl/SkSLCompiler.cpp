@@ -455,7 +455,7 @@ static bool validate_spirv(ErrorReporter& reporter, std::string_view program) {
     const uint32_t* programData = reinterpret_cast<const uint32_t*>(program.data());
     size_t programSize = program.size() / 4;
 
-    spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
+    spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_3);
     std::string errors;
     auto msgFn = [&errors](spv_message_level_t, const char*, const spv_position_t&, const char* m) {
         String::appendf(&errors, "SPIR-V validation error: %s\n", m);

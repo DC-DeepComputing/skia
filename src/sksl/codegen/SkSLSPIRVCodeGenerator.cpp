@@ -1106,9 +1106,6 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
         case Type::TypeKind::kSampler: {
             // Subpass inputs should use the Texture type, not a Sampler.
             SkASSERT(type->dimensions() != SpvDimSubpassData);
-            if (SpvDimBuffer == type->dimensions()) {
-                fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
-            }
             SpvId imageTypeId = this->getType(type->textureType(), layout);
             return this->writeInstruction(SpvOpTypeSampledImage,
                                           Words{Word::Result(), imageTypeId},
@@ -1117,6 +1114,15 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
         case Type::TypeKind::kTexture: {
             SpvId floatTypeId = this->getType(*fContext.fTypes.fFloat, layout);
             int sampled = (type->textureAccess() == Type::TextureAccess::kSample) ? 1 : 2;
+            if (type->dimensions() == SpvDimRect) {
+                if (sampled == 1) {
+                    fCapabilities |= 1ULL << SpvCapabilitySampledRect;
+                } else if (sampled == 2) {
+                    fCapabilities |= 1ULL << SpvCapabilityImageRect;
+                }
+            } else if (type->dimensions() == SpvDimBuffer && sampled != 2) {
+                fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
+            }
             return this->writeInstruction(SpvOpTypeImage,
                                           Words{Word::Result(),
                                                 floatTypeId,
@@ -1465,7 +1471,8 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         case kTextureGrad_SpecialIntrinsic: {
             SpvOp_ op = SpvOpImageSampleExplicitLod;
             SkASSERT(arguments.size() == 4);
-            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D ||
+                     arguments[0]->type().dimensions() == SpvDimRect);
             SkASSERT(arguments[1]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[2]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[3]->type().matches(*fContext.fTypes.fFloat2));
