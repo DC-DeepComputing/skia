@@ -34,6 +34,24 @@
       "parentUuid": "43f141f6_2aab5949",
       "revId": "b655f25cd76628ce8cb413f4c16ea75f8b313c82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cb8740d_f18b49d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T19:40:01Z",
+      "side": 1,
+      "message": "`SkSTArray` provides a big feature--you can bake in a dedicated buffer of N elements, so there\u0027s no extra allocations if you know your common case is \u003c\u003d N elements. It\u0027s very similar to absl::InlinedVector. That\u0027s a pretty big motivator to use `SkTArray` over `vector`. It\u0027s especially nice because you can pass an `SkSTArray\u0026` to a function which takes an `SkTArray\u0026` and it just works (there\u0027s no such cross-compatibility with `vector` and `InlinedVector`).",
+      "parentUuid": "a334d24f_6367b276",
+      "revId": "b655f25cd76628ce8cb413f4c16ea75f8b313c82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
