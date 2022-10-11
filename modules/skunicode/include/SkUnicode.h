@@ -263,11 +263,25 @@ class SKUNICODE_API SkUnicode {
 
         static std::unique_ptr<SkUnicode> Make();
 
-        static std::unique_ptr<SkUnicode> Make(SkSpan<char> text,
-                                               std::vector<SkUnicode::BidiRegion> bidiRegions,
-                                               std::vector<SkUnicode::Position> words,
-                                               std::vector<SkUnicode::Position> graphemeBreaks,
-                                               std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+        static std::unique_ptr<SkUnicode> Make(
+                SkSpan<char> text,
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> words,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+#ifdef SKUNICODE_ICU_AVAILABLE
+        static std::unique_ptr<SkUnicode> MakeIcuUnicode();
+#endif
+
+#ifdef SKUNICODE_CLIENT_AVAILABLE
+        static std::unique_ptr<SkUnicode> MakeClientUnicode(
+                SkSpan<char> text,
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> words,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+#endif
 };
 
 namespace sknonstd {

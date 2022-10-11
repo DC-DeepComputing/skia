@@ -8,6 +8,7 @@ declare_args() {
   paragraph_gms_enabled = true
   paragraph_tests_enabled = true
   paragraph_bench_enabled = false
+  paragraph_tests_unicode = false
 }
 
 if (skia_enable_skparagraph && skia_enable_skshaper && skia_use_icu &&
@@ -73,6 +74,9 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_use_icu &&
           "../..:test",
           "../skshaper",
         ]
+        if (paragraph_tests_unicode) {
+          defines = [ "SKUNICODE_TEST_AVAILABLE" ]
+        }
       } else {
         sources = []
       }
