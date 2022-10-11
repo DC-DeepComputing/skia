@@ -27,6 +27,7 @@ class DSLBlock {
 public:
     template<class... Statements>
     DSLBlock(Statements... statements) {
+        fSymbols = CurrentSymbolTableForBlock();
         fStatements.reserve_back(sizeof...(statements));
         ((void)fStatements.push_back(DSLStatement(statements.release()).release()), ...);
     }
@@ -43,6 +44,7 @@ public:
 
     DSLBlock& operator=(DSLBlock&& other) {
         fStatements = std::move(other.fStatements);
+        fSymbols = std::move(other.fSymbols);
         return *this;
     }
 
@@ -51,6 +53,8 @@ public:
     std::unique_ptr<SkSL::Block> release();
 
 private:
+    static std::shared_ptr<SkSL::SymbolTable> CurrentSymbolTableForBlock();
+
     SkSL::StatementArray fStatements;
     std::shared_ptr<SkSL::SymbolTable> fSymbols;
     Position fPosition;

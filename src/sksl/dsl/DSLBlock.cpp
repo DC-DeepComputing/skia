@@ -9,6 +9,7 @@
 
 #include "include/sksl/DSLStatement.h"
 #include "include/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLBlock.h"
 
 namespace SkSL {
@@ -47,6 +48,11 @@ std::unique_ptr<SkSL::Block> DSLBlock::release() {
 
 void DSLBlock::append(DSLStatement stmt) {
     fStatements.push_back(stmt.release());
+}
+
+std::shared_ptr<SkSL::SymbolTable> DSLBlock::CurrentSymbolTableForBlock() {
+    // We can't reference ThreadContext directly from a public header.
+    return ThreadContext::SymbolTable();
 }
 
 } // namespace dsl
