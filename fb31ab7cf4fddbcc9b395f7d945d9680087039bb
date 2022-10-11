@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baee2f0b_c908e35d",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "https://www.w3.org/TR/webgpu/#texture-view-creation\nBased on the spec, the wgpu::Texture can not be sampled or rendered directly. A wgpu::TextureView has to be created from wgpu::Texture::CreateView(). A texture view just offers us a view into the texture. The texture view is not like GL framebufer object. It can be used as both render target and a static texture. Just because we can not get texture from swapchain, so we need this ctor.\n\nFor the ctor BackendTexture(wgpu::Texture texture), the BackendTexture will hold the texture. When the backend is used, we still need to create a texture view from it with the default properties.\n\nAnd if I read the spec correctly, I think we can read or write pixels data to a wgpu::Texture directly, but wgpu::TextureView doesn\u0027t support them. But I think skia can draw pixels to the wgpu::TextureView instead of copy, and can draw wgpu::TextureView to another intermedia texture and then copy pixels from it. So I feel all skia API can works with both texture and texture view.",
+      "parentUuid": "58cf6858_7acd7ace",
+      "range": {
+        "startLine": 33,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fe5081c_e510d7b9",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-10T14:29:15Z",
       "side": 1,
       "message": "Though there\u0027s a good chance these friends will be needed, lets only add them as we actually add a uses to call dawnTextureSpec (instead of just copying metal).",
+      "range": {
+        "startLine": 110,
+        "startChar": 2,
+        "endLine": 112,
+        "endChar": 29
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e0a19ec_360257f2",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fe5081c_e510d7b9",
       "range": {
         "startLine": 110,
         "startChar": 2,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67c02325_280f9f24",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc193553_3d5479b0",
+      "range": {
+        "startLine": 28,
+        "startChar": 23,
+        "endLine": 28,
+        "endChar": 29
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0f3bc36_dbd80f82",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-10-10T14:29:15Z",
       "side": 1,
       "message": "do you also need to check this-\u003eisValid()? I think a non valid BackendTexture may have any value stored as its backend. Maybe just start this whole dtor with:\n    if (!this-\u003eisValid()) {\n        return;\n    }\n\nThat way any other backends who want to do things don\u0027t need to do the valid check?",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 45
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49c6053d_1d1a04fc",
+        "filename": "src/gpu/graphite/BackendTexture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0f3bc36_dbd80f82",
       "range": {
         "startLine": 14,
         "startChar": 5,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d17d4f4_8081019e",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3df193e8_ad3eebd8",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 34
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc0c09e5_e1dba0c3",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-10-10T14:29:15Z",
       "side": 1,
       "message": "We don\u0027t use printf in Skia. I would use the Log.h system we\u0027re adding for graphite. you can see examples throughout the graphite code",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 42
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05ddff5f_a80a2d67",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc0c09e5_e1dba0c3",
       "range": {
         "startLine": 25,
         "startChar": 4,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e113100_7cfc15e0",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d653713_c69ba76e",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af1d37fe_61add956",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-10-10T14:29:15Z",
       "side": 1,
       "message": "I don\u0027t think this is need either",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd8335e_dfba0aa1",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-11T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af1d37fe_61add956",
       "range": {
         "startLine": 11,
         "startChar": 0,
