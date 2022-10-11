@@ -72,6 +72,41 @@ if (skia_use_system_icu) {
     ]
   }
 
+  third_party("bidi") {
+    public_include_dirs = [
+      "../externals/icu/source/common",
+      "../externals/icu/source/i18n",
+      "bidi/",
+    ]
+    public_defines = [
+      "U_USING_ICU_NAMESPACE=0",
+      "U_DISABLE_RENAMING",
+      "SK_USING_THIRD_PARTY_ICU",
+    ]
+    defines = [
+      "U_COMMON_IMPLEMENTATION",
+      "U_STATIC_IMPLEMENTATION",
+      "U_I18N_IMPLEMENTATION",
+    ]
+    configs = [ "//gn/portable:add_rtti" ]
+    sources = [
+      "../externals/icu/source/common/cmemory.cpp",
+      "../externals/icu/source/common/cstring.cpp",
+      "../externals/icu/source/common/ubidi.cpp",
+      "../externals/icu/source/common/ubidi_props.cpp",
+      "../externals/icu/source/common/ubidiln.cpp",
+      "../externals/icu/source/common/ubidiwrt.cpp",
+      "../externals/icu/source/common/uchar.cpp",
+      "../externals/icu/source/common/udataswp.cpp",
+      "../externals/icu/source/common/uinvchar.cpp",
+      "../externals/icu/source/common/ustring.cpp",
+      "../externals/icu/source/common/ustrtrns.cpp",
+      "../externals/icu/source/common/utf_impl.cpp",
+      "../externals/icu/source/common/utrie2.cpp",
+      "bidi/Headers.h",
+    ]
+  }
+
   third_party("icu") {
     public_include_dirs = [
       "../externals/icu/source/common",

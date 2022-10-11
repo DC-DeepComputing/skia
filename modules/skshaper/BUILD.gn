@@ -7,6 +7,11 @@ import("../../gn/skia.gni")
 import("skshaper.gni")
 
 if (skia_enable_skshaper) {
+  if (skia_use_harfbuzz) {
+    assert(skia_use_icu || skia_use_client_icu,
+           "Harfbuzz requires SkUnicode implementation.")
+  }
+
   config("public_config") {
     include_dirs = [ "include" ]
     defines = []
