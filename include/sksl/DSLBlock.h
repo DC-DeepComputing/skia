@@ -39,9 +39,10 @@ public:
     DSLBlock(SkTArray<DSLStatement> statements, std::shared_ptr<SymbolTable> symbols = nullptr,
             Position pos = {});
 
-    ~DSLBlock();
+    ~DSLBlock() = default;
 
     DSLBlock& operator=(DSLBlock&& other) {
+        fSymbols = std::move(other.fSymbols);
         fStatements = std::move(other.fStatements);
         return *this;
     }
