@@ -1465,7 +1465,8 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         case kTextureGrad_SpecialIntrinsic: {
             SpvOp_ op = SpvOpImageSampleExplicitLod;
             SkASSERT(arguments.size() == 4);
-            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D ||
+                     arguments[0]->type().dimensions() == SpvDimRect);
             SkASSERT(arguments[1]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[2]->type().matches(*fContext.fTypes.fFloat2));
             SkASSERT(arguments[3]->type().matches(*fContext.fTypes.fFloat2));
