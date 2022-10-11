@@ -17,6 +17,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/ToolUtils.h"
+#include "tools/Resources.h"
 
 /**
  *  Skia may draw from outlines when the size is very large, so we exercise that
@@ -61,3 +62,17 @@ private:
 };
 
 DEF_GM(return new BigTextGM;)
+
+// Exercise the case where the glyph is sufficiently large that we should just draw with a path,
+// but the DirectWrite scaler context failed to calculate the bounds and reported empty bounds.
+// With empty bounds the glyph was discarded instead of rendered from path. See crbug.com/1370488
+DEF_SIMPLE_GM(bigtext_crbug_1370488, canvas, 512, 512) {
+    auto typeface = MakeResourceAsTypeface("fonts/SpiderSymbol.ttf");
+    SkFont font(typeface, 12.f);
+
+    canvas->translate(-1200.f, 1200.f);
+    canvas->scale(437.5f, 437.5f);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    canvas->drawString("\xEF\x80\xA1", 0.f, 0.f, font, paint);
+}
