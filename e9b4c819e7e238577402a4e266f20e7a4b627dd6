@@ -88,6 +88,24 @@
       "parentUuid": "47e2204d_4a9c7b48",
       "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6000cf71_f7dd3b51",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-10-11T17:16:24Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "36a1e76e_37a2b0dc",
+      "revId": "e9b4c819e7e238577402a4e266f20e7a4b627dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
