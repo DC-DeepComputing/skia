@@ -166,6 +166,30 @@
       },
       "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b23dc5_078b29a3",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-11T00:41:33Z",
+      "side": 1,
+      "message": "Practically speaking, I agree with John in that using the old code path in ES 2.0 should be OK.\n\nTo be extra pedantic, AIUI this is technically still considered undefined behavior in ES 2.0. From the GLSL ES Specification version 1.00, Appendix A: \"Limitations for ES 2.0\":\n\n- Section 4 \"Control Flow\": Forward branching is allowed, both for constant and non-constant conditions. Therefore if-then, if-then-else, break and continue statements are permitted.\n\n- Section 6 \"Texture Accesses\": Accessing mip-mapped textures within the body of a non-uniform conditional block gives an undefined value. A non-uniform conditional block is a block whose execution cannot be determined at compile time.\n\nAgain, this piece of code never accesses a mipped texture (the whole basis of the sampleLod approach), it always uses the same texture coordinates in all the branches it takes, the shader compiler will likely flatten the branches anyway, and it will never be subject to uniformity analysis on ES 2.0.\n\nStill, it\u0027s good to be cognizant of this hole in the spec.",
+      "parentUuid": "39c1c203_23f0b0ab",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 98
+      },
+      "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
