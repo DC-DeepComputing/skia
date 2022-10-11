@@ -356,15 +356,9 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
     }
 
     // Detect the declaration of magical variables.
-    if ((var->storage() == Variable::Storage::kGlobal) && var->name() == Compiler::FRAGCOLOR_NAME) {
-        // Silently ignore duplicate definitions of `sk_FragColor`.
-        const Symbol* symbol = ThreadContext::SymbolTable()->find(var->name());
-        if (symbol) {
-            return nullptr;
-        }
-    } else if ((var->storage() == Variable::Storage::kGlobal ||
-                var->storage() == Variable::Storage::kInterfaceBlock) &&
-               var->name() == Compiler::RTADJUST_NAME) {
+    if ((var->storage() == Variable::Storage::kGlobal ||
+         var->storage() == Variable::Storage::kInterfaceBlock) &&
+        var->name() == Compiler::RTADJUST_NAME) {
         // `sk_RTAdjust` is special, and makes the IR generator emit position-fixup expressions.
         if (ThreadContext::RTAdjustState().fVar || ThreadContext::RTAdjustState().fInterfaceBlock) {
             context.fErrors->error(var->fPosition, "duplicate definition of 'sk_RTAdjust'");
