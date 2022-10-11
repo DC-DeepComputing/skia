@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5468cc_e5dc1627",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-11T14:48:31Z",
+      "side": 1,
+      "message": "PTAL: Michael and I seem to have addressed all the issues.",
+      "revId": "f3d09158101851d732624a86f509711eef45cad1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
