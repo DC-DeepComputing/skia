@@ -10,15 +10,15 @@ declare_args() {
   skia_use_runtime_icu = false
 }
 
-if (skia_use_icu) {
-  config("public_config") {
-    include_dirs = [ "include" ]
-    defines = [ "SK_UNICODE_AVAILABLE" ]
-    if (is_component_build) {
-      defines += [ "SKUNICODE_DLL" ]
-    }
+config("public_config") {
+  include_dirs = [ "include" ]
+  defines = [ "SK_UNICODE_AVAILABLE" ]
+  if (is_component_build) {
+    defines += [ "SKUNICODE_DLL" ]
   }
+}
 
+if (skia_use_icu || skia_use_client_icu) {
   component("skunicode") {
     check_includes = false
     public_configs = [ ":public_config" ]
@@ -26,19 +26,31 @@ if (skia_use_icu) {
     deps = [ "../..:skia" ]
     defines = [ "SKUNICODE_IMPLEMENTATION=1" ]
     sources = skia_unicode_sources
+    configs += [ "../../:skia_private" ]
 
-    # only available for Android at the moment
-    if (skia_use_runtime_icu && (is_android || is_linux)) {
-      sources += skia_unicode_runtime_icu_sources
-      deps += [ "//third_party/icu:headers" ]
+    if (skia_use_icu) {
+      sources += skia_unicode_icu_sources
+      if (skia_use_client_icu) {
+        # To allow testing client icu agains full icu
+        sources += skia_unicode_client_sources
+        defines += [ "SKUNICODE_CLIENT_AVAILABLE" ]
+      }
+      defines += [ "SKUNICODE_ICU_AVAILABLE" ]
+
+      # only available for Android at the moment
+      if (skia_use_runtime_icu && (is_android || is_linux)) {
+        sources += skia_unicode_runtime_icu_sources
+        deps += [ "//third_party/icu:headers" ]
+      } else {
+        sources += skia_unicode_builtin_icu_sources
+        deps += [ "//third_party/icu" ]
+      }
+      configs += [ "../../third_party/icu/config:no_cxx" ]
     } else {
-      sources += skia_unicode_builtin_icu_sources
-      deps += [ "//third_party/icu" ]
+      sources += skia_unicode_client_sources
+      defines += [ "SKUNICODE_CLIENT_AVAILABLE" ]
+      deps += [ "//third_party/icu:bidi" ]
     }
-    configs += [
-      "../../:skia_private",
-      "../../third_party/icu/config:no_cxx",
-    ]
   }
 } else {
   group("skunicode") {
