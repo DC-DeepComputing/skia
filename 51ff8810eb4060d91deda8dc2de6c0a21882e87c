@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76b309c_ec057b86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T17:24:29Z",
+      "side": 1,
+      "message": "I think the organization is an improvement, but I think the naming is a little strange now (because it\u0027s no longer just a Map). Merging everything into Module would alleviate that, but I\u0027m not certain how that\u0027s going to look.",
+      "revId": "51ff8810eb4060d91deda8dc2de6c0a21882e87c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
