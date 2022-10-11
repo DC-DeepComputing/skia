@@ -1,0 +1,19 @@
+# Copyright 2022 Google LLC.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+_src = "../externals/icu/source"
+icu_bidi_sources = [
+  "$_src/common/cmemory.cpp",
+  "$_src/common/cstring.cpp",
+  "$_src/common/ubidi.cpp",
+  "$_src/common/ubidi_props.cpp",
+  "$_src/common/ubidiln.cpp",
+  "$_src/common/ubidiwrt.cpp",
+  "$_src/common/uchar.cpp",
+  "$_src/common/udataswp.cpp",
+  "$_src/common/uinvchar.cpp",
+  "$_src/common/ustring.cpp",
+  "$_src/common/ustrtrns.cpp",
+  "$_src/common/utf_impl.cpp",
+  "$_src/common/utrie2.cpp",
+]
