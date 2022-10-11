@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 
 namespace skgpu::graphite {
 
@@ -15,11 +16,19 @@ VulkanCaps::VulkanCaps() : Caps() {}
 
 VulkanCaps::~VulkanCaps() {}
 
-TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType,
+TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType colorType,
                                                      uint32_t levelCount,
                                                      Protected,
-                                                     Renderable) const {
-    return {};
+                                                     Renderable renderable) const {
+    // if (renderable == Renderable::kYes) {
+
+    // }
+    // get format from color type; return nothing if invalid; assign to fFormat otherwise
+
+    VulkanTextureInfo info {};
+    info.fLevelCount = levelCount;
+
+    return info;
 }
 
 TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
