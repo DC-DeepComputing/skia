@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d010dee7_92a93c9b",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-11T13:24:45Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 95,
+        "startChar": 75,
+        "endLine": 95,
+        "endChar": 81
+      },
+      "revId": "7d36bd666da6ca0b02841b768c31de1c41bd2fe9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

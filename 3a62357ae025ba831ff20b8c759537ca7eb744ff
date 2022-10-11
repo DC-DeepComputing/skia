@@ -190,6 +190,30 @@
       },
       "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc497487_5e896cf0",
+        "filename": "src/gpu/ganesh/effects/GrAtlasedShaderHelpers.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-11T13:24:45Z",
+      "side": 1,
+      "message": "I guess that makes sense in that nothing bars ES2 capable hardware from being more capable and efficient than ES2 demands and ES2 can be used on devices that also support later ES versions. I suppose if we got any regressions from this we could even restrict the explicit LOD path to WebGPU.",
+      "parentUuid": "39b23dc5_078b29a3",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 98
+      },
+      "revId": "3a62357ae025ba831ff20b8c759537ca7eb744ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
