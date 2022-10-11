@@ -16,6 +16,40 @@
       "message": "That \"maybe I\u0027ll do this in a while\" became \"doing it now\"...",
       "revId": "e3b07e9dde2336474e010d9085627950d2eb4ad3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6168e30a_04245626",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:20:39Z",
+      "side": 1,
+      "message": "nit: This could take `const skcms_CICP\u0026`",
+      "revId": "e3b07e9dde2336474e010d9085627950d2eb4ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40b1542a_57734ebf",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-11T14:20:39Z",
+      "side": 1,
+      "message": "Can we assert that fn is srgb-ish here?",
+      "revId": "e3b07e9dde2336474e010d9085627950d2eb4ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
