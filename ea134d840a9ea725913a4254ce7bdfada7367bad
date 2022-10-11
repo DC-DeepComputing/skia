@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e068602_8a3e3f9d",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T14:14:23Z",
+      "side": 0,
+      "message": "This felt like it belonged in SkSLBuiltinMap.cpp. (When this was written, I am pretty sure builtin maps didn\u0027t have an associated cpp yet.)",
+      "range": {
+        "startLine": 206,
+        "startChar": 12,
+        "endLine": 206,
+        "endChar": 73
+      },
+      "revId": "ea134d840a9ea725913a4254ce7bdfada7367bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
