@@ -259,7 +259,7 @@ class SKUNICODE_API SkUnicode {
             } while (!iter->isDone());
         }
 
-        virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
+        static void reorderVisualRuns(const uint8_t* levels, int32_t length, int32_t* indexMap);
 
         static std::unique_ptr<SkUnicode> Make();
 

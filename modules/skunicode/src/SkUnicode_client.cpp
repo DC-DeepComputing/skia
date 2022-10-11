@@ -207,14 +207,6 @@ public:
         SkASSERT(false);
         return SkString(fText8.data(), fText8.size());
     }
-
-    void reorderVisual(const BidiLevel runLevels[],
-                       int levelsCount,
-                       int32_t logicalFromVisual[]) override {
-        // This is a temp solution until we "borrow" reorderVisual code
-        static std::unique_ptr<SkUnicode> icu = SkUnicode::Make();
-        return icu->reorderVisual(runLevels, levelsCount, logicalFromVisual);
-    }
 private:
     friend class SkBidiIterator_client;
     friend class SkBreakIterator_client;

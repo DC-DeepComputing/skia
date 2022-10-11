@@ -556,12 +556,6 @@ public:
 
         return true;
     }
-
-    void reorderVisual(const BidiLevel runLevels[],
-                       int levelsCount,
-                       int32_t logicalFromVisual[]) override {
-        sk_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
-    }
 };
 
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
