@@ -7,7 +7,6 @@
 #ifndef SkOpEdgeBuilder_DEFINED
 #define SkOpEdgeBuilder_DEFINED
 
-#include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkTDArray.h"
 #include "src/pathops/SkOpContour.h"
@@ -17,6 +16,7 @@
 #include <cstdint>
 
 class SkPath;
+struct SkPoint;
 
 class SkOpEdgeBuilder {
 public:

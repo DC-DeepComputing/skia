@@ -19,85 +19,239 @@
 #include <tuple>
 #include <utility>
 
-class SK_SPI SkTDStorage {
+int CalculateStorageReserve(int newReserve, int sizeOfT);
+
+template <typename T> class SK_SPI SkTDStorage {
 public:
-    explicit SkTDStorage(int sizeOfT);
-    SkTDStorage(const void* src, int count, int sizeOfT);
+    SkTDStorage() = default;
+    SkTDStorage(const void* src, int count)
+        : fReserve{count}
+        , fCount{count} {
+        if (count > 0) {
+            SkASSERT(src != nullptr);
+            size_t storageSize = this->bytes(count);
+            fStorage = static_cast<std::byte*>(sk_malloc_throw(storageSize));
+            memcpy(fStorage, src, storageSize);
+        }
+    }
 
     // Copy
-    SkTDStorage(const SkTDStorage& that);
-    SkTDStorage& operator= (const SkTDStorage& that);
+    SkTDStorage(const SkTDStorage<T>& that)
+          : SkTDStorage{that.fStorage, that.fCount} {}
+
+    SkTDStorage<T>& operator= (const SkTDStorage<T>& that) {
+        if (this != &that) {
+            if (that.fCount <= fReserve) {
+              fCount = that.fCount;
+              if (fCount > 0) {
+                memcpy(fStorage, that.data(), that.size_bytes());
+              }
+            } else {
+              *this = SkTDStorage{that.data(), that.size()};
+            }
+        }
+        return *this;
+    }
 
     // Move
-    SkTDStorage(SkTDStorage&& that);
-    SkTDStorage& operator= (SkTDStorage&& that);
+    SkTDStorage(SkTDStorage<T>&& that)
+        : fStorage(std::exchange(that.fStorage, nullptr))
+        , fReserve{that.fReserve}
+        , fCount{that.fCount} {}
 
-    ~SkTDStorage();
+    SkTDStorage& operator= (SkTDStorage&& that) {
+        if (this != &that) {
+            this->~SkTDStorage();
+            new (this) SkTDStorage{std::move(that)};
+        }
+        return *this;
+    }
 
-    void reset();
-    void swap(SkTDStorage& that);
+    ~SkTDStorage() {
+        sk_free(fStorage);
+    }
+
+    void reset() {
+        this->~SkTDStorage();
+        new (this) SkTDStorage<T>{};
+    }
+    void swap(SkTDStorage<T>& that) {
+        std::swap(fStorage, that.fStorage);
+        std::swap(fReserve, that.fReserve);
+        std::swap(fCount, that.fCount);
+    }
 
     // Size routines
     bool empty() const { return fCount == 0; }
     void clear() { fCount = 0; }
     int size() const { return fCount; }
-    void resize(int newCount);
+    void resize(int newCount) {
+        SkASSERT(newCount >= 0);
+        if (newCount > fReserve) {
+            this->reserve(newCount);
+        }
+        fCount = newCount;
+    }
     size_t size_bytes() const { return this->bytes(fCount); }
 
     // Capacity routines
     int capacity() const { return fReserve; }
-    void reserve(int newReserve);
-    void shrink_to_fit();
+    void reserve(int newReserve) {
+        SkASSERT(newReserve >= 0);
+        if (newReserve > fReserve) {
+            fReserve = CalculateStorageReserve(newReserve, static_cast<int>(sizeof(T)));
+            size_t newStorageSize = this->bytes(fReserve);
+            fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, newStorageSize));
+        }
+    }
+    void shrink_to_fit() {
+        if (fReserve != fCount) {
+            fReserve = fCount;
+            // Because calling realloc with size of 0 is implementation defined, force to a good state
+            // by freeing fStorage.
+            if (fReserve > 0) {
+                fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, this->bytes(fReserve)));
+            } else {
+                sk_free(fStorage);
+                fStorage = nullptr;
+            }
+        }
+    }
 
     void* data() { return fStorage; }
     const void* data() const { return fStorage; }
 
     // Deletion routines
-    void erase(int index, int count);
+    void erase(int index, int count) {
+        SkASSERT(count >= 0);
+        SkASSERT(fCount >= count);
+        SkASSERT(0 <= index && index <= fCount);
+
+        if (count > 0) {
+            // Check that the resulting size fits in an int. This will abort if not.
+          const int newCount = this->calculateSizeOrDie(-count);
+          this->moveTail(index, index + count, fCount);
+          this->resize(newCount);
+        }
+    }
     // Removes the entry at 'index' and replaces it with the last array element
-    void removeShuffle(int index);
+    void removeShuffle(int index) {
+        SkASSERT(fCount > 0);
+        SkASSERT(0 <= index && index < fCount);
+        // Check that the new count is valid.
+        const int newCount = this->calculateSizeOrDie(-1);
+        this->moveTail(index, fCount - 1, fCount);
+        this->resize(newCount);
+    }
 
     // Insertion routines
-    void* prepend();
+    void* prepend() {
+        return this->insert(/*index=*/0);
+    }
 
-    void append();
-    void append(int count);
-    void* append(const void* src, int count);
+    void append() {
+        if (fCount < fReserve) {
+            fCount++;
+        } else {
+          this->insert(fCount);
+        }
+    }
+    void append(int count) {
+        SkASSERT(count >= 0);
+        // Read as: if (fCount + count <= fReserve) {...}. This is a UB safe way to avoid the add.
+        if (fReserve - fCount >= count) {
+          fCount += count;
+        } else {
+          this->insert(fCount, count, nullptr);
+        }
+    }
+    void* append(const void* src, int count) {
+        return this->insert(fCount, count, src);
+    }
 
-    void* insert(int index);
-    void* insert(int index, int count, const void* src);
+    void* insert(int index) {
+        return this->insert(index, /*count=*/1, nullptr);
+    }
+    void* insert(int index, int count, const void* src) {
+        SkASSERT(0 <= index && index <= fCount);
+        SkASSERT(count >= 0);
+
+        if (count > 0) {
+            const int oldCount = fCount;
+            const int newCount = this->calculateSizeOrDie(count);
+            this->resize(newCount);
+            this->moveTail(index + count, index, oldCount);
+
+            if (src != nullptr) {
+                this->copySrc(index, src, count);
+            }
+        }
+
+        return this->address(index);
+    }
 
     void pop_back() {
         SkASSERT(fCount > 0);
         fCount--;
     }
 
-    friend bool operator==(const SkTDStorage& a, const SkTDStorage& b);
-    friend bool operator!=(const SkTDStorage& a, const SkTDStorage& b) {
-        return !(a == b);
-    }
+    template <typename U>
+    friend bool operator==(const SkTDStorage<U>& a, const SkTDStorage<U>& b);
+    template <typename U>
+    friend bool operator!=(const SkTDStorage<U>& a, const SkTDStorage<U>& b);
 
 private:
-    size_t bytes(int n) const { return SkToSizeT(n * fSizeOfT); }
+    size_t bytes(int n) const { return SkToSizeT(n * sizeof(T)); }
     void* address(int n) { return fStorage + this->bytes(n); }
 
     // Adds delta to fCount. Crash if outside [0, INT_MAX]
-    int calculateSizeOrDie(int delta);
+    int calculateSizeOrDie(int delta) {
+        // Check that count will not go negative.
+        SkASSERT_RELEASE(-fCount <= delta);
+
+        // We take care to avoid overflow here.
+        // Because count and delta are both signed 32-bit ints, the sum of count and delta is at
+        // most 4294967294, which fits fine in uint32_t. Proof follows in assert.
+        static_assert(UINT32_MAX >= (uint32_t)INT_MAX + (uint32_t)INT_MAX);
+        uint32_t testCount = (uint32_t)fCount + (uint32_t)delta;
+        SkASSERT_RELEASE(SkTFitsIn<int>(testCount));
+        return SkToInt(testCount);
+    }
 
     // Move the tail of the array defined by the indexes tailStart and tailEnd to dstIndex. The
     // elements at dstIndex are overwritten by the tail.
-    void moveTail(int dstIndex, int tailStart, int tailEnd);
+    void moveTail(int to, int tailStart, int tailEnd) {
+        SkASSERT(0 <= to && to <= fCount);
+        SkASSERT(0 <= tailStart && tailStart <= tailEnd && tailEnd <= fCount);
+        if (to != tailStart && tailStart != tailEnd) {
+            this->copySrc(to, this->address(tailStart), tailEnd - tailStart);
+        }
+    }
 
     // Copy src into the array at dstIndex.
-    void copySrc(int dstIndex, const void* src, int count);
+    void copySrc(int dstIndex, const void* src, int count) {
+        SkASSERT(count > 0);
+        memmove(this->address(dstIndex), src, this->bytes(count));
+    }
 
-    const int fSizeOfT;
     std::byte* fStorage{nullptr};
     int fReserve{0};  // size of the allocation in fArray (#elements)
     int fCount{0};    // logical number of elements (fCount <= fReserve)
 };
 
-static inline void swap(SkTDStorage& a, SkTDStorage& b) {
+template <typename T>
+bool operator==(const SkTDStorage<T>& a, const SkTDStorage<T>& b) {
+    return a.size() == b.size() &&
+        (a.size() == 0 || !memcmp(a.data(), b.data(), a.bytes(a.size())));
+}
+
+template <typename T>
+bool operator!=(const SkTDStorage<T>& a, const SkTDStorage<T>& b) {
+    return !(a == b);
+}
+
+template <typename T>
+static inline void swap(SkTDStorage<T>& a, SkTDStorage<T>& b) {
     a.swap(b);
 }
 
@@ -107,10 +261,10 @@ static inline void swap(SkTDStorage& a, SkTDStorage& b) {
 //
 // In most cases, std::vector<T> can provide a similar level of performance for POD objects when
 // used with appropriate care. In new code, consider std::vector<T> instead.
-template <typename T> class SkTDArray {
+template <typename T> class SkTDArray  {
 public:
-    SkTDArray() : fStorage{sizeof(T)} {}
-    SkTDArray(const T src[], int count) : fStorage{src, count, sizeof(T)} { }
+    SkTDArray() = default;
+    SkTDArray(const T src[], int count) : fStorage{src, count} { }
     SkTDArray(const std::initializer_list<T>& list) : SkTDArray(list.begin(), list.size()) {}
 
     // Copy
@@ -268,7 +422,7 @@ public:
     }
 
 private:
-    SkTDStorage fStorage;
+    SkTDStorage<T> fStorage;
 };
 
 template <typename T> static inline void swap(SkTDArray<T>& a, SkTDArray<T>& b) { a.swap(b); }
