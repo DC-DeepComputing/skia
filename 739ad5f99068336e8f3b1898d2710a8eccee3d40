@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9dd4094_76794ca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-11T18:01:58Z",
+      "side": 1,
+      "message": "Making SkTDStorage not inlined was explicitly done to reduce code size. The change to include the sizeof(T) in SkTDStorage discussed as a group in Skia. I\u0027m kicking this to Brian and Brian for higher level decision. But, my vote is that a 5% improvement in motion mark paths does not warrant the code bloat I just removed.",
+      "revId": "739ad5f99068336e8f3b1898d2710a8eccee3d40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fec56c94_2de498e1",
