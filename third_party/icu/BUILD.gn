@@ -72,6 +72,25 @@ if (skia_use_system_icu) {
     ]
   }
 
+  third_party("bidi") {
+    public_include_dirs = [
+      "../externals/icu/source/common",
+      "../externals/icu/source/i18n",
+      "bidi/",
+    ]
+    defines = [
+      "U_COMMON_IMPLEMENTATION",
+      "U_STATIC_IMPLEMENTATION",
+      "U_I18N_IMPLEMENTATION",
+    ]
+    configs = [ "//gn/portable:add_rtti" ]
+    sources = [
+      "../externals/icu/source/common/ubidiln.cpp",
+      "bidi/SkUnicodeBidi.cpp",
+      "bidi/SkUnicodeBidi.h",
+    ]
+  }
+
   third_party("icu") {
     public_include_dirs = [
       "../externals/icu/source/common",

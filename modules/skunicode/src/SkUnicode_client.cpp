@@ -12,6 +12,8 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "third_party/icu/bidi/SkUnicodeBidi.h"
 #include "src/utils/SkUTF.h"
 
 #include <algorithm>
@@ -211,10 +213,9 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        // This is a temp solution until we "borrow" reorderVisual code
-        static std::unique_ptr<SkUnicode> icu = SkUnicode::Make();
-        return icu->reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicodeBidi::reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
+
 private:
     friend class SkBidiIterator_client;
     friend class SkBreakIterator_client;
@@ -296,11 +297,12 @@ std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(const char 
 std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(BreakType breakType) {
     return std::make_unique<SkBreakIterator_client>(this);
 }
-std::unique_ptr<SkUnicode> SkUnicode::Make(SkSpan<char> text,
-                                           std::vector<SkUnicode::BidiRegion> bidiRegions,
-                                           std::vector<SkUnicode::Position> words,
-                                           std::vector<SkUnicode::Position> graphemeBreaks,
-                                           std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
-    return std::make_unique<SkUnicode_client>(text, bidiRegions, words,  graphemeBreaks,
-                                              lineBreaks);
+
+std::unique_ptr<SkUnicode> SkUnicode::MakeClientUnicode(
+        SkSpan<char> text,
+        std::vector<SkUnicode::BidiRegion> bidiRegions,
+        std::vector<SkUnicode::Position> words,
+        std::vector<SkUnicode::Position> graphemeBreaks,
+        std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    return std::make_unique<SkUnicode_client>(text, bidiRegions, words, graphemeBreaks, lineBreaks);
 }
