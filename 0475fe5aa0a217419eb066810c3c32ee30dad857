@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f507272_3e94cbd8",
+        "filename": "include/core/SkICC.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-11T20:01:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f307710e_23dd6710",
+      "range": {
+        "startLine": 23,
+        "startChar": 72,
+        "endLine": 23,
+        "endChar": 79
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c642793_fa32ab5f",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-11T14:40:13Z",
       "side": 1,
       "message": "spelling",
+      "range": {
+        "startLine": 27,
+        "startChar": 39,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f5d3ba_826f085a",
+        "filename": "include/core/SkICC.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-11T20:01:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c642793_fa32ab5f",
       "range": {
         "startLine": 27,
         "startChar": 39,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "418449fa_c1f3a034",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-11T20:01:38Z",
+      "side": 1,
+      "message": "Yes, this is only for the grid_16 entry of skcms_A2B and skcms_B2A. I had been trying to find a more authoritative name, but this ended up feeling the best.\n\nThis math I pulled not from the spec, but from how skcms would interpret the CLUT. In particular:\n- Op_clut_A2B [0]\n  - this just divides the short value by 65535 [1]\n- Op_lab_to_xyz [2]\n  - and reverse operation at [3]\n\nThe spec definitely sounds that we should be using the legacy encoding here (where L\u003d1 should be encoded as 0xFF00, not 0xFFFF). Should I make a comment here indicating that this matches skcms and that the spec seems to indicate something slightly different?\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/skcms.cc;l\u003d2752;drc\u003d8a9c775ac269415bd8a235b402562570189f8cfa\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/src/Transform_inl.h;l\u003d700;drc\u003d8a9c775ac269415bd8a235b402562570189f8cfa\n[2] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/skcms.cc;l\u003d2787;drc\u003d8a9c775ac269415bd8a235b402562570189f8cfa\n[3] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/src/Transform_inl.h;l\u003d1198;drc\u003d8a9c775ac269415bd8a235b402562570189f8cfa",
+      "parentUuid": "10cf3b88_804c81df",
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d815c18_45d503a1",
         "filename": "src/core/SkICC.cpp",
         "patchSetId": 4
@@ -77,6 +143,30 @@
       "writtenOn": "2022-10-11T14:40:13Z",
       "side": 1,
       "message": "Find-replace goof. 😊",
+      "range": {
+        "startLine": 610,
+        "startChar": 38,
+        "endLine": 610,
+        "endChar": 40
+      },
+      "revId": "0475fe5aa0a217419eb066810c3c32ee30dad857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7be7902_2694b8c2",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-11T20:01:38Z",
+      "side": 1,
+      "message": "Heh, oops!",
+      "parentUuid": "7d815c18_45d503a1",
       "range": {
         "startLine": 610,
         "startChar": 38,
