@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65345e29_6ccafceb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T21:11:16Z",
+      "side": 1,
+      "message": "-752 bytes to delete a few array copies, whoops!\n\nhttps://codesize.skia.org/binary_diff?binary_name\u003dskottie_tool\u0026compile_task_name\u003dBuild-Debian10-Clang-x86_64-OptimizeForSize\u0026patch_issue\u003d590182\u0026patch_set\u003d1",
+      "revId": "82599e0b9465ba6e2e4d827562fb23516316a3c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
