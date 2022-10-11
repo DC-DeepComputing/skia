@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7e2a97_652ccc0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-11T21:40:54Z",
+      "side": 1,
+      "message": "So this change does mostly fix an issue and should probably land anyway. However, it only fixes the motivating Chromium issue a bit. If the size doubles again from what is in this test then we start zapping the glyph to zero size again because of overflowing the 16bit bounds. Either the glyph bounds should be bigger (int or float) or we need some way to represent \"it\u0027s really big\" (the bounds are really big, we don\u0027t know where the glyph will draw or not in advance, invalidate everything).",
+      "revId": "437a0e4b64a80662d77c0a5b004fa49fe79dac73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
