@@ -36,6 +36,7 @@
 #include <cstddef>
 #include <forward_list>
 #include <string_view>
+#include <type_traits>
 
 namespace SkSL {
 
