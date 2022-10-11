@@ -6,9 +6,12 @@ exports_files_legacy()
 
 skia_cc_library(
     name = "skunicode",
-    srcs = ["//modules/skunicode/src:srcs"],
+    srcs = [
+      "//modules/skunicode/src:srcs",
+      "//modules/skunicode/src:icu_srcs",
+      ],
     hdrs = ["//modules/skunicode/include:hdrs"],
-    defines = ["SK_UNICODE_AVAILABLE"],
+    defines = ["SKUNICODE_ICU_AVAILABLE", "SK_UNICODE_AVAILABLE"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//:skia_internal",
