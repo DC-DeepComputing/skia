@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "14b23482_aed9d8e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-11T14:05:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b91efcc6_16dc5162",
+      "revId": "31ccbe8f30437a1a16562ccac8cf582510083cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2403dce4_69a1c094",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -48,6 +66,30 @@
       "writtenOn": "2022-10-11T13:57:49Z",
       "side": 1,
       "message": "So the idea here is to always have `skia_enable_fontmgr_custom_embedded` (unless all font stuff is removed) so it is available for the user to make a `FontMgr` from a list of font data (with `SkFontMgr_New_Custom_Data`, we\u0027re not actually using the \"embedded\" part here). Then also have `skia_enable_fontmgr_custom_empty` (and its factory) in just this case so the default is empty (which is fine because the extra code overhead is tiny). In this case the factory needs to be specified to be the empty one since otherwise `gn/skia.gni` will default to the embedded factory.\n\nIn the other two cases this change is explicitly stating the fontmgr factory that `gn/skia.gni` would have chosen anyway, but it is much easier to reason about (and less fragile) here with the factories explicitly stated.",
+      "range": {
+        "startLine": 134,
+        "startChar": 12,
+        "endLine": 134,
+        "endChar": 52
+      },
+      "revId": "31ccbe8f30437a1a16562ccac8cf582510083cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3aad358_ab7370af",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-11T14:05:37Z",
+      "side": 1,
+      "message": "Exactly.",
+      "parentUuid": "7433f983_8aece8fa",
       "range": {
         "startLine": 134,
         "startChar": 12,
