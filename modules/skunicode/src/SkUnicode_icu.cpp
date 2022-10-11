@@ -577,3 +577,13 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
         ? std::make_unique<SkUnicode_icu>()
         : nullptr;
 }
+
+#ifndef SKUNICODE_TEST_ICU
+std::unique_ptr<SkUnicode> SkUnicode::Make(SkSpan<char> text,
+                                           std::vector<SkUnicode::BidiRegion> bidiRegions,
+                                           std::vector<SkUnicode::Position> words,
+                                           std::vector<SkUnicode::Position> graphemeBreaks,
+                                           std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    return nullptr;
+}
+#endif

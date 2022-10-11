@@ -199,8 +199,8 @@ private:
     const char* name;
 };
 
-//#define SK_CLIENT_ICU
-#ifdef SK_CLIENT_ICU
+//#define SKUNICODE_TEST_ICU
+#ifdef SKUNICODE_TEST_ICU
 class SkUnicode_test : public SkUnicode {
 public:
     SkUnicode_test() = delete;

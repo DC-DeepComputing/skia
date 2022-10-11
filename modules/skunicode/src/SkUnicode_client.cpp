@@ -12,6 +12,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicodeBidi.h"
 #include "src/utils/SkUTF.h"
 
 #include <algorithm>
@@ -211,10 +212,11 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        // This is a temp solution until we "borrow" reorderVisual code
-        static std::unique_ptr<SkUnicode> icu = SkUnicode::Make();
-        return icu->reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        return SkUnicodeBidi::reorderVisual(static_cast<const uint8_t*>(&runLevels[0]),
+                                            (int32_t)levelsCount,
+                                            &logicalFromVisual[0]);
     }
+
 private:
     friend class SkBidiIterator_client;
     friend class SkBreakIterator_client;
@@ -296,6 +298,13 @@ std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(const char 
 std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(BreakType breakType) {
     return std::make_unique<SkBreakIterator_client>(this);
 }
+
+#ifndef SKUNICODE_TEST_ICU
+std::unique_ptr<SkUnicode> SkUnicode::Make() {
+    return nullptr;
+}
+#endif
+
 std::unique_ptr<SkUnicode> SkUnicode::Make(SkSpan<char> text,
                                            std::vector<SkUnicode::BidiRegion> bidiRegions,
                                            std::vector<SkUnicode::Position> words,
