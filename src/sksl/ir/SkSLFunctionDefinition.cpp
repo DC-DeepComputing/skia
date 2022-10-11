@@ -26,7 +26,6 @@
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
-#include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -37,6 +36,7 @@
 #include <cstddef>
 #include <forward_list>
 #include <string_view>
+#include <type_traits>
 
 namespace SkSL {
 
@@ -51,7 +51,8 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
     ThreadContext::RTAdjustData& rtAdjust = ThreadContext::RTAdjustState();
     if (rtAdjust.fVar || rtAdjust.fInterfaceBlock) {
         // ...append a line to the end of the function body which fixes up sk_Position.
-        const Field& skPositionField = (*body.symbolTable())[Compiler::POSITION_NAME]->as<Field>();
+        const Field& skPositionField = body.symbolTable()->find(Compiler::POSITION_NAME)
+                                                         ->as<Field>();
 
         auto Ref = [](const Variable* var) -> std::unique_ptr<Expression> {
             return VariableReference::Make(Position(), var);
