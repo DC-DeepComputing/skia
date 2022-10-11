@@ -199,11 +199,10 @@ private:
     const char* name;
 };
 
-//#define SK_CLIENT_ICU
-#ifdef SK_CLIENT_ICU
+#ifdef SKUNICODE_TEST_AVAILABLE
 class SkUnicode_test : public SkUnicode {
 public:
-    SkUnicode_test() = delete;
+    SkUnicode_test() { }
 
     SkUnicode_test(SkSpan<char> text, const ParagraphStyle& style) {
 
@@ -254,6 +253,13 @@ public:
                 SkASSERT(codeUnitFlags[i] == codeUnitFlags1[i]);
             }
         }
+    }
+
+    std::unique_ptr<SkUnicode> copy() override {
+        auto unicode = std::make_unique<SkUnicode_test>();
+        unicode->fIcu = fIcu->copy();
+        unicode->fClient = fClient->copy();
+        return unicode;
     }
 
     ~SkUnicode_test() override = default;
