@@ -68,7 +68,7 @@ void Surface::onAsyncReadPixels(const SkImageInfo& info,
                                           SkIRect srcRect,
                                           ReadPixelsCallback callback,
                                           ReadPixelsContext context) {
-    fDevice->asyncReadPixels(info,
+    fDevice->asyncReadPixels(info.colorType(),
                              srcRect,
                              callback,
                              context);
