@@ -6,16 +6,19 @@
  */
 
 #include "include/sksl/DSL.h"
-#include "include/sksl/DSLBlock.h"
-
 #include "tests/Test.h"
 
-#include <utility>
+#include <string_view>
 
+struct GrContextOptions;
 namespace sk_gpu_test { class ContextInfo; }
 
 // This file verifies that DSL code compiles with only a DSL.h import. We don't bother with any
 // 'real' tests here, as those are all in SkSLDSLTest.cpp.
+// IWYU pragma: no_include "include/sksl/DSLCore.h"
+// IWYU pragma: no_include "include/sksl/DSLExpression.h"
+// IWYU pragma: no_include "include/sksl/DSLStatement.h"
+// IWYU pragma: no_include "include/sksl/DSLType.h"
 
 using namespace SkSL::dsl;
 

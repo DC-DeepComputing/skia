@@ -6,8 +6,10 @@
  */
 
 #include "tests/PathOpsCubicIntersectionTestData.h"
+#include "src/pathops/SkPathOpsTypes.h"
 
-#include <limits>
+#include <array>
+#include <cfloat>
 
 namespace PathOpsCubicIntersectionTestData {
 
