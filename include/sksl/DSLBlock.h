@@ -31,20 +31,16 @@ public:
         ((void)fStatements.push_back(DSLStatement(statements.release()).release()), ...);
     }
 
-    DSLBlock(DSLBlock&& other) = default;
-
     DSLBlock(SkSL::StatementArray statements, std::shared_ptr<SymbolTable> symbols = nullptr,
             Position pos = {});
 
     DSLBlock(SkTArray<DSLStatement> statements, std::shared_ptr<SymbolTable> symbols = nullptr,
             Position pos = {});
 
-    ~DSLBlock();
+    DSLBlock(DSLBlock&& other) = default;
+    DSLBlock& operator=(DSLBlock&& other) = default;
 
-    DSLBlock& operator=(DSLBlock&& other) {
-        fStatements = std::move(other.fStatements);
-        return *this;
-    }
+    ~DSLBlock() = default;
 
     void append(DSLStatement stmt);
 
