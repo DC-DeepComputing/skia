@@ -16,6 +16,24 @@
       "message": "I don\u0027t know how to test this--do the built-in checks have it covered?",
       "revId": "821adc5f8e14514dcaed23f819c55c382f148d24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a44544e8_f5771d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T13:55:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d2cb3351_65bc611e",
+      "revId": "821adc5f8e14514dcaed23f819c55c382f148d24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
