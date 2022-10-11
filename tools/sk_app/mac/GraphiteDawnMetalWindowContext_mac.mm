@@ -75,8 +75,10 @@ bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
     surfaceDesc.nextInChain = &surfaceChainedDesc;
 
     auto surface = wgpu::Instance(fInstance->Get()).CreateSurface(&surfaceDesc);
-    if (!surface)
+    if (!surface) {
+        SkASSERT(false);
         return false;
+    }
 
     wgpu::SwapChainDescriptor swapChainDesc;
     swapChainDesc.usage = kTextureUsage;
@@ -86,8 +88,10 @@ bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
     swapChainDesc.presentMode = wgpu::PresentMode::Fifo;
     swapChainDesc.implementation = 0;
     auto swapChain = device.CreateSwapChain(surface, &swapChainDesc);
-    if (!swapChain)
+    if (!swapChain) {
+        SkASSERT(false);
         return false;
+    }
 
     fDevice = std::move(device);
     fSurface = std::move(surface);

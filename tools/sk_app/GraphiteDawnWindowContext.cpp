@@ -54,10 +54,13 @@ void GraphiteDawnWindowContext::initializeContext(int width, int height) {
     backendContext.fQueue = fDevice.GetQueue();
     fGraphiteContext = skgpu::graphite::Context::MakeDawn(backendContext,
                                                           skgpu::graphite::ContextOptions());
-    if (!fGraphiteContext)
+    SkASSERT(fGraphiteContext);
+    if (!fGraphiteContext) {
         return;
+    }
 
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    SkASSERT(fGraphiteRecorder);
 }
 
 GraphiteDawnWindowContext::~GraphiteDawnWindowContext() = default;

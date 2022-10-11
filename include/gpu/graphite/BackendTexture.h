@@ -30,15 +30,7 @@ class BackendTexture {
 public:
     BackendTexture() {}
 #ifdef SK_DAWN
-    // Create a BackendTexture from a wgpu::Texture. Texture info will be
-    // queried from the texture. Comparing to wgpu::TextureView,
-    // SkImage::readPixels(), SkSurface::readPixels() and
-    // SkSurface::writePixels() are implemented by direct buffer copy. They
-    // should be more efficient. For wgpu::TextureView, those methods will use
-    // create an intermediate wgpu::Texture, and use it to transfer pixels.
     BackendTexture(wgpu::Texture texture);
-    // Create a BackendTexture from a wgpu::TextureView. Texture dimensions and
-    // info have to be provided.
     BackendTexture(SkISize dimensions,
                    const DawnTextureInfo& info,
                    wgpu::TextureView textureView);
