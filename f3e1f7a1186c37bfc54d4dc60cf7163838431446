@@ -105,6 +105,30 @@
       },
       "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa3021d_1a85247b",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-11T12:32:00Z",
+      "side": 1,
+      "message": "Thanks for explaining the `skia_fontmgr_factory` mechanism - somehow that had eluded me.\n\nWe now set exactly the factory we need for each setting. We can use `SkFontMgr_New_Custom_Data` in the default build or with no_embedded_font set. The code that uses `SkFontMgr_New_Custom_Data` is (still) #ifdef\u0027d out if no_font is set.",
+      "parentUuid": "d6e07103_b682ab38",
+      "range": {
+        "startLine": 133,
+        "startChar": 53,
+        "endLine": 133,
+        "endChar": 91
+      },
+      "revId": "f3e1f7a1186c37bfc54d4dc60cf7163838431446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
