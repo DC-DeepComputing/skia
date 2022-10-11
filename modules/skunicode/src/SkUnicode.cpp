@@ -10,6 +10,32 @@
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTemplates.h"
 
+std::unique_ptr<SkUnicode> SkUnicode::Make() {
+#ifdef SKUNICODE_ICU_AVAILABLE
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcuUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
+std::unique_ptr<SkUnicode> SkUnicode::Make(
+        SkSpan<char> text,
+        std::vector<SkUnicode::BidiRegion> bidiRegions,
+        std::vector<SkUnicode::Position> words,
+        std::vector<SkUnicode::Position> graphemeBreaks,
+        std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+#ifdef SKUNICODE_CLIENT_AVAILABLE
+    std::unique_ptr<SkUnicode> unicode =
+            SkUnicode::MakeClientUnicode(text, bidiRegions, words, graphemeBreaks, lineBreaks);
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
 SkString SkUnicode::convertUtf16ToUtf8(const char16_t* utf16, int utf16Units) {
 
     int utf8Units = SkUTF::UTF16ToUTF8(nullptr, 0, (uint16_t*)utf16, utf16Units);
