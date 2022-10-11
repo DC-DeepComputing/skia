@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLBuiltinMap.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLModifiersPool.h"
@@ -74,6 +76,8 @@
 #endif
 
 namespace SkSL {
+
+class ProgramElement;
 
 #define TYPE(t) &BuiltinTypes::f ## t
 
@@ -250,7 +254,7 @@ const ParsedModule& ModuleLoader::rootModule() {
 std::shared_ptr<SymbolTable>& ModuleLoader::rootSymbolTableWithPublicTypes() {
     if (!fModuleLoader.fRootSymbolTableWithPublicTypes) {
         fModuleLoader.fRootSymbolTableWithPublicTypes =
-                std::make_shared<SymbolTable>(this->rootModule().fSymbols, /*builtin=*/true);
+                std::make_shared<SymbolTable>(this->rootModule().symbols(), /*builtin=*/true);
         add_public_type_aliases(fModuleLoader.fRootSymbolTableWithPublicTypes.get(),
                                 this->builtinTypes());
     }
@@ -258,20 +262,20 @@ std::shared_ptr<SymbolTable>& ModuleLoader::rootSymbolTableWithPublicTypes() {
 }
 
 const ParsedModule& ModuleLoader::loadPublicModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fPublicModule.fSymbols) {
+    if (!fModuleLoader.fPublicModule.fBuiltins) {
         const ParsedModule& sharedModule = this->loadSharedModule(compiler);
         fModuleLoader.fPublicModule = compile_and_parse(compiler,
                                                         ProgramKind::kGeneric,
                                                         MODULE_DATA(sksl_public),
                                                         sharedModule,
                                                         this->coreModifiers());
-        add_public_type_aliases(fModuleLoader.fPublicModule.fSymbols.get(), this->builtinTypes());
+        add_public_type_aliases(fModuleLoader.fPublicModule.symbols().get(), this->builtinTypes());
     }
     return fModuleLoader.fPublicModule;
 }
 
 const ParsedModule& ModuleLoader::loadPrivateRTShaderModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fRuntimeShaderModule.fSymbols) {
+    if (!fModuleLoader.fRuntimeShaderModule.fBuiltins) {
         const ParsedModule& publicModule = this->loadPublicModule(compiler);
         fModuleLoader.fRuntimeShaderModule = compile_and_parse(compiler,
                                                                ProgramKind::kFragment,
@@ -283,7 +287,7 @@ const ParsedModule& ModuleLoader::loadPrivateRTShaderModule(SkSL::Compiler* comp
 }
 
 const ParsedModule& ModuleLoader::loadSharedModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fSharedModule.fSymbols) {
+    if (!fModuleLoader.fSharedModule.fBuiltins) {
         const ParsedModule& rootModule = this->rootModule();
         fModuleLoader.fSharedModule = compile_and_parse(compiler,
                                                         ProgramKind::kFragment,
@@ -295,7 +299,7 @@ const ParsedModule& ModuleLoader::loadSharedModule(SkSL::Compiler* compiler) {
 }
 
 const ParsedModule& ModuleLoader::loadGPUModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fGPUModule.fSymbols) {
+    if (!fModuleLoader.fGPUModule.fBuiltins) {
         const ParsedModule& sharedModule = this->loadSharedModule(compiler);
         fModuleLoader.fGPUModule = compile_and_parse(compiler,
                                                      ProgramKind::kFragment,
@@ -307,7 +311,7 @@ const ParsedModule& ModuleLoader::loadGPUModule(SkSL::Compiler* compiler) {
 }
 
 const ParsedModule& ModuleLoader::loadFragmentModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fFragmentModule.fSymbols) {
+    if (!fModuleLoader.fFragmentModule.fBuiltins) {
         const ParsedModule& gpuModule = this->loadGPUModule(compiler);
         fModuleLoader.fFragmentModule = compile_and_parse(compiler,
                                                           ProgramKind::kFragment,
@@ -319,7 +323,7 @@ const ParsedModule& ModuleLoader::loadFragmentModule(SkSL::Compiler* compiler) {
 }
 
 const ParsedModule& ModuleLoader::loadVertexModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fVertexModule.fSymbols) {
+    if (!fModuleLoader.fVertexModule.fBuiltins) {
         const ParsedModule& gpuModule = this->loadGPUModule(compiler);
         fModuleLoader.fVertexModule = compile_and_parse(compiler,
                                                         ProgramKind::kVertex,
@@ -331,21 +335,22 @@ const ParsedModule& ModuleLoader::loadVertexModule(SkSL::Compiler* compiler) {
 }
 
 const ParsedModule& ModuleLoader::loadComputeModule(SkSL::Compiler* compiler) {
-    if (!fModuleLoader.fComputeModule.fSymbols) {
+    if (!fModuleLoader.fComputeModule.fBuiltins) {
         const ParsedModule& gpuModule = this->loadGPUModule(compiler);
         fModuleLoader.fComputeModule = compile_and_parse(compiler,
                                                          ProgramKind::kCompute,
                                                          MODULE_DATA(sksl_compute),
                                                          gpuModule,
                                                          this->coreModifiers());
-        add_compute_type_aliases(fModuleLoader.fComputeModule.fSymbols.get(), this->builtinTypes());
+        add_compute_type_aliases(fModuleLoader.fComputeModule.symbols().get(),
+                                 this->builtinTypes());
     }
     return fModuleLoader.fComputeModule;
 }
 
 const ParsedModule& ModuleLoader::loadGraphiteFragmentModule(SkSL::Compiler* compiler) {
 #if defined(SK_GRAPHITE_ENABLED)
-    if (!fModuleLoader.fGraphiteFragmentModule.fSymbols) {
+    if (!fModuleLoader.fGraphiteFragmentModule.fBuiltins) {
         const ParsedModule& fragmentModule = this->loadFragmentModule(compiler);
         fModuleLoader.fGraphiteFragmentModule = compile_and_parse(compiler,
                                                                   ProgramKind::kGraphiteFragment,
@@ -361,7 +366,7 @@ const ParsedModule& ModuleLoader::loadGraphiteFragmentModule(SkSL::Compiler* com
 
 const ParsedModule& ModuleLoader::loadGraphiteVertexModule(SkSL::Compiler* compiler) {
 #if defined(SK_GRAPHITE_ENABLED)
-    if (!fModuleLoader.fGraphiteVertexModule.fSymbols) {
+    if (!fModuleLoader.fGraphiteVertexModule.fBuiltins) {
         const ParsedModule& vertexModule = this->loadVertexModule(compiler);
         fModuleLoader.fGraphiteVertexModule = compile_and_parse(compiler,
                                                                 ProgramKind::kGraphiteVertex,
@@ -376,25 +381,29 @@ const ParsedModule& ModuleLoader::loadGraphiteVertexModule(SkSL::Compiler* compi
 }
 
 void ModuleLoader::Impl::makeRootSymbolTable() {
-    fRootModule.fSymbols = std::make_shared<SymbolTable>(/*builtin=*/true);
+    auto symbols = std::make_shared<SymbolTable>(/*builtin=*/true);
 
     for (BuiltinTypePtr rootType : kRootTypes) {
-        fRootModule.fSymbols->addWithoutOwnership((fBuiltinTypes.*rootType).get());
+        symbols->addWithoutOwnership((fBuiltinTypes.*rootType).get());
     }
 
     for (BuiltinTypePtr privateType : kPrivateTypes) {
-        fRootModule.fSymbols->addWithoutOwnership((fBuiltinTypes.*privateType).get());
+        symbols->addWithoutOwnership((fBuiltinTypes.*privateType).get());
     }
 
     // sk_Caps is "builtin", but all references to it are resolved to Settings, so we don't need to
     // treat it as builtin (ie, no need to clone it into the Program).
-    fRootModule.fSymbols->add(std::make_unique<Variable>(/*pos=*/Position(),
-                                                         /*modifiersPosition=*/Position(),
-                                                         fCoreModifiers.add(Modifiers{}),
-                                                         "sk_Caps",
-                                                         fBuiltinTypes.fSkCaps.get(),
-                                                         /*builtin=*/false,
-                                                         Variable::Storage::kGlobal));
+    symbols->add(std::make_unique<Variable>(/*pos=*/Position(),
+                                            /*modifiersPosition=*/Position(),
+                                            fCoreModifiers.add(Modifiers{}),
+                                            "sk_Caps",
+                                            fBuiltinTypes.fSkCaps.get(),
+                                            /*builtin=*/false,
+                                            Variable::Storage::kGlobal));
+    fRootModule = {
+            std::make_shared<BuiltinMap>(/*parent=*/nullptr,
+                                         std::move(symbols),
+                                         /*elements=*/SkSpan<std::unique_ptr<ProgramElement>>())};
 }
 
 }  // namespace SkSL

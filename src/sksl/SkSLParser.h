@@ -53,7 +53,7 @@ public:
 
     std::unique_ptr<Program> program();
 
-    SkSL::LoadedModule moduleInheritingFrom(SkSL::ParsedModule baseModule);
+    SkSL::LoadedModule moduleInheritingFrom(const SkSL::ParsedModule& baseModule);
 
     std::string_view text(Token token);
 

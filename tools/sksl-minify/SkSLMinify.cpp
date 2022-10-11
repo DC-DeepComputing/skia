@@ -79,8 +79,7 @@ static std::optional<SkSL::LoadedModule> compile_module_list(SkSpan<const std::s
     // Each module inherits the symbols from its parent module.
     SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
     SkSL::LoadedModule loadedModule;
-    std::list<SkSL::ParsedModule> modules = {{SkSL::ModuleLoader::Get().rootModule().fSymbols,
-                                              /*fElements=*/nullptr}};
+    std::list<SkSL::ParsedModule> modules = {SkSL::ModuleLoader::Get().rootModule()};
     for (auto modulePath = paths.rbegin(); modulePath != paths.rend(); ++modulePath) {
         std::ifstream in(*modulePath);
         std::string moduleSource{std::istreambuf_iterator<char>(in),

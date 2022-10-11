@@ -23,7 +23,7 @@ namespace SkSL {
 ThreadContext::ThreadContext(SkSL::Compiler* compiler,
                              SkSL::ProgramKind kind,
                              const SkSL::ProgramSettings& settings,
-                             SkSL::ParsedModule module,
+                             const SkSL::ParsedModule& module,
                              bool isModule)
         : fCompiler(compiler)
         , fOldConfig(fCompiler->fContext->fConfig)
@@ -45,8 +45,8 @@ ThreadContext::ThreadContext(SkSL::Compiler* compiler,
     fConfig->fIsBuiltinCode = isModule;
     fCompiler->fContext->fConfig = fConfig.get();
     fCompiler->fContext->fErrors = &fDefaultErrorReporter;
-    fCompiler->fContext->fBuiltins = module.fElements.get();
-    fCompiler->fSymbolTable = module.fSymbols;
+    fCompiler->fContext->fBuiltins = module.fBuiltins.get();
+    fCompiler->fSymbolTable = module.symbols();
     this->setupSymbolTable();
 }
 
