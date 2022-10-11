@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "366dc5fa_002be585",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-11T20:57:01Z",
+      "side": 1,
+      "message": "Pfft, this causes a problem in Dawn (sk_FragColor is missing some decoration).",
+      "revId": "934b318673cd1dc17bb073405724d367921b5fd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
