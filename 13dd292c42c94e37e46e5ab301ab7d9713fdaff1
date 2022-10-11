@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e15f20a_d61c6fa5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19324
+      },
+      "writtenOn": "2022-10-11T19:42:58Z",
+      "side": 1,
+      "message": "See associated CL https://chromium-review.googlesource.com/c/chromium/src/+/3947285",
+      "revId": "13dd292c42c94e37e46e5ab301ab7d9713fdaff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
