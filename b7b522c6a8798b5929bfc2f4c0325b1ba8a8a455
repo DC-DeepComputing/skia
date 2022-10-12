@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22567939_68beda37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-12T20:13:43Z",
+      "side": 1,
+      "message": "Thank you, this is a good improvement for readability. I appreciate that the various IRNode Kind enums are all declared together in one place now.",
+      "revId": "b7b522c6a8798b5929bfc2f4c0325b1ba8a8a455",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
