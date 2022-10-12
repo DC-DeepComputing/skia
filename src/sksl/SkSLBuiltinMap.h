@@ -41,6 +41,7 @@ private:
     const BuiltinMap* fParent = nullptr;
     std::shared_ptr<SymbolTable> fSymbolTable;
     SkTHashMap<const Symbol*, std::unique_ptr<ProgramElement>> fElements;
+    SkTArray<std::unique_ptr<ProgramElement>> fUnmappedElements;
 };
 
 } // namespace SkSL

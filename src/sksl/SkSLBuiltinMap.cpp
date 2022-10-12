@@ -33,9 +33,8 @@ BuiltinMap::BuiltinMap(const BuiltinMap* parent,
     for (std::unique_ptr<ProgramElement>& element : elements) {
         switch (element->kind()) {
             case ProgramElement::Kind::kFunction: {
-                const FunctionDeclaration& decl = element->as<FunctionDefinition>().declaration();
-                SkASSERT(decl.isBuiltin());
-                this->insertOrDie(&decl, std::move(element));
+                // We don't look these up from the BuiltinMap anymore, but we can't delete them.
+                fUnmappedElements.push_back(std::move(element));
                 break;
             }
             case ProgramElement::Kind::kFunctionPrototype: {
