@@ -19,6 +19,7 @@
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
@@ -47,14 +48,31 @@ public:
             : fContext(context)
             , fSymbols(symbols) {}
 
-    void addDeclaringElement(const Symbol* var) {
-        if (const ProgramElement* decl = fContext.fBuiltins->find(var)) {
+    void addDeclaringElement(const ProgramElement* decl) {
+        // Make sure we only add a built-in variable once. We only have a small handful of built-in
+        // variables to declare, so linear search here is good enough.
+        if (decl != nullptr &&
+            std::find(fNewElements.begin(), fNewElements.end(), decl) == fNewElements.end()) {
+            fNewElements.push_back(decl);
+        }
+    }
+
+    void addDeclaringElement(const Symbol* symbol) {
+        if (!symbol) {
+            return;
+        }
+        if (symbol->is<Variable>()) {
+            if (const GlobalVarDeclaration* decl = symbol->as<Variable>().globalVarDeclaration()) {
+                this->addDeclaringElement(decl);
+                return;
+            }
+        }
+        if (const ProgramElement* decl = fContext.fBuiltins->find(symbol)) {
             // Make sure we only add a built-in variable once. We only have a small handful of
             // built-in variables, so linear search here is good enough.
             SkASSERT(decl->is<GlobalVarDeclaration>() || decl->is<InterfaceBlock>());
-            if (std::find(fNewElements.begin(), fNewElements.end(), decl) == fNewElements.end()) {
-                fNewElements.push_back(decl);
-            }
+            this->addDeclaringElement(decl);
+            return;
         }
     }
 

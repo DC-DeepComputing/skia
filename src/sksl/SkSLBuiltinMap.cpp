@@ -42,10 +42,8 @@ BuiltinMap::BuiltinMap(const BuiltinMap* parent,
                 break;
             }
             case ProgramElement::Kind::kGlobalVar: {
-                const GlobalVarDeclaration& global = element->as<GlobalVarDeclaration>();
-                const Variable& var = global.declaration()->as<VarDeclaration>().var();
-                SkASSERT(var.isBuiltin());
-                this->insertOrDie(&var, std::move(element));
+                // We don't look these up from the BuiltinMap anymore, but we can't delete them.
+                fUnmappedElements.push_back(std::move(element));
                 break;
             }
             case ProgramElement::Kind::kInterfaceBlock: {

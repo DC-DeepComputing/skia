@@ -27,13 +27,49 @@ namespace SkSL {
 
 Variable::~Variable() {
     // Unhook this Variable from its associated VarDeclaration, since we're being deleted.
-    if (fDeclaration) {
-        fDeclaration->setVar(nullptr);
+    VarDeclaration* declaration = this->varDeclaration();
+    if (declaration) {
+        declaration->setVar(nullptr);
     }
 }
 
 const Expression* Variable::initialValue() const {
-    return fDeclaration ? fDeclaration->value().get() : nullptr;
+    VarDeclaration* declaration = this->varDeclaration();
+    return declaration ? declaration->value().get() : nullptr;
+}
+
+VarDeclaration* Variable::varDeclaration() const {
+    if (!fDeclaringElement) {
+        return nullptr;
+    }
+    SkASSERT(fDeclaringElement->is<VarDeclaration>() ||
+             fDeclaringElement->is<GlobalVarDeclaration>());
+    return fDeclaringElement->is<GlobalVarDeclaration>()
+               ? &fDeclaringElement->as<GlobalVarDeclaration>().declaration()->as<VarDeclaration>()
+               : &fDeclaringElement->as<VarDeclaration>();
+}
+
+GlobalVarDeclaration* Variable::globalVarDeclaration() const {
+    if (!fDeclaringElement) {
+        return nullptr;
+    }
+    SkASSERT(fDeclaringElement->is<VarDeclaration>() ||
+             fDeclaringElement->is<GlobalVarDeclaration>());
+    return fDeclaringElement->is<GlobalVarDeclaration>()
+               ? &fDeclaringElement->as<GlobalVarDeclaration>()
+               : nullptr;
+}
+
+void Variable::setVarDeclaration(VarDeclaration* declaration) {
+    SkASSERT(!fDeclaringElement || &this->varDeclaration()->var() == this);
+    if (!fDeclaringElement) {
+        fDeclaringElement = declaration;
+    }
+}
+
+void Variable::setGlobalVarDeclaration(GlobalVarDeclaration* declaration) {
+    SkASSERT(!fDeclaringElement || &this->varDeclaration()->var() == this);
+    fDeclaringElement = declaration;
 }
 
 std::string Variable::mangledName() const {

@@ -24,6 +24,7 @@ namespace SkSL {
 
 class Context;
 class Expression;
+class GlobalVarDeclaration;
 class Mangler;
 class SymbolTable;
 class VarDeclaration;
@@ -103,15 +104,15 @@ public:
 
     const Expression* initialValue() const;
 
-    void setDeclaration(VarDeclaration* declaration) {
-        SkASSERT(!fDeclaration);
-        fDeclaration = declaration;
-    }
+    void setVarDeclaration(VarDeclaration* declaration);
+    void setGlobalVarDeclaration(GlobalVarDeclaration* declaration);
 
-    void detachDeadVarDeclaration() const {
+    GlobalVarDeclaration* globalVarDeclaration() const;
+    VarDeclaration* varDeclaration() const;
+
+    void detachDeadVarDeclaration() {
         // The VarDeclaration is being deleted, so our reference to it has become stale.
-        // This variable is now dead, so it shouldn't matter that we are modifying its symbol.
-        const_cast<Variable*>(this)->fDeclaration = nullptr;
+        fDeclaringElement = nullptr;
     }
 
     std::string description() const override {
@@ -122,7 +123,7 @@ public:
     std::string mangledName() const;
 
 private:
-    VarDeclaration* fDeclaration = nullptr;
+    IRNode* fDeclaringElement = nullptr;
     // We don't store the position in the Modifiers object itself because they are pooled
     Position fModifiersPosition;
     const Modifiers* fModifiers;
