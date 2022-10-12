@@ -34,6 +34,24 @@
       "parentUuid": "fb7e2a97_652ccc0f",
       "revId": "437a0e4b64a80662d77c0a5b004fa49fe79dac73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9d38351_44c23862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T00:07:16Z",
+      "side": 1,
+      "message": "After taking a walk around the block, it seems that maybe just saturating the reported bounds should be fine. The signal that the bounds are \"too big\" is just that one of the bound values are saturated. In any event, that\u0027s a follow on to this change.",
+      "parentUuid": "7e6f9fed_74266834",
+      "revId": "437a0e4b64a80662d77c0a5b004fa49fe79dac73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
