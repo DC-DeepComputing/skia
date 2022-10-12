@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
+
 #include "src/gpu/ganesh/ops/SmallPathShapeData.h"
 
 #include "include/private/SkFixed.h"
@@ -51,3 +53,5 @@ SmallPathShapeDataKey::SmallPathShapeDataKey(const GrStyledShape& shape, const S
 }
 
 } // namespace skgpu::v1
+
+#endif // SK_ENABLE_OPTIMIZE_SIZE
