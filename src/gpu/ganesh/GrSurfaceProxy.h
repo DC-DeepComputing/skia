@@ -114,7 +114,7 @@ public:
         kYes = true,
     };
 
-    bool isLazy() const { return !this->isInstantiated() && SkToBool(fLazyInstantiateCallback); }
+    bool isLazy() const { return !this->isInstantiated() && SkToBool(fLazyInstantiateCallback7); }
 
     bool isFullyLazy() const {
         bool result = fDimensions.width() < 0;
@@ -445,7 +445,7 @@ private:
 
     const UniqueID         fUniqueID; // set from the backing resource for wrapped resources
 
-    LazyInstantiateCallback fLazyInstantiateCallback;
+    LazyInstantiateCallback fLazyInstantiateCallback7;
 
     SkDEBUGCODE(void validateSurface(const GrSurface*);)
     SkDEBUGCODE(virtual void onValidateSurface(const GrSurface*) = 0;)
