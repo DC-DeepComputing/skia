@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6067f12d_1793d8f9",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T17:41:08Z",
+      "side": 1,
+      "message": "This should stay pure virtual. That\u0027s the point.",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc7f41f_108dc53b",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T17:41:08Z",
+      "side": 1,
+      "message": "Should not be building this file in this build.",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973385fc_f8021778",
+        "filename": "modules/skunicode/src/SkUnicodeBidi.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T17:41:08Z",
+      "side": 1,
+      "message": "Need to be very careful about the license here. In particular, this is at the very least copyright ICU and IBM.",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88659a8f_7b91aec0",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T17:41:08Z",
+      "side": 0,
+      "message": "I am unsure why we would want to do this. When we do have ICU we would want to use this and not use our redundant copy of this function. I don\u0027t think any `_icu.*` files should be modified in this change.",
+      "revId": "34bf5d7ca8ac0bc8300023902a3a60f1030ca77b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
