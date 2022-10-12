@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19cc9c67_da8e3cf8",
+        "filename": "tests/sksl/intrinsics/SampleGrad2DRect.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-12T20:21:19Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "be200dfaa775e4c62ea7cb807bf2b29d817cef65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
