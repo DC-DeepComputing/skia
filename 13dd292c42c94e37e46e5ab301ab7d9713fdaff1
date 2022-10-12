@@ -69,6 +69,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75cce7a7_64f6cab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19324
+      },
+      "writtenOn": "2022-10-12T17:37:05Z",
+      "side": 1,
+      "message": "Note this is motivated, not by any error message from Skia, but from a font test that fails on Ventura, https://crbug.com/1372420, and I wanted to patch callers in this area.",
+      "revId": "13dd292c42c94e37e46e5ab301ab7d9713fdaff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10c78ab9_13bc591b",
