@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f30d3b08_f0de38d6",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c11174fe_0717a7db",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13e458d7_7201922e",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-11T19:39:38Z",
       "side": 1,
       "message": "ditto",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dae9d72_8c84a552",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13e458d7_7201922e",
       "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ced15684_629a57a7",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38901fb6_c633a07f",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94fe1231_e0e2e770",
@@ -65,6 +119,30 @@
       "writtenOn": "2022-10-11T19:39:38Z",
       "side": 1,
       "message": "Looks like we\u0027re always initializing fSlotManagerWrapper above, I don\u0027t think we need this.",
+      "range": {
+        "startLine": 493,
+        "startChar": 28,
+        "endLine": 493,
+        "endChar": 47
+      },
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad818b0e_29e57fb1",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94fe1231_e0e2e770",
       "range": {
         "startLine": 493,
         "startChar": 28,
@@ -98,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa79e61_c678e7b8",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3b0db6f_ebd7299d",
+      "range": {
+        "startLine": 493,
+        "startChar": 0,
+        "endLine": 507,
+        "endChar": 5
+      },
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3de3ff50_330d0251",
@@ -111,6 +213,24 @@
       "writtenOn": "2022-10-11T19:39:38Z",
       "side": 1,
       "message": "return true here (to signal that the event was handled)",
+      "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8114d854_5ea2e16d",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-10-12T17:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3de3ff50_330d0251",
       "revId": "9380c7b68c3606c9cfc63810eb74c29c138aacd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
