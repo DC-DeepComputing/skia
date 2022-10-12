@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796964b6_297b7a8b",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-12T19:28:08Z",
+      "side": 1,
+      "message": "Just FYI: A lot of tests like this I think should be changed to DEF_GRAPHITE_TEST where you are responsible for making your own Context, but it would allow us to run the tests just once. Like we don\u0027t gain anything from running on all contexts.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 34
+      },
+      "revId": "31a18bf6152288ac7ea8a9545c230b1fd1261ea3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
