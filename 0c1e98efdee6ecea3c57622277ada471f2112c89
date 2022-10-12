@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e43dbb_e16cfc9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-12T20:01:06Z",
+      "side": 1,
+      "message": "Looks like a test case needs to be dropped, too, but lgtm pending decision around `#ifndef` vs `#if !defined`",
+      "revId": "0c1e98efdee6ecea3c57622277ada471f2112c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdfe26d2_e1cad733",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-12T20:01:06Z",
+      "side": 1,
+      "message": "nit(?): I thought our style favored `#if !defined(SK_ENABLE_OPTIMIZE_SIZE)`?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 31
+      },
+      "revId": "0c1e98efdee6ecea3c57622277ada471f2112c89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
