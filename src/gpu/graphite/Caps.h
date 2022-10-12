@@ -164,11 +164,15 @@ protected:
     // Used in format tables.
     struct ColorTypeInfo {
         SkColorType fColorType = kUnknown_SkColorType;
+        SkColorType fTransferColorType = kUnknown_SkColorType;
         enum {
             kUploadData_Flag = 0x1,
             // Does Graphite itself support rendering to this colorType & format pair. Renderability
             // still additionally depends on if the format itself is renderable.
             kRenderable_Flag = 0x2,
+            // Indicates that this colorType is supported only if we are wrapping a texture with
+            // the given format and colorType. We do not allow creation with this pair.
+            kWrappedOnly_Flag = 0x4,
         };
         uint32_t fFlags = 0;
 
