@@ -1,0 +1,34 @@
+load("//bazel:macros.bzl", "exports_files_legacy", "selects", "skia_cc_deps")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+filegroup(
+    name = "srcs",
+    testonly = True,
+    srcs = [
+        "RasterWindowContext_sdl2.cpp",
+        "WindowContextFactory_sdl2.h",
+        "Window_sdl2.cpp",
+        "Window_sdl2.h",
+        "main_sdl2.cpp",
+    ] + select({
+        "//src/gpu:gl_backend": ["GLWindowContext_sdl2.cpp"],
+        "//src/gpu:vulkan_backend": ["VulkanWindowContext_sdl2.cpp"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//tools/sk_app:__pkg__"],
+)
+
+skia_cc_deps(
+    name = "deps",
+    testonly = True,
+    linkopts = [
+        "-lX11",
+    ],    
+    visibility = ["//tools/sk_app:__pkg__"],
+    deps = [
+        "//tools:tool_utils",
+    ],
+)

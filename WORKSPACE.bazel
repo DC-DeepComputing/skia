@@ -218,7 +218,7 @@ new_local_repository(
     build_file = "bazel/external/dawn/BUILD.bazel",
     path = "third_party/externals/dawn",
     workspace_file_content = "",
-)
+) 
 
 new_local_repository(
     name = "dng_sdk",
@@ -306,6 +306,13 @@ new_local_repository(
     name = "libpng",
     build_file = "bazel/external/libpng/BUILD.bazel",
     path = "third_party/externals/libpng",
+    workspace_file_content = "",
+)
+
+new_local_repository(
+    name = "SDL2",
+    build_file = "bazel/external/SDL2/BUILD.bazel",
+    path = "third_party/externals/SDL2",
     workspace_file_content = "",
 )
 
