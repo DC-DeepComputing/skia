@@ -3436,6 +3436,13 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
             fFormatTable[i].fColorSampleCounts[0] = 1;
         }
     }
+
+    // Implicite resolve may have a lower max samples than the per format MSAA listed above.
+    if (GrGLCaps::kES_IMG_MsToTexture_MSFBOType == fMSFBOType) {
+        GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES_IMG, &fMaxSamplesImplicitMultisampleResolve);
+    } else if (GrGLCaps::kES_EXT_MsToTexture_MSFBOType == fMSFBOType) {
+        GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES, &fMaxSamplesImplicitMultisampleResolve);
+    }
 }
 
 bool GrGLCaps::canCopyTexSubImage(GrGLFormat dstFormat, bool dstHasMSAARenderBuffer,
@@ -4803,6 +4810,9 @@ int GrGLCaps::maxRenderTargetSampleCount(GrGLFormat format) const {
     int count = table[table.size() - 1];
     if (fDriverBugWorkarounds.max_msaa_sample_count_4) {
         count = std::min(count, 4);
+    }
+    if (fMaxSamplesImplicitMultisampleResolve > 0) {
+        count = std::min(count, fMaxSamplesImplicitMultisampleResolve);
     }
     return count;
 }

@@ -614,6 +614,7 @@ private:
     bool fRebindColorAttachmentAfterCheckFramebufferStatus : 1;
     bool fFlushBeforeWritePixels : 1;
     int fMaxInstancesPerDrawWithoutCrashing = 0;
+    int fMaxSamplesImplicitMultisampleResolve = 0;
 
     uint32_t fBlitFramebufferFlags = kNoSupport_BlitFramebufferFlag;
 
