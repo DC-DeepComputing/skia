@@ -6,6 +6,8 @@
  * found in the LICENSE file.
  */
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
+
 #include "src/gpu/ganesh/ops/SmallPathRenderer.h"
 
 #include "include/core/SkPaint.h"
@@ -739,3 +741,5 @@ GR_DRAW_OP_TEST_DEFINE(SmallPathOp) {
 }
 
 #endif // GR_TEST_UTILS
+
+#endif // SK_ENABLE_OPTIMIZE_SIZE

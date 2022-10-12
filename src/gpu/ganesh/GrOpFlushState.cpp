@@ -222,9 +222,11 @@ GrAtlasManager* GrOpFlushState::atlasManager() const {
     return fGpu->getContext()->priv().getAtlasManager();
 }
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
 skgpu::v1::SmallPathAtlasMgr* GrOpFlushState::smallPathAtlasManager() const {
     return fGpu->getContext()->priv().getSmallPathAtlasMgr();
 }
+#endif
 
 void GrOpFlushState::drawMesh(const GrSimpleMesh& mesh) {
     SkASSERT(mesh.fIsInitialized);
