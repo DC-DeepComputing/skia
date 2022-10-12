@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "349ba90f_d1742618",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T20:27:50Z",
+      "side": 1,
+      "message": "This should now be ready for review. The gm has been updated to draw from controlled font data and in a way that makes it easy to see that this particular issue has been fixed but also allows one to zoom in an see the additional issue of needing to allow for saturation (in GPU the glyph disappears when zooming in sufficiently). This additional issue will need to be handled in a follow up to this change, which I think will mean allowing the bounds to just saturate.",
+      "revId": "1e21fa93df1022028954e18c121463889bf93f6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
