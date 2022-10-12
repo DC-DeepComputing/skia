@@ -369,6 +369,7 @@ public:
     T* data() { return fItemArray; }
     const T* data() const { return fItemArray; }
     size_t size() const { return (size_t)fCount; }
+    size_t size_bytes() const { return static_cast<size_t>(fCount) * sizeof(T); }
     void resize(size_t count) { this->resize_back((int)count); }
 
     /**
