@@ -7,6 +7,7 @@
 #include "include/core/SkString.h"
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsThreadedCommon.h"
+#include "tests/Test.h"
 
 static int loopNo = 1;
 

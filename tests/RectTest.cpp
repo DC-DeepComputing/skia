@@ -7,12 +7,21 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSurface.h"
+#include "include/core/SkTypes.h"
 #include "src/core/SkRectPriv.h"
 #include "tests/Test.h"
 
-#include <limits.h>
+#include <climits>
+#include <initializer_list>
 
 static bool has_green_pixels(const SkBitmap& bm) {
     for (int j = 0; j < bm.height(); ++j) {

@@ -5,10 +5,20 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
+#include "include/core/SkScalar.h"
+#include "include/pathops/SkPathOps.h"
+#include "include/private/SkFloatBits.h"
+#include "include/utils/SkParsePath.h"
 #include "include/utils/SkRandom.h"
 #include "tests/PathOpsExtendedTest.h"
-#include "tests/SubsetPath.h"
+#include "tests/Test.h"
+#include "tools/flags/CommandLineFlags.h"
 
 #define DEBUG_SIMPLIFY_FAILS 0
 

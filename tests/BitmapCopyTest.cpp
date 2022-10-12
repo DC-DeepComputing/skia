@@ -5,9 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -17,6 +20,9 @@
 #include "src/core/SkOpts.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
+
+#include <array>
+#include <cstddef>
 
 static void init_src(const SkBitmap& bitmap) {
     if (bitmap.getPixels()) {

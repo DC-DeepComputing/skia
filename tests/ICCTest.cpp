@@ -5,16 +5,18 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTypes.h"
-
-#include <cmath>
-
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkData.h"
 #include "include/core/SkICC.h"
-#include "include/core/SkString.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
 #include "modules/skcms/skcms.h"
-#include "src/core/SkColorSpacePriv.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
+
+#include <cmath>
+#include <cstdint>
+#include <cstdlib>
 
 DEF_TEST(AdobeRGB, r) {
     if (sk_sp<SkData> profile = GetResourceAsData("icc_profiles/AdobeRGB1998.icc")) {
@@ -107,7 +109,6 @@ DEF_TEST(HDR_ICC, r) {
                 REPORTER_ASSERT(
                         r, approx_equal(dst_pixel_actual[i], dst_pixels_expected[test][pixel][i]));
             }
-            printf("\n");
         }
     }
 }

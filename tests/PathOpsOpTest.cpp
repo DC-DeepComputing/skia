@@ -4,9 +4,12 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkString.h"
+#include "src/pathops/SkPathOpsQuad.h"
 #include "tests/PathOpsDebug.h"
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsTestCommon.h"
+#include "tests/Test.h"
 
 class PathTest_Private {
 public:
