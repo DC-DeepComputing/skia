@@ -16,6 +16,23 @@
       "message": "Thanks!",
       "revId": "b8015559fe5be7a5b52992c7517fda06f4a481c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7063008c_f3d65637",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-12T11:55:53Z",
+      "side": 1,
+      "message": "I find it very hard to navigate the trybot output here -- I\u0027d like to see the reason for the failure (like, what didn\u0027t compile, what was the error). I used to be able to get somewhere by clicking on \"rich output\", but that now gives me a 403.",
+      "revId": "b8015559fe5be7a5b52992c7517fda06f4a481c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
