@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39bc7e3_f195bfbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-12T16:14:23Z",
+      "side": 1,
+      "message": "Not sure I believe my eyes, but this appears to remove 1.6 MiB.",
+      "revId": "8fd97e33fdddd70a9be7ddb492c1efcb62862316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
