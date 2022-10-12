@@ -86,6 +86,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "248ad33a_e7d70052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T18:23:51Z",
+      "side": 1,
+      "message": "Thanks for pointing out this issue to us as yet another place we should make sure we aren\u0027t trusting the types in these dictionaries and doing something sane if they aren\u0027t as expected. I\u0027m pretty sure `find_dict_CGFloat` and how it is used with `SkCTFontDescriptorGetSkFontStyle` was done that way specifically because of similar issues in the past. However, it appears that `SkCTFontGetDataFontWeightMapping` should probably be tweaked. That one is less noticeable since the only effect is to report the weights of fonts created from data slightly different from correct, which generally doesn\u0027t show up in Chromium.",
+      "parentUuid": "75cce7a7_64f6cab3",
+      "revId": "13dd292c42c94e37e46e5ab301ab7d9713fdaff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21fcd48e_7e231b3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T18:23:51Z",
+      "side": 1,
+      "message": "Yeah, in `src/ports/SkTypeface_mac_ct.cpp` we\u0027re doing exactly that. Mostly because we already don\u0027t trust what\u0027s in any of these dictionaries (half the code in this file is about not trusting what\u0027s in these dictionaries and what to do if they don\u0027t contain the expected types).\n\nHowever, `src/utils/mac/SkCTFont.cpp` probably should probably change behavior a bit to match. Created https://skia-review.googlesource.com/c/skia/+/590553 for that.",
+      "parentUuid": "fd63797e_7e4ade50",
+      "revId": "13dd292c42c94e37e46e5ab301ab7d9713fdaff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10c78ab9_13bc591b",
