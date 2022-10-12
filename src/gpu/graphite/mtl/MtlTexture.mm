@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/mtl/MtlTypes.h"
 #include "include/private/gpu/graphite/MtlTypesPriv.h"
+#include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/mtl/MtlCaps.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 #include "src/gpu/graphite/mtl/MtlUtils.h"
@@ -118,5 +119,9 @@ void MtlTexture::freeGpuData() {
     fTexture.reset();
 }
 
-} // namespace skgpu::graphite
+void MtlTexture::onSetReleaseCallback(sk_sp<RefCntedCallback>) {
+    // Nothing to do
+}
 
+
+} // namespace skgpu::graphite

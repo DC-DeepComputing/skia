@@ -140,7 +140,7 @@ protected:
 
     ~GrSurface() override {
         // check that invokeReleaseProc has been called (if needed)
-        SkASSERT(!fReleaseHelper);
+        SkASSERT(!fReleaseHelper1);
     }
 
     void onRelease() override;
@@ -153,16 +153,16 @@ private:
     // ensure it isn't called until GPU work related to the resource is completed.
     virtual void onSetRelease(sk_sp<RefCntedReleaseProc>) {}
 
-    void invokeReleaseProc() {
+    void invokeReleaseProc1() {
         // Depending on the ref count of fReleaseHelper this may or may not actually trigger the
         // ReleaseProc to be called.
-        fReleaseHelper.reset();
+        fReleaseHelper1.reset();
     }
 
     SkISize                    fDimensions;
     GrInternalSurfaceFlags     fSurfaceFlags;
     GrProtected                fIsProtected;
-    sk_sp<RefCntedReleaseProc> fReleaseHelper;
+    sk_sp<RefCntedReleaseProc> fReleaseHelper1;
 
     using INHERITED = GrGpuResource;
 };
