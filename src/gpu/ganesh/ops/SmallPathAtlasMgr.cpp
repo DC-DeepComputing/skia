@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
+
 #include "src/gpu/ganesh/ops/SmallPathAtlasMgr.h"
 
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
@@ -142,3 +144,5 @@ void SmallPathAtlasMgr::evict(skgpu::PlotLocator plotLocator) {
 }
 
 } // namespace skgpu::v1
+
+#endif // SK_ENABLE_OPTIMIZE_SIZE

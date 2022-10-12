@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#ifndef SK_ENABLE_OPTIMIZE_SIZE
+
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/gpu/ganesh/GrDistanceFieldGenFromVector.h"
 
@@ -862,3 +864,5 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
     }
     return true;
 }
+
+#endif // SK_ENABLE_OPTIMIZE_SIZE
