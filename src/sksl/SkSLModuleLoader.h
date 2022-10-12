@@ -39,10 +39,6 @@ public:
     const BuiltinTypes& builtinTypes();
     const BuiltinMap*   rootModule();
 
-    // This is used for testing purposes; it contains root types and public aliases (mat2 for
-    // float2x2), and hides private types like sk_Caps.
-    std::shared_ptr<SymbolTable>& rootSymbolTableWithPublicTypes();
-
     // This ModifiersPool is shared by every built-in module.
     ModifiersPool& coreModifiers();
 
