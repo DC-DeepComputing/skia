@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62fd9bbb_6efaaacd",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-12T17:11:22Z",
+      "side": 0,
+      "message": "I believe that what might have been missing here (and all that needs to be added to get the same effect) is\n\n`    \u0026\u0026 CFGetTypeID(num) \u003d\u003d CFNumberGetTypeID()`\n\nThe caller of this function already defaults to 0 value on error for similar reasons (the traits were buggy in previous releases as well). Though I\u0027m not sure this is necessary anyway, since I think `CFNumberIsFloatType` should return `false` if the type isn\u0027t a `CFNumberRef`? (The documentation is of course unhelpful here.)\n\nIn other words, I don\u0027t understand what behavior this actually changes? I think this was already handled? Was anything asserting or printing anything in this case? I see on the build failure in the related Chromium issue that the Chromium version of this cast as used in Blink failed as an assert error, but here this is explicitly handled by returning a boolean.",
+      "revId": "7e0214ee4c9fed49f2185da02c2e6ab8edd21c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
