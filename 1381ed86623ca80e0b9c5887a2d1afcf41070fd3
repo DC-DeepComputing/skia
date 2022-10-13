@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85dedfb1_5ffe61b5",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3420,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T20:59:30Z",
+      "side": 1,
+      "message": "If we move the max(1, maxSampleCnt) line up, is there any need for this check? Looks like multisampleIsImplicit will guard this appropriately for us.",
+      "range": {
+        "startLine": 3420,
+        "startChar": 50,
+        "endLine": 3420,
+        "endChar": 69
+      },
+      "revId": "1381ed86623ca80e0b9c5887a2d1afcf41070fd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4666e29a_9807872d",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3428,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T20:59:30Z",
+      "side": 1,
+      "message": "should this have moved up with the get calls?",
+      "range": {
+        "startLine": 3427,
+        "startChar": 16,
+        "endLine": 3428,
+        "endChar": 57
+      },
+      "revId": "1381ed86623ca80e0b9c5887a2d1afcf41070fd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
