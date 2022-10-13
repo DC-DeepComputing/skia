@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecordingPriv.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 
 namespace skgpu::graphite {
 
@@ -66,7 +67,9 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         return;
     }
 
-    if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
+    if (!info.fRecording->priv().addCommands(resourceProvider,
+                                             fCurrentCommandBuffer.get(),
+                                             static_cast<Surface*>(info.fSurface))) {
         if (callback) {
             callback->setFailureResult();
         }
