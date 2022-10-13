@@ -87,6 +87,30 @@
       },
       "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d841c456_2780e587",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3415,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T15:09:06Z",
+      "side": 1,
+      "message": "What do you mean by not accurate? The specs for both the implicit resolve things say you to be less than GL_MAX_SAMPLES and the max value reported for the internal format. In Skia we don\u0027t swap back and forth between implicit and explicit resolve msaa, so if we pick implicit we\u0027re going to do that.\n\nThus it seems fine to just limit what we put into the table. I don\u0027t see how functionally that gives you any different results than how you changed the maxRenderTargetSampleCount() function.",
+      "parentUuid": "53e7c445_96de11e6",
+      "range": {
+        "startLine": 3415,
+        "startChar": 16,
+        "endLine": 3415,
+        "endChar": 76
+      },
+      "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
