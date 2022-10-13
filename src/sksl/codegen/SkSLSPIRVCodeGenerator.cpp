@@ -1110,11 +1110,22 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
                 fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
             }
             SpvId imageTypeId = this->getType(type->textureType(), layout);
+            if (imageTypeId == NA) {
+                fContext.fErrors->error(type->fPosition,
+                                        "unsupported sampler type: '" + type->displayName() + "'");
+                return NA;
+            }
             return this->writeInstruction(SpvOpTypeSampledImage,
                                           Words{Word::Result(), imageTypeId},
                                           fConstantBuffer);
         }
         case Type::TypeKind::kTexture: {
+            if (type->dimensions() == SpvDimRect) {
+                fContext.fErrors->error(
+                        type->fPosition,
+                        "unsupported texture dimensions: '" + type->displayName() + "'");
+                return NA;
+            }
             SpvId floatTypeId = this->getType(*fContext.fTypes.fFloat, layout);
             int sampled = (type->textureAccess() == Type::TextureAccess::kSample) ? 1 : 2;
             return this->writeInstruction(SpvOpTypeImage,
@@ -1434,8 +1445,12 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                         SkASSERT(arg1Type.matches(*fContext.fTypes.fFloat3));
                     }
                     break;
+                case SpvDimRect:
+                    fContext.fErrors->error(c.fPosition,
+                                            "unsupported texture dimensions: '" +
+                                                    arguments[0]->type().displayName() + "'");
+                    return NA;
                 case SpvDimCube:   // fall through
-                case SpvDimRect:   // fall through
                 case SpvDimBuffer: // fall through
                 case SpvDimSubpassData:
                     break;
