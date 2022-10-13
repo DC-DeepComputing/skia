@@ -16,6 +16,24 @@
       "message": "So, this finally compiles, generating ~30K .wasm module. \n-r-xr-xr-x 1 ubuntu ubuntu  29995 Oct 12 10:05 hello_world.wasm\n\nJust wanted to push out a rough CL, if anyone would like to have a detailed look.\n\n@kjlubick Sorry, I couldnt still get all the globs away from SDL2/BUILD.bazel file, as the number of files in the repo is huge. I think we need to carefully review how much do we need for compilation or dependencies (maybe involve some folks from emscripten in the process) ?\n\nBut, on playing back the wasm module via emscripten JS templates, we see errors like \n\"hello_world.js:1164 wasm streaming compile failed: LinkError: WebAssembly.instantiate(): Import #1 module\u003d\"env\" function\u003d\"_embind_register_void\" error: function import requires a callable\"\n\nAny pointers, if emscripten is missing some thing in the build chain. Should we raise a bug there ?",
       "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19ae0df6_942f3bd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-13T11:26:12Z",
+      "side": 1,
+      "message": "I\u0027ll take a look, probably tomorrow.",
+      "parentUuid": "a7d72878_ac279896",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
