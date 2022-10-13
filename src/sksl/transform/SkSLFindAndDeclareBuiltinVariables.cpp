@@ -57,16 +57,17 @@ public:
         if (!symbol) {
             return;
         }
-        if (symbol->is<Variable>()) {
-            if (const GlobalVarDeclaration* decl = symbol->as<Variable>().globalVarDeclaration()) {
-                this->addDeclaringElement(decl);
-                return;
-            }
-        }
-        if (const ProgramElement* decl = fContext.fBuiltins->find(symbol)) {
-            SkASSERT(decl->is<InterfaceBlock>());
+        const Variable& var = symbol->as<Variable>();
+        if (const GlobalVarDeclaration* decl = var.globalVarDeclaration()) {
             this->addDeclaringElement(decl);
-            return;
+        } else if (const InterfaceBlock* block = var.interfaceBlock()) {
+            this->addDeclaringElement(block);
+        } else {
+            // Double-check that this variable isn't associated with a global or an interface block.
+            // (Locals and parameters will come along natually as part of the associated function.)
+            SkASSERTF(var.storage() != VariableStorage::kGlobal &&
+                      var.storage() != VariableStorage::kInterfaceBlock,
+                      "%.*s", (int)var.name().size(), var.name().data());
         }
     }
 

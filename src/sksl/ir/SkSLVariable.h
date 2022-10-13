@@ -26,6 +26,7 @@ class Context;
 class Expression;
 class GlobalVarDeclaration;
 class IRNode;
+class InterfaceBlock;
 class Mangler;
 class SymbolTable;
 class VarDeclaration;
@@ -105,6 +106,14 @@ public:
 
     const Expression* initialValue() const;
 
+    /**
+     * The declaring element of this variable--could be a VarDeclaration statement, a
+     * GlobalVarDeclaration program element, or an InterfaceBlock program element.
+     * There's overlap here (e.g. a GlobalVarDeclaration wraps a VarDeclaration statement),
+     * and a Variable can potentially receive multiple calls to set its declaring element (from both
+     * the VarDeclaration and the surrounding GlobalVarDeclaration). We prioritize InterfaceBlocks
+     * highest, GlobalVarDeclarations next, and VarDeclarations lowest.
+     */
     VarDeclaration* varDeclaration() const;
 
     void setVarDeclaration(VarDeclaration* declaration);
@@ -113,10 +122,11 @@ public:
 
     void setGlobalVarDeclaration(GlobalVarDeclaration* declaration);
 
-    void detachDeadVarDeclaration() {
-        // The VarDeclaration is being deleted, so our reference to it has become stale.
-        fDeclaringElement = nullptr;
-    }
+    InterfaceBlock* interfaceBlock() const;
+
+    void setInterfaceBlock(InterfaceBlock* block);
+
+    void detachDeadDeclaringElement(IRNode* deadElement);
 
     std::string description() const override {
         return this->modifiers().description() + this->type().displayName() + " " +

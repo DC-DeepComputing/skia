@@ -34,11 +34,12 @@ def executeWorklist(input, worklist):
         if err.returncode != 1:
             print("### " + input + " skslc error:\n")
             print("\n".join(err.output.decode('utf-8', errors='ignore').splitlines()))
+            print(worklist.name)
             sys.exit(err.returncode)
         pass  # Compile errors (exit code 1) are expected and normal in test code
 
     # Delete the worklist file now that execution is complete.
-    os.remove(worklist.name)
+##    os.remove(worklist.name)
 
 def makeEmptyFile(path):
     try:
