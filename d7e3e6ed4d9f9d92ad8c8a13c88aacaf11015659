@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b6e439f_c434c8d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-13T20:27:27Z",
+      "side": 1,
+      "message": "I pushed the minor SPIR-V side clean-up as Patch Set 3. We decided to remove support for Rect dim OpTypeTexture from the SPIR-V backend so this is here only to document this feature for posterity, if we ever want to bring back support for it.\n\nFor now I\u0027m archiving this change and I will upload different CLs for removing support and the sampleGrad overload that works for GL only.",
+      "revId": "d7e3e6ed4d9f9d92ad8c8a13c88aacaf11015659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

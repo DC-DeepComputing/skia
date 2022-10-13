@@ -22,6 +22,30 @@
       },
       "revId": "be200dfaa775e4c62ea7cb807bf2b29d817cef65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b788bad_7ed041cb",
+        "filename": "tests/sksl/intrinsics/SampleGrad2DRect.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-13T20:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19cc9c67_da8e3cf8",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "be200dfaa775e4c62ea7cb807bf2b29d817cef65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
