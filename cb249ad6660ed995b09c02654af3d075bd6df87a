@@ -22,6 +22,30 @@
       },
       "revId": "cb249ad6660ed995b09c02654af3d075bd6df87a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee29e050_1774fa46",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-13T17:54:02Z",
+      "side": 0,
+      "message": "`fVariableCounts` should include every variable in the program. If not, we made changes without updating the ProgramUsage.",
+      "parentUuid": "224b1503_5e613771",
+      "range": {
+        "startLine": 132,
+        "startChar": 4,
+        "endLine": 132,
+        "endChar": 21
+      },
+      "revId": "cb249ad6660ed995b09c02654af3d075bd6df87a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
