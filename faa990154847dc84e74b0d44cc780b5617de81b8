@@ -111,6 +111,30 @@
       },
       "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7185fad4_5303e453",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3415,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2022-10-13T15:29:50Z",
+      "side": 1,
+      "message": "\u003eIn Skia we don\u0027t swap back and forth between implicit and explicit resolve msaa, so if we pick implicit we\u0027re going to do that.\n\nOk makes sense. I will change.",
+      "parentUuid": "d841c456_2780e587",
+      "range": {
+        "startLine": 3415,
+        "startChar": 16,
+        "endLine": 3415,
+        "endChar": 76
+      },
+      "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
