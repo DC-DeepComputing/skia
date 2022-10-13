@@ -50,6 +50,41 @@
       "message": "Thank you, Pavel, in one or another way or form your suggested fix will be added soon to SkParagraph code. However, we need to make sure we meet Flutter expectation on that API first since the Flutter is our main focus. \nI will try to make it happen as soon as possible.",
       "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c43f65a5_91adaec4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19014
+      },
+      "writtenOn": "2022-10-13T13:28:08Z",
+      "side": 1,
+      "message": "Also I found, that this setting probably should be added in key of paragraph cache.\nI can fix it if it would be helpful.",
+      "parentUuid": "a16f37c4_78d4abdf",
+      "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0f10f0_626a9c02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19014
+      },
+      "writtenOn": "2022-10-13T13:28:08Z",
+      "side": 1,
+      "message": "Hey! Is there any updates on this topic?",
+      "revId": "5ac5d086c40d8f94be7cf8d06d07924cd1bab17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
