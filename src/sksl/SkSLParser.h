@@ -33,7 +33,6 @@
 
 namespace SkSL {
 
-class BuiltinMap;
 struct Program;
 
 namespace dsl {
@@ -52,7 +51,7 @@ public:
 
     std::unique_ptr<Program> program();
 
-    SkSL::LoadedModule moduleInheritingFrom(const SkSL::BuiltinMap* baseModule);
+    std::unique_ptr<LoadedModule> moduleInheritingFrom(const LoadedModule* parent);
 
     std::string_view text(Token token);
 
