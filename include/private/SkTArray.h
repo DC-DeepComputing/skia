@@ -246,7 +246,7 @@ public:
     T* push_back_n(int n) {
         SkASSERT(n >= 0);
         void* newTs = this->push_back_raw(n);
-        for (int i = 0; i < n; ++i) {
+        for (size_t i = 0; i < static_cast<size_t>(n); ++i) {
             new (static_cast<char*>(newTs) + i * sizeof(T)) T;
         }
         return static_cast<T*>(newTs);
@@ -369,6 +369,7 @@ public:
     T* data() { return fItemArray; }
     const T* data() const { return fItemArray; }
     size_t size() const { return (size_t)fCount; }
+    size_t size_bytes() const { return static_cast<size_t>(fCount) * sizeof(T); }
     void resize(size_t count) { this->resize_back((int)count); }
 
     /**
