@@ -21,18 +21,12 @@ namespace SkSL {
 class Symbol;
 class SymbolTable;
 
-/**
- * Maps Symbols from the built-in modules onto the ProgramElements that created them.
- */
+/** TODO(johnstiles): remove this class */
 class BuiltinMap {
 public:
     BuiltinMap(const BuiltinMap* parent,
                std::shared_ptr<SymbolTable> symbolTable,
                SkSpan<std::unique_ptr<ProgramElement>> elements);
-
-    void insertOrDie(const Symbol* key, std::unique_ptr<ProgramElement> element);
-
-    const ProgramElement* find(const Symbol* key) const;
 
     void foreach(const std::function<void(const ProgramElement&)>& fn) const;
 
@@ -41,7 +35,6 @@ public:
 private:
     const BuiltinMap* fParent = nullptr;
     std::shared_ptr<SymbolTable> fSymbolTable;
-    SkTHashMap<const Symbol*, std::unique_ptr<ProgramElement>> fElements;
     SkTArray<std::unique_ptr<ProgramElement>> fUnmappedElements;
 };
 
