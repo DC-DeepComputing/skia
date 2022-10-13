@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e09731c_2dd80843",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-13T21:40:36Z",
+      "side": 1,
+      "message": "I moved this down here because AIUI the capabilities like SampledBuffer and others are related to OpTypeImage not OpTypeSampledImage. OpTypeSampledImage always depends on an OpTypeImage (and the `Type::TypeKind::kSampler` case above will recur and always indirectly execute this path), so the behavior doesn\u0027t change.",
+      "revId": "3efa17180edf49e51e58cb702c06c19f3afef1ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
