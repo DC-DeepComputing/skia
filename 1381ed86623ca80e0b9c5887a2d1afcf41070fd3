@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "179cf644_e6ce7d08",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3420,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2022-10-13T21:28:33Z",
+      "side": 1,
+      "message": "Do you mean \"dont we just want to cap the samples if we dont get a null resonse\" thus moving the std::max(1... portion to above and getting rid of the maxSampleCnt\u003e 0 check is the behavior you desire",
+      "parentUuid": "582e2c63_48c2b5fb",
+      "range": {
+        "startLine": 3420,
+        "startChar": 50,
+        "endLine": 3420,
+        "endChar": 69
+      },
+      "revId": "1381ed86623ca80e0b9c5887a2d1afcf41070fd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4666e29a_9807872d",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 7
