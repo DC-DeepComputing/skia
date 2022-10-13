@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adbbc663_b6d124b7",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-13T14:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c274f1fd_9e962030",
+      "range": {
+        "startLine": 80,
+        "startChar": 44,
+        "endLine": 80,
+        "endChar": 69
+      },
+      "revId": "650281984d95657f9a4260442e8bbfaf0169a52e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90512772_f46f8435",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-12T16:42:55Z",
       "side": 1,
       "message": "I\u0027d meant for this to go in CombinationBuilder, where it\u0027s adding blocks to the builder directly as well, but doesn\u0027t have anything equivalent to `alphaColorFilter` that covers this behavior in PaintParams::toKey right now.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 95
+      },
+      "revId": "650281984d95657f9a4260442e8bbfaf0169a52e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8254d81_d401799d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-13T14:31:39Z",
+      "side": 1,
+      "message": "Ah, I understand now that by \"combination\" you meant the combination builder. My bad. I removed this line and added a TODO in CombinationBuilder\u0027s createKey method. \n\nThere\u0027s an existing TODO to add a ColorFilterId class which will be the color filter equivalent to BlenderId, so I added a follow-up TODO to add in the alpha color filtering option/step once that\u0027s completed.",
+      "parentUuid": "90512772_f46f8435",
       "range": {
         "startLine": 92,
         "startChar": 0,
