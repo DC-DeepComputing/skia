@@ -3372,6 +3372,13 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
     sk_ignore_unused_variable(standard);
     GrGLVersion version = ctxInfo.version();
 
+    int maxSampleCnt = 0;
+    if (GrGLCaps::kES_IMG_MsToTexture_MSFBOType == fMSFBOType) {
+        GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES_IMG, &maxSampleCnt);
+    } else if (GrGLCaps::kES_EXT_MsToTexture_MSFBOType == fMSFBOType) {
+        GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES, &maxSampleCnt);
+    }
+
     for (int i = 0; i < kGrGLColorFormatCount; ++i) {
         if (FormatInfo::kFBOColorAttachmentWithMSAA_Flag & fFormatTable[i].fFlags) {
             // We assume that MSAA rendering is supported only if we support non-MSAA rendering.
@@ -3394,29 +3401,28 @@ void GrGLCaps::setupSampleCounts(const GrGLContextInfo& ctxInfo, const GrGLInter
                         --count;
                         SkASSERT(!count || temp[count -1] > 1);
                     }
-                    fFormatTable[i].fColorSampleCounts.resize(count+1);
+                    fFormatTable[i].fColorSampleCounts.reserve(count + 1);
                     // We initialize our supported values with 1 (no msaa) and reverse the order
                     // returned by GL so that the array is ascending.
-                    fFormatTable[i].fColorSampleCounts[0] = 1;
+                    fFormatTable[i].fColorSampleCounts.push_back(1);
                     for (int j = 0; j < count; ++j) {
 #if defined(SK_BUILD_FOR_IOS) && TARGET_OS_SIMULATOR
                         // The iOS simulator is reporting incorrect values for sample counts,
                         // so force them to be a power of 2.
-                        fFormatTable[i].fColorSampleCounts[j+1] = SkPrevPow2(temp[count - j - 1]);
+                        int sampleCnt = SkPrevPow2(temp[count - j - 1]);
 #else
-                        fFormatTable[i].fColorSampleCounts[j+1] = temp[count - j - 1];
+                        int sampleCnt = temp[count - j - 1];
 #endif
+                        // Implicite resolve may have a lower max samples than the per format MSAA.
+                        if (maxSampleCnt > 0 && sampleCnt > maxSampleCnt) {
+                            break;
+                        }
+                        fFormatTable[i].fColorSampleCounts.push_back(sampleCnt);
                     }
                 }
             } else {
                 // Fake out the table using some semi-standard counts up to the max allowed sample
                 // count.
-                int maxSampleCnt = 1;
-                if (GrGLCaps::kES_IMG_MsToTexture_MSFBOType == fMSFBOType) {
-                    GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES_IMG, &maxSampleCnt);
-                } else if (GrGLCaps::kNone_MSFBOType != fMSFBOType) {
-                    GR_GL_GetIntegerv(gli, GR_GL_MAX_SAMPLES, &maxSampleCnt);
-                }
                 // Chrome has a mock GL implementation that returns 0.
                 maxSampleCnt = std::max(1, maxSampleCnt);
 
