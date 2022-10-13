@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/Texture.h"
 
+#include "src/gpu/RefCntedCallback.h"
+
 namespace skgpu::graphite {
 
 Texture::Texture(const SharedContext* sharedContext,
@@ -18,6 +20,13 @@ Texture::Texture(const SharedContext* sharedContext,
         , fDimensions(dimensions)
         , fInfo(info) {}
 
-Texture::~Texture() {}
+Texture::~Texture() {
+    SkDebugf("--- deleting %p\n", this);
+}
+
+void Texture::setReleaseCallback(sk_sp<RefCntedCallback> releaseCallback) {
+    fReleaseCallback = releaseCallback;
+    this->onSetReleaseCallback(fReleaseCallback);
+}
 
 } // namespace skgpu::graphite

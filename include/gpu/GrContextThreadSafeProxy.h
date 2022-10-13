@@ -34,7 +34,7 @@ namespace sktext::gpu { class TextBlobRedrawCoordinator; }
  */
 class SK_API GrContextThreadSafeProxy final : public SkNVRefCnt<GrContextThreadSafeProxy> {
 public:
-    ~GrContextThreadSafeProxy();
+    ~GrContextThreadSafeProxy() override;
 
     /**
      *  Create a surface characterization for a DDL that will be replayed into the GrContext

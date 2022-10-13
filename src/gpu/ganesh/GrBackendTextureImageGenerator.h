@@ -62,7 +62,7 @@ private:
                   GrDirectContext::DirectContextID owningContextID,
                   std::unique_ptr<GrSemaphore>);
 
-        ~RefHelper();
+        ~RefHelper() override;
 
         sk_sp<GrTexture>                 fOriginalTexture;
         GrDirectContext::DirectContextID fOwningContextID;

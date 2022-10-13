@@ -57,11 +57,10 @@ size_t GrSurface::ComputeSize(const GrBackendFormat& format,
 
 void GrSurface::setRelease(sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     SkASSERT(this->getContext());
-    fReleaseHelper.reset(new RefCntedReleaseProc(std::move(releaseHelper),
+    fReleaseHelper1.reset(new RefCntedReleaseProc(std::move(releaseHelper),
                                                  sk_ref_sp(this->getContext())));
-    this->onSetRelease(fReleaseHelper);
+    this->onSetRelease(fReleaseHelper1);
 }
-
 
 GrSurface::RefCntedReleaseProc::RefCntedReleaseProc(sk_sp<skgpu::RefCntedCallback> callback,
                                                     sk_sp<GrDirectContext> directContext)
@@ -77,11 +76,11 @@ GrSurface::RefCntedReleaseProc::~RefCntedReleaseProc() {
 }
 
 void GrSurface::onRelease() {
-    this->invokeReleaseProc();
+    this->invokeReleaseProc1();
     this->INHERITED::onRelease();
 }
 
 void GrSurface::onAbandon() {
-    this->invokeReleaseProc();
+    this->invokeReleaseProc1();
     this->INHERITED::onAbandon();
 }

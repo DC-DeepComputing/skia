@@ -120,7 +120,7 @@ private:
 
     // These resources all get instantiated during prepareResources.
     SkTArray<sk_sp<GraphicsPipeline>> fFullPipelines;
-    SkTArray<sk_sp<TextureProxy>> fSampledTextures;
+    SkTArray<sk_sp<TextureProxy>> fSampledTextures1;
     SkTArray<sk_sp<Sampler>> fSamplers;
 };
 

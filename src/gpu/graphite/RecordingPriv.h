@@ -14,6 +14,7 @@ namespace skgpu::graphite {
 
 class RecordingPriv {
 public:
+    void instantiateVolatileProxies(ResourceProvider*);
     bool addCommands(ResourceProvider*, CommandBuffer*);
     void addResourceRef(sk_sp<Resource> resource);
 
@@ -37,4 +38,3 @@ inline RecordingPriv Recording::priv() {
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_RecordingPriv_DEFINED
-

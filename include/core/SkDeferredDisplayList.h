@@ -30,7 +30,7 @@ using GrRenderTargetProxy = SkRefCnt;
  */
 class SkDeferredDisplayList : public SkNVRefCnt<SkDeferredDisplayList> {
 public:
-    SK_API ~SkDeferredDisplayList();
+    SK_API ~SkDeferredDisplayList() override;
 
     SK_API const SkSurfaceCharacterization& characterization() const {
         return fCharacterization;

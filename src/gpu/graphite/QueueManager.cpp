@@ -66,6 +66,8 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         return;
     }
 
+    info.fRecording->priv().instantiateVolatileProxies(resourceProvider);
+
     if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
         if (callback) {
             callback->setFailureResult();

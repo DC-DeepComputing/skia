@@ -103,7 +103,7 @@ public:
     // keeps hold of the cpu-side data but allows deferred filling in of the mirroring gpu buffer.
     class VertexData : public SkNVRefCnt<VertexData> {
     public:
-        ~VertexData();
+        ~VertexData() override;
 
         const void* vertices() const { return fVertices; }
         size_t size() const { return fNumVertices * fVertexSize; }

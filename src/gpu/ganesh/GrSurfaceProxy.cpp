@@ -78,11 +78,11 @@ GrSurfaceProxy::GrSurfaceProxy(LazyInstantiateCallback&& callback,
         , fFit(fit)
         , fBudgeted(budgeted)
         , fUseAllocator(useAllocator)
-        , fLazyInstantiateCallback(std::move(callback))
+        , fLazyInstantiateCallback7(std::move(callback))
         , fIsProtected(isProtected)
         , fLabel(label) {
     SkASSERT(fFormat.isValid());
-    SkASSERT(fLazyInstantiateCallback);
+    SkASSERT(fLazyInstantiateCallback7);
     SkASSERT(is_valid_lazy(dimensions, fit));
 }
 
@@ -434,12 +434,12 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
     }
 
     bool syncKey = true;
-    bool releaseCallback = false;
+    bool releaseCallback2 = false;
     if (!surface) {
-        auto result = fProxy->fLazyInstantiateCallback(resourceProvider, fProxy->callbackDesc());
+        auto result = fProxy->fLazyInstantiateCallback7(resourceProvider, fProxy->callbackDesc());
         surface = std::move(result.fSurface);
         syncKey = result.fKeyMode == GrSurfaceProxy::LazyInstantiationKeyMode::kSynced;
-        releaseCallback = surface && result.fReleaseCallback;
+        releaseCallback2 = surface && result.fReleaseCallback1;
     }
     if (!surface) {
         fProxy->fDimensions.setEmpty();
@@ -475,8 +475,8 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
     }
 
     this->assign(std::move(surface));
-    if (releaseCallback) {
-        fProxy->fLazyInstantiateCallback = nullptr;
+    if (releaseCallback2) {
+        fProxy->fLazyInstantiateCallback7 = nullptr;
     }
 
     return true;

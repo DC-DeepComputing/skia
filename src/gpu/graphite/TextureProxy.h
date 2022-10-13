@@ -23,6 +23,21 @@ class Texture;
 
 class TextureProxy : public SkRefCnt {
 public:
+    void ref() const override {
+        if (this->isVolatile()) {
+            int refCnt = this->getRefCnt();
+            SkDebugf("-------- TextureProxy ref %p %d->%d \n", this, refCnt, refCnt+1);
+        }
+        SkRefCnt::ref();
+    }
+    void unref() const override {
+        if (this->isVolatile()) {
+            int refCnt = this->getRefCnt();
+            SkDebugf("--------- TextureProxy unref %p %d->%d\n", this, refCnt, refCnt-1);
+        }
+        SkRefCnt::unref();
+    }
+
     TextureProxy(SkISize dimensions, const TextureInfo& info, SkBudgeted budgeted);
     TextureProxy(sk_sp<Texture>);
 
@@ -34,7 +49,11 @@ public:
     SkISize dimensions() const { return fDimensions; }
     const TextureInfo& textureInfo() const { return fInfo; }
 
+    bool isLazy() const;
+    bool isVolatile() const;
+
     bool instantiate(ResourceProvider*);
+    bool volatileInstantiate(ResourceProvider*);
     bool isInstantiated() const { return SkToBool(fTexture); }
     sk_sp<Texture> refTexture() const;
     const Texture* texture() const;
@@ -47,7 +66,37 @@ public:
                                     Renderable,
                                     SkBudgeted);
 
+    /**
+     * Specifies the expected properties of the Texture returned by a lazy instantiation
+     * callback.
+     */
+    struct LazySurfaceDesc {
+        SkISize     fDimensions;
+        TextureInfo fTextureInfo;
+        SkBudgeted  fBudgeted;
+        Volatile    fIsVolatile;
+    };
+
+    using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*,
+                                                                  const LazySurfaceDesc&)>;
+
+    static sk_sp<TextureProxy> MakeLazy(SkISize dimensions,
+                                        const TextureInfo&,
+                                        SkBudgeted,
+                                        Volatile,
+                                        LazyInstantiateCallback&&);
+
+    LazySurfaceDesc callbackDesc() const {
+        return { fDimensions, fInfo, fBudgeted, fVolatile };
+    }
+
 private:
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo&,
+                 SkBudgeted,
+                 Volatile,
+                 LazyInstantiateCallback&&);
+
 #ifdef SK_DEBUG
     void validateTexture(const Texture*);
 #endif
@@ -56,8 +105,11 @@ private:
     TextureInfo fInfo;
 
     SkBudgeted fBudgeted;
+    Volatile fVolatile;
 
     sk_sp<Texture> fTexture;
+
+    LazyInstantiateCallback fLazyInstantiateCallback;
 };
 
 } // namepsace skgpu::graphite
