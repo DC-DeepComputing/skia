@@ -13,6 +13,10 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+namespace skgpu {
+class RefCntedCallback;
+};
+
 namespace skgpu::graphite {
 
 class Texture : public Resource {
@@ -25,15 +29,25 @@ public:
     SkISize dimensions() const { return fDimensions; }
     const TextureInfo& textureInfo() const { return fInfo; }
 
+    void setReleaseCallback(sk_sp<RefCntedCallback>);
+
 protected:
     Texture(const SharedContext*,
             SkISize dimensions,
             const TextureInfo& info,
-            Ownership, SkBudgeted);
+            Ownership,
+            SkBudgeted);
 
 private:
+    // Unmanaged backends (e.g. Vulkan) may want to specially handle the release callback in order
+    // to ensure it isn't called until GPU work related to the resource is completed.
+    virtual void onSetReleaseCallback(sk_sp<RefCntedCallback>) = 0;
+
     SkISize fDimensions;
     TextureInfo fInfo;
+
+public:
+    sk_sp<RefCntedCallback> fReleaseCallback;
 };
 
 } // namepsace skgpu::graphite

@@ -184,7 +184,7 @@ public:
     static sk_sp<Animation> Make(SkStream*);
     static sk_sp<Animation> MakeFromFile(const char path[]);
 
-    ~Animation();
+    ~Animation() override;
 
     enum RenderFlag : uint32_t {
         // When rendering into a known transparent buffer, clients can pass

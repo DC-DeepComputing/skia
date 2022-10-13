@@ -35,7 +35,7 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
                                 ResourceProvider* resourceProvider) {
     sk_sp<RefCntedCallback> callback;
     if (info.fFinishedProc) {
-        callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
+        callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext, true); //$$
     }
 
     SkASSERT(info.fRecording);
@@ -65,6 +65,8 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         }
         return;
     }
+
+    info.fRecording->priv().instantiateVolatileProxies(resourceProvider);
 
     if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
         if (callback) {

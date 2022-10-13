@@ -282,7 +282,7 @@ public:
      */
     static void Rewind(sk_sp<SkPathRef>* pathRef);
 
-    ~SkPathRef();
+    ~SkPathRef() override;
     int countPoints() const { return fPoints.size(); }
     int countVerbs() const { return fVerbs.size(); }
     int countWeights() const { return fConicWeights.size(); }

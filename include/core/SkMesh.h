@@ -93,7 +93,7 @@ public:
 
     using Uniform = SkRuntimeEffect::Uniform;
 
-    ~SkMeshSpecification();
+    ~SkMeshSpecification() override;
 
     struct Result {
         sk_sp<SkMeshSpecification> specification;
