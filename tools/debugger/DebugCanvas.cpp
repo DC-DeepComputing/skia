@@ -1,4 +1,5 @@
 /*
+#include "DrawCommand.h"
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -133,7 +134,12 @@ DebugCanvas::DebugCanvas(int width, int height)
 DebugCanvas::DebugCanvas(SkIRect bounds)
         : DebugCanvas(bounds.width(), bounds.height()) {}
 
-DebugCanvas::~DebugCanvas() { fCommandVector.deleteAll(); }
+DebugCanvas::~DebugCanvas() {
+    for (DrawCommand* p : fCommandVector) {
+        delete p;
+    }
+    fCommandVector.reset();
+}
 
 void DebugCanvas::addDrawCommand(DrawCommand* command) { fCommandVector.push_back(command); }
 
