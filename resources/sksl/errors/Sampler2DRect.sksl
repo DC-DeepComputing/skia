@@ -1,0 +1,5 @@
+layout(binding=0) uniform sampler2DRect t;
+half4 main(float2 coords)
+{
+    return sample(t, coords);
+}
