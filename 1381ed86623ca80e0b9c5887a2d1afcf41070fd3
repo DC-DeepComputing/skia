@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "582e2c63_48c2b5fb",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3420,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T21:23:12Z",
+      "side": 1,
+      "message": "But in that case (assuming that means maxSampleCnt stays at 0) do we not want to just cap the max samples we use at 1 (i.e. no multisampling)",
+      "parentUuid": "19dec451_855b98e1",
+      "range": {
+        "startLine": 3420,
+        "startChar": 50,
+        "endLine": 3420,
+        "endChar": 69
+      },
+      "revId": "1381ed86623ca80e0b9c5887a2d1afcf41070fd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4666e29a_9807872d",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 7
