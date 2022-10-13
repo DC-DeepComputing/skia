@@ -39,6 +39,30 @@
       },
       "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ebbac7_ce3ce33c",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3415,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T14:52:45Z",
+      "side": 1,
+      "message": "Ahh nevermind, I missed that the above \"if\" also includes a line for ES 3.0 and above. So looks like we could just add checks in the above if and limit that values we push into the table. That way we don\u0027t have to store an extra variable and check every time we query. This leaves all the logic in one place only run once at startup.",
+      "parentUuid": "b9e33c4e_2f89d4b2",
+      "range": {
+        "startLine": 3415,
+        "startChar": 16,
+        "endLine": 3415,
+        "endChar": 76
+      },
+      "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
