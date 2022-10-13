@@ -22,6 +22,30 @@
       },
       "revId": "ebd81e233a27b85f37febbbdecf2e02fb1fc993a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07408f49_542b7b9b",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T19:03:36Z",
+      "side": 1,
+      "message": "Okay we don\u0027t use these todays, but I think its because we are missing the cap queries that ganesh has that are of the form isFormatAsColorTypeRenderable. I feel like we would want/need these type of queries and wonder if we\u0027re missing some checks higher up in Graphite where it should be checking these things.\n\nAnyways I would leave the first two as is. I still feel like the kWrapped only is more a property of the entire format though.",
+      "parentUuid": "1deca2b7_a934d505",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 35
+      },
+      "revId": "ebd81e233a27b85f37febbbdecf2e02fb1fc993a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
