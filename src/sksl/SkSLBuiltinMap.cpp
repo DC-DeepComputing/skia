@@ -71,10 +71,13 @@ const ProgramElement* BuiltinMap::find(const Symbol* symbol) const {
     return fParent ? fParent->find(symbol) : nullptr;
 }
 
-void BuiltinMap::foreach(const std::function<void(const Symbol*,const ProgramElement&)>& fn) const {
+void BuiltinMap::foreach(const std::function<void(const ProgramElement&)>& fn) const {
     fElements.foreach([&](const Symbol* symbol, const std::unique_ptr<ProgramElement>& elem) {
-        fn(symbol, *elem);
+        fn(*elem);
     });
+    for (const std::unique_ptr<ProgramElement>& elem : fUnmappedElements) {
+        fn(*elem);
+    }
     if (fParent) {
         fParent->foreach(fn);
     }

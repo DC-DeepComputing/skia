@@ -34,7 +34,7 @@ public:
 
     const ProgramElement* find(const Symbol* key) const;
 
-    void foreach(const std::function<void(const Symbol*, const ProgramElement&)>& fn) const;
+    void foreach(const std::function<void(const ProgramElement&)>& fn) const;
 
     std::shared_ptr<SymbolTable> symbols() const { return fSymbolTable; }
 
