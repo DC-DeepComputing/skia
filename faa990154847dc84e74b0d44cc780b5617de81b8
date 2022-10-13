@@ -63,6 +63,30 @@
       },
       "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e7c445_96de11e6",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3415,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2022-10-13T14:58:19Z",
+      "side": 1,
+      "message": "I thought of doing that but i thought that maybe it was not accurate.\nSo from what I can tell the table tells us per format MSAA. but this GL_MAX_SAMPLES tells us specifically the max for the implicit resolve which can be different (doesnt make much sense that it would be but it could).\n\nI think that this is probably only different because the driver is simply reporting it incorrectly. The device doesnt actually have any issues running at 8 samples it is simply the validation (Angle) that is telling us that this is not technically correct.",
+      "parentUuid": "93ebbac7_ce3ce33c",
+      "range": {
+        "startLine": 3415,
+        "startChar": 16,
+        "endLine": 3415,
+        "endChar": 76
+      },
+      "revId": "faa990154847dc84e74b0d44cc780b5617de81b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
