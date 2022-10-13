@@ -127,6 +127,14 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options));
 }
 
+std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options,
+                                                SkISize dimensions,
+                                                const SkColorInfo& colorInfo) {
+    ASSERT_SINGLE_OWNER
+
+    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, dimensions, colorInfo));
+}
+
 void Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
