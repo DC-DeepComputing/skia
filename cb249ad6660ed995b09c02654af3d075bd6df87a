@@ -22,6 +22,30 @@
       },
       "revId": "cb249ad6660ed995b09c02654af3d075bd6df87a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9125f30_54c7c6e6",
+        "filename": "gm/colorfilterimagefilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-13T19:29:51Z",
+      "side": 0,
+      "message": "Sure they are. I\u0027m using an SkTArray\u003csk_sp\u003cSkShader\u003e\u003e instead of an SkTDArray\u003cSkShader*\u003e. This way the dtor of SkTArray unrefs all the sk_sp\u003cSkShader\u003e.",
+      "parentUuid": "e25db6ec_c6e39a9c",
+      "range": {
+        "startLine": 89,
+        "startChar": 16,
+        "endLine": 89,
+        "endChar": 22
+      },
+      "revId": "cb249ad6660ed995b09c02654af3d075bd6df87a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
