@@ -2369,7 +2369,7 @@ public:
     SDFTSubRun(bool useLCDText,
                bool antiAliased,
                const SDFTMatrixRange& matrixRange,
-               TransformedMaskVertexFiller&& vertexFiller,
+               TransformedMaskVertexFiller2&& vertexFiller,
                GlyphVector&& glyphs)
         : fUseLCDText{useLCDText}
         , fAntiAliased{antiAliased}
@@ -2380,15 +2380,14 @@ public:
     static SubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                             const SkFont& runFont,
                             SkStrikePromise&& strikePromise,
-                            SkRect sourceBounds,
-                            SkScalar strikeToSourceScale,
+                            const SkMatrix& creationMatrix,
+                            SkRect creationBounds,
                             const SDFTMatrixRange& matrixRange,
                             SubRunAllocator* alloc) {
-        auto vertexFiller = TransformedMaskVertexFiller::Make(
-                sourceBounds,
+        auto vertexFiller = TransformedMaskVertexFiller2::Make(
                 MaskFormat::kA8,
-                SK_DistanceFieldInset,
-                strikeToSourceScale,
+                creationMatrix,
+                creationBounds,
                 accepted,
                 alloc);
 
@@ -2409,7 +2408,7 @@ public:
         int useLCD = buffer.readInt();
         int isAntiAliased = buffer.readInt();
         SDFTMatrixRange matrixRange = SDFTMatrixRange::MakeFromBuffer(buffer);
-        auto vertexFiller = TransformedMaskVertexFiller::MakeFromBuffer(buffer, alloc);
+        auto vertexFiller = TransformedMaskVertexFiller2::MakeFromBuffer(buffer, alloc);
         if (!buffer.validate(vertexFiller.has_value())) { return nullptr; }
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
@@ -2482,11 +2481,12 @@ public:
                                                     sdc->arenaAlloc());
 
         GrRecordingContext* const rContext = sdc->recordingContext();
+        SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
                                                  maskType,
                                                  true,
                                                  this->glyphCount(),
-                                                 this->deviceRect(drawMatrix, drawOrigin),
+                                                 this->deviceRect(positionMatrix),
                                                  SkPaintPriv::ComputeLuminanceColor(paint),
                                                  useGammaCorrectDistanceTable,
                                                  DFGPFlags,
@@ -2589,15 +2589,15 @@ protected:
 
 private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
-    SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const {
-        return fVertexFiller.deviceRect(drawMatrix, drawOrigin);
+    SkRect deviceRect(const SkMatrix& positionMatrix) const {
+        return fVertexFiller.deviceRect(positionMatrix);
     }
 
     const bool fUseLCDText;
     const bool fAntiAliased;
     const SDFTMatrixRange fMatrixRange;
 
-    const TransformedMaskVertexFiller fVertexFiller;
+    const TransformedMaskVertexFiller2 fVertexFiller;
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
@@ -2817,12 +2817,13 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 if (!SkScalarNearlyZero(strikeToSourceScale)) {
                     ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
-                    accepted->startSource(rejected->source());
+                    SkMatrix creationMatrix =
+                            SkMatrix::Scale(1.f/strikeToSourceScale, 1.f/strikeToSourceScale);
+                    accepted->startSourceWithMatrixAdjustment(rejected->source(), creationMatrix);
                     if constexpr (kTrace) {
                         msg.appendf("    glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                     }
-                    SkRect sourceBounds = strike->prepareForSDFTDrawing(
-                            strikeToSourceScale, accepted, rejected);
+                    SkRect creationBounds = strike->prepareForSDFTDrawing(accepted, rejected);
                     rejected->flipRejectsToSource();
 
                     if (creationBehavior == kAddSubRuns && !accepted->empty()) {
@@ -2830,9 +2831,10 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                                 accepted->accepted(),
                                 runFont,
                                 strike->strikePromise(),
-                                sourceBounds,
-                                strikeToSourceScale,
-                                matrixRange, alloc));
+                                creationMatrix,
+                                creationBounds,
+                                matrixRange,
+                                alloc));
                     }
                 }
             }
