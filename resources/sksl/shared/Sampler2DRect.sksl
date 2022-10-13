@@ -1,0 +1,8 @@
+layout(binding=0) uniform sampler2DRect t;
+half4 main(float2 coords)
+{
+    return sample(t, coords);
+}
+
+// This test is expected to report different results based on the backends.
+// Expect successful compilation in GLSL, failure in Metal and SPIR-V.
