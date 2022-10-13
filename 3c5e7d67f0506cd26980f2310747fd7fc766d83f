@@ -45,6 +45,29 @@
       },
       "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05bd1e0a_2329a98c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T16:58:00Z",
+      "side": 1,
+      "message": "nit: align",
+      "range": {
+        "startLine": 87,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 45
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

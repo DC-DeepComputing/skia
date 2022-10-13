@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1deca2b7_a934d505",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-13T16:58:00Z",
+      "side": 1,
+      "message": "Are these flags actually used anywhere? I don\u0027t see anything using them. If not maybe we remove this whole ColorTypeInfo flag enum. Then move the kWrappedOnly as a flag on the format. I don\u0027t think the wrapped only thing is really meant to be specific to just a format/colortype combo but more generally to the entire format anyways.",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 35
+      },
+      "revId": "ebd81e233a27b85f37febbbdecf2e02fb1fc993a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
