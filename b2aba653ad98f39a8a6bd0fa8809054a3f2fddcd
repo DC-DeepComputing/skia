@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3eb42ad2_ecfb10c5",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-13T22:25:50Z",
+      "side": 1,
+      "message": "I changed this to return a TextureProxy as part of always instantiating a target surface on replay.",
+      "parentUuid": "f037f32f_3c35a642",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48bc473d_83749eeb",
         "filename": "src/gpu/graphite/TextureProxy.cpp",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-10-13T19:44:10Z",
       "side": 1,
       "message": "I wrote this test in two parts in order to have an instantiated surface with no un-flushed commands before starting to replay recordings. But, should we always a) instantiate a target surface and/or b) flush pending work on a surface behind the scenes before replaying to it?",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "403e2b59_11667f2e",
+        "filename": "tests/graphite/MtlRecordingSurfacesTest.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-13T22:25:50Z",
+      "side": 1,
+      "message": "I decided that we should always instantiate the target surface, and in the test I get around worrying about un-flushed commands by manually playing back the surface\u0027s recorder before playing the detached recorder.",
+      "parentUuid": "4a2294f5_c9df030c",
       "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
