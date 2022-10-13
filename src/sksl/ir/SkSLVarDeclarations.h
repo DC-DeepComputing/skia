@@ -50,7 +50,7 @@ public:
     ~VarDeclaration() override {
         // Unhook this VarDeclaration from its associated Variable, since we're being deleted.
         if (fVar && !fIsClone) {
-            fVar->detachDeadVarDeclaration();
+            fVar->detachDeadDeclaringElement(this);
         }
     }
 
@@ -78,8 +78,8 @@ public:
         return fVar;
     }
 
-    void setVar(Variable* var) {
-        fVar = var;
+    void detachDeadVariable() {
+        fVar = nullptr;
     }
 
     int arraySize() const {
@@ -126,6 +126,12 @@ public:
             , fDeclaration(std::move(decl)) {
         SkASSERT(this->declaration()->is<VarDeclaration>());
         this->declaration()->as<VarDeclaration>().var()->setGlobalVarDeclaration(this);
+    }
+
+    ~GlobalVarDeclaration() override {
+        if (Variable* var = this->declaration()->as<VarDeclaration>().var()) {
+            var->detachDeadDeclaringElement(this);
+        }
     }
 
     std::unique_ptr<Statement>& declaration() {

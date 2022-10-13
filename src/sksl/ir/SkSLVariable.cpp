@@ -18,6 +18,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLInterfaceBlock.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
@@ -27,9 +28,12 @@
 namespace SkSL {
 
 Variable::~Variable() {
-    // Unhook this Variable from its associated VarDeclaration, since we're being deleted.
     if (VarDeclaration* declaration = this->varDeclaration()) {
-        declaration->setVar(nullptr);
+        // Unhook this Variable from its associated VarDeclaration, since we're being deleted.
+        declaration->detachDeadVariable();
+    } else if (fDeclaringElement && fDeclaringElement->is<InterfaceBlock>()) {
+        // Unhook this Variable from its associated InterfaceBlock, since we're being deleted.
+        fDeclaringElement->as<InterfaceBlock>().detachDeadVariable();
     }
 }
 
@@ -43,10 +47,17 @@ VarDeclaration* Variable::varDeclaration() const {
         return nullptr;
     }
     SkASSERT(fDeclaringElement->is<VarDeclaration>() ||
-             fDeclaringElement->is<GlobalVarDeclaration>());
-    return fDeclaringElement->is<GlobalVarDeclaration>()
-               ? &fDeclaringElement->as<GlobalVarDeclaration>().declaration()->as<VarDeclaration>()
-               : &fDeclaringElement->as<VarDeclaration>();
+             fDeclaringElement->is<GlobalVarDeclaration>() ||
+             fDeclaringElement->is<InterfaceBlock>());
+    if (fDeclaringElement->is<GlobalVarDeclaration>()) {
+        return &fDeclaringElement->as<GlobalVarDeclaration>()
+                        .declaration()
+                        ->as<VarDeclaration>();
+    }
+    if (fDeclaringElement->is<VarDeclaration>()) {
+        return &fDeclaringElement->as<VarDeclaration>();
+    }
+    return nullptr;
 }
 
 GlobalVarDeclaration* Variable::globalVarDeclaration() const {
@@ -54,14 +65,29 @@ GlobalVarDeclaration* Variable::globalVarDeclaration() const {
         return nullptr;
     }
     SkASSERT(fDeclaringElement->is<VarDeclaration>() ||
-             fDeclaringElement->is<GlobalVarDeclaration>());
+             fDeclaringElement->is<GlobalVarDeclaration>() ||
+             fDeclaringElement->is<InterfaceBlock>());
     return fDeclaringElement->is<GlobalVarDeclaration>()
                ? &fDeclaringElement->as<GlobalVarDeclaration>()
                : nullptr;
 }
 
+InterfaceBlock* Variable::interfaceBlock() const {
+    if (!fDeclaringElement) {
+        return nullptr;
+    }
+    SkASSERT(fDeclaringElement->is<VarDeclaration>() ||
+             fDeclaringElement->is<GlobalVarDeclaration>() ||
+             fDeclaringElement->is<InterfaceBlock>());
+    return fDeclaringElement->is<InterfaceBlock>()
+               ? &fDeclaringElement->as<InterfaceBlock>()
+               : nullptr;
+}
+
 void Variable::setVarDeclaration(VarDeclaration* declaration) {
     SkASSERT(!fDeclaringElement || this == declaration->var());
+    // If we already have a declaring element, it's a GlobalVarDeclaration or InterfaceBlock;
+    // those are higher precedence, so keep them instead.
     if (!fDeclaringElement) {
         fDeclaringElement = declaration;
     }
@@ -69,7 +95,23 @@ void Variable::setVarDeclaration(VarDeclaration* declaration) {
 
 void Variable::setGlobalVarDeclaration(GlobalVarDeclaration* global) {
     SkASSERT(!fDeclaringElement || this == global->declaration()->as<VarDeclaration>().var());
-    fDeclaringElement = global;
+    // Let GlobalVarDeclarations take precedence over VarDeclarations, but not InterfaceBlocks.
+    if (!fDeclaringElement || fDeclaringElement->is<VarDeclaration>()) {
+        fDeclaringElement = global;
+    }
+}
+
+void Variable::setInterfaceBlock(InterfaceBlock* block) {
+    SkASSERT(!fDeclaringElement || this == block->var());
+    // InterfaceBlocks take precedence over VarDeclarations and GlobalVarDeclarations.
+    fDeclaringElement = block;
+}
+
+void Variable::detachDeadDeclaringElement(IRNode* deadElement) {
+    if (deadElement == fDeclaringElement) {
+        // The declaring element is being deleted, so our reference to it has become stale.
+        fDeclaringElement = nullptr;
+    }
 }
 
 std::string Variable::mangledName() const {
