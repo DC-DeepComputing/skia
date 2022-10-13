@@ -129,8 +129,7 @@ std::unique_ptr<ProgramUsage> Analysis::GetUsage(const LoadedModule& module,
 
 ProgramUsage::VariableCounts ProgramUsage::get(const Variable& v) const {
     const VariableCounts* counts = fVariableCounts.find(&v);
-    SkASSERT(counts);
-    return *counts;
+    return counts ? *counts : VariableCounts();
 }
 
 bool ProgramUsage::isDead(const Variable& v) const {
