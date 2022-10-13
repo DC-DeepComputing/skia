@@ -215,7 +215,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                     mipmapped,
                                                     Protected::kNo,
                                                     Renderable::kYes,
-                                                    budgeted);
+                                                    budgeted,
+                                                    LateBindable::kNo);
     if (!target) {
         return nullptr;
     }
@@ -328,7 +329,8 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
                                                   mipmapped,
                                                   srcView.proxy()->textureInfo().isProtected(),
                                                   Renderable::kNo,
-                                                  SkBudgeted::kNo);
+                                                  SkBudgeted::kNo,
+                                                  LateBindable::kNo);
     if (!dest) {
         return {};
     }

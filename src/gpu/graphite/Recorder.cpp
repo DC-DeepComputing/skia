@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -101,6 +102,23 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     SkASSERT(fResourceProvider);
 }
 
+Recorder::Recorder(sk_sp<SharedContext> sharedContext,
+                   const RecorderOptions& options,
+                   SkISize dimensions,
+                   const SkColorInfo& colorInfo)
+        : Recorder(sharedContext, options) {
+    fTargetProxy = TextureProxy::Make(fSharedContext->caps(),
+                                      dimensions,
+                                      colorInfo.colorType(),
+                                      Mipmapped::kNo,
+                                      Protected::kNo,
+                                      Renderable::kYes,
+                                      SkBudgeted::kNo,
+                                      LateBindable::kYes);
+    fTargetProxyDevice = Device::Make(this, fTargetProxy, colorInfo, {}, false);
+    fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
+}
+
 Recorder::~Recorder() {
     ASSERT_SINGLE_OWNER
     for (auto& device : fTrackedDevices) {
@@ -136,7 +154,7 @@ std::unique_ptr<Recording> Recorder::snap() {
         return nullptr;
     }
 
-    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph)));
+    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph), fTargetProxy));
     fDrawBufferManager->transferToRecording(recording.get());
     fUploadBufferManager->transferToRecording(recording.get());
 
@@ -145,6 +163,11 @@ std::unique_ptr<Recording> Recorder::snap() {
     fTextureDataCache = std::make_unique<TextureDataCache>();
     fAtlasManager->evictAtlases();
     return recording;
+}
+
+SkCanvas* Recorder::getRecordingCanvas() {
+    SkASSERT(SkToBool(fTargetProxyCanvas));
+    return fTargetProxyCanvas.get();
 }
 
 void Recorder::registerDevice(Device* device) {

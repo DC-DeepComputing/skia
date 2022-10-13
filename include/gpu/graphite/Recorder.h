@@ -16,6 +16,8 @@
 
 #include <vector>
 
+class SkCanvas;
+class SkColorInfo;
 class SkRuntimeEffectDictionary;
 class SkTextureDataBlock;
 class SkUniformDataBlock;
@@ -43,6 +45,7 @@ class SharedContext;
 class Task;
 class TaskGraph;
 class TextureInfo;
+class TextureProxy;
 class UploadBufferManager;
 
 template<typename T> class PipelineDataCache;
@@ -95,6 +98,10 @@ public:
      */
     void deleteBackendTexture(BackendTexture&);
 
+    // If this Recorder is recording to an uninstantiated proxy surface, this returns a canvas to
+    // draw to that surface, otherwise it returns null.
+    SkCanvas* getRecordingCanvas();
+
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -109,6 +116,10 @@ private:
     friend class RecorderPriv; // for ctor and hidden methods
 
     Recorder(sk_sp<SharedContext>, const RecorderOptions&);
+
+    // Create a Recorder with an uninstantiated proxy surface, which can be drawn to with the canvas
+    // returned from getRecordingCanvas() and is instantiated only on playback.
+    Recorder(sk_sp<SharedContext>, const RecorderOptions&, SkISize, const SkColorInfo&);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
@@ -156,6 +167,10 @@ private:
     // This guard is passed to the ResourceCache.
     // TODO: Should we also pass this to Device, DrawContext, and similar classes?
     mutable SingleOwner fSingleOwner;
+
+    sk_sp<TextureProxy> fTargetProxy;
+    sk_sp<Device> fTargetProxyDevice;
+    std::unique_ptr<SkCanvas> fTargetProxyCanvas;
 };
 
 } // namespace skgpu::graphite

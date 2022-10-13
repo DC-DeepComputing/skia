@@ -12,9 +12,11 @@
 
 namespace skgpu::graphite {
 
+class Surface;
+
 class RecordingPriv {
 public:
-    bool addCommands(ResourceProvider*, CommandBuffer*);
+    bool addCommands(ResourceProvider*, CommandBuffer*, Surface* surface);
     void addResourceRef(sk_sp<Resource> resource);
 
 private:
