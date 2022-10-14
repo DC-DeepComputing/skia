@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aeca388_602fecbb",
+        "filename": "samplecode/SampleGradients.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:34:35Z",
+      "side": 0,
+      "message": "This sample wasn\u0027t interactive, so it was essentially another large static grid of gradients, just like all of our gradients GMs. Because I wanted to add an interactive gradient sample, I decided to overwrite this one (it had the best/obvious name).",
+      "revId": "97ffa90ddc53cd0fbdd2fba8398b30a297366713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
