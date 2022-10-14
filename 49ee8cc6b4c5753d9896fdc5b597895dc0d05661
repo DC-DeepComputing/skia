@@ -16,6 +16,24 @@
       "message": "Note: Initially I wanted to have a separate resources/sksl/glsl/Sampler2DRect.sksl for the supported GLSL case and a resources/sksl/errors/Sampler2DRect.sksl for the unsupported Metal/SPIR-V case. I had to abandon that approach because files under errors/ are fed to SkSLErrorTest which currently doesn\u0027t support different error/GLSL messages per-backend and I didn\u0027t want to add a special rule to skip only this test.\n\nI\u0027m considering adding support to SkSLErrorTest so that a shader can specify per-backend error messages. If folks are supportive, I can follow up with that change so we have some automation around the error messages I added here.",
       "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e44b7a1_d5310cad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T13:08:07Z",
+      "side": 1,
+      "message": "Could we get consistent error messages, and centralize the logic by moving the check to the front-end? We\u0027d just need a shader-caps bit for rect-samplers being allowed, and if it\u0027s not set, we could even do the lazy thing of adding an alias from those types to poison/invalid?",
+      "parentUuid": "d2676699_ac9cd6b7",
+      "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
