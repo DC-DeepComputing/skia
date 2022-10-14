@@ -23,8 +23,13 @@ class Texture;
 
 class TextureProxy : public SkRefCnt {
 public:
-    TextureProxy(SkISize dimensions, const TextureInfo& info, SkBudgeted budgeted);
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo& info,
+                 SkBudgeted budgeted,
+                 LateBindable lateBindable);
     TextureProxy(sk_sp<Texture>);
+
+    TextureProxy() = delete;
 
     ~TextureProxy() override;
 
@@ -35,7 +40,12 @@ public:
     const TextureInfo& textureInfo() const { return fInfo; }
 
     bool instantiate(ResourceProvider*);
+    void instantiate(sk_sp<Texture> texture);
+    void uninstantiate();
+
     bool isInstantiated() const { return SkToBool(fTexture); }
+    LateBindable lateBindable() const { return fLateBindable; }
+
     sk_sp<Texture> refTexture() const;
     const Texture* texture() const;
 
@@ -45,7 +55,8 @@ public:
                                     Mipmapped,
                                     Protected,
                                     Renderable,
-                                    SkBudgeted);
+                                    SkBudgeted,
+                                    LateBindable);
 
 private:
 #ifdef SK_DEBUG
@@ -58,6 +69,20 @@ private:
     SkBudgeted fBudgeted;
 
     sk_sp<Texture> fTexture;
+
+    const LateBindable fLateBindable = LateBindable::kNo;
+};
+
+// Late-instantiated texture proxy that uninstantiates itself on destruction.
+class AutoUninstantiateTextureProxy {
+public:
+    AutoUninstantiateTextureProxy(TextureProxy*);
+    ~AutoUninstantiateTextureProxy();
+
+    void instantiate(sk_sp<Texture>);
+
+private:
+    TextureProxy* const fTextureProxy;
 };
 
 } // namepsace skgpu::graphite

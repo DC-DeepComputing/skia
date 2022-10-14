@@ -13,6 +13,8 @@
 
 #include <memory>
 
+class SkSurface;
+
 namespace skgpu::graphite {
 
 class Recording;
@@ -30,6 +32,7 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  */
 struct InsertRecordingInfo {
     Recording* fRecording = nullptr;
+    SkSurface* fSurface = nullptr;
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;
 };
@@ -46,6 +49,14 @@ enum class SyncToCpu : bool {
  * Is the texture mipmapped or not
  */
 enum class Mipmapped : bool {
+    kNo = false,
+    kYes = true,
+};
+
+/**
+ * Whether a texture needs to be instantiated while recording draws that use it as a target.
+ */
+enum class LateBindable : bool {
     kNo = false,
     kYes = true,
 };

@@ -14,8 +14,11 @@
 
 namespace skgpu::graphite {
 
-TextureProxy::TextureProxy(SkISize dimensions, const TextureInfo& info, SkBudgeted budgeted)
-        : fDimensions(dimensions), fInfo(info), fBudgeted(budgeted) {
+TextureProxy::TextureProxy(SkISize dimensions,
+                           const TextureInfo& info,
+                           SkBudgeted budgeted,
+                           LateBindable lateBindable)
+        : fDimensions(dimensions), fInfo(info), fBudgeted(budgeted), fLateBindable(lateBindable) {
     // TODO: Enable this assert once we are correctly handling the creation of all graphite
     // SkImages. Right now things like makeImageSnapshot create an invalid proxy with an invalid
     // TextureInfo.
@@ -44,6 +47,18 @@ bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
     return true;
 }
 
+void TextureProxy::instantiate(sk_sp<Texture> texture) {
+    SkASSERT(fLateBindable == LateBindable::kYes && !this->isInstantiated());
+    fTexture = std::move(texture);
+    fDimensions = fTexture->dimensions();
+    SkDEBUGCODE(this->validateTexture(fTexture.get()));
+}
+
+void TextureProxy::uninstantiate() {
+    SkASSERT(fLateBindable == LateBindable::kYes && this->isInstantiated());
+    fTexture = nullptr;
+}
+
 sk_sp<Texture> TextureProxy::refTexture() const {
     return fTexture;
 }
@@ -58,7 +73,8 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        Mipmapped mipmapped,
                                        Protected isProtected,
                                        Renderable renderable,
-                                       SkBudgeted budgeted) {
+                                       SkBudgeted budgeted,
+                                       LateBindable lateBindable) {
     if (dimensions.width() < 1 || dimensions.height() < 1) {
         return nullptr;
     }
@@ -75,7 +91,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
         return nullptr;
     }
 
-    return sk_make_sp<TextureProxy>(dimensions, textureInfo, budgeted);
+    return sk_make_sp<TextureProxy>(dimensions, textureInfo, budgeted, lateBindable);
 }
 
 #ifdef SK_DEBUG
@@ -84,5 +100,18 @@ void TextureProxy::validateTexture(const Texture* texture) {
     SkASSERT(fInfo == texture->textureInfo());
 }
 #endif
+
+AutoUninstantiateTextureProxy::AutoUninstantiateTextureProxy(TextureProxy* textureProxy)
+        : fTextureProxy(textureProxy) {}
+
+AutoUninstantiateTextureProxy::~AutoUninstantiateTextureProxy() {
+    if (fTextureProxy) {
+        fTextureProxy->uninstantiate();
+    }
+}
+
+void AutoUninstantiateTextureProxy::instantiate(sk_sp<Texture> texture) {
+    fTextureProxy->instantiate(std::move(texture));
+}
 
 } // namespace skgpu::graphite

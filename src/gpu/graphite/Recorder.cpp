@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -103,6 +104,21 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     SkASSERT(fResourceProvider);
 }
 
+Recorder::Recorder(sk_sp<SharedContext> sharedContext,
+                   const RecorderOptions& options,
+                   SkISize dimensions,
+                   const SkColorInfo& colorInfo,
+                   const TextureInfo& textureInfo)
+        : Recorder(sharedContext, options) {
+    fTargetProxyDevice = Device::Make(
+            this,
+            sk_make_sp<TextureProxy>(dimensions, textureInfo, SkBudgeted::kNo, LateBindable::kYes),
+            colorInfo,
+            {},
+            false);
+    fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
+}
+
 Recorder::~Recorder() {
     ASSERT_SINGLE_OWNER
     for (auto& device : fTrackedDevices) {
@@ -138,7 +154,11 @@ std::unique_ptr<Recording> Recorder::snap() {
         return nullptr;
     }
 
-    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph)));
+    sk_sp<TextureProxy> targetProxy;
+    if (fTargetProxyDevice) {
+        targetProxy = fTargetProxyDevice->readSurfaceView().refProxy();
+    }
+    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph), std::move(targetProxy)));
     fDrawBufferManager->transferToRecording(recording.get());
     fUploadBufferManager->transferToRecording(recording.get());
 
@@ -147,6 +167,11 @@ std::unique_ptr<Recording> Recorder::snap() {
     fTextureDataCache = std::make_unique<TextureDataCache>();
     fAtlasManager->evictAtlases();
     return recording;
+}
+
+SkCanvas* Recorder::getRecordingCanvas() {
+    SkASSERT(SkToBool(fTargetProxyCanvas));
+    return fTargetProxyCanvas.get();
 }
 
 void Recorder::registerDevice(Device* device) {
