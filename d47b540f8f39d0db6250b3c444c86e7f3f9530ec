@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9264d185_e88ed0e5",
+        "filename": "src/sksl/SkSLAnalysis.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:46:22Z",
+      "side": 1,
+      "message": "nit: No longer alphabetical",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 22
+      },
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edccbe4a_dbe2041d",
+        "filename": "src/sksl/SkSLContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:46:22Z",
+      "side": 1,
+      "message": "same",
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57276627_70b285ab",
+        "filename": "src/sksl/SkSLModuleLoader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:46:22Z",
+      "side": 1,
+      "message": "same",
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cde6f48d_1c15e003",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:46:22Z",
+      "side": 1,
+      "message": "same",
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fabdd2a_c8746d78",
+        "filename": "src/sksl/transform/SkSLTransform.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T19:46:22Z",
+      "side": 1,
+      "message": "same",
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
