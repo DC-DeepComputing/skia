@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f52791_706eab04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T19:23:54Z",
+      "side": 1,
+      "message": "informal LGTM",
+      "revId": "97ffa90ddc53cd0fbdd2fba8398b30a297366713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40250dc8_39528ec0",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T19:23:54Z",
+      "side": 1,
+      "message": "tiny nit: indenting feels wrong since it\u0027s no longer next to `fColorSpace`",
+      "range": {
+        "startLine": 96,
+        "startChar": 26,
+        "endLine": 96,
+        "endChar": 31
+      },
+      "revId": "97ffa90ddc53cd0fbdd2fba8398b30a297366713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7e63c6e3_7dc86dcb",
