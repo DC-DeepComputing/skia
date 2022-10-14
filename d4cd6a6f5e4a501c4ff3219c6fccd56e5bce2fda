@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c31472de_32bfae76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Because I would like to remove the strange size constraint in the test, I think we may want to rethink the operator\u003d(\u0026\u0026).",
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dffc7943_e2752143",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Can you add a comment for rational of 4, 4, 2. It would be best if you had a bug to point to. Please include any performance findings.",
+      "range": {
+        "startLine": 67,
+        "startChar": 2,
+        "endLine": 69,
+        "endChar": 51
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19201f79_c11d262e",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "I don\u0027t think we should make this public.",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 48
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f084a59_bd7dd9fd",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Prefer\nfAllocCount \u003d std::exchange(that.fAllocCount, 0);\nfItemArray \u003d std::exchange(that.fItemArray, nullptr);",
+      "range": {
+        "startLine": 131,
+        "startChar": 16,
+        "endLine": 131,
+        "endChar": 47
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131fe293_82bc0607",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Please keep these ints.",
+      "range": {
+        "startLine": 290,
+        "startChar": 13,
+        "endLine": 290,
+        "endChar": 19
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc0d8fb5_75ccfd31",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Please spell this shrink_to_fit().",
+      "range": {
+        "startLine": 416,
+        "startChar": 9,
+        "endLine": 416,
+        "endChar": 20
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea0fcb5f_9842de44",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "Please introduce clear() to the SkTArray API, and use that.",
+      "range": {
+        "startLine": 231,
+        "startChar": 28,
+        "endLine": 231,
+        "endChar": 37
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74e5e4bc_e19f824f",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "This should not be public.",
+      "range": {
+        "startLine": 302,
+        "startChar": 34,
+        "endLine": 302,
+        "endChar": 72
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f465219_b65ab38a",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T19:02:46Z",
+      "side": 1,
+      "message": "I don\u0027t think this is a really useful property of paths. I don\u0027t think we should check this. It constrains what allocation strategies we can pursue.",
+      "range": {
+        "startLine": 309,
+        "startChar": 8,
+        "endLine": 310,
+        "endChar": 87
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
