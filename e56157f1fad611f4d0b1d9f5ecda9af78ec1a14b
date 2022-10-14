@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7b74eb2_ea481fd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-14T17:00:36Z",
+      "side": 1,
+      "message": "Greg, I cannot CQ+2. Could you please do it for me? Thanks",
+      "revId": "e56157f1fad611f4d0b1d9f5ecda9af78ec1a14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
