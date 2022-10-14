@@ -39,6 +39,30 @@
       },
       "revId": "80af90f74b9e265820b8848437ab1f89d2746901",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "544215f5_66e0d0d8",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-14T16:34:32Z",
+      "side": 1,
+      "message": "Done. Moved to a separate CL.\n\nAnd I will try to setup a bot for graphite dawn.",
+      "parentUuid": "82ebfeb7_b63a1d83",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 27
+      },
+      "revId": "80af90f74b9e265820b8848437ab1f89d2746901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
