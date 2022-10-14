@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db16d7c9_caa9f7e8",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T21:09:05Z",
+      "side": 1,
+      "message": "Not part of this CL, but just realized this comment still documents the old storage mechanism.",
+      "revId": "af4a6dc1e5f2d76830b1f519999943b312188dcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
