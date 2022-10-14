@@ -22,6 +22,30 @@
       },
       "revId": "e229ac25a32451a002e44736dce381aea322d702",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72550fbd_b7f91435",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T13:51:32Z",
+      "side": 1,
+      "message": "Your equation is correct, but when these things happens makes a difference. We transform the positions to [1/strikeToSourceScale]. This allows math with no multiplies when calculating the glyph positions and bounding boxes. Then when we draw through and arbitrary new [positionMatrix\u0027], then we position and scale the images by [positionMatrix\u0027][creationMatrix]^-1 \u003d\u003d [positionMatrix\u0027][scale by strikeToSourceScale]. Since the positions are given in source space they need to be multiplied by [positionMatrix\u0027] only and should not be have the additional strikeToSourceScale factor. The strategy is to have a single matrix map both positions and glyphs images. So, we need to multiply all the positions by 1/strikeToSourceScale so when transformed by [positionMatrix\u0027][creationMatrix]^-1 then end up being positioned as if the original given points were transformed by [positionMatrix\u0027] alone.",
+      "parentUuid": "5b5757bf_d4c33950",
+      "range": {
+        "startLine": 2834,
+        "startChar": 20,
+        "endLine": 2836,
+        "endChar": 71
+      },
+      "revId": "e229ac25a32451a002e44736dce381aea322d702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
