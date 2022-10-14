@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "210759db_dd67cdba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T20:59:26Z",
+      "side": 1,
+      "message": "FYI, these new bots won\u0027t show up in the gerrit UI to select them as try jobs. However, you can trigger them from the command line using something like:\n\nbin/sk try .*Graphite_Dawn.*\n\nyou may need to get \u0027sk\u0027 binary first which can be done calling:\nbin/fetch-sk\n\nWe should definitely try running them in this CL before we land them",
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00b00147_8ff94bec",
