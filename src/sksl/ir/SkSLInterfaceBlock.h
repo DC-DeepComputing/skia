@@ -46,6 +46,14 @@ public:
         SkASSERT(fVariable->type().isInterfaceBlock() ||
                  (fVariable->type().isArray() &&
                   fVariable->type().componentType().isInterfaceBlock()));
+        fVariable->setInterfaceBlock(this);
+    }
+
+    ~InterfaceBlock() override {
+        // Unhook this InterfaceBlock from its associated Variable, since we're being deleted.
+        if (fVariable) {
+            fVariable->detachDeadInterfaceBlock();
+        }
     }
 
     Variable* var() const {
