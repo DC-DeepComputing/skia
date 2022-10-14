@@ -7042,8 +7042,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutAndTextBehavior, reporter) {
     auto height1 = draw(TextHeightBehavior::kDisableAll);
     auto height2 = draw(TextHeightBehavior::kAll);
 
-    // Regardless of TextHeightBehavior strut sets the line height
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(height1, 24.0f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(height1, 16.0f));
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(height2, 24.0f));
 }
 
