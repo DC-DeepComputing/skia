@@ -42,16 +42,7 @@ void GrProgramInfo::checkMSAAAndMIPSAreResolved() const {
         SkASSERT(tex);
 
         // Ensure mipmaps were all resolved ahead of time by the DAG.
-        if (te.samplerState().mipmapped() == GrMipmapped::kYes &&
-            (tex->width() != 1 || tex->height() != 1)) {
-            // Ensure that all proxys that need mipmap regeneration have received them.
-            GrTextureProxy* texProxy = te.view().asTextureProxy();
-            SkASSERT(!texProxy->slatedForMipmapRegen());
-
-            // There are some cases where we might be given a non-mipmapped texture with a
-            // mipmap filter. See skbug.com/7094.
-            SkASSERT(tex->mipmapped() != GrMipmapped::kYes || !tex->mipmapsAreDirty());
-        }
+        tex->assertMipmapsNotDirty();
     });
 }
 
