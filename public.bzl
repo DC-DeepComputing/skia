@@ -1640,6 +1640,8 @@ BASE_SRCS_ALL = [
     "src/utils/SkCharToGlyphCache.h",
     "src/utils/SkClipStackUtils.cpp",
     "src/utils/SkClipStackUtils.h",
+    "src/utils/SkConvexTessellator.cpp",
+    "src/utils/SkConvexTessellator.h",
     "src/utils/SkCustomTypeface.cpp",
     "src/utils/SkCycles.h",
     "src/utils/SkDashPath.cpp",

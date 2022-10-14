@@ -502,6 +502,7 @@ bool SkBaseShadowTessellator::clipUmbraPoint(const SkPoint& umbraPoint, const Sk
     return false;
 }
 
+// returns true if it's a duplicate point
 bool SkBaseShadowTessellator::addInnerPoint(const SkPoint& pathPoint, SkColor umbraColor,
                                             const SkTDArray<SkPoint>& umbraPolygon,
                                             int* currUmbraIndex) {

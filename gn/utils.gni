@@ -40,6 +40,8 @@ skia_utils_sources = [
   "$_src/utils/SkCharToGlyphCache.h",
   "$_src/utils/SkClipStackUtils.cpp",
   "$_src/utils/SkClipStackUtils.h",
+  "$_src/utils/SkConvexTessellator.cpp",
+  "$_src/utils/SkConvexTessellator.h",
   "$_src/utils/SkCustomTypeface.cpp",
   "$_src/utils/SkCycles.h",
   "$_src/utils/SkDashPath.cpp",

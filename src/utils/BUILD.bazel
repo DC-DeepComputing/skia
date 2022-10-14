@@ -33,6 +33,8 @@ CORE_FILES = [
     "SkCharToGlyphCache.h",
     "SkClipStackUtils.cpp",
     "SkClipStackUtils.h",
+    "SkConvexTessellator.cpp",
+    "SkConvexTessellator.h",
     "SkCustomTypeface.cpp",
     "SkCycles.h",
     "SkDashPath.cpp",
