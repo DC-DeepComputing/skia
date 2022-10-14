@@ -157,6 +157,30 @@
       },
       "revId": "25523bb79055f8a5e5de372fb827d290723639e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "745d87ca_6357d4be",
+        "filename": "tools/sk_app/mac/GraphiteDawnMetalWindowContext_mac.mm",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T15:33:47Z",
+      "side": 1,
+      "message": "Yeah I think as we start to expand the Dawn support more and more we should make sure we\u0027re testing both worlds. 1) Where the client is using Dawns helper tools to create swapchains and such. And 2) Where a client is managing their own backend objects and windowing and just want to be able to import those into Skia backend by Dawn. Both use cases are very important to make sure we have working correclty.\n\nFor now though this seems fine to get some initial coverage of case 1).",
+      "parentUuid": "6ccfad13_c3de4869",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 15
+      },
+      "revId": "25523bb79055f8a5e5de372fb827d290723639e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

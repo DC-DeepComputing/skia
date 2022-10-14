@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d439472c_372a0adc",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T15:33:47Z",
+      "side": 1,
+      "message": "So if a client has the option should they ever be giving Skia a TextureView? Maybe update this comment to say the client should try to always give Skia a Texture expect for when they are using Dawn swapchains which require the use of a TextureView.",
+      "parentUuid": "baee2f0b_c908e35d",
+      "range": {
+        "startLine": 33,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "fb31ab7cf4fddbcc9b395f7d945d9680087039bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fe5081c_e510d7b9",
         "filename": "include/gpu/graphite/TextureInfo.h",
         "patchSetId": 8

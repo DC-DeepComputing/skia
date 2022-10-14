@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f405cae3_b5f930f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T15:33:47Z",
+      "side": 1,
+      "message": "lgtm with the one question/suggestion on the comment",
+      "revId": "80af90f74b9e265820b8848437ab1f89d2746901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ebfeb7_b63a1d83",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T15:33:47Z",
+      "side": 1,
+      "message": "This would be in a different CL, but lets get Dawn build bots up and running soon so that we can know when we break Dawn builds with API changes like this. You can see what I did for getting Vulkan build bots setup in this CL, https://skia-review.googlesource.com/c/skia/+/580519.",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 27
+      },
+      "revId": "80af90f74b9e265820b8848437ab1f89d2746901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
