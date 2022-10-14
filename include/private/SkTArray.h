@@ -40,6 +40,8 @@ private:
 public:
     using value_type = T;
 
+    static constexpr int kMinHeapAllocCount = 8;
+
     /**
      * Creates an empty array with no initial storage
      */
@@ -109,6 +111,28 @@ public:
         if (this == &that) {
             return *this;
         }
+
+        // Special case empty and owning memory. This is special cased for
+        // subclass constructors, which call this. Not special casing this
+        // means the constructor supplying data to copy ends up allocating
+        // more than is necessary.
+        if (fCount == 0 && !fOwnMemory) {
+            if (that.fOwnMemory) {
+                fAllocCount = that.fAllocCount;
+                fItemArray = that.fItemArray;
+                that.fAllocCount = 0;
+                that.fItemArray = nullptr;
+                fOwnMemory = true;
+            } else if (that.fCount) {
+                SkASSERT(!that.fOwnMemory);
+                SkASSERT(fAllocCount == that.fAllocCount);
+                that.move(fItemArray);
+            }
+            fCount = that.fCount;
+            that.fCount = 0;
+            return *this;
+        }
+
         for (int i = 0; i < this->count(); ++i) {
             fItemArray[i].~T();
         }
@@ -168,6 +192,17 @@ public:
         this->copy(array);
         fReserved = false;
     }
+
+    /**
+     * Ensures there is enough reserved space for n elements.
+     */
+    void reserve(int n) {
+        SkASSERT(n >= 0);
+        if (n < count()) {
+          return;
+        }
+        reserve_back(n - count());
+  }
 
     /**
      * Ensures there is enough reserved space for n additional elements. The is guaranteed at least
@@ -246,7 +281,7 @@ public:
     T* push_back_n(int n) {
         SkASSERT(n >= 0);
         void* newTs = this->push_back_raw(n);
-        for (int i = 0; i < n; ++i) {
+        for (size_t i = 0; i < static_cast<size_t>(n); ++i) {
             new (static_cast<char*>(newTs) + i * sizeof(T)) T;
         }
         return static_cast<T*>(newTs);
@@ -369,7 +404,26 @@ public:
     T* data() { return fItemArray; }
     const T* data() const { return fItemArray; }
     size_t size() const { return (size_t)fCount; }
+    size_t size_bytes() const { return static_cast<size_t>(fCount) * sizeof(T); }
     void resize(size_t count) { this->resize_back((int)count); }
+
+    void shrinkToFit() {
+        if (!fOwnMemory || fCount == fAllocCount) {
+            return;
+        }
+        if (fCount == 0) {
+            sk_free(fItemArray);
+            fItemArray = nullptr;
+        } else {
+            T* newItemArray = TCast(sk_malloc_throw((size_t)fCount, sizeof(T)));
+            this->move(newItemArray);
+            if (fOwnMemory) {
+                sk_free(fItemArray);
+            }
+            fItemArray = newItemArray;
+        }
+        fAllocCount = fCount;
+    }
 
     /**
      * Get the i^th element.
@@ -536,8 +590,6 @@ private:
             fItemArray[i].~T();
         }
     }
-
-    static constexpr int kMinHeapAllocCount = 8;
 
     // Helper function that makes space for n objects, adjusts the count, but does not initialize
     // the new objects.
