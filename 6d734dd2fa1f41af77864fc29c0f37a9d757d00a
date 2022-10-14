@@ -22,6 +22,30 @@
       },
       "revId": "6d734dd2fa1f41af77864fc29c0f37a9d757d00a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef421a6_96632d28",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2804,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T21:04:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9320a408_b58f1bae",
+      "range": {
+        "startLine": 2804,
+        "startChar": 69,
+        "endLine": 2804,
+        "endChar": 78
+      },
+      "revId": "6d734dd2fa1f41af77864fc29c0f37a9d757d00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
