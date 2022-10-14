@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb8064d_2887a84c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T13:05:54Z",
+      "side": 1,
+      "message": "I really like getting rid of the builtin map. I\u0027ll say that the state tracking here is making me squeamish, but I don\u0027t see any way to simplify it without making everything bigger and/or slower. I also don\u0027t see any bugs, and I think the asserts are keeping us in line. (But yikes, this would be an ideal case for a weak ref/ptr).",
+      "revId": "79673e9be95eb7555a89dc700774aafcc1314125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f8bd023_a5394161",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T13:05:54Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 66,
+        "startChar": 54,
+        "endLine": 66,
+        "endChar": 62
+      },
+      "revId": "79673e9be95eb7555a89dc700774aafcc1314125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
