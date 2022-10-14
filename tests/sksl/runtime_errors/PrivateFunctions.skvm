@@ -1,8 +1,12 @@
-2 registers, 6 instructions:
-0	r0 = splat 0 (0)
-1	r1 = splat 3F800000 (1)
-loop:
-2	    store32 ptr1 r0
-3	    store32 ptr2 r0
-4	    store32 ptr3 r0
-5	    store32 ptr4 r1
+### Compilation failed:
+
+error: 1: name '$function' is reserved
+void $function() {}
+     ^^^^^^^^^
+error: 4: name '$function' is reserved
+    $function();
+    ^^^^^^^^^
+error: 5: name '$hsl_to_rgb' is reserved
+    return $hsl_to_rgb(half3(0), 1);
+           ^^^^^^^^^^^
+3 errors
