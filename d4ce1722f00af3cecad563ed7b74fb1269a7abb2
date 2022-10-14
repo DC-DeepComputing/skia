@@ -22,6 +22,30 @@
       },
       "revId": "d4ce1722f00af3cecad563ed7b74fb1269a7abb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3faef15_c4060997",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T17:16:39Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m starting to realize that there\u0027s (probably) a giant implicit assumption in the spec that\u0027s barely hinted at. u1fixed15Number is only referenced in a couple spots, and never as the contents of any particular table, etc... Which is ... strange? All of the table types explicitly contain u16Number, and explicitly say they decode to [0,1]. Then they include that comment about how the range clearly has to be adapted to the min/max of the value you\u0027re using.\n\nSo I suspect that with the wording hints, we could either pretend that the u16s are actually u1Fixed15s, or do the re-mapping after (multiply by the implied range?). This all comes out the same, assuming that we infer the range of PCS values from the table/type that defines their fixed point encodings. I don\u0027t think anything elsewhere specifies a legal range for (eg) PCSXYZ values, other than 6.3.4.2.\n\nIn any case ... that still leaves the question of where to apply those transforms. Again, the wording in the various table types (mft1, mft2, ma2b, ...) suggests that ANY \"table\" (clut or 1D) has the same [0,1] -\u003e [0,1] behavior, so we should be doing the change after each step, but we\u0027d possibly have to undo it when we index into the next-table within the same tag. Bleh. Is that the same as just leaving everything [0,1] until after the entire tag has run?",
+      "parentUuid": "2a460f5d_107c0a97",
+      "range": {
+        "startLine": 788,
+        "startChar": 11,
+        "endLine": 788,
+        "endChar": 83
+      },
+      "revId": "d4ce1722f00af3cecad563ed7b74fb1269a7abb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
