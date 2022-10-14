@@ -33,6 +33,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class TextureInfo;
 
 #ifdef SK_ENABLE_PRECOMPILE
 class BlenderID;
@@ -62,6 +63,13 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    // Create a Recorder with an uninstantiated proxy surface, which can be drawn to with the canvas
+    // returned from getRecordingCanvas() and is instantiated only on playback.
+    std::unique_ptr<Recorder> makeRecorder(const RecorderOptions&,
+                                           SkISize,
+                                           const SkColorInfo&,
+                                           const TextureInfo&);
 
     void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
