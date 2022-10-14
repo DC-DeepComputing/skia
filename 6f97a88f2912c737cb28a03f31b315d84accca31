@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997874a6_c5759e7e",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T15:22:50Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 65,
+        "startChar": 47,
+        "endLine": 65,
+        "endChar": 69
+      },
+      "revId": "6f97a88f2912c737cb28a03f31b315d84accca31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
