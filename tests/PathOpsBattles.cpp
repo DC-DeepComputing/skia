@@ -6,6 +6,7 @@
  */
 #include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsTestCommon.h"
+#include "tests/Test.h"
 
 #define TEST(name) { name, #name }
 

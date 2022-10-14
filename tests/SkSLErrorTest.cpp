@@ -9,21 +9,23 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/private/SkSLProgramKind.h"
-#include "include/private/SkTHash.h"
 #include "src/core/SkOSFile.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
+#include <cstddef>
 #include <functional>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
+namespace SkSL { struct Program; }
 
 static std::vector<std::string> get_expected_errors(const char* shaderString) {
     // Error expectations are embedded in the source with a special *%%* marker, like so:

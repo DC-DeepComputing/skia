@@ -24,6 +24,7 @@
 #include "tests/Test.h"
 
 #include <cmath>
+#include <string>
 
 static const SkColor bgColor = SK_ColorWHITE;
 
