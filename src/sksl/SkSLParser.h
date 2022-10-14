@@ -173,6 +173,10 @@ private:
                ProgramConfig::IsVertex(fKind);
     }
 
+    bool allowPrivateIdentifiers() {
+        return ProgramConfig::IsRuntimeEffect(fKind);
+    }
+
     bool parseArrayDimensions(Position pos, dsl::DSLType* type);
 
     bool parseInitializer(Position pos, dsl::DSLExpression* initializer);
