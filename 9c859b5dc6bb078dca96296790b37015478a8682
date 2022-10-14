@@ -16,6 +16,52 @@
       "message": "Hi Greg,  Seems I just need add Graphite_Dawn build bots in jobs.json, and script will generate tasks.json based on the jobs\u0027 names and with correct build args, right? PTAL. Thanks.",
       "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b00147_8ff94bec",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T20:56:53Z",
+      "side": 1,
+      "message": "I don\u0027t think we want/need all of these Dawn/Graphite builds to be part of the commit queue. I would say for now just leave this one Debug Build in the commit queue and remove the cq_config from all the others.",
+      "range": {
+        "startLine": 158,
+        "startChar": 3,
+        "endLine": 158,
+        "endChar": 69
+      },
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf32133c_c26f3201",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T20:56:53Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027re in a state to add Dawn Perf and Test bots yet. I\u0027m fairly certain they will either crash or do nothing. Lets remove all these bots for now until we\u0027ve actually setup our perf and test tools to use Dawn",
+      "range": {
+        "startLine": 410,
+        "startChar": 11,
+        "endLine": 410,
+        "endChar": 16
+      },
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
