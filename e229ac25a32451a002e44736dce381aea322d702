@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b5757bf_d4c33950",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2836,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-14T13:28:34Z",
+      "side": 1,
+      "message": "I\u0027m missing something here. [positionMatrix][scale by strikeToSourceScale][scale by 1/strikeToSourceScale] \u003d [positionMatrix] ... so why scale by anything? It clearly works, I\u0027m just not sure how.",
+      "range": {
+        "startLine": 2834,
+        "startChar": 20,
+        "endLine": 2836,
+        "endChar": 71
+      },
+      "revId": "e229ac25a32451a002e44736dce381aea322d702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
