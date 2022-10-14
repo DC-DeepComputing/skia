@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a460f5d_107c0a97",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-14T17:01:56Z",
+      "side": 1,
+      "message": "I\u0027m re-reading the spec (it\u0027s been a while), and I have no idea. The description of the different tag types (A2B and B2A type) make it clear that the domain and range of everything is always [0,1], so values that are XYZ or LAB need to be scaled and offset. But there aren\u0027t any details, other than an off-hand comment.\n\nSimilarly, I think we still have the issue with the A2B tag being either lut16type or lutAtoBtype, which changes how PCSLAB values are encoded. We may need to remember what the original tag type was in the skcms_A2B struct, so we can apply the LAB fixup only to lut16/lut8 tables?",
+      "range": {
+        "startLine": 788,
+        "startChar": 11,
+        "endLine": 788,
+        "endChar": 83
+      },
+      "revId": "d4ce1722f00af3cecad563ed7b74fb1269a7abb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
