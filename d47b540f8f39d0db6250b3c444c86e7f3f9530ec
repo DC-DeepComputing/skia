@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "099016c9_33878db7",
+        "filename": "src/sksl/SkSLAnalysis.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T19:52:41Z",
+      "side": 1,
+      "message": "I am surprised we don\u0027t get IWYU warnings here",
+      "parentUuid": "9264d185_e88ed0e5",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 22
+      },
+      "revId": "d47b540f8f39d0db6250b3c444c86e7f3f9530ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edccbe4a_dbe2041d",
         "filename": "src/sksl/SkSLContext.h",
         "patchSetId": 1
