@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8d4fe16_38cc975c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-14T20:45:00Z",
+      "side": 1,
+      "message": "Hi Greg,  Seems I just need add Graphite_Dawn build bots in jobs.json, and script will generate tasks.json based on the jobs\u0027 names and with correct build args, right? PTAL. Thanks.",
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
