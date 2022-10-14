@@ -46,6 +46,30 @@
       },
       "revId": "d4ce1722f00af3cecad563ed7b74fb1269a7abb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ac375d_0a853333",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-14T20:40:07Z",
+      "side": 1,
+      "message": "I was playing with this a bit more, and I found that skcms does indeed do the right thing, *IF*, we include a matrix and m-curves in our A2B.\n\nIt appears that this comes from this line\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/skcms.cc;l\u003d854;drc\u003d21a4c84dd469bfdc9f27375133dc309b62101ef8",
+      "parentUuid": "a3faef15_c4060997",
+      "range": {
+        "startLine": 788,
+        "startChar": 11,
+        "endLine": 788,
+        "endChar": 83
+      },
+      "revId": "d4ce1722f00af3cecad563ed7b74fb1269a7abb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
