@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efcdab66_0993d395",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-14T15:00:26Z",
+      "side": 1,
+      "message": "Oops, I forgot about those Skottie tracing jobs.",
+      "revId": "da605b7dd66b05fa37a52254288d6f26a15ba974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
