@@ -299,7 +299,7 @@ DEF_TEST(pathbuilder_shrinkToFit, reporter) {
     for (int pts = 0; pts < 10; pts++) {
 
         SkPathBuilder b;
-        for (int i = 0; i < pts; i++) {
+        for (int i = 0; i < pts + SkTArray<uint32_t>::kMinHeapAllocCount + 1; i++) {
             b.lineTo(i,i);
         }
         b.close();
