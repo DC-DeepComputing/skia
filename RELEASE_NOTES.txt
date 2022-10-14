@@ -7,7 +7,7 @@ Milestone 108
   * SkShader::asAGradient() has been removed.
   * SkMesh and SkMeshSpecification has separate sk_sp and bare ptr getters for ref counted types.
   * Add support for specifying a custom ICC profile to SkJpegEncoder, SkPngEncoder, and
-    SkWebpEncoder.
+    SkWebpEncoder, and helper functions for populating 1D and 3D lookup tables.
 
 * * *
 
