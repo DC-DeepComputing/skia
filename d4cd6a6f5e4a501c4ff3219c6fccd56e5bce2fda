@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b05df6_fbe008f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "I removed those changes.",
+      "parentUuid": "c31472de_32bfae76",
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dffc7943_e2752143",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-10-14T19:02:46Z",
       "side": 1,
       "message": "Can you add a comment for rational of 4, 4, 2. It would be best if you had a bug to point to. Please include any performance findings.",
+      "range": {
+        "startLine": 67,
+        "startChar": 2,
+        "endLine": 69,
+        "endChar": 51
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a38c3f0_e1105e34",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dffc7943_e2752143",
       "range": {
         "startLine": 67,
         "startChar": 2,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caf194af_51fbd871",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "I moved this back, and based on your other comments removed the test.",
+      "parentUuid": "19201f79_c11d262e",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 48
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f084a59_bd7dd9fd",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-10-14T19:02:46Z",
       "side": 1,
       "message": "Prefer\nfAllocCount \u003d std::exchange(that.fAllocCount, 0);\nfItemArray \u003d std::exchange(that.fItemArray, nullptr);",
+      "range": {
+        "startLine": 131,
+        "startChar": 16,
+        "endLine": 131,
+        "endChar": 47
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "604c8a25_7f73ef61",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. As I removed this entirely, it\u0027s no longer necessary.",
+      "parentUuid": "5f084a59_bd7dd9fd",
       "range": {
         "startLine": 131,
         "startChar": 16,
@@ -112,6 +202,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11d5c91f_ebd246cb",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "I touched these because of a compile warning on an earlier patchset. Specifically this: https://logs.chromium.org/logs/skia/5de6ffd5dcfc2011/+/steps/ninja/0/stdout . That\u0027s from patchset 0 which didn\u0027t have this change. Maybe the android bot wasn\u0027t hitting this code path until now?",
+      "parentUuid": "131fe293_82bc0607",
+      "range": {
+        "startLine": 290,
+        "startChar": 13,
+        "endLine": 290,
+        "endChar": 19
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc0d8fb5_75ccfd31",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 12
@@ -123,6 +237,30 @@
       "writtenOn": "2022-10-14T19:02:46Z",
       "side": 1,
       "message": "Please spell this shrink_to_fit().",
+      "range": {
+        "startLine": 416,
+        "startChar": 9,
+        "endLine": 416,
+        "endChar": 20
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bf11abc_28b9a82a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc0d8fb5_75ccfd31",
       "range": {
         "startLine": 416,
         "startChar": 9,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e31eb9_c3de4092",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea0fcb5f_9842de44",
+      "range": {
+        "startLine": 231,
+        "startChar": 28,
+        "endLine": 231,
+        "endChar": 37
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74e5e4bc_e19f824f",
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "724045cd_50b1eee7",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74e5e4bc_e19f824f",
+      "range": {
+        "startLine": 302,
+        "startChar": 34,
+        "endLine": 302,
+        "endChar": 72
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f465219_b65ab38a",
@@ -192,6 +378,30 @@
       "writtenOn": "2022-10-14T19:02:46Z",
       "side": 1,
       "message": "I don\u0027t think this is a really useful property of paths. I don\u0027t think we should check this. It constrains what allocation strategies we can pursue.",
+      "range": {
+        "startLine": 309,
+        "startChar": 8,
+        "endLine": 310,
+        "endChar": 87
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9d08cfb_05dc87d3",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2022-10-14T20:32:28Z",
+      "side": 1,
+      "message": "That simplifies things, removed.",
+      "parentUuid": "9f465219_b65ab38a",
       "range": {
         "startLine": 309,
         "startChar": 8,
