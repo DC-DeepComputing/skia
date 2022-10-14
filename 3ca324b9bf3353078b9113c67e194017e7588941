@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4dc0b67_01457b1d",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "i think we\u0027ll also need to take a TextuerInfo into this call. There are a lot of properties that we make decisions on that we need to match the final surface.",
+      "range": {
+        "startLine": 68,
+        "startChar": 30,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3750304f_e8a80204",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "We need to figure out what we\u0027re actually calling this surface and use it for the name here as well as in comments. Right now fSurface doesn\u0027t mean anything to a client :)",
+      "range": {
+        "startLine": 35,
+        "startChar": 15,
+        "endLine": 35,
+        "endChar": 23
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a8e2cf_3508455e",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "Again once we figure out what we\u0027re calling this surface, I think this should be named something get\"SpecialSurface\"Canvas(). getRecordingCanvas could easily confuse folks that this is the only canvas that can be used with this recording which is not true.",
+      "range": {
+        "startLine": 123,
+        "startChar": 14,
+        "endLine": 123,
+        "endChar": 32
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31bd05c8_5188618a",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "Do we need to save the proxy on Recorder here? I would have thought that the Device/DrawContext would have a ref to it? Then we just have to pull that proxy off and hold it on the Recording when we snap.",
+      "range": {
+        "startLine": 191,
+        "startChar": 24,
+        "endLine": 191,
+        "endChar": 36
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae33836_e634188b",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "I wonder to match some of Skia\u0027s other names, we should call this like AutoUninstantiateTextureProxy",
+      "range": {
+        "startLine": 77,
+        "startChar": 6,
+        "endLine": 77,
+        "endChar": 30
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

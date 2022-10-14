@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cda68dea_2a17d5e1",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "This seems right to me. In general we would have instantiated all the proxies during the snap call except for certain promise Images and this special surface. So when a Recording gets played back the first thing we\u0027ll do is instantiate all the remaining promise images and this special surface.",
+      "parentUuid": "3eb42ad2_ecfb10c5",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48bc473d_83749eeb",
         "filename": "src/gpu/graphite/TextureProxy.cpp",
         "patchSetId": 1
@@ -49,6 +67,24 @@
       "writtenOn": "2022-10-13T19:44:10Z",
       "side": 1,
       "message": "It seems like we also would want to check some backend-specific stuff here, like pixel format? But it also seems like there\u0027s some backend-specific stuff we don\u0027t care about, for example MtlTextureInfo.fStorageMode? If that\u0027s correct I can add checks for some backend-specific properties; at least pixel format.",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4439863d_000df372",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "I think to start we want to confirm that the TextureInfos are the same and I guess the dimensions as well. We can then refine the check to be more of a compatible check so that if the Texture has a superset of the properties we require then that\u0027s fine as well. FWIW I think this will be the same check that we will use for fulfilling PromiseImages. So may want to chat with Rob specifically about this part.",
+      "parentUuid": "48bc473d_83749eeb",
       "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -84,6 +120,24 @@
       "side": 1,
       "message": "I decided that we should always instantiate the target surface, and in the test I get around worrying about un-flushed commands by manually playing back the surface\u0027s recorder before playing the detached recorder.",
       "parentUuid": "4a2294f5_c9df030c",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb81773_00a74a8c",
+        "filename": "tests/graphite/MtlRecordingSurfacesTest.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-14T13:47:09Z",
+      "side": 1,
+      "message": "In general we should not be flushing, unflushed commands of the surface. The reason being those will all flush to the surfaces Recorder which may be on another thread doing other work. There is though a small race condition in terms of instantiation here. If a surface has work recorded on a Recorder and that Recorder is snapped at the same time we try to use the special surface, both the snap and special use may try to instantiate the surface at the same time.",
+      "parentUuid": "403e2b59_11667f2e",
       "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
