@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "372af5e2_852f44ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-14T22:29:13Z",
+      "side": 1,
+      "message": "I promise we\u0027ll delete the non-writing parts of this soon!",
+      "revId": "4fd7f72d270532599c6a6bfa1f0593ab5245345d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
