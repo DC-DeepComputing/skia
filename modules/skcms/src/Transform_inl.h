@@ -711,7 +711,7 @@ SI void sample_clut_16(const uint8_t* grid_16, I32 ix, F* r, F* g, F* b, F* a) {
     *a = F_from_U16_BE(gather_16(grid_16, 4*ix+3));
 }
 
-static void clut(uint32_t input_channels, uint32_t output_channels,
+static void clut(uint32_t pcs, uint32_t input_channels, uint32_t output_channels,
                  const uint8_t grid_points[4], const uint8_t* grid_8, const uint8_t* grid_16,
                  F* r, F* g, F* b, F* a) {
 
@@ -785,20 +785,28 @@ static void clut(uint32_t input_channels, uint32_t output_channels,
             if (grid_8) { sample_clut_8 (grid_8 ,ix, &R,&G,&B,&A); }
             else        { sample_clut_16(grid_16,ix, &R,&G,&B,&A); }
         }
-        *r += w*R;
-        *g += w*G;
-        *b += w*B;
+		// XXX - do we do this here? Or do we do it after the various curves are applied?
+        if (pcs == skcms_Signature_XYZ) {
+            const float scale = (65535/32768.f);
+            *r += w*R*scale;
+            *g += w*G*scale;
+            *b += w*B*scale;
+        } else if (pcs == skcms_Signature_Lab) {
+            *r += w*R;
+            *g += w*G;
+            *b += w*B;
+        }
         *a += w*A;
     }
 }
 
-static void clut(const skcms_A2B* a2b, F* r, F* g, F* b, F a) {
-    clut(a2b->input_channels, a2b->output_channels,
+static void clut(const skcms_A2B* a2b, uint32_t pcs, F* r, F* g, F* b, F a) {
+    clut(pcs, a2b->input_channels, a2b->output_channels,
          a2b->grid_points, a2b->grid_8, a2b->grid_16,
          r,g,b,&a);
 }
-static void clut(const skcms_B2A* b2a, F* r, F* g, F* b, F* a) {
-    clut(b2a->input_channels, b2a->output_channels,
+static void clut(const skcms_B2A* b2a, uint32_t pcs, F* r, F* g, F* b, F* a) {
+    clut(pcs, b2a->input_channels, b2a->output_channels,
          b2a->grid_points, b2a->grid_8, b2a->grid_16,
          r,g,b,a);
 }
@@ -1231,7 +1239,8 @@ static void exec_ops(const Op* ops, const void** args,
 
             case Op_clut_A2B: {
                 const skcms_A2B* a2b = (const skcms_A2B*) *args++;
-                clut(a2b, &r,&g,&b,a);
+                const uint32_t* pcs = (const uint32_t*) *args++;
+                clut(a2b, *pcs, &r,&g,&b,a);
 
                 if (a2b->input_channels == 4) {
                     // CMYK is opaque.
@@ -1241,7 +1250,8 @@ static void exec_ops(const Op* ops, const void** args,
 
             case Op_clut_B2A: {
                 const skcms_B2A* b2a = (const skcms_B2A*) *args++;
-                clut(b2a, &r,&g,&b,&a);
+                const uint32_t* pcs = (const uint32_t*) *args++;
+                clut(b2a, *pcs, &r,&g,&b,&a);
             } break;
 
     // Notice, from here on down the store_ ops all return, ending the loop.

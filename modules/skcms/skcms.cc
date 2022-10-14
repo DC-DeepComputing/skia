@@ -2751,6 +2751,7 @@ bool skcms_TransformWithPalette(const void*             src,
                 *ops++  = Op_clamp;
                 *ops++  = Op_clut_A2B;
                 *args++ = &srcProfile->A2B;
+                *args++ = &srcProfile->pcs;
             }
 
             if (srcProfile->A2B.matrix_channels == 3) {
@@ -2847,6 +2848,7 @@ bool skcms_TransformWithPalette(const void*             src,
                 *ops++  = Op_clamp;
                 *ops++  = Op_clut_B2A;
                 *args++ = &dstProfile->B2A;
+                *args++ = &srcProfile->pcs;
                 for (int i = 0; i < (int)dstProfile->B2A.output_channels; i++) {
                     OpAndArg oa = select_curve_op(&dstProfile->B2A.output_curves[i], i);
                     if (oa.arg) {

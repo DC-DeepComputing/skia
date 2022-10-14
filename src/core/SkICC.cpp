@@ -307,29 +307,10 @@ static void skcms_Matrix3x3_apply(const skcms_Matrix3x3* m, float* x) {
     x[2] = y2;
 }
 
-void SkICCFloatXYZD50ToGrid16Lab(const float* xyz_float, uint8_t* grid16_lab) {
-    float v[3] = {
-            xyz_float[0] / kD50_x,
-            xyz_float[1] / kD50_y,
-            xyz_float[2] / kD50_z,
-    };
+void SkICCFloatXYZD50ToGrid16(const float* xyz, uint8_t* grid16) {
     for (size_t i = 0; i < 3; ++i) {
-        v[i] = v[i] > 0.008856f ? cbrtf(v[i]) : v[i] * 7.787f + (16 / 116.0f);
-    }
-    const float L = v[1] * 116.0f - 16.0f;
-    const float a = (v[0] - v[1]) * 500.0f;
-    const float b = (v[1] - v[2]) * 200.0f;
-    const float Lab_unorm[3] = {
-            L * (1 / 100.f),
-            (a + 128.0f) * (1 / 255.0f),
-            (b + 128.0f) * (1 / 255.0f),
-    };
-    // This will encode L=1 as 0xFFFF. This matches how skcms will interpret the
-    // table, but the spec appears to indicate that the value should be 0xFF00.
-    // https://crbug.com/skia/13807
-    for (size_t i = 0; i < 3; ++i) {
-        reinterpret_cast<uint16_t*>(grid16_lab)[i] =
-                SkEndian_SwapBE16(float_round_to_unorm16(Lab_unorm[i]));
+        reinterpret_cast<uint16_t*>(grid16)[i] =
+                SkEndian_SwapBE16(float_round_to_unorm16(xyz[i] * (32768 / 65535.f)));
     }
 }
 
@@ -696,8 +677,6 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_TransferFunction& fn, const skcms_Ma
 
     // Populate A2B (PQ only).
     if (skcms_TransferFunction_isPQish(&fn)) {
-        profile.pcs = skcms_Signature_Lab;
-
         constexpr uint32_t kGridSize = 17;
         profile.has_A2B = true;
         profile.A2B.input_channels = kNumChannels;
@@ -719,7 +698,7 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_TransferFunction& fn, const skcms_Ma
                             b_index / (kGridSize - 1.f),
                     };
                     compute_lut_entry(toXYZD50, rgb);
-                    SkICCFloatXYZD50ToGrid16Lab(rgb, &a2b_grid[a2b_grid_index]);
+                    SkICCFloatXYZD50ToGrid16(rgb, &a2b_grid[a2b_grid_index]);
                     a2b_grid_index += 6;
                 }
             }
