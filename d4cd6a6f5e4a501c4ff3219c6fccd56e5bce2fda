@@ -226,6 +226,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5077be13_219631a9",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-14T21:01:13Z",
+      "side": 1,
+      "message": "How about:\n```\nT* newTs \u003d static_cast\u003cT*\u003e(this-\u003epush_back_raw(n);\nfor (int i \u003d 0; i \u003c n; ++i) {\n   new (\u0026newTs[i]) T;\n}\nreturn newTs;\n```",
+      "parentUuid": "11d5c91f_ebd246cb",
+      "range": {
+        "startLine": 290,
+        "startChar": 13,
+        "endLine": 290,
+        "endChar": 19
+      },
+      "revId": "d4cd6a6f5e4a501c4ff3219c6fccd56e5bce2fda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc0d8fb5_75ccfd31",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 12
