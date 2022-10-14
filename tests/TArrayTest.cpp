@@ -406,3 +406,14 @@ DEF_TEST(TArray, reporter) {
     test_skstarray_compatibility<SkSTArray<3, double>, SkSTArray<4, double>>(reporter);
     test_skstarray_compatibility<SkSTArray<2, short>, SkSTArray<1, short>>(reporter);
 }
+
+DEF_TEST(MemoryExtremes, reporter) {
+    if constexpr (sizeof(void*) > 4) {
+        // Allocate 2^31 - 1 bytes.
+        static constexpr size_t kMaxMem = 0x7FFF'FFFF;
+        uint8_t* p = static_cast<uint8_t*>(sk_malloc_throw(kMaxMem));
+        p[0] = 1;
+        p[kMaxMem - 1] = 1;
+        sk_free(p);
+    }
+}
