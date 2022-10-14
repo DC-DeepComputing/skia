@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb546fb7_6a678888",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T13:08:49Z",
+      "side": 1,
+      "message": "Honestly I am 100% in agreement; I would not be shocked to see the fuzzer invent some horrible test case that breaks this code. Interface blocks are complex (probably moreso than necessary). It might be worth it to just split this up into 2  pointers just for peace of mind.",
+      "parentUuid": "cfb8064d_2887a84c",
+      "revId": "79673e9be95eb7555a89dc700774aafcc1314125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f8bd023_a5394161",
         "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
         "patchSetId": 6
