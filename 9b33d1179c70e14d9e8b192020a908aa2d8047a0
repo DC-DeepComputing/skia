@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29833eda_ff1242c0",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-14T21:19:33Z",
+      "side": 1,
+      "message": "We don\u0027t want to admit `$mat x` in _any_ code, public or private.",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "9b33d1179c70e14d9e8b192020a908aa2d8047a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
