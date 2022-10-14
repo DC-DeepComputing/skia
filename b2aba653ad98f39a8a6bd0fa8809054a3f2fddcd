@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0ac8c1f_5afbed9a",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cda68dea_2a17d5e1",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48bc473d_83749eeb",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "I think to start we want to confirm that the TextureInfos are the same and I guess the dimensions as well. We can then refine the check to be more of a compatible check so that if the Texture has a superset of the properties we require then that\u0027s fine as well. FWIW I think this will be the same check that we will use for fulfilling PromiseImages. So may want to chat with Rob specifically about this part.",
       "parentUuid": "48bc473d_83749eeb",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c55f634_cf1c5123",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "I wouldn\u0027t think we care about dimensions -- don\u0027t we explicitly want to be able to replay to a larger surface than we recorded on?",
+      "parentUuid": "4439863d_000df372",
       "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -138,6 +174,24 @@
       "side": 1,
       "message": "In general we should not be flushing, unflushed commands of the surface. The reason being those will all flush to the surfaces Recorder which may be on another thread doing other work. There is though a small race condition in terms of instantiation here. If a surface has work recorded on a Recorder and that Recorder is snapped at the same time we try to use the special surface, both the snap and special use may try to instantiate the surface at the same time.",
       "parentUuid": "403e2b59_11667f2e",
+      "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d605cf8e_b6f96a80",
+        "filename": "tests/graphite/MtlRecordingSurfacesTest.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "If I\u0027m understanding the condition correctly, we can have Thread A which directly draws to a surface and then snaps a recording from the surface\u0027s recorder, and then Thread B which has a recording with a special/proxy surface and replays this recording to the actual surface from Thread A. Do we consider this a valid use of special surfaces? In other words, would it better to assert this doesn\u0027t happen, or protect instantiation with a semaphore?",
+      "parentUuid": "ceb81773_00a74a8c",
       "revId": "b2aba653ad98f39a8a6bd0fa8809054a3f2fddcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4ae6735_987b8b0b",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "There\u0027s a todo in DrawContext::Make to validate that the given SkColorInfo and TextureProxy are compatible; should this be addressed now since users will be able to create DrawContexts with arbitrary SkColorInfos and TextureInfos?",
+      "parentUuid": "d4dc0b67_01457b1d",
+      "range": {
+        "startLine": 68,
+        "startChar": 30,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3750304f_e8a80204",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-14T13:47:09Z",
       "side": 1,
       "message": "We need to figure out what we\u0027re actually calling this surface and use it for the name here as well as in comments. Right now fSurface doesn\u0027t mean anything to a client :)",
+      "range": {
+        "startLine": 35,
+        "startChar": 15,
+        "endLine": 35,
+        "endChar": 23
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "680442fb_26d21cea",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "Agreed, but I\u0027m not sure what to call it. I guess in discussions we\u0027ve used ProxySurface or SpecialSurface, neither of which I love, but either of which I\u0027d be willing to go with.",
+      "parentUuid": "3750304f_e8a80204",
       "range": {
         "startLine": 35,
         "startChar": 15,
@@ -93,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c208461c_39ab4002",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31bd05c8_5188618a",
+      "range": {
+        "startLine": 191,
+        "startChar": 24,
+        "endLine": 191,
+        "endChar": 36
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ae33836_e634188b",
@@ -106,6 +178,30 @@
       "writtenOn": "2022-10-14T13:47:09Z",
       "side": 1,
       "message": "I wonder to match some of Skia\u0027s other names, we should call this like AutoUninstantiateTextureProxy",
+      "range": {
+        "startLine": 77,
+        "startChar": 6,
+        "endLine": 77,
+        "endChar": 30
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aed6fb4_5eb43d8f",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-14T21:54:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ae33836_e634188b",
       "range": {
         "startLine": 77,
         "startChar": 6,
