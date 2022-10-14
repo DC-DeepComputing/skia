@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/gpu/graphite/ContextOptions.h"
@@ -18,12 +19,15 @@
 #include <memory>
 
 class SkRuntimeEffect;
+class SkSurface;
 
 namespace skgpu { struct VulkanBackendContext; }
 
 namespace skgpu::graphite {
 
 class BackendTexture;
+class Buffer;
+class ClientMappedBufferManager;
 class Context;
 class ContextPriv;
 struct DawnBackendContext;
@@ -33,6 +37,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class TextureProxy;
 
 #ifdef SK_ENABLE_PRECOMPILE
 class BlenderID;
@@ -66,6 +71,17 @@ public:
     void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
 
+    void asyncReadPixels(const SkImage* image,
+                         SkColorType dstColorType,
+                         const SkIRect& srcRect,
+                         SkImage::ReadPixelsCallback callback,
+                         SkImage::ReadPixelsContext context);
+    void asyncReadPixels(const SkSurface* surface,
+                         SkColorType dstColorType,
+                         const SkIRect& srcRect,
+                         SkImage::ReadPixelsCallback callback,
+                         SkImage::ReadPixelsContext context);
+
     /**
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
      */
@@ -94,6 +110,25 @@ public:
     ContextPriv priv();
     const ContextPriv priv() const;  // NOLINT(readability-const-return-type)
 
+    class ContextID {
+    public:
+        static Context::ContextID Next();
+
+        ContextID() : fID(SK_InvalidUniqueID) {}
+
+        bool operator==(const ContextID& that) const { return fID == that.fID; }
+        bool operator!=(const ContextID& that) const { return !(*this == that); }
+
+        void makeInvalid() { fID = SK_InvalidUniqueID; }
+        bool isValid() const { return fID != SK_InvalidUniqueID; }
+
+    private:
+        constexpr ContextID(uint32_t id) : fID(id) {}
+        uint32_t fID;
+    };
+
+    ContextID contextID() const { return fContextID; }
+
 protected:
     Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>);
 
@@ -102,13 +137,35 @@ private:
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
+    // Inserts a transfer, part of the implementation of asyncRescaleAndReadPixels and
+    // asyncRescaleAndReadPixelsYUV420().
+    struct PixelTransferResult {
+        using ConversionFn = void(void* dst, const void* mappedBuffer);
+        // If null then the transfer could not be performed. Otherwise this buffer will contain
+        // the pixel data when the transfer is complete.
+        sk_sp<Buffer> fTransferBuffer;
+        // If this is null then the transfer buffer will contain the data in the requested
+        // color type. Otherwise, when the transfer is done this must be called to convert
+        // from the transfer buffer's color type to the requested color type.
+        std::function<ConversionFn> fPixelConverter;
+    };
+    PixelTransferResult copyTextureToBuffer(Recorder*,
+                                            const TextureProxy*,
+                                            const SkImageInfo&,
+                                            SkColorType dstColorType,
+                                            const SkIRect& srcRect);
+    class AsyncReadResult;
+
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<QueueManager> fQueueManager;
+    std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
     mutable SingleOwner fSingleOwner;
+
+    const ContextID fContextID;  // Needed for MessageBox handling
 };
 
 } // namespace skgpu::graphite
