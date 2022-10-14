@@ -32,7 +32,7 @@ class Variable;
 class VariableReference;
 enum class VariableRefKind : int8_t;
 struct ForLoopPositions;
-struct LoadedModule;
+struct Module;
 struct LoopUnrollInfo;
 struct Program;
 
@@ -107,7 +107,7 @@ bool SwitchCaseContainsUnconditionalExit(Statement& stmt);
 bool SwitchCaseContainsConditionalExit(Statement& stmt);
 
 std::unique_ptr<ProgramUsage> GetUsage(const Program& program);
-std::unique_ptr<ProgramUsage> GetUsage(const LoadedModule& module);
+std::unique_ptr<ProgramUsage> GetUsage(const Module& module);
 
 bool StatementWritesToVariable(const Statement& stmt, const Variable& var);
 

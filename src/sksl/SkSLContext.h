@@ -12,7 +12,7 @@ namespace SkSL {
 
 class BuiltinTypes;
 class ErrorReporter;
-struct LoadedModule;
+struct Module;
 class ModifiersPool;
 struct ProgramConfig;
 struct ShaderCaps;
@@ -41,7 +41,7 @@ public:
     ErrorReporter* fErrors;
 
     // The Context holds a pointer to our module with built-in declarations.
-    const LoadedModule* fModule = nullptr;
+    const Module* fModule = nullptr;
 };
 
 }  // namespace SkSL

@@ -22,7 +22,7 @@
 namespace SkSL {
 
 class Compiler;
-struct LoadedModule;
+struct Module;
 class ModifiersPool;
 class Pool;
 class Position;
@@ -45,7 +45,7 @@ public:
     ThreadContext(SkSL::Compiler* compiler,
                   SkSL::ProgramKind kind,
                   const SkSL::ProgramSettings& settings,
-                  const SkSL::LoadedModule* module,
+                  const SkSL::Module* module,
                   bool isModule);
     ~ThreadContext();
 
