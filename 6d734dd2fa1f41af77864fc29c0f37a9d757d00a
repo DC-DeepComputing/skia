@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9320a408_b58f1bae",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2804,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-14T20:36:49Z",
+      "side": 1,
+      "message": "\"and not too big\"?",
+      "range": {
+        "startLine": 2804,
+        "startChar": 69,
+        "endLine": 2804,
+        "endChar": 78
+      },
+      "revId": "6d734dd2fa1f41af77864fc29c0f37a9d757d00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
