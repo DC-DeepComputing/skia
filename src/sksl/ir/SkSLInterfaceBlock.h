@@ -17,8 +17,6 @@
 
 namespace SkSL {
 
-class InterfaceBlockVariable;
-
 /**
  * An interface block, as in:
  *

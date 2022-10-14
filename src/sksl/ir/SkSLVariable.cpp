@@ -28,15 +28,15 @@
 namespace SkSL {
 
 Variable::~Variable() {
-    // Unhook this Variable from its associated VarDeclaration, since we're being deleted.
     if (VarDeclaration* declaration = this->varDeclaration()) {
-        declaration->setVar(nullptr);
+        // Unhook this Variable from its associated VarDeclaration, since we're being deleted.
+        declaration->detachDeadVariable();
     }
 }
 
 InterfaceBlockVariable::~InterfaceBlockVariable() {
-    // Unhook this Variable from its associated InterfaceBlock, since we're being deleted.
     if (fInterfaceBlockElement) {
+        // Unhook this Variable from its associated InterfaceBlock, since we're being deleted.
         fInterfaceBlockElement->detachDeadVariable();
     }
 }
@@ -45,6 +45,7 @@ const Expression* Variable::initialValue() const {
     VarDeclaration* declaration = this->varDeclaration();
     return declaration ? declaration->value().get() : nullptr;
 }
+
 
 VarDeclaration* Variable::varDeclaration() const {
     if (!fDeclaringElement) {
