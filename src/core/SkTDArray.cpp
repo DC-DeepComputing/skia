@@ -5,8 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTDArray.h"
+
+#include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 
 #include <utility>
@@ -14,9 +15,7 @@
 SkTDStorage::SkTDStorage(int sizeOfT) : fSizeOfT{sizeOfT} {}
 
 SkTDStorage::SkTDStorage(const void* src, int count, int sizeOfT)
-        : fSizeOfT{sizeOfT}
-        , fReserve{count}
-        , fCount{count} {
+        : fSizeOfT{sizeOfT}, fReserve{count}, fCount{count} {
     if (count > 0) {
         SkASSERT(src != nullptr);
         size_t storageSize = this->bytes(count);
@@ -56,9 +55,7 @@ SkTDStorage& SkTDStorage::operator=(SkTDStorage&& that) {
     return *this;
 }
 
-SkTDStorage::~SkTDStorage() {
-    sk_free(fStorage);
-}
+SkTDStorage::~SkTDStorage() { sk_free(fStorage); }
 
 void SkTDStorage::reset() {
     const int sizeOfT = fSizeOfT;
@@ -101,7 +98,6 @@ void SkTDStorage::reserve(int newReserve) {
                 expandedReserve = newReserve + growth;
             }
         }
-
 
         // With a T size of 1, the above allocator produces the progression of 7, 15, ... Since,
         // the sizeof max_align_t is often 16, there is no reason to allocate anything less than
@@ -153,9 +149,7 @@ void SkTDStorage::removeShuffle(int index) {
     this->resize(newCount);
 }
 
-void* SkTDStorage::prepend() {
-    return this->insert(/*index=*/0);
-}
+void* SkTDStorage::prepend() { return this->insert(/*index=*/0); }
 
 void SkTDStorage::append() {
     if (fCount < fReserve) {
@@ -175,13 +169,9 @@ void SkTDStorage::append(int count) {
     }
 }
 
-void* SkTDStorage::append(const void* src, int count) {
-    return this->insert(fCount, count, src);
-}
+void* SkTDStorage::append(const void* src, int count) { return this->insert(fCount, count, src); }
 
-void* SkTDStorage::insert(int index) {
-    return this->insert(index, /*count=*/1, nullptr);
-}
+void* SkTDStorage::insert(int index) { return this->insert(index, /*count=*/1, nullptr); }
 
 void* SkTDStorage::insert(int index, int count, const void* src) {
     SkASSERT(0 <= index && index <= fCount);

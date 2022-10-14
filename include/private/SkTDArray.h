@@ -13,8 +13,8 @@
 #include "include/private/SkTo.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <climits>
+#include <cstddef>
 #include <initializer_list>
 #include <tuple>
 #include <utility>
@@ -26,11 +26,11 @@ public:
 
     // Copy
     SkTDStorage(const SkTDStorage& that);
-    SkTDStorage& operator= (const SkTDStorage& that);
+    SkTDStorage& operator=(const SkTDStorage& that);
 
     // Move
     SkTDStorage(SkTDStorage&& that);
-    SkTDStorage& operator= (SkTDStorage&& that);
+    SkTDStorage& operator=(SkTDStorage&& that);
 
     ~SkTDStorage();
 
@@ -73,9 +73,7 @@ public:
     }
 
     friend bool operator==(const SkTDStorage& a, const SkTDStorage& b);
-    friend bool operator!=(const SkTDStorage& a, const SkTDStorage& b) {
-        return !(a == b);
-    }
+    friend bool operator!=(const SkTDStorage& a, const SkTDStorage& b) { return !(a == b); }
 
 private:
     size_t bytes(int n) const { return SkToSizeT(n * fSizeOfT); }
@@ -97,9 +95,7 @@ private:
     int fCount{0};    // logical number of elements (fCount <= fReserve)
 };
 
-static inline void swap(SkTDStorage& a, SkTDStorage& b) {
-    a.swap(b);
-}
+static inline void swap(SkTDStorage& a, SkTDStorage& b) { a.swap(b); }
 
 // SkTDArray<T> implements a std::vector-like array for raw data-only objects that do not require
 // construction or destruction. The constructor and destructor for T will not be called; T objects
@@ -107,7 +103,7 @@ static inline void swap(SkTDStorage& a, SkTDStorage& b) {
 template <typename T> class SkTDArray {
 public:
     SkTDArray() : fStorage{sizeof(T)} {}
-    SkTDArray(const T src[], int count) : fStorage{src, count, sizeof(T)} { }
+    SkTDArray(const T src[], int count) : fStorage{src, count, sizeof(T)} {}
     SkTDArray(const std::initializer_list<T>& list) : SkTDArray(list.begin(), list.size()) {}
 
     // Copy
@@ -147,11 +143,11 @@ public:
     // return the number of bytes in the array: count * sizeof(T)
     size_t size_bytes() const { return fStorage.size_bytes(); }
 
-    T*       data() { return static_cast<T*>(fStorage.data()); }
+    T* data() { return static_cast<T*>(fStorage.data()); }
     const T* data() const { return static_cast<const T*>(fStorage.data()); }
-    T*       begin() { return this->data(); }
+    T* begin() { return this->data(); }
     const T* begin() const { return this->data(); }
-    T*       end() { return this->data() + this->size(); }
+    T* end() { return this->data() + this->size(); }
     const T* end() const { return this->data() + this->size(); }
 
     T& operator[](int index) {
@@ -172,25 +168,17 @@ public:
         return this->data()[this->size() - 1];
     }
 
-    void reset() {
-        fStorage.reset();
-    }
+    void reset() { fStorage.reset(); }
 
-    void clear() {
-        fStorage.clear();
-    }
+    void clear() { fStorage.clear(); }
 
-     // Sets the number of elements in the array.
-     // If the array does not have space for count elements, it will increase
-     // the storage allocated to some amount greater than that required.
-     // It will never shrink the storage.
-    void resize(int count) {
-        fStorage.resize(count);
-    }
+    // Sets the number of elements in the array.
+    // If the array does not have space for count elements, it will increase
+    // the storage allocated to some amount greater than that required.
+    // It will never shrink the storage.
+    void resize(int count) { fStorage.resize(count); }
 
-    void reserve(size_t n) {
-        fStorage.reserve(n);
-    }
+    void reserve(size_t n) { fStorage.reserve(n); }
 
     T* append() {
         fStorage.append();
@@ -200,24 +188,16 @@ public:
         fStorage.append(count);
         return this->end() - count;
     }
-    T* append(int count, const T* src) {
-        return static_cast<T*>(fStorage.append(src, count));
-    }
+    T* append(int count, const T* src) { return static_cast<T*>(fStorage.append(src, count)); }
 
-    T* insert(int index) {
-        return static_cast<T*>(fStorage.insert(index));
-    }
+    T* insert(int index) { return static_cast<T*>(fStorage.insert(index)); }
     T* insert(int index, int count, const T* src = nullptr) {
         return static_cast<T*>(fStorage.insert(index, count, src));
     }
 
-    void remove(int index, int count = 1) {
-        fStorage.erase(index, count);
-    }
+    void remove(int index, int count = 1) { fStorage.erase(index, count); }
 
-    void removeShuffle(int index) {
-        fStorage.removeShuffle(index);
-    }
+    void removeShuffle(int index) { fStorage.removeShuffle(index); }
 
     // routines to treat the array like a stack
     void push_back(const T& v) {
@@ -226,9 +206,7 @@ public:
     }
     void pop_back() { fStorage.pop_back(); }
 
-    void shrink_to_fit() {
-        fStorage.shrink_to_fit();
-    }
+    void shrink_to_fit() { fStorage.shrink_to_fit(); }
 
 private:
     SkTDStorage fStorage;
