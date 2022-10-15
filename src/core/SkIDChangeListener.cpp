@@ -26,7 +26,7 @@ List::List() = default;
 List::~List() {
     // We don't need the mutex. No other thread should have this list while it's being
     // destroyed.
-    for (int i = 0; i < fListeners.size(); ++i) {
+    for (int i = 0; i < fListeners.count(); ++i) {
         if (!fListeners[i]->shouldDeregister()) {
             fListeners[i]->changed();
         }
@@ -42,18 +42,18 @@ void List::add(sk_sp<SkIDChangeListener> listener) {
 
     SkAutoMutexExclusive lock(fMutex);
     // Clean out any stale listeners before we append the new one.
-    for (int i = 0; i < fListeners.size(); ++i) {
+    for (int i = 0; i < fListeners.count(); ++i) {
         if (fListeners[i]->shouldDeregister()) {
             fListeners[i]->unref();
             fListeners.removeShuffle(i--);  // No need to preserve the order after i.
         }
     }
-    *fListeners.append() = listener.release();
+    fListeners.push_back(listener.release());
 }
 
 int List::count() const {
     SkAutoMutexExclusive lock(fMutex);
-    return fListeners.size();
+    return fListeners.count();
 }
 
 void List::changed() {
