@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5695b14a_c2212ca8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-15T14:17:17Z",
+      "side": 1,
+      "message": "Hmmm... looks like `Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All` falls over (stops collecting output at least) if there is too much output (or interesting UTF-8 output) at once. Removing the extra debug information seems to correct the strange hang.",
+      "revId": "8f91009f94636479ac71c87daca490a2d38dc61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
