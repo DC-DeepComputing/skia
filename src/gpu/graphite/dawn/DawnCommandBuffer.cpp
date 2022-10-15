@@ -80,4 +80,8 @@ bool DawnCommandBuffer::onSynchronizeBufferToCpu(const Buffer* buffer, bool* out
 void DawnCommandBuffer::onResetCommandBuffer() {
 }
 
+bool DawnCommandBuffer::setNewCommandBufferResources() {
+    return false;
+}
+
 } // namespace skgpu::graphite

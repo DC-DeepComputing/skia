@@ -15,9 +15,6 @@
 
 #include "webgpu/webgpu_cpp.h"
 
-#include <memory>
-
-#include "include/core/SkTypes.h"
 
 namespace skgpu::graphite {
 class DawnBlitCommandEncoder;
@@ -73,6 +70,7 @@ private:
                                 SkIPoint dstPoint) override;
     bool onSynchronizeBufferToCpu(const Buffer*, bool* outDidResultInWork) override;
     void onResetCommandBuffer() override;
+    bool setNewCommandBufferResources() override;
 
     wgpu::CommandBuffer fCommandBuffer;
     wgpu::Buffer fCurrentIndexBuffer;
