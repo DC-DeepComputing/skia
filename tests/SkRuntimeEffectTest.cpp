@@ -301,7 +301,7 @@ DEF_TEST(SkRuntimeEffectForShader, r) {
     // The 'half4 main(float2, half4|float4)' signature is disallowed on both public and private
     // runtime effects.
     SkRuntimeEffect::Options options;
-    SkRuntimeEffectPriv::UsePrivateRTShaderModule(&options);
+    SkRuntimeEffectPriv::AllowPrivateAccess(&options);
     test_invalid("half4  main(float2 p, half4  c) { return c; }", "'main' parameter");
     test_invalid("half4  main(float2 p, half4  c) { return c; }", "'main' parameter", options);
 
@@ -430,7 +430,7 @@ public:
 
     void build(const char* src) {
         SkRuntimeEffect::Options options;
-        SkRuntimeEffectPriv::UsePrivateRTShaderModule(&options);
+        SkRuntimeEffectPriv::AllowPrivateAccess(&options);
         auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(src), options);
         if (!effect) {
             ERRORF(fReporter, "Effect didn't compile: %s", errorText.c_str());
@@ -1200,7 +1200,7 @@ DEF_TEST(SkRuntimeEffectThreaded, r) {
     for (auto& thread : threads) {
         thread = std::thread([r]() {
             SkRuntimeEffect::Options options;
-            SkRuntimeEffectPriv::UsePrivateRTShaderModule(&options);
+            SkRuntimeEffectPriv::AllowPrivateAccess(&options);
             auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(kSource), options);
             REPORTER_ASSERT(r, effect);
         });
