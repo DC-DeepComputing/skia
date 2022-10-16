@@ -19,6 +19,11 @@
 
 namespace SkSL {
 
+template <typename Container, typename Predicate>
+static void SkContainerRemoveIf(Container& c, Predicate pred) {
+    c.resize(std::distance(c.begin(), std::remove_if(c.begin(), c.end(), pred)));
+}
+
 bool Transform::EliminateDeadFunctions(Program& program) {
     ProgramUsage* usage = program.fUsage.get();
     bool madeChanges = false;
@@ -37,16 +42,10 @@ bool Transform::EliminateDeadFunctions(Program& program) {
             return true;
         };
 
-        program.fOwnedElements.erase(std::remove_if(program.fOwnedElements.begin(),
-                                                    program.fOwnedElements.end(),
-                                                    [&](const std::unique_ptr<ProgramElement>& pe) {
-                                                        return isDeadFunction(pe.get());
-                                                    }),
-                                     program.fOwnedElements.end());
-        program.fSharedElements.erase(std::remove_if(program.fSharedElements.begin(),
-                                                     program.fSharedElements.end(),
-                                                     isDeadFunction),
-                                      program.fSharedElements.end());
+        SkContainerRemoveIf(program.fOwnedElements, [&](const std::unique_ptr<ProgramElement>& pe) {
+            return isDeadFunction(pe.get());
+        });
+        SkContainerRemoveIf(program.fSharedElements, isDeadFunction);
     }
     return madeChanges;
 }
