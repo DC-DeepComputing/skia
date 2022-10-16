@@ -69,6 +69,11 @@
 #include <string_view>
 #include <utility>
 
+template <typename Container, typename Predicate>
+static void SkContainerRemoveIf(Container& c, Predicate pred) {
+    c.resize(std::distance(c.begin(), std::remove_if(c.begin(), c.end(), pred)));
+}
+
 namespace SkSL {
 namespace {
 
@@ -1069,13 +1074,9 @@ void Inliner::buildCandidateList(const std::vector<std::unique_ptr<ProgramElemen
 
     // Remove candidates that are not safe to inline.
     InlinabilityCache cache;
-    candidates.erase(std::remove_if(candidates.begin(),
-                                    candidates.end(),
-                                    [&](const InlineCandidate& candidate) {
-                                        return !this->candidateCanBeInlined(
-                                                candidate, *usage, &cache);
-                                    }),
-                     candidates.end());
+    SkContainerRemoveIf(candidates, [&](const InlineCandidate& candidate) {
+        return !this->candidateCanBeInlined(candidate, *usage, &cache);
+    });
 
     // If the inline threshold is unlimited, or if we have no candidates left, our candidate list is
     // complete.
@@ -1093,25 +1094,23 @@ void Inliner::buildCandidateList(const std::vector<std::unique_ptr<ProgramElemen
         candidateTotalCost[&fnDecl] += this->getFunctionSize(fnDecl, &functionSizeCache);
     }
 
-    candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                        [&](const InlineCandidate& candidate) {
-                            const FunctionDeclaration& fnDecl = candidate_func(candidate);
-                            if (fnDecl.modifiers().fFlags & Modifiers::kInline_Flag) {
-                                // Functions marked `inline` ignore size limitations.
-                                return false;
-                            }
-                            if (usage->get(fnDecl) == 1) {
-                                // If a function is only used once, it's cost-free to inline.
-                                return false;
-                            }
-                            if (candidateTotalCost[&fnDecl] <= this->settings().fInlineThreshold) {
-                                // We won't exceed the inline threshold by inlining this.
-                                return false;
-                            }
-                            // Inlining this function will add too many IRNodes.
-                            return true;
-                        }),
-         candidates.end());
+    SkContainerRemoveIf(candidates, [&](const InlineCandidate& candidate) {
+        const FunctionDeclaration& fnDecl = candidate_func(candidate);
+        if (fnDecl.modifiers().fFlags & Modifiers::kInline_Flag) {
+            // Functions marked `inline` ignore size limitations.
+            return false;
+        }
+        if (usage->get(fnDecl) == 1) {
+            // If a function is only used once, it's cost-free to inline.
+            return false;
+        }
+        if (candidateTotalCost[&fnDecl] <= this->settings().fInlineThreshold) {
+            // We won't exceed the inline threshold by inlining this.
+            return false;
+        }
+        // Inlining this function will add too many IRNodes.
+        return true;
+    });
 }
 
 bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elements,

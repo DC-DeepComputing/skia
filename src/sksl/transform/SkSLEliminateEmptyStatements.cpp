@@ -20,6 +20,11 @@
 #include <iterator>
 #include <memory>
 
+template <typename Container, typename Predicate>
+static void SkContainerRemoveIf(Container& c, Predicate pred) {
+    c.resize(std::distance(c.begin(), std::remove_if(c.begin(), c.end(), pred)));
+}
+
 namespace SkSL {
 
 class Expression;
@@ -38,11 +43,9 @@ static void eliminate_empty_statements(SkSpan<std::unique_ptr<ProgramElement>> e
 
             if (stmt->is<Block>()) {
                 StatementArray& children = stmt->as<Block>().children();
-                auto iter = std::remove_if(children.begin(), children.end(),
-                                           [](std::unique_ptr<Statement>& stmt) {
-                                               return stmt->isEmpty();
-                                           });
-                children.resize(std::distance(children.begin(), iter));
+                SkContainerRemoveIf(children, [](std::unique_ptr<Statement>& stmt) {
+                    return stmt->isEmpty();
+                });
             }
 
             // We always check the entire program.

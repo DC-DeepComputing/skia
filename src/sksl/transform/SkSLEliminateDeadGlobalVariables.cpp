@@ -22,6 +22,11 @@
 #include <memory>
 #include <vector>
 
+template <typename Container, typename Predicate>
+static void SkContainerRemoveIf(Container& c, Predicate pred) {
+    c.resize(std::distance(c.begin(), std::remove_if(c.begin(), c.end(), pred)));
+}
+
 namespace SkSL {
 
 static bool is_dead_variable(const ProgramElement& element,
@@ -51,12 +56,9 @@ bool Transform::EliminateDeadGlobalVariables(const Context& context,
 
     size_t numElements = module.fElements.size();
     if (context.fConfig->fSettings.fRemoveDeadVariables) {
-        module.fElements.erase(std::remove_if(module.fElements.begin(),
-                                              module.fElements.end(),
-                                              [&](const std::unique_ptr<ProgramElement>& pe) {
-                                                  return isDeadVariable(*pe);
-                                              }),
-                               module.fElements.end());
+        SkContainerRemoveIf(module.fElements, [&](const std::unique_ptr<ProgramElement>& pe) {
+            return isDeadVariable(*pe);
+        });
     }
     return module.fElements.size() < numElements;
 }
@@ -69,18 +71,12 @@ bool Transform::EliminateDeadGlobalVariables(Program& program) {
     size_t numOwnedElements = program.fOwnedElements.size();
     size_t numSharedElements = program.fSharedElements.size();
     if (program.fConfig->fSettings.fRemoveDeadVariables) {
-        program.fOwnedElements.erase(std::remove_if(program.fOwnedElements.begin(),
-                                                    program.fOwnedElements.end(),
-                                                    [&](const std::unique_ptr<ProgramElement>& pe) {
-                                                        return isDeadVariable(*pe);
-                                                    }),
-                                     program.fOwnedElements.end());
-        program.fSharedElements.erase(std::remove_if(program.fSharedElements.begin(),
-                                                     program.fSharedElements.end(),
-                                                     [&](const ProgramElement* pe) {
-                                                         return isDeadVariable(*pe);
-                                                     }),
-                                      program.fSharedElements.end());
+        SkContainerRemoveIf(program.fOwnedElements, [&](const std::unique_ptr<ProgramElement>& pe) {
+            return isDeadVariable(*pe);
+        });
+        SkContainerRemoveIf(program.fSharedElements, [&](const ProgramElement* pe) {
+            return isDeadVariable(*pe);
+        });
     }
     return program.fOwnedElements.size() < numOwnedElements ||
            program.fSharedElements.size() < numSharedElements;

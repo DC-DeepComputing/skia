@@ -25,6 +25,11 @@
 #include <utility>
 #include <vector>
 
+template <typename Container, typename Predicate>
+static void SkContainerRemoveIf(Container& c, Predicate pred) {
+    c.resize(std::distance(c.begin(), std::remove_if(c.begin(), c.end(), pred)));
+}
+
 #if SKSL_STANDALONE
 
     // In standalone mode, we load the original SkSL source files. GN is responsible for copying
@@ -244,27 +249,23 @@ static std::unique_ptr<Module> compile_and_shrink(SkSL::Compiler* compiler,
     // We can eliminate FunctionPrototypes without changing the meaning of the module; the function
     // declaration is still safely in the symbol table. This only impacts our ability to recreate
     // the input verbatim, which we don't care about at runtime.
-    m->fElements.erase(std::remove_if(m->fElements.begin(), m->fElements.end(),
-                                      [](const std::unique_ptr<ProgramElement>& element) {
-                                          switch (element->kind()) {
-                                              case ProgramElement::Kind::kFunction:
-                                              case ProgramElement::Kind::kGlobalVar:
-                                              case ProgramElement::Kind::kInterfaceBlock:
-                                                  // We need to preserve these.
-                                                  return false;
+    SkContainerRemoveIf(m->fElements, [](const std::unique_ptr<ProgramElement>& element) {
+        switch (element->kind()) {
+            case ProgramElement::Kind::kFunction:
+            case ProgramElement::Kind::kGlobalVar:
+            case ProgramElement::Kind::kInterfaceBlock:
+                // We need to preserve these.
+                return false;
 
-                                              case ProgramElement::Kind::kFunctionPrototype:
-                                                  // These are already in the symbol table; the
-                                                  // ProgramElement isn't needed anymore.
-                                                  return true;
+            case ProgramElement::Kind::kFunctionPrototype:
+                // These are already in the symbol table; the ProgramElement isn't needed anymore.
+                return true;
 
-                                              default:
-                                                  SkDEBUGFAILF("Unsupported element: %s\n",
-                                                               element->description().c_str());
-                                                  return false;
-                                          }
-                                      }),
-                       m->fElements.end());
+            default:
+                SkDEBUGFAILF("Unsupported element: %s\n", element->description().c_str());
+                return false;
+        }
+    });
 
     m->fElements.shrink_to_fit();
     return m;
