@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2857eeae_176b226f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-17T17:06:58Z",
+      "side": 1,
+      "message": "lgtm % one comment",
+      "revId": "7949b0a44514fb73204ba50585b9c7bb8aaff7d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1c99b69_f4cbef9d",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-17T17:06:58Z",
+      "side": 1,
+      "message": "nit: What you have is consistent with the surrounding code, so lgtm. Though wdyt about naming non-const accessors like this something like `mutVarDeclaration()`?",
+      "range": {
+        "startLine": 139,
+        "startChar": 4,
+        "endLine": 139,
+        "endChar": 36
+      },
+      "revId": "7949b0a44514fb73204ba50585b9c7bb8aaff7d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
