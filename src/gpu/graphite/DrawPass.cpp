@@ -170,7 +170,7 @@ public:
         }
     }
 
-    SkTArray<sk_sp<TextureProxy>>&& detachTextures() { return fProxyCache.detach(); }
+    SkTArray<sk_sp<TextureProxy>>&& detachTextures1() { return fProxyCache.detach(); }
     SkTArray<SamplerDesc>&& detachSamplers() { return fSamplerCache.detach(); }
 
 private:
@@ -575,7 +575,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     drawPass->fPipelineDescs   = pipelineCache.detach();
     drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();
-    drawPass->fSampledTextures = textureBindingTracker.detachTextures();
+    drawPass->fSampledTextures1 = textureBindingTracker.detachTextures1();
 
     return drawPass;
 }
@@ -598,15 +598,15 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     // once we've created pipelines, so we drop the storage for them here.
     fPipelineDescs.reset();
 
-    for (int i = 0; i < fSampledTextures.count(); ++i) {
+    for (int i = 0; i < fSampledTextures1.count(); ++i) {
         // TODO: We need to remove this check once we are creating valid SkImages from things like
         // snapshot, save layers, etc. Right now we only support SkImages directly made for graphite
         // and all others have a TextureProxy with an invalid TextureInfo.
-        if (!fSampledTextures[i]->textureInfo().isValid()) {
+        if (!fSampledTextures1[i]->textureInfo().isValid()) {
             SKGPU_LOG_W("Failed to validate sampled texture. Will not create renderpass!");
             return false;
         }
-        if (!fSampledTextures[i]->instantiate(resourceProvider)) {
+        if (!fSampledTextures1[i]->instantiate(resourceProvider)) {
             SKGPU_LOG_W("Failed to instantiate sampled texture. Will not create renderpass!");
             return false;
         }
@@ -635,8 +635,8 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
     for (size_t i = 0; i < fFullPipelines.size(); ++i) {
         commandBuffer->trackResource(fFullPipelines[i]);
     }
-    for (size_t i = 0; i < fSampledTextures.size(); ++i) {
-        commandBuffer->trackResource(fSampledTextures[i]->refTexture());
+    for (size_t i = 0; i < fSampledTextures1.size(); ++i) {
+        commandBuffer->trackResource(fSampledTextures1[i]->refTexture());
     }
     for (size_t i = 0; i < fSamplers.size(); ++i) {
         commandBuffer->trackResource(fSamplers[i]);
@@ -644,10 +644,10 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
 }
 
 const Texture* DrawPass::getTexture(size_t index) const {
-    SkASSERT(index < fSampledTextures.size());
-    SkASSERT(fSampledTextures[index]);
-    SkASSERT(fSampledTextures[index]->texture());
-    return fSampledTextures[index]->texture();
+    SkASSERT(index < fSampledTextures1.size());
+    SkASSERT(fSampledTextures1[index]);
+    SkASSERT(fSampledTextures1[index]->texture());
+    return fSampledTextures1[index]->texture();
 }
 const Sampler* DrawPass::getSampler(size_t index) const {
     SkASSERT(index < fSamplers.size());

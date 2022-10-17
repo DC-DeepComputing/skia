@@ -80,7 +80,6 @@ public:
     }
 
 private:
-
 #ifdef SK_DEBUG
     /** Return the reference count. Use only for debugging. */
     int32_t getRefCnt() const {
@@ -174,7 +173,7 @@ public:
 
     bool unique() const { return 1 == fRefCnt.load(std::memory_order_acquire); }
     void ref() const { (void)fRefCnt.fetch_add(+1, std::memory_order_relaxed); }
-    void  unref() const {
+    void unref() const {
         if (1 == fRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
             // restore the 1 for our destructor's assert
             SkDEBUGCODE(fRefCnt.store(1, std::memory_order_relaxed));
@@ -193,6 +192,10 @@ public:
         // If this fails then the above contract has been violated.
         SkASSERT(cnt >= threadIsolatedTestCnt);
         return cnt > threadIsolatedTestCnt;
+    }
+
+    int32_t getRefCnt() const {
+        return fRefCnt.load(std::memory_order_relaxed);
     }
 
 private:
