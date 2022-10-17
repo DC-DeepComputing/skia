@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a2d06a_e6e0142e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T16:39:25Z",
+      "side": 1,
+      "message": "Discussed offline--I don\u0027t think most of these changes add value. In particular it eliminates some alignment which feels valuable to keep.\n\nFlattening out all the small functions onto a single line isn\u0027t _bad_, but I don\u0027t think the squashed-onto-one-line accessor is very common in Skia in general.",
+      "revId": "917d46a9b55574049b9754eb889966379611b37d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
