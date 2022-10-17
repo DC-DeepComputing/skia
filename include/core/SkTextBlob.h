@@ -238,7 +238,7 @@ private:
 
     explicit SkTextBlob(const SkRect& bounds);
 
-    ~SkTextBlob();
+    ~SkTextBlob() override;
 
     // Memory for objects of this class is created with sk_malloc rather than operator new and must
     // be freed with sk_free.

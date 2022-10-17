@@ -172,7 +172,7 @@ private:
 
     SkData(const void* ptr, size_t size, ReleaseProc, void* context);
     explicit SkData(size_t size);   // inplace new/delete
-    ~SkData();
+    ~SkData() override;
 
     // Ensure the unsized delete is called.
     void operator delete(void* p);

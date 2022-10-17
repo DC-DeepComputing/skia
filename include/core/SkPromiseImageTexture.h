@@ -23,7 +23,7 @@ public:
     SkPromiseImageTexture() = delete;
     SkPromiseImageTexture(const SkPromiseImageTexture&) = delete;
     SkPromiseImageTexture(SkPromiseImageTexture&&) = delete;
-    ~SkPromiseImageTexture();
+    ~SkPromiseImageTexture() override;
     SkPromiseImageTexture& operator=(const SkPromiseImageTexture&) = delete;
     SkPromiseImageTexture& operator=(SkPromiseImageTexture&&) = delete;
 

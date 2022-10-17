@@ -19,6 +19,8 @@ class Recorder;
 
 class Image final : public SkImage_Base {
 public:
+    TextureProxy* proxy() const override { return fTextureProxyView.proxy(); }
+
     Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
     Image(TextureProxyView, const SkColorInfo&);
     ~Image() override;
@@ -80,7 +82,16 @@ public:
 
     TextureProxyView textureProxyView() const { return fTextureProxyView; }
 
+    static sk_sp<TextureProxy> MakePromiseImageLazyProxy(Recorder*,
+                                                         SkISize dimensions,
+                                                         TextureInfo,
+                                                         Volatile,
+                                                         GraphitePromiseImageFulfillProc,
+                                                         GraphitePromiseImageReleaseProc,
+                                                         GraphitePromiseImageFulfillContext);
+
 private:
+
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
             GrRecordingContext*,

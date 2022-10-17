@@ -12,15 +12,47 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/TaskGraph.h"
+#include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
 
-Recording::Recording(std::unique_ptr<TaskGraph> graph) : fGraph(std::move(graph)) {
+Recording::Recording(std::unique_ptr<TaskGraph> graph,
+                     std::unordered_set<TextureProxy*>&& volatileProxies)
+        : fGraph(std::move(graph))
+        , fVolatileProxies(std::move(volatileProxies)) {
+
+    SkDebugf("Recording volatile proxies:\n");
+    for (auto iter = fVolatileProxies.begin(); iter != fVolatileProxies.end(); ++iter) {
+        SkDebugf("proxy: %p %d texture: %p - ", *iter, (*iter)->getRefCnt(), (*iter)->texture());
+        if ((*iter)->texture()) {
+            (*iter)->texture()->printRefs();
+        }
+        SkDebugf("\n");
+    }
 }
 
-Recording::~Recording() {}
+Recording::~Recording() {
+
+    SkDebugf("~Recording volatile proxies:\n");
+    for (auto iter = fVolatileProxies.begin(); iter != fVolatileProxies.end(); ++iter) {
+        SkDebugf("proxy: %p %d texture: %p - ", *iter, (*iter)->getRefCnt(), (*iter)->texture());
+        if ((*iter)->texture()) {
+            (*iter)->texture()->printRefs();
+        }
+        SkDebugf("\n");
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
+
+void RecordingPriv::instantiateVolatileProxies(ResourceProvider* resourceProvider) {
+
+    for (TextureProxy* proxy : fRecording->fVolatileProxies) {
+        proxy->volatileInstantiate(resourceProvider);
+    }
+
+}
 
 bool RecordingPriv::addCommands(ResourceProvider* resourceProvider, CommandBuffer* commandBuffer) {
     if (!fRecording->fGraph->addCommands(resourceProvider, commandBuffer)) {

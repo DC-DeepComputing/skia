@@ -59,7 +59,7 @@ public:
 
     /** Increment the reference count. Must be balanced by a call to unref().
     */
-    void ref() const {
+    virtual void ref() const {
         SkASSERT(this->getRefCnt() > 0);
         // No barrier required.
         (void)fRefCnt.fetch_add(+1, std::memory_order_relaxed);
@@ -69,7 +69,7 @@ public:
         decrement, then delete the object. Note that if this is the case, then
         the object needs to have been allocated via new, and not on the stack.
     */
-    void unref() const {
+    virtual void unref() const {
         SkASSERT(this->getRefCnt() > 0);
         // A release here acts in place of all releases we "should" have been doing in ref().
         if (1 == fRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
@@ -81,6 +81,7 @@ public:
 
 private:
 
+public:
 #ifdef SK_DEBUG
     /** Return the reference count. Use only for debugging. */
     int32_t getRefCnt() const {
@@ -160,7 +161,7 @@ template <typename Derived>
 class SkNVRefCnt {
 public:
     SkNVRefCnt() : fRefCnt(1) {}
-    ~SkNVRefCnt() {
+    virtual ~SkNVRefCnt() {
     #ifdef SK_DEBUG
         int rc = fRefCnt.load(std::memory_order_relaxed);
         SkASSERTF(rc == 1, "NVRefCnt was %d", rc);
@@ -173,8 +174,8 @@ public:
     //   - unref() needs a release barrier, and an acquire if it's going to call delete.
 
     bool unique() const { return 1 == fRefCnt.load(std::memory_order_acquire); }
-    void ref() const { (void)fRefCnt.fetch_add(+1, std::memory_order_relaxed); }
-    void  unref() const {
+    virtual void ref() const { (void)fRefCnt.fetch_add(+1, std::memory_order_relaxed); }
+    virtual void unref() const {
         if (1 == fRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
             // restore the 1 for our destructor's assert
             SkDEBUGCODE(fRefCnt.store(1, std::memory_order_relaxed));
@@ -193,6 +194,10 @@ public:
         // If this fails then the above contract has been violated.
         SkASSERT(cnt >= threadIsolatedTestCnt);
         return cnt > threadIsolatedTestCnt;
+    }
+
+    int32_t getRefCnt() const {
+        return fRefCnt.load(std::memory_order_relaxed);
     }
 
 private:

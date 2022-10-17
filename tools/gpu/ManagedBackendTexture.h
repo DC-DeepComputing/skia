@@ -62,7 +62,7 @@ public:
     /** GrGpuFinishedProc or image/surface release proc. */
     static void ReleaseProc(void* context);
 
-    ~ManagedBackendTexture();
+    ~ManagedBackendTexture() override;
 
     /**
      * The context to use with ReleaseProc. This adds a ref so it *must* be balanced by a call to
