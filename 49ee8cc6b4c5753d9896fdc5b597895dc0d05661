@@ -34,6 +34,46 @@
       "parentUuid": "d2676699_ac9cd6b7",
       "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a66280_989c2d0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T13:34:30Z",
+      "side": 1,
+      "message": "This is better than emitting invalid SPIR-V, for sure. \n\nHowever, for a long time we\u0027ve had a goal to avoid emitting errors from the backend as much as possible, and push errors up to the front. For Runtime Effects this was a big deal, because it was the difference between \"user gets a reasonable compile error\" and \"user compiles a shader with no error reports, but painting mysteriously does nothing.\"\n\nI\u0027m not sure if that goal applies here because Runtime Effects will never be able to directly specify a sampler2DRect. WDYT Brian?",
+      "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e9e2f2e_2f509042",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1114,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T13:34:30Z",
+      "side": 1,
+      "message": "Minor concern: Builtin types won\u0027t have a position (you can see in the output below that these lines are missing a position). You\u0027d need the position of the expression that involved this type if you wanted this to work.",
+      "range": {
+        "startLine": 1114,
+        "startChar": 40,
+        "endLine": 1114,
+        "endChar": 55
+      },
+      "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
