@@ -33,6 +33,24 @@
       "message": "Did you still want to land this workaround, or just fix the skcms bug?",
       "revId": "4fd7f72d270532599c6a6bfa1f0593ab5245345d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0999c30_236ab3fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2022-10-17T15:12:01Z",
+      "side": 1,
+      "message": "Actually, both! It turns out that this path ends up allowing us to create smaller PQ ICC profiles (veluca and sboukortt created those profiles).\n\nSo yes, I\u0027ll want to land this, and also fix skcms (and add tests for both).",
+      "parentUuid": "57736c55_c321e18f",
+      "revId": "4fd7f72d270532599c6a6bfa1f0593ab5245345d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
