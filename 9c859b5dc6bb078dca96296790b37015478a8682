@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d3508dc_ea3af082",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-17T13:12:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00b00147_8ff94bec",
+      "range": {
+        "startLine": 158,
+        "startChar": 3,
+        "endLine": 158,
+        "endChar": 69
+      },
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf32133c_c26f3201",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-10-14T20:56:53Z",
       "side": 1,
       "message": "I don\u0027t think we\u0027re in a state to add Dawn Perf and Test bots yet. I\u0027m fairly certain they will either crash or do nothing. Lets remove all these bots for now until we\u0027ve actually setup our perf and test tools to use Dawn",
+      "range": {
+        "startLine": 410,
+        "startChar": 11,
+        "endLine": 410,
+        "endChar": 16
+      },
+      "revId": "9c859b5dc6bb078dca96296790b37015478a8682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1463e24e_510ac111",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-17T13:12:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf32133c_c26f3201",
       "range": {
         "startLine": 410,
         "startChar": 11,
