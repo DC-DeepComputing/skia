@@ -51,6 +51,23 @@
       "parentUuid": "57736c55_c321e18f",
       "revId": "4fd7f72d270532599c6a6bfa1f0593ab5245345d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c47db1_5548117c",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T15:22:50Z",
+      "side": 1,
+      "message": "108 has shipped, so technically any new release notes should be in a 109 section.",
+      "revId": "4fd7f72d270532599c6a6bfa1f0593ab5245345d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
