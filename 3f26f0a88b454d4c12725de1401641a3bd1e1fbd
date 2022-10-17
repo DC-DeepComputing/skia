@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aedf57f3_444d75d6",
+        "filename": "src/gpu/graphite/ClientMappedBufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-17T17:24:06Z",
+      "side": 1,
+      "message": "Better?",
+      "parentUuid": "bb34c925_8787d4fb",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "3f26f0a88b454d4c12725de1401641a3bd1e1fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41d14883_cafde64f",
