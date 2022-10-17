@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1726255b_0ad4a536",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-17T13:54:23Z",
+      "side": 1,
+      "message": "LGTM % question about adding a test for failing compilation when private access isn\u0027t allowed.",
+      "revId": "b67e80b2618ce568a719e65fd20a78539fe14973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "021389e9_cdfd8488",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-17T13:54:23Z",
+      "side": 1,
+      "message": "What do you think about adding a version of this that leaves `allowPrivateAccess` as false and tests for the failure case?",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 58
+      },
+      "revId": "b67e80b2618ce568a719e65fd20a78539fe14973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
