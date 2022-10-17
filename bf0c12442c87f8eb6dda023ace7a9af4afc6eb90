@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7680a3dd_2dc97317",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T14:12:17Z",
+      "side": 1,
+      "message": "Pending thinking of a good name for the surface and related `getRecordingCanvas()` rename, I think it looks good.",
+      "revId": "bf0c12442c87f8eb6dda023ace7a9af4afc6eb90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc3d7f0_9eedf13a",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T14:12:17Z",
+      "side": 1,
+      "message": "Should we add another sentence here that any snapped Recording can re-target its surface when it\u0027s played back? Otherwise it may not be clear to a user what the benefit of an uninstantiated surface is.",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 79
+      },
+      "revId": "bf0c12442c87f8eb6dda023ace7a9af4afc6eb90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

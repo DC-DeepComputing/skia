@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91f8e546_acef5772",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T14:12:17Z",
+      "side": 1,
+      "message": "\"DynamicTarget\" or \"ReplaySurface\"?",
+      "parentUuid": "680442fb_26d21cea",
+      "range": {
+        "startLine": 35,
+        "startChar": 15,
+        "endLine": 35,
+        "endChar": 23
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33a8e2cf_3508455e",
         "filename": "include/gpu/graphite/Recorder.h",
         "patchSetId": 4
@@ -108,6 +132,30 @@
       "writtenOn": "2022-10-14T13:47:09Z",
       "side": 1,
       "message": "Again once we figure out what we\u0027re calling this surface, I think this should be named something get\"SpecialSurface\"Canvas(). getRecordingCanvas could easily confuse folks that this is the only canvas that can be used with this recording which is not true.",
+      "range": {
+        "startLine": 123,
+        "startChar": 14,
+        "endLine": 123,
+        "endChar": 32
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abba2fb_68f95aab",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T14:12:17Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "33a8e2cf_3508455e",
       "range": {
         "startLine": 123,
         "startChar": 14,
