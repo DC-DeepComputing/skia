@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6ea0fb1_e10fd0ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T13:58:04Z",
+      "side": 1,
+      "message": "Yeah, I had a comment to that effect earlier. I do think pushing this to the front-end would be nice for the reasons you listed, but also to get the same error message on all backends.",
+      "parentUuid": "55a66280_989c2d0c",
+      "revId": "49ee8cc6b4c5753d9896fdc5b597895dc0d05661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e9e2f2e_2f509042",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 4
