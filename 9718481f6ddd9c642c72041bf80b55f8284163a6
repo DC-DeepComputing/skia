@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "9718481f6ddd9c642c72041bf80b55f8284163a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3c89774_66170fb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-17T14:44:45Z",
+      "side": 1,
+      "message": "FYI. I\u0027m going to be working on SkTArray.h to sort out some of its allocation algorithm. In particular, shrinking in normal operation will be removed unless\nspecified by shrink_to_fit.",
+      "revId": "9718481f6ddd9c642c72041bf80b55f8284163a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
