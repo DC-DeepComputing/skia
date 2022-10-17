@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b62f2c0_dad16ba0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-17T16:39:15Z",
+      "side": 1,
+      "message": "I\u0027d revert this after figuring out why we\u0027re asserting in Chrome",
+      "revId": "13fa96e8bec82fd08a19fec3360bcbfeb062aac1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
