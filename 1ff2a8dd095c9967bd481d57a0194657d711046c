@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0b06177_38b7a002",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T14:42:22Z",
+      "side": 1,
+      "message": "I like this. I\u0027ve got some runtime FPs I had to write for the new gradient stuff, and I ended up having to use shader signatures to get to the helper functions, even though color-filter would be more natural.",
+      "revId": "1ff2a8dd095c9967bd481d57a0194657d711046c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
