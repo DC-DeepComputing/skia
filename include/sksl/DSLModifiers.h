@@ -56,6 +56,10 @@ private:
     Position fPosition;
 
     friend DSLType Struct(std::string_view name, SkSpan<DSLField> fields, Position pos);
+    friend DSLType StructType(std::string_view name,
+                              SkSpan<DSLField> fields,
+                              bool interfaceBlock,
+                              Position pos);
     friend class DSLCore;
     friend class DSLFunction;
     friend class DSLType;
