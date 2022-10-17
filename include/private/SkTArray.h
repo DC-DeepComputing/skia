@@ -35,7 +35,7 @@
 */
 template <typename T, bool MEM_MOVE = sk_is_trivially_relocatable<T>::value> class SkTArray {
 private:
-    enum ReallocType { kExactFit, kGrowing, kShrinking };
+    enum ReallocType { kExactFit, kGrowing };
 
 public:
     using value_type = T;
@@ -310,7 +310,6 @@ public:
         SkASSERT(fCount > 0);
         --fCount;
         fItemArray[fCount].~T();
-        this->checkRealloc(0, kShrinking);
     }
 
     /**
@@ -319,11 +318,13 @@ public:
     void pop_back_n(int n) {
         SkASSERT(n >= 0);
         SkASSERT(this->count() >= n);
+        if (n > fCount) {
+            SK_ABORT("pop_back_n underflow");
+        }
         fCount -= n;
         for (int i = 0; i < n; ++i) {
             fItemArray[fCount + i].~T();
         }
-        this->checkRealloc(0, kShrinking);
     }
 
     /**
@@ -585,21 +586,16 @@ private:
         SkASSERT(fAllocCount >= 0);
         SkASSERT(-delta <= this->count());
 
-        // Move into 64bit math temporarily, to avoid local overflows
-        int64_t newCount = fCount + delta;
+        // Return if there are enough open elements to satisfy the request.
+        if (fAllocCount - fCount >= delta) { return; }
 
-        // We allow fAllocCount to be in the range [newCount, 3*newCount]. We also never shrink
-        // when we're currently using preallocated memory, would allocate less than
-        // kMinHeapAllocCount, or a reserve count was specified that has yet to be exceeded.
-        bool mustGrow = newCount > fAllocCount;
-        bool shouldShrink = fAllocCount > 3 * newCount && fOwnMemory && !fReserved;
-        if (!mustGrow && !shouldShrink) {
-            return;
-        }
+        // Note: the maximum range for count is upto INT_MAX because it is a 31-bit unsigned number.
+        SkASSERT_RELEASE(delta <= INT_MAX - fCount);
+        int newCount = fCount + delta;
 
         int64_t newAllocCount = newCount;
         if (reallocType != kExactFit) {
-            // Whether we're growing or shrinking, leave at least 50% extra space for future growth.
+            // Whether we're growing, leave at least 50% extra space for future growth.
             newAllocCount += ((newCount + 1) >> 1);
             // Align the new allocation count to kMinHeapAllocCount.
             static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
