@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f43f867_938b8452",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T16:39:41Z",
+      "side": 0,
+      "message": "Good alignment here",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 64
+      },
+      "revId": "8b1a2976274f416ff1042485fcdf17dcdd7bcd51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
