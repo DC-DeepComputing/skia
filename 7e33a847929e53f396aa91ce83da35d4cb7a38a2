@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef8017ee_72b785c9",
+        "filename": "include/private/SkIDChangeListener.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T17:13:05Z",
+      "side": 1,
+      "message": "This comment is unnecessary now",
+      "range": {
+        "startLine": 68,
+        "startChar": 83,
+        "endLine": 68,
+        "endChar": 105
+      },
+      "revId": "7e33a847929e53f396aa91ce83da35d4cb7a38a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
