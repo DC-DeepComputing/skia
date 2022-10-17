@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954d9bc7_8be6cc3b",
+        "filename": "src/gpu/graphite/ClientMappedBufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T17:00:33Z",
+      "side": 1,
+      "message": "nit: Just 4 spaces here",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "3f26f0a88b454d4c12725de1401641a3bd1e1fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d14883_cafde64f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T17:00:33Z",
+      "side": 1,
+      "message": "destroying buffers off thread is meant to be safe. I.e. we can unref Resources on any thread",
+      "range": {
+        "startLine": 72,
+        "startChar": 51,
+        "endLine": 72,
+        "endChar": 66
+      },
+      "revId": "3f26f0a88b454d4c12725de1401641a3bd1e1fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cf36690_08216e1f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T17:00:33Z",
+      "side": 1,
+      "message": "Is it needed to call reset here or can we just let it happen automatically by unique_ptr dtor? Or is this part of trying to order things related to above comment?",
+      "range": {
+        "startLine": 73,
+        "startChar": 25,
+        "endLine": 73,
+        "endChar": 30
+      },
+      "revId": "3f26f0a88b454d4c12725de1401641a3bd1e1fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
