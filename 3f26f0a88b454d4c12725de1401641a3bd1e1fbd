@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb34c925_8787d4fb",
+        "filename": "src/gpu/graphite/ClientMappedBufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T17:21:45Z",
+      "side": 1,
+      "message": "this looks like it is still 8 spaces. I think you were at 12 spaces before.",
+      "parentUuid": "34c637aa_0d5700c9",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "3f26f0a88b454d4c12725de1401641a3bd1e1fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41d14883_cafde64f",
