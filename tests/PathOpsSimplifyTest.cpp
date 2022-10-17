@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "tests/PathOpsExtendedTest.h"
+#include "tests/Test.h"
 
 #define TEST(name) { name, #name }
 
