@@ -46,6 +46,8 @@ private:
 
     void freeGpuData() override;
 
+    void onSetReleaseCallback(sk_sp<RefCntedCallback>) override;
+
     sk_cfp<id<MTLTexture>> fTexture;
 };
 
