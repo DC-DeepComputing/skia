@@ -39,6 +39,30 @@
       },
       "revId": "7949b0a44514fb73204ba50585b9c7bb8aaff7d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b67b00d7_902c467b",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T17:20:39Z",
+      "side": 1,
+      "message": "I am on the fence? In theory it sounds fine. In practice I think it might break the ProgramVisitor so we\u0027d need to see what the actual damage looks like.",
+      "parentUuid": "d1c99b69_f4cbef9d",
+      "range": {
+        "startLine": 139,
+        "startChar": 4,
+        "endLine": 139,
+        "endChar": 36
+      },
+      "revId": "7949b0a44514fb73204ba50585b9c7bb8aaff7d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
