@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd5703ff_d745351c",
+        "filename": "include/private/SkIDChangeListener.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-17T14:58:44Z",
+      "side": 1,
+      "message": "Since we are no longer using SkTDArray. Can you consider:\nSkSTArray\u003c1, sk_sp\u003cSkIDChangerListener\u003e\u003e fListeners SK_GUARDED_BY(fMutex);\n?\n\nThis would entail using std::move instead of release, and removing unrefs in the code.",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 41
+      },
+      "revId": "d2357492c923df3bebe51478953504b199b10f4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
