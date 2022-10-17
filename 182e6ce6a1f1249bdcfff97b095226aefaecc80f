@@ -16,6 +16,144 @@
       "message": "Here is a pretty complete sample that shows how vertices will be positioned for fills and stroked rects and round rects, handling all their styles, hairlines, and perspective.\n\nThe LocalCornerVert::transform() function will be pretty analogous to the vertex shader work. The kCornerTemplate will be the fixed vertex attributes used for drawInstanced calls. Most of the corner-case logic and style/constant picking can be handled on the CPU as it writes the instance attributes. The exception is checking if the AA insets have crossed over, but that\u0027s pretty simple.\n\nHere is some helper visualizations showing how the vertices are positioned for the different styles, and how the basic equation can be tweaked to define positions for bevel, miter, and round corners on a unit square: https://docs.google.com/presentation/d/1MCPstNsSlDBhR8CrsJo0r-cZNbu-sEJEvU9W94GOJoY/edit?usp\u003dsharing\n\nI\u0027ll be porting this content over into the AnalyticRoundRectRenderStep in pieces. My plan is to get all the vertex structure implemented and then move on to the fragment shader that will actually evaluate the corner curves.",
       "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9104077_26fda671",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "2022...LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "401bcd99_667b1a72",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "I feel like we should rename one of these minmax_scales calls. Given they they moth take in different prams and return different values, I don\u0027t think it helps them being called the same thing.",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17fff385_bafdf136",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "nothing is using this value or the max float. Is it needed?",
+      "range": {
+        "startLine": 72,
+        "startChar": 18,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee29dba4_18ef2b25",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "can you add comments as to why dividing a const kAARadius value by the min is giving us a \"local aa radius\"",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 27
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b356a340_1b391017",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "should this be [-1,1] or does it actually exclude the 1 values?",
+      "range": {
+        "startLine": 110,
+        "startChar": 92,
+        "endLine": 110,
+        "endChar": 98
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d712817_3740880c",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-17T16:00:58Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 111,
+        "startChar": 89,
+        "endLine": 111,
+        "endChar": 94
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
