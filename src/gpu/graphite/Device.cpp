@@ -54,8 +54,8 @@
 #include <unordered_map>
 #include <vector>
 
-// TODO: This will be removed once the AnalyticRRectRenderStep is finished being developed.
-#define ENABLE_ANALYTIC_RRECT_RENDERER 0
+// TODO: This will be removed once the AnalyticRectRenderStep is finished being developed.
+#define ENABLE_ANALYTIC_RRECT_RENDERER 1
 
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
