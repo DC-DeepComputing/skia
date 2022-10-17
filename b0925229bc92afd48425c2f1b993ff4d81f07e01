@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3171c6fb_78945026",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T20:22:59Z",
+      "side": 1,
+      "message": "SkASSERT(imageInfo.bounds().contains(srcRect))?",
+      "range": {
+        "startLine": 274,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 73
+      },
+      "revId": "b0925229bc92afd48425c2f1b993ff4d81f07e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4ccc5dd_440535c6",
         "filename": "src/gpu/graphite/Recorder.cpp",
         "patchSetId": 1
@@ -14,6 +37,24 @@
       "writtenOn": "2022-10-17T18:27:16Z",
       "side": 1,
       "message": "Question: if a buffer is created using this Recorder\u0027s ResourceProvider, it should be safe to unmap/delete it in the Context\u0027s ClientMappedBufferManager, correct?",
+      "revId": "b0925229bc92afd48425c2f1b993ff4d81f07e01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ee2ba2b_dd79d9f3",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-17T20:22:59Z",
+      "side": 1,
+      "message": "Deletion/unreffing would send the buffer back to the Recorders ResourceProvider, or just delete it if the Recorder was gone, so that should be fine.\n\nAre we mapping and unmapping on the same thread? I\u0027d assume so, since we\u0027ll map the buffer inside Context after the work is done, call the callback and then convert fn, and then unmap, right? It seems like that should be fine.",
+      "parentUuid": "a4ccc5dd_440535c6",
       "revId": "b0925229bc92afd48425c2f1b993ff4d81f07e01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
