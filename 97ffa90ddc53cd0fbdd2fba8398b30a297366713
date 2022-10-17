@@ -43,6 +43,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cefa188e_eed55ed1",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T12:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40250dc8_39528ec0",
+      "range": {
+        "startLine": 96,
+        "startChar": 26,
+        "endLine": 96,
+        "endChar": 31
+      },
+      "revId": "97ffa90ddc53cd0fbdd2fba8398b30a297366713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7e63c6e3_7dc86dcb",
         "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
         "patchSetId": 10
