@@ -101,6 +101,14 @@ public:
         fKey = key;
     }
 
+    void printRefs() const {
+        SkDebugf("%p: refs %d %d %d\n",
+                 this,
+                 fUsageRefCnt.load(std::memory_order_relaxed),
+                 fCommandBufferRefCnt.load(std::memory_order_relaxed),
+                 fCacheRefCnt.load(std::memory_order_relaxed));
+    }
+
 protected:
     Resource(const SharedContext*, Ownership, SkBudgeted);
     virtual ~Resource();
@@ -257,4 +265,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Resource_DEFINED
-

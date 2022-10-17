@@ -28,11 +28,11 @@ public:
         return sk_sp<RefCntedCallback>(new RefCntedCallback(proc, ctx));
     }
 
-    static sk_sp<RefCntedCallback> Make(ResultCallback proc, Context ctx) {
+    static sk_sp<RefCntedCallback> Make(ResultCallback proc, Context ctx, bool foo) {
         if (!proc) {
             return nullptr;
         }
-        return sk_sp<RefCntedCallback>(new RefCntedCallback(proc, ctx));
+        return sk_sp<RefCntedCallback>(new RefCntedCallback(proc, ctx, foo));
     }
 
     ~RefCntedCallback() {
@@ -56,9 +56,15 @@ public:
 
 private:
     RefCntedCallback(Callback proc, Context ctx) : fReleaseProc(proc), fReleaseCtx(ctx) {}
-    RefCntedCallback(ResultCallback proc, Context ctx)
+    RefCntedCallback(ResultCallback proc, Context ctx, bool)
             : fResultReleaseProc(proc), fReleaseCtx(ctx) {}
-    RefCntedCallback(const RefCntedCallback&) = delete;
+    RefCntedCallback(const RefCntedCallback& other)
+            : fReleaseProc(other.fReleaseProc)
+            , fResultReleaseProc(other.fResultReleaseProc)
+            , fReleaseCtx(other.fReleaseCtx)
+            , fResult(other.fResult) {
+        fIsClone = true;
+    }
     RefCntedCallback(RefCntedCallback&&) = delete;
     RefCntedCallback& operator=(const RefCntedCallback&) = delete;
     RefCntedCallback& operator=(RefCntedCallback&&) = delete;
@@ -67,9 +73,10 @@ private:
     ResultCallback fResultReleaseProc = nullptr;
     Context fReleaseCtx;
     CallbackResult fResult = CallbackResult::kSuccess;
+public:
+    bool fIsClone = false;
 };
 
 } // namespace skgpu
 
 #endif // skgpu_RefCntedCallback_DEFINED
-

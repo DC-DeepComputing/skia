@@ -62,7 +62,6 @@ void GrSurface::setRelease(sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     this->onSetRelease(fReleaseHelper);
 }
 
-
 GrSurface::RefCntedReleaseProc::RefCntedReleaseProc(sk_sp<skgpu::RefCntedCallback> callback,
                                                     sk_sp<GrDirectContext> directContext)
             : fCallback(std::move(callback))
@@ -77,11 +76,11 @@ GrSurface::RefCntedReleaseProc::~RefCntedReleaseProc() {
 }
 
 void GrSurface::onRelease() {
-    this->invokeReleaseProc();
+    this->invokeReleaseProc1();
     this->INHERITED::onRelease();
 }
 
 void GrSurface::onAbandon() {
-    this->invokeReleaseProc();
+    this->invokeReleaseProc1();
     this->INHERITED::onAbandon();
 }

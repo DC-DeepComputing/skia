@@ -83,7 +83,7 @@ public:
         LazyCallbackResult(sk_sp<GrSurface> surf,
                            bool releaseCallback = true,
                            LazyInstantiationKeyMode mode = LazyInstantiationKeyMode::kSynced)
-                : fSurface(std::move(surf)), fKeyMode(mode), fReleaseCallback(releaseCallback) {}
+                : fSurface(std::move(surf)), fKeyMode(mode), fReleaseCallback1(releaseCallback) {}
         LazyCallbackResult(sk_sp<GrTexture> tex)
                 : LazyCallbackResult(sk_sp<GrSurface>(std::move(tex))) {}
 
@@ -96,7 +96,7 @@ public:
          * Should the callback be disposed of after it has returned or preserved until the proxy
          * is freed. Only honored if fSurface is not-null. If it is null the callback is preserved.
          */
-        bool fReleaseCallback = true;
+        bool fReleaseCallback1 = true;
     };
 
     using LazyInstantiateCallback =
@@ -114,7 +114,7 @@ public:
         kYes = true,
     };
 
-    bool isLazy() const { return !this->isInstantiated() && SkToBool(fLazyInstantiateCallback); }
+    bool isLazy() const { return !this->isInstantiated() && SkToBool(fLazyInstantiateCallback7); }
 
     bool isFullyLazy() const {
         bool result = fDimensions.width() < 0;
@@ -445,7 +445,7 @@ private:
 
     const UniqueID         fUniqueID; // set from the backing resource for wrapped resources
 
-    LazyInstantiateCallback fLazyInstantiateCallback;
+    LazyInstantiateCallback fLazyInstantiateCallback7;
 
     SkDEBUGCODE(void validateSurface(const GrSurface*);)
     SkDEBUGCODE(virtual void onValidateSurface(const GrSurface*) = 0;)
