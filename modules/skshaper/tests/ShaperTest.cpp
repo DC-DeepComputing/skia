@@ -1,7 +1,7 @@
 // Copyright 2019 Google LLC.
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-#include "tests/Test.h"
+#include "include/core/SkTypes.h"
 
 #if !defined(SK_BUILD_FOR_GOOGLE3)
 
@@ -16,6 +16,7 @@
 #include "include/private/SkTo.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "src/core/SkZip.h"
+#include "tests/Test.h"
 #include "tools/Resources.h"
 
 #include <cinttypes>
