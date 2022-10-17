@@ -39,6 +39,30 @@
       },
       "revId": "b67e80b2618ce568a719e65fd20a78539fe14973",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdfcafe4_23e43c3d",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T14:17:11Z",
+      "side": 1,
+      "message": "Excellent suggestion, see newly-added SkRuntimeEffectAllowsPrivateAccess below.\nSome parts are commented out until the followup because private access isn\u0027t enforced properly yet at this CL.",
+      "parentUuid": "021389e9_cdfd8488",
+      "range": {
+        "startLine": 433,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 58
+      },
+      "revId": "b67e80b2618ce568a719e65fd20a78539fe14973",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
