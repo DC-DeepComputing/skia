@@ -31,7 +31,7 @@ static bool is_dead_variable(const ProgramElement& element,
         return false;
     }
     const GlobalVarDeclaration& global = element.as<GlobalVarDeclaration>();
-    const VarDeclaration& varDecl = global.declaration()->as<VarDeclaration>();
+    const VarDeclaration& varDecl = global.varDeclaration();
     if (onlyPrivateGlobals && !skstd::starts_with(varDecl.var()->name(), '$')) {
         return false;
     }
