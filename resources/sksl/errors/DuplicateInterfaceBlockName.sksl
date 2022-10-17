@@ -1,0 +1,6 @@
+uniform main {
+    float a;
+};
+
+void main() {
+}
