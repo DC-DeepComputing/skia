@@ -95,6 +95,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ac61e80_054970ec",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-17T20:24:54Z",
+      "side": 1,
+      "message": "Apparently not constexpr in MSVC",
+      "range": {
+        "startLine": 491,
+        "startChar": 37,
+        "endLine": 491,
+        "endChar": 45
+      },
+      "revId": "cdb8d768aa2a80c49caf5666eb553d808e12ec14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea927c07_2ab8f9b1",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 5
