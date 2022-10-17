@@ -17,6 +17,7 @@
 #include "include/private/SkTo.h"
 
 #include <algorithm>
+#include <climits>
 #include <string.h>
 #include <initializer_list>
 #include <memory>
@@ -63,13 +64,11 @@ public:
             fCount = that.fCount;
             fAllocCount = that.fAllocCount;
             fOwnMemory = true;
-            fReserved = that.fReserved;
 
             that.fItemArray = nullptr;
             that.fCount = 0;
             that.fAllocCount = 0;
             that.fOwnMemory = true;
-            that.fReserved = false;
         } else {
             this->init(that.fCount);
             that.move(fItemArray);
@@ -134,7 +133,6 @@ public:
      */
     void reset() {
         this->pop_back_n(fCount);
-        fReserved = false;
     }
 
     /**
@@ -152,7 +150,6 @@ public:
         for (int i = 0; i < this->count(); ++i) {
             new (fItemArray + i) T;
         }
-        fReserved = false;
     }
 
     /**
@@ -166,7 +163,6 @@ public:
         this->checkRealloc(count, kExactFit);
         fCount = count;
         this->copy(array);
-        fReserved = false;
     }
 
     /**
@@ -189,9 +185,6 @@ public:
         SkASSERT(n >= 0);
         if (n > 0) {
             this->checkRealloc(n, kExactFit);
-            fReserved = fOwnMemory;
-        } else {
-            fReserved = false;
         }
     }
 
@@ -494,6 +487,12 @@ protected:
     }
 
 private:
+    static constexpr int kMinHeapAllocCount = 8;
+    static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
+    // Note for 32-bit machines this will be <= SIZE_MAX. For 64-bit machines in will just be
+    // INT_MAX if the sizeof(T) < 2^32.
+    static constexpr int kMaxCount = std::min(SIZE_MAX / sizeof(T), (size_t)INT_MAX);
+
     // We disable Control-Flow Integrity sanitization (go/cfi) when casting item-array buffers.
     // CFI flags this code as dangerous because we are casting `buffer` to a T* while the buffer's
     // contents might still be uninitialized memory. When T has a vtable, this is especially risky
@@ -506,6 +505,11 @@ private:
         return (T*)buffer;
     }
 
+    size_t bytes(int n) const {
+        SkASSERT(n <= kMaxCount);
+        return SkToSizeT(n) * sizeof(T);
+    }
+
     void init(int count) {
         fCount = SkToU32(count);
         if (!count) {
@@ -516,7 +520,6 @@ private:
             fItemArray = TCast(sk_malloc_throw((size_t)fAllocCount, sizeof(T)));
         }
         fOwnMemory = true;
-        fReserved = false;
     }
 
     void initWithPreallocatedStorage(int count, void* preallocStorage, int preallocCount) {
@@ -525,7 +528,6 @@ private:
         SkASSERT(preallocStorage);
         fCount = SkToU32(count);
         fItemArray = nullptr;
-        fReserved = false;
         if (count > preallocCount) {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
             fItemArray = TCast(sk_malloc_throw(fAllocCount, sizeof(T)));
@@ -570,8 +572,6 @@ private:
         }
     }
 
-    static constexpr int kMinHeapAllocCount = 8;
-
     // Helper function that makes space for n objects, adjusts the count, but does not initialize
     // the new objects.
     void* push_back_raw(int n) {
@@ -582,48 +582,53 @@ private:
     }
 
     void checkRealloc(int delta, ReallocType reallocType) {
+        SkASSERT(delta >= 0);
         SkASSERT(fCount >= 0);
         SkASSERT(fAllocCount >= 0);
-        SkASSERT(-delta <= this->count());
 
-        // Return if there are enough open elements to satisfy the request.
+        // Return if there are enough remaining allocated elements to satisfy the request.
         if (fAllocCount - fCount >= delta) { return; }
 
         // Note: the maximum range for count is upto INT_MAX because it is a 31-bit unsigned number.
         SkASSERT_RELEASE(delta <= INT_MAX - fCount);
         int newCount = fCount + delta;
 
-        int64_t newAllocCount = newCount;
-        if (reallocType != kExactFit) {
+        // Don't overflow size_t later in the memory allocation. This really only applies
+        // to fCounts on 32-bit machines; on 64-bit machines this will probably never produce a
+        // check. The check for newCount <= INT_MAX is the SkASSERT_RELEASE above.
+        if constexpr (kMaxCount < INT_MAX) {
+            SkASSERT_RELEASE(newCount <= kMaxCount);
+        }
+
+        int64_t newAllocCount = kMaxCount;
+        if (reallocType == kExactFit) {
+            newAllocCount = newCount;
+        } else {
             // Whether we're growing, leave at least 50% extra space for future growth.
-            newAllocCount += ((newCount + 1) >> 1);
+            int64_t expandedAllocCount = newCount + ((newCount + 1) >> 1);
             // Align the new allocation count to kMinHeapAllocCount.
-            static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
-            newAllocCount = (newAllocCount + (kMinHeapAllocCount - 1)) & ~(kMinHeapAllocCount - 1);
+            expandedAllocCount =
+                    (expandedAllocCount + (kMinHeapAllocCount - 1)) & ~(kMinHeapAllocCount - 1);
+            if (newAllocCount <= kMaxCount) {
+                newAllocCount = expandedAllocCount;
+            }
         }
 
-        // At small sizes the old and new alloc count can both be kMinHeapAllocCount.
-        if (newAllocCount == fAllocCount) {
-            return;
-        }
-
-        fAllocCount = SkToU32(Sk64_pin_to_s32(newAllocCount));
+        fAllocCount = newAllocCount;
         SkASSERT(fAllocCount >= newCount);
-        T* newItemArray = TCast(sk_malloc_throw((size_t)fAllocCount, sizeof(T)));
+        T* newItemArray = TCast(sk_malloc_throw(this->bytes(fAllocCount)));
         this->move(newItemArray);
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
         fItemArray = newItemArray;
         fOwnMemory = true;
-        fReserved = false;
     }
 
     T* fItemArray;
-    uint32_t fOwnMemory  :  1;
-    uint32_t fCount      : 31;
-    uint32_t fReserved   :  1;
+    int fCount;
     uint32_t fAllocCount : 31;
+    uint32_t fOwnMemory  :  1;
 };
 
 template <typename T, bool M> static inline void swap(SkTArray<T, M>& a, SkTArray<T, M>& b) {
