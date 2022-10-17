@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f004d8cb_1736b897",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T20:23:46Z",
+      "side": 1,
+      "message": "Pretty sure that this will need to be written as TCast()",
+      "range": {
+        "startLine": 265,
+        "startChar": 19,
+        "endLine": 265,
+        "endChar": 34
+      },
+      "revId": "cdb8d768aa2a80c49caf5666eb553d808e12ec14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c39784b_414515f5",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-17T20:23:46Z",
+      "side": 1,
+      "message": "nit: \u0027it\u0027",
+      "range": {
+        "startLine": 489,
+        "startChar": 78,
+        "endLine": 489,
+        "endChar": 80
+      },
+      "revId": "cdb8d768aa2a80c49caf5666eb553d808e12ec14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
