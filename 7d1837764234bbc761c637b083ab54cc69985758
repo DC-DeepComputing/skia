@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5686a17f_415bf667",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-18T15:17:23Z",
+      "side": 1,
+      "message": "I would say let\u0027s remove this for now. Unlike Ganesh we are tracking the direct Textures, Buffers, etc on command buffers. So I don\u0027t think there is a need for a separate object (i.e. GrVkImage::Resource) that also needs the callback forwarded to.",
+      "range": {
+        "startLine": 44,
+        "startChar": 17,
+        "endLine": 44,
+        "endChar": 37
+      },
+      "revId": "7d1837764234bbc761c637b083ab54cc69985758",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
