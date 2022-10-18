@@ -52,6 +52,24 @@
       "parentUuid": "0349754e_1a43849b",
       "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a34e82_249e280e",
+        "filename": "tests/DrawBitmapRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-18T15:51:40Z",
+      "side": 1,
+      "message": "Interesting that iwyu doesn\u0027t seem to be seeing the implicit destructor here. Also that `SkBitmap.h` appears not to even forward declare `SkImage`, which it seems like it should be doing, given that it has a method returning an `sk_sp\u003cSkImage\u003e`. I\u0027m wondering if this should really be fixed by `SkBitmap.h` doing a full include of `SkImage.h` since any user of its API will need to be able to destroy an `SkImage`. (Not sure iwyu sees things that way though.)",
+      "parentUuid": "c08efcb9_fb81255d",
+      "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
