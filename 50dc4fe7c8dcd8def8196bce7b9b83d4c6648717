@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "241fc477_904909ed",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T14:53:29Z",
+      "side": 1,
+      "message": "Done. Moved to SkStreamPriv.h since it\u0027s already around.",
+      "parentUuid": "ff1c9930_27d44897",
+      "revId": "50dc4fe7c8dcd8def8196bce7b9b83d4c6648717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a9d9061_dd9ea1f7",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-10-18T14:39:47Z",
       "side": 1,
       "message": "chance",
+      "range": {
+        "startLine": 205,
+        "startChar": 18,
+        "endLine": 205,
+        "endChar": 24
+      },
+      "revId": "50dc4fe7c8dcd8def8196bce7b9b83d4c6648717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c75d43_861a6a44",
+        "filename": "src/core/SkData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T14:53:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a9d9061_dd9ea1f7",
       "range": {
         "startLine": 205,
         "startChar": 18,
