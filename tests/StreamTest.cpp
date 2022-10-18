@@ -413,6 +413,27 @@ DEF_TEST(StreamPeek_BlockMemoryStream, rep) {
     stream_peek_test(rep, asset.get(), expected.get());
 }
 
+DEF_TEST(hasInsufficientRemainingBytes_MemoryStream, rep) {
+    SkMemoryStream stream(100);
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 0));
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 90));
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 100));
+
+    REPORTER_ASSERT(rep, hasInsufficientRemainingBytes(&stream, 101));
+    REPORTER_ASSERT(rep, hasInsufficientRemainingBytes(&stream, ULONG_MAX));
+
+    uint8_t buff[75];
+    REPORTER_ASSERT(rep, stream.read(buff, 75) == 75);
+
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 0));
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 24));
+    REPORTER_ASSERT(rep, !hasInsufficientRemainingBytes(&stream, 25));
+
+    REPORTER_ASSERT(rep, hasInsufficientRemainingBytes(&stream, 26));
+    REPORTER_ASSERT(rep, hasInsufficientRemainingBytes(&stream, 100));
+    REPORTER_ASSERT(rep, hasInsufficientRemainingBytes(&stream, ULONG_MAX));
+}
+
 namespace {
 class DumbStream : public SkStream {
 public:
