@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42045a8f_6b0eb79e",
+        "filename": "tests/StreamTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-18T13:31:00Z",
+      "side": 1,
+      "message": "Given that insufficientRemainingBytes also depends on position, I\u0027d be more comfortable if this test also tried reading some bytes, then did checks? (eg, read 50, ensure that 50 remain, but not 51)?",
+      "revId": "110b33c0b660f32567d33d56062f536bb030c2eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
