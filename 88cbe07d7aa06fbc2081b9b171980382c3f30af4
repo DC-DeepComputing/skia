@@ -242,6 +242,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd210cdb_8dde1e0b",
+        "filename": "samplecode/SampleImageFilterDAG.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T13:42:15Z",
+      "side": 1,
+      "message": "Huh, but it _does_ work in `if constexpr` which seems to be where we need the constexpr-expression stuff to work: https://godbolt.org/z/P9h15x6ar",
+      "parentUuid": "cc0fa179_46ca5207",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "88cbe07d7aa06fbc2081b9b171980382c3f30af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de4be296_b1c23137",
         "filename": "tools/viewer/SlideDir.h",
         "patchSetId": 6
