@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f23d1cfd_d7630500",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9104077_26fda671",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "401bcd99_667b1a72",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-17T16:00:58Z",
       "side": 1,
       "message": "I feel like we should rename one of these minmax_scales calls. Given they they moth take in different prams and return different values, I don\u0027t think it helps them being called the same thing.",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 44
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ad0230_ff2da1a2",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "I consolidated these functions a bit, so instead of minmax_scales*2 and local_aa_radius, there\u0027s just singular_values() and local_aa_radius().",
+      "parentUuid": "401bcd99_667b1a72",
       "range": {
         "startLine": 34,
         "startChar": 7,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da9c8e1_741da9d2",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "That was a hold-over from earlier experimentation. Now they just return the local aa radius based on the min value.",
+      "parentUuid": "17fff385_bafdf136",
+      "range": {
+        "startLine": 72,
+        "startChar": 18,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee29dba4_18ef2b25",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-10-17T16:00:58Z",
       "side": 1,
       "message": "can you add comments as to why dividing a const kAARadius value by the min is giving us a \"local aa radius\"",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 27
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "539d1352_523b1231",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee29dba4_18ef2b25",
       "range": {
         "startLine": 99,
         "startChar": 11,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a564f4f_af66499c",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b356a340_1b391017",
+      "range": {
+        "startLine": 110,
+        "startChar": 92,
+        "endLine": 110,
+        "endChar": 98
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d712817_3740880c",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-10-17T16:00:58Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 111,
+        "startChar": 89,
+        "endLine": 111,
+        "endChar": 94
+      },
+      "revId": "182e6ce6a1f1249bdcfff97b095226aefaecc80f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ade3542_41469ae6",
+        "filename": "samplecode/SampleGraphitePrimitives.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-18T19:10:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d712817_3740880c",
       "range": {
         "startLine": 111,
         "startChar": 89,
