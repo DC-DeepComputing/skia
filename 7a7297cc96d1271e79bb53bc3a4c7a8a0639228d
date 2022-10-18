@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d5d06c9_060890b2",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-18T14:45:03Z",
+      "side": 1,
+      "message": "This should be SK_DAWN",
+      "range": {
+        "startLine": 65,
+        "startChar": 7,
+        "endLine": 65,
+        "endChar": 15
+      },
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
