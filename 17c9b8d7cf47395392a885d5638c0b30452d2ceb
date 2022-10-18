@@ -45,6 +45,30 @@
       },
       "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f273790a_2b05042f",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-18T17:20:44Z",
+      "side": 1,
+      "message": "Agree, though at this point, I think I\u0027d rather avoid the yoda-ism in the name, and make it something like `hasAtLeastNBytes()` (then invert all the checks).",
+      "parentUuid": "8d4b8cf5_8b5277c8",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 158,
+        "endChar": 35
+      },
+      "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
