@@ -16,6 +16,47 @@
       "message": "Using what we learned from SkTDArray.",
       "revId": "1886f3d36814165dca8b0c809c6938411c7c2195",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceaac2f9_3cc49b4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T13:18:00Z",
+      "side": 1,
+      "message": "Let\u0027s put a sentence in the CL description explaining why this is valid; a future reader will not know/remember the context from our recent SkTDArray updates",
+      "parentUuid": "13f22336_8ab8b4f5",
+      "revId": "1886f3d36814165dca8b0c809c6938411c7c2195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a594fd1_29ad64f1",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T13:18:00Z",
+      "side": 1,
+      "message": "Could simplify to `SkASSERT(fItemArray || fCount \u003d\u003d 0);`",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 9
+      },
+      "revId": "1886f3d36814165dca8b0c809c6938411c7c2195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
