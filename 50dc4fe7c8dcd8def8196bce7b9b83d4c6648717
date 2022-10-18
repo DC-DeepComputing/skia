@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff1c9930_27d44897",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-18T14:39:47Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want this as a public method on `SkStream`. I\u0027ve tried at various times to get the (entirely unwanted) `read?*` off of this class for ages. This proposed method (and the `read?*`) would be better as static methods on an internal `SkStreamUtils` class or just in a namespace or something. These methods just do things with (on top of) a stream, they aren\u0027t really integral to what it means to be a stream and can more cleanly be implemented using public API.",
+      "revId": "50dc4fe7c8dcd8def8196bce7b9b83d4c6648717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9d9061_dd9ea1f7",
+        "filename": "src/core/SkData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-18T14:39:47Z",
+      "side": 1,
+      "message": "chance",
+      "range": {
+        "startLine": 205,
+        "startChar": 18,
+        "endLine": 205,
+        "endChar": 24
+      },
+      "revId": "50dc4fe7c8dcd8def8196bce7b9b83d4c6648717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
