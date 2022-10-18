@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15809e0b_26c82226",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T18:00:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cae919e_bbbb3468",
+      "range": {
+        "startLine": 491,
+        "startChar": 40,
+        "endLine": 492,
+        "endChar": 85
+      },
+      "revId": "505bcb40f9cf44b1f3cca16af9b76fe07ad1a96a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c283ac15_cc96b240",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-18T17:47:34Z",
       "side": 1,
       "message": "tiny nit: remove space",
+      "range": {
+        "startLine": 495,
+        "startChar": 42,
+        "endLine": 495,
+        "endChar": 43
+      },
+      "revId": "505bcb40f9cf44b1f3cca16af9b76fe07ad1a96a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc0a629a_527b3ebc",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T18:00:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c283ac15_cc96b240",
       "range": {
         "startLine": 495,
         "startChar": 42,
