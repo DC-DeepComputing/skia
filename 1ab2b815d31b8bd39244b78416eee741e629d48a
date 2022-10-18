@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1878a4_946d54e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-18T15:28:14Z",
+      "side": 1,
+      "message": "This is fine for now, but I\u0027m trying to recall why we had a setRelease function in Ganesh instead of just passing in the callback in the ctor. Maybe, if no uses come up we could consider just adding it to the ctor later on.",
+      "revId": "1ab2b815d31b8bd39244b78416eee741e629d48a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
