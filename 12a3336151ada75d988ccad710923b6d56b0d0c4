@@ -86,6 +86,24 @@
       "parentUuid": "70f98a9c_0b447ecb",
       "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6777737a_04f51b5b",
+        "filename": "tests/tests.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T13:55:03Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/592739 using the native test_suite rule",
+      "parentUuid": "d86ac7cc_23fd87fc",
+      "revId": "12a3336151ada75d988ccad710923b6d56b0d0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
