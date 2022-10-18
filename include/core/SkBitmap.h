@@ -8,24 +8,30 @@
 #ifndef SkBitmap_DEFINED
 #define SkBitmap_DEFINED
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
-#include "include/core/SkMatrix.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkShader.h" // IWYU pragma: keep
+#include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
+#include "include/core/SkTypes.h"
 
-class SkBitmap;
+#include <cstddef>
+#include <cstdint>
+
 class SkColorSpace;
-struct SkMask;
+class SkImage;
+class SkMatrix;
 class SkMipmap;
-struct SkIRect;
-struct SkRect;
 class SkPaint;
 class SkPixelRef;
-class SkShader;
+struct SkMask;
 
 /** \class SkBitmap
     SkBitmap describes a two-dimensional raster pixel array. SkBitmap is built on

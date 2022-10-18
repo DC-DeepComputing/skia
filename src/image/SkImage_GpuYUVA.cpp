@@ -241,6 +241,16 @@ sk_sp<SkImage> SkImage_GpuYUVA::onMakeTextureImage(skgpu::graphite::Recorder*,
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
+                                             const GrYUVABackendTextures& yuvaTextures) {
+    return SkImage::MakeFromYUVATextures(context, yuvaTextures, nullptr, nullptr, nullptr);
+}
+
+sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
+                                             const GrYUVABackendTextures& yuvaTextures,
+                                             sk_sp<SkColorSpace> imageColorSpace) {
+    return SkImage::MakeFromYUVATextures(context, yuvaTextures, imageColorSpace, nullptr, nullptr);
+}
 
 sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
                                              const GrYUVABackendTextures& yuvaTextures,
@@ -274,6 +284,13 @@ sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
                                        kNeedNewImageUniqueID,
                                        yuvaProxies,
                                        imageColorSpace);
+}
+sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
+                                            const SkYUVAPixmaps& pixmaps,
+                                            GrMipmapped buildMips,
+                                            bool limitToMaxTextureSize) {
+    return SkImage::MakeFromYUVAPixmaps(context, pixmaps, buildMips, limitToMaxTextureSize,
+                                        nullptr);
 }
 
 sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,

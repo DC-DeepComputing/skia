@@ -7,18 +7,15 @@
 
 #include "include/core/SkBitmap.h"
 
-#include "include/core/SkColorSpace.h"
-#include "include/core/SkData.h"
+#include "include/core/SkColorSpace.h" // IWYU pragma: keep
+#include "include/core/SkImage.h"
 #include "include/core/SkMallocPixelRef.h"
-#include "include/core/SkMath.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPixelRef.h"
 #include "include/core/SkRect.h"
-#include "include/core/SkScalar.h"
-#include "include/core/SkUnPreMultiply.h"
-#include "include/private/SkColorData.h"
-#include "include/private/SkHalf.h"
 #include "include/private/SkImageInfoPriv.h"
-#include "include/private/SkTemplates.h"
+#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMask.h"
@@ -26,12 +23,11 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkPixelRefPriv.h"
 #include "src/core/SkPixmapPriv.h"
-#include "src/core/SkReadBuffer.h"
-#include "src/core/SkWriteBuffer.h"
 #include "src/core/SkWritePixelsRec.h"
 
 #include <cstring>
 #include <utility>
+class SkMaskFilter;
 
 static bool reset_return_false(SkBitmap* bm) {
     bm->reset();
@@ -525,10 +521,6 @@ static bool GetBitmapAlpha(const SkBitmap& src, uint8_t* SK_RESTRICT alpha, int 
     return SkConvertPixels(SkImageInfo::MakeA8(pmap.width(), pmap.height()), alpha, alphaRowBytes,
                            pmap.info(), pmap.addr(), pmap.rowBytes());
 }
-
-#include "include/core/SkMaskFilter.h"
-#include "include/core/SkMatrix.h"
-#include "include/core/SkPaint.h"
 
 bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
                             Allocator *allocator, SkIPoint* offset) const {
