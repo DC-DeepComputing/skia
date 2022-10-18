@@ -219,7 +219,7 @@ protected:
     void compileAndAppendLayoutQualifiers();
 
     void nextStage() {
-        fShaderStrings.push_back();
+        fShaderStrings.append();
         fCodeIndex++;
     }
 

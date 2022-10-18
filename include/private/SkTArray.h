@@ -220,9 +220,18 @@ public:
      * the reference only remains valid until the next call that adds or removes
      * elements.
      */
-    T& push_back() {
-        void* newT = this->push_back_raw(1);
-        return *new (newT) T;
+//    T& push_back() {
+//        void* newT = this->push_back_raw(1);
+//        return *new (newT) T;
+//    }
+
+    T* append() {
+        if (fCount <= fAllocCount) {
+            new (fItemArray + fCount++) T;
+        } else {
+            return static_cast<T*>(this->push_back_raw(1));
+        }
+        return this->end() - 1;
     }
 
     /**

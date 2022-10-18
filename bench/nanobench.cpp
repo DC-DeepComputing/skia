@@ -795,7 +795,7 @@ public:
         }
 
         for (int i = 0; i < FLAGS_scales.size(); i++) {
-            if (1 != sscanf(FLAGS_scales[i], "%f", &fScales.push_back())) {
+            if (1 != sscanf(FLAGS_scales[i], "%f", fScales.append())) {
                 SkDebugf("Can't parse %s from --scales as an SkScalar.\n", FLAGS_scales[i]);
                 exit(1);
             }

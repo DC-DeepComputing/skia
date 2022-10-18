@@ -40,35 +40,42 @@ protected:
     SkISize onISize() override { return SkISize::Make(500, 500); }
 
     void onOnceBeforeDraw() override {
-        fShapes.push_back().setOval(SkRect::MakeXYWH(-5, 25, 200, 100));
+        fShapes.push_back(SkRRect::MakeOval(SkRect::MakeXYWH(-5, 25, 200, 100)));
         fRotations.push_back(21);
 
-        fShapes.push_back().setRect(SkRect::MakeXYWH(95, 75, 125, 100));
+        fShapes.push_back(SkRRect::MakeRect(SkRect::MakeXYWH(95, 75, 125, 100)));
         fRotations.push_back(94);
 
-        fShapes.push_back().setRectXY(SkRect::MakeXYWH(0, 75, 150, 100), 1e-5f, 1e-5f);
+        fShapes.push_back(SkRRect::MakeRectXY(SkRect::MakeXYWH(0, 75, 150, 100), 1e-5f, 1e-5f));
         fRotations.push_back(132);
 
-        fShapes.push_back().setRectXY(SkRect::MakeXYWH(15, -20, 100, 100), 20, 15);
+        fShapes.push_back(SkRRect::MakeRectXY(SkRect::MakeXYWH(15, -20, 100, 100), 20, 15));
         fRotations.push_back(282);
 
         fSimpleShapeCount = fShapes.count();
 
-        fShapes.push_back().setNinePatch(SkRect::MakeXYWH(140, -50, 90, 110), 10, 5, 25, 35);
+        SkRRect ninePatch;
+        ninePatch.setNinePatch(SkRect::MakeXYWH(140, -50, 90, 110), 10, 5, 25, 35);
+        fShapes.push_back(ninePatch);
         fRotations.push_back(0);
 
-        fShapes.push_back().setNinePatch(SkRect::MakeXYWH(160, -60, 60, 90), 10, 60, 50, 30);
+        ninePatch.setNinePatch(SkRect::MakeXYWH(160, -60, 60, 90), 10, 60, 50, 30);
+        fShapes.push_back(ninePatch);
         fRotations.push_back(-35);
 
-        fShapes.push_back().setNinePatch(SkRect::MakeXYWH(220, -120, 60, 90), 1, 89, 59, 1);
+        ninePatch.setNinePatch(SkRect::MakeXYWH(220, -120, 60, 90), 1, 89, 59, 1);
+        fShapes.push_back(ninePatch);
         fRotations.push_back(65);
 
         SkVector radii[4] = {{4, 6}, {12, 8}, {24, 16}, {32, 48}};
-        fShapes.push_back().setRectRadii(SkRect::MakeXYWH(150, -129, 80, 160), radii);
+        SkRRect rectRadii;
+        rectRadii.setRectRadii(SkRect::MakeXYWH(150, -129, 80, 160), radii);
+        fShapes.push_back(rectRadii);
         fRotations.push_back(265);
 
         SkVector radii2[4] = {{0, 0}, {80, 60}, {0, 0}, {80, 60}};
-        fShapes.push_back().setRectRadii(SkRect::MakeXYWH(180, -30, 80, 60), radii2);
+        rectRadii.setRectRadii(SkRect::MakeXYWH(180, -30, 80, 60), radii2);
+        fShapes.push_back(rectRadii);
         fRotations.push_back(295);
 
         fPaint.setAntiAlias(fAntialias);

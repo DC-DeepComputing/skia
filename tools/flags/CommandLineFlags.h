@@ -162,9 +162,9 @@ public:
     private:
         void reset() { fStrings.reset(); }
 
-        void append(const char* string) { fStrings.push_back().set(string); }
+        void append(const char* string) { fStrings.emplace_back(string); }
 
-        void append(const char* string, size_t length) { fStrings.push_back().set(string, length); }
+        void append(const char* string, size_t length) { fStrings.emplace_back(string, length); }
 
         SkTArray<SkString> fStrings;
 

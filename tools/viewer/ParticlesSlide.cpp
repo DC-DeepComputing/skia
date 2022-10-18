@@ -204,7 +204,7 @@ public:
     int enterArray(const char* name, int oldCount) override {
         this->enterObject(item(name));
         fArrayCounterStack.push_back(0);
-        fArrayEditStack.push_back();
+        fArrayEditStack.append();
 
         int count = oldCount;
         if (fTreeStack.back()) {
