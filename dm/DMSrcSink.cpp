@@ -1183,7 +1183,7 @@ Result BisectSrc::draw(GrDirectContext* context, SkCanvas* canvas) const {
 
     private:
         void onDrawPath(const SkPath& path, const SkPaint& paint) override {
-            fFoundPaths.push_back() = {path, paint, this->getTotalMatrix()};
+            fFoundPaths.push_back({path, paint, this->getTotalMatrix()});
         }
 
         SkTArray<FoundPath> fFoundPaths;

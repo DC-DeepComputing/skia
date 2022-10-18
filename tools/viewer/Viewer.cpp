@@ -2535,7 +2535,7 @@ void Viewer::drawImGui() {
                 if (gLoadPending) {
                     auto collectShaders = [this](sk_sp<const SkData> key, sk_sp<SkData> data,
                                                  const SkString& description, int hitCount) {
-                        CachedShader& entry(fCachedShaders.push_back());
+                        CachedShader& entry(*fCachedShaders.append());
                         entry.fKey = key;
                         SkMD5 hash;
                         hash.write(key->bytes(), key->size());

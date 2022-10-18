@@ -176,7 +176,7 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
         }
 
         if (nullptr != codec) {
-            codecs->push_back().reset(codec.release());
+            codecs->push_back(std::move(codec));
         }
     }
 

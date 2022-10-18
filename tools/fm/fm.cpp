@@ -445,7 +445,7 @@ int main(int argc, char** argv) {
     SkTArray<Source> sources;
     for (const SkString& name : FLAGS_sources)
     for (int replica = 0; replica < replicas; replica++) {
-        Source* source = &sources.push_back();
+        Source* source = sources.append();
         source->name = name;
 
         if (skiagm::GMFactory* factory = gm_factories.find(name)) {

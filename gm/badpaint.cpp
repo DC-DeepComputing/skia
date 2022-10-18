@@ -38,11 +38,11 @@ protected:
         badMatrix.setAll(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
         // Empty bitmap.
-        fPaints.push_back().setColor(SK_ColorGREEN);
+        fPaints.append()->setColor(SK_ColorGREEN);
         fPaints.back().setShader(emptyBmp.makeShader(SkSamplingOptions()));
 
         // Non-invertible local matrix.
-        fPaints.push_back().setColor(SK_ColorGREEN);
+        fPaints.append()->setColor(SK_ColorGREEN);
         fPaints.back().setShader(blueBmp.makeShader(SkSamplingOptions(), badMatrix));
     }
 
