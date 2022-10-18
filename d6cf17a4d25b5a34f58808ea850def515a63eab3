@@ -88,6 +88,24 @@
       "parentUuid": "f3a34e82_249e280e",
       "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c3eec3_55af18c6",
+        "filename": "tests/DrawBitmapRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T22:03:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4581fa9_8aced9d4",
+      "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
