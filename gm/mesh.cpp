@@ -44,10 +44,10 @@ protected:
             static constexpr char kVS[] = R"(
                     half4 unswizzle_color(half4 color) { return color.garb; }
 
-                    float2 main(in Attributes attributes, out Varyings varyings) {
-                        varyings.color = unswizzle_color(attributes.brag);
-                        varyings.uv    = attributes.xuyv.yw;
-                        return attributes.xuyv.xz;
+                    void main(in Attributes attributes, out Varyings varyings) {
+                        varyings.color    = unswizzle_color(attributes.brag);
+                        varyings.uv       = attributes.xuyv.yw;
+                        varyings.position = attributes.xuyv.xz;
                     }
             )";
             static constexpr char kFS[] = R"(
@@ -75,9 +75,9 @@ protected:
                     {Varying::Type::kFloat2, SkString{"vux2"}},
             };
             static constexpr char kVS[] = R"(
-                    float2 main(in Attributes a, out Varyings v) {
-                        v.vux2 = 2*a.xuyv.wy;
-                        return a.xuyv.xz;
+                    void main(in Attributes a, out Varyings v) {
+                        v.vux2     = 2*a.xuyv.wy;
+                        v.position = a.xuyv.xz;
                     }
             )";
             static constexpr char kFS[] = R"(
@@ -360,21 +360,22 @@ protected:
                 {Varying::Type::kHalf4,  SkString{"color"}},
         };
         static constexpr char kPremulVS[] = R"(
-                float2 main(in Attributes attributes, out Varyings varyings) {
+                void main(in Attributes attributes, out Varyings varyings) {
                     varyings.color = half4(attributes.color.a*attributes.color.rgb,
                                            attributes.color.a);
-                    return attributes.pos;
+                    varyings.position = attributes.pos;
                 }
         )";
         static constexpr char kUnpremulVS[] = R"(
-                float2 main(in Attributes attributes, out Varyings varyings) {
-                    varyings.color = attributes.color;
-                    return attributes.pos;
+                void main(in Attributes attributes, out Varyings varyings) {
+                    varyings.color    = attributes.color;
+                    varyings.position = attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
-                void main(in Varyings varyings, out half4 color) {
+                float2 main(in Varyings varyings, out half4 color) {
                     color = varyings.color;
+                    return varyings.position;
                 }
         )";
         for (bool unpremul : {false, true}) {
@@ -503,9 +504,9 @@ protected:
         static constexpr char kVS[] = R"(
                 uniform float t[2];
                 uniform half3x3 m;
-                float2 main(in Attributes attributes, out Varyings varyings) {
-                    varyings.coords = (m*float3(attributes.coords + float2(t[0], t[1]), 1)).xy;
-                    return attributes.pos;
+                void main(in Attributes attributes, out Varyings varyings) {
+                    varyings.coords   = (m*float3(attributes.coords + float2(t[0], t[1]), 1)).xy;
+                    varyings.position = attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
@@ -656,9 +657,9 @@ protected:
                 {Varying::Type::kFloat2, SkString{"coords"}},
         };
         static constexpr char kVS[] = R"(
-                float2 main(in Attributes attributes, out Varyings varyings) {
-                    varyings.coords = attributes.coords;
-                    return attributes.pos;
+                void main(in Attributes attributes, out Varyings varyings) {
+                    varyings.coords   = attributes.coords;
+                    varyings.position = attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
@@ -855,13 +856,16 @@ protected:
         };
         static const Varying kVaryings[]{{Varying::Type::kHalf4, SkString{"color"}}};
         static constexpr char kVS[] = R"(
-                float2 main(in Attributes attributes, out Varyings varyings) {
-                    varyings.color = attributes.color;
-                    return attributes.pos;
+                void main(in Attributes attributes, out Varyings varyings) {
+                    varyings.color    = attributes.color;
+                    varyings.position = attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
-                void main(Varyings varyings, out half4 color) { color = varyings.color; }
+                float2 main(Varyings varyings, out half4 color) {
+                    color = varyings.color;
+                    return varyings.position;
+                }
         )";
         auto result = SkMeshSpecification::Make(kAttributes1,
                                                 /*vertexStride==*/12,

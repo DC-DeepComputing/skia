@@ -29,22 +29,23 @@ namespace SkSL { struct Program; }
 
 /**
  * A specification for custom meshes. Specifies the vertex buffer attributes and stride, the
- * vertex program that produces a user-defined set of varyings, a fragment program that ingests
- * the interpolated varyings and produces local coordinates and optionally a color.
+ * vertex program that produces a user-defined set of varyings and one fixed-function varying - a
+ * float2 named "position", and a fragment program that ingests the interpolated varyings and
+ * produces local coordinates for shading and optionally a color.
  *
  * The signature of the vertex program must be:
- *   float2 main(Attributes, out Varyings)
- * where the return value is a local position that will be transformed by SkCanvas's matrix.
+ *   void main(Attributes, out Varyings).
  *
  * The signature of the fragment program must be either:
- *   (float2|void) main(Varyings)
+ *   float2 main(Varyings)
  * or
- *   (float2|void) main(Varyings, out (half4|float4) color)
+ *   float2 main(Varyings, out (half4|float4) color)
  *
  * where the return value is the local coordinates that will be used to access SkShader. If the
- * return type is void then the interpolated position from vertex shader return is used as the local
- * coordinate. If the color variant is used it will be blended with SkShader (or SkPaint color in
- * absence of a shader) using the SkBlender provided to the SkCanvas draw call.
+ * color variant is used it will be blended with SkShader (or SkPaint color in absence of a shader)
+ * using the SkBlender provided to the SkCanvas draw call. To use interpolated local space positions
+ * as the local coordinates, equivalent to how SkPaths are shaded, return the position field from
+ * the Varying struct.
  *
  * The vertex and fragment programs may both contain uniforms. Uniforms with the same name are
  * assumed to be shared between stages. It is an error to specify uniforms in the vertex and
@@ -191,7 +192,6 @@ private:
                         std::unique_ptr<const SkSL::Program>,
                         std::unique_ptr<const SkSL::Program>,
                         ColorType,
-                        bool hasLocalCoords,
                         sk_sp<SkColorSpace>,
                         SkAlphaType);
 
@@ -209,7 +209,6 @@ private:
     const size_t                               fStride;
           uint32_t                             fHash;
     const ColorType                            fColorType;
-    const bool                                 fHasLocalCoords;
     const sk_sp<SkColorSpace>                  fColorSpace;
     const SkAlphaType                          fAlphaType;
 };

@@ -244,8 +244,8 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
         }
         case ProgramKind::kMeshVertex: {
             // float2 main(Attributes, out Varyings)
-            if (!returnType.matches(*context.fTypes.fFloat2)) {
-                errors.error(pos, "'main' must return: 'vec2' or 'float2'");
+            if (!returnType.matches(*context.fTypes.fVoid)) {
+                errors.error(pos, "'main' must have void return.");
                 return false;
             }
             if (!(parameters.size() == 2 && paramIsInAttributes(0) && paramIsOutVaryings(1))) {
@@ -255,11 +255,9 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
             break;
         }
         case ProgramKind::kMeshFragment: {
-            // float2 main(Varyings) -or- float2 main(Varyings, out half4|float4) -or-
-            // void main(Varyings) -or- void main(Varyings, out half4|float4)
-            if (!returnType.matches(*context.fTypes.fFloat2) &&
-                !returnType.matches(*context.fTypes.fVoid)) {
-                errors.error(pos, "'main' must return: 'vec2', 'float2', 'or' 'void'");
+            // float2 main(Varyings) -or- float2 main(Varyings, out half4|float4)
+            if (!returnType.matches(*context.fTypes.fFloat2)) {
+                errors.error(pos, "'main' must return: 'vec2' or 'float2'");
                 return false;
             }
             if (!((parameters.size() == 1 && paramIsInVaryings(0)) ||
