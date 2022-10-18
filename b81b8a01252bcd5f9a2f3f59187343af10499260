@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "951b936b_5874d614",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "Note: These, along with passing in more information into FormatInfo::init methods are the main changes spurred by https://skia-review.googlesource.com/c/skia/+/590546/comment/145a24be_5a766eaf/. Let me know your thoughts!",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 5
+      },
+      "revId": "b81b8a01252bcd5f9a2f3f59187343af10499260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26bf6059_d9cc9441",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "Question: Now that kWrappedOnly_Flag is a format flag instead of a color type flag, should kWrappedOnly_Flag be applied to both the optimal and linear flags? If so, does that mean we should check for both here?\n\nFollow-up question: If the flag is applied to both the linear and optimal flag set, then could we just refer to VulkanCaps::fSupportsYcbcrConversion here? Would that make the kWrappedOnly_Flag obsolete? I don\u0027t see where else we reference that.",
+      "range": {
+        "startLine": 685,
+        "startChar": 0,
+        "endLine": 686,
+        "endChar": 85
+      },
+      "revId": "b81b8a01252bcd5f9a2f3f59187343af10499260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

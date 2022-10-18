@@ -46,6 +46,30 @@
       },
       "revId": "ebd81e233a27b85f37febbbdecf2e02fb1fc993a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c08f14_46f17378",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "Gotcha. I moved kWrappedOnly into the FormatInfo struct\u0027s flags enum, and now set that flag in InitFlags() if we support YCBCR conversion (that seems to be the only circumstance in which the kWrappedOnly flag was set).",
+      "parentUuid": "07408f49_542b7b9b",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 35
+      },
+      "revId": "ebd81e233a27b85f37febbbdecf2e02fb1fc993a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

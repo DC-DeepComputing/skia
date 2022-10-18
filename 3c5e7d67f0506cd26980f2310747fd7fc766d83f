@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea2bda55_8b675550",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "\u003eIt would mean that if we want to internally create something internally that is renderable we\u0027ll additionally have to add the check for sampled support each time (since that\u0027s what we in skia assume).\n\nCould you foresee removing our custom enum leading to us having to do more checks against VkFormatFeatureFlags than the case you outlined above? I am concerned about littering these checks everywhere, but I can see the benefit of doing it that way instead. Arguably, if we do want to check additional arbitrary combinations of format features later on, then couldn\u0027t someone just as easily expand this enum?",
+      "parentUuid": "6a834c66_fc37f23f",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 42
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "145a24be_5a766eaf",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 7
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6139e38c_a3a7124a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "Per our offline discussion, we now check for these conditions within FormatInfo::InitFormatFlags, which now takes in more parameters in order to perform these checks. I incorporated checking these conditions into our setting of the kBlit[Src/Dst]_Flag flags and added a TODO re:VK_KHR_sampler_ycbcr_conversion.",
+      "parentUuid": "145a24be_5a766eaf",
+      "range": {
+        "startLine": 73,
+        "startChar": 5,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05bd1e0a_2329a98c",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 7
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-13T16:58:00Z",
       "side": 1,
       "message": "nit: align",
+      "range": {
+        "startLine": 87,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 45
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "494adda0_68fdc434",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-18T20:51:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05bd1e0a_2329a98c",
       "range": {
         "startLine": 87,
         "startChar": 44,
