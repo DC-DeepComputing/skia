@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61ef3ad5_02577717",
+        "filename": "samplecode/SampleImageFilterDAG.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T13:22:42Z",
+      "side": 1,
+      "message": "The new SkTArray system calculates kMaxCount. MSVC is complaining that it does not have the full definition of Rec of FilterNode, which it doesn\u0027t, to calculate the size. MSVC is not suppose to instantiate a template at definition time, only at the time of use. Clang does the properly, and this works in clang. Vectors work because they do not calculate anything from the type. I decided to use vectors here instead of rewriting the code to make the definitions available because they are not in Skia proper: viewer and sample code.",
+      "parentUuid": "973ff215_a6c043d7",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "88cbe07d7aa06fbc2081b9b171980382c3f30af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de4be296_b1c23137",
