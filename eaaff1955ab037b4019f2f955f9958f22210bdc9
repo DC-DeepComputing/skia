@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b1d8ad1_aebd9b4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18774
+      },
+      "writtenOn": "2022-10-18T18:44:57Z",
+      "side": 1,
+      "message": "Closing as the goldens change was approved",
+      "revId": "eaaff1955ab037b4019f2f955f9958f22210bdc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
