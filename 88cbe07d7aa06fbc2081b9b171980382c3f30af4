@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13cf203e_e7808d54",
+        "filename": "samplecode/SampleImageFilterDAG.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T13:29:07Z",
+      "side": 1,
+      "message": "Minimal reproducer: https://godbolt.org/z/x8oeMGKoh",
+      "parentUuid": "61ef3ad5_02577717",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "88cbe07d7aa06fbc2081b9b171980382c3f30af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de4be296_b1c23137",
