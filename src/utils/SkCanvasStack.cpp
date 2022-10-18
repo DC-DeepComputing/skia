@@ -32,7 +32,7 @@ void SkCanvasStack::pushCanvas(std::unique_ptr<SkCanvas> canvas, const SkIPoint&
         this->INHERITED::addCanvas(canvas.get());
 
         // push the canvas data onto the stack
-        CanvasData* data = &fCanvasData.push_back();
+        CanvasData* data = fCanvasData.append();
         data->origin = origin;
         data->requiredClip.setRect(canvasBounds);
         data->ownedCanvas = std::move(canvas);

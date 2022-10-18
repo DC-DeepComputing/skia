@@ -281,7 +281,7 @@ void DrawAtlas::compact(DrawToken startTokenForNextFlush) {
                 // Count plots we can potentially upload to in all pages except the last one
                 // (the potential compactee).
                 if (plot->flushesSinceLastUsed() > kPlotRecentlyUsedCount) {
-                    availablePlots.push_back() = plot;
+                    availablePlots.push_back(plot);
                 }
 
                 plotIter.next();

@@ -55,7 +55,7 @@ public:
             : INHERITED(ClassID())
             , fHelper(processorSet, aaType, stencilSettings)
             , fViewMatrix(viewMatrix) {
-        RegionInfo& info = fRegions.push_back();
+        RegionInfo& info = *fRegions.append();
         info.fColor = color;
         info.fRegion = region;
 

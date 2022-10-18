@@ -58,7 +58,7 @@ void draw_paths(SkCanvas* canvas, ShadowMode mode) {
 
     // star
     SkTArray<SkPath> concavePaths;
-    concavePaths.push_back().moveTo(0.0f, -33.3333f);
+    concavePaths.append()->moveTo(0.0f, -33.3333f);
     concavePaths.back().lineTo(9.62f, -16.6667f);
     concavePaths.back().lineTo(28.867f, -16.6667f);
     concavePaths.back().lineTo(19.24f, 0.0f);
@@ -73,7 +73,7 @@ void draw_paths(SkCanvas* canvas, ShadowMode mode) {
     concavePaths.back().close();
 
     // dumbbell
-    concavePaths.push_back().moveTo(50, 0);
+    concavePaths.append()->moveTo(50, 0);
     concavePaths.back().cubicTo(100, 25, 60, 50, 50, 0);
     concavePaths.back().cubicTo(0, -25, 40, -50, 50, 0);
 

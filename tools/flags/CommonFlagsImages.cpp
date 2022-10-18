@@ -79,7 +79,7 @@ bool CollectImages(CommandLineFlags::StringArray images, SkTArray<SkString>* out
                 SkString file;
                 while (it.next(&file)) {
                     foundAnImage = true;
-                    output->push_back() = SkOSPath::Join(flag, file.c_str());
+                    output->push_back(SkOSPath::Join(flag, file.c_str()));
                 }
             }
             if (!foundAnImage) {
@@ -88,7 +88,7 @@ bool CollectImages(CommandLineFlags::StringArray images, SkTArray<SkString>* out
             }
         } else {
             // Also add the value if it is a single image
-            output->push_back() = flag;
+            output->emplace_back(flag);
         }
     }
     return true;

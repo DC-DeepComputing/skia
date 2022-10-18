@@ -493,7 +493,7 @@ static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
         !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
-        TaggedSrc& s = gSrcs->push_back();
+        TaggedSrc& s = *gSrcs->append();
         s.reset(src.release());
         s.tag = tag;
         s.options = options;
@@ -951,7 +951,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         exit(1);
     }
 
-    TaggedSink& ts = gSinks->push_back();
+    TaggedSink& ts = *gSinks->append();
     ts.reset(sink.release());
     ts.tag = config.getTag();
 }
