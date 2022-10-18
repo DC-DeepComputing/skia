@@ -39,6 +39,10 @@ protected:
             SkBudgeted);
 
 private:
+    // Unmanaged backends (e.g. Vulkan) may want to specially handle the release callback in order
+    // to ensure it isn't called until GPU work related to the resource is completed.
+    virtual void onSetReleaseCallback(sk_sp<RefCntedCallback>) = 0;
+
     SkISize fDimensions;
     TextureInfo fInfo;
     sk_sp<RefCntedCallback> fReleaseCallback;
