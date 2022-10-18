@@ -18,14 +18,62 @@ fi
 
 pushd /tmp
 
+LIBDRM_VERSION=2.4.113
+
+# Install libdrm, because Debian 11.5 doesn't have a recent enough version.
+curl https://dri.freedesktop.org/libdrm/libdrm-${LIBDRM_VERSION}.tar.xz -o libdrm.tar.xz
+
+tar xf libdrm.tar.xz
+pushd libdrm-${LIBDRM_VERSION}/
+mkdir -p build/install
+
+pushd build
+
+meson --buildtype=release     \
+      -Dudev=true             \
+      -Dvalgrind=disabled
+ninja install
+
+popd
+
+popd
+
+
+# Install newer wayland-protocols.
+
+WAYLAND_PROT_VERSION=1.26
+
+curl https://wayland.freedesktop.org/releases/wayland-protocols-1.26.tar.xz -o wayland.tar.xz
+tar xf wayland.tar.xz
+
+pushd wayland-protocols-${WAYLAND_PROT_VERSION}
+
+mkdir build
+
+pushd build
+
+meson --buildtype=release
+ninja
+ninja install
+
+popd
+
+popd
+
+
 curl  https://archive.mesa3d.org//mesa-${MESA_VERSION}.tar.xz -o mesa.tar.xz
 tar xf mesa.tar.xz
 cd mesa-${MESA_VERSION}/
 
 ls -al
 
+# https://dri.freedesktop.org/libdrm/libdrm-2.4.113.tar.xz
+
 meson build/
-meson configure --prefix="${PWD}/build/install" build/ -D 'dri-drivers-path=.'
+meson configure --prefix="${PWD}/build/install" build/ \
+   -D gallium-drivers=swrast,iris \
+   -D prefer-iris=true  \
+   -D dri-drivers-path=.
 ninja -C build/
 ninja -C build/ install
 

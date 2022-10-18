@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:11.5
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -9,7 +9,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list~ && \
     sed -i 's/\(^deb\)\(.*\)$/\1\2\n\1-src \2/' /etc/apt/sources.list
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y wget curl clang meson rsync jq && \
+    apt-get install -y wget curl clang meson rsync jq libpciaccess-dev && \
     apt-get build-dep -y mesa && \
     rm -rf /var/lib/apt/lists/*
 
