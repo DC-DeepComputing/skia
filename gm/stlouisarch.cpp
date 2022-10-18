@@ -27,13 +27,13 @@ protected:
 
     void onOnceBeforeDraw() override {
         {
-            SkPath* bigQuad = &fPaths.push_back();
+            SkPath* bigQuad = fPaths.append();
             bigQuad->moveTo(0, 0);
             bigQuad->quadTo(kWidth/2, kHeight, kWidth, 0);
         }
 
         {
-            SkPath* degenBigQuad = &fPaths.push_back();
+            SkPath* degenBigQuad = fPaths.append();
             SkScalar yPos = kHeight / 2 + 10;
             degenBigQuad->moveTo(0, yPos);
             degenBigQuad->quadTo(0, yPos, kWidth, yPos);
@@ -41,7 +41,7 @@ protected:
 
 
         {
-            SkPath* bigCubic = &fPaths.push_back();
+            SkPath* bigCubic = fPaths.append();
             bigCubic->moveTo(0, 0);
             bigCubic->cubicTo(0, kHeight,
                               kWidth, kHeight,
@@ -49,7 +49,7 @@ protected:
         }
 
         {
-            SkPath* degenBigCubic = &fPaths.push_back();
+            SkPath* degenBigCubic = fPaths.append();
             SkScalar yPos = kHeight / 2;
             degenBigCubic->moveTo(0, yPos);
             degenBigCubic->cubicTo(0, yPos,
@@ -58,13 +58,13 @@ protected:
         }
 
         {
-            SkPath* bigConic = &fPaths.push_back();
+            SkPath* bigConic = fPaths.append();
             bigConic->moveTo(0, 0);
             bigConic->conicTo(kWidth/2, kHeight, kWidth, 0, .5);
         }
 
         {
-            SkPath* degenBigConic = &fPaths.push_back();
+            SkPath* degenBigConic = fPaths.append();
             SkScalar yPos = kHeight / 2 - 10;
             degenBigConic->moveTo(0, yPos);
             degenBigConic->conicTo(0, yPos, kWidth, yPos, .5);

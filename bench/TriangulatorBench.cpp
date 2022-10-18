@@ -37,7 +37,7 @@ public:
 protected:
     void onDelayedSetup() override {
         for (int i = 0; i < kNumTigerPaths; ++i) {
-            SkPath& path = fPaths.push_back();
+            SkPath& path = *fPaths.append();
             const std::vector<SkPoint>& pts = kTigerPaths[i].fPoints;
             int ptsIdx = 0;
             for (const char* v = kTigerPaths[i].fVerbs; *v; ++v) {

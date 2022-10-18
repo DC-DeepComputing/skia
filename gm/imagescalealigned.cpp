@@ -26,15 +26,15 @@ protected:
         const SkVector vectors[] = { { 1, 0 }, { 0, 1 } };
 
         for (size_t i = 0; i < std::size(vectors); ++i) {
-           auto& set = fSets.push_back();
+           auto& set = *fSets.append();
 
            set.fVector = vectors[i];
-           set.fImages.push_back() = MakeImage(vectors[i], SK_ColorGREEN);
-           set.fScales.push_back() = 1;
-           set.fImages.push_back() = MakeImage(vectors[i], SK_ColorRED);
-           set.fScales.push_back() = kStretchFactor;
-           set.fImages.push_back() = MakeImage(vectors[i], SK_ColorGREEN);
-           set.fScales.push_back() = 1;
+           set.fImages.push_back(MakeImage(vectors[i], SK_ColorGREEN));
+           set.fScales.push_back(1);
+           set.fImages.push_back(MakeImage(vectors[i], SK_ColorRED));
+           set.fScales.push_back(kStretchFactor);
+           set.fImages.push_back(MakeImage(vectors[i], SK_ColorGREEN));
+           set.fScales.push_back(1);
         }
     }
 

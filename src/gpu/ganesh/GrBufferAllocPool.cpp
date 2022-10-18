@@ -315,7 +315,7 @@ bool GrBufferAllocPool::createBlock(size_t requestSize) {
 
     VALIDATE();
 
-    BufferBlock& block = fBlocks.push_back();
+    BufferBlock& block = *fBlocks.append();
 
     block.fBuffer = this->getBuffer(size);
     if (!block.fBuffer) {

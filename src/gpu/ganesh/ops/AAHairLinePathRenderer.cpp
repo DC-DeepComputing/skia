@@ -310,7 +310,7 @@ int gather_lines_and_quads(const SkPath& path,
                 pts[0] = qPts[0];
                 pts[1] = qPts[1];
                 pts[2] = qPts[2];
-                quadSubdivCnts->push_back() = subdiv;
+                quadSubdivCnts->push_back(subdiv);
                 totalQuadCount += 1 << subdiv;
             }
         }
@@ -367,7 +367,7 @@ int gather_lines_and_quads(const SkPath& path,
                                 pts[0] = cPts[0];
                                 pts[1] = cPts[1];
                                 pts[2] = cPts[2];
-                                conicWeights->push_back() = dst[i].fW;
+                                conicWeights->push_back(dst[i].fW);
                             }
                         }
                     }

@@ -35,7 +35,7 @@ void StatsLayer::resetMeasurements() {
 
 StatsLayer::Timer StatsLayer::addTimer(const char* label, SkColor color, SkColor labelColor) {
     Timer newTimer = fTimers.count();
-    TimerData& newData = fTimers.push_back();
+    TimerData& newData = *fTimers.append();
     memset(newData.fTimes, 0, sizeof(newData.fTimes));
     newData.fLabel = label;
     newData.fColor = color;

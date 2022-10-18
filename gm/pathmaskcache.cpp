@@ -75,7 +75,7 @@ protected:
 
 
         SkTArray<SkPath> paths;
-        paths.push_back();
+        paths.append();
         paths.back().moveTo(0.f, 0.f);
         paths.back().lineTo(98.f, 100.f);
         paths.back().lineTo(100.f, 100.f);
@@ -83,7 +83,7 @@ protected:
         paths.back().conicTo(148.f, 50.f, 100.f, 100.f, 0.6f);
         paths.back().conicTo(50.f, 30.f, 0.f, 100.f, 0.9f);
 
-        paths.push_back();
+        paths.append();
         paths.back().addCircle(30.f, 30.f, 30.f);
         paths.back().addRect(SkRect::MakeXYWH(45.f, 45.f, 50.f, 60.f));
         paths.back().setFillType(SkPathFillType::kEvenOdd);
