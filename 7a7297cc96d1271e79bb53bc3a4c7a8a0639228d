@@ -22,6 +22,57 @@
       },
       "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e094dff0_c1079ed6",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2022-10-18T19:23:26Z",
+      "side": 1,
+      "message": "Yes, it\u0027s definitely worth doing this, as it saves a roundtrip on creation.\n\nFor reference, see https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/dawn/GrDawnBuffer.cpp;l\u003d63",
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c52d6fbf_286543a6",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2022-10-18T19:23:26Z",
+      "side": 1,
+      "message": "Probably best to use Graphite\u0027s DrawBufferManager if possible (see above).",
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd65975_7d3342c3",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2022-10-18T19:23:26Z",
+      "side": 1,
+      "message": "For reference, Skia/Dawn uses GrStagingBufferManager, which is was generalized from my Dawn implementation to generic Ganesh code. It\u0027s used by the other Ganesh backends now.\n\nThe Graphite equivalent seems to be DrawBufferManager for vertex/index/uniform buffers, and UploadBufferManager for textures.",
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
