@@ -150,6 +150,19 @@ public:
     //TODO: replace with virtual const SkData* getData()
     virtual const void* getMemoryBase() { return nullptr; }
 
+    // If the stream supports identifying the current position and total length, this returns
+    // true if there are not enough bytes in the stream to fulfil a read of the given length.
+    // Otherwise, it returns false.
+    // False does *not* mean a read will succeed of the given length, but true means we are
+    // certain it will fail.
+    bool insufficientRemainingBytes(size_t len) {
+        if (this->hasLength() && this->hasPosition()) {
+            size_t remainingBytes = this->getLength() - this->getPosition();
+            return len > remainingBytes;
+        }
+        return false;
+    }
+
 private:
     virtual SkStream* onDuplicate() const { return nullptr; }
     virtual SkStream* onFork() const { return nullptr; }
