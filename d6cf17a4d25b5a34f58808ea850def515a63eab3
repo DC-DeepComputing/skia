@@ -34,6 +34,24 @@
       "parentUuid": "0349754e_1a43849b",
       "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08efcb9_fb81255d",
+        "filename": "tests/DrawBitmapRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T15:43:07Z",
+      "side": 1,
+      "message": "IWYU says to drop it, but if you do, then there\u0027s a compiler error.\n\n```\nIn file included from tests/DrawBitmapRectTest.cpp:8:\nIn file included from ./include/core/SkBitmap.h:12:\nIn file included from ./include/core/SkImageInfo.h:15:\n./include/core/SkRefCnt.h:151:12: error: member access into incomplete type \u0027SkImage\u0027\n        obj-\u003eunref();\n           ^\n./include/core/SkRefCnt.h:261:9: note: in instantiation of function template specialization \u0027SkSafeUnref\u003cSkImage\u003e\u0027 requested here\n        SkSafeUnref(fPtr);\n        ^\ntests/DrawBitmapRectTest.cpp:258:30: note: in instantiation of member function \u0027sk_sp\u003cSkImage\u003e::~sk_sp\u0027 requested here\n    canvas.drawImageRect(src.asImage(), srcR, dstR, SkSamplingOptions(), nullptr,\n                             ^\n./include/core/SkShader.h:23:7: note: forward declaration of \u0027SkImage\u0027\nclass SkImage;\n      ^\n1 error generated.\n\n```",
+      "parentUuid": "0349754e_1a43849b",
+      "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
