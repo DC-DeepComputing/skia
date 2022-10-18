@@ -141,6 +141,30 @@
       },
       "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4b9a6c5_1261bf21",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T18:48:35Z",
+      "side": 1,
+      "message": "I like that, except it\u0027s a function now, not a method.\n\nremainingLengthIsBelow(stream, n) doesn\u0027t quite have as nice of a ring to it.",
+      "parentUuid": "413875fe_3388cd35",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 158,
+        "endChar": 35
+      },
+      "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
