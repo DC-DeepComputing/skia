@@ -16,6 +16,24 @@
       "message": "In the next CL, will we be able to undo this?",
       "revId": "5fcb9aa328fdca738820eb61ffca9ca50035f3ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc8d1d94_11d07ad8",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T17:31:22Z",
+      "side": 1,
+      "message": "I think we\u0027d want to keep some sort of guard since we\u0027re doing a blind `symbols.find(\"sk_Clockwise\")`. We don\u0027t reserve the symbol name in non-fragment programs. e.g., in a compute program, nothing is hypothetically stopping you from declaring a `struct sk_Clockwise {...}`.",
+      "parentUuid": "b6d5ee80_0bfe9c7d",
+      "revId": "5fcb9aa328fdca738820eb61ffca9ca50035f3ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
