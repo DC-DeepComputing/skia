@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5193af2_63ba4a57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T13:33:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceaac2f9_3cc49b4a",
+      "revId": "1886f3d36814165dca8b0c809c6938411c7c2195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a594fd1_29ad64f1",
@@ -49,6 +67,30 @@
       "writtenOn": "2022-10-18T13:18:00Z",
       "side": 1,
       "message": "Could simplify to `SkASSERT(fItemArray || fCount \u003d\u003d 0);`",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 9
+      },
+      "revId": "1886f3d36814165dca8b0c809c6938411c7c2195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47dd0c33_344da082",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T13:33:16Z",
+      "side": 1,
+      "message": "Yes but who remembers that implication A-\u003eB is ~A or B. This is clear.",
+      "parentUuid": "1a594fd1_29ad64f1",
       "range": {
         "startLine": 375,
         "startChar": 0,
