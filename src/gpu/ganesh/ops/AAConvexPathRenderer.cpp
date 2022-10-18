@@ -249,7 +249,7 @@ inline bool get_direction(const SkPath& path, const SkMatrix& m, SkPathFirstDire
 }
 
 inline void add_line_to_segment(const SkPoint& pt, SegmentArray* segments) {
-    segments->push_back();
+    segments->append();
     segments->back().fType = Segment::kLine;
     segments->back().fPts[0] = pt;
 }
@@ -260,7 +260,7 @@ inline void add_quad_segment(const SkPoint pts[3], SegmentArray* segments) {
             add_line_to_segment(pts[2], segments);
         }
     } else {
-        segments->push_back();
+        segments->append();
         segments->back().fType = Segment::kQuad;
         segments->back().fPts[0] = pts[1];
         segments->back().fPts[1] = pts[2];
@@ -373,7 +373,7 @@ void create_vertices(const SegmentArray& segments,
                      VertexWriter& verts,
                      uint16_t* idxs,
                      size_t vertexStride) {
-    Draw* draw = &draws->push_back();
+    Draw* draw = draws->append();
     // alias just to make vert/index assignments easier to read.
     int* v = &draw->fVertexCnt;
     int* i = &draw->fIndexCnt;
@@ -394,7 +394,7 @@ void create_vertices(const SegmentArray& segments,
         }
         if (draw->fVertexCnt + vCount > (1 << 16)) {
             idxs += *i;
-            draw = &draws->push_back();
+            draw = draws->append();
             v = &draw->fVertexCnt;
             i = &draw->fIndexCnt;
         }

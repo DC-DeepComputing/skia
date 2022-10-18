@@ -16,7 +16,7 @@ public:
                          SkFontMgr_Custom::Families* families) const override
     {
         SkFontStyleSet_Custom* family = new SkFontStyleSet_Custom(SkString());
-        families->push_back().reset(family);
+        families->append()->reset(family);
         family->appendTypeface(sk_make_sp<SkTypeface_Empty>());
     }
 

@@ -26,7 +26,7 @@ GrGLSLShaderBuilder::GrGLSLShaderBuilder(GrGLSLProgramBuilder* program)
     , fTmpVariableCounter(0) {
     // We push back some placeholder pointers which will later become our header
     for (int i = 0; i <= kCode; i++) {
-        fShaderStrings.push_back();
+        fShaderStrings.append();
     }
 
     this->main() = "void main() {";
@@ -286,7 +286,7 @@ void GrGLSLShaderBuilder::appendDecls(const VarArray& vars, SkString* out) const
 void GrGLSLShaderBuilder::addLayoutQualifier(const char* param, InterfaceQualifier interface) {
     SkASSERT(fProgramBuilder->shaderCaps()->fGLSLGeneration >= SkSL::GLSLGeneration::k330 ||
              fProgramBuilder->shaderCaps()->mustEnableAdvBlendEqs());
-    fLayoutParams[interface].push_back() = param;
+    fLayoutParams[interface].emplace_back(param);
 }
 
 void GrGLSLShaderBuilder::compileAndAppendLayoutQualifiers() {

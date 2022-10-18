@@ -91,7 +91,7 @@ void GrAuditTrail::copyOutFromOpsTask(OpInfo* outOpInfo, int opsTaskID) {
     outOpInfo->fBounds = bn->fBounds;
     outOpInfo->fProxyUniqueID    = bn->fProxyUniqueID;
     for (int j = 0; j < bn->fChildren.count(); j++) {
-        OpInfo::Op& outOp = outOpInfo->fOps.push_back();
+        OpInfo::Op& outOp = *outOpInfo->fOps.append();
         const Op* currentOp = bn->fChildren[j];
         outOp.fBounds = currentOp->fBounds;
         outOp.fClientID = currentOp->fClientID;
@@ -111,7 +111,7 @@ void GrAuditTrail::getBoundsByClientID(SkTArray<OpInfo>* outInfo, int clientID) 
             // Because we will copy out all of the ops associated with a given op list id everytime
             // the id changes, we only have to update our struct when the id changes.
             if (kGrAuditTrailInvalidID == currentOpsTaskID || op->fOpsTaskID != currentOpsTaskID) {
-                OpInfo& outOpInfo = outInfo->push_back();
+                OpInfo& outOpInfo = *outInfo->append();
 
                 // copy out all of the ops so the client can display them even if they have a
                 // different clientID

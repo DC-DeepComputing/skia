@@ -82,14 +82,14 @@ public:
             "M 200,100 C 210,150 390,150 400,100"
             "M 400,100 C 390, 50 210, 50 200,100"
             "M 200,100 C 190,150  10,150   0,100",
-            &fPaths.push_back()));
+            fPaths.append()));
 
         SkAssertResult(SkParsePath::FromSVGString(
             "M   0, 75 L 200, 75"
             "M 200, 91 L 200, 91"
             "M 200,108 L 200,108"
             "M 200,125 L 400,125",
-            &fPaths.push_back()));
+            fPaths.append()));
 
         SkAssertResult(SkParsePath::FromSVGString(
             "M   0,100 L  50, 50"
@@ -97,7 +97,7 @@ public:
             "M 150,150 L 250, 50"
             "M 250, 50 L 350,150"
             "M 350,150 L 400,100",
-            &fPaths.push_back()));
+            fPaths.append()));
 
     }
 

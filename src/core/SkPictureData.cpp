@@ -465,7 +465,7 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
                     return;
                 }
                 for (int i = 0; i < count; i++) {
-                    buffer.readPath(&fPaths.push_back());
+                    buffer.readPath(fPaths.append());
                     if (!buffer.isValid()) {
                         return;
                     }

@@ -352,7 +352,7 @@ static void init_distances(DFData* data, int size) {
 }
 
 static inline void add_line(const SkPoint pts[2], PathSegmentArray* segments) {
-    segments->push_back();
+    segments->append();
     segments->back().fType = PathSegment::kLine;
     segments->back().fPts[0] = pts[0];
     segments->back().fPts[1] = pts[1];
@@ -371,7 +371,7 @@ static inline void add_quad(const SkPoint pts[3], PathSegmentArray* segments) {
             add_line(line_pts, segments);
         }
     } else {
-        segments->push_back();
+        segments->append();
         segments->back().fType = PathSegment::kQuad;
         segments->back().fPts[0] = pts[0];
         segments->back().fPts[1] = pts[1];

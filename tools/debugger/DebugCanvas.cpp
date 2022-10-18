@@ -247,7 +247,7 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
             at->getBoundsByClientID(&childrenBounds, index);
         } else {
             // the client wants us to draw the mth op
-            at->getBoundsByOpsTaskID(&childrenBounds.push_back(), m);
+            at->getBoundsByOpsTaskID(childrenBounds.append(), m);
         }
         // Shift the rects half a pixel, so they appear as exactly 1px thick lines.
         finalCanvas->save();

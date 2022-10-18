@@ -94,7 +94,7 @@ constexpr drawMth gDrawMthds[] = {
 };
 
 static void add_paint(SkTArray<SkPaint>* paints, sk_sp<SkImageFilter> filter) {
-    SkPaint& p = paints->push_back();
+    SkPaint& p = *paints->append();
     p.setImageFilter(std::move(filter));
     SkASSERT(p.canComputeFastBounds());
 }
