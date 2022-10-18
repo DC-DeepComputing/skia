@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa16b12c_834b1245",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9074dbf5_e8ec61e5",
+      "range": {
+        "startLine": 154,
+        "startChar": 59,
+        "endLine": 154,
+        "endChar": 65
+      },
+      "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d4b8cf5_8b5277c8",
