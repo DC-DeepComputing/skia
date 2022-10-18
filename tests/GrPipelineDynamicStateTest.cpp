@@ -189,7 +189,7 @@ private:
                             flushState->drawOpArgs().writeView().swizzle());
         SkSTArray<kNumMeshes, GrSimpleMesh> meshes;
         for (int i = 0; i < kNumMeshes; ++i) {
-            GrSimpleMesh& mesh = meshes.push_back();
+            GrSimpleMesh& mesh = *meshes.append();
             mesh.set(fVertexBuffer, 4, 4 * i);
         }
 

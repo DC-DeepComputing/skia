@@ -45,7 +45,7 @@ static void TestTSet_basic(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, a.count() == 0);
 
     // { }, add a default constructed element
-    a.push_back() = T{0};
+    a.emplace_back(0);
     REPORTER_ASSERT(reporter, !a.empty());
     REPORTER_ASSERT(reporter, a.count() == 1);
 
@@ -55,8 +55,8 @@ static void TestTSet_basic(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, a.count() == 0);
 
     // { }, add a default, add a 1, remove first
-    a.push_back() = T{0};
-    a.push_back() = T{1};
+    a.emplace_back(0);
+    a.emplace_back(1);
     a.removeShuffle(0);
     REPORTER_ASSERT(reporter, !a.empty());
     REPORTER_ASSERT(reporter, a.count() == 1);
@@ -326,14 +326,14 @@ template <typename Array> static void test_array_reserve(skiatest::Reporter* rep
                                                          Array* array, int reserveCount) {
     SkRandom random;
     REPORTER_ASSERT(reporter, array->capacity() >= reserveCount);
-    array->push_back();
+    array->append();
     REPORTER_ASSERT(reporter, array->capacity() >= reserveCount);
     array->pop_back();
     REPORTER_ASSERT(reporter, array->capacity() >= reserveCount);
     while (array->count() < reserveCount) {
         // Two steps forward, one step back
         if (random.nextULessThan(3) < 2) {
-            array->push_back();
+            array->append();
         } else if (array->size() > 0) {
             array->pop_back();
         }

@@ -388,7 +388,7 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             }
             SkTArray<SkMatrix> matrices(matrixCount);
             for (int i = 0; i < matrixCount && reader->isValid(); ++i) {
-                reader->readMatrix(&matrices.push_back());
+                reader->readMatrix(matrices.append());
             }
             BREAK_ON_READ_ERROR(reader);
 

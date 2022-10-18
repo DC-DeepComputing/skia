@@ -917,7 +917,7 @@ static size_t fill_in_compressed_regions(GrStagingBufferManager* stagingBufferMa
     }
 
     for (int i = 0; i < numMipLevels; ++i) {
-        VkBufferImageCopy& region = regions->push_back();
+        VkBufferImageCopy& region = *regions->append();
         memset(&region, 0, sizeof(VkBufferImageCopy));
         region.bufferOffset = slice->fOffset + (*individualMipOffsets)[i];
         SkISize revisedDimensions = GrCompressedDimensions(compression, dimensions);
@@ -1011,7 +1011,7 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
             const char* src = (const char*)texelsShallowCopy[currentMipLevel].fPixels;
             SkRectMemcpy(dst, trimRowBytes, src, rowBytes, trimRowBytes, currentHeight);
 
-            VkBufferImageCopy& region = regions.push_back();
+            VkBufferImageCopy& region = *regions.append();
             memset(&region, 0, sizeof(VkBufferImageCopy));
             region.bufferOffset = slice.fOffset + individualMipOffsets[currentMipLevel];
             region.bufferRowLength = currentWidth;
@@ -1160,7 +1160,7 @@ sk_sp<GrTexture> GrVkGpu::onCreateTexture(SkISize dimensions,
                 if (inRange) {
                     ranges.back().levelCount++;
                 } else {
-                    auto& range = ranges.push_back();
+                    auto& range = *ranges.append();
                     range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
                     range.baseArrayLayer = 0;
                     range.baseMipLevel = i;

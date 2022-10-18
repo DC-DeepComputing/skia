@@ -1135,24 +1135,24 @@ void GrGLCaps::initStencilSupport(const GrGLContextInfo& ctxInfo) {
         // S1 thru S16 formats are in GL 3.0+, EXT_FBO, and ARB_FBO since we
         // require FBO support we can expect these are legal formats and don't
         // check.
-        fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX8;
-        fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX16;
+        fStencilFormats.push_back(GrGLFormat::kSTENCIL_INDEX8);
+        fStencilFormats.push_back(GrGLFormat::kSTENCIL_INDEX16);
         if (supportsPackedDS) {
-            fStencilFormats.push_back() = GrGLFormat::kDEPTH24_STENCIL8;
+            fStencilFormats.push_back(GrGLFormat::kDEPTH24_STENCIL8);
         }
     } else if (GR_IS_GR_GL_ES(ctxInfo.standard())) {
         // ES2 has STENCIL_INDEX8 without extensions but requires extensions
         // for other formats.
 
-        fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX8;
+        fStencilFormats.push_back(GrGLFormat::kSTENCIL_INDEX8);
         if (ctxInfo.version() >= GR_GL_VER(3,0) ||
             ctxInfo.hasExtension("GL_OES_packed_depth_stencil")) {
-            fStencilFormats.push_back() = GrGLFormat::kDEPTH24_STENCIL8;
+            fStencilFormats.push_back(GrGLFormat::kDEPTH24_STENCIL8);
         }
     } else if (GR_IS_GR_WEBGL(ctxInfo.standard())) {
-        fStencilFormats.push_back() = GrGLFormat::kSTENCIL_INDEX8;
+        fStencilFormats.push_back(GrGLFormat::kSTENCIL_INDEX8);
         if (ctxInfo.version() >= GR_GL_VER(2,0)) {
-            fStencilFormats.push_back() = GrGLFormat::kDEPTH24_STENCIL8;
+            fStencilFormats.push_back(GrGLFormat::kDEPTH24_STENCIL8);
         }
     }
 }

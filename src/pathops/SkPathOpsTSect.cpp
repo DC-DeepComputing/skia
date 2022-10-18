@@ -1739,7 +1739,7 @@ struct SkClosestRecord {
 struct SkClosestSect {
     SkClosestSect()
         : fUsed(0) {
-        fClosest.push_back().reset();
+        fClosest.append()->reset();
     }
 
     bool find(const SkTSpan* span1, const SkTSpan* span2
@@ -1764,7 +1764,7 @@ struct SkClosestSect {
             }
         }
         ++fUsed;
-        fClosest.push_back().reset();
+        fClosest.append()->reset();
         return true;
     }
 
