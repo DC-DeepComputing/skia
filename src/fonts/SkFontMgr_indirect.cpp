@@ -125,7 +125,7 @@ SkTypeface* SkFontMgr_Indirect::createTypefaceFromFontId(const SkFontIdentity& i
         return nullptr;
     }
 
-    DataEntry& newEntry = fDataCache.push_back();
+    DataEntry& newEntry = *fDataCache.append();
     typeface->weak_ref();
     newEntry.fDataId = id.fDataId;
     newEntry.fTtcIndex = id.fTtcIndex;

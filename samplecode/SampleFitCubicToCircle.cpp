@@ -119,10 +119,10 @@ void SampleFitCubicToCircle::fitCubic() {
     // "Control length" is the length of (p1 - p0) and/or (p3 - p2) in unit circle space.
     fControlLength = fit_cubic_to_unit_circle(fEndptsX[0], fEndptsY[0], fEndptsX[1], fEndptsY[1],
                                               &X, &Y);
-    fInfoStrings.push_back().printf("control length=%0.14f", fControlLength);
+    fInfoStrings.append()->printf("control length=%0.14f", fControlLength);
 
     fMaxErrorT = find_max_error_T(X.data(), Y.data());
-    fInfoStrings.push_back().printf("max error T=%0.14f", fMaxErrorT);
+    fInfoStrings.append()->printf("max error T=%0.14f", fMaxErrorT);
 
     for (int i = 0; i < 4; ++i) {
         fCubicX[i] = X[i] * kRadius + kCenterX;
@@ -131,14 +131,14 @@ void SampleFitCubicToCircle::fitCubic() {
     double errX = std::get<0>(eval_cubic(fCubicX.data(), fMaxErrorT)) - kCenterX;
     double errY = std::get<0>(eval_cubic(fCubicY.data(), fMaxErrorT)) - kCenterY;
     fMaxError = std::sqrt(errX*errX + errY*errY) - kRadius;
-    fInfoStrings.push_back().printf("max error=%.5gpx", fMaxError);
+    fInfoStrings.append()->printf("max error=%.5gpx", fMaxError);
 
     fTheta = std::atan2(fEndptsY[1], fEndptsX[1]) - std::atan2(fEndptsY[0], fEndptsX[0]);
     fTheta = std::abs(fTheta * 180/M_PI);
     if (fTheta > 180) {
         fTheta = 360 - fTheta;
     }
-    fInfoStrings.push_back().printf("(theta=%.2f)", fTheta);
+    fInfoStrings.append()->printf("(theta=%.2f)", fTheta);
 
     SkDebugf("\n");
     for (const SkString& infoString : fInfoStrings) {

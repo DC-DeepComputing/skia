@@ -29,7 +29,7 @@ sk_sp<BisectSlide> BisectSlide::Create(const char filepath[]) {
         matrix.mapRect(&bounds, path.getBounds());
         bounds.roundOut(&ibounds);
         bisect->fDrawBounds.join(ibounds);
-        bisect->fFoundPaths.push_back() = {path, paint, matrix};
+        bisect->fFoundPaths.push_back({path, paint, matrix});
     });
     return bisect;
 }

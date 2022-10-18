@@ -111,7 +111,7 @@ DrawAtlasOpImpl::DrawAtlasOpImpl(GrProcessorSet* processorSet, const SkPMColor4f
     SkASSERT(rects);
 
     fViewMatrix = viewMatrix;
-    Geometry& installedGeo = fGeoData.push_back();
+    Geometry& installedGeo = *fGeoData.append();
     installedGeo.fColor = color;
 
     // Figure out stride and offsets

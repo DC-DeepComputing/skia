@@ -179,18 +179,18 @@ DEF_SIMPLE_GM(circular_arcs_weird, canvas, 1000, 400) {
     };
     SkTArray<SkPaint> paints;
     // fill
-    paints.push_back();
+    paints.append();
     // stroke
-    paints.push_back().setStroke(true);
+    paints.append()->setStroke(true);
     paints.back().setStrokeWidth(kS / 6.f);
     // hairline
-    paints.push_back().setStroke(true);
+    paints.append()->setStroke(true);
     paints.back().setStrokeWidth(0.f);
     // stroke and fill
-    paints.push_back().setStyle(SkPaint::kStrokeAndFill_Style);
+    paints.append()->setStyle(SkPaint::kStrokeAndFill_Style);
     paints.back().setStrokeWidth(kS / 6.f);
     // dash effect
-    paints.push_back().setStroke(true);
+    paints.append()->setStroke(true);
     paints.back().setStrokeWidth(kS / 6.f);
     constexpr SkScalar kDashIntervals[] = {kS / 15, 2 * kS / 15};
     paints.back().setPathEffect(SkDashPathEffect::Make(kDashIntervals, 2, 0.f));
@@ -277,46 +277,46 @@ DEF_SIMPLE_GM(circular_arc_stroke_matrix, canvas, 820, 1090) {
     static constexpr SkScalar kSweep = 180.f/SK_ScalarPI; // one radian
 
     SkTArray<SkMatrix> matrices;
-    matrices.push_back().setRotate(kRadius, kRadius, 45.f);
+    matrices.push_back(SkMatrix::RotateDeg(45.f, {kRadius, kRadius})).setRotate(kRadius, kRadius, 45.f);
     matrices.push_back(SkMatrix::I());
-    matrices.push_back().setAll(-1,  0,  2*kRadius,
-                                 0,  1,  0,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 1,  0,  0,
-                                 0, -1,  2*kRadius,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 1,  0,  0,
-                                 0, -1,  2*kRadius,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 0, -1,  2*kRadius,
-                                -1,  0,  2*kRadius,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 0, -1,  2*kRadius,
-                                 1,  0,  0,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 0,  1,  0,
-                                 1,  0,  0,
-                                 0,  0,  1);
-    matrices.push_back().setAll( 0,  1,  0,
-                                -1,  0,  2*kRadius,
-                                 0,  0,  1);
+    matrices.append()->setAll(-1,  0,  2*kRadius,
+                               0,  1,  0,
+                               0,  0,  1);
+    matrices.append()->setAll( 1,  0,  0,
+                               0, -1,  2*kRadius,
+                               0,  0,  1);
+    matrices.append()->setAll( 1,  0,  0,
+                               0, -1,  2*kRadius,
+                               0,  0,  1);
+    matrices.append()->setAll( 0, -1,  2*kRadius,
+                              -1,  0,  2*kRadius,
+                               0,  0,  1);
+    matrices.append()->setAll( 0, -1,  2*kRadius,
+                               1,  0,  0,
+                               0,  0,  1);
+    matrices.append()->setAll( 0,  1,  0,
+                               1,  0,  0,
+                               0,  0,  1);
+    matrices.append()->setAll( 0,  1,  0,
+                              -1,  0,  2*kRadius,
+                               0,  0,  1);
     int baseMatrixCnt = matrices.count();
 
 
     SkMatrix tinyCW;
     tinyCW.setRotate(0.001f, kRadius, kRadius);
     for (int i = 0; i < baseMatrixCnt; ++i) {
-        matrices.push_back().setConcat(matrices[i], tinyCW);
+        matrices.append()->setConcat(matrices[i], tinyCW);
     }
     SkMatrix tinyCCW;
     tinyCCW.setRotate(-0.001f, kRadius, kRadius);
     for (int i = 0; i < baseMatrixCnt; ++i) {
-        matrices.push_back().setConcat(matrices[i], tinyCCW);
+        matrices.append()->setConcat(matrices[i], tinyCCW);
     }
     SkMatrix cw45;
     cw45.setRotate(45.f, kRadius, kRadius);
     for (int i = 0; i < baseMatrixCnt; ++i) {
-        matrices.push_back().setConcat(matrices[i], cw45);
+        matrices.append()->setConcat(matrices[i], cw45);
     }
 
     int x = 0;

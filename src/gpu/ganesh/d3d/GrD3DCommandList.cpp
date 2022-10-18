@@ -95,7 +95,7 @@ void GrD3DCommandList::resourceBarrier(sk_sp<GrManagedResource> resource,
     SkASSERT(barriers);
     for (int i = 0; i < numBarriers; ++i) {
         // D3D will apply barriers in order so we can just add onto the end
-        D3D12_RESOURCE_BARRIER& newBarrier = fResourceBarriers.push_back();
+        D3D12_RESOURCE_BARRIER& newBarrier = *fResourceBarriers.append();
         newBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
         newBarrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
         newBarrier.Transition = barriers[i];
@@ -111,7 +111,7 @@ void GrD3DCommandList::uavBarrier(sk_sp<GrManagedResource> resource,
                                   ID3D12Resource* uavResource) {
     SkASSERT(fIsActive);
     // D3D will apply barriers in order so we can just add onto the end
-    D3D12_RESOURCE_BARRIER& newBarrier = fResourceBarriers.push_back();
+    D3D12_RESOURCE_BARRIER& newBarrier = *fResourceBarriers.append();
     newBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
     newBarrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
     newBarrier.UAV.pResource = uavResource;
@@ -128,7 +128,7 @@ void GrD3DCommandList::aliasingBarrier(sk_sp<GrManagedResource> beforeManagedRes
                                        ID3D12Resource* afterResource) {
     SkASSERT(fIsActive);
     // D3D will apply barriers in order so we can just add onto the end
-    D3D12_RESOURCE_BARRIER& newBarrier = fResourceBarriers.push_back();
+    D3D12_RESOURCE_BARRIER& newBarrier = *fResourceBarriers.append();
     newBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_ALIASING;
     newBarrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
     newBarrier.Aliasing.pResourceBefore = beforeResource;

@@ -191,7 +191,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
                                              nonPatchVersion);
         if (idx != -1) {
-            instanceLayers->push_back() = layers[idx];
+            instanceLayers->push_back(layers[idx]);
         }
     }
     delete[] layers;
@@ -212,7 +212,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            instanceExtensions->push_back() = extensions[i];
+            instanceExtensions->push_back(extensions[i]);
         }
         delete [] extensions;
     }
@@ -234,7 +234,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            instanceExtensions->push_back() = extensions[i];
+            instanceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }
@@ -280,7 +280,7 @@ static bool init_device_extensions_and_layers(skgpu::VulkanGetProc getProc, uint
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
                                              nonPatchVersion);
         if (idx != -1) {
-            deviceLayers->push_back() = layers[idx];
+            deviceLayers->push_back(layers[idx]);
         }
     }
     delete[] layers;
@@ -301,7 +301,7 @@ static bool init_device_extensions_and_layers(skgpu::VulkanGetProc getProc, uint
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            deviceExtensions->push_back() = extensions[i];
+            deviceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }
@@ -325,7 +325,7 @@ static bool init_device_extensions_and_layers(skgpu::VulkanGetProc getProc, uint
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            deviceExtensions->push_back() = extensions[i];
+            deviceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }

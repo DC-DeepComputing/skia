@@ -328,7 +328,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
 
     // We must always add new contexts by pushing to the back so that when we delete them we delete
     // them in reverse order in which they were made.
-    Context& context = fContexts.push_back();
+    Context& context = *fContexts.append();
     context.fBackend = backend;
     context.fTestContext = testCtx.release();
     context.fGrContext = SkRef(grCtx.get());

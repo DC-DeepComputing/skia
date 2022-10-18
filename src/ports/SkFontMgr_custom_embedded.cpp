@@ -31,7 +31,7 @@ public:
 
         if (families->empty()) {
             SkFontStyleSet_Custom* family = new SkFontStyleSet_Custom(SkString());
-            families->push_back().reset(family);
+            families->append()->reset(family);
             family->appendTypeface(sk_make_sp<SkTypeface_Empty>());
         }
     }
@@ -53,7 +53,7 @@ public:
 
         if (families->empty()) {
             SkFontStyleSet_Custom* family = new SkFontStyleSet_Custom(SkString());
-            families->push_back().reset(family);
+            families->append()->reset(family);
             family->appendTypeface(sk_make_sp<SkTypeface_Empty>());
         }
     }
@@ -97,7 +97,7 @@ static void load_font_from_data(const SkTypeface_FreeType::Scanner& scanner,
         SkFontStyleSet_Custom* addTo = find_family(*families, realname.c_str());
         if (nullptr == addTo) {
             addTo = new SkFontStyleSet_Custom(realname);
-            families->push_back().reset(addTo);
+            families->append()->reset(addTo);
         }
         auto data = std::make_unique<SkFontData>(stream->duplicate(), faceIndex, 0,
                                                  nullptr, 0, nullptr, 0);

@@ -58,7 +58,7 @@ static void eat_space_sep_strings(SkTArray<SkString>* out, const char in[]) {
         }
         // we found an extension
         size_t length = strcspn(in, " ");
-        out->push_back().set(in, length);
+        out->emplace_back(in, length);
         in += length;
     }
 }

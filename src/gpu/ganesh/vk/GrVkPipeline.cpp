@@ -118,18 +118,12 @@ static void setup_vertex_input_state(
     }
 
     if (vaCount) {
-        bindingDescs->push_back() = {
-                vertexBinding,
-                (uint32_t) vertexAttribs.stride(),
-                VK_VERTEX_INPUT_RATE_VERTEX
-        };
+        bindingDescs->push_back(
+                {vertexBinding, (uint32_t)vertexAttribs.stride(), VK_VERTEX_INPUT_RATE_VERTEX});
     }
     if (iaCount) {
-        bindingDescs->push_back() = {
-                instanceBinding,
-                (uint32_t) instanceAttribs.stride(),
-                VK_VERTEX_INPUT_RATE_INSTANCE
-        };
+        bindingDescs->push_back(
+            {instanceBinding, (uint32_t) instanceAttribs.stride(),VK_VERTEX_INPUT_RATE_INSTANCE});
     }
 
     memset(vertexInputInfo, 0, sizeof(VkPipelineVertexInputStateCreateInfo));

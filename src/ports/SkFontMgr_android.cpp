@@ -236,7 +236,7 @@ public:
             Scanner::computeAxisValues(axisDefinitions, position,
                                        axisValues, familyName);
 
-            fStyles.push_back().reset(new SkTypeface_AndroidSystem(
+            fStyles.append()->reset(new SkTypeface_AndroidSystem(
                     pathName, cacheFontFiles, ttcIndex, axisValues.get(), axisDefinitions.count(),
                     style, isFixedWidth, familyName, family.fLanguages, variant));
         }
@@ -511,7 +511,7 @@ private:
             nameToFamily = &fFallbackNameToFamilyMap;
 
             if (0 == family.fNames.count()) {
-                SkString& fallbackName = family.fNames.push_back();
+                SkString& fallbackName = *family.fNames.append();
                 fallbackName.printf("%.2x##fallback", familyIndex);
             }
         }

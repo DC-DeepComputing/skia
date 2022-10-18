@@ -639,7 +639,7 @@ void SkStrSplit(const char* str, const char* delimiters, SkStrSplitMode splitMod
         // Find a token.
         const size_t len = strcspn(str, delimiters);
         if (splitMode == kStrict_SkStrSplitMode || len > 0) {
-            out->push_back().set(str, len);
+            out->emplace_back(str, len);
             str += len;
         }
 

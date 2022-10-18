@@ -124,10 +124,10 @@ bool SkOpBuilder::FixWinding(SkPath* path) {
 
 void SkOpBuilder::add(const SkPath& path, SkPathOp op) {
     if (fOps.empty() && op != kUnion_SkPathOp) {
-        fPathRefs.push_back() = SkPath();
+        fPathRefs.append();
         *fOps.append() = kUnion_SkPathOp;
     }
-    fPathRefs.push_back() = path;
+    fPathRefs.push_back(path);
     *fOps.append() = op;
 }
 
