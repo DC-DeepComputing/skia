@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d5ee80_0bfe9c7d",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-18T17:22:13Z",
+      "side": 1,
+      "message": "In the next CL, will we be able to undo this?",
+      "revId": "5fcb9aa328fdca738820eb61ffca9ca50035f3ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
