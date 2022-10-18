@@ -69,6 +69,30 @@
       },
       "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8051987_2de86644",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-18T17:45:29Z",
+      "side": 1,
+      "message": "I disagree with the name \"hasAtLeastNBytes\" because it seems to imply something stronger than what we are really saying. If the stream can\u0027t provide us length, then returning true from \"hasAtLeastNBytes\" feels wrong (to me at least).\n\nhasInsufficientRemainingBytes works better IMO because if we say true we know we are right and if we say false it\u0027s like \"no guarantees\".",
+      "parentUuid": "f273790a_2b05042f",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 158,
+        "endChar": 35
+      },
+      "revId": "17c9b8d7cf47395392a885d5638c0b30452d2ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
