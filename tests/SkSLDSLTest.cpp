@@ -1575,7 +1575,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(DSLInterfaceBlock, r, ctxInfo) {
     REPORTER_ASSERT(r, SkSL::ThreadContext::ProgramElements().size() == 1);
     EXPECT_EQUAL(*SkSL::ThreadContext::ProgramElements().back(),
                  "uniform InterfaceBlock1 { float a; int b; };");
-    EXPECT_EQUAL(intf.field("a"), "InterfaceBlock1.a");
+    EXPECT_EQUAL(intf.field("a"), "a");
 
     DSLGlobalVar intf2 = InterfaceBlock(kUniform_Modifier, "InterfaceBlock2",
                                         { Field(kFloat2_Type, "x"), Field(kHalf2x2_Type, "y") },
@@ -2009,9 +2009,9 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(DSLRTAdjust, r, ctxInfo) {
         REPORTER_ASSERT(r, SkSL::ThreadContext::ProgramElements().size() == 2);
         EXPECT_EQUAL(*SkSL::ThreadContext::ProgramElements()[1],
             "void main() {"
-            "sk_PerVertex.sk_Position = float4(0.0);"
-            "sk_PerVertex.sk_Position = float4(sk_PerVertex.sk_Position.xy * sk_RTAdjust.xz + "
-                "sk_PerVertex.sk_Position.ww * sk_RTAdjust.yw, 0.0, sk_PerVertex.sk_Position.w);"
+                "sk_Position = float4(0.0);"
+                "sk_Position = float4(sk_Position.xy * sk_RTAdjust.xz + "
+                                     "sk_Position.ww * sk_RTAdjust.yw, 0.0, sk_Position.w);"
             "}");
     }
 
