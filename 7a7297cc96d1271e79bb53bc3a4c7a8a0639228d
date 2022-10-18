@@ -73,6 +73,24 @@
       "message": "For reference, Skia/Dawn uses GrStagingBufferManager, which is was generalized from my Dawn implementation to generic Ganesh code. It\u0027s used by the other Ganesh backends now.\n\nThe Graphite equivalent seems to be DrawBufferManager for vertex/index/uniform buffers, and UploadBufferManager for textures.",
       "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a0ae50f_13799160",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2022-10-18T19:27:49Z",
+      "side": 1,
+      "message": "Just to follow up: apparently DrawBufferManager currently requires being able to write into a mapped buffer, which Dawn can\u0027t do for vertex/index/uniform.\n\nFrom Greg:\n\n\"So currently all our draw buffer usages in Graphite depend on writing to a mapped buffer. Obviously, that is problematic for Dawn which can\u0027t map things like vertex buffers . So I see two possible options here. First, similar to Ganesh, Dawn can hide the fact that it uses a transfer buffer inside the Buffer::map and Buffer::unmap calls. This would probably work but isn\u0027t really in the style of what I thing is best for Graphite (i.e. being very explicit about how we are using backend objects). So the other option is to have DrawBufferManager store two parallel Buffers: a CpuMappedBuffer and GpuBuffer. On most backends that aren\u0027t dawn these two Buffers would just be the same thing. But on Dawn they would be two separate. Then when done with filling out the buffer on the cpu, we\u0027ll just need some logic that says if those two buffers aren\u0027t equal, add a copy BufferToBuffer task.\"",
+      "parentUuid": "1dd65975_7d3342c3",
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
