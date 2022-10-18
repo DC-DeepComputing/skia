@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff076ed7_691af878",
+        "filename": "resources/sksl/compute/MatrixMultiply.compute",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T19:54:28Z",
+      "side": 0,
+      "message": "Had a valid name conflict here (can\u0027t have variable `sizes` variable at global scope when the type claims the symbol first)",
+      "range": {
+        "startLine": 2,
+        "startChar": 11,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "233a2efb6cb2fa6c6a5a999a025d3f4952dba463",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
