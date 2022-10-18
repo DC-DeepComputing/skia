@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe1adff_fa6afa7d",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-18T14:26:43Z",
+      "side": 1,
+      "message": "Indent",
+      "range": {
+        "startLine": 282,
+        "startChar": 49,
+        "endLine": 282,
+        "endChar": 64
+      },
+      "revId": "44ac896fd554b660c44ca966630e23e864bc74e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
