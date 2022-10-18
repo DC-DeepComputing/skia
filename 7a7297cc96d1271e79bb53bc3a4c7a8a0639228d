@@ -91,6 +91,24 @@
       "parentUuid": "1dd65975_7d3342c3",
       "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5aa4348_42ea044a",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-18T20:49:29Z",
+      "side": 1,
+      "message": "From Dawn team, mappable vertex and uniform buffers will be supported by dawn. But webgpu spec doesn\u0027t plan to support it. So for graphite + webgpu build, we still need handle it specially. But for graphite + dawn, we can just use mappable buffer in future.",
+      "parentUuid": "8a0ae50f_13799160",
+      "revId": "7a7297cc96d1271e79bb53bc3a4c7a8a0639228d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
