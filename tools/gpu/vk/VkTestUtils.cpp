@@ -212,7 +212,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            instanceExtensions->push_back() = extensions[i];
+            instanceExtensions->push_back(extensions[i]);
         }
         delete [] extensions;
     }
@@ -234,7 +234,7 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            instanceExtensions->push_back() = extensions[i];
+            instanceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }
@@ -301,7 +301,7 @@ static bool init_device_extensions_and_layers(skgpu::VulkanGetProc getProc, uint
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            deviceExtensions->push_back() = extensions[i];
+            deviceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }
@@ -325,7 +325,7 @@ static bool init_device_extensions_and_layers(skgpu::VulkanGetProc getProc, uint
             return false;
         }
         for (uint32_t i = 0; i < extensionCount; ++i) {
-            deviceExtensions->push_back() = extensions[i];
+            deviceExtensions->push_back(extensions[i]);
         }
         delete[] extensions;
     }

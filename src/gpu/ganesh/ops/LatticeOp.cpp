@@ -162,7 +162,7 @@ public:
             , fAlphaType(alphaType)
             , fColorSpaceXform(std::move(colorSpaceXform))
             , fFilter(filter) {
-        Patch& patch = fPatches.push_back();
+        Patch& patch = *fPatches.append();
         patch.fViewMatrix = viewMatrix;
         patch.fColor = color;
         patch.fIter = std::move(iter);

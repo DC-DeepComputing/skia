@@ -177,13 +177,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
             int c = y + x;
             int rgb[3] = {-(c & 1) & 0xff, -((c >> 1) & 1) & 0xff, -((c >> 2) & 1) & 0xff};
 
-            const Box box = boxes.push_back() = {
-                    float(x * kBoxSize),
-                    float(y * kBoxSize),
-                    GrColorPackRGBA(rgb[0], rgb[1], rgb[2], 255)
-            };
+            const Box box = boxes.push_back({float(x * kBoxSize),
+                                             float(y * kBoxSize),
+                                             GrColorPackRGBA(rgb[0], rgb[1], rgb[2], 255)});
 
-            std::array<Box, 4>& boxVertices = vertexData.push_back();
+            std::array<Box, 4>& boxVertices = *vertexData.append();
             for (int i = 0; i < 4; ++i) {
                 boxVertices[i] = {
                         box.fX + (i / 2) * kBoxSize,

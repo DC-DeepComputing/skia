@@ -155,7 +155,7 @@ static void FuzzSkMeshSpecification(SkSpan<const uint8_t> data) {
         switch (control) {
             case 0: {
                 // Add an attribute.
-                Attribute& a = attributes.push_back();
+                Attribute& a = *attributes.append();
                 a.type = (Attribute::Type)(extract<uint8_t>(data) %
                                            ((int)Attribute::Type::kLast + 1));
                 a.offset = extract<uint16_t>(data) % (SkMeshSpecification::kMaxStride + 2);
@@ -168,7 +168,7 @@ static void FuzzSkMeshSpecification(SkSpan<const uint8_t> data) {
             }
             case 1: {
                 // Add a varying.
-                Varying& v = varyings.push_back();
+                Varying& v = *varyings.append();
                 v.type = (Varying::Type)(extract<uint8_t>(data) % ((int)Varying::Type::kLast + 1));
                 while (uint8_t c = extract<char>(data)) {
                     if (!fuzzByteToASCII(c, &v.name)) {

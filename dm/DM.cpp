@@ -493,10 +493,7 @@ static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
         !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
-        TaggedSrc& s = gSrcs->push_back();
-        s.reset(src.release());
-        s.tag = tag;
-        s.options = options;
+        gSrcs->push_back(TaggedSrc{{std::move(src)}, SkString{tag}, options});
     }
 }
 
@@ -951,9 +948,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         exit(1);
     }
 
-    TaggedSink& ts = gSinks->push_back();
-    ts.reset(sink.release());
-    ts.tag = config.getTag();
+    gSinks->push_back({{std::move(sink)}, config.getTag()});
 }
 
 static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLineConfig* config) {

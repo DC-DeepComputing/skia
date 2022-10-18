@@ -207,7 +207,7 @@ static const TagHandler axisHandler = {
             }
         }
         if (axisTagIsValid && axisStyleValueIsValid) {
-            auto& coordinate = file.fVariationDesignPosition.push_back();
+            auto& coordinate = *file.fVariationDesignPosition.append();
             coordinate.axis = axisTag;
             coordinate.value = SkFixedToScalar(axisStyleValue);
         }
@@ -223,7 +223,7 @@ static const TagHandler fontHandler = {
         // 'style' ("normal", "italic") [default "auto"]
         // 'index' (non-negative integer) [default 0]
         // The character data should be a filename.
-        FontFileInfo& file = self->fCurrentFamily->fFonts.push_back();
+        FontFileInfo& file = *self->fCurrentFamily->fFonts.append();
         self->fCurrentFontInfo = &file;
         SkString fallbackFor;
         for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
@@ -298,7 +298,7 @@ static const TagHandler familyHandler = {
             size_t valueLen = strlen(value);
             if (MEMEQ("name", name, nameLen)) {
                 SkAutoAsciiToLC tolc(value);
-                family->fNames.push_back().set(tolc.lc());
+                family->fNames.emplace_back(tolc.lc());
                 family->fIsFallbackFont = false;
             } else if (MEMEQ("lang", name, nameLen)) {
                 parse_space_separated_languages(value, valueLen, family->fLanguages);
@@ -373,7 +373,7 @@ static const TagHandler aliasHandler = {
 
         if (weight) {
             FontFamily* family = new FontFamily(targetFamily->fBasePath, self->fIsFallback);
-            family->fNames.push_back().set(aliasName);
+            family->fNames.emplace_back(aliasName);
 
             for (int i = 0; i < targetFamily->fFonts.count(); i++) {
                 if (targetFamily->fFonts[i].fWeight == weight) {
@@ -382,7 +382,7 @@ static const TagHandler aliasHandler = {
             }
             *self->fFamilies.append() = family;
         } else {
-            targetFamily->fNames.push_back().set(aliasName);
+            targetFamily->fNames.emplace_back(aliasName);
         }
     },
     /*end*/nullptr,
@@ -416,7 +416,7 @@ static const TagHandler fileHandler = {
         // 'index' (non-negative integer) [default 0]
         // The character data should be a filename.
         FontFamily& currentFamily = *self->fCurrentFamily;
-        FontFileInfo& newFileInfo = currentFamily.fFonts.push_back();
+        FontFileInfo& newFileInfo = *currentFamily.fFonts.append();
         if (attributes) {
             for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
                 const char* name = attributes[i];
@@ -485,7 +485,7 @@ static const TagHandler fileSetHandler = {
 static const TagHandler nameHandler = {
     /*start*/[](FamilyData* self, const char* tag, const char** attributes) {
         // The character data should be a name for the font.
-        self->fCurrentFamily->fNames.push_back();
+        self->fCurrentFamily->fNames.append();
     },
     /*end*/nullptr,
     /*tag*/nullptr,

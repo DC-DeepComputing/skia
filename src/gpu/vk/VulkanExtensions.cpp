@@ -42,7 +42,7 @@ void VulkanExtensions::init(VulkanGetProc getProc,
         const char* extension = instanceExtensions[i];
         // if not already in the list, add it
         if (find_info(fExtensions, extension) < 0) {
-            fExtensions.push_back() = Info(extension);
+            fExtensions.push_back(Info(extension));
             SkTQSort(fExtensions.begin(), fExtensions.end(), extension_compare);
         }
     }
@@ -50,7 +50,7 @@ void VulkanExtensions::init(VulkanGetProc getProc,
         const char* extension = deviceExtensions[i];
         // if not already in the list, add it
         if (find_info(fExtensions, extension) < 0) {
-            fExtensions.push_back() = Info(extension);
+            fExtensions.push_back(Info(extension));
             SkTQSort(fExtensions.begin(), fExtensions.end(), extension_compare);
         }
     }
