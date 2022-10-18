@@ -481,12 +481,8 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
 
         // The amount of bytes in the stream must be at least as big as sz, otherwise
         // sz is invalid.
-        if (stream->hasLength() && stream->hasPosition()) {
-            SkASSERT(stream->getLength() >= stream->getPosition());
-            size_t remainingBytes = stream->getLength() - stream->getPosition();
-            if (sz > remainingBytes) {
-                return nullptr;
-            }
+        if (stream->insufficientRemainingBytes(sz)) {
+            return nullptr;
         }
 
         auto data = SkData::MakeUninitialized(sz);
