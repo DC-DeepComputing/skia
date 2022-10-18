@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59e9da98_04ffec71",
+        "filename": "samplecode/SampleImageFilterDAG.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-18T13:37:23Z",
+      "side": 1,
+      "message": "The problem with the code you present in compiler explorer is that you are using initializing a variable, and not creating a static constexpr value. We don\u0027t want to add memory to hold a value we can know at compile time.",
+      "parentUuid": "694ea09e_b4b22cb1",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "88cbe07d7aa06fbc2081b9b171980382c3f30af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de4be296_b1c23137",
         "filename": "tools/viewer/SlideDir.h",
         "patchSetId": 6
