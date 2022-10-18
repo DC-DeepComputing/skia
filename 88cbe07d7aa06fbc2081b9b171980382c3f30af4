@@ -218,6 +218,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc0fa179_46ca5207",
+        "filename": "samplecode/SampleImageFilterDAG.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-18T13:39:28Z",
+      "side": 1,
+      "message": "Crap, I lied, you can use it but not in a constexpr context or you get the bug again.\nhttps://godbolt.org/z/578WG8vKx",
+      "parentUuid": "25883266_1723c83f",
+      "range": {
+        "startLine": 42,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "88cbe07d7aa06fbc2081b9b171980382c3f30af4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de4be296_b1c23137",
         "filename": "tools/viewer/SlideDir.h",
         "patchSetId": 6
