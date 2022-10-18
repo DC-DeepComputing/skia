@@ -202,6 +202,13 @@ sk_sp<SkData> SkData::MakeWithCString(const char cstr[]) {
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
+    // If the stream allows it, make sure there's enough data to read before allocating.
+    if (stream->hasLength() && stream->hasPosition()) {
+        size_t remainingBytes = stream->getLength() - stream->getPosition();
+        if (size > remainingBytes) {
+            return nullptr;
+        }
+    }
     sk_sp<SkData> data(SkData::MakeUninitialized(size));
     if (stream->read(data->writable_data(), size) != size) {
         return nullptr;

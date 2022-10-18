@@ -138,8 +138,10 @@ sk_sp<SkPicture> SkPicture::Forwardport(const SkPictInfo& info,
     return r.finishRecordingAsPicture();
 }
 
+static const int nestedSKPLimit = 100; // Arbitrarily set
+
 sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procs) {
-    return MakeFromStream(stream, procs, nullptr);
+    return MakeFromStreamPriv(stream, procs, nullptr, nestedSKPLimit);
 }
 
 sk_sp<SkPicture> SkPicture::MakeFromData(const void* data, size_t size,
@@ -148,7 +150,7 @@ sk_sp<SkPicture> SkPicture::MakeFromData(const void* data, size_t size,
         return nullptr;
     }
     SkMemoryStream stream(data, size);
-    return MakeFromStream(&stream, procs, nullptr);
+    return MakeFromStreamPriv(&stream, procs, nullptr, nestedSKPLimit);
 }
 
 sk_sp<SkPicture> SkPicture::MakeFromData(const SkData* data, const SkDeserialProcs* procs) {
@@ -156,11 +158,14 @@ sk_sp<SkPicture> SkPicture::MakeFromData(const SkData* data, const SkDeserialPro
         return nullptr;
     }
     SkMemoryStream stream(data->data(), data->size());
-    return MakeFromStream(&stream, procs, nullptr);
+    return MakeFromStreamPriv(&stream, procs, nullptr, nestedSKPLimit);
 }
 
-sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procsPtr,
-                                           SkTypefacePlayback* typefaces) {
+sk_sp<SkPicture> SkPicture::MakeFromStreamPriv(SkStream* stream, const SkDeserialProcs* procsPtr,
+                                               SkTypefacePlayback* typefaces, int recursionLimit) {
+    if (recursionLimit <= 0) {
+        return nullptr;
+    }
     SkPictInfo info;
     if (!StreamIsSKP(stream, &info)) {
         return nullptr;
@@ -176,7 +181,8 @@ sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialPro
     switch (trailingStreamByteAfterPictInfo) {
         case kPictureData_TrailingStreamByteAfterPictInfo: {
             std::unique_ptr<SkPictureData> data(
-                    SkPictureData::CreateFromStream(stream, info, procs, typefaces));
+                    SkPictureData::CreateFromStream(stream, info, procs, typefaces,
+                                                    recursionLimit));
             return Forwardport(info, data.get(), nullptr);
         }
         case kCustom_TrailingStreamByteAfterPictInfo: {
@@ -185,6 +191,12 @@ sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialPro
                 return nullptr;
             }
             size_t size = sk_negate_to_size_t(ssize);
+            if (stream->hasLength() && stream->hasPosition()) {
+                size_t remainingBytes = stream->getLength() - stream->getPosition();
+                if (size > remainingBytes) {
+                    return nullptr;
+                }
+            }
             auto data = SkData::MakeUninitialized(size);
             if (stream->read(data->writable_data(), size) != size) {
                 return nullptr;
