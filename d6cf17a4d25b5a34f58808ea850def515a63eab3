@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0349754e_1a43849b",
+        "filename": "tests/DrawBitmapRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-18T15:38:19Z",
+      "side": 1,
+      "message": "This is interesting? What is the issue without it? From a glance at this file it\u0027s just `canvas.drawImageRect(src.asImage()` that uses it at all, and only as a pointer, and that forward declaration should come from `SkCanvas.h`? I\u0027ll take a bit of a look, bit this seem strange?",
+      "revId": "d6cf17a4d25b5a34f58808ea850def515a63eab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
