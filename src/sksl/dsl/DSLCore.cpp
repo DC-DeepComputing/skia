@@ -240,12 +240,22 @@ public:
                                        SkTArray<DSLField> fields, std::string_view varName,
                                        int arraySize, Position pos) {
         std::shared_ptr<SymbolTable> symbols = ThreadContext::SymbolTable();
-        const bool anonymous = varName.empty();
+
+        // Build a struct type corresponding to the passed-in fields and array size.
         DSLType dslStructType = StructType(typeName, fields, /*interfaceBlock=*/true, pos);
         const SkSL::Type* structType = &dslStructType.skslType();
         DSLType varType = arraySize > 0 ? Array(structType, arraySize)
                                         : std::move(dslStructType);
-        DSLGlobalVar var(modifiers, varType, anonymous ? typeName : varName, DSLExpression(), pos);
+
+        // If this is an anonymous interface block, invent a private name for it.
+        const bool anonymous = varName.empty();
+        std::string_view globalVarName =
+                anonymous ? *symbols->takeOwnershipOfString("$intf_" + std::string(typeName))
+                          : varName;
+
+        // Create a global variable to attach our interface block to. (The variable doesn't actually
+        // get a program element, though; the interface block does instead.)
+        DSLGlobalVar var(modifiers, varType, globalVarName, DSLExpression(), pos);
         SkSL::Variable* skslVar = DSLWriter::Var(var);
         if (skslVar) {
             auto intf = std::make_unique<SkSL::InterfaceBlock>(pos, skslVar, typeName,
@@ -261,7 +271,7 @@ public:
                 }
             } else {
                 // Add the global variable to the top-level symbols.
-                AddToSymbolTable(var);
+                symbols->addWithoutOwnership(skslVar);
             }
         }
         return var;
