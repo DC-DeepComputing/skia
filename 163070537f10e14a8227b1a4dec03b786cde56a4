@@ -88,6 +88,24 @@
       "parentUuid": "4f64b3fd_9b6a512c",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3fa0cf6_accff555",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T15:19:59Z",
+      "side": 1,
+      "message": "In practice, I actually prefer the `emplace_back` behavior.\nIf we assign into the value immediately, the optimizer will notice this and can eliminate the extra store.\nIf we _don\u0027t_ assign into the value immediately, I\u0027d rather have a value-initialized object than uninitialized garbage.",
+      "parentUuid": "a48a7e43_62f4a18b",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
