@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/gpu/graphite/ContextOptions.h"
@@ -18,6 +19,7 @@
 #include <memory>
 
 class SkRuntimeEffect;
+class SkSurface;
 
 namespace skgpu { struct VulkanBackendContext; }
 
@@ -35,6 +37,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class TextureProxy;
 
 #ifdef SK_ENABLE_PRECOMPILE
 class BlenderID;
@@ -67,6 +70,12 @@ public:
 
     void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
+
+    void asyncReadPixels(const SkImage* image,
+                         SkColorType dstColorType,
+                         const SkIRect& srcRect,
+                         SkImage::ReadPixelsCallback callback,
+                         SkImage::ReadPixelsContext context);
 
     /**
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
@@ -122,6 +131,8 @@ private:
     friend class ContextPriv;
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
+
+    class AsyncReadResult;
 
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;
