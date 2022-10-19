@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7c7abb_8c706fce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-19T19:28:31Z",
+      "side": 1,
+      "message": "Seems fine, though we do need to remember that `SkTo` only asserts in debug.",
+      "revId": "d6f7ee9bb26d80c52baa945635bcefb622b1b9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
