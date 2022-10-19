@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13efbcb8_015d8c12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-19T19:17:18Z",
+      "side": 1,
+      "message": "The canary chromium failures appear to be the same set of failures as the parent CL, which will be suppressed by https://chromium-review.googlesource.com/c/chromium/src/+/3964805.\n\nThe large GM differences in backdrop_scalefactor only show up in the last column, which uses a 1/10th scale factor, so it\u0027s not surprising that a single pixel change at that lower resolution becomes grossly magnified. In practice ChromeOS doesn\u0027t go below a 1/3 scale factor anyways.",
+      "revId": "f79b5a2fc90b4f751ffb881a4ba5464adbabd479",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
