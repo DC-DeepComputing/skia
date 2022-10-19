@@ -20,6 +20,8 @@ class RecordingPriv;
 class Resource;
 class ResourceProvider;
 class TaskGraph;
+class TextureProxy;
+class VolatileProxyContext;
 
 class Recording final {
 public:
@@ -31,7 +33,7 @@ private:
     friend class Recorder; // for ctor
     friend class RecordingPriv;
 
-    Recording(std::unique_ptr<TaskGraph>);
+    Recording(std::unique_ptr<TaskGraph>, sk_sp<VolatileProxyContext>);
 
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
@@ -42,6 +44,8 @@ private:
     // Those refs are stored in the array here and will eventually be passed onto a CommandBuffer
     // when the Recording adds its commands.
     std::vector<sk_sp<Resource>> fExtraResourceRefs;
+
+    sk_sp<VolatileProxyContext> fVolatileProxyContext;
 };
 
 } // namespace skgpu::graphite
