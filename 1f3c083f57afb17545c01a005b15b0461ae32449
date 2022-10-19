@@ -16,6 +16,24 @@
       "message": "Is this expected?",
       "revId": "1f3c083f57afb17545c01a005b15b0461ae32449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "778871fc_af3c8d06",
+        "filename": "tests/sksl/shared/InterfaceBlockMultipleAnonymous.asm.frag",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T17:06:22Z",
+      "side": 1,
+      "message": "Oh! No, I didn\u0027t see this. It also appears on `InterfaceBlockBuffer.asm.frag` so I don\u0027t think it\u0027s related to this CL. It looks like most test cases mark the IB as `uniform`. I\u0027ll try that here.\n\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/sksl/shared/InterfaceBlockBuffer.asm.frag;l\u003d3;drc\u003d6114bb947c3314665cf9d544e914e650e0802e9d",
+      "parentUuid": "c28c7ce4_f39bec05",
+      "revId": "1f3c083f57afb17545c01a005b15b0461ae32449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
