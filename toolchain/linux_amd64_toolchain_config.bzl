@@ -219,7 +219,7 @@ def _make_default_flags():
                     "-isystem",
                     EXTERNAL_TOOLCHAIN + "/usr/include",
                     "-isystem",
-                    EXTERNAL_TOOLCHAIN + "/lib/clang/13.0.0/include",
+                    EXTERNAL_TOOLCHAIN + "/lib/clang/15.0.2/include",
                     "-isystem",
                     EXTERNAL_TOOLCHAIN + "/usr/include/x86_64-linux-gnu",
                     # We do not want clang to search in absolute paths for files. This makes

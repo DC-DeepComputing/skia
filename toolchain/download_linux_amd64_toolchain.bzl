@@ -15,10 +15,11 @@ which will act as our sysroot.
 
 load("//toolchain:utils.bzl", "gcs_mirror_url")
 
-# From https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz.sha256
-clang_prefix = "clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/"
-clang_sha256 = "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8"
-clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
+# From https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.2
+# Using objdump -T path/to/bin/clang | grep GLIBC | sort revealed this requires glibc 2.29
+clang_prefix = "clang+llvm-15.0.2-x86_64-unknown-linux-gnu"
+clang_sha256 = "8af00fb689459cb6b9af2a427af9d7d99da8f77e1da161fa1dc58164832b3b21"
+clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.2/clang+llvm-15.0.2-x86_64-unknown-linux-gnu-sles15.tar.xz"
 
 debs_to_install = [
     # These three comprise glibc. libc6 has the shared libraries, like libc itself, the math library
@@ -253,7 +254,7 @@ filegroup(
         include = [
             "include/c++/v1/**",
             "usr/include/**",
-            "lib/clang/13.0.0/**",
+            "lib/clang/15.0.2/**",
             "usr/include/x86_64-linux-gnu/**",
         ],
         allow_empty = False,
@@ -273,7 +274,7 @@ filegroup(
         "lib64/ld-linux-x86-64.so.2",
     ] + glob(
         include = [
-            "lib/clang/13.0.0/lib/**",
+            "lib/clang/15.0.2/lib/**",
             "lib/x86_64-linux-gnu/**",
             "usr/lib/x86_64-linux-gnu/**",
         ],
