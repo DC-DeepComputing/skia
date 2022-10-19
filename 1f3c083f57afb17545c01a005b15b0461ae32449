@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28c7ce4_f39bec05",
+        "filename": "tests/sksl/shared/InterfaceBlockMultipleAnonymous.asm.frag",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-19T16:57:01Z",
+      "side": 1,
+      "message": "Is this expected?",
+      "revId": "1f3c083f57afb17545c01a005b15b0461ae32449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
