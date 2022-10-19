@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "259a8160_33bde4ca",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T13:20:47Z",
+      "side": 1,
+      "message": "Okay well this was a good exercise in coding, but I\u0027ve been thinking about this the last couple days and I think we\u0027re going to move towards requiring 1.1 for Graphite. Basically all our clients and similar libraries require it, so I don\u0027t think we lose much  in terms of device support by requiring it.",
+      "range": {
+        "startLine": 94,
+        "startChar": 3,
+        "endLine": 97,
+        "endChar": 65
+      },
+      "revId": "989839f29a8721a1171621b096afa7220b4601de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb0c366_64028d90",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T13:20:47Z",
+      "side": 1,
+      "message": "So blit and Transfer are two different flags for different commands in vulkan. The blit is specifically for vkCmdBlit calls where as transfer is for vkCmdCopy* calls and vkCmdClear* calls.",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "revId": "989839f29a8721a1171621b096afa7220b4601de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

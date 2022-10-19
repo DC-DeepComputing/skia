@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b156f8e2_0c23a864",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T13:20:47Z",
+      "side": 1,
+      "message": "Yeah its hard to say right now what the best/cleanest. But, for example, I feel like it would be good to know whether a format can be used as a transfer src or a transfer dst instead of requiring both to say we support transfers. So if we want that fine grain of queries it seems like our enums may end up matching very closely to what the format features flags already are.\n\nHopefully if we have things like kRenderable_Flag right now which we require that it has all of VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT \u0026\u0026 VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT \u0026\u0026\nVK_FORMAT_FEATURE_COLOR_ATTACHMENT_BLEND_BIT\n\nthat check could just all be put into a helper function so anywhere where we\u0027re currently doing \"if (flags \u0026 kRenderable_Flag)\" today can just be replaced with something like if (is_renderable(featureFlags)).",
+      "parentUuid": "ea2bda55_8b675550",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 42
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "145a24be_5a766eaf",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 7
