@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d15f0dc5_017d125f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-19T15:18:57Z",
+      "side": 1,
+      "message": "As fun as that was, that requirement makes sense.",
+      "parentUuid": "259a8160_33bde4ca",
+      "range": {
+        "startLine": 94,
+        "startChar": 3,
+        "endLine": 97,
+        "endChar": 65
+      },
+      "revId": "989839f29a8721a1171621b096afa7220b4601de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8eb0c366_64028d90",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-19T13:20:47Z",
       "side": 1,
       "message": "So blit and Transfer are two different flags for different commands in vulkan. The blit is specifically for vkCmdBlit calls where as transfer is for vkCmdCopy* calls and vkCmdClear* calls.",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "revId": "989839f29a8721a1171621b096afa7220b4601de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f429e71_81d701c8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-19T15:18:57Z",
+      "side": 1,
+      "message": "Ah, gotcha, that makes sense. \n\n\u003eI feel like it would be good to know whether a format can be used as a transfer src or a transfer dst instead of requiring both to say we support transfers.\n\nWe can easily add a helper for this once we want to query for it.",
+      "parentUuid": "8eb0c366_64028d90",
       "range": {
         "startLine": 109,
         "startChar": 26,

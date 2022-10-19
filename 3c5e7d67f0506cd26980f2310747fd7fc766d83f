@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1094353_99993b32",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-19T15:18:57Z",
+      "side": 1,
+      "message": "Alright, I took a swing at this. I must admit, so far, I do prefer it over the past approach. Let me know what you think. For now, I threw those helpers into an anonymous namespace within the class file, but we could always put them somewhere more generally accessible as other files may need them.",
+      "parentUuid": "b156f8e2_0c23a864",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 42
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "145a24be_5a766eaf",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 7
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "Per our offline discussion, we now check for these conditions within FormatInfo::InitFormatFlags, which now takes in more parameters in order to perform these checks. I incorporated checking these conditions into our setting of the kBlit[Src/Dst]_Flag flags and added a TODO re:VK_KHR_sampler_ycbcr_conversion.",
       "parentUuid": "145a24be_5a766eaf",
+      "range": {
+        "startLine": 73,
+        "startChar": 5,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "3c5e7d67f0506cd26980f2310747fd7fc766d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b94581_4487afff",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-19T15:18:57Z",
+      "side": 1,
+      "message": "Since we are requiring Vk \u003e\u003d 1.1.0, I removed this TODO and the work resulting from the original comment.",
+      "parentUuid": "6139e38c_a3a7124a",
       "range": {
         "startLine": 73,
         "startChar": 5,
