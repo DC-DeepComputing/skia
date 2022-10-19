@@ -16,6 +16,24 @@
       "message": "Can I suggest `emplace_back` instead? That\u0027s actually tracking with std::vector:\n\nhttps://en.cppreference.com/w/cpp/container/vector/emplace_back\n\nReturns a reference instead of a pointer, but that\u0027s just different notation. We can add the support for passing `Args...` in a followup if we ever need it.",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b575968_9b036639",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-19T13:04:30Z",
+      "side": 1,
+      "message": "Do you mean emplace_back() as a way to add a single item. append() matches the SkTDArray API. Part of our goal is bringing the SkTDArray and SkTArray APIs together. I view append as a shorthand for insert where the start is at fEnd. insert() returns a pointer. And returning a pointer makes sense when this is expanded to append(int n) because then you have a pointer to the array of elements you can change.",
+      "parentUuid": "6855c31d_e14d2eb7",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
