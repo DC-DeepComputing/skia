@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7294a661_7eccc7ae",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-19T20:47:11Z",
+      "side": 1,
+      "message": "gm names cannot have spaces in them (by policy).\nparagraph_fontSize_and_heightMultipler_0",
+      "range": {
+        "startLine": 1232,
+        "startChar": 8,
+        "endLine": 1232,
+        "endChar": 49
+      },
+      "revId": "d4cfe5c96ed82527cad077c03f2340c566653a88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
