@@ -34,6 +34,24 @@
       "parentUuid": "ebe31597_3d40f513",
       "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69921b4f_c8589bec",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-19T18:34:00Z",
+      "side": 0,
+      "message": "I spent a while trying to find a reasonably fast scalar version of this that\u0027s correct, but everything is massively worse than the current code. And Fixing just the SIMD code is probably a bad idea ... in addition to platforms where we don\u0027t have SIMD, the fallback is used for any tail pixels. So my test case would be correct for the first N pixels per scan-line, and wrong for the last few.",
+      "parentUuid": "c8c681cb_09263c50",
+      "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
