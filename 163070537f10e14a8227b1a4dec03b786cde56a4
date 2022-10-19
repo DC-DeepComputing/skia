@@ -34,6 +34,24 @@
       "parentUuid": "6855c31d_e14d2eb7",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a466f62_25f3ecd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-19T13:26:34Z",
+      "side": 1,
+      "message": "Oh that\u0027s confusing. So, emplace_back initially had a void return type then it started returning reference in c++17. push_back has a return type of void.",
+      "parentUuid": "7b575968_9b036639",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
