@@ -147,6 +147,8 @@ bool validate_backend_texture(const Caps* caps,
 
 } // anonymous namespace
 
+using namespace skgpu::graphite;
+
 sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
                                          RequiredImageProperties requiredProps) const {
     if (!recorder) {
@@ -163,6 +165,140 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
         }
     }
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+}
+
+sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(
+        Recorder* recorder,
+         SkISize dimensions,
+         TextureInfo textureInfo,
+         Volatile isVolatile,
+         GraphitePromiseImageFulfillProc fulfillProc,
+         GraphitePromiseImageReleaseProc releaseProc,
+         GraphitePromiseImageFulfillContext fulfillContext) {
+    SkASSERT(!dimensions.isEmpty());
+
+    if (!fulfillProc) {
+        return nullptr;
+    }
+
+    /**
+     * This class is the lazy instantiation callback for promise images. It manages calling the
+     * client's Fulfill, Release, and Done procs. It attempts to reuse a GrTexture instance in
+     * cases where the client provides the same SkPromiseImageTexture as Fulfill results for
+     * multiple SkImages. The created GrTexture is given a key based on a unique ID associated with
+     * the SkPromiseImageTexture.
+     *
+     * A key invalidation message is installed on the SkPromiseImageTexture so that the GrTexture
+     * is deleted once it can no longer be used to instantiate a proxy.
+     */
+    class PromiseLazyInstantiateCallback {
+    public:
+        PromiseLazyInstantiateCallback(GraphitePromiseImageFulfillProc fulfillProc,
+                                       GraphitePromiseImageReleaseProc releaseProc,
+                                       GraphitePromiseImageFulfillContext fulfillContext)
+                : fFulfillProc(fulfillProc)
+                , fReleaseProc(releaseProc)
+                , fFulfillContext(fulfillContext) {
+        }
+
+        PromiseLazyInstantiateCallback(PromiseLazyInstantiateCallback&&) = default;
+        PromiseLazyInstantiateCallback(const PromiseLazyInstantiateCallback&) {
+            // Because we get wrapped in std::function we must be copyable. But we should never
+            // be copied.
+            SkASSERT(false);
+        }
+        PromiseLazyInstantiateCallback& operator=(PromiseLazyInstantiateCallback&&) = default;
+        PromiseLazyInstantiateCallback& operator=(const PromiseLazyInstantiateCallback&) {
+            SkASSERT(false);
+            return *this;
+        }
+
+        sk_sp<Texture> operator()(ResourceProvider* resourceProvider, Volatile isVolatile) {
+
+            if (fCalledFulfilledProc && isVolatile == Volatile::kNo) {
+                // In the non-volatile case we should only try to fulfill multiple times if the
+                // first call failed.
+                SkASSERT(fFulfillProcFailed);
+                return nullptr;
+            }
+
+            fCalledFulfilledProc = true;
+            auto [ backendTexture, releaseContext ] = fFulfillProc(fFulfillContext);
+            if (!backendTexture.isValid()) {
+                fFulfillProcFailed = true;
+                return nullptr;
+            }
+
+            sk_sp<RefCntedCallback> releaseCB = RefCntedCallback::Make(fReleaseProc,
+                                                                       releaseContext);
+
+            sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture);
+            if (!texture) {
+                return nullptr;
+            }
+
+            texture->setReleaseCallback(std::move(releaseCB));
+            return texture;
+        }
+
+    private:
+        GraphitePromiseImageFulfillProc fFulfillProc;
+        GraphitePromiseImageReleaseProc fReleaseProc;
+        GraphitePromiseImageFulfillContext fFulfillContext;
+        bool fCalledFulfilledProc = false;
+        bool fFulfillProcFailed = false;
+
+    } callback(fulfillProc, releaseProc, fulfillContext);
+
+    return TextureProxy::MakeLazy(dimensions,
+                                  textureInfo,
+                                  SkBudgeted::kNo,     // This is destined for a user's SkImage
+                                  isVolatile,
+                                  std::move(callback));
+}
+
+sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(
+        Recorder* recorder,
+        SkISize dimensions,
+        const TextureInfo& textureInfo,
+        const SkColorInfo& colorInfo,
+        Volatile isVolatile,
+        GraphitePromiseImageFulfillProc fulfillProc,
+        GraphitePromiseImageReleaseProc releaseProc,
+        GraphitePromiseImageFulfillContext fulfillContext) {
+
+    if (!recorder) {
+        SKGPU_LOG_W("Null Recorder");
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    SkImageInfo info = SkImageInfo::Make(dimensions, colorInfo);
+    if (!SkImageInfoIsValid(info)) {
+        SKGPU_LOG_W("Invalid SkImageInfo");
+        return nullptr;
+    }
+
+    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), textureInfo)) {
+        SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
+        return nullptr;
+    }
+
+    sk_sp<TextureProxy> proxy = Image::MakePromiseImageLazyProxy(recorder,
+                                                                 dimensions,
+                                                                 textureInfo,
+                                                                 isVolatile,
+                                                                 fulfillProc,
+                                                                 releaseProc,
+                                                                 fulfillContext);
+    if (!proxy) {
+        return nullptr;
+    }
+
+    skgpu::Swizzle swizzle = caps->getReadSwizzle(colorInfo.colorType(), textureInfo);
+    TextureProxyView view(std::move(proxy), swizzle);
+    return sk_make_sp<Image>(view, colorInfo);
 }
 
 sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
