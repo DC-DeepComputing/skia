@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f4a0dd_84a1feae",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T16:05:14Z",
+      "side": 1,
+      "message": "false? Seems dangerous for this to return true and then have some code things its safe to grab the Texture off the TextureProxy",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 23
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f11ace_1869eed5",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T16:05:14Z",
+      "side": 1,
+      "message": "Should this have a:\nif (fTexture) {\n    return true;\n}\n\nOr if not then we should assert we don\u0027t have a texture when this called. We will be uninstantiated this volatile ones so we should never have a case where we are replacing a valid fTexture with a different fTexture.",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 12
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a70093_1d0f8842",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T16:05:14Z",
+      "side": 1,
+      "message": "Are all of these things really needed to be passed into the Lazy callback? I don\u0027t see them used, besides volatile in the follow up cls.",
+      "range": {
+        "startLine": 81,
+        "startChar": 15,
+        "endLine": 81,
+        "endChar": 59
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
