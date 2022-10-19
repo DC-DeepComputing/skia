@@ -16,6 +16,29 @@
       "message": "Seems fine, though we do need to remember that `SkTo` only asserts in debug.",
       "revId": "d6f7ee9bb26d80c52baa945635bcefb622b1b9c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "813b84dc_ea74be1e",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T19:33:06Z",
+      "side": 1,
+      "message": "\"are re-enabled\" would be slightly easier to understand. The comma confused by brain-parser briefly",
+      "range": {
+        "startLine": 463,
+        "startChar": 68,
+        "endLine": 463,
+        "endChar": 80
+      },
+      "revId": "d6f7ee9bb26d80c52baa945635bcefb622b1b9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
