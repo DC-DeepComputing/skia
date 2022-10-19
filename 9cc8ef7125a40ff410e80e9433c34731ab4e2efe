@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe31597_3d40f513",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-19T18:28:09Z",
+      "side": 0,
+      "message": "Was this really adding whole colors as 32bit signed ints? So if there was an overflow the channel would wrap around, but maybe also increment the low bit of the next channel?",
+      "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
