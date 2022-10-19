@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aadf9f1f_1d650136",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-19T18:46:26Z",
+      "side": 1,
+      "message": "Another question this brings up -- how do we expect clients to populate / get a TextureInfo object to pass in here? Does that have to be handled on a per-backend basis via backend-specific (e.g. MtlTextureInfo) constructors?",
+      "parentUuid": "d4ae6735_987b8b0b",
+      "range": {
+        "startLine": 68,
+        "startChar": 30,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3750304f_e8a80204",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 4
