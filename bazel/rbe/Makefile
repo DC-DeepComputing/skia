@@ -1,4 +1,4 @@
-LINUX_VERSION=v1
+LINUX_VERSION=v2
 
 build_linux_container:
 	docker build -t gcr.io/skia-public/rbe_linux:${LINUX_VERSION} ./gce_linux_container/
