@@ -460,7 +460,7 @@ config("warnings") {
     cflags += [
       "-Wno-cast-align",
       "-Wno-cast-qual",
-      "-Wno-conversion",  # -Wsign-conversion re-enabled for header sources
+      "-Wno-conversion",  # -Wsign-conversion and -Wshorten-64-to-32, re-enabled for header sources
       "-Wno-disabled-macro-expansion",
       "-Wno-documentation",
       "-Wno-documentation-unknown-command",
@@ -560,6 +560,7 @@ config("warnings_for_public_headers") {
     cflags = [
       "-Wsign-conversion",
       "-Wunused-parameter",
+      "-Wshorten-64-to-32",
     ]
   }
 }
