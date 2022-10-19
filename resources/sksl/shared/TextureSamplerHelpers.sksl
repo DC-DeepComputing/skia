@@ -1,0 +1,12 @@
+layout(binding = 0) uniform sampler s;
+layout(binding = 1) uniform texture2D t;
+
+layout(location = 1) in float2 c;
+
+noinline half4 doTextureStuff(sampler s, texture2D t) {
+    return sample(makeSampler2D(t, s), c).bgra;
+}
+
+void main() {
+    sk_FragColor = doTextureStuff(s, t);
+}
