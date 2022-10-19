@@ -34,6 +34,24 @@
       "parentUuid": "c28c7ce4_f39bec05",
       "revId": "1f3c083f57afb17545c01a005b15b0461ae32449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8833b466_1b7c63dd",
+        "filename": "tests/sksl/shared/InterfaceBlockMultipleAnonymous.asm.frag",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T17:13:01Z",
+      "side": 1,
+      "message": "Marking as `uniform` resolved it. Thanks for noticing this.",
+      "parentUuid": "778871fc_af3c8d06",
+      "revId": "1f3c083f57afb17545c01a005b15b0461ae32449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
