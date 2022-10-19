@@ -35,6 +35,8 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+#include <unordered_set>
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
@@ -122,6 +124,17 @@ std::unique_ptr<Recording> Recorder::snap() {
         device->flushPendingWorkToRecorder();
     }
 
+    std::unordered_set<TextureProxy*> volatileProxies;
+    fTextureDataCache->foreach([&](const SkTextureDataBlock* block) {
+        for (int j = 0; j < block->numTextures(); ++j) {
+            const SkTextureDataBlock::SampledTexture& tex = block->texture(j);
+
+            if (tex.first->isVolatile()) {
+                volatileProxies.insert(tex.first.get());
+            }
+        }
+    });
+
     // TODO: fulfill all promise images in the TextureDataCache here
     // TODO: create all the samplers needed in the TextureDataCache here
 
@@ -139,7 +152,8 @@ std::unique_ptr<Recording> Recorder::snap() {
         return nullptr;
     }
 
-    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph)));
+    std::unique_ptr<Recording> recording(new Recording(std::move(fGraph),
+                                                       std::move(volatileProxies)));
     fDrawBufferManager->transferToRecording(recording.get());
     fUploadBufferManager->transferToRecording(recording.get());
 
@@ -291,7 +305,7 @@ RecorderPriv::PixelTransferResult RecorderPriv::transferPixels(const TextureProx
     }
 
     size_t rowBytes = caps->getAlignedTextureDataRowBytes(
-                              SkColorTypeBytesPerPixel(supportedColorType) * srcRect.width());
+            SkColorTypeBytesPerPixel(supportedColorType) * srcRect.width());
     size_t size = rowBytes * srcRect.height();
     sk_sp<Buffer> buffer = this->resourceProvider()->findOrCreateBuffer(
             size,
@@ -305,7 +319,7 @@ RecorderPriv::PixelTransferResult RecorderPriv::transferPixels(const TextureProx
     sk_sp<CopyTextureToBufferTask> copyTask = CopyTextureToBufferTask::Make(sk_ref_sp(proxy),
                                                                             srcRect,
                                                                             buffer,
-                                                                            /*bufferOffset=*/0,
+            /*bufferOffset=*/0,
                                                                             rowBytes);
     if (!copyTask) {
         return {};
@@ -328,5 +342,6 @@ RecorderPriv::PixelTransferResult RecorderPriv::transferPixels(const TextureProx
  */
     return result;
 }
+
 
 } // namespace skgpu::graphite
