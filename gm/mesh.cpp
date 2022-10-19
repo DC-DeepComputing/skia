@@ -44,14 +44,14 @@ protected:
             static constexpr char kVS[] = R"(
                     half4 unswizzle_color(half4 color) { return color.garb; }
 
-                    void main(in Attributes attributes, out Varyings varyings) {
+                    void main(const in Attributes attributes, out Varyings varyings) {
                         varyings.color    = unswizzle_color(attributes.brag);
                         varyings.uv       = attributes.xuyv.yw;
                         varyings.position = attributes.xuyv.xz;
                     }
             )";
             static constexpr char kFS[] = R"(
-                    float2 main(in Varyings varyings, out float4 color) {
+                    float2 main(const in Varyings varyings, out float4 color) {
                         color = varyings.color;
                         return varyings.uv;
                     }
@@ -75,14 +75,14 @@ protected:
                     {Varying::Type::kFloat2, SkString{"vux2"}},
             };
             static constexpr char kVS[] = R"(
-                    void main(in Attributes a, out Varyings v) {
+                    void main(const in Attributes a, out Varyings v) {
                         v.vux2     = 2*a.xuyv.wy;
                         v.position = a.xuyv.xz;
                     }
             )";
             static constexpr char kFS[] = R"(
                     float2 helper(in float2 vux2) { return vux2.yx/2; }
-                    float2 main(in Varyings varyings) {
+                    float2 main(const in Varyings varyings) {
                         return helper(varyings.vux2);
                     }
             )";

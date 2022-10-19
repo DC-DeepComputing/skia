@@ -34,12 +34,12 @@ namespace SkSL { struct Program; }
  * produces local coordinates for shading and optionally a color.
  *
  * The signature of the vertex program must be:
- *   void main(Attributes, out Varyings).
+ *   void main(const Attributes, out Varyings).
  *
  * The signature of the fragment program must be either:
- *   float2 main(Varyings)
+ *   float2 main(const Varyings)
  * or
- *   float2 main(Varyings, out (half4|float4) color)
+ *   float2 main(const Varyings, out (half4|float4) color)
  *
  * where the return value is the local coordinates that will be used to access SkShader. If the
  * color variant is used it will be blended with SkShader (or SkPaint color in absence of a shader)

@@ -33,6 +33,11 @@
 #include "src/gpu/ganesh/GrStagingBufferManager.h"
 #endif  // SK_SUPPORT_GPU
 
+#include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLReturnStatement.h"
+#include "src/sksl/ir/SkSLType.h"
+#include "src/sksl/ir/SkSLVariableReference.h"
 #include <locale>
 #include <string>
 #include <tuple>
@@ -227,6 +232,92 @@ check_vertex_offsets_and_stride(SkSpan<const Attribute> attributes,
     RETURN_SUCCESS;
 }
 
+static std::optional<Varying> check_for_passthrough_local_coords(const SkSL::Program& fsProgram,
+                                                                 SkSpan<const Varying> varyings) {
+    using namespace SkSL;
+
+    class Visitor final : public SkSL::ProgramVisitor {
+    public:
+        Visitor(const Context& context) : fContext(context) {}
+
+        void visit(const Program& program) { ProgramVisitor::visit(program); }
+
+        const std::string_view fieldName() {
+            if (fFieldIndex < 0) {
+                return {};
+            }
+            return fVaryings->type().fields()[fFieldIndex].fName;
+        }
+
+        int fieldIndex() const { return fFieldIndex; }
+
+        SkDEBUGCODE(const Variable* varyings() const { return fVaryings; })
+
+    protected:
+        bool visitProgramElement(const ProgramElement& p) override {
+            if (p.is<FunctionDefinition>()) {
+                if (!p.as<FunctionDefinition>().declaration().isMain()) {
+                    return false;
+                }
+                SkASSERT(fVaryings == nullptr);
+                fVaryings = p.as<FunctionDefinition>().declaration().parameters()[0];
+            }
+            return ProgramVisitor::visitProgramElement(p);
+        }
+
+        bool visitExpression(const Expression& e) override {
+            if (!e.is<ReturnStatement>()) {
+                return ProgramVisitor::visitExpression(e);
+            }
+            const auto& rs = e.as<ReturnStatement>();
+            SkASSERT(rs.expression());
+            if (!rs.expression()->is<FieldAccess>()) {
+                fFieldIndex = -1;
+                return false;
+            }
+            const auto& fa = rs.expression()->as<FieldAccess>();
+            if (!fa.base()->is<VariableReference>()) {
+                fFieldIndex = -1;
+                return false;
+            }
+            const auto& baseRef = fa.base()->as<VariableReference>();
+            if (baseRef.variable() != fVaryings) {
+                fFieldIndex = -1;
+                return false;
+            }
+            if (fFieldIndex >= 0) {
+                if (fa.fieldIndex() != fFieldIndex) {
+                    fFieldIndex = -1;
+                    return false;
+                }
+                // Can we just stop here with return false?
+                return ProgramVisitor::visitExpression(e);
+            }
+            const Type::Field& field = fVaryings->type().fields()[fa.fieldIndex()];
+            if (!field.fType->matches(*fContext.fTypes.fFloat2)) {
+                return false;
+            }
+            fFieldIndex = fa.fieldIndex();
+            // and here?
+            return ProgramVisitor::visitExpression(e);
+        }
+
+    private:
+        const Context&  fContext;
+        const Variable* fVaryings   = nullptr;
+        int             fFieldIndex = -1;
+    };
+    Visitor v(*fsProgram.fContext);
+    v.visit(fsProgram);
+    if (v.fieldIndex() < 0) {
+        return {};
+    }
+    SkASSERT(v.varyings()->type().fields()[v.fieldIndex()].fName ==
+             varyings[v.fieldIndex()].name.c_str());
+    SkASSERT(varyings[v.fieldIndex()].type == Varying::Type::kFloat2);
+    return varyings[v.fieldIndex()];
+}
+
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
                                                       size_t vertexStride,
                                                       SkSpan<const Varying> varyings,
@@ -263,6 +354,8 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
     }
     attributesStruct.append("};\n");
 
+    // TODO: Put the varyings in the Varying array (and maybe allow user to predeclare it??) to
+    // simplify later stuff. Update docs so it's clear this will be SkMeshSpecification::varyings();
     SkString varyingStruct("struct Varyings {\n  float2 position;\n");
     for (const auto& v : varyings) {
         varyingStruct.appendf("  %s %s;\n", varying_type_string(v.type), v.name.c_str());
@@ -386,6 +479,8 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
             return {nullptr, SkString{"Must provide a valid alpha type if FS returns a color."}};
         }
     }
+
+    auto passThroughVaryings = check_for_passthrough_local_coords(*fsProgram, varyings);
 
     return {sk_sp<SkMeshSpecification>(new SkMeshSpecification(attributes,
                                                                stride,

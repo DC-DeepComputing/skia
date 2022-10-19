@@ -175,9 +175,9 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
                p.modifiers().fLayout.fBuiltin == builtinID;
     };
 
-    auto paramIsInAttributes = [&](int idx) {
+    auto paramIsConstInAttributes = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForAttributes(p.type()) && p.modifiers().fFlags == 0;
+        return typeIsValidForAttributes(p.type()) && p.modifiers().fFlags == Modifiers::kConst_Flag;
     };
 
     auto paramIsOutVaryings = [&](int idx) {
@@ -185,9 +185,9 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
         return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == Modifiers::kOut_Flag;
     };
 
-    auto paramIsInVaryings = [&](int idx) {
+    auto paramIsConstInVaryings = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == 0;
+        return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == Modifiers::kConst_Flag;
     };
 
     auto paramIsOutColor = [&](int idx) {
@@ -248,8 +248,8 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
                 errors.error(pos, "'main' must have void return.");
                 return false;
             }
-            if (!(parameters.size() == 2 && paramIsInAttributes(0) && paramIsOutVaryings(1))) {
-                errors.error(pos, "'main' parameters must be (Attributes, out Varyings");
+            if (!(parameters.size() == 2 && paramIsConstInAttributes(0) && paramIsOutVaryings(1))) {
+                errors.error(pos, "'main' parameters must be (const Attributes, out Varyings");
                 return false;
             }
             break;
@@ -260,9 +260,9 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
                 errors.error(pos, "'main' must return: 'vec2' or 'float2'");
                 return false;
             }
-            if (!((parameters.size() == 1 && paramIsInVaryings(0)) ||
-                  (parameters.size() == 2 && paramIsInVaryings(0) && paramIsOutColor(1)))) {
-                errors.error(pos, "'main' parameters must be (Varyings, (out (half4|float4))?)");
+            if (!((parameters.size() == 1 && paramIsConstInVaryings(0)) ||
+                  (parameters.size() == 2 && paramIsConstInVaryings(0) && paramIsOutColor(1)))) {
+                errors.error(pos, "'main' parameters must be (const Varyings, (out (half4|float4))?)");
                 return false;
             }
             break;
