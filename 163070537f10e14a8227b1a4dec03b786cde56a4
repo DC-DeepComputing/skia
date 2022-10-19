@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6855c31d_e14d2eb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T12:45:36Z",
+      "side": 1,
+      "message": "Can I suggest `emplace_back` instead? That\u0027s actually tracking with std::vector:\n\nhttps://en.cppreference.com/w/cpp/container/vector/emplace_back\n\nReturns a reference instead of a pointer, but that\u0027s just different notation. We can add the support for passing `Args...` in a followup if we ever need it.",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
