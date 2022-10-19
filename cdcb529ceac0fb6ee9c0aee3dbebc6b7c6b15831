@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf2a3c4_8ca5b179",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-19T16:25:51Z",
+      "side": 1,
+      "message": "This looks fine for now. It isn\u0027t immediately clear to me why this is an `SkOnce` and not just a `bool`, since this class now being mutable means that it cannot be safely used from multiple threads at the same time anyway, so the atomic guarantees of `SkOnce` don\u0027t actually appear to be needed. We can take a look at that separately though.",
+      "revId": "cdcb529ceac0fb6ee9c0aee3dbebc6b7c6b15831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
