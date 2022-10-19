@@ -106,6 +106,24 @@
       "parentUuid": "a48a7e43_62f4a18b",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3791f8c1_ee82fe8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-19T15:52:14Z",
+      "side": 1,
+      "message": "I understand your concern, but some code uses the uninitialized behavior, and the is the behavior of the current push_back_n(int n).",
+      "parentUuid": "a3fa0cf6_accff555",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
