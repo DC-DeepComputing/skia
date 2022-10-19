@@ -34,10 +34,6 @@ std::shared_ptr<SymbolTable> CurrentSymbolTable() {
     return ThreadContext::SymbolTable();
 }
 
-DSLExpression Symbol(std::string_view name, Position pos) {
-    return DSLExpression(ThreadContext::Compiler().convertIdentifier(pos, name), pos);
-}
-
 void AddToSymbolTable(DSLVarBase& var, Position pos) {
     SkSL::Variable* skslVar = DSLWriter::Var(var);
     if (skslVar) {

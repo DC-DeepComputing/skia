@@ -45,11 +45,6 @@ void PopSymbolTable();
 std::shared_ptr<SymbolTable> CurrentSymbolTable();
 
 /**
- * Returns an expression referring to the named symbol.
- */
-DSLExpression Symbol(std::string_view name, Position pos = {});
-
-/**
  * Adds a variable to the current symbol table.
  */
 void AddToSymbolTable(DSLVarBase& var, Position pos = {});
