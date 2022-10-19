@@ -1940,15 +1940,21 @@ DEF_TEST(XfermodeImageFilterBounds, reporter) {
 }
 
 DEF_TEST(OffsetImageFilterBounds, reporter) {
-    SkIRect src = SkIRect::MakeXYWH(0, 0, 100, 100);
-    sk_sp<SkImageFilter> offset(SkImageFilters::Offset(-50.5f, -50.5f, nullptr));
+    const SkIRect src = SkIRect::MakeXYWH(0, 0, 100, 100);
+    const SkVector srcOffset = {-50.5f, -50.5f};
+    sk_sp<SkImageFilter> offset(SkImageFilters::Offset(srcOffset.fX, srcOffset.fY, nullptr));
 
-    SkIRect expectedForward = SkIRect::MakeXYWH(-50, -50, 100, 100);
+    // Because the offset has a fractional component, the final output and required input bounds
+    // will be rounded out to include an extra pixel.
+    SkIRect expectedForward = SkRect::Make(src).makeOffset(srcOffset.fX, srcOffset.fY).roundOut();
     SkIRect boundsForward = offset->filterBounds(src, SkMatrix::I(),
                                                  SkImageFilter::kForward_MapDirection, nullptr);
     REPORTER_ASSERT(reporter, boundsForward == expectedForward);
 
-    SkIRect expectedReverse = SkIRect::MakeXYWH(50, 50, 100, 100);
+    // In addition to rounding out, the offset filter uses bilinear filtering so includes 1 extra
+    // buffer of requested input.
+    SkIRect expectedReverse = SkRect::Make(src).makeOffset(-srcOffset.fX, -srcOffset.fY)
+                                               .makeOutset(1.f, 1.f).roundOut();
     SkIRect boundsReverse = offset->filterBounds(src, SkMatrix::I(),
                                                  SkImageFilter::kReverse_MapDirection, &src);
     REPORTER_ASSERT(reporter, boundsReverse == expectedReverse);
