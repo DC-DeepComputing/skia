@@ -9,6 +9,7 @@
 #define SkBlenderBase_DEFINED
 
 #include "include/core/SkBlender.h"
+#include "include/core/SkColor.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
 
@@ -58,13 +59,17 @@ public:
 
 #ifdef SK_ENABLE_SKSL
     // TODO: make pure virtual
-    // 'primitiveColorBlender' is true when this blender is acting to blend the primitive's color
-    // with the paint's color. When false, the blender is acting to blend the result of the paint
-    // evaluation with the back buffer.
+    virtual void addToKey(const SkKeyContext&,
+                          SkPaintParamsKeyBuilder*,
+                          SkPipelineDataGatherer*) const;
+    /**
+     * Override which includes a provided destination color (as opposed to a destination color
+     * determined by the current color on the surface).
+     */
     virtual void addToKey(const SkKeyContext&,
                           SkPaintParamsKeyBuilder*,
                           SkPipelineDataGatherer*,
-                          bool primitiveColorBlender) const;
+                          const SkColor4f* destColor) const;
 #endif
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }

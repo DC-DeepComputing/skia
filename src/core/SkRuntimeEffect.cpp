@@ -953,8 +953,7 @@ static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children
         } else if (type == ChildType::kColorFilter) {
             as_CFB(child.colorFilter())->addToKey(keyContext, builder, gatherer);
         } else if (type == ChildType::kBlender) {
-            as_BB(child.blender())->addToKey(keyContext, builder, gatherer,
-                                             /*primitiveColorBlender=*/false);
+            as_BB(child.blender())->addToKey(keyContext, builder, gatherer);
         } else {
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
@@ -1422,9 +1421,8 @@ public:
     void addToKey(const SkKeyContext& keyContext,
                   SkPaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer,
-                  bool primitiveColorBlender) const override {
+                  bool primitiveColorBlender) const {
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
-
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
         builder->endBlock();

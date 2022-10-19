@@ -73,8 +73,8 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
     }
 
     if (fPrimitiveBlender) {
-        as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer,
-                                           /*primitiveColorBlender=*/true);
+        const SkColor4f testColor = SkColors::kCyan;//SkColor4f::FromColor({0,1,0,1});
+        as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer, &testColor);
     }
 
     // Apply the paint's alpha value.
@@ -85,13 +85,16 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
         as_CFB(alphaColorFilter)->addToKey(keyContext, builder, gatherer);
     }
 
+    if (fPrimitiveBlender) {
+        as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer, &fColor);
+    }
+
     if (fColorFilter) {
         as_CFB(fColorFilter)->addToKey(keyContext, builder, gatherer);
     }
 
     if (fFinalBlender) {
-        as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer,
-                                       /*primitiveColorBlender=*/false);
+        as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer);
     } else {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
         builder->endBlock();
