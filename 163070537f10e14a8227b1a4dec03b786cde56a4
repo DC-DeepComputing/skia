@@ -124,6 +124,24 @@
       "parentUuid": "a3fa0cf6_accff555",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5990e8e2_caaad2d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T15:58:38Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a zero-argument `append()`, which is what this CL delivers. It seems like these updated call sites could all be updated to use `emplace_back()` and we wouldn\u0027t need any changes inside SkTArray, and it\u0027s likely to be a total wash for code size/perf.\n\nFor multi-element insertion, we could talk about renaming `push_back_n` to `append` or something along those lines, and that\u0027s totally a valid and reasonable idea. But that\u0027s a separate CL.",
+      "parentUuid": "3791f8c1_ee82fe8c",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
