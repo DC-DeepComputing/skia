@@ -70,6 +70,24 @@
       "parentUuid": "9a466f62_25f3ecd5",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48a7e43_62f4a18b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-19T13:36:29Z",
+      "side": 1,
+      "message": "OH! Another strange distiction.\nEmplace back will call:\n  new (X) T();\n\nWhile append() will call:\n  new(X) T;\n  \nEmplace back will cause zero the memory for pods while append() will not. append()\nwould do less work for pushing back ints, pointers, etc.",
+      "parentUuid": "4f64b3fd_9b6a512c",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
