@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5b17ec9_4933d0c4",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-19T16:58:29Z",
+      "side": 1,
+      "message": "If we return false here the prepareResources call(s) will fail and the snap will fail.\n\nWe could rename this to be \u0027instantiateIfNonVolatile\u0027 to clarify that the Texture isn\u0027t necessarily filled in after this call.\n\nNote that, with volatile promise images, one can\u0027t assume that all TextureProxies have a Texture after snapping.",
+      "parentUuid": "f3f4a0dd_84a1feae",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 23
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59f11ace_1869eed5",
         "filename": "src/gpu/graphite/TextureProxy.cpp",
         "patchSetId": 4
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2993f9c9_52006540",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-19T16:58:29Z",
+      "side": 1,
+      "message": "A client could, if they wanted to, insert the same Recording (with volatile promise images) twice and then submit. We would follow our contract and call fulfill on each insertion and the second one would win.\n\nNote that we will also be calling the releaseProc twice w/ potentially different release contexts.",
+      "parentUuid": "59f11ace_1869eed5",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 12
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05a70093_1d0f8842",
         "filename": "src/gpu/graphite/TextureProxy.h",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-19T16:05:14Z",
       "side": 1,
       "message": "Are all of these things really needed to be passed into the Lazy callback? I don\u0027t see them used, besides volatile in the follow up cls.",
+      "range": {
+        "startLine": 81,
+        "startChar": 15,
+        "endLine": 81,
+        "endChar": 59
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2175890d_8d84d155",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-19T16:58:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05a70093_1d0f8842",
       "range": {
         "startLine": 81,
         "startChar": 15,
