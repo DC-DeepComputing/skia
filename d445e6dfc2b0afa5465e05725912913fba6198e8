@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d21fb6d_c9c97232",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-19T20:54:25Z",
+      "side": 1,
+      "message": "WDYT about taking texView and srcRect as params and returning the new view? The way it is now it isn\u0027t so obvious what\u0027s happening at the call sites.",
+      "revId": "d445e6dfc2b0afa5465e05725912913fba6198e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e82b98_c2d04a42",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1285,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-19T20:54:25Z",
+      "side": 1,
+      "message": "Not sure if it\u0027s better but could be:\n```\n  if (xform || texView.origin() !\u003d stepDst-\u003eorigin() ||\n      !stepDst-\u003ecopyScaled(texView.refProxy(), srcRect, stepDstRect, filter)) {\n      if (!ensureTexturable()) {\n          return false;\n      }\n      auto srcRectF \u003d SkRect::Make(srcRect);\n      ...\n```",
+      "range": {
+        "startLine": 1277,
+        "startChar": 0,
+        "endLine": 1285,
+        "endChar": 26
+      },
+      "revId": "d445e6dfc2b0afa5465e05725912913fba6198e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
