@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a517e18f_d5616dd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-10-19T15:10:47Z",
+      "side": 1,
+      "message": "Herb and Jim, if you\u0027re happy with this, I support merging it to android/next-release and AOSP.",
+      "revId": "9a4a7b595124d2aae640eb09a5fc958e4ba18587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
