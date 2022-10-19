@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82bd2440_63c9f530",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-19T19:00:01Z",
+      "side": 1,
+      "message": "Generally the client would need to fill the TextureInfos in which all the backend specific stuff. We can also expose publically similar helper queries like what we have in our caps, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/Caps.h;l\u003d43, to give them default TextureInfos. But it required by the client to make sure they honor all the defaults when they end up giving us a texture.\n\nWe maybe can also add getters on already made SkSurface/Skimages to return their matching TextureInfo if that is helpful.",
+      "parentUuid": "aadf9f1f_1d650136",
+      "range": {
+        "startLine": 68,
+        "startChar": 30,
+        "endLine": 68,
+        "endChar": 42
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3750304f_e8a80204",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 4
