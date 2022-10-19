@@ -12,15 +12,30 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/TaskGraph.h"
+#include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
 
-Recording::Recording(std::unique_ptr<TaskGraph> graph) : fGraph(std::move(graph)) {
+Recording::Recording(std::unique_ptr<TaskGraph> graph,
+                     std::unordered_set<TextureProxy*>&& volatileProxies)
+        : fGraph(std::move(graph))
+        , fVolatileProxies(std::move(volatileProxies)) {
 }
 
 Recording::~Recording() {}
 
 ////////////////////////////////////////////////////////////////////////////////
+
+bool RecordingPriv::instantiateVolatileProxies(ResourceProvider* resourceProvider) {
+
+    for (TextureProxy* proxy : fRecording->fVolatileProxies) {
+        if (!proxy->volatileInstantiate(resourceProvider)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 bool RecordingPriv::addCommands(ResourceProvider* resourceProvider, CommandBuffer* commandBuffer) {
     if (!fRecording->fGraph->addCommands(resourceProvider, commandBuffer)) {
