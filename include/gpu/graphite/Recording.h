@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 namespace skgpu::graphite {
@@ -20,6 +21,7 @@ class RecordingPriv;
 class Resource;
 class ResourceProvider;
 class TaskGraph;
+class TextureProxy;
 
 class Recording final {
 public:
@@ -31,7 +33,7 @@ private:
     friend class Recorder; // for ctor
     friend class RecordingPriv;
 
-    Recording(std::unique_ptr<TaskGraph>);
+    Recording(std::unique_ptr<TaskGraph>, std::unordered_set<TextureProxy*>&& volatileProxies);
 
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
@@ -42,6 +44,8 @@ private:
     // Those refs are stored in the array here and will eventually be passed onto a CommandBuffer
     // when the Recording adds its commands.
     std::vector<sk_sp<Resource>> fExtraResourceRefs;
+
+    std::unordered_set<TextureProxy*> fVolatileProxies;
 };
 
 } // namespace skgpu::graphite
