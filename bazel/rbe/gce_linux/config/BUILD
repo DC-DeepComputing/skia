@@ -17,6 +17,7 @@
 
 package(default_visibility = ["//visibility:public"])
 
+
 toolchain(
     name = "cc-toolchain",
     exec_compatible_with = [
@@ -34,14 +35,14 @@ toolchain(
 
 platform(
     name = "platform",
+    parents = ["@local_config_platform//:host"],
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
         "@bazel_tools//tools/cpp:clang",
     ],
     exec_properties = {
-        "container-image": "docker://gcr.io/skia-public/rbe_linux@sha256:4f7ea556fbf46f65f0c6a2d65144bbcb1139acc78ef19be4bd4b04dcfa623f18",
+        "container-image": "docker://gcr.io/skia-public/rbe_linux@sha256:91f46bdc8aaf6658f862d4094b8d8ec9613d082b42ce8db551ffea5caf38e026",
         "OSFamily": "Linux",
     },
-    parents = ["@local_config_platform//:host"],
 )
