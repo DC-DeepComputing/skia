@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec0b72c2_3a9fff10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-19T18:52:31Z",
+      "side": 1,
+      "message": "Once https://chromium-review.googlesource.com/c/chromium/src/+/3964805 lands, this will be good to roll into chromium.",
+      "revId": "ec37555364aba7fa8e1e8d6b683272e70e6b5dab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
