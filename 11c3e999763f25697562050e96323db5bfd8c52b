@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "11c3e999763f25697562050e96323db5bfd8c52b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520eb337_51005738",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-19T15:22:20Z",
+      "side": 1,
+      "message": "nit: `bits.` (no space before period)",
+      "range": {
+        "startLine": 631,
+        "startChar": 55,
+        "endLine": 631,
+        "endChar": 57
+      },
+      "revId": "11c3e999763f25697562050e96323db5bfd8c52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
