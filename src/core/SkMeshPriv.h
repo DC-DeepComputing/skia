@@ -87,6 +87,8 @@ struct SkMeshSpecificationPriv {
         }
         SkUNREACHABLE;
     }
+
+    static std::optional<Varying> CheckForPassthroughLocalCoords(const SkMeshSpecification&);
 };
 
 struct SkMeshPriv {
