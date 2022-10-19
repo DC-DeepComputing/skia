@@ -20,14 +20,18 @@
 #include "src/gpu/graphite/ClientMappedBufferManager.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/CopyTask.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/TextureProxyView.h"
 
 #ifdef SK_DAWN
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
@@ -67,7 +71,12 @@ Context::Context(sk_sp<SharedContext> sharedContext, std::unique_ptr<QueueManage
     fResourceProvider = fSharedContext->makeResourceProvider(&fSingleOwner);
     fMappedBufferManager = std::make_unique<ClientMappedBufferManager>(this->contextID());
 }
-Context::~Context() {}
+
+Context::~Context() {
+    // TODO: need to releaseAll in ResourceProvider first so that other threads that are holding
+    // async pixel result don't try to destroy buffers off thread?
+    fMappedBufferManager.reset();
+}
 
 BackendApi Context::backend() const { return fSharedContext->backend(); }
 
@@ -150,6 +159,175 @@ void Context::submit(SyncToCpu syncToCpu) {
 
     fQueueManager->submitToGpu();
     fQueueManager->checkForFinishedWork(syncToCpu);
+}
+
+using PixelTransferResult = RecorderPriv::PixelTransferResult;
+
+class Context::AsyncReadResult : public SkImage::AsyncReadResult {
+public:
+    AsyncReadResult(Context::ContextID intendedRecipient)
+        : fIntendedRecipient(intendedRecipient) {
+    }
+
+    ~AsyncReadResult() override {
+        for (int i = 0; i < fPlanes.count(); ++i) {
+            fPlanes[i].releaseMappedBuffer(fIntendedRecipient);
+        }
+    }
+
+    int count() const override { return fPlanes.count(); }
+    const void* data(int i) const override { return fPlanes[i].data(); }
+    size_t rowBytes(int i) const override { return fPlanes[i].rowBytes(); }
+
+    bool addTransferResult(const PixelTransferResult& result,
+                           SkISize dimensions,
+                           size_t rowBytes,
+                           ClientMappedBufferManager* manager) {
+        SkASSERT(!result.fTransferBuffer->isMapped());
+        const void* mappedData = result.fTransferBuffer->map();
+        if (!mappedData) {
+            return false;
+        }
+        if (result.fPixelConverter) {
+            size_t size = rowBytes*dimensions.height();
+            sk_sp<SkData> data = SkData::MakeUninitialized(size);
+            result.fPixelConverter(data->writable_data(), mappedData);
+            this->addCpuPlane(std::move(data), rowBytes);
+            result.fTransferBuffer->unmap();
+        } else {
+            manager->insert(result.fTransferBuffer);
+            this->addMappedPlane(mappedData, rowBytes, std::move(result.fTransferBuffer));
+        }
+        return true;
+    }
+
+    void addCpuPlane(sk_sp<SkData> data, size_t rowBytes) {
+        SkASSERT(data);
+        SkASSERT(rowBytes > 0);
+        fPlanes.emplace_back(std::move(data), rowBytes);
+    }
+
+private:
+    void addMappedPlane(const void* data, size_t rowBytes, sk_sp<Buffer> mappedBuffer) {
+        SkASSERT(data);
+        SkASSERT(rowBytes > 0);
+        SkASSERT(mappedBuffer);
+        SkASSERT(mappedBuffer->isMapped());
+        fPlanes.emplace_back(std::move(mappedBuffer), rowBytes);
+    }
+
+    class Plane {
+    public:
+        Plane(sk_sp<Buffer> buffer, size_t rowBytes)
+                : fMappedBuffer(std::move(buffer)), fRowBytes(rowBytes) {}
+        Plane(sk_sp<SkData> data, size_t rowBytes) : fData(std::move(data)), fRowBytes(rowBytes) {}
+
+        Plane(Plane&&) = default;
+
+        ~Plane() { SkASSERT(!fMappedBuffer); }
+
+        Plane& operator=(const Plane&) = delete;
+        Plane& operator=(Plane&&) = default;
+
+        void releaseMappedBuffer(Context::ContextID intendedRecipient) {
+            if (fMappedBuffer) {
+                ClientMappedBufferManager::BufferFinishedMessageBus::Post(
+                        {std::move(fMappedBuffer), intendedRecipient});
+            }
+        }
+
+        const void* data() const {
+            if (fMappedBuffer) {
+                SkASSERT(!fData);
+                SkASSERT(fMappedBuffer->isMapped());
+                return fMappedBuffer->map();
+            }
+            SkASSERT(fData);
+            return fData->data();
+        }
+
+        size_t rowBytes() const { return fRowBytes; }
+
+    private:
+        sk_sp<SkData> fData;
+        sk_sp<Buffer> fMappedBuffer;
+        size_t fRowBytes;
+    };
+    SkSTArray<3, Plane> fPlanes;
+    Context::ContextID fIntendedRecipient;
+};
+
+void Context::asyncReadPixels(const SkImage* image,
+                              SkColorType dstColorType,
+                              const SkIRect& srcRect,
+                              SkImage::ReadPixelsCallback callback,
+                              SkImage::ReadPixelsContext callbackContext) {
+    if (dstColorType == kUnknown_SkColorType) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+    if (!SkIRect::MakeSize(image->dimensions()).contains(srcRect)) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+    auto graphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(image);
+    TextureProxyView proxyView = graphiteImage->textureProxyView();
+    TextureProxy* proxy = proxyView.proxy();
+
+    std::unique_ptr<Recorder> recorder = this->makeRecorder();
+    const Caps* caps = recorder->priv().caps();
+    if (!caps->supportsReadPixels(proxy->textureInfo())) {
+        // TODO: try to copy to a readable texture instead
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+    PixelTransferResult transferResult =
+            recorder->priv().transferPixels(proxy, image->imageInfo(), dstColorType, srcRect);
+
+    if (!transferResult.fTransferBuffer) {
+        // TODO: try to do a synchronous readPixels instead
+        callback(callbackContext, nullptr);
+        return;
+    }
+
+    // Need a way to pass a FinishContext to result
+    struct FinishContext {
+        SkImage::ReadPixelsCallback* fClientCallback;
+        SkImage::ReadPixelsContext fClientContext;
+        SkISize fSize;
+        size_t fRowBytes;
+        ClientMappedBufferManager* fMappedBufferManager;
+        PixelTransferResult fTransferResult;
+    };
+    size_t rowBytes = recorder->priv().caps()->getAlignedTextureDataRowBytes(
+            srcRect.width() * SkColorTypeBytesPerPixel(dstColorType));
+    auto* finishContext = new FinishContext{callback,
+                                            callbackContext,
+                                            srcRect.size(),
+                                            rowBytes,
+                                            fMappedBufferManager.get(),
+                                            std::move(transferResult)};
+    GpuFinishedProc finishCallback = [](GpuFinishedContext c, CallbackResult) {
+        const auto* context = reinterpret_cast<const FinishContext*>(c);
+        ClientMappedBufferManager* manager = context->fMappedBufferManager;
+        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
+        if (!result->addTransferResult(context->fTransferResult, context->fSize,
+                                       context->fRowBytes, manager)) {
+            result.reset();
+        }
+        (*context->fClientCallback)(context->fClientContext, std::move(result));
+        delete context;
+    };
+
+    std::unique_ptr<Recording> recording = recorder->snap();
+    InsertRecordingInfo info;
+    info.fRecording = recording.get();
+    info.fFinishedContext = finishContext; // TODO: set these up to call callback
+    info.fFinishedProc = finishCallback;
+    this->insertRecording(info);
 }
 
 void Context::checkAsyncWorkCompletion() {
