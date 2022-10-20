@@ -9,6 +9,7 @@
 #define SkTArray_DEFINED
 
 #include "include/core/SkMath.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkSafe32.h"
@@ -121,7 +122,7 @@ public:
 
     ~SkTArray() {
         for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
+            (*this)[i].~T();
         }
         if (fOwnMemory) {
             sk_free(fItemArray);
@@ -393,15 +394,17 @@ public:
         if (fCount == 0) {
             sk_free(fItemArray);
             fItemArray = nullptr;
+            fAllocCount = 0;
         } else {
-            T* newItemArray = TCast(sk_malloc_throw(SkToSizeT(fCount), sizeof(T)));
+            SkSpan<std::byte> allocation = Allocate(fCount, 1.0);
+            T* newItemArray = TCast(allocation.data());
             this->move(newItemArray);
             if (fOwnMemory) {
                 sk_free(fItemArray);
             }
             fItemArray = newItemArray;
+            fAllocCount = SkToU32(allocation.size_bytes() / sizeof(T));
         }
-        fAllocCount = fCount;
     }
 
     /**
@@ -519,6 +522,12 @@ private:
         return SkToSizeT(n) * sizeof(T);
     }
 
+    static SkSpan<std::byte> Allocate(int atLeast, double growthFactor) {
+        // Don't leak sk_allocate out of core. Keep it secret. Keep it safe.
+        extern SkSpan<std::byte> sk_allocate(int atLeast, size_t sizeOfT, double growthFactor);
+        return sk_allocate(atLeast, sizeof(T), growthFactor);
+    }
+
     void init(int count) {
         fCount = count;
         if (!count) {
@@ -526,7 +535,9 @@ private:
             fItemArray = nullptr;
         } else {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
-            fItemArray = TCast(sk_malloc_throw(SkToSizeT(fAllocCount), sizeof(T)));
+            SkSpan<std::byte> allocation = Allocate(fAllocCount, 1.0);
+            fItemArray = TCast(allocation.data());
+            fAllocCount = allocation.size_bytes() / sizeof(T);
         }
         fOwnMemory = true;
     }
@@ -539,7 +550,9 @@ private:
         fItemArray = nullptr;
         if (count > preallocCount) {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
-            fItemArray = TCast(sk_malloc_throw(fAllocCount, sizeof(T)));
+            SkSpan<std::byte> allocation = Allocate(fAllocCount, 1.0);
+            fItemArray = TCast(allocation.data());
+            fAllocCount = allocation.size_bytes() / sizeof(T);
             fOwnMemory = true;
         } else {
             fAllocCount = SkToU32(preallocCount);
@@ -605,7 +618,7 @@ private:
 
         // Note: the maximum range for count is up to INT_MAX.
         SkASSERT_RELEASE(delta <= INT_MAX - fCount);
-        int newCount = fCount + delta;
+        const int newCount = fCount + delta;
 
         // Don't overflow size_t later in the memory allocation. This really only applies
         // to fCounts on 32-bit machines; on 64-bit machines this will probably never produce a
@@ -614,31 +627,21 @@ private:
             SkASSERT_RELEASE(newCount <= kMaxCount);
         }
 
-        int64_t newAllocCount = kMaxCount;
-        if (reallocType == kExactFit) {
-            newAllocCount = newCount;
-        } else {
-            // Whether we're growing, leave at least 50% extra space for future growth.
-            int64_t expandedAllocCount = newCount + ((newCount + 1) >> 1);
-            // Align the new allocation count to kMinHeapAllocCount.
-            expandedAllocCount =
-                    (expandedAllocCount + (kMinHeapAllocCount - 1)) & ~(kMinHeapAllocCount - 1);
-            if (newAllocCount <= kMaxCount) {
-                newAllocCount = expandedAllocCount;
-            }
-        }
+        double growthFactor = reallocType == kExactFit ? 1.0 : 1.5;
 
-        // Make sure the new allocation fits in 31 bits.
-        SkASSERT(newAllocCount <= INT_MAX);
-        fAllocCount = SkToU32(newAllocCount);
-        SkASSERT(SkToInt(fAllocCount) >= newCount);
-        T* newItemArray = TCast(sk_malloc_throw(this->bytes(fAllocCount)));
-        this->move(newItemArray);
+        SkSpan<std::byte> allocation = Allocate(newCount, growthFactor);
+
+        // The size returned may be too large for AllocCount; pin it to the max count.
+        fAllocCount = SkToU32(std::min(SkToSizeT(kMaxCount), allocation.size_bytes() / sizeof(T)));
+
+        this->move(allocation.data());
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
-        fItemArray = newItemArray;
+        fItemArray = TCast(allocation.data());
         fOwnMemory = true;
+        SkASSERT(SkToInt(fAllocCount) >= newCount);
+        SkASSERT(fItemArray != nullptr);
     }
 
     T* fItemArray;
