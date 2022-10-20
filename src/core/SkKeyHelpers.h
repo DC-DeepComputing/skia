@@ -261,6 +261,7 @@ struct BlendModeBlock {
                            SkBlendMode);
 };
 
+// TODO: Add comment explaining why this block is needed separately from BlendModeBlock.
 struct PrimitiveBlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,

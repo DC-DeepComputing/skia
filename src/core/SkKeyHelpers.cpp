@@ -603,7 +603,6 @@ void add_shaderbasedblender_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->addFlags(
             dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kShaderBasedBlender));
 }
-
 } // anonymous namespace
 
 #endif // SK_GRAPHITE_ENABLED
@@ -612,7 +611,6 @@ void BlendModeBlock::BeginBlock(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder *builder,
                                 SkPipelineDataGatherer* gatherer,
                                 SkBlendMode bm) {
-
 #ifdef SK_GRAPHITE_ENABLED
     auto dict = keyContext.dict();
 
@@ -636,18 +634,17 @@ void BlendModeBlock::BeginBlock(const SkKeyContext& keyContext,
 }
 
 void PrimitiveBlendModeBlock::BeginBlock(const SkKeyContext& keyContext,
-                                         SkPaintParamsKeyBuilder *builder,
-                                         SkPipelineDataGatherer* gatherer,
-                                         SkBlendMode pbm) {
-
+                                            SkPaintParamsKeyBuilder *builder,
+                                            SkPipelineDataGatherer* gatherer,
+                                            SkBlendMode bm) {
 #ifdef SK_GRAPHITE_ENABLED
+    // Only shader-based blending and runtime effects will pass in dest colors for blending
+    // (as opposed to "dest" referring to the current color at a location on the surface).
     auto dict = keyContext.dict();
-    // Unlike in the usual blendmode case, the primitive blend mode will always be implemented
-    // via shader-based blending.
     if (gatherer) {
-        add_shaderbasedblender_uniform_data(dict, pbm, gatherer);
+        add_shaderbasedblender_uniform_data(dict, bm, gatherer);
     }
-    builder->beginBlock(SkBuiltInCodeSnippetID::kShaderBasedBlender);
+    builder->beginBlock(SkBuiltInCodeSnippetID::kPrimitiveColorShaderBasedBlender);
 #endif // SK_GRAPHITE_ENABLED
 }
 
