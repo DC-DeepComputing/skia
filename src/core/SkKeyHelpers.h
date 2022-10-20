@@ -37,6 +37,17 @@ enum class ShaderType : uint32_t;
 
 // The KeyHelpers can be used to manually construct an SkPaintParamsKey
 
+/**
+ * Note: Different blend blocks are needed to represent different pairings of src/dst color sources.
+ * BlendModeBlock
+ *      Dst: color attachment    Src: priorStageOutput   For: SkPaint::getBlender()
+ * BlendShaderBlock
+ *      Dst: shader output A     Src: shader output B    For: SkShaders::Blend()
+ * BlendColorFilter
+ *      Dst: priorStageOutput    Src: color uniform      For: SkColorFilters::Blend()
+ * PrimitiveBlendModeBlock
+ *      Dst: primitiveColor      Src: priorStageOutput   For: drawVertices, drawAtlas, etc.
+ */
 struct PassthroughShaderBlock {
 
     static void BeginBlock(const SkKeyContext&,
