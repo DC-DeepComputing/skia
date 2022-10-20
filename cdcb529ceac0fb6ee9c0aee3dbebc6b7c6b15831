@@ -16,6 +16,24 @@
       "message": "This looks fine for now. It isn\u0027t immediately clear to me why this is an `SkOnce` and not just a `bool`, since this class now being mutable means that it cannot be safely used from multiple threads at the same time anyway, so the atomic guarantees of `SkOnce` don\u0027t actually appear to be needed. We can take a look at that separately though.",
       "revId": "cdcb529ceac0fb6ee9c0aee3dbebc6b7c6b15831",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be1e011e_ff3ef99f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8323
+      },
+      "writtenOn": "2022-10-20T02:00:47Z",
+      "side": 1,
+      "message": "Yep I was also wondering if `SkOnce` is an over kill, but trying to keep minimal changes to status quo.  I can make a follow up change...",
+      "parentUuid": "bcf2a3c4_8ca5b179",
+      "revId": "cdcb529ceac0fb6ee9c0aee3dbebc6b7c6b15831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
