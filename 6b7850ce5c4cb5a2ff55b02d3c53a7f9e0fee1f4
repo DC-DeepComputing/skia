@@ -16,6 +16,24 @@
       "message": "What changed?",
       "revId": "6b7850ce5c4cb5a2ff55b02d3c53a7f9e0fee1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55441fc8_932a45ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-20T20:04:01Z",
+      "side": 1,
+      "message": "I put some defines of SK_METAL back in the main ganesh and graphite defs. I noticed that Gold was fine until I took them out, so just testing that theory.",
+      "parentUuid": "59e5f17d_b5790f8b",
+      "revId": "6b7850ce5c4cb5a2ff55b02d3c53a7f9e0fee1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
