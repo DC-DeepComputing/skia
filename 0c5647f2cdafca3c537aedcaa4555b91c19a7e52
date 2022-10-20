@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fbaae29_a36a4e0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-20T19:12:32Z",
+      "side": 1,
+      "message": "This is not a final CL, just a request for comment on the internal structure. I don\u0027t think I\u0027m using the correct defines for the different OSs. I don\u0027t know\nhandle plain Linux.",
+      "revId": "0c5647f2cdafca3c537aedcaa4555b91c19a7e52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
