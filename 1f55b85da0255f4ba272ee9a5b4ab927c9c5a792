@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e43beb_a8bd14af",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T20:36:56Z",
+      "side": 1,
+      "message": "I seem to remember at some point this conflicting with OpenSSL\u0027s `stack.h`\u0027s `sk_free` but it had a different signature so being able to explicitly state it allowed specifying which (the deduction couldn\u0027t disambiguate). Not sure if that\u0027s still an issue anywhere.",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1420c70_862ea88a",
+        "filename": "modules/skplaintexteditor/src/word_boundaries.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T20:36:56Z",
+      "side": 1,
+      "message": "I think the same thing can be done here, and the `decltype(foo)` below removed.",
+      "range": {
+        "startLine": 15,
+        "startChar": 21,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b209087_ed90f0b4",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T20:36:56Z",
+      "side": 1,
+      "message": "I think the same thing can be done here, and the `decltype(foo)` below removed.",
+      "range": {
+        "startLine": 56,
+        "startChar": 21,
+        "endLine": 56,
+        "endChar": 36
+      },
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1517134_a199130f",
+        "filename": "src/pdf/SkPDFSubsetFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T20:36:56Z",
+      "side": 1,
+      "message": "I think this fits on the previous line now.\n\nAlso, this happened to work out because the types all worked out. This should now probably look more like the other `resource` templates.",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67867af_b49de2f5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T20:36:56Z",
+      "side": 1,
+      "message": "Should fit on one line now?",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
