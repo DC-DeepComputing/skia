@@ -108,6 +108,30 @@
       },
       "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4474c73e_27245048",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-20T15:35:58Z",
+      "side": 1,
+      "message": "Another thing we could consider is making the planes be pixmaps. At the time this was added we didn\u0027t have the necessary color types for yuv, but now we do.",
+      "parentUuid": "ec9e3789_5de8a3e9",
+      "range": {
+        "startLine": 215,
+        "startChar": 10,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
