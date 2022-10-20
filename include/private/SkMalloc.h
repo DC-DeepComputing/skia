@@ -1,4 +1,5 @@
 /*
+#include <memory>
  * Copyright 2017 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -8,10 +9,16 @@
 #ifndef SkMalloc_DEFINED
 #define SkMalloc_DEFINED
 
+#include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <cstring>
+#include <functional>
+#include <tuple>
+#include <variant>
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 /*
     memory wrappers to be implemented by the porting layer (platform)
@@ -20,6 +27,11 @@
 
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
 SK_API extern void sk_free(void*);
+struct SkFreer {
+    void operator()(void* toFree) {
+        sk_free(toFree);
+    }
+};
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
@@ -98,7 +110,7 @@ SK_API extern void* sk_malloc_canfail(size_t count, size_t elemSize);
 
 // bzero is safer than memset, but we can't rely on it, so... sk_bzero()
 static inline void sk_bzero(void* buffer, size_t size) {
-    // Please c.f. sk_careful_memcpy.  It's undefined behavior to call memset(null, 0, 0).
+    // Please c.f. sk_careful_memcpy.  It is undefined behavior to call memset(null, 0, 0).
     if (size) {
         memset(buffer, 0, size);
     }
