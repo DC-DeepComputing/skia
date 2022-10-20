@@ -53,7 +53,7 @@ template <> struct is_bitmask_enum<hb_buffer_flags_t> : std::true_type {};
 }  // namespace sknonstd
 
 namespace {
-template <typename T,typename P,P* p> using resource = std::unique_ptr<T, SkFunctionWrapper<P, p>>;
+template <typename T,typename P,P* p> using resource = std::unique_ptr<T, SkFunctionWrapper<p>>;
 using HBBlob   = resource<hb_blob_t     , decltype(hb_blob_destroy)  , hb_blob_destroy  >;
 using HBFace   = resource<hb_face_t     , decltype(hb_face_destroy)  , hb_face_destroy  >;
 using HBFont   = resource<hb_font_t     , decltype(hb_font_destroy)  , hb_font_destroy  >;

@@ -12,7 +12,7 @@
 
 
 namespace {
-template <typename T,typename P,P* p> using resource = std::unique_ptr<T, SkFunctionWrapper<P, p>>;
+template <typename T,typename P,P* p> using resource = std::unique_ptr<T, SkFunctionWrapper<p>>;
 using ICUBrk   = resource<UBreakIterator, decltype(ubrk_close)       , ubrk_close       >;
 using ICUUText = resource<UText         , decltype(utext_close)      , utext_close      >;
 }  // namespace
