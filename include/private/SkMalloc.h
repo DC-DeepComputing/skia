@@ -20,6 +20,10 @@
 
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
 SK_API extern void sk_free(void*);
+struct SkFreer {
+    void operator()(void* toFree) { sk_free(toFree); }
+};
+
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
