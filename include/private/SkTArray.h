@@ -605,7 +605,7 @@ private:
 
         // Note: the maximum range for count is up to INT_MAX.
         SkASSERT_RELEASE(delta <= INT_MAX - fCount);
-        int newCount = fCount + delta;
+        const int newCount = fCount + delta;
 
         // Don't overflow size_t later in the memory allocation. This really only applies
         // to fCounts on 32-bit machines; on 64-bit machines this will probably never produce a
@@ -630,15 +630,20 @@ private:
 
         // Make sure the new allocation fits in 31 bits.
         SkASSERT(newAllocCount <= INT_MAX);
-        fAllocCount = SkToU32(newAllocCount);
-        SkASSERT(SkToInt(fAllocCount) >= newCount);
-        T* newItemArray = TCast(sk_malloc_throw(this->bytes(fAllocCount)));
-        this->move(newItemArray);
+
+        auto [data, size] = sk_allocate(this->bytes(SkToInt(newAllocCount)), this->bytes(newCount));
+
+        // The size returned may be too large for AllocCount; pin it to the max count.
+        fAllocCount = SkToU32(std::min(SkToSizeT(kMaxCount), size / sizeof(T)));
+
+        this->move(data);
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
-        fItemArray = newItemArray;
+        fItemArray = TCast(data);
         fOwnMemory = true;
+        SkASSERT(SkToInt(fAllocCount) >= newCount);
+        SkASSERT(fItemArray != nullptr);
     }
 
     T* fItemArray;

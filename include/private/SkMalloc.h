@@ -8,8 +8,10 @@
 #ifndef SkMalloc_DEFINED
 #define SkMalloc_DEFINED
 
+#include <algorithm>
 #include <cstddef>
 #include <cstring>
+#include <tuple>
 
 #include "include/core/SkTypes.h"
 
@@ -98,7 +100,7 @@ SK_API extern void* sk_malloc_canfail(size_t count, size_t elemSize);
 
 // bzero is safer than memset, but we can't rely on it, so... sk_bzero()
 static inline void sk_bzero(void* buffer, size_t size) {
-    // Please c.f. sk_careful_memcpy.  It's undefined behavior to call memset(null, 0, 0).
+    // Please c.f. sk_careful_memcpy.  It is undefined behavior to call memset(null, 0, 0).
     if (size) {
         memset(buffer, 0, size);
     }
@@ -142,6 +144,48 @@ static inline int sk_careful_memcmp(const void* a, const void* b, size_t len) {
         return 0;   // we treat zero-length buffers as "equal"
     }
     return memcmp(a, b, len);
+}
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+    #include <malloc/malloc.h>
+#elif defined(TARGET_OS_LINUX)
+    #include <malloc.h>
+#elif defined(SK_BUILD_FOR_WIN)
+    #include <malloc.h>
+#endif
+
+static inline std::tuple<void*, size_t> sk_allocate(size_t preferred, size_t atLeast) {
+
+    // There is no reason to ask for anything less the alignment of the allocation.
+    static constexpr size_t kMinSize = sizeof(max_align_t);
+    preferred = std::max(kMinSize, preferred);
+    atLeast = std::max(kMinSize, atLeast);
+
+    // Ask for the preferred amount.
+    void* data = sk_malloc_canfail(preferred);
+    size_t size = preferred;
+
+    if (data == nullptr) {
+        // Try the atLeast amount.
+        data = sk_malloc_throw(atLeast);
+        size = atLeast;
+    }
+
+    // Check Skia's standard hook for usable size. If it returns 0 then it's not implemented.
+    if (size_t allocatedSize = sk_malloc_usable_size(data); allocatedSize != 0) {
+        size = allocatedSize;
+    } else {
+        // Use the OS specific calls to find the actual memory size.
+        #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+            size = malloc_size(data);
+        #elif defined(SK_BUILD_FOR_ANDROID)
+            size = malloc_usable_size(data);
+        #elif defined(SK_BUILD_FOR_WIN)
+            size = _msize(data);
+        #endif
+    }
+
+    SkASSERT(data != nullptr && size >= atLeast);
+    return {data, size};
 }
 
 #endif  // SkMalloc_DEFINED
