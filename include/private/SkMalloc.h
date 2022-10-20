@@ -1,4 +1,5 @@
 /*
+#include <memory>
  * Copyright 2017 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -8,10 +9,16 @@
 #ifndef SkMalloc_DEFINED
 #define SkMalloc_DEFINED
 
+#include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <cstring>
+#include <functional>
+#include <tuple>
+#include <variant>
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 /*
     memory wrappers to be implemented by the porting layer (platform)
@@ -20,6 +27,11 @@
 
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
 SK_API extern void sk_free(void*);
+struct SkFreer {
+    void operator()(void* toFree) {
+        sk_free(toFree);
+    }
+};
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
@@ -98,7 +110,7 @@ SK_API extern void* sk_malloc_canfail(size_t count, size_t elemSize);
 
 // bzero is safer than memset, but we can't rely on it, so... sk_bzero()
 static inline void sk_bzero(void* buffer, size_t size) {
-    // Please c.f. sk_careful_memcpy.  It's undefined behavior to call memset(null, 0, 0).
+    // Please c.f. sk_careful_memcpy.  It is undefined behavior to call memset(null, 0, 0).
     if (size) {
         memset(buffer, 0, size);
     }
@@ -143,5 +155,367 @@ static inline int sk_careful_memcmp(const void* a, const void* b, size_t len) {
     }
     return memcmp(a, b, len);
 }
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+    #include <malloc/malloc.h>
+#elif defined(TARGET_OS_LINUX)
+    #include <malloc.h>
+#elif defined(SK_BUILD_FOR_WIN)
+    #include <malloc.h>
+#endif
+
+static inline std::tuple<void*, size_t> sk_allocate(
+        int atLeast, size_t sizeOfT, double growthFactor) {
+    SkASSERT(atLeast >= 0);
+    SkASSERT(sizeOfT > 0);
+    SkASSERT(growthFactor >= 1.0);
+
+    void* data = nullptr;
+    size_t size = 0;
+
+    static constexpr size_t kMinSize = sizeof(max_align_t);
+    // There is no reason to ask for anything less the alignment of the allocation.
+    const size_t leastAllocation = std::max(kMinSize, atLeast * sizeOfT);
+
+    if (growthFactor > 1.0) {
+        const int maxCount = SkToInt(std::min(SIZE_MAX / sizeOfT, SkToSizeT(INT_MAX)));
+        SkASSERT_RELEASE(atLeast <= maxCount);
+
+        const size_t largestAllocation = maxCount * sizeOfT;
+
+        const size_t allocationWithGrowth =
+            std::min(static_cast<size_t>(ceil(leastAllocation * growthFactor)), largestAllocation);
+
+        // Ask for the growth amount.
+        data = sk_malloc_canfail(allocationWithGrowth);
+        size = allocationWithGrowth;
+    }
+
+    if (data == nullptr) {
+        // Try the atLeast amount.
+        data = sk_malloc_throw(leastAllocation);
+        size = atLeast;
+    }
+
+    // Check Skia's standard hook for usable size. If it returns 0 then it's not implemented.
+    if (size_t allocatedSize = sk_malloc_usable_size(data)) {
+        size = allocatedSize;
+    } else {
+        // Use the OS specific calls to find the actual memory size.
+        #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+            size = malloc_size(data);
+        #elif defined(SK_BUILD_FOR_ANDROID)
+            size = malloc_usable_size(data);
+        #elif defined(SK_BUILD_FOR_WIN)
+            size = _msize(data);
+        #endif
+    }
+
+    SkASSERT(data != nullptr && size >= leastAllocation);
+    return {data, size};
+}
+
+// SizeOfT - sizeof(T)
+// InlineTs - store at least InlineTs inline.
+template <size_t SizeOfT, size_t InlineTs>
+class SkStorage2 {
+public:
+    // Callback for deleting an T.
+    // TODO: needs to take ranges.
+    using Deleter = std::function<void(void*)>;
+    // Callback for bulk moving T's during allocation or deletion.
+    using Mover = std::function<void(void*, const void*)>;
+
+    SkStorage2();
+
+    // Size
+    // clear assumes that the items have been properly deleted.
+    void clear(const Deleter* deleter) {
+            if (deleter != nullptr) {
+                for (int i = 0; i < fSize; ++i) {
+                    (*deleter)(this->address(i));
+                }
+            }
+            fSize = 0;
+    }
+    bool empty() const { return fSize == 0; }
+    int size() const { return fSize; }
+    size_t size_bytes() const { return Bytes(fSize); }
+    void resize(int newSize, const Mover* mover, const Deleter* deleter) {
+        if (newSize <= this->capacity()) {
+            if (newSize < fSize && deleter != nullptr) {
+                for (int i = newSize; i < fSize; ++i) {
+                    (*deleter)(this->address(i));
+                }
+            }
+        } else {
+            auto [newData, newCapacitySizeBytes] = sk_allocate(newSize, SizeOfT, kGrowthFactor);
+            this->updateData(mover, deleter, newData, newCapacitySizeBytes);
+        }
+
+        fSize = newSize;
+    }
+    void* fastGrow() {
+        if (fSize < fCapacity) {
+            return this->address(fSize++);
+        }
+        return nullptr;
+    }
+
+    // Capacity
+    int capacity() const { return fCapacity; }
+    void reserve(int newCapacity, const Mover& mover, const Deleter& deleter) {
+        if (newCapacity > this->capacity()) {
+            auto [newData, newCapacitySizeBytes] = sk_allocate(newCapacity, SizeOfT, kGrowthFactor);
+            this->changeData(mover, deleter, newData, newCapacitySizeBytes);
+        }
+    }
+    void shrink_to_fit(const Mover* mover, const Deleter* deleter) {
+        if (fSize == this->capacity()) { return; }
+        void *newData;
+        int newCapacitySizeBytes;
+        if (fSize <= kInlineCapacity) {
+            // Because this is already inline, there is nothing to do.
+            if (fIsInline) { return; }
+            newData = fInline;
+            newCapacitySizeBytes = kInlineSizeBytes;
+        } else {
+            std::tie(newData, newCapacitySizeBytes) = sk_allocate(fSize, SizeOfT, 1.0);
+        }
+        this->changeData(mover, deleter, newData, newCapacitySizeBytes);
+    }
+
+    // Data
+    void* data() { return this->dataBytes(); }
+    const void* data() const { this->dataBytes(); }
+
+private:
+    static constexpr double kGrowthFactor = 1.5;
+    static constexpr int kMaxSize = SkToInt(std::min(SIZE_MAX / SizeOfT, SkToSizeT(INT_MAX)));
+    static_assert(InlineTs < kMaxSize);
+    static constexpr size_t Bytes(int n) { return n * SizeOfT; }
+    std::byte* dataBytes() { return fIsInline ? fInline : fData; }
+    void* address(int index) {
+        return this->dataBytes() + Bytes(index);
+    }
+    void changeData(
+            const Mover* mover, const Deleter* deleter, void* newData, size_t newCapacityByteSize) {
+        if (this->data() != newData) {
+            if (mover != nullptr) {
+                (*mover)(newData, this->data());
+            }
+            if (deleter != nullptr) {
+                for (int i = 0; i < fSize; ++i) {
+                    (*deleter)(this->address(i));
+                }
+            }
+
+            if (!fIsInline) {
+                sk_free(fData);
+            }
+
+            // Switch everything over to the new storage.
+            fIsInline = newData == fInline;
+
+            if (!fIsInline) {
+                fData = static_cast<std::byte*>(newData);
+            }
+            fCapacity = SkToU32(newCapacityByteSize / SizeOfT);
+        }
+    }
+
+    static constexpr size_t RoundUpToMaxAlign (size_t n) {
+        constexpr size_t r = alignof(max_align_t) - 1;
+        return (n + r) & ~r;
+    }
+
+    // We get the size of fData (void*) for free. So there are at least sizeof(fData).
+    static constexpr size_t kInlineSizeBytes =
+            std::max(sizeof(void*), RoundUpToMaxAlign(SizeOfT * InlineTs));
+    static constexpr int kInlineCapacity = kInlineSizeBytes / SizeOfT;
+    int fSize{0};
+    uint32_t fCapacity : 31;
+    bool fIsInline : 1;
+
+    union {
+        std::byte* fData;
+        alignas(max_align_t) std::array<std::byte, kInlineSizeBytes> fInline;
+    };
+};
+
+template <size_t SizeOfT, size_t InlineTs>
+inline SkStorage2<SizeOfT, InlineTs>::SkStorage2()
+        : fCapacity{kInlineCapacity}
+        , fIsInline{kInlineCapacity > 0} {}
+
+// 1) Allocate memory.
+// 2) move parameter to the end.
+// 3) move over prefix
+// 4) delete old buffer.
+
+template <size_t N>
+class SkStorage {
+public:
+    using Mover = std::function<void(void*, const void*)>;
+    SkStorage() = default;
+    SkStorage(const SkStorage&) = delete;
+    SkStorage& operator=(const SkStorage&) = delete;
+    SkStorage(SkStorage&& that) = delete;
+    SkStorage& Storage(SkStorage&& that) = delete;
+    ~SkStorage() {
+        if (fData != fInline) {
+            sk_free(fData);
+        }
+    }
+
+    void* data() { return fData; }
+    const void* data() const { return fData; }
+
+    size_t grow(
+        int atLeast, size_t sizeOfT, double growthFactor, const Mover* mover = nullptr) {
+        SkASSERT(atLeast >= 0);
+        SkASSERT(sizeOfT > 0);
+        SkASSERT(growthFactor >= 1.0);
+
+        if (fData == fInline) {
+            if (atLeast <= fInline.size()) {
+                if (mover != nullptr) {
+                    (*mover)(fData, fData);
+                }
+                return fInline.size();
+            }
+        }
+
+        void* data = nullptr;
+        size_t size = 0;
+
+        static constexpr size_t kMinSize = sizeof(max_align_t);
+        // There is no reason to ask for anything less the alignment of the allocation.
+        const size_t leastAllocation = std::max(kMinSize, atLeast * sizeOfT);
+
+        if (growthFactor > 1.0) {
+            const int maxCount = SkToInt(std::min(SIZE_MAX / sizeOfT, SkToSizeT(INT_MAX)));
+            SkASSERT_RELEASE(atLeast <= maxCount);
+
+            const size_t largestAllocation = maxCount * sizeOfT;
+
+            const size_t allocationWithGrowth =
+                    std::min(static_cast<size_t>(ceil(leastAllocation * growthFactor)),
+                             largestAllocation);
+
+            // Ask for the growth amount.
+            data = sk_malloc_canfail(allocationWithGrowth);
+            size = allocationWithGrowth;
+        }
+
+        if (data == nullptr) {
+            // Try the atLeast amount.
+            data = sk_malloc_throw(leastAllocation);
+            size = atLeast;
+        }
+
+        // Check Skia's standard hook for usable size. If it returns 0 then it's not implemented.
+        if (size_t allocatedSize = sk_malloc_usable_size(data)) {
+            size = allocatedSize;
+        } else {
+            // Use the OS specific calls to find the actual memory size.
+            #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+                size = malloc_size(data);
+            #elif defined(SK_BUILD_FOR_ANDROID)
+                size = malloc_usable_size(data);
+            #elif defined(SK_BUILD_FOR_WIN)
+                size = _msize(data);
+            #endif
+        }
+
+        SkASSERT(data != nullptr && size >= leastAllocation);
+
+        if (mover != nullptr) {
+            (*mover)(data, fData);
+        }
+
+        fData = data;
+        return size;
+    }
+
+private:
+    alignas(max_align_t) std::array<std::byte, N> fInline;
+    void* fData{fInline};
+};
+
+template <>
+class SkStorage<0> {
+public:
+    using Mover = std::function<void(void*, const void*)>;
+    SkStorage() = default;
+    SkStorage(const SkStorage&) = delete;
+    SkStorage& operator=(const SkStorage&) = delete;
+    SkStorage(SkStorage&& that) = delete;
+    SkStorage& Storage(SkStorage&& that) = delete;
+
+    void* data() { return fData.get(); }
+    const void* data() const { return fData.get(); }
+
+    size_t grow(
+            int atLeast, size_t sizeOfT, double growthFactor, const Mover* mover = nullptr) {
+        SkASSERT(atLeast >= 0);
+        SkASSERT(sizeOfT > 0);
+        SkASSERT(growthFactor >= 1.0);
+
+        void* data = nullptr;
+        size_t size = 0;
+
+        static constexpr size_t kMinSize = sizeof(max_align_t);
+        // There is no reason to ask for anything less the alignment of the allocation.
+        const size_t leastAllocation = std::max(kMinSize, atLeast * sizeOfT);
+
+        if (growthFactor > 1.0) {
+            const int maxCount = SkToInt(std::min(SIZE_MAX / sizeOfT, SkToSizeT(INT_MAX)));
+            SkASSERT_RELEASE(atLeast <= maxCount);
+
+            const size_t largestAllocation = maxCount * sizeOfT;
+
+            const size_t allocationWithGrowth =
+                    std::min(static_cast<size_t>(ceil(leastAllocation * growthFactor)),
+                             largestAllocation);
+
+            // Ask for the growth amount.
+            data = sk_malloc_canfail(allocationWithGrowth);
+            size = allocationWithGrowth;
+        }
+
+        if (data == nullptr) {
+            // Try the atLeast amount.
+            data = sk_malloc_throw(leastAllocation);
+            size = atLeast;
+        }
+
+        // Check Skia's standard hook for usable size. If it returns 0 then it's not implemented.
+        if (size_t allocatedSize = sk_malloc_usable_size(data)) {
+            size = allocatedSize;
+        } else {
+            // Use the OS specific calls to find the actual memory size.
+            #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+                size = malloc_size(data);
+            #elif defined(SK_BUILD_FOR_ANDROID)
+                size = malloc_usable_size(data);
+            #elif defined(SK_BUILD_FOR_WIN)
+                size = _msize(data);
+            #endif
+        }
+
+        SkASSERT(data != nullptr && size >= leastAllocation);
+
+        if (mover != nullptr) {
+            (*mover)(data, fData.get());
+        }
+
+        fData = std::unique_ptr<void, SkFreer>{data};
+
+        return size;
+    }
+
+private:
+    std::unique_ptr<void, SkFreer> fData;
+};
 
 #endif  // SkMalloc_DEFINED
