@@ -9,6 +9,7 @@
 #define SkTArray_DEFINED
 
 #include "include/core/SkMath.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkSafe32.h"
@@ -23,6 +24,58 @@
 #include <memory>
 #include <new>
 #include <utility>
+
+struct SkAllocationCapacity {
+    const size_t leastCapacity;
+    const size_t growthCapacity;
+};
+
+template <size_t SizeOfT>
+class SkAllocationBuilder {
+public:
+    static SkAllocationCapacity MakeLeastCapacity(int newCapacity) {
+        return {LeastAllocation(newCapacity), 0};
+    }
+
+    static SkAllocationCapacity MakeGrowthCapacity(int newCapacity) {
+        // Multiply by the growthFactor.
+        const int64_t capacityGrowth = static_cast<int64_t>(newCapacity * kGrowthFactor);
+
+        // Notice that for small values of atLeast, rounding up to kCapacityMultiple will provide
+        // most of the growth.
+        const int64_t roundedCapacityGrowth = RoundUpCapacityMultiple(capacityGrowth);
+
+        // Pin expandedCapacity to the maximum capacity.
+        const int expandedCapacity =
+                SkToInt(std::min(roundedCapacityGrowth, static_cast<int64_t>(kMaxCapacity)));
+
+        return {LeastAllocation(newCapacity), expandedCapacity * SizeOfT};
+    }
+
+private:
+    static constexpr double kGrowthFactor = 1.5;
+
+    // All capacity counts will be rounded up to kCapacityMultiple;
+    static constexpr int64_t kCapacityMultiple = 8;
+
+    // Calculate the max capacity given sizeOfT. This will be pinned to INT_MAX. This is mainly
+    // a safety measure for 32-bit machines.
+    static constexpr int kMaxCapacity = SkToInt(std::min(SIZE_MAX / SizeOfT, SkToSizeT(INT_MAX)));
+
+    static size_t LeastAllocation(int newCapacity) {
+        SkASSERT(newCapacity >= 0);
+        SkASSERT_RELEASE(newCapacity <= kMaxCapacity);
+
+        // There is no reason to ask for anything less the alignment of the allocation.
+        return std::max(sizeof(max_align_t), newCapacity * SizeOfT);
+    }
+
+    static int RoundUpCapacityMultiple(int64_t n) {
+        static_assert(SkIsPow2(kCapacityMultiple));
+        static constexpr int m = kCapacityMultiple - 1;
+        return n + m & ~m;
+    }
+};
 
 /** SkTArray<T> implements a typical, mostly std::vector-like array.
     Each T will be default-initialized on allocation, and ~T will be called on destruction.
@@ -121,7 +174,7 @@ public:
 
     ~SkTArray() {
         for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
+            (*this)[i].~T();
         }
         if (fOwnMemory) {
             sk_free(fItemArray);
@@ -393,15 +446,17 @@ public:
         if (fCount == 0) {
             sk_free(fItemArray);
             fItemArray = nullptr;
+            fAllocCount = 0;
         } else {
-            T* newItemArray = TCast(sk_malloc_throw(SkToSizeT(fCount), sizeof(T)));
+            SkSpan<std::byte> allocation = Allocate(AllocationBuilder::MakeLeastCapacity(fCount));
+            T* newItemArray = TCast(allocation.data());
             this->move(newItemArray);
             if (fOwnMemory) {
                 sk_free(fItemArray);
             }
             fItemArray = newItemArray;
+            fAllocCount = SkToU32(allocation.size_bytes() / sizeof(T));
         }
-        fAllocCount = fCount;
     }
 
     /**
@@ -494,6 +549,7 @@ protected:
     }
 
 private:
+    using AllocationBuilder = SkAllocationBuilder<sizeof(T)>;
     static constexpr int kMinHeapAllocCount = 8;
     static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
     // Note for 32-bit machines CalculateMaxCount will be <= SIZE_MAX. For 64-bit machines it will
@@ -519,6 +575,12 @@ private:
         return SkToSizeT(n) * sizeof(T);
     }
 
+    static SkSpan<std::byte> Allocate(SkAllocationCapacity allocationCapacity) {
+        // Don't leak sk_allocate out of core. Keep it secret. Keep it safe.
+        extern SkSpan<std::byte> sk_allocate(SkAllocationCapacity allocationCapacity);
+        return sk_allocate(allocationCapacity);
+    }
+
     void init(int count) {
         fCount = count;
         if (!count) {
@@ -526,7 +588,10 @@ private:
             fItemArray = nullptr;
         } else {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
-            fItemArray = TCast(sk_malloc_throw(SkToSizeT(fAllocCount), sizeof(T)));
+            SkSpan<std::byte> allocation =
+                    Allocate(AllocationBuilder::MakeLeastCapacity(fAllocCount));
+            fItemArray = TCast(allocation.data());
+            fAllocCount = allocation.size_bytes() / sizeof(T);
         }
         fOwnMemory = true;
     }
@@ -539,7 +604,10 @@ private:
         fItemArray = nullptr;
         if (count > preallocCount) {
             fAllocCount = SkToU32(std::max(count, kMinHeapAllocCount));
-            fItemArray = TCast(sk_malloc_throw(fAllocCount, sizeof(T)));
+            SkSpan<std::byte> allocation =
+                    Allocate(AllocationBuilder::MakeLeastCapacity(fAllocCount));
+            fItemArray = TCast(allocation.data());
+            fAllocCount = allocation.size_bytes() / sizeof(T);
             fOwnMemory = true;
         } else {
             fAllocCount = SkToU32(preallocCount);
@@ -605,7 +673,7 @@ private:
 
         // Note: the maximum range for count is up to INT_MAX.
         SkASSERT_RELEASE(delta <= INT_MAX - fCount);
-        int newCount = fCount + delta;
+        const int newCount = fCount + delta;
 
         // Don't overflow size_t later in the memory allocation. This really only applies
         // to fCounts on 32-bit machines; on 64-bit machines this will probably never produce a
@@ -614,31 +682,23 @@ private:
             SkASSERT_RELEASE(newCount <= kMaxCount);
         }
 
-        int64_t newAllocCount = kMaxCount;
-        if (reallocType == kExactFit) {
-            newAllocCount = newCount;
-        } else {
-            // Whether we're growing, leave at least 50% extra space for future growth.
-            int64_t expandedAllocCount = newCount + ((newCount + 1) >> 1);
-            // Align the new allocation count to kMinHeapAllocCount.
-            expandedAllocCount =
-                    (expandedAllocCount + (kMinHeapAllocCount - 1)) & ~(kMinHeapAllocCount - 1);
-            if (newAllocCount <= kMaxCount) {
-                newAllocCount = expandedAllocCount;
-            }
-        }
+        SkAllocationCapacity allocationCapacity =
+                reallocType == kExactFit ? AllocationBuilder::MakeLeastCapacity(newCount)
+                                         : AllocationBuilder::MakeGrowthCapacity(newCount);
 
-        // Make sure the new allocation fits in 31 bits.
-        SkASSERT(newAllocCount <= INT_MAX);
-        fAllocCount = SkToU32(newAllocCount);
-        SkASSERT(SkToInt(fAllocCount) >= newCount);
-        T* newItemArray = TCast(sk_malloc_throw(this->bytes(fAllocCount)));
-        this->move(newItemArray);
+        SkSpan<std::byte> allocation = Allocate(allocationCapacity);
+
+        // The size returned may be too large for AllocCount; pin it to the max count.
+        fAllocCount = SkToU32(std::min(SkToSizeT(kMaxCount), allocation.size_bytes() / sizeof(T)));
+
+        this->move(allocation.data());
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
-        fItemArray = newItemArray;
+        fItemArray = TCast(allocation.data());
         fOwnMemory = true;
+        SkASSERT(SkToInt(fAllocCount) >= newCount);
+        SkASSERT(fItemArray != nullptr);
     }
 
     T* fItemArray;
