@@ -21,12 +21,16 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "src/sksl/ir/SkSLReturnStatement.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
+#include "src/sksl/ir/SkSLVariableReference.h"
 
 #if SK_SUPPORT_GPU
 #include "src/gpu/ganesh/GrGpu.h"
@@ -226,6 +230,81 @@ check_vertex_offsets_and_stride(SkSpan<const Attribute> attributes,
     RETURN_SUCCESS;
 }
 
+static int check_for_passthrough_local_coords(const SkSL::Program& fsProgram) {
+    using namespace SkSL;
+
+    class Visitor final : public SkSL::ProgramVisitor {
+    public:
+        Visitor(const Context& context) : fContext(context) {}
+
+        void visit(const Program& program) { ProgramVisitor::visit(program); }
+
+        int fieldIndex() const { return fFieldIndex; }
+
+        SkDEBUGCODE(const Variable* varyings() const { return fVaryings; })
+
+    protected:
+        bool visitProgramElement(const ProgramElement& p) override {
+            if (p.is<FunctionDefinition>()) {
+                if (!p.as<FunctionDefinition>().declaration().isMain()) {
+                    return true;
+                }
+                SkASSERT(fVaryings == nullptr);
+                fVaryings = p.as<FunctionDefinition>().declaration().parameters()[0];
+            }
+            return ProgramVisitor::visitProgramElement(p);
+        }
+
+        bool visitStatement(const Statement& s) override {
+            if (fFieldIndex == -2) {
+                // We've already determined there are return statements that aren't passthrough
+                // or return different fields.
+                return true;
+            }
+            if (!s.is<ReturnStatement>()) {
+                return ProgramVisitor::visitStatement(s);
+            }
+            const auto& rs = s.as<ReturnStatement>();
+            SkASSERT(rs.expression());
+            if (!rs.expression()->is<FieldAccess>()) {
+                fFieldIndex = -2;
+                return true;
+            }
+            const auto& fa = rs.expression()->as<FieldAccess>();
+            if (!fa.base()->is<VariableReference>()) {
+                fFieldIndex = -2;
+                return true;
+            }
+            const auto& baseRef = fa.base()->as<VariableReference>();
+            if (baseRef.variable() != fVaryings) {
+                fFieldIndex = -2;
+                return true;
+            }
+            if (fFieldIndex >= 0) {
+                if (fa.fieldIndex() != fFieldIndex) {
+                    fFieldIndex = -2;
+                }
+                return true;
+            }
+            const Type::Field& field = fVaryings->type().fields()[fa.fieldIndex()];
+            if (!field.fType->matches(*fContext.fTypes.fFloat2)) {
+                return true;
+            }
+            fFieldIndex = fa.fieldIndex();
+            return true;
+        }
+
+    private:
+        const Context&  fContext;
+        const Variable* fVaryings   = nullptr;
+        int             fFieldIndex = -1;
+    };
+
+    Visitor v(*fsProgram.fContext);
+    v.visit(fsProgram);
+    return v.fieldIndex();
+}
+
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
                                                       size_t vertexStride,
                                                       SkSpan<const Varying> varyings,
@@ -406,9 +485,15 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
         }
     }
 
+    auto passThroughLocalCoordsVaryingIndex = check_for_passthrough_local_coords(*fsProgram);
+    if (passThroughLocalCoordsVaryingIndex >= 0) {
+        SkASSERT(varyings[passThroughLocalCoordsVaryingIndex].type == Varying::Type::kFloat2);
+    }
+
     return {sk_sp<SkMeshSpecification>(new SkMeshSpecification(attributes,
                                                                stride,
                                                                varyings,
+                                                               passThroughLocalCoordsVaryingIndex,
                                                                std::move(uniforms),
                                                                std::move(vsProgram),
                                                                std::move(fsProgram),
@@ -420,21 +505,24 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
 
 SkMeshSpecification::~SkMeshSpecification() = default;
 
-SkMeshSpecification::SkMeshSpecification(SkSpan<const Attribute>              attributes,
-                                         size_t                               stride,
-                                         SkSpan<const Varying>                varyings,
-                                         std::vector<Uniform>                 uniforms,
-                                         std::unique_ptr<const SkSL::Program> vs,
-                                         std::unique_ptr<const SkSL::Program> fs,
-                                         ColorType                            ct,
-                                         sk_sp<SkColorSpace>                  cs,
-                                         SkAlphaType                          at)
+SkMeshSpecification::SkMeshSpecification(
+        SkSpan<const Attribute>              attributes,
+        size_t                               stride,
+        SkSpan<const Varying>                varyings,
+        int                                  passThroughLocalCoordsVaryingIndex,
+        std::vector<Uniform>                 uniforms,
+        std::unique_ptr<const SkSL::Program> vs,
+        std::unique_ptr<const SkSL::Program> fs,
+        ColorType                            ct,
+        sk_sp<SkColorSpace>                  cs,
+        SkAlphaType                          at)
         : fAttributes(attributes.begin(), attributes.end())
         , fVaryings(varyings.begin(), varyings.end())
         , fUniforms(std::move(uniforms))
         , fVS(std::move(vs))
         , fFS(std::move(fs))
         , fStride(stride)
+        , fPassthroughLocalCoordsVaryingIndex(passThroughLocalCoordsVaryingIndex)
         , fColorType(ct)
         , fColorSpace(std::move(cs))
         , fAlphaType(at) {
