@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9945f26_3a0e743b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T22:38:40Z",
+      "side": 1,
+      "message": "Not super ideal yet, since if you do try to build the targets in `BUILD.gn` when the dependencies are empty they won\u0027t link because no `main`. However, there already exist other `test_app` that work the same way. However, this does allow us to fix the actual dependencies and conditions.",
+      "revId": "f76fccf8a8299b13c0512157c063324a738ecac0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
