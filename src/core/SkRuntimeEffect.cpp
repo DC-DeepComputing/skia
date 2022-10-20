@@ -1424,7 +1424,6 @@ public:
                   SkPipelineDataGatherer* gatherer,
                   bool primitiveColorBlender) const override {
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
-
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
         builder->endBlock();

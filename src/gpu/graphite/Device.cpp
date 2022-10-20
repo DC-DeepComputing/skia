@@ -868,6 +868,9 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
+    if (!renderer->emitsPrimitiveColor()) {
+        primitiveBlender = nullptr;
+    }
     PaintParams shading{paint, std::move(primitiveBlender), skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =

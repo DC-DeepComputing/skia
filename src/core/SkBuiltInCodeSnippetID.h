@@ -48,8 +48,9 @@ enum class SkBuiltInCodeSnippetID : int32_t {
     // BlendMode code snippets (applying a blend to the destination)
     kFixedFunctionBlender,
     kShaderBasedBlender,
+    kPrimitiveColorShaderBasedBlender,
 
-    kLast = kShaderBasedBlender
+    kLast = kPrimitiveColorShaderBasedBlender
 };
 static constexpr int kBuiltInCodeSnippetIDCount = static_cast<int>(SkBuiltInCodeSnippetID::kLast)+1;
 
