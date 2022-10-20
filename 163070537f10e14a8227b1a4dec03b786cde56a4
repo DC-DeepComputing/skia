@@ -142,6 +142,24 @@
       "parentUuid": "3791f8c1_ee82fe8c",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd1cfb06_2b3d528b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-20T15:08:46Z",
+      "side": 1,
+      "message": "Shouldn\u0027t append() just be the same as append(1)? And, I do think that the T vs. T() is important. It has been in the past. In particular, these arrays are used to get around exactly that problem. There is no way to make uninitialized things in vector.\n\nYou do realize, that if we keep just say \"Well vector does X\" we will end up with vector. These array things were made because vector didn\u0027t solve the problem.",
+      "parentUuid": "5990e8e2_caaad2d5",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
