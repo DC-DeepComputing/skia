@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "572a4e5e_8df4cb14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-20T18:53:00Z",
+      "side": 1,
+      "message": "The only interesting thing about this change is fixing the build when building without HarfBuzz. Now that HarfBuzz 3.0 (and later) exists with the public subsetter API, I\u0027m not sure there is any reason to continue to have this old sfntly code here. I\u0027ll need to survey the users.",
+      "revId": "bb28ce7e2bda1baf4eeae0f8d2e45175a68d7313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
