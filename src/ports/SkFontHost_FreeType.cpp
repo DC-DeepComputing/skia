@@ -114,7 +114,7 @@ static SkScalar SkFT_FixedToScalar(FT_Fixed x) {
 }
 
 using SkUniqueFTFace =
-        std::unique_ptr<FT_FaceRec, SkFunctionWrapper<decltype(FT_Done_Face), FT_Done_Face>>;
+        std::unique_ptr<FT_FaceRec, SkFunctionWrapper<FT_Done_Face>>;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -959,7 +959,7 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
         fLoadGlyphFlags = loadFlags;
     }
 
-    using DoneFTSize = SkFunctionWrapper<decltype(FT_Done_Size), FT_Done_Size>;
+    using DoneFTSize = SkFunctionWrapper<FT_Done_Size>;
     std::unique_ptr<std::remove_pointer_t<FT_Size>, DoneFTSize> ftSize([this]() -> FT_Size {
         FT_Size size;
         FT_Error err = FT_New_Size(fFaceRec->fFace.get(), &size);

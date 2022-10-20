@@ -1350,7 +1350,7 @@ bool colrv1_traverse_paint(SkCanvas* canvas,
 SkPath GetClipBoxPath(FT_Face face, uint16_t glyphId, bool untransformed) {
     SkPath resultPath;
 
-    using DoneFTSize = SkFunctionWrapper<decltype(FT_Done_Size), FT_Done_Size>;
+    using DoneFTSize = SkFunctionWrapper<FT_Done_Size>;
     std::unique_ptr<std::remove_pointer_t<FT_Size>, DoneFTSize> unscaledFtSize = nullptr;
 
     FT_Size oldSize = face->size;
@@ -2018,7 +2018,7 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
     flags |= FT_LOAD_NO_AUTOHINT;
     flags |= FT_LOAD_IGNORE_TRANSFORM;
 
-    using DoneFTSize = SkFunctionWrapper<decltype(FT_Done_Size), FT_Done_Size>;
+    using DoneFTSize = SkFunctionWrapper<FT_Done_Size>;
     std::unique_ptr<std::remove_pointer_t<FT_Size>, DoneFTSize> unscaledFtSize([face]() -> FT_Size {
         FT_Size size;
         FT_Error err = FT_New_Size(face, &size);
