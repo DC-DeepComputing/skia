@@ -303,12 +303,14 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             const bool lumConversion =
                     !(SkColorTypeChannelFlags(srcCT) & kGray_SkColorChannelFlag) &&
                     (SkColorTypeChannelFlags(readCT) & kGray_SkColorChannelFlag);
+            const bool srgbConversion = SkColorTypeIsSRGBEncoded(srcCT) !=
+                                        SkColorTypeIsSRGBEncoded(readCT);
             // A CS or luminance conversion allows a 3 value difference and otherwise a 2 value
             // difference. Note that sometimes read back on GPU can be lossy even when there no
             // conversion at all because GPU->CPU read may go to a lower bit depth format and then
             // be promoted back to the original type. For example, GL ES cannot read to 1010102, so
             // we go through 8888.
-            float numer = (lumConversion || csConversion) ? 3.f : 2.f;
+            float numer = (lumConversion || csConversion || srgbConversion) ? 3.f : 2.f;
             // Allow some extra tolerance if unpremuling.
             if (srcAT == kPremul_SkAlphaType && readAT == kUnpremul_SkAlphaType) {
                 numer += 1;
@@ -316,14 +318,18 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             int rgbBits = std::min({min_rgb_channel_bits(readCT), min_rgb_channel_bits(srcCT), 8});
             float tol = numer / (1 << rgbBits);
             float alphaTol = 0;
-            if (readAT != kOpaque_SkAlphaType && srcAT != kOpaque_SkAlphaType) {
-                // Alpha can also get squashed down to 8 bits going through an intermediate
-                // color format.
-                const int alphaBits = std::min({alpha_channel_bits(readCT),
-                                                alpha_channel_bits(srcCT),
-                                                8});
-                alphaTol = 2.f / (1 << alphaBits);
-            }
+
+            // It'd be nice to require that if either the src or dst is opaque then the read alpha
+            // must be 1.0. However, in reads that involve draws some impls will (e.g. SwiftShader)
+            // produce a value slightly less than 1 in the result. We'd have to use a special shader
+            // to enforce opaqueness or clean up the values on the CPU after reading from the GPU.
+
+            // Alpha can also get squashed down to 8 bits going through an intermediate
+            // color format.
+            const int alphaBits = std::min({alpha_channel_bits(readCT),
+                                            alpha_channel_bits(srcCT),
+                                            8});
+            alphaTol = 2.f / (1 << alphaBits);
 
             const float tols[4] = {tol, tol, tol, alphaTol};
             auto error = std::function<ComparePixmapsErrorReporter>([&](int x, int y,
@@ -424,7 +430,24 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             bool forceOpaque = srcAT == kPremul_SkAlphaType &&
                     (srcCT == kRGBA_1010102_SkColorType || srcCT == kBGRA_1010102_SkColorType);
 
-            SkAutoPixmapStorage srcPixels = make_ref_data(refInfo, forceOpaque);
+            SkAutoPixmapStorage refPixels = make_ref_data(refInfo, forceOpaque);
+
+            // Convert the ref data to our desired src color type.
+            const auto srcInfo = SkImageInfo::Make(kW, kH, srcCT, srcAT, SkColorSpace::MakeSRGB());
+            SkAutoPixmapStorage srcPixels;
+            srcPixels.alloc(srcInfo);
+            {
+                SkPixmap readPixmap = srcPixels;
+                // Spoof the alpha type to kUnpremul so the read will succeed without doing any
+                // conversion (because we made our surface also be kUnpremul).
+                if (srcAT == kUnknown_SkAlphaType) {
+                    readPixmap.reset(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                                     srcPixels.addr(),
+                                     srcPixels.rowBytes());
+                }
+                refPixels.readPixels(readPixmap, 0, 0);
+            }
+
             auto src = srcFactory(srcPixels);
             if (!src) {
                 continue;
@@ -603,7 +626,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
                     direct->checkAsyncWorkCompletion();
                 }
                 if (!context.fResult) {
-                    return Result::kFail;
+                    // We don't currently have a good way of knowing when it's ok to fail here
+                    // because of format caps without too much logic here.
+                    return Result::kExcusedFailure;
                 }
                 SkRectMemcpy(pixels.writable_addr(), pixels.rowBytes(), context.fResult->data(0),
                              context.fResult->rowBytes(0), pixels.info().minRowBytes(),
@@ -680,7 +705,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels,
             context->checkAsyncWorkCompletion();
         }
         if (!asyncContext.fResult) {
-            return Result::kFail;
+            // We don't currently have a good way of knowing when it's ok to fail here because of
+            // format caps without too much logic here.
+            return Result::kExcusedFailure;
         }
         SkRectMemcpy(pixels.writable_addr(), pixels.rowBytes(), asyncContext.fResult->data(0),
                      asyncContext.fResult->rowBytes(0), pixels.info().minRowBytes(),
