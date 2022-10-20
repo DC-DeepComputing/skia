@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e7cdf6d_bfa31c1e",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-20T17:32:51Z",
+      "side": 1,
+      "message": "\u003eI think 4 different variations is fine; the biggest challenge becomes naming/commenting them really well, so that a future reader understands why we need four :)\n\nI would like to call attention to this comment block for review. I tried matching different blend blocks to justification as to why it\u0027s needed and I want to make sure it\u0027s correct and gives enough information.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "362780bdeff28c9bd65c49bf76fb93f01c5c3825",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b32aeaa1_6761a5a7",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-20T17:32:51Z",
+      "side": 1,
+      "message": "Question for discussion: This raw string matches up with the variable name that render steps assign primitive color values to. Is this an acceptable way to do this? \n\nWe already do a similar thing with render steps relying upon hard-coded variable names not changing (such as assigning to `primitiveColor` or `outputCoverage`), but I\u0027m debating whether it would be preferable to instead define these shader variable names as const expressions that both the render steps and the shader code dictionary could pull from. \n\nThis would make it so they could all be changed and referenced from one \"source of truth\" so the names are easier to change or add to (as needed). It would probably also cut down on some of the comment lengths in the render steps. \n\nCould be lumped in with work as discussed in this thread from awhile ago that people may have had new thoughts on: https://chat.google.com/room/AAAAGFlf6VQ/nqeWyYE_pR0",
+      "range": {
+        "startLine": 913,
+        "startChar": 59,
+        "endLine": 913,
+        "endChar": 73
+      },
+      "revId": "362780bdeff28c9bd65c49bf76fb93f01c5c3825",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
