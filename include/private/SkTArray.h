@@ -605,7 +605,7 @@ private:
 
         // Note: the maximum range for count is up to INT_MAX.
         SkASSERT_RELEASE(delta <= INT_MAX - fCount);
-        int newCount = fCount + delta;
+        const int newCount = fCount + delta;
 
         // Don't overflow size_t later in the memory allocation. This really only applies
         // to fCounts on 32-bit machines; on 64-bit machines this will probably never produce a
@@ -614,31 +614,21 @@ private:
             SkASSERT_RELEASE(newCount <= kMaxCount);
         }
 
-        int64_t newAllocCount = kMaxCount;
-        if (reallocType == kExactFit) {
-            newAllocCount = newCount;
-        } else {
-            // Whether we're growing, leave at least 50% extra space for future growth.
-            int64_t expandedAllocCount = newCount + ((newCount + 1) >> 1);
-            // Align the new allocation count to kMinHeapAllocCount.
-            expandedAllocCount =
-                    (expandedAllocCount + (kMinHeapAllocCount - 1)) & ~(kMinHeapAllocCount - 1);
-            if (newAllocCount <= kMaxCount) {
-                newAllocCount = expandedAllocCount;
-            }
-        }
+        double growthFactor = reallocType == kExactFit ? 1.0 : 1.5;
 
-        // Make sure the new allocation fits in 31 bits.
-        SkASSERT(newAllocCount <= INT_MAX);
-        fAllocCount = SkToU32(newAllocCount);
-        SkASSERT(SkToInt(fAllocCount) >= newCount);
-        T* newItemArray = TCast(sk_malloc_throw(this->bytes(fAllocCount)));
-        this->move(newItemArray);
+        auto [data, size] = sk_allocate(newCount, sizeof(T), growthFactor);
+
+        // The size returned may be too large for AllocCount; pin it to the max count.
+        fAllocCount = SkToU32(std::min(SkToSizeT(kMaxCount), size / sizeof(T)));
+
+        this->move(data);
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
-        fItemArray = newItemArray;
+        fItemArray = TCast(data);
         fOwnMemory = true;
+        SkASSERT(SkToInt(fAllocCount) >= newCount);
+        SkASSERT(fItemArray != nullptr);
     }
 
     T* fItemArray;
