@@ -16,6 +16,98 @@
       "message": "PTAL",
       "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc63fc1e_8f42f44c",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-20T15:22:49Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc07a4f_fc660f6f",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-20T15:22:49Z",
+      "side": 1,
+      "message": "Or this?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 19
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd5c358_7f84039b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-20T15:22:49Z",
+      "side": 1,
+      "message": "besides the manager being a different type, this all look identical to what we do in Ganesh. Could all this be moved into SkImage::AsyncreadResult and make a base class for the ClientMappedBuffermanager that ass an insert call on it?",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 20
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec9e3789_5de8a3e9",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-20T15:22:49Z",
+      "side": 1,
+      "message": "Is it worth finding a way to share Plane or some base class of it with Ganesh. I feel like then with that and my above comment all the logic in this Result struct could be shared?",
+      "range": {
+        "startLine": 215,
+        "startChar": 10,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
