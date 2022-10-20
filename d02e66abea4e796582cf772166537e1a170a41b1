@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0190cc3_a80a74df",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-20T20:21:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc63fc1e_8f42f44c",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dc07a4f_fc660f6f",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa309ec2_b79a3b6e",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-20T20:21:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dc07a4f_fc660f6f",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 19
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fd5c358_7f84039b",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-10-20T15:22:49Z",
       "side": 1,
       "message": "besides the manager being a different type, this all look identical to what we do in Ganesh. Could all this be moved into SkImage::AsyncreadResult and make a base class for the ClientMappedBuffermanager that ass an insert call on it?",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 20
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469143b2_a8d857e7",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-20T20:21:24Z",
+      "side": 1,
+      "message": "ClientMappedBufferManager and GrClientMappedBufferManager derived from the templated TClientMappedBufferManager, so we could create a templated AsyncReadResult class that feeds into that.",
+      "parentUuid": "3fd5c358_7f84039b",
       "range": {
         "startLine": 182,
         "startChar": 0,
@@ -124,6 +196,30 @@
       "side": 1,
       "message": "Another thing we could consider is making the planes be pixmaps. At the time this was added we didn\u0027t have the necessary color types for yuv, but now we do.",
       "parentUuid": "ec9e3789_5de8a3e9",
+      "range": {
+        "startLine": 215,
+        "startChar": 10,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a16262_947542e6",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-20T20:21:24Z",
+      "side": 1,
+      "message": "Well, we need the sk_sp\u003cBuffer\u003e don\u0027t we? I think we could make this part of that templated AsyncReadResult.",
+      "parentUuid": "4474c73e_27245048",
       "range": {
         "startLine": 215,
         "startChar": 10,
