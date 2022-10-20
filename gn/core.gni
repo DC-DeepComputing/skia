@@ -172,6 +172,8 @@ skia_core_sources = [
   "$_src/core/SkColorSpaceXformSteps.h",
   "$_src/core/SkCompressedDataUtils.cpp",
   "$_src/core/SkCompressedDataUtils.h",
+  "$_src/core/SkContainers.cpp",
+  "$_src/core/SkContainers.h",
   "$_src/core/SkContourMeasure.cpp",
   "$_src/core/SkConvertPixels.cpp",
   "$_src/core/SkConvertPixels.h",
