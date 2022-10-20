@@ -20,6 +20,8 @@
 
 /** Free memory returned by sk_malloc(). It is safe to pass null. */
 SK_API extern void sk_free(void*);
+// This disambiguates using sk_free from Skia as opposed to the one from OpenSSL.
+inline static constexpr void (*sk_free_with_signature)(void*) = sk_free;
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
