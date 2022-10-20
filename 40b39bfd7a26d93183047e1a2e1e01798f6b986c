@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96153eb3_c48eb2ba",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-20T16:11:36Z",
+      "side": 0,
+      "message": "You might consider using\nnamespace gr \u003d skgpu:graphite;\nThis can reduce the specification clutter.",
+      "range": {
+        "startLine": 92,
+        "startChar": 6,
+        "endLine": 92,
+        "endChar": 54
+      },
+      "revId": "40b39bfd7a26d93183047e1a2e1e01798f6b986c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
