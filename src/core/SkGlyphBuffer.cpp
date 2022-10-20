@@ -14,7 +14,7 @@ void SkSourceGlyphBuffer::reset() {
     fRejectedPositions.reset();
 }
 
-void SkDrawableGlyphBuffer::ensureSize(size_t size) {
+void SkDrawableGlyphBuffer::ensureSize(int size) {
     if (size > fMaxSize) {
         fMultiBuffer.reset(size);
         fPositions.reset(size);
