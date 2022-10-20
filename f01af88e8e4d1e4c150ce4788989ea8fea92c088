@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e269e39_05f97d4a",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-20T16:28:48Z",
+      "side": 1,
+      "message": "can be on follow on CL if you want or this one, but I wonder if all this can also go into the shared section as well now.",
+      "range": {
+        "startLine": 1021,
+        "startChar": 0,
+        "endLine": 1028,
+        "endChar": 5
+      },
+      "revId": "f01af88e8e4d1e4c150ce4788989ea8fea92c088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
