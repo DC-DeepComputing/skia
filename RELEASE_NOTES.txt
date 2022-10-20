@@ -2,6 +2,12 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 109
+-------------
+  * SkMesh vertex and fragment main() signatures have changed. See docs on SkMeshSpecification.
+
+* * *
+
 Milestone 108
 -------------
   * SkShader::asAGradient() has been removed.
