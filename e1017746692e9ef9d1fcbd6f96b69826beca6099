@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce4b2cf_fd16b657",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T14:15:47Z",
+      "side": 1,
+      "message": "Unless it leads to an avalanche of trouble, I feel like the cleaner fix would be to take a `size_t` in `Vec::operator[]` instead of an int.",
+      "range": {
+        "startLine": 620,
+        "startChar": 21,
+        "endLine": 620,
+        "endChar": 40
+      },
+      "revId": "e1017746692e9ef9d1fcbd6f96b69826beca6099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "964f843d_bac6a84c",
+        "filename": "src/core/SkGlyphBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T14:15:47Z",
+      "side": 1,
+      "message": "Without reviewing all of the code in the class, changing an unsigned type to a signed type could be risky. (Various operations are defined for unsigned types but UB for a signed type.) WDYT about using uint32_t?",
+      "range": {
+        "startLine": 223,
+        "startChar": 4,
+        "endLine": 223,
+        "endChar": 7
+      },
+      "revId": "e1017746692e9ef9d1fcbd6f96b69826beca6099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
