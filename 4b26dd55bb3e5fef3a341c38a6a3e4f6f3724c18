@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b25833e5_60733a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-21T22:04:31Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure what\u0027s going on with the failing GMs but the overall change LGTM",
+      "revId": "4b26dd55bb3e5fef3a341c38a6a3e4f6f3724c18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e112fd8f_7d57c640",
+        "filename": "tools/sksl-minify/SkSLMinify.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-21T22:04:31Z",
+      "side": 1,
+      "message": "There is an implicit precedence to the program kinds. Consider detecting the case where more than one of these is provided (e.g. `--frag --vert`) and perhaps reporting an error.",
+      "range": {
+        "startLine": 249,
+        "startChar": 4,
+        "endLine": 256,
+        "endChar": 0
+      },
+      "revId": "4b26dd55bb3e5fef3a341c38a6a3e4f6f3724c18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
