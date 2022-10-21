@@ -88,6 +88,87 @@
       "parentUuid": "ac61c074_e971c357",
       "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9ef66b4_807d6105",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-21T16:26:20Z",
+      "side": 1,
+      "message": "I\u0027m not quite sure what should  be in platformData, but it\u0027s easy to send integers from JS to WASM and hard to send other data types.",
+      "parentUuid": "47bdcbef_af3e5691",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0703da3c_2bc387bd",
+        "filename": "bazel/copts.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-21T16:26:20Z",
+      "side": 1,
+      "message": "unnecessary trailing whitespace",
+      "range": {
+        "startLine": 37,
+        "startChar": 37,
+        "endLine": 37,
+        "endChar": 39
+      },
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0af9a406_7c56a7bc",
+        "filename": "bazel/external/SDL2/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-21T16:26:20Z",
+      "side": 1,
+      "message": "Why did this not work? We probably don\u0027t want to expose the src/** as the \"public API\" to SDL2, either. Listing these headers in srcs should be sufficient (and we don\u0027t need to list them in both places).",
+      "range": {
+        "startLine": 949,
+        "startChar": 4,
+        "endLine": 949,
+        "endChar": 21
+      },
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ce3fb5_9594394f",
+        "filename": "tools/sk_app/sdl2/main_sdl2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-21T16:26:20Z",
+      "side": 1,
+      "message": "It has been a long while since I used a C++ main file and ran it as JS/WASM, so I don\u0027t think I\u0027ll be more helpful than the documentation on that.\n\nWhat I can tell you is how CanvasKit and related things work. CK uses the embind feature and no main. Then, we have some JS code that runs and calls one or more C++ function. This allows the JS code to make a canvas, set up WebGL (or WebGL2), before the C++ code starts to run and needs to talk to the GPU.\n\nThat has been easier for me to understand how it works and easier to work with.",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
