@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c4d3c6_d621b053",
+        "filename": "modules/skshaper/src/SkShaper_primitive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-21T19:50:52Z",
+      "side": 1,
+      "message": "Can this be zero? If so, use safe_memcpy. Are gylphCount and numGlyphs in sync? Maybe use info.glyphCount instead of numGlyphs. Or change the if () to use numGlyphs. Having both running around is confusing.",
+      "range": {
+        "startLine": 215,
+        "startChar": 62,
+        "endLine": 215,
+        "endChar": 91
+      },
+      "revId": "adb476b88fe0d21895501b1456b1437ad33608a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
