@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "589fb12d_22141298",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-21T18:10:19Z",
+      "side": 1,
+      "message": "I have added sk_free_with_signature which should fix this.... maybe.",
+      "parentUuid": "3145494e_a8747682",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1420c70_862ea88a",
