@@ -197,6 +197,8 @@ static void FuzzSkMeshSpecification(SkSpan<const uint8_t> data) {
             }
         }
     }
+    SkDebugf("first %s\n", vs.c_str());
+    SkDebugf("second %s\n", fs.c_str());
 
     auto result = SkMeshSpecification::Make(attributes, vertexStride, varyings, vs, fs);
     if (result.error.isEmpty()) {
