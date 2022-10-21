@@ -22,6 +22,30 @@
       },
       "revId": "adb476b88fe0d21895501b1456b1437ad33608a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecb4bff4_284dfce9",
+        "filename": "modules/skshaper/src/SkShaper_primitive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T20:19:16Z",
+      "side": 1,
+      "message": "You\u0027re right, this existing code is a bit confusing for using two different names for the same value. Changed everything to `info.glyphCount` since that\u0027s the value reported to the user.\n\nThough it\u0027s fine to `memcpy` zero things, it\u0027s just that `src` and `dst` can\u0027t be `nullptr` (or otherwise not point to objects or not to one past the end of an object).",
+      "parentUuid": "05c4d3c6_d621b053",
+      "range": {
+        "startLine": 215,
+        "startChar": 62,
+        "endLine": 215,
+        "endChar": 91
+      },
+      "revId": "adb476b88fe0d21895501b1456b1437ad33608a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
