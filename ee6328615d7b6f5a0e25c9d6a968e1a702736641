@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45ed09b6_ede5d228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-21T20:12:21Z",
+      "side": 1,
+      "message": "Thank you for taking a look, John. I responded to one of your points to provide some more general context. They all make sense to me and I\u0027ll address them shortly.",
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6589c947_27191a04",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "Also, we would want an error test demonstrating that passing a sampler2D is rejected cleanly (assuming we have updated the frontend to reject them).",
       "parentUuid": "6589c947_27191a04",
+      "range": {
+        "startLine": 1181,
+        "startChar": 1,
+        "endLine": 1187,
+        "endChar": 5
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d958d3ca_bca5d589",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-21T20:12:21Z",
+      "side": 1,
+      "message": "All of your comments make sense and I\u0027ll work on them soon.\n\nRe your first point around currently passing sampler2Ds in sksl_graphite_frag.sksl: this has been a point of friction for the Graphite+Dawn work during the sprint and I have summarized where we are with the prototyping so far at https://bugs.chromium.org/p/skia/issues/detail?id\u003d13806#c26. PTAL!\n\njamesgk@ and I discussed this quite a bit during the sprint and I have a working prototype that separates the unified sampler parameters in an exploration branch, see https://chromium.googlesource.com/experimental/external/gob/skia/skia/+/329acf77fb5f9f159385723fe221b095929420d7 and https://chromium.googlesource.com/experimental/external/gob/skia/skia/+/43ee9c601dda30f822c785a11c1908f3f9bb020d.\n\nMy current thinking was to land this CL first without effecting functionality in Metal (the Vulkan/Dawn backends aren\u0027t far enough along in Skia\u0027s mainline to be affected). I can alternately turn the experimental changes above into proper CLs first, test them on Metal, and then move on to the SPIR-V changes if you think that order makes more sense. (That would actually make it easier to address your other comments around catching these in the front-end graphite will have moved off the pattern).\n\nI realize that skbug.com/13806 has gotten fairly large and I intend to file independent bugs for all of these subtasks and document them thoroughly.",
+      "parentUuid": "79ad1ad2_4cf3a729",
       "range": {
         "startLine": 1181,
         "startChar": 1,
