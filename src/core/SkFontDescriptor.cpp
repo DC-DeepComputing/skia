@@ -8,6 +8,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/core/SkStreamPriv.h"
 
 enum {
     kInvalid        = 0x00,
@@ -126,9 +127,15 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
             case kItalic:
                 if (!stream->readScalar(&italic)) { return false; }
                 break;
-            case kFontVariation:
+            case kFontVariation: {
                 if (!stream->readPackedUInt(&coordinateCount)) { return false; }
                 if (!SkTFitsIn<CoordinateCountType>(coordinateCount)) { return false; }
+                // Check for overflow before multiplying count * bytes
+                constexpr int bytesPerLoop = sizeof(SkScalar) + sizeof(uint32_t);
+                if (coordinateCount >= (SIZE_MAX / bytesPerLoop) ||
+                    StreamRemainingLengthIsBelow(stream, coordinateCount * bytesPerLoop)) {
+                    return false;
+                }
                 result->fCoordinateCount = SkTo<CoordinateCountType>(coordinateCount);
 
                 result->fVariation.reset(coordinateCount);
@@ -137,6 +144,7 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                     if (!stream->readScalar(&result->fVariation[i].value)) { return false; }
                 }
                 break;
+            }
             case kFontIndex:
                 if (!stream->readPackedUInt(&index)) { return false; }
                 if (!SkTFitsIn<CollectionIndexType>(index)) { return false; }
@@ -147,9 +155,15 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                 if (!SkTFitsIn<PaletteIndexType>(paletteIndex)) { return false; }
                 result->fPaletteIndex = SkTo<PaletteIndexType>(paletteIndex);
                 break;
-            case kPaletteEntryOverrides:
+            case kPaletteEntryOverrides: {
                 if (!stream->readPackedUInt(&paletteEntryOverrideCount)) { return false; }
                 if (!SkTFitsIn<PaletteEntryOverrideCountType>(paletteEntryOverrideCount)) {
+                    return false;
+                }
+                // Check for overflow before multiplying count * bytes
+                constexpr int bytesPerLoop = sizeof(size_t) + sizeof(uint32_t);
+                if (paletteEntryOverrideCount >= (SIZE_MAX / bytesPerLoop) ||
+                    StreamRemainingLengthIsBelow(stream, paletteEntryOverrideCount * bytesPerLoop)) {
                     return false;
                 }
                 result->fPaletteEntryOverrideCount =
@@ -168,6 +182,7 @@ bool SkFontDescriptor::Deserialize(SkStream* stream, SkFontDescriptor* result) {
                     }
                 }
                 break;
+            }
             default:
                 SkDEBUGFAIL("Unknown id used by a font descriptor");
                 return false;
