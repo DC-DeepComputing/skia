@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/BackendTexture.h"
 
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/Context.h"
@@ -47,27 +48,32 @@ struct PromiseTextureChecker {
 
 enum class ReleaseBalanceExpectation {
     kBalanced,
-    kAllUnbalanced,
+    kAllOffByOne,  // fulfill calls ahead of release calls by 1
+    kNoReleases,   // fulfill calls must match expected but release count is 0
 };
 
 void check_fulfill_and_release_cnts(skiatest::Reporter* reporter,
                                     const PromiseTextureChecker& promiseChecker,
                                     int expectedFulfillCnt,
-                                    ReleaseBalanceExpectation releaseBalanceExpecation) {
+                                    ReleaseBalanceExpectation releaseBalanceExpectation) {
     REPORTER_ASSERT(reporter, promiseChecker.fFulfillCount == expectedFulfillCnt);
     if (!expectedFulfillCnt) {
         // Release should only ever be called after Fulfill.
         REPORTER_ASSERT(reporter, !promiseChecker.fReleaseCount);
         return;
     }
+
     int releaseDiff = promiseChecker.fFulfillCount - promiseChecker.fReleaseCount;
-    switch (releaseBalanceExpecation) {
+    switch (releaseBalanceExpectation) {
         case ReleaseBalanceExpectation::kBalanced:
             SkASSERT(!releaseDiff);
             REPORTER_ASSERT(reporter, !releaseDiff);
             break;
-        case ReleaseBalanceExpectation::kAllUnbalanced:
-            REPORTER_ASSERT(reporter, releaseDiff == promiseChecker.fFulfillCount);
+        case ReleaseBalanceExpectation::kAllOffByOne:
+            REPORTER_ASSERT(reporter, releaseDiff == 1);
+            break;
+        case ReleaseBalanceExpectation::kNoReleases:
+            REPORTER_ASSERT(reporter, promiseChecker.fReleaseCount == 0);
             break;
     }
 }
@@ -78,16 +84,25 @@ void check_unfulfilled(const PromiseTextureChecker& promiseChecker,
                                    ReleaseBalanceExpectation::kBalanced);
 }
 
-void check_only_fulfilled(skiatest::Reporter* reporter,
-                          const PromiseTextureChecker& promiseChecker) {
-    check_fulfill_and_release_cnts(reporter, promiseChecker, /* expectedFulfillCnt= */ 1,
-                                   ReleaseBalanceExpectation::kAllUnbalanced);
+void check_fulfilled_ahead_by_one(skiatest::Reporter* reporter,
+                          const PromiseTextureChecker& promiseChecker,
+                          int expectedFulfillCnt) {
+    check_fulfill_and_release_cnts(reporter, promiseChecker, expectedFulfillCnt,
+                                   ReleaseBalanceExpectation::kAllOffByOne);
 }
 
 void check_all_done(skiatest::Reporter* reporter,
-                    const PromiseTextureChecker& promiseChecker) {
-    check_fulfill_and_release_cnts(reporter, promiseChecker, /* expectedFulfillCnt= */ 1,
+                    const PromiseTextureChecker& promiseChecker,
+                    int expectedFulfillCnt) {
+    check_fulfill_and_release_cnts(reporter, promiseChecker, expectedFulfillCnt,
                                    ReleaseBalanceExpectation::kBalanced);
+}
+
+void check_no_releases(skiatest::Reporter* reporter,
+                       const PromiseTextureChecker& promiseChecker,
+                       int expectedFulfillCnt) {
+    check_fulfill_and_release_cnts(reporter, promiseChecker, expectedFulfillCnt,
+                                   ReleaseBalanceExpectation::kNoReleases);
 }
 
 } // anonymous namespace
@@ -133,17 +148,17 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageTest,
         check_unfulfilled(promiseChecker, reporter);
 
         std::unique_ptr<Recording> recording = recorder->snap();
-        check_only_fulfilled(reporter, promiseChecker);
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
         context->insertRecording({ recording.get() });
     }
 
     context->submit(SyncToCpu::kNo);
     // We still own the 'img' so we should not have called Release.
-    check_only_fulfilled(reporter, promiseChecker);
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
     context->submit(SyncToCpu::kYes);
-    check_only_fulfilled(reporter, promiseChecker);
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
     {
         SkCanvas* canvas = surface->getCanvas();
@@ -153,13 +168,13 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageTest,
 
         std::unique_ptr<Recording> recording = recorder->snap();
         // 'img' should still be fulfilled from the first time we snapped a Recording.
-        check_only_fulfilled(reporter, promiseChecker);
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
         context->insertRecording({ recording.get() });
     }
 
     context->submit(SyncToCpu::kYes);
-    check_only_fulfilled(reporter, promiseChecker);
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
     {
         SkCanvas* canvas = surface->getCanvas();
@@ -168,18 +183,280 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageTest,
         img.reset();
 
         std::unique_ptr<Recording> recording = recorder->snap();
-        check_only_fulfilled(reporter, promiseChecker);
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
         context->insertRecording({ recording.get() });
     }
 
     // We no longer own 'img' but the last recording is still not submitted.
-    check_only_fulfilled(reporter, promiseChecker);
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
     context->submit(SyncToCpu::kYes);
 
     // Now Release should definitely have been called.
-    check_all_done(reporter, promiseChecker);
+    check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
 
     context->deleteBackendTexture(backendTex);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageFulfillFailureTest,
+                                         reporter,
+                                         context) {
+    constexpr SkISize kDimensions { 16, 16 };
+
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                                 /* levelCount= */ 1,
+                                                                 skgpu::Protected::kNo,
+                                                                 Renderable::kYes);
+
+    BackendTexture backendTex;
+    REPORTER_ASSERT(reporter, !backendTex.isValid());
+
+    PromiseTextureChecker promiseChecker(backendTex, reporter);
+
+    SkImageInfo ii = SkImageInfo::Make(kDimensions.fWidth,
+                                       kDimensions.fHeight,
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    sk_sp<SkImage> img = SkImage::MakeGraphitePromiseTexture(recorder.get(),
+                                                             kDimensions,
+                                                             textureInfo,
+                                                             ii.colorInfo(),
+                                                             Volatile::kNo,
+                                                             PromiseTextureChecker::Fulfill,
+                                                             PromiseTextureChecker::Release,
+                                                             &promiseChecker);
+
+    sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder.get(), ii);
+
+    // Draw the image a few different ways.
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        canvas->drawImage(img, 0, 0);
+        check_unfulfilled(promiseChecker, reporter);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+        REPORTER_ASSERT(reporter, !recording); // snap should've failed
+    }
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        SkPaint paint;
+        paint.setColorFilter(SkColorFilters::LinearToSRGBGamma());
+        canvas->drawImage(img, 0, 0, SkSamplingOptions(), &paint);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        // Once a non-volatile fulfill callback has failed we should never try to re-fulfill
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+        REPORTER_ASSERT(reporter, !recording); // snap should've failed
+    }
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        sk_sp<SkShader> shader = img->makeShader(SkSamplingOptions());
+        REPORTER_ASSERT(reporter, shader);
+
+        SkPaint paint;
+        paint.setShader(std::move(shader));
+        canvas->drawRect(SkRect::MakeWH(1, 1), paint);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        // Once a non-volatile fulfill callback has failed we should never try to re-fulfill
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+        REPORTER_ASSERT(reporter, !recording); // snap should've failed
+    }
+
+    surface.reset();
+    img.reset();
+
+    context->submit(SyncToCpu::kYes);
+    // fulfill should've only been called once while release should never have been called
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(VolatileGraphitePromiseImageTest,
+                                         reporter,
+                                         context) {
+    constexpr SkISize kDimensions { 16, 16 };
+
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                                 /* levelCount= */ 1,
+                                                                 skgpu::Protected::kNo,
+                                                                 Renderable::kYes);
+
+    BackendTexture backendTex = recorder->createBackendTexture(kDimensions, textureInfo);
+    REPORTER_ASSERT(reporter, backendTex.isValid());
+
+    PromiseTextureChecker promiseChecker(backendTex, reporter);
+
+    SkImageInfo ii = SkImageInfo::Make(kDimensions.fWidth,
+                                       kDimensions.fHeight,
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    sk_sp<SkImage> img = SkImage::MakeGraphitePromiseTexture(recorder.get(),
+                                                             kDimensions,
+                                                             textureInfo,
+                                                             ii.colorInfo(),
+                                                             Volatile::kYes,
+                                                             PromiseTextureChecker::Fulfill,
+                                                             PromiseTextureChecker::Release,
+                                                             &promiseChecker);
+
+    sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder.get(), ii);
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        canvas->drawImage(img, 0, 0);
+        check_unfulfilled(promiseChecker, reporter);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_unfulfilled(promiseChecker, reporter);
+
+        context->insertRecording({ recording.get() });
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+    }
+
+    context->submit(SyncToCpu::kYes);
+    check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        canvas->drawImage(img, 0, 0);
+        canvas->drawImage(img, 0, 0);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+        context->insertRecording({ recording.get() });
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 2);
+    }
+
+    context->submit(SyncToCpu::kYes);
+    check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 2);
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        canvas->drawImage(img, 0, 0);
+        img.reset();
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 2);
+
+        context->insertRecording({ recording.get() });
+        check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 3);
+    }
+
+    // We no longer own 'img' but the last recording is still not submitted.
+    check_fulfilled_ahead_by_one(reporter, promiseChecker, /* expectedFulfillCnt= */ 3);
+
+    context->submit(SyncToCpu::kYes);
+
+    // Now Release should definitely have been called.
+    check_all_done(reporter, promiseChecker, /* expectedFulfillCnt= */ 3);
+
+    context->deleteBackendTexture(backendTex);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(VolatileGraphitePromiseImageFulfillFailureTest,
+                                         reporter,
+                                         context) {
+    constexpr SkISize kDimensions { 16, 16 };
+
+    const Caps* caps = context->priv().caps();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                                 /* levelCount= */ 1,
+                                                                 skgpu::Protected::kNo,
+                                                                 Renderable::kYes);
+
+    BackendTexture backendTex;
+    REPORTER_ASSERT(reporter, !backendTex.isValid());
+
+    PromiseTextureChecker promiseChecker(backendTex, reporter);
+
+    SkImageInfo ii = SkImageInfo::Make(kDimensions.fWidth,
+                                       kDimensions.fHeight,
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    sk_sp<SkImage> img = SkImage::MakeGraphitePromiseTexture(recorder.get(),
+                                                             kDimensions,
+                                                             textureInfo,
+                                                             ii.colorInfo(),
+                                                             Volatile::kYes,
+                                                             PromiseTextureChecker::Fulfill,
+                                                             PromiseTextureChecker::Release,
+                                                             &promiseChecker);
+
+    sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder.get(), ii);
+
+    // Draw the image a few different ways.
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        canvas->drawImage(img, 0, 0);
+        check_unfulfilled(promiseChecker, reporter);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_unfulfilled(promiseChecker, reporter);
+
+        context->insertRecording({ recording.get() });
+        check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+    }
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        SkPaint paint;
+        paint.setColorFilter(SkColorFilters::LinearToSRGBGamma());
+        canvas->drawImage(img, 0, 0, SkSamplingOptions(), &paint);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 1);
+
+        context->insertRecording({ recording.get() });
+        check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 2);
+    }
+
+    {
+        SkCanvas* canvas = surface->getCanvas();
+
+        sk_sp<SkShader> shader = img->makeShader(SkSamplingOptions());
+        REPORTER_ASSERT(reporter, shader);
+
+        SkPaint paint;
+        paint.setShader(std::move(shader));
+        canvas->drawRect(SkRect::MakeWH(1, 1), paint);
+
+        std::unique_ptr<Recording> recording = recorder->snap();
+        check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 2);
+
+        context->insertRecording({ recording.get() });
+        check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 3);
+    }
+
+    surface.reset();
+    img.reset();
+
+    context->submit(SyncToCpu::kYes);
+    check_no_releases(reporter, promiseChecker, /* expectedFulfillCnt= */ 3);
 }
