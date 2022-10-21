@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3145494e_a8747682",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T15:16:09Z",
+      "side": 1,
+      "message": "... these are pulling in the OpenSSL one, but apparently they are somehow.",
+      "parentUuid": "a24583b7_59a54d47",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1420c70_862ea88a",
         "filename": "modules/skplaintexteditor/src/word_boundaries.cpp",
         "patchSetId": 4
