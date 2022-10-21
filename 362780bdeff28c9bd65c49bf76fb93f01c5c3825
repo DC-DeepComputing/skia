@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f6032b4_07c90706",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T18:55:42Z",
+      "side": 1,
+      "message": "I think the information here is unfortunately out of date since we are aiming to eliminate \"prior stage output\" and build one giant shading tree.\n\n(Also, this should probably live next to the various blend blocks, not at the top of the file; a reader wouldn\u0027t be looking for it here.)",
+      "parentUuid": "3e7cdf6d_bfa31c1e",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "362780bdeff28c9bd65c49bf76fb93f01c5c3825",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b32aeaa1_6761a5a7",

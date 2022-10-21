@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ae10d8_219fc4d5",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T18:55:42Z",
+      "side": 1,
+      "message": "I thought the goal was to get rid of this boolean and just make separate blender types.",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476e47fb_847331cf",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T18:55:42Z",
+      "side": 1,
+      "message": "If this is a \"primitive color blender,\" we shouldn\u0027t ever generate a `BlendModeBlock`. BlendModeBlock controls the blend equation for the final draw against the surface which is always the very last thing that happens in a paint. The primitive-color blend happens much earlier in the process, mixing the paint color with the primitive color.\n\n(A diagram--primitive color blend happens in the dotted oval, blend-mode happens at the bottom:\nhttps://docs.google.com/presentation/d/1vFlrDxBhAvygDeoyDlWLmOC6JQtp1wVlSXyq0LlUItA/edit?resourcekey\u003d0-VSsIdNzu-J4m5tJzbmKMrQ#slide\u003did.g10541deba55_0_255 )",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
