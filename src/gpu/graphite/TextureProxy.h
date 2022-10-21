@@ -34,7 +34,11 @@ public:
     SkISize dimensions() const { return fDimensions; }
     const TextureInfo& textureInfo() const { return fInfo; }
 
+    bool isLazy() const;
+    bool isVolatile() const;
+
     bool instantiate(ResourceProvider*);
+    bool volatileInstantiate(ResourceProvider*);
     bool isInstantiated() const { return SkToBool(fTexture); }
     sk_sp<Texture> refTexture() const;
     const Texture* texture() const;
@@ -47,7 +51,21 @@ public:
                                     Renderable,
                                     SkBudgeted);
 
+    using LazyInstantiateCallback = std::function<sk_sp<Texture>(ResourceProvider*, Volatile)>;
+
+    static sk_sp<TextureProxy> MakeLazy(SkISize dimensions,
+                                        const TextureInfo&,
+                                        SkBudgeted,
+                                        Volatile,
+                                        LazyInstantiateCallback&&);
+
 private:
+    TextureProxy(SkISize dimensions,
+                 const TextureInfo&,
+                 SkBudgeted,
+                 Volatile,
+                 LazyInstantiateCallback&&);
+
 #ifdef SK_DEBUG
     void validateTexture(const Texture*);
 #endif
@@ -56,8 +74,11 @@ private:
     TextureInfo fInfo;
 
     SkBudgeted fBudgeted;
+    Volatile fVolatile;
 
     sk_sp<Texture> fTexture;
+
+    LazyInstantiateCallback fLazyInstantiateCallback;
 };
 
 } // namepsace skgpu::graphite
