@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a92dbf79_31a31e84",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:31:53Z",
+      "side": 1,
+      "message": "If we land this CL, it\u0027s free money for the fuzzer; it can easily generate a shader which hits this assertion. \n\nLet\u0027s assume that we change this error to use the ErrorReporter to dodge that issue. Then, landing this change in mainline would put us in a state where we can\u0027t pass split sampler/textures (unsupported in Metal), and we can\u0027t pass unified sampler/textures (unsupported in Dawn). That seems like a bad place to be in.\n\nUnfortunately fixing Metal to work properly with separate-samplers is going to take some doing; I don\u0027t see any support for `kSeparateSampler` in Metal today. (Metal has all the moving parts; we just need to implement it.)\n\nIf you guys have a separate branch for the exploration sprint, would it be better to land this there? I don\u0027t see any rush to land this in mainline today, and while it solves a problem for Dawn, AFAICS it adds a problem for Greg in the short term as he works on Vulkan support for Graphite.",
+      "parentUuid": "d958d3ca_bca5d589",
+      "range": {
+        "startLine": 1181,
+        "startChar": 1,
+        "endLine": 1187,
+        "endChar": 5
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11383da2_24e98c68",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
