@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d8eb9c_a3ea64ad",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-21T14:20:43Z",
+      "side": 1,
+      "message": "Uppercase Tight?",
+      "range": {
+        "startLine": 1250,
+        "startChar": 111,
+        "endLine": 1250,
+        "endChar": 116
+      },
+      "revId": "af9a828aa9dd67f6f78f14cf60545c32cc4d9595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
