@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9469b8aa_edda98a8",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-21T21:57:46Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t want to mess with this right now. It is template hell. But, I actually prefer operator[int]. For Skia, it makes more sense. Skia is kind of int based.",
+      "parentUuid": "cce4b2cf_fd16b657",
+      "range": {
+        "startLine": 620,
+        "startChar": 21,
+        "endLine": 620,
+        "endChar": 40
+      },
+      "revId": "e1017746692e9ef9d1fcbd6f96b69826beca6099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "964f843d_bac6a84c",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-21T14:15:47Z",
       "side": 1,
       "message": "Without reviewing all of the code in the class, changing an unsigned type to a signed type could be risky. (Various operations are defined for unsigned types but UB for a signed type.) WDYT about using uint32_t?",
+      "range": {
+        "startLine": 223,
+        "startChar": 4,
+        "endLine": 223,
+        "endChar": 7
+      },
+      "revId": "e1017746692e9ef9d1fcbd6f96b69826beca6099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1f45ab_1c0f2aaf",
+        "filename": "src/core/SkGlyphBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-21T21:57:46Z",
+      "side": 1,
+      "message": "I wrote this class, I\u0027m pretty comfortable with this. The largest number of glyphs is 2^20. This seems fine, and I invite the UB warning because they would have been errors.",
+      "parentUuid": "964f843d_bac6a84c",
       "range": {
         "startLine": 223,
         "startChar": 4,
