@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a24583b7_59a54d47",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T15:15:09Z",
+      "side": 1,
+      "message": "Yeah, as I suspected, the Chromium (and G3) builds fail with\n\n```\n../../third_party/skia/include/private/SkTemplates.h:285:42: error: non-type template parameter \u0027P\u0027 with type \u0027auto\u0027 has incompatible initializer of type \u0027\u003coverloaded function type\u003e\u0027\n    std::unique_ptr\u003cT, SkFunctionWrapper\u003csk_free\u003e\u003e fPtr;\n                                         ^~~~~~~\n```\nwhich is a bit lame as an error message since it doesn\u0027t state what the overloads are (where they are declared or what the signatures are at least). I\u0027m not even sure how",
+      "parentUuid": "7a85c680_22f76b0b",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1420c70_862ea88a",
         "filename": "modules/skplaintexteditor/src/word_boundaries.cpp",
         "patchSetId": 4
