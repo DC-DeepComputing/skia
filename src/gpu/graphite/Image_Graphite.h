@@ -85,7 +85,16 @@ public:
 
     TextureProxyView textureProxyView() const { return fTextureProxyView; }
 
+    static sk_sp<TextureProxy> MakePromiseImageLazyProxy(Recorder*,
+                                                         SkISize dimensions,
+                                                         TextureInfo,
+                                                         Volatile,
+                                                         GraphitePromiseImageFulfillProc,
+                                                         GraphitePromiseImageReleaseProc,
+                                                         GraphitePromiseImageFulfillContext);
+
 private:
+
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
             GrRecordingContext*,
