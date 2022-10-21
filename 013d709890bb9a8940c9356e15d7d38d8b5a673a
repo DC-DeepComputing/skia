@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e2c8afa_68494451",
+        "filename": "fuzz/oss_fuzz/FuzzSKP.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T15:22:01Z",
+      "side": 0,
+      "message": "Yeah, probably `SkDEBUGF` was intended here to begin with (which turns into nothing in a non-debug build). In any event, if someone wants this for debugging locally they can always add it back locally.",
+      "revId": "013d709890bb9a8940c9356e15d7d38d8b5a673a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
