@@ -30,6 +30,7 @@
 
 static bool gUnoptimized = false;
 static bool gStringify = false;
+static SkSL::ProgramKind gProgramKind = SkSL::ProgramKind::kFragment;
 
 void SkDebugf(const char format[], ...) {
     va_list args;
@@ -90,13 +91,10 @@ static std::forward_list<std::unique_ptr<const SkSL::Module>> compile_module_lis
             return {};
         }
 
-        // TODO(skia:13778): We don't know the module's ProgramKind here, so we always pass
-        // kFragment. For minification purposes, the ProgramKind doesn't really make a difference
-        // as long as it doesn't limit what we can do.
         const SkSL::Module* parent = modules.empty() ? SkSL::ModuleLoader::Get().rootModule()
                                                      : modules.front().get();
         std::unique_ptr<SkSL::Module> m =
-                compiler.compileModule(SkSL::ProgramKind::kFragment,
+                compiler.compileModule(gProgramKind,
                                        modulePath->c_str(),
                                        std::move(moduleSource),
                                        parent,
@@ -108,7 +106,7 @@ static std::forward_list<std::unique_ptr<const SkSL::Module>> compile_module_lis
             // (i.e., if module A claims names `$a` and `$b` at global scope, module B will need to
             // start at `$c`. The most straightforward way to handle this is to actually perform the
             // renames.)
-            compiler.optimizeModuleBeforeMinifying(SkSL::ProgramKind::kFragment, *m);
+            compiler.optimizeModuleBeforeMinifying(gProgramKind, *m);
         }
         modules.push_front(std::move(m));
     }
@@ -248,6 +246,13 @@ int main(int argc, const char** argv) {
 
     gUnoptimized = find_boolean_flag(args, "--unoptimized");
     gStringify = find_boolean_flag(args, "--stringify");
+    if (find_boolean_flag(args, "--frag")) {
+        gProgramKind = SkSL::ProgramKind::kFragment;
+    } else if (find_boolean_flag(args, "--vert")) {
+        gProgramKind = SkSL::ProgramKind::kVertex;
+    } else if (find_boolean_flag(args, "--compute")) {
+        gProgramKind = SkSL::ProgramKind::kCompute;
+    }
 
     return (int)processCommand(args);
 }
