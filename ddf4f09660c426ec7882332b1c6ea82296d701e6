@@ -16,6 +16,23 @@
       "message": "This particular roll is because the SVG metrics changed slightly and we just want to make sure they\u0027re sane.",
       "revId": "ddf4f09660c426ec7882332b1c6ea82296d701e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f146dc72_20146d62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T16:52:23Z",
+      "side": 1,
+      "message": "As expected, this change fixes the advances for OT-SVG.",
+      "revId": "ddf4f09660c426ec7882332b1c6ea82296d701e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
