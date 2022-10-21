@@ -132,6 +132,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97b1e523_fd2ad0a4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-21T20:43:52Z",
+      "side": 1,
+      "message": "This change is already in the exploration branch, so there is really no rush to land this in mainline yet. I\u0027m OK with going through the steps to first fix the metal backend and ensure we avoid using the unified sampler/texture uniforms and then make SPIR-V work.\n\nI don\u0027t know if we landed on a solution for Graphite OpenGL shaders where only unified samplers are supported but I would like to see us use separate declarations if possible (at least that seemed to be the consensus in the related chat thread).\n\nAll that being said, this CL doesn\u0027t need to include this portion about disallowing unified samplers. We can still continue allowing them as helper parameters in the SPIR-V backend without any assertions like this and maintain the old behavior for unified samplers. Really the important part of this CL is how the UniformConstant pointers get passed around and I can easily make them work for unified sampler types as well and remove this assertion entirely.",
+      "parentUuid": "a92dbf79_31a31e84",
+      "range": {
+        "startLine": 1181,
+        "startChar": 1,
+        "endLine": 1187,
+        "endChar": 5
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11383da2_24e98c68",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
