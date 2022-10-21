@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b7fb000_fd21e6ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T19:14:12Z",
+      "side": 1,
+      "message": "What\u0027s preventing this part from landing?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 323
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a46da9fd_a5500a09",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T19:14:12Z",
+      "side": 1,
+      "message": "My strong hunch is that this is an `kAlpha_8_SkColorType` texture which is created as R8 internally, and Graphite is treating it as red instead of as alpha. We see a very similar effect on the GM_threshold_rt slide: https://osscs.corp.google.com/skia/skia/+/main:gm/runtimeshader.cpp;l\u003d95;drc\u003ddeac56e45256d2df9a03fec48c10e819c20dd322\n\nIt\u0027s definitely not color space management and it doesn\u0027t look like a local matrix issue either.",
+      "range": {
+        "startLine": 13,
+        "startChar": 163,
+        "endLine": 13,
+        "endChar": 491
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ae10d8_219fc4d5",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 21
