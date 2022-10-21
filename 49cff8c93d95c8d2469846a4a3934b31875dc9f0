@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f30a053b_2ac22f35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "Nice! Any idea how much this saves on code size? Getting this logic out of the header is probably a big win!",
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cd8a94_71e4a195",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "\"Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names.\"\n\nhttp://go/cstyle#Structs_vs._Tuples",
+      "range": {
+        "startLine": 158,
+        "startChar": 14,
+        "endLine": 158,
+        "endChar": 39
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46064d72_b58975be",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "Is there a reason to forbid `atLeast \u003d\u003d 0`?\nIt doesn\u0027t need to do anything special, but it seems harmless enough. I don\u0027t think I\u0027ve worked with any allocator where `malloc(0)` was forbidden.",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87000dd_8b9267c7",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "We should comment this; it\u0027s a bit hard to reason about blind. \"Limit allocation size to 2GB\" or something?",
+      "range": {
+        "startLine": 169,
+        "startChar": 8,
+        "endLine": 169,
+        "endChar": 87
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "298f9a2d_a9c27add",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "This should take `sizeOfT` into account; we don\u0027t ever need fractions of a T. Even if it was totally free to round up (which isn\u0027t a given), we\u0027ll still never use it so we shouldn\u0027t request it.\n\nExample: if `atLeast\u003d1` and `sizeOfT\u003d1MB` and `growthFactor\u003d1.5`, I think this will give us a 1.5MB allocation. That 0.5MB of space goes unused because it\u0027s too small to hold a T. Obviously that\u0027s an extreme example, but it would still apply to `sizeOfT\u003d5K` or something.",
+      "range": {
+        "startLine": 176,
+        "startChar": 45,
+        "endLine": 176,
+        "endChar": 83
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4c625d_93fbb2ad",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "up to you: this would be equivalent and IMO reads fine\n\n`if (size_t allocatedSize \u003d sk_malloc_usable_size(data)) {`",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 79
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4f0ef19_a218c8a9",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "allocation",
+      "range": {
+        "startLine": 198,
+        "startChar": 56,
+        "endLine": 198,
+        "endChar": 62
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d1798cd_25efd721",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "up to you: WDYT about dropping a #pragma warning or something here, in case we add a new SK_BUILD platform in the future? Otherwise it\u0027s unlikely we\u0027ll find and fix this and we\u0027re leaving performance on the table.",
+      "range": {
+        "startLine": 205,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 14
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4711d53_699ad465",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "nit: \"because sk_allocate can round up\" gives the reader a place to look if they\u0027re curious about why this happens.",
+      "range": {
+        "startLine": 97,
+        "startChar": 44,
+        "endLine": 97,
+        "endChar": 75
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b1380e_97e4605f",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T20:05:21Z",
+      "side": 1,
+      "message": "Let\u0027s put some sort of upper bound on this check; we do want to fail if the capacity is crazy large.",
+      "range": {
+        "startLine": 98,
+        "startChar": 30,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
