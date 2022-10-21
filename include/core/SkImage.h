@@ -54,6 +54,8 @@ enum class SkEncodedImageFormat;
 namespace skgpu::graphite {
 class BackendTexture;
 class Recorder;
+class TextureInfo;
+enum class Volatile : bool;
 };
 #endif
 
@@ -369,8 +371,7 @@ public:
         When SkImage is no longer referenced, context releases texture memory
         asynchronously.
 
-        GrBackendTexture created from pixmap is uploaded to match SkSurface created with
-        dstColorSpace. SkColorSpace of SkImage is determined by pixmap.colorSpace().
+        SkColorSpace of SkImage is determined by pixmap.colorSpace().
 
         SkImage is returned referring to GPU back-end if context is not nullptr,
         format of data is recognized and supported, and if context supports moving
@@ -381,7 +382,6 @@ public:
         @param context                GPU context
         @param pixmap                 SkImageInfo, pixel address, and row bytes
         @param buildMips              create SkImage as mip map if true
-        @param dstColorSpace          range of colors of matching SkSurface on GPU
         @param limitToMaxTextureSize  downscale image to GPU maximum texture size, if necessary
         @return                       created SkImage, or nullptr
     */
@@ -1178,6 +1178,60 @@ public:
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
+
+    using GraphitePromiseImageFulfillContext = void*;
+    using GraphitePromiseImageReleaseContext = void*;
+
+    using GraphitePromiseImageFulfillProc =
+            std::tuple<skgpu::graphite::BackendTexture, GraphitePromiseImageReleaseContext>
+            (*)(GraphitePromiseImageFulfillContext);
+    using GraphitePromiseImageReleaseProc = void (*)(GraphitePromiseImageReleaseContext);
+
+    /** Create a new SkImage that is very similar to an SkImage created by
+        MakeGraphiteFromBackendTexture. The difference is that the caller need not have created the
+        backend texture nor populated it with data when creating the image. Instead of passing a
+        BackendTexture to the factory the client supplies a description of the texture consisting
+        of dimensions, TextureInfo, SkColorInfo and Volatility.
+
+        In general, the fulfillProc must return a BackendTexture that match the properties
+        provided at SkImage creation time. The BackendTexture must refer to a valid existing
+        texture in the backend API context/device, and already be populated with data.
+        The texture cannot be deleted until the releaseProc is called. The releaseProc will
+        be called with the releaseContext returned by the fulfillProc.
+
+        Wrt when and how often the fulfill and release Procs will be called:
+
+        For non-volatile promise images, fulfill will be only ever called once at Recorder::snap
+        time. If the fulfillProc failed (i.e., it didn't return a valid backend
+        texture) the releaseProc will never be called. If fulfillProc was successful then the
+        releaseProc will be called once. It will usually be called when the containing Recording
+        is deleted but could occur earlier due to error conditions.
+
+        For volatile promise images, fulfill will be called each time the Recording is inserted
+        into a Context. If the fulfillProc fails at that time the paired releaseProc will never
+        be called. If the fulfillProc was successful then a releaseProc matching that fulfill will
+        be called when the GPU is done with the contents of the promise image. This will usually
+        occur during a Context::submit call but it could occur earlier due to error conditions.
+
+        @param recorder       the recorder that will capture the commands creating the image
+        @param dimensions     width & height of promised gpu texture
+        @param textureInfo    structural information for the promised gpu texture
+        @param colorInfo      color type, alpha type and colorSpace information for the image
+        @param isVolatile     volatility of the promise image
+        @param fulfillProc    function called to get the actual backend texture
+        @param releaseProc    function called when the backend texture can be deleted
+        @param fulfillContext state passed to the fulfillProc
+        @return               created SkImage, or nullptr
+    */
+    static sk_sp<SkImage> MakeGraphitePromiseTexture(skgpu::graphite::Recorder*,
+                                                     SkISize dimensions,
+                                                     const skgpu::graphite::TextureInfo&,
+                                                     const SkColorInfo&,
+                                                     skgpu::graphite::Volatile,
+                                                     GraphitePromiseImageFulfillProc,
+                                                     GraphitePromiseImageReleaseProc,
+                                                     GraphitePromiseImageFulfillContext);
+
     /** Creates an SkImage from a GPU texture associated with the recorder.
 
         SkImage is returned if the format of backendTexture is recognized and supported.
