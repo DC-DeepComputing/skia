@@ -160,6 +160,24 @@
       "parentUuid": "5990e8e2_caaad2d5",
       "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab1338c6_b8751c1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-21T14:32:06Z",
+      "side": 1,
+      "message": "I think ending up with \"we re-implemented `vector\u003c\u003e` plus extensions that we needed\" is a totally desirable end state. We already have lots of useful extensions that vector will never have (no exceptions, SkSTArray, push_back_n) and we can add more whenever we want, or make tradeoffs that the standard library would never make, like limit the container to 2 billion elements to make the class smaller.\n\nLet\u0027s chat about this over GVC so I can understand the goals here better.",
+      "parentUuid": "fd1cfb06_2b3d528b",
+      "revId": "163070537f10e14a8227b1a4dec03b786cde56a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
