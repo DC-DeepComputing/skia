@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef59c3c2_12afe4fd",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-21T19:18:23Z",
+      "side": 1,
+      "message": "Or we could still have the old version of SkFunctionWrapper which allows stating the type so that it doesn\u0027t have to be inferred.",
+      "parentUuid": "589fb12d_22141298",
+      "revId": "1f55b85da0255f4ba272ee9a5b4ab927c9c5a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1420c70_862ea88a",
