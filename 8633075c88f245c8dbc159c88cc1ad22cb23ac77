@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afc8db55_95e73583",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 1212,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2022-10-21T17:18:32Z",
+      "side": 1,
+      "message": "drive-by nit: these comments need to be updated",
+      "range": {
+        "startLine": 1210,
+        "startChar": 0,
+        "endLine": 1212,
+        "endChar": 68
+      },
+      "revId": "8633075c88f245c8dbc159c88cc1ad22cb23ac77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
