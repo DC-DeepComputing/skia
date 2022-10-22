@@ -204,6 +204,9 @@ const char* kBackendTypeStrings[sk_app::Window::kBackendTypeCount] = {
 #endif
 #ifdef SK_DAWN
     "Dawn",
+#ifdef SK_GRAPHITE_ENABLED
+    "Dawn (Graphite)",
+#endif
 #endif
 #ifdef SK_VULKAN
     "Vulkan",
