@@ -199,6 +199,29 @@
       },
       "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3f3af41_0655f002",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-22T18:33:07Z",
+      "side": 1,
+      "message": "This doesn\u0027t look correct. The sampler should have received a ` [[sampler(0)]]` decoration and the code should have at least contained a polyfill for `sample` (and `makeSampler2D`?) as it does in https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/sksl/metal/SamplerGlobals.metal;l\u003d9?\n\nIf we consider the input SkSL valid then this looks like a bug (filed skia:13841). I don\u0027t know where we\u0027ll land with skia:13840 but this should either generate correct code or catch this in the front-end if combined samplers are the future.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
