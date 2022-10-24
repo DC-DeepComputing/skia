@@ -57,7 +57,7 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
             writer.writeByteArray(attr.c_str(), attr.size());
         }
 
-        writer.writeBool(meta->fHasCustomColorOutput);
+        writer.writeBool(meta->fHasPrimaryColorOutput);
         writer.writeBool(meta->fHasSecondaryColorOutput);
 
         if (meta->fPlatformData) {
@@ -112,7 +112,7 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
             }
         }
 
-        meta->fHasCustomColorOutput    = reader->readBool();
+        meta->fHasPrimaryColorOutput   = reader->readBool();
         meta->fHasSecondaryColorOutput = reader->readBool();
 
         // a given platform will be responsible for reading its data

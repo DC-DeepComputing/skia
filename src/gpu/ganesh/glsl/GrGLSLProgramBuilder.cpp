@@ -370,7 +370,7 @@ bool GrGLSLProgramBuilder::emitAndInstallXferProc(const SkString& colorIn,
     }
 
     if (this->shaderCaps()->mustDeclareFragmentShaderOutput()) {
-        fFS.enableCustomOutput();
+        fFS.enablePrimaryOutput();
     }
 
     SkString openBrace;
