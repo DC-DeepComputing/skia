@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbff3a56_36f4ad75",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T17:39:18Z",
+      "side": 1,
+      "message": "Because all the other places that set the field index to kFailed also return true, this *shouldn\u0027t* be possible, but no harm in leaving it here, I think.",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 13
+      },
+      "revId": "6ec0b64ae310de073ea38c823d1be8d84ed7a64b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaf37e95_e9f10532",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T17:39:18Z",
+      "side": 1,
+      "message": "Right. Returning true will terminate the recursion entirely (no sibling nodes will be visited during the return sequence up the stack). Returning false is \"the default\" that eventually happens anyway, and just avoids recursing deeper.",
+      "parentUuid": "3274a5ca_85b9fe44",
+      "range": {
+        "startLine": 254,
+        "startChar": 19,
+        "endLine": 254,
+        "endChar": 58
+      },
+      "revId": "87f6949529029ce128e995ce5503f8dd56187b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5ff7fb0_24c5747e",
