@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f61768_8502f223",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T16:48:54Z",
+      "side": 1,
+      "message": "if you `return false` here, then you will short circuit scanning other program elements (particularly other function definitions), and you won\u0027t need the fInMain logic (because that will be the only place that statements are encountered)",
+      "range": {
+        "startLine": 254,
+        "startChar": 19,
+        "endLine": 254,
+        "endChar": 58
+      },
+      "revId": "87f6949529029ce128e995ce5503f8dd56187b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ff7fb0_24c5747e",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T16:48:54Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 225,
+        "startChar": 43,
+        "endLine": 225,
+        "endChar": 51
+      },
+      "revId": "87f6949529029ce128e995ce5503f8dd56187b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "903c253f_f5fd2432",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T16:48:54Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be strictly `\u003c` ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 57,
+        "endLine": 227,
+        "endChar": 60
+      },
+      "revId": "87f6949529029ce128e995ce5503f8dd56187b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
