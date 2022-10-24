@@ -34,6 +34,24 @@
       "parentUuid": "c37d2ee8_fbb19e81",
       "revId": "d2863cc50a3d4c7f782c0251d8c6eb6bd5ea5d07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27e34cef_ad869b0d",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-24T20:20:13Z",
+      "side": 1,
+      "message": "sgtm",
+      "parentUuid": "f9359026_adcad6e5",
+      "revId": "d2863cc50a3d4c7f782c0251d8c6eb6bd5ea5d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
