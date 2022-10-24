@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "286f655b_d60e81f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-24T15:00:45Z",
+      "side": 1,
+      "message": "So add the command buffer instructions for all of them, submit once, and then sync and check results at the end?",
+      "parentUuid": "73dfe8e1_8514d2f4",
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc63fc1e_8f42f44c",
