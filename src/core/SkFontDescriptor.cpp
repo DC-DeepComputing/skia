@@ -37,6 +37,9 @@ SkFontDescriptor::SkFontDescriptor() { }
 static bool SK_WARN_UNUSED_RESULT read_string(SkStream* stream, SkString* string) {
     size_t length;
     if (!stream->readPackedUInt(&length)) { return false; }
+    if (StreamRemainingLengthIsBelow(stream, paletteEntryOverrideCount)) {
+        return false;
+    }
     if (length > 0) {
         string->resize(length);
         if (stream->read(string->writable_str(), length) != length) { return false; }
