@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9cd16b_d583ceb3",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T20:59:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "910070db_7ec2548b",
+      "revId": "5566b80e9eee2a812a98c649e91b8eae61fc4f8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1695fc1_3efe5dac",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-24T20:19:11Z",
       "side": 1,
       "message": "This might be working because of luck (or because of the inliner)? I think the code I tagged above will (potentially) dereference a null fVaryings when it looks at this expression, because we haven\u0027t encountered `main` yet.",
+      "revId": "5566b80e9eee2a812a98c649e91b8eae61fc4f8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9057f88_26b36bef",
+        "filename": "tests/MeshTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T20:59:53Z",
+      "side": 1,
+      "message": "It was the inliner. Now we look for the Varyings struct definition to get the type. The function is marked noinline and the test crashes without the type detection change.",
+      "parentUuid": "b1695fc1_3efe5dac",
       "revId": "5566b80e9eee2a812a98c649e91b8eae61fc4f8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
