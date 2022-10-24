@@ -33,6 +33,23 @@
       "message": "As expected, this change fixes the advances for OT-SVG.",
       "revId": "ddf4f09660c426ec7882332b1c6ea82296d701e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71e49327_22566b3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T16:15:58Z",
+      "side": 1,
+      "message": "It\u0027s vaguely possible that someone using some build of CanvasKit could be using OT-SVG, so Kevin should be aware of this FreeType change too.",
+      "revId": "ddf4f09660c426ec7882332b1c6ea82296d701e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
