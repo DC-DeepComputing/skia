@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a7acaa_0b50bb5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T13:57:22Z",
+      "side": 1,
+      "message": "Not sure what\u0027s up with all the empty canvases in gold, but lgtm.",
+      "revId": "fb8179ebf5d91889197a8e79234d6c58c03ade3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
