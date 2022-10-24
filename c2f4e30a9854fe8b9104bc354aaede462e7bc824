@@ -187,6 +187,24 @@
       "parentUuid": "46ce3fb5_9594394f",
       "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "031d3924_cda39d8f",
+        "filename": "tools/sk_app/sdl2/main_sdl2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T18:08:03Z",
+      "side": 1,
+      "message": "I think the goal here is to make any app written against sk_app work with WASM in as similar a manner as possible the native sk_app implementations, not to write WASM apps.\n\nsk_app/SDL2 are doing a lot of lifting for us here: multiple windows, GL context management, dynamically switching between CPU and GL Skia backends in a running app (and recreating any \u003ccanvas\u003e backing store to support this).\n\nWe also may want to use SDL2 for native in the future, meaning we\u0027d have to rewrite anything that got lifted out of sk_app/SDL2 and into our own JS code and have something else to maintain.\n\nSo unless there is some significant disadvantage to doing things this way I\u0027d lean towards keeping this in line with the other sk_app backends and being able to share as much code as possible between native and WASM.",
+      "parentUuid": "a4007139_109a64fa",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
