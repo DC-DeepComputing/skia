@@ -22,6 +22,30 @@
       },
       "revId": "6ec0b64ae310de073ea38c823d1be8d84ed7a64b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d777bb0f_f8fd6808",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T17:48:07Z",
+      "side": 1,
+      "message": "Good point. Changed it to an assertion.",
+      "parentUuid": "fbff3a56_36f4ad75",
+      "range": {
+        "startLine": 260,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 13
+      },
+      "revId": "6ec0b64ae310de073ea38c823d1be8d84ed7a64b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
