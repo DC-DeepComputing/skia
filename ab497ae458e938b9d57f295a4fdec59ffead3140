@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34c2f3d0_e8306003",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-24T18:04:53Z",
+      "side": 1,
+      "message": "The canary is failing because the linux-blink-rel bot is failing to patch, but I believe the linux-rel bot runs a super-set of the tests that linux-blink-rel does, and that passes, so I believe my test suppressions from https://chromium-review.googlesource.com/c/chromium/src/+/3964805 are sufficient and I\u0027ll submit this.",
+      "revId": "ab497ae458e938b9d57f295a4fdec59ffead3140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
