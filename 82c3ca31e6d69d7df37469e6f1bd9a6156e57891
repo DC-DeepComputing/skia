@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f1c332_a7fc6367",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T19:59:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a3f811d_a0aca807",
+      "range": {
+        "startLine": 1206,
+        "startChar": 21,
+        "endLine": 1206,
+        "endChar": 53
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f03d8c43_c49beed8",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0e229b1_8619d012",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T19:59:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f03d8c43_c49beed8",
+      "range": {
+        "startLine": 1207,
+        "startChar": 87,
+        "endLine": 1208,
+        "endChar": 18
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d023761c_36c3a769",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-24T13:41:25Z",
       "side": 1,
       "message": "Do we need Graphite in the name here?",
+      "range": {
+        "startLine": 1226,
+        "startChar": 30,
+        "endLine": 1226,
+        "endChar": 38
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2526183_2b272556",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T19:59:33Z",
+      "side": 1,
+      "message": "Will do in a follow up CL",
+      "parentUuid": "d023761c_36c3a769",
       "range": {
         "startLine": 1226,
         "startChar": 30,
