@@ -16,6 +16,40 @@
       "message": "I will remove ICU dependency from SkShaper in a separate CL (before submitting this CL)",
       "revId": "0c0d185509b6b014ef21b1b5fc574190a0efc6f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfda35f7_8d7cf398",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T21:08:07Z",
+      "side": 1,
+      "message": "I\u0027m going to defer any further licensing issues to Heather. Heather, `SkUnicodeBidi.cpp` here is a copy of the bidi visual reordering code from ICU. I\u0027m not sure what\u0027s the right way to handle the license of that.",
+      "revId": "0c0d185509b6b014ef21b1b5fc574190a0efc6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ff0aa1_c43d6ea0",
+        "filename": "modules/skparagraph/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T21:08:07Z",
+      "side": 1,
+      "message": "nit: I think this needs to be indented two more spaces.",
+      "revId": "0c0d185509b6b014ef21b1b5fc574190a0efc6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
