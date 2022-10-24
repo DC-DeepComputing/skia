@@ -64,6 +64,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44cd6658_045415b5",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T13:42:29Z",
+      "side": 1,
+      "message": "It\u0027s true it also supports making a CPU copy. I updated the note. The buffers *aren\u0027t* immutable so I thought it potentially could be useful to make this \"Copy\" rather than strictly CPU-\u003eGPU. It wouldn\u0027t be hard to add GPU-\u003eGPU (on the same context) if it were ever requested (or range copies).",
+      "parentUuid": "510b84af_c0554119",
+      "range": {
+        "startLine": 6,
+        "startChar": 61,
+        "endLine": 6,
+        "endChar": 67
+      },
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6629de97_5f9f9969",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T13:42:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a2ef3f1_b1372443",
+      "range": {
+        "startLine": 6,
+        "startChar": 28,
+        "endLine": 6,
+        "endChar": 32
+      },
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80b9b853_93eeb070",
@@ -77,6 +125,24 @@
       "writtenOn": "2022-10-24T13:35:36Z",
       "side": 1,
       "message": "tiny nit: two newlines in a row",
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f26c534_5e2df457",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T13:42:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80b9b853_93eeb070",
       "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
