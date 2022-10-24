@@ -9,10 +9,11 @@
 #define SKSL_UTIL
 
 #include "include/sksl/SkSLVersion.h"
-#include "src/core/SkSLTypeShared.h"
 #include "src/sksl/SkSLGLSL.h"
 
 #include <memory>
+
+enum class SkSLType : char;
 
 #ifndef SKSL_STANDALONE
 #include "include/core/SkTypes.h"

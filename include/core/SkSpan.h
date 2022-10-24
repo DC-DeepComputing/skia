@@ -8,12 +8,13 @@
 #ifndef SkSpan_DEFINED
 #define SkSpan_DEFINED
 
+#include "include/private/SkTLogic.h"
+
 #include <cstddef>
 #include <initializer_list>
 #include <iterator>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: export
 #include <utility>
-#include "include/private/SkTLogic.h"
 
 // Add macro to check the lifetime of initializer_list arguments. initializer_list has a very
 // short life span, and can only be used as a parameter, and not as a variable.
