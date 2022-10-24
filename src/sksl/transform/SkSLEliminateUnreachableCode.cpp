@@ -23,6 +23,7 @@
 #include "src/sksl/transform/SkSLTransform.h"
 
 #include <memory>
+#include <vector>
 
 namespace SkSL {
 

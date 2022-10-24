@@ -5,8 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/sksl/transform/SkSLTransform.h"
-
 #include "include/core/SkSpan.h"
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLProgramElement.h"
@@ -15,10 +13,13 @@
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/transform/SkSLProgramWriter.h"
+#include "src/sksl/transform/SkSLTransform.h"
 
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <type_traits>
+#include <vector>
 
 namespace SkSL {
 

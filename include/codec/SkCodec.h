@@ -8,10 +8,7 @@
 #ifndef SkCodec_DEFINED
 #define SkCodec_DEFINED
 
-#include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkEncodedOrigin.h"
-#include "include/core/SkAlphaType.h"
-#include "include/core/SkEncodedImageFormat.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRect.h"
@@ -35,6 +32,12 @@ class SkImage;
 class SkPngChunkReader;
 class SkSampler;
 class SkStream;
+enum SkAlphaType : int;
+enum class SkEncodedImageFormat;
+namespace SkCodecAnimation {
+    enum class Blend;
+    enum class DisposalMethod;
+}
 
 namespace DM {
 class CodecSrc;

@@ -83,6 +83,8 @@
 
   { include: ["<__locale>", "private", "<locale>", "public"] },
 
+  { include: ["<__numeric/accumulate.h>", "private", "<numeric>", "public"] },
+
   { include: ["<__memory/shared_ptr.h>", "private", "<memory>", "public"] },
   { include: ["<__memory/unique_ptr.h>", "private", "<memory>", "public"] },
 
@@ -103,14 +105,21 @@
 
   { symbol: ["std::string", "public", "<string>", "public"] },
 
+  { include: ["<__fwd/string_view.h>", "private", "<string_view>", "public"] },
+
   { include: ["<__hash_table>", "private", "<unordered_map>", "public"] },
 
   { include: ["<__utility/declval.h>", "private", "<utility>", "public"] },
   { include: ["<__utility/exchange.h>", "private", "<utility>", "public"] },
   { include: ["<__utility/forward.h>", "private", "<utility>", "public"] },
   { include: ["<__utility/move.h>", "private", "<utility>", "public"] },
-  { include: ["<__utility/swap.h>", "private", "<utility>", "public"] },
+  { include: ["<__utility/swap. h>", "private", "<utility>", "public"] },
   { include: ["<__utility/pair.h>", "private", "<utility>", "public"] },
+
+  { include: ["<__type_traits/enable_if.h.h>", "private", "<type_traits>", "public"] },
+  { include: ["<__type_traits/integral_constant.h>", "private", "<type_traits>", "public"] },
+  { include: ["<__type_traits/remove_extent.h>", "private", "<type_traits>", "public"] },
+  { include: ["<__type_traits/remove_pointer.h>", "private", "<type_traits>", "public"] },
 
   { symbol: ["std::__bit_reference", "public", "<vector>", "public"] },
   { include: ["<__bit_reference>", "private",  "<vector>", "public"] },

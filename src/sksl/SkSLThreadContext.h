@@ -9,7 +9,6 @@
 #define SKSL_THREADCONTEXT
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkSLProgramKind.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -23,13 +22,14 @@ namespace SkSL {
 
 class Compiler;
 class ModifiersPool;
-struct Module;
 class Pool;
 class Position;
 class ProgramElement;
 class SymbolTable;
 class Variable;
+enum class ProgramKind : int8_t;
 struct Modifiers;
+struct Module;
 
 namespace dsl {
 

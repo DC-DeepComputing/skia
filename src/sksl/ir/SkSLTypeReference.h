@@ -8,6 +8,7 @@
 #ifndef SKSL_TYPEREFERENCE
 #define SKSL_TYPEREFERENCE
 
+#include "include/private/SkSLIRNode.h"
 #include "include/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
@@ -18,6 +19,8 @@
 #include <string>
 
 namespace SkSL {
+
+enum class OperatorPrecedence : uint8_t;
 
 /**
  * Represents an identifier referring to a type. This is an intermediate value: TypeReferences are
