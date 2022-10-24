@@ -16,6 +16,125 @@
       "message": "I had to change the build a little bit to be able to test client icu code.",
       "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50c516f0_d2985647",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "This test is literally never run because `SKUNICODE_TEST_ICU` is not defined.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48b541dd_f8ceee24",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "This is the wrong name. If I understand correctly, the point of this being `true` is to include code for an implementation of `skunicode` which does not use ICU. This should be less misleading, like `skunicode_client` (for a client provided implementation of `SkUnicode`) or something like that.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bb34c21_9a912f65",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "I don\u0027t understand the logic of this at all. It appears this is a request to build both the client and ICU implementations of `SkUnicode`. But that should should simply be requesting both of those implementations, not some \"test\" configuration.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba4389d_397903ac",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "This should now be inverted. In particular the point of the `skunicode` component is to be able to not use ICU, so whether or not ICU is enabled should not affect if `skunicode` is built or not.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b201f8_a97ceadd",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "`skia_unicode_icu_sources` so that we go from general to most specific.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc70117e_550ce4f6",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "`skia_unicode_client_sources`",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24e16851_d2be407d",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T15:43:53Z",
+      "side": 1,
+      "message": "If the idea is to have a default, then this should either follow the `_factory.cpp` pattern used by the `SkFontMgr` implementations (where each factory is in its own file and the user can specify which factory target to build) or it would need to be done like `SkShaper` where the \"best\" one is picked based on defines but there is only one factory method.\n\nHowever, there should be a `Make` available for each of the implementations, but those should not be in `ifdef`s.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
