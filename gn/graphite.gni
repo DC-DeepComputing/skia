@@ -126,6 +126,8 @@ skia_graphite_sources = [
   "$_src/UploadBufferManager.h",
   "$_src/UploadTask.cpp",
   "$_src/UploadTask.h",
+  "$_src/VolatileProxyContext.cpp",
+  "$_src/VolatileProxyContext.h",
   "$_src/geom/BoundsManager.h",
   "$_src/geom/Geometry.h",
   "$_src/geom/IntersectionTree.cpp",
