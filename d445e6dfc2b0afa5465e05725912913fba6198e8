@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac10f41_a1d590fb",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-24T16:01:35Z",
+      "side": 1,
+      "message": "I agree; when I\u0027d come back to this from my old hacky CL I was similarly confused by ensureTexturable() for a moment. It now takes GrSurfaceProxyView and SkIRect as a parameters and returns a std::pair\u003cGrSurfaceProxyView, SkIRect\u003e. Call sites just use std::tie() to update and then check that texView isn\u0027t null.\n\nI\u0027d tried using rvalues and std::move() but it seemed that using `std::tie(texView, srcRect) \u003d ensureTexturable(std::move(texView), srcRect)` confused clang-tidy and it didn\u0027t realize that `texView` had been re-assigned to after the move. I figured the compiler could remove all the redundant copies anyways on release builds, so this was cleaner than adding clang-tidy suppression comments.",
+      "parentUuid": "1d21fb6d_c9c97232",
+      "revId": "d445e6dfc2b0afa5465e05725912913fba6198e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9e82b98_c2d04a42",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-10-19T20:54:25Z",
       "side": 1,
       "message": "Not sure if it\u0027s better but could be:\n```\n  if (xform || texView.origin() !\u003d stepDst-\u003eorigin() ||\n      !stepDst-\u003ecopyScaled(texView.refProxy(), srcRect, stepDstRect, filter)) {\n      if (!ensureTexturable()) {\n          return false;\n      }\n      auto srcRectF \u003d SkRect::Make(srcRect);\n      ...\n```",
+      "range": {
+        "startLine": 1277,
+        "startChar": 0,
+        "endLine": 1285,
+        "endChar": 26
+      },
+      "revId": "d445e6dfc2b0afa5465e05725912913fba6198e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf96125_252bc421",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1285,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-24T16:01:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9e82b98_c2d04a42",
       "range": {
         "startLine": 1277,
         "startChar": 0,
