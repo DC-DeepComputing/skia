@@ -16,6 +16,24 @@
       "message": "I\"m okay with this fix (I think it might be applicable to other situations), but we could also fix this by limiting this check to non-runtime effects, right? (This particular block of code is specifically for fragment shaders, so we can share our SkSL test inputs with RTE?)",
       "revId": "d2863cc50a3d4c7f782c0251d8c6eb6bd5ea5d07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9359026_adcad6e5",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T20:18:41Z",
+      "side": 1,
+      "message": "Hmm. The `sk_Clockwise` check is already appropriately guarded by `ProgramConfig::IsFragment`; I guess we could add a similar check here as well. I still think it\u0027s safer to continue using `findBuiltinSymbol` just out of an abundance of caution (plus it\u0027s more accurate as to what we want to do).",
+      "parentUuid": "c37d2ee8_fbb19e81",
+      "revId": "d2863cc50a3d4c7f782c0251d8c6eb6bd5ea5d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
