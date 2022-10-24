@@ -1,6 +1,11 @@
 Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
+Milestone 108
+-------------
+  * SkMesh buffer factories addd that copy CPU-backed buffer to GPU.
+
+* * *
 
 Milestone 108
 -------------
