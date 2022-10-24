@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb44850f_a953839e",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-24T13:16:01Z",
+      "side": 1,
+      "message": "So some caller above this code is going to have to do a check whether a proxy is volatile or not so that it can be placed in the volatile set on the Recording. So it seems like that same logic can restrict only calling this on non-volatile proxies.\n\nIt just seems weird to me as a caller that i could do\nproxy-\u003einstantiate(); // returns true since volatile\nproxy-\u003eisInstantiated(); //returns false\n\nIf we don\u0027t want to add logic to enforce calling this on non-volatile proxies only, maybe we could have the return be a tri-state enum instead of a bool. FailedInstantiationg, SkippedForVolatile, Instantiated.",
+      "parentUuid": "a5b17ec9_4933d0c4",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 23
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59f11ace_1869eed5",
         "filename": "src/gpu/graphite/TextureProxy.cpp",
         "patchSetId": 4
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "A client could, if they wanted to, insert the same Recording (with volatile promise images) twice and then submit. We would follow our contract and call fulfill on each insertion and the second one would win.\n\nNote that we will also be calling the releaseProc twice w/ potentially different release contexts.",
       "parentUuid": "59f11ace_1869eed5",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 12
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0621aa6_b2c731b4",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-24T13:16:01Z",
+      "side": 1,
+      "message": "So then we should be able to have an SkASSERT(!fTexture) here right?",
+      "parentUuid": "2993f9c9_52006540",
       "range": {
         "startLine": 83,
         "startChar": 4,
