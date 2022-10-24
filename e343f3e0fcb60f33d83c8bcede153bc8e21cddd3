@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43cc7f5_c52c82be",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "I have it at\n    if (skia_use_test_icu) {\n      defines +\u003d [ \"SKUNICODE_TEST_ICU\" ]",
+      "parentUuid": "50c516f0_d2985647",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48b541dd_f8ceee24",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-10-24T15:43:53Z",
       "side": 1,
       "message": "This is the wrong name. If I understand correctly, the point of this being `true` is to include code for an implementation of `skunicode` which does not use ICU. This should be less misleading, like `skunicode_client` (for a client provided implementation of `SkUnicode`) or something like that.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b40f43ee_6c1d8597",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48b541dd_f8ceee24",
       "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93c2d067_282b7341",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bb34c21_9a912f65",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fba4389d_397903ac",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-10-24T15:43:53Z",
       "side": 1,
       "message": "This should now be inverted. In particular the point of the `skunicode` component is to be able to not use ICU, so whether or not ICU is enabled should not affect if `skunicode` is built or not.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62283e5e_6603643b",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "You are right but there is another case: when we do not use ICU and do not use client. I think there are build machines with that configuration. So I still have to check for non-trivial condifions.",
+      "parentUuid": "fba4389d_397903ac",
       "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -103,6 +175,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb4f13e_8667070a",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88b201f8_a97ceadd",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc70117e_550ce4f6",
@@ -120,6 +210,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b72c08f8_028d8df0",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc70117e_550ce4f6",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24e16851_d2be407d",
@@ -133,6 +241,24 @@
       "writtenOn": "2022-10-24T15:43:53Z",
       "side": 1,
       "message": "If the idea is to have a default, then this should either follow the `_factory.cpp` pattern used by the `SkFontMgr` implementations (where each factory is in its own file and the user can specify which factory target to build) or it would need to be done like `SkShaper` where the \"best\" one is picked based on defines but there is only one factory method.\n\nHowever, there should be a `Make` available for each of the implementations, but those should not be in `ifdef`s.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c5a92f1_84c833b0",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24e16851_d2be407d",
       "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

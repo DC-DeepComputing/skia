@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67c1d2a8_0c380c1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T18:35:35Z",
+      "side": 1,
+      "message": "I will remove ICU dependency from SkShaper in a separate CL (before submitting this CL)",
+      "revId": "0c0d185509b6b014ef21b1b5fc574190a0efc6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
