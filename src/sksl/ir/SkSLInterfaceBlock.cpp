@@ -45,9 +45,15 @@ std::unique_ptr<InterfaceBlock> InterfaceBlock::Convert(const Context& context,
                                                         Position pos,
                                                         Variable* variable,
                                                         std::shared_ptr<SymbolTable> symbols) {
-    SkSpan<const Type::Field> fields = variable->type().componentType().fields();
+    if (SkSL::ProgramKind kind = context.fConfig->fKind; !ProgramConfig::IsFragment(kind) &&
+                                                         !ProgramConfig::IsVertex(kind) &&
+                                                         !ProgramConfig::IsCompute(kind)) {
+        context.fErrors->error(pos, "interface blocks are not allowed in this kind of program");
+        return nullptr;
+    }
 
     // Find sk_RTAdjust and error out if it's not of type `float4`.
+    SkSpan<const Type::Field> fields = variable->type().componentType().fields();
     std::optional<int> rtAdjustIndex = find_rt_adjust_index(fields);
     if (rtAdjustIndex.has_value()) {
         const Type::Field& rtAdjustField = fields[*rtAdjustIndex];
@@ -64,6 +70,10 @@ std::unique_ptr<InterfaceBlock> InterfaceBlock::Make(const Context& context,
                                                      Variable* variable,
                                                      std::optional<int> rtAdjustIndex,
                                                      std::shared_ptr<SymbolTable> symbols) {
+    SkASSERT(ProgramConfig::IsFragment(context.fConfig->fKind) ||
+             ProgramConfig::IsVertex(context.fConfig->fKind) ||
+             ProgramConfig::IsCompute(context.fConfig->fKind));
+
     SkASSERT(variable->type().componentType().isInterfaceBlock());
     SkSpan<const Type::Field> fields = variable->type().componentType().fields();
 
