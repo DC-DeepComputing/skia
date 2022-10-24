@@ -187,7 +187,7 @@ void GrGLProgramBuilder::storeShaderInCache(const SkSL::Program::Inputs& inputs,
         // source cache, plus metadata to allow for a complete precompile
         GrPersistentCacheUtils::ShaderMetadata meta;
         meta.fSettings = settings;
-        meta.fHasCustomColorOutput = fFS.hasCustomColorOutput();
+        meta.fHasPrimaryColorOutput = fFS.hasPrimaryColorOutput();
         meta.fHasSecondaryColorOutput = fFS.hasSecondaryOutput();
         for (auto attr : this->geometryProcessor().vertexAttributes()) {
             meta.fAttributeNames.emplace_back(attr.name());
@@ -409,7 +409,7 @@ void GrGLProgramBuilder::bindProgramResourceLocations(GrGLuint programID) {
     fUniformHandler.bindUniformLocations(programID, fGpu->glCaps());
 
     const GrGLCaps& caps = this->gpu()->glCaps();
-    if (fFS.hasCustomColorOutput() && caps.bindFragDataLocationSupport()) {
+    if (fFS.hasPrimaryColorOutput() && caps.bindFragDataLocationSupport()) {
         GL_CALL(BindFragDataLocation(programID, 0,
                                      GrGLSLFragmentShaderBuilder::DeclaredColorOutputName()));
     }
@@ -541,7 +541,7 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
     }
 
     const GrGLCaps& caps = glGpu->glCaps();
-    if (meta.fHasCustomColorOutput && caps.bindFragDataLocationSupport()) {
+    if (meta.fHasPrimaryColorOutput && caps.bindFragDataLocationSupport()) {
         GR_GL_CALL(glGpu->glInterface(),
                    BindFragDataLocation(programID, 0,
                                         GrGLSLFragmentShaderBuilder::DeclaredColorOutputName()));
