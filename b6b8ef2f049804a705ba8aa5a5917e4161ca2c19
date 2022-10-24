@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d541b6_4c36597a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T22:08:45Z",
+      "side": 1,
+      "message": "Hey Brian Osman, do you think we should track struct fields in ProgramUsage? Might make this sort of thing a lot easier.",
+      "revId": "b6b8ef2f049804a705ba8aa5a5917e4161ca2c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b916a2ba_b6d45e64",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T22:08:45Z",
+      "side": 1,
+      "message": "style nit: consider using `INHERITED`",
+      "range": {
+        "startLine": 268,
+        "startChar": 30,
+        "endLine": 268,
+        "endChar": 44
+      },
+      "revId": "b6b8ef2f049804a705ba8aa5a5917e4161ca2c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39dd3767_d88ee2c5",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T22:08:45Z",
+      "side": 1,
+      "message": "style nit: `this-\u003epassthroughFailed()`",
+      "range": {
+        "startLine": 296,
+        "startChar": 16,
+        "endLine": 296,
+        "endChar": 33
+      },
+      "revId": "b6b8ef2f049804a705ba8aa5a5917e4161ca2c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
