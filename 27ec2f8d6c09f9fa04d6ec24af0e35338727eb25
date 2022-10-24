@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d48a9ee2_99226c50",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T16:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84ff6025_216dadd7",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 23
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59f11ace_1869eed5",
@@ -181,6 +205,30 @@
       "side": 1,
       "message": "Well - if the client is doing what is expected - \u0027fTexture\u0027 would be null when entering volatileInstantiate.",
       "parentUuid": "c0621aa6_b2c731b4",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 12
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e55eb9_562b0d12",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T16:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f8153ae_f0d9a179",
       "range": {
         "startLine": 83,
         "startChar": 4,
