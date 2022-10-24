@@ -77,7 +77,7 @@ public:
             if (funcDef.declaration().isMain()) {
                 if (funcDef.declaration().returnType().matches(*fContext.fTypes.fHalf4)) {
                     // main() returns a half4, so make sure we include sk_FragColor in the output.
-                    this->addDeclaringElement(fSymbols.find(Compiler::FRAGCOLOR_NAME));
+                    this->addDeclaringElement(fSymbols.findBuiltinSymbol(Compiler::FRAGCOLOR_NAME));
                 }
                 // Once we find main(), we can stop scanning.
                 return true;
@@ -137,7 +137,7 @@ void FindAndDeclareBuiltinVariables(Program& program) {
         // Vulkan requires certain builtin variables be present, even if they're unused. At one
         // time, validation errors would result if sk_Clockwise was missing. Now, it's just (Adreno)
         // driver bugs that drop or corrupt draws if they're missing.
-        scanner.addDeclaringElement(symbols.find("sk_Clockwise"));
+        scanner.addDeclaringElement(symbols.findBuiltinSymbol("sk_Clockwise"));
     }
 
     // Scan all the variables used by the program and declare any built-ins.
