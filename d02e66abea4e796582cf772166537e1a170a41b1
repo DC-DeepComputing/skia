@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efa292bf_807650a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T15:06:14Z",
+      "side": 1,
+      "message": "Yeah, something like that. Or trigger the checks as the callbacks occur and submit/sync at the end to ensure they all do occur. Maybe submit after each test to keep the pipeline moving but just don\u0027t sync for each test.",
+      "parentUuid": "286f655b_d60e81f2",
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc63fc1e_8f42f44c",
