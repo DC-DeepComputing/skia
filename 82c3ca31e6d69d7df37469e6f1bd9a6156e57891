@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3f811d_a0aca807",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-24T13:41:25Z",
+      "side": 1,
+      "message": "This is a slight departure from all our other \"release\" proc systems. We guarantee that we always call it. Though I understand why we are doing this because of how volatile promise images work.\n\nWould it make sense for promise release procs to have 2 contexts? An imageContext and textureContext? Both are passed to the ReleaseProc. The imageContext never changes and the textureContext changes every time fulfill gets called? I\u0027m trying to think through what this buys for the client besides being able to passed a nullptr for the textureContext in the case we fail early creation of the image or something.",
+      "range": {
+        "startLine": 1206,
+        "startChar": 21,
+        "endLine": 1206,
+        "endChar": 53
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f03d8c43_c49beed8",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-24T13:41:25Z",
+      "side": 1,
+      "message": "This is not really true. I imagine in most cases where the Recording is not held onto to be reused, we typically we call it when work on the GPU has finished.",
+      "range": {
+        "startLine": 1207,
+        "startChar": 87,
+        "endLine": 1208,
+        "endChar": 18
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d023761c_36c3a769",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-24T13:41:25Z",
+      "side": 1,
+      "message": "Do we need Graphite in the name here?",
+      "range": {
+        "startLine": 1226,
+        "startChar": 30,
+        "endLine": 1226,
+        "endChar": 38
+      },
+      "revId": "82c3ca31e6d69d7df37469e6f1bd9a6156e57891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
