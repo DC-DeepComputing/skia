@@ -13,12 +13,12 @@ resolver) and extracted to
 which will act as our sysroot.
 """
 
-load("//toolchain:utils.bzl", "gcs_mirror_url")
+load("//toolchain:utils.bzl", "gcs_mirror_only", "gcs_mirror_url")
 
-# From https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz.sha256
-clang_prefix = "clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/"
-clang_sha256 = "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8"
-clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
+# The clang from CIPD has no prefix, and we download it directly from our GCS bucket
+# This is clang 15.0.1 and iwyu built from source
+# https://chrome-infra-packages.appspot.com/p/skia/bots/clang_linux/+/VTCzY3c3TwGpReUO_Ejv0D1KuFZ1btFPx8QE6SmQhzcC
+clang_sha256 = "5530b36377374f01a945e50efc48efd03d4ab856756ed14fc7c404e929908737"
 
 debs_to_install = [
     # These three comprise glibc. libc6 has the shared libraries, like libc itself, the math library
@@ -209,9 +209,8 @@ def _download_linux_amd64_toolchain_impl(ctx):
     # Download the clang toolchain (the extraction can take a while)
     # https://bazel.build/rules/lib/repository_ctx#download_and_extract
     ctx.download_and_extract(
-        url = gcs_mirror_url(clang_url, clang_sha256),
+        url = gcs_mirror_only(clang_sha256, ".zip"),
         output = "",
-        stripPrefix = clang_prefix,
         sha256 = clang_sha256,
     )
 
@@ -252,8 +251,9 @@ filegroup(
     ] + glob(
         include = [
             "include/c++/v1/**",
+            "include/x86_64-unknown-linux-gnu/c++/v1/**",
             "usr/include/**",
-            "lib/clang/13.0.0/**",
+            "lib/clang/15.0.1/**",
             "usr/include/x86_64-linux-gnu/**",
         ],
         allow_empty = False,
@@ -273,7 +273,7 @@ filegroup(
         "lib64/ld-linux-x86-64.so.2",
     ] + glob(
         include = [
-            "lib/clang/13.0.0/lib/**",
+            "lib/clang/15.0.1/lib/**",
             "lib/x86_64-linux-gnu/**",
             "usr/lib/x86_64-linux-gnu/**",
         ],
