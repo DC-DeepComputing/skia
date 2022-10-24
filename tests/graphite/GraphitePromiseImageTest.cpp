@@ -116,7 +116,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageTest,
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
-                                                                 /* levelCount= */ 1,
+                                                                 Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  Renderable::kYes);
 
@@ -208,7 +208,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(NonVolatileGraphitePromiseImageFulfillF
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
-                                                                 /* levelCount= */ 1,
+                                                                 Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  Renderable::kYes);
 
@@ -294,7 +294,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(VolatileGraphitePromiseImageTest,
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
-            /* levelCount= */ 1,
+                                                                 Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  Renderable::kYes);
 
@@ -384,7 +384,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(VolatileGraphitePromiseImageFulfillFail
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
-                                                                 /* levelCount= */ 1,
+                                                                 Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  Renderable::kYes);
 
