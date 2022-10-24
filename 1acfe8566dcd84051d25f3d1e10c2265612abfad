@@ -16,6 +16,69 @@
       "message": "By request of internal client",
       "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a2ef3f1_b1372443",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T13:35:36Z",
+      "side": 1,
+      "message": "added",
+      "range": {
+        "startLine": 6,
+        "startChar": 28,
+        "endLine": 6,
+        "endChar": 32
+      },
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "510b84af_c0554119",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T13:35:36Z",
+      "side": 1,
+      "message": "It seems like the API is actually more flexible; if `dc` is null, then they will make a new CPU-backed buffer. Should we fail in that case? Or if we want to support it, if the buffers are immutable, should we just add one ref to the existing buffer instead of actually making a real copy?",
+      "range": {
+        "startLine": 6,
+        "startChar": 61,
+        "endLine": 6,
+        "endChar": 67
+      },
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b9b853_93eeb070",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T13:35:36Z",
+      "side": 1,
+      "message": "tiny nit: two newlines in a row",
+      "revId": "1acfe8566dcd84051d25f3d1e10c2265612abfad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
