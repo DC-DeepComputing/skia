@@ -222,6 +222,30 @@
       },
       "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017923c3_77a21ebb",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T13:39:17Z",
+      "side": 1,
+      "message": "Currently Metal has no real support at all for separate samplers. There will be many things to fix.",
+      "parentUuid": "d3f3af41_0655f002",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
