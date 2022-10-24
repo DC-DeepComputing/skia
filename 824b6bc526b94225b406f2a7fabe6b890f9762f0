@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24392550_5f603f5a",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T14:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6067f12d_1793d8f9",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fc7f41f_108dc53b",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e888ad9d_009a7797",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T14:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fc7f41f_108dc53b",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "973385fc_f8021778",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-10-12T17:41:08Z",
       "side": 1,
       "message": "Need to be very careful about the license here. In particular, this is at the very least copyright ICU and IBM.",
+      "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cab6819_11333d89",
+        "filename": "modules/skunicode/src/SkUnicodeBidi.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T14:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "973385fc_f8021778",
       "revId": "824b6bc526b94225b406f2a7fabe6b890f9762f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

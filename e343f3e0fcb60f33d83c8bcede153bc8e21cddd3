@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "959e63ea_5464e3a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-10-24T14:46:06Z",
+      "side": 1,
+      "message": "I had to change the build a little bit to be able to test client icu code.",
+      "revId": "e343f3e0fcb60f33d83c8bcede153bc8e21cddd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
