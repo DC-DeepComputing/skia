@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a40b182_fda3defb",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3858,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T21:56:27Z",
+      "side": 1,
+      "message": "Previously, we were creating a struct where every field inside was flagged with `uniform`. This was subtly wrong but didn\u0027t actually impact output.",
+      "range": {
+        "startLine": 3857,
+        "startChar": 0,
+        "endLine": 3858,
+        "endChar": 54
+      },
+      "revId": "509f38bb62c04796db6f11cfdb13443510ddb4fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9be4e0a6_94ef3e52",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-24T21:56:27Z",
+      "side": 1,
+      "message": "We are cloning an existing struct, so there\u0027s no need to error-check it again.",
+      "range": {
+        "startLine": 1022,
+        "startChar": 36,
+        "endLine": 1022,
+        "endChar": 64
+      },
+      "revId": "509f38bb62c04796db6f11cfdb13443510ddb4fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
