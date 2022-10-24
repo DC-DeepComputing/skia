@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73dfe8e1_8514d2f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T14:43:31Z",
+      "side": 1,
+      "message": "I\u0027ve been trying to work through failures when fixing the equivalent tests on Ganesh. These tests can be pretty slow. I wonder if we could structure it to not sync but rather just keep running through the tests",
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc63fc1e_8f42f44c",
@@ -220,6 +237,30 @@
       "side": 1,
       "message": "Well, we need the sk_sp\u003cBuffer\u003e don\u0027t we? I think we could make this part of that templated AsyncReadResult.",
       "parentUuid": "4474c73e_27245048",
+      "range": {
+        "startLine": 215,
+        "startChar": 10,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eee34d4b_a5ae59db",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T14:43:31Z",
+      "side": 1,
+      "message": "Yeah, we\u0027d still need to hold on to the buffer. I was thinking it might make a better API to present the client with a pixmap. That is beyond the scope of this change but internally keeping a pixmap would get us closer.",
+      "parentUuid": "20a16262_947542e6",
       "range": {
         "startLine": 215,
         "startChar": 10,
