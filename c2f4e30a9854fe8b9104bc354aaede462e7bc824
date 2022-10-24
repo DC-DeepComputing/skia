@@ -169,6 +169,24 @@
       "message": "It has been a long while since I used a C++ main file and ran it as JS/WASM, so I don\u0027t think I\u0027ll be more helpful than the documentation on that.\n\nWhat I can tell you is how CanvasKit and related things work. CK uses the embind feature and no main. Then, we have some JS code that runs and calls one or more C++ function. This allows the JS code to make a canvas, set up WebGL (or WebGL2), before the C++ code starts to run and needs to talk to the GPU.\n\nThat has been easier for me to understand how it works and easier to work with.",
       "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4007139_109a64fa",
+        "filename": "tools/sk_app/sdl2/main_sdl2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7871
+      },
+      "writtenOn": "2022-10-24T17:43:14Z",
+      "side": 1,
+      "message": "Thanks!\nI would wonder if we introduce some interface code to communicate with JS, wouldn\u0027t that change how the rest of the sk_app ports (android, ios, mac etc.) are organized. \nAlso if we were to supply a canvas from JS to here, does it really make sense to have a SDL port/window/surface at all ?",
+      "parentUuid": "46ce3fb5_9594394f",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
