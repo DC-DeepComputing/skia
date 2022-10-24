@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84ff6025_216dadd7",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-24T14:52:23Z",
+      "side": 1,
+      "message": "instantiate is called in 6 locations - all w/in prepareResources methods. Rather than call instantiate directly we could add a \u0027instantiateOnlyIfNonVolatile\u0027.\n\nThe tri-state return would also work.",
+      "parentUuid": "cb44850f_a953839e",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 23
+      },
+      "revId": "27ec2f8d6c09f9fa04d6ec24af0e35338727eb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59f11ace_1869eed5",
         "filename": "src/gpu/graphite/TextureProxy.cpp",
         "patchSetId": 4
