@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf2d209_30eab72c",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-24T14:42:20Z",
+      "side": 1,
+      "message": "Now I\u0027m curious as to why we need this at all. The reason I ask is that all the files modified here seem to be in `src` except for this file and `SkTemplates.h`. If this is only to keep `SkAutoTMalloc` and `SkAutoFree` (which are incompetently actually public in `SkTemplates.h`) happy then this should be in the declaration of `SkAutoFree` and `SkAutoTMalloc` should use `SkAutoFree`. This means the uses in `src` can remain `SkFunctionWrapper(sk_free)` by virtue of being source files (don\u0027t include OpenSSL headers in them) but we also don\u0027t need to expose yet another semi public awkward name.",
+      "revId": "47f5c2c04a2b9880b9058f5d02fb94b55369a113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
