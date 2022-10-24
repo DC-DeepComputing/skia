@@ -16,6 +16,24 @@
       "message": "How is this different than the last CL?",
       "revId": "2767050b15b45409f0345b39eb48c0dfdcb61f2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47993c86_4f2ca7a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-24T16:25:57Z",
+      "side": 1,
+      "message": "I haven\u0027t uploaded any changes yet, this is the base to compare against. Sorry about the confusion.",
+      "parentUuid": "9df19102_38e3c99a",
+      "revId": "2767050b15b45409f0345b39eb48c0dfdcb61f2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
