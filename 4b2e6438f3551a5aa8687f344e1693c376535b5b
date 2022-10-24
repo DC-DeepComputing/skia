@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7235c21_483ac6e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-24T14:35:32Z",
+      "side": 1,
+      "message": "The crashes show that the offending textures are dirty at creation but my initial change didn\u0027t actually grab the flush status at creation. I also through it might help to know if these are wrapped or not.",
+      "revId": "4b2e6438f3551a5aa8687f344e1693c376535b5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
