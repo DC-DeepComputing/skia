@@ -13,9 +13,8 @@ namespace textlayout {
 
 enum InternalState {
   kUnknown = 0,
-  kShaped = 2,
-  kClusterized = 3,
-  kMarked = 4,
+  kIndexed = 1,     // Text is indexed
+  kShaped = 2,      // Text is shaped
   kLineBroken = 5,
   kFormatted = 6,
   kDrawn = 7
