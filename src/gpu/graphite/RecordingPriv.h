@@ -10,10 +10,18 @@
 
 #include "include/gpu/graphite/Recording.h"
 
+namespace skgpu {
+class RefCntedCallback;
+}
+
 namespace skgpu::graphite {
 
 class RecordingPriv {
 public:
+    bool hasVolatileProxies() const;
+    bool instantiateVolatileProxies(ResourceProvider*);
+    void deinstantiateVolatileProxies();
+
     bool addCommands(ResourceProvider*, CommandBuffer*);
     void addResourceRef(sk_sp<Resource> resource);
 
@@ -36,5 +44,4 @@ inline RecordingPriv Recording::priv() {
 
 } // namespace skgpu::graphite
 
-#endif // skgpu_graphite_RecordingPriv_DEFINED
-
+#endif // skgpu_graphite_RecorderPriv_DEFINED

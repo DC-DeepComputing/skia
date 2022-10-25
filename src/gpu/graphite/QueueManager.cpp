@@ -66,16 +66,33 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         return;
     }
 
+    sk_sp<RefCntedCallback> volatileProxiesCallback;
+    if (info.fRecording->priv().hasVolatileProxies()) {
+        if (!info.fRecording->priv().instantiateVolatileProxies(resourceProvider)) {
+            if (callback) {
+                callback->setFailureResult();
+            }
+            info.fRecording->priv().deinstantiateVolatileProxies();
+            return;
+        }
+    }
+
     if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
         if (callback) {
             callback->setFailureResult();
         }
+        info.fRecording->priv().deinstantiateVolatileProxies();
         return;
     }
 
     if (callback) {
         fCurrentCommandBuffer->addFinishedProc(std::move(callback));
     }
+    if (volatileProxiesCallback) {
+        fCurrentCommandBuffer->addFinishedProc(std::move(volatileProxiesCallback));
+    }
+
+    info.fRecording->priv().deinstantiateVolatileProxies();
 }
 
 bool QueueManager::submitToGpu() {
