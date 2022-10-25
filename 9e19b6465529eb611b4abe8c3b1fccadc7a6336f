@@ -70,6 +70,24 @@
       "parentUuid": "45a57d10_60e62ded",
       "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2745ab3_98c74621",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T14:56:06Z",
+      "side": 1,
+      "message": "Apparently in code review under preferences one can set the tab width for both editing and viewing. I\u0027ve set it to 4 now, which I think is what you must have yours set to? In any event, line length limits without tab specification is underspecified. Though I notice that go really wants you to use 8?",
+      "parentUuid": "478a6779_0c4f1638",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
