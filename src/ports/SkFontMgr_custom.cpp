@@ -164,10 +164,11 @@ SkString SkFontStyleSet_Custom::getFamilyName() { return fFamilyName; }
 
 SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader) : fDefaultFamily(nullptr) {
     loader.loadSystemFonts(fScanner, &fFamilies);
+    SkDebugf("loaded %d system fonts\n", fFamilies.count());
 
     // Try to pick a default font.
     static const char* defaultNames[] = {
-        "Arial", "Verdana", "Times New Roman", "Droid Sans", nullptr
+        "Arial", "Verdana", "Times New Roman", "Droid Sans", "DejaVu Serif", nullptr
     };
     for (size_t i = 0; i < std::size(defaultNames); ++i) {
         sk_sp<SkFontStyleSet_Custom> set(this->onMatchFamily(defaultNames[i]));
@@ -183,10 +184,12 @@ SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader) : fDefaultFam
         }
 
         fDefaultFamily = set.get();
+        SkDebugf("Default %s found\n", defaultNames[i]);
         break;
     }
     if (nullptr == fDefaultFamily) {
         fDefaultFamily = fFamilies[0].get();
+        SkDebugf("No default found, falling back to %s\n", fDefaultFamily->getFamilyName().c_str());
     }
 }
 
