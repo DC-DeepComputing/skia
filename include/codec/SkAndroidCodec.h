@@ -9,10 +9,7 @@
 #define SkAndroidCodec_DEFINED
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
-#include "include/core/SkEncodedImageFormat.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -27,6 +24,9 @@
 class SkData;
 class SkPngChunkReader;
 class SkStream;
+enum SkAlphaType : int;
+enum SkColorType : int;
+enum class SkEncodedImageFormat;
 struct SkIRect;
 
 /**
