@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2a54c00_e35c1f36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-25T16:17:53Z",
+      "side": 1,
+      "message": "lgtm % comment",
+      "revId": "b297d3079598f46b3b65595fa2989e7edc73c756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10f6fd64_4435864d",
+        "filename": "resources/sksl/errors/OverloadedMain.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-25T16:17:53Z",
+      "side": 1,
+      "message": "Maybe add a comment that this is meant to intentionally fail in the front-end and will be fixed as part of skia:52714.",
+      "revId": "b297d3079598f46b3b65595fa2989e7edc73c756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
