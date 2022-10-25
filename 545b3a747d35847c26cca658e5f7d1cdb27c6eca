@@ -123,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "515da92e_475017f2",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-25T17:42:55Z",
+      "side": 1,
+      "message": "I\u0027ll add the comment. I believe IWYU will only suggest removing \u003ctype_traits\u003e if the file already includes SkSpan.h",
+      "parentUuid": "c4bcb814_8a6846d7",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "916f9357_d39803cc",
