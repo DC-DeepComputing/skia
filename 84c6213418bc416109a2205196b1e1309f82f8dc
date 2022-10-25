@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d72966b9_262cf8ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T21:31:32Z",
+      "side": 1,
+      "message": "not sure why mac bot is failing, otherwise lgtm",
+      "revId": "84c6213418bc416109a2205196b1e1309f82f8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
