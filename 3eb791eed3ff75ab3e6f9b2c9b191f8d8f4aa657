@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63c27c06_aa07f62b",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T15:24:12Z",
+      "side": 1,
+      "message": "Left side lgtm.",
+      "parentUuid": "ddf37317_edd980a6",
+      "range": {
+        "startLine": 681,
+        "startChar": 20,
+        "endLine": 686,
+        "endChar": 38
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afc61c86_6307815b",
