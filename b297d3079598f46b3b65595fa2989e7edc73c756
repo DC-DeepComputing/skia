@@ -33,6 +33,24 @@
       "message": "Maybe add a comment that this is meant to intentionally fail in the front-end and will be fixed as part of skia:52714.",
       "revId": "b297d3079598f46b3b65595fa2989e7edc73c756",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9f74e4_858e0724",
+        "filename": "resources/sksl/errors/OverloadedMain.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-25T16:34:48Z",
+      "side": 1,
+      "message": "I\u0027ve already got a fix CL lined up for you.",
+      "parentUuid": "10f6fd64_4435864d",
+      "revId": "b297d3079598f46b3b65595fa2989e7edc73c756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
