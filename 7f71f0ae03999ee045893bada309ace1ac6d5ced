@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "541d36da_51b84e0f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 928,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T15:19:46Z",
+      "side": 1,
+      "message": "I\u0027d have to add an SkRect::Make(SkISize), right now SkIRect takes an SkISize and SkRect takes an SkSize, worth it?",
+      "parentUuid": "d0baea4b_bd1e8f37",
+      "range": {
+        "startLine": 928,
+        "startChar": 31,
+        "endLine": 928,
+        "endChar": 81
+      },
+      "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2156306_0b766d38",
         "filename": "src/gpu/ganesh/Device.cpp",
         "patchSetId": 10
@@ -71,6 +95,24 @@
       "writtenOn": "2022-10-25T15:02:06Z",
       "side": 1,
       "message": "Would it make sense to move to the fallback-to-draw code here?",
+      "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f821a5_616d99a7",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T15:19:46Z",
+      "side": 1,
+      "message": "The one use case of this has more general purpose fallback-to-draw code (can handle more than just scaling dimensions in its transform), so when nullptr is returned here we just hit that case.",
+      "parentUuid": "f2156306_0b766d38",
       "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
