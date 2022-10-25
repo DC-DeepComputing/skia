@@ -1,0 +1,17 @@
+diff --git a/BUILD b/BUILD
+index 4c9b57a..75a5689 100644
+--- a/BUILD
++++ b/BUILD
+@@ -46,10 +46,10 @@ create_msvc_config()
+ STRICT_C_OPTIONS = select({
+     ":msvc": [],
+     "//conditions:default": [
+-        "--pedantic-errors",
++        #"--pedantic-errors",
+         "-Wall",
+         "-Wconversion",
+-        "-Werror",
++        #"-Werror",
+         "-Wextra",
+         "-Wlong-long",
+         "-Wmissing-declarations",
