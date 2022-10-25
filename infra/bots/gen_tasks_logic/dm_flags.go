@@ -678,6 +678,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.model("TecnoSpark3Pro", "Wembley") {
 		// skbug.com/9421
 		skip(ALL, "test", ALL, "InitialTextureClear")
+        skip(ALL, "gm", "ALL", "custommesh")
 	}
 
 	if b.model("Wembley", "JioNext") {
