@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cc4f805_79313794",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T14:07:06Z",
+      "side": 1,
+      "message": "nit: line is long but already wraps.",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
