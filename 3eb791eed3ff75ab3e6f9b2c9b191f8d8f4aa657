@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddf37317_edd980a6",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Tried that, then decided it looked better on the left hand side. I also added them below, just so they both show up in search if anyone is ever looking for instances of the enum names to do refactoring, etc.",
+      "parentUuid": "32888c43_a83b6341",
+      "range": {
+        "startLine": 681,
+        "startChar": 20,
+        "endLine": 686,
+        "endChar": 38
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afc61c86_6307815b",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-10-25T14:38:23Z",
       "side": 1,
       "message": "these cases I don\u0027t feel so strongly about needing the labels since they call the named module functions.",
+      "range": {
+        "startLine": 690,
+        "startChar": 17,
+        "endLine": 693,
+        "endChar": 24
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b6c1c6_f7e048ed",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afc61c86_6307815b",
       "range": {
         "startLine": 690,
         "startChar": 17,
@@ -127,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea80fa80_829a687c",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Yes (this is how ICC profiles up to V4 work -- XYZD50 is the \"universal\" connection space).",
+      "parentUuid": "a3b229ac_f69239e1",
+      "range": {
+        "startLine": 645,
+        "startChar": 19,
+        "endLine": 645,
+        "endChar": 89
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "992cbd28_d624ebbd",
@@ -140,6 +212,30 @@
       "writtenOn": "2022-10-25T14:38:23Z",
       "side": 1,
       "message": "related to comment in sksl, what\u0027s the benefit of producing hcl over lch? Is it for dealing with consistent polar premul with other color spaces like HSV that puts hue first?\n\nedit: I answered my own question once I got to the large comment below. I think the point about hue in the first channel (HCL) for consistency with other polar spaces is a useful addition to these notes here and in shared_sksl.",
+      "range": {
+        "startLine": 731,
+        "startChar": 27,
+        "endLine": 731,
+        "endChar": 32
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee574adf_02e52c63",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Yes - this is all to limit the number of ways that we have to premul and unpremul things. I\u0027ll update the comments and function names to reflect what actually happens (per your comment in the sksl), though.",
+      "parentUuid": "992cbd28_d624ebbd",
       "range": {
         "startLine": 731,
         "startChar": 27,
@@ -173,6 +269,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba71f5f_69ae7583",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Good catch. No, CSS actually calls it the interpolation space. Agree that it sounds better - I\u0027ll update the wording throughout.",
+      "parentUuid": "0c3329ba_90131fd4",
+      "range": {
+        "startLine": 762,
+        "startChar": 43,
+        "endLine": 762,
+        "endChar": 55
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a40827fd_3fc487a9",
@@ -196,6 +316,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b076a5e0_d4c97839",
+        "filename": "src/sksl/sksl_shared.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a40827fd_3fc487a9",
+      "range": {
+        "startLine": 330,
+        "startChar": 14,
+        "endLine": 330,
+        "endChar": 20
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "deb2c95a_99f72c2b",
@@ -209,6 +353,30 @@
       "writtenOn": "2022-10-25T14:38:23Z",
       "side": 1,
       "message": "If this function and `$css_oklch_to_linear_srgb()` pass their params directly to `$css_lch_to_lab`, and that function is noted to operate on `hcl` not `lch`, that seems like a foot gun waiting to happen.\n\nWhat\u0027s the source of the swizzle? Why not update the variable names to be `hcl` to reflect the component order, or update the callers to provide `lch` for the canonical component order and keep the `$css_lch_to_lab` function unchanged from before?",
+      "range": {
+        "startLine": 339,
+        "startChar": 42,
+        "endLine": 339,
+        "endChar": 45
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57e0d4a7_633bc9c2",
+        "filename": "src/sksl/sksl_shared.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T15:20:49Z",
+      "side": 1,
+      "message": "Agreed on all points. (I obviously wrote all the code first, then realized I wanted to normalize hue placement, and did a rough job of fixing everything up). I\u0027ve gone back and added better comments here, and also updated the function and variable names to reflect the actual channel ordering at all stages.",
+      "parentUuid": "deb2c95a_99f72c2b",
       "range": {
         "startLine": 339,
         "startChar": 42,
