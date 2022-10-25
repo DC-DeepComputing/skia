@@ -16,6 +16,24 @@
       "message": "not sure why mac bot is failing, otherwise lgtm",
       "revId": "84c6213418bc416109a2205196b1e1309f82f8dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "637eb4d6_d80d84d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-25T21:41:52Z",
+      "side": 1,
+      "message": "I\u0027m able to duplicate it on my eGPU -- hopefully will have a fix tomorrow.",
+      "parentUuid": "d72966b9_262cf8ab",
+      "revId": "84c6213418bc416109a2205196b1e1309f82f8dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
