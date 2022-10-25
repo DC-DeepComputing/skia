@@ -182,7 +182,8 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
 
     auto paramIsConstInVaryings = [&](int idx) {
         const Variable& p = *parameters[idx];
-        return typeIsValidForVaryings(p.type()) && p.modifiers().fFlags == Modifiers::kConst_Flag;
+        return typeIsValidForVaryings(p.type()) && (p.modifiers().fFlags == Modifiers::kConst_Flag ||
+                                                    p.modifiers().fFlags == Modifiers::kNo_Flag);
     };
 
     auto paramIsOutColor = [&](int idx) {

@@ -53,7 +53,7 @@ protected:
                     }
             )";
             static constexpr char kFS[] = R"(
-                    float2 main(const in Varyings varyings, out float4 color) {
+                    float2 main(in Varyings varyings, out float4 color) {
                         color = varyings.color;
                         return varyings.uv;
                     }
