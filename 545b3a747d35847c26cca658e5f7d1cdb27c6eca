@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf43e8f9_4c5e5d32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T17:37:56Z",
+      "side": 1,
+      "message": "I\u0027m fine with this change. Might just add some \"keep\" includes (in the public includes) to land this with notes about needing to fix up users.",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b005507_3a721c88",
@@ -84,6 +101,24 @@
       "side": 1,
       "message": "This was added because of a complaint about a lot of churn with respect to this include. At least in IWYU 0.17, it would suggest the addition and removal of this a lot, seemingly randomly. Maybe that\u0027s not the case in 0.19, but I figured I would like our tools to not be frustrating, at the cost of not being perfect.",
       "parentUuid": "257d2742_0120c9d9",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4bcb814_8a6846d7",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T17:37:56Z",
+      "side": 1,
+      "message": "Using IWYU is frustrating in general. It needs a lot more work and resources. In particular the last time I started working with it I just started with `gms/` I think and fixed a few at a time until I inevitably ran into yet another problem which I tried to get fixed upstream (or work around locally), and eventually I just ran out of time. The idea of iwyu is great, but the reality is that the tool is very imperfect and does not have the manpower to be correct to the extent that it will not be frustrating. I understand that this is being added because of the 0.17 issues, and I\u0027m fairly sure those issue haven\u0027t been fixed (I think there are generally issues with uses in unevaluated expressions) but it seems awkward to add this here (maybe in a different CL with its own discussion).\n\nIn any event, the side effect of this will be that iwyu won\u0027t suggest `\u003ctype_traits\u003e` when it should, but probably won\u0027t complain or suggest removal if it is included where it should be, so maybe this is fine. (If it does suggest removing an include where it should be, that\u0027s different.) Maybe we should comment here why were adding this pragma with a link to an issue?",
+      "parentUuid": "e7056f15_981377e2",
       "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
