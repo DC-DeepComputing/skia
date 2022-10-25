@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bf23b06_fb834b40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T14:45:22Z",
+      "side": 1,
+      "message": "Yes, I think we are ready to just use `stepLocalCoords` and remove the last parts of the `dev2Local` hacks.",
+      "parentUuid": "8196015f_02fcdff0",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 323
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a46da9fd_a5500a09",
         "filename": "/COMMIT_MSG",
         "patchSetId": 21
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Is *Graphite* treating it as red instead of alpha? Or do you am *I* doing something within this CL incorrectly that\u0027s leading to that behavior? That hunch would make sense, I just want to understand if that\u0027s expected at this stage of graphite development or not.",
       "parentUuid": "a46da9fd_a5500a09",
+      "range": {
+        "startLine": 13,
+        "startChar": 163,
+        "endLine": 13,
+        "endChar": 491
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29271238_872972f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T14:45:22Z",
+      "side": 1,
+      "message": "My guess is that graphite\u0027s texture sampling is not set up to convey the SkColorType correctly in this case. In Ganesh we configure swizzles (either in hardware or as extra logic added in SkSL) to modify what\u0027s returned by a `sample` call. In this case, an R8 texture\u0027s value would be swizzled to `.rrrr` but w/o that it will just be `r000` I believe. Greg would know more.",
+      "parentUuid": "1633b99f_5ab9c2c0",
       "range": {
         "startLine": 13,
         "startChar": 163,
