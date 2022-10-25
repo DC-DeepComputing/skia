@@ -1,0 +1,39 @@
+diff --git a/c/common/dictionary.c b/c/common/dictionary.c
+index f9e3041..a4fc526 100644
+--- a/c/common/dictionary.c
++++ b/c/common/dictionary.c
+@@ -5895,7 +5895,7 @@ static BrotliDictionary kBrotliDictionary = {
+ #endif
+ };
+ 
+-const BrotliDictionary* BrotliGetDictionary() {
++const BrotliDictionary* BrotliGetDictionary(void) {
+   return &kBrotliDictionary;
+ }
+ 
+diff --git a/c/dec/decode.c b/c/dec/decode.c
+index ae5a3d3..6be28e8 100644
+--- a/c/dec/decode.c
++++ b/c/dec/decode.c
+@@ -2599,7 +2599,7 @@ const char* BrotliDecoderErrorString(BrotliDecoderErrorCode c) {
+   }
+ }
+ 
+-uint32_t BrotliDecoderVersion() {
++uint32_t BrotliDecoderVersion(void) {
+   return BROTLI_VERSION;
+ }
+ 
+diff --git a/c/enc/bit_cost.h b/c/enc/bit_cost.h
+index 6586469..31838f1 100644
+--- a/c/enc/bit_cost.h
++++ b/c/enc/bit_cost.h
+@@ -45,7 +45,7 @@ static BROTLI_INLINE double BitsEntropy(
+     const uint32_t* population, size_t size) {
+   size_t sum;
+   double retval = ShannonEntropy(population, size, &sum);
+-  if (retval < sum) {
++  if (retval < (double)sum) {
+     /* At least one bit per literal is needed. */
+     retval = (double)sum;
+   }
