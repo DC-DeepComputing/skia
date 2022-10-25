@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "990eab31_ef9ff684",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-25T17:15:15Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/595456",
+      "parentUuid": "1b005507_3a721c88",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "257d2742_0120c9d9",
