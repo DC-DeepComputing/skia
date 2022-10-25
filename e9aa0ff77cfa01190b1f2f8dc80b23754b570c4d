@@ -16,6 +16,75 @@
       "message": "Quick CL hooking up local coordinates (and removing the temporary dev2Local uniforms) once and for all.",
       "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47429193_94eb6725",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T19:46:02Z",
+      "side": 1,
+      "message": "See note below, but I think we can get rid of this line entirely.",
+      "range": {
+        "startLine": 148,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 51
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f52001a_69e9f775",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T19:46:02Z",
+      "side": 1,
+      "message": "Assuming the shader snippet\u0027s definition is valid, when this-\u003eneedsLocalCoords() is false, it shouldn\u0027t every reference the coords parameter.\n\nI tried to look at what the default code gen does, and it looks like its functions skip the `float2 pos` parameter when needsLocalCoords() is false, so it shouldn\u0027t matter what we pass in under those circumstances. \n\nCan we get away with just passing in `\"localCoordsVar\"` in the call to `emit_glue_code_for_entry()`? If not, and we need to call functions that still have a float2 parameter that\u0027s internally ignored, we can pass in a constant expression like `float2(0)` so we don\u0027t have to define other variables.",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 158,
+        "endChar": 88
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9342270b_c75f2917",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-25T19:46:02Z",
+      "side": 1,
+      "message": "This if and `needsLocalCoords` should be able to go away just like EmitPaintParamsUniforms",
+      "range": {
+        "startLine": 157,
+        "startChar": 41,
+        "endLine": 160,
+        "endChar": 5
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
