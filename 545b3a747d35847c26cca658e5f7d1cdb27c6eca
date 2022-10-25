@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7056f15_981377e2",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-25T17:17:19Z",
+      "side": 1,
+      "message": "This was added because of a complaint about a lot of churn with respect to this include. At least in IWYU 0.17, it would suggest the addition and removal of this a lot, seemingly randomly. Maybe that\u0027s not the case in 0.19, but I figured I would like our tools to not be frustrating, at the cost of not being perfect.",
+      "parentUuid": "257d2742_0120c9d9",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "916f9357_d39803cc",
