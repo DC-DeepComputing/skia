@@ -68,10 +68,6 @@ public:
         return fTargetType.bitWidth();
     }
 
-    bool isPrivate() const override {
-        return fTargetType.isPrivate();
-    }
-
     bool isAllowedInES2() const override {
         return fTargetType.isAllowedInES2();
     }
@@ -175,10 +171,6 @@ public:
         return this->componentType().bitWidth();
     }
 
-    bool isPrivate() const override {
-        return fComponentType.isPrivate();
-    }
-
     bool isAllowedInES2() const override {
         return fComponentType.isAllowedInES2();
     }
@@ -264,10 +256,6 @@ public:
     }
 
     bool isLiteral() const override {
-        return true;
-    }
-
-    bool isPrivate() const override {
         return true;
     }
 
@@ -523,12 +511,6 @@ public:
 
     bool isInterfaceBlock() const override {
         return fInterfaceBlock;
-    }
-
-    bool isPrivate() const override {
-        return std::any_of(fFields.begin(), fFields.end(), [](const Field& f) {
-            return f.fType->isPrivate();
-        });
     }
 
     bool isAllowedInES2() const override {
@@ -1059,10 +1041,6 @@ std::unique_ptr<Expression> Type::coerceExpression(std::unique_ptr<Expression> e
     }
     context.fErrors->error(pos, "cannot construct '" + this->displayName() + "'");
     return nullptr;
-}
-
-bool Type::isPrivate() const {
-    return skstd::starts_with(this->name(), '$');
 }
 
 static bool is_or_contains_array(const Type* type, bool onlyMatchUnsizedArrays) {
