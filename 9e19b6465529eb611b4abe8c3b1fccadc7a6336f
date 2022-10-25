@@ -88,6 +88,24 @@
       "parentUuid": "478a6779_0c4f1638",
       "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0962bf90_69208fd2",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-25T15:01:39Z",
+      "side": 1,
+      "message": "Yes, I go with 4 to help my bad eyes (but 8 is excessive). Others on the team go with 2 *gasp*",
+      "parentUuid": "c2745ab3_98c74621",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
