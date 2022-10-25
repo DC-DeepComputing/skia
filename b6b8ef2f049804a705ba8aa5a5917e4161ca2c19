@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27977bbb_07d336b4",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T00:38:03Z",
+      "side": 1,
+      "message": "INHERITED is no longer recommended:\nhttps://skia-review.googlesource.com/c/skia/+/536498\n\nIIRC this came after a discussion in the Skia chat space.",
+      "parentUuid": "b916a2ba_b6d45e64",
+      "range": {
+        "startLine": 268,
+        "startChar": 30,
+        "endLine": 268,
+        "endChar": 44
+      },
+      "revId": "b6b8ef2f049804a705ba8aa5a5917e4161ca2c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39dd3767_d88ee2c5",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-24T22:08:45Z",
       "side": 1,
       "message": "style nit: `this-\u003epassthroughFailed()`",
+      "range": {
+        "startLine": 296,
+        "startChar": 16,
+        "endLine": 296,
+        "endChar": 33
+      },
+      "revId": "b6b8ef2f049804a705ba8aa5a5917e4161ca2c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96ae732e_b829b842",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T00:38:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39dd3767_d88ee2c5",
       "range": {
         "startLine": 296,
         "startChar": 16,
