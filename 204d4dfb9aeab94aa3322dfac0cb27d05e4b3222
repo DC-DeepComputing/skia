@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bbe1760_309dc68e",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-25T16:30:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1d8d134_06031d5f",
+      "range": {
+        "startLine": 1210,
+        "startChar": 27,
+        "endLine": 1210,
+        "endChar": 89
+      },
+      "revId": "204d4dfb9aeab94aa3322dfac0cb27d05e4b3222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e0b0f86_7cbaa42b",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-24T20:14:38Z",
       "side": 1,
       "message": "This is not what the public comment says which says fulfill will only ever be called once for non-volatile. But I think this is more the API we want.\n\nDo we really need to return nullptr here? Could all this just be an assert? Like we control the instantiate calls, and our intention internally is to never try to call fulfill if we already have an instantiated proxy. Then we can wrap fFulfillProcFailed and fCalledfulfilledProc in SkDEBUGCODE statements.",
+      "range": {
+        "startLine": 214,
+        "startChar": 58,
+        "endLine": 214,
+        "endChar": 88
+      },
+      "revId": "204d4dfb9aeab94aa3322dfac0cb27d05e4b3222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4fdbf2b_d297e730",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-25T16:30:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0b0f86_7cbaa42b",
       "range": {
         "startLine": 214,
         "startChar": 58,
