@@ -39,6 +39,30 @@
       },
       "revId": "d8acb5ea153a79afe5cef308cfa96b9ef3d1cd68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8647aa31_49210738",
+        "filename": "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-25T14:33:12Z",
+      "side": 1,
+      "message": "`mustDeclareFragmentShaderOutput` is extremely broad (everything above GLSL 1.1). `bindFragDataLocationSupport` is definitely a subset (GL 3.0, ES3, and never in WebGL).\n\nI will try restructuring this in a quick followup.",
+      "parentUuid": "b277e5b3_c658fb43",
+      "range": {
+        "startLine": 410,
+        "startChar": 0,
+        "endLine": 418,
+        "endChar": 5
+      },
+      "revId": "d8acb5ea153a79afe5cef308cfa96b9ef3d1cd68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
