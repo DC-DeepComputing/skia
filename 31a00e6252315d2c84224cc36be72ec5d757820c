@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0d80ca_a71b18e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T16:59:19Z",
+      "side": 1,
+      "message": "Okay reworked this and now using the formatWorkarounds again",
+      "revId": "31a00e6252315d2c84224cc36be72ec5d757820c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
