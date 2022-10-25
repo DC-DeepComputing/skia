@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50521d00_3a6228a1",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T17:07:41Z",
+      "side": 1,
+      "message": "Right. I will go back and add some static_asserts here",
+      "parentUuid": "e2eb6eeb_2e457fae",
+      "range": {
+        "startLine": 681,
+        "startChar": 0,
+        "endLine": 686,
+        "endChar": 68
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afc61c86_6307815b",
         "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
         "patchSetId": 15
@@ -377,6 +401,30 @@
       "writtenOn": "2022-10-25T16:23:29Z",
       "side": 1,
       "message": "Why this hcl/lch business here and in the SkSL code?",
+      "range": {
+        "startLine": 731,
+        "startChar": 0,
+        "endLine": 731,
+        "endChar": 32
+      },
+      "revId": "3eb791eed3ff75ab3e6f9b2c9b191f8d8f4aa657",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53cc7ed_07150198",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-25T17:07:41Z",
+      "side": 1,
+      "message": "Added better comments throughout to explain this.",
+      "parentUuid": "cdeb2596_6b18947a",
       "range": {
         "startLine": 731,
         "startChar": 0,
