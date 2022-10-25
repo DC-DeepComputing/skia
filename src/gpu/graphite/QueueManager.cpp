@@ -66,6 +66,19 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         return;
     }
 
+    sk_sp<RefCntedCallback> volatileProxiesCallback;
+    if (info.fRecording->priv().hasVolatileProxies()) {
+        bool success;
+        std::tie(success, volatileProxiesCallback) =
+                info.fRecording->priv().instantiateVolatileProxies(resourceProvider);
+        if (!success) {
+            if (callback) {
+                callback->setFailureResult();
+            }
+            return;
+        }
+    }
+
     if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
         if (callback) {
             callback->setFailureResult();
@@ -75,6 +88,12 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
 
     if (callback) {
         fCurrentCommandBuffer->addFinishedProc(std::move(callback));
+    }
+    if (volatileProxiesCallback) {
+        fCurrentCommandBuffer->addFinishedProc(std::move(volatileProxiesCallback));
+    }
+    if (info.fRecording->priv().hasVolatileProxies()) {
+        info.fRecording->priv().deinstantiateVolatileProxies();
     }
 }
 
