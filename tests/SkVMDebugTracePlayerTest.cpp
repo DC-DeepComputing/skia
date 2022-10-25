@@ -6,13 +6,14 @@
  */
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkSLProgramKind.h"
 #include "src/core/SkVM.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/ir/SkSLProgram.h" // IWYU pragma: keep
+#include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 #include "src/sksl/tracing/SkVMDebugTracePlayer.h"
 #include "tests/Test.h"

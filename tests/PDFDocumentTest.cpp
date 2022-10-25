@@ -17,6 +17,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTime.h"
+#include "include/core/SkTime.h"
 #include "include/docs/SkPDFDocument.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
