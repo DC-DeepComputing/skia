@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5f02abf_d097aac4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-25T14:57:03Z",
+      "side": 1,
+      "message": "+1 @michaelludwig@google.com exactly right.",
+      "parentUuid": "29271238_872972f2",
+      "range": {
+        "startLine": 13,
+        "startChar": 163,
+        "endLine": 13,
+        "endChar": 491
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ae10d8_219fc4d5",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 21
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "Well I have them as separate blocks - both \u0027regular\u0027 blenders and primitive blenders both boil down to `SkBlenderBase`, right?\n\nOriginally, I had added an overloaded `SkBlenderBase::addToKey` that took in a color, and this is what distinguished a primitive blender. But we figured out that we don\u0027t know the color at this point in time and it cannot be stored as a uniform, so we no longer need to take in a color here. That\u0027s what motivated me to return to using this bool.\n\nInstead of keeping it as-is, what did you have in mind?\n1) A whole separate blender base class, like \u0027SkPrimitiveBlenderBase`, which has a .cpp file equivalent to `SkBlendModeBlender`; such as `SkPrimitiveBlender\u0027\n2) Adding a separate method to `SkBlenderBase` explicitly for primitive blenders that would be equivalent to \u0027addToKey\u0027; such as `SkBlenderBase::addPrimitiveBlenderToKey`\n3) Other?",
       "parentUuid": "38ae10d8_219fc4d5",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc1f7529_76508a01",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-25T14:57:03Z",
+      "side": 1,
+      "message": "The way we control for not knowing the input color is by connecting the blocks and their children in the right tree-structure. For example, a color filter block doesn\u0027t inherently know its input color either. Today, the color filter block comes immediately after the shader block, and it uses \"prior stage output\" to grab the color from that. However, as you know, we want to redesign this structure anyway--in the new design, the shader block would be a _child_ of the color filter block.\n\nThe only place where we need special treatment is in the final blend against the destination surface. We need to use fixed-function hardware or do readback on the color attachment. But AFAICS that is a totally separate case? Primitive blenders are not the special case--blending against the destination surface is.",
+      "parentUuid": "86e2cea7_77273a75",
       "range": {
         "startLine": 71,
         "startChar": 29,
