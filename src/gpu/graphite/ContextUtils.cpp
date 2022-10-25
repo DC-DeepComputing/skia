@@ -27,13 +27,12 @@ std::tuple<SkUniquePaintParamsID, const SkUniformDataBlock*, const SkTextureData
 ExtractPaintData(Recorder* recorder,
                  SkPipelineDataGatherer* gatherer,
                  SkPaintParamsKeyBuilder* builder,
-                 const SkM44& dev2Local,
                  const PaintParams& p) {
 
     SkDEBUGCODE(gatherer->checkReset());
     SkDEBUGCODE(builder->checkReset());
 
-    SkKeyContext keyContext(recorder, dev2Local);
+    SkKeyContext keyContext(recorder);
 
     p.toKey(keyContext, builder, gatherer);
 
@@ -123,12 +122,7 @@ bool have_uniforms(const std::vector<SkPaintParamsKey::BlockReader>& readers) {
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
-                                    const std::vector<SkPaintParamsKey::BlockReader>& readers,
-                                    bool needsLocalCoords) {
-    if (!needsLocalCoords && !have_uniforms(readers)) {
-        return {};
-    }
-
+                                    const std::vector<SkPaintParamsKey::BlockReader>& readers) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
@@ -139,11 +133,6 @@ std::string EmitPaintParamsUniforms(int bufferID,
             SkSL::String::appendf(&result, "// %s uniforms\n", readers[i].entry()->fName);
             result += get_uniforms(uniforms, &offset, i);
         }
-    }
-    if (needsLocalCoords) {
-        static constexpr SkUniform kDev2LocalUniform[] = {{ "dev2LocalUni", SkSLType::kFloat4x4 }};
-        result += "// NeedsLocalCoords\n";
-        result += get_uniforms(SkSpan<const SkUniform>(kDev2LocalUniform, 1), &offset, -1);
     }
     result.append("};\n\n");
 
@@ -187,11 +176,6 @@ std::string EmitPaintParamsStorageBuffer(int bufferID,
             }
             result.append(";\n");
         }
-    }
-    if (needsLocalCoords) {
-        result.append(
-                "// NeedsLocalCoords\n"
-                "    float4x4 dev2LocalUni;\n");
     }
     result.append("};\n\n");
 
