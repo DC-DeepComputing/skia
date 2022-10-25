@@ -164,6 +164,7 @@ SkString SkFontStyleSet_Custom::getFamilyName() { return fFamilyName; }
 
 SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader) : fDefaultFamily(nullptr) {
     loader.loadSystemFonts(fScanner, &fFamilies);
+    SkDebugf("loaded %d system fonts\n", fFamilies.count());
 
     // Try to pick a default font.
     static const char* defaultNames[] = {
@@ -183,9 +184,11 @@ SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader) : fDefaultFam
         }
 
         fDefaultFamily = set.get();
+        SkDebugf("Default %s found\n", defaultNames[i]);
         break;
     }
     if (nullptr == fDefaultFamily) {
+        SkDebugf("No default found\n");
         fDefaultFamily = fFamilies[0].get();
     }
 }
