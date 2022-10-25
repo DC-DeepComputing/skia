@@ -515,7 +515,6 @@ private:
         bool fDisableRGBA16FTexStorageForCrBug1008003 = false;
         bool fDisableBGRATextureStorageForIntelWindowsES = false;
         bool fDisableLuminance16F = false;
-        bool fDontDisableTexStorageOnAndroid = false;
         bool fDisallowDirectRG8ReadPixels = false;
         bool fDisallowBGRA8ReadPixels = false;
         bool fDisallowR8ForPowerVRSGX54x = false;
