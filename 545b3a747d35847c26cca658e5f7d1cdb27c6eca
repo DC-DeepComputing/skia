@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "156ced18_7e42b217",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T16:03:48Z",
+      "side": 1,
+      "message": "So difficult to iwyu as a library (note Chromium build failures in tests). Basically have to fix all the leaves first (tests, users, internal code) and fix the public includes last. (At least if one wants to avoid lots of churn.)",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b005507_3a721c88",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T16:03:48Z",
+      "side": 1,
+      "message": "So umm... I know this jus moved up here, but what is this used for? This header now provides a few `sknonstd` and `SkCount`, and I don\u0027t see any mention of them? I guess we\u0027re not currently building headers, so IWYU wasn\u0027t actually run on this to state that it should be removed. But until we\u0027re running IWYU on headers by themselves it seems weird to be making further changes (like the export) since things will just be further confused. For instance, does removing this break other files which do need to include it?",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "257d2742_0120c9d9",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T16:03:48Z",
+      "side": 1,
+      "message": "Dang, I wish we could IWYU annotate the template instead. Doing this means that `SkSpan.h` is publicly providing all of `\u003ctype_traits\u003e` so anything that includes `SkSpan.h` won\u0027t need to include `\u003ctype_traits\u003e` if they\u0027re using other type traits. This is a really big hammer that kinda breaks using IWYU. In some sense not using IWYU is like \"exporting\" all includes, so it\u0027s not totally broken or anything, but in this case `SkSpan.h` really doesn\u0027t want to publicly export this. On the other hand this is worse because not IWYU can either remove `\u003ctype_traits\u003e` includes or not suggest them when it should.",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "916f9357_d39803cc",
+        "filename": "include/utils/SkPaintFilterCanvas.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T16:03:48Z",
+      "side": 1,
+      "message": "Interesting that `enum` by itself is of some indeterminate underlying type, but `enum class` is implicitly `int` if not otherwise specified. How nice. (I was wondering why this worked, but at least it does.)",
+      "revId": "545b3a747d35847c26cca658e5f7d1cdb27c6eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
