@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8196015f_02fcdff0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-25T14:33:38Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com Are all of the primitive types that require local coordinates already emitting them? If so, we could pipe this up and delete any references to the dev2Local uniform.",
+      "parentUuid": "6b7fb000_fd21e6ab",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 323
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a46da9fd_a5500a09",
         "filename": "/COMMIT_MSG",
         "patchSetId": 21
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-21T19:14:12Z",
       "side": 1,
       "message": "My strong hunch is that this is an `kAlpha_8_SkColorType` texture which is created as R8 internally, and Graphite is treating it as red instead of as alpha. We see a very similar effect on the GM_threshold_rt slide: https://osscs.corp.google.com/skia/skia/+/main:gm/runtimeshader.cpp;l\u003d95;drc\u003ddeac56e45256d2df9a03fec48c10e819c20dd322\n\nIt\u0027s definitely not color space management and it doesn\u0027t look like a local matrix issue either.",
+      "range": {
+        "startLine": 13,
+        "startChar": 163,
+        "endLine": 13,
+        "endChar": 491
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1633b99f_5ab9c2c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-25T14:33:38Z",
+      "side": 1,
+      "message": "Is *Graphite* treating it as red instead of alpha? Or do you am *I* doing something within this CL incorrectly that\u0027s leading to that behavior? That hunch would make sense, I just want to understand if that\u0027s expected at this stage of graphite development or not.",
+      "parentUuid": "a46da9fd_a5500a09",
       "range": {
         "startLine": 13,
         "startChar": 163,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86e2cea7_77273a75",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-25T14:33:38Z",
+      "side": 1,
+      "message": "Well I have them as separate blocks - both \u0027regular\u0027 blenders and primitive blenders both boil down to `SkBlenderBase`, right?\n\nOriginally, I had added an overloaded `SkBlenderBase::addToKey` that took in a color, and this is what distinguished a primitive blender. But we figured out that we don\u0027t know the color at this point in time and it cannot be stored as a uniform, so we no longer need to take in a color here. That\u0027s what motivated me to return to using this bool.\n\nInstead of keeping it as-is, what did you have in mind?\n1) A whole separate blender base class, like \u0027SkPrimitiveBlenderBase`, which has a .cpp file equivalent to `SkBlendModeBlender`; such as `SkPrimitiveBlender\u0027\n2) Adding a separate method to `SkBlenderBase` explicitly for primitive blenders that would be equivalent to \u0027addToKey\u0027; such as `SkBlenderBase::addPrimitiveBlenderToKey`\n3) Other?",
+      "parentUuid": "38ae10d8_219fc4d5",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "476e47fb_847331cf",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 21
@@ -83,6 +155,30 @@
       "writtenOn": "2022-10-21T18:55:42Z",
       "side": 1,
       "message": "If this is a \"primitive color blender,\" we shouldn\u0027t ever generate a `BlendModeBlock`. BlendModeBlock controls the blend equation for the final draw against the surface which is always the very last thing that happens in a paint. The primitive-color blend happens much earlier in the process, mixing the paint color with the primitive color.\n\n(A diagram--primitive color blend happens in the dotted oval, blend-mode happens at the bottom:\nhttps://docs.google.com/presentation/d/1vFlrDxBhAvygDeoyDlWLmOC6JQtp1wVlSXyq0LlUItA/edit?resourcekey\u003d0-VSsIdNzu-J4m5tJzbmKMrQ#slide\u003did.g10541deba55_0_255 )",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00e11d45_c8482b92",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-25T14:33:38Z",
+      "side": 1,
+      "message": "You are absolutely right, I forgot to clean up this logic here.",
+      "parentUuid": "476e47fb_847331cf",
       "range": {
         "startLine": 77,
         "startChar": 0,
