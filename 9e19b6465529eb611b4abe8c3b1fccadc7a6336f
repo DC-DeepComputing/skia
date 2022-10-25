@@ -52,6 +52,24 @@
       "parentUuid": "97841a0c_7c15b09d",
       "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "478a6779_0c4f1638",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T14:52:41Z",
+      "side": 1,
+      "message": "Actually, wait, after counting again, this is long here because the tabs are displayed in review here as 8 spaces so this line is 106 wide as I see it at the moment.",
+      "parentUuid": "45a57d10_60e62ded",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
