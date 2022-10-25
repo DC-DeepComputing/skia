@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec49a275_17cd883e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-25T17:58:58Z",
+      "side": 1,
+      "message": "Quick CL hooking up local coordinates (and removing the temporary dev2Local uniforms) once and for all.",
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
