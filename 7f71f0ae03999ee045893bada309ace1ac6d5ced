@@ -16,6 +16,63 @@
       "message": "The original chromium canary failures were rebasing/infra issues and re-running it turned all the jobs green except for one android test hang that\u0027s likely unrelated since it doesn\u0027t use backdrop filters and is a test that I\u0027ve seen be very flaky in the past.\n\nThe main gold diffs are on `backdrop_scalefactor`, which includes a backdrop blur where the layer is downscaled by a factor of 10x before scaling back up. At such a low resolution, the differences in the sampling from a scaled blit vs. our draw path can be greatly magnified, but the final results are still in line with what I\u0027d expect.",
       "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72618152_5d6341ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T15:02:06Z",
+      "side": 1,
+      "message": "overall lg",
+      "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0baea4b_bd1e8f37",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 928,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T15:02:06Z",
+      "side": 1,
+      "message": "SkRect::Make(srcDims)?",
+      "range": {
+        "startLine": 928,
+        "startChar": 31,
+        "endLine": 928,
+        "endChar": 81
+      },
+      "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2156306_0b766d38",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-25T15:02:06Z",
+      "side": 1,
+      "message": "Would it make sense to move to the fallback-to-draw code here?",
+      "revId": "7f71f0ae03999ee045893bada309ace1ac6d5ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
