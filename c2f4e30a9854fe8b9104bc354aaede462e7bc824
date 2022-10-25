@@ -205,6 +205,24 @@
       "parentUuid": "a4007139_109a64fa",
       "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dab1af3_7d6eb2ff",
+        "filename": "tools/sk_app/sdl2/main_sdl2.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7871
+      },
+      "writtenOn": "2022-10-25T17:42:06Z",
+      "side": 1,
+      "message": "Thanks Brian! \nWe would need to figure out how to invoke the *main* from JS with the right argc, argv params.\nThe current wasm examples, Canvaskit, Box2D, Bullet etc. seems to be all using the JS canvas passing way.\nThe emscripten dev group referred to the following documentation, https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html\n\nPlease suggest, if you have some other pointers.\nI would be curious to know, when you made the original CL, how did you test the generated wasm from JS ?\nAlso, another thing which stands out is the size of this module, it is ~30KB, which is much smaller than what canvaskit.wasm generates. I was wondering if we are missing compilation of some modules ?",
+      "parentUuid": "031d3924_cda39d8f",
+      "revId": "c2f4e30a9854fe8b9104bc354aaede462e7bc824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
