@@ -34,6 +34,24 @@
       "parentUuid": "3cc4f805_79313794",
       "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45a57d10_60e62ded",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T14:48:36Z",
+      "side": 1,
+      "message": "I\u0027m sorry, I thought this was wrapping because it was too wide, but it\u0027s actually just that it wrapped because apparently even though there is space my browser seems to be wrapping at ~94 columns and this is almost exactly 100. I\u0027m pretty sure I have my settings at 100 and I have space on my screen, but it\u0027s wrapping anyway for some reason.",
+      "parentUuid": "97841a0c_7c15b09d",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
