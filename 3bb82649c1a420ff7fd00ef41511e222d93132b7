@@ -22,6 +22,30 @@
       },
       "revId": "3bb82649c1a420ff7fd00ef41511e222d93132b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a045d7d_150764f5",
+        "filename": "tests/sksl/errors/InterfaceBlockStorageModifiers.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-25T18:35:59Z",
+      "side": 1,
+      "message": "This is expected, see the CL description text re \"slightly more positional information\".",
+      "parentUuid": "6a3aec1f_7e87c099",
+      "range": {
+        "startLine": 5,
+        "startChar": 14,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "3bb82649c1a420ff7fd00ef41511e222d93132b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
