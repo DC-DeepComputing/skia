@@ -212,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4a49f8_14290ba0",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-25T18:02:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "469143b2_a8d857e7",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 20
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec9e3789_5de8a3e9",
@@ -297,6 +321,30 @@
       "side": 1,
       "message": "Yeah, we\u0027d still need to hold on to the buffer. I was thinking it might make a better API to present the client with a pixmap. That is beyond the scope of this change but internally keeping a pixmap would get us closer.",
       "parentUuid": "20a16262_947542e6",
+      "range": {
+        "startLine": 215,
+        "startChar": 10,
+        "endLine": 215,
+        "endChar": 15
+      },
+      "revId": "d02e66abea4e796582cf772166537e1a170a41b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36fbc29c_71d87b9f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-25T18:02:08Z",
+      "side": 1,
+      "message": "Got the Planes shared in the template class. I think I\u0027d like to hold off on setting up the Pixmaps -- this CL is getting a little busy already.",
+      "parentUuid": "eee34d4b_a5ae59db",
       "range": {
         "startLine": 215,
         "startChar": 10,
