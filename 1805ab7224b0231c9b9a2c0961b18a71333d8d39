@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6d7b8ea_9dcef82a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T22:51:52Z",
+      "side": 1,
+      "message": "At Patch Set 6 this all appears to work out fine in `viewer`, but in `dm` this is crashing in `minikin::FontCollection::getFamilyForChar` on a nullptr dereference. This is preceded by a `uloc_addLikelySubtags(\"zh\") failed: U_MISSING_RESOURCE_ERROR` message, so this may have something to do with running the executable directly not setting up ICU?",
+      "revId": "1805ab7224b0231c9b9a2c0961b18a71333d8d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
