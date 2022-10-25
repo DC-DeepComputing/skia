@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4d0cb4_3450eef9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-25T14:15:21Z",
+      "side": 1,
+      "message": "I assume the empty `bazel/external/brotli/BUILD.bazel` is on purpose and just marks the directory as a package so that Bazel will work with it?\n\nAlso, I\u0027m confused by the weirdness and complexity of trying to patch like Skia is a distro or something. Why not just roll brotli to some recent commit? Skia doesn\u0027t care much about when or if an upstream tags.",
+      "revId": "6e64edbc09296e25a98a27c9ed1576fb40ace463",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
