@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93af27be_bdc6b70b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3858,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-25T17:58:04Z",
+      "side": 1,
+      "message": "There\u0027s much magic in our SPIR-V codegen. I hope we can remove the need for this eventually by only allowing blocks to be bound as a UBO (which is what happens in practice anyway). IIRC opaque resources are handled separately and they are the only type of standalone binding that we should allow when targeting Vulkan/Dawn IMO.",
+      "parentUuid": "9a40b182_fda3defb",
+      "range": {
+        "startLine": 3857,
+        "startChar": 0,
+        "endLine": 3858,
+        "endChar": 54
+      },
+      "revId": "509f38bb62c04796db6f11cfdb13443510ddb4fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9be4e0a6_94ef3e52",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-24T21:56:27Z",
       "side": 1,
       "message": "We are cloning an existing struct, so there\u0027s no need to error-check it again.",
+      "range": {
+        "startLine": 1022,
+        "startChar": 36,
+        "endLine": 1022,
+        "endChar": 64
+      },
+      "revId": "509f38bb62c04796db6f11cfdb13443510ddb4fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8472a574_2503029b",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-25T17:58:04Z",
+      "side": 1,
+      "message": "This Gerrit comment may be valuable as a code comment 😊",
+      "parentUuid": "9be4e0a6_94ef3e52",
       "range": {
         "startLine": 1022,
         "startChar": 36,
