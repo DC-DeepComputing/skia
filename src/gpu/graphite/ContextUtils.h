@@ -29,7 +29,6 @@ std::tuple<SkUniquePaintParamsID, const SkUniformDataBlock*, const SkTextureData
 ExtractPaintData(Recorder*,
                  SkPipelineDataGatherer* gatherer,
                  SkPaintParamsKeyBuilder* builder,
-                 const SkM44& dev2local,
                  const PaintParams&);
 
 std::tuple<const SkUniformDataBlock*, const SkTextureDataBlock*>
@@ -53,8 +52,7 @@ std::string GetSkSLFS(const SkShaderCodeDictionary*,
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
-                                    const std::vector<SkPaintParamsKey::BlockReader>&,
-                                    bool needsDev2Local);
+                                    const std::vector<SkPaintParamsKey::BlockReader>&);
 std::string EmitRenderStepUniforms(int bufferID, const char* name,
                                    SkSpan<const SkUniform> uniforms);
 std::string EmitPaintParamsStorageBuffer(int bufferID,
