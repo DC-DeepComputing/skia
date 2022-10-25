@@ -16,6 +16,167 @@
       "message": "Bump to see if the latest changes have addressed your feedback",
       "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d32b5551_9cfde932",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "I feel like inside caps here I want to remove these checks and our caps queries about being renderable vs texturable shouldn\u0027t be tied together at all. For higher level code in Graphite maybe we either force the callers to check both texturable and renderable if that\u0027s what they require. Or to avoid the two function calls we could make isRenderable take an optional param like:\nCaps::isRenderable(const TextureInfo\u0026 info, bool requiresTexturable \u003d false);",
+      "range": {
+        "startLine": 18,
+        "startChar": 15,
+        "endLine": 19,
+        "endChar": 85
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f042278_7fd2e30a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "does this need to be passed in?",
+      "range": {
+        "startLine": 145,
+        "startChar": 33,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23de6cbe_85b1da77",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "spacing is off here or maybe below",
+      "range": {
+        "startLine": 183,
+        "startChar": 7,
+        "endLine": 183,
+        "endChar": 8
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce7ee3c0_1c3eee97",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "It took my a couple minutes to remember/reason out what this whole if block is checking. Can we add a comment at the top that is something like:\n\n\"Validate that if any format\u0027s FormatInfo claims support for the passed in colorType, make sure that that format is included in the list of formats passed in.\"",
+      "range": {
+        "startLine": 612,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 48
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f03e4e45_df074af0",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "This is a global support flag which almost all devices will support. So this is going to cause us to not ever check formats/colortypes.\n\nI think this was attempting to replace the kWrappedOnly flag check I suggested changing? I think we still want this flag but I was suggesting it lives on FormatInfo and not ColorTypeInfo since it is basically global to the whole format. Now I think it can just be bool that only exists in debug builds since the only use of it was for this debug check.",
+      "range": {
+        "startLine": 616,
+        "startChar": 50,
+        "endLine": 616,
+        "endChar": 75
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89721209_1f49b812",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "In Ganesh we just do:\n    {\n        GrVkCaps* nonConstThis \u003d const_cast\u003cGrVkCaps*\u003e(this);\n        return nonConstThis-\u003egetFormatInfo(format);\n    }\n\nIs there a reason we can\u0027t do that here?",
+      "range": {
+        "startLine": 641,
+        "startChar": 0,
+        "endLine": 650,
+        "endChar": 26
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08f9528a_5cba6d9f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-25T15:20:58Z",
+      "side": 1,
+      "message": "I\u0027m not sure the second part of this comment is needed for the caps here. Having the conversion info stuff isn\u0027t needed for the caps to just say whether it is supported or not.",
+      "range": {
+        "startLine": 123,
+        "startChar": 59,
+        "endLine": 124,
+        "endChar": 52
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
