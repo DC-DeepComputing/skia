@@ -16,6 +16,24 @@
       "message": "nit: line is long but already wraps.",
       "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97841a0c_7c15b09d",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-25T14:31:04Z",
+      "side": 1,
+      "message": "I\u0027m confused - our Golang style is wrap comments at 100 cols, and this is within that range.",
+      "parentUuid": "3cc4f805_79313794",
+      "revId": "9e19b6465529eb611b4abe8c3b1fccadc7a6336f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
