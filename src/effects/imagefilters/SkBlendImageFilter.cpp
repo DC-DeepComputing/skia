@@ -253,7 +253,16 @@ SkIRect SkBlendImageFilter::onFilterBounds(const SkIRect& src,
         }
     }
     auto result = getBackground();
+    auto bg = result;
+    auto fg = getForeground();
+
     result.join(getForeground());
+
+    SkDebugf("bg: %d %d %d %d + fg: %d %d %d %d -> %d %d %d %d\n",
+        bg.fLeft, bg.fTop, bg.fRight, bg.fBottom,
+        fg.fLeft, fg.fTop, fg.fRight, fg.fBottom,
+        result.fLeft, result.fTop, result.fRight, result.fBottom);
+
     return result;
 }
 

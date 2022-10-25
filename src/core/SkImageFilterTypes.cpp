@@ -55,6 +55,30 @@ static bool is_nearly_integer_translation(const skif::LayerSpace<SkMatrix>& m,
     return true;
 }
 
+static SkRect map_rect(const SkMatrix& m, const SkRect& r) {
+    if (r.isEmpty()) {
+        return SkRect::MakeEmpty();
+    }
+    return m.mapRect(r);
+}
+
+static SkIRect map_rect(const SkMatrix& m, const SkIRect& r) {
+    if (r.isEmpty()) {
+        return SkIRect::MakeEmpty();
+    }
+    // Since we are starting from integer coordinates and ending in integer coordinates, we can
+    // separate out any integer translation from the matrix. This is beneficial when the matrix
+    // and/or rectangle produce coordinates that are within the representational range of an int but
+    // beyond the range where float has integral precision.
+    if (matrix.isScaleTranslate()) {
+        // Can we do scaling and translating to the rounded coordinates directly, and then
+        // scale+translate the
+    } else {
+        // Have to map the rectangle in float, but we can leave off the post translation as integers
+    }
+    return RoundOut(matrix.mapRect(SkRect::Make(geom)));
+}
+
 namespace skif {
 
 SkIRect RoundOut(SkRect r) { return r.makeInset(kRoundEpsilon, kRoundEpsilon).roundOut(); }
@@ -129,12 +153,12 @@ bool Mapping::adjustLayerSpace(const SkMatrix& layer) {
 // Instantiate map specializations for the 6 geometric types used during filtering
 template<>
 SkRect Mapping::map<SkRect>(const SkRect& geom, const SkMatrix& matrix) {
-    return matrix.mapRect(geom);
+    return map_rect(matrix, geom);
 }
 
 template<>
 SkIRect Mapping::map<SkIRect>(const SkIRect& geom, const SkMatrix& matrix) {
-    return RoundOut(matrix.mapRect(SkRect::Make(geom)));
+    return map_rect(matrix, geom);
 }
 
 template<>
@@ -186,6 +210,14 @@ SkMatrix Mapping::map<SkMatrix>(const SkMatrix& m, const SkMatrix& matrix) {
     return inv;
 }
 
+LayerSpace<SkRect> LayerSpace<SkMatrix>::mapRect(const LayerSpace<SkRect>& r) const {
+    return LayerSpace<SkRect>(map_rect(SkRect(r), fData));
+}
+
+LayerSpace<SkIRect> LayerSpace<SkMatrix>::mapRect(const LayerSpace<SkIRect>& r) const {
+    return LayerSpace<SkIRect>(map_rect(SkIRect(r), fData));
+}
+
 sk_sp<SkSpecialImage> FilterResult::imageAndOffset(SkIPoint* offset) const {
     if (!fImage) {
         *offset = {0, 0};
@@ -196,9 +228,17 @@ sk_sp<SkSpecialImage> FilterResult::imageAndOffset(SkIPoint* offset) const {
     // TODO: When there are other tile modes than kDecal, imageAndOffset needs to apply them even if
     // the transform is representable as an offset.
     if (is_nearly_integer_translation(fTransform, &origin)) {
-        // Nothing to resolve
-        *offset = SkIPoint(origin);
-        return fImage;
+        // This is similar to the integer-translate case of applyCrop(), except that it can also
+        // apply any soft-cropping from desired output effects on fLayerBounds (which are a request
+        // for minimum content, not a hard maximum like a regular crop).
+        LayerSpace<IVector> originShift = fLayerBounds.topLeft() - origin;
+        auto subsetImage = fImage->makeSubset(SkIRect::MakeXYWH(originShift.x(),
+                                                                originShift.y(),
+                                                                fLayerBounds.width(),
+                                                                fLayerBounds.height()));
+
+        *offset = SkIPoint(fLayerBounds.topLeft());
+        return subsetImage;
     } else {
         // Legacy fallback requires us to produce a new image that matches this FilterResult but
         // has no new properties legacy code can't handle.
@@ -331,10 +371,12 @@ void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
     }
     fSamplingOptions = newSampling;
     fTransform.postConcat(transform);
-    // Rebuild the layer bounds and then restrict to the current desired output.
-    fLayerBounds = fTransform.mapRect(LayerSpace<SkRect>(SkRect::MakeIWH(fImage->width(),
-                                                                         fImage->height())))
-                             .roundOut();
+    // Rebuild the layer bounds and then restrict to the current desired output. The original value
+    // of fLayerBounds includes the image mapped by the original fTransform as well as any
+    // accumulated soft crops from desired outputs of prior stages. To prevent discarding that info,
+    // we map fLayerBounds by the additional transform, instead of re-mapping the image bounds.
+    fLayerBounds = transform.mapRect(fLayerBounds);
+
     if (!fLayerBounds.intersect(desiredOutput)) {
         // The transformed output doesn't touch the desired, so it would just be transparent black.
         // TODO: This intersection only applies when the tile mode is kDecal.
