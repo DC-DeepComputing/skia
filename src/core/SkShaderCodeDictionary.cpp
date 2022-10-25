@@ -136,7 +136,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
                 /*bufferID=*/2, "FS", "fs", fBlockReaders, this->needsLocalCoords());
     } else {
         preamble += skgpu::graphite::EmitPaintParamsUniforms(
-                /*bufferID=*/2, "FS", fBlockReaders, this->needsLocalCoords());
+                /*bufferID=*/2, "FS", fBlockReaders);
     }
     int binding = 0;
     preamble += skgpu::graphite::EmitTexturesAndSamplers(fBlockReaders, &binding);
@@ -146,19 +146,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
 
     std::string mainBody = "void main() {";
 
-    // TODO: Remove all use of dev2LocalUni once all render steps that require local coordinates
-    // emit them directly.
-    if (!this->needsLocalCoords()) {
-        mainBody += "float2 coords = sk_FragCoord.xy;";
-    } else if (this->ssboIndex()) {
-        SkSL::String::appendf(
-                &mainBody,
-                "float2 coords = (%s * sk_FragCoord).xy;",
-                skgpu::graphite::EmitStorageBufferAccess("fs", this->ssboIndex(), "dev2LocalUni")
-                        .c_str());
-    } else {
-        mainBody += "float2 coords = (dev2LocalUni * sk_FragCoord).xy;";
-    }
+    mainBody += "float2 coords = sk_FragCoord.xy;";
 
     // Set initial color. This will typically be optimized out by SkSL in favor of the paint
     // specifying a color with a solid color shader.
@@ -167,11 +155,9 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
 
     for (int entryIndex = 0; entryIndex < (int)fBlockReaders.size();) {
         // Emit shader main body code. This never alters the preamble or increases the entry index.
-        // TODO - Once RenderSteps that require local coordinates emit them directly to the
-        // localCoordsVar varying, "localCoordsVar" can be passed in here instead of "coords".
         static constexpr char kUnusedDestColor[] = "half4(1)";
         lastOutputVar = emit_glue_code_for_entry(*this, entryIndex, {lastOutputVar,
-                                                 kUnusedDestColor, "coords"},
+                                                 kUnusedDestColor, "localCoordsVar"},
                                                  &mainBody);
 
         // Emit preamble code. This iterates over all the children as well, and increases the entry
