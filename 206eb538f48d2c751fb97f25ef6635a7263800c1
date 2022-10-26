@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0976005d_79171db5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:20:42Z",
+      "side": 1,
+      "message": "So we\u0027re waiting on RBE to update (or sanely patch) their Docker? Is there an issue open for that? If there is can we mention that here somewhere?",
+      "revId": "206eb538f48d2c751fb97f25ef6635a7263800c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "95ad434d_3bb312c0",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-10-26T15:09:16Z",
       "side": 1,
       "message": "As a reminder, this version of Clang/LLVM is only used by Bazel to build its internal stuff if necessary. This is *not* the version used to compile Skia, which is provided by the hermetic toolchain.",
+      "range": {
+        "startLine": 8,
+        "startChar": 9,
+        "endLine": 8,
+        "endChar": 13
+      },
+      "revId": "206eb538f48d2c751fb97f25ef6635a7263800c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "212ea2bf_45a5dbc4",
+        "filename": "bazel/rbe/gce_linux/cc/builtin_include_directory_paths",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:20:42Z",
+      "side": 1,
+      "message": "To be hermetic every project needs to drag in its own compiler.",
+      "parentUuid": "95ad434d_3bb312c0",
       "range": {
         "startLine": 8,
         "startChar": 9,
