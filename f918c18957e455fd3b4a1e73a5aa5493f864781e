@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2ba61f9_6c6a1109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-26T20:49:23Z",
+      "side": 1,
+      "message": "Guarded for layout test rebaselines. Can\u0027t land until https://chromium-review.googlesource.com/c/chromium/src/+/3983374 does.",
+      "revId": "f918c18957e455fd3b4a1e73a5aa5493f864781e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60820c1f_1ce19653",
+        "filename": "gm/anisotropic.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-26T20:49:23Z",
+      "side": 1,
+      "message": "FYI: These GM changes fix issues with serialize-8888 and pic-8888. The underlying issue is that when we run the GM\u0027s drawing commands through the serializer, the images always come out the other end as N32 (regardless of the original color type). Rendering to N32 lets us hit the legacy blitter, whereas rendering to RGBA (if N32 is BGRA) forces us to use RP. So the new mipmap builder produces one-bit differences. Having the original be N32 ensures we get the same result both times.",
+      "revId": "f918c18957e455fd3b4a1e73a5aa5493f864781e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
