@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cddc9824_344b168e",
+        "filename": "src/core/SkDrawShadowInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-26T17:59:46Z",
+      "side": 0,
+      "message": "This code is used for concave blurred shadows too, so I\u0027m not sure why this is here. Might be a remnant of when we didn\u0027t support concave at all.",
+      "range": {
+        "startLine": 54,
+        "startChar": 13,
+        "endLine": 54,
+        "endChar": 30
+      },
+      "revId": "5096e8edc80823be2631c0fa9dcff15d81596573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
