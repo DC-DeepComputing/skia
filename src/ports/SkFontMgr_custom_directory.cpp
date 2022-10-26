@@ -84,6 +84,7 @@ private:
                                                                   realname, filename.c_str(),
                                                                   faceIndex));
             }
+            SkDebugf("Loaded from %s\n", name.c_str());
         }
 
         SkOSFile::Iter dirIter(directory.c_str());
