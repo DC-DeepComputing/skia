@@ -16,6 +16,24 @@
       "message": "At Patch Set 6 this all appears to work out fine in `viewer`, but in `dm` this is crashing in `minikin::FontCollection::getFamilyForChar` on a nullptr dereference. This is preceded by a `uloc_addLikelySubtags(\"zh\") failed: U_MISSING_RESOURCE_ERROR` message, so this may have something to do with running the executable directly not setting up ICU?",
       "revId": "1805ab7224b0231c9b9a2c0961b18a71333d8d39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "349ed9ba_1662e076",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T17:53:50Z",
+      "side": 1,
+      "message": "Related is https://cs.android.com/android/_/android/platform/frameworks/minikin/+/1be4ac71900ca2258491a4d0b72a4bebce19da71 where this same issue turned up when running minikin tests but was internally hacked around.",
+      "parentUuid": "a6d7b8ea_9dcef82a",
+      "revId": "1805ab7224b0231c9b9a2c0961b18a71333d8d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
