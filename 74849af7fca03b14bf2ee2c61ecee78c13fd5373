@@ -16,6 +16,24 @@
       "message": "This is totally fine as-is, but does this actually do any better than just reusing the runtime effect code and letting it compile down to SkVM? Is there an advantage to writing raw SkVM for something where we already have SkSL?",
       "revId": "74849af7fca03b14bf2ee2c61ecee78c13fd5373",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b14102f_6e7371b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-26T13:49:07Z",
+      "side": 1,
+      "message": "We don\u0027t have a great way to reuse those effects in this way. They\u0027re currently just runtime FPs. I guess we could turn them into some kind of shared private color filter that we attach to the tail end of the gradient, but we\u0027ve never done anything like that before (using SkSL as a building block from within the skvm blitter construction).",
+      "parentUuid": "8c84eeed_c5e3288e",
+      "revId": "74849af7fca03b14bf2ee2c61ecee78c13fd5373",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
