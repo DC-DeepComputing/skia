@@ -730,7 +730,7 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
     const char* const slversion = getString(GR_GL_SHADING_LANGUAGE_VERSION);
     const char* const renderer  = getString(GR_GL_RENDERER);
     const char* const vendor    = getString(GR_GL_VENDOR);
-
+SkDEBUGFAILF("VEN: \"%s\"\nREN: \"%s\"\nVER: \"%s\"\n", vendor, renderer, version);
     info.fVersion     = GrGLGetVersionFromString(version);
     info.fGLSLVersion = get_glsl_version(slversion);
     info.fVendor      = get_vendor(vendor);
