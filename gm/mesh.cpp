@@ -971,4 +971,61 @@ private:
 
 DEF_GM(return new MeshZeroInitGM())
 
+DEF_SIMPLE_GM_CAN_FAIL(mesh_default_fs, canvas, errorMsg, 20, 20) {
+    GrRecordingContext* rc = canvas->recordingContext();
+    if (!rc) {
+        // This is only expected to draw anything on GPU.
+        return DrawResult::kSkip;
+    }
+
+    static const SkMeshSpecification::Attribute kAttributes[]{
+            {SkMeshSpecification::Attribute::Type::kFloat2, 0, SkString{"pos"}},
+    };
+    static constexpr char kVS[] = R"(
+                    Varyings main(const Attributes attributes) {
+                        Varyings varyings;
+                        varyings.position = attributes.pos;
+                        return varyings;
+                    }
+            )";
+
+    auto [spec, error] = SkMeshSpecification::Make(kAttributes,
+                                                   2*sizeof(float),
+                                                   /*varyings=*/{},
+                                                   SkString(kVS),
+                                                   /*fs=*/{});
+    if (!spec) {
+        *errorMsg = error;
+        return DrawResult::kFail;
+    }
+    float v[] { 0,  0,
+                0, 20,
+               20,  0,
+               20, 20};
+
+    auto vb = SkMesh::MakeVertexBuffer(/*GrDirectContext*=*/nullptr, v, sizeof(v));
+    if (!vb) {
+        *errorMsg = "vertex buffer creation failed";
+        return DrawResult::kFail;
+    }
+
+    auto mesh = SkMesh::Make(spec,
+                             SkMesh::Mode::kTriangleStrip,
+                             vb,
+                             /*vertexCount=*/ 4,
+                             /*vertexOffset=*/0,
+                             /*uniforms=*/nullptr,
+                             SkRect::MakeWH(20, 20));
+    SkPaint paint;
+    SkColor colors[] {SK_ColorGREEN, SK_ColorBLUE};
+    paint.setShader(SkGradientShader::MakeRadial(/*center=*/{10, 10},
+                                                 /*radius=*/17,
+                                                 colors,
+                                                 /*pos=*/nullptr,
+                                                 /*count=*/2,
+                                                 SkTileMode::kRepeat));
+    canvas->drawMesh(mesh, nullptr, paint);
+    return DrawResult::kOk;
+}
+
 }  // namespace skiagm
