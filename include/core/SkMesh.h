@@ -55,6 +55,10 @@ namespace SkSL { struct Program; }
  * interpolated local space positions as the shader coordinates, equivalent to how SkPaths are
  * shaded, return the position field from the Varying struct as the coordinates.
  *
+ * An empty fragment shader string indicates that a default shader of
+ * float2 main(const Varyings v) { return v.position; }
+ * should be used.
+ *
  * The vertex and fragment programs may both contain uniforms. Uniforms with the same name are
  * assumed to be shared between stages. It is an error to specify uniforms in the vertex and
  * fragment program with the same name but different types, dimensionality, or layouts.

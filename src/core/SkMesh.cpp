@@ -393,9 +393,13 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       size_t vertexStride,
                                                       SkSpan<const Varying> varyings,
                                                       const SkString& vs,
-                                                      const SkString& fs,
+                                                      const SkString& origFS,
                                                       sk_sp<SkColorSpace> cs,
                                                       SkAlphaType at) {
+    SkString fs = origFS;
+    if (fs.isEmpty()) {
+        fs = "float2 main(const Varyings v) { return v.position; }";
+    }
     SkString attributesStruct("struct Attributes {\n");
     for (const auto& a : attributes) {
         attributesStruct.appendf("  %s %s;\n", attribute_type_string(a.type), a.name.c_str());
