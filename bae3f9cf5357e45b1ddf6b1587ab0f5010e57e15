@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d32ecdf_7c68e5c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:34:56Z",
+      "side": 1,
+      "message": "At a glance `ParagraphImpl` isn\u0027t thread safe, so it shouldn\u0027t be partially pretending like it is. It either needs to be immutable after construction or it needs any state change to be protected by a mutex.",
+      "revId": "bae3f9cf5357e45b1ddf6b1587ab0f5010e57e15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "694d6bf5_308a959f",
+        "filename": "modules/skparagraph/include/ParagraphCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:34:56Z",
+      "side": 1,
+      "message": "Why is an enum called `InternalState` in what appears to be a public include file? It looks like it should be in `ParagraphImp.h`. If it\u0027s only exposed for `SampleParagraph.cpp` to use directly, that already includes `ParagraphImp.h`.",
+      "revId": "bae3f9cf5357e45b1ddf6b1587ab0f5010e57e15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d284b747_d39651e3",
+        "filename": "modules/skparagraph/src/ParagraphImpl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:34:56Z",
+      "side": 1,
+      "message": "This isn\u0027t thread safe either. There\u0027s no point in making the index mapping thread safe if this class is mutable and this state isn\u0027t protected by a mutex.",
+      "revId": "bae3f9cf5357e45b1ddf6b1587ab0f5010e57e15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64e5e71b_c5e2390f",
+        "filename": "modules/skparagraph/src/ParagraphImpl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-26T15:34:56Z",
+      "side": 1,
+      "message": "Having this here is fine, and I\u0027ll allow it so that we don\u0027t crash people using this class in odd ways.",
+      "revId": "bae3f9cf5357e45b1ddf6b1587ab0f5010e57e15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
