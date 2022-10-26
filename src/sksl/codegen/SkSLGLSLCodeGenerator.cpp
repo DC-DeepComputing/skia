@@ -1132,7 +1132,11 @@ void GLSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
         }
         this->write(separator);
         separator = ", ";
-        this->writeModifiers(param->modifiers(), false);
+        Modifiers modifiers = param->modifiers();
+        if (this->caps().fRemoveConstFromFunctionParameters) {
+            modifiers = Modifiers(modifiers.fLayout, modifiers.fFlags & ~Modifiers::kConst_Flag);
+        }
+        this->writeModifiers(modifiers, false);
         std::vector<int> sizes;
         const Type* type = &param->type();
         if (type->isArray()) {
