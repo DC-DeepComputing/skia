@@ -16,6 +16,24 @@
       "message": "Do we have a standard way of designating that this workaround is only implemented in the GLSL generator?",
       "revId": "08e8e0a5967f60d31a9847844b14a4d98d1daca9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9b8ad02_1959bd2e",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-26T13:40:53Z",
+      "side": 1,
+      "message": "I\u0027d just put it in the comment here.",
+      "parentUuid": "8de287ca_63d74fa2",
+      "revId": "08e8e0a5967f60d31a9847844b14a4d98d1daca9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
