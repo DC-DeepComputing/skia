@@ -48,14 +48,26 @@ public:
      */
     virtual bool isConstant() const { return false; }
 
-    using GradientInfo = SkShader::GradientInfo;
+    struct GradientInfo {
+        int         fColorCount    = 0;        //!< In-out parameter, specifies passed size
+                                               //   of fColors/fColorOffsets on input, and
+                                               //   actual number of colors/offsets on
+                                               //   output.
+        SkColor*    fColors        = nullptr;  //!< The colors in the gradient.
+        SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        SkPoint     fPoint[2];                 //!< Type specific, see above.
+        SkScalar    fRadius[2];                //!< Type specific, see above.
+        SkTileMode  fTileMode;
+        uint32_t    fGradientFlags = 0;        //!< see SkGradientShader::Flags
+    };
+
     enum class GradientType {
-        kNone    = kNone_GradientType,
-        kColor   = kColor_GradientType,
-        kLinear  = kLinear_GradientType,
-        kRadial  = kRadial_GradientType,
-        kSweep   = kSweep_GradientType,
-        kConical = kConical_GradientType,
+        kNone,
+        kColor,
+        kLinear,
+        kRadial,
+        kSweep,
+        kConical
     };
 
     virtual GradientType asGradient(GradientInfo* info    = nullptr,
