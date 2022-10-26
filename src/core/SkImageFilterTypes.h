@@ -439,9 +439,11 @@ public:
     explicit operator const SkMatrix&() const { return fData; }
 
     // Parrot a limited selection of the SkMatrix API while preserving coordinate space.
-    LayerSpace<SkRect> mapRect(const LayerSpace<SkRect>& r) const {
-        return LayerSpace<SkRect>(fData.mapRect(SkRect(r)));
-    }
+    LayerSpace<SkRect> mapRect(const LayerSpace<SkRect>& r) const;
+
+    // Roughly equivalent to mapRect().roundOut() but more accurate when the underlying matrix has
+    // large floating point values.
+    LayerSpace<SkIRect> mapRect(const LayerSpace<SkIRect>& r) const;
 
     LayerSpace<SkPoint> mapPoint(const LayerSpace<SkPoint>& p) const {
         return LayerSpace<SkPoint>(fData.mapPoint(SkPoint(p)));
