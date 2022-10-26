@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18931891_197c2675",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "Since is_renderable used to also implicitly encapsulate is_texturable, do we need to check for both here? As in, do we care in this instance if the format is texturable or not?",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 21
+      },
+      "revId": "f7d8f75ce094071c359a66c7911a58004a75519a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

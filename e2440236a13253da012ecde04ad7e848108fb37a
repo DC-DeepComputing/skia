@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "647121af_a28bb927",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "Ah, yeah, I understand and see the benefit to that. I chatted with Michael he is on board with altering the higher-level graphite code to perform two separate queries as needed (huzzah).\n\nI went ahead and removed the texture format feature flag checking from `is_renderable` here, but will create a follow-up CL to make those higher-level changes and more nitty-gritty changes within the Vk/Metal backends to support that.",
+      "parentUuid": "d32b5551_9cfde932",
+      "range": {
+        "startLine": 18,
+        "startChar": 15,
+        "endLine": 19,
+        "endChar": 85
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f042278_7fd2e30a",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-25T15:20:58Z",
       "side": 1,
       "message": "does this need to be passed in?",
+      "range": {
+        "startLine": 145,
+        "startChar": 33,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4936eb17_14a41810",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "Nope, not anymore. Removed",
+      "parentUuid": "9f042278_7fd2e30a",
       "range": {
         "startLine": 145,
         "startChar": 33,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "102ac4ff_67aa2ca7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "The `if` was off. Ew, that was gross-looking and tragic. I think I got them all.",
+      "parentUuid": "23de6cbe_85b1da77",
+      "range": {
+        "startLine": 183,
+        "startChar": 7,
+        "endLine": 183,
+        "endChar": 8
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce7ee3c0_1c3eee97",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-10-25T15:20:58Z",
       "side": 1,
       "message": "It took my a couple minutes to remember/reason out what this whole if block is checking. Can we add a comment at the top that is something like:\n\n\"Validate that if any format\u0027s FormatInfo claims support for the passed in colorType, make sure that that format is included in the list of formats passed in.\"",
+      "range": {
+        "startLine": 612,
+        "startChar": 4,
+        "endLine": 612,
+        "endChar": 48
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d548e0b_10075107",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce7ee3c0_1c3eee97",
       "range": {
         "startLine": 612,
         "startChar": 4,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "577708a3_e3000c04",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "TL;DR: Yes, good callout. Done\n\nLong version in case you\u0027re curious:\nYeah, I had some confusion around that (it not being checked ever). This was initially in response to the kWrappedOnly flag being moved from ColorTypeInfo to a part of the FormatInfo flags, which have since been replaced with direct queries on the VkFormatFeatureFlags.\n\nAdded fIsWrappedOnly into the FormatInfo struct in debug builds.",
+      "parentUuid": "f03e4e45_df074af0",
+      "range": {
+        "startLine": 616,
+        "startChar": 50,
+        "endLine": 616,
+        "endChar": 75
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89721209_1f49b812",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba05a383_0a4280fd",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "You\u0027re absolutely correct, that was a copy/paste mistake.",
+      "parentUuid": "89721209_1f49b812",
+      "range": {
+        "startLine": 641,
+        "startChar": 0,
+        "endLine": 650,
+        "endChar": 26
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08f9528a_5cba6d9f",
@@ -169,6 +313,30 @@
       "writtenOn": "2022-10-25T15:20:58Z",
       "side": 1,
       "message": "I\u0027m not sure the second part of this comment is needed for the caps here. Having the conversion info stuff isn\u0027t needed for the caps to just say whether it is supported or not.",
+      "range": {
+        "startLine": 123,
+        "startChar": 59,
+        "endLine": 124,
+        "endChar": 52
+      },
+      "revId": "e2440236a13253da012ecde04ad7e848108fb37a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b449458_81d4c09a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-26T18:51:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08f9528a_5cba6d9f",
       "range": {
         "startLine": 123,
         "startChar": 59,
