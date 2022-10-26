@@ -289,7 +289,9 @@ static std::map<std::string, std::string> cf_api_map = {
     {"api_null_canvas", "NullCanvas"},
     {"api_path_measure", "PathMeasure"},
     {"api_pathop", "Pathop"},
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     {"api_polyutils", "PolyUtils"},
+#endif
     {"api_raster_n32_canvas", "RasterN32Canvas"},
     {"api_skparagraph", "SkParagraph"},
     {"api_svg_canvas", "SVGCanvas"},
