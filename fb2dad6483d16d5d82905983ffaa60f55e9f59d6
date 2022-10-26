@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b85f46a1_b6ef0574",
+        "filename": "src/gpu/ganesh/GrTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-26T18:18:30Z",
+      "side": 1,
+      "message": "oof.. this typo wasn\u0027t caught by my local build. It\u0027s legal as\n `SkStringPrintf(...), this-\u003ereadOnly();`\nwhere the `,` is the comma operator. Other builders noticed the possible comma misuse and insufficient # of args for the format string.",
+      "range": {
+        "startLine": 88,
+        "startChar": 44,
+        "endLine": 88,
+        "endChar": 45
+      },
+      "revId": "fb2dad6483d16d5d82905983ffaa60f55e9f59d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
