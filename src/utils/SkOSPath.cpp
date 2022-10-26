@@ -47,3 +47,50 @@ SkString SkOSPath::Dirname(const char* fullPath) {
     }
     return SkString(fullPath, end - fullPath);
 }
+
+#if defined(SK_BUILD_FOR_WIN)
+
+#include <windows.h>
+
+SkString SkOSPath::GetExecutablePath() {
+    char executableFileBuf[MAX_PATH];
+    DWORD executablePathLen = GetModuleFileNameA(nullptr, executableFileBuf, MAX_PATH);
+    return (executablePathLen > 0) ? SkString(executableFileBuf) : SkString();
+}
+
+#elif defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+
+#include <mach-o/dyld.h>
+
+SkString SkOSPath::GetExecutablePath() {
+    uint32_t size = 0;
+    _NSGetExecutablePath(nullptr, &size);
+
+    SkString result(/*text=*/nullptr, size);
+    if (_NSGetExecutablePath(result.writable_str(), &size) != 0) {
+        result.reset();
+    }
+    return result;
+}
+
+#elif defined(SK_BUILD_FOR_UNIX) || defined(SK_BUILD_FOR_ANDROID)
+
+// Note that /proc/self/exe is Linux-specific; this won't work on other UNIX systems.
+
+#include <cstddef>
+#include <linux/limits.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+SkString SkOSPath::GetExecutablePath() {
+    SkString result(/*text=*/nullptr, PATH_MAX);
+    ssize_t len = readlink("/proc/self/exe", result.writable_str(), result.size() - 1);
+    if (len < 0 || static_cast<size_t>(len) >= PATH_MAX - 1) {
+        result.reset();
+    } else {
+        result.resize(len);
+    }
+    return result;
+}
+
+#endif

@@ -11,7 +11,7 @@
 #include "include/core/SkString.h"
 
 /**
- *  Functions for modifying SkStrings which represent paths on the filesystem.
+ *  OS-agnostic functions for manipulating filesystem paths
  */
 class SkOSPath {
 public:
@@ -50,6 +50,11 @@ public:
      *      final slash, or the full name if ending in a slash.
      */
     static SkString Dirname(const char* fullPath);
+
+    /**
+     *  Returns a fully-qualified path to the currently-running executable.
+     */
+    static SkString GetExecutablePath();
 };
 
 #endif
