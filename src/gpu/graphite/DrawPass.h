@@ -54,16 +54,13 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    // TODO: Replace SDC with the SDC's surface proxy view
     static std::unique_ptr<DrawPass> Make(Recorder*,
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy>,
+                                          SkIRect viewport,
                                           std::pair<LoadOp, StoreOp>,
                                           std::array<float, 4> clearColor);
 
-    // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
-    // contained within its dimensions.
-    const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
@@ -105,7 +102,6 @@ private:
     DrawPassCommands::List fCommandList;
 
     sk_sp<TextureProxy> fTarget;
-    SkIRect fBounds;
 
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;

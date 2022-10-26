@@ -48,6 +48,7 @@ class TextureProxyView;
 class DrawContext final : public SkRefCnt {
 public:
     static sk_sp<DrawContext> Make(sk_sp<TextureProxy> target,
+                                   SkIRect viewport,
                                    const SkColorInfo&,
                                    const SkSurfaceProps&);
 
@@ -120,9 +121,10 @@ public:
 #endif
 
 private:
-    DrawContext(sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
+    DrawContext(sk_sp<TextureProxy>, SkIRect, const SkImageInfo&, const SkSurfaceProps&);
 
     sk_sp<TextureProxy> fTarget;
+    SkIRect fViewport;
     SkImageInfo fImageInfo;
     const SkSurfaceProps fSurfaceProps;
 
