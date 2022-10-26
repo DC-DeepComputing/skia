@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a422e6b_9ce6505e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-26T18:00:04Z",
+      "side": 1,
+      "message": "I will need to suppress several layout tests and one cc pixel test before this can land and roll into chromium, but they are not objectionable.\n\nThe largest gold diffs from this CL are the result of more offset filters being able to skip renderpasses (all of them, instead of just integer offsets). For 1010102 configs, that means we\u0027re sometimes drawing directly into the 1010102 surface whereas previously we would have been promoted to an 8888 layer, modulated the alpha into the color channels, and then not really run into issues losing alpha precision in the final draws.",
+      "revId": "e52e1e8cfd0cf5b0dd97b0e64dd297b0439d199c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
