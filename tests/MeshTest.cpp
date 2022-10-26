@@ -138,6 +138,7 @@ static const SkString kValidFSes[]{
                 return float2(10);
             }
         )"},
+        SkString{},  // tests default fragment shader
 };
 
 // Simple valid attributes, stride, and varyings to make specifications
@@ -577,17 +578,7 @@ static void test_no_main(skiatest::Reporter* r) {
         return;
     }
 
-    // Empty FS
-    if (!check_for_failure(r,
-                           kValidAttrs,
-                           kValidStride,
-                           kValidVaryings,
-                           kValidVS,
-                           SkString{})) {
-        return;
-    }
-
-    // VS with helper function but no main
+    // VF with helper function but no main
     if (!check_for_failure(r,
                            kValidAttrs,
                            kValidStride,
