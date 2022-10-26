@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "792eb2c0_5de11757",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "I don\u0027t know yet. I\u0027m still working things out.",
+      "parentUuid": "f30a053b_2ac22f35",
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32cd8a94_71e4a195",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-10-21T20:05:21Z",
       "side": 1,
       "message": "\"Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names.\"\n\nhttp://go/cstyle#Structs_vs._Tuples",
+      "range": {
+        "startLine": 158,
+        "startChar": 14,
+        "endLine": 158,
+        "endChar": 39
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56050496_e7711d9e",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32cd8a94_71e4a195",
       "range": {
         "startLine": 158,
         "startChar": 14,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bcc7eab_ac42fc7e",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46064d72_b58975be",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a87000dd_8b9267c7",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-10-21T20:05:21Z",
       "side": 1,
       "message": "We should comment this; it\u0027s a bit hard to reason about blind. \"Limit allocation size to 2GB\" or something?",
+      "range": {
+        "startLine": 169,
+        "startChar": 8,
+        "endLine": 169,
+        "endChar": 87
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "859a7393_e7fcb1b9",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a87000dd_8b9267c7",
       "range": {
         "startLine": 169,
         "startChar": 8,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a55d0ec_69bd14a1",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "I switch to doing the growth calculation in count instead of bytes. This will always give the a whole multiple of sizeOfT bytes. I also add the round up to the next value of 8 logic from SkTArray to handle small values.",
+      "parentUuid": "298f9a2d_a9c27add",
+      "range": {
+        "startLine": 176,
+        "startChar": 45,
+        "endLine": 176,
+        "endChar": 83
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd4c625d_93fbb2ad",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-10-21T20:05:21Z",
       "side": 1,
       "message": "up to you: this would be equivalent and IMO reads fine\n\n`if (size_t allocatedSize \u003d sk_malloc_usable_size(data)) {`",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 79
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51a344c7_99304531",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd4c625d_93fbb2ad",
       "range": {
         "startLine": 195,
         "startChar": 4,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "105a2b33_1e50d45f",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4f0ef19_a218c8a9",
+      "range": {
+        "startLine": 198,
+        "startChar": 56,
+        "endLine": 198,
+        "endChar": 62
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d1798cd_25efd721",
@@ -169,6 +331,30 @@
       "writtenOn": "2022-10-21T20:05:21Z",
       "side": 1,
       "message": "up to you: WDYT about dropping a #pragma warning or something here, in case we add a new SK_BUILD platform in the future? Otherwise it\u0027s unlikely we\u0027ll find and fix this and we\u0027re leaving performance on the table.",
+      "range": {
+        "startLine": 205,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 14
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "142f6b58_0c89e9b9",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "The default is just to return leastAllocation or allocationWithGrowth.",
+      "parentUuid": "3d1798cd_25efd721",
       "range": {
         "startLine": 205,
         "startChar": 8,
@@ -202,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "763fedb5_04af0f3a",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4711d53_699ad465",
+      "range": {
+        "startLine": 97,
+        "startChar": 44,
+        "endLine": 97,
+        "endChar": 75
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94b1380e_97e4605f",
@@ -215,6 +425,30 @@
       "writtenOn": "2022-10-21T20:05:21Z",
       "side": 1,
       "message": "Let\u0027s put some sort of upper bound on this check; we do want to fail if the capacity is crazy large.",
+      "range": {
+        "startLine": 98,
+        "startChar": 30,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5d4738f_a7bf6cb3",
+        "filename": "tests/TArrayTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-26T02:52:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94b1380e_97e4605f",
       "range": {
         "startLine": 98,
         "startChar": 30,
