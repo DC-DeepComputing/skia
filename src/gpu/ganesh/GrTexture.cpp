@@ -40,6 +40,7 @@ void GrTexture::markMipmapsDirty(const char* reason) {
 
 void GrTexture::markMipmapsClean() {
     SkASSERT(GrMipmapStatus::kNotAllocated != fMipmapStatus);
+    SkDEBUGCODE(fMipmapRegenFailureReason = "did not fail";)
     fMipmapStatus = GrMipmapStatus::kValid;
 }
 
@@ -86,7 +87,9 @@ void GrTexture::assertMipmapsNotDirty(const GrTextureProxy* proxy) {
                     borrowed);
         }
         if (proxy) {
-            msg += SkStringPrintf(", proxy status = %d", proxy->mipmapsAreDirty());
+            msg += SkStringPrintf(", proxy status = %d, slated: %d",
+                                  proxy->mipmapsAreDirty(),
+                                  proxy->slatedForMipmapRegen());
         }
         SK_ABORT("%s", msg.c_str());
     }
