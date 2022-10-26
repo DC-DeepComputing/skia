@@ -16,7 +16,7 @@
 #include <new>
 #include <utility>
 
-// Before trying to use SkTHashTable, look below to see if SkTHashMap or SkTHashSet works for you.
+// Before trying to use SkTHashTable, look below to see if s or SkTHashSet works for you.
 // They're easier to use, usually perform the same, and have fewer sharp edges.
 
 // T and K are treated as ordinary copyable C++ types.
