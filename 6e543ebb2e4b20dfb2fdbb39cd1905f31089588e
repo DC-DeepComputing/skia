@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b848f46f_fcad3f6d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-10-27T18:11:13Z",
+      "side": 1,
+      "message": "Could we have git-sync-deps call into Bazel to download the deps?",
+      "range": {
+        "startLine": 10,
+        "startChar": 22,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "05096fc6_354d4262",
@@ -14,6 +37,29 @@
       "writtenOn": "2022-10-27T18:08:39Z",
       "side": 1,
       "message": "Build part of this change lgtm.",
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8cd549_a293798c",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-10-27T18:11:13Z",
+      "side": 1,
+      "message": "I would recommend leveraging https://skia.googlesource.com/buildbot/+/refs/heads/main/go/depot_tools/deps_parser/deps_parser.go#94",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
       "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
