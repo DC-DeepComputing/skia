@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64de4c94_2e88dd02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-27T17:31:22Z",
+      "side": 1,
+      "message": "FYI: Going to land this. With the link pool sized at 2, it worked fine.",
+      "revId": "eb6c1c75abfd7117a8744fe57d8de61b2f179fdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
