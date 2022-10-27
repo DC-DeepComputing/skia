@@ -36,6 +36,7 @@
 namespace skgpu::graphite {
 
 sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
+                                     SkIRect viewport,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
     if (!target) {
@@ -43,14 +44,16 @@ sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
     }
 
     // TODO: validate that the color type and alpha type are compatible with the target's info
-    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(), colorInfo);
-    return sk_sp<DrawContext>(new DrawContext(std::move(target), imageInfo, props));
+    SkImageInfo imageInfo = SkImageInfo::Make(viewport.size(), colorInfo);
+    return sk_sp<DrawContext>(new DrawContext(std::move(target), viewport, imageInfo, props));
 }
 
 DrawContext::DrawContext(sk_sp<TextureProxy> target,
+                         SkIRect viewport,
                          const SkImageInfo& ii,
                          const SkSurfaceProps& props)
         : fTarget(std::move(target))
+        , fViewport(viewport)
         , fImageInfo(ii)
         , fSurfaceProps(props)
         , fPendingDraws(std::make_unique<DrawList>())
@@ -96,7 +99,7 @@ void DrawContext::recordDraw(const Renderer* renderer,
                              DrawOrder ordering,
                              const PaintParams* paint,
                              const StrokeStyle* stroke) {
-    SkASSERT(SkIRect::MakeSize(fTarget->dimensions()).contains(clip.scissor()));
+    SkASSERT(fViewport.contains(clip.scissor()));
     fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paint, stroke);
 }
 
@@ -131,6 +134,7 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     auto pass = DrawPass::Make(recorder,
                                std::move(fPendingDraws),
                                fTarget,
+                               fViewport,
                                std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                fPendingClearColor);
     fDrawPasses.push_back(std::move(pass));

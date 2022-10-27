@@ -232,7 +232,25 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), colorInfo, props);
+    return Make(recorder,
+                target,
+                SkIRect::MakeSize(target->dimensions()),
+                colorInfo,
+                props,
+                addInitialClear);
+}
+
+sk_sp<Device> Device::Make(Recorder* recorder,
+                           sk_sp<TextureProxy> target,
+                           SkIRect viewport,
+                           const SkColorInfo& colorInfo,
+                           const SkSurfaceProps& props,
+                           bool addInitialClear) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), viewport, colorInfo, props);
     if (!dc) {
         return nullptr;
     }
