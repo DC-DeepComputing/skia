@@ -87,6 +87,24 @@
       "parentUuid": "b8c687ac_396f8b41",
       "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c523b78_04542821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T20:18:42Z",
+      "side": 1,
+      "message": "So, the \"special\" ones are the way to go after all?",
+      "parentUuid": "b955e978_6c5925a0",
+      "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
