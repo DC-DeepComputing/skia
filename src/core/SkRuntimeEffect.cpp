@@ -1221,7 +1221,7 @@ public:
         }
 
         SkMatrix matrix;
-        if (args.fLocalMatrix && !args.fLocalMatrix->invert(&matrix)) {
+        if (args.fLocalMatrix1 && !args.fLocalMatrix1->invert(&matrix)) {
             return nullptr;
         }
 
@@ -1233,7 +1233,7 @@ public:
 
         // We handle the local matrix at this level so strip it out.
         GrFPArgs fpArgs = args;
-        fpArgs.fLocalMatrix = nullptr;
+        fpArgs.fLocalMatrix1 = nullptr;
         auto [success, fp] = make_effect_fp(fEffect,
                                             "runtime_shader",
                                             std::move(uniforms),

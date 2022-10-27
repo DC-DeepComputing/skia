@@ -68,17 +68,19 @@ constexpr struct {
 };
 
 static void draw_scene(SkCanvas* canvas, SkScalar pictureSize) {
-    canvas->clear(SK_ColorWHITE);
+    canvas->clear(SK_ColorGRAY);
 
     SkPaint paint;
-    paint.setColor(SK_ColorGREEN);
     paint.setStyle(SkPaint::kFill_Style);
     paint.setAntiAlias(true);
 
+    paint.setColor(SK_ColorGREEN);
     canvas->drawCircle(pictureSize / 4, pictureSize / 4, pictureSize / 4, paint);
+    paint.setColor(SK_ColorRED);
     canvas->drawRect(SkRect::MakeXYWH(pictureSize / 2, pictureSize / 2,
                                       pictureSize / 2, pictureSize / 2), paint);
 
+#if 0
     paint.setColor(SK_ColorRED);
     canvas->drawLine(pictureSize / 2, pictureSize * 1 / 3,
                      pictureSize / 2, pictureSize * 2 / 3, paint);
@@ -88,6 +90,7 @@ static void draw_scene(SkCanvas* canvas, SkScalar pictureSize) {
     paint.setColor(SK_ColorBLACK);
     paint.setStyle(SkPaint::kStroke_Style);
     canvas->drawRect(SkRect::MakeWH(pictureSize, pictureSize), paint);
+#endif
 }
 
 class PictureShaderTileGM : public skiagm::GM {
@@ -151,7 +154,9 @@ protected:
             canvas->save();
             canvas->translate((i % kRowSize) * kFillSize * 1.1f,
                               (i / kRowSize) * kFillSize * 1.1f);
-            canvas->drawRect(SkRect::MakeWH(kFillSize, kFillSize), paint);
+            if (i == 9) {
+                canvas->drawRect(SkRect::MakeWH(kFillSize, kFillSize), paint);
+            }
             canvas->restore();
         }
     }

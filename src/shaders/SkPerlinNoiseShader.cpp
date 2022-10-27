@@ -922,7 +922,7 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
         const GrFPArgs& args) const {
     SkASSERT(args.fContext);
 
-    const auto& localMatrix = args.fLocalMatrix ? *args.fLocalMatrix : SkMatrix::I();
+    const auto& localMatrix = args.fLocalMatrix1 ? *args.fLocalMatrix1 : SkMatrix::I();
     const auto  paintMatrix = SkMatrix::Concat(args.fMatrixProvider.localToDevice(), localMatrix);
 
     // Either we don't stitch tiles, either we have a valid tile size

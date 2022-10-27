@@ -32,14 +32,14 @@ struct GrFPArgs {
 
     GrFPArgs withNewMatrixProvider(const SkMatrixProvider& provider) const {
         GrFPArgs newArgs(fContext, provider, fDstColorInfo, fSurfaceProps);
-        newArgs.fLocalMatrix = fLocalMatrix;
+        newArgs.fLocalMatrix1 = fLocalMatrix1;
         return newArgs;
     }
 
     GrRecordingContext* fContext;
     const SkMatrixProvider& fMatrixProvider;
 
-    const SkMatrix* fLocalMatrix = nullptr;
+    const SkMatrix* fLocalMatrix1 = nullptr;
 
     const GrColorInfo* fDstColorInfo;
 
@@ -52,11 +52,11 @@ class GrFPArgs::ConcatLocalMatrix final : public GrFPArgs {
 public:
     ConcatLocalMatrix(const GrFPArgs& args, const SkMatrix& childLM) : INHERITED(args) {
         if (!childLM.isIdentity()) {
-            if (fLocalMatrix) {
-                fStorage = SkShaderBase::ConcatLocalMatrices(*fLocalMatrix, childLM);
-                fLocalMatrix = fStorage.isIdentity() ? nullptr : &fStorage;
+            if (fLocalMatrix1) {
+                fStorage = SkShaderBase::ConcatLocalMatrices(*fLocalMatrix1, childLM);
+                fLocalMatrix1 = fStorage.isIdentity() ? nullptr : &fStorage;
             } else {
-                fLocalMatrix = &childLM;
+                fLocalMatrix1 = &childLM;
             }
         }
     }
