@@ -16,6 +16,23 @@
       "message": "Why? These old \"special\" ones only exist because they all used to be one offs before the general templated version was implemented. I was just too lazy to go around removing the rest of these. Though the includes look good.",
       "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac4ca32_44fb1474",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-27T14:02:00Z",
+      "side": 1,
+      "message": "If you really wanted to get fancy, you could make this \"deduce\" the destination type as well, by writing this as a class which stores the source and has a templated implicit conversion operator which does the actual conversion. Not sure if that can all be done constexpr in C++17, but it might be able to now (think it just needed C++14?).",
+      "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
