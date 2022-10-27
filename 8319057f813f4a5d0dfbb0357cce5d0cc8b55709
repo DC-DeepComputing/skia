@@ -312,6 +312,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2806e36a_6c45652c",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T19:09:52Z",
+      "side": 1,
+      "message": "\"Did you envision having an SkPrimitiveBlender(Or a more inclusive name to represent cases of blending without dest reads; suggestions welcome) that is totally separate from SkBlender?\"\n\nNo, that\u0027s not what I\u0027m trying to suggest at all. Sorry if my description wasn\u0027t clear :( \n\nA SkBlender describes how to mix two colors together, it doesn\u0027t have anything to do with the origin of those colors. The blender doesn\u0027t need to know that the source color came from the primitive on a drawVertices call (or anywhere else). A blender can hypothetically be invoked anywhere in the shader tree; any runtime effect can evaluate a blend. All a blender needs to know is \"the source color is #AARRGGBB and the dest color is #AARRGGBB and the blend mode is this SkBlendMode\" (or, the blend is described by this SkSL function). And it then generates code that does that blend. Well, more exactly, it generates a Key that uniquely describes a Block that knows how to emit that code.\n\nThere\u0027s one special case, and that is when it\u0027s the very last step before we cover the destination surface. There\u0027s still a destination color in this case, but the difference is that we don\u0027t need to supply it in our program, the GPU supplies it by reading the pixel that we\u0027re drawing on top of. Handling this type of blend should be an implementation detail of the paint-param building process, where we detect that the blend uses a SkBlendMode and that this blend is occurring as the very last thing in the tree. When this is the case, we need to use a totally different Block (the BlendModeBlock) here. This type of Block only takes as inputs the source color and the blend mode; the destination color is supplied implicitly by the GPU and the blend is performed by dedicated GPU hardware. AFAICS this special case doesn\u0027t need to bleed into SkBlender or into onAddToKey at all. We handle it when we decide on which Blocks to emit. The final blend should just emit a different type of Key/Block entirely, one where there\u0027s no child slot for a destination color.",
+      "parentUuid": "903f17db_2f36deff",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "476e47fb_847331cf",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 21
