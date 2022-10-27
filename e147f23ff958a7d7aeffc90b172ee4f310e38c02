@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c57c563b_6f786c6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-27T19:44:40Z",
+      "side": 1,
+      "message": "Looks like this broke the OptimizeForSize SkottieTracing bot:\nhttps://ci.chromium.org/raw/build/logs.chromium.org/skia/5e32a70accb03211/+/annotations\n\nWhich makes me wonder how this worked before clang 15...",
+      "revId": "e147f23ff958a7d7aeffc90b172ee4f310e38c02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
