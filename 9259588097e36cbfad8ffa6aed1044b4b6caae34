@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4782804c_4e22aaf8",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T17:50:51Z",
+      "side": 1,
+      "message": "tiny nit: indenting (move first arg to separate line, use 8-space indent to free up space)",
+      "range": {
+        "startLine": 148,
+        "startChar": 41,
+        "endLine": 148,
+        "endChar": 42
+      },
+      "revId": "9259588097e36cbfad8ffa6aed1044b4b6caae34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
