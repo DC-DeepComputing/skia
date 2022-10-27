@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db7b59f_d617c24d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-27T13:33:25Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "ddd0358c_3defe66e",
+      "revId": "0dedfa7608f08f6d85c3edb1aa27339df070fbd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ba56d17_e43c65e5",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-10-27T13:27:16Z",
       "side": 1,
       "message": "Position-indendendent executable",
+      "range": {
+        "startLine": 632,
+        "startChar": 30,
+        "endLine": 632,
+        "endChar": 61
+      },
+      "revId": "0dedfa7608f08f6d85c3edb1aa27339df070fbd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3127966_225a0705",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-27T13:33:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ba56d17_e43c65e5",
       "range": {
         "startLine": 632,
         "startChar": 30,
