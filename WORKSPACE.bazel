@@ -173,14 +173,28 @@ browser_repositories(
     firefox = True,
 )
 
+load("//bazel:deps.bzl", "git_repos_from_deps")
+
+# This are two lists of Bazel repository names, which is brought in by the following macro.
+# It is here for easier grepping, i.e. someone trying to find where a label like @brotli//:brotlidec
+# was defined. If a dep has its own BUILD rules, then one will need to go to its git repository
+# to find the BUILD or BUILD.bazel file with the rule. If a dep does not have Bazel support, then
+# that means someone on the Skia team wrote a BUILD.bazel file and put it in
+# //bazel/externals/<dep_name> and one can go find it there.
+#
+#### START GENERATED LIST OF THIRD_PARTY DEPS
+# @abseil_cpp - https://skia.googlesource.com/external/github.com/abseil/abseil-cpp.git
+#
+# @dawn - //bazel/external/dawn:BUILD.bazel
+# @dng_sdk - //bazel/external/dng_sdk:BUILD.bazel
+# @expat - //bazel/external/expat:BUILD.bazel
+#### END GENERATED LIST OF THIRD_PARTY DEPS
+git_repos_from_deps()
+
 ###################################################
 # External C++ deps with Bazel support            #
 ###################################################
 # https://bazel.build/reference/be/workspace#local_repository
-local_repository(
-    name = "abseil_cpp",
-    path = "third_party/externals/abseil-cpp",
-)
 
 local_repository(
     name = "brotli",
@@ -213,26 +227,6 @@ local_repository(
 # multiple versions of the same project being compiled together.              #
 ###############################################################################
 # https://bazel.build/reference/be/workspace#new_local_repository
-new_local_repository(
-    name = "dawn",
-    build_file = "bazel/external/dawn/BUILD.bazel",
-    path = "third_party/externals/dawn",
-    workspace_file_content = "",
-)
-
-new_local_repository(
-    name = "dng_sdk",
-    build_file = "bazel/external/dng_sdk/BUILD.bazel",
-    path = "third_party/externals/dng_sdk",
-    workspace_file_content = "",
-)
-
-new_local_repository(
-    name = "expat",
-    build_file = "bazel/external/expat/BUILD.bazel",
-    path = "third_party/externals/expat",
-    workspace_file_content = "",
-)
 
 new_local_repository(
     name = "freetype",
