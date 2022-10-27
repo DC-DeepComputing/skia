@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58befda1_8d2d55cf",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:15:40Z",
+      "side": 1,
+      "message": "See response to other comment",
+      "parentUuid": "47429193_94eb6725",
+      "range": {
+        "startLine": 148,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 51
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f52001a_69e9f775",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72f6108_ceed92e1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:15:40Z",
+      "side": 1,
+      "message": "So initially I just passed in `localCoordsVar` and I got a failure for a null right child shader, but the constexpr float2(0) is a good idea and seems to work.",
+      "parentUuid": "5f52001a_69e9f775",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 158,
+        "endChar": 88
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9342270b_c75f2917",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-10-25T19:46:02Z",
       "side": 1,
       "message": "This if and `needsLocalCoords` should be able to go away just like EmitPaintParamsUniforms",
+      "range": {
+        "startLine": 157,
+        "startChar": 41,
+        "endLine": 160,
+        "endChar": 5
+      },
+      "revId": "e9aa0ff77cfa01190b1f2f8dc80b23754b570c4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea53216_ebe05981",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:15:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9342270b_c75f2917",
       "range": {
         "startLine": 157,
         "startChar": 41,
