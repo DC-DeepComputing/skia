@@ -51,6 +51,24 @@
       "parentUuid": "d7952801_82372443",
       "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c687ac_396f8b41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-27T20:01:32Z",
+      "side": 1,
+      "message": "I\u0027m kinda too lazy at the moment to do more but\n\n```\ntemplate \u003ctypename S\u003e class Skast {\n    S fS;\npublic:\n    constexpr Skast(S s) : fS(s) {}\n    template \u003ctypename D\u003e constexpr operator D() { return SkTo\u003cD\u003e(fS); }\n};\ntemplate \u003ctypename S\u003e Skast(S) -\u003e Skast\u003cS\u003e;\n```\n\nSo much being inferred here. It\u0027s like a tiny example of how to make the use site\u0027s actual behavior mostly inscrutable.",
+      "parentUuid": "b914bd84_84503d8b",
+      "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
