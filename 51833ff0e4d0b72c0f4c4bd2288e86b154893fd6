@@ -1,0 +1,487 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11ff624d_5aa1d383",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "As written, this appears to be talking about the \"on-failure\" case until you reach \"given\". Consider a rephrase:\n\n\"Given a capacity of 0, it will return the empty span.\"",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 91
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de305e70_673120b7",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "If I were using the API, my first question would probably be \"how do I free this allocation\" so we should probably mention that here.",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 7
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c943f2e_a578af44",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "It looks like this is here to test clamping behavior without actually making allocations of INT_MAX size, right?",
+      "range": {
+        "startLine": 19,
+        "startChar": 18,
+        "endLine": 19,
+        "endChar": 49
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92b189ff_59d243a9",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Checked in what way? I can\u0027t imagine it would be fruitful to make it smaller, but you think maybe it should universally be 16 or 32 instead?",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 97
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b3bcad4_a9368925",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "nit: \"Rounds\" (and below, \"Grows\")\n\nhttp://go/cstyle#function_declarations\n\n\u003e Function comments should be written with an implied subject of _This function_ and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".",
+      "range": {
+        "startLine": 24,
+        "startChar": 7,
+        "endLine": 24,
+        "endChar": 12
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "622deff1_1d82c57f",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "This function returns an empty span on failure; isn\u0027t a zero-size going to do exactly what the caller would hope for?",
+      "range": {
+        "startLine": 34,
+        "startChar": 62,
+        "endLine": 34,
+        "endChar": 89
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0f5eb1_6b319c1f",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Consider flipping sentence order as above",
+      "range": {
+        "startLine": 37,
+        "startChar": 44,
+        "endLine": 37,
+        "endChar": 82
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab8e659c_e8b626e6",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Consider `setItemArrayToAllocation` or even just `setItemArray`? `install` sounds quirky to me; in my head \"install\" is what we do to apps.",
+      "range": {
+        "startLine": 505,
+        "startChar": 9,
+        "endLine": 505,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f720c42_d8431b0c",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Is there a reason the rounding-to-sizeofT behavior doesn\u0027t live in SkContainerAllocator? I was surprised to see it still here, after seeing that the SkContainerAllocator already knows `sizeOfT` and the allocator has methods with names like `roundUpCapacity`. (We might even be able to avoid the divide if we structure it right?)\n\nAfter reading through the rest of this CL, this is my biggest question. The rest of the comments are all nits but this seems like an important function for the the ContainerAllocator to actually take responsibility for, esp. since it seems to have all the moving pieces necessary to centralize the logic.",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc0a7d6_4a162768",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "up to you: NBD either way, but there\u0027s not really any need to name the object here, unless you find it easier to read than\n\n`return SkContainerAllocator{sizeof(T), kMaxCapacity}.allocate(capacity, growthFactor);`",
+      "range": {
+        "startLine": 531,
+        "startChar": 8,
+        "endLine": 532,
+        "endChar": 58
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4500d6ae_ea0e68b5",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Up to you: I think these would still read fine as a one-liner, especially with the name change I mentioned earlier. (NBD though)\n`this-\u003esetItemArray(Allocate(fAllocCount));`",
+      "range": {
+        "startLine": 542,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 48
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ac1c64d_a41200ff",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Does `SkTFitsIn\u003cint\u003e(kMaxCapacity)` mean the same thing? (If so, that seems to be more self-explanatory...if not, what am I missing?)",
+      "range": {
+        "startLine": 626,
+        "startChar": 22,
+        "endLine": 626,
+        "endChar": 53
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b4fa42_a0713bac",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Unusual style for copyright header?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 0
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d026d8_ae32e80d",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "nit: put `return` on its own line",
+      "range": {
+        "startLine": 27,
+        "startChar": 25,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d597e2c6_2014f36b",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "up to you: I think `{}` or `SkSpan{}` gives exactly the same thing. (here and below)",
+      "range": {
+        "startLine": 27,
+        "startChar": 32,
+        "endLine": 27,
+        "endChar": 44
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe21ab6f_5aa6af3b",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "(nothing to change in this CL) TIL that the default implementation always returns zero :( Very unfortunate.",
+      "range": {
+        "startLine": 32,
+        "startChar": 31,
+        "endLine": 32,
+        "endChar": 52
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc715ad_6d1f5cf4",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "This is already spelled out in the doc comment, and is pretty easy to ascertain via inspection (it\u0027s the first line of `sk_allocate_throw`); I\u0027m not sure this comment adds much value.",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 60
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934199e3_9bda636e",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Do we want to assert a non-negative capacity?",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 3
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cdfa0b3_fe2ee6de",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Use `SkAlignTo`",
+      "range": {
+        "startLine": 71,
+        "startChar": 15,
+        "endLine": 71,
+        "endChar": 56
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c7a009_1c7ac29b",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "Do we want to assert a non-negative capacity and growth-factor \u003e\u003d 1?",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 3
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6bd8c5_91123dbb",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T21:33:24Z",
+      "side": 1,
+      "message": "nit: put `return` on its own line",
+      "range": {
+        "startLine": 96,
+        "startChar": 20,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
