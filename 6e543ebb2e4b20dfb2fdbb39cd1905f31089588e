@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "145a1778_034d546b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-27T18:29:41Z",
+      "side": 1,
+      "message": "No. git-sync-deps is still necessary for GN, and I don\u0027t want to change its behavior.\n\nFurthermore, Bazel doesn\u0027t download the git repositories to third_party/externals (which is where git-sync-deps does); it downloads them to the Bazel cache, which is hidden away from the user. We cannot control where Bazel downloads them.",
+      "parentUuid": "b848f46f_fcad3f6d",
+      "range": {
+        "startLine": 10,
+        "startChar": 22,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "05096fc6_354d4262",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-27T18:11:13Z",
       "side": 1,
       "message": "I would recommend leveraging https://skia.googlesource.com/buildbot/+/refs/heads/main/go/depot_tools/deps_parser/deps_parser.go#94",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a7cf64_13cbd6cd",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-27T18:29:41Z",
+      "side": 1,
+      "message": "I intentionally did not want to incur any dependencies outside the standard library because I want this code to compile without needing to sync anything. If we needed to bootstrap the script (run it without Bazel) because the WORKSPACE.bazel got corrupted or something, then I don\u0027t want to have to go get or go install any deps. It seems simpler to have a script with no external dependencies.",
+      "parentUuid": "2a8cd549_a293798c",
       "range": {
         "startLine": 5,
         "startChar": 0,
