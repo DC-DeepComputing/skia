@@ -27,13 +27,14 @@ std::tuple<SkUniquePaintParamsID, const SkUniformDataBlock*, const SkTextureData
 ExtractPaintData(Recorder* recorder,
                  SkPipelineDataGatherer* gatherer,
                  SkPaintParamsKeyBuilder* builder,
+                 const SkM44& local2Dev,
                  const SkM44& dev2Local,
                  const PaintParams& p) {
 
     SkDEBUGCODE(gatherer->checkReset());
     SkDEBUGCODE(builder->checkReset());
 
-    SkKeyContext keyContext(recorder, dev2Local);
+    SkKeyContext keyContext(recorder, local2Dev, dev2Local);
 
     p.toKey(keyContext, builder, gatherer);
 
