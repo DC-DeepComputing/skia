@@ -16,6 +16,23 @@
       "message": "ping",
       "revId": "59e1c5193531282e6cf8e4b1a35e87d900fc365e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c691a4_37d64422",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-27T22:46:32Z",
+      "side": 1,
+      "message": "A few PowerVR GMs look very incorrect following this change (e.g. dashing4, convex-lineonly-paths, longpathdash are some pretty bad ones.",
+      "revId": "59e1c5193531282e6cf8e4b1a35e87d900fc365e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
