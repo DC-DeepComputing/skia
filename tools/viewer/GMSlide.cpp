@@ -40,6 +40,11 @@ void GMSlide::draw(SkCanvas* canvas) {
     fGM->draw(canvas, &msg);
 }
 
+void GMSlide::draw(skgpu::graphite::Context* context, SkCanvas* canvas) {
+    SkString msg;
+    fGM->draw(context, canvas, &msg);
+}
+
 bool GMSlide::animate(double nanos) { return fGM->animate(nanos); }
 
 bool GMSlide::onChar(SkUnichar c) { return fGM->onChar(c); }

@@ -14,12 +14,11 @@
 
 class GrDirectContext;
 class SkSurface;
-#ifdef SK_GRAPHITE_ENABLED
+
 namespace skgpu::graphite {
 class Context;
 class Recorder;
 }
-#endif
 
 namespace sk_app {
 
@@ -46,6 +45,9 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::graphite::Context* graphiteContext() const { return fGraphiteContext.get(); }
     skgpu::graphite::Recorder* graphiteRecorder() const { return fGraphiteRecorder.get(); }
+#else
+    skgpu::graphite::Context* graphiteContext() const { return nullptr; }
+    skgpu::graphite::Recorder* graphiteRecorder() const { return nullptr; }
 #endif
 
     int width() const { return fWidth; }
