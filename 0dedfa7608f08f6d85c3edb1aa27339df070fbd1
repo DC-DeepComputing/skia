@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd0358c_3defe66e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-27T13:28:27Z",
+      "side": 1,
+      "message": "This is fine here. I haven\u0027t formed a strong opinion yet on GN vs. recipes for the size optimization stuff. I think that when it can be done in GN, that\u0027s nice (less for people to remember to replicate the effects locally). Some things don\u0027t work great like that. At the end of the day I think we\u0027re going to need a document that lists all of the tools/tricks we\u0027ve found to shrink the library, so our clients can adjust their own build scripts.",
+      "revId": "0dedfa7608f08f6d85c3edb1aa27339df070fbd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ba56d17_e43c65e5",
