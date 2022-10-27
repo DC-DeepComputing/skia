@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b87057a5_1ac0cf8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:28:36Z",
+      "side": 1,
+      "message": "Excellent! https://skia-review.googlesource.com/c/skia/+/595398",
+      "parentUuid": "9bf23b06_fb834b40",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 323
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a46da9fd_a5500a09",
@@ -167,6 +191,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3004066c_4972d198",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:28:36Z",
+      "side": 1,
+      "message": "Okay, that makes sense. I will ask Greg about it. I created a task in TaskFlow since I wasn\u0027t sure where the best spot would be to have a TODO (We currently seem to handle this in Ganesh in `GrDataUtils.h`, which doesn\u0027t seem to have a clear Graphite equivalent yet). http://b/255978448 Add swizzle to sample return values",
+      "parentUuid": "e5f02abf_d097aac4",
+      "range": {
+        "startLine": 13,
+        "startChar": 163,
+        "endLine": 13,
+        "endChar": 491
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38ae10d8_219fc4d5",
@@ -228,6 +276,30 @@
       "side": 1,
       "message": "The way we control for not knowing the input color is by connecting the blocks and their children in the right tree-structure. For example, a color filter block doesn\u0027t inherently know its input color either. Today, the color filter block comes immediately after the shader block, and it uses \"prior stage output\" to grab the color from that. However, as you know, we want to redesign this structure anyway--in the new design, the shader block would be a _child_ of the color filter block.\n\nThe only place where we need special treatment is in the final blend against the destination surface. We need to use fixed-function hardware or do readback on the color attachment. But AFAICS that is a totally separate case? Primitive blenders are not the special case--blending against the destination surface is.",
       "parentUuid": "86e2cea7_77273a75",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "903f17db_2f36deff",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:28:36Z",
+      "side": 1,
+      "message": "I see what you mean in regards to primitive blending not being the special case since they do not require dest reads. In previous comment chains, we had talked about having different type of blending blocks, but I suppose I did not extrapolate that to mean four different blend \"types\". Can you explicate what you mean by types? Do you mean snippets, classes? Besides having the different blocks, I\u0027m not sure what advantage splitting this up further would grant us.\n\nI understand the color filter example - did you envision having an `SkPrimitiveBlender`(Or a more inclusive name to represent cases of blending without dest reads; suggestions welcome) that is totally separate from `SkBlender`? That can be done, I just want to be sure I understand why that would be beneficial as opposed to just leveraging the existing `SkBlender` class to choose between creating one type of blend block versus another, and then decide whether to perform the dest read or not within SkSL (opting to do so when blending against the surface; opting not to when doing primitive blending/no surface read).",
+      "parentUuid": "dc1f7529_76508a01",
       "range": {
         "startLine": 71,
         "startChar": 29,

@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4a27163b_dcff523e",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-10-27T17:28:36Z",
+      "side": 1,
+      "message": "I agree that eventually this will be out of date, but I think it\u0027s a good idea to throw it in here until that work is implemented. I split it up as suggested and tried to word it such that it\u0027s not *as* rigidly tied to the current implementation.",
+      "parentUuid": "3f6032b4_07c90706",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "362780bdeff28c9bd65c49bf76fb93f01c5c3825",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b32aeaa1_6761a5a7",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 18
