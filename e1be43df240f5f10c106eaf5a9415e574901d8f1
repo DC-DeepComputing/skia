@@ -105,6 +105,24 @@
       "parentUuid": "b955e978_6c5925a0",
       "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb1e48f5_a9b9c7d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-27T20:25:11Z",
+      "side": 1,
+      "message": "For me, the SkToInt style reads and types easier than SkTo\u003cInt\u003e.",
+      "parentUuid": "3c523b78_04542821",
+      "revId": "e1be43df240f5f10c106eaf5a9415e574901d8f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
