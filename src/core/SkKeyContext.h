@@ -30,12 +30,19 @@ public:
     // Constructor for the pre-compile code path
     SkKeyContext(SkShaderCodeDictionary* dict) : fDictionary(dict) {}
 #ifdef SK_GRAPHITE_ENABLED
-    SkKeyContext(skgpu::graphite::Recorder*, const SkM44& dev2Local);
+    SkKeyContext(skgpu::graphite::Recorder*,
+                 const SkM44& local2Dev,
+                 const SkM44& dev2Local);
+    SkKeyContext(const SkKeyContext& other,
+                 const SkMatrix& childLM);
+
     skgpu::graphite::Recorder* recorder() const { return fRecorder; }
 
+    const SkM44& local2Dev() const { return fLocal2Dev; }
     // TODO: it is expected that 'dev2Local' will go away once we switch to the actual
     // desired way of providing local coordinates to the fragment shaders.
     const SkM44& dev2Local() const { return fDev2Local; }
+    const SkMatrix& localMatrix1() const { return fLocalMatrix; }
 #endif
 #if SK_SUPPORT_GPU
     SkKeyContext(GrRecordingContext*);
@@ -47,7 +54,9 @@ public:
 private:
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::graphite::Recorder* fRecorder = nullptr;
+    SkM44 fLocal2Dev;
     SkM44 fDev2Local;
+    SkMatrix fLocalMatrix;
 #endif
 
 #if SK_SUPPORT_GPU
