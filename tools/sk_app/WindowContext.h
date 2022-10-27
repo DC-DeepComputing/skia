@@ -46,6 +46,9 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::graphite::Context* graphiteContext() const { return fGraphiteContext.get(); }
     skgpu::graphite::Recorder* graphiteRecorder() const { return fGraphiteRecorder.get(); }
+#else
+    skgpu::graphite::Context* graphiteContext() const { return nullptr; }
+    skgpu::graphite::Recorder* graphiteRecorder() const { return nullptr; }
 #endif
 
     int width() const { return fWidth; }
