@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00d56d2_7be36e56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-27T14:32:22Z",
+      "side": 1,
+      "message": "Huh--looks like it\u0027s currently registering as +5K. That\u0027s unexpected. \nhttps://codesize.skia.org/binary_diff?binary_name\u003dskottie_tool\u0026compile_task_name\u003dBuild-Debian10-Clang-x86_64-OptimizeForSize\u0026patch_issue\u003d593957\u0026patch_set\u003d21",
+      "parentUuid": "792eb2c0_5de11757",
+      "revId": "49cff8c93d95c8d2469846a4a3934b31875dc9f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32cd8a94_71e4a195",
