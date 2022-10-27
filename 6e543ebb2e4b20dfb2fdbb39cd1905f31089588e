@@ -158,6 +158,30 @@
       },
       "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d498921d_aa5c2fd2",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-27T18:47:44Z",
+      "side": 1,
+      "message": "This script does not have that dependency on the infra repo. If we find that the regex is brittle, I\u0027m happy to reconsider the tradeoff.",
+      "parentUuid": "4ee79086_694b8e93",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
