@@ -642,6 +642,11 @@ static constexpr char kBlendShaderName[] = "sk_blend_shader";
 static constexpr int kNumBlendShaderChildren = 2;
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kColorFilterShaderName[] = "sk_colorfilter_shader";
+
+static constexpr int kNumColorFilterShaderChildren = 2;
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kRuntimeShaderName[] = "RuntimeEffect";
 
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
@@ -1289,6 +1294,18 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNumBlendShaderChildren,
+            { }      // no data payload
+    };
+
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kColorFilterShader] = {
+            "ColorFilterShader",
+            {},      // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kColorFilterShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNumColorFilterShaderChildren,
             { }      // no data payload
     };
 
