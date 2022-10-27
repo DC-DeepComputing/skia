@@ -173,6 +173,10 @@ browser_repositories(
     firefox = True,
 )
 
+load("//bazel:deps.bzl", "git_repos_from_deps")
+
+git_repos_from_deps()
+
 ###################################################
 # External C++ deps with Bazel support            #
 ###################################################
@@ -213,26 +217,6 @@ local_repository(
 # multiple versions of the same project being compiled together.              #
 ###############################################################################
 # https://bazel.build/reference/be/workspace#new_local_repository
-new_local_repository(
-    name = "dawn",
-    build_file = "bazel/external/dawn/BUILD.bazel",
-    path = "third_party/externals/dawn",
-    workspace_file_content = "",
-)
-
-new_local_repository(
-    name = "dng_sdk",
-    build_file = "bazel/external/dng_sdk/BUILD.bazel",
-    path = "third_party/externals/dng_sdk",
-    workspace_file_content = "",
-)
-
-new_local_repository(
-    name = "expat",
-    build_file = "bazel/external/expat/BUILD.bazel",
-    path = "third_party/externals/expat",
-    workspace_file_content = "",
-)
 
 new_local_repository(
     name = "freetype",
