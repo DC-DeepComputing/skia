@@ -11,11 +11,23 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
-SkKeyContext::SkKeyContext(skgpu::graphite::Recorder* recorder, const SkM44& dev2Local)
+SkKeyContext::SkKeyContext(skgpu::graphite::Recorder* recorder,
+                           const SkM44& local2Dev,
+                           const SkM44& dev2Local)
         : fRecorder(recorder)
+        , fLocal2Dev(local2Dev)
         , fDev2Local(dev2Local) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
 }
+
+SkKeyContext::SkKeyContext(const SkKeyContext& other, const SkMatrix& childLM)
+        : fRecorder(other.fRecorder)
+        , fLocal2Dev(other.fLocal2Dev)
+        , fDev2Local(other.fDev2Local)
+        , fDictionary(other.fDictionary) {
+    fLocalMatrix = SkMatrix::Concat(childLM, other.fLocalMatrix);
+}
+
 #endif
 
 #if SK_SUPPORT_GPU
