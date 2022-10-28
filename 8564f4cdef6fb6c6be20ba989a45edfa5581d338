@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c38ab80_a9dff8d8",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T19:09:25Z",
+      "side": 1,
+      "message": "Is this true? What if a client calls:\n\nsurface-\u003emakeImageSnapshot();\nsuface-\u003easImage();\n\nI believe in that case we\u0027ll have a cachedImage right?",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 48
+      },
+      "revId": "8564f4cdef6fb6c6be20ba989a45edfa5581d338",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
