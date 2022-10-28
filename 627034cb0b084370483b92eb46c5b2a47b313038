@@ -46,6 +46,30 @@
       },
       "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ffd42cf_78a86972",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T23:40:03Z",
+      "side": 1,
+      "message": "Got it, thank you for the explanation. I\u0027m OK with renaming with these files. The overlap we have between tests that exist as golden files and those that are run in SkSLTest.cpp is a bit confusing and I wonder if we can go further and standardize all the tests that are meant to be run by SkSLTest on `.rts` (including the ES3 variants, maybe using a #version directive) and maybe move the golden-file-generating SkSL to a separate directory. There is quite a bit of overlap between these two sets of files though and I don\u0027t know how to split those apart without duplicating a lot of them.\n\nThere are many files that are used for both purposes and quite a few that are dispersed in various `resources/sksl/` subdirectories that are meant as golden-file only (a handful of them are vertex/compute programs but a majority are `.sksl`). We also have .rts tests like the folding tests that all generate .glsl with an invalid `main` signature, so while having golden files for them is nice the programs themselves aren\u0027t entirely correct.\n\nI don\u0027t know what a better organization would really look like or if it\u0027s worth undertaking.",
+      "parentUuid": "97a03bd3_f6c186de",
+      "range": {
+        "startLine": 619,
+        "startChar": 34,
+        "endLine": 619,
+        "endChar": 37
+      },
+      "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
