@@ -87,6 +87,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1166dc_052ee503",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T14:24:01Z",
+      "side": 1,
+      "message": "\"Use default capture by reference (`[\u0026]`) only when the lifetime of the lambda is obviously shorter than any potential captures.\"\n\nhttp://screen/4mbdiRBp9k6SB28",
+      "parentUuid": "e541a3b8_4d0e9c60",
+      "range": {
+        "startLine": 46,
+        "startChar": 53,
+        "endLine": 46,
+        "endChar": 54
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f8d97fb_bdbcc855",
@@ -110,6 +134,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b827d757_d486281d",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T14:24:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1f8d97fb_bdbcc855",
+      "range": {
+        "startLine": 52,
+        "startChar": 54,
+        "endLine": 52,
+        "endChar": 55
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a16fbeca_588bfd28",
@@ -123,6 +171,30 @@
       "writtenOn": "2022-10-28T07:22:34Z",
       "side": 1,
       "message": "nit: the capture list could be limited to just `usage` (i.e. `[usage](const ...) {...}`)",
+      "range": {
+        "startLine": 69,
+        "startChar": 47,
+        "endLine": 69,
+        "endChar": 48
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c117598_de6afb58",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T14:24:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a16fbeca_588bfd28",
       "range": {
         "startLine": 69,
         "startChar": 47,
