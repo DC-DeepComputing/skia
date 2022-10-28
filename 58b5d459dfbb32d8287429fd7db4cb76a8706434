@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb34c04f_a7bf4d66",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T19:02:42Z",
+      "side": 1,
+      "message": "Do we need this one outside of GRAPHITE_ENABLED?",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 75
+      },
+      "revId": "58b5d459dfbb32d8287429fd7db4cb76a8706434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd4ecd1_f7282ec3",
+        "filename": "tools/viewer/GMSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T19:02:42Z",
+      "side": 1,
+      "message": "with the current change, are we ever going to get into here? Seems like we need to to be able to call fGM-\u003egpuSetup.",
+      "revId": "58b5d459dfbb32d8287429fd7db4cb76a8706434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
