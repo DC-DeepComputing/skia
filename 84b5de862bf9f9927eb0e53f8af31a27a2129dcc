@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31871e97_ba4eab76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T15:04:30Z",
+      "side": 1,
+      "message": "lgtm, with some thoughts on what the best data structure to use here is.",
+      "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40dd81d9_f80e4f0d",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T15:04:30Z",
+      "side": 1,
+      "message": "How many volatile images we expect per Recording? I wonder if we\u0027d be better off using a Hash that just returned 1 always. Or just using a std::vector and manually checking for duplications on insertion.",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
