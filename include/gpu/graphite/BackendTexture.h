@@ -111,12 +111,30 @@ private:
 
     sk_sp<MutableTextureStateRef> fMutableState;
 
+#ifdef SK_DAWN
+    struct Dawn {
+        Dawn(wgpu::Texture texture) : fTexture(std::move(texture)) {}
+        Dawn(wgpu::TextureView textureView) : fTextureView(std::move(textureView)) {}
+        wgpu::Texture fTexture;
+        wgpu::TextureView fTextureView;
+        bool operator==(const Dawn& that) const {
+            return fTexture.Get() == that.fTexture.Get() &&
+                   fTextureView.Get() == that.fTextureView.Get();
+        }
+        bool operator!=(const Dawn& that) const {
+            return !this->operator==(that);
+        }
+        Dawn& operator=(const Dawn& that) {
+            fTexture = that.fTexture;
+            fTextureView = that.fTextureView;
+            return *this;
+        }
+    };
+#endif
+
     union {
 #ifdef SK_DAWN
-        struct {
-            wgpu::Texture fDawnTexture;
-            wgpu::TextureView fDawnTextureView;
-        };
+        Dawn fDawn;
 #endif
 #ifdef SK_METAL
         MtlHandle fMtlTexture;
