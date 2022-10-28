@@ -190,11 +190,6 @@ SkSurface::SkSurface(const SkImageInfo& info, const SkSurfaceProps* props)
     fGenerationID = 0;
 }
 
-SkImageInfo SkSurface::imageInfo() {
-    // TODO: do we need to go through canvas for this?
-    return this->getCanvas()->imageInfo();
-}
-
 uint32_t SkSurface::generationID() {
     if (0 == fGenerationID) {
         fGenerationID = asSB(this)->newGenerationID();
