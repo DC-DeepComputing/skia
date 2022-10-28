@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52299134_3de967fc",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T17:12:10Z",
+      "side": 0,
+      "message": "is there any worry with the fact the onImageInfo is virtual on SkCanvas? Like SkPaintFilterCanvas has proxy SkCanvas and thus gets the baseDevice from that. And I don\u0027t know if there are any other clients who may have overridden this virtual on their SkCanvas subclass.\n\nHopefully the answer to all my questions is this doesn\u0027t happen and we can keep this change. Though I would then want to get rid of the virtual call on SkCanvas so that we don\u0027t get into a situation down the road were:\nsurface-\u003eimageInfo() !\u003d surface-\u003egetCanvas()-\u003eimageInfo();",
+      "range": {
+        "startLine": 195,
+        "startChar": 30,
+        "endLine": 195,
+        "endChar": 40
+      },
+      "revId": "e3ec13bb8e1705c39eca33390b8403fe483b7d7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
