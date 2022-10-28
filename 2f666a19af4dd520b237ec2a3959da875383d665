@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31cd095_a5959b31",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-28T21:23:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8baa302_0cff9d4b",
+      "range": {
+        "startLine": 136,
+        "startChar": 28,
+        "endLine": 136,
+        "endChar": 68
+      },
+      "revId": "2f666a19af4dd520b237ec2a3959da875383d665",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a522846_068c3e02",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-28T20:53:16Z",
       "side": 1,
       "message": "should this assert the context is valid?",
+      "range": {
+        "startLine": 233,
+        "startChar": 56,
+        "endLine": 233,
+        "endChar": 63
+      },
+      "revId": "2f666a19af4dd520b237ec2a3959da875383d665",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b9c237_bbee5604",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-28T21:23:20Z",
+      "side": 1,
+      "message": "This method\u0027s going to get overriden, but I put that assert in drawContent.",
+      "parentUuid": "5a522846_068c3e02",
       "range": {
         "startLine": 233,
         "startChar": 56,
