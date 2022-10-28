@@ -3579,7 +3579,7 @@
   },
   "tasks": {
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3623,7 +3623,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-example_hello_world_gl-release-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3667,7 +3667,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-example_hello_world_vulkan-release-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3711,7 +3711,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3755,7 +3755,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3799,7 +3799,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-skia_public-release-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3843,7 +3843,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3887,7 +3887,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-tests-cpu_only-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3931,7 +3931,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-tests-dawn_ganesh-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -3975,7 +3975,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-tests-enforce_iwyu-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -4019,7 +4019,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-tests-gl_ganesh-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -4063,7 +4063,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-tests-vulkan_ganesh-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazel_build_task_driver",
@@ -4107,7 +4107,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazelisk",
@@ -4158,7 +4158,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazelisk",
@@ -4209,7 +4209,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazelisk",
@@ -4245,7 +4245,7 @@
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64": {
-      "casSpec": "compile",
+      "casSpec": "bazel",
       "cipd_packages": [
         {
           "name": "skia/bots/bazelisk",
@@ -91903,6 +91903,30 @@
     }
   },
   "casSpecs": {
+    "bazel": {
+      "root": "..",
+      "paths": [
+        "skia/example",
+        "skia/include",
+        "skia/modules",
+        "skia/src",
+        "skia/tests",
+        "skia/third_party",
+        "skia/tools",
+        "skia/.bazelrc",
+        "skia/.bazelversion",
+        "skia/BUILD.bazel",
+        "skia/WORKSPACE.bazel",
+        "skia/bazel",
+        "skia/go_repositories.bzl",
+        "skia/requirements.txt",
+        "skia/toolchain"
+      ],
+      "excludes": [
+        "^(.*\\/)*\\.git(\\/.*)*$",
+        "skia/third_party/externals"
+      ]
+    },
     "canvaskit": {
       "root": "..",
       "paths": [
