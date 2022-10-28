@@ -22,6 +22,30 @@
       },
       "revId": "04176f49163ab4b9b2f063bac5d689c73be2d3f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aac4c4_841123fb",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4280,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-28T20:18:00Z",
+      "side": 1,
+      "message": "Ohhh great catch! I\u0027ll file a bug to make these real types. This mistake is too easy to make and we\u0027ll likely keep some of this around for graphite.",
+      "parentUuid": "16fad820_0235feb0",
+      "range": {
+        "startLine": 4280,
+        "startChar": 34,
+        "endLine": 4280,
+        "endChar": 43
+      },
+      "revId": "04176f49163ab4b9b2f063bac5d689c73be2d3f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
