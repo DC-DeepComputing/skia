@@ -125,7 +125,7 @@ void XMLCALL entity_decl_handler(void *data,
                                  const XML_Char *notationName) {
     HANDLER_CONTEXT(data, ctx);
 
-    SkDebugf("'%s' entity declaration found, stopping processing", entityName);
+    SkDEBUGF("'%s' entity declaration found, stopping processing", entityName);
     XML_StopParser(ctx->fXMLParser, XML_FALSE);
 }
 
@@ -143,7 +143,7 @@ bool SkXMLParser::parse(SkStream& docStream)
 {
     ParsingContext ctx(this);
     if (!ctx.fXMLParser) {
-        SkDebugf("could not create XML parser\n");
+        SkDEBUGF("could not create XML parser\n");
         return false;
     }
 
@@ -159,7 +159,7 @@ bool SkXMLParser::parse(SkStream& docStream)
     do {
         void* buffer = XML_GetBuffer(ctx.fXMLParser, kBufferSize);
         if (!buffer) {
-            SkDebugf("could not buffer enough to continue\n");
+            SkDEBUGF("could not buffer enough to continue\n");
             return false;
         }
 
@@ -171,7 +171,7 @@ bool SkXMLParser::parse(SkStream& docStream)
             int line = XML_GetCurrentLineNumber(ctx.fXMLParser);
             int column = XML_GetCurrentColumnNumber(ctx.fXMLParser);
             const XML_LChar* errorString = XML_ErrorString(error);
-            SkDebugf("parse error @%d:%d: %d (%s).\n", line, column, error, errorString);
+            SkDEBUGF("parse error @%d:%d: %d (%s).\n", line, column, error, errorString);
             return false;
         }
     } while (!done);
