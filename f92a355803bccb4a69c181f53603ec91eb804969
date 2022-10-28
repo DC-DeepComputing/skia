@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eeb5984a_a775ff0e",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:36:22Z",
+      "side": 1,
+      "message": "Do we ever call Write with a null dst anymore?",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 18
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3233e1e4_c122f495",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:36:22Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 18
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "866c0061_9b1fdb47",
         "filename": "src/gpu/graphite/UniformManager.cpp",
         "patchSetId": 3
@@ -14,6 +60,30 @@
       "writtenOn": "2022-10-28T16:10:07Z",
       "side": 1,
       "message": "The size calculation in `get_ubo_aligned_offset` only ever impacted its own state which depended on `fCurUBOOffset`. The effective `uniformSize` value is always obtained by calling `fWriteUniform` in the following lines. This felt redundant and confusing to me as I tried to understand the code.\n\nThe logic in `fWriteUniform` is not as simple as `sksltype_to_size` but it handles array layout correctly. `UniformManager::write` calls `fWriteUniform` twice (once to compute the size and once to do actual write). The first one skips the memcpy parts since it doesn\u0027t involve a write.\n\nIt made sense to have just one way to calculate the size instead of two. Let me know if `sksltype_to_size` served a purpose that I may have missed.",
+      "range": {
+        "startLine": 461,
+        "startChar": 29,
+        "endLine": 461,
+        "endChar": 81
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5570f6f_adf65264",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:36:22Z",
+      "side": 1,
+      "message": "If it passes all the Graphite unit tests I\u0027m satisfied! (And if it still exposes a problem, add more tests :)  )",
+      "parentUuid": "866c0061_9b1fdb47",
       "range": {
         "startLine": 461,
         "startChar": 29,
