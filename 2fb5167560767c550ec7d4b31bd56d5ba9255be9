@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01dab5ef_6660347a",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:44:27Z",
+      "side": 1,
+      "message": "duplicate word",
+      "range": {
+        "startLine": 408,
+        "startChar": 18,
+        "endLine": 408,
+        "endChar": 29
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c85a87_1d6d13d1",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:44:27Z",
+      "side": 1,
+      "message": "vec4 alignment is the maximum alignment in std140 (16-byte aligned). What we actually do here is just return the alignment of a vec4, which is completely fine, but the comment describes a rounding-up process that we don\u0027t do (because it\u0027s unnecessary). Is there some nuance I\u0027m missing here?",
+      "range": {
+        "startLine": 408,
+        "startChar": 43,
+        "endLine": 408,
+        "endChar": 99
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84bf33e9_87badc4a",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 3
@@ -19,6 +65,76 @@
         "startChar": 4,
         "endLine": 71,
         "endChar": 64
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbdd3093_44c9a540",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:44:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "84bf33e9_87badc4a",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 64
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "689c82a8_6180889e",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:44:27Z",
+      "side": 1,
+      "message": "`i \u003c std::size(kExpectedLayout)`, remove nullptr sentinel",
+      "range": {
+        "startLine": 716,
+        "startChar": 23,
+        "endLine": 716,
+        "endChar": 52
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14bd6341_b4ceb057",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:44:27Z",
+      "side": 1,
+      "message": "`zu`",
+      "range": {
+        "startLine": 728,
+        "startChar": 76,
+        "endLine": 728,
+        "endChar": 96
       },
       "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
