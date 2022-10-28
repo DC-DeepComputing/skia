@@ -80,6 +80,30 @@
       },
       "revId": "1b6039a6a6e8b3f1945e037e02c9a3c64c7cf587",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbaaf9ee_84ee8708",
+        "filename": "tests/SkContainersTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T17:36:18Z",
+      "side": 1,
+      "message": "I just double checked the tree. All x86-64 worked fine. It was only unit tests on 32 bit x86. I think my constexpr check above will do the right thing for this? (SIZE_MAX \u003d\u003d UINT_MAX on 32 bit?)",
+      "parentUuid": "1dc6a961_2e18cded",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 24
+      },
+      "revId": "1b6039a6a6e8b3f1945e037e02c9a3c64c7cf587",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
