@@ -496,6 +496,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1d79ba_1110952e",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T15:29:41Z",
+      "side": 1,
+      "message": "But since this class only has one function and all instances of that function will add to .text and to .hf_frame for each type used. It\u0027s the same as templating the class.\n\nI agree, this is a vexing problem. Let\u0027s get this in and just focus on that divide problem. We could probably pass a pointer to a function that does the divide, but I would like that in its own CL.",
+      "parentUuid": "22346415_edd33484",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cc0a7d6_4a162768",
