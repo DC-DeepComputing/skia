@@ -1778,6 +1778,12 @@ STAGE(unpremul, Ctx::None) {
     g *= scale;
     b *= scale;
 }
+STAGE(unpremul_polar, Ctx::None) {
+    float inf = sk_bit_cast<float>(0x7f800000);
+    auto scale = if_then_else(1.0f/a < inf, 1.0f/a, 0);
+    g *= scale;
+    b *= scale;
+}
 
 STAGE(force_opaque    , Ctx::None) {  a = 1; }
 STAGE(force_opaque_dst, Ctx::None) { da = 1; }
@@ -1818,6 +1824,58 @@ STAGE(hsl_to_rgb, Ctx::None) {
     r = hue_to_rgb(h + 0.0f/3.0f);
     g = hue_to_rgb(h + 2.0f/3.0f);
     b = hue_to_rgb(h + 1.0f/3.0f);
+}
+
+// Color conversion functions used in gradient interpolation, based on
+// https://www.w3.org/TR/css-color-4/#color-conversion-code
+STAGE(css_lab_to_xyz, Ctx::None) {
+    constexpr float k = 24389 / 27.0f;
+    constexpr float e = 216 / 24389.0f;
+
+    F f[3];
+    f[1] = (r + 16) * (1 / 116.0f);
+    f[0] = (g * (1 / 500.0f)) + f[1];
+    f[2] = f[1] - (b * (1 / 200.0f));
+
+    F f_cubed[3] = { f[0]*f[0]*f[0], f[1]*f[1]*f[1], f[2]*f[2]*f[2] };
+
+    F xyz[3] = {
+        if_then_else(f_cubed[0] > e, f_cubed[0], (116 * f[0] - 16) * (1 / k)),
+        if_then_else(r > k * e,      f_cubed[1], r * (1 / k)),
+        if_then_else(f_cubed[2] > e, f_cubed[2], (116 * f[2] - 16) * (1 / k))
+    };
+
+    constexpr float D50[3] = { 0.3457f / 0.3585f, 1.0f, (1.0f - 0.3457f - 0.3585f) / 0.3585f };
+    r = xyz[0]*D50[0];
+    g = xyz[1]*D50[1];
+    b = xyz[2]*D50[2];
+}
+
+STAGE(css_oklab_to_linear_srgb, Ctx::None) {
+    F l_ = r + 0.3963377774f * g + 0.2158037573f * b,
+      m_ = r - 0.1055613458f * g - 0.0638541728f * b,
+      s_ = r - 0.0894841775f * g - 1.2914855480f * b;
+
+    F l = l_*l_*l_,
+      m = m_*m_*m_,
+      s = s_*s_*s_;
+
+    r = +4.0767416621f * l - 3.3077115913f * m + 0.2309699292f * s;
+    g = -1.2684380046f * l + 2.6097574011f * m - 0.3413193965f * s;
+    b = -0.0041960863f * l - 0.7034186147f * m + 1.7076147010f * s;
+}
+
+STAGE(css_hcl_to_xyz, Ctx::None) {
+
+}
+STAGE(css_okhcl_to_linear_srgb, Ctx::None) {
+
+}
+STAGE(css_hsl_to_srgb, Ctx::None) {
+
+}
+STAGE(css_hwb_to_srgb, Ctx::None) {
+
 }
 
 // Derive alpha's coverage from rgb coverage and the values of src and dst alpha.
