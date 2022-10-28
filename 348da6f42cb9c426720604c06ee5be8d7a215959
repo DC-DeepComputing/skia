@@ -39,6 +39,30 @@
       },
       "revId": "348da6f42cb9c426720604c06ee5be8d7a215959",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0756ab3c_e4957998",
+        "filename": "infra/bots/task_drivers/cpu_tests/cpu_tests.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-28T14:22:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbd60500_05758b2e",
+      "range": {
+        "startLine": 55,
+        "startChar": 14,
+        "endLine": 55,
+        "endChar": 34
+      },
+      "revId": "348da6f42cb9c426720604c06ee5be8d7a215959",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
