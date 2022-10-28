@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee9e3bb_f71d14d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "lgtm % some minor nits.",
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8522bcbc_d825dddf",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "nit: You could compact this assignment to \n\n    // Runtime shaders are isolated from other parts of the program via name mangling, so we can\n    // eliminate public globals if they aren\u0027t referenced. Otherwise, we only eliminate\n    // private globals (prefixed with `$`) to avoid changing the meaning of\n    // the module code.\n    bool onlyPrivateGlobals \u003d (kind !\u003d ProgramKind::kRuntimeShader);",
+      "range": {
+        "startLine": 334,
+        "startChar": 3,
+        "endLine": 342,
+        "endChar": 5
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28da4868_8c322547",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "Maybe rename this to `check_if_dead_function_and_remove_usage` or `maybe_remove_dead_function_usage` or something similar since it has that side effect.",
+      "range": {
+        "startLine": 25,
+        "startChar": 12,
+        "endLine": 25,
+        "endChar": 28
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e541a3b8_4d0e9c60",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "nit: the capture list could be limited to just `usage` (i.e. `[usage](const ...) {...}`)",
+      "range": {
+        "startLine": 46,
+        "startChar": 53,
+        "endLine": 46,
+        "endChar": 54
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f8d97fb_bdbcc855",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "nit: the capture list could be limited to just `usage` (i.e. `[usage](const ...) {...}`)",
+      "range": {
+        "startLine": 52,
+        "startChar": 54,
+        "endLine": 52,
+        "endChar": 55
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16fbeca_588bfd28",
+        "filename": "src/sksl/transform/SkSLEliminateDeadFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T07:22:34Z",
+      "side": 1,
+      "message": "nit: the capture list could be limited to just `usage` (i.e. `[usage](const ...) {...}`)",
+      "range": {
+        "startLine": 69,
+        "startChar": 47,
+        "endLine": 69,
+        "endChar": 48
+      },
+      "revId": "aa25a3aaf2e58865893e449d548546488d882ab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
