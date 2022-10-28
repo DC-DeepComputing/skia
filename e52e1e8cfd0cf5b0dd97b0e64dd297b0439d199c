@@ -16,6 +16,29 @@
       "message": "I will need to suppress several layout tests and one cc pixel test before this can land and roll into chromium, but they are not objectionable.\n\nThe largest gold diffs from this CL are the result of more offset filters being able to skip renderpasses (all of them, instead of just integer offsets). For 1010102 configs, that means we\u0027re sometimes drawing directly into the 1010102 surface whereas previously we would have been promoted to an 8888 layer, modulated the alpha into the color channels, and then not really run into issues losing alpha precision in the final draws.",
       "revId": "e52e1e8cfd0cf5b0dd97b0e64dd297b0439d199c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d4a0efc_96491271",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-10-28T17:48:56Z",
+      "side": 1,
+      "message": "Am I reading this right? It looks like it\u0027s rounding in (sort of?), which is backwards from what I\u0027d expect. The floor/ceil make sense, but what\u0027s the epsilon about?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 89
+      },
+      "revId": "e52e1e8cfd0cf5b0dd97b0e64dd297b0439d199c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
