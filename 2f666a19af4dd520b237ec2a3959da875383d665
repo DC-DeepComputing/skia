@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8baa302_0cff9d4b",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T20:53:16Z",
+      "side": 1,
+      "message": "In order to reduce code duplication, I wonder if we should have the draw and drawContext calls above that don\u0027t take a graphite context to call the graphite versions with a nullptr. Then here we can have the check:\nif (context) {\n   this-\u003eonDraw(context, ...);\nelse\n   this-\u003eonDraw(...);\n}",
+      "range": {
+        "startLine": 136,
+        "startChar": 28,
+        "endLine": 136,
+        "endChar": 68
+      },
+      "revId": "2f666a19af4dd520b237ec2a3959da875383d665",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a522846_068c3e02",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T20:53:16Z",
+      "side": 1,
+      "message": "should this assert the context is valid?",
+      "range": {
+        "startLine": 233,
+        "startChar": 56,
+        "endLine": 233,
+        "endChar": 63
+      },
+      "revId": "2f666a19af4dd520b237ec2a3959da875383d665",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
