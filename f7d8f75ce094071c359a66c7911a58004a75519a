@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64d3db15_cb726a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T20:05:01Z",
+      "side": 1,
+      "message": "just the one spacing set of spacing nits",
+      "revId": "f7d8f75ce094071c359a66c7911a58004a75519a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18931891_197c2675",
@@ -19,6 +36,53 @@
         "startChar": 8,
         "endLine": 135,
         "endChar": 21
+      },
+      "revId": "f7d8f75ce094071c359a66c7911a58004a75519a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd27792c_353d47cc",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T20:05:01Z",
+      "side": 1,
+      "message": "Na sample counts are needed/interesting independent of being texturable",
+      "parentUuid": "18931891_197c2675",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 21
+      },
+      "revId": "f7d8f75ce094071c359a66c7911a58004a75519a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3d7bd7_e78ad0d7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T20:05:01Z",
+      "side": 1,
+      "message": "We always put these preprocessor things at the start of the line without any tabs/spaces.\n\nIf what your trying to make debug only is only one line long, you can alternatively use:\nSkDEBUGCODE(bool fIsWrappedOnly;)\n\nEither approach is fine, whatever you think is easiest/cleanest to read.",
+      "range": {
+        "startLine": 111,
+        "startChar": 8,
+        "endLine": 111,
+        "endChar": 23
       },
       "revId": "f7d8f75ce094071c359a66c7911a58004a75519a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
