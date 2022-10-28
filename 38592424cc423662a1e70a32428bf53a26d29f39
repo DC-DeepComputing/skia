@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b16587_75ae3926",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T13:54:59Z",
+      "side": 1,
+      "message": "Since the 6\u0027s aren\u0027t running Debug Vulkan we should make sure the 7 are running it. If we have the space I\u0027d say just add it, if we\u0027re worried about capacity, I\u0027d say replace the non vulkan Debug bot with Vulkan (since that is covered by the 6\u0027s)",
+      "range": {
+        "startLine": 540,
+        "startChar": 1,
+        "endLine": 540,
+        "endChar": 86
+      },
+      "revId": "38592424cc423662a1e70a32428bf53a26d29f39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
