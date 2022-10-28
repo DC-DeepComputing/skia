@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "add38167_8dc58c10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-28T14:16:31Z",
+      "side": 1,
+      "message": "This is a bit hacky, but fine. I should really go on a crusade to remove the default SkFontMgr, it\u0027s been nothing but a problem since forever (it\u0027s a lingering vestige of the old SkFontHost system).",
+      "revId": "f6a757657c75514ae3407f0b5d90df7ef283bb0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
