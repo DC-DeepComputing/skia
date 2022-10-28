@@ -35,6 +35,12 @@ class SkStageUpdater;
 
 class SkUpdatableShader;
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+#include <atomic>
+
+extern std::atomic<bool> gSkLegacyLocalMatrixConcatOrder;
+#endif
+
 class SkShaderBase : public SkShader {
 public:
     ~SkShaderBase() override;
@@ -235,7 +241,12 @@ public:
 #endif
 
     static SkMatrix ConcatLocalMatrices(const SkMatrix& parentLM, const SkMatrix& childLM) {
-        return SkMatrix::Concat(childLM, parentLM);
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+        if (gSkLegacyLocalMatrixConcatOrder) {
+            return SkMatrix::Concat(childLM, parentLM);
+        }
+#endif
+        return SkMatrix::Concat(parentLM, childLM);
     }
 
 protected:
