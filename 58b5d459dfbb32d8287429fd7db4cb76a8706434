@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e9cad78_415c5bc8",
+        "filename": "tools/sk_app/WindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-28T20:31:11Z",
+      "side": 1,
+      "message": "If we call graphiteRecorder on every draw in viewer, we need to implement some non-graphite version of the method, but I moved that to the Window class to avoid changes to WindowContext.",
+      "parentUuid": "bb34c04f_a7bf4d66",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 75
+      },
+      "revId": "58b5d459dfbb32d8287429fd7db4cb76a8706434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dd4ecd1_f7282ec3",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-10-28T19:02:42Z",
       "side": 1,
       "message": "with the current change, are we ever going to get into here? Seems like we need to to be able to call fGM-\u003egpuSetup.",
+      "revId": "58b5d459dfbb32d8287429fd7db4cb76a8706434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6acd2ec6_a51537d3",
+        "filename": "tools/viewer/GMSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-10-28T20:31:11Z",
+      "side": 1,
+      "message": "Ah, of course. Also, I don\u0027t think we want to call dfGM-\u003edraw with a null context -- graphite GMs should be able to assume the context is non-null. So now I\u0027ve got this checking if the provided graphite context is null, and calling the appropriate draw method based on that.",
+      "parentUuid": "6dd4ecd1_f7282ec3",
       "revId": "58b5d459dfbb32d8287429fd7db4cb76a8706434",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
