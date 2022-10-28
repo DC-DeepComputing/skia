@@ -16,6 +16,24 @@
       "message": "It looks like presubmits are failing due to:\n\n```\npanic: failed to unmarshal json: {\"task\":{\"bot_dimensions\":[\"bot_config:skia.py\",\"caches:ccache\",\"caches:git\",\"caches:go_cache\",\"caches:gopath\",\"caches:vpython\",\"caches:work\",\"cores:64\",\"cpu:x86\",\"cpu:x86-64\",\"cpu:x86-64-Haswell_GCE\",\"cpu:x86-64-avx2\",\"docker_installed:true\",\"gce:1\",\"gcp:skia-swarming-bots\",\"gpu:none\",\"id:skia-e-gce-301\",\"image:skia-swarming-base-v2020-03-31-000\",\"inside_docker:0\",\"kernel:4.19.0-8-cloud-amd64\",\"kvm:0\",\"locale:en_US.UTF-8\",\"machine_type:n1-highcpu-64\",\"os:Debian\",\"os:Debian-10\",\"os:Debian-10.3\",\"os:Linux\",\"pool:Skia\",\"python:3\",\"python:3.7\",\"python:3.7.3\",\"server_version:6842-6b7ef03\",\"ssd:0\",\"zone:us\",\"zone:us-central\",\"zone:us-central1\",\"zone:us-central1-c\"],\"server\":\"https://chromium-swarm.appspot.com\",\"task_id\":\"5e3460d8948b2f10\"}}: unknown field \"task\" in lucictx.Swarming\n```\n\nThe hash that we\u0027re branching on might be too old? We may need to land this and rely on Flutter CI to test.",
       "revId": "0c43ead230ae4cb90aaa0e26926097e6f0dbcf55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c132ba22_85e8b944",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18774
+      },
+      "writtenOn": "2022-10-28T15:56:58Z",
+      "side": 1,
+      "message": "This is expected. We don\u0027t have permissions to run CQ as it would require branching the skia infra configs as well.\n\nThe plan is to land this without CQ coverage since it\u0027s a clean CP.",
+      "parentUuid": "5cead319_60724563",
+      "revId": "0c43ead230ae4cb90aaa0e26926097e6f0dbcf55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
