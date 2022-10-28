@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3da1e91_ae10cfd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T20:10:02Z",
+      "side": 1,
+      "message": "lgtm, but have one suggestion with SkOnce. Our tree is closed at the moment due to some bot issues, as well.",
+      "revId": "c43bea3f36f9159fb86836752dbb70adf4ba4f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a339b7b_f58f52b9",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T20:10:02Z",
+      "side": 1,
+      "message": "You can wrap this logic in SkOnce, instead of checking if instance is null, for a little more thread safety. Here\u0027s a pretty typical example of how you\u0027d used it: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontHost_win.cpp;drc\u003db5968f165853af6630ffa897c902e527afb82497;l\u003d1010",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 6
+      },
+      "revId": "c43bea3f36f9159fb86836752dbb70adf4ba4f4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
