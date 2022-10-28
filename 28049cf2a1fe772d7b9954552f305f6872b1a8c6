@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2db2433e_e902c600",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-28T14:23:58Z",
+      "side": 1,
+      "message": "Yeah, we shouldn\u0027t be using unguarded `SkDebugf` in release in general. We\u0027re a library so if we want to pass an error message back to the user that\u0027s fine, but as a library we shouldn\u0027t be doing global things like writing directly to stderr or stdout in release builds (or crashing if we can possibly avoid it, for that matter). The fuzzer is probably a good was for us to find these, since generally our tests don\u0027t test all these interesting failure cases. (I remember distinctly at least one release of CoreText which would write directly to stderr if it thought a particular matrix passed in was singular, even though that was fine and it actually handled that correctly. Very annoying to work around.)",
+      "revId": "28049cf2a1fe772d7b9954552f305f6872b1a8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
