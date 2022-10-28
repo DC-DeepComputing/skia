@@ -16,6 +16,98 @@
       "message": "Hi Michael, PTAL. Thanks",
       "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f24496b_a4f6b03d",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T14:27:04Z",
+      "side": 1,
+      "message": "We don\u0027t usually use SK_DEBUG to control whether or not we log info like this, I would add a `#define LOG_ADAPTERS 0` to the top of this file and adjust this to be `#if LOG_ADAPTERS`.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c3078b3_df7c6df1",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T14:27:04Z",
+      "side": 1,
+      "message": "SkASSERT() won\u0027t run on release builds. If we have an uncaptured error on a release build, is logging and continuing okay? Or should we abort the process (e.g. `SK_ABORT(\"%s\", message)`?",
+      "range": {
+        "startLine": 69,
+        "startChar": 16,
+        "endLine": 69,
+        "endChar": 32
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97a8d18f_53fab64d",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T14:27:04Z",
+      "side": 1,
+      "message": "nit: line length, can we wrap std::move(instance) to on a new line, lined up with `backendContext` and still fit within 100 chars?",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 106
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "862cf6aa_149f93e4",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T14:27:04Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like fInstance is used to by `Context::MakeDawn`. Do we store it here to keep it alive? Any reason it shouldn\u0027t be part of the `DawnBackendContext`?\n\nIf it stays separate, can we add a comment that we\u0027re just preserving lifetime?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 54
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
