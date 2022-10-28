@@ -426,6 +426,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9eb1756_042ad665",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T14:53:51Z",
+      "side": 1,
+      "message": "WDYT about moving this logic into `SkContainerAllocator` all the same, but have the method use a `template \u003ctypename T\u003e` so that the compiler can optimize away the division? \n\nThis keeps the logic centralized and reusable, but still gives us the shift or big-multiply instead of idiv.",
+      "parentUuid": "468782a2_8a1dbc4a",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cc0a7d6_4a162768",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 26
