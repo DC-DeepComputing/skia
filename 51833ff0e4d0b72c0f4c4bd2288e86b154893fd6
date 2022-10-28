@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40ee94a5_e9092247",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de305e70_673120b7",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 7
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f7d22c8_3838b8cf",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Thanks. That is much better wording.",
+      "parentUuid": "11ff624d_5aa1d383",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 91
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c943f2e_a578af44",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "It looks like this is here to test clamping behavior without actually making allocations of INT_MAX size, right?",
+      "range": {
+        "startLine": 19,
+        "startChar": 18,
+        "endLine": 19,
+        "endChar": 49
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f584d5_708c0442",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "The tests actually do test max_capacity() for T \u003d 1 byte and T \u003d 16 bytes using allocation. But, I don\u0027t test INT_MAX. The INT_MAX for 16 should crash on 32-bit machines because it INT_MAX \u003e kMaxCapacity, which I\u0027m trying to avoid for the tests.",
+      "parentUuid": "0c943f2e_a578af44",
       "range": {
         "startLine": 19,
         "startChar": 18,
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f9dd97_8d000a15",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Or it progress early on like 2, 8, 16 until the growth factor takes over. It\u0027s hard to say. I just don\u0027t know how 8 was arrived as the value.",
+      "parentUuid": "92b189ff_59d243a9",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 97
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b3bcad4_a9368925",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "nit: \"Rounds\" (and below, \"Grows\")\n\nhttp://go/cstyle#function_declarations\n\n\u003e Function comments should be written with an implied subject of _This function_ and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".",
+      "range": {
+        "startLine": 24,
+        "startChar": 7,
+        "endLine": 24,
+        "endChar": 12
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f79f024_7356bb2c",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b3bcad4_a9368925",
       "range": {
         "startLine": 24,
         "startChar": 7,
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7dccab_40c3e200",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "If 0 is allowed, then you can\u0027t tell if it\u0027s a crash or you passed 0.",
+      "parentUuid": "622deff1_1d82c57f",
+      "range": {
+        "startLine": 34,
+        "startChar": 62,
+        "endLine": 34,
+        "endChar": 89
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be0f5eb1_6b319c1f",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "Consider flipping sentence order as above",
+      "range": {
+        "startLine": 37,
+        "startChar": 44,
+        "endLine": 37,
+        "endChar": 82
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf505a78_dab9cd81",
+        "filename": "include/private/SkContainers.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be0f5eb1_6b319c1f",
       "range": {
         "startLine": 37,
         "startChar": 44,
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59260fc8_c5b5daab",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab8e659c_e8b626e6",
+      "range": {
+        "startLine": 505,
+        "startChar": 9,
+        "endLine": 505,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f720c42_d8431b0c",
@@ -198,6 +390,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "Is there a reason the rounding-to-sizeofT behavior doesn\u0027t live in SkContainerAllocator? I was surprised to see it still here, after seeing that the SkContainerAllocator already knows `sizeOfT` and the allocator has methods with names like `roundUpCapacity`. (We might even be able to avoid the divide if we structure it right?)\n\nAfter reading through the rest of this CL, this is my biggest question. The rest of the comments are all nits but this seems like an important function for the the ContainerAllocator to actually take responsibility for, esp. since it seems to have all the moving pieces necessary to centralize the logic.",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "468782a2_8a1dbc4a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "This is on purpose. The divide done by SkContainerAllocator would need to use the idiv instruction which on skylake takes 42-95 cycles according to agner.org. Since, the divide is done here the size is know at compile time, and likely strength reduced to a shift with a latency of 1. I had problems with this in some of my original SkTDArray work. I sympathise with your observation, but I think this is a good optimization, and not too onerous. I will add a comment explaining this.",
+      "parentUuid": "0f720c42_d8431b0c",
       "range": {
         "startLine": 506,
         "startChar": 0,
@@ -231,6 +447,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a4a7ad_34f7f96d",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc0a7d6_4a162768",
+      "range": {
+        "startLine": 531,
+        "startChar": 8,
+        "endLine": 532,
+        "endChar": 58
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4500d6ae_ea0e68b5",
@@ -244,6 +484,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "Up to you: I think these would still read fine as a one-liner, especially with the name change I mentioned earlier. (NBD though)\n`this-\u003esetItemArray(Allocate(fAllocCount));`",
+      "range": {
+        "startLine": 542,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 48
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a35a8305_dabc84e4",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4500d6ae_ea0e68b5",
       "range": {
         "startLine": 542,
         "startChar": 12,
@@ -277,6 +541,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9996dd9c_7904a31f",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ac1c64d_a41200ff",
+      "range": {
+        "startLine": 626,
+        "startChar": 22,
+        "endLine": 626,
+        "endChar": 53
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60b4fa42_a0713bac",
@@ -290,6 +578,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "Unusual style for copyright header?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 0
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1486a4a_65ec626e",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Hummm. Copied from SkVM_opts.h. I thought this was a new style. It is out of the way.",
+      "parentUuid": "60b4fa42_a0713bac",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -346,6 +658,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f82b365_c8fe33c8",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3d026d8_ae32e80d",
+      "range": {
+        "startLine": 27,
+        "startChar": 25,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcae0da3_f21029b7",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d597e2c6_2014f36b",
+      "range": {
+        "startLine": 27,
+        "startChar": 32,
+        "endLine": 27,
+        "endChar": 44
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe21ab6f_5aa6af3b",
@@ -359,6 +719,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "(nothing to change in this CL) TIL that the default implementation always returns zero :( Very unfortunate.",
+      "range": {
+        "startLine": 32,
+        "startChar": 31,
+        "endLine": 32,
+        "endChar": 52
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dad0f91_662c9f73",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fe21ab6f_5aa6af3b",
       "range": {
         "startLine": 32,
         "startChar": 31,
@@ -392,6 +776,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8256824_5ba3c75b",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcc715ad_6d1f5cf4",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 60
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "934199e3_9bda636e",
@@ -405,6 +813,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "Do we want to assert a non-negative capacity?",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 3
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e071d1_470e537e",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "934199e3_9bda636e",
       "range": {
         "startLine": 67,
         "startChar": 1,
@@ -438,6 +870,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53bb14d9_ffb56629",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cdfa0b3_fe2ee6de",
+      "range": {
+        "startLine": 71,
+        "startChar": 15,
+        "endLine": 71,
+        "endChar": 56
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10c7a009_1c7ac29b",
@@ -461,6 +917,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3028b4f8_49919550",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10c7a009_1c7ac29b",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 3
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e6bd8c5_91123dbb",
@@ -474,6 +954,30 @@
       "writtenOn": "2022-10-27T21:33:24Z",
       "side": 1,
       "message": "nit: put `return` on its own line",
+      "range": {
+        "startLine": 96,
+        "startChar": 20,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9747e0c_c3b2a85d",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-10-28T14:41:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e6bd8c5_91123dbb",
       "range": {
         "startLine": 96,
         "startChar": 20,
