@@ -105,16 +105,34 @@ void GM::gpuTeardown() {
 }
 
 DrawResult GM::draw(SkCanvas* canvas, SkString* errorMsg) {
-    TRACE_EVENT1("GM", TRACE_FUNC, "name", TRACE_STR_COPY(this->getName()));
-    this->drawBackground(canvas);
-    return this->drawContent(canvas, errorMsg);
+    return this->draw(nullptr, canvas, errorMsg);
 }
 
 DrawResult GM::drawContent(SkCanvas* canvas, SkString* errorMsg) {
+    return this->drawContent(nullptr, canvas, errorMsg);
+}
+
+DrawResult GM::draw(skgpu::graphite::Context* context, SkCanvas* canvas, SkString* errorMsg) {
+    TRACE_EVENT1("GM", TRACE_FUNC, "name", TRACE_STR_COPY(this->getName()));
+    this->drawBackground(canvas);
+    return this->drawContent(context, canvas, errorMsg);
+}
+
+DrawResult GM::drawContent(skgpu::graphite::Context* context,
+                           SkCanvas* canvas,
+                           SkString* errorMsg) {
     TRACE_EVENT0("GM", TRACE_FUNC);
     this->onceBeforeDraw();
     SkAutoCanvasRestore acr(canvas, true);
-    DrawResult drawResult = this->onDraw(canvas, errorMsg);
+
+    DrawResult drawResult;
+    if (context) {
+        SkASSERT(context->isValid());
+        drawResult = this->onDraw(context, canvas, errorMsg);
+    } else {
+        drawResult = this->onDraw(canvas, errorMsg);
+    }
+
     if (DrawResult::kOk != drawResult) {
         handle_gm_failure(canvas, drawResult, *errorMsg);
     }
@@ -127,6 +145,9 @@ void GM::drawBackground(SkCanvas* canvas) {
     canvas->drawColor(fBGColor, SkBlendMode::kSrc);
 }
 
+DrawResult GM::onDraw(skgpu::graphite::Context*, SkCanvas* canvas, SkString* errorMsg) {
+    return this->onDraw(canvas, errorMsg);
+}
 DrawResult GM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
     this->onDraw(canvas);
     return DrawResult::kOk;
@@ -206,6 +227,19 @@ DrawResult GpuGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
         return DrawResult::kSkip;
     }
     return this->onDraw(rContext, canvas, errorMsg);
+}
+
+DrawResult GraphiteGM::onDraw(skgpu::graphite::Context* context,
+                              SkCanvas* canvas,
+                              SkString* errorMsg) {
+    this->onDraw(context, canvas);
+    return DrawResult::kOk;
+}
+void GraphiteGM::onDraw(skgpu::graphite::Context*, SkCanvas*) { SK_ABORT("Not implemented."); }
+
+DrawResult GraphiteGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
+    *errorMsg = kErrorMsg_DrawSkippedGraphiteOnly;
+    return DrawResult::kSkip;
 }
 
 template <typename Fn>
