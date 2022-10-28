@@ -16,6 +16,24 @@
       "message": "This is going to be very surprising to developers who get a fuzzer issue report, try to do some `Debugf` debugging, and nothing happens. Is there a particular offender here? I assume that we\u0027re not building with DEBUG for the fuzzer (are we?) in which case `SkDEBUGF` (which only prints in debug) is generally a replacement for chatty code. If it\u0027s just extra debug logging stuff (I know SkPathOps is known for that) that should be `SkDebugf` behind some `if constexpr` like is done in most of the scaler context code. Anyhow, don\u0027t see a bug references here, so not sure who the offender was who motivated this.",
       "revId": "e1dad36389b2a664b30d7d3f38f109af179679e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ccd0317_7c2e26e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-10-28T14:13:54Z",
+      "side": 1,
+      "message": "I was just browsing through the fuzz statistics page and saw the SVG parsing was the chattiest, but there are a few other fuzzers that talk a bit. While it would be straightforward to move those few SkDebugf to SkDEBUGF, I figured we could just remove all logging.\n\nI think you are right though, some fuzz bugs may only show up if the define is set and removing SkDebugf would be surprising/annoying.\n\nI\u0027ll do the SkDEBUGF changes.",
+      "parentUuid": "d9a0eb0c_14e72867",
+      "revId": "e1dad36389b2a664b30d7d3f38f109af179679e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
