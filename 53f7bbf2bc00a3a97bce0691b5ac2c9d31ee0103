@@ -16,6 +16,23 @@
       "message": "PTAL. I believe I got all the cases. The SkCanvas created by the base SkSurface is an SkNoDrawCanvas, so I think Unknown for colortype and alphatype is correct. The only others I saw are created from the Device (GPU) or SkBitmap (Raster), which I\u0027ve mirrored to grab the ImageInfo directly.",
       "revId": "53f7bbf2bc00a3a97bce0691b5ac2c9d31ee0103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acef8a39_dcf1aaf4",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-28T17:26:32Z",
+      "side": 1,
+      "message": "Is SkNullSurface the only user of the default? Might make sense to make this pure virtual and force any new subclass author to have to think about this.",
+      "revId": "53f7bbf2bc00a3a97bce0691b5ac2c9d31ee0103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
