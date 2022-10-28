@@ -12,9 +12,11 @@
 #include <stdio.h>
 
 void SkDebugf(const char format[], ...) {
+#if !defined(SK_BUILD_FOR_FUZZER)
     va_list args;
     va_start(args, format);
     vfprintf(stderr, format, args);
     va_end(args);
+#endif
 }
 #endif//!defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)
