@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9a0eb0c_14e72867",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-28T14:05:20Z",
+      "side": 1,
+      "message": "This is going to be very surprising to developers who get a fuzzer issue report, try to do some `Debugf` debugging, and nothing happens. Is there a particular offender here? I assume that we\u0027re not building with DEBUG for the fuzzer (are we?) in which case `SkDEBUGF` (which only prints in debug) is generally a replacement for chatty code. If it\u0027s just extra debug logging stuff (I know SkPathOps is known for that) that should be `SkDebugf` behind some `if constexpr` like is done in most of the scaler context code. Anyhow, don\u0027t see a bug references here, so not sure who the offender was who motivated this.",
+      "revId": "e1dad36389b2a664b30d7d3f38f109af179679e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
