@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95d21ba_8ebcd727",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T18:30:41Z",
+      "side": 1,
+      "message": "Is there a benefit to turning these into runtime shaders? Previously we kept rte files separately under resources/sksl/runtime. I don\u0027t know if that separation was intentional but now we have a mix of program kinds like `IntFoldingES2.rts` and `IntFoldingES3.sksl`.",
+      "range": {
+        "startLine": 619,
+        "startChar": 34,
+        "endLine": 619,
+        "endChar": 37
+      },
+      "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
