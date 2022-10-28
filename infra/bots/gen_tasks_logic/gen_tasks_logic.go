@@ -28,6 +28,7 @@ import (
 )
 
 const (
+	CAS_BAZEL         = "bazel"
 	CAS_CANVASKIT     = "canvaskit"
 	CAS_COMPILE       = "compile"
 	CAS_EMPTY         = "empty" // TODO(borenet): It'd be nice if this wasn't necessary.
@@ -408,6 +409,30 @@ func GenTasks(cfg *Config) {
 	}
 
 	// Create CasSpecs.
+	b.MustAddCasSpec(CAS_BAZEL, &specs.CasSpec{
+		Root: "..",
+		Paths: []string{
+			// source code
+			"skia/include",
+			"skia/src",
+			"skia/tools",
+			"skia/modules/",
+			"skia/third_party/",
+			// bazel deps
+			"skia/.bazelrc",
+			"skia/.bazelversion",
+			"skia/BUILD.bazel",
+			"skia/WORKSPACE.bazel",
+			"skia/bazel",
+			"skia/go_repositories.bzl",
+			"skia/requirements.txt",
+			"skia/toolchain",
+		},
+		Excludes: []string{
+			rbe.ExcludeGitDir,
+			"skia/third_party/externals",
+		},
+	})
 	b.MustAddCasSpec(CAS_CANVASKIT, &specs.CasSpec{
 		Root: "..",
 		Paths: []string{
@@ -2149,7 +2174,7 @@ func (b *jobBuilder) bazelBuild() {
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.addToPATH("bazelisk")
 		b.idempotent()
-		b.cas(CAS_COMPILE)
+		b.cas(CAS_BAZEL)
 		b.attempts(1)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 	})
@@ -2214,7 +2239,7 @@ func (b *jobBuilder) bazelTest() {
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.addToPATH("bazelisk")
 		b.idempotent()
-		b.cas(CAS_COMPILE)
+		b.cas(CAS_BAZEL)
 		b.attempts(1)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 	})
