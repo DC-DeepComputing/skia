@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84bf33e9_87badc4a",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-28T16:25:21Z",
+      "side": 1,
+      "message": "This will be addressed (by having `write` and `writeArray` variants) in a follow-up CL.",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 64
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
