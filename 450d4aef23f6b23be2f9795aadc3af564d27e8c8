@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53410fc2_6ebc20ce",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "apply changes from `UniformManagerStd430ArrayLayout` here as well",
+      "range": {
+        "startLine": 568,
+        "startChar": 7,
+        "endLine": 568,
+        "endChar": 8
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "381599be_d6fbe759",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 641,
+        "startChar": 8,
+        "endLine": 641,
+        "endChar": 15
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28829e9_c07df122",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "`i \u003c std::size(kExpectedLayout)`",
+      "range": {
+        "startLine": 643,
+        "startChar": 23,
+        "endLine": 643,
+        "endChar": 52
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b96a9ae_66d0661b",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "`zu`",
+      "range": {
+        "startLine": 655,
+        "startChar": 94,
+        "endLine": 655,
+        "endChar": 96
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c3517f_e7fdca2b",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "`zu` (otherwise you get failures on platforms where `size_t` is 32 bits)",
+      "range": {
+        "startLine": 655,
+        "startChar": 76,
+        "endLine": 655,
+        "endChar": 78
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea4752c8_20d93b31",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "http://go/cstyle#Structs_vs._Tuples\n\n\"Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names.\"",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 29
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54793a12_468e257d",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "mark function as `static`",
+      "range": {
+        "startLine": 19,
+        "startChar": 30,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0c398d9_e09b9dd2",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T16:13:54Z",
+      "side": 1,
+      "message": "Consider adding report messages in case these assertions fire.\n\n`REPORTER_ASSERT(r, alignment \u003d\u003d expectedAlignment, \n                 \"alignment\u003d%u expectedAlignment\u003d%u\", alignment, expectedAlignment);`",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 23
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
