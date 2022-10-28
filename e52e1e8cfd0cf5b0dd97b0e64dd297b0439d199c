@@ -39,6 +39,30 @@
       },
       "revId": "e52e1e8cfd0cf5b0dd97b0e64dd297b0439d199c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3aafc34_e0ed793b",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T18:16:35Z",
+      "side": 1,
+      "message": "It\u0027s manually matching the skif::RoundOut function. When rounding out, we first inset by kRoundEpsilon so that left/top edges that are x.9999 round \"out\" to (x+1) instead of jumping all the way to x, and similarly for right/bot edges that are x.0001 round \"out\" to x instead of jumping all the way to (x+1). This has helped cut down on pixel interpolation and popping due to float transforms that should have been integers not actually staying that way.",
+      "parentUuid": "9d4a0efc_96491271",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 89
+      },
+      "revId": "e52e1e8cfd0cf5b0dd97b0e64dd297b0439d199c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
