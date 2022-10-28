@@ -22,6 +22,30 @@
       },
       "revId": "efa07c7ae272941b21a5ea4388d115f62942a186",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf33c946_7a5595e5",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-10-28T15:39:10Z",
+      "side": 1,
+      "message": "Ah good point. Done.",
+      "parentUuid": "283e6460_04b49deb",
+      "range": {
+        "startLine": 58,
+        "startChar": 67,
+        "endLine": 58,
+        "endChar": 76
+      },
+      "revId": "efa07c7ae272941b21a5ea4388d115f62942a186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
