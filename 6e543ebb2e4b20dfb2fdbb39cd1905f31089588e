@@ -182,6 +182,30 @@
       },
       "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c8d450_efb00980",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-10-28T14:42:00Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d498921d_aa5c2fd2",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "6e543ebb2e4b20dfb2fdbb39cd1905f31089588e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
