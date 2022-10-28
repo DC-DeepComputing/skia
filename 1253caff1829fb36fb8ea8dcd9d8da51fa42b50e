@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00cf203a_311d9a59",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-28T15:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f24496b_a4f6b03d",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c3078b3_df7c6df1",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-28T14:27:04Z",
       "side": 1,
       "message": "SkASSERT() won\u0027t run on release builds. If we have an uncaptured error on a release build, is logging and continuing okay? Or should we abort the process (e.g. `SK_ABORT(\"%s\", message)`?",
+      "range": {
+        "startLine": 69,
+        "startChar": 16,
+        "endLine": 69,
+        "endChar": 32
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e9e0c6c_e8a7fbca",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-28T15:14:50Z",
+      "side": 1,
+      "message": "For the test context, abort is good.",
+      "parentUuid": "8c3078b3_df7c6df1",
       "range": {
         "startLine": 69,
         "startChar": 16,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d022485a_b95080ef",
+        "filename": "tools/graphite/dawn/DawnTestContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-28T15:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97a8d18f_53fab64d",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 106
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "862cf6aa_149f93e4",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-10-28T14:27:04Z",
       "side": 1,
       "message": "It doesn\u0027t look like fInstance is used to by `Context::MakeDawn`. Do we store it here to keep it alive? Any reason it shouldn\u0027t be part of the `DawnBackendContext`?\n\nIf it stays separate, can we add a comment that we\u0027re just preserving lifetime?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 54
+      },
+      "revId": "1253caff1829fb36fb8ea8dcd9d8da51fa42b50e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e49788_ef7dd9ef",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-10-28T15:14:50Z",
+      "side": 1,
+      "message": "Removed it, and store the instance in a static variable, in case there may be more than one DawnTestContext.",
+      "parentUuid": "862cf6aa_149f93e4",
       "range": {
         "startLine": 39,
         "startChar": 0,
