@@ -474,6 +474,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22346415_edd33484",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T15:01:02Z",
+      "side": 1,
+      "message": "OK, I took a look--I didn\u0027t mean making the whole class templated, just one method inside the class. My thought process is that simple math like that will get inlined out entirely. (SK_ALWAYS_INLINE can really force the issue if need be)",
+      "parentUuid": "52dadf4f_cc663209",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 26
+      },
+      "revId": "51833ff0e4d0b72c0f4c4bd2288e86b154893fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cc0a7d6_4a162768",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 26
