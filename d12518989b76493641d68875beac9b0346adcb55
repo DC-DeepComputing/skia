@@ -22,6 +22,30 @@
       },
       "revId": "d12518989b76493641d68875beac9b0346adcb55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "365a5d30_db4d4ab0",
+        "filename": "tests/sksl/folding/ArraySizeFolding.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T20:17:06Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "4fa979b4_4f688a87",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "d12518989b76493641d68875beac9b0346adcb55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

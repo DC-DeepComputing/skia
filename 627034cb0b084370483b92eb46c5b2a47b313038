@@ -22,6 +22,30 @@
       },
       "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a03bd3_f6c186de",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-28T20:17:06Z",
+      "side": 1,
+      "message": "Nowadays, anything being run by `SkSLTest.cpp` in `CPU+GPU` mode _is_ a plain vanilla ES2 runtime shader and `.rts` is the right extension for it. However, when most of these tests were written, that wasn\u0027t true. For instance, here\u0027s the original IntFolding.sksl from 2020: \n\nhttps://osscs.corp.google.com/skia/skia/+/ab4ab20fcf7b39eac087785e08791c5bf066edf1:tests/sksl/shared/IntFolding.sksl\n\nAs you can see, it\u0027s using `void main()` and assigning directly into `sk_FragColor`. The code is nonsense that doesn\u0027t do anything meaningful at all. It just exercised the frontend/backends and let us see what the compiler would emit for a given block of code.\n\nLater, I fixed up these tests to have a RuntimeEffect-like signature, and to do meaningful work, but when those changes were made, I didn\u0027t think to change their extensions to `.rts` since runtime effect files were a pretty new concept. I could leave them as `.sksl` and fix up the logic in GN to accept `.sksl` as well, it\u0027s not really a big deal either way, but it seemed like a good opportunity to standardize on `.rts`.",
+      "parentUuid": "f95d21ba_8ebcd727",
+      "range": {
+        "startLine": 619,
+        "startChar": 34,
+        "endLine": 619,
+        "endChar": 37
+      },
+      "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
