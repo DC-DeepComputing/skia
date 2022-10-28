@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00db77d0_59d621ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-10-28T18:48:45Z",
+      "side": 1,
+      "message": "Hmm... the wheels are turning now.  Task Scheduler actually performs a full \"gclient sync\" because we need the DEPS to be present.  Getting rid of that would be REALLY nice...",
+      "revId": "eacf1e21aaa863c4eb98ef58a2ee18da405677ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
