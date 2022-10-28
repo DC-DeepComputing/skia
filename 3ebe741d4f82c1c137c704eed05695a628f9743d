@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45845a69_901270ad",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-28T14:44:08Z",
+      "side": 1,
+      "message": "\"recording insertions\"? Since it could be the same recording tried multiple times.",
+      "range": {
+        "startLine": 1216,
+        "startChar": 34,
+        "endLine": 1216,
+        "endChar": 44
+      },
+      "revId": "3ebe741d4f82c1c137c704eed05695a628f9743d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
