@@ -16,6 +16,23 @@
       "message": "We could also try just flat-out removing this guard.",
       "revId": "19942903316b13d0807d2df2b2dcad463f912ba6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b9309d_e13be86d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-10-28T14:35:33Z",
+      "side": 1,
+      "message": "This is probably a good idea, I\u0027ll see about using `tryAlloc` instead in the FreeType scaler context and just letting the glyph image be empty (or otherwise mark it as invalid). The issue is that we need somewhere to put the original bitmap out of the font (here it is reported to be large), but we should be able to pretend to continue if it\u0027s really big.",
+      "revId": "19942903316b13d0807d2df2b2dcad463f912ba6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
