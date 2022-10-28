@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16fad820_0235feb0",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-10-28T19:24:37Z",
+      "side": 1,
+      "message": "GR_GL_DRIVER_VER I think; GR_GL_VER shifts major version by 16, GR_GL_DRIVER_VER shifts by 32, so ctxInfo.driverVersion() will be greater no matter what and that\u0027s why the wembley\u0027s turned on when they haven\u0027t been updated.",
+      "range": {
+        "startLine": 4280,
+        "startChar": 34,
+        "endLine": 4280,
+        "endChar": 43
+      },
+      "revId": "04176f49163ab4b9b2f063bac5d689c73be2d3f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
