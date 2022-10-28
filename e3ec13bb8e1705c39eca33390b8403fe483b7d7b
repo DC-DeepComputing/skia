@@ -22,6 +22,30 @@
       },
       "revId": "e3ec13bb8e1705c39eca33390b8403fe483b7d7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ca741d_91ee1203",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-28T18:27:06Z",
+      "side": 0,
+      "message": "I did a code search and doesn\u0027t look like any of our main clients have overridden it. I\u0027m not sure what to replace the virtual call with. As you say, SkPaintFilterCanvas gets the ImageInfo from its internal proxy. In that case I think we can trust it to match the Surface (which is also created from the proxy) but I\u0027m not sure how to prevent trouble with other subclasses. Call newSurface() and get the ImageInfo from that?",
+      "parentUuid": "52299134_3de967fc",
+      "range": {
+        "startLine": 195,
+        "startChar": 30,
+        "endLine": 195,
+        "endChar": 40
+      },
+      "revId": "e3ec13bb8e1705c39eca33390b8403fe483b7d7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
