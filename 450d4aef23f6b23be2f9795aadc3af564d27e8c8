@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21feb56c_92d4554f",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-29T02:33:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53410fc2_6ebc20ce",
+      "range": {
+        "startLine": 568,
+        "startChar": 7,
+        "endLine": 568,
+        "endChar": 8
+      },
+      "revId": "450d4aef23f6b23be2f9795aadc3af564d27e8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "381599be_d6fbe759",
