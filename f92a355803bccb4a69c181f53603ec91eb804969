@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd957c0_8a57c98a",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:46Z",
+      "side": 1,
+      "message": "Yes, this still gets called by `advanceOffset` (see line 465). Previously both `calculateOffset` and `write` called it. Now `write` calls `advanceOffset` instead of duplicating that code.",
+      "parentUuid": "eeb5984a_a775ff0e",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 18
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3233e1e4_c122f495",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-28T16:36:22Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 18
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24988f8d_5ec849ed",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:46Z",
+      "side": 1,
+      "message": "see my reply to your comment above.",
+      "parentUuid": "3233e1e4_c122f495",
       "range": {
         "startLine": 218,
         "startChar": 0,
@@ -84,6 +132,30 @@
       "side": 1,
       "message": "If it passes all the Graphite unit tests I\u0027m satisfied! (And if it still exposes a problem, add more tests :)  )",
       "parentUuid": "866c0061_9b1fdb47",
+      "range": {
+        "startLine": 461,
+        "startChar": 29,
+        "endLine": 461,
+        "endChar": 81
+      },
+      "revId": "f92a355803bccb4a69c181f53603ec91eb804969",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88acfd34_976d5a70",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:46Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "b5570f6f_adf65264",
       "range": {
         "startLine": 461,
         "startChar": 29,
