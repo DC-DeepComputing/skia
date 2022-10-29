@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ce4f1f_66131c56",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-29T13:11:09Z",
+      "side": 1,
+      "message": "Is 30 seconds enough of a timeout for rebooting?",
+      "range": {
+        "startLine": 95,
+        "startChar": 42,
+        "endLine": 95,
+        "endChar": 44
+      },
+      "revId": "ec864c7652cb798ed3011ab4ae579c2b605f0100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
