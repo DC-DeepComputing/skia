@@ -70,6 +70,30 @@
       },
       "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fbba58f_42ea94e1",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-29T01:44:52Z",
+      "side": 1,
+      "message": "At some point we will be in a spot where `#version 300` is ready for prime time, and that will be an ideal moment to reevaluate and fix things up. For now, I 100% agree that things are a bit of a hodge-podge, but I don\u0027t think I can justify the time sink that a big reorg of the tests would require, when you consider all the existing stuff that we\u0027ve already got on our plates. I think I\u0027m already oversubscribed for Q4, to be honest.",
+      "parentUuid": "1ffd42cf_78a86972",
+      "range": {
+        "startLine": 619,
+        "startChar": 34,
+        "endLine": 619,
+        "endChar": 37
+      },
+      "revId": "627034cb0b084370483b92eb46c5b2a47b313038",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
