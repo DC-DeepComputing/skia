@@ -22,6 +22,29 @@
       },
       "revId": "ec864c7652cb798ed3011ab4ae579c2b605f0100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d297e4b_6272e5fd",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-29T13:11:57Z",
+      "side": 1,
+      "message": "Seems like this needs a unique name to avoid (1) (2) (3) suffix?",
+      "range": {
+        "startLine": 98,
+        "startChar": 18,
+        "endLine": 98,
+        "endChar": 47
+      },
+      "revId": "ec864c7652cb798ed3011ab4ae579c2b605f0100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
