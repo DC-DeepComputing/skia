@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8103e4b7_0fc4eb65",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01dab5ef_6660347a",
+      "range": {
+        "startLine": 408,
+        "startChar": 18,
+        "endLine": 408,
+        "endChar": 29
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e337c5a_ee1006a6",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:56Z",
+      "side": 1,
+      "message": "I was referring to what this whole method does (i.e. we need to round `currentOffset` up to the base alignment of vec4). I\u0027ll clarify the comment.",
+      "parentUuid": "02c85a87_1d6d13d1",
+      "range": {
+        "startLine": 408,
+        "startChar": 43,
+        "endLine": 408,
+        "endChar": 99
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84bf33e9_87badc4a",
@@ -117,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a022135_0ee4cfcb",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "689c82a8_6180889e",
+      "range": {
+        "startLine": 716,
+        "startChar": 23,
+        "endLine": 716,
+        "endChar": 52
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14bd6341_b4ceb057",
@@ -130,6 +202,30 @@
       "writtenOn": "2022-10-28T16:44:27Z",
       "side": 1,
       "message": "`zu`",
+      "range": {
+        "startLine": 728,
+        "startChar": 76,
+        "endLine": 728,
+        "endChar": 96
+      },
+      "revId": "2fb5167560767c550ec7d4b31bd56d5ba9255be9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c098e4a_7ffea831",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-29T18:18:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14bd6341_b4ceb057",
       "range": {
         "startLine": 728,
         "startChar": 76,
