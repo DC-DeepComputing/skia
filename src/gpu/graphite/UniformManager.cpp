@@ -518,7 +518,7 @@ void UniformManager::doneWithExpectedUniforms() {
     SkDEBUGCODE(fExpectedUniforms = {};)
 }
 
-void UniformManager::write(SkSLType type, unsigned int count, const void* src) {
+void UniformManager::writeInternal(SkSLType type, unsigned int count, const void* src) {
     this->checkExpected(type, (count == SkUniform::kNonArray) ? 1 : count);
 
     SkSLType revisedType = this->getUniformTypeForLayout(type);
@@ -540,49 +540,75 @@ void UniformManager::write(SkSLType type, unsigned int count, const void* src) {
     fReqAlignment = std::max(fReqAlignment, sksltype_to_alignment_mask(revisedType) + 1);
 }
 
+void UniformManager::write(SkSLType type, const void* src) {
+    this->writeInternal(type, SkUniform::kNonArray, src);
+}
+
+void UniformManager::writeArray(SkSLType type, const void* src, unsigned int count) {
+    // Don't write any elements if count is 0. Since SkUniform::kNonArray == 0, passing count
+    // directly would cause a one-element non-array write.
+    if (count > 0) {
+        this->writeInternal(type, count, src);
+    }
+}
+
+void UniformManager::write(const SkUniform& u, const uint8_t* src) {
+    this->writeInternal(u.type(), u.count(), src);
+}
+
 void UniformManager::write(const SkM44& mat) {
     static constexpr SkSLType kType = SkSLType::kFloat4x4;
-    this->write(kType, SkUniform::kNonArray, &mat);
+    this->write(kType, &mat);
 }
 
-void UniformManager::write(const SkColor4f* colors, int count) {
+void UniformManager::write(const SkPMColor4f& color) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
-    this->write(kType, count, colors);
-}
-
-void UniformManager::write(const SkPMColor4f* premulColors, int count) {
-    static constexpr SkSLType kType = SkSLType::kFloat4;
-    this->write(kType, count, premulColors);
+    this->write(kType, &color);
 }
 
 void UniformManager::write(const SkRect& rect) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
-    this->write(kType, SkUniform::kNonArray, &rect);
+    this->write(kType, &rect);
 }
 
 void UniformManager::write(SkPoint point) {
     static constexpr SkSLType kType = SkSLType::kFloat2;
-    this->write(kType, SkUniform::kNonArray, &point);
+    this->write(kType, &point);
 }
 
-void UniformManager::write(const float* floats, int count) {
+void UniformManager::write(float f) {
     static constexpr SkSLType kType = SkSLType::kFloat;
-    this->write(kType, count, floats);
+    this->write(kType, &f);
 }
 
 void UniformManager::write(int i) {
     static constexpr SkSLType kType = SkSLType::kInt;
-    this->write(kType, SkUniform::kNonArray, &i);
+    this->write(kType, &i);
 }
 
 void UniformManager::write(skvx::float2 v) {
     static constexpr SkSLType kType = SkSLType::kFloat2;
-    this->write(kType, SkUniform::kNonArray, &v);
+    this->write(kType, &v);
 }
 
 void UniformManager::write(skvx::float4 v) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
-    this->write(kType, SkUniform::kNonArray, &v);
+    this->write(kType, &v);
+}
+
+void UniformManager::writeArray(SkSpan<const SkColor4f> arr) {
+    static constexpr SkSLType kType = SkSLType::kFloat4;
+    this->writeArray(kType, arr.data(), arr.size());
+}
+
+void UniformManager::writeArray(SkSpan<const SkPMColor4f> arr) {
+    static constexpr SkSLType kType = SkSLType::kFloat4;
+    this->writeArray(kType, arr.data(), arr.size());
+}
+
+void UniformManager::writeArray(SkSpan<const float> arr) {
+    static constexpr SkSLType kType = SkSLType::kFloat;
+    this->writeArray(kType, arr.data(), arr.size());
 }
 
 } // namespace skgpu::graphite
