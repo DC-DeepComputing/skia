@@ -22,6 +22,30 @@
       },
       "revId": "3ebe741d4f82c1c137c704eed05695a628f9743d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e70e0df9_0a579f8c",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-31T17:27:38Z",
+      "side": 1,
+      "message": "I\u0027ve just removed the line. Right now, once a non-volatile promise image fails fulfillment Graphite should just fail the snap entirely.",
+      "parentUuid": "45845a69_901270ad",
+      "range": {
+        "startLine": 1216,
+        "startChar": 34,
+        "endLine": 1216,
+        "endChar": 44
+      },
+      "revId": "3ebe741d4f82c1c137c704eed05695a628f9743d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
