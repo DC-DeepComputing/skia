@@ -39,6 +39,30 @@
       },
       "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b70cc85b_bcec72e6",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-31T18:01:02Z",
+      "side": 1,
+      "message": "I\u0027ve added a comment to reconsider the data structure once we have more information about Chrome\u0027s usage pattern. I suspect you may be right and a uniquified std::vector may suffice.",
+      "parentUuid": "40dd81d9_f80e4f0d",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
