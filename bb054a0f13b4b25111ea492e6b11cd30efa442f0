@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c45c025_8d2c610a",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T12:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc206c6e_abde3c86",
+      "range": {
+        "startLine": 280,
+        "startChar": 86,
+        "endLine": 280,
+        "endChar": 87
+      },
+      "revId": "bb054a0f13b4b25111ea492e6b11cd30efa442f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fe36bb8_dc1a60e4",
@@ -54,6 +78,24 @@
       "writtenOn": "2022-10-29T17:58:17Z",
       "side": 1,
       "message": "nit: remove trailing whitespace",
+      "revId": "bb054a0f13b4b25111ea492e6b11cd30efa442f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0bb502_af5be0c6",
+        "filename": "site/docs/user/sksl.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T12:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fe36bb8_dc1a60e4",
       "revId": "bb054a0f13b4b25111ea492e6b11cd30efa442f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
