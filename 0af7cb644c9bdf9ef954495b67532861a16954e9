@@ -22,6 +22,30 @@
       },
       "revId": "0af7cb644c9bdf9ef954495b67532861a16954e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5447f8f4_be14da1e",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T17:16:47Z",
+      "side": 0,
+      "message": "This is correct, not an array. Source:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/core/SkShaderCodeDictionary.cpp;l\u003d615;drc\u003dfba16d8e7dd35c1a6d3da638f9a5371746e161ed\n\nRe assert, it\u0027s probably not necessary, but it\u0027s harmless if you wanted to add it. Check for `\u003d\u003d`, not `\u003e\u003d`.  The contract on the getter is that it must return exactly 4:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/Blend.h;l\u003d194;drc\u003d004b2a2b14319a9a9d4d76b0e158addbb0acb6b5",
+      "parentUuid": "ada3a1a6_3663a562",
+      "range": {
+        "startLine": 392,
+        "startChar": 41,
+        "endLine": 392,
+        "endChar": 43
+      },
+      "revId": "0af7cb644c9bdf9ef954495b67532861a16954e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
