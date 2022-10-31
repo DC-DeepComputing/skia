@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db043b0f_86010c56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-10-31T16:10:47Z",
+      "side": 1,
+      "message": "Dramatically simplifies adb recovery logic, which also speeds it up.",
+      "revId": "104d6789e9979e4974400ee64788af6795831033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
