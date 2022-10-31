@@ -755,6 +755,7 @@ public:
     // A stack of the symbol tables; since most nodes don't have one, expected to be shallower than
     // the enclosing-statement stack.
     std::vector<std::shared_ptr<SymbolTable>> fSymbolTableStack;
+
     // A stack of "enclosing" statements--these would be suitable for the inliner to use for adding
     // new instructions. Not all statements are suitable (e.g. a for-loop's initializer). The
     // inliner might replace a statement with a block containing the statement.
@@ -796,8 +797,8 @@ public:
             return;
         }
 
+        Analysis::SymbolTableStackBuilder scopedStackBuilder(stmt->get(), &fSymbolTableStack);
         size_t oldEnclosingStmtStackSize = fEnclosingStmtStack.size();
-        size_t oldSymbolStackSize = fSymbolTableStack.size();
 
         if (isViableAsEnclosingStatement) {
             fEnclosingStmtStack.push_back(stmt);
@@ -812,10 +813,6 @@ public:
 
             case Statement::Kind::kBlock: {
                 Block& block = (*stmt)->as<Block>();
-                if (block.symbolTable()) {
-                    fSymbolTableStack.push_back(block.symbolTable());
-                }
-
                 for (std::unique_ptr<Statement>& blockStmt : block.children()) {
                     this->visitStatement(&blockStmt);
                 }
@@ -843,10 +840,6 @@ public:
             }
             case Statement::Kind::kFor: {
                 ForStatement& forStmt = (*stmt)->as<ForStatement>();
-                if (forStmt.symbols()) {
-                    fSymbolTableStack.push_back(forStmt.symbols());
-                }
-
                 // The initializer and loop body are candidates for inlining.
                 this->visitStatement(&forStmt.initializer(),
                                      /*isViableAsEnclosingStatement=*/false);
@@ -882,10 +875,6 @@ public:
             }
             case Statement::Kind::kSwitch: {
                 SwitchStatement& switchStmt = (*stmt)->as<SwitchStatement>();
-                if (switchStmt.symbols()) {
-                    fSymbolTableStack.push_back(switchStmt.symbols());
-                }
-
                 this->visitExpression(&switchStmt.value());
                 for (const std::unique_ptr<Statement>& switchCase : switchStmt.cases()) {
                     // The switch-case's fValue cannot be a FunctionCall; skip it.
@@ -904,7 +893,6 @@ public:
         }
 
         // Pop our symbol and enclosing-statement stacks.
-        fSymbolTableStack.resize(oldSymbolStackSize);
         fEnclosingStmtStack.resize(oldEnclosingStmtStackSize);
     }
 
