@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada3a1a6_3663a562",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-10-31T17:04:09Z",
+      "side": 0,
+      "message": "johnstiles@: I took this to mean writing a half4 and not a `half4[1]` but please correct me this was meant to be an array.\n\nAlso should this assert here that `fPorterDuffConstants.size() \u003e\u003d 4`?",
+      "range": {
+        "startLine": 392,
+        "startChar": 41,
+        "endLine": 392,
+        "endChar": 43
+      },
+      "revId": "0af7cb644c9bdf9ef954495b67532861a16954e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
