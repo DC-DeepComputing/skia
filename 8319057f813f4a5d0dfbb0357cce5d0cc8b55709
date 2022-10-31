@@ -336,6 +336,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e7e96d9_9d04a304",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T14:01:37Z",
+      "side": 1,
+      "message": "I thought about this some more over the weekend.\n\nI think the real answer might be to prioritize fixing the \"prior-stage\" versus \"child\" issue first. Right now, the way we build shader trees isn\u0027t right. The straight-line path (paint color -\u003e shader -\u003e filter -\u003e destination blend) works OK in isolation, but pritimive-blends introduce a V in the tree which \"prior-stage\" is not capable of handling. I think we\u0027re getting tied up in knots as a result.\n\nIs there any chance you can refocus your efforts on straightening out the shader tree hierarchy? I don\u0027t know when I will be able to get to it; the raster pipeline stuff I have to work on is gnarly. If that\u0027s not in the cards, our best bet is probably just to table this and work on something else entirely. Even if we can get this to look right on screen, it\u0027s probably going to need to be reworked anyway when we untangle the tree structure.",
+      "parentUuid": "2806e36a_6c45652c",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "476e47fb_847331cf",
         "filename": "src/core/SkBlendModeBlender.cpp",
         "patchSetId": 21
