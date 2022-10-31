@@ -595,12 +595,13 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchExtraConfig("Graphite") {
-		// The Graphite bots run the skps, gms and tests
 		removeFromArgs("image")
 		removeFromArgs("lottie")
 		removeFromArgs("colorImage")
 		removeFromArgs("svg")
-	} else if b.matchExtraConfig("DDL", "PDF") {
+	}
+
+	if b.matchExtraConfig("DDL", "PDF") {
 		// The DDL and PDF bots just render the large skps and the gms
 		removeFromArgs("tests")
 		removeFromArgs("image")
