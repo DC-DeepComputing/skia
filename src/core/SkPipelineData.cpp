@@ -14,6 +14,12 @@ SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::graphite::Layout layout)
         : fUniformManager(layout)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
 }
+
+void SkPipelineDataGatherer::setLayoutAndReset(skgpu::graphite::Layout layout) {
+    fUniformManager.setLayoutAndReset(layout);
+    fTextureDataBlock.reset();
+    fSnippetRequirementFlags = SnippetRequirementFlags::kNone;
+}
 #endif
 
 void SkPipelineDataGatherer::reset() {
