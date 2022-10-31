@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9730c856_2fbb5dfc",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T17:20:39Z",
+      "side": 1,
+      "message": "WDYT about moving this to the call sites?",
+      "range": {
+        "startLine": 522,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 75
+      },
+      "revId": "65c1b0593e43f95dcc6e4574f4a26b357725aa5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f2ec39_21bfd04a",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T17:20:39Z",
+      "side": 1,
+      "message": "The next line might be more clear upon casual inspection if written as\n\nif `count` \u003d\u003d 0 (aka SkUniform::kNonArray).",
+      "range": {
+        "startLine": 101,
+        "startChar": 54,
+        "endLine": 101,
+        "endChar": 85
+      },
+      "revId": "65c1b0593e43f95dcc6e4574f4a26b357725aa5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
