@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97010008_3f87ffb0",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-31T16:55:42Z",
+      "side": 1,
+      "message": "so we remember next time, can we add a comment above this block saying something like:\n\"Remove skps for all bots except for a select few. On bots that will run SKPs remove some of their other tests.\"",
+      "range": {
+        "startLine": 604,
+        "startChar": 1,
+        "endLine": 604,
+        "endChar": 38
+      },
+      "revId": "13a01e190bf6a71ee5610aa5d7b3fb1ffb381012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
