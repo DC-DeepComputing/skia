@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e03a712d_fc2b337b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-31T15:23:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e40c3519_4735b604",
+      "range": {
+        "startLine": 165,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 80
+      },
+      "revId": "011ee33c46fb700525460710db117307667f8e82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c583969_d38023bd",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-10-31T13:57:12Z",
       "side": 1,
       "message": "This may return a non valid proxyView (i.e. surface is not texturable). We are then accessing the null proxy directly in the follow shared asyncReadPixels call below.",
+      "range": {
+        "startLine": 183,
+        "startChar": 21,
+        "endLine": 183,
+        "endChar": 30
+      },
+      "revId": "011ee33c46fb700525460710db117307667f8e82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51aa5fad_ebd00d74",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-10-31T15:23:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c583969_d38023bd",
       "range": {
         "startLine": 183,
         "startChar": 21,
