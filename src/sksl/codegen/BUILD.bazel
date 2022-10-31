@@ -7,6 +7,8 @@ exports_files_legacy()
 filegroup(
     name = "core_srcs",
     srcs = [
+        "SkSLRasterPipelineCodeGenerator.cpp",
+        "SkSLRasterPipelineCodeGenerator.h",
         "SkSLVMCodeGenerator.cpp",
     ],
 )
@@ -48,6 +50,7 @@ filegroup(
 filegroup(
     name = "private_hdrs",
     srcs = [
+        "SkSLRasterPipelineCodeGenerator.h",
         "SkSLVMCodeGenerator.h",
     ] + select({
         "//src/sksl:use_sksl_gpu_srcs": [":gpu_hdrs"],
