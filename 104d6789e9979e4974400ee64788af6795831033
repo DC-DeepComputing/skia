@@ -16,6 +16,23 @@
       "message": "Dramatically simplifies adb recovery logic, which also speeds it up.",
       "revId": "104d6789e9979e4974400ee64788af6795831033",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69956419_dc125af2",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-10-31T16:39:37Z",
+      "side": 1,
+      "message": "FYI: this is commented out (making sure it was intentional)",
+      "revId": "104d6789e9979e4974400ee64788af6795831033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
