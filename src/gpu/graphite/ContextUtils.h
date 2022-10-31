@@ -25,25 +25,31 @@ class PaintParams;
 class Recorder;
 class RenderStep;
 
+enum class Layout;
+
 std::tuple<SkUniquePaintParamsID, const SkUniformDataBlock*, const SkTextureDataBlock*>
 ExtractPaintData(Recorder*,
+                 Layout layout,
                  SkPipelineDataGatherer* gatherer,
                  SkPaintParamsKeyBuilder* builder,
                  const SkM44& local2Dev,
                  const PaintParams&);
 
-std::tuple<const SkUniformDataBlock*, const SkTextureDataBlock*>
-ExtractRenderStepData(UniformDataCache* uniformDataCache,
-                      TextureDataCache* textureDataCache,
-                      SkPipelineDataGatherer* gatherer,
-                      const RenderStep* step,
-                      const DrawParams& params);
+std::tuple<const SkUniformDataBlock*, const SkTextureDataBlock*> ExtractRenderStepData(
+        UniformDataCache* uniformDataCache,
+        TextureDataCache* textureDataCache,
+        Layout layout,
+        SkPipelineDataGatherer* gatherer,
+        const RenderStep* step,
+        const DrawParams& params);
 
-std::string GetSkSLVS(const RenderStep* step,
+std::string GetSkSLVS(Layout uniformLayout,
+                      const RenderStep* step,
                       bool defineShadingSsboIndexVarying,
                       bool defineLocalCoordsVarying);
 
-std::string GetSkSLFS(const SkShaderCodeDictionary*,
+std::string GetSkSLFS(Layout uniformLayout,
+                      const SkShaderCodeDictionary*,
                       const SkRuntimeEffectDictionary*,
                       const RenderStep* renderStep,
                       SkUniquePaintParamsID paintID,
@@ -53,8 +59,11 @@ std::string GetSkSLFS(const SkShaderCodeDictionary*,
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
+                                    Layout layout,
                                     const std::vector<SkPaintParamsKey::BlockReader>&);
-std::string EmitRenderStepUniforms(int bufferID, const char* name,
+std::string EmitRenderStepUniforms(int bufferID,
+                                   const char* name,
+                                   Layout layout,
                                    SkSpan<const SkUniform> uniforms);
 std::string EmitPaintParamsStorageBuffer(int bufferID,
                                          const char* bufferTypePrefix,

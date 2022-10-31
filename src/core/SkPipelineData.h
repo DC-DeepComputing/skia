@@ -97,6 +97,8 @@ class SkPipelineDataGatherer {
 public:
 #ifdef SK_GRAPHITE_ENABLED
     SkPipelineDataGatherer(skgpu::graphite::Layout layout);
+
+    void resetWithNewLayout(skgpu::graphite::Layout layout);
 #endif
 
     void reset();
