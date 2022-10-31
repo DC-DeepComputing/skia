@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeefbd8a_91615de2",
+        "filename": "gm/kawase_blur_rt.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-10-31T21:53:29Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 90,
+        "startChar": 27,
+        "endLine": 90,
+        "endChar": 46
+      },
+      "revId": "278929445b3a688bb272743a2ed3fc2bd2afbf11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
