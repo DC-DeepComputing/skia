@@ -19,7 +19,7 @@
 #include <malloc.h>
 #endif
 
-namespace {
+namespace skia::containers {
 // Return at least as many bytes to keep malloc aligned.
 constexpr size_t kMinBytes = alignof(max_align_t);
 
@@ -47,7 +47,7 @@ SkSpan<std::byte> complete_size(void* ptr, size_t size) {
     SkASSERT(completeSize >= size);
     return {static_cast<std::byte*>(ptr), completeSize};
 }
-}  // namespace
+}  // namespace skia::containers
 
 SkSpan<std::byte> SkContainerAllocator::allocate(int capacity, double growthFactor) {
     SkASSERT(capacity >= 0);
@@ -86,15 +86,14 @@ size_t SkContainerAllocator::growthFactorCapacity(int capacity, double growthFac
     return this->roundUpCapacity(capacityGrowth);
 }
 
-
 SkSpan<std::byte> sk_allocate_canfail(size_t size) {
     // Make sure to ask for at least the minimum number of bytes.
-    const size_t adjustedSize = std::max(size, kMinBytes);
+    const size_t adjustedSize = std::max(size, skia::containers::kMinBytes);
     void* ptr = sk_malloc_canfail(adjustedSize);
     if (ptr == nullptr) {
         return {};
     }
-    return complete_size(ptr, adjustedSize);
+    return skia::containers::complete_size(ptr, adjustedSize);
 }
 
 SkSpan<std::byte> sk_allocate_throw(size_t size) {
@@ -102,7 +101,7 @@ SkSpan<std::byte> sk_allocate_throw(size_t size) {
         return {};
     }
     // Make sure to ask for at least the minimum number of bytes.
-    const size_t adjustedSize = std::max(size, kMinBytes);
+    const size_t adjustedSize = std::max(size, skia::containers::kMinBytes);
     void* ptr = sk_malloc_throw(adjustedSize);
-    return complete_size(ptr, adjustedSize);
+    return skia::containers::complete_size(ptr, adjustedSize);
 }
