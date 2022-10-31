@@ -676,6 +676,8 @@
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*"]}
   },
   {"name": "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal"},
+  {"name": "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-DDL1_Graphite_Metal"},
+  {"name": "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-DDL3_Graphite_Metal"},
   {"name": "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal",
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*"]}
   },
