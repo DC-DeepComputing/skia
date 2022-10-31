@@ -22,6 +22,30 @@
       },
       "revId": "13a01e190bf6a71ee5610aa5d7b3fb1ffb381012",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d097777_992a13d8",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-10-31T17:03:41Z",
+      "side": 1,
+      "message": "Done.\n\nI also removed the \"lottie\" removal from the \"DDL\" block since it is handled in the following \"Lottie\" block.",
+      "parentUuid": "97010008_3f87ffb0",
+      "range": {
+        "startLine": 604,
+        "startChar": 1,
+        "endLine": 604,
+        "endChar": 38
+      },
+      "revId": "13a01e190bf6a71ee5610aa5d7b3fb1ffb381012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
