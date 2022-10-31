@@ -63,6 +63,30 @@
       },
       "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1266bcee_89f330dd",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-10-31T19:15:00Z",
+      "side": 1,
+      "message": "I guess I worry we won\u0027t actually go back to changing this in any short amount of time. So I worry we\u0027re going to be adding a lot of overhead running the hash function on every texture proxy, every time. Then again if we don\u0027t actually think there are that many textures that will be sampled in a recording in general (regardless of volatile or not) then maybe this is fine.\n\nBut I do feel like we should code this now to how we expect the usage patterns to be and then adjust to the surprise case if need be. And my personal thoughts are that we\u0027ll have minimal volatile images.",
+      "parentUuid": "b70cc85b_bcec72e6",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
