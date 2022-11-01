@@ -186,6 +186,60 @@ void update_backend_texture(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, recorder->updateBackendTexture(backendTex, pixmaps, numMipLevels));
 }
 
+// case 1
+class UpdateBackendTextureMutator : public Mutator {
+public:
+    static std::unique_ptr<Mutator> Make(skiatest::Reporter* reporter,
+                                         Recorder* recorder,
+                                         bool withMips) {
+        return std::make_unique<UpdateBackendTextureMutator>(reporter, recorder, withMips);
+    }
+
+    UpdateBackendTextureMutator(skiatest::Reporter* reporter, Recorder* recorder, bool withMips)
+            : Mutator(reporter, recorder, withMips) {
+    }
+    ~UpdateBackendTextureMutator() override {
+        fRecorder->deleteBackendTexture(fBETexture);
+    }
+
+    std::unique_ptr<Recording> init(const Caps* caps) override {
+
+        // Note: not renderable
+        TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                              fWithMips ? Mipmapped::kYes
+                                                                        : Mipmapped::kNo,
+                                                              skgpu::Protected::kNo,
+                                                              Renderable::kNo);
+        REPORTER_ASSERT(fReporter, info.isValid());
+
+        fBETexture = fRecorder->createBackendTexture(kImageSize, info);
+        REPORTER_ASSERT(fReporter, fBETexture.isValid());
+
+        update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
+                               fWithMips, kInitialColor);
+
+        fMutatingImg = SkImage::MakeGraphiteFromBackendTexture(fRecorder,
+                                                               fBETexture,
+                                                               kRGBA_8888_SkColorType,
+                                                               kPremul_SkAlphaType,
+                                                               /* colorSpace= */ nullptr);
+        REPORTER_ASSERT(fReporter, fMutatingImg);
+
+        return fRecorder->snap();
+    }
+
+    std::unique_ptr<Recording> mutate(int mutationIndex) override {
+        update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
+                               fWithMips, kMutationColors[mutationIndex]);
+        return fRecorder->snap();
+    }
+
+    int getCase() const override { return 1; }
+
+private:
+    BackendTexture fBETexture;
+};
+
 // case 2 (Volatile Promise Images)
 class VolatilePromiseImageMutator : public Mutator {
 public:
@@ -437,6 +491,10 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MutableImagesTest, reporter, context) {
 
     for (bool useTwoRecorders : { false, true }) {
         for (bool withMips : { false, true }) {
+            // case 1 (mutating backend texture w/ 1 image)
+            run_test(reporter, context, useTwoRecorders, withMips,
+                     UpdateBackendTextureMutator::Make);
+
             // case 2 (volatile promise image)
             run_test(reporter, context, useTwoRecorders, withMips,
                      VolatilePromiseImageMutator::Make);

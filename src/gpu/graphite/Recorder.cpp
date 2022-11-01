@@ -36,6 +36,8 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+#include <unordered_set>
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
