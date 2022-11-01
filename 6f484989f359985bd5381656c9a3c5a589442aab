@@ -157,6 +157,30 @@
       },
       "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5331e2ef_c4a61ef9",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-01T14:48:02Z",
+      "side": 1,
+      "message": "If we are claiming additional layout rules beyond Apple\u0027s rules, that\u0027s news to me and we should document it a lot more than this comment :) You might be right, though. I wasn\u0027t involved in the initial design of layouts.",
+      "parentUuid": "74aa93b2_937fedbc",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
