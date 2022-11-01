@@ -28387,7 +28387,7 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_os:SP2A.211004.001",
+        "device_os:SP2A.220505.008",
         "device_type:wembley",
         "os:Android",
         "pool:Skia"
@@ -44270,7 +44270,7 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_os:SP2A.211004.001",
+        "device_os:SP2A.220505.008",
         "device_type:wembley",
         "os:Android",
         "pool:Skia"
@@ -44363,7 +44363,7 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_os:SP2A.211004.001",
+        "device_os:SP2A.220505.008",
         "device_type:wembley",
         "os:Android",
         "pool:Skia"
