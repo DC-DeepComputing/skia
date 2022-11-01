@@ -265,7 +265,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
         } else if (result == Result::kFail) {
             // TODO: Support RGB/BGR 101010x, BGRA 1010102 on the GPU.
-            if (readCT != kUnknown_SkColorType) {
+            if (readCT != kUnknown_SkColorType && readAT != kUnknown_SkAlphaType) {
                 ERRORF(reporter,
                        "Read failed. %sSrc CT: %s, Src AT: %s Read CT: %s, Read AT: %s, "
                        "Rect [%d, %d, %d, %d], CS conversion: %d\n",
@@ -334,11 +334,11 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                 SkPixmap unpremulRef(refInfo.makeAlphaType(kUnpremul_SkAlphaType),
                                      ref.addr(),
                                      ref.rowBytes());
-                SkPixmap unpremulSRc(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                SkPixmap unpremulSrc(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
                                      srcPixels.addr(),
                                      srcPixels.rowBytes());
 
-                unpremulSRc.readPixels(unpremulRef, srcReadRect.x(), srcReadRect.y());
+                unpremulSrc.readPixels(unpremulRef, srcReadRect.x(), srcReadRect.y());
             } else {
                 srcPixels.readPixels(ref, srcReadRect.x(), srcReadRect.y());
             }
@@ -390,7 +390,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
     // and full complement of alpha types with one successful read in the loop.
     std::array<bool, kLastEnum_SkColorType + 1> srcCTTestedThoroughly  = {},
                                                 readCTTestedThoroughly = {};
-    for (int sat = 0; sat < kLastEnum_SkAlphaType; ++sat) {
+    for (int sat = 0; sat <= kLastEnum_SkAlphaType; ++sat) {
         const auto srcAT = static_cast<SkAlphaType>(sat);
         if (srcAT == kUnpremul_SkAlphaType && !rules.fAllowUnpremulSrc) {
             continue;
@@ -443,6 +443,12 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
             }
             for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
                 const auto readCT = static_cast<SkColorType>(rct);
+                // ComparePixels will end up converting these types to kUnknown
+                // because there's no corresponding GrColorType, and hence it will fail
+                if (readCT == kRGB_101010x_SkColorType ||
+                    readCT == kBGR_101010x_SkColorType) {
+                    continue;
+                }
                 for (const sk_sp<SkColorSpace>& readCS :
                      {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
                     for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
@@ -461,12 +467,6 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                              kUnknown_SkAlphaType  == readAT)) {
                             continue;
                         }
-
-                        // TODO : fix color and alpha conversion
-                        if (srcPixels.colorType() != readCT || srcAT != readAT) {
-                            continue;
-                        }
-
                         const auto& rects =
                                 srcCTTestedThoroughly[sct] && readCTTestedThoroughly[rct]
                                         ? shortRectArray
@@ -474,10 +474,6 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                         for (const auto& rect : rects) {
                             const auto readInfo = SkImageInfo::Make(rect.width(), rect.height(),
                                                                     readCT, readAT, readCS);
-                            // TODO: fix colorspace conversion
-                            if (srcPixels.colorSpace() != readInfo.colorSpace()) {
-                                continue;
-                            }
                             const SkIPoint offset = rect.topLeft();
                             Result r = runTest(src, srcPixels, readInfo, offset);
                             if (r == Result::kSuccess) {
@@ -532,7 +528,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphite,
             return Result::kExcusedFailure;
         }
 
-        context->asyncReadPixels(image.get(), pixels.colorType(), rect,
+        context->asyncReadPixels(image.get(), pixels.info().colorInfo(), rect,
                                  async_callback, &asyncContext);
         if (!asyncContext.fCalled) {
             context->submit();
@@ -602,7 +598,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
         AsyncContext asyncContext;
         auto rect = SkIRect::MakeSize(pixels.dimensions()).makeOffset(offset);
 
-        context->asyncReadPixels(surface.get(), pixels.colorType(), rect,
+        context->asyncReadPixels(surface.get(), pixels.info().colorInfo(), rect,
                                  async_callback, &asyncContext);
         if (!asyncContext.fCalled) {
             context->submit();
