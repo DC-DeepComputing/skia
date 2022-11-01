@@ -43,7 +43,8 @@ sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
     }
 
     // TODO: validate that the color type and alpha type are compatible with the target's info
-    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(), colorInfo);
+    SkColorInfo premulColorInfo = colorInfo.makeAlphaType(kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(), premulColorInfo);
     return sk_sp<DrawContext>(new DrawContext(std::move(target), imageInfo, props));
 }
 
