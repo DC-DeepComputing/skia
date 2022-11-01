@@ -12,7 +12,11 @@
 #include "src/image/SkSurface_Base.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include <atomic>
+
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+
+std::atomic<bool> gSkLegacyLocalMatrixConcatOrder {false};
 
 #include <log/log.h>
 
@@ -50,7 +54,7 @@ SkCanvas* SkAndroidFrameworkUtils::getBaseWrappedCanvas(SkCanvas* canvas) {
 }
 
 void SkAndroidFrameworkUtils::UseLegacyLocalMatrixConcatenation() {
-    // Nothing to do yet.
+    gSkLegacyLocalMatrixConcatOrder = true;
 }
 
 bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
