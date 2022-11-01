@@ -39,6 +39,30 @@
       },
       "revId": "6294f16905977e8b41678a6fbc5ef555699e502f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e26d31_f8477db7",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-01T19:49:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2060d62c_8ecd6344",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 268,
+        "endChar": 83
+      },
+      "revId": "6294f16905977e8b41678a6fbc5ef555699e502f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
