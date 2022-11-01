@@ -336,7 +336,7 @@ private:
         // If the op doesn't use subsets, this is ignored. If the op uses subsets and the specific
         // entry does not, this rect will equal kLargeRect, so it automatically has no effect.
         SkRect fSubsetRect;
-        unsigned fAAFlags : 4;
+        unsigned fAAFlags : 5;
 
         GrQuadAAFlags aaFlags() const { return static_cast<GrQuadAAFlags>(fAAFlags); }
     };

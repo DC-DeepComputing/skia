@@ -15,6 +15,7 @@
 #include "src/gpu/ganesh/geometry/GrQuadUtils.h"
 #include "src/gpu/ganesh/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
@@ -756,7 +757,11 @@ public:
                     args.fFragBuilder->appendTextureLookupAndBlend(
                             blendDst, SkBlendMode::kModulate, args.fTexSamplers[0],
                             "texCoord", &fTextureColorSpaceXformHelper);
-                    args.fFragBuilder->codeAppend(");");
+                    const auto tex_uniform =
+                            args.fFragBuilder->getProgramBuilder()->samplerVariable(
+                                    args.fTexSamplers[0]);
+                    args.fFragBuilder->codeAppendf(") * half2(textureSize(%s, 0)).x/1024.0;",
+                                                   tex_uniform);
                 } else {
                     // Saturate is only intended for use with a proxy to account for the fact
                     // that TextureOp skips SkPaint conversion, which normally handles this.
