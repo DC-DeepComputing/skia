@@ -22,6 +22,30 @@
       },
       "revId": "12c3cd3a6c089668a995e2f5c8776b0a8d329846",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceead450_80264985",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-01T21:46:34Z",
+      "side": 1,
+      "message": "Hmm... Then what should we skip?",
+      "parentUuid": "b2e4fdf2_ac989e75",
+      "range": {
+        "startLine": 1030,
+        "startChar": 39,
+        "endLine": 1030,
+        "endChar": 61
+      },
+      "revId": "12c3cd3a6c089668a995e2f5c8776b0a8d329846",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
