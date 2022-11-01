@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "6294f16905977e8b41678a6fbc5ef555699e502f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2060d62c_8ecd6344",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-01T19:32:06Z",
+      "side": 1,
+      "message": "Maybe just update above conditions to always expect kFail if there are true? I believe the code this was copied from in Ganesh was used in a wider class of tests and couldn\u0027t always require failure.",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 268,
+        "endChar": 83
+      },
+      "revId": "6294f16905977e8b41678a6fbc5ef555699e502f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
