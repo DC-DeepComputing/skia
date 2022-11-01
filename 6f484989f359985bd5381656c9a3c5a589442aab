@@ -205,6 +205,30 @@
       },
       "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28a73bee_97bafa23",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-01T15:57:27Z",
+      "side": 1,
+      "message": "Metal does have one uniform-related rule that std430 doesn\u0027t have; it encodes half types in fp16 format.\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/graphite/UniformManagerTest.cpp;l\u003d54-57;drc\u003da5ef003835c77ce0ef6cafe994400fe937031ae2",
+      "parentUuid": "f76a619a_e931e7e3",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
