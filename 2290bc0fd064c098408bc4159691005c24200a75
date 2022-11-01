@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d058f3e_1fa406d0",
+        "filename": "src/sksl/ir/SkSLLayout.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-01T20:50:06Z",
+      "side": 1,
+      "message": "Compare `fTexture` and `fSampler` here now too?",
+      "revId": "2290bc0fd064c098408bc4159691005c24200a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
