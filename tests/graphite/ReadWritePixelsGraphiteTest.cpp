@@ -334,11 +334,11 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                 SkPixmap unpremulRef(refInfo.makeAlphaType(kUnpremul_SkAlphaType),
                                      ref.addr(),
                                      ref.rowBytes());
-                SkPixmap unpremulSRc(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                SkPixmap unpremulSrc(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
                                      srcPixels.addr(),
                                      srcPixels.rowBytes());
 
-                unpremulSRc.readPixels(unpremulRef, srcReadRect.x(), srcReadRect.y());
+                unpremulSrc.readPixels(unpremulRef, srcReadRect.x(), srcReadRect.y());
             } else {
                 srcPixels.readPixels(ref, srcReadRect.x(), srcReadRect.y());
             }
@@ -443,6 +443,12 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
             }
             for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
                 const auto readCT = static_cast<SkColorType>(rct);
+                // ComparePixels will end up converting these types to kUnknown
+                // because there's no corresponding GrColorType, and hence failing
+                if (readCT == kRGB_101010x_SkColorType ||
+                    readCT == kBGR_101010x_SkColorType) {
+                    continue;
+                }
                 for (const sk_sp<SkColorSpace>& readCS :
                      {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
                     for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
@@ -461,12 +467,10 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                              kUnknown_SkAlphaType  == readAT)) {
                             continue;
                         }
-
-                        // TODO : fix color and alpha conversion
-                        if (srcPixels.colorType() != readCT || srcAT != readAT) {
+                        // TODO : fix alpha conversion
+                        if (srcAT != readAT) {
                             continue;
                         }
-
                         const auto& rects =
                                 srcCTTestedThoroughly[sct] && readCTTestedThoroughly[rct]
                                         ? shortRectArray

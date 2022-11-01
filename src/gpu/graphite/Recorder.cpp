@@ -12,6 +12,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/Recording.h"
+#include "src/core/SkConvertPixels.h"
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkRuntimeEffectDictionary.h"
 #include "src/gpu/AtlasTypes.h"
@@ -321,18 +322,17 @@ RecorderPriv::PixelTransferResult RecorderPriv::transferPixels(const TextureProx
 
     PixelTransferResult result;
     result.fTransferBuffer = std::move(buffer);
-/* TODO: color conversion
-    auto at = this->colorInfo().alphaType();
-    if (supportedRead.fColorType != dstCT) {
-        result.fPixelConverter = [w = rect.width(), h = rect.height(), dstCT, supportedRead, at](
+    if (imageInfo.colorType() != dstCT) {
+        result.fPixelConverter = [w = srcRect.width(), h = srcRect.height(), dstCT, imageInfo](
                 void* dst, const void* src) {
-            GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
-            GrImageInfo dstInfo(dstCT,                    at, nullptr, w, h);
-            GrConvertPixels( GrPixmap(dstInfo, dst, dstInfo.minRowBytes()),
-                            GrCPixmap(srcInfo, src, srcInfo.minRowBytes()));
+            SkAlphaType at = imageInfo.alphaType();
+            SkImageInfo srcInfo = SkImageInfo::Make(w, h, imageInfo.colorType(), at);
+            SkImageInfo dstInfo = SkImageInfo::Make(w, h, dstCT, at);
+            SkAssertResult(SkConvertPixels(dstInfo, dst, dstInfo.minRowBytes(),
+                                           srcInfo, src, srcInfo.minRowBytes()));
         };
     }
- */
+
     return result;
 }
 
