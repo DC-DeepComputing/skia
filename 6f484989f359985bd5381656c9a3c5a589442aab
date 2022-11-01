@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b9bfa83_c5dab465",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-01T14:31:03Z",
+      "side": 1,
+      "message": "What\u0027s the motivation for these being the defaults?",
+      "range": {
+        "startLine": 189,
+        "startChar": 3,
+        "endLine": 190,
+        "endChar": 50
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314d0c11_3ebc0620",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-01T14:31:03Z",
+      "side": 1,
+      "message": "If uniforms can have two different layouts, we unfortunately need two different gatherers. Right now this gatherer is used by both ExtractPaintData (which feeds into the `shadingSsboTracker` instance that is configured to use either SSBOs or UBOs based on `caps()-\u003estorageBufferPreferred()`), or ExtractRenderStepData (which always uses UBOs).\n\nAlternatively, since the gatherer (and its UniformManager under the hood) are only long-lived so we can reuse the high-water allocation, we could have resetting allow it to change its layout, so ExtractPaintData() would set the gatherer\u0027s layout and similarly for ExtractRenderStepData. It\u0027s a little more plumbing but I kind of favor that.",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "361b0780_0f9ccd66",
         "filename": "src/gpu/graphite/ResourceTypes.h",
         "patchSetId": 1
@@ -31,6 +77,30 @@
       "writtenOn": "2022-11-01T13:58:32Z",
       "side": 1,
       "message": "I know the comment was here before, but it seems pretty meaningless/zero-value-add to me; maybe we should remove it?",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9e5942_7df0a2d6",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-01T14:31:03Z",
+      "side": 1,
+      "message": "I disagree in this case, I think it\u0027s a useful reminder that we have the ability to change the layout for metal if we need to. W/o such a comment I fear we\u0027d start passively assuming kMetal was hard-speced by Apple.",
+      "parentUuid": "361b0780_0f9ccd66",
       "range": {
         "startLine": 51,
         "startChar": 16,
