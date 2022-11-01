@@ -353,6 +353,7 @@ sksl_spirv_tests = [
   "/sksl/spirv/InterfaceBlockPushConstant.sksl",
   "/sksl/spirv/LayoutMultipleOf4.sksl",
   "/sksl/spirv/LayoutOutOfOrder.sksl",
+  "/sksl/spirv/MakeSampler2D.sksl",
   "/sksl/spirv/OpaqueTypeInArray.sksl",
   "/sksl/spirv/Ossfuzz35916.sksl",
   "/sksl/spirv/Ossfuzz37627.sksl",
