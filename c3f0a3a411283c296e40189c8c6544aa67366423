@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0813f6a_03b3442d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-01T18:45:36Z",
+      "side": 1,
+      "message": "Not landing until https://skia-review.googlesource.com/c/skia-autoroll-internal-config/+/596819 lands and FYI email sent to team.",
+      "revId": "c3f0a3a411283c296e40189c8c6544aa67366423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
