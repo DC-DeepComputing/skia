@@ -22,6 +22,30 @@
       },
       "revId": "8564f4cdef6fb6c6be20ba989a45edfa5581d338",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c112ea04_8934e2a4",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-01T15:41:30Z",
+      "side": 1,
+      "message": "Switched a logging a message.",
+      "parentUuid": "3c38ab80_a9dff8d8",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 48
+      },
+      "revId": "8564f4cdef6fb6c6be20ba989a45edfa5581d338",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
