@@ -87,6 +87,30 @@
       },
       "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87bdeb2d_3228ddbc",
+        "filename": "include/gpu/graphite/Recording.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-01T15:14:46Z",
+      "side": 1,
+      "message": "In an offline discussion we resolved to keep the map since the hash function shouldn\u0027t be invoked many times to the volatile images. Additionally, if we add a container for non-volatile images that are fulfilled at insertion time we will probably want to use a map for them. Having both be maps will make things simpler.",
+      "parentUuid": "1266bcee_89f330dd",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "84b5de862bf9f9927eb0e53f8af31a27a2129dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
