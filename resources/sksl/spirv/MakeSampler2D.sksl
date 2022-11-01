@@ -1,0 +1,11 @@
+texture2D t;
+sampler s;
+
+half4 get_texel(sampler2D s, float2 xy) {
+    return sample(s, xy);
+}
+
+half4 main(float2 xy) {
+    sampler2D unified = makeSampler2D(t, s);
+    return get_texel(unified, xy);
+}
