@@ -16,6 +16,29 @@
       "message": "There\u0027s one skottie test which shows differences: resources/skottie/skottie-motiontile-effect-phase.json\n\nI can look into where that\u0027s coming from.\n\n(you can also repro with dm: dm --config 8888 --src lottie --lotties resources/skottie/ ....)",
       "revId": "efed0fbfef7bebd288d37f02ecb5389e84ca1a91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6e6a75_e20b4971",
+        "filename": "gm/localmatrixshader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-01T14:46:18Z",
+      "side": 1,
+      "message": "nit: scale",
+      "range": {
+        "startLine": 197,
+        "startChar": 10,
+        "endLine": 197,
+        "endChar": 15
+      },
+      "revId": "efed0fbfef7bebd288d37f02ecb5389e84ca1a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
