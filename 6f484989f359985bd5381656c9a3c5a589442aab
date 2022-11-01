@@ -133,6 +133,30 @@
       },
       "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74aa93b2_937fedbc",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-01T14:46:25Z",
+      "side": 1,
+      "message": "But our kMetal is that plus additional rules, if I remember correctly. My understanding had been that the metal layout rules weren\u0027t complete, and so we had to make choices for some of the vector types. Given that it seems even more important to comment that `kMetal` isn\u0027t just Apple\u0027s spec.\n\nOr maybe their spec is complete now, and we should just align to that and be able to claim `kMetal` is exactly the hard-spec.",
+      "parentUuid": "020cdbec_28ffb3f7",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
