@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a66041ba_0e513276",
+        "filename": "src/android/SkAndroidFrameworkUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-01T13:41:59Z",
+      "side": 0,
+      "message": "Android is already calling this and has a unit test to verify that the older API versions use the old behavior.",
+      "range": {
+        "startLine": 52,
+        "startChar": 30,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "f0416658f05792d9d61627e2ad09b2cb4009d590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
