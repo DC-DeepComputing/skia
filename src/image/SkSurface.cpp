@@ -232,6 +232,21 @@ sk_sp<SkImage> SkSurface::makeImageSnapshot(const SkIRect& srcBounds) {
     }
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+sk_sp<SkImage> SkSurface::asImage() {
+    SkASSERT_RELEASE(!asSB(this)->fCachedImage);
+
+    return asSB(this)->onAsImage();
+}
+
+sk_sp<SkImage> SkSurface::makeImageCopy(const SkIRect* subset,
+                                        skgpu::graphite::Mipmapped mipmapped) {
+    SkASSERT_RELEASE(!asSB(this)->fCachedImage);
+
+    return asSB(this)->onMakeImageCopy(subset, mipmapped);
+}
+#endif
+
 sk_sp<SkSurface> SkSurface::makeSurface(const SkImageInfo& info) {
     return asSB(this)->onNewSurface(info);
 }
@@ -433,6 +448,3 @@ sk_sp<SkSurface> SkSurface::MakeNull(int width, int height) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
-
-
-
