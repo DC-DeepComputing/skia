@@ -46,6 +46,30 @@
       },
       "revId": "e3ec13bb8e1705c39eca33390b8403fe483b7d7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f57e7f_08ab23e2",
+        "filename": "src/image/SkSurface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-01T18:21:18Z",
+      "side": 0,
+      "message": "Just to confirm, you\u0027re okay with leaving the virtual call?",
+      "parentUuid": "b8ca741d_91ee1203",
+      "range": {
+        "startLine": 195,
+        "startChar": 30,
+        "endLine": 195,
+        "endChar": 40
+      },
+      "revId": "e3ec13bb8e1705c39eca33390b8403fe483b7d7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
