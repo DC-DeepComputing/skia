@@ -1089,6 +1089,21 @@ private:
 
         example: https://fiddle.skia.org/c/@Path_addOval
     */
+    SkPath& addOval(const SkRect& oval, SkScalar start_angle,
+                    SkPathDirection dir = SkPathDirection::kCW);
+    /** Adds oval to path, appending two arcTo verbs. Oval is upright ellipse bounded by
+        SkRect oval with radii equal to half oval width and half oval height. Oval begins
+        at (oval.centerX() + cos(start_angle) * oval.width() / 2, oval.centerY() +
+        sin(start_angle) * oval.width() / 2) and continues clockwise if dir is
+        kCW_Direction, counterclockwise if dir is kCCW_Direction.
+
+        @param oval         bounds of ellipse added
+        @param start_angle  angle of starting point
+        @param dir          SkPath::Direction to wind ellipse
+        @return             reference to SkPath
+
+        example: https://fiddle.skia.org/c/@Path_addOval
+    */
     SkPath& addOval(const SkRect& oval, SkPathDirection dir = SkPathDirection::kCW);
 
     /** Adds oval to SkPath, appending kMove_Verb, four kConic_Verb, and kClose_Verb.

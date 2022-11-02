@@ -1136,6 +1136,27 @@ SkPath& SkPath::addOval(const SkRect &oval, SkPathDirection dir, unsigned startP
     return *this;
 }
 
+SkPath& SkPath::addOval(const SkRect &oval, SkScalar startAngle, SkPathDirection dir) {
+    assert_known_direction(dir);
+
+    bool isOval = hasOnlyMoveTos();
+
+    SkAutoPathBoundsUpdate apbu(this, oval);
+
+    constexpr SkScalar k180 = SkIntToScalar(180);
+    if (dir == SkPathDirection::kCCW) {
+      this->arcTo(oval, startAngle, k180, false);
+      this->arcTo(oval, startAngle + k180, k180, false);
+    } else {
+      this->arcTo(oval, startAngle, -k180, false);
+      this->arcTo(oval, startAngle - k180, -k180, false);
+    }
+
+    SkPathRef::Editor ed(&fPathRef);
+    ed.setIsOval(isOval, SkPathDirection::kCCW == dir, 0);
+    return *this;
+}
+
 SkPath& SkPath::addCircle(SkScalar x, SkScalar y, SkScalar r, SkPathDirection dir) {
     if (r > 0) {
         this->addOval(SkRect::MakeLTRB(x - r, y - r, x + r, y + r), dir);
