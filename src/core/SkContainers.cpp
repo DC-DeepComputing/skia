@@ -32,7 +32,8 @@ SkSpan<std::byte> complete_size(void* ptr, size_t size) {
 
     // Use the OS specific calls to find the actual capacity.
     #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        // TODO: remove the max, when the chrome implementation of malloc_size doesn't return 0.
+        // TODO: remove the max, when the chrome implementation of malloc_size doesn't
+        //  return 0.
         completeSize = std::max(malloc_size(ptr), size);
     #elif defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 17
         completeSize = malloc_usable_size(ptr);
