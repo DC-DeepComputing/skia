@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0678506_59bef8f0",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T19:47:09Z",
+      "side": 1,
+      "message": "It exists in Clang and we should try to keep it there. Can we disable just in GCC?\n\nhttps://clang.llvm.org/docs/DiagnosticsReference.html#wunreachable-code",
+      "range": {
+        "startLine": 421,
+        "startChar": 56,
+        "endLine": 421,
+        "endChar": 68
+      },
+      "revId": "de9fb4ae7499b62fd74ef99aedf41273b2dfdc02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
