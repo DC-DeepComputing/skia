@@ -433,6 +433,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "748a4ba0_e23ed5d7",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3486,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T22:04:34Z",
+      "side": 1,
+      "message": "You\u0027re right--checking for `const` on the decl flags is necessary--that makes sense. Thanks for clarifying this.\n\nBut `Analysis::IsCompileTimeConstant(*initialValue)` will return false for an initial-value expression of `VarDeclaration PI` so AFAICS this will generate an OpVariable for our `x` decl here, won\u0027t it? \n\nMaybe we don\u0027t actually have a test case that creates a `const` variable whose initial-value is just another `const` variable...? Just to be sure, please try creating a test like like this and check the output:\n\n```\n{\n  const float PI \u003d 3.14;\n  const float x \u003d PI;\n  // Use x in some code to prevent it from being eliminated\n}\n```\n\nUnless I\u0027m confused, this is where you will see the need for this call to `GetConstantValueForVariable`. If we don\u0027t have a test like this today, I think it\u0027s worth adding it.\n\nBTW, do not worry about \"walking the expression tree\" performance re `IsCompileTimeConstant` or `GetConstantValueForVariable`. Both of these calls early-out as soon as they find a mismatch, and the matching trees are just a leaf (Literal/VariableReference) or a 1-deep tree of 2-4 leaves (Constructor[2~4 Literals]). They are realistically a lot closer to O(1) than O(N).",
+      "parentUuid": "92af9dcb_68f9999e",
+      "range": {
+        "startLine": 3485,
+        "startChar": 8,
+        "endLine": 3486,
+        "endChar": 55
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29ad9bc4_a0dbe3fc",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
