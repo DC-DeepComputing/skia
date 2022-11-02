@@ -19,22 +19,41 @@
 namespace skgpu::graphite {
 
 Recording::Recording(std::unique_ptr<TaskGraph> graph,
-                     std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileProxies)
+                     std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
+                     std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies)
         : fGraph(std::move(graph))
-        , fVolatileProxies(std::move(volatileProxies)) {
+        , fNonVolatileLazyProxies(std::move(nonVolatileLazyProxies))
+        , fVolatileLazyProxies(std::move(volatileLazyProxies)) {
 }
 
 Recording::~Recording() {}
 
 ////////////////////////////////////////////////////////////////////////////////
-bool RecordingPriv::hasVolatileProxies() const {
-    return !fRecording->fVolatileProxies.empty();
+bool RecordingPriv::hasNonVolatileLazyProxies() const {
+    return !fRecording->fNonVolatileLazyProxies.empty();
 }
 
-bool RecordingPriv::instantiateVolatileProxies(ResourceProvider* resourceProvider) {
-    SkASSERT(this->hasVolatileProxies());
+bool RecordingPriv::instantiateNonVolatileLazyProxies(ResourceProvider* resourceProvider) {
+    SkASSERT(this->hasNonVolatileLazyProxies());
 
-    for (auto proxy : fRecording->fVolatileProxies) {
+    for (auto proxy : fRecording->fNonVolatileLazyProxies) {
+        if (!proxy->instantiate(resourceProvider)) {
+            return false;
+        }
+    }
+
+    fRecording->fNonVolatileLazyProxies.clear();
+    return true;
+}
+
+bool RecordingPriv::hasVolatileLazyProxies() const {
+    return !fRecording->fVolatileLazyProxies.empty();
+}
+
+bool RecordingPriv::instantiateVolatileLazyProxies(ResourceProvider* resourceProvider) {
+    SkASSERT(this->hasVolatileLazyProxies());
+
+    for (auto proxy : fRecording->fVolatileLazyProxies) {
         if (!proxy->volatileInstantiate(resourceProvider)) {
             return false;
         }
@@ -43,12 +62,12 @@ bool RecordingPriv::instantiateVolatileProxies(ResourceProvider* resourceProvide
     return true;
 }
 
-void RecordingPriv::deinstantiateVolatileProxies() {
-    if (!this->hasVolatileProxies()) {
+void RecordingPriv::deinstantiateVolatileLazyProxies() {
+    if (!this->hasVolatileLazyProxies()) {
         return;
     }
 
-    for (auto proxy : fRecording->fVolatileProxies) {
+    for (auto proxy : fRecording->fVolatileLazyProxies) {
         SkASSERT(proxy->isVolatile());
         proxy->deinstantiate();
     }

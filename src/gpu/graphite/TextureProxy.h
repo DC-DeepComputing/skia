@@ -43,14 +43,14 @@ public:
      * calling patterns. We don't ever want to instantiate a volatile proxy at snap time (with
      * the normal instantiate call) but also only ever want to instantiate volatile proxies
      * at insertion time. The two entry points isolate those two cases. Snap-time 'instantiate'
-     * calls should be wrapped in 'InstantiateIfNonVolatile'
+     * calls should be wrapped in 'InstantiateIfNotLazy'
      */
     bool volatileInstantiate(ResourceProvider*);
     /*
      * For Volatile proxies this will return true. Otherwise, it will return the result of
      * calling instantiate on the texture proxy.
      */
-    static bool InstantiateIfNonVolatile(ResourceProvider*, TextureProxy*);
+    static bool InstantiateIfNotLazy(ResourceProvider*, TextureProxy*);
     bool isInstantiated() const { return SkToBool(fTexture); }
     void deinstantiate();
     sk_sp<Texture> refTexture() const;

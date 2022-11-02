@@ -87,9 +87,9 @@ bool TextureProxy::volatileInstantiate(ResourceProvider* resourceProvider) {
     return true;
 }
 
-bool TextureProxy::InstantiateIfNonVolatile(ResourceProvider* resourceProvider,
+bool TextureProxy::InstantiateIfNotLazy(ResourceProvider* resourceProvider,
                                             TextureProxy* textureProxy) {
-    if (textureProxy->isVolatile()) {
+    if (textureProxy->isLazy()) {
         return true;
     }
 
