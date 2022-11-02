@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d4835b7_5d79e2a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T08:56:48Z",
+      "side": 1,
+      "message": "Yeah, especially since StructsInFunctions did not change at all but I\u0027m guessing the program looks different when run as a RTE. The SPIR-V validation error looks like:\n```\nSPIR-V validation error: CompositeConstruct must appear in a block\n  %126 \u003d OpCompositeConstruct %S_S1_c0 %float_2 %int_3\n\n```\n\nI wonder if this is because I passed `fConstantBuffer` instead `out` to writeExpression, as you also noted. I\u0027m surprised that didn\u0027t actually make a difference in the golden file but it looks like it\u0027s the wrong thing to do regardless. Giving it a try now.",
+      "parentUuid": "1cc68ac6_c8ae899f",
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0aaab3c6_8b022af3",
         "filename": "resources/sksl/spirv/CompileTimeConstantVariables.sksl",
         "patchSetId": 1
@@ -88,6 +106,30 @@
       "writtenOn": "2022-11-02T02:26:55Z",
       "side": 1,
       "message": "Use `out`. The expectation is that this will travel the path of `writeExpression` -\u003e `writeLiteral` -\u003e `writeOpConstant`, and `writeOpConstant` always uses the constant buffer, so the passed-in `out` will probably be ignored. But if something goes not-according-to-plan, we don\u0027t want to accidentally write non-constant ops into the constant buffer.",
+      "range": {
+        "startLine": 2522,
+        "startChar": 62,
+        "endLine": 2522,
+        "endChar": 77
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab2d9d1d_1ca55da8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2522,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T08:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e96e0fe4_7b04fdbf",
       "range": {
         "startLine": 2522,
         "startChar": 62,
