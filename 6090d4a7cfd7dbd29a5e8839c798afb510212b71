@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1bdaa91_6f3ffd20",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-02T17:33:55Z",
+      "side": 1,
+      "message": "Do the tests for this taskdriver need updating? Is it possible to see the StepText from there?",
+      "range": {
+        "startLine": 304,
+        "startChar": 5,
+        "endLine": 304,
+        "endChar": 13
+      },
+      "revId": "6090d4a7cfd7dbd29a5e8839c798afb510212b71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
