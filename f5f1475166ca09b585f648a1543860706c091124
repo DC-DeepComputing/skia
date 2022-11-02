@@ -39,6 +39,30 @@
       },
       "revId": "f5f1475166ca09b585f648a1543860706c091124",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03e5ed8b_384fccc1",
+        "filename": "gm/graphitestart.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-02T17:54:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8134d1f2_dcc7cbb5",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 82,
+        "endChar": 42
+      },
+      "revId": "f5f1475166ca09b585f648a1543860706c091124",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
