@@ -43,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aaf1de6a_193a0040",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T20:49:42Z",
+      "side": 1,
+      "message": "No need to talk about Clang here anymore\n\n\"Causes false positives in old GCC; removed from modern GCC entirely\"",
+      "range": {
+        "startLine": 560,
+        "startChar": 34,
+        "endLine": 560,
+        "endChar": 68
+      },
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff2d0d3d_deda8532",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 2
