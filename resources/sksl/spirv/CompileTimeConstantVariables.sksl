@@ -1,0 +1,20 @@
+const int kConstant = 0;
+const int kOtherConstant = 1;
+const float kFloatConstant = 2.14;
+
+const half4 kConstVec = half4(1, 0.2, kFloatConstant, 1);
+
+layout(set = 0, binding = 0) uniform someUniforms {
+    int value;
+};
+
+half4 main(float2) {
+    const float kLocalFloatConstant = 1.0 + kFloatConstant;
+    if (value == kConstant) {
+        return half4(kFloatConstant);
+    } else if (value == kOtherConstant) {
+        return kConstVec;
+    } else {
+        return half4(kLocalFloatConstant);
+    }
+}
