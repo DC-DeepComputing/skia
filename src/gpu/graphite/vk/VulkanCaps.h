@@ -83,6 +83,7 @@ private:
                                              SkColorType dstColorType) const override {
         return kUnknown_SkColorType;
     }
+
     struct FormatInfo {
         uint32_t colorTypeFlags(SkColorType colorType) const {
             for (int i = 0; i < fColorTypeInfoCount; ++i) {
@@ -120,6 +121,8 @@ private:
 
     static const size_t kNumVkFormats = 22;
     FormatInfo fFormatTable[kNumVkFormats];
+
+    VkFormat getFormatFromColorType(SkColorType) const;
 
     // TODO: Assign real value to fSupportsYcbcrConversion.
     bool fSupportsYcbcrConversion = false;
