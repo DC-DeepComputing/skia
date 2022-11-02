@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2beb3139_7ae2016e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T07:06:48Z",
+      "side": 1,
+      "message": "No, this bulk of this change is still important for generating the correct pointer type when we pass textures/samplers/combined-samplers to helper functions. We need this for both split and combined samplers and to make Tint\u0027s SPIR-V reader happy by matching glslang.\n\nThe part I\u0027m going to abandon is the bit that disallows OpSampledImage-type uniforms and instead apply the same rule to them too (always pass them to user-defined functions as a UniformConstant pointer).",
+      "parentUuid": "3ab7d68a_029b18fd",
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6589c947_27191a04",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
