@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eaa0a56_fbcc71bf",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1662,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T23:56:49Z",
+      "side": 1,
+      "message": "Move this to the end of the comment like below (e.g. \"See getFunctionParameterType for additional details\").",
+      "range": {
+        "startLine": 1662,
+        "startChar": 11,
+        "endLine": 1662,
+        "endChar": 49
+      },
+      "revId": "9aad8ea9bd33b2bd25f2c153b9caabc8de97a35d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45facdf4_2eab0825",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T23:56:49Z",
+      "side": 1,
+      "message": "Do you mean \"which handle opaque arguments\"?",
+      "range": {
+        "startLine": 1666,
+        "startChar": 36,
+        "endLine": 1666,
+        "endChar": 55
+      },
+      "revId": "9aad8ea9bd33b2bd25f2c153b9caabc8de97a35d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a98f5ee_6117578f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T23:56:49Z",
+      "side": 1,
+      "message": "It looks like this always used for global variables? Maybe it could just be `get_storage_class_for_global_variable` and the storage checks could just become an assertion up top. Or is it used more in a followup?",
+      "range": {
+        "startLine": 2162,
+        "startChar": 24,
+        "endLine": 2162,
+        "endChar": 54
+      },
+      "revId": "9aad8ea9bd33b2bd25f2c153b9caabc8de97a35d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
