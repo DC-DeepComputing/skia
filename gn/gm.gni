@@ -9,10 +9,6 @@ _gm = get_path_info("../gm", "abspath")
 gm_sources = [
   "$_gm/3d.cpp",
   "$_gm/aaa.cpp",
-  "$_gm/aaclip.cpp",
-  "$_gm/aarectmodes.cpp",
-  "$_gm/aaxfermodes.cpp",
-  "$_gm/addarc.cpp",
   "$_gm/all_bitmap_configs.cpp",
   "$_gm/alpha_image.cpp",
   "$_gm/alphagradients.cpp",
