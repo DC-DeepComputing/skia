@@ -104,6 +104,7 @@ static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
     set_uniform(&builder, "colorWhite",       SkV4{1, 1, 1, 1});
     set_uniform(&builder, "testInputs",       SkV4{-1.25, 0, 0.75, 2.25});
     set_uniform(&builder, "unknownInput",     1.0f);
+    set_uniform(&builder, "integerInput",     1);
     set_uniform(&builder, "testMatrix2x2",    std::array<float,4>{1, 2,
                                                                   3, 4});
     set_uniform(&builder, "testMatrix3x3",    std::array<float,9>{1, 2, 3,
