@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d3e3236_a98f7991",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T12:50:18Z",
+      "side": 1,
+      "message": "Oh, thanks for the extra info. Now this makes sense actually. \"OpCompositeConstruct float 2, int 3\" is the result from `constructs_a_struct`. Writing a struct goes through `writeCompositeConstructor` -\u003e `writeOpCompositeConstruct`. `writeOpCompositeConstruct` is smart enough to OpConstant-ify vectors and matrices, but for structs there is no smart handling at all and it always uses OpCompositeConstruct. This is totally a \"not-according-to-plan\" path. Using `out` should have fixed it.",
+      "parentUuid": "3d4835b7_5d79e2a6",
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0aaab3c6_8b022af3",
         "filename": "resources/sksl/spirv/CompileTimeConstantVariables.sksl",
         "patchSetId": 1
