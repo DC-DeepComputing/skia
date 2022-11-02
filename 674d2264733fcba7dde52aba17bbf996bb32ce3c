@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b7b3753_1c87158a",
+        "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T20:57:16Z",
+      "side": 0,
+      "message": "Ah, I see. Thanks!",
+      "parentUuid": "bd20e564_6b794ec6",
+      "revId": "674d2264733fcba7dde52aba17bbf996bb32ce3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bf3eafb_5a2c4ecd",
