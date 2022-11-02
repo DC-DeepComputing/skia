@@ -22,6 +22,30 @@
       },
       "revId": "5c32c84185e4f4e405b9b6995b63dab91437dcec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c402e7d_d62ce945",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T17:31:51Z",
+      "side": 1,
+      "message": "Or alternatively\n\n```\n    if (growthFactor \u003e 1.0 \u0026\u0026 capacity \u003e 0) {\n        capacity \u003d this-\u003egrowthFactorCapacity(capacity, growthFactor);\n    }\n\n    return sk_allocate_throw(capacity * fSizeOfT);\n```",
+      "parentUuid": "f8f2743e_5be851f4",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 50
+      },
+      "revId": "5c32c84185e4f4e405b9b6995b63dab91437dcec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
