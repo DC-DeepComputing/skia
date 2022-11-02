@@ -148,6 +148,29 @@
       },
       "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b37968d3_86edfe9e",
+        "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:35:51Z",
+      "side": 1,
+      "message": "^ call to InverseSqrt(-1) not optimized away",
+      "range": {
+        "startLine": 220,
+        "startChar": 27,
+        "endLine": 220,
+        "endChar": 48
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
