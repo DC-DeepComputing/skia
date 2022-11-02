@@ -554,8 +554,16 @@ config("warnings") {
     ]
   }
 
+  # !is_clang is a proxy for gcc.
+  if (!is_clang) {
+    cflags = [
+      "-Wno-unreachable-code",  # Misfeature in GCC and not in clang
+    ]
+  }
+ss
   cflags_objcc += cflags_cc
 }
+
 config("warnings_for_public_headers") {
   if (is_clang) {
     cflags = [
