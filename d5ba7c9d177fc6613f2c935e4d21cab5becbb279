@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ff6cbd_110187c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-02T13:03:52Z",
+      "side": 1,
+      "message": "Android is going to stick with the old behavior for consistency across API versions so updated the change to remove the toggle from SkAndroidFrameworkUtils and just always apply the old order for the framework.",
+      "revId": "d5ba7c9d177fc6613f2c935e4d21cab5becbb279",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
