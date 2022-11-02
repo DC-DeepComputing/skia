@@ -77,6 +77,16 @@ sk_sp<SkShader> create_blend_shader(SkCanvas* destCanvas, SkBlendMode bm) {
                                                 SkTileMode::kRepeat, SkTileMode::kRepeat));
 }
 
+sk_sp<SkColorFilter> create_grayscale_colorfilter() {
+    float matrix[20];
+    memset(matrix, 0, 20 * sizeof(float));
+    matrix[0] = matrix[5] = matrix[10] = 0.2126f;
+    matrix[1] = matrix[6] = matrix[11] = 0.7152f;
+    matrix[2] = matrix[7] = matrix[12] = 0.0722f;
+    matrix[18] = 1.0f;
+    return SkColorFilters::Matrix(matrix);
+}
+
 void draw_image_shader_tile(SkCanvas* canvas, SkRect clipRect) {
     SkPaint p;
     p.setShader(create_image_shader(canvas, SkTileMode::kClamp, SkTileMode::kRepeat));
@@ -265,8 +275,9 @@ protected:
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
-        canvas->clipRRect(SkRRect::MakeRectXY(clipRect, 32.f, 32.f), true);
+//        canvas->clipRRect(SkRRect::MakeRectXY(clipRect, 32.f, 32.f), true);
 
+#if 0
         // Upper-left corner
         draw_image_shader_tile(canvas, SkRect::MakeXYWH(0, 0, kTileWidth, kTileHeight));
 
@@ -294,14 +305,28 @@ protected:
             SkRect r = SkRect::MakeXYWH(kTileWidth, kTileHeight, kTileWidth, kTileHeight);
             canvas->drawRect(r.makeInset(1.0f, 1.0f), p);
         }
+#endif
 
         // Middle-right tile
         {
-            // <add tile here>
+            sk_sp<SkImage> image(GetResourceAsImage("images/mandrill_128.png"));
+            sk_sp<SkShader> shader;
+
+            if (image) {
+                shader = image->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, {});
+                shader = shader->makeWithColorFilter(create_grayscale_colorfilter());
+            }
+
+            SkPaint p;
+            p.setShader(std::move(shader));
+
+            SkRect r = SkRect::MakeXYWH(2*kTileWidth, kTileHeight, kTileWidth, kTileHeight);
+            canvas->drawRect(r.makeInset(1.0f, 1.0f), p);
         }
 
         canvas->restore();
 
+#if 0
         // Bottom-left corner
 #ifdef SK_GRAPHITE_ENABLED
         // TODO: failing serialize test on Linux, not sure what's going on
@@ -334,6 +359,7 @@ protected:
                 canvas->drawRect(kTile.makeInset(15, 25), circlePaint);
             canvas->restore();
         }
+#endif
     }
 
 private:

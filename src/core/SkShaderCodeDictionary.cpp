@@ -627,6 +627,50 @@ static constexpr char kBlendShaderName[] = "sk_blend_shader";
 static constexpr int kNumBlendShaderChildren = 2;
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kColorFilterShaderName[] = "sk_colorfilter_shader";
+
+static constexpr int kNumColorFilterShaderChildren = 2;
+
+void GenerateColorFilterShaderPreamble(const SkShaderInfo& shaderInfo,
+                                       int* entryIndex,
+                                       const SkPaintParamsKey::BlockReader& reader,
+                                       std::string* preamble) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+    const SkShaderSnippet* entry = reader.entry();
+    SkASSERT(entry->fNumChildren == kNumColorFilterShaderChildren);
+
+    // Advance over the parent entry.
+    int curEntryIndex = *entryIndex;
+    *entryIndex += 1;
+
+    static constexpr char kUnusedDestColor[] = "half4(1)";
+
+    // Get the shader's evaluation expression.
+    std::string shaderExpr = emit_expression_for_entry(shaderInfo, *entryIndex,
+                                                       {"inColor", kUnusedDestColor, "coords"});
+    // Emit preamble code for the shader.
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    // Get the color filter's evaluation expression.
+    std::string colorFilterExpr = emit_expression_for_entry(shaderInfo, *entryIndex,
+                                                            {"shaderColor", kUnusedDestColor, "coords"});
+    // Emit preamble code for color filter.
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    /**
+     */
+    std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, curEntryIndex);
+    SkSL::String::appendf(preamble,
+                          "half4 %s(half4 inColor, half4 destColor, float2 coords) {"
+                          "half4 shaderColor = %s;"
+                          "return %s;"
+                          "}",
+                          helperFnName.c_str(),
+                          shaderExpr.c_str(),
+                          colorFilterExpr.c_str());
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+}
+//--------------------------------------------------------------------------------------------------
 static constexpr char kRuntimeShaderName[] = "RuntimeEffect";
 
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
@@ -1274,6 +1318,18 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNumBlendShaderChildren,
+            { }      // no data payload
+    };
+
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kColorFilterShader] = {
+            "ColorFilterShader",
+            {},      // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kColorFilterShaderName,
+            GenerateDefaultExpression,
+            GenerateColorFilterShaderPreamble,
+            kNumColorFilterShaderChildren,
             { }      // no data payload
     };
 
