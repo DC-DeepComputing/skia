@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "661335bb_7259b437",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T21:48:16Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "5eb11aa8_9cd4d762",
+      "range": {
+        "startLine": 218,
+        "startChar": 22,
+        "endLine": 218,
+        "endChar": 38
+      },
+      "revId": "1dd2bbfbb5ee0a7526d2edd6ccf0bcbd254adb6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2c5c338_cb3b1b21",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c922184_54cd841c",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T21:48:16Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "a2c5c338_cb3b1b21",
+      "range": {
+        "startLine": 236,
+        "startChar": 12,
+        "endLine": 236,
+        "endChar": 93
+      },
+      "revId": "1dd2bbfbb5ee0a7526d2edd6ccf0bcbd254adb6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d59567b5_9b24d4d9",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-11-02T20:54:04Z",
       "side": 0,
       "message": "This bug is already marked fixed",
+      "range": {
+        "startLine": 258,
+        "startChar": 22,
+        "endLine": 258,
+        "endChar": 27
+      },
+      "revId": "1dd2bbfbb5ee0a7526d2edd6ccf0bcbd254adb6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d04802_eed89767",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T21:48:16Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "d59567b5_9b24d4d9",
       "range": {
         "startLine": 258,
         "startChar": 22,
