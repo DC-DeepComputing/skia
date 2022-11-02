@@ -16,6 +16,23 @@
       "message": "To actually land this we\u0027d have to suppress the MSVC warning (either globally or for FatBits with push/pop) or change the helper Slide subclasses to work as composition rather then inheritance.\n\nThe weird part is that we even get the warning for getDimensions(), which is pure virtual in the base class. Thus FatBitsSlide only has one implementation along either path.\n\nNote that if FillWindowSlide and ClickHandlerSlide were to both override any of the virtual functions in Slide clang gives us an error so this warning isn\u0027t needed to save us from that.",
       "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67cad003_f55d70da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-02T14:53:27Z",
+      "side": 1,
+      "message": "Any thoughts on this? I\u0027m feeling ambivalent. Maybe FillWindowSlide isn\u0027t an important abstraction and slides that want to fill the window can just implement it.",
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
