@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1804f83_4b71e419",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T20:47:15Z",
+      "side": 1,
+      "message": "off",
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff2d0d3d_deda8532",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T20:47:15Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 2
+      },
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
