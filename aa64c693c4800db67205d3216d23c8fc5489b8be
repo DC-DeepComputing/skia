@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e2fc28_88445f3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "Nice codegen improvements! I\u0027m jsut surprised I didn\u0027t notice this earlier when I was looking for low-hanging fruit in our SPIR-V output.",
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aaab3c6_8b022af3",
+        "filename": "resources/sksl/spirv/CompileTimeConstantVariables.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "Any reason not to just make this a runnable test in `shared/`? Seems like it\u0027s 95% of the way there.",
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e96e0fe4_7b04fdbf",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2522,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "Use `out`. The expectation is that this will travel the path of `writeExpression` -\u003e `writeLiteral` -\u003e `writeOpConstant`, and `writeOpConstant` always uses the constant buffer, so the passed-in `out` will probably be ignored. But if something goes not-according-to-plan, we don\u0027t want to accidentally write non-constant ops into the constant buffer.",
+      "range": {
+        "startLine": 2522,
+        "startChar": 62,
+        "endLine": 2522,
+        "endChar": 77
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d58c3b88_7533a7a7",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3482,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "Is this constant-folding or constant propagation? I\u0027d just say \"emit an OpConstant\" to remove any doubt.",
+      "range": {
+        "startLine": 3482,
+        "startChar": 57,
+        "endLine": 3482,
+        "endChar": 70
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "354250f2_840555d5",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3482,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "compile-time constant",
+      "range": {
+        "startLine": 3482,
+        "startChar": 36,
+        "endLine": 3482,
+        "endChar": 45
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52f8deeb_f79c3319",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3486,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "This is just a reimplementation of `GetConstantValueForVariable`. (It is only missing the refkind check and the loop.) Better to use `GetConstantValueForVariable` directly, especially since that\u0027s what the actual replacement logic uses.",
+      "range": {
+        "startLine": 3485,
+        "startChar": 8,
+        "endLine": 3486,
+        "endChar": 55
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29ad9bc4_a0dbe3fc",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3535,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:26:55Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 3529,
+        "startChar": 3,
+        "endLine": 3535,
+        "endChar": 5
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
