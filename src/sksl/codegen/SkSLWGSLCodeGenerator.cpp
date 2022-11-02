@@ -547,20 +547,19 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
     this->write("fn ");
     this->write(f.mangledName());
     this->write("(");
-    const char* separator = "";
+    auto separator = SkSL::String::Separator();
     FunctionDependencies* deps = fRequirements.dependencies.find(&f);
     if (deps) {
         std::string_view structNamePrefix = pipeline_struct_prefix(fProgram.fConfig->fKind);
         if (structNamePrefix.length() != 0) {
             if ((*deps & FunctionDependencies::kPipelineInputs) != FunctionDependencies::kNone) {
-                separator = ", ";
+                this->write(separator());
                 this->write("_stageIn: ");
                 this->write(structNamePrefix);
                 this->write("In");
             }
             if ((*deps & FunctionDependencies::kPipelineOutputs) != FunctionDependencies::kNone) {
-                this->write(separator);
-                separator = ", ";
+                this->write(separator());
                 this->write("_stageOut: ptr<function, ");
                 this->write(structNamePrefix);
                 this->write("Out>");
@@ -568,8 +567,7 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
         }
     }
     for (const Variable* param : f.parameters()) {
-        this->write(separator);
-        separator = ", ";
+        this->write(separator());
         this->writeName(param->mangledName());
         this->write(": ");
 
@@ -633,16 +631,15 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     // Generate the function call to the user-defined main:
     this->write(main.declaration().mangledName());
     this->write("(");
-    const char* separator = "";
+    auto separator = SkSL::String::Separator();
     FunctionDependencies* deps = fRequirements.dependencies.find(&main.declaration());
     if (deps) {
         if ((*deps & FunctionDependencies::kPipelineInputs) != FunctionDependencies::kNone) {
-            separator = ", ";
+            this->write(separator());
             this->write("_stageIn");
         }
         if ((*deps & FunctionDependencies::kPipelineOutputs) != FunctionDependencies::kNone) {
-            this->write(separator);
-            separator = ", ";
+            this->write(separator());
             this->write("&_stageOut");
         }
     }
@@ -658,8 +655,7 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
                 return;
             }
 
-            this->write(separator);
-            separator = ", ";
+            this->write(separator());
             this->write("_stageIn.sk_FragCoord.xy");
         }
     }
@@ -889,10 +885,9 @@ void WGSLCodeGenerator::writeVariableReference(const VariableReference& r) {
 void WGSLCodeGenerator::writeAnyConstructor(const AnyConstructor& c, Precedence parentPrecedence) {
     this->write(to_wgsl_type(c.type()));
     this->write("(");
-    const char* separator = "";
+    auto separator = SkSL::String::Separator();
     for (const auto& e : c.argumentSpan()) {
-        this->write(separator);
-        separator = ", ";
+        this->write(separator());
         this->writeExpression(*e, Precedence::kSequence);
     }
     this->write(")");

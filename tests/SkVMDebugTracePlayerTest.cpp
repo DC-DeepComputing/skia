@@ -75,10 +75,9 @@ static std::string make_vars_string(
         const SkSL::SkVMDebugTrace& trace,
         const std::vector<SkSL::SkVMDebugTracePlayer::VariableData>& vars) {
     std::string text;
-    const char* separator = "";
+    auto separator = SkSL::String::Separator();
     for (const SkSL::SkVMDebugTracePlayer::VariableData& var : vars) {
-        text += separator;
-        separator = ", ";
+        text += separator();
 
         if (var.fSlotIndex < 0 || (size_t)var.fSlotIndex >= trace.fSlotInfo.size()) {
             text += "???";
