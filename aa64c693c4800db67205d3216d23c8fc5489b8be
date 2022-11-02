@@ -409,6 +409,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92af9dcb_68f9999e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3486,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T21:45:53Z",
+      "side": 1,
+      "message": "Thank you for the clarification, I think it\u0027s very helpful. This makes sense for the rhs of the initial value assignment, which may be a VariableReference but I think the code here still needs to check that the lhs (i.e. the declared variable) has a const modifier. Otherwise the code would eliminate declarations like `float x \u003d PI` which won\u0027t get OpConstant-ified in `writeWriteVariableReference` (as `GetConstantValueOrNullForVariable` will return nullptr for references to `x). Sure enough, I hit assertions on many non-const variables being missing in `fVariableMap` if I don\u0027t explicitly filter for `var-\u003emodifiers().fFlags \u0026 Modifiers::kConst_Flag` here.\n\nGiven that\u0027s necessary, it feels redundant to call `GetConstantValueForVariable` and also call `Analysis::IsCompileTimeConstant` on the initial value (which will also walk the entire expression tree).\n\nI may be missing the complete picture here but I think `GetConstantValueForVariable` would have to also work for a `VarDeclaration` and check the const modifiers for the lhs. I think that may remove the need to call `Analysis::IsCompileTimeConstant` on the initial value. Otherwise simply checking for `if (var-\u003emodifiers().fFlags \u0026 Modifiers::kConst_Flag \u0026\u0026 Analysis::IsCompileTimeConstant(*varDecl.value())) {` here has the same result and keeps the code clear.",
+      "parentUuid": "cda84ba9_d314af91",
+      "range": {
+        "startLine": 3485,
+        "startChar": 8,
+        "endLine": 3486,
+        "endChar": 55
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29ad9bc4_a0dbe3fc",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
