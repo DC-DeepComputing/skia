@@ -418,6 +418,7 @@ config("warnings") {
       "-Wno-maybe-uninitialized",
       "-Wno-psabi",
       "-Wno-unused-parameter",  # Re-enabled for header sources
+      "-Wno-unreachable-code",  # Misfeature in GCC and not in clang
     ]
     cflags_cc += [
       "-Wnon-virtual-dtor",
