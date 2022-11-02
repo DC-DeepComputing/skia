@@ -1,0 +1,27 @@
+const int kConstant = 0;
+const int kOtherConstant = 1;
+const int kAnotherConstant = 2;
+const float kFloatConstant = 2.14;
+const float kFloatConstantAlias = kFloatConstant;
+const half4 kConstVec = half4(1, 0.2, kFloatConstant, 1);
+
+uniform int integerInput;  // The value of this is always 1.
+uniform half4 colorGreen;
+
+half4 main(float2) {
+    const float kLocalFloatConstant = 1.0 + kFloatConstantAlias;
+    const float kLocalFloatConstantAlias = kLocalFloatConstant;
+    if (integerInput == kConstant) {
+        return half4(kFloatConstant);
+    } else if (integerInput == kOtherConstant) {
+        return colorGreen;  // Expect the shader to always take this path.
+    } else if (integerInput == kAnotherConstant) {
+        return kConstVec;
+    } else if (kLocalFloatConstantAlias < colorGreen.x * kLocalFloatConstant) {
+        return half4(kLocalFloatConstantAlias);
+    } else if (kFloatConstantAlias >= colorGreen.x * kFloatConstantAlias) {
+        return half4(0);
+    } else {
+        return half4(1, 0, 0, 1);
+    }
+}
