@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
@@ -36,24 +37,6 @@ VulkanCaps::VulkanCaps(const skgpu::VulkanInterface* vkInterface,
 
 VulkanCaps::~VulkanCaps() {}
 
-TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType,
-                                                     Mipmapped mipmapped,
-                                                     Protected,
-                                                     Renderable) const {
-    return {};
-}
-
-TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                                  Discardable discardable) const {
-    return {};
-}
-
-TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                          uint32_t sampleCount,
-                                                          Protected) const {
-    return {};
-}
-
 // These are all the valid VkFormats that we support in Skia. They are roughly ordered from most
 // frequently used to least to improve look up times in arrays.
 static constexpr VkFormat kVkFormats[] = {
@@ -80,6 +63,60 @@ static constexpr VkFormat kVkFormats[] = {
     VK_FORMAT_R16G16B16A16_UNORM,
     VK_FORMAT_R16G16_SFLOAT,
 };
+
+TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType ct,
+                                                     Mipmapped mipmapped,
+                                                     Protected isProtected,
+                                                     Renderable isRenderable) const {
+    VkFormat format = this->getFormatFromColorType(ct);
+    if (format == VK_FORMAT_UNDEFINED) {
+        return {};
+    }
+
+    VulkanTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = mipmapped;
+    info.fFlags = VK_IMAGE_CREATE_PROTECTED_BIT;
+    info.fFormat = format;
+    info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
+    info.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    info.fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+
+    return info;
+}
+
+TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
+                                                  Discardable discardable) const {
+    const VulkanTextureSpec& singleSpec = singleSampledInfo.vulkanTextureSpec();
+    VulkanTextureInfo info;
+    info.fSampleCount = this->defaultMSAASamples();
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFlags = VK_IMAGE_CREATE_PROTECTED_BIT;
+    info.fFormat = singleSpec.fFormat;
+    info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
+    info.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    info.fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+
+    return info;
+}
+
+TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags> flags,
+                                                          uint32_t sampleCount,
+                                                          Protected isProtected) const {
+    VulkanTextureInfo info;
+    info.fSampleCount = sampleCount;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFlags = VK_IMAGE_CREATE_PROTECTED_BIT;
+    info.fFormat = VulkanDepthStencilFlagsToFormat(flags);
+    info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    info.fImageUsageFlags = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+    info.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    info.fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+
+    return info;
+}
 
 void VulkanCaps::FormatInfo::initSampleCounts(const skgpu::VulkanInterface* interface,
                                               VkPhysicalDevice physDev,
@@ -654,6 +691,12 @@ VulkanCaps::FormatInfo& VulkanCaps::getFormatInfo(VkFormat format) {
     static FormatInfo kInvalidFormat;
     return kInvalidFormat;
 }
+
+VkFormat VulkanCaps::getFormatFromColorType(SkColorType colorType) const {
+    int idx = static_cast<int>(colorType);
+    return fColorTypeToFormatTable[idx];
+}
+
 
 } // namespace skgpu::graphite
 
