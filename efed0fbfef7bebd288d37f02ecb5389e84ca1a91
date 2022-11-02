@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b54d27a_6fb5a7ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-11-02T11:50:09Z",
+      "side": 1,
+      "message": "Found it:\n\n    diff --git a/modules/skottie/src/effects/MotionTileEffect.cpp \n    b/modules/skottie/src/effects/MotionTileEffect.cpp\n    index 971e2df7a8..1edab14c27 100644\n    --- a/modules/skottie/src/effects/MotionTileEffect.cpp\n    +++ b/modules/skottie/src/effects/MotionTileEffect.cpp\n    @@ -93,8 +93,7 @@ protected:\n                 const auto phase_vec \u003d fHorizontalPhase\n                         ? SkVector::Make(tile.width(), 0)\n                         : SkVector::Make(0, tile.height());\n    -            const auto phase_shift \u003d SkVector::Make(phase_vec.fX / layerShaderMatrix.getScaleX(),\n    -                                                    phase_vec.fY / layerShaderMatrix.getScaleY())\n    +            const auto phase_shift \u003d SkVector::Make(phase_vec.fX, phase_vec.fY)\n                                          * std::fmod(fPhase * (1/360.0f), 1);\n                 const auto phase_shader_matrix \u003d SkMatrix::Translate(phase_shift.x(), phase_shift.y());\n\n\nThere are two nested shaders with LMs, and previously we had to work around the ordering issue by inverting a scale.  This definitely has a good smell.",
+      "parentUuid": "76b1b1a8_ab55c172",
+      "revId": "efed0fbfef7bebd288d37f02ecb5389e84ca1a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be6e6a75_e20b4971",
         "filename": "gm/localmatrixshader.cpp",
         "patchSetId": 14
