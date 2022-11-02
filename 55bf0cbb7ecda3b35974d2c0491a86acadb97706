@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb6c89d_b031541c",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-02T20:54:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45acc150_97ab3085",
+      "range": {
+        "startLine": 559,
+        "startChar": 11,
+        "endLine": 559,
+        "endChar": 12
+      },
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aaf1de6a_193a0040",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ba7ef72_e77239cd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-02T20:54:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaf1de6a_193a0040",
+      "range": {
+        "startLine": 560,
+        "startChar": 34,
+        "endLine": 560,
+        "endChar": 68
+      },
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff2d0d3d_deda8532",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-11-02T20:47:15Z",
       "side": 1,
       "message": "?",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 2
+      },
+      "revId": "55bf0cbb7ecda3b35974d2c0491a86acadb97706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b43e361_b471dac1",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-02T20:54:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff2d0d3d_deda8532",
       "range": {
         "startLine": 563,
         "startChar": 0,
