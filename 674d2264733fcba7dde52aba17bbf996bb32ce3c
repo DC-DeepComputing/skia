@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f02b103_f0186933",
+        "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T01:59:18Z",
+      "side": 0,
+      "message": "There are a few files with now eliminated constant variables like this where the source sksl has a comment that says `// should not optimize away` (for example: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/resources/sksl/intrinsics/Inversesqrt.sksl;l\u003d6).\n\nWas this comment was an expectation on the output SPIR-V?",
+      "revId": "674d2264733fcba7dde52aba17bbf996bb32ce3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bf3eafb_5a2c4ecd",
+        "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T01:59:18Z",
+      "side": 0,
+      "message": "Interestingly enough `%negativeVal` (which is a function-scope variable) was getting constant-folded already (it\u0027s not referenced except for the `OpStore %negativeVal %32` instruction above).",
+      "range": {
+        "startLine": 259,
+        "startChar": 40,
+        "endLine": 259,
+        "endChar": 44
+      },
+      "revId": "674d2264733fcba7dde52aba17bbf996bb32ce3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
