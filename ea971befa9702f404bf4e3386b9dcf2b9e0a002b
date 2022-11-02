@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "166e612f_5eb17571",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.asm.frag",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T22:24:44Z",
+      "side": 1,
+      "message": "All constants seem to have been folded as expected.",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 16
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "877c8e6b_4b53d355",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.glsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T22:24:44Z",
+      "side": 1,
+      "message": "This is still present even though it\u0027s never referenced.",
+      "range": {
+        "startLine": 6,
+        "startChar": 12,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f9b4e69_bce11c6a",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-02T22:24:44Z",
+      "side": 1,
+      "message": "This is still present even though it\u0027s never referenced",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
