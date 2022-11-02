@@ -26,6 +26,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLIntrinsicList.h"
 #include "src/sksl/SkSLModifiersPool.h"
@@ -2514,8 +2515,13 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                                                            deviceClockwise)).release(),
                                          out);
         }
-        default:
+        default: {
+            // Constant-fold variables that have a known compile-time value.
+            if (const Expression* expr = ConstantFolder::GetConstantValueOrNullForVariable(ref)) {
+                return this->writeExpression(*expr, fConstantBuffer);
+            }
             return this->getLValue(ref, out)->load(out);
+        }
     }
 
 }
@@ -3471,6 +3477,15 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
     if (this->isDead(*var)) {
         return;
     }
+
+    // If this global variable is a compile-time constant then we'll emit OpConstant or
+    // OpConstantComposite later when the variable is referenced. Avoid declaring an OpVariable now.
+    const Expression* initialValue = varDecl.value().get();
+    if (var->modifiers().fFlags & Modifiers::kConst_Flag && initialValue &&
+        Analysis::IsCompileTimeConstant(*initialValue)) {
+        return;
+    }
+
     SpvStorageClass_ storageClass = get_storage_class(*var, SpvStorageClassPrivate);
     if (storageClass == SpvStorageClassUniform) {
         // Top-level uniforms are emitted in writeUniformBuffer.
@@ -3481,10 +3496,12 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
     const Type& type = var->type();
     SpvId id = this->nextId(&type);
     fVariableMap.set(var, id);
+
     Layout layout = var->modifiers().fLayout;
     if (layout.fSet < 0 && storageClass == SpvStorageClassUniformConstant) {
         layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
     }
+
     SpvId typeId = this->getPointerType(type, storageClass);
     this->writeInstruction(SpvOpVariable, typeId, id, storageClass, fConstantBuffer);
     this->writeInstruction(SpvOpName, id, var->name(), fNameBuffer);
@@ -3507,6 +3524,15 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
 
 void SPIRVCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl, OutputStream& out) {
     const Variable* var = varDecl.var();
+
+    // If this global variable is a constexpr then we'll constant-fold it later when the variable is
+    // referenced. Avoid declaring an OpVariable now.
+    const Expression* initialValue = varDecl.value().get();
+    if (var->modifiers().fFlags & Modifiers::kConst_Flag && initialValue &&
+        Analysis::IsCompileTimeConstant(*initialValue)) {
+        return;
+    }
+
     SpvId id = this->nextId(&var->type());
     fVariableMap.set(var, id);
     SpvId type = this->getPointerType(var->type(), SpvStorageClassFunction);
