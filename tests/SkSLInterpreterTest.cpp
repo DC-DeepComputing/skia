@@ -88,16 +88,18 @@ static void verify_values(skiatest::Reporter* r,
     if (!valid) {
         printf("for program: %s\n", src);
         printf("    expected (");
-        const char* separator = "";
-        for (int i = 0; i < N; ++i) {
-            printf("%s%f", separator, expected[i]);
-            separator = ", ";
+        {
+            auto separator = SkSL::String::Separator();
+            for (int i = 0; i < N; ++i) {
+                printf("%s%f", separator().c_str(), expected[i]);
+            }
         }
         printf("), but received (");
-        separator = "";
-        for (int i = 0; i < N; ++i) {
-            printf("%s%f", separator, actual[i]);
-            separator = ", ";
+        {
+            auto separator = SkSL::String::Separator();
+            for (int i = 0; i < N; ++i) {
+                printf("%s%f", separator().c_str(), actual[i]);
+            }
         }
         printf(")\n");
     }
