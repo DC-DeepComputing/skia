@@ -456,6 +456,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44f43836_1093a314",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3535,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T21:02:26Z",
+      "side": 1,
+      "message": "It\u0027s required to handle `const float x \u003d PI;`. The initialValue here is `VariableReference PI`, not `Literal 3.14`.",
+      "parentUuid": "4160cbcd_6c67b853",
+      "range": {
+        "startLine": 3529,
+        "startChar": 3,
+        "endLine": 3535,
+        "endChar": 5
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b37968d3_86edfe9e",
         "filename": "tests/sksl/intrinsics/Inversesqrt.asm.frag",
         "patchSetId": 1
