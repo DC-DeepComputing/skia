@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e65bdd1b_90ac56c0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2521,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-02T02:41:38Z",
+      "side": 1,
+      "message": "We can land http://review.skia.org/598976 and replace this with a null check.",
+      "range": {
+        "startLine": 2521,
+        "startChar": 16,
+        "endLine": 2521,
+        "endChar": 38
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e96e0fe4_7b04fdbf",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
