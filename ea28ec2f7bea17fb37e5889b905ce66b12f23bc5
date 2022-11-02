@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab81f6a_fff2b430",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-02T19:32:23Z",
+      "side": 1,
+      "message": "PTAL. There was another place in PDF where we were trying to work around the wrong LM order!",
+      "revId": "ea28ec2f7bea17fb37e5889b905ce66b12f23bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
