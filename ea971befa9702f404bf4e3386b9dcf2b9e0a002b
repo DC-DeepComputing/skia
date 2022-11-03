@@ -116,6 +116,30 @@
       },
       "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0757e0c9_26ac90e8",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T14:17:47Z",
+      "side": 1,
+      "message": "OK, I took care of this for you. I found a minor usage bug while I was at it too. PTAL http://review.skia.org/599696 ... rebase on top of that and your global should be eliminated properly.",
+      "parentUuid": "334e90bc_54d49f66",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
