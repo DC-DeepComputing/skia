@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0649c63c_0db201e7",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T16:14:59Z",
+      "side": 1,
+      "message": "Consider using `\\` and line-breaking it here, otherwise at a glance it sort of looks like we\u0027re calling `$$SKSL_MINIFY_EXE` with these arguments rather than calling `$$MINIFY_SCRIPT` with `$$SKSL_MINIFY_EXE` as the first argument",
+      "range": {
+        "startLine": 109,
+        "startChar": 33,
+        "endLine": 109,
+        "endChar": 34
+      },
+      "revId": "fa54851cbd457d7625a1cf718d4eb49500f47beb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
