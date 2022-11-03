@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51c6e28a_3068236b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-03T13:36:16Z",
+      "side": 1,
+      "message": "This is a precursor to removing the matrix tweaking from CPU. Now this GM shows both image pixels in all cases. Afterwards it will only show both in the forward direction, mirroring will repeat a value.",
+      "revId": "8b756fe1ae6ad8a59508bcab19d00deba33bfd72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
