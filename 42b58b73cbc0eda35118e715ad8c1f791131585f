@@ -16,6 +16,24 @@
       "message": "Might delay landing this to get a few traces with the new info.",
       "revId": "42b58b73cbc0eda35118e715ad8c1f791131585f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7fda154_a4c0e9f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-03T19:11:19Z",
+      "side": 1,
+      "message": "That sgtm",
+      "parentUuid": "ad084bb3_f114f891",
+      "revId": "42b58b73cbc0eda35118e715ad8c1f791131585f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
