@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "085914d9_fc9e9228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T21:45:34Z",
+      "side": 1,
+      "message": "According to codesize this is +1K\n\nhttps://codesize.skia.org/binary_diff?binary_name\u003dskottie_tool\u0026compile_task_name\u003dBuild-Debian10-Clang-x86_64-OptimizeForSize\u0026patch_issue\u003d600159\u0026patch_set\u003d1\n\nMaybe the `count()`-based loop is slightly smaller...?",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
