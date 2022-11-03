@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f76900d5_2c68146c",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.glsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T00:13:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "877c8e6b_4b53d355",
+      "range": {
+        "startLine": 6,
+        "startChar": 12,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f9b4e69_bce11c6a",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-11-02T22:24:44Z",
       "side": 1,
       "message": "This is still present even though it\u0027s never referenced",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334e90bc_54d49f66",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T00:13:32Z",
+      "side": 1,
+      "message": "Likely what is happening is that `kFloatConstant` has one reference to it (vardecl `const float kFloatConstantAlias \u003d kFloatConstant`). When we do dead-global elimination, we eliminate that reference. At that point, `kFloatConstant` drops to zero references, but we don\u0027t run the dead-global check a second time.\n\nPTAL\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLCompiler.cpp;l\u003d400;drc\u003d0cbf56d64706de13cc1d79fa708d4fbbfe77e21a\n\nTry changing this line to call `Transform::EliminateDeadGlobalVariables` in a loop until it returns false. Crib from here:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLCompiler.cpp;l\u003d337;drc\u003d0cbf56d64706de13cc1d79fa708d4fbbfe77e21a\n\nSee if that resolves it. I actually noticed this a while back, but we didn\u0027t have any test cases which changed when I added the loop, so I ignored it. The module minifier does have the loop because I wrote that more recently.",
+      "parentUuid": "1f9b4e69_bce11c6a",
       "range": {
         "startLine": 7,
         "startChar": 21,

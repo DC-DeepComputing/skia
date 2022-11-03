@@ -481,6 +481,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93669395_354e00e9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3486,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T00:13:32Z",
+      "side": 1,
+      "message": "Unfortunately I don\u0027t think your test is working as expected.\n\n`kFloatConstantAlias` is only used in a constant-foldable context (`1.0 + kFloatConstantAlias`). This binary expression will be folded into a Literal, and then `kFloatConstantAlias` will be eliminated because it has no references left.\n\n`kLocalFloatConstantAlias` is only used in a constant-foldable context (`half4(kLocalFloatConstantAlias)` will be folded into `half4(Literal)`) and then `kLocalFloatConstantAlias` will be eliminated because it has no references left.\n\nPlease use one of these variables in a way that we can\u0027t possibly fold it, e.g. `if (kFloatConstantAlias \u003d\u003d myUniform)`. If you put it into a foldable expression, it will get hit by the ConstantFolder bat and will likely be simplified out. Using a uniform (or even a non-constant variable!) is an easy way to prevent it from being folded.",
+      "parentUuid": "febf7ecb_f3cae7d8",
+      "range": {
+        "startLine": 3485,
+        "startChar": 8,
+        "endLine": 3486,
+        "endChar": 55
+      },
+      "revId": "aa64c693c4800db67205d3216d23c8fc5489b8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29ad9bc4_a0dbe3fc",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
