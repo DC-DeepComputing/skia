@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da142bee_ce4bb03b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-11-03T13:14:47Z",
+      "side": 1,
+      "message": "Another attempt to avoid this licensing issue...",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
