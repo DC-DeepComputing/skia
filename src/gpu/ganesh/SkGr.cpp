@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/SkGr.h"
 
+#include <iostream>
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
@@ -441,9 +443,11 @@ static inline bool skpaint_to_grpaint_impl(
     std::unique_ptr<GrFragmentProcessor> paintFP;
     const bool gpProvidesShader = shaderFP.has_value() && !*shaderFP;
     if (!primColorBlender || blender_requires_shader(primColorBlender)) {
-        if (shaderFP.has_value()) {
+        if (shaderFP.has_value() && !skPaint.getShader()) {
             paintFP = std::move(*shaderFP);
         } else {
+            if (shaderFP.has_value())
+                std::cout << "shaderFP has value but skpaint has shader as well" << std::endl;
             if (const SkShaderBase* shader = as_SB(skPaint.getShader())) {
                 paintFP = shader->asFragmentProcessor(fpArgs);
                 if (paintFP == nullptr) {
