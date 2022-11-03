@@ -16,13 +16,11 @@ batchMinify = False
 sksl_minify = sys.argv[1]
 shared_module = sys.argv[2]
 public_module = sys.argv[3]
-with open(sys.argv[4], 'r') as reader:
+input_root_dir = sys.argv[4]
+output_root_dir = sys.argv[5]
+# The last arg is a file containing a space seperated list of filenames
+with open(sys.argv[6], 'r') as reader:
     inputs = shlex.split(reader.read())
-
-def pairwise(iterable):
-    # Iterate over an array pairwise (two elements at a time).
-    a = iter(iterable)
-    return zip(a, a)
 
 def executeWorklist(input, worklist):
     # Invoke sksl-minify, passing in the worklist.
@@ -42,21 +40,16 @@ def executeWorklist(input, worklist):
 
 worklist = tempfile.NamedTemporaryFile(suffix='.worklist', delete=False, mode='w')
 
-# The `inputs` array pairs off input files with their matching output directory, e.g.:
-#     //skia/resources/sksl/shared/HelloWorld.rts
-#     //skia/tests/sksl/shared/
-#     //skia/resources/sksl/intrinsics/Abs.rts
-#     //skia/tests/sksl/intrinsics/
-#     ... (etc) ...
 # Here we loop over these inputs and convert them into a worklist file for sksl-minify.
-for input, targetDir in pairwise(inputs):
+for input in inputs:
+    # Derive the target path (no extension) from the input filename.
+    target = input.replace(input_root_dir, output_root_dir)
+    target = os.path.splitext(target)[0]
+    if not os.path.isdir(os.path.dirname(target)):
+        os.mkdir(os.path.dirname(target))
+
     noExt, ext = os.path.splitext(input)
     head, tail = os.path.split(noExt)
-
-    if not os.path.isdir(targetDir):
-        os.mkdir(targetDir)
-
-    target = os.path.join(targetDir, tail)
 
     if ext == '.rts':
         worklist.write("--shader\n")
