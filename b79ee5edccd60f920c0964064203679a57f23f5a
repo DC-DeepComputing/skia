@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43def0c1_7114321c",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T17:48:55Z",
+      "side": 1,
+      "message": "We still have two items on one line for some reason?",
+      "range": {
+        "startLine": 112,
+        "startChar": 21,
+        "endLine": 112,
+        "endChar": 22
+      },
+      "revId": "b79ee5edccd60f920c0964064203679a57f23f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
