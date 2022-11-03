@@ -91,12 +91,8 @@ void GrTexture::assertMipmapsNotDirty(const GrTextureEffect& effect) {
                     fMipmapRegenFailureReason);
         }
         GrTextureProxy* proxy = effect.view().asTextureProxy();
-        msg += SkStringPrintf(", proxy status = %d, slated: %d ",
-                              proxy->mipmapsAreDirty(),
-                              proxy->slatedForMipmapRegen());
-        if (proxy->mipmapsAreDirty()) {
-            msg += proxy->mipmapDirtyReport();
-        }
+        msg += ", ";
+        msg += proxy->mipmapDirtyReport();
         msg += SkStringPrintf(" Proxy was %s at effect creation, texture was %s.",
                               effect.proxyDirtyAtCreation(),
                               effect.texMMStatusAtCreation());
