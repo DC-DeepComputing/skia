@@ -51,6 +51,24 @@
       "parentUuid": "513ba239_26743968",
       "revId": "8b756fe1ae6ad8a59508bcab19d00deba33bfd72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "866d7fbf_a154eb32",
+        "filename": "gm/nearesthalfpixelimage.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-11-03T15:15:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b0c22950_98c4d85a",
+      "revId": "8b756fe1ae6ad8a59508bcab19d00deba33bfd72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
