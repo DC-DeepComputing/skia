@@ -22,6 +22,30 @@
       },
       "revId": "fa54851cbd457d7625a1cf718d4eb49500f47beb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb6426a_cb0b63a4",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:48:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0649c63c_0db201e7",
+      "range": {
+        "startLine": 109,
+        "startChar": 33,
+        "endLine": 109,
+        "endChar": 34
+      },
+      "revId": "fa54851cbd457d7625a1cf718d4eb49500f47beb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
