@@ -53,7 +53,7 @@ DEF_TEST(SkRasterPipelineOpts_Any, r) {
         I32 i = sk_unaligned_load<I32>(masks.data());
 
         // Verify that the raster pipeline any() matches expectations.
-        REPORTER_ASSERT(r, SK_OPTS_NS::any(i) == std::any_of(std::begin(masks), std::end(masks),
+        REPORTER_ASSERT(r, SK_OPTS_NS::any(i) == std::any_of(masks.begin(), masks.end(),
                                                              [](int32_t m) { return m != 0; }));
     }
 }
@@ -70,5 +70,33 @@ DEF_TEST(SkRasterPipelineOpts_All, r) {
         // Verify that the raster pipeline all() matches expectations.
         REPORTER_ASSERT(r, SK_OPTS_NS::all(i) == std::all_of(std::begin(masks), std::end(masks),
                                                              [](int32_t m) { return m != 0; }));
+    }
+}
+
+DEF_TEST(SkRasterPipelineOpts_Sin, r) {
+    using F = SK_OPTS_NS::F;
+
+    constexpr float P = SK_ScalarPI;
+    constexpr float tol = 0.00175f;
+    for (float rad = -5*P; rad <= 5*P; rad += 0.1f) {
+        F result = SK_OPTS_NS::sin_(rad);
+        F expected = sk_float_sin(rad);
+        F delta = SK_OPTS_NS::abs_(expected - result);
+
+        REPORTER_ASSERT(r, SK_OPTS_NS::all(delta < tol));
+    }
+}
+
+DEF_TEST(SkRasterPipelineOpts_Cos, r) {
+    using F = SK_OPTS_NS::F;
+
+    constexpr float P = SK_ScalarPI;
+    constexpr float tol = 0.00175f;
+    for (float rad = -5*P; rad <= 5*P; rad += 0.1f) {
+        F result = SK_OPTS_NS::cos_(rad);
+        F expected = sk_float_cos(rad);
+        F delta = SK_OPTS_NS::abs_(expected - result);
+
+        REPORTER_ASSERT(r, SK_OPTS_NS::all(delta < tol));
     }
 }

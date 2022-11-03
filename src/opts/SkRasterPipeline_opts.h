@@ -1360,6 +1360,22 @@ SI F clamp(F v, F limit) {
     return min(max(0, v), inclusive);
 }
 
+SI F sin_(F v) {
+    constexpr float Pi = SK_ScalarPI;
+    F x = fract(v * (0.5f/Pi)) * (2*Pi);
+    I32 neg = x > Pi;
+    x = if_then_else(neg, x - Pi, x);
+
+    F pair = x * (Pi - x);
+    x = 4.0f * pair / ((5*Pi*Pi/4) - pair);
+    x = if_then_else(neg, -x, x);
+    return x;
+}
+
+SI F cos_(F v) {
+    return sin_(v + (SK_ScalarPI/2));
+}
+
 // Used by gather_ stages to calculate the base pointer and a vector of indices to load.
 template <typename T>
 SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, F x, F y) {
