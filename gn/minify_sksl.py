@@ -29,6 +29,7 @@ dependencies = {
 for module in modules:
     try:
         moduleDir, moduleName = os.path.split(os.path.splitext(module)[0])
+        print(moduleDir, moduleName)
         if not os.path.isdir(targetDir):
             os.mkdir(targetDir)
         target = os.path.join(targetDir, moduleName)

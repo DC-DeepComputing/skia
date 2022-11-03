@@ -1,0 +1,131 @@
+load("//bazel:macros.bzl", "exports_files_legacy")
+load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+# https://bazel.build/reference/be/shell#sh_binary
+sh_binary(
+    name = "minify_srcs",
+    srcs = [":sksl_minify_srcs.sh"],
+    data = [
+        ":sksl_minify",
+        ":sksl_minify_srcs.sh",
+        "//src/sksl:sksl_srcs",
+    ],
+)
+
+sh_binary(
+    name = "minify_tests",
+    srcs = [":sksl_minify_tests.sh"],
+    args = [
+    ],
+    data = [
+        ":sksl_minify",
+        ":sksl_minify_tests.sh",
+        "//resources/sksl:test_inputs",
+    ],
+)
+
+cc_binary_with_flags(
+    name = "sksl_minify",
+    srcs = ["SkSLMinify.cpp"],
+    set_flags = {
+        "enable_sksl": ["True"],
+    },
+    deps = [
+        "//:skia_internal",
+        "//tools:get_executable_path",
+        "//tools/skslc:process_worklist",
+    ],
+)
+
+_SKSL_MINIFY_SRCS = """
+# Change into the Skia root directory
+# https://bazel.build/docs/user-manual#running-executables
+cd $$BUILD_WORKSPACE_DIRECTORY
+
+# execpath returns the path to the given label relative to the Skia root.
+# This will be something like:
+#   bazel-out/k8-opt-exec-81C6BA4F/bin/tools/sksl-minify/sksl_minify
+# https://bazel.build/reference/be/make-variables#predefined_label_variables
+SKSL_MINIFY_EXE=$(execpath //tools/sksl-minify:sksl_minify)
+MINIFY_SCRIPT=$(execpath //gn:minify_sksl)
+
+# We then find the absolute path because this is easier to debug and more
+# consistent if the script we are calling changes the working directory.
+# Note the double dollar signs are because we are escaping the dollar sign
+# operator from Bazel (because realpath is a Unix command we want to invoke).
+SKSL_MINIFY_EXE=$$(realpath $$SKSL_MINIFY_EXE)
+MINIFY_SCRIPT=$$(realpath $$MINIFY_SCRIPT)
+
+# Uncomment below to see what this expands into
+# set -x
+
+$$MINIFY_SCRIPT $$SKSL_MINIFY_EXE src/sksl/generated src/sksl/*.sksl
+"""
+
+genrule(
+    name = "create_sksl_minify_srcs_script",
+    outs = ["sksl_minify_srcs.sh"],
+    cmd = "echo '%s' > $@" % _SKSL_MINIFY_SRCS,
+    exec_tools = [
+        ":sksl_minify",
+        "//gn:minify_sksl",
+    ],
+)
+
+_SKSL_MINIFY_TESTS = """
+# Change into the Skia root directory
+# https://bazel.build/docs/user-manual#running-executables
+cd $$BUILD_WORKSPACE_DIRECTORY
+
+# execpath returns the path to the given label relative to the Skia root.
+# This will be something like:
+#   bazel-out/k8-opt-exec-81C6BA4F/bin/tools/sksl-minify/sksl_minify
+# https://bazel.build/reference/be/make-variables#predefined_label_variables
+SKSL_MINIFY_EXE=$(execpath //tools/sksl-minify:sksl_minify)
+MINIFY_SCRIPT=$(execpath //gn:minify_sksl_tests)
+TEST_INPUTS=$(execpath :test_input_list.txt)
+
+# We then find the absolute path because this is easier to debug and more
+# consistent if the script we are calling changes the working directory.
+# Note the double dollar signs are because we are escaping the dollar sign
+# operator from Bazel (because realpath is a Unix command we want to invoke).
+SKSL_MINIFY_EXE=$$(realpath $$SKSL_MINIFY_EXE)
+MINIFY_SCRIPT=$$(realpath $$MINIFY_SCRIPT)
+TEST_INPUTS=$$(realpath $$TEST_INPUTS)
+
+# Uncomment below to see what this expands into
+set -x
+
+$$MINIFY_SCRIPT $$SKSL_MINIFY_EXE src/sksl/sksl_shared.sksl \
+                                  src/sksl/sksl_public.sksl \
+                                  resources tests \
+                                  $$TEST_INPUTS
+"""
+
+genrule(
+    name = "create_sksl_minify_tests_script",
+    outs = ["sksl_minify_tests.sh"],
+    cmd = "echo '%s' > $@" % _SKSL_MINIFY_TESTS,
+    exec_tools = [
+        ":sksl_minify",
+        "//gn:minify_sksl_tests",
+        ":test_input_list.txt",
+    ],
+)
+
+_TEST_INPUT_GENERATION = ""
+
+genrule(
+    name = "enumerate_test_input_list",
+    srcs = ["//resources/sksl:test_inputs"],
+    outs = ["test_input_list.txt"],
+    # Put a space seperated list of file names into the one output
+    # This is done because the list could be quite long and overflow
+    # the command line length
+    # https://bazel.build/reference/be/make-variables#predefined_genrule_variables
+    cmd = "echo $(SRCS) > $@",
+)

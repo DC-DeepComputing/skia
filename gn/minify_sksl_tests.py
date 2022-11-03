@@ -16,13 +16,10 @@ batchMinify = False
 sksl_minify = sys.argv[1]
 shared_module = sys.argv[2]
 public_module = sys.argv[3]
-with open(sys.argv[4], 'r') as reader:
+input_root_dir = sys.argv[4]
+output_root_dir = sys.argv[5]
+with open(sys.argv[6], 'r') as reader:
     inputs = shlex.split(reader.read())
-
-def pairwise(iterable):
-    # Iterate over an array pairwise (two elements at a time).
-    a = iter(iterable)
-    return zip(a, a)
 
 def executeWorklist(input, worklist):
     # Invoke sksl-minify, passing in the worklist.
@@ -49,14 +46,14 @@ worklist = tempfile.NamedTemporaryFile(suffix='.worklist', delete=False, mode='w
 #     //skia/tests/sksl/intrinsics/
 #     ... (etc) ...
 # Here we loop over these inputs and convert them into a worklist file for sksl-minify.
-for input, targetDir in pairwise(inputs):
+for input in inputs:
+    target = input.replace(input_root_dir, output_root_dir)
+    target = os.path.splitext(target)[0]
+    if not os.path.isdir(os.path.dirname(target)):
+        os.mkdir(os.path.dirname(target))
+
     noExt, ext = os.path.splitext(input)
     head, tail = os.path.split(noExt)
-
-    if not os.path.isdir(targetDir):
-        os.mkdir(targetDir)
-
-    target = os.path.join(targetDir, tail)
 
     if ext == '.rts':
         worklist.write("--shader\n")
