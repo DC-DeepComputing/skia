@@ -7,7 +7,75 @@ filegroup(
     visibility = ["//tools/sksl-minify:__pkg__"],
 )
 
+filegroup(
+    name = "sksl_glsl_tests_sources",
+    srcs = [
+        ":sksl_error_tests",
+        ":sksl_folding_tests",
+        ":sksl_glsl_tests",
+        ":sksl_inliner_tests",
+        ":sksl_shared_tests",
+    ],
+    visibility = ["//tools/skslc:__pkg__"],
+)
+
 # TODO(kjlubick,cmumford) remove the globs and generate the .gni files from the Bazel files
+filegroup(
+    name = "sksl_error_tests",
+    srcs = glob(
+        include = [
+            "errors/*.rts",
+            "errors/*.sksl",
+            "errors/*.vert",
+        ],
+        allow_empty = False,
+        exclude = [
+            "errors/Ossfuzz36850.sksl",
+            "errors/Ossfuzz37469.sksl",
+        ],
+    ),
+)
+
+filegroup(
+    name = "sksl_folding_tests",
+    srcs = glob(
+        include = [
+            "folding/*.rtb",
+            "folding/*.rtcf",
+            "folding/*.rts",
+        ],
+    ),
+)
+
+filegroup(
+    name = "sksl_glsl_tests",
+    srcs = glob(
+        include = [
+            "glsl/*.sksl",
+        ],
+    ),
+)
+
+filegroup(
+    name = "sksl_inliner_tests",
+    srcs = glob(
+        include = [
+            "inliner/*.sksl",
+        ],
+    ),
+)
+
+filegroup(
+    name = "sksl_rte_error_tests",
+    srcs = glob(
+        include = [
+            "runtime_errors/*.rtb",
+            "runtime_errors/*.rtcf",
+            "runtime_errors/*.rts",
+        ],
+    ),
+)
+
 filegroup(
     name = "sksl_rte_tests",
     srcs = glob(
@@ -20,12 +88,12 @@ filegroup(
 )
 
 filegroup(
-    name = "sksl_folding_tests",
+    name = "sksl_shared_tests",
     srcs = glob(
         include = [
-            "folding/*.rtb",
-            "folding/*.rtcf",
-            "folding/*.rts",
+            "intrinsics/*.sksl",
+            "shared/*.rtcf",
+            "shared/*.vert",
         ],
     ),
 )
