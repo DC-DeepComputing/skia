@@ -16,6 +16,23 @@
       "message": "This is a precursor to removing the matrix tweaking from CPU. Now this GM shows both image pixels in all cases. Afterwards it will only show both in the forward direction, mirroring will repeat a value.",
       "revId": "8b756fe1ae6ad8a59508bcab19d00deba33bfd72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513ba239_26743968",
+        "filename": "gm/nearesthalfpixelimage.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-11-03T15:10:46Z",
+      "side": 1,
+      "message": "I don\u0027t know whether we actually test in different configs, maybe SkPremultiplyColor(...) to avoid BGRA/RGBA differences?",
+      "revId": "8b756fe1ae6ad8a59508bcab19d00deba33bfd72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
