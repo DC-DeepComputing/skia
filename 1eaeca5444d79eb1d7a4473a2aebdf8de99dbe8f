@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f578c40_f848381f",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-03T17:02:53Z",
+      "side": 1,
+      "message": "This feels like a bit of an awkward place for this since it\u0027s not next to any of the blend blocks. But given the rest of the organization of the block types, there really isn\u0027t a better place for it. \n\nCan we move the `// The KeyHelpers...` single line comment into this multi-line comment, so it\u0027s more clearly part of the comment preface of the header, and then add a line after the comment to separate it from `PassthroughShaderBlock`.\n\nIt might also be good to capture in a TODO after describing the different blocks that if we restructure how the keys are made, the different pairings can be encoded as parent-child relationships and we can go back to a single block type for blenders.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 100
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "639bfe15_4ee5b4a4",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-03T17:02:53Z",
+      "side": 1,
+      "message": "nit: add `const` to this local declaration.",
+      "range": {
+        "startLine": 903,
+        "startChar": 0,
+        "endLine": 903,
+        "endChar": 67
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eefacf4b_759dbd04",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-03T17:02:53Z",
+      "side": 1,
+      "message": "This could be a `const char*` and then the later printf is simplified because we can use `%s` and pass in destColor directly, right?",
+      "range": {
+        "startLine": 913,
+        "startChar": 4,
+        "endLine": 913,
+        "endChar": 20
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df2ad69e_5dbd363d",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-03T17:02:53Z",
+      "side": 1,
+      "message": "Instead of setting this to null when we don\u0027t have a primitive color from the Renderer, can we `SkASSERT(renderer-\u003eemitsPrimitiveColor() \u003d\u003d SkToBool(primitiveBlender))`?",
+      "range": {
+        "startLine": 872,
+        "startChar": 8,
+        "endLine": 872,
+        "endChar": 24
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

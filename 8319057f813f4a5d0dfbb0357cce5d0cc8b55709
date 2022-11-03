@@ -358,6 +358,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f28635d_616fdc3c",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-03T17:02:53Z",
+      "side": 1,
+      "message": "Given priorities, we don\u0027t have any time to move forwards with the improved key/tree building. I think we should land this (pending my minor comments), since it doesn\u0027t seem to greatly increase complexity of the current system, and will help make sure that when we do switch to the new system, we are still matching behavior.\n\nIn the meantime it also gets viewer to work (through red lenses ;) ).",
+      "parentUuid": "1e7e96d9_9d04a304",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "476e47fb_847331cf",
