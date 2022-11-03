@@ -1346,12 +1346,21 @@ SI F clamp(F v, F limit) {
     return min(max(0, v), inclusive);
 }
 
+// Our rasterizer biases upward. That is a rect from 0.5...1.5 fills pixel 1 and not pixel 0.
+// To make an image that is mapped 1:1 with device pixels but at a half pixel offset select every
+// pixel from the src image once we make exact integer pixel sample values round down not up. Note
+// that a mirror mapping will not have this property.
+#if defined(SK_LEGACY_NEAREST_SAMPLE_MATRIX_TWEAK)
+    static c1nstexpr int kImageCoordBias = 0;
+#else
+    static constexpr int kImageCoordBias = -1;
+#endif
+
 // Used by gather_ stages to calculate the base pointer and a vector of indices to load.
 template <typename T>
 SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, F x, F y) {
-    x = clamp(x, ctx->width);
-    y = clamp(y, ctx->height);
-
+    x = clamp(sk_bit_cast<F>(sk_bit_cast<U32>(x) + kImageCoordBias), ctx->width );
+    y = clamp(sk_bit_cast<F>(sk_bit_cast<U32>(y) + kImageCoordBias), ctx->height);
     *ptr = (const T*)ctx->pixels;
     return trunc_(y)*ctx->stride + trunc_(x);
 }
@@ -3495,8 +3504,8 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipeline_GatherCtx* ctx, F x, F y) {
     const F w = sk_bit_cast<float>( sk_bit_cast<uint32_t>(ctx->width ) - 1),
             h = sk_bit_cast<float>( sk_bit_cast<uint32_t>(ctx->height) - 1);
 
-    x = min(max(0, x), w);
-    y = min(max(0, y), h);
+    x = min(max(0, sk_bit_cast<F>(sk_bit_cast<U32>(x) + kImageCoordBias)), w);
+    y = min(max(0, sk_bit_cast<F>(sk_bit_cast<U32>(y) + kImageCoordBias)), h);
 
     *ptr = (const T*)ctx->pixels;
     return trunc_(y)*ctx->stride + trunc_(x);
