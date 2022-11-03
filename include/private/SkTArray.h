@@ -97,10 +97,7 @@ public:
         if (this == &that) {
             return *this;
         }
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
-        fCount = 0;
+        this->clear();
         this->checkRealloc(that.count(), kExactFit);
         fCount = that.fCount;
         this->copy(that.fItemArray);
@@ -122,9 +119,7 @@ public:
     }
 
     ~SkTArray() {
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
+        this->clear();
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
@@ -142,11 +137,7 @@ public:
      */
     void reset(int n) {
         SkASSERT(n >= 0);
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
-        // Set fCount to 0 before calling checkRealloc so that no elements are moved.
-        fCount = 0;
+        this->clear();
         this->checkRealloc(n, kExactFit);
         fCount = n;
         for (int i = 0; i < this->count(); ++i) {
@@ -159,10 +150,7 @@ public:
      */
     void reset(const T* array, int count) {
         SkASSERT(count >= 0);
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
-        fCount = 0;
+        this->clear();
         this->checkRealloc(count, kExactFit);
         fCount = count;
         this->copy(array);
