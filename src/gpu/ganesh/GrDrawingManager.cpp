@@ -58,6 +58,10 @@ GrDrawingManager::GrDrawingManager(GrRecordingContext* rContext,
         , fPathRendererChain(nullptr)
         , fSoftwarePathRenderer(nullptr)
         , fReduceOpsTaskSplitting(reduceOpsTaskSplitting) {
+#if defined(SK_DEBUG)  // Temporarily disabling ops task reordering in debug to see effect on
+                       // crbug.com/1365578
+    const_cast<bool&>(fReduceOpsTaskSplitting) = false;
+#endif
 }
 
 GrDrawingManager::~GrDrawingManager() {
