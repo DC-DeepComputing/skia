@@ -14,6 +14,9 @@
 #include "src/core/SkUtils.h"  // unaligned_{load,store}
 #include <cstdint>
 
+extern size_t gRPTraceX;
+extern size_t gRPTraceY;
+
 // Every function in this file should be marked static and inline using SI.
 #if defined(__clang__)
     #define SI __attribute__((always_inline)) static inline
@@ -64,7 +67,7 @@ struct Ctx {
 };
 
 
-#if !defined(__clang__)
+#if defined(__clang__)
     #define JUMPER_IS_SCALAR
 #elif defined(SK_ARM_HAS_NEON)
     #define JUMPER_IS_NEON
@@ -1127,6 +1130,9 @@ static void start_pipeline(size_t dx, size_t dy, size_t xlimit, size_t ylimit, v
         static void ABI name(size_t tail, void** program, size_t dx, size_t dy,      \
                              F r, F g, F b, F a, F dr, F dg, F db, F da) {           \
             name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);                 \
+            if (dx == gRPTraceX && dy == gRPTraceY) {                                \
+                SkDebugf("%s: [%g %g %g %g], [%g %g %g %g]\n", #name, r, g, b, a, dr, dg, db, da); \
+            }                                                                        \
             auto next = (Stage)load_and_inc(program);                                \
             next(tail,program,dx,dy, r,g,b,a, dr,dg,db,da);                          \
         }                                                                            \

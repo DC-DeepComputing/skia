@@ -1121,6 +1121,24 @@ DEF_SIMPLE_GM_BG(gradients_color_space, canvas, 265, 205, SK_ColorGRAY) {
     }
 }
 
+DEF_SIMPLE_GM_BG(gradients_lch, canvas, 265, 205, SK_ColorGRAY) {
+    using CS = SkGradientShader::Interpolation::ColorSpace;
+
+    SkPoint pts[] = {{0, 0}, {4, 0}};
+    SkColor4f colors[] = {SkColors::kBlue, SkColors::kYellow};
+    colors[1].fA = 0.0f;
+
+    SkPaint p;
+    SkGradientShader::Interpolation interpolation;
+
+    interpolation.fColorSpace = CS::kLCH;
+    p.setShader(SkGradientShader::MakeLinear(pts, colors, SkColorSpace::MakeSRGB(), nullptr, 2,
+                                             SkTileMode::kClamp, interpolation, nullptr));
+    SkDebugf("BEGIN PAINT\n");
+    canvas->drawRect({0, 0, 4, 1}, p);
+    SkDebugf("END PAINT\n");
+}
+
 DEF_SIMPLE_GM_BG(gradients_hue_method, canvas, 285, 105, SK_ColorGRAY) {
     using HM = SkGradientShader::Interpolation::HueMethod;
 

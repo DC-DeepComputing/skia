@@ -15,6 +15,9 @@
 
 #include <algorithm>
 
+size_t gRPTraceX = (size_t)1;
+size_t gRPTraceY = (size_t)0;
+
 bool gForceHighPrecisionRasterPipeline;
 
 SkRasterPipeline::SkRasterPipeline(SkArenaAlloc* alloc) : fAlloc(alloc) {
