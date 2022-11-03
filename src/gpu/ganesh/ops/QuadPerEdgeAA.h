@@ -57,15 +57,20 @@ namespace skgpu::v1::QuadPerEdgeAA {
                 , fLocalQuadType(0)      // kAxisAligned
                 , fIndexBufferOption(0)  // kPictureFramed
                 , fHasLocalCoords(false)
-                , fColorType(0)          // kNone
+                , fColorType(0)  // kNone
                 , fHasSubset(false)
                 , fUsesCoverageAA(false)
                 , fCompatibleWithCoverageAsAlpha(false)
-                , fRequiresGeometrySubset(false) {}
+                , fRequiresGeometrySubset(false)
+                , fIsCompressed(false) {}
 
-        VertexSpec(GrQuad::Type deviceQuadType, ColorType colorType, GrQuad::Type localQuadType,
+        VertexSpec(GrQuad::Type deviceQuadType,
+                   ColorType colorType,
+                   GrQuad::Type localQuadType,
                    bool hasLocalCoords,
-                   Subset subset, GrAAType aa, bool coverageAsAlpha,
+                   Subset subset,
+                   GrAAType aa,
+                   bool coverageAsAlpha,
                    IndexBufferOption indexBufferOption)
                 : fDeviceQuadType(static_cast<unsigned>(deviceQuadType))
                 , fLocalQuadType(static_cast<unsigned>(localQuadType))
@@ -76,7 +81,8 @@ namespace skgpu::v1::QuadPerEdgeAA {
                 , fUsesCoverageAA(aa == GrAAType::kCoverage)
                 , fCompatibleWithCoverageAsAlpha(coverageAsAlpha)
                 , fRequiresGeometrySubset(aa == GrAAType::kCoverage &&
-                                          deviceQuadType > GrQuad::Type::kRectilinear) { }
+                                          deviceQuadType > GrQuad::Type::kRectilinear)
+                , fIsCompressed(false) {}
 
         GrQuad::Type deviceQuadType() const { return static_cast<GrQuad::Type>(fDeviceQuadType); }
         GrQuad::Type localQuadType() const { return static_cast<GrQuad::Type>(fLocalQuadType); }
@@ -129,6 +135,10 @@ namespace skgpu::v1::QuadPerEdgeAA {
         // The geometry subset serves to clip off pixels touched by quads with sharp corners that
         // would otherwise exceed the miter limit for the AA-outset geometry.
         unsigned fRequiresGeometrySubset : 1;
+
+    public:
+        // I'm evil.
+        unsigned fIsCompressed : 1;
     };
 
     // A Tessellator is responsible for processing a series of device+local GrQuads into a VBO,

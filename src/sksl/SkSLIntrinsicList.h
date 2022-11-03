@@ -77,7 +77,7 @@
     SKSL_INTRINSIC(mod)                \
     SKSL_INTRINSIC(normalize)          \
     SKSL_INTRINSIC(notEqual)           \
-    SKSL_INTRINSIC(not)                \
+    SKSL_INTRINSIC(not )               \
     SKSL_INTRINSIC(outerProduct)       \
     SKSL_INTRINSIC(packDouble2x32)     \
     SKSL_INTRINSIC(packHalf2x16)       \
@@ -117,7 +117,8 @@
     SKSL_INTRINSIC(unpackUnorm2x16)    \
     SKSL_INTRINSIC(unpackUnorm4x8)     \
     SKSL_INTRINSIC(width)              \
-    SKSL_INTRINSIC(write)
+    SKSL_INTRINSIC(write)              \
+    SKSL_INTRINSIC(textureSize)
 
 namespace SkSL {
 

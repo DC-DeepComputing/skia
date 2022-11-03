@@ -12,6 +12,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -336,7 +337,7 @@ private:
         // If the op doesn't use subsets, this is ignored. If the op uses subsets and the specific
         // entry does not, this rect will equal kLargeRect, so it automatically has no effect.
         SkRect fSubsetRect;
-        unsigned fAAFlags : 4;
+        unsigned fAAFlags : 5;
 
         GrQuadAAFlags aaFlags() const { return static_cast<GrQuadAAFlags>(fAAFlags); }
     };
@@ -649,6 +650,9 @@ private:
             quad->fEdgeFlags = GrQuadAAFlags::kNone;
             quadCount = 1;
         }
+        if (quad->fEdgeFlags & GrQuadAAFlags::kCompressed_QuadAAFlag) {
+            fIsCompressed = true;
+        }
         fQuads.append(quad->fDevice, {color, subset, quad->fEdgeFlags},  &quad->fLocal);
         if (quadCount > 1) {
             fQuads.append(extra.fDevice, {color, subset, extra.fEdgeFlags}, &extra.fLocal);
@@ -724,13 +728,14 @@ private:
                                char* vertexData) {
         SkASSERT(vertexData);
 
-        SkDEBUGCODE(int totQuadsSeen = 0;)
-        SkDEBUGCODE(int totVerticesSeen = 0;)
-        SkDEBUGCODE(const size_t vertexSize = desc->fVertexSpec.vertexSize();)
-        SkDEBUGCODE(auto startMark{vertexData};)
+        SkDEBUGCODE(int totQuadsSeen = 0;) SkDEBUGCODE(int totVerticesSeen = 0;)
+                SkDEBUGCODE(const size_t vertexSize = desc->fVertexSpec.vertexSize();)
+                        SkDEBUGCODE(auto startMark{vertexData};)
 
-        skgpu::v1::QuadPerEdgeAA::Tessellator tessellator(desc->fVertexSpec, vertexData);
+                                skgpu::v1::QuadPerEdgeAA::Tessellator tessellator(desc->fVertexSpec,
+                                                                                  vertexData);
         for (const auto& op : ChainRange<TextureOpImpl>(texOp)) {
+            uint32_t all_aa_flags = static_cast<uint32_t>(GrQuadAAFlags::kAll);
             auto iter = op.fQuads.iterator();
             for (unsigned p = 0; p < op.fMetadata.fProxyCount; ++p) {
                 const int quadCnt = op.fViewCountPairs[p].fQuadCnt;
@@ -740,6 +745,7 @@ private:
                     SkASSERT(iter.isLocalValid());
                     const ColorSubsetAndAA& info = iter.metadata();
 
+                    all_aa_flags &= iter.metadata().fAAFlags;
                     tessellator.append(iter.deviceQuad(), iter.localQuad(), info.fColor,
                                        info.fSubsetRect, info.aaFlags());
                 }
@@ -755,7 +761,22 @@ private:
             // If quad counts per proxy were calculated correctly, the entire iterator
             // should have been consumed.
             SkASSERT(!iter.next());
+
+            // SkASSERTF(op.fIsCompressed ==
+            //                   ((all_aa_flags &
+            //                     static_cast<uint32_t>(GrQuadAAFlags::kCompressed_QuadAAFlag)) !=
+            //                     0),
+            //           "If any quad uses compressed textures, then all quads must use compressed "
+            //           "textures. IsCompressed: %d. Quad flags: %X",
+            //           op.fIsCompressed,
+            //           all_aa_flags);
         }
+
+        // if (texOp->fIsCompressed) {
+        //     printf("RAMY: Yup, we got a compressed tex.\n");
+        // } else {
+        //     printf("RAMY: Apologies, no compression\n");
+        // }
 
         SkASSERT(desc->totalSizeInBytes() == (size_t)(tessellator.vertexMark() - startMark));
         SkASSERT(totQuadsSeen == desc->fNumTotalQuads);
@@ -854,6 +875,7 @@ private:
         desc->fVertexSpec = VertexSpec(quadType, colorType, srcQuadType, /* hasLocal */ true,
                                        subset, overallAAType, /* alpha as coverage */ true,
                                        indexBufferOption);
+        desc->fVertexSpec.fIsCompressed = true;
 
         SkASSERT(desc->fNumTotalQuads <= skgpu::v1::QuadPerEdgeAA::QuadLimit(indexBufferOption));
     }
@@ -1114,6 +1136,8 @@ private:
     // consider/measure changes with care.
     Desc* fDesc;
     Metadata fMetadata;
+
+    bool fIsCompressed = false;
 
     // This field must go last. When allocating this op, we will allocate extra space to hold
     // additional ViewCountPairs immediately after the op's allocation so we can treat this
