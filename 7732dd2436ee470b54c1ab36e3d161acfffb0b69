@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5af8df_6565e415",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-03T15:50:28Z",
+      "side": 1,
+      "message": "Could you please split out the GN/py changes (which I feel confident reviewing) into a separate CL from the Bazel changes (which I don\u0027t)?",
+      "revId": "7732dd2436ee470b54c1ab36e3d161acfffb0b69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
