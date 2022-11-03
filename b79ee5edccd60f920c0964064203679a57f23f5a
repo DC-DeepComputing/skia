@@ -22,6 +22,30 @@
       },
       "revId": "b79ee5edccd60f920c0964064203679a57f23f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9f69da_6a615400",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T18:17:35Z",
+      "side": 1,
+      "message": "Whoops.",
+      "parentUuid": "43def0c1_7114321c",
+      "range": {
+        "startLine": 112,
+        "startChar": 21,
+        "endLine": 112,
+        "endChar": 22
+      },
+      "revId": "b79ee5edccd60f920c0964064203679a57f23f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
