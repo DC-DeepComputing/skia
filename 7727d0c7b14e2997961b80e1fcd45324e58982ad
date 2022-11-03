@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00b3f35_f800faa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-03T19:47:34Z",
+      "side": 1,
+      "message": "I had this CL sitting around for a long time. I planned to try and fix the sprite blitters before landing it ... but I don\u0027t think that\u0027s necessary (there are already other ways to create out-of-gamut source images).",
+      "revId": "7727d0c7b14e2997961b80e1fcd45324e58982ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
