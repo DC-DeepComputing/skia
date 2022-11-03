@@ -97,9 +97,7 @@ public:
         if (this == &that) {
             return *this;
         }
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
+        this->destroyAll();
         fCount = 0;
         this->checkRealloc(that.count(), kExactFit);
         fCount = that.fCount;
@@ -122,9 +120,7 @@ public:
     }
 
     ~SkTArray() {
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
+        this->destroyAll();
         if (fOwnMemory) {
             sk_free(fItemArray);
         }
@@ -142,9 +138,7 @@ public:
      */
     void reset(int n) {
         SkASSERT(n >= 0);
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
+        this->destroyAll();
         // Set fCount to 0 before calling checkRealloc so that no elements are moved.
         fCount = 0;
         this->checkRealloc(n, kExactFit);
@@ -159,9 +153,7 @@ public:
      */
     void reset(const T* array, int count) {
         SkASSERT(count >= 0);
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
+        this->destroyAll();
         fCount = 0;
         this->checkRealloc(count, kExactFit);
         fCount = count;
@@ -532,6 +524,12 @@ private:
 
     static SkSpan<std::byte> Allocate(int capacity, double growthFactor = 1.0) {
         return SkContainerAllocator{sizeof(T), kMaxCapacity}.allocate(capacity, growthFactor);
+    }
+
+    void destroyAll() {
+        for (int i = 0; i < this->count(); ++i) {
+            (*this)[i].~T();
+        }
     }
 
     void init(int count) {
