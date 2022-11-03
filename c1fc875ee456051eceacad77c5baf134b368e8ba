@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad82050e_956bdba4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:17:15Z",
+      "side": 1,
+      "message": "Yes, I plan to follow up with that.",
+      "parentUuid": "bd007b0c_fc280454",
+      "range": {
+        "startLine": 7,
+        "startChar": 14,
+        "endLine": 7,
+        "endChar": 27
+      },
+      "revId": "c1fc875ee456051eceacad77c5baf134b368e8ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5a3ebf8_c1bc7f42",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-03T16:11:10Z",
       "side": 1,
       "message": "Labeling these with their py script equivalents is a good idea, but if we\u0027re going to do it, let\u0027s do it for all the variables, not just these two. Also it might helper a reader to explain what the labels mean--they\u0027re more likely to think `input_root_dir` is a GN concept, without any additional context.",
+      "range": {
+        "startLine": 721,
+        "startChar": 50,
+        "endLine": 721,
+        "endChar": 51
+      },
+      "revId": "c1fc875ee456051eceacad77c5baf134b368e8ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "237c3fb4_d05e7cfa",
+        "filename": "BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5a3ebf8_c1bc7f42",
       "range": {
         "startLine": 721,
         "startChar": 50,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21a4b064_4331abf1",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b54d8ceb_652f0bd8",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "c1fc875ee456051eceacad77c5baf134b368e8ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "647141f3_aa228716",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95932a46_e397020d",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "647141f3_aa228716",
+      "range": {
+        "startLine": 45,
+        "startChar": 30,
+        "endLine": 45,
+        "endChar": 42
+      },
+      "revId": "c1fc875ee456051eceacad77c5baf134b368e8ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb89712d_f8e4255e",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-11-03T16:11:10Z",
       "side": 1,
       "message": "Let\u0027s put this in a `targetDir` variable so we don\u0027t need to repeat ourselves on the following line",
+      "range": {
+        "startLine": 48,
+        "startChar": 25,
+        "endLine": 48,
+        "endChar": 48
+      },
+      "revId": "c1fc875ee456051eceacad77c5baf134b368e8ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73b2307f_a2d73907",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-03T17:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb89712d_f8e4255e",
       "range": {
         "startLine": 48,
         "startChar": 25,
