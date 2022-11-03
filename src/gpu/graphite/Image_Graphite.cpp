@@ -255,7 +255,7 @@ sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(
         GraphitePromiseImageContext imageContext) {
 
     // Our contract is that we will always call the _image_ release proc even on failure.
-    // We use the helper to convey the imageContext, so we need to ensure make doesn't fail.
+    // We use the helper to convey the imageContext, so we need to ensure Make doesn't fail.
     imageReleaseProc = imageReleaseProc ? imageReleaseProc : [](void*) {};
     auto releaseHelper = skgpu::RefCntedCallback::Make(imageReleaseProc, imageContext);
 
