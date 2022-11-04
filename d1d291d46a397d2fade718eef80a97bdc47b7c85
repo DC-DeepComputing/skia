@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a9bb122_50f2c686",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T14:08:35Z",
+      "side": 1,
+      "message": "The expectation with skslc is that it finds the modules in the current working directory. This seems like it would break that assumption and require that skslc only runs from the root of a full Skia checkout? That\u0027s not good.\n\nMaybe an alternative: we could use the newly-added SkGetExecutablePath and look for modules that are sitting next to the executable, instead of looking in the cwd?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 47
+      },
+      "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
