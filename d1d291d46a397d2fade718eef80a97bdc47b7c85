@@ -22,6 +22,30 @@
       },
       "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd1ed1b_d55737db",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T14:16:04Z",
+      "side": 1,
+      "message": "Why is that not good?\n\nI\u0027ve set this up to impact on the Bazel build, which we know will run from where the executable is. It\u0027s a bit awkward to move executables and files around in Bazel-land, so I\u0027d like to understand why changing the behavior is bad.",
+      "parentUuid": "5a9bb122_50f2c686",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 47
+      },
+      "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
