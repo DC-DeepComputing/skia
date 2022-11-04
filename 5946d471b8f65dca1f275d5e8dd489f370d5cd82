@@ -323,6 +323,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "302dcbe8_4fb2b384",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T15:06:02Z",
+      "side": 1,
+      "message": "I wonder if directly stating `T\u0026` is doing it. What does IWYU think of this:\n\n```\nvoid destroyAll() {\n  for (int i \u003d 0; i \u003c this-\u003ecount(); ++i) {\n    T\u0026 e \u003d (*this)[i];\n    e.~T();\n  }\n}\n```",
+      "parentUuid": "bcc57f39_fb6ca767",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
