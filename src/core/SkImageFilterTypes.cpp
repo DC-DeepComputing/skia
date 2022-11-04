@@ -300,7 +300,9 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
 }
 
 static bool compatible_sampling(const SkSamplingOptions& current,
-                                SkSamplingOptions* next) {
+                                bool current_xform_wont_affect_nearest,
+                                SkSamplingOptions* next,
+                                bool next_xform_wont_affect_nearest) {
     // Both transforms could perform non-trivial sampling, but if they are similar enough we
     // assume performing one non-trivial sampling operation with the concatenated transform will
     // not be visually distinguishable from sampling twice.
@@ -325,6 +327,15 @@ static bool compatible_sampling(const SkSamplingOptions& current,
     } else if (current.filter == SkFilterMode::kLinear && next->filter == SkFilterMode::kLinear) {
         // Assume we can get away with a single bilerp vs. the two
         return true;
+    } else if (next->filter == SkFilterMode::kNearest && current_xform_wont_affect_nearest) {
+        // The next transform and nearest-neighbor filtering isn't impacted by the current transform
+        SkASSERT(current.filter == SkFilterMode::kLinear);
+        return true;
+    } else if (current.filter == SkFilterMode::kNearest && next_xform_wont_affect_nearest) {
+        // The next transform doesn't change the nearest-neighbor filtering of the current transform
+        SkASSERT(next->filter == SkFilterMode::kLinear);
+        *next = current;
+        return true;
     } else {
         // The current or next sampling is nearest neighbor, and will produce visible texels
         // oriented with the current transform; assume this is a desired effect and preserve it.
@@ -344,12 +355,15 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     // We make sure the new sampling is bilerp (default) if the new transform doesn't matter
     // (and assert that the current is bilerp if its transform didn't matter). Bilerp can be
     // maximally combined, so simplifies the logic in compatible_sampling().
-    SkASSERT(!is_nearly_integer_translation(fTransform) || fSamplingOptions == kDefaultSampling);
-    SkSamplingOptions nextSampling = is_nearly_integer_translation(transform)
-            ? kDefaultSampling : sampling;
+    const bool currentXformIsInteger = is_nearly_integer_translation(fTransform);
+    const bool nextXformIsIneger = is_nearly_integer_translation(transform);
+
+    SkASSERT(!currentXformIsInteger || fSamplingOptions == kDefaultSampling);
+    SkSamplingOptions nextSampling = nextXformIsIneger ? kDefaultSampling : sampling;
 
     FilterResult transformed;
-    if (compatible_sampling(fSamplingOptions, &nextSampling)) {
+    if (compatible_sampling(fSamplingOptions, currentXformIsInteger,
+                            &nextSampling, nextXformIsIneger)) {
         // We can concat transforms and 'nextSampling' will be either fSamplingOptions,
         // sampling, or a merged combination depending on the two transforms in play.
         transformed = *this;
