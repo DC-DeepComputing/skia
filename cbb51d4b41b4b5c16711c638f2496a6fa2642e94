@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4092eec_2a726117",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T19:54:11Z",
+      "side": 1,
+      "message": "This now uses a py_binary and makes the change about where .sksl files should be copied.",
+      "revId": "cbb51d4b41b4b5c16711c638f2496a6fa2642e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
