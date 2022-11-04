@@ -51,6 +51,69 @@
       "parentUuid": "67cad003_f55d70da",
       "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fcacace_86cef2f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T15:09:00Z",
+      "side": 1,
+      "message": "LGTM modulo the casting problems on win.",
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "519cae0a_6d42d37d",
+        "filename": "tools/viewer/ClickHandlerSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T15:09:00Z",
+      "side": 1,
+      "message": "SK_ABORT?",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 51,
+        "endChar": 28
+      },
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37eb94bf_3aa61b73",
+        "filename": "tools/viewer/ClickHandlerSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T15:09:00Z",
+      "side": 1,
+      "message": "SK_ABORT?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
