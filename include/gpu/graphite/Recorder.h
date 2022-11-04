@@ -33,6 +33,7 @@ namespace skgpu::graphite {
 class AtlasManager;
 class BackendTexture;
 class Caps;
+class Context;
 class Device;
 class DrawBufferManager;
 class GlobalCache;
@@ -176,6 +177,10 @@ private:
     // This guard is passed to the ResourceCache.
     // TODO: Should we also pass this to Device, DrawContext, and similar classes?
     mutable SingleOwner fSingleOwner;
+
+#if GRAPHITE_TEST_UTILS
+    Context* fOwningContext;
+#endif
 };
 
 } // namespace skgpu::graphite

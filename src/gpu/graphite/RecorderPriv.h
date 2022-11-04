@@ -73,6 +73,11 @@ public:
                                        const SkColorInfo& dstColorInfo,
                                        const SkIRect& srcRect);
 
+#if GRAPHITE_TEST_UTILS
+    // used by the Context that created this Recorder to set a back pointer
+    void setOwningContext(Context*);
+#endif
+
 private:
     explicit RecorderPriv(Recorder* recorder) : fRecorder(recorder) {}
     RecorderPriv& operator=(const RecorderPriv&) = delete;
