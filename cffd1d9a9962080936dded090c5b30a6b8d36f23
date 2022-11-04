@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c29140_5801f8c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-04T19:15:59Z",
+      "side": 1,
+      "message": "FilterResult and image filters are in a bit of an awkward halfway point between using floating point coordinates and integer coordinates. My long term plan is to just use floating point as the ground truth and round to integers when actually doing a rendering operation. This avoids the visible but not-super-large-magnitude errors from rounding at every step in a filter graph. Unfortunately it does introduce the potential for large-magnitude errors when dealing with coordinates that are in the awkward range of higher precision as an int32. \n\nThis change is a little at odds with my recent change to handle `map_rect` for scale+translate matrices in a higher precision. With this CL we are explicitly throwing out a higher-precision result (the manually constructed fLayerBounds from integers) and relying on `map_rect`. Unfortunately, because the origin of the image is part of `fTransform`, it has to be represented as a float, so if that loses precision compared to the integer origin, we were getting out of sync and incorrectly calculating image subsets later on.\n\nI considered adding an additional integer translation, but decided that that would make the overall logic even more complicated for a situation that shouldn\u0027t really matter because outside of a fuzzer, these sorts of filters will always be culled or producing extreme content anyways. Once everything is floating point, if we need to preserve pixel-level precision for larger values, we can switch to doubles.",
+      "revId": "cffd1d9a9962080936dded090c5b30a6b8d36f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
