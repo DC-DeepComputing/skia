@@ -70,6 +70,30 @@
       },
       "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb8b93fd_f7bad128",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T14:20:52Z",
+      "side": 1,
+      "message": "How would you feel about skslc getting a path to where to look for the modules passed in as a flag instead of a hard-coded value?",
+      "parentUuid": "477cb84a_e0e7728f",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 47
+      },
+      "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
