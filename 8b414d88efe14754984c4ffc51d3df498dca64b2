@@ -39,6 +39,30 @@
       },
       "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f1902c_a0d0b097",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T18:13:59Z",
+      "side": 1,
+      "message": "We could indeed emit Python, when that becomes necessary. genrule also allows us to have Windows specific logic (cmd_bat or cmd_ps). \n\nBTW, execpath is a Bazel substitution thing, not a Bash substitution thing.",
+      "parentUuid": "1b649378_b0af976e",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
