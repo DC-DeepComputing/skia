@@ -1,17 +1,18 @@
-load("//bazel:macros.bzl", "exports_files_legacy", "skia_cc_library")
-load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
+load("//bazel:macros.bzl", "exports_files_legacy", "skia_cc_binary_with_flags", "skia_cc_library")
+load(":compile_sksl.bzl", "compile_sksl")
 
 licenses(["notice"])
 
 exports_files_legacy()
 
-cc_binary_with_flags(
+skia_cc_binary_with_flags(
     name = "skslc",
     srcs = [
         "Main.cpp",
     ],
     set_flags = {
         "enable_sksl": ["True"],
+        "enable_sksl_tracing": ["True"],
         "enable_skslc": ["True"],
     },
     deps = [
@@ -27,4 +28,94 @@ skia_cc_library(
     hdrs = ["ProcessWorklist.h"],
     visibility = ["//tools/sksl-minify:__pkg__"],
     deps = ["//:skia_internal"],
+)
+
+filegroup(
+    name = "glsl_tests_with_settings",
+    srcs = [
+        "//resources/sksl:sksl_glsl_settings_tests_sources",
+        "//resources/sksl:sksl_glsl_tests_sources",
+    ],
+)
+
+# Invoke these using:
+#     bazel run //tools/skslc:compile_glsl_tests
+compile_sksl(
+    name = "glsl_tests",
+    inputs = ":glsl_tests_with_settings",
+    lang = "glsl",
+)
+
+compile_sksl(
+    name = "glsl_nosettings_tests",
+    inputs = "//resources/sksl:sksl_glsl_settings_tests_sources",
+    lang = "glsl",
+    settings = "nosettings",
+)
+
+compile_sksl(
+    name = "metal_tests",
+    inputs = "//resources/sksl:sksl_metal_tests_sources",
+    lang = "metal",
+)
+
+compile_sksl(
+    name = "skvm_tests",
+    inputs = "//resources/sksl:sksl_skvm_tests_sources",
+    lang = "skvm",
+)
+
+compile_sksl(
+    name = "stage_tests",
+    inputs = "//resources/sksl:sksl_stage_tests_sources",
+    lang = "stage",
+)
+
+compile_sksl(
+    name = "spirv_tests",
+    inputs = "//resources/sksl:sksl_spirv_tests_sources",
+    lang = "spirv",
+)
+
+compile_sksl(
+    name = "wgsl_tests",
+    inputs = "//resources/sksl:sksl_wgsl_tests_sources",
+    lang = "wgsl",
+)
+
+_SKSL_COMPILE_TESTS = """
+# Change into the Skia root directory
+# https://bazel.build/docs/user-manual#running-executables
+cd $$BUILD_WORKSPACE_DIRECTORY
+
+# execpath returns the path to the given label relative to the Skia root.
+# This will be something like:
+#   bazel-out/k8-opt-exec-81C6BA4F/bin/tools/skslc/skslc
+# https://bazel.build/reference/be/make-variables#predefined_label_variables
+SKSL_COMPILE_EXE=$(execpath //tools/skslc:skslc)
+COMPILE_TESTS_SCRIPT=$(execpath //gn:compile_sksl_tests)
+
+# We then find the absolute path because this is easier to debug and more
+# consistent if the script we are calling changes the working directory.
+# Note the double dollar signs are because we are escaping the dollar sign
+# operator from Bazel (because realpath is a Unix command we want to invoke).
+SKSL_COMPILE_EXE=$$(realpath $$SKSL_COMPILE_EXE)
+COMPILE_TESTS_SCRIPT=$$(realpath $$COMPILE_TESTS_SCRIPT)
+
+# Uncomment below to see what this expands into
+# set -x
+
+$$COMPILE_TESTS_SCRIPT \
+    $$SKSL_COMPILE_EXE \
+    $$@
+"""
+
+genrule(
+    name = "create_sksl_minify_srcs_script",
+    outs = ["sksl_compile_tests.sh"],
+    cmd = "echo '%s' > $@" % _SKSL_COMPILE_TESTS,
+    exec_tools = [
+        ":skslc",
+        "//gn:compile_sksl_tests",
+    ],
 )
