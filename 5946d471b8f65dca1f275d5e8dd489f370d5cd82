@@ -107,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3946170d_e65a517c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T13:38:13Z",
+      "side": 1,
+      "message": "I suspect `SkSL::IRNode` should not #include `SkTArray.h` at all, but it\u0027s not being checked by IWYU at all because there\u0027s no `IRNode.cpp`--it\u0027s header only. I\u0027m testing the theory now.",
+      "parentUuid": "72f9129c_31ca5d6a",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
