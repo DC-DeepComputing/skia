@@ -159,6 +159,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec5a32a_d95a25f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T14:08:19Z",
+      "side": 1,
+      "message": "I changed it to be count() based, and it\u0027s still +1K. I suspect that this is due to hf_frame information, and not the .text. It would be better to track this metric using arm instead of x86_64 since smaller on arm is the target.",
+      "parentUuid": "085914d9_fc9e9228",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e0794a_2120dd09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T14:08:19Z",
+      "side": 1,
+      "message": "I don\u0027t know what happened, but the latest version of the CL seems to be working now. Was it the change of for loop?",
+      "parentUuid": "7f1fc0e4_15f39c80",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
@@ -172,6 +208,30 @@
       "writtenOn": "2022-11-03T21:43:53Z",
       "side": 1,
       "message": "Why parens here?",
+      "range": {
+        "startLine": 530,
+        "startChar": 26,
+        "endLine": 530,
+        "endChar": 27
+      },
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f18763f_c7939e89",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T14:08:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3ff4f9a_2bde5dbf",
       "range": {
         "startLine": 530,
         "startChar": 26,
