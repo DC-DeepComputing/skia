@@ -118,6 +118,30 @@
       },
       "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69013fbe_3e2a92b4",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T15:40:55Z",
+      "side": 1,
+      "message": "Using SkGetExecutablePath from SkSLModuleLoader.cpp is going to require either:\n1) Adding SkGetExecutablePath to the core Skia build (ick)\n2) Make SkGetExecutablePath return a std::string instead of a SkString.\n\nI\u0027m also looking into copying the files into the Bazel exec/working directory, but it appears to make things more complex than I would like.",
+      "parentUuid": "2e1e3f26_62276f65",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 47
+      },
+      "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
