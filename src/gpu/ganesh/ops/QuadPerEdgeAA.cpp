@@ -15,6 +15,7 @@
 #include "src/gpu/ganesh/geometry/GrQuadUtils.h"
 #include "src/gpu/ganesh/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
@@ -756,7 +757,33 @@ public:
                     args.fFragBuilder->appendTextureLookupAndBlend(
                             blendDst, SkBlendMode::kModulate, args.fTexSamplers[0],
                             "texCoord", &fTextureColorSpaceXformHelper);
+                    const auto tex_uniform =
+                            args.fFragBuilder->getProgramBuilder()->samplerVariable(
+                                    args.fTexSamplers[0]);
                     args.fFragBuilder->codeAppend(");");
+                    if (gp.fIsCompressed) {
+                        args.fFragBuilder->codeAppendf(
+                                "\
+                        half4 out_col = %s;\n\
+                        int4 ival = int4(out_col * 255.0);\n\
+                        // a & 128 \n\
+                        if (ival.a >= 128) {\n\
+                          // attempting: b | (g mod 128 << 8) \n\
+                          int x = ival.a + 256 * (ival.g - 128 * (ival.g / 128));\n\
+                          // attempting: r | ((a mod 128) << 8)\n\
+                          int y = ival.r + 256 * (ival.a - 128 * (ival.a / 128));\n\
+                          float2 offset = float2(float(x) / 32767.0 * 2.0 - 1.0, float(y) / 32767.0 * 2.0 - 1.0);\n\
+                          out_col = sample(%s, (float2(texCoord) + offset)).rgba;\n\
+                          // out_col = half4(1,0,0,1);\n\
+                        }\n\
+                        %s = out_col;\n\
+                      ",
+                                args.fOutputColor,
+                                tex_uniform,
+                                args.fOutputColor);
+                    }
+                    // args.fFragBuilder->codeAppendf(") * half2(textureSize(%s, 0)).x/1024.0;",
+                    //                                tex_uniform);
                 } else {
                     // Saturate is only intended for use with a proxy to account for the fact
                     // that TextureOp skips SkPaint conversion, which normally handles this.
@@ -858,6 +885,7 @@ private:
     void initializeAttrs(const VertexSpec& spec) {
         fNeedsPerspective = spec.deviceDimensionality() == 3;
         fCoverageMode = spec.coverageMode();
+        fIsCompressed = spec.fIsCompressed;
 
         if (fCoverageMode == CoverageMode::kWithPosition) {
             if (fNeedsPerspective) {
@@ -913,6 +941,7 @@ private:
     // Should saturate() be called on the color? Only relevant when created with a texture.
     Saturate fSaturate = Saturate::kNo;
     CoverageMode fCoverageMode;
+    bool fIsCompressed;
 
     // Color space will be null and fSampler.isInitialized() returns false when the GP is configured
     // to skip texturing.
