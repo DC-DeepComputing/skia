@@ -28,6 +28,10 @@
 
 #if SKSL_STANDALONE
 
+#if !defined(SKSL_MODULE_PREFIX)
+#define SKSL_MODULE_PREFIX ""
+#endif
+
     // In standalone mode, we load the original SkSL source files. GN is responsible for copying
     // these files from src/sksl/ to the output directory.
     #include <fstream>
@@ -42,7 +46,7 @@
         return moduleSource;
     }
 
-    #define MODULE_DATA(name) #name, load_module_file(#name ".sksl")
+    #define MODULE_DATA(name) #name, load_module_file(SKSL_MODULE_PREFIX #name ".sksl")
 
 #else
 
