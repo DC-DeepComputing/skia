@@ -94,6 +94,30 @@
       },
       "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1e3f26_62276f65",
+        "filename": "bazel/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T15:01:01Z",
+      "side": 1,
+      "message": "I don\u0027t want to change its behavior, no. I would be willing to swap out \"same path as the exe\" instead of \"current working directory,\" but adding a new command line argument makes the tool harder to use.",
+      "parentUuid": "bb8b93fd_f7bad128",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 47
+      },
+      "revId": "d1d291d46a397d2fade718eef80a97bdc47b7c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
