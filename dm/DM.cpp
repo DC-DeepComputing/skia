@@ -1053,6 +1053,7 @@ static Sink* create_via(const SkString& tag, Sink* wrapped) {
 }
 
 static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfigs) {
+    return true;
     SkCommandLineConfigArray configs;
     ParseConfigs(FLAGS_config, &configs);
     AutoreleasePool pool;
