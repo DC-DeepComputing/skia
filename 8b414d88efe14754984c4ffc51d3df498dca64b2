@@ -87,6 +87,30 @@
       },
       "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11aa7837_f1ce5e12",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T19:04:25Z",
+      "side": 1,
+      "message": "I gave the Python script generation a try. It\u0027s so easy, I might as well do it now instead of having to do it later.",
+      "parentUuid": "e11b7d58_bad992c3",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
