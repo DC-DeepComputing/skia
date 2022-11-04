@@ -33,6 +33,24 @@
       "message": "Any thoughts on this? I\u0027m feeling ambivalent. Maybe FillWindowSlide isn\u0027t an important abstraction and slides that want to fill the window can just implement it.",
       "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "485df394_be007161",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-04T14:21:41Z",
+      "side": 1,
+      "message": "I suspect this is true. My read of things is that slide dimensions aren\u0027t *that* important (and basically EVERY slide other than GMSlide probably just wants the window dimensions anyway). We could possibly just put that functionality in the Slide base class, so every slide gets that behavior unless it\u0027s overridden?",
+      "parentUuid": "67cad003_f55d70da",
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
