@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb7d9d2_3325ba7f",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T14:09:10Z",
+      "side": 1,
+      "message": "Doesn\u0027t really belong in this CL, please move to Bazel CL (or remove? I am not sure this is a good idea either way)",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 80
+      },
+      "revId": "d888bce012ce704bed386191691bb25c4a7befe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
