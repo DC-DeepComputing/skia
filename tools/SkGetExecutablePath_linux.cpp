@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -13,13 +13,12 @@
 
 // Note that /proc/self/exe is Linux-specific; this won't work on other UNIX systems.
 
-SkString SkGetExecutablePath() {
-    SkString result(/*text=*/nullptr, PATH_MAX);
-    ssize_t len = readlink("/proc/self/exe", result.data(), result.size() - 1);
+std::string SkGetExecutablePath() {
+    char buff[PATH_MAX];
+    ssize_t len = readlink("/proc/self/exe", buff, PATH_MAX - 1);
     if (len < 0 || static_cast<size_t>(len) >= PATH_MAX - 1) {
-        result.reset();
-    } else {
-        result.resize(len);
+        return "";
     }
-    return result;
+    buff[len] = '\0';
+    return std::string(buff);
 }
