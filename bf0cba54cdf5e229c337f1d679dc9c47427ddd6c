@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c5d18d_b175eeab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-04T19:03:47Z",
+      "side": 1,
+      "message": "I\u0027m actually on the fence about this CL. It does improve the details of the volatile PromiseImage fulfillment clobbering but not by much.",
+      "revId": "bf0cba54cdf5e229c337f1d679dc9c47427ddd6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
