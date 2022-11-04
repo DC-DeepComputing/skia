@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d806900_fe083323",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-04T17:55:03Z",
+      "side": 1,
+      "message": "Interesting to use bazel as more or less a scripting language to build intermediates, but it seems like it would be worse to not have this in build.",
+      "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
