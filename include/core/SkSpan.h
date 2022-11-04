@@ -9,6 +9,7 @@
 #define SkSpan_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 #include <cstddef>
 #include <initializer_list>
@@ -67,6 +68,12 @@ public:
         SkASSERT(ptr || size == 0);  // disallow nullptr + a nonzero size
         SkASSERT(size < kMaxSize);
     }
+    // A convenience constructor for Skia collection types.
+    constexpr SkSpan(T* ptr, int size) : SkSpan{ptr, SkToSizeT(size)} {}
+    // Some counts are uint32_t. This is needed to disambiguate the different constructors.
+    // Only enable on 64-bit machines.
+    template <typename = std::enable_if_t<(sizeof(size_t) > sizeof(uint32_t)), void>>
+    constexpr SkSpan(T* ptr, uint32_t size) : SkSpan{ptr, SkToSizeT(size)} {}
     template <typename U, typename = typename std::enable_if<std::is_same<const U, T>::value>::type>
     constexpr SkSpan(const SkSpan<U>& that) : fPtr(std::data(that)), fSize{std::size(that)} {}
     constexpr SkSpan(const SkSpan& o) = default;
