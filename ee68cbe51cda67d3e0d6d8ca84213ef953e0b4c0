@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "081dc6f1_8d2f1d6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-04T14:15:24Z",
+      "side": 1,
+      "message": "Excellent. One less thing I need in my RP implementation of CSS color-level-4 gradients.",
+      "revId": "ee68cbe51cda67d3e0d6d8ca84213ef953e0b4c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2df24d8b_f4e4a56f",
+        "filename": "tests/SkRasterPipelineOptsTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-04T14:15:24Z",
+      "side": 1,
+      "message": "😎",
+      "range": {
+        "startLine": 86,
+        "startChar": 39,
+        "endLine": 86,
+        "endChar": 42
+      },
+      "revId": "ee68cbe51cda67d3e0d6d8ca84213ef953e0b4c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
