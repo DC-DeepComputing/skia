@@ -22,6 +22,30 @@
       },
       "revId": "cef84c17328c1e4b9d8b3ed03abf4eaaa28741bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3713fe46_34352372",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T13:57:21Z",
+      "side": 1,
+      "message": "This seems like a question for Ben, but I think that the _v should live close to the original definition. If we do consolidate, I would expect that should be a different CL.",
+      "parentUuid": "252c0945_5dba09ab",
+      "range": {
+        "startLine": 451,
+        "startChar": 22,
+        "endLine": 451,
+        "endChar": 51
+      },
+      "revId": "cef84c17328c1e4b9d8b3ed03abf4eaaa28741bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
