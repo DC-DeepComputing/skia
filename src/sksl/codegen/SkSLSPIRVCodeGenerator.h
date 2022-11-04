@@ -446,8 +446,8 @@ private:
     SpvId toComponent(SpvId id, int component);
 
     struct ConditionalOpCounts {
-        size_t numReachableOps;
-        size_t numStoreOps;
+        int numReachableOps;
+        int numStoreOps;
     };
     ConditionalOpCounts getConditionalOpCounts();
     void pruneConditionalOps(ConditionalOpCounts ops);
