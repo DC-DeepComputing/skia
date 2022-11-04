@@ -70,6 +70,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11f3341b_acf3548a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T13:10:32Z",
+      "side": 1,
+      "message": "Adding Ben who knows IWYU stuff a bit better than me.",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f9129c_31ca5d6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T13:10:32Z",
+      "side": 1,
+      "message": "Looking at the logs, I see\nFound covariant return type in SkSL::ConstructorCompound::clone, needs complete type of unique_ptr\u003cclass SkSL::Expression\u003e.\nsrc/sksl/ir/SkSLConstructorCompound.h:46:16: warning: SkTArray is defined in \"include/private/SkTArray.h\", which isn\u0027t directly #included.\n\nThis is a bit puzzling to me because SkSL::Expression doesn\u0027t appear to use SkTArray, but it inherits from SkSLIRNode which includes SkTArray, but I\u0027m not sure where it gets used. I wonder if this is another case of some templating stuff throwing off IWYU?",
+      "parentUuid": "c0fe9d62_3266cd5f",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
