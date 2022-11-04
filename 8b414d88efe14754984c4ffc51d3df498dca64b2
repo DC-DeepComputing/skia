@@ -63,6 +63,30 @@
       },
       "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11b7d58_bad992c3",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T18:27:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "68f1902c_a0d0b097",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
