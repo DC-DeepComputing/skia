@@ -197,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d79fbeaf_6ac355f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T14:10:07Z",
+      "side": 1,
+      "message": "Yep. The for loop is causing this:\n    void destroyAll() {\n        for (T\u0026 e : *this) {\n            e.~T();\n        }\n    }\n    \nis the problem.",
+      "parentUuid": "40e0794a_2120dd09",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
