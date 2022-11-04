@@ -233,6 +233,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d63fce34_b44f093d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T14:14:31Z",
+      "side": 1,
+      "message": "Here\u0027s my working theory: previously, the destroy loop was baked into `~SkTArray`. This CL outlines `destroyAll` into a separate function, so it\u0027s bigger/has eh_frame overhead/etc. Most places never call `reset` or use `operator\u003d`, so they pay the cost of the outlining, but don\u0027t get any savings from deduplication.\n\nIf that theory holds up, maybe it\u0027s actually better to leave the code duplicated, or use `SK_ALWAYS_INLINE`?",
+      "parentUuid": "eec5a32a_d95a25f7",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73c8baf9_ae81be6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T14:14:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e85089aa_e332ea12",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
