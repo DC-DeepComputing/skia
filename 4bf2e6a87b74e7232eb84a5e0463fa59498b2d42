@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce325f3_0192d641",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T17:59:11Z",
+      "side": 1,
+      "message": "Counterproposal: http://review.skia.org/600338",
+      "revId": "4bf2e6a87b74e7232eb84a5e0463fa59498b2d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
