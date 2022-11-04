@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "313fbdbe_5fac012d",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T14:25:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a09b3d97_d8797f9e",
+      "range": {
+        "startLine": 13,
+        "startChar": 26,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "558714f5875384c16eab7f0fb1f82afc6f135ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c2d95ca_4d4a32cf",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-11-04T14:21:11Z",
       "side": 1,
       "message": "^",
+      "range": {
+        "startLine": 473,
+        "startChar": 8,
+        "endLine": 473,
+        "endChar": 23
+      },
+      "revId": "558714f5875384c16eab7f0fb1f82afc6f135ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "424c1a5b_7bdea375",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-04T14:25:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5c2d95ca_4d4a32cf",
       "range": {
         "startLine": 473,
         "startChar": 8,
