@@ -8,9 +8,9 @@
 #ifndef SkGetExecutablePath_DEFINED
 #define SkGetExecutablePath_DEFINED
 
-#include "include/core/SkString.h"
+#include <string>
 
 /** Returns a fully-qualified path to the currently-running executable. */
-SkString SkGetExecutablePath();
+std::string SkGetExecutablePath();
 
 #endif
