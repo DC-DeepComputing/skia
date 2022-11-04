@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ffa3968_69623619",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-04T15:07:55Z",
+      "side": 1,
+      "message": "This flag should only be add if isProtected \u003d\u003d Protected::kYes",
+      "range": {
+        "startLine": 79,
+        "startChar": 18,
+        "endLine": 79,
+        "endChar": 47
+      },
+      "revId": "fd3137e76a94c9f7459c9c325afb3a4660ae5b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "874796f4_8ad96b34",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-04T15:07:55Z",
+      "side": 1,
+      "message": "we always want to default to making textures that also have VK_IMAGE_USAGE_TRANSFER_DST_BIT and VK_IMAGE_USAGE_TRANSFER_SRC_BIT. Additionally if isRenderable is true, we need VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT.\n\nI also think we need to verify that the format is texturable, renderable, etc. because I believe a lot of the callers of this assume the returned TextureInfo will be valid to use",
+      "range": {
+        "startLine": 82,
+        "startChar": 28,
+        "endLine": 82,
+        "endChar": 54
+      },
+      "revId": "fd3137e76a94c9f7459c9c325afb3a4660ae5b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5205a0bf_2ca1a719",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-04T15:07:55Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 95,
+        "startChar": 18,
+        "endLine": 95,
+        "endChar": 47
+      },
+      "revId": "fd3137e76a94c9f7459c9c325afb3a4660ae5b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75105feb_eda5b2ef",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-04T15:07:55Z",
+      "side": 1,
+      "message": "This should be VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT always.\n\nIf discardable is kYes and the caps supports memoryless attachments, then we should also add VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT.\nElse\nwe should require VK_IMAGE_USAGE_TRANSFER_DST_BIT and VK_IMAGE_USAGE_TRANSFER_SRC_BIT.\n\nAgain adding caps checks to make sure all these usages are valid for the format",
+      "range": {
+        "startLine": 98,
+        "startChar": 28,
+        "endLine": 98,
+        "endChar": 54
+      },
+      "revId": "fd3137e76a94c9f7459c9c325afb3a4660ae5b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae01e7a1_71d84510",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-04T15:07:55Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 111,
+        "startChar": 18,
+        "endLine": 111,
+        "endChar": 47
+      },
+      "revId": "fd3137e76a94c9f7459c9c325afb3a4660ae5b29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
