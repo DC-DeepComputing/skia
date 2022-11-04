@@ -79,3 +79,55 @@ skia_cc_library(
     visibility = ["//tests:__pkg__"],
     deps = ["//:skia_internal"],
 )
+
+py_binary(
+    name = "build_workaround_header",
+    srcs = [
+        "build_workaround_header.py",
+    ],
+)
+
+sh_binary(
+    name = "generate_workarounds",
+    srcs = [":generate_workarounds.sh"],
+    args = [
+        "--output-file",
+        "include/gpu/GrDriverBugWorkaroundsAutogen.h",
+        "src/gpu/gpu_workaround_list.txt",
+    ],
+    data = [
+        ":build_workaround_header",
+        ":generate_workarounds.sh",
+    ],
+    tags = ["no-remote"],
+)
+
+_GENERATE_WORKAROUNDS = """
+# Change into the Skia root directory
+# https://bazel.build/docs/user-manual#running-executables
+cd $$BUILD_WORKSPACE_DIRECTORY
+
+# execpath returns the path to the given label relative to the Skia root.
+# This will be something like:
+#   bazel-out/k8-opt-exec-81C6BA4F/bin/tools/build_workaround_header
+# https://bazel.build/reference/be/make-variables#predefined_label_variables
+GENERATE_SCRIPT=$(execpath :build_workaround_header)
+
+# We then find the absolute path because this is easier to debug and more
+# consistent if the script we are calling changes the working directory.
+# Note the double dollar signs are because we are escaping the dollar sign
+# operator from Bazel (because realpath is a Unix command we want to invoke).
+GENERATE_SCRIPT=$$(realpath $$GENERATE_SCRIPT)
+
+# Uncomment below to see what this expands into
+# set -x
+
+$$GENERATE_SCRIPT $$@
+"""
+
+genrule(
+    name = "create_generate_workarounds_script",
+    outs = ["generate_workarounds.sh"],
+    cmd = "echo '%s' > $@" % _GENERATE_WORKAROUNDS,
+    exec_tools = [":build_workaround_header"],
+)
