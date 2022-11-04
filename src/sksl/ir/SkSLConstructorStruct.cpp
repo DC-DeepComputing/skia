@@ -26,10 +26,10 @@ std::unique_ptr<Expression> ConstructorStruct::Convert(const Context& context,
     SkASSERTF(type.isStruct() && type.fields().size() > 0, "%s", type.description().c_str());
 
     // Check that the number of constructor arguments matches the array size.
-    if (type.fields().size() != args.size()) {
+    if (type.fields().size() != SkToSizeT(args.size())) {
         context.fErrors->error(pos,
                                String::printf("invalid arguments to '%s' constructor "
-                                              "(expected %zu elements, but found %zu)",
+                                              "(expected %zu elements, but found %d)",
                                               type.displayName().c_str(), type.fields().size(),
                                               args.size()));
         return nullptr;
@@ -51,7 +51,7 @@ std::unique_ptr<Expression> ConstructorStruct::Convert(const Context& context,
 
 [[maybe_unused]] static bool arguments_match_field_types(const ExpressionArray& args,
                                                          const Type& type) {
-    SkASSERT(type.fields().size() == args.size());
+    SkASSERT(type.fields().size() == SkToSizeT(args.size()));
 
     for (int index = 0; index < args.count(); ++index) {
         const std::unique_ptr<Expression>& argument = args[index];
