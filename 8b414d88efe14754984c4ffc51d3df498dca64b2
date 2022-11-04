@@ -16,6 +16,29 @@
       "message": "Interesting to use bazel as more or less a scripting language to build intermediates, but it seems like it would be worse to not have this in build.",
       "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b649378_b0af976e",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-04T18:04:41Z",
+      "side": 1,
+      "message": "Will this actually work on Windows? (no execpath, among other concerns)\nOur existing stuff generally relies on .py everywhere because it\u0027s cross platform. It seems like this could emit .py as well?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "8b414d88efe14754984c4ffc51d3df498dca64b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
