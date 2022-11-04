@@ -402,7 +402,7 @@ static sk_sp<SkTypeface> DeserializeTypeface(const void* data, size_t length, vo
         SkASSERT(false);
         return nullptr;
     }
-    size_t idx = *reinterpret_cast<const size_t*>(data);
+    int idx = SkToInt(*reinterpret_cast<const size_t*>(data));
     if (idx >= array->size()) {
         SkASSERT(false);
         return nullptr;
