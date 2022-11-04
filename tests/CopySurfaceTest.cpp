@@ -34,6 +34,69 @@
 
 struct GrContextOptions;
 
+#include "include/core/SkColorSpace.h"
+#include "src/gpu/Swizzle.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/SurfaceDrawContext.h"
+#include "src/gpu/ganesh/effects/GrTextureEffect.h"
+
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(JunkTest,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+    auto dc = ctxInfo.directContext();
+    auto bef = dc->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888, GrRenderable::kNo);
+
+    auto src = dc->priv().proxyProvider()->createProxy(bef,
+                                                       {64, 64},
+                                                       GrRenderable::kNo,
+                                                       1,
+                                                       GrMipmapped::kNo,
+                                                       SkBackingFit::kExact,
+                                                       SkBudgeted::kYes,
+                                                       GrProtected::kNo,
+                                                       "testSrc");
+
+    auto mmProxy = dc->priv().proxyProvider()->createProxy(bef,
+                                                          {64, 64},
+                                                          GrRenderable::kNo,
+                                                          1,
+                                                          GrMipmapped::kYes,
+                                                          SkBackingFit::kExact,
+                                                          SkBudgeted::kYes,
+                                                          GrProtected::kNo,
+                                                          "test MM Proxy");
+    GrSurfaceProxyView mmProxyView{mmProxy, kBottomLeft_GrSurfaceOrigin, Swizzle::RGBA()};
+    v1::SurfaceContext mmSC(dc,
+                            mmProxyView,
+                            {GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr});
+    mmSC.testCopy(src);
+
+    auto drawDst = v1::SurfaceDrawContext::Make(dc,
+                                                GrColorType::kRGBA_8888,
+                                                nullptr,
+                                                SkBackingFit::kExact,
+                                                {8, 8},
+                                                SkSurfaceProps{},
+                                                "testDrawDst");
+    auto te = GrTextureEffect::Make(mmProxyView,
+                                    kPremul_SkAlphaType,
+                                    SkMatrix::I(),
+                                    GrSamplerState{SkFilterMode::kLinear, SkMipmapMode::kLinear},
+                                    *dc->priv().caps());
+
+    GrPaint paint;
+    paint.setColorFragmentProcessor(std::move(te));
+
+    drawDst->drawRect(nullptr,
+                      std::move(paint),
+                      GrAA::kNo,
+                      SkMatrix::Scale(1/8.f, 1/8.f),
+                      SkRect::Make(mmProxy->dimensions()));
+}
+
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(CopySurface,
                                        reporter,
                                        ctxInfo,
