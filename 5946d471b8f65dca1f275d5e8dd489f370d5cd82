@@ -287,6 +287,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33bb57b1_d2d83b08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-04T14:18:48Z",
+      "side": 1,
+      "message": "Could using *this be causing to look for std::begin() and std::end() instead of using (*this).begin() (*this).end()?",
+      "parentUuid": "c88bcdc3_94a7ca1f",
+      "revId": "5946d471b8f65dca1f275d5e8dd489f370d5cd82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3ff4f9a_2bde5dbf",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
