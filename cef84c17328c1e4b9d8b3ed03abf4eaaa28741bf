@@ -70,6 +70,30 @@
       },
       "revId": "cef84c17328c1e4b9d8b3ed03abf4eaaa28741bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9891211_21ee11be",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-04T14:40:44Z",
+      "side": 1,
+      "message": "It\u0027s all a mess, but yeah, both of these (the trait and the _v) probably should be in SkTLogic. If we had the time, the rest of the containers in here should go in their own header or headers (and be cleaned up to make sense) and the rest go in SkTLogic. This file might as well be called \"utils\".",
+      "parentUuid": "40132d8f_204ebe3b",
+      "range": {
+        "startLine": 451,
+        "startChar": 22,
+        "endLine": 451,
+        "endChar": 51
+      },
+      "revId": "cef84c17328c1e4b9d8b3ed03abf4eaaa28741bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
