@@ -523,9 +523,11 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
                 return Nop::Make();
             }
 
-            // For more complex functions, assign their result into a variable.
+            // For more complex functions, we assign their result into a variable. We refuse to
+            // inline anything with early returns, so this should be safe to do; that is, on this
+            // control path, this is the last statement that will occur.
             SkASSERT(*resultExpr);
-            auto assignment = ExpressionStatement::Make(
+            return ExpressionStatement::Make(
                     *fContext,
                     BinaryExpression::Make(
                             *fContext,
@@ -533,10 +535,6 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
                             clone_with_ref_kind(**resultExpr, VariableRefKind::kWrite),
                             Operator::Kind::EQ,
                             expr(r.expression())));
-
-            // Functions without early returns aren't wrapped in a for loop and don't need to worry
-            // about breaking out of the control flow.
-            return assignment;
         }
         case Statement::Kind::kSwitch: {
             const SwitchStatement& ss = statement.as<SwitchStatement>();
@@ -639,7 +637,7 @@ Inliner::InlinedCall Inliner::inlineCall(const FunctionCall& call,
     VariableRewriteMap varMap;
     for (int i = 0; i < arguments.count(); ++i) {
         // If the parameter isn't written to within the inline function ...
-        Expression* arg = arguments[i].get();
+        const Expression* arg = arguments[i].get();
         const Variable* param = function.declaration().parameters()[i];
         const ProgramUsage::VariableCounts& paramUsage = usage.get(*param);
         if (!paramUsage.fWrite) {
@@ -689,8 +687,8 @@ Inliner::InlinedCall Inliner::inlineCall(const FunctionCall& call,
         // Still, discard our output and generate an error.
         SkDEBUGFAIL("inliner found non-void function that fails to return a value on any path");
         fContext->fErrors->error(function.fPosition, "inliner found non-void function '" +
-                std::string(function.declaration().name()) +
-                "' that fails to return a value on any path");
+                                                     std::string(function.declaration().name()) +
+                                                     "' that fails to return a value on any path");
         inlinedCall = {};
     }
 
