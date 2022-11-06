@@ -586,7 +586,7 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
     }
 }
 
-Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
+Inliner::InlinedCall Inliner::inlineCall(const FunctionCall& call,
                                          std::shared_ptr<SymbolTable> symbolTable,
                                          const ProgramUsage& usage,
                                          const FunctionDeclaration* caller) {
@@ -602,12 +602,11 @@ Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
     // statements), we wrap the whole function in a loop and use break statements to jump to the
     // end.
     SkASSERT(fContext);
-    SkASSERT(call);
-    SkASSERT(this->isSafeToInline(call->function().definition(), usage));
+    SkASSERT(this->isSafeToInline(call.function().definition(), usage));
 
-    ExpressionArray& arguments = call->arguments();
-    const Position pos = call->fPosition;
-    const FunctionDefinition& function = *call->function().definition();
+    const ExpressionArray& arguments = call.arguments();
+    const Position pos = call.fPosition;
+    const FunctionDefinition& function = *call.function().definition();
     const Block& body = function.body()->as<Block>();
     const ReturnComplexity returnComplexity = GetReturnComplexity(function);
 
@@ -659,7 +658,7 @@ Inliner::InlinedCall Inliner::inlineCall(FunctionCall* call,
                                                             &arg->type(),
                                                             param->modifiers(),
                                                             symbolTable.get(),
-                                                            std::move(arguments[i]));
+                                                            arguments[i]->clone());
         inlineStatements.push_back(std::move(var.fVarDecl));
         varMap.set(param, VariableReference::Make(Position(), var.fVarSymbol));
     }
@@ -1125,10 +1124,10 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
 
     bool madeChanges = false;
     for (const InlineCandidate& candidate : candidateList.fCandidates) {
-        FunctionCall& funcCall = (*candidate.fCandidateExpr)->as<FunctionCall>();
+        const FunctionCall& funcCall = (*candidate.fCandidateExpr)->as<FunctionCall>();
 
         // Convert the function call to its inlined equivalent.
-        InlinedCall inlinedCall = this->inlineCall(&funcCall, candidate.fSymbols, *usage,
+        InlinedCall inlinedCall = this->inlineCall(funcCall, candidate.fSymbols, *usage,
                                                    &candidate.fEnclosingFunction->declaration());
 
         // Stop if an error was detected during the inlining process.
