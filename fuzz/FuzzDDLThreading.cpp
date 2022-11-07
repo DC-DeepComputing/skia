@@ -56,10 +56,11 @@ public:
         // If we hit this, then the image or the texture will outlive this object which is bad.
         SkASSERT_RELEASE(!fImage || fImage->unique());
         SkASSERT_RELEASE(!fTexture || fTexture->unique());
+        State s = fState;
+        SkASSERT_RELEASE(s == State::kDone ||
+                         (s == State::kInitial && !fTexture));
         fImage.reset();
         fTexture.reset();
-        State s = fState;
-        SkASSERT_RELEASE(s == State::kDone);
     }
     DDLFuzzer* fFuzzer = nullptr;
     sk_sp<SkImage> fImage;
@@ -187,7 +188,7 @@ void DDLFuzzer::releasePromiseImage(PromiseImageInfo& promiseImage) {
     if (!this->isOnGPUThread()) {
         fFuzz->signalBug();
     }
-    State old = promiseImage.fState.exchange(State::kInitial, std::memory_order_relaxed);
+    State old = promiseImage.fState.exchange(State::kDone, std::memory_order_relaxed);
     if (old != State::kTriedToFulfill) {
         fFuzz->signalBug();
     }

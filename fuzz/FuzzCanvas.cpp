@@ -1685,9 +1685,9 @@ DEF_FUZZ(_DumpCanvas, fuzz) {
     fwrite(json->data(), json->size(), 1, stdout);
 }
 
-DEF_FUZZ(SVGCanvas, fuzz) {
-    SkNullWStream stream;
-    SkRect bounds = SkRect::MakeIWH(150, 150);
-    std::unique_ptr<SkCanvas> canvas = SkSVGCanvas::Make(bounds, &stream);
-    fuzz_canvas(fuzz, canvas.get());
-}
+//DEF_FUZZ(SVGCanvas, fuzz) {
+//    SkNullWStream stream;
+//    SkRect bounds = SkRect::MakeIWH(150, 150);
+//    std::unique_ptr<SkCanvas> canvas = SkSVGCanvas::Make(bounds, &stream);
+//    fuzz_canvas(fuzz, canvas.get());
+//}
