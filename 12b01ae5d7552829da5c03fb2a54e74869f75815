@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2540cd0f_89f6d5e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T16:56:46Z",
+      "side": 1,
+      "message": "Herb is working on reducing the number of containers we have in Skia, and a starting point is to come up with a common API surface. (Presumably once two containers have matching APIs, one can be substituted for another easily.) Here\u0027s Herb\u0027s doc\n\nhttp://doc/1GiyzXWqviHV11TkrSp1qkbJ_HrJlFVyCDiGPrdcexRE#heading\u003dh.k77d45qsa47t\n\nOTOH, I have to say I do agree with the impedance mismatch concerns, and this CL is a good example of what those concerns look like. Just because we store an int internally does not mean we need to return an int. That\u0027s why we have historically had both `size` (impedance match) and `count` (Skia-specific).",
+      "parentUuid": "54aa079a_ff399966",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e52b8f51_2c98fa29",
         "filename": "include/core/SkSpan.h",
         "patchSetId": 8
