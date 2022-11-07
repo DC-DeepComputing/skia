@@ -9,6 +9,7 @@
 #define SkSpan_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 #include <cstddef>
 #include <initializer_list>
@@ -63,7 +64,9 @@ template <typename T>
 class SkSpan {
 public:
     constexpr SkSpan() : fPtr{nullptr}, fSize{0} {}
-    constexpr SkSpan(T* ptr, size_t size) : fPtr{ptr}, fSize{size} {
+
+    template <typename Integer, std::enable_if_t<std::is_integral<Integer>::value, bool> = true>
+    constexpr SkSpan(T* ptr, Integer size) : fPtr{ptr}, fSize{SkToSizeT(size)} {
         SkASSERT(ptr || size == 0);  // disallow nullptr + a nonzero size
         SkASSERT(size < kMaxSize);
     }
