@@ -130,28 +130,6 @@ public:
         }
     }
 
-    bool visitStatement(const Statement& stmt) override {
-        switch (stmt.kind()) {
-            case Statement::Kind::kIf:
-                if (stmt.as<IfStatement>().isStatic()) {
-                    fContext.fErrors->error(stmt.as<IfStatement>().test()->fPosition,
-                            "static if has non-static test");
-                }
-                break;
-
-            case Statement::Kind::kSwitch:
-                if (stmt.as<SwitchStatement>().isStatic()) {
-                    fContext.fErrors->error(stmt.as<SwitchStatement>().value()->fPosition,
-                            "static switch has non-static test");
-                }
-                break;
-
-            default:
-                break;
-        }
-        return INHERITED::visitStatement(stmt);
-    }
-
     bool visitExpression(const Expression& expr) override {
         switch (expr.kind()) {
             case Expression::Kind::kFunctionCall: {
