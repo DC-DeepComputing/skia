@@ -121,6 +121,9 @@ private:
     static const size_t kNumVkFormats = 22;
     FormatInfo fFormatTable[kNumVkFormats];
 
+    VkFormat getFormatFromColorType(SkColorType) const;
+
+    bool fSupportsMemorylessAttachments = false;
     // TODO: Assign real value to fSupportsYcbcrConversion.
     bool fSupportsYcbcrConversion = false;
 };
