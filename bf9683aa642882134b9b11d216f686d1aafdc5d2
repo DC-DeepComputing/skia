@@ -22,6 +22,30 @@
       },
       "revId": "bf9683aa642882134b9b11d216f686d1aafdc5d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da66ca1d_89eefe55",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T15:06:52Z",
+      "side": 1,
+      "message": "I was just following IWYU orders :) If we want to prefer cstring for memcpy, I can add an IWYU rule.",
+      "parentUuid": "336da006_c4456370",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 19
+      },
+      "revId": "bf9683aa642882134b9b11d216f686d1aafdc5d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
