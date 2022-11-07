@@ -218,6 +218,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fe1ef80_1163b436",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T19:22:23Z",
+      "side": 1,
+      "message": "I think there are two changes which are being conflated.\n\n- What type should we use to store the count? AFAICS everyone agrees `int` works great. It\u0027s smaller and UBSAN works.\n\n- What API should expose the count to outside code? Personally I am not yet convinced that this CL is better than what we have today, which is: `count()` returns that int as-is, and `size()` returns a size_t for easy mix-and-match with existing libraries.\n\nAll of the discussion seems to center on the first point but let\u0027s talk about the second point too. I am not sure why we can\u0027t have our cake and eat it too and just expose both `size` and `count`.",
+      "parentUuid": "267bd327_bd4db427",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
