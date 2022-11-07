@@ -31,6 +31,7 @@ public:
 
 private:
     bool resizeInternal();
+    wgpu::SwapChain createSwapChain();
 
     NSView*              fMainView;
     CAMetalLayer*        fMetalLayer;
@@ -82,22 +83,10 @@ bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
         return false;
     }
 
-    wgpu::SwapChainDescriptor swapChainDesc;
-    swapChainDesc.usage = kTextureUsage;
-    swapChainDesc.format = fSwapChainFormat;
-    swapChainDesc.width = fWidth;
-    swapChainDesc.height = fHeight;
-    swapChainDesc.presentMode = wgpu::PresentMode::Fifo;
-    swapChainDesc.implementation = 0;
-    auto swapChain = device.CreateSwapChain(surface, &swapChainDesc);
-    if (!swapChain) {
-        SkASSERT(false);
-        return false;
-    }
 
     fDevice = std::move(device);
     fSurface = std::move(surface);
-    fSwapChain = std::move(swapChain);
+    fSwapChain = this->createSwapChain();
 
     return true;
 }
@@ -115,7 +104,7 @@ void GraphiteDawnMetalWindowContext_mac::resize(int w, int h) {
     if (!this->resizeInternal()) {
         return;
     }
-    fSwapChain.Configure(fSwapChainFormat, kTextureUsage, fWidth, fHeight);
+    fSwapChain = this->createSwapChain();
 }
 
 bool GraphiteDawnMetalWindowContext_mac::resizeInternal() {
