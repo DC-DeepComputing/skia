@@ -1376,15 +1376,20 @@ func (b *jobBuilder) recreateSKPs() {
 // by hand.
 func (b *jobBuilder) checkGeneratedFiles() {
 	b.addTask(b.Name, func(b *taskBuilder) {
-		b.recipeProps(EXTRA_PROPS)
-		b.kitchenTask("check_generated_files", OUTPUT_NONE)
-		b.serviceAccount(b.cfg.ServiceAccountCompile)
-		b.linuxGceDimensions(MACHINE_TYPE_LARGE)
-		b.usesGo()
-		b.asset("clang_linux")
-		b.asset("ccache_linux")
-		b.usesCCache()
-		b.cache(CACHES_WORKDIR...)
+		b.cas(CAS_BAZEL)
+		b.dep(b.buildTaskDrivers("linux", "amd64"))
+		b.cmd("./check_generated_files",
+			"--local=false",
+			"--git_path=./cipd_bin_packages/git",
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+		)
+		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.serviceAccount(b.cfg.ServiceAccountHousekeeper)
 	})
 }
 
