@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef484290_d668fbb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T17:05:06Z",
+      "side": 1,
+      "message": "I think we\u0027ve prioritized the goal of \"containers are as small as we can make them\" over the goal of \"containers can store \u003e2 billion elements.\" For the rare cases where we might have billions of items in a container, we can use `vector\u003c\u003e`.\n\nFor signed-vs-unsigned, there is a case to be made that STL choosing unsigned for container sizes was a mistake. It\u0027s brittle/makes it hard to detect overflow. However, I don\u0027t know how compelling that argument actually is, vs the reality of \"we still need to interact with STL.\"",
+      "parentUuid": "4b47f68e_7c80dce7",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e52b8f51_2c98fa29",
         "filename": "include/core/SkSpan.h",
         "patchSetId": 8
