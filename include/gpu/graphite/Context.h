@@ -155,6 +155,13 @@ private:
 
     // Needed for MessageBox handling
     const ContextID fContextID;
+
+#if GRAPHITE_TEST_UTILS
+    // In test builds we may track the Context in a Recorder it has created. To allow the
+    // client to safely delete the Context or a Recorder in any order we must also track
+    // the Recorders created here.
+    std::vector<Recorder*> fTrackedRecorders;
+#endif
 };
 
 } // namespace skgpu::graphite

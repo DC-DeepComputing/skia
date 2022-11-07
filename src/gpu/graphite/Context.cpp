@@ -72,7 +72,14 @@ Context::Context(sk_sp<SharedContext> sharedContext, std::unique_ptr<QueueManage
     fMappedBufferManager = std::make_unique<ClientMappedBufferManager>(this->contextID());
 }
 
-Context::~Context() {}
+Context::~Context() {
+#if GRAPHITE_TEST_UTILS
+    ASSERT_SINGLE_OWNER
+    for (auto& recorder : fTrackedRecorders) {
+        recorder->priv().setContext(nullptr);
+    }
+#endif
+}
 
 BackendApi Context::backend() const { return fSharedContext->backend(); }
 
@@ -141,7 +148,12 @@ std::unique_ptr<Context> Context::MakeVulkan(const VulkanBackendContext& backend
 std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options));
+    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options));
+#if GRAPHITE_TEST_UTILS
+    //if set to do so...
+    recorder->priv().setContext(this);
+#endif
+    return recorder;
 }
 
 bool Context::insertRecording(const InsertRecordingInfo& info) {
@@ -321,5 +333,19 @@ void Context::deleteBackendTexture(BackendTexture& texture) {
     }
     fResourceProvider->deleteBackendTexture(texture);
 }
+
+#if GRAPHITE_TEST_UTILS
+void ContextPriv::deregisterRecorder(const Recorder* recorder) {
+    SKGPU_ASSERT_SINGLE_OWNER(fContext->singleOwner())
+    for (auto it = fContext->fTrackedRecorders.begin();
+         it != fContext->fTrackedRecorders.end();
+         it++) {
+        if (*it == recorder) {
+            fContext->fTrackedRecorders.erase(it);
+            return;
+        }
+    }
+}
+#endif
 
 } // namespace skgpu::graphite

@@ -43,6 +43,8 @@ public:
     }
 #endif
 
+    void deregisterRecorder(const Recorder*);
+
 private:
     friend class Context; // to construct/copy this type.
 
