@@ -242,6 +242,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae96be12_91cdc9e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T20:19:49Z",
+      "side": 1,
+      "message": "* SkTDArray has always been 16 bytes.\n* People really don\u0027t mix and match. For whatever reason, they have decided to have external counts or indexes as unsigned or uint32_t.\n\nFor example all the index in the paragraph code are size_t or unsigned,  but the data is backed by SkTArray. Just changing the those to int makes the code smaller, read easier, and safer. \n\nAnother example is     \nstruct ConditionalOpCounts {\n        size_t numReachableOps;\n        size_t numStoreOps;\n};\n\nThe things they count are fReachableOps and fStoreOps which are both SkTArrays. There is no reason they should have been size_t instead of int.\n\nAnother example is SkSVGDevice.cpp, there is no need for rec_idx to be size_t. It should have been int from the start.\n\nThe above list of files have very few cross std collection to skia collection linkages.\n\nAnything that ends up being an index into SkTArray should be an int.\n\nHaving both count and size produces larger binaries, and creates confusion about which call to use. Having size() return int is a strong signal that this is an int sized collection.\n\nAnd, it\u0027s nice to have c.resize(c.size() + 1) not need cast.",
+      "parentUuid": "9fe1ef80_1163b436",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
