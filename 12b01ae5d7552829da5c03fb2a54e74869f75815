@@ -410,6 +410,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9259a18c_33a539d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:49:04Z",
+      "side": 1,
+      "message": "SGTM. If we can demonstrate that removing `count()` adds value (and I suppose \"shrinks code size\" is a good metric for that) then this all seems totally solid.",
+      "parentUuid": "6a3dcd44_c8c47f31",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
