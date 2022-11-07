@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1cbeff_33e750f0",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T22:32:49Z",
+      "side": 0,
+      "message": "Wow, we were still doing this check during finalization! That\u0027s surprising. As soon as we got rid of constant propagation this could have moved to Convert.",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 28
+      },
+      "revId": "aef6d301c0b58b6011485a6a58e5cd9639d314a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

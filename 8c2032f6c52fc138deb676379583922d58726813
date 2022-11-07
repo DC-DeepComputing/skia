@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2527cec3_253c8177",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T22:32:49Z",
+      "side": 1,
+      "message": "SkSLLexer.cpp didn\u0027t get rebuilt; please set gn arg `skia_lex \u003d true`.",
+      "revId": "8c2032f6c52fc138deb676379583922d58726813",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
