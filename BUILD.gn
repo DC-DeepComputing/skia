@@ -771,6 +771,13 @@ if (skia_compile_sksl_tests) {
     ]
     libs = []
     if (is_win) {
+      sources += [ "tools/SkGetExecutablePath_win.cpp" ]
+    } else if (is_mac || is_ios) {
+      sources += [ "tools/SkGetExecutablePath_mac.cpp" ]
+    } else if (is_linux || is_android) {
+      sources += [ "tools/SkGetExecutablePath_linux.cpp" ]
+    }
+    if (is_win) {
       sources += [ "src/ports/SkOSFile_win.cpp" ]
     } else {
       sources += [ "src/ports/SkOSFile_posix.cpp" ]
@@ -813,10 +820,13 @@ if (skia_compile_sksl_tests) {
       outputs = []
       response_file_contents = []
       args = [
-        rebase_path(skslc_path),
-        invoker.lang,
-        invoker.settings,
-        "{{response_file_name}}",
+        # Comments are the variable name in compile_sksl_tests.py
+        rebase_path(skslc_path),  # skslc
+        invoker.lang,  # lang
+        invoker.settings,  # settings
+        rebase_path("resources"),  # input_root_dir
+        rebase_path("tests"),  # output_root_dir
+        "{{response_file_name}}",  # input_file
       ]
 
       testsDir = get_path_info("tests", "abspath")
@@ -829,10 +839,7 @@ if (skia_compile_sksl_tests) {
         dir = get_path_info(dst, "dir")
         name = get_path_info(dst, "name")
         ext = get_path_info(dst, "extension")
-        response_file_contents += rebase_path([
-                                                src,
-                                                dir,
-                                              ])
+        response_file_contents += [ rebase_path(src) ]
         sources += [ src ]
 
         foreach(outExtension, invoker.outExtensions) {
