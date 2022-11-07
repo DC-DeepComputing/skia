@@ -68,6 +68,121 @@
       },
       "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f445a2f_9f21367c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:45:46Z",
+      "side": 1,
+      "message": "Prefer SkToSize() on the return from size() since `ClusterRange` \u003d `SkRange\u003csize_t\u003e`?",
+      "range": {
+        "startLine": 871,
+        "startChar": 13,
+        "endLine": 871,
+        "endChar": 20
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "867f97ca_09d64d9c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:45:46Z",
+      "side": 1,
+      "message": "This is a uint32_t, SkToSize on the .size() call instead?",
+      "range": {
+        "startLine": 877,
+        "startChar": 13,
+        "endLine": 877,
+        "endChar": 34
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d4149eb_5f0df9f0",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:45:46Z",
+      "side": 1,
+      "message": "`BlockRange` \u003d `SkRange\u003csize_t\u003e`, use SkToSize on the .size() call instead?",
+      "range": {
+        "startLine": 887,
+        "startChar": 13,
+        "endLine": 887,
+        "endChar": 59
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "068be74b_1f042efa",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:45:46Z",
+      "side": 1,
+      "message": "`BlockIndex` \u003d `size_t`, use SkToSize on the .size() call?",
+      "range": {
+        "startLine": 893,
+        "startChar": 21,
+        "endLine": 893,
+        "endChar": 31
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f372606f_ce9ccc23",
+        "filename": "src/sksl/ir/SkSLConstructorStruct.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:45:46Z",
+      "side": 1,
+      "message": "Wow, that\u0027s a landmine--thank goodness we have printf warnings now. A year ago this would not have been detected.",
+      "range": {
+        "startLine": 33,
+        "startChar": 81,
+        "endLine": 33,
+        "endChar": 83
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
