@@ -349,34 +349,34 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
     return { std::move(dest), srcView.swizzle() };
 }
 
-bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
+bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
+#if GRAPHITE_TEST_UTILS
+    if (Context* context = fRecorder->priv().context()) {
+        this->flushPendingWorkToRecorder();
+        return context->priv().readPixels(fRecorder, pm, fDC->target(), this->imageInfo(),
+                                          srcX, srcY);
+    }
+#endif
     // We have no access to a context to do a read pixels here.
     return false;
 }
 
+// TODO: remove this?
 bool Device::readPixels(Context* context,
                         Recorder* recorder,
                         const SkPixmap& pm,
                         int srcX,
                         int srcY) {
-    return ReadPixelsHelper([this]() {
-                                this->flushPendingWorkToRecorder();
-                            },
-                            context,
-                            recorder,
-                            fDC->target(),
-                            pm.info(),
-                            pm.writable_addr(),
-                            pm.rowBytes(),
-                            srcX,
-                            srcY);
+    this->flushPendingWorkToRecorder();
+    return context->priv().readPixels(recorder, pm, fDC->target(), this->imageInfo(),
+                                      srcX, srcY);
 }
 
 void Device::asyncReadPixels(const SkImageInfo& info,
                              SkIRect srcRect,
                              ReadPixelsCallback callback,
                              ReadPixelsContext context) {
-    // TODO: implement for Graphite
+    // Not supported for Graphite
     callback(context, nullptr);
 }
 
@@ -386,7 +386,7 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                        RescaleMode rescaleMode,
                                        ReadPixelsCallback callback,
                                        ReadPixelsContext context) {
-    // TODO: implement for Graphite
+    // Not supported for Graphite
     callback(context, nullptr);
 }
 
