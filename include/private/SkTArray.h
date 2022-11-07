@@ -639,8 +639,17 @@ private:
     }
 
     T* fItemArray;
+
+    // fCount can range on [0, 2^31 - 1].
     int fCount;
+
+    // fAllocCount is logically of type int. But a bit is stolen to indicate that this SkTArray
+    // owns the memory. It is tempting to use int fAllocCount : 31, but the standard for C++
+    // states that this would be a range of [-2^30, 2^30 - 1], but what is needed is the range
+    // [0, 2^31 - 1] which exactly match uint32_t fAllocCount : 31.
     uint32_t fAllocCount : 31;
+
+    // Indicates that this SkTArray is responsible for freeing fItemArray.
     uint32_t fOwnMemory  :  1;
 };
 
