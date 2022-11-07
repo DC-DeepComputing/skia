@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d02a88bd_d366537f",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-07T18:07:21Z",
+      "side": 1,
+      "message": "Maybe \u0027curSampling\u0027 or \u0027currentSampling\u0027 ?",
+      "revId": "65155aaa5ba5d5901f2f84ad7e0e69da3895ff86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737d49f1_7110a43c",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-07T18:07:21Z",
+      "side": 1,
+      "message": "These should still be camel case",
+      "range": {
+        "startLine": 303,
+        "startChar": 37,
+        "endLine": 303,
+        "endChar": 70
+      },
+      "revId": "65155aaa5ba5d5901f2f84ad7e0e69da3895ff86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f269a9_1cd1933a",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-07T18:07:21Z",
+      "side": 1,
+      "message": "Maybe \u0027nextSampling\u0027 ?",
+      "range": {
+        "startLine": 304,
+        "startChar": 51,
+        "endLine": 304,
+        "endChar": 55
+      },
+      "revId": "65155aaa5ba5d5901f2f84ad7e0e69da3895ff86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bbb68d8_1b11cc5f",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-07T18:07:21Z",
+      "side": 1,
+      "message": "Integer",
+      "range": {
+        "startLine": 359,
+        "startChar": 15,
+        "endLine": 359,
+        "endChar": 32
+      },
+      "revId": "65155aaa5ba5d5901f2f84ad7e0e69da3895ff86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
