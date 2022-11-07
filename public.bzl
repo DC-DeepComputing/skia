@@ -1986,8 +1986,6 @@ VULKAN_SRCS = [
     "src/gpu/ganesh/vk/GrVkImageView.cpp",
     "src/gpu/ganesh/vk/GrVkImageView.h",
     "src/gpu/ganesh/vk/GrVkManagedResource.h",
-    "src/gpu/ganesh/vk/GrVkMemory.cpp",
-    "src/gpu/ganesh/vk/GrVkMemory.h",
     "src/gpu/ganesh/vk/GrVkMSAALoadManager.cpp",
     "src/gpu/ganesh/vk/GrVkMSAALoadManager.h",
     "src/gpu/ganesh/vk/GrVkOpsRenderPass.cpp",
@@ -2029,6 +2027,8 @@ VULKAN_SRCS = [
     "src/gpu/vk/VulkanExtensions.cpp",
     "src/gpu/vk/VulkanInterface.cpp",
     "src/gpu/vk/VulkanInterface.h",
+    "src/gpu/vk/VulkanMemory.cpp",
+    "src/gpu/vk/VulkanMemory.h",
     "src/gpu/vk/VulkanUtils.h",
 ]
 
