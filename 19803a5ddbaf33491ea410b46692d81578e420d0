@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a984d59_bd69003f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15374
+      },
+      "writtenOn": "2022-11-07T14:34:36Z",
+      "side": 1,
+      "message": "lgtm, apologies for the delay. As discussed offline, sk_allocate_throw() is likely the better choice.",
+      "revId": "19803a5ddbaf33491ea410b46692d81578e420d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
