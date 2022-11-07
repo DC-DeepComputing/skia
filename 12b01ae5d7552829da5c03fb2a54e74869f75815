@@ -98,6 +98,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50994678_06a58374",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T17:10:52Z",
+      "side": 1,
+      "message": "I just had a thought--what about `std::size(c)`? We can\u0027t control what it returns, it\u0027s always going to be `size_t` (built-in function). Does this mean we can no longer call it on an `SkTArray` without causing a warning? The ability to write generic code that targets Skia containers and built-in containers has a _ton of value_.\n\nActually, is this why `SkSpan` broke?",
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e52b8f51_2c98fa29",
         "filename": "include/core/SkSpan.h",
         "patchSetId": 8
