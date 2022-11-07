@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fd434a5_9490a88c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T18:03:26Z",
+      "side": 1,
+      "message": "I missed an additional reason why I think int is a better choice than size_t. Size_t means different things on different platforms.\n  * x86_64 size_t - unsigned 64-bit number.\n  * arm size_t - unsigned 32-bit number and has the same type as uint32_t.\n  * wasm32 size_t - unsigned 32-bit number and has a *different* type than \n    uint32_t.\n    \nThis difference creates many problems with interface and thinking about overflow.\n\nint is the same everywhere. I can think about it one way, and it translates to all the platforms.",
+      "parentUuid": "1401239c_af47b642",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
