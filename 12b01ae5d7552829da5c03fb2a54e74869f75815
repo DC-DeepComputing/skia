@@ -266,6 +266,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2277dc6b_bb9f8f81",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-07T20:56:55Z",
+      "side": 1,
+      "message": "I\u0027m also going to throw out this: I don\u0027t think interop with std:: containers is *that* important or likely, particularly if we succeed in our other goals. Namely: We don\u0027t want clients using our containers. Given that, if we can use int internally everywhere, get the size/code-size/consistency... benefits, and live with the limitations, it seems fine.\n\nI think the one exception where we want to be careful is SkSpan -- in my ideal world, our clients wouldn\u0027t know about Sk[TDS]*Array, and as much as possibly we\u0027d be using SkSpan to accept value ranges at the API boundary. That means that SkSpan becomes the one bridge that needs to speak both int and size_t (assuming that clients have std:: structures they\u0027re using to construct the spans they pass in) ... but having a single funnel lets us decide which type to store in spans, and where/how to do the conversion.",
+      "parentUuid": "ae96be12_91cdc9e0",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
