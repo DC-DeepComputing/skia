@@ -22,6 +22,52 @@
       },
       "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4117f5e2_20d9f1d4",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:38:38Z",
+      "side": 1,
+      "message": "Seems like a safer change would be `start \u003c SkToSize(fUTF8IndexForUTF16Index.size())`\n\nSince `start` is a uint32",
+      "range": {
+        "startLine": 739,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 55
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2d2e7be_5a261fa2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:38:38Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 747,
+        "startChar": 8,
+        "endLine": 747,
+        "endChar": 15
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
