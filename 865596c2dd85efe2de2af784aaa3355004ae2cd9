@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eefa631_a46e91c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-07T16:23:16Z",
+      "side": 1,
+      "message": "This is something of an overly specific thing to fight G3\u0027s over reliance on non-standard modules. Not sure if this should really go here or if it should be added by the roller / BUILD generator.",
+      "revId": "865596c2dd85efe2de2af784aaa3355004ae2cd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
