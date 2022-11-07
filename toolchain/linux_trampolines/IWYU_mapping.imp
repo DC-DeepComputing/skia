@@ -29,6 +29,12 @@
   { symbol: ["fabs", "public", "<cmath>", "public"]},
   { symbol: ["sqrt", "public", "<cmath>", "public"]},
 
+  # Prefer cstring over string.h for memcpy and memcmp.
+  { symbol: ["memcpy", "public", "<cstring>", "public"]},
+  { symbol: ["memcmp", "public", "<cstring>", "public"]},
+  { symbol: ["std::memcpy", "public", "<cstring>", "public"]},
+  { symbol: ["std::memcmp", "public", "<cstring>", "public"]},
+
   # The first of these is the preferred include, but the others are acceptable.
   { symbol: ["size_t", "private", "<cstddef>", "public"]},
   { symbol: ["size_t", "private", "<cstdio>", "public"]},
