@@ -290,6 +290,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "537bf7f0_cf29db91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:05:40Z",
+      "side": 1,
+      "message": "`SkSpan` is probably temporary, like `StringFragment` was. It only exists at all because C++ doesn\u0027t support `std::span` until C++20. I expect we will migrate to `std::span` when we migrate from C++17 to C++20. If we change the `size()` API, now we will run into trouble when we try to transition to `std::span`.",
+      "parentUuid": "2277dc6b_bb9f8f81",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
