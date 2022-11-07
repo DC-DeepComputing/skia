@@ -362,6 +362,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d59e2a2_b63cbffa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:20:18Z",
+      "side": 1,
+      "message": "Well, in Brian\u0027s design, clients wouldn\u0027t be using SkTArray, so AFAICS that would not be an issue. The concern I\u0027m thinking of would be that there is already existing client code which uses SkSpan and is warning-safe with its size() returning size_t. If we update its size() to return int, we could introduce warnings in client code and cause churn to fix it. Then if we switch to std::span\u003cT\u003e in the future, we will whiplash back to the original state anyway, meaning all churn was just wasted effort.",
+      "parentUuid": "5506f260_b0fdfc2d",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
