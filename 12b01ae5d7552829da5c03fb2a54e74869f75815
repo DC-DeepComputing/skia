@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba7234a_4cf03ed0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-11-07T18:49:42Z",
+      "side": 1,
+      "message": "\u003e From Google\u0027s c++ style guide:\n\u003e Unsigned integers are good for representing bitfields and modular arithmetic. Because of historical accident, the C++ standard also uses unsigned integers to represent the size of containers - many members of the standards body believe this to be a mistake, but it is effectively impossible to fix at this point.\n\u003e ...\n\u003e Do not use an unsigned type merely to assert that a variable is non-negative.\n\nYet every collection impl under the sun, including Google\u0027s, seems to use unsigned types for size :)\n\nI find that last sentence particularly odd as it flat out dismisses one of the basic principles (pick a type that reflects your data domain as accurately as possible).  We\u0027re not merely asserting that the variable is non-negative, we\u0027re ensuring it\u0027s impossible to represent a negative value... which doesn\u0027t hurt when range-checking or defending against OOB access. /shrug/\n\n\n\u003e The fact that int can be checked by UBSAN for overflow is a pretty compelling safeguard.\n\nUBSAN can also check unsigned overflow, no?  -fsanitize\u003dunsigned-integer-overflow\n\n\n\u003e A vector is 50% bigger than SkTArray.\n\nOh, ok, so SkTArray already stores an int size internally (and takes int indices).  For some reason I though we\u0027re also changing that part.\n\nUpdating size() to match the current representation seems fine.",
+      "parentUuid": "1401239c_af47b642",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50994678_06a58374",
