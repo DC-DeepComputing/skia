@@ -34,6 +34,24 @@
       "parentUuid": "f27a3351_0a5b105c",
       "revId": "015fb5112255e65d60498bcb4a268a354043ab9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733c092f_9a663391",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-07T17:27:43Z",
+      "side": 1,
+      "message": "We decided on making a convenient way to re-generate all of the sksl tests and (soon after this lands), replacing the GN version with the Bazel version (perhaps investigating having GN shell out to Bazel).",
+      "parentUuid": "6dac9c4a_3fda4869",
+      "revId": "015fb5112255e65d60498bcb4a268a354043ab9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
