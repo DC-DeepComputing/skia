@@ -9,6 +9,7 @@
 #define SkSpan_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 #include <cstddef>
 #include <initializer_list>
@@ -67,12 +68,19 @@ public:
         SkASSERT(ptr || size == 0);  // disallow nullptr + a nonzero size
         SkASSERT(size < kMaxSize);
     }
-    template <typename U, typename = typename std::enable_if<std::is_same<const U, T>::value>::type>
+    // A convenience constructor for Skia collection types.
+    constexpr SkSpan(T* ptr, int size) : SkSpan{ptr, SkToSizeT(size)} {}
+    // Handle when size is passed as uint32, but disable it when size_t is the same as uint32_t.
+    template <typename U = T,
+              typename = std::enable_if_t<!std::is_same_v<size_t, uint32_t>, U>>
+    constexpr  SkSpan(T* ptr, uint32_t size) : SkSpan{ptr, SkToSizeT(size)} {}
+    template <typename U = T,
+              typename = typename std::enable_if<std::is_same<const U,T>::value>::type>
     constexpr SkSpan(const SkSpan<U>& that) : fPtr(std::data(that)), fSize{std::size(that)} {}
     constexpr SkSpan(const SkSpan& o) = default;
     template<size_t N> constexpr SkSpan(T(&a)[N]) : SkSpan(a, N) { }
     template<typename Container>
-    constexpr SkSpan(Container& c) : SkSpan{std::data(c), std::size(c)} { }
+    constexpr SkSpan(Container& c) : SkSpan{std::data(c), SkToSizeT(std::size(c))} { }
     SkSpan(std::initializer_list<T> il SK_CHECK_IL_LIFETIME)
             : SkSpan(std::data(il), std::size(il)) {}
 

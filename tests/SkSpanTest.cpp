@@ -96,3 +96,32 @@ DEF_TEST(SkSpanDeduceParam, reporter) {
         REPORTER_ASSERT(reporter, test_span_parameter(s));
     }
 }
+
+struct C {
+    int* data() { return nullptr; }
+    int size() const { return 0; }
+};
+
+DEF_TEST(SkSpanDeduceSize, reporter) {
+    int d[] = {1, 2, 3, 4, 5};
+    {
+        int s = std::size(d);
+        SkSpan span = SkSpan{d, s};
+        REPORTER_ASSERT(reporter, span.size() == std::size(d));
+    }
+    {
+        uint32_t s = std::size(d);
+        SkSpan span = SkSpan{d, s};
+        REPORTER_ASSERT(reporter, span.size() == std::size(d));
+    }
+    {
+        size_t s = std::size(d);
+        SkSpan span = SkSpan{d, s};
+        REPORTER_ASSERT(reporter, span.size() == std::size(d));
+    }
+    {
+        C c;
+        SkSpan span = SkSpan(c);
+        REPORTER_ASSERT(reporter, span.size() == 0);
+    }
+}
