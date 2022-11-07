@@ -1590,13 +1590,15 @@ public:
      * Experimental. Controls anti-aliasing of each edge of images in an image-set.
      */
     enum QuadAAFlags : unsigned {
-        kLeft_QuadAAFlag    = 0b0001,
-        kTop_QuadAAFlag     = 0b0010,
-        kRight_QuadAAFlag   = 0b0100,
-        kBottom_QuadAAFlag  = 0b1000,
+        kLeft_QuadAAFlag = 0b0001,
+        kTop_QuadAAFlag = 0b0010,
+        kRight_QuadAAFlag = 0b0100,
+        kBottom_QuadAAFlag = 0b1000,
 
-        kNone_QuadAAFlags   = 0b0000,
-        kAll_QuadAAFlags    = 0b1111,
+        kCompressed_QuadAAFlag = 0b10000,
+
+        kNone_QuadAAFlags = 0b0000,
+        kAll_QuadAAFlags = 0b11111,
     };
 
     /** This is used by the experimental API below. */

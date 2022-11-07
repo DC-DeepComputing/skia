@@ -387,6 +387,9 @@ void ResolveAAType(GrAAType requestedAAType, GrQuadAAFlags requestedEdgeFlags, c
             *outEdgeFlags = GrQuadAAFlags::kAll;
             break;
     }
+    if (requestedEdgeFlags & GrQuadAAFlags::kCompressed_QuadAAFlag) {
+        *outEdgeFlags |= GrQuadAAFlags::kCompressed_QuadAAFlag;
+    }
 }
 
 int ClipToW0(DrawQuad* quad, DrawQuad* extraVertices) {
