@@ -314,6 +314,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5506f260_b0fdfc2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T21:14:53Z",
+      "side": 1,
+      "message": "I\u0027m not a fan of borrowing trouble from the future. But, wouldn\u0027t mean we just introduce the ctor SkTArray(std::span\u003cT\u003e s)?",
+      "parentUuid": "537bf7f0_cf29db91",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
