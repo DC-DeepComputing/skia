@@ -16,6 +16,23 @@
       "message": "Heh, I made one of these as well. Was slower because I got distracted by these also being out of order. Will fix that in a follow-up.",
       "revId": "3623305e46d39a1048cedb245edf3db26fb9b3f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79756318_8b7557f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-07T16:28:14Z",
+      "side": 1,
+      "message": "`Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan` seems to be very slowly failing every test with a vulkan validation layer warning and a stack trace.",
+      "revId": "3623305e46d39a1048cedb245edf3db26fb9b3f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
