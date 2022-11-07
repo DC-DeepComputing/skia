@@ -37,15 +37,7 @@ SI Dst widen_cast(const Src& src) {
 
 // load_and_inc() steps the program forward by 1 void*, returning that pointer.
 SI void* load_and_inc(void**& program) {
-#if defined(__GNUC__) && defined(__x86_64__)
-    // If program is in %rsi (we try to make this likely) then this is a single instruction.
-    void* rax;
-    asm("lodsq" : "=a"(rax), "+S"(program));  // Write-only %rax, read-write %rsi.
-    return rax;
-#else
-    // On ARM *program++ compiles into pretty ideal code without any handholding.
     return *program++;
-#endif
 }
 
 struct Ctx {
