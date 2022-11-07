@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1401239c_af47b642",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T17:33:30Z",
+      "side": 1,
+      "message": "From Google\u0027s c++ style guide:\nUnsigned integers are good for representing bitfields and modular arithmetic. Because of historical accident, the C++ standard also uses unsigned integers to represent the size of containers - many members of the standards body believe this to be a mistake, but it is effectively impossible to fix at this point.\n...\nDo not use an unsigned type merely to assert that a variable is non-negative.\n\nUnsigned values are more dangerous than int, and in Skia they introduce the impedance mismatch.\n\nThere are three several types used for representing the count of things in the skia codebase: size_t, unsigned, uint32_t, and int. The fact that int can be checked by UBSAN for overflow is a pretty compelling safeguard.\n\nThe skia collections all seem to have sizes bounded by [0, MAX_INT]. Therefore, the transitive closure set of values that feed into the administrative methods of the skia collections should be int. Having unsigned, etc. count doesn\u0027t buy you anything because they are all limited to the range [0, MAX_INT].\n\nWhy not have size_t containers? Because there are zero use cases in Skia that seem to demand it. This causes waste. A vector is 50% bigger than SkTArray.\n\nBecause of unsigned ints guarantee of modular arithmetic, sometime more code is needed to to keep that promise.\n\nIf you do use mixed std collections and skia collections, int is always safe for both.",
+      "parentUuid": "ef484290_d668fbb1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
@@ -109,6 +133,24 @@
       "writtenOn": "2022-11-07T17:10:52Z",
       "side": 1,
       "message": "I just had a thought--what about `std::size(c)`? We can\u0027t control what it returns, it\u0027s always going to be `size_t` (built-in function). Does this mean we can no longer call it on an `SkTArray` without causing a warning? The ability to write generic code that targets Skia containers and built-in containers has a _ton of value_.\n\nActually, is this why `SkSpan` broke?",
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34603b18_02ed3970",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T17:33:30Z",
+      "side": 1,
+      "message": "std::size(c) does *not* always return size_t. That is why SkSpan is broken.\n\nHere is the C++17 definition of size().\n\ntemplate\u003c class C \u003e\nconstexpr auto size( const C\u0026 c ) -\u003e decltype(c.size());\n\nIt returns whatever the underlying size of the container returns.",
+      "parentUuid": "50994678_06a58374",
       "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
