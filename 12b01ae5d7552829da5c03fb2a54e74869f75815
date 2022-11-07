@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f85a864_d72efc0b",
+        "filename": "tests/TextBlobTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T16:20:36Z",
+      "side": 1,
+      "message": "The SkToInt path added here will assert, but will not return nullptr, so it\u0027s not as safe against corrupt input.\nMaybe:\n\n    size_t idx \u003d *reinterpret_cast\u003cconst size_t*\u003e(data);\n    if (idx \u003c 0 || idx \u003e\u003d array-\u003esize()) {",
+      "range": {
+        "startLine": 405,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 0
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
