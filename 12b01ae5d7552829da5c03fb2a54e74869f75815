@@ -192,6 +192,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "267bd327_bd4db427",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T19:12:18Z",
+      "side": 1,
+      "message": "The fact that int can be checked by UBSAN for overflow is a pretty compelling safeguard.\n\nUBSAN can also check unsigned overflow, no? -fsanitize\u003dunsigned-integer-overflow\n\nThe problem is that we use unsigned integer overflow in our code like for checking for overflow. So, we would have to selectively address each of those instances.",
+      "parentUuid": "4f87bf61_7c4321b5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50994678_06a58374",
