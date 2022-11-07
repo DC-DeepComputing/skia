@@ -16,6 +16,24 @@
       "message": "Is there automatic synchronization from Bazel to `sksl_tests.gni`?\nSkSL tests are added more frequently than new .cpp/.h files, and it would be unfortunate if we had to keep these in sync manually.",
       "revId": "015fb5112255e65d60498bcb4a268a354043ab9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dac9c4a_3fda4869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-07T14:57:56Z",
+      "side": 1,
+      "message": "That is one of a few options going forward. Please see discussion at https://chat.google.com/room/AAAADH2lbho/sBmsIxC5oBA",
+      "parentUuid": "f27a3351_0a5b105c",
+      "revId": "015fb5112255e65d60498bcb4a268a354043ab9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
