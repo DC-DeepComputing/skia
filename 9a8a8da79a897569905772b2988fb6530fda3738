@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c2b4009_7db0c845",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-07T21:35:39Z",
+      "side": 1,
+      "message": "Curiosity: could you add on a followup that removes count() to see how much code size savings we get?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 0
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
