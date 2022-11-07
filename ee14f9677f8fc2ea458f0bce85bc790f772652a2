@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b304f9a2_0b86db28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-07T17:56:35Z",
+      "side": 1,
+      "message": "This is a pure reland. The IWYU failures are unrelated (happening on ToT).",
+      "revId": "ee14f9677f8fc2ea458f0bce85bc790f772652a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
