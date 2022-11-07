@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b80d232b_6207616a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "That is the very next CL.",
+      "parentUuid": "0c2b4009_7db0c845",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 0
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4117f5e2_20d9f1d4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-07T21:38:38Z",
       "side": 1,
       "message": "Seems like a safer change would be `start \u003c SkToSize(fUTF8IndexForUTF16Index.size())`\n\nSince `start` is a uint32",
+      "range": {
+        "startLine": 739,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 55
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33560c6_8634a0f5",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4117f5e2_20d9f1d4",
       "range": {
         "startLine": 739,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31e7e23a_bd9114c2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2d2e7be_5a261fa2",
+      "range": {
+        "startLine": 747,
+        "startChar": 8,
+        "endLine": 747,
+        "endChar": 15
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f445a2f_9f21367c",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-07T21:45:46Z",
       "side": 1,
       "message": "Prefer SkToSize() on the return from size() since `ClusterRange` \u003d `SkRange\u003csize_t\u003e`?",
+      "range": {
+        "startLine": 871,
+        "startChar": 13,
+        "endLine": 871,
+        "endChar": 20
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b3fe648_6149f908",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f445a2f_9f21367c",
       "range": {
         "startLine": 871,
         "startChar": 13,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afcf8d08_54764da6",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "867f97ca_09d64d9c",
+      "range": {
+        "startLine": 877,
+        "startChar": 13,
+        "endLine": 877,
+        "endChar": 34
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d4149eb_5f0df9f0",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-11-07T21:45:46Z",
       "side": 1,
       "message": "`BlockRange` \u003d `SkRange\u003csize_t\u003e`, use SkToSize on the .size() call instead?",
+      "range": {
+        "startLine": 887,
+        "startChar": 13,
+        "endLine": 887,
+        "endChar": 59
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6ffb952_f7d9f1cd",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d4149eb_5f0df9f0",
       "range": {
         "startLine": 887,
         "startChar": 13,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff4e89a6_b0c067b1",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "068be74b_1f042efa",
+      "range": {
+        "startLine": 893,
+        "startChar": 21,
+        "endLine": 893,
+        "endChar": 31
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f372606f_ce9ccc23",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-11-07T21:45:46Z",
       "side": 1,
       "message": "Wow, that\u0027s a landmine--thank goodness we have printf warnings now. A year ago this would not have been detected.",
+      "range": {
+        "startLine": 33,
+        "startChar": 81,
+        "endLine": 33,
+        "endChar": 83
+      },
+      "revId": "9a8a8da79a897569905772b2988fb6530fda3738",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6882e90_9f6211a6",
+        "filename": "src/sksl/ir/SkSLConstructorStruct.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T22:55:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f372606f_ce9ccc23",
       "range": {
         "startLine": 33,
         "startChar": 81,
