@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f87bf61_7c4321b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T18:54:47Z",
+      "side": 1,
+      "message": "Are their any additional objections? Is this resolved?",
+      "parentUuid": "3fd434a5_9490a88c",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50994678_06a58374",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 8
@@ -244,6 +268,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92724567_938d4f36",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T18:54:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e52b8f51_2c98fa29",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 0
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffcfef75_88003cee",
@@ -261,6 +309,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d356c67_b2c3e70f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T18:54:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffcfef75_88003cee",
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f85a864_d72efc0b",
@@ -274,6 +340,30 @@
       "writtenOn": "2022-11-07T16:20:36Z",
       "side": 1,
       "message": "The SkToInt path added here will assert, but will not return nullptr, so it\u0027s not as safe against corrupt input.\nMaybe:\n\n    size_t idx \u003d *reinterpret_cast\u003cconst size_t*\u003e(data);\n    if (idx \u003c 0 || idx \u003e\u003d array-\u003esize()) {",
+      "range": {
+        "startLine": 405,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 0
+      },
+      "revId": "12b01ae5d7552829da5c03fb2a54e74869f75815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa22532a_e7b05366",
+        "filename": "tests/TextBlobTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-07T18:54:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f85a864_d72efc0b",
       "range": {
         "startLine": 405,
         "startChar": 0,
