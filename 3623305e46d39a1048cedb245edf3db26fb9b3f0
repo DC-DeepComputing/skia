@@ -33,6 +33,24 @@
       "message": "`Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan` seems to be very slowly failing every test with a vulkan validation layer warning and a stack trace.",
       "revId": "3623305e46d39a1048cedb245edf3db26fb9b3f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6d5c59a_9cd011c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-07T16:34:05Z",
+      "side": 1,
+      "message": "Hmm. That\u0027s actually happening on the tree already (but it\u0027s finishing much quicker): https://logs.chromium.org/logs/skia/5e6bb4cae772ab11/+/steps/dm/0/stdout",
+      "parentUuid": "79756318_8b7557f2",
+      "revId": "3623305e46d39a1048cedb245edf3db26fb9b3f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
