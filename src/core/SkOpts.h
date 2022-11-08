@@ -121,8 +121,8 @@ namespace SkOpts {
     extern StageFn stages_highp[SkRasterPipeline::kNumHighpStages], just_return_highp;
     extern StageFn stages_lowp [SkRasterPipeline::kNumLowpStages ], just_return_lowp;
 
-    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, void**);
-    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, void**);
+    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
+    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
 
     extern void (*interpret_skvm)(const skvm::InterpreterInstruction insts[], int ninsts,
                                   int nregs, int loop, const int strides[],
