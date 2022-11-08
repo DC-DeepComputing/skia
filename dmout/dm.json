@@ -1,0 +1,22 @@
+{
+   "key": {},
+   "max_rss_MB": 19,
+   "results": [
+      {
+         "key": {
+            "name": "async_rescale_and_read_no_bleed",
+            "config": "srgb-rgba",
+            "source_type": "gm"
+         },
+         "options": {
+            "ext": "png",
+            "gamut": "sRGB",
+            "transfer_fn": "sRGB",
+            "color_type": "RGBA_8888",
+            "alpha_type": "Premul",
+            "color_depth": "8888"
+         },
+         "md5": "629efb8b27c96facf878fa6aced78073"
+      }
+   ]
+}
