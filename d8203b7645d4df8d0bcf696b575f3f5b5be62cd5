@@ -16,6 +16,57 @@
       "message": "PTAL now that the generated script is the cross-platform Python version.",
       "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0801daef_fcc3f9e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T16:20:10Z",
+      "side": 1,
+      "message": "Bazel side of this lgtm with notes about comments.",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea15ced_7c0c4a76",
+        "filename": "include/gpu/GrDriverBugWorkarounds.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T16:20:10Z",
+      "side": 1,
+      "message": "or run `bazel run //tools:generate_workarounds`.\n\nJust makes it much easier to parse with quotes so my head parser doesn\u0027t get confused and distracted about \"run bazel run\".",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6223fbb0_4e02f569",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T16:20:10Z",
+      "side": 1,
+      "message": "Regenerate workarounds with `bazel run //tools:generate_workarounds`.\n\nMight as well add quotes here as well.",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
