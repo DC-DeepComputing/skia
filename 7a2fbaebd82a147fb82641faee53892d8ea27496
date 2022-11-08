@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99e0a358_d6252e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-08T16:03:55Z",
+      "side": 1,
+      "message": "A canary roll suggests that this won\u0027t improve the test results much (at all?) when we flip the flag in chromium. Still: it\u0027s the right thing to do, and there\u0027s a chance it cuts down on some of the platform variance. (Because canvas2D fast path was already skipping clamping, but GPUs/situations that couldn\u0027t use it would hit this code and do the clamp).",
+      "revId": "7a2fbaebd82a147fb82641faee53892d8ea27496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
