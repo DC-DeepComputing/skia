@@ -16,6 +16,24 @@
       "message": "Really should have a comment here about how this is an old glibc and we\u0027re being held back by RBE and a link to an RBE issue. Otherwise this just looks really old for no reason and in need of being updated.",
       "revId": "0274c8fb51ed42ecbce53bc230e44de7ae56fa37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df503d52_cd84e9dc",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-08T16:04:11Z",
+      "side": 1,
+      "message": "Done. It should be noted that this is not an RBE issue (although glibc *did* cause issues with RBE before, it only caused us to go to Debian 11, not 10 https://skia-review.googlesource.com/c/skia/+/593557), but an issue with our Swarming pool.",
+      "parentUuid": "d9958861_b5bd12c4",
+      "revId": "0274c8fb51ed42ecbce53bc230e44de7ae56fa37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
