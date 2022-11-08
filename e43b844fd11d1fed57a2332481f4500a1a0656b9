@@ -16,6 +16,29 @@
       "message": "Now that cl 601321 is in, this is ready to go.",
       "revId": "e43b844fd11d1fed57a2332481f4500a1a0656b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d660c020_581df3bd",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-08T20:29:54Z",
+      "side": 1,
+      "message": "`start` is unsigned. Let\u0027s do `start \u003e SkToSizeT(fUTF8IndexForUTF16Index.size())` to avoid introducing an assertion here for invalid `start`.",
+      "range": {
+        "startLine": 723,
+        "startChar": 24,
+        "endLine": 723,
+        "endChar": 71
+      },
+      "revId": "e43b844fd11d1fed57a2332481f4500a1a0656b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
