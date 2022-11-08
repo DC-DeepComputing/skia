@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51c19569_c124c5ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-08T20:18:18Z",
+      "side": 1,
+      "message": "PTAL. this is +1.44K. I think on arm it should reduce, but I\u0027m not sure.",
+      "revId": "1368351f4a71cba7ac2e2cbf525796420cb98625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
