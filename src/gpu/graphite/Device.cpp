@@ -868,6 +868,12 @@ void Device::drawGeometry(const Transform& localToDevice,
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
 
+    // If a renderer emits a primitive color, then a null primitive blender should default to
+    // SrcOver blending.
+    if (renderer->emitsPrimitiveColor() && !SkToBool(primitiveBlender)) {
+        primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
+    }
+
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
