@@ -9,9 +9,19 @@
 
 #include "include/gpu/graphite/BackendTexture.h"
 #include "src/gpu/graphite/ComputePipeline.h"
+#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/dawn/DawnBuffer.h"
+#include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
+#include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/gpu/graphite/dawn/DawnUtils.h"
+#include "src/sksl/ir/SkSLProgram.h"
+
 
 namespace skgpu::graphite {
 
@@ -21,40 +31,197 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
-sk_sp<Texture> DawnResourceProvider::createWrappedTexture(const BackendTexture&) {
-    return nullptr;
+sk_sp<Texture> DawnResourceProvider::createWrappedTexture(const BackendTexture& texture) {
+    wgpu::Texture dawnTexture         = texture.getDawnTexture();
+    wgpu::TextureView dawnTextureView = texture.getDawnTextureView();
+    SkASSERT(!dawnTexture || !dawnTextureView);
+
+    if (!dawnTexture && !dawnTextureView) {
+        return {};
+    }
+
+    if (dawnTexture) {
+        return DawnTexture::MakeWrapped(this->dawnSharedContext(),
+                                        texture.dimensions(),
+                                        texture.info(),
+                                        std::move(dawnTexture));
+    } else {
+        return DawnTexture::MakeWrapped(this->dawnSharedContext(),
+                                        texture.dimensions(),
+                                        texture.info(),
+                                        std::move(dawnTextureView));
+    }
 }
 
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
-        const SkRuntimeEffectDictionary*,
-        const GraphicsPipelineDesc&,
-        const RenderPassDesc&) {
-    return nullptr;
+        const SkRuntimeEffectDictionary* runtimeDict,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc) {
+    SkSL::Program::Inputs vsInputs, fsInputs;
+    SkSL::ProgramSettings settings;
+
+    settings.fForceNoRTFlip = true;
+
+    auto skslCompiler = this->skslCompiler();
+    ShaderErrorHandler* errorHandler = fSharedContext->caps()->shaderErrorHandler();
+
+    const RenderStep* step =
+            fSharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
+
+    bool useShadingSsboIndex =
+            fSharedContext->caps()->storageBufferPreferred() && step->performsShading();
+
+    BlendInfo blendInfo;
+    bool localCoordsNeeded = false;
+#if 0
+    std::string vsWGSL, fsWGSL;
+    if (!SkSLToWGSL(skslCompiler,
+                     GetSkSLFS(Layout::kStd140,
+                               fSharedContext->shaderCodeDictionary(),
+                               runtimeDict,
+                               step,
+                               pipelineDesc.paintParamsID(),
+                               useShadingSsboIndex,
+                               &blendInfo,
+                               &localCoordsNeeded),
+                     SkSL::ProgramKind::kGraphiteFragment,
+                     settings,
+                     &fsWGSL,
+                     &fsInputs,
+                     errorHandler)) {
+        SkASSERT(false);
+        return nullptr;
+    }
+
+    if (!SkSLToWGSL(skslCompiler,
+                    GetSkSLVS(step, useShadingSsboIndex, localCoordsNeeded),
+                    SkSL::ProgramKind::kGraphiteVertex,
+                    settings,
+                    &vsWGSL,
+                    &vsInputs,
+                    errorHandler)) {
+        SkASSERT(false);
+        return nullptr;
+    }
+
+    auto vsModule = DawnCompileWGSLShaderModule(this->dawnSharedContext(), vsWGSL, errorHandler);
+    if (!vsModule) {
+        SkASSERT(false);
+        return nullptr;
+    }
+
+    auto fsModule = DawnCompileSPIRVShaderModule(this->dawnSharedContext(), fsWGSL, errorHandler);
+    if (!fsModule) {
+        SkASSERT(false);
+        return nullptr;
+    }
+#else
+    std::string vsSPIRV, fsSPIRV;
+    wgpu::ShaderModule fsModule, vsModule;
+    // Some steps just render depth buffer but not color buffer, so the fragment
+    // shader is null.
+    auto fsSKSL = GetSkSLFS(Layout::kStd140,
+                            fSharedContext->shaderCodeDictionary(),
+                            runtimeDict,
+                            step,
+                            pipelineDesc.paintParamsID(),
+                            useShadingSsboIndex,
+                            &blendInfo,
+                            &localCoordsNeeded);
+    if (!fsSKSL.empty()) {
+        if (!SkSLToSPIRV(skslCompiler,
+                         fsSKSL,
+                         SkSL::ProgramKind::kGraphiteFragment,
+                         settings,
+                         &fsSPIRV,
+                         &fsInputs,
+                         errorHandler)) {
+            SkASSERT(false);
+            return nullptr;
+        }
+        fsModule = DawnCompileSPIRVShaderModule(this->dawnSharedContext(),
+                                                fsSPIRV,
+                                                errorHandler);
+        SkASSERT(fsModule);
+        if (!fsModule) {
+            return nullptr;
+        }
+    }
+
+    if (!SkSLToSPIRV(skslCompiler,
+                     GetSkSLVS(Layout::kStd140, step, useShadingSsboIndex, localCoordsNeeded),
+                     SkSL::ProgramKind::kGraphiteVertex,
+                     settings,
+                     &vsSPIRV,
+                     &vsInputs,
+                     errorHandler)) {
+        SkASSERT(false);
+        return nullptr;
+    }
+
+    vsModule = DawnCompileSPIRVShaderModule(this->dawnSharedContext(), vsSPIRV, errorHandler);
+    SkASSERT(vsModule);
+    if (!vsModule) {
+        return nullptr;
+    }
+#endif
+
+    return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
+                                      step->name(),
+                                      std::move(vsModule),
+                                      step->uniforms(),
+                                      step->numTextures(),
+                                      step->vertexAttributes(),
+                                      step->instanceAttributes(),
+                                      step->primitiveType(),
+                                      std::move(fsModule),
+                                      step->depthStencilSettings(),
+                                      blendInfo,
+                                      renderPassDesc);
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
+    SkASSERT(false);
     return nullptr;
 }
 
-sk_sp<Texture> DawnResourceProvider::createTexture(SkISize, const TextureInfo&, SkBudgeted) {
-    return nullptr;
+sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
+                                                   const TextureInfo& info,
+                                                   SkBudgeted budgeted) {
+    return DawnTexture::Make(this->dawnSharedContext(), dimensions, info, budgeted);
+
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
-                                                 PrioritizeGpuReads) {
-    return nullptr;
+                                                 PrioritizeGpuReads prioritizeGpuReads) {
+
+    return DawnBuffer::Make(dawnSharedContext(), size, type, prioritizeGpuReads);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions&,
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
                                                    SkTileMode xTileMode,
                                                    SkTileMode yTileMode) {
-    return nullptr;
+    return DawnSampler::Make(dawnSharedContext(), options, xTileMode, yTileMode);
 }
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
-                                                              const TextureInfo&) {
+                                                            const TextureInfo& info) {
+    SkASSERT(false);
     return {};
+}
+
+void DawnResourceProvider::onDeleteBackendTexture(BackendTexture& texture) {
+    SkASSERT(texture.isValid());
+    SkASSERT(texture.backend() == BackendApi::kDawn);
+    // TODO: should modify texture?
+    // texture.fDawnTexture = nullptr;
+    // texture.fDawnTextureView = nullptr;
+    SkASSERT(false);
+}
+
+const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
+    return static_cast<const DawnSharedContext*>(fSharedContext);
 }
 
 } // namespace skgpu::graphite

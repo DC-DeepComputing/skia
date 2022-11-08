@@ -1,0 +1,71 @@
+/*
+ * Copyright 2022 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_DawnBuffer_DEFINED
+#define skgpu_graphite_DawnBuffer_DEFINED
+
+#include "webgpu/webgpu_cpp.h"
+
+#include <vector>
+
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/graphite/dawn/DawnTypes.h"
+#include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/dawn/DawnSharedContext.h"
+
+namespace skgpu::graphite {
+
+class DawnUniformBufferBindGroupCacheKeepAlive;
+
+class DawnBuffer : public Buffer {
+public:
+    static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
+                                  size_t size,
+                                  BufferType type,
+                                  PrioritizeGpuReads);
+    static sk_sp<DawnBuffer> MakeWrapped(const DawnSharedContext*,
+                                         size_t size,
+                                         BufferType type,
+                                         PrioritizeGpuReads,
+                                         wgpu::Buffer buffer);
+
+    const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
+
+    void MapInternal();
+    void UnmapInternal();
+
+    void linkBindGroupCacheEntry(
+            std::shared_ptr<DawnUniformBufferBindGroupCacheKeepAlive> bindGroupCacheEntry) const;
+
+private:
+    DawnBuffer(const DawnSharedContext*,
+               size_t size,
+               BufferType type,
+               PrioritizeGpuReads,
+               wgpu::Buffer);
+
+    void onMap() override;
+    void onUnmap() override;
+
+    void freeGpuData() override;
+
+    const DawnSharedContext* dawnSharedContext() const {
+        return static_cast<const DawnSharedContext*>(sharedContext());
+    }
+
+    wgpu::Buffer fBuffer;
+    bool fIsReady = true;
+    // TODO: using a ring buffer backing by wgpu::Buffer as staging buffer.
+    std::vector<char> fStagingBuffer;
+
+    mutable std::vector<std::shared_ptr<DawnUniformBufferBindGroupCacheKeepAlive>>
+            fBindGroupCacheEntries;
+};
+
+}  // namespace skgpu::graphite
+
+#endif  // skgpu_graphite_DawnBuffer_DEFINED

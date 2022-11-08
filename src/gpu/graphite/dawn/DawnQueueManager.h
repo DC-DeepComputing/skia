@@ -14,14 +14,17 @@
 
 namespace skgpu::graphite {
 
+struct DawnBackendContext;
 class DawnSharedContext;
 class SharedContext;
 
 class DawnQueueManager : public QueueManager {
 public:
-    DawnQueueManager(wgpu::Queue fQueue, const SharedContext*);
+    DawnQueueManager(const DawnBackendContext&, const SharedContext*);
     ~DawnQueueManager() override {}
 
+    using SubmitCallback = void (*)(void*);
+    void registerNextWorkSubmitCallback(SubmitCallback callback, void* userdata);
 private:
     const DawnSharedContext* dawnSharedContext() const;
 
@@ -34,6 +37,8 @@ private:
 #endif
 
     wgpu::Queue fQueue;
+
+    std::vector<std::pair<void*, SubmitCallback>> fNextSubmitUserCallbacks;
 };
 
 } // namespace skgpu::graphite

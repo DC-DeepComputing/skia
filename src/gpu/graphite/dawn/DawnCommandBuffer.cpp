@@ -9,32 +9,77 @@
 
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
+#include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
+#include "src/gpu/graphite/dawn/DawnQueueManager.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/gpu/graphite/dawn/DawnUtils.h"
 
 namespace skgpu::graphite {
 
-std::unique_ptr<DawnCommandBuffer> DawnCommandBuffer::Make(wgpu::CommandBuffer cmdBuffer,
-                                                           const DawnSharedContext* sharedContext,
+namespace {
+using IntrinsicConstant = float[4];
+}
+
+std::unique_ptr<DawnCommandBuffer> DawnCommandBuffer::Make(const DawnSharedContext* sharedContext,
+                                                           DawnQueueManager* cmdQueue,
                                                            DawnResourceProvider* resourceProvider) {
-    return nullptr;
+    std::unique_ptr<DawnCommandBuffer> cmdBuffer(
+            new DawnCommandBuffer(sharedContext, cmdQueue, resourceProvider));
+    if (!cmdBuffer->setNewCommandBufferResources()) {
+        return {};
+    }
+    return cmdBuffer;
 }
 
-DawnCommandBuffer::DawnCommandBuffer(wgpu::CommandBuffer cmdBuffer,
-                                     const DawnSharedContext* sharedContext,
+DawnCommandBuffer::DawnCommandBuffer(const DawnSharedContext* sharedContext,
+                                     DawnQueueManager* cmdQueue,
                                      DawnResourceProvider* resourceProvider)
-        : fCommandBuffer(std::move(cmdBuffer))
-        , fSharedContext(sharedContext)
-        , fResourceProvider(resourceProvider) {
-
-}
+        // : fConstantStagingBufferPool(sizeof(IntrinsicConstant))
+        : fSharedContext(sharedContext)
+        , fCmdQueue(cmdQueue)
+        , fResourceProvider(resourceProvider) {}
 
 DawnCommandBuffer::~DawnCommandBuffer() {}
 
-bool DawnCommandBuffer::commit() {
+wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
     // TODO
-    return false;
+    SkASSERT(fCommandEncoder);
+    wgpu::CommandBuffer cmdBuffer = fCommandEncoder.Finish();
+
+    fCommandEncoder = nullptr;
+
+    return cmdBuffer;
+}
+
+void DawnCommandBuffer::onSubmitted() {
+    // fBuffers.clear();
+}
+
+void DawnCommandBuffer::onResetCommandBuffer() {
+    fActiveGraphicsPipeline = nullptr;
+    fActiveRenderPassEncoder = nullptr;
+    fActiveComputePassEncoder = nullptr;
+    fCommandEncoder = nullptr;
+    hasTextureGroupBind = false;
+#if ALWAYS_MAPPED_CONSTANT_BUFFER
+    fIntrinsicConstantCount = 0;
+#endif
+    for (auto& bufferSlot : fBoundUniformBuffers) {
+        bufferSlot = nullptr;
+    }
+    fBoundUniformBuffersDirty = true;
+}
+
+bool DawnCommandBuffer::setNewCommandBufferResources() {
+    SkASSERT(!fCommandEncoder);
+    fCommandEncoder = fSharedContext->device().CreateCommandEncoder();
+    SkASSERT(fCommandEncoder);
+    return true;
 }
 
 bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
@@ -42,15 +87,543 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
                                         const std::vector<std::unique_ptr<DrawPass>>& drawPasses) {
-    // TODO
-    return false;
+    // Update viewport's constant buffer before starting a render pass.
+    int numViewports = 0;
+    for (auto& drawPass : drawPasses) {
+        for (auto [type, cmdPtr] : drawPass->commands()) {
+            if (type == DrawPassCommands::Type::kSetViewport) {
+                numViewports++;
+                auto sv = static_cast<DrawPassCommands::SetViewport*>(cmdPtr);
+                preprocessViewport(*sv);
+            }
+        }
+    }
+
+    // TODO: only support single viewport change per render pass for now.
+    SkASSERT(numViewports <= 1);
+
+    if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
+        return false;
+    }
+
+    for (size_t i = 0; i < drawPasses.size(); ++i) {
+        this->addDrawPass(drawPasses[i].get());
+    }
+
+    this->endRenderPass();
+    return true;
 }
 
 bool DawnCommandBuffer::onAddComputePass(const ComputePassDesc& computePassDesc,
                                          const ComputePipeline* pipeline,
                                          const std::vector<ResourceBinding>& bindings) {
-    // TODO
-    return false;
+    this->beginComputePass();
+    this->bindComputePipeline(pipeline);
+    for (const ResourceBinding& binding : bindings) {
+        this->bindBuffer(
+                binding.fResource.fBuffer.get(), binding.fResource.fOffset, binding.fIndex);
+    }
+    this->dispatchThreadgroups(computePassDesc.fGlobalDispatchSize,
+                               computePassDesc.fLocalDispatchSize);
+    this->endComputePass();
+    return true;
+}
+
+bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
+                                        const Texture* colorTexture,
+                                        const Texture* resolveTexture,
+                                        const Texture* depthStencilTexture) {
+    SkASSERT(!fActiveRenderPassEncoder);
+    SkASSERT(!fActiveComputePassEncoder);
+
+    constexpr static wgpu::LoadOp wgpuLoadActionMap[]{
+            wgpu::LoadOp::Load,
+            wgpu::LoadOp::Clear,
+            wgpu::LoadOp::Undefined  // Don't care
+    };
+    static_assert((int)LoadOp::kLoad == 0);
+    static_assert((int)LoadOp::kClear == 1);
+    static_assert((int)LoadOp::kDiscard == 2);
+    static_assert(std::size(wgpuLoadActionMap) == kLoadOpCount);
+
+    constexpr static wgpu::StoreOp wgpuStoreActionMap[]{wgpu::StoreOp::Store,
+                                                        wgpu::StoreOp::Discard};
+    static_assert((int)StoreOp::kStore == 0);
+    static_assert((int)StoreOp::kDiscard == 1);
+    static_assert(std::size(wgpuStoreActionMap) == kStoreOpCount);
+
+    wgpu::RenderPassDescriptor wgpuRenderPass = {};
+    wgpu::RenderPassColorAttachment colorAttachment;
+    wgpu::RenderPassDepthStencilAttachment depthStencilAttachment;
+
+    // Set up color attachment.
+    auto& colorInfo = renderPassDesc.fColorAttachment;
+    bool loadMSAAFromResolve = false;
+    if (colorTexture) {
+        wgpuRenderPass.colorAttachments = &colorAttachment;
+        wgpuRenderPass.colorAttachmentCount = 1;
+
+        // TODO: check Texture matches RenderPassDesc
+        const auto* dawnColorTexture = static_cast<const DawnTexture*>(colorTexture);
+        if (const auto& texture = dawnColorTexture->dawnTexture()) {
+            SkASSERT(!dawnColorTexture->dawnTextureView());
+            colorAttachment.view = texture.CreateView();
+            SkASSERT(colorAttachment.view);
+        } else {
+            SkASSERT(dawnColorTexture->dawnTextureView());
+            colorAttachment.view = dawnColorTexture->dawnTextureView();
+        }
+        const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
+        colorAttachment.clearValue = {clearColor[0], clearColor[1], clearColor[2], clearColor[3]};
+        colorAttachment.loadOp = wgpuLoadActionMap[static_cast<int>(colorInfo.fLoadOp)];
+        colorAttachment.storeOp = wgpuStoreActionMap[static_cast<int>(colorInfo.fStoreOp)];
+
+        // Set up resolve attachment
+        if (resolveTexture) {
+            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+            // TODO: check Texture matches RenderPassDesc
+            const auto* dawnResolveTexture = static_cast<const DawnTexture*>(resolveTexture);
+            if (const auto& texture = dawnResolveTexture->dawnTexture()) {
+                SkASSERT(!dawnResolveTexture->dawnTextureView());
+                colorAttachment.resolveTarget = texture.CreateView();
+                SkASSERT(colorAttachment.resolveTarget);
+            } else {
+                SkASSERT(dawnResolveTexture->dawnTextureView());
+                colorAttachment.resolveTarget = dawnResolveTexture->dawnTextureView();
+            }
+            // Inclusion of a resolve texture implies the client wants to finish the
+            // renderpass with a resolve.
+            SkASSERT(colorAttachment.storeOp == wgpu::StoreOp::Discard);
+
+            // But it also means we have to load the resolve texture into the MSAA color attachment
+            loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+            // TODO: If the color resolve texture is read-only we can use a private (vs. memoryless)
+            // msaa attachment that's coupled to the framebuffer and the StoreAndMultisampleResolve
+            // action instead of loading as a draw.
+        }
+    }
+
+    // Set up stencil/depth attachment
+    auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
+    if (depthStencilTexture) {
+        const auto* dawnDepthStencilTexture = static_cast<const DawnTexture*>(depthStencilTexture);
+        auto format = dawnDepthStencilTexture->textureInfo().dawnTextureSpec().fFormat;
+        SkASSERT(DawnFormatIsDepthOrStencil(format));
+
+        // TODO: check Texture matches RenderPassDesc
+        if (const auto& texture = dawnDepthStencilTexture->dawnTexture()) {
+            SkASSERT(!dawnDepthStencilTexture->dawnTextureView());
+            depthStencilAttachment.view = texture.CreateView();
+            SkASSERT(depthStencilAttachment.view);
+        } else {
+            SkASSERT(dawnDepthStencilTexture->dawnTextureView());
+            depthStencilAttachment.view = dawnDepthStencilTexture->dawnTextureView();
+        }
+
+        if (DawnFormatIsDepth(format)) {
+            depthStencilAttachment.depthClearValue = renderPassDesc.fClearDepth;
+            depthStencilAttachment.depthLoadOp =
+                    wgpuLoadActionMap[static_cast<int>(depthStencilInfo.fLoadOp)];
+            depthStencilAttachment.depthStoreOp =
+                    wgpuStoreActionMap[static_cast<int>(depthStencilInfo.fStoreOp)];
+        }
+
+        if (DawnFormatIsStencil(format)) {
+            depthStencilAttachment.stencilClearValue = renderPassDesc.fClearStencil;
+            depthStencilAttachment.stencilLoadOp =
+                    wgpuLoadActionMap[static_cast<int>(depthStencilInfo.fLoadOp)];
+            depthStencilAttachment.stencilStoreOp =
+                    wgpuStoreActionMap[static_cast<int>(depthStencilInfo.fStoreOp)];
+        }
+
+        wgpuRenderPass.depthStencilAttachment = &depthStencilAttachment;
+    } else {
+        SkASSERT(!depthStencilInfo.fTextureInfo.isValid());
+    }
+
+    fActiveRenderPassEncoder = fCommandEncoder.BeginRenderPass(&wgpuRenderPass);
+
+    if (loadMSAAFromResolve) {
+        // Manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the actual load op for the MSAA attachment had better have been discard.
+        SkASSERT(colorInfo.fLoadOp == LoadOp::kDiscard);
+
+        // TODO
+        SkASSERT(false);
+    }
+
+    return true;
+}
+
+void DawnCommandBuffer::endRenderPass() {
+    SkASSERT(fActiveRenderPassEncoder);
+    fActiveRenderPassEncoder.End();
+    fActiveRenderPassEncoder = nullptr;
+}
+
+void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+    drawPass->addResourceRefs(this);
+    for (auto[type, cmdPtr] : drawPass->commands()) {
+        switch (type) {
+            case DrawPassCommands::Type::kBindGraphicsPipeline: {
+                auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
+                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                break;
+            }
+            case DrawPassCommands::Type::kSetBlendConstants: {
+                auto sbc = static_cast<DrawPassCommands::SetBlendConstants*>(cmdPtr);
+                this->setBlendConstants(sbc->fBlendConstants);
+                break;
+            }
+            case DrawPassCommands::Type::kBindUniformBuffer: {
+                auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
+                this->bindUniformBuffer(bub->fInfo, bub->fSlot);
+                break;
+            }
+            case DrawPassCommands::Type::kBindDrawBuffers: {
+                auto bdb = static_cast<DrawPassCommands::BindDrawBuffers*>(cmdPtr);
+                this->bindDrawBuffers(bdb->fVertices, bdb->fInstances, bdb->fIndices);
+                break;
+            }
+            case DrawPassCommands::Type::kBindTexturesAndSamplers: {
+                auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
+                bindTextureAndSamplers(*drawPass, *bts);
+                break;
+            }
+            case DrawPassCommands::Type::kSetViewport: {
+                auto sv = static_cast<DrawPassCommands::SetViewport*>(cmdPtr);
+                this->setViewport(sv->fViewport.fLeft,
+                                  sv->fViewport.fTop,
+                                  sv->fViewport.width(),
+                                  sv->fViewport.height(),
+                                  sv->fMinDepth,
+                                  sv->fMaxDepth);
+                break;
+            }
+            case DrawPassCommands::Type::kSetScissor: {
+                auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
+                const SkIRect& rect = ss->fScissor;
+                this->setScissor(rect.fLeft, rect.fTop, rect.width(), rect.height());
+                break;
+            }
+            case DrawPassCommands::Type::kDraw: {
+                auto draw = static_cast<DrawPassCommands::Draw*>(cmdPtr);
+                this->draw(draw->fType, draw->fBaseVertex, draw->fVertexCount);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexed: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexed*>(cmdPtr);
+                this->drawIndexed(draw->fType,
+                                  draw->fBaseIndex,
+                                  draw->fIndexCount,
+                                  draw->fBaseVertex);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawInstanced: {
+                auto draw = static_cast<DrawPassCommands::DrawInstanced*>(cmdPtr);
+                this->drawInstanced(draw->fType,
+                                    draw->fBaseVertex,
+                                    draw->fVertexCount,
+                                    draw->fBaseInstance,
+                                    draw->fInstanceCount);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexedInstanced: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
+                this->drawIndexedInstanced(draw->fType,
+                                           draw->fBaseIndex,
+                                           draw->fIndexCount,
+                                           draw->fBaseVertex,
+                                           draw->fBaseInstance,
+                                           draw->fInstanceCount);
+                break;
+            }
+        }
+    }
+}
+
+void DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
+    fActiveGraphicsPipeline = static_cast<const DawnGraphicsPipeline*>(graphicsPipeline);
+    fActiveRenderPassEncoder.SetPipeline(fActiveGraphicsPipeline->dawnRenderPipeline());
+    fBoundUniformBuffersDirty = true;
+}
+
+void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot slot) {
+    SkASSERT(fActiveRenderPassEncoder);
+
+    auto dawnBuffer = static_cast<const DawnBuffer*>(info.fBuffer);
+    // fBuffers.insert(dawnBuffer);
+
+    unsigned int bufferIndex = 0;
+    switch(slot) {
+        case UniformSlot::kRenderStep:
+            bufferIndex = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+            break;
+        case UniformSlot::kPaint:
+            bufferIndex = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+            break;
+        default:
+            SkASSERT(false);
+    }
+
+    fBoundUniformBuffers[bufferIndex] = dawnBuffer;
+    fBoundUniformBufferOffsets[bufferIndex] = static_cast<uint32_t>(info.fOffset);
+    fBoundUniformBufferRanges[bufferIndex] = static_cast<uint32_t>(info.fBytes);
+
+    fBoundUniformBuffersDirty = true;
+}
+
+void DawnCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
+                                        const BindBufferInfo& instances,
+                                        const BindBufferInfo& indices) {
+    SkASSERT(fActiveRenderPassEncoder);
+
+    if (vertices.fBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(vertices.fBuffer)->dawnBuffer();
+        // fBuffers.insert(static_cast<const DawnBuffer*>(vertices.fBuffer));
+        fActiveRenderPassEncoder.SetVertexBuffer(
+                DawnGraphicsPipeline::kVertexBufferIndex, dawnBuffer, vertices.fOffset);
+    }
+    if (instances.fBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(instances.fBuffer)->dawnBuffer();
+        // fBuffers.insert(static_cast<const DawnBuffer*>(instances.fBuffer));
+        fActiveRenderPassEncoder.SetVertexBuffer(
+                DawnGraphicsPipeline::kInstanceBufferIndex, dawnBuffer, instances.fOffset);
+    }
+    if (indices.fBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(indices.fBuffer)->dawnBuffer();
+        // fBuffers.insert(static_cast<const DawnBuffer*>(indices.fBuffer));
+        fActiveRenderPassEncoder.SetIndexBuffer(
+                dawnBuffer, wgpu::IndexFormat::Uint16, indices.fOffset);
+    }
+}
+
+void DawnCommandBuffer::bindTextureAndSamplers(const DrawPass& drawPass,
+                                               const DrawPassCommands::BindTexturesAndSamplers& command) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline);
+
+    // TODO: optimize for single texture.
+    std::vector<wgpu::BindGroupEntry> entries(2 * command.fNumTexSamplers);
+
+    for (int i = 0; i < command.fNumTexSamplers; ++i) {
+        const auto* texture = static_cast<const DawnTexture*>(drawPass.getTexture(command.fTextureIndices[i]));
+        const auto* sampler = static_cast<const DawnSampler*>(drawPass.getSampler(command.fSamplerIndices[i]));
+        auto wgpuTextureView = texture->dawnTexture() ?
+                texture->dawnTexture().CreateView() : texture->dawnTextureView();
+        auto& wgpuSampler = sampler->dawnSampler();
+
+        // since shader generator assigns binding slot to sampler then texture,
+        // then the next sampler and texture, and so on, we need to use
+        // 2 * j as base binding index of the sampler and texture.
+        entries[2 * i].binding = 2 * i;
+        entries[2 * i].sampler = wgpuSampler;
+
+        entries[2 * i + 1].binding = 2 * i + 1;
+        entries[2 * i + 1].textureView = wgpuTextureView;
+    }
+
+    wgpu::BindGroupDescriptor desc;
+    desc.layout = fActiveGraphicsPipeline->dawnRenderPipeline().GetBindGroupLayout(
+            DawnGraphicsPipeline::kTextureBindGroupIndex);
+    desc.entryCount = entries.size();
+    desc.entries = entries.data();
+
+    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+
+    fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kTextureBindGroupIndex, bindGroup);
+    hasTextureGroupBind = true;
+}
+
+void DawnCommandBuffer::syncUniformBuffers() {
+    if (fBoundUniformBuffersDirty) {
+        fBoundUniformBuffersDirty = false;
+
+        std::array<uint32_t, 3> offsets;
+        uint32_t offsetsCount = 0;
+
+        DawnUniformBufferBindGroupDesc uniformBuffersDesc;
+        {
+            auto &entry = uniformBuffersDesc.pushEntry();
+#if ALWAYS_MAPPED_CONSTANT_BUFFER
+            auto j = (fIntrinsicConstantCount - 1) / kIntrinsicConstantPerBuffer;
+            entry.binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+            entry.buffer = fConstantBuffers[j].get();
+            entry.size = sizeof(IntrinsicConstant);
+            offsets[offsetsCount++] = ((fIntrinsicConstantCount - 1) % kIntrinsicConstantPerBuffer) * sizeof(IntrinsicConstant);
+#else
+            entry.binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+            entry.buffer = fConstantBuffer.get();
+            entry.size = 0; // whole buffer
+            offsets[offsetsCount++] = 0;
+#endif
+        }
+
+        if (fActiveGraphicsPipeline->hasStepUniforms() &&
+            fBoundUniformBuffers[DawnGraphicsPipeline::kRenderStepUniformBufferIndex]) {
+            auto &entry = uniformBuffersDesc.pushEntry();
+            entry.binding = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+            entry.buffer = fBoundUniformBuffers[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
+            entry.size = fBoundUniformBufferRanges[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
+            offsets[offsetsCount++] = fBoundUniformBufferOffsets[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
+        }
+
+        if (fActiveGraphicsPipeline->hasFragment() &&
+            fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex]) {
+            auto &entry = uniformBuffersDesc.pushEntry();
+            entry.binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+            entry.buffer = fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex];
+            entry.size = fBoundUniformBufferRanges[DawnGraphicsPipeline::kPaintUniformBufferIndex];
+            offsets[offsetsCount++] = fBoundUniformBufferOffsets[DawnGraphicsPipeline::kPaintUniformBufferIndex];
+        }
+
+        const auto &bindGroup = fActiveGraphicsPipeline->getOrCreateBindGroup(uniformBuffersDesc);
+
+        fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
+                                              bindGroup,
+                                              offsetsCount,
+                                              offsets.data());
+    }
+}
+
+void DawnCommandBuffer::setScissor(unsigned int left, unsigned int top,
+                                   unsigned int width, unsigned int height) {
+    SkASSERT(fActiveRenderPassEncoder);
+    fActiveRenderPassEncoder.SetScissorRect(left, top, width, height);
+}
+
+void DawnCommandBuffer::preprocessViewport(const DrawPassCommands::SetViewport& viewportCommand) {
+    SkASSERT(!fActiveRenderPassEncoder);
+    SkASSERT(!fActiveComputePassEncoder);
+
+    // Dawn's framebuffer space has (0, 0) at the top left. This agrees with Skia's device coords.
+    // However, in NDC (-1, -1) is the bottom left. So we flip the origin here (assuming all
+    // surfaces we have are TopLeft origin).
+    const float x = viewportCommand.fViewport.fLeft;
+    const float y = viewportCommand.fViewport.fTop;
+    const float invTwoW = 2.f / viewportCommand.fViewport.width();
+    const float invTwoH = 2.f / viewportCommand.fViewport.height();
+    const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
+
+#if ALWAYS_MAPPED_CONSTANT_BUFFER
+    auto i = fIntrinsicConstantCount / kIntrinsicConstantPerBuffer;
+    if (i >= fConstantBuffers.size()) {
+        SkASSERT(i == fConstantBuffers.size());
+        wgpu::BufferDescriptor desc;
+#if defined(SK_DEBUG)
+        desc.label = "CommandBufferConstant";
+#endif
+        desc.usage = wgpu::BufferUsage::MapWrite | wgpu::BufferUsage::Uniform;
+        desc.size = sizeof(IntrinsicConstant) * kIntrinsicConstantPerBuffer;
+        desc.mappedAtCreation = true;
+        auto wgpuBuffer = fSharedContext->device().CreateBuffer(&desc);
+        SkASSERT(wgpuBuffer);
+
+        auto dawnWrapperBuffer = DawnBuffer::MakeWrapped(fSharedContext,
+                                                         desc.size,
+                                                         BufferType::kUniform,
+                                                         PrioritizeGpuReads::kYes,
+                                                         wgpuBuffer);
+        fConstantBuffers.push_back(std::move(dawnWrapperBuffer));
+    }
+    auto& buffer = fConstantBuffers[i]->dawnBuffer();
+    auto offset =
+            (fIntrinsicConstantCount % kIntrinsicConstantPerBuffer) * sizeof(IntrinsicConstant);
+    memcpy(buffer.GetMappedRange(offset, sizeof(rtAdjust)), rtAdjust, sizeof(IntrinsicConstant));
+    ++fIntrinsicConstantCount;
+#else
+    if (!fConstantBuffer) {
+        fConstantBuffer = DawnBuffer::Make(fSharedContext,
+                                           sizeof(IntrinsicConstant),
+                                           BufferType::kUniform,
+                                           PrioritizeGpuReads::kYes);
+        SkASSERT(fConstantBuffer);
+    }
+    fCommandEncoder.WriteBuffer(fConstantBuffer->dawnBuffer(), 0, reinterpret_cast<const uint8_t*>(rtAdjust), sizeof(rtAdjust));
+    // fConstantStagingBufferPool.writeBuffer(
+    //         fSharedContext->device(), fCmdQueue, fCommandEncoder, fConstantBuffer->dawnBuffer(), &rtAdjust);
+#endif
+}
+
+void DawnCommandBuffer::setViewport(float x, float y, float width, float height,
+                                    float minDepth, float maxDepth) {
+    SkASSERT(fActiveRenderPassEncoder);
+    fActiveRenderPassEncoder.SetViewport(x, y, width, height, minDepth, maxDepth);
+}
+
+void DawnCommandBuffer::setBlendConstants(float* blendConstants) {
+    SkASSERT(fActiveRenderPassEncoder);
+    wgpu::Color blendConst = {
+            blendConstants[0], blendConstants[1], blendConstants[2], blendConstants[3]};
+    fActiveRenderPassEncoder.SetBlendConstant(&blendConst);
+}
+
+void DawnCommandBuffer::draw(PrimitiveType type,
+                             unsigned int baseVertex,
+                             unsigned int vertexCount) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    syncUniformBuffers();
+
+    fActiveRenderPassEncoder.Draw(vertexCount, /*instanceCount=*/1, baseVertex);
+}
+
+void DawnCommandBuffer::drawIndexed(PrimitiveType type, unsigned int baseIndex,
+                                    unsigned int indexCount, unsigned int baseVertex) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    syncUniformBuffers();
+
+    fActiveRenderPassEncoder.DrawIndexed(indexCount, /*instanceCount=*/1, baseIndex, baseVertex);
+}
+
+void DawnCommandBuffer::drawInstanced(PrimitiveType type, unsigned int baseVertex,
+                                      unsigned int vertexCount, unsigned int baseInstance,
+                                      unsigned int instanceCount) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    syncUniformBuffers();
+
+    fActiveRenderPassEncoder.Draw(vertexCount, instanceCount, baseVertex, baseInstance);
+}
+
+void DawnCommandBuffer::drawIndexedInstanced(PrimitiveType type,
+                                             unsigned int baseIndex,
+                                             unsigned int indexCount,
+                                             unsigned int baseVertex,
+                                             unsigned int baseInstance,
+                                             unsigned int instanceCount) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    syncUniformBuffers();
+
+    fActiveRenderPassEncoder.DrawIndexed(
+            indexCount, instanceCount, baseIndex, baseVertex, baseInstance);
+}
+
+void DawnCommandBuffer::beginComputePass() {
+    SkASSERT(false);
+}
+
+void DawnCommandBuffer::bindComputePipeline(const ComputePipeline* computePipeline) {
+    SkASSERT(false);
+}
+
+void DawnCommandBuffer::bindBuffer(const Buffer* buffer, unsigned int offset, unsigned int index) {
+    SkASSERT(false);
+}
+
+void DawnCommandBuffer::dispatchThreadgroups(const WorkgroupSize& globalSize,
+                                             const WorkgroupSize& localSize) {
+    SkASSERT(false);
+}
+
+void DawnCommandBuffer::endComputePass() {
+    SkASSERT(false);
 }
 
 bool DawnCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
@@ -58,33 +631,114 @@ bool DawnCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
                                               const Buffer* buffer,
                                               size_t bufferOffset,
                                               size_t bufferRowBytes) {
-    return false;
+    SkASSERT(!fActiveRenderPassEncoder);
+    SkASSERT(!fActiveComputePassEncoder);
+
+    auto& wgpuTexture = static_cast<const DawnTexture*>(texture)->dawnTexture();
+    auto& wgpuBuffer = static_cast<const DawnBuffer*>(buffer)->dawnBuffer();
+
+    // fBuffers.insert(static_cast<const DawnBuffer*>(buffer));
+
+    wgpu::ImageCopyTexture src;
+    src.texture = wgpuTexture;
+    src.origin.x = srcRect.fLeft;
+    src.origin.y = srcRect.fTop;
+
+    wgpu::ImageCopyBuffer dst;
+    dst.buffer = wgpuBuffer;
+    dst.layout.bytesPerRow = (bufferRowBytes + 0xFF) & ~0xFF;
+    dst.layout.offset = bufferOffset;
+
+    if (dst.layout.bytesPerRow == bufferRowBytes) {
+        wgpu::Extent3D copySize = { static_cast<uint32_t>(srcRect.width()),
+                                    static_cast<uint32_t>(srcRect.height()), 1};
+        fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
+    } else {
+        // TODO: optimize this copy.
+        wgpu::Extent3D copySize = { static_cast<uint32_t>(srcRect.width()), 1, 1};
+        while(src.origin.y < static_cast<uint32_t>(srcRect.bottom())) {
+            fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
+            dst.layout.offset += bufferRowBytes;
+            ++src.origin.y;
+        }
+    }
+
+    return true;
 }
 
 bool DawnCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
                                               const Texture* texture,
                                               const BufferTextureCopyData* copyData,
                                               int count) {
-    return false;
+    SkASSERT(!fActiveRenderPassEncoder);
+    SkASSERT(!fActiveComputePassEncoder);
+
+    auto& wgpuTexture = static_cast<const DawnTexture*>(texture)->dawnTexture();
+    auto& wgpuBuffer = static_cast<const DawnBuffer*>(buffer)->dawnBuffer();
+
+    // fBuffers.insert(static_cast<const DawnBuffer*>(buffer));
+
+    wgpu::ImageCopyBuffer src;
+    src.buffer = wgpuBuffer;
+
+    wgpu::ImageCopyTexture dst;
+    dst.texture = wgpuTexture;
+
+    for (int i = 0; i < count; ++i) {
+        dst.origin.x = copyData[i].fRect.x();
+        dst.origin.y = copyData[i].fRect.y();
+        src.layout.bytesPerRow = (copyData[i].fBufferRowBytes + 0xFF) & ~0xFF;
+        src.layout.offset = copyData[i].fBufferOffset;
+        // If row is not aligned with 256 bytes, we have to copy for each rows.
+        // TODO: optimize this copy.
+        if (src.layout.bytesPerRow != copyData[i].fBufferRowBytes) {
+            wgpu::Extent3D copySize = { static_cast<uint32_t>(copyData[i].fRect.width()), 1, 1 };
+            while (dst.origin.y < static_cast<uint32_t>(copyData[i].fRect.bottom())) {
+                fCommandEncoder.CopyBufferToTexture(&src, &dst, &copySize);
+                src.layout.offset += copyData[i].fBufferRowBytes;
+                ++dst.origin.y;
+            }
+        } else {
+            wgpu::Extent3D copySize = { static_cast<uint32_t>(copyData[i].fRect.width()),
+                                        static_cast<uint32_t>(copyData[i].fRect.height()),
+                                        1 };
+            fCommandEncoder.CopyBufferToTexture(&src, &dst, &copySize);
+        }
+    }
+
+    return true;
 }
 
 bool DawnCommandBuffer::onCopyTextureToTexture(const Texture* src,
                                                SkIRect srcRect,
                                                const Texture* dst,
                                                SkIPoint dstPoint) {
-    return false;
+    SkASSERT(!fActiveRenderPassEncoder);
+    SkASSERT(!fActiveComputePassEncoder);
+
+    auto& wgpuTextureSrc = static_cast<const DawnTexture*>(src)->dawnTexture();
+    auto& wgpuTextureDst = static_cast<const DawnTexture*>(dst)->dawnTexture();
+
+    wgpu::ImageCopyTexture srcArgs;
+    srcArgs.texture = wgpuTextureSrc;
+    srcArgs.origin.x = srcRect.fLeft;
+    srcArgs.origin.y = srcRect.fTop;
+
+    wgpu::ImageCopyTexture dstArgs;
+    dstArgs.texture = wgpuTextureDst;
+    dstArgs.origin.x = dstPoint.fX;
+    dstArgs.origin.y = dstPoint.fY;
+
+    wgpu::Extent3D copySize = {
+            static_cast<uint32_t>(srcRect.width()), static_cast<uint32_t>(srcRect.height()), 1};
+
+    fCommandEncoder.CopyTextureToTexture(&srcArgs, &dstArgs, &copySize);
+
+    return true;
 }
 
-bool DawnCommandBuffer::onSynchronizeBufferToCpu(const Buffer* buffer,
-                                                 bool* outDidResultInWork) {
-    return false;
-}
-
-void DawnCommandBuffer::onResetCommandBuffer() {
-}
-
-bool DawnCommandBuffer::setNewCommandBufferResources() {
-    return false;
+bool DawnCommandBuffer::onSynchronizeBufferToCpu(const Buffer* buffer, bool* outDidResultInWork) {
+    return true;
 }
 
 } // namespace skgpu::graphite

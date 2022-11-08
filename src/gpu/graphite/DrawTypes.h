@@ -150,6 +150,7 @@ static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
 struct BindBufferInfo {
     const Buffer* fBuffer = nullptr;
     size_t fOffset = 0;
+    size_t fBytes = 0;
 
     operator bool() const { return SkToBool(fBuffer); }
 

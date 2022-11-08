@@ -144,6 +144,7 @@ std::tuple<UniformWriter, BindBufferInfo> DrawBufferManager::getUniformWriter(
     BindBufferInfo bindInfo;
     bindInfo.fBuffer = fCurrentUniformBuffer.get();
     bindInfo.fOffset = fUniformOffset;
+    bindInfo.fBytes = requiredBytes;
     fUniformOffset += requiredBytes;
     return {UniformWriter(map_offset(bindInfo), requiredBytes), bindInfo};
 }

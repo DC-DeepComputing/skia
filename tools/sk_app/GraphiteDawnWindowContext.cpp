@@ -19,6 +19,12 @@
 
 #include "dawn/dawn_proc.h"
 
+#if defined(SK_DEBUG)
+#define DISABLE_DAWN_VALIDATION 0
+#else
+#define DISABLE_DAWN_VALIDATION 1
+#endif
+
 namespace sk_app {
 
 GraphiteDawnWindowContext::GraphiteDawnWindowContext(const DisplayParams& params,
@@ -123,11 +129,30 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         if (properties.backendType != type) {
             continue;
         }
-        auto device = wgpu::Device::Acquire(adapter.CreateDevice());
+        wgpu::FeatureName features[] = {
+            wgpu::FeatureName::DepthClipControl,
+            wgpu::FeatureName::Depth32FloatStencil8,
+        };
+        wgpu::DeviceDescriptor desc;
+        desc.requiredFeaturesCount = std::size(features);
+        desc.requiredFeatures = features;
+
+#if DISABLE_DAWN_VALIDATION
+        const char* toggles[] = {
+            "disable_robustness",
+            "skip_validation",
+        };
+        wgpu::DawnTogglesDeviceDescriptor togglesDeviceDesc;
+        togglesDeviceDesc.forceEnabledTogglesCount = std::size(toggles);
+        togglesDeviceDesc.forceEnabledToggles = toggles;
+        desc.nextInChain = &togglesDeviceDesc;
+#endif
+
+        auto device = wgpu::Device::Acquire(adapter.CreateDevice(&desc));
         device.SetUncapturedErrorCallback(
                 [](WGPUErrorType type, const char* message, void*) {
-                    SkDebugf("Device error: %s\n", message);
-                    SkASSERT(false);
+                    SK_ABORT("Device error: %s\n", message);
+                    // SkASSERT(false);
                 },
                 0);
         return device;

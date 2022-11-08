@@ -135,6 +135,7 @@ private:
         kTexture_SpecialIntrinsic,
         kTextureGrad_SpecialIntrinsic,
         kTextureLod_SpecialIntrinsic,
+        kIsInf_SpecialIntrinsic,
     };
 
     enum class Precision {
@@ -161,6 +162,8 @@ private:
     SpvId getType(const Type& type, const MemoryLayout& layout);
 
     SpvId getFunctionType(const FunctionDeclaration& function);
+
+    SpvId getFunctionParameterType(const Type& parameterType);
 
     SpvId getPointerType(const Type& type, SpvStorageClass_ storageClass);
 

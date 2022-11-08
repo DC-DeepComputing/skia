@@ -86,9 +86,12 @@ std::string get_uniform_header(int bufferID, const char* name) {
     return result;
 }
 
-std::string get_uniforms(SkSpan<const SkUniform> uniforms, int* offset, int manglingSuffix) {
+std::string get_uniforms(Layout layout,
+                         SkSpan<const SkUniform> uniforms,
+                         int* offset,
+                         int manglingSuffix) {
     std::string result;
-    UniformOffsetCalculator offsetter(Layout::kMetal, *offset);
+    UniformOffsetCalculator offsetter(layout, *offset);
 
     for (const SkUniform& u : uniforms) {
         SkSL::String::appendf(&result,
@@ -111,11 +114,26 @@ std::string get_uniforms(SkSpan<const SkUniform> uniforms, int* offset, int mang
     *offset = offsetter.size();
     return result;
 }
+
+bool have_uniforms(const std::vector<SkPaintParamsKey::BlockReader>& readers) {
+    for (const SkPaintParamsKey::BlockReader& r : readers) {
+        if (r.entry()->fUniforms.size() > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 }  // anonymous namespace
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
-                                    const std::vector<SkPaintParamsKey::BlockReader>& readers) {
+                                    Layout layout,
+                                    const std::vector<SkPaintParamsKey::BlockReader>& readers,
+                                    bool needsLocalCoords) {
+    if (!needsLocalCoords && !have_uniforms(readers)) {
+        return {};
+    }
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
@@ -124,20 +142,27 @@ std::string EmitPaintParamsUniforms(int bufferID,
 
         if (!uniforms.empty()) {
             SkSL::String::appendf(&result, "// %s uniforms\n", readers[i].entry()->fName);
-            result += get_uniforms(uniforms, &offset, i);
+            result += get_uniforms(layout, uniforms, &offset, i);
         }
+    }
+    if (needsLocalCoords) {
+        static constexpr SkUniform kDev2LocalUniform[] = {{ "dev2LocalUni", SkSLType::kFloat4x4 }};
+        result += "// NeedsLocalCoords\n";
+        result += get_uniforms(layout, SkSpan<const SkUniform>(kDev2LocalUniform, 1), &offset, -1);
     }
     result.append("};\n\n");
 
     return result;
 }
 
-std::string EmitRenderStepUniforms(int bufferID, const char* name,
+std::string EmitRenderStepUniforms(int bufferID,
+                                   const char* name,
+                                   Layout layout,
                                    SkSpan<const SkUniform> uniforms) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
-    result += get_uniforms(uniforms, &offset, -1);
+    result += get_uniforms(layout, uniforms, &offset, -1);
     result.append("};\n\n");
 
     return result;
@@ -197,9 +222,9 @@ std::string EmitTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockRea
 
             for (const SkTextureAndSampler& t : samplers) {
                 SkSL::String::appendf(&result,
-                                      "layout(binding=%d) uniform sampler2D %s_%d;\n",
-                                      *binding, t.name(), i);
-                (*binding)++;
+                        "layout(set = 1, binding=%d) uniform sampler %s_sampler_%d;\n"
+                        "layout(set = 1, binding=%d) uniform texture2D %s_texture_%d;\n",
+                        (*binding)++, t.name(), i, (*binding)++, t.name(), i);
             }
         }
     }
@@ -263,7 +288,8 @@ std::string EmitVaryings(const RenderStep* step,
     return result;
 }
 
-std::string GetSkSLVS(const RenderStep* step,
+std::string GetSkSLVS(Layout uniformLayout,
+                      const RenderStep* step,
                       bool defineShadingSsboIndexVarying,
                       bool defineLocalCoordsVarying) {
     // TODO: To more completely support end-to-end rendering, this will need to be updated so that
@@ -289,7 +315,7 @@ std::string GetSkSLVS(const RenderStep* step,
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     // TODO: replace hard-coded bufferID with the backend's renderstep uniform-buffer index.
     if (step->numUniforms() > 0) {
-        sksl += EmitRenderStepUniforms(1, "Step", step->uniforms());
+        sksl += EmitRenderStepUniforms(1, "Step", uniformLayout, step->uniforms());
     }
 
     // Varyings needed by RenderStep
@@ -318,7 +344,8 @@ std::string GetSkSLVS(const RenderStep* step,
     return sksl;
 }
 
-std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
+std::string GetSkSLFS(Layout uniformLayout,
+                      const SkShaderCodeDictionary* dict,
                       const SkRuntimeEffectDictionary* rteDict,
                       const RenderStep* step,
                       SkUniquePaintParamsID paintID,
@@ -338,7 +365,7 @@ std::string GetSkSLFS(const SkShaderCodeDictionary* dict,
     *requiresLocalCoordsVarying = shaderInfo.needsLocalCoords();
 
     std::string sksl;
-    sksl += shaderInfo.toSkSL(step, useStorageBuffers, *requiresLocalCoordsVarying);
+    sksl += shaderInfo.toSkSL(uniformLayout, step, useStorageBuffers, *requiresLocalCoordsVarying);
 
     return sksl;
 }
