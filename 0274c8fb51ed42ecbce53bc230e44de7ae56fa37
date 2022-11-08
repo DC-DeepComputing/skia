@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9958861_b5bd12c4",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T15:57:57Z",
+      "side": 1,
+      "message": "Really should have a comment here about how this is an old glibc and we\u0027re being held back by RBE and a link to an RBE issue. Otherwise this just looks really old for no reason and in need of being updated.",
+      "revId": "0274c8fb51ed42ecbce53bc230e44de7ae56fa37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
