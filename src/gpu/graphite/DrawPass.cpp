@@ -507,15 +507,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // bugs in the DrawOrder determination code?
     std::sort(keys.begin(), keys.end());
 
-    // Set viewport to the entire texture for now (eventually, we may have logically smaller bounds
-    // within an approx-sized texture). It is assumed that this also configures the sk_rtAdjust
-    // intrinsic for programs (however the backend chooses to do so).
-    drawPass->fCommandList.setViewport(SkRect::Make(drawPass->fTarget->dimensions()));
-
     // Used to record vertex/instance data, buffer binds, and draw calls
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
     GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
-    SkIRect lastScissor = SkIRect::MakeSize(drawPass->fTarget->dimensions());
+    SkIRect lastScissor = drawPass->fTarget->isInstantiated()
+                                  ? SkIRect::MakeSize(drawPass->fTarget->dimensions())
+                                  : SkIRect::MakeEmpty();
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
