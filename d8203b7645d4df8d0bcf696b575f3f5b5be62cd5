@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa4a553a_da6e0103",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-08T16:15:40Z",
+      "side": 1,
+      "message": "PTAL now that the generated script is the cross-platform Python version.",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
