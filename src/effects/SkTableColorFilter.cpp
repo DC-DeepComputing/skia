@@ -59,8 +59,8 @@ class SkSurfaceProps;
 #if defined(SK_ENABLE_SKSL)
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkVM.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 
 class SkPipelineDataGatherer;
 #endif
@@ -91,7 +91,7 @@ public:
 
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext& keyContext,
-                  SkPaintParamsKeyBuilder* builder,
+                  skgpu::graphite::PaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer) const override;
 #endif
 
@@ -291,7 +291,7 @@ GrFPResult SkTable_ColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentPr
 #ifdef SK_ENABLE_SKSL
 
 void SkTable_ColorFilter::addToKey(const SkKeyContext& keyContext,
-                                   SkPaintParamsKeyBuilder* builder,
+                                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                                    SkPipelineDataGatherer* gatherer) const {
     TableColorFilterBlock::TableColorFilterData data;
 

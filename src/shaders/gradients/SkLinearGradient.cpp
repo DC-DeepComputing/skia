@@ -14,7 +14,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
@@ -126,7 +126,7 @@ std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
 
 #ifdef SK_ENABLE_SKSL
 void SkLinearGradient::addToKey(const SkKeyContext& keyContext,
-                                SkPaintParamsKeyBuilder* builder,
+                                skgpu::graphite::PaintParamsKeyBuilder* builder,
                                 SkPipelineDataGatherer* gatherer) const {
     GradientShaderBlocks::GradientData data(GradientType::kLinear,
                                             fStart, fEnd,

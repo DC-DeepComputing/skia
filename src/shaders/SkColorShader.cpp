@@ -17,7 +17,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 #include "src/shaders/SkShaderBase.h"
@@ -48,7 +48,7 @@ public:
 
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 
@@ -84,7 +84,7 @@ public:
 #endif
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 
@@ -222,7 +222,7 @@ std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(
 
 #ifdef SK_ENABLE_SKSL
 void SkColorShader::addToKey(const SkKeyContext& keyContext,
-                             SkPaintParamsKeyBuilder* builder,
+                             skgpu::graphite::PaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
                                       SkColor4f::FromColor(fColor).premul());
@@ -230,7 +230,7 @@ void SkColorShader::addToKey(const SkKeyContext& keyContext,
 }
 
 void SkColor4Shader::addToKey(const SkKeyContext& keyContext,
-                              SkPaintParamsKeyBuilder* builder,
+                              skgpu::graphite::PaintParamsKeyBuilder* builder,
                               SkPipelineDataGatherer* gatherer) const {
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, fColor.premul());
     builder->endBlock();

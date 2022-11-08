@@ -43,7 +43,7 @@ public:
 #endif
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 
@@ -173,10 +173,10 @@ GrFPResult SkModeColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProc
 #ifdef SK_ENABLE_SKSL
 
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 
 void SkModeColorFilter::addToKey(const SkKeyContext& keyContext,
-                                 SkPaintParamsKeyBuilder* builder,
+                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
                                  SkPipelineDataGatherer* gatherer) const {
     // TODO: Take into account the render target color space once graphite has color management.
     SkPMColor4f color = map_color(fColor, sk_srgb_singleton(), nullptr);

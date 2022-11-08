@@ -31,7 +31,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 bool SkColorFilter::asAColorMode(SkColor* color, SkBlendMode* mode) const {
@@ -149,7 +149,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
 
 #ifdef SK_ENABLE_SKSL
 void SkColorFilterBase::addToKey(const SkKeyContext& keyContext,
-                                 SkPaintParamsKeyBuilder* builder,
+                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
                                  SkPipelineDataGatherer* gatherer) const {
     // Return the input color as-is.
     PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
@@ -209,7 +209,7 @@ public:
 
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext& keyContext,
-                  SkPaintParamsKeyBuilder* builder,
+                  skgpu::graphite::PaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer) const override {
         ComposeColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
 

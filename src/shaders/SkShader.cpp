@@ -27,7 +27,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 SkShaderBase::SkShaderBase() = default;
@@ -122,7 +122,7 @@ SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
 #ifdef SK_ENABLE_SKSL
 // TODO: add implementations for derived classes
 void SkShaderBase::addToKey(const SkKeyContext& keyContext,
-                            SkPaintParamsKeyBuilder* builder,
+                            skgpu::graphite::PaintParamsKeyBuilder* builder,
                             SkPipelineDataGatherer* gatherer) const {
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 0, 0, 1});
     builder->endBlock();

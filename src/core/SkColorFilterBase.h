@@ -20,12 +20,15 @@ class SkBitmap;
 class SkColorInfo;
 class SkColorSpace;
 class SkKeyContext;
-class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
 class SkRuntimeEffect;
 class SkSurfaceProps;
 struct SkStageRec;
 using GrFPResult = std::tuple<bool, std::unique_ptr<GrFragmentProcessor>>;
+
+namespace skgpu::graphite {
+class PaintParamsKeyBuilder;
+}
 
 class SkColorFilterBase : public SkColorFilter {
 public:
@@ -89,7 +92,7 @@ public:
         @param gatherer   if non-null, storage for this colorFilter's data
     */
     virtual void addToKey(const SkKeyContext& keyContext,
-                          SkPaintParamsKeyBuilder* builder,
+                          skgpu::graphite::PaintParamsKeyBuilder* builder,
                           SkPipelineDataGatherer* gatherer) const;
 #endif
 

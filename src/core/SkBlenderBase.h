@@ -17,10 +17,13 @@
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkColorInfo;
-class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
 class SkRuntimeEffect;
 class SkKeyContext;
+
+namespace skgpu::graphite {
+class PaintParamsKeyBuilder;
+};
 
 /**
  * Encapsulates a blend function, including non-public APIs.
@@ -62,7 +65,7 @@ public:
     // with the paint's color. When false, the blender is acting to blend the result of the paint
     // evaluation with the back buffer.
     virtual void addToKey(const SkKeyContext&,
-                          SkPaintParamsKeyBuilder*,
+                          skgpu::graphite::PaintParamsKeyBuilder*,
                           SkPipelineDataGatherer*,
                           bool primitiveColorBlender) const;
 #endif

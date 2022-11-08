@@ -54,7 +54,7 @@ public:
 #endif
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
     static SkM44 CubicResamplerMatrix(float B, float C);

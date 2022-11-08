@@ -37,7 +37,7 @@ public:
 #endif
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 

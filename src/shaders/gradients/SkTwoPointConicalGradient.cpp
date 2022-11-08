@@ -16,7 +16,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 // Please see https://skia.org/dev/design/conical for how our shader works.
@@ -64,7 +64,7 @@ public:
 #endif
 #ifdef SK_ENABLE_SKSL
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
     bool isOpaque() const override;
@@ -532,7 +532,7 @@ std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProces
 
 #ifdef SK_ENABLE_SKSL
 void SkTwoPointConicalGradient::addToKey(const SkKeyContext& keyContext,
-                                         SkPaintParamsKeyBuilder* builder,
+                                         skgpu::graphite::PaintParamsKeyBuilder* builder,
                                          SkPipelineDataGatherer* gatherer) const {
     GradientShaderBlocks::GradientData data(GradientType::kConical,
                                             fCenter1, fCenter2,

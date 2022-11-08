@@ -442,15 +442,15 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #endif
 
 void SkPictureShader::addToKey(const SkKeyContext& keyContext,
-                               SkPaintParamsKeyBuilder* builder,
+                               skgpu::graphite::PaintParamsKeyBuilder* builder,
                                SkPipelineDataGatherer* gatherer) const {
 
 #ifdef SK_GRAPHITE_ENABLED

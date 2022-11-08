@@ -22,7 +22,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 SkColorFilterShader::SkColorFilterShader(sk_sp<SkShader> shader,
@@ -120,7 +120,7 @@ std::unique_ptr<GrFragmentProcessor> SkColorFilterShader::asFragmentProcessor(
 #ifdef SK_ENABLE_SKSL
 
 void SkColorFilterShader::addToKey(const SkKeyContext& keyContext,
-                                   SkPaintParamsKeyBuilder* builder,
+                                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                                    SkPipelineDataGatherer* gatherer) const {
     ColorFilterShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
