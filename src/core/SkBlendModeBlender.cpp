@@ -16,7 +16,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
@@ -64,9 +64,9 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #undef RETURN_SINGLETON_BLENDER
 }
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
 void SkBlenderBase::addToKey(const SkKeyContext& keyContext,
-                             SkPaintParamsKeyBuilder* builder,
+                             skgpu::graphite::PaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer,
                              bool primitiveColorBlender) const {
 

@@ -12,7 +12,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 #include "src/shaders/gradients/SkGradientShaderBase.h"
@@ -41,9 +41,9 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 protected:
@@ -142,9 +142,9 @@ std::unique_ptr<GrFragmentProcessor> SkRadialGradient::asFragmentProcessor(
 
 #endif
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
 void SkRadialGradient::addToKey(const SkKeyContext& keyContext,
-                                SkPaintParamsKeyBuilder* builder,
+                                skgpu::graphite::PaintParamsKeyBuilder* builder,
                                 SkPipelineDataGatherer* gatherer) const {
     GradientShaderBlocks::GradientData data(GradientType::kRadial,
                                             fCenter, { 0.0f, 0.0f },

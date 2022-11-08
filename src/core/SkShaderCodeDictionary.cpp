@@ -30,8 +30,10 @@
 
 #include <new>
 
-using DataPayloadField = SkPaintParamsKey::DataPayloadField;
-using DataPayloadType = SkPaintParamsKey::DataPayloadType;
+using PaintParamsKey = skgpu::graphite::PaintParamsKey;
+
+using DataPayloadField = PaintParamsKey::DataPayloadField;
+using DataPayloadType = PaintParamsKey::DataPayloadType;
 
 namespace {
 
@@ -69,7 +71,7 @@ std::string SkShaderSnippet::getMangledSamplerName(int samplerIdx, int mangleId)
 static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
                                              int entryIndex,
                                              SkShaderSnippet::Args args) {
-    const SkPaintParamsKey::BlockReader& reader = shaderInfo.blockReader(entryIndex);
+    const PaintParamsKey::BlockReader& reader = shaderInfo.blockReader(entryIndex);
     const SkShaderSnippet* entry = reader.entry();
 
     return entry->fExpressionGenerator(shaderInfo, entryIndex, reader, args);
@@ -98,7 +100,7 @@ static std::string emit_glue_code_for_entry(const SkShaderInfo& shaderInfo,
 static void emit_preamble_for_entry(const SkShaderInfo& shaderInfo,
                                     int* entryIndex,
                                     std::string* preamble) {
-    const SkPaintParamsKey::BlockReader& reader = shaderInfo.blockReader(*entryIndex);
+    const PaintParamsKey::BlockReader& reader = shaderInfo.blockReader(*entryIndex);
 
     [[maybe_unused]] int startingEntryIndex = *entryIndex;
     reader.entry()->fPreambleGenerator(shaderInfo, entryIndex, reader, preamble);
@@ -186,7 +188,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
 #endif
 
 SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
-        const SkPaintParamsKey& key
+        const PaintParamsKey& key
 #ifdef SK_GRAPHITE_ENABLED
         , const skgpu::BlendInfo& blendInfo
 #endif
@@ -202,7 +204,7 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
 #endif
 }
 
-size_t SkShaderCodeDictionary::SkPaintParamsKeyPtr::Hash::operator()(SkPaintParamsKeyPtr p) const {
+size_t SkShaderCodeDictionary::PaintParamsKeyPtr::Hash::operator()(PaintParamsKeyPtr p) const {
     return SkOpts::hash_fn(p.fKey->data(), p.fKey->sizeInBytes(), 0);
 }
 
@@ -211,12 +213,12 @@ size_t SkShaderCodeDictionary::RuntimeEffectKey::Hash::operator()(RuntimeEffectK
 }
 
 const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
-        SkPaintParamsKeyBuilder* builder) {
-    const SkPaintParamsKey& key = builder->lockAsKey();
+        skgpu::graphite::PaintParamsKeyBuilder* builder) {
+    const skgpu::graphite::PaintParamsKey& key = builder->lockAsKey();
 
     SkAutoSpinlock lock{fSpinLock};
 
-    Entry** existingEntry = fHash.find(SkPaintParamsKeyPtr{&key});
+    Entry** existingEntry = fHash.find(PaintParamsKeyPtr{&key});
     if (existingEntry) {
         SkASSERT(fEntryVector[(*existingEntry)->uniqueID().asUInt()] == *existingEntry);
         return *existingEntry;
@@ -228,7 +230,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
     Entry* newEntry = this->makeEntry(key);
 #endif
     newEntry->setUniqueID(fEntryVector.size());
-    fHash.set(SkPaintParamsKeyPtr{&newEntry->paintParamsKey()}, newEntry);
+    fHash.set(PaintParamsKeyPtr{&newEntry->paintParamsKey()}, newEntry);
     fEntryVector.push_back(newEntry);
 
     return newEntry;
@@ -347,7 +349,7 @@ static std::string append_default_snippet_arguments(const SkShaderInfo& shaderIn
 static void emit_helper_function(const SkShaderInfo& shaderInfo,
                                  int* entryIndex,
                                  std::string* preamble) {
-    const SkPaintParamsKey::BlockReader& reader = shaderInfo.blockReader(*entryIndex);
+    const PaintParamsKey::BlockReader& reader = shaderInfo.blockReader(*entryIndex);
     const SkShaderSnippet* entry = reader.entry();
 
     const int numChildren = reader.numChildren();
@@ -398,7 +400,7 @@ static void emit_helper_function(const SkShaderInfo& shaderInfo,
 
 std::string GenerateDefaultExpression(const SkShaderInfo& shaderInfo,
                                       int entryIndex,
-                                      const SkPaintParamsKey::BlockReader& reader,
+                                      const PaintParamsKey::BlockReader& reader,
                                       const SkShaderSnippet::Args& args) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -432,7 +434,7 @@ std::string GenerateDefaultExpression(const SkShaderInfo& shaderInfo,
 //                               /* all child output variable names as parameters */);
 void GenerateDefaultPreamble(const SkShaderInfo& shaderInfo,
                              int* entryIndex,
-                             const SkPaintParamsKey::BlockReader& reader,
+                             const PaintParamsKey::BlockReader& reader,
                              std::string* preamble) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -545,7 +547,7 @@ static constexpr char kLocalMatrixShaderName[] = "LocalMatrix";
 
 void GenerateLocalMatrixPreamble(const SkShaderInfo& shaderInfo,
                                  int* entryIndex,
-                                 const SkPaintParamsKey::BlockReader& reader,
+                                 const PaintParamsKey::BlockReader& reader,
                                  std::string* preamble) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -725,7 +727,7 @@ private:
 
 void GenerateRuntimeShaderPreamble(const SkShaderInfo& shaderInfo,
                                    int* entryIndex,
-                                   const SkPaintParamsKey::BlockReader& reader,
+                                   const PaintParamsKey::BlockReader& reader,
                                    std::string* preamble) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -757,7 +759,7 @@ void GenerateRuntimeShaderPreamble(const SkShaderInfo& shaderInfo,
 
 std::string GenerateRuntimeShaderExpression(const SkShaderInfo& shaderInfo,
                                             int entryIndex,
-                                            const SkPaintParamsKey::BlockReader& reader,
+                                            const PaintParamsKey::BlockReader& reader,
                                             const SkShaderSnippet::Args& args) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -798,7 +800,7 @@ static constexpr int kNumComposeColorFilterChildren = 2;
 
 void GenerateNestedChildrenPreamble(const SkShaderInfo& shaderInfo,
                                     int* entryIndex,
-                                    const SkPaintParamsKey::BlockReader& reader,
+                                    const PaintParamsKey::BlockReader& reader,
                                     std::string* preamble) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
@@ -856,15 +858,15 @@ static constexpr char kPassthroughShaderName[] = "sk_passthrough";
 static constexpr char kPassthroughBlenderName[] = "blend_src_over";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr SkPaintParamsKey::DataPayloadField kFixedFunctionDataFields[] = {
-    { "blendMode", SkPaintParamsKey::DataPayloadType::kByte, 1},
+static constexpr PaintParamsKey::DataPayloadField kFixedFunctionDataFields[] = {
+    { "blendMode", PaintParamsKey::DataPayloadType::kByte, 1},
 };
 
 // This method generates the glue code for the case where the SkBlendMode-based blending is
 // handled with fixed function blending.
 std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
                                                    int entryIndex,
-                                                   const SkPaintParamsKey::BlockReader& reader,
+                                                   const PaintParamsKey::BlockReader& reader,
                                                    const SkShaderSnippet::Args& args) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(reader.entry()->fUniforms.empty());
@@ -890,7 +892,7 @@ static constexpr char kBlendHelperName[] = "sk_blend";
 // standardized (e.g., via a snippets requirement flag) this could be removed.
 std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo& shaderInfo,
                                                  int entryIndex,
-                                                 const SkPaintParamsKey::BlockReader& reader,
+                                                 const PaintParamsKey::BlockReader& reader,
                                                  const SkShaderSnippet::Args& args) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(reader.entry()->fUniforms.size() == 1);
@@ -938,7 +940,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
         SkShaderSnippet::GenerateExpressionForSnippetFn expressionGenerator,
         SkShaderSnippet::GeneratePreambleForSnippetFn preambleGenerator,
         int numChildren,
-        SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
+        SkSpan<const PaintParamsKey::DataPayloadField> dataPayloadExpectations) {
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
     // would have to be a thread safe allocation since the arena also stores entries for
     // 'fHash' and 'fEntryVector'

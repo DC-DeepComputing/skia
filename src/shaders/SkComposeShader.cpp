@@ -22,7 +22,7 @@
 
 #ifdef SK_ENABLE_SKSL
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
 namespace {
@@ -63,7 +63,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const SkKeyContext&,
-                  SkPaintParamsKeyBuilder*,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
                   SkPipelineDataGatherer*) const override;
 #endif
 
@@ -180,7 +180,7 @@ std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
 #include "src/gpu/Blend.h"
 
 void SkShader_Blend::addToKey(const SkKeyContext& keyContext,
-                              SkPaintParamsKeyBuilder* builder,
+                              skgpu::graphite::PaintParamsKeyBuilder* builder,
                               SkPipelineDataGatherer* gatherer) const {
     SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(fMode);
     if (!porterDuffConstants.empty()) {
