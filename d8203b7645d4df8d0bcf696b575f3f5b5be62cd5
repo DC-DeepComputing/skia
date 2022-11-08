@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43cabca_04188797",
+        "filename": "include/gpu/GrDriverBugWorkarounds.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-08T16:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eea15ced_7c0c4a76",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6223fbb0_4e02f569",
@@ -65,6 +83,24 @@
       "writtenOn": "2022-11-08T16:20:10Z",
       "side": 1,
       "message": "Regenerate workarounds with `bazel run //tools:generate_workarounds`.\n\nMight as well add quotes here as well.",
+      "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27eb6ef6_38ef408a",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-08T16:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6223fbb0_4e02f569",
       "revId": "d8203b7645d4df8d0bcf696b575f3f5b5be62cd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
