@@ -16,6 +16,23 @@
       "message": "PTAL. this is +1.44K. I think on arm it should reduce, but I\u0027m not sure.",
       "revId": "1368351f4a71cba7ac2e2cbf525796420cb98625",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb88f499_30efaeb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-08T20:20:47Z",
+      "side": 1,
+      "message": "It turns out the deleteAll() was pretty much just clear(). So, call clear, but you can\u0027t use resize_back(0) because this code might increase the number of items, and needs the default ctor. There are some type that don\u0027t have a default ctor. Just use pop_back_n(fCount).",
+      "revId": "1368351f4a71cba7ac2e2cbf525796420cb98625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
