@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53e79030_9aad3cf4",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 2838,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5effda11_8c93da48",
+      "range": {
+        "startLine": 2838,
+        "startChar": 7,
+        "endLine": 2838,
+        "endChar": 10
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7b6b352_46633915",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-11-08T15:55:12Z",
       "side": 1,
       "message": "General question from not knowing Dawn, is there a downside to now calling CreateSwapChain instead of Configure on the old one?",
+      "range": {
+        "startLine": 106,
+        "startChar": 17,
+        "endLine": 106,
+        "endChar": 41
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9b63883_43447f8d",
+        "filename": "tools/sk_app/mac/GraphiteDawnMetalWindowContext_mac.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Configure() is invalid for the new surface-based swapchains.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/SwapChain.cpp;l\u003d303;drc\u003d38bff96f36fb3980fef273c1066ba65a7b32da7c;bpv\u003d1;bpt\u003d1?q\u003dAPIConfigure\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fdawn%2F",
+      "parentUuid": "e7b6b352_46633915",
       "range": {
         "startLine": 106,
         "startChar": 17,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95925c1f_44aa87f9",
+        "filename": "tools/sk_app/unix/GraphiteDawnVulkanWindowContext_unix.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ba5e292_0067028c",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5c8cb62_db10cfa0",
@@ -117,6 +189,30 @@
       "writtenOn": "2022-11-08T15:55:12Z",
       "side": 1,
       "message": "nit: over 100 chars. Move down to the next line and indent 8 spaces.",
+      "range": {
+        "startLine": 35,
+        "startChar": 75,
+        "endLine": 35,
+        "endChar": 102
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fabbeb2_fe9dd24c",
+        "filename": "tools/sk_app/unix/GraphiteDawnVulkanWindowContext_unix.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5c8cb62_db10cfa0",
       "range": {
         "startLine": 35,
         "startChar": 75,
@@ -144,6 +240,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0436c3ee_72f0ce8b",
+        "filename": "tools/sk_app/unix/GraphiteDawnVulkanWindowContext_unix.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "858f14ce_c8a3e789",
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "163b0392_9e3a3677",
@@ -167,6 +281,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e3d78df_7be7737e",
+        "filename": "tools/sk_app/unix/Window_unix.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "163b0392_9e3a3677",
+      "range": {
+        "startLine": 407,
+        "startChar": 83,
+        "endLine": 407,
+        "endChar": 107
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7bfdb57_9dc9bfd8",
@@ -180,6 +318,30 @@
       "writtenOn": "2022-11-08T15:55:12Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 48,
+        "startChar": 18,
+        "endLine": 48,
+        "endChar": 30
+      },
+      "revId": "c54eff6255351fd22290eb3375e0cac2f16a0bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "904d8fdd_d836e56d",
+        "filename": "tools/sk_app/win/GraphiteDawnD3D12WindowContext_win.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-08T16:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7bfdb57_9dc9bfd8",
       "range": {
         "startLine": 48,
         "startChar": 18,
