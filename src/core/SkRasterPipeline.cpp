@@ -354,7 +354,7 @@ void SkRasterPipeline::append_transfer_function(const skcms_TransferFunction& tf
 // GPUs clamp all color channels to the limits of the format just before the blend step. To match
 // that auto-clamp, the RP blitter uses this helper immediately before appending blending stages.
 void SkRasterPipeline::append_clamp_if_normalized(const SkImageInfo& info) {
-#if defined(SK_USE_LEGACY_GAMUT_CLAMP)
+#if 0 //defined(SK_USE_LEGACY_GAMUT_CLAMP)
     // Temporarily support Skia's old behavior, until chromium is rebaselined:
     // Clamp premul values to [0,alpha] (logical [0,1]) to avoid the confusing
     // scenario of being able to store a logical color channel > 1.0 when alpha < 1.0.

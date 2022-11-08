@@ -612,17 +612,12 @@ bool GrConvertPixels(const GrPixmap& dst, const GrCPixmap& src, bool flipY) {
                                                   &dstIsNormalized,
                                                   &dstIsSRGB);
 
-    bool clampGamut;
     SkTLazy<SkColorSpaceXformSteps> steps;
     skgpu::Swizzle loadStoreSwizzle;
     if (alphaOrCSConversion) {
         steps.init(src.colorSpace(), src.alphaType(), dst.colorSpace(), dst.alphaType());
-        clampGamut = dstIsNormalized && dst.alphaType() == kPremul_SkAlphaType;
     } else {
-        clampGamut = dstIsNormalized && !srcIsNormalized && dst.alphaType() == kPremul_SkAlphaType;
-        if (!clampGamut) {
-            loadStoreSwizzle = skgpu::Swizzle::Concat(loadSwizzle, storeSwizzle);
-        }
+        loadStoreSwizzle = skgpu::Swizzle::Concat(loadSwizzle, storeSwizzle);
     }
     int cnt = 1;
     int height = src.height();
@@ -640,7 +635,7 @@ bool GrConvertPixels(const GrPixmap& dst, const GrCPixmap& src, bool flipY) {
         std::swap(cnt, height);
     }
 
-    bool hasConversion = alphaOrCSConversion || clampGamut || lumMode != LumMode::kNone;
+    bool hasConversion = alphaOrCSConversion || lumMode != LumMode::kNone;
 
     if (srcIsSRGB && dstIsSRGB && !hasConversion) {
         // No need to convert from srgb if we are just going to immediately convert it back.
@@ -658,9 +653,6 @@ bool GrConvertPixels(const GrPixmap& dst, const GrCPixmap& src, bool flipY) {
         }
         if (alphaOrCSConversion) {
             steps->apply(&pipeline);
-        }
-        if (clampGamut) {
-            pipeline.append(SkRasterPipeline::clamp_gamut);  // TODO(skia:13715): Remove this?
         }
         switch (lumMode) {
             case LumMode::kNone:
