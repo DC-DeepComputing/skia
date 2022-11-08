@@ -34,6 +34,24 @@
       "parentUuid": "d9958861_b5bd12c4",
       "revId": "0274c8fb51ed42ecbce53bc230e44de7ae56fa37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0cc495d_2b5b1073",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T16:15:46Z",
+      "side": 1,
+      "message": "Ah, an even better reason to comment, since I thought I knew why and didn\u0027t! The comment lgtm.",
+      "parentUuid": "df503d52_cd84e9dc",
+      "revId": "0274c8fb51ed42ecbce53bc230e44de7ae56fa37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
