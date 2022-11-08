@@ -36,6 +36,7 @@
 namespace skgpu::graphite {
 
 sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
+                                     SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
     if (!target) {
@@ -43,7 +44,7 @@ sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
     }
 
     // TODO: validate that the color type and alpha type are compatible with the target's info
-    SkImageInfo imageInfo = SkImageInfo::Make(target->dimensions(), colorInfo);
+    SkImageInfo imageInfo = SkImageInfo::Make(deviceSize, colorInfo);
     return sk_sp<DrawContext>(new DrawContext(std::move(target), imageInfo, props));
 }
 
@@ -96,7 +97,7 @@ void DrawContext::recordDraw(const Renderer* renderer,
                              DrawOrder ordering,
                              const PaintParams* paint,
                              const StrokeStyle* stroke) {
-    SkASSERT(SkIRect::MakeSize(fTarget->dimensions()).contains(clip.scissor()));
+    SkASSERT(SkIRect::MakeSize(this->imageInfo().dimensions()).contains(clip.scissor()));
     fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paint, stroke);
 }
 
