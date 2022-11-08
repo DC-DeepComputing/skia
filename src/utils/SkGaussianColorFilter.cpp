@@ -50,9 +50,9 @@ public:
                                    const SkSurfaceProps&) const override;
 #endif
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
     void addToKey(const SkKeyContext& keyContext,
-                  SkPaintParamsKeyBuilder* builder,
+                  skgpu::graphite::PaintParamsKeyBuilder* builder,
                   SkPipelineDataGatherer* gatherer) const override;
 #endif
 
@@ -108,14 +108,14 @@ GrFPResult SkGaussianColorFilter::asFragmentProcessor(std::unique_ptr<GrFragment
 }
 #endif
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
 
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 
 void SkGaussianColorFilter::addToKey(const SkKeyContext& keyContext,
-                                     SkPaintParamsKeyBuilder* builder,
+                                     skgpu::graphite::PaintParamsKeyBuilder* builder,
                                      SkPipelineDataGatherer* gatherer) const {
     GaussianColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
     builder->endBlock();
