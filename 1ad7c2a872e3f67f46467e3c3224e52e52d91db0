@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36748ade_8ddbd278",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-08T16:39:32Z",
+      "side": 1,
+      "message": "the flutter canary has passed the important tests, just some infra issues that will make it turn red.",
+      "revId": "1ad7c2a872e3f67f46467e3c3224e52e52d91db0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
