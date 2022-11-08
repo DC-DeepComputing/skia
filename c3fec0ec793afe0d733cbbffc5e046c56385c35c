@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f55d7804_42dbacb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-08T17:08:47Z",
+      "side": 1,
+      "message": "Done here: https://skia-review.googlesource.com/c/skia/+/601318",
+      "parentUuid": "485df394_be007161",
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "519cae0a_6d42d37d",
@@ -93,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30c16a7a_cd7ba3cb",
+        "filename": "tools/viewer/ClickHandlerSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-08T17:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "519cae0a_6d42d37d",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 51,
+        "endChar": 28
+      },
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37eb94bf_3aa61b73",
@@ -106,6 +148,30 @@
       "writtenOn": "2022-11-04T15:09:00Z",
       "side": 1,
       "message": "SK_ABORT?",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "c3fec0ec793afe0d733cbbffc5e046c56385c35c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1de7920e_21b3f5ed",
+        "filename": "tools/viewer/ClickHandlerSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-08T17:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37eb94bf_3aa61b73",
       "range": {
         "startLine": 54,
         "startChar": 4,
