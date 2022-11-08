@@ -22,6 +22,30 @@
       },
       "revId": "aef6d301c0b58b6011485a6a58e5cd9639d314a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f24901_bc46b7a2",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-08T14:23:51Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "ae1cbeff_33e750f0",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 28
+      },
+      "revId": "aef6d301c0b58b6011485a6a58e5cd9639d314a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
