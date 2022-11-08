@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d0d0fc0_55b342c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-08T21:41:13Z",
+      "side": 1,
+      "message": "Updated, PTAL\n- Now calling setViewport in CommandBuffer::addRenderPass\n- Tracking Device size in Device::fDC::fImageInfo\n- No longer changing DrawPass API",
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ae91f05_274701c3",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-08T21:41:13Z",
+      "side": 1,
+      "message": "Is it worth passing in the device size and using that as the initial scissor here?",
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
