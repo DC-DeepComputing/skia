@@ -2,6 +2,8 @@
 
 // See "The OpenGL ES Shading Language, Section 8"
 
+$pure int2 textureSize(sampler2D s, int lod);
+
 // 8.1 : Angle and Trigonometry Functions
 $pure $genType  radians($genType  degrees);
 $pure $genHType radians($genHType degrees);

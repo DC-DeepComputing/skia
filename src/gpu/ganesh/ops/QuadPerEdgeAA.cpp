@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
 
 #include "include/private/SkVx.h"
+#include "skia/config/SkUserConfig.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
@@ -15,6 +16,7 @@
 #include "src/gpu/ganesh/geometry/GrQuadUtils.h"
 #include "src/gpu/ganesh/glsl/GrGLSLColorSpaceXformHelper.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
@@ -23,7 +25,7 @@ static_assert((int)GrQuadAAFlags::kTop    == SkCanvas::kTop_QuadAAFlag);
 static_assert((int)GrQuadAAFlags::kRight  == SkCanvas::kRight_QuadAAFlag);
 static_assert((int)GrQuadAAFlags::kBottom == SkCanvas::kBottom_QuadAAFlag);
 static_assert((int)GrQuadAAFlags::kNone   == SkCanvas::kNone_QuadAAFlags);
-static_assert((int)GrQuadAAFlags::kAll    == SkCanvas::kAll_QuadAAFlags);
+// static_assert((int)GrQuadAAFlags::kAll    == SkCanvas::kAll_QuadAAFlags);
 
 namespace skgpu::v1::QuadPerEdgeAA {
 
@@ -631,6 +633,7 @@ public:
         b->addBool(fSampler.isInitialized(),      "textured");
         b->addBool(fNeedsPerspective,             "perspective");
         b->addBool((fSaturate == Saturate::kYes), "saturate");
+        b->addBool(fIsCompressed, "isCompressed");
 
         b->addBool(fLocalCoord.isInitialized(),   "hasLocalCoords");
         if (fLocalCoord.isInitialized()) {
@@ -756,7 +759,51 @@ public:
                     args.fFragBuilder->appendTextureLookupAndBlend(
                             blendDst, SkBlendMode::kModulate, args.fTexSamplers[0],
                             "texCoord", &fTextureColorSpaceXformHelper);
+                    const auto tex_uniform =
+                            args.fFragBuilder->getProgramBuilder()->samplerVariable(
+                                    args.fTexSamplers[0]);
                     args.fFragBuilder->codeAppend(");");
+                    if (gp.fIsCompressed && (true)) {
+                        args.fFragBuilder->codeAppendf(
+                                R"(
+                        half4 out_col = %s;
+                        int4 ival = int4(round(255.0 * out_col));
+                        // a & 128
+                        if (ival.a >= 128) {
+                          int x = ival.b + 256 * (ival.g & 0x7F);
+                          int y = ival.r + 256 * (ival.a & 0x7F);
+                          float2 offset = float2((float(x) / 32767.0) * 8.0 - 4.0, (float(y) / 32767.0) * 8.0 -4.0 );
+                          texCoord = (float2(texCoord*4.0) + offset);
+                          out_col = sample(%s, texCoord).rgba;
+                          //out_col =  half4(texCoord.x, texCoord.y, 0,1);
+                          //if(texCoord.y > 1.5)
+                           // out_col = half4(1,0,0,1);
+
+                          //out_col = half4(out_col.rgb,1);
+                        } else if (ival.a == 127) {
+                           out_col.a  = 1.0;
+                           // out_col = half4(0,1,0,1);
+                        } else {
+                          out_col.a *= 2.0;
+                          //out_col = half4(0,1,0,1);
+                        }
+                        //out_col = half4(texCoord.x, texCoord.y, 0,1);
+                        %s = out_col;
+                      )",
+                                args.fOutputColor,
+                                tex_uniform,
+                                args.fOutputColor);
+                    } else {
+                        args.fFragBuilder->codeAppendf("%s = half4(%s.b, %s.r, %s.g, %s.a);",
+                                                       args.fOutputColor,
+                                                       args.fOutputColor,
+                                                       args.fOutputColor,
+                                                       args.fOutputColor,
+                                                       args.fOutputColor);
+                    }
+
+                    // args.fFragBuilder->codeAppendf(") * half2(textureSize(%s, 0)).x/1024.0;",
+                    //                                tex_uniform);
                 } else {
                     // Saturate is only intended for use with a proxy to account for the fact
                     // that TextureOp skips SkPaint conversion, which normally handles this.
@@ -858,6 +905,8 @@ private:
     void initializeAttrs(const VertexSpec& spec) {
         fNeedsPerspective = spec.deviceDimensionality() == 3;
         fCoverageMode = spec.coverageMode();
+       // SkDebugf(" is compressed= %d" ,spec.fIsCompressed);
+        fIsCompressed = spec.fIsCompressed;
 
         if (fCoverageMode == CoverageMode::kWithPosition) {
             if (fNeedsPerspective) {
@@ -913,6 +962,7 @@ private:
     // Should saturate() be called on the color? Only relevant when created with a texture.
     Saturate fSaturate = Saturate::kNo;
     CoverageMode fCoverageMode;
+    bool fIsCompressed;
 
     // Color space will be null and fSampler.isInitialized() returns false when the GP is configured
     // to skip texturing.
