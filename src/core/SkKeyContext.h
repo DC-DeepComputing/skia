@@ -14,22 +14,24 @@
 #ifdef SK_GRAPHITE_ENABLED
 #include "include/core/SkM44.h"
 
-namespace skgpu::graphite { class Recorder; }
+namespace skgpu::graphite {
+class Recorder;
+class ShaderCodeDictionary;
+}
 #endif
 
 #if SK_SUPPORT_GPU
 class GrRecordingContext;
 #endif
 
-class SkShaderCodeDictionary;
 
-// The key context must always be able to provide a valid SkShaderCodeDictionary. Depending
+// The key context must always be able to provide a valid ShaderCodeDictionary. Depending
 // on the calling context it can also supply a backend-specific resource providing
 // object (e.g., a Recorder).
 class SkKeyContext {
 public:
     // Constructor for the pre-compile code path
-    SkKeyContext(SkShaderCodeDictionary* dict) : fDictionary(dict) {}
+    SkKeyContext(skgpu::graphite::ShaderCodeDictionary* dict) : fDictionary(dict) {}
 #ifdef SK_GRAPHITE_ENABLED
     SkKeyContext(skgpu::graphite::Recorder*,
                  const SkM44& local2Dev);
@@ -45,7 +47,7 @@ public:
     GrRecordingContext* recordingContext() const { return fRecordingContext; }
 #endif
 
-    SkShaderCodeDictionary* dict() const { return fDictionary; }
+    skgpu::graphite::ShaderCodeDictionary* dict() const { return fDictionary; }
 
 protected:
 #ifdef SK_GRAPHITE_ENABLED
@@ -58,7 +60,7 @@ protected:
 #endif
 
     SkMatrix* fLocalMatrix;
-    SkShaderCodeDictionary* fDictionary;
+    skgpu::graphite::ShaderCodeDictionary* fDictionary;
 };
 
 class SkKeyContextWithLocalMatrix : public SkKeyContext {

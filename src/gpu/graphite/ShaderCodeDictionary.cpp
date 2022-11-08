@@ -5,24 +5,21 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/SkOpts_spi.h"
-#include "src/core/SkRuntimeEffectPriv.h"
-#include "src/core/SkSLTypeShared.h"
-
-#ifdef SK_GRAPHITE_ENABLED
 #include "include/gpu/graphite/Context.h"
+#include "include/private/SkOpts_spi.h"
 #include "include/private/SkSLString.h"
 #include "src/core/SkRuntimeEffectDictionary.h"
+#include "src/core/SkRuntimeEffectPriv.h"
+#include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
-#endif
 
 #ifdef SK_ENABLE_PRECOMPILE
 #include "include/gpu/graphite/CombinationBuilder.h"
@@ -30,21 +27,20 @@
 
 #include <new>
 
-using PaintParamsKey = skgpu::graphite::PaintParamsKey;
-using PaintParamsKeyBuilder = skgpu::graphite::PaintParamsKeyBuilder;
-
-using DataPayloadField = PaintParamsKey::DataPayloadField;
-using DataPayloadType = PaintParamsKey::DataPayloadType;
-
 namespace {
 
-#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+#ifdef SK_ENABLE_SKSL
 std::string get_mangled_name(const std::string& baseName, int manglingSuffix) {
     return baseName + "_" + std::to_string(manglingSuffix);
 }
 #endif
 
 } // anonymous namespace
+
+namespace skgpu::graphite {
+
+using DataPayloadField = PaintParamsKey::DataPayloadField;
+using DataPayloadType = PaintParamsKey::DataPayloadType;
 
 std::string SkShaderSnippet::getMangledUniformName(const SkShaderInfo& shaderInfo,
                                                    int uniformIdx,
@@ -188,7 +184,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step,
 }
 #endif
 
-SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
+ShaderCodeDictionary::Entry* ShaderCodeDictionary::makeEntry(
         const PaintParamsKey& key
 #ifdef SK_GRAPHITE_ENABLED
         , const skgpu::BlendInfo& blendInfo
@@ -205,15 +201,15 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
 #endif
 }
 
-size_t SkShaderCodeDictionary::PaintParamsKeyPtr::Hash::operator()(PaintParamsKeyPtr p) const {
+size_t ShaderCodeDictionary::PaintParamsKeyPtr::Hash::operator()(PaintParamsKeyPtr p) const {
     return SkOpts::hash_fn(p.fKey->data(), p.fKey->sizeInBytes(), 0);
 }
 
-size_t SkShaderCodeDictionary::RuntimeEffectKey::Hash::operator()(RuntimeEffectKey k) const {
+size_t ShaderCodeDictionary::RuntimeEffectKey::Hash::operator()(RuntimeEffectKey k) const {
     return SkOpts::hash_fn(&k, sizeof(k), 0);
 }
 
-const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
+const ShaderCodeDictionary::Entry* ShaderCodeDictionary::findOrCreate(
         PaintParamsKeyBuilder* builder) {
     const PaintParamsKey& key = builder->lockAsKey();
 
@@ -237,7 +233,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
     return newEntry;
 }
 
-const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::lookup(
+const ShaderCodeDictionary::Entry* ShaderCodeDictionary::lookup(
         SkUniquePaintParamsID codeID) const {
 
     if (!codeID.isValid()) {
@@ -251,17 +247,17 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::lookup(
     return fEntryVector[codeID.asUInt()];
 }
 
-SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippetID id) const {
+SkSpan<const SkUniform> ShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippetID id) const {
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-SkSpan<const DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
+SkSpan<const DataPayloadField> ShaderCodeDictionary::dataPayloadExpectations(
         int codeSnippetID) const {
     // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
     return this->getEntry(codeSnippetID)->fDataPayloadExpectations;
 }
 
-const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
+const SkShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
     if (codeSnippetID < 0) {
         return nullptr;
     }
@@ -278,8 +274,8 @@ const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const
     return nullptr;
 }
 
-void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID,
-                                           SkShaderInfo* info) const {
+void ShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID,
+                                         SkShaderInfo* info) const {
     auto entry = this->lookup(uniqueID);
 
     entry->paintParamsKey().toShaderInfo(this, info);
@@ -917,7 +913,7 @@ std::string GenerateShaderBasedBlenderExpression(const SkShaderInfo& shaderInfo,
 
 } // anonymous namespace
 
-bool SkShaderCodeDictionary::isValidID(int snippetID) const {
+bool ShaderCodeDictionary::isValidID(int snippetID) const {
     if (snippetID < 0) {
         return false;
     }
@@ -932,14 +928,14 @@ bool SkShaderCodeDictionary::isValidID(int snippetID) const {
 
 static constexpr int kNoChildren = 0;
 
-int SkShaderCodeDictionary::addUserDefinedSnippet(
+int ShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkUniform> uniforms,
         SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
         SkSpan<const SkTextureAndSampler> texturesAndSamplers,
         const char* functionName,
-        SkShaderSnippet::GenerateExpressionForSnippetFn expressionGenerator,
-        SkShaderSnippet::GeneratePreambleForSnippetFn preambleGenerator,
+        ShaderSnippet::GenerateExpressionForSnippetFn expressionGenerator,
+        ShaderSnippet::GeneratePreambleForSnippetFn preambleGenerator,
         int numChildren,
         SkSpan<const PaintParamsKey::DataPayloadField> dataPayloadExpectations) {
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
@@ -959,7 +955,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
 }
 
 // TODO: this version needs to be removed
-int SkShaderCodeDictionary::addUserDefinedSnippet(
+int ShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const DataPayloadField> dataPayloadExpectations) {
     return this->addUserDefinedSnippet("UserDefined",
@@ -974,7 +970,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
 }
 
 #if defined(SK_ENABLE_PRECOMPILE) && defined(SK_GRAPHITE_ENABLED)
-skgpu::graphite::BlenderID SkShaderCodeDictionary::addUserDefinedBlender(
+skgpu::graphite::BlenderID ShaderCodeDictionary::addUserDefinedBlender(
             sk_sp<SkRuntimeEffect> effect) {
     if (!effect) {
         return {};
@@ -996,7 +992,7 @@ skgpu::graphite::BlenderID SkShaderCodeDictionary::addUserDefinedBlender(
     return skgpu::graphite::BlenderID(codeSnippetID);
 }
 
-const SkShaderSnippet* SkShaderCodeDictionary::getEntry(skgpu::graphite::BlenderID id) const {
+const SkShaderSnippet* ShaderCodeDictionary::getEntry(skgpu::graphite::BlenderID id) const {
     return this->getEntry(id.asUInt());
 }
 
@@ -1036,14 +1032,14 @@ static SkSLType uniform_type_to_sksl_type(const SkRuntimeEffect::Uniform& u) {
     SkUNREACHABLE;
 }
 
-const char* SkShaderCodeDictionary::addTextToArena(std::string_view text) {
+const char* ShaderCodeDictionary::addTextToArena(std::string_view text) {
     char* textInArena = fArena.makeArrayDefault<char>(text.size() + 1);
     memcpy(textInArena, text.data(), text.size());
     textInArena[text.size()] = '\0';
     return textInArena;
 }
 
-SkSpan<const SkUniform> SkShaderCodeDictionary::convertUniforms(const SkRuntimeEffect* effect) {
+SkSpan<const SkUniform> ShaderCodeDictionary::convertUniforms(const SkRuntimeEffect* effect) {
     using Uniform = SkRuntimeEffect::Uniform;
     SkSpan<const Uniform> uniforms = effect->uniforms();
 
@@ -1067,7 +1063,7 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::convertUniforms(const SkRuntimeE
     return SkSpan<const SkUniform>(uniformArray, numUniforms);
 }
 
-int SkShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) {
+int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) {
     // Use the combination of {SkSL program hash, uniform size} as our key.
     // In the unfortunate event of a hash collision, at least we'll have the right amount of
     // uniform data available.
@@ -1102,7 +1098,7 @@ int SkShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffe
     return newCodeSnippetID;
 }
 
-SkShaderCodeDictionary::SkShaderCodeDictionary() {
+ShaderCodeDictionary::ShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
 
@@ -1377,3 +1373,5 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }      // no data payload
     };
 }
+
+} // namespace skgpu::graphite
