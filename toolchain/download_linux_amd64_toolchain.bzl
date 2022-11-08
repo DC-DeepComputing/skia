@@ -25,12 +25,6 @@ debs_to_install = [
     # (libm), etc. linux-libc-dev has the header files specific to linux. libc6-dev has the libc
     # system headers (e.g. malloc.h, math.h).
     {
-        # We use this old version of glibc because as of Nov 2022, many of our Swarming machines
-        # are still on Debian 10. While many of the Bazel tasks can be run in RBE, using a newer
-        # Debian 11 image (see //bazel/rbe/gce_linux_container/Dockerfile) some tasks need to be
-        # run on these host machines using Debian 10. As a result, we need to compile and link
-        # against a version of glibc that can be run on Debian 10 until we update those Swarming
-        # hosts.
         # From https://packages.debian.org/buster/amd64/libc6/download
         "sha256": "980066e3e6124b8d84cdfd4cfa96d78a97cd659f8f3ba995bbcb887dad9ac237",
         "url": "https://security.debian.org/debian-security/pool/updates/main/g/glibc/libc6_2.28-10+deb10u2_amd64.deb",
