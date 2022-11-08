@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dde483f_ebbc95f0",
+        "filename": "base_defines.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-08T16:14:16Z",
+      "side": 1,
+      "message": "This seems like a fine organization (all these flags and defines really are part of Skia\u0027s build and not really a thing that needs to be overridden, since you \"override\" all of these with bazel flags). I\u0027m not sure about the name `base_defines.bzl` though. I understand that it might be slightly confusing to have both a `//defines.bzl` and a `//bazel:defines.bzl` but that seems less odd to me. \n\nThe awkward part really seems to be that the `//bazel/` part (or directory) is really a `//bazel_ext/` or something like that, where any user of Skia (including Skia) needs to put some (at the moment not very well defined) set of bazel definitions which define how to do certain things in that bazel environment (it\u0027s the customization point). As it is named now it looks like the place where general bazel build things go, but it isn\u0027t that anymore.\n\nAll that to say that the `base_` in `base_defines.bzl` seems a little redundant. If anything, this \"base\" one should be `//defines.bzl` and other one should be `//bazel:extra_defines.bzl` or `//bazel_ext:defines.bzl`. Of course, changing the name of the existing one there is more difficult.",
+      "revId": "b221affc82988f477c4aa1d69fb2f43852b89f45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
