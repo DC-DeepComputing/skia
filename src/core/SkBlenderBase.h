@@ -17,12 +17,12 @@
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkColorInfo;
-class SkPipelineDataGatherer;
 class SkRuntimeEffect;
 class SkKeyContext;
 
 namespace skgpu::graphite {
 class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 };
 
 /**
@@ -66,7 +66,7 @@ public:
     // evaluation with the back buffer.
     virtual void addToKey(const SkKeyContext&,
                           skgpu::graphite::PaintParamsKeyBuilder*,
-                          SkPipelineDataGatherer*,
+                          skgpu::graphite::PipelineDataGatherer*,
                           bool primitiveColorBlender) const;
 #endif
 
