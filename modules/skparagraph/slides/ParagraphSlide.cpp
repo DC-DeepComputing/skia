@@ -1907,7 +1907,7 @@ public:
                 }
                 line.iterateThroughVisualRuns(true,
                     [&](const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
-                    *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, false).clip.width();
+                    *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, TextLine::TextAdjustment::GlyphCluster).clip.width();
                     if (this->isVerbose()) {
                         SkDebugf("%zu[%zu: %zu) @%f + %f %s\n",
                                  run->index(), textRange.start, textRange.end, runOffset, *width,
@@ -3939,6 +3939,10 @@ public:
         auto paragraph = builder.Build();
         paragraph->layout(this->size().width());
         paragraph->paint(canvas, 0, 0);
+<<<<<<< PATCH SET (7af849 Correct text adjustment (2))
+        //auto width = paragraph->getLongestLine();
+=======
+>>>>>>> BASE      (8a5585 Correct text adjustment (1))
         auto height = paragraph->getHeight();
         if (this->isVerbose()) {
             auto resSK = paragraph->getRectsForRange(0, K, RectHeightStyle::kTight,
