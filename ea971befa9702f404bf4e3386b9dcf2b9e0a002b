@@ -253,6 +253,30 @@
       },
       "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae50e2cd_ecede1e0",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T18:06:08Z",
+      "side": 1,
+      "message": "\u003e `kFloatConstant` is not replaced with the literal value `2.14` because the variable is not part of a larger expression. Variables in isolation don\u0027t constant-propagate. As soon as it participates in a larger expression, folding will kick in.\n\nGot it, I wasn\u0027t sure if it was intended to be eliminated completely since it\u0027s only used as the rhs for the initializer in `kFloatConstantAlias`\u0027. Either way, I don\u0027t think this is that important as long as it\u0027s WAI.\n\n\u003e FYI: I\u0027ve migrated out the test SkSL into its own CL so that this CL\u0027s diff can demonstrate the improvements more readily. PTAL http://review.skia.org/602437 and rebase on top of it if you agree!\n\nsgtm",
+      "parentUuid": "673879b3_9cde10a0",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
