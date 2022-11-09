@@ -46,6 +46,30 @@
       },
       "revId": "32b1a34ca29dc6488e540e63ee45a033641d8c3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98f27f3_63782400",
+        "filename": "include/gpu/graphite/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-09T20:48:55Z",
+      "side": 0,
+      "message": "Oh, did these files get deleted? Yeah, then the BUILD.bazel files should be as well.",
+      "parentUuid": "ee73e3e4_02b106cc",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "32b1a34ca29dc6488e540e63ee45a033641d8c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
