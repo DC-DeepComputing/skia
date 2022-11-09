@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6aafc5a5_732b3291",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-09T15:11:10Z",
+      "side": 1,
+      "message": "This has us only setting a viewport in addRenderPass, which is called on replay, and as written in this CL I believe the provided viewport does reflect the bounds of the final surface (passed in by RenderPassTask::addCommands).",
+      "parentUuid": "42f959a1_42821d61",
+      "range": {
+        "startLine": 65,
+        "startChar": 30,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ae91f05_274701c3",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 5
