@@ -392,8 +392,6 @@ skia_core_sources = [
   "$_src/core/SkScan_Path.cpp",
   "$_src/core/SkScopeExit.h",
   "$_src/core/SkSemaphore.cpp",
-  "$_src/core/SkShaderCodeDictionary.cpp",
-  "$_src/core/SkShaderCodeDictionary.h",
   "$_src/core/SkSharedMutex.cpp",
   "$_src/core/SkSharedMutex.h",
   "$_src/core/SkSpecialImage.cpp",
@@ -625,15 +623,6 @@ skia_pathops_sources = [
   "$_src/pathops/SkPathWriter.h",
   "$_src/pathops/SkReduceOrder.cpp",
   "$_src/pathops/SkReduceOrder.h",
-]
-
-skia_precompile_public = [ "$_include/gpu/graphite/CombinationBuilder.h" ]
-
-skia_precompile_sources = [
-  "$_src/gpu/graphite/CombinationBuilder.cpp",
-  "$_src/gpu/graphite/FactoryFunctions.cpp",
-  "$_src/gpu/graphite/FactoryFunctions.h",
-  "$_src/gpu/graphite/Precompile.h",
 ]
 
 skia_skpicture_public = [
