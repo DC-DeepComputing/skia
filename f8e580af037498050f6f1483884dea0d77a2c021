@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8b219f4_2fb1a689",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T15:20:45Z",
+      "side": 1,
+      "message": "Well right now the viewport passed in looks to be fTarget-\u003edimensions and fTarget is our special proxy. Does it actually have dimensions?\n\nAlso we have a SetViewport command that is save the the DrawPass. This gets values that we\u0027re setting while recording. Is old command just going to override the new setting of viewport? Maybe we don\u0027t need to have explicit SetViewport commands? I feel like that\u0027s only really useful if we plan on changing the viewport multiple time within the RenderPass. But then that would get really tricky and complicated with this whole replaying at different transforms things. So in that case maybe the viewport is just more of a thing thats set once on begin render pass (or maybe begin sub pass) like you\u0027re doing here and we remove the old command?",
+      "parentUuid": "6aafc5a5_732b3291",
+      "range": {
+        "startLine": 65,
+        "startChar": 30,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ae91f05_274701c3",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 5
