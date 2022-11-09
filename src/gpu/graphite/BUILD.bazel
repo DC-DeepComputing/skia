@@ -5,12 +5,7 @@ licenses(["notice"])
 exports_files_legacy()
 
 # Mapped to //gn/core.gni:skia_precompile_sources.
-PRECOMPILE_FILES = [
-    "CombinationBuilder.cpp",
-    "FactoryFunctions.cpp",
-    "FactoryFunctions.h",
-    "Precompile.h",
-]
+PRECOMPILE_FILES = []
 
 split_srcs_and_hdrs(
     name = "precompile",

@@ -103,6 +103,8 @@ skia_graphite_sources = [
   "$_src/ResourceTypes.h",
   "$_src/Sampler.cpp",
   "$_src/Sampler.h",
+  "$_src/ShaderCodeDictionary.cpp",
+  "$_src/ShaderCodeDictionary.h",
   "$_src/SharedContext.cpp",
   "$_src/SharedContext.h",
   "$_src/SpecialImage_Graphite.cpp",
@@ -233,4 +235,13 @@ skia_graphite_vk_sources = [
 skia_graphite_piet_sources = [
   "$_src/PietRenderTask.cpp",
   "$_src/PietRenderTask.h",
+]
+
+skia_graphite_precompile_public = [ "$_include/CombinationBuilder.h" ]
+
+skia_graphite_precompile_sources = [
+  "$_src/CombinationBuilder.cpp",
+  "$_src/FactoryFunctions.cpp",
+  "$_src/FactoryFunctions.h",
+  "$_src/Precompile.h",
 ]
