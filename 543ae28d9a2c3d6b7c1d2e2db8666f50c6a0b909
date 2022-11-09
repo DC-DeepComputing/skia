@@ -122,6 +122,24 @@
       "parentUuid": "c531198c_5a981f67",
       "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8d702c2_65aa7e88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T19:56:59Z",
+      "side": 1,
+      "message": "Chatting off line, the plan is to land this as is to unblock some other work. Then we can revisit this when we have a better idea of if we\u0027ll need public recorder read pixel apis or not.",
+      "parentUuid": "25c153b3_d792d553",
+      "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
