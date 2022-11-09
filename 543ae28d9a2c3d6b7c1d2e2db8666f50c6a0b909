@@ -68,6 +68,24 @@
       "parentUuid": "68c5b31e_3577b280",
       "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8b7f047_755ebbd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T16:23:44Z",
+      "side": 1,
+      "message": "So if we do that would we be moving all of the code currently in Context::asyncReadPixels into the Recorder? Or are there things we want to keep separate/different between the Context::asyncReadPixel calls and the Recorder::asyncReadPixels call? If we want those two functions to be different, maybe it makes more sense to just have a utility function that produces the copy and sync tasks. Then both recorder and context could just call that helper to generate the tasks and Context wouldn\u0027t need a Recorder.\n\nIf we do go the approach where everything is in the recorder, then Context should be making a long lived recorder to reuse so we can reuse the buffer allocations.",
+      "parentUuid": "b5032d00_a267a3c0",
+      "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
