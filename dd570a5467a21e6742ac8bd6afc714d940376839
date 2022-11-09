@@ -16,6 +16,24 @@
       "message": "I love how simple this became after iterating on it. :D",
       "revId": "dd570a5467a21e6742ac8bd6afc714d940376839",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70029f87_e2aac7fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T22:10:17Z",
+      "side": 1,
+      "message": "Yeah, I like that `ConstantFolder` utilities can be reused in this context now too.",
+      "parentUuid": "c603fea2_2d2d0058",
+      "revId": "dd570a5467a21e6742ac8bd6afc714d940376839",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
