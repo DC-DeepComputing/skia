@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0528c805_582b6562",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "I wonder if we need is_renderable to take a sampleCount value as well?",
+      "range": {
+        "startLine": 22,
+        "startChar": 9,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60e9ec3_48324781",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 97,
+        "startChar": 42,
+        "endLine": 97,
+        "endChar": 55
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af19dc98_a3a2ae89",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "I odn\u0027t think you need to check UNDEFINED here. I believe if you pass VK_FORMAT_UNDEFINED into getFormatInfo we\u0027ll return a default/invalid FormatInfo which won\u0027t have any properties. So it will fail all the future checks.",
+      "range": {
+        "startLine": 98,
+        "startChar": 18,
+        "endLine": 98,
+        "endChar": 37
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "391aa7ff_5b907f0c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "We only need to check is_renderable here if isRenderable that is passed in is kYes. No need to require renderable if the caller isn\u0027t asking for it.",
+      "range": {
+        "startLine": 99,
+        "startChar": 18,
+        "endLine": 99,
+        "endChar": 75
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30dea897_0cb6895a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "We should probably add a query to the general caps that is: Caps::supportsProtected(). In Vulkan this is always true in version 1.1 or higher so we can just set it to true always. I would default it to false for other backends.\n\nThen we should check\n\n    if (isProtected \u003d\u003d Protected::kYes \u0026\u0026 !this-\u003esupportsProtected()) {\n        return {};\n    }",
+      "range": {
+        "startLine": 107,
+        "startChar": 19,
+        "endLine": 107,
+        "endChar": 30
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6add6729_c8014497",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 125,
+        "startChar": 42,
+        "endLine": 125,
+        "endChar": 55
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8436b32c_85016501",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 126,
+        "startChar": 28,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b852a1c1_71b51a64",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "we don\u0027t need msaa things to be texturable (i.e. sampleable in a shader)",
+      "range": {
+        "startLine": 128,
+        "startChar": 28,
+        "endLine": 128,
+        "endChar": 85
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d8056e6_ad2eb6af",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "These don\u0027t matter for DepthStencil. We need another query for is_supported_depth_stencil(); In general this would be storing some form of \"FormatInfo\" for DS formats. However, I think we can keep it much simpler. We can just keep a list of supported formats for the device instead of all the flags and such. When we call the GetPhysicalDeviceFormatProperties function we can just look at the optimal flags (since that\u0027s all we ever use) and look if the contain the depth stencil flag. If so add the format to the supported list or something.\n\nThen again we may also want to know what sampleCounts are supported with the format as well...",
+      "range": {
+        "startLine": 163,
+        "startChar": 30,
+        "endLine": 164,
+        "endChar": 87
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942c6877_c38bdd5b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "can you just use depthStencilFormat from above?",
+      "range": {
+        "startLine": 172,
+        "startChar": 19,
+        "endLine": 172,
+        "endChar": 58
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "299c8390_e8ed9f73",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "I\u0027m thinking we may want to also support the TRANSIENT bit like we do for MSAA. This will involve passing in a discardable flag to this query. Though we should confirm that we are discarding stencils as well all the time (this was a little murky in Ganesh but I believe that\u0027s the policy for Graphite). However, if easier we can do this on a follow up CL.",
+      "range": {
+        "startLine": 174,
+        "startChar": 28,
+        "endLine": 174,
+        "endChar": 71
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba267b14_546530d9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T14:58:06Z",
+      "side": 1,
+      "message": "Extra review :)\n\nSo this call returns a VkResult object and we\u0027re suppose to check to see if it returns VK_ERROR_FORMAT_NOT_SUPPORTED or not (well if you follow the general pattern in Vulkan). Now technically, what we\u0027re doing here is safe because this one function is weird and early specs didn\u0027t have the return value and said that all property values will be filled to 0 if unsupported. This is left in the current specs for backwards compatibility. But we should probably do things the intended way and check the return value. See https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#capabilities-image",
+      "range": {
+        "startLine": 190,
+        "startChar": 27,
+        "endLine": 190,
+        "endChar": 65
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
