@@ -16,6 +16,23 @@
       "message": "Added Brian for interface files.",
       "revId": "2aa2d409ae1c3fab5bc14487446d490541c45cf6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde3243f_9ca487a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:38:39Z",
+      "side": 1,
+      "message": "Is there a code size savings?\nI thought collapsing size() and count() into one would be a net positive but it seems like such a simple accessor is just a no-op?",
+      "revId": "2aa2d409ae1c3fab5bc14487446d490541c45cf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
