@@ -162,6 +162,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecaa07d1_784512ae",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T22:04:56Z",
+      "side": 1,
+      "message": "I see. Could we perhaps decouple the UBO/SSBO encoding part of UniformManager from the backing storage? This code here could initialize a `SkTDArray` (with some heuristic-based initial size) and the `Extract*` helpers can create one-off `SkPipelineDataGatherer`s over the preallocated storage.\n\nAlternately, if we must maintain the existing model then I would introduce a function like `setLayoutAndReset(Layout)` and call that as the first thing in the helpers (or perhaps before calling out to the helpers, so they don\u0027t have to worry about which layout to select).",
+      "parentUuid": "55666bcb_1ac7f8d4",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "361b0780_0f9ccd66",
         "filename": "src/gpu/graphite/ResourceTypes.h",
         "patchSetId": 1
