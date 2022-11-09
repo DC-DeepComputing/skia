@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f4dd9c1_ffd39707",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-09T14:58:01Z",
+      "side": 1,
+      "message": "It\u0027s meant to be a never-existing file. It was my goal to explain that with this comment, but I\u0027ll try again.",
+      "parentUuid": "46a9a189_00eac9ae",
+      "range": {
+        "startLine": 671,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 34
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b02b2157_6b2a002b",
@@ -93,6 +117,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59c93c28_db806341",
+        "filename": "gn/bazel_compile_sksl_tests.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-09T14:58:01Z",
+      "side": 1,
+      "message": "By using bazelisk in scripts, it reduces the maintenance needed to update to the latest version of Bazel.\n\nIn short: yes, use bazelisk instead of bazel directly. Feel free to symlink bazel (or blaze) to bazelisk: that\u0027s what I do.",
+      "parentUuid": "d3195dfc_7fe9ae72",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 18
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c6692c2_f8e33190",
@@ -106,6 +154,30 @@
       "writtenOn": "2022-11-09T14:53:55Z",
       "side": 1,
       "message": "Include the period as well in the extension check\n`.rts`, `.rtcf`, `.rtb`",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc92b0d2_ae8bad2f",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-09T14:58:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c6692c2_f8e33190",
       "range": {
         "startLine": 28,
         "startChar": 22,
