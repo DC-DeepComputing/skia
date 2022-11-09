@@ -70,6 +70,30 @@
       },
       "revId": "32b1a34ca29dc6488e540e63ee45a033641d8c3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be76c838_fcdfdb9a",
+        "filename": "include/gpu/graphite/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-09T21:05:36Z",
+      "side": 0,
+      "message": "They still exist but are now only built w/in Graphite so they\u0027re never touched by Bazel and G3. Other than the precompilation files there were no others in the BUILD.bazel file lists.",
+      "parentUuid": "c98f27f3_63782400",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "32b1a34ca29dc6488e540e63ee45a033641d8c3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
