@@ -620,7 +620,7 @@ protected:
         paraStyle.setTextStyle(style);
         paraStyle.setMaxLines(lineLimit);
 
-        paraStyle.setEllipsis(ellipsis);
+        //paraStyle.setEllipsis(ellipsis);
 
         const char* logo1 = "google_";
         const char* logo2 = "logo";
