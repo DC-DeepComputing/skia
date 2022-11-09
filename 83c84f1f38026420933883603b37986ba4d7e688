@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0d7e54_11cb2744",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-09T18:23:01Z",
+      "side": 1,
+      "message": "OK, I think this is really ready to go now (Android has updated their one failing test).",
+      "revId": "83c84f1f38026420933883603b37986ba4d7e688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
