@@ -7,12 +7,17 @@
 
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
-#include "src/core/SkShaderCodeDictionary.h"
+
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
+#endif
+
+using SnippetRequirementFlags = skgpu::graphite::SnippetRequirementFlags;
 
 #ifdef SK_GRAPHITE_ENABLED
 SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::graphite::Layout layout)
         : fUniformManager(layout)
-        , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
+        , fSnippetRequirementFlags(skgpu::graphite::SnippetRequirementFlags::kNone) {
 }
 #endif
 
