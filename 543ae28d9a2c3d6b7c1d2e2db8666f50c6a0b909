@@ -50,6 +50,24 @@
       "message": "So thinking about this more after reading this CL, do we actually need a recorder to make these async readPixels? Can we just make a CopyImageToBuffer (or whatever its called) and insert it into our command buffer? Like what are we gaining from creating a whole recorder on the Context here?",
       "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5032d00_a267a3c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-09T16:03:20Z",
+      "side": 1,
+      "message": "I see your point, but we\u0027ll need it if Chrome wants to insert readPixels into a Recording. I\u0027d rather have everything flow through one place, even if it\u0027s heavy-handed in some cases (it\u0027s already heavy-handed since we have to sync). If we can convince Chrome to do everything through the Context then I don\u0027t see a need for a Recorder.",
+      "parentUuid": "68c5b31e_3577b280",
+      "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
