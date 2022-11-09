@@ -59,7 +59,7 @@ public:
 
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
-#ifdef SK_ENABLE_SKSL
+#ifdef SK_GRAPHITE_ENABLED
     /**
      * TODO: Make pure virtual.
      * primitiveColorBlender = true when blending the result of the paint evaluation with a
