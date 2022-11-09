@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d004689_a9e1305d",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:23:25Z",
+      "side": 1,
+      "message": "If it\u0027s arbitrary, it\u0027s kind of weird that they use different values.",
+      "parentUuid": "9fa4acab_b494a9de",
+      "range": {
+        "startLine": 189,
+        "startChar": 3,
+        "endLine": 190,
+        "endChar": 50
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "314d0c11_3ebc0620",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 1
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "I can certainly implement that but I wonder if the gatherer really needs to be long-lived? Most of its members are stack allocated counters which always get reassigned on `reset()` and the only heap-allocated member that\u0027s not debug-only (`SkTextureDataBlock::fTextureData`) gets reset by the Extract functions.\n\nI worry about the statefulness in letting `ExtractPaintData` and `ExtractRenderStepData` mutate the layout being used by the gatherer under the hood. Could they instantiate their own function-scope gatherers with the appropriate layout instead, especially if they are going to reset the gatherer on every call anyway?",
       "parentUuid": "314d0c11_3ebc0620",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55666bcb_1ac7f8d4",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:23:25Z",
+      "side": 1,
+      "message": "AIUI the goal here is to keep using the same `fStorage` in UniformManager instead of letting it be freed and reallocated over and over again. (`SkTDArray` is like a `vector` in that it never shrinks when cleared. The idea is that, over time, `fStorage` converges on a mostly steady-state, large-enough size.)",
+      "parentUuid": "f33f66a6_d2cfa2ea",
       "range": {
         "startLine": 451,
         "startChar": 0,
