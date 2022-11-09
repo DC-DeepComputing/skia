@@ -52,6 +52,24 @@
       "parentUuid": "fe46bf5c_6da0a618",
       "revId": "8caeb175898570cc99053bd4be307409f2a00562",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "206c9249_2105cdc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T20:53:56Z",
+      "side": 1,
+      "message": "Aborting test at 5m 45s. Did not complete.",
+      "parentUuid": "05a261d0_cc3d0429",
+      "revId": "8caeb175898570cc99053bd4be307409f2a00562",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
