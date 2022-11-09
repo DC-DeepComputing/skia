@@ -301,6 +301,30 @@
       },
       "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74cd28e7_1c3e0e8b",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:20:03Z",
+      "side": 1,
+      "message": "I agree with Michael, remove the comment but keep the enum.\nAFAIK we match standard Metal layout rules and I agree that the unit tests are pretty self-documenting.",
+      "parentUuid": "1be9d75c_7b648f2f",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
