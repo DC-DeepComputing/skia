@@ -284,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cfce682_5c2691c0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2444,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T18:45:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f50c0a6c_9319998d",
+      "range": {
+        "startLine": 2444,
+        "startChar": 64,
+        "endLine": 2444,
+        "endChar": 86
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3f3af41_0655f002",
@@ -321,6 +345,30 @@
       "side": 1,
       "message": "Currently Metal has no real support at all for separate samplers. There will be many things to fix.",
       "parentUuid": "d3f3af41_0655f002",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "ee6328615d7b6f5a0e25c9d6a968e1a702736641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19bb8a05_654edfce",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T18:45:56Z",
+      "side": 1,
+      "message": "I\u0027m leaving this as is for now. Once the new combined sampler syntax is supported in the SPIR-V backend, I\u0027ll change the FunctionParametersOfTextureAndSamplerType.sksl test to avoid separate texture/sampler declarations and this won\u0027t be a problem.\n\nAs part of that work, maybe it makes sense for the Metal codegen to assert on separate declarations instead of outputting invalid code.",
+      "parentUuid": "017923c3_77a21ebb",
       "range": {
         "startLine": 17,
         "startChar": 0,
