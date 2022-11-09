@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8170b8eb_5abd51d2",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T23:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d004689_a9e1305d",
+      "range": {
+        "startLine": 189,
+        "startChar": 3,
+        "endLine": 190,
+        "endChar": 50
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314d0c11_3ebc0620",
@@ -222,6 +246,30 @@
       "side": 1,
       "message": "There is a slight nuance in that currently the helpers are responsible for resetting the gatherer _after_ they have written to it. They will now need to reset it before (and maybe after). Though personally I think the initial layout reset should be done at the call site instead of having the helpers also know about which layout they need to apply on the gatherer.\n\nI\u0027ll work this change to demonstrate what I mean. If folks like the idea to decouple the storage from the gatherer then I can rework that in a follow up.",
       "parentUuid": "cf53a041_911293bc",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0198d0c_968117e6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T23:25:45Z",
+      "side": 1,
+      "message": "PTAL",
+      "parentUuid": "2ddfe238_eb1d91fa",
       "range": {
         "startLine": 451,
         "startChar": 0,
@@ -437,6 +485,30 @@
       "side": 1,
       "message": "I agree with Michael, remove the comment but keep the enum.\nAFAIK we match standard Metal layout rules and I agree that the unit tests are pretty self-documenting.",
       "parentUuid": "1be9d75c_7b648f2f",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c38964a7_d49ace41",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T23:25:45Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "74cd28e7_1c3e0e8b",
       "range": {
         "startLine": 51,
         "startChar": 16,
