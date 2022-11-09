@@ -86,6 +86,24 @@
       "parentUuid": "b5032d00_a267a3c0",
       "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c531198c_5a981f67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T16:29:04Z",
+      "side": 1,
+      "message": "I guess in short my opinion is, as of right now we don\u0027t have support for calling asyncReadPixels from a Recorder. It all goes through context (ignoring testing backdoor, but that still ends up at context). So in today\u0027s world we should just have all the read pixel logic in Context. The Recorder doesn\u0027t add anything but extra layers. If we then later decide we do need to support asyncReadPixels on Recorder then we can move all of the logic off Context and onto Recorder for everything to use.\n\nAlternatively we could try to figure out from Chrome beforehand, now why they think that need the Recorder API and if that\u0027s actually a valid reason to add the more complex API (more complex since we need the multiple callbacks for release and \"never call release again\" procs).",
+      "parentUuid": "e8b7f047_755ebbd0",
+      "revId": "543ae28d9a2c3d6b7c1d2e2db8666f50c6a0b909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
