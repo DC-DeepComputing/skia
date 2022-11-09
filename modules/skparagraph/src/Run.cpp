@@ -116,7 +116,7 @@ std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange
 
     ClusterIndex startIndex = fOwner->clusterIndex(text.start);
     ClusterIndex endIndex = fOwner->clusterIndex(text.end - 1);
-    if (!leftToRight()) {
+    if (!this->leftToRight()) {
         std::swap(startIndex, endIndex);
     }
     return std::make_tuple(startIndex != fClusterRange.end && endIndex != fClusterRange.end, startIndex, endIndex);
