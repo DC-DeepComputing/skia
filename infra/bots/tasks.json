@@ -93968,6 +93968,7 @@
     "CodeSize-dm-Debian10-Clang-x86_64-OptimizeForSize": {},
     "CodeSize-fm-Debian10-Clang-x86_64-OptimizeForSize": {},
     "CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize": {},
+    "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {},
     "Housekeeper-OnDemand-Presubmit": {},
     "Housekeeper-PerCommit-CheckGeneratedFiles": {
       "location_regexes": [
