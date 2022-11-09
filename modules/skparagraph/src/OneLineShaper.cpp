@@ -211,7 +211,7 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
                     height,
                     block.fStyle.getHalfLeading(),
                     block.fStyle.getBaselineShift(),
-                    this->fParagraph->fRuns.count(),
+                    this->fParagraph->fRuns.sizefoob(),
                     advanceX
                 );
         auto piece = &this->fParagraph->fRuns.back();
@@ -571,7 +571,7 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
                                        0.0f,
                                        0.0f,
                                        false,
-                                       fParagraph->fRuns.count(),
+                                       fParagraph->fRuns.sizefoob(),
                                        advanceX);
 
         run.fPositions[0] = { advanceX, 0 };

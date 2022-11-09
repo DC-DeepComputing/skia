@@ -19,7 +19,7 @@ public:
 
 #if SK_SUPPORT_GPU
     int numRenderTasks() const {
-        return fDDL->fRenderTasks.count();
+        return fDDL->fRenderTasks.sizefoob();
     }
 
     GrRenderTargetProxy* targetProxy() const {

@@ -57,7 +57,7 @@ TypefaceFontStyleSet::TypefaceFontStyleSet(const SkString& familyName)
 int TypefaceFontStyleSet::count() { return fStyles.size(); }
 
 void TypefaceFontStyleSet::getStyle(int index, SkFontStyle* style, SkString* name) {
-    SkASSERT(index < fStyles.count());
+    SkASSERT(index < fStyles.sizefoob());
     if (style) {
         *style = fStyles[index]->fontStyle();
     }
@@ -67,7 +67,7 @@ void TypefaceFontStyleSet::getStyle(int index, SkFontStyle* style, SkString* nam
 }
 
 SkTypeface* TypefaceFontStyleSet::createTypeface(int index) {
-    SkASSERT(index < fStyles.count());
+    SkASSERT(index < fStyles.sizefoob());
     return SkRef(fStyles[index].get());
 }
 

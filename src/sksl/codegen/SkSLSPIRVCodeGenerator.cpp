@@ -587,10 +587,10 @@ SPIRVCodeGenerator::Instruction SPIRVCodeGenerator::BuildInstructionKey(
     // Assemble a cache key for this instruction.
     Instruction key;
     key.fOp = opCode;
-    key.fWords.resize(words.count());
+    key.fWords.resize(words.sizefoob());
     key.fResultKind = Word::Kind::kNone;
 
-    for (int index = 0; index < words.count(); ++index) {
+    for (int index = 0; index < words.sizefoob(); ++index) {
         const Word& word = words[index];
         key.fWords[index] = word.fValue;
         if (word.isResult()) {
@@ -742,7 +742,7 @@ bool SPIRVCodeGenerator::toConstants(SpvId value, SkTArray<SpvId>* constants) {
 
         case SpvOpConstantComposite: // OpConstantComposite ResultType ResultID Constituents...
             // Start at word 2 to skip past ResultType and ResultID.
-            for (int i = 2; i < instr->fWords.count(); ++i) {
+            for (int i = 2; i < instr->fWords.sizefoob(); ++i) {
                 if (!this->toConstants(instr->fWords[i], constants)) {
                     return false;
                 }
@@ -869,7 +869,7 @@ SpvId SPIRVCodeGenerator::toComponent(SpvId id, int component) {
 
         // When composing a vector, components can be either scalars or vectors.
         // This means we need to check the op type on each component. (+2 to skip ResultType/Result)
-        for (int index = 2; index < instr->fWords.count(); ++index) {
+        for (int index = 2; index < instr->fWords.sizefoob(); ++index) {
             int32_t currentWord = instr->fWords[index];
 
             // Retrieve the sub-instruction pointed to by OpCompositeConstruct.
@@ -1918,9 +1918,9 @@ void SPIRVCodeGenerator::addColumnEntry(const Type& columnType,
                                         int rows,
                                         SpvId entry,
                                         OutputStream& out) {
-    SkASSERT(currentColumn->count() < rows);
+    SkASSERT(currentColumn->sizefoob() < rows);
     currentColumn->push_back(entry);
-    if (currentColumn->count() == rows) {
+    if (currentColumn->sizefoob() == rows) {
         // Synthesize this column into a vector.
         SpvId columnId = this->writeOpCompositeConstruct(columnType, *currentColumn, out);
         columnIds->push_back(columnId);
@@ -1978,7 +1978,7 @@ SpvId SPIRVCodeGenerator::writeMatrixConstructor(const ConstructorCompound& c, O
             }
         }
     }
-    SkASSERT(columnIds.count() == type.columns());
+    SkASSERT(columnIds.sizefoob() == type.columns());
     return this->writeOpCompositeConstruct(type, columnIds, out);
 }
 
@@ -2249,7 +2249,7 @@ public:
     bool applySwizzle(const ComponentArray& components, const Type& newType) override {
         ComponentArray updatedSwizzle;
         for (int8_t component : components) {
-            if (component < 0 || component >= fComponents.count()) {
+            if (component < 0 || component >= fComponents.sizefoob()) {
                 SkDEBUGFAILF("swizzle accessed nonexistent component %d", (int)component);
                 return false;
             }

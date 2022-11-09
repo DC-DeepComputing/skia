@@ -25,15 +25,15 @@ int ImgHandler::handle(Request* request, MHD_Connection* connection,
     SkTArray<SkString> commands;
     SkStrSplit(url, "/", &commands);
 
-    if (!request->hasPicture() || commands.count() > 3) {
+    if (!request->hasPicture() || commands.sizefoob() > 3) {
         return MHD_NO;
     }
 
     int n, m = -1;
     // /img or /img/N
-    if (commands.count() == 1) {
+    if (commands.sizefoob() == 1) {
         n = request->fDebugCanvas->getSize() - 1;
-    } else if (commands.count() == 2) {
+    } else if (commands.sizefoob() == 2) {
         sscanf(commands[1].c_str(), "%d", &n);
     } else {
         sscanf(commands[1].c_str(), "%d", &n);

@@ -294,7 +294,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
     // redundant input parameter entirely, and not give it any name.)
     SkTHashSet<const Variable*> writtenVars;
 
-    for (int index = 0; index < arguments.count(); ++index) {
+    for (int index = 0; index < arguments.sizefoob(); ++index) {
         this->write(separator);
         separator = ", ";
 
@@ -325,7 +325,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
     this->writeLine(") {");
 
     ++fIndentation;
-    for (int index = 0; index < outVars.count(); ++index) {
+    for (int index = 0; index < outVars.sizefoob(); ++index) {
         if (!outVars[index]) {
             continue;
         }
@@ -357,7 +357,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
     separator = "";
     this->writeFunctionRequirementArgs(function, separator);
 
-    for (int index = 0; index < arguments.count(); ++index) {
+    for (int index = 0; index < arguments.sizefoob(); ++index) {
         this->write(separator);
         separator = ", ";
 
@@ -366,7 +366,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
     }
     this->writeLine(");");
 
-    for (int index = 0; index < outVars.count(); ++index) {
+    for (int index = 0; index < outVars.sizefoob(); ++index) {
         if (!outVars[index]) {
             continue;
         }
@@ -413,9 +413,9 @@ void MetalCodeGenerator::writeFunctionCall(const FunctionCall& c) {
 
     bool foundOutParam = false;
     SkSTArray<16, VariableReference*> outVars;
-    outVars.push_back_n(arguments.count(), (VariableReference*)nullptr);
+    outVars.push_back_n(arguments.sizefoob(), (VariableReference*)nullptr);
 
-    for (int index = 0; index < arguments.count(); ++index) {
+    for (int index = 0; index < arguments.sizefoob(); ++index) {
         // If this is an out parameter...
         if (parameters[index]->modifiers().fFlags & Modifiers::kOut_Flag) {
             // Find the expression's inner variable being written to.
@@ -441,7 +441,7 @@ void MetalCodeGenerator::writeFunctionCall(const FunctionCall& c) {
     this->write("(");
     const char* separator = "";
     this->writeFunctionRequirementArgs(function, separator);
-    for (int i = 0; i < arguments.count(); ++i) {
+    for (int i = 0; i < arguments.sizefoob(); ++i) {
         this->write(separator);
         separator = ", ";
 
@@ -2118,7 +2118,7 @@ static bool is_block_ending_with_return(const Statement* stmt) {
         return false;
     }
     const StatementArray& block = stmt->as<Block>().children();
-    for (int index = block.count(); index--; ) {
+    for (int index = block.sizefoob(); index--; ) {
         stmt = block[index].get();
         if (stmt->is<ReturnStatement>()) {
             return true;

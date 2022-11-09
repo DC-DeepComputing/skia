@@ -794,7 +794,7 @@ bool GrGpu::checkAndResetOOMed() {
 }
 
 void GrGpu::callSubmittedProcs(bool success) {
-    for (int i = 0; i < fSubmittedProcs.count(); ++i) {
+    for (int i = 0; i < fSubmittedProcs.sizefoob(); ++i) {
         fSubmittedProcs[i].fProc(fSubmittedProcs[i].fContext, success);
     }
     fSubmittedProcs.reset();

@@ -302,7 +302,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
         return nullptr;
     }
 
-    if (inComponents.count() > 4) {
+    if (inComponents.sizefoob() > 4) {
         Position errorPos = rawMaskPos.valid() ? Position::Range(maskPos.startOffset() + 4,
                                                                  maskPos.endOffset())
                                                : pos;
@@ -313,7 +313,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
 
     ComponentArray maskComponents;
     bool foundXYZW = false;
-    for (int i = 0; i < inComponents.count(); ++i) {
+    for (int i = 0; i < inComponents.sizefoob(); ++i) {
         switch (inComponents[i]) {
             case SwizzleComponent::ZERO:
             case SwizzleComponent::ONE:
@@ -386,7 +386,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
     std::unique_ptr<Expression> expr = Swizzle::Make(context, pos, std::move(base), maskComponents);
 
     // If we have processed the entire swizzle, we're done.
-    if (maskComponents.count() == inComponents.count()) {
+    if (maskComponents.sizefoob() == inComponents.sizefoob()) {
         return expr;
     }
 
@@ -412,7 +412,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
     int constantFieldIdx = maskComponents.size();
     int constantZeroIdx = -1, constantOneIdx = -1;
 
-    for (int i = 0; i < inComponents.count(); i++) {
+    for (int i = 0; i < inComponents.sizefoob(); i++) {
         switch (inComponents[i]) {
             case SwizzleComponent::ZERO:
                 if (constantZeroIdx == -1) {
@@ -452,7 +452,7 @@ std::unique_ptr<Expression> Swizzle::Make(const Context& context,
     const Type& exprType = expr->type();
     SkASSERTF(exprType.isVector() || exprType.isScalar(),
               "cannot swizzle type '%s'", exprType.description().c_str());
-    SkASSERT(components.count() >= 1 && components.count() <= 4);
+    SkASSERT(components.sizefoob() >= 1 && components.sizefoob() <= 4);
 
     // Confirm that the component array only contains X/Y/Z/W. (Call MakeWith01 if you want support
     // for ZERO and ONE. Once initial IR generation is complete, no swizzles should have zeros or
@@ -471,9 +471,9 @@ std::unique_ptr<Expression> Swizzle::Make(const Context& context,
     }
 
     // Detect identity swizzles like `color.rgba` and optimize it away.
-    if (components.count() == exprType.columns()) {
+    if (components.sizefoob() == exprType.columns()) {
         bool identity = true;
-        for (int i = 0; i < components.count(); ++i) {
+        for (int i = 0; i < components.sizefoob(); ++i) {
             if (components[i] != i) {
                 identity = false;
                 break;

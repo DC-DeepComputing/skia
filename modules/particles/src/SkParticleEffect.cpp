@@ -233,8 +233,8 @@ void SkParticleEffect::updateStorage() {
     // Ensure our storage block for uniforms is large enough
     if (this->uniformInfo()) {
         int newCount = this->uniformInfo()->fUniformSlotCount;
-        if (newCount > fUniforms.count()) {
-            fUniforms.push_back_n(newCount - fUniforms.count(), 0.0f);
+        if (newCount > fUniforms.sizefoob()) {
+            fUniforms.push_back_n(newCount - fUniforms.sizefoob(), 0.0f);
         } else {
             fUniforms.resize(newCount);
         }

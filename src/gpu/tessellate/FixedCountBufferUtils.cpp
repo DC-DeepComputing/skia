@@ -55,10 +55,10 @@ void write_curve_index_buffer_base_index(VertexWriter vertexWriter,
         }
         SkASSERT(neighborInLastResolveLevel == firstTriangleInCurrentResolveLevel);
     }
-    SkASSERT(indexData.count() == triangleCount);
+    SkASSERT(indexData.sizefoob() == triangleCount);
     SkASSERT(nextIndex == baseIndex + triangleCount + 2);
 
-    vertexWriter << VertexWriter::Array(indexData.data(), indexData.count());
+    vertexWriter << VertexWriter::Array(indexData.data(), indexData.sizefoob());
 }
 
 }  // namespace

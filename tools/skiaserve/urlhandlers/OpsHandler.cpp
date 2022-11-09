@@ -23,7 +23,7 @@ int OpsHandler::handle(Request* request, MHD_Connection* connection, const char*
     SkTArray<SkString> commands;
     SkStrSplit(url, "/", &commands);
 
-    if (!request->hasPicture() || commands.count() > 1) {
+    if (!request->hasPicture() || commands.sizefoob() > 1) {
         return MHD_NO;
     }
 

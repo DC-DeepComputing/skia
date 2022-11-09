@@ -55,10 +55,10 @@ bool BisectSlide::onChar(SkUnichar c) {
             return true;
 
         case 'x':
-            if (fFoundPaths.count() > 1) {
-                int midpt = (fFoundPaths.count() + 1) / 2;
+            if (fFoundPaths.sizefoob() > 1) {
+                int midpt = (fFoundPaths.sizefoob() + 1) / 2;
                 fPathHistory.emplace(fFoundPaths, fTossedPaths);
-                fTossedPaths.reset(fFoundPaths.begin() + midpt, fFoundPaths.count() - midpt);
+                fTossedPaths.reset(fFoundPaths.begin() + midpt, fFoundPaths.sizefoob() - midpt);
                 fFoundPaths.resize_back(midpt);
                 fTrail.push_back('x');
             }

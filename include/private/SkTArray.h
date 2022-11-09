@@ -98,7 +98,7 @@ public:
             return *this;
         }
         this->clear();
-        this->checkRealloc(that.count(), kExactFit);
+        this->checkRealloc(that.sizefoob(), kExactFit);
         fCount = that.fCount;
         this->copy(that.fItemArray);
         return *this;
@@ -107,11 +107,11 @@ public:
         if (this == &that) {
             return *this;
         }
-        for (int i = 0; i < this->count(); ++i) {
+        for (int i = 0; i < this->sizefoob(); ++i) {
             fItemArray[i].~T();
         }
         fCount = 0;
-        this->checkRealloc(that.count(), kExactFit);
+        this->checkRealloc(that.sizefoob(), kExactFit);
         fCount = that.fCount;
         that.move(fItemArray);
         that.fCount = 0;
@@ -140,7 +140,7 @@ public:
         this->clear();
         this->checkRealloc(n, kExactFit);
         fCount = n;
-        for (int i = 0; i < this->count(); ++i) {
+        for (int i = 0; i < this->sizefoob(); ++i) {
             new (fItemArray + i) T;
         }
     }
@@ -161,10 +161,10 @@ public:
      */
     void reserve(int n) {
         SkASSERT(n >= 0);
-        if (n < count()) {
+        if (n < sizefoob()) {
           return;
         }
-        reserve_back(n - count());
+        reserve_back(n - sizefoob());
     }
 
     /**
@@ -180,7 +180,7 @@ public:
     }
 
     void removeShuffle(int n) {
-        SkASSERT(n < this->count());
+        SkASSERT(n < this->sizefoob());
         int newCount = fCount - 1;
         fCount = newCount;
         fItemArray[n].~T();
@@ -192,7 +192,7 @@ public:
     /**
      * Number of elements in the array.
      */
-    int count() const { return fCount; }
+    int sizefoob() const { return fCount; }
 
     /**
      * Is the array empty.
@@ -301,7 +301,7 @@ public:
      */
     void pop_back_n(int n) {
         SkASSERT(n >= 0);
-        SkASSERT(this->count() >= n);
+        SkASSERT(this->sizefoob() >= n);
         fCount -= n;
         for (int i = 0; i < n; ++i) {
             fItemArray[fCount + i].~T();
@@ -315,9 +315,9 @@ public:
     void resize_back(int newCount) {
         SkASSERT(newCount >= 0);
 
-        if (newCount > this->count()) {
+        if (newCount > this->sizefoob()) {
             this->push_back_n(newCount - fCount);
-        } else if (newCount < this->count()) {
+        } else if (newCount < this->sizefoob()) {
             this->pop_back_n(fCount - newCount);
         }
     }
@@ -398,13 +398,13 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->sizefoob());
         SkASSERT(i >= 0);
         return fItemArray[i];
     }
 
     const T& operator[] (int i) const {
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->sizefoob());
         SkASSERT(i >= 0);
         return fItemArray[i];
     }
@@ -431,19 +431,19 @@ public:
      */
     T& fromBack(int i) {
         SkASSERT(i >= 0);
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->sizefoob());
         return fItemArray[fCount - i - 1];
     }
 
     const T& fromBack(int i) const {
         SkASSERT(i >= 0);
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->sizefoob());
         return fItemArray[fCount - i - 1];
     }
 
     bool operator==(const SkTArray<T, MEM_MOVE>& right) const {
-        int leftCount = this->count();
-        if (leftCount != right.count()) {
+        int leftCount = this->sizefoob();
+        if (leftCount != right.sizefoob()) {
             return false;
         }
         for (int index = 0; index < leftCount; ++index) {
@@ -560,7 +560,7 @@ private:
                 sk_careful_memcpy(fItemArray, src, this->size_bytes());
             }
         } else {
-            for (int i = 0; i < this->count(); ++i) {
+            for (int i = 0; i < this->sizefoob(); ++i) {
                 new (fItemArray + i) T(src[i]);
             }
         }
@@ -581,7 +581,7 @@ private:
         if constexpr (MEM_MOVE) {
             sk_careful_memcpy(dst, fItemArray, this->bytes(fCount));
         } else {
-            for (int i = 0; i < this->count(); ++i) {
+            for (int i = 0; i < this->sizefoob(); ++i) {
                 new (static_cast<char*>(dst) + this->bytes(i)) T(std::move(fItemArray[i]));
                 fItemArray[i].~T();
             }

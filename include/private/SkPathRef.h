@@ -289,9 +289,9 @@ public:
     static void Rewind(sk_sp<SkPathRef>* pathRef);
 
     ~SkPathRef();
-    int countPoints() const { return fPoints.count(); }
-    int countVerbs() const { return fVerbs.count(); }
-    int countWeights() const { return fConicWeights.count(); }
+    int countPoints() const { return fPoints.sizefoob(); }
+    int countVerbs() const { return fVerbs.sizefoob(); }
+    int countWeights() const { return fConicWeights.sizefoob(); }
 
     size_t approximateBytesUsed() const;
 

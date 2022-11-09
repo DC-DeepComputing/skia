@@ -171,7 +171,7 @@ bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
     if (fText.size() != other.fText.size()) {
         return false;
     }
-    if (fPlaceholders.count() != other.fPlaceholders.count()) {
+    if (fPlaceholders.sizefoob() != other.fPlaceholders.sizefoob()) {
         return false;
     }
     if (fText != other.fText) {

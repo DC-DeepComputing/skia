@@ -34,7 +34,7 @@ private:
     static SkFontStyleSet_Custom* find_family(SkFontMgr_Custom::Families& families,
                                               const char familyName[])
     {
-       for (int i = 0; i < families.count(); ++i) {
+       for (int i = 0; i < families.sizefoob(); ++i) {
             if (families[i]->getFamilyName().equals(familyName)) {
                 return families[i].get();
             }

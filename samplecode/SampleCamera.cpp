@@ -44,7 +44,7 @@ class CameraView : public Sample {
     }
 
     void onDrawContent(SkCanvas* canvas) override {
-        if (fShaders.count() > 0) {
+        if (fShaders.sizefoob() > 0) {
             canvas->translate(this->width()/2, this->height()/2);
 
             Sk3DView    view;
@@ -55,7 +55,7 @@ class CameraView : public Sample {
             bool frontFace = view.dotWithNormal(0, 0, SK_Scalar1) < 0;
             if (frontFace != fFrontFace) {
                 fFrontFace = frontFace;
-                fShaderIndex = (fShaderIndex + 1) % fShaders.count();
+                fShaderIndex = (fShaderIndex + 1) % fShaders.sizefoob();
             }
 
             SkPaint paint;
