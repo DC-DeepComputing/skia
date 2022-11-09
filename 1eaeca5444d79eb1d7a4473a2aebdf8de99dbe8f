@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6440a3_b6cdad0e",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-09T15:02:25Z",
+      "side": 1,
+      "message": "John had me break this up and relocate the bits around to the appropriate block definition in the class file anyhow, but I will add a top-level TODO. Good idea.",
+      "parentUuid": "0f578c40_f848381f",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 100
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "639bfe15_4ee5b4a4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-03T17:02:53Z",
       "side": 1,
       "message": "nit: add `const` to this local declaration.",
+      "range": {
+        "startLine": 903,
+        "startChar": 0,
+        "endLine": 903,
+        "endChar": 67
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1498f132_591ac07a",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-09T15:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "639bfe15_4ee5b4a4",
       "range": {
         "startLine": 903,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1288d855_e79dc7d5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-09T15:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eefacf4b_759dbd04",
+      "range": {
+        "startLine": 913,
+        "startChar": 4,
+        "endLine": 913,
+        "endChar": 20
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df2ad69e_5dbd363d",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-03T17:02:53Z",
       "side": 1,
       "message": "Instead of setting this to null when we don\u0027t have a primitive color from the Renderer, can we `SkASSERT(renderer-\u003eemitsPrimitiveColor() \u003d\u003d SkToBool(primitiveBlender))`?",
+      "range": {
+        "startLine": 872,
+        "startChar": 8,
+        "endLine": 872,
+        "endChar": 24
+      },
+      "revId": "1eaeca5444d79eb1d7a4473a2aebdf8de99dbe8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3930b593_8dce74d4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-09T15:02:25Z",
+      "side": 1,
+      "message": "Per our offline discussion, it is possible to have a null prim. blender even when a renderer emits a color. In that case, we should default to SrcOver blending.\n\nIt is also possible to have no primitive colors even though there is a primitive blender. In Ganesh, we ignored the blender if there was no color accompanying it to blend against, So I left this in but w/ new comment documentation.",
+      "parentUuid": "df2ad69e_5dbd363d",
       "range": {
         "startLine": 872,
         "startChar": 8,

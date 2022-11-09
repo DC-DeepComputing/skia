@@ -382,6 +382,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "174b5c19_0efd4c76",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-09T15:02:25Z",
+      "side": 1,
+      "message": "Ah, I see how that would be the case once the tree style is implemented. I guess I am just confused as to what that means for this current CL where we still rely upon the rigid, chronological/linear structure of key building.\n\nUpdate: After offline discussions, this will create some extra overhead when dismantling our current method of key generation, but we decided the utility of having this work merged in outweighed that downside. \nI added a TODO that will point us towards consolidating the blender blocks once we refactor into the tree method.",
+      "parentUuid": "2806e36a_6c45652c",
+      "range": {
+        "startLine": 71,
+        "startChar": 29,
+        "endLine": 71,
+        "endChar": 55
+      },
+      "revId": "8319057f813f4a5d0dfbb0357cce5d0cc8b55709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "476e47fb_847331cf",
