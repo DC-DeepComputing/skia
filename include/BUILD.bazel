@@ -43,3 +43,16 @@ filegroup(
         "//src/opts:__pkg__",
     ],
 )
+
+filegroup(
+    name = "skslc_hdrs",
+    srcs = [
+        "//include/core:SkTypes.h",
+        "//include/private:SkMalloc.h",
+        "//include/private:SkStringView.h",
+    ],
+    visibility = [
+        "//tools/sksl-minify:__pkg__",
+        "//tools/skslc:__pkg__",
+    ],
+)

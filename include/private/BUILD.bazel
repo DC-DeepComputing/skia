@@ -3,8 +3,15 @@ load("//bazel:macros.bzl", "exports_files_legacy")
 licenses(["notice"])
 
 exports_files_legacy(
-    label_list = ["SkBitmaskEnum.h"],
-    visibility = ["//tools/skui:__pkg__"],
+    label_list = [
+        "SkBitmaskEnum.h",
+        "SkStringView.h",
+        "SkMalloc.h",
+    ],
+    visibility = [
+        "//include:__pkg__",
+        "//tools/skui:__pkg__",
+    ],
 )
 
 # In own filegroup for mapping to the //gn/sksl.gni file.

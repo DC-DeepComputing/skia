@@ -2,8 +2,6 @@ load("//bazel:macros.bzl", "exports_files_legacy", "selects", "split_srcs_and_hd
 
 licenses(["notice"])
 
-exports_files_legacy()
-
 # In own group for exporting to sksl.gni:skslc_deps.
 CORE_SKSLC_FILES = [
     "SkParse.cpp",
@@ -11,6 +9,8 @@ CORE_SKSLC_FILES = [
     "SkUTF.h",
     "SkVMVisualizer.cpp",
     "SkVMVisualizer.h",
+    "SkOSPath.cpp",
+    "SkOSPath.h",
 ]
 
 split_srcs_and_hdrs(
@@ -83,12 +83,14 @@ filegroup(
     ],
 )
 
+JSON_SRCS = [
+    "SkJSON.cpp",
+    "SkJSONWriter.cpp",
+]
+
 filegroup(
     name = "json_srcs",
-    srcs = [
-        "SkJSON.cpp",
-        "SkJSONWriter.cpp",
-    ],
+    srcs = JSON_SRCS,
     visibility = [
         "//modules/skottie:__pkg__",
         "//tools/debugger:__pkg__",
@@ -141,4 +143,11 @@ filegroup(
         "//conditions:default": [],
     }),
     visibility = ["//src:__pkg__"],
+)
+
+exports_files_legacy(
+    label_list = CORE_SKSLC_FILES + SKSL_FILES + JSON_SRCS,
+    visibility = [
+        "//src:__pkg__",
+    ],
 )

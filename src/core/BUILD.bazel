@@ -2,8 +2,6 @@ load("//bazel:macros.bzl", "exports_files_legacy", "split_srcs_and_hdrs")
 
 licenses(["notice"])
 
-exports_files_legacy()
-
 # In separate file list because these files are exported to
 # core.gni:skia_core_sources as well as sksl.gni:skslc_deps.
 CORE_SKSLC_FILES = [
@@ -11,6 +9,7 @@ CORE_SKSLC_FILES = [
     "SkArenaAlloc.h",
     "SkBlockAllocator.cpp",
     "SkBlockAllocator.h",
+    "SkContainers.cpp",
     "SkCpu.cpp",
     "SkCpu.h",
     "SkData.cpp",
@@ -30,6 +29,13 @@ CORE_SKSLC_FILES = [
     "SkVM.cpp",
     "SkVM.h",
 ]
+
+exports_files_legacy(
+    label_list = CORE_SKSLC_FILES,
+    visibility = [
+        "//src:__pkg__",
+    ],
+)
 
 split_srcs_and_hdrs(
     name = "core_skslc",

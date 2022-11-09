@@ -22,12 +22,13 @@ skia_cc_binary_with_flags(
     ],
 )
 
-skia_cc_library(
+filegroup(
     name = "process_worklist",
-    srcs = ["ProcessWorklist.cpp"],
-    hdrs = ["ProcessWorklist.h"],
+    srcs = [
+        "ProcessWorklist.cpp",
+        "ProcessWorklist.h",
+    ],
     visibility = ["//tools/sksl-minify:__pkg__"],
-    deps = ["//:skia_internal"],
 )
 
 filegroup(

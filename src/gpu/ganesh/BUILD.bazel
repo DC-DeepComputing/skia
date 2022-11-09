@@ -2,13 +2,18 @@ load("//bazel:macros.bzl", "exports_files_legacy", "select_multi", "skia_cc_deps
 
 licenses(["notice"])
 
-exports_files_legacy()
-
 # In separate groups for exporting to sksl.gni:skslc_deps.
 SKSLC_FILES = [
     "GrMemoryPool.cpp",
     "GrMemoryPool.h",
 ]
+
+exports_files_legacy(
+    label_list = SKSLC_FILES,
+    visibility = [
+        "//src:__pkg__",
+    ],
+)
 
 split_srcs_and_hdrs(
     name = "core_skslc",

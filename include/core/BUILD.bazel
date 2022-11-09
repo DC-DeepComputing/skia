@@ -2,7 +2,15 @@ load("//bazel:macros.bzl", "exports_files_legacy")
 
 licenses(["notice"])
 
-exports_files_legacy()
+exports_files_legacy(
+    label_list = [
+        "SkTypes.h",
+        "SkStream.h",
+    ],
+    visibility = [
+        "//include:__pkg__",
+    ],
+)
 
 # Maintain SkPicture files in separate filegroup so that the legacy
 # skia_skpicture_public GNI file list can be created.

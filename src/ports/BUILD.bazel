@@ -2,7 +2,15 @@ load("//bazel:macros.bzl", "exports_files_legacy", "select_multi", "selects", "s
 
 licenses(["notice"])
 
-exports_files_legacy()
+exports_files_legacy(
+    label_list = [
+        "SkMemory_malloc.cpp",
+        "SkOSFile_stdio.cpp",
+    ],
+    visibility = [
+        "//src:__pkg__",
+    ],
+)
 
 filegroup(
     name = "discardable_memory_pool",
