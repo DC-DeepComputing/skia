@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d267571_60610919",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-09T14:38:50Z",
+      "side": 1,
+      "message": "This GM demonstrates the bug with legacy sprite blitters (using 32-bit adds to do per-channel math).",
+      "revId": "38449e41eda676866389e007dd34de95e1f97127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
