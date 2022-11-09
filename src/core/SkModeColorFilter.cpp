@@ -172,7 +172,7 @@ GrFPResult SkModeColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProc
 
 #ifdef SK_GRAPHITE_ENABLED
 
-#include "src/core/SkKeyHelpers.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 
 void SkModeColorFilter::addToKey(const SkKeyContext& keyContext,

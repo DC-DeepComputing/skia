@@ -11,7 +11,7 @@
 #include "src/shaders/SkLocalMatrixShader.h"
 
 #ifdef SK_GRAPHITE_ENABLED
-#include "src/core/SkKeyHelpers.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 

@@ -26,8 +26,8 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/core/SkKeyContext.h"
-#include "src/core/SkKeyHelpers.h"
 #include "src/gpu/graphite/ImageUtils.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 

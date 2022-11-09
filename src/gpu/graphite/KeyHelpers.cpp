@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkKeyHelpers.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 
 #include "include/core/SkData.h"
 #include "include/effects/SkRuntimeEffect.h"
