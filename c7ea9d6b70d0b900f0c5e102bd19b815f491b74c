@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46a9a189_00eac9ae",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:50:35Z",
+      "side": 1,
+      "message": "Does anything generate this text file? Or is it a dummy that is never expected to exist, forcing GN to always run the py script? If it\u0027s a dummy, the name/comment should probably make this more clear; if something creates it, where does that happen?",
+      "range": {
+        "startLine": 671,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 34
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
