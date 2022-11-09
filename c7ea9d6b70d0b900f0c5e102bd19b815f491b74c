@@ -22,6 +22,98 @@
       },
       "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b02b2157_6b2a002b",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:53:55Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 685,
+        "startChar": 35,
+        "endLine": 685,
+        "endChar": 56
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c58af1a0_99911253",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:53:55Z",
+      "side": 1,
+      "message": "...",
+      "range": {
+        "startLine": 748,
+        "startChar": 33,
+        "endLine": 748,
+        "endChar": 55
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3195dfc_7fe9ae72",
+        "filename": "gn/bazel_compile_sksl_tests.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:53:55Z",
+      "side": 1,
+      "message": "Are we fully locked into bazelisk, vs plain bazel? I use bazelisk locally, but I wasn\u0027t aware that it\u0027s a requirement.",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 18
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c6692c2_f8e33190",
+        "filename": "gn/minify_sksl_tests.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:53:55Z",
+      "side": 1,
+      "message": "Include the period as well in the extension check\n`.rts`, `.rtcf`, `.rtb`",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "c7ea9d6b70d0b900f0c5e102bd19b815f491b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
