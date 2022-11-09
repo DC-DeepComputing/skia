@@ -157,6 +157,30 @@
       },
       "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5359b490_f96aded8",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T02:20:45Z",
+      "side": 1,
+      "message": "I rebased the change (with your suggested changes to the test) but this declaration is still here. I intentionally avoided any references to `kFloatConstant` that are not in a foldable context.",
+      "parentUuid": "0757e0c9_26ac90e8",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
