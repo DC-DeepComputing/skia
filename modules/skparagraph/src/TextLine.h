@@ -76,14 +76,22 @@ public:
     SkScalar ideographicBaseline() const { return fSizes.ideographicBaseline(); }
     SkScalar baseline() const { return fSizes.baseline(); }
 
-    using RunVisitor = std::function<bool(const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width)>;
+    using RunVisitor = std::function<bool(
+            const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width)>;
     void iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisitor& runVisitor) const;
-    using RunStyleVisitor = std::function<void(TextRange textRange, const TextStyle& style, const ClipContext& context)>;
-    SkScalar iterateThroughSingleRunByStyles(const Run* run, SkScalar runOffset, TextRange textRange,
-                                         StyleType styleType, const RunStyleVisitor& visitor) const;
+    using RunStyleVisitor = std::function<void(
+            TextRange textRange, const TextStyle& style, const ClipContext& context)>;
+    SkScalar iterateThroughSingleRunByStyles(bool alignToGrapheme,
+                                             const Run* run,
+                                             SkScalar runOffset,
+                                             TextRange textRange,
+                                             StyleType styleType,
+                                             const RunStyleVisitor& visitor) const;
 
     using ClustersVisitor = std::function<bool(const Cluster* cluster, bool ghost)>;
-    void iterateThroughClustersInGlyphsOrder(bool reverse, bool includeGhosts, const ClustersVisitor& visitor) const;
+    void iterateThroughClustersInGlyphsOrder(bool reverse,
+                                             bool includeGhosts,
+                                             const ClustersVisitor& visitor) const;
 
     void format(TextAlign align, SkScalar maxWidth);
     void paint(ParagraphPainter* painter, SkScalar x, SkScalar y);
