@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fa4acab_b494a9de",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T19:16:06Z",
+      "side": 1,
+      "message": "These are arbitrary. I didn\u0027t want to leave the members uninitialized, although they should always get overwritten by the backend caps implementation.\n\nAlternately, I can introduce an \"uninitialized/invalid\" enum member and set that as the default value. At least callers can assert on it.",
+      "parentUuid": "9b9bfa83_c5dab465",
+      "range": {
+        "startLine": 189,
+        "startChar": 3,
+        "endLine": 190,
+        "endChar": 50
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "314d0c11_3ebc0620",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2022-11-01T14:31:03Z",
       "side": 1,
       "message": "If uniforms can have two different layouts, we unfortunately need two different gatherers. Right now this gatherer is used by both ExtractPaintData (which feeds into the `shadingSsboTracker` instance that is configured to use either SSBOs or UBOs based on `caps()-\u003estorageBufferPreferred()`), or ExtractRenderStepData (which always uses UBOs).\n\nAlternatively, since the gatherer (and its UniformManager under the hood) are only long-lived so we can reuse the high-water allocation, we could have resetting allow it to change its layout, so ExtractPaintData() would set the gatherer\u0027s layout and similarly for ExtractRenderStepData. It\u0027s a little more plumbing but I kind of favor that.",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f33f66a6_d2cfa2ea",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T19:16:06Z",
+      "side": 1,
+      "message": "I can certainly implement that but I wonder if the gatherer really needs to be long-lived? Most of its members are stack allocated counters which always get reassigned on `reset()` and the only heap-allocated member that\u0027s not debug-only (`SkTextureDataBlock::fTextureData`) gets reset by the Extract functions.\n\nI worry about the statefulness in letting `ExtractPaintData` and `ExtractRenderStepData` mutate the layout being used by the gatherer under the hood. Could they instantiate their own function-scope gatherers with the appropriate layout instead, especially if they are going to reset the gatherer on every call anyway?",
+      "parentUuid": "314d0c11_3ebc0620",
       "range": {
         "startLine": 451,
         "startChar": 0,
@@ -221,6 +269,30 @@
       "side": 1,
       "message": "Metal does have one uniform-related rule that std430 doesn\u0027t have; it encodes half types in fp16 format.\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/graphite/UniformManagerTest.cpp;l\u003d54-57;drc\u003da5ef003835c77ce0ef6cafe994400fe937031ae2",
       "parentUuid": "f76a619a_e931e7e3",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be9d75c_7b648f2f",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T19:16:06Z",
+      "side": 1,
+      "message": "Indeed the size of the half-precision types is the only nuance between std430 and our Metal layout rules that I\u0027m aware of. As long as that\u0027s worth keeping I think we should retain the `kMetal` enum but I\u0027m happy to remove the comment if you don\u0027t think it adds value.\n\nIf there are any differences with the \"standard\" Metal layout then we should document them. FWIW the unit tests (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/graphite/UniformOffsetCalculatorTest.cpp;l\u003d74?q\u003dUniformOffsetCalculatorTest\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F) are fairly self-documenting in that regard.",
+      "parentUuid": "28a73bee_97bafa23",
       "range": {
         "startLine": 51,
         "startChar": 16,
