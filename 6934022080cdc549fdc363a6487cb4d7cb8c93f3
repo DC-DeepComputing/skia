@@ -22,6 +22,30 @@
       },
       "revId": "6934022080cdc549fdc363a6487cb4d7cb8c93f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45f1393_05edc949",
+        "filename": "gn/bazel_compile_sksl_tests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T18:55:06Z",
+      "side": 0,
+      "message": "I don\u0027t know what would need to be added here (particularly if we want it to honor the user\u0027s RBE choice at the top level)",
+      "parentUuid": "1706bc8a_92bd203b",
+      "range": {
+        "startLine": 18,
+        "startChar": 37,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "6934022080cdc549fdc363a6487cb4d7cb8c93f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
