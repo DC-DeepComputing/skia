@@ -4,11 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
-# Mapped to //gn/core.gni:skia_precompile_public.
+# Group is exported to //gn/graphite.gni:skia_shared_vk_sources.
 filegroup(
-    name = "precompile_public_hdrs",
+    name = "shared_public_hdrs",
+    srcs = [],
+)
+
+# Group is exported to //gn/graphite.gni:skia_vk_sources.
+filegroup(
+    name = "public_hdrs",
     srcs = [
-        "CombinationBuilder.h",
+        ":shared_public_hdrs",
     ],
-    visibility = ["//include:__pkg__"],
+    visibility = ["//include/gpu/graphite:__pkg__"],
 )
