@@ -210,6 +210,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ddfe238_eb1d91fa",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T22:22:22Z",
+      "side": 1,
+      "message": "There is a slight nuance in that currently the helpers are responsible for resetting the gatherer _after_ they have written to it. They will now need to reset it before (and maybe after). Though personally I think the initial layout reset should be done at the call site instead of having the helpers also know about which layout they need to apply on the gatherer.\n\nI\u0027ll work this change to demonstrate what I mean. If folks like the idea to decouple the storage from the gatherer then I can rework that in a follow up.",
+      "parentUuid": "cf53a041_911293bc",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "361b0780_0f9ccd66",
         "filename": "src/gpu/graphite/ResourceTypes.h",
         "patchSetId": 1
