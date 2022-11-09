@@ -229,6 +229,30 @@
       },
       "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "673879b3_9cde10a0",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:17:32Z",
+      "side": 1,
+      "message": "FYI: I\u0027ve migrated out the test SkSL into its own CL so that this CL\u0027s diff can demonstrate the improvements more readily. PTAL http://review.skia.org/602437 and rebase on top of it if you agree!",
+      "parentUuid": "95e85242_ef5fb2fe",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
