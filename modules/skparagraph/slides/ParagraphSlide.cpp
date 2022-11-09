@@ -1903,7 +1903,7 @@ public:
                 }
                 line.iterateThroughVisualRuns(true,
                     [&](const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
-                    *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, false).clip.width();
+                    *width = line.measureTextInsideOneRun(textRange, run, runOffset, 0, true, TextLine::TextAdjustment::GlyphCluster).clip.width();
                     if (this->isVerbose()) {
                         SkDebugf("%zu[%zu: %zu) @%f + %f %s\n",
                                  run->index(), textRange.start, textRange.end, runOffset, *width,
