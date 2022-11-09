@@ -186,6 +186,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf53a041_911293bc",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T22:10:59Z",
+      "side": 1,
+      "message": "That sounds like Michael\u0027s original suggestion to me, I think? _\"... we could have resetting allow it to change its layout, so ExtractPaintData() would set the gatherer\u0027s layout and similarly for ExtractRenderStepData. It\u0027s a little more plumbing but I kind of favor that.\"_",
+      "parentUuid": "ecaa07d1_784512ae",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "6f484989f359985bd5381656c9a3c5a589442aab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "361b0780_0f9ccd66",
         "filename": "src/gpu/graphite/ResourceTypes.h",
         "patchSetId": 1
