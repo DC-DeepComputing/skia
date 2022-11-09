@@ -33,6 +33,52 @@
       "message": "Is there a code size savings?\nI thought collapsing size() and count() into one would be a net positive but it seems like such a simple accessor is just a no-op?",
       "revId": "2aa2d409ae1c3fab5bc14487446d490541c45cf6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a150dd08_98c95af2",
+        "filename": "src/gpu/ganesh/vk/GrVkDescriptorSetManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:46:27Z",
+      "side": 1,
+      "message": "empty()",
+      "range": {
+        "startLine": 195,
+        "startChar": 35,
+        "endLine": 195,
+        "endChar": 46
+      },
+      "revId": "2aa2d409ae1c3fab5bc14487446d490541c45cf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a8c30be_90a90a02",
+        "filename": "src/pathops/SkPathWriter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T19:46:27Z",
+      "side": 1,
+      "message": "empty()",
+      "range": {
+        "startLine": 253,
+        "startChar": 12,
+        "endLine": 253,
+        "endChar": 32
+      },
+      "revId": "2aa2d409ae1c3fab5bc14487446d490541c45cf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
