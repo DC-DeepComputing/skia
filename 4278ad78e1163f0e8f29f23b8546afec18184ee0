@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d31e6fc_bbfa3369",
+        "filename": "resources/sksl/shared/CompileTimeConstantVariables.sksl",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:10:33Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 5,
+        "startChar": 34,
+        "endLine": 5,
+        "endChar": 48
+      },
+      "revId": "4278ad78e1163f0e8f29f23b8546afec18184ee0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

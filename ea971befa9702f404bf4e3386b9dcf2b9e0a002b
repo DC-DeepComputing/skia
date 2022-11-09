@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9854cae8_f317cfde",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.asm.frag",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:10:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "166e612f_5eb17571",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 16
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "877c8e6b_4b53d355",
@@ -173,6 +197,30 @@
       "side": 1,
       "message": "I rebased the change (with your suggested changes to the test) but this declaration is still here. I intentionally avoided any references to `kFloatConstant` that are not in a foldable context.",
       "parentUuid": "0757e0c9_26ac90e8",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "ea971befa9702f404bf4e3386b9dcf2b9e0a002b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e85242_ef5fb2fe",
+        "filename": "tests/sksl/shared/CompileTimeConstantVariables.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T14:10:33Z",
+      "side": 1,
+      "message": "`kFloatConstant` is referenced here:\n\n`const float kFloatConstantAlias \u003d kFloatConstant;`\n\n`kFloatConstant` is not replaced with the literal value `2.14` because the variable is not part of a larger expression. Variables in isolation don\u0027t constant-propagate. As soon as it participates in a larger expression, folding will kick in.\n\n(VariableReferences in isolation do not constant-propagate because we expect every driver to be smart enough to emit good code for `const float PI` without our help. That\u0027s table stakes, right? It\u0027s not an optimization unless there\u0027s some sort of benefit in the final results; otherwise, it\u0027s just wasted work.)\n\nIf we use both IsCompileTimeConstant or GetConstantValueForVariable when deciding to emit OpVariable or not, I _believe_ we will avoid emitting an OpVariable here, because we will see that `kFloatConstantAlias` has a compile-time-constant value after variable-to-value substitution and the SPIR-V code-gen will handle the rest. I don\u0027t expect the decl to disappear in other backends and that\u0027s OK; I trust the drivers to do their part.",
+      "parentUuid": "5359b490_f96aded8",
       "range": {
         "startLine": 7,
         "startChar": 21,
