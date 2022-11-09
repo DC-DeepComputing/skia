@@ -38,17 +38,22 @@ public:
     SDFTControl(bool ableToUseSDFT, bool useSDFTForSmallText, bool useSDFTForPerspectiveText,
                 SkScalar min, SkScalar max);
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     // Produce a font, a scale factor from the nominal size to the source space size, and matrix
     // range where this font can be reused.
     std::tuple<SkFont, SkScalar, SDFTMatrixRange>
     getSDFFont(const SkFont& font, const SkMatrix& viewMatrix, const SkPoint& textLocation) const;
+#endif
 
     bool isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
                   const SkMatrix& matrix) const;
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     bool isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
                 const SkMatrix& matrix) const;
+#endif
 
 private:
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     static SkScalar MinSDFTRange(bool useSDFTForSmallText, SkScalar min);
 
     // Below this size (in device space) distance field text will not be used.
@@ -60,6 +65,7 @@ private:
 
     const bool fAbleToUseSDFT;
     const bool fAbleToUsePerspectiveSDFT;
+#endif
 };
 
 }  // namespace sktext::gpu

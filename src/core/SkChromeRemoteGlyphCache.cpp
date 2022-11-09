@@ -183,9 +183,11 @@ public:
             SkDrawableGlyphBuffer* accepted,
             SkSourceGlyphBuffer* rejected) override;
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     SkRect prepareForSDFTDrawing(
             SkDrawableGlyphBuffer* accepted,
             SkSourceGlyphBuffer* rejected) override;
+#endif
 
     void prepareForPathDrawing(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) override;
@@ -421,6 +423,7 @@ SkRect RemoteStrike::prepareForMaskDrawing(
     return boundingRect.rect();
 }
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 SkRect RemoteStrike::prepareForSDFTDrawing(SkDrawableGlyphBuffer* accepted,
                                            SkSourceGlyphBuffer* rejected) {
     SkGlyphRect boundingRect = skglyph::empty_rect();
@@ -446,6 +449,7 @@ SkRect RemoteStrike::prepareForSDFTDrawing(SkDrawableGlyphBuffer* accepted,
     }
     return boundingRect.rect();
 }
+#endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 void RemoteStrike::prepareForPathDrawing(
         SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) {

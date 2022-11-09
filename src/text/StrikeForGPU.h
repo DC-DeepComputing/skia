@@ -82,9 +82,11 @@ public:
                 SkDrawableGlyphBuffer* accepted,
                 SkSourceGlyphBuffer* rejected) = 0;
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     virtual SkRect prepareForSDFTDrawing(
                 SkDrawableGlyphBuffer* accepted,
                 SkSourceGlyphBuffer* rejected) = 0;
+#endif
 
     virtual void prepareForPathDrawing(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) = 0;

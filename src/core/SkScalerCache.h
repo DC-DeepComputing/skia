@@ -83,9 +83,11 @@ public:
             SkDrawableGlyphBuffer* accepted,
             SkSourceGlyphBuffer* rejected) SK_EXCLUDES(fMu);
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     std::tuple<SkRect, size_t> prepareForSDFTDrawing(
             SkDrawableGlyphBuffer* accepted,
             SkSourceGlyphBuffer* rejected) SK_EXCLUDES(fMu);
+#endif
 
     size_t prepareForPathDrawing(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) SK_EXCLUDES(fMu);

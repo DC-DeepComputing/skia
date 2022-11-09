@@ -149,7 +149,7 @@ SkStrikeSpec SkStrikeSpec::MakePDFVector(const SkTypeface& typeface, int* size) 
                         SkMatrix::I());
 }
 
-#if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+#if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)) && !defined(SK_ENABLE_OPTIMIZE_SIZE)
 std::tuple<SkStrikeSpec, SkScalar, sktext::gpu::SDFTMatrixRange>
 SkStrikeSpec::MakeSDFT(const SkFont& font, const SkPaint& paint,
                        const SkSurfaceProps& surfaceProps, const SkMatrix& deviceMatrix,

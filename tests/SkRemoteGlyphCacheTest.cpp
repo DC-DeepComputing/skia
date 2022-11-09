@@ -906,6 +906,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextXY,
     discardableManager->unlockAndDeleteAll();
 }
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextAsDFT,
                                        reporter,
                                        ctxInfo,
@@ -958,6 +959,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextAsDFT,
     // Must unlock everything on termination, otherwise valgrind complains about memory leaks.
     discardableManager->unlockAndDeleteAll();
 }
+#endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_CacheMissReporting,
                                        reporter,

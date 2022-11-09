@@ -21,6 +21,7 @@
 
 namespace sktext::gpu {
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 // DF sizes and thresholds for usage of the small and medium sizes. For example, above
 // kSmallDFFontLimit we will use the medium size. The large size is used up until the size at
 // which we switch over to drawing as paths as controlled by Control.
@@ -37,25 +38,33 @@ SkScalar SDFTControl::MinSDFTRange(bool useSDFTForSmallText, SkScalar min) {
     }
     return min;
 }
+#endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 SDFTControl::SDFTControl(
         bool ableToUseSDFT, bool useSDFTForSmallText, bool useSDFTForPerspectiveText,
         SkScalar min, SkScalar max)
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
         : fMinDistanceFieldFontSize{MinSDFTRange(useSDFTForSmallText, min)}
         , fMaxDistanceFieldFontSize{max}
         , fAbleToUseSDFT{ableToUseSDFT}
-        , fAbleToUsePerspectiveSDFT{useSDFTForPerspectiveText} {
+        , fAbleToUsePerspectiveSDFT{useSDFTForPerspectiveText}
+#endif
+{
     SkASSERT_RELEASE(0 < min && min <= max);
 }
 
 bool SDFTControl::isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
                            const SkMatrix& matrix) const {
-    return !isSDFT(approximateDeviceTextSize, paint, matrix) &&
+    return
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
+           !isSDFT(approximateDeviceTextSize, paint, matrix) &&
+#endif
            !matrix.hasPerspective() &&
             0 < approximateDeviceTextSize &&
             approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas;
 }
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 bool SDFTControl::isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
                          const SkMatrix& matrix) const {
     return fAbleToUseSDFT &&
@@ -113,6 +122,7 @@ SDFTControl::getSDFFont(const SkFont& font, const SkMatrix& viewMatrix,
              maxMatrixScale = dfMaskScaleCeil  / textSize;
     return {dfFont, textSize / dfMaskScaleCeil, {minMatrixScale, maxMatrixScale}};
 }
+#endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 bool SDFTMatrixRange::matrixInRange(const SkMatrix& matrix) const {
     SkScalar maxScale = matrix.getMaxScale();
