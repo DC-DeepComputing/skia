@@ -18,7 +18,6 @@
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
-#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
@@ -28,6 +27,7 @@
 #include "src/core/SkUtils.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -947,6 +947,8 @@ static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children
                                 const SkKeyContext& keyContext,
                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
                                 skgpu::graphite::PipelineDataGatherer* gatherer) {
+    using namespace skgpu::graphite;
+
     SkASSERT(children.size() == childInfo.size());
 
     for (size_t index = 0; index < children.size(); ++index) {
@@ -1082,6 +1084,8 @@ public:
     void addToKey(const SkKeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
+        using namespace skgpu::graphite;
+
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
@@ -1260,6 +1264,8 @@ public:
     void addToKey(const SkKeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
+        using namespace skgpu::graphite;
+
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
@@ -1433,6 +1439,8 @@ public:
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer,
                   bool primitiveColorBlender) const override {
+        using namespace skgpu::graphite;
+
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);

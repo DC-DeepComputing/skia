@@ -465,8 +465,6 @@ BASE_SRCS_ALL = [
     "src/core/SkImagePriv.h",
     "src/core/SkKeyContext.cpp",
     "src/core/SkKeyContext.h",
-    "src/core/SkKeyHelpers.cpp",
-    "src/core/SkKeyHelpers.h",
     "src/core/SkLRUCache.h",
     "src/core/SkLatticeIter.cpp",
     "src/core/SkLatticeIter.h",
