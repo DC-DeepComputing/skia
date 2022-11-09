@@ -140,6 +140,30 @@
       },
       "revId": "9aad8ea9bd33b2bd25f2c153b9caabc8de97a35d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69f439ed_3661e44c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T18:52:09Z",
+      "side": 1,
+      "message": "Well, the interface block variable itself is a global. But there is also `VariableStorage::kInterfaceBlock` for the fields inside an interface block (which can be accessed at global scope if the interface block is anonymous). I\u0027m not entirely sure if any of that is relevant here, though.",
+      "parentUuid": "2ed89dc2_196cd00a",
+      "range": {
+        "startLine": 2162,
+        "startChar": 24,
+        "endLine": 2162,
+        "endChar": 54
+      },
+      "revId": "9aad8ea9bd33b2bd25f2c153b9caabc8de97a35d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
