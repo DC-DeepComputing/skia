@@ -4,11 +4,26 @@ licenses(["notice"])
 
 exports_files_legacy()
 
-# Mapped to //gn/core.gni:skia_precompile_public.
+# Group is exported to //gn/gpu.gni:skia_shared_vk_sources.
 filegroup(
-    name = "precompile_public_hdrs",
+    name = "shared_public_hdrs",
     srcs = [
-        "CombinationBuilder.h",
+        "VulkanBackendContext.h",
+        "VulkanExtensions.h",
+        "VulkanMemoryAllocator.h",
+        "VulkanTypes.h",
     ],
-    visibility = ["//include:__pkg__"],
+)
+
+# Group is exported to //gn/gpu.gni:skia_vk_sources.
+filegroup(
+    name = "public_hdrs",
+    srcs = [
+        "GrVkBackendContext.h",
+        "GrVkExtensions.h",
+        "GrVkMemoryAllocator.h",
+        "GrVkTypes.h",
+        ":shared_public_hdrs",
+    ],
+    visibility = ["//include/gpu:__pkg__"],
 )

@@ -1,0 +1,17 @@
+load("//bazel:macros.bzl", "exports_files_legacy", "split_srcs_and_hdrs")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+# Not currently in a Bazel target.
+# This list is exported to to gpu.gni:skia_metal_sources.
+MTL_FILES = [
+    "GrMtlAttachment.h",
+    "GrMtlAttachment.mm",
+]
+
+split_srcs_and_hdrs(
+    name = "mtl",
+    files = MTL_FILES,
+)
