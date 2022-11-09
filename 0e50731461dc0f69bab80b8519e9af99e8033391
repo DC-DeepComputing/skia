@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01f7a0d5_1de6eca4",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T21:27:56Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 1136,
+        "startChar": 38,
+        "endLine": 1136,
+        "endChar": 65
+      },
+      "revId": "0e50731461dc0f69bab80b8519e9af99e8033391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
