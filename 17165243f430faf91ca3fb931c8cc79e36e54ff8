@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae157cc1_a037b0ef",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2519,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T21:14:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "387a5aca_f01a115d",
+      "range": {
+        "startLine": 2519,
+        "startChar": 15,
+        "endLine": 2519,
+        "endChar": 28
+      },
+      "revId": "17165243f430faf91ca3fb931c8cc79e36e54ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b34d15e2_cf5d86ff",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-09T18:41:41Z",
       "side": 1,
       "message": "Seems like this shared logic could be moved to a helper function?\n\n`static bool vardecl_is_compile_time_constant(const VarDeclaration\u0026 varDecl) {`",
+      "range": {
+        "startLine": 3483,
+        "startChar": 8,
+        "endLine": 3485,
+        "endChar": 59
+      },
+      "revId": "17165243f430faf91ca3fb931c8cc79e36e54ff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c82709c3_940bdaba",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 3485,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T21:14:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b34d15e2_cf5d86ff",
       "range": {
         "startLine": 3483,
         "startChar": 8,
