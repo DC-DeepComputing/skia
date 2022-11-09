@@ -22,6 +22,30 @@
       },
       "revId": "99957813c5df4f3214e81f2cc9a16b1b3352602f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a55382_3411c841",
+        "filename": "resources/sksl/shared/FunctionParametersOfTextureAndSamplerType.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-09T21:23:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3728faa5_bebda81f",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 21
+      },
+      "revId": "99957813c5df4f3214e81f2cc9a16b1b3352602f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
