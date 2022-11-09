@@ -1,0 +1,26 @@
+load("//bazel:macros.bzl", "exports_files_legacy", "split_srcs_and_hdrs")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+# Not currently in a Bazel target.
+# This list is exported to to graphite.gni:skia_graphite_mtl_sources.
+MTL_FILES = []
+
+split_srcs_and_hdrs(
+    name = "mtl",
+    files = MTL_FILES,
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [":mtl_srcs"],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+filegroup(
+    name = "private_hdrs",
+    srcs = [":mtl_hdrs"],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
