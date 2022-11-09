@@ -16,6 +16,24 @@
       "message": "I\u0027m not quite sure what\u0027s going on. Is it just some gni groups moving files?",
       "revId": "99c194fb974c1497cb79634443bb2e8c60df7942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4220175_12712a62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-09T19:31:11Z",
+      "side": 1,
+      "message": "At one point we believed we would want to do precompilation for Ganesh, SkVM and Graphite. Now we only ever want to do it for Graphite so the precompilation system should only be compiled (optionally) when Graphite is enabled.",
+      "parentUuid": "91bab2e1_7e24d816",
+      "revId": "99c194fb974c1497cb79634443bb2e8c60df7942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
