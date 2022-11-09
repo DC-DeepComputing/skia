@@ -7,8 +7,6 @@ exports_files_legacy()
 # Mapped to //gn/core.gni:skia_precompile_public.
 filegroup(
     name = "precompile_public_hdrs",
-    srcs = [
-        "CombinationBuilder.h",
-    ],
+    srcs = [],
     visibility = ["//include:__pkg__"],
 )
