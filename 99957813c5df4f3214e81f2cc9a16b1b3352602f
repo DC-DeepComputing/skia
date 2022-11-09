@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3728faa5_bebda81f",
+        "filename": "resources/sksl/shared/FunctionParametersOfTextureAndSamplerType.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-09T18:53:58Z",
+      "side": 1,
+      "message": "Based on these comments, let\u0027s put this test in `spirv/` for now? We can move or clone it when the Metal side is actually working.",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 21
+      },
+      "revId": "99957813c5df4f3214e81f2cc9a16b1b3352602f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
