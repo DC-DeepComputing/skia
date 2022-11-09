@@ -16,6 +16,23 @@
       "message": "The change is big enough and in rather sensitive area. Jason, could you please add a test for it?",
       "revId": "d69bdccf52dbc21df31c25558d4dae4523f48792",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fae9d1e_a1ef5a6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-11-09T15:21:37Z",
+      "side": 1,
+      "message": "There are 2 SkParagraph tests that are failing with your change:\nSkParagraph_ArabicRectsLTRLeftAlignParagraph\nSkParagraph_ArabicRectsLTRRightAlignParagraph\nI checked, and it seems that these tests were incorrect and your change actually fixed them.\nPlease, update these tests with the right numbers on boxes[0].rect.right() (no word space at the end).",
+      "revId": "d69bdccf52dbc21df31c25558d4dae4523f48792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
