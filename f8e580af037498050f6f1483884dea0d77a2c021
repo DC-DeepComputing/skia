@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42f959a1_42821d61",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-09T15:00:25Z",
+      "side": 1,
+      "message": "Are we still trying to set a viewport on these special surfaces? For some reason I thought we decided to just keep the full viewport of the final surface so that we don\u0027t have to deal with differing code for when we have none translation transforms on the replay?\n\nThough I may be mis remembering things",
+      "range": {
+        "startLine": 65,
+        "startChar": 30,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ae91f05_274701c3",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 5
