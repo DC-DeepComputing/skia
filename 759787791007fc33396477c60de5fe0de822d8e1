@@ -33,6 +33,23 @@
       "message": "After this change, will need to update `tools/gpu/dawn/DawnTestContext.cpp` to provide a Vulkan context on Android. In theory this should be somewhat straight forward as there are already `Android_Vulkan` jobs.",
       "revId": "759787791007fc33396477c60de5fe0de822d8e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15c3022e_d4cc4b69",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-11-10T19:33:29Z",
+      "side": 1,
+      "message": "As in the chat, I\u0027d suggest you factor out the repetition with default.py into util.py: add an add_externals_to_python_path() and have a separate function to add skia_use_dawn and skia_use_gl to arg, then call them both from here (and defaults.py). Happy to do it myself if you prefer.",
+      "revId": "759787791007fc33396477c60de5fe0de822d8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
