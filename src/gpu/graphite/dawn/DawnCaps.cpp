@@ -31,6 +31,25 @@ static constexpr wgpu::TextureFormat kFormats[] = {
     wgpu::TextureFormat::Undefined,
 };
 
+// There are only a few possible valid sample counts (1, 2, 4, 8, 16). So we can key on those 5
+// options instead of the actual sample value.
+uint32_t samples_to_key(uint32_t numSamples) {
+    switch (numSamples) {
+        case 1:
+            return 0;
+        case 2:
+            return 1;
+        case 4:
+            return 2;
+        case 8:
+            return 3;
+        case 16:
+            return 4;
+        default:
+            SkUNREACHABLE;
+    }
+}
+
 }
 
 namespace skgpu::graphite {
@@ -350,20 +369,100 @@ void DawnCaps::setColorType(SkColorType colorType,
     }
 }
 
+uint64_t DawnCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
+    DawnTextureInfo colorInfo, depthStencilInfo;
+    renderPassDesc.fColorAttachment.fTextureInfo.getDawnTextureInfo(&colorInfo);
+    renderPassDesc.fDepthStencilAttachment.fTextureInfo.getDawnTextureInfo(&depthStencilInfo);
+    SkASSERT(static_cast<uint32_t>(colorInfo.fFormat) <= 0xffff &&
+             static_cast<uint32_t>(depthStencilInfo.fFormat) <= 0xffff);
+    uint32_t colorAttachmentKey =
+            static_cast<uint32_t>(colorInfo.fFormat) << 16 | colorInfo.fSampleCount;
+    uint32_t dsAttachmentKey =
+            static_cast<uint32_t>(depthStencilInfo.fFormat) << 16 | depthStencilInfo.fSampleCount;
+    return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
+}
+
 UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc) const {
-    return {};
+    UniqueKey pipelineKey;
+    {
+        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
+        // 4 uint32_t's (render step id, paint id, uint64 RenderPass desc)
+        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 4, "GraphicsPipeline");
+        // add GraphicsPipelineDesc key
+        builder[0] = pipelineDesc.renderStepID();
+        builder[1] = pipelineDesc.paintParamsID().asUInt();
+
+        // add RenderPassDesc key
+        uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
+        builder[2] = renderPassKey & 0xFFFFFFFF;
+        builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
+        builder.finish();
+    }
+
+    return pipelineKey;
 }
 
 UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
-    return {};
+    UniqueKey pipelineKey;
+    {
+        static const skgpu::UniqueKey::Domain kComputePipelineDomain = UniqueKey::GenerateDomain();
+        SkSpan<const uint32_t> pipelineDescKey = pipelineDesc.asKey();
+        UniqueKey::Builder builder(
+                &pipelineKey, kComputePipelineDomain, pipelineDescKey.size(), "ComputePipeline");
+        // Add ComputePipelineDesc key
+        for (unsigned int i = 0; i < pipelineDescKey.size(); ++i) {
+            builder[i] = pipelineDescKey[i];
+        }
+
+        // TODO(b/240615224): The local work group size may need to factor into the key on platforms
+        // that don't support specialization constants and require the workgroup/threadgroup size to
+        // be specified in the shader text (D3D12, Vulkan 1.0, and OpenGL).
+
+        builder.finish();
+    }
+    return pipelineKey;
 }
 
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,
                                   Shareable shareable,
-                                  GraphiteResourceKey* key) const {}
+                                  GraphiteResourceKey* key) const {
+    const DawnTextureSpec& dawnSpec = info.dawnTextureSpec();
+
+    SkASSERT(!dimensions.isEmpty());
+
+    SkASSERT(dawnSpec.fFormat != wgpu::TextureFormat::Undefined);
+    uint32_t formatKey = static_cast<uint32_t>(dawnSpec.fFormat);
+
+    uint32_t samplesKey = samples_to_key(info.numSamples());
+    // We don't have to key the number of mip levels because it is inherit in the combination of
+    // isMipped and dimensions.
+    bool isMipped = info.mipmapped() == Mipmapped::kYes;
+    Protected isProtected = info.isProtected();
+
+    // Confirm all the below parts of the key can fit in a single uint32_t. The sum of the shift
+    // amounts in the asserts must be less than or equal to 32.
+    SkASSERT(samplesKey                             < (1u << 3));
+    SkASSERT(static_cast<uint32_t>(isMipped)        < (1u << 1));
+    SkASSERT(static_cast<uint32_t>(isProtected)     < (1u << 1));
+    SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 5));
+
+    // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
+    static int kNum32DataCnt = 2 + 1 + 1;
+
+    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+
+    builder[0] = dimensions.width();
+    builder[1] = dimensions.height();
+    builder[2] = formatKey;
+    builder[3] = (samplesKey                                   << 0) |
+                 (static_cast<uint32_t>(isMipped)              << 3) |
+                 (static_cast<uint32_t>(isProtected)           << 4) |
+                 (static_cast<uint32_t>(dawnSpec.fUsage)       << 5);
+
+}
 
 } // namespace skgpu::graphite
 
