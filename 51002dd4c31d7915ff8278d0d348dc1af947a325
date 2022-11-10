@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bbeb3b4_5625fc28",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1929,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T16:53:27Z",
+      "side": 1,
+      "message": "Any reason not to assign directly into r/g/b at this point? Might generate slightly tighter code.",
+      "range": {
+        "startLine": 1925,
+        "startChar": 4,
+        "endLine": 1929,
+        "endChar": 6
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
