@@ -77,3 +77,14 @@ for pattern in build_products:
 ''' % str(product_list),
       args=[src, dst],
       infra_step=True)
+
+
+def add_dawn_libs_to_python_path(env, api, skia_dir):
+    """Dawn imports jinja2, which imports markupsafe. Make those importable."""
+    env['PYTHONPATH'] = api.path.pathsep.join([
+        str(skia_dir.join('third_party', 'externals')), '%%(PYTHONPATH)s'])
+
+
+def add_dawn_args(args):
+    args['skia_use_dawn'] = 'true'
+    args['skia_use_gl'] = 'false'
