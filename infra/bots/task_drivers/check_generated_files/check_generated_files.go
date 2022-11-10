@@ -107,6 +107,10 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 
+	if err := generateGNIFiles(ctx, skiaPath, *bazelArgs...); err != nil {
+		td.Fatal(ctx, err)
+	}
+
 	if err := checkGitDiff(ctx, absGit, skiaPath); err != nil {
 		td.Fatal(ctx, err)
 	}
@@ -170,6 +174,36 @@ func gitInit(ctx context.Context, gitPath, skiaPath string) error {
 		return nil
 	})
 	return err
+}
+
+// checkGitDiff runs git diff and returns error if the diff is non-empty.
+func generateGNIFiles(ctx context.Context, skiaPath string, args ...string) error {
+	return td.Do(ctx, td.Props("Generate GNI files from BUILD.bazel ones"), func(ctx context.Context) error {
+		// Build with the passed in Bazel args to make use of RBE if opted-in
+		buildCmd := &sk_exec.Command{
+			Name:       "bazelisk",
+			Args:       append([]string{"build", "//bazel/exporter_tool"}, args...),
+			InheritEnv: true, // Need to make sure bazelisk is on the path,
+			Dir:        skiaPath,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		if _, err := sk_exec.RunCommand(ctx, buildCmd); err != nil {
+			return err
+		}
+		runCmd := &sk_exec.Command{
+			Name:       "make",
+			Args:       []string{"-C", "bazel", "generate_gni"},
+			InheritEnv: true, // Need to make sure bazelisk is on the path,
+			Dir:        skiaPath,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		if _, err := sk_exec.RunCommand(ctx, runCmd); err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 // checkGitDiff runs git diff and returns error if the diff is non-empty.
