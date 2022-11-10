@@ -1,0 +1,9 @@
+uniform int idx;
+
+half4 main() {
+    const half[2] array = half[2](1, 2);
+    const half2 vector = half2(1, 2);
+    const half2x2 matrix = half2x2(1, 2, 3, 4);
+
+    return half4(array[idx], vector[idx], matrix[idx]);
+}
