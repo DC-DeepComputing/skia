@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5ac66be_006d328b",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T20:49:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this is two calls. The actual thing we\u0027re trying to do here is add Dawn to the build. We should just pass everything needed to do so and it should just be added. Separating this into two discrete steps (adding the flag and adding to the python path) seems odd, as neither makes any sense independently.",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "061666d6_962a61f7",
         "filename": "infra/bots/recipe_modules/build/android.py",
         "patchSetId": 1
