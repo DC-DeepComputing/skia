@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe2da54_59c2dae9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T21:15:27Z",
+      "side": 1,
+      "message": "Oh, and when we do have the final form of this, we should be sure to run `Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn` and make sure that it does set `skia_use_dawn` in the `gn gen` step. (It will fail later in the build due to subsequent issues, but at least it will get that far.)",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5ac66be_006d328b",
