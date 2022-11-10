@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b6e698_aa3b0f78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T16:22:35Z",
+      "side": 1,
+      "message": "Can this all be broken up into smaller CLs. Seems like there are a bunch of independent changes here. First at least move The setting up the formats into their own change. Next filling in the getDefault* things should probably be their own change. Finally, all the key generating stuff should be separate. But the key stuff might make more sense if it was connected to CLs (not necessarily the same CL) for building the pipelines. Its hard to review if the keys are setup correctly without know what the pipelines should do.\n\nIn general you should look to land changes that all relate the same thing instead of just \"filling out\" entire files. As a reviewer that makes it very hard to review and have any context for what is happening.",
+      "revId": "5b2b959c050de1607780844639aced7aa7dd88b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
