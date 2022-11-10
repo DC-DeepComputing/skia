@@ -22,6 +22,30 @@
       },
       "revId": "148d5d4c3071f0afb2e0bfa047b08b2ec10a1890",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e667395_c9fd9435",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-10T17:37:54Z",
+      "side": 1,
+      "message": "Probably we need to verify if a sample count is supported on different platform, but I didn\u0027t find it in dawn API. Removed it for now. If it is needed, I will revisit.",
+      "parentUuid": "9a656066_48c24087",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 22
+      },
+      "revId": "148d5d4c3071f0afb2e0bfa047b08b2ec10a1890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
