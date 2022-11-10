@@ -69,6 +69,30 @@
       },
       "revId": "f75402a37a5a12779193c1e6aa3b3f87c1840491",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "358ad532_3f0400dc",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T21:46:57Z",
+      "side": 1,
+      "message": "Yeah, that makes sense; an SkVM Builder makes a Program when it\u0027s done, this could do the same. I will probably adopt that model once I\u0027m further along. For now I don\u0027t want to get too hung up on the details of the builder when I am still trying to feel out what an Instruction looks like :)",
+      "parentUuid": "2a97fd56_a9e41675",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 27
+      },
+      "revId": "f75402a37a5a12779193c1e6aa3b3f87c1840491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
