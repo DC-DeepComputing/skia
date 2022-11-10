@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a90495f_a5f71e15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T18:41:41Z",
+      "side": 1,
+      "message": "In addition to the micro-optimizations, now that I have all three implementations done, I\u0027m going to do some bigger optimizations across the board.",
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bbeb3b4_5625fc28",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-11-10T16:53:27Z",
       "side": 1,
       "message": "Any reason not to assign directly into r/g/b at this point? Might generate slightly tighter code.",
+      "range": {
+        "startLine": 1925,
+        "startChar": 4,
+        "endLine": 1929,
+        "endChar": 6
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2513d1f7_46a5795b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1929,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T18:41:41Z",
+      "side": 1,
+      "message": "Yes, this one does shave a couple instructions off the generated code.",
+      "parentUuid": "0bbeb3b4_5625fc28",
       "range": {
         "startLine": 1925,
         "startChar": 4,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d22eaef3_cee7e539",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1945,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T18:41:41Z",
+      "side": 1,
+      "message": "Nope, I get the same code (trying to at least reuse lms for the first two sets of expressions).",
+      "parentUuid": "7219aa73_b9871a40",
+      "range": {
+        "startLine": 1942,
+        "startChar": 0,
+        "endLine": 1945,
+        "endChar": 0
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02adae0f_9d6fb8f7",
@@ -60,6 +125,30 @@
       "writtenOn": "2022-11-10T17:00:37Z",
       "side": 1,
       "message": "Do we get better codegen if we force the compiler to do the reciprocal at compile time?\n\n```\nSI F mod_(F x, float y, float one_over_y \u003d 1.0f / y) {\n    return x - y * floor_(x * one_over_y));\n}\n```",
+      "range": {
+        "startLine": 1966,
+        "startChar": 0,
+        "endLine": 1968,
+        "endChar": 1
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "741fe600_42679d04",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1968,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T18:41:41Z",
+      "side": 1,
+      "message": "The compiler doesn\u0027t like having the default value refer to another parameter, but from looking at the disassembly, it\u0027s pre-computed the inverse anyway.",
+      "parentUuid": "02adae0f_9d6fb8f7",
       "range": {
         "startLine": 1966,
         "startChar": 0,
