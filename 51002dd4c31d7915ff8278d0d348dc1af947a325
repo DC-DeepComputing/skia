@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4840259e_b4c1f23a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1929,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T19:17:44Z",
+      "side": 1,
+      "message": "Doh, had to undo this. Assigning directly into r breaks the math for g.",
+      "parentUuid": "2513d1f7_46a5795b",
+      "range": {
+        "startLine": 1925,
+        "startChar": 4,
+        "endLine": 1929,
+        "endChar": 6
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7219aa73_b9871a40",
