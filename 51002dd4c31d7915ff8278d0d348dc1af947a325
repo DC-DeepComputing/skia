@@ -22,6 +22,52 @@
       },
       "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7219aa73_b9871a40",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1945,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T17:00:37Z",
+      "side": 1,
+      "message": "Does the codegen improve if we use r/g/b instead of l/m/s, or is the compiler smart enough to reuse those registers?",
+      "range": {
+        "startLine": 1942,
+        "startChar": 0,
+        "endLine": 1945,
+        "endChar": 0
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02adae0f_9d6fb8f7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1968,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T17:00:37Z",
+      "side": 1,
+      "message": "Do we get better codegen if we force the compiler to do the reciprocal at compile time?\n\n```\nSI F mod_(F x, float y, float one_over_y \u003d 1.0f / y) {\n    return x - y * floor_(x * one_over_y));\n}\n```",
+      "range": {
+        "startLine": 1966,
+        "startChar": 0,
+        "endLine": 1968,
+        "endChar": 1
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
