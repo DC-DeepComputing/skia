@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73cae351_21077714",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T17:14:35Z",
+      "side": 1,
+      "message": "This should fix most of the new Dawn builders, but probably not the Android ones, which seem to have the additional issue of not actually setting the `SK_DAWN` define.",
+      "revId": "af167acda19d09ac03e81f089c5b0e9575756010",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
