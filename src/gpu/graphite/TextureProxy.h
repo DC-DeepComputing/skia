@@ -12,6 +12,8 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
 
+#include <function>
+
 enum SkColorType : int;
 
 namespace skgpu::graphite {
