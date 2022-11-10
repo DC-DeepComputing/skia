@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36162e00_db35544c",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-10T00:31:31Z",
+      "side": 0,
+      "message": "Now, instead of checking that the gatherer has been reset on entry and resetting on exit, these functions always reset on entry but do not reset on exit. I think other call sites that expect the gatherer to be reset can do so explicitly (and call `checkReset()` as needed.\n\nI don\u0027t know of any other places that call `SkPipelineGatherer::reset()`. I left them in for now but perhaps they should be removed unless they are meant to be called from somewhere else?",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 40
+      },
+      "revId": "1ced68576d6e8d083a1332397075465606dfa3c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
