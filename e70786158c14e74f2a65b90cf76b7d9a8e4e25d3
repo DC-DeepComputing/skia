@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abfe15de_bab5181d",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-11-10T21:11:20Z",
+      "side": 1,
+      "message": "I originally had it as 2 calls because, at a casual reading, I thought we were frobbing the global PYTHONPATH and I thought that was worth making obvious at the callsite. I never changed it back after I realized we weren\u0027t.",
+      "parentUuid": "a5ac66be_006d328b",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "061666d6_962a61f7",
         "filename": "infra/bots/recipe_modules/build/android.py",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Indeed, this was the part of the structure I didn\u0027t want to have three copies of (default, android, and chromeos all do this) \"with api.context fetch gn, gn gen, ninja\" part.",
       "parentUuid": "061666d6_962a61f7",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bea9a4a_403f3a68",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-11-10T21:11:20Z",
+      "side": 1,
+      "message": "Ah, good catch. I was copying and pasting out of your CL and missed.",
+      "parentUuid": "8e20bf40_a78b62d0",
       "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
