@@ -1,0 +1,46 @@
+py_binary(
+    name = "gn",
+    srcs = [":gn.py"],
+    data = [":gn_exe"],
+    # We can compile remotely, but because we are running the executable to modify files in
+    # the source tree, running it in a remote, sandboxed would have no effect locally.
+    tags = ["no-remote"],
+)
+
+_GN = """
+import os
+import subprocess
+import sys
+
+# execpath returns the path to the given label from the exec path.
+# https://bazel.build/reference/be/make-variables#predefined_label_variables
+# We need to get the absolute path here because we want to run gn from the
+# location the user ran bazel
+gn_exe = os.path.abspath("$(execpath :gn_exe)")
+print(gn_exe)
+
+# https://bazel.build/docs/user-manual#running-executables
+# Note: Bazel eats single quotes, so we must use double quotes.
+os.chdir(os.environ["BUILD_WORKING_DIRECTORY"]) # path where user ran Bazel
+
+result = subprocess.run([gn_exe] + sys.argv[1:], encoding="utf-8")
+sys.exit(result.returncode)
+"""
+
+genrule(
+    name = "create_gn_script",
+    outs = ["gn.py"],
+    cmd = "echo '%s' > $@" % _GN,
+    exec_tools = [
+        ":gn_exe",
+    ],
+)
+
+filegroup(
+    name = "gn_exe",
+    srcs = select({
+        "//bazel/common_config_settings:linux_x64": ["@gn_linux_amd64//:gn"],
+        "//bazel/common_config_settings:mac_arm64": ["@gn_mac_arm64//:gn"],
+        "//bazel/common_config_settings:mac_x64": [],
+    }),
+)

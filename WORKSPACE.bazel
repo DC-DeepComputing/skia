@@ -232,3 +232,55 @@ local_repository(
     name = "icu_utils",
     path = "bazel/external/icu/utils",
 )
+
+http_archive(
+    name = "gn_mac_arm64",
+    build_file_content="""
+exports_files(["gn"],
+    visibility = ["//visibility:public"]
+)
+""",
+    sha256 = "6ee55c0d888539a88aee49854ad9a58b8cab9c7cff2fac72a5bdb1837fba47ff",
+    urls = [
+        "https://chrome-infra-packages.appspot.com/dl/gn/gn/mac-arm64/+/git_revision:a4d67be044b42963de801001e7146f9657c7fad4",
+        "https://storage.googleapis.com/skia-world-readable/bazel/6ee55c0d888539a88aee49854ad9a58b8cab9c7cff2fac72a5bdb1837fba47ff.zip",
+    ],
+    type="zip",
+)
+
+# load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
+
+# # We import depot_tools to get the `cipd` binary, which is used by the cipd_install workspace rule.
+# new_git_repository(
+#     name = "depot_tools",
+#     build_file_content = """
+# exports_files(
+#     glob(
+#         ["**/*"],
+#         # This prevents "link or target filename contains space" Bazel errors.
+#         exclude = [
+#             "**/* *",
+#         ],
+#     ),
+#     visibility = ["//visibility:public"],
+# )""",
+#     commit = "7253c59443a1a41069c41e8414713f9587dcfb8e",
+#     remote = "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
+#     # Bazel prints out a debug message if we don't specify shallow_since as a Unix timestamp. The
+#     # below timestamp is 2021-10-05T17:35:06+00:00 in RFC 3339 format.
+#     shallow_since = "1633455306 +0000",
+# )
+
+# load("@org_skia_go_infra//bazel/external:cipd_install.bzl", "cipd_install")
+
+# cipd_install(
+#     name = "gn_linux_amd64",
+#     package = "gn/gn/linux-amd64",
+#     version = "git_revision:a4d67be044b42963de801001e7146f9657c7fad4",
+# )
+
+# cipd_install(
+#     name = "gn_mac_arm64",
+#     package = "gn/gn/mac-arm64",
+#     version = "git_revision:a4d67be044b42963de801001e7146f9657c7fad4",
+# )
