@@ -933,6 +933,7 @@ skia_filegroup(
         "spirv/Ossfuzz35916.sksl",
         "spirv/Ossfuzz37627.sksl",
         "spirv/Ossfuzz44096.sksl",
+        "spirv/Ossfuzz53202.sksl",
         "spirv/UnusedInterfaceBlock.sksl",
         "workarounds/RewriteMatrixVectorMultiply.sksl",
     ],
