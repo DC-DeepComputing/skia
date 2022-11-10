@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df10c412_5cac9c02",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-10T21:27:30Z",
+      "side": 1,
+      "message": "Nit: alignment?",
+      "range": {
+        "startLine": 21,
+        "startChar": 45,
+        "endLine": 21,
+        "endChar": 46
+      },
+      "revId": "6b2d4f0b751b023f73962960f0dde3c5fb0ec0c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de79ee2_b278bcb7",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-10T21:27:30Z",
+      "side": 1,
+      "message": "Nit: offsetting",
+      "range": {
+        "startLine": 378,
+        "startChar": 42,
+        "endLine": 378,
+        "endChar": 51
+      },
+      "revId": "6b2d4f0b751b023f73962960f0dde3c5fb0ec0c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
