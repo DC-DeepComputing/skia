@@ -16,6 +16,23 @@
       "message": "This is all more or less copied over from `default.py`. The compile step is now failing, but before we didn\u0027t really get that far, so this is at least a step to getting this bot to build.",
       "revId": "759787791007fc33396477c60de5fe0de822d8e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "962f643a_ecc81c7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T18:39:06Z",
+      "side": 1,
+      "message": "After this change, will need to update `tools/gpu/dawn/DawnTestContext.cpp` to provide a Vulkan context on Android. In theory this should be somewhat straight forward as there are already `Android_Vulkan` jobs.",
+      "revId": "759787791007fc33396477c60de5fe0de822d8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
