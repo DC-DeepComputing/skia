@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a656066_48c24087",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T17:14:25Z",
+      "side": 1,
+      "message": "do we actually need to make this array for dawn? If format supports 1, 2, 4, 8 it looks like we can just explicilty check for those in the is_renderable type calls.",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 22
+      },
+      "revId": "148d5d4c3071f0afb2e0bfa047b08b2ec10a1890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
