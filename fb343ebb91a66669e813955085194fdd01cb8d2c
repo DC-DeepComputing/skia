@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced2e14f_d07eb426",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T17:00:28Z",
+      "side": 1,
+      "message": "bah, I need to upload what I actually built...",
+      "revId": "fb343ebb91a66669e813955085194fdd01cb8d2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
