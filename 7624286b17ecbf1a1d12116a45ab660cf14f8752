@@ -22,6 +22,30 @@
       },
       "revId": "7624286b17ecbf1a1d12116a45ab660cf14f8752",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "700e7c36_db38c33f",
+        "filename": "third_party/libmicrohttpd/MHD_config.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-10T15:17:40Z",
+      "side": 0,
+      "message": "I don\u0027t think so. This is a configuration file that is used by third_party code (note this is in third_party/ not third_party/externals. A Skia engineer wrote this at one point and checked it in.\n\nhttps://github.com/google/skia/blob/main/third_party/libmicrohttpd/MHD_config.h",
+      "parentUuid": "20728fa1_d05c28b9",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "7624286b17ecbf1a1d12116a45ab660cf14f8752",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
