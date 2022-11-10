@@ -182,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "759f3989_db3dc14c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1970,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T19:08:39Z",
+      "side": 1,
+      "message": "Yeah, that was intentional (particularly for an earlier version where I was using this to represent colors in a variety of spaces including XYZ and RGB, as well as HSL, etc..., and didn\u0027t want to get confused). At this point it\u0027s only used to hold RGB colors, so I can fix the naming.",
+      "parentUuid": "efd51421_2d7b114c",
+      "range": {
+        "startLine": 1970,
+        "startChar": 14,
+        "endLine": 1970,
+        "endChar": 24
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f80159e_fbf1c41f",
@@ -205,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93e016c5_eb3b7cb5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1979,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T19:08:39Z",
+      "side": 1,
+      "message": "Yup.",
+      "parentUuid": "5f80159e_fbf1c41f",
+      "range": {
+        "startLine": 1979,
+        "startChar": 17,
+        "endLine": 1979,
+        "endChar": 32
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3717b0e_6e0acd39",
@@ -218,6 +266,30 @@
       "writtenOn": "2022-11-10T18:45:35Z",
       "side": 1,
       "message": "The three copies optimize away?",
+      "range": {
+        "startLine": 2005,
+        "startChar": 22,
+        "endLine": 2005,
+        "endChar": 33
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12ed238f_761b7b90",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2005,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T19:08:39Z",
+      "side": 1,
+      "message": "That was my hope, but worth checking... Yup, identical code-gen hoisting that to a temporary F.",
+      "parentUuid": "a3717b0e_6e0acd39",
       "range": {
         "startLine": 2005,
         "startChar": 22,
