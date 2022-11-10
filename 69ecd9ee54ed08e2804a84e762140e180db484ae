@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c321ea1c_013260e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-10T20:05:28Z",
+      "side": 1,
+      "message": "I think this is ready. I could possibly go further and remove some of the higher-level options/parameters that refer to SDF but I\u0027m unsure whether it\u0027s worth cluttering up the code.",
+      "revId": "69ecd9ee54ed08e2804a84e762140e180db484ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
