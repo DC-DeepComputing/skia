@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f0882c2_3cdc080e",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-10T16:13:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec32c121_d918afca",
+      "range": {
+        "startLine": 65,
+        "startChar": 30,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa9585f7_94218fdc",
@@ -150,6 +174,24 @@
       "writtenOn": "2022-11-10T14:42:06Z",
       "side": 1,
       "message": "See later comment about validating `deviceSize`, but I think we should validate size. vs. target here and either assert or return null.",
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9be4f92_29aa4c61",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-10T16:13:52Z",
+      "side": 1,
+      "message": "Used an assert since I don\u0027t think we\u0027d expect users to cause a discrepancy here (either the device has a fully lazy proxy or the sizes should be the same). Also, only asserting if the proxy is instantiated. We could change this to asserting if it\u0027s not fully lazy, but that concept is coming in the next CL.",
+      "parentUuid": "fa9585f7_94218fdc",
       "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -185,6 +227,24 @@
       "side": 1,
       "message": "If we passed in the device size and added a SetScissor command, then I think we\u0027d be good. If we didn\u0027t have the SetScissor command as well, we\u0027d run into issues with content not being clipped if it went outside the \"device\" bounds. \n\nThere are two cases where this could happen but I\u0027m not sure if we care about them:\n1. We\u0027re replaying a fully lazy target so the actual texture is larger than our device bounds. In this case the plan was we\u0027d record an actual clipRect of the \"device bounds\" so it would be transformable with the replay. This should take care of everything for us, but adding an initial SetScissor wouldn\u0027t hurt.\n2. In Ganesh we have approx-fit textures that are internal and they have a \"logical\" dimension and a possibly larger/nice actual dimension. In this case we could just allow draws to go beyond the logical dimension since nothing should be reading from the excess texels...  but having a SetScissor to the logical dimension seems better. \n\nIf we set the scissor to the device size, then I think the validation rules for DrawContext::Make() are pretty simple: the device\u0027s size has to be contained in the target, or the target has to be fully lazy.\n\nIf we don\u0027t set the scissor to the device size, then I think we\u0027d validate as device size \u003d\u003d target size or target is fully lazy.",
       "parentUuid": "9ae91f05_274701c3",
+      "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "310e4bb5_9140acf1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-10T16:13:52Z",
+      "side": 1,
+      "message": "Added a SetScissor command and assert that the device size is contained in the target.",
+      "parentUuid": "284f537d_6dfd235d",
       "revId": "f8e580af037498050f6f1483884dea0d77a2c021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
