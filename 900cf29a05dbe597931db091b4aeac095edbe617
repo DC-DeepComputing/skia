@@ -16,6 +16,52 @@
       "message": "Hi Greg, PTAL. Thanks",
       "revId": "900cf29a05dbe597931db091b4aeac095edbe617",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a274b441_414c3ce2",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T19:24:52Z",
+      "side": 1,
+      "message": "Do we really need this field? It looks like everything just says kAllFlags. Then all the DepthStenicl ones just say kMSAA, but those are already handled specially.",
+      "range": {
+        "startLine": 203,
+        "startChar": 8,
+        "endLine": 203,
+        "endChar": 45
+      },
+      "revId": "900cf29a05dbe597931db091b4aeac095edbe617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7142cca_f3d545ec",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T19:24:52Z",
+      "side": 1,
+      "message": "Are we gaining anything by having these DepthStencil things in the FormatTable?",
+      "range": {
+        "startLine": 287,
+        "startChar": 2,
+        "endLine": 292,
+        "endChar": 5
+      },
+      "revId": "900cf29a05dbe597931db091b4aeac095edbe617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
