@@ -983,8 +983,6 @@ TINT_SRCS = [
     "src/tint/transform/transform.h",
     "src/tint/transform/unshadow.cc",
     "src/tint/transform/unshadow.h",
-    "src/tint/transform/unwind_discard_functions.cc",
-    "src/tint/transform/unwind_discard_functions.h",
     "src/tint/transform/utils/get_insertion_point.cc",
     "src/tint/transform/utils/get_insertion_point.h",
     "src/tint/transform/utils/hoist_to_decl_before.cc",
