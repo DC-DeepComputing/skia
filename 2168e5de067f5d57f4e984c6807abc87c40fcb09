@@ -16,6 +16,24 @@
       "message": "I think it might be advantages to use a different flag to mark all the SDF changes that way when we go back and want finer grain control these would be easier to find. Say you use SK_DISABLE_SDF and then set SK_DISABLE_SDF based on SK_ENABLE_OPTIMZIED_SIZE. That way it\u0027s easier to see all the control of all the SDF code.\n\nThis is just an idea. @brianosman@google.com what do you think?",
       "revId": "2168e5de067f5d57f4e984c6807abc87c40fcb09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f3de1cc_e7b3b15a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-10T13:50:14Z",
+      "side": 1,
+      "message": "That sounds like a good plan to me. I\u0027m about to do the same thing with SK_FORCE_RASTER_PIPELINE_BLITTER. We don\u0027t have a great spot to do that inference, it probably needs to live in SkTypes.h (if we want a central location that we can guarantee will be seen by all translation units before anyone tries to use the defines).",
+      "parentUuid": "5e99ef4b_4c55d76b",
+      "revId": "2168e5de067f5d57f4e984c6807abc87c40fcb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
