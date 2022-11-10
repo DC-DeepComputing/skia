@@ -28,6 +28,8 @@ supported_files_or_dirs=(
   "src/utils/"
   "tools/debugger/"
   "tests/"
+
+  "src/gen/SkRefCnt.cpp"
 )
 
 excluded_files=(
@@ -40,6 +42,16 @@ function opted_in_to_IWYU_checks() {
   # Need [@] for entire list: https://stackoverflow.com/a/46137325
   for path in ${supported_files_or_dirs[@]}; do
     if [[ $1 == *"-c $path"* ]]; then
+        for e_path in ${excluded_files[@]}; do
+          if [[ $1 == *"-c $e_path"* ]]; then
+            echo ""
+            return 0
+          fi
+        done
+      echo $path
+      return 0
+    fi
+    if [[ $1 == *"-c bazel-out"*"$path"* ]]; then
         for e_path in ${excluded_files[@]}; do
           if [[ $1 == *"-c $e_path"* ]]; then
             echo ""
@@ -64,6 +76,7 @@ if [[ -z $opt_in ]]; then
 else
   # Now try to compile with Clang, and then verify with IWYU
   external/clang_linux_amd64/bin/clang $@
+  echo "IWYU"
   # IWYU always [1] returns a non-zero code because it doesn't produce the .o file (that's why
   # we ran Clang first). As such, we do not want bash to fail after running IWYU.
   # [1] Until v0.18 at least
