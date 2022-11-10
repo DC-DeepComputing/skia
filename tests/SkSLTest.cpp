@@ -104,6 +104,7 @@ static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
     set_uniform(&builder, "colorBlue",        SkV4{0, 0, 1, 1});
     set_uniform(&builder, "colorWhite",       SkV4{1, 1, 1, 1});
     set_uniform(&builder, "testInputs",       SkV4{-1.25, 0, 0.75, 2.25});
+    set_uniform(&builder, "zero",             0);
     set_uniform(&builder, "unknownInput",     1.0f);
     set_uniform(&builder, "testMatrix2x2",    std::array<float,4>{1, 2,
                                                                   3, 4});
@@ -458,6 +459,8 @@ SKSL_TEST(CPU + GPU, kApiLevel_T, CastsRoundTowardZero,            "shared/Casts
 SKSL_TEST(CPU + GPU, kApiLevel_T, CommaMixedTypes,                 "shared/CommaMixedTypes.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, CommaSideEffects,                "shared/CommaSideEffects.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, CompileTimeConstantVariables,    "shared/CompileTimeConstantVariables.sksl")
+SKSL_TEST(GPU_ES3,   kNever,      ConstantCompositeAccessViaConstantIndex, "shared/ConstantCompositeAccessViaConstantIndex.sksl");
+SKSL_TEST(GPU_ES3,   kNever,      ConstantCompositeAccessViaDynamicIndex,  "shared/ConstantCompositeAccessViaDynamicIndex.sksl");
 SKSL_TEST(CPU + GPU, kApiLevel_T, ConstantIf,                      "shared/ConstantIf.sksl")
 SKSL_TEST(GPU_ES3,   kNever,      ConstArray,                      "shared/ConstArray.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, ConstVariableComparison,         "shared/ConstVariableComparison.sksl")
