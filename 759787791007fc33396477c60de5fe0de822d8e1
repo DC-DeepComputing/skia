@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1425c64_379d9bcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T18:19:13Z",
+      "side": 1,
+      "message": "This is all more or less copied over from `default.py`. The compile step is now failing, but before we didn\u0027t really get that far, so this is at least a step to getting this bot to build.",
+      "revId": "759787791007fc33396477c60de5fe0de822d8e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
