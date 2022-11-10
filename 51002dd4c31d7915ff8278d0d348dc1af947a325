@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84c3e281_2076e859",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1929,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T19:19:18Z",
+      "side": 1,
+      "message": "Ah, makes sense. Does it work if you order the assignments g,r,b?",
+      "parentUuid": "4840259e_b4c1f23a",
+      "range": {
+        "startLine": 1925,
+        "startChar": 4,
+        "endLine": 1929,
+        "endChar": 6
+      },
+      "revId": "51002dd4c31d7915ff8278d0d348dc1af947a325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7219aa73_b9871a40",
