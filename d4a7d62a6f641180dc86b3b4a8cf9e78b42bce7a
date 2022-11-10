@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e970c4e4_18127040",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T20:20:39Z",
+      "side": 1,
+      "message": "+nicolette whose working on similar stuff in Vulkan to follow along and add thoughts.",
+      "revId": "d4a7d62a6f641180dc86b3b4a8cf9e78b42bce7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

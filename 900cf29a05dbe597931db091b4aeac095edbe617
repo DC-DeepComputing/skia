@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78b81619_bac6d964",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T20:20:39Z",
+      "side": 1,
+      "message": "Oh so we will have more formats added to this which don\u0027t all include the full flags? If so then yeah we could keep it. I was just basing it off the formats currently listed here.",
+      "parentUuid": "e2c1ea45_1cf10974",
+      "range": {
+        "startLine": 203,
+        "startChar": 8,
+        "endLine": 203,
+        "endChar": 45
+      },
+      "revId": "900cf29a05dbe597931db091b4aeac095edbe617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7142cca_f3d545ec",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 3
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "onIsTexturable() and isRenderable() need to check this table. Will they be called with TextureInfo with depth or stencil format?",
       "parentUuid": "f7142cca_f3d545ec",
+      "range": {
+        "startLine": 287,
+        "startChar": 2,
+        "endLine": 292,
+        "endChar": 5
+      },
+      "revId": "900cf29a05dbe597931db091b4aeac095edbe617",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f97811_abb3f617",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-10T20:20:39Z",
+      "side": 1,
+      "message": "Internally we won\u0027t call those functions for depth and stencil formats. But in theory even if we did, those calls would try to find say Stencil8 in the format table, not find anything, and thus return false. And that is what we want to happen. So I don\u0027t think we need to have these formats in the table.",
+      "parentUuid": "f7e19cfd_ac0bc5e4",
       "range": {
         "startLine": 287,
         "startChar": 2,
