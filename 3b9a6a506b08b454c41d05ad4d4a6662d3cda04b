@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c6341c_4f4d7ae2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-10T21:15:34Z",
+      "side": 1,
+      "message": "Missed one initializer in https://skia-review.googlesource.com/c/skia/+/600344",
+      "revId": "3b9a6a506b08b454c41d05ad4d4a6662d3cda04b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
