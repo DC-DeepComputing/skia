@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20728fa1_d05c28b9",
+        "filename": "third_party/libmicrohttpd/MHD_config.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-10T15:10:03Z",
+      "side": 0,
+      "message": "This is a third-party dep. We need to fix this in libmicrohttpd directly. Please remove.",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "7624286b17ecbf1a1d12116a45ab660cf14f8752",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
