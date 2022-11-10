@@ -34,6 +34,24 @@
       "parentUuid": "5e99ef4b_4c55d76b",
       "revId": "2168e5de067f5d57f4e984c6807abc87c40fcb09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93403c57_d78c265d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-10T14:32:40Z",
+      "side": 1,
+      "message": "Yeah, I was thinking the same as I went through this. Separating the path SDF and the text SDF in particular.",
+      "parentUuid": "5f3de1cc_e7b3b15a",
+      "revId": "2168e5de067f5d57f4e984c6807abc87c40fcb09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
