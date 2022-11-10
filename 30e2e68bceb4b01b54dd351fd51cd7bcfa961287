@@ -16,6 +16,24 @@
       "message": "I realize this code predates this CL, but this line seems suspicious.  I believe this line is equivalent to:\n\n```\nif (0 \u003c\u003d t) {\n```\n\nDid it intend to be something like:\n\n```\nif (t \u003c 0 || t \u003e 1) {\n```\n\nor something like that to see if \u0027t\u0027 is outside a range?  I don\u0027t know the logic here, so I don\u0027t know what was intended.  But the current code seems like it probably isn\u0027t doing what the original author intended.",
       "revId": "30e2e68bceb4b01b54dd351fd51cd7bcfa961287",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c14141a0_1a91fb5f",
+        "filename": "tools/viewer/CuspSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-10T17:30:10Z",
+      "side": 1,
+      "message": "Hm.... I really have no idea. This whole slide seems to be designed to randomly produce cusp cubics and this part seems be designed to produce either one or two cubic paths in a ratio somehow determined by phase. I think it probably doesn\u0027t matter and t \u003c 0 would be fine. But this actually makes me think we should just delete the whole thing. If someone ever wants to test random cubics with cusps in the future it\u0027s not too hard to write something that produces them.",
+      "parentUuid": "f35d0f60_ec6094d6",
+      "revId": "30e2e68bceb4b01b54dd351fd51cd7bcfa961287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
