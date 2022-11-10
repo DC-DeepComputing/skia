@@ -144,6 +144,102 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     return {bufferInfo.fBuffer, std::move(textureProxy), std::move(copyData)};
 }
 
+UploadInstance UploadInstance::Make(Recorder* recorder,
+                                    sk_sp<TextureProxy> textureProxy,
+                                    const SkColorInfo& srcColorInfo,
+                                    const SkColorInfo& dstColorInfo,
+                                    const std::vector<MipLevel>& levels,
+                                    const SkIRect& dstRect) {
+    // Or maybe have colorType variant pipe into this one?
+    if (srcColorInfo == dstColorInfo) {
+        return UploadInstance::Make(recorder, textureProxy, srcColorInfo.colorType(),
+                                    levels, dstRect);
+    }
+
+    const Caps* caps = recorder->priv().caps();
+    SkASSERT(caps->isTexturable(textureProxy->textureInfo()));
+
+    unsigned int mipLevelCount = levels.size();
+    // The assumption is either that we have no mipmaps, or that our rect is the entire texture
+    SkASSERT(mipLevelCount == 1 || dstRect == SkIRect::MakeSize(textureProxy->dimensions()));
+
+    // We assume that if the texture has mip levels, we either upload to all the levels or just the
+    // first.
+#ifdef SK_DEBUG
+    unsigned int numExpectedLevels = 1;
+    if (textureProxy->textureInfo().mipmapped() == Mipmapped::kYes) {
+        numExpectedLevels = SkMipmap::ComputeLevelCount(textureProxy->dimensions().width(),
+                                                        textureProxy->dimensions().height()) + 1;
+    }
+    SkASSERT(mipLevelCount == 1 || mipLevelCount == numExpectedLevels);
+#endif
+
+    if (dstRect.isEmpty()) {
+        return {};
+    }
+
+    if (mipLevelCount == 1 && !levels[0].fPixels) {
+        return {};   // no data to upload
+    }
+
+    for (unsigned int i = 0; i < mipLevelCount; ++i) {
+        // We do not allow any gaps in the mip data
+        if (!levels[i].fPixels) {
+            return {};
+        }
+    }
+
+    size_t bpp = dstColorInfo.bytesPerPixel();
+    size_t minAlignment = caps->getTransferBufferAlignment(bpp);
+    SkTArray<size_t> individualMipOffsets(mipLevelCount);
+    size_t combinedBufferSize = compute_combined_buffer_size(mipLevelCount, bpp, minAlignment,
+                                                             dstRect.size(), &individualMipOffsets);
+    SkASSERT(combinedBufferSize);
+
+    UploadBufferManager* bufferMgr = recorder->priv().uploadBufferManager();
+    auto [writer, bufferInfo] = bufferMgr->getUploadWriter(combinedBufferSize, minAlignment);
+
+    std::vector<BufferTextureCopyData> copyData(mipLevelCount);
+
+    if (!bufferInfo.fBuffer) {
+        return {};
+    }
+    size_t baseOffset = bufferInfo.fOffset;
+
+    int32_t currentWidth = dstRect.width();
+    int32_t currentHeight = dstRect.height();
+    for (unsigned int currentMipLevel = 0; currentMipLevel < mipLevelCount; currentMipLevel++) {
+        const size_t trimRowBytes = currentWidth * bpp;
+        const size_t rowBytes = levels[currentMipLevel].fRowBytes;
+        const size_t mipOffset = individualMipOffsets[currentMipLevel];
+
+        SkISize dims = {currentWidth, currentHeight};
+        SkImageInfo srcImageInfo = SkImageInfo::Make(dims, srcColorInfo);
+        SkImageInfo dstImageInfo = SkImageInfo::Make(dims, dstColorInfo);
+
+        // copy data into the buffer, skipping any trailing bytes
+        const char* src = (const char*)levels[currentMipLevel].fPixels;
+        writer.convertAndWrite(mipOffset, srcImageInfo, src, rowBytes,
+                               dstImageInfo, trimRowBytes);
+
+        copyData[currentMipLevel].fBufferOffset = baseOffset + mipOffset;
+        copyData[currentMipLevel].fBufferRowBytes = trimRowBytes;
+        copyData[currentMipLevel].fRect = {
+            dstRect.left(), dstRect.top(), // TODO: can we recompute this for mips?
+            dstRect.left() + currentWidth, dstRect.top() + currentHeight
+        };
+        copyData[currentMipLevel].fMipLevel = currentMipLevel;
+
+        currentWidth = std::max(1, currentWidth/2);
+        currentHeight = std::max(1, currentHeight/2);
+    }
+
+    ATRACE_ANDROID_FRAMEWORK("Upload %sTexture [%ux%u]",
+                             mipLevelCount > 1 ? "MipMap " : "",
+                             dstRect.width(), dstRect.height());
+
+    return {bufferInfo.fBuffer, std::move(textureProxy), std::move(copyData)};
+}
 bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
     if (!fTextureProxy) {
         SKGPU_LOG_E("No texture proxy specified for UploadTask");
@@ -173,6 +269,23 @@ bool UploadList::recordUpload(Recorder* recorder,
                               const std::vector<MipLevel>& levels,
                               const SkIRect& dstRect) {
     UploadInstance instance = UploadInstance::Make(recorder, std::move(textureProxy), dataColorType,
+                                                   levels, dstRect);
+    if (!instance.isValid()) {
+        return false;
+    }
+
+    fInstances.push_back(instance);
+    return true;
+}
+
+bool UploadList::recordUpload(Recorder* recorder,
+                              sk_sp<TextureProxy> textureProxy,
+                              const SkColorInfo& srcColorInfo,
+                              const SkColorInfo& dstColorInfo,
+                              const std::vector<MipLevel>& levels,
+                              const SkIRect& dstRect) {
+    UploadInstance instance = UploadInstance::Make(recorder, std::move(textureProxy),
+                                                   srcColorInfo, dstColorInfo,
                                                    levels, dstRect);
     if (!instance.isValid()) {
         return false;
