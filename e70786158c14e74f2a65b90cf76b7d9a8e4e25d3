@@ -16,6 +16,23 @@
       "message": "Here\u0027s something to look at while I figure out the remaining presubmit failures.",
       "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "061666d6_962a61f7",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-10T20:46:34Z",
+      "side": 1,
+      "message": "I think you must have meant to replace these lines here?",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
