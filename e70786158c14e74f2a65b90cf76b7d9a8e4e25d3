@@ -156,6 +156,24 @@
       "parentUuid": "8e20bf40_a78b62d0",
       "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00885b22_0512ca05",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-11-11T15:37:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bea9a4a_403f3a68",
+      "revId": "e70786158c14e74f2a65b90cf76b7d9a8e4e25d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
