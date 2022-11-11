@@ -37,9 +37,6 @@
     characteristics when used with appropriate care. Consider using std::vector<T> in new code.
 */
 template <typename T, bool MEM_MOVE = sk_is_trivially_relocatable_v<T>> class SkTArray {
-private:
-    enum ReallocType { kExactFit, kGrowing };
-
 public:
     using value_type = T;
 
@@ -98,23 +95,19 @@ public:
             return *this;
         }
         this->clear();
-        this->checkRealloc(that.count(), kExactFit);
+        this->checkRealloc(that.size(), kExactFit);
         fCount = that.fCount;
         this->copy(that.fItemArray);
         return *this;
     }
     SkTArray& operator=(SkTArray&& that) {
-        if (this == &that) {
-            return *this;
+        if (this != &that) {
+            this->clear();
+            this->checkRealloc(that.size(), kExactFit);
+            fCount = that.fCount;
+            that.move(fItemArray);
+            that.fCount = 0;
         }
-        for (int i = 0; i < this->count(); ++i) {
-            fItemArray[i].~T();
-        }
-        fCount = 0;
-        this->checkRealloc(that.count(), kExactFit);
-        fCount = that.fCount;
-        that.move(fItemArray);
-        that.fCount = 0;
         return *this;
     }
 
@@ -126,21 +119,21 @@ public:
     }
 
     /**
-     * Resets to count() == 0 and resets any reserve count.
+     * Resets to size() == 0 and resets any reserve count.
      */
     void reset() {
         this->pop_back_n(fCount);
     }
 
     /**
-     * Resets to count() = n newly constructed T objects and resets any reserve count.
+     * Resets to size() = n newly constructed T objects and resets any reserve count.
      */
     void reset(int n) {
         SkASSERT(n >= 0);
         this->clear();
         this->checkRealloc(n, kExactFit);
         fCount = n;
-        for (int i = 0; i < this->count(); ++i) {
+        for (int i = 0; i < this->size(); ++i) {
             new (fItemArray + i) T;
         }
     }
@@ -161,10 +154,9 @@ public:
      */
     void reserve(int n) {
         SkASSERT(n >= 0);
-        if (n < count()) {
-          return;
+        if (n >= this->size()) {
+            this->reserve_back(n - size());
         }
-        reserve_back(n - count());
     }
 
     /**
@@ -180,7 +172,7 @@ public:
     }
 
     void removeShuffle(int n) {
-        SkASSERT(n < this->count());
+        SkASSERT(n < this->size());
         int newCount = fCount - 1;
         fCount = newCount;
         fItemArray[n].~T();
@@ -190,14 +182,9 @@ public:
     }
 
     /**
-     * Number of elements in the array.
-     */
-    int count() const { return fCount; }
-
-    /**
      * Is the array empty.
      */
-    bool empty() const { return !fCount; }
+    bool empty() const { return fCount == 0; }
 
     /**
      * Adds 1 new default-initialized T value and returns it by reference. Note
@@ -267,11 +254,12 @@ public:
     T* push_back_n(int n, const T t[]) {
         SkASSERT(n >= 0);
         this->checkRealloc(n, kGrowing);
+        T* end = this->end();
         for (int i = 0; i < n; ++i) {
-            new (fItemArray + fCount + i) T(t[i]);
+            new (end + i) T(t[i]);
         }
         fCount += n;
-        return fItemArray + fCount - n;
+        return end;
     }
 
     /**
@@ -280,15 +268,16 @@ public:
     T* move_back_n(int n, T* t) {
         SkASSERT(n >= 0);
         this->checkRealloc(n, kGrowing);
+        T* end = this->end();
         for (int i = 0; i < n; ++i) {
-            new (fItemArray + fCount + i) T(std::move(t[i]));
+            new (end + i) T(std::move(t[i]));
         }
         fCount += n;
-        return fItemArray + fCount - n;
+        return end;
     }
 
     /**
-     * Removes the last element. Not safe to call when count() == 0.
+     * Removes the last element. Not safe to call when size() == 0.
      */
     void pop_back() {
         SkASSERT(fCount > 0);
@@ -297,11 +286,11 @@ public:
     }
 
     /**
-     * Removes the last n elements. Not safe to call when count() < n.
+     * Removes the last n elements. Not safe to call when size() < n.
      */
     void pop_back_n(int n) {
         SkASSERT(n >= 0);
-        SkASSERT(this->count() >= n);
+        SkASSERT(this->size() >= n);
         fCount -= n;
         for (int i = 0; i < n; ++i) {
             fItemArray[fCount + i].~T();
@@ -315,9 +304,9 @@ public:
     void resize_back(int newCount) {
         SkASSERT(newCount >= 0);
 
-        if (newCount > this->count()) {
+        if (newCount > this->size()) {
             this->push_back_n(newCount - fCount);
-        } else if (newCount < this->count()) {
+        } else if (newCount < this->size()) {
             this->pop_back_n(fCount - newCount);
         }
     }
@@ -331,11 +320,9 @@ public:
         }
         if (fOwnMemory && that.fOwnMemory) {
             swap(fItemArray, that.fItemArray);
+            swap(fCount, that.fCount);
 
-            auto count = fCount;
-            fCount = that.fCount;
-            that.fCount = count;
-
+            // Can't use swap because fAllocCount is a bit field.
             auto allocCount = fAllocCount;
             fAllocCount = that.fAllocCount;
             that.fAllocCount = allocCount;
@@ -371,6 +358,7 @@ public:
     T* data() { return fItemArray; }
     const T* data() const { return fItemArray; }
     int size() const { return fCount; }
+    int count() const { return fCount; }
     size_t size_bytes() const { return this->bytes(fCount); }
     void resize(size_t count) { this->resize_back((int)count); }
 
@@ -398,13 +386,13 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->size());
         SkASSERT(i >= 0);
         return fItemArray[i];
     }
 
     const T& operator[] (int i) const {
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->size());
         SkASSERT(i >= 0);
         return fItemArray[i];
     }
@@ -420,30 +408,30 @@ public:
     const T& front() const { SkASSERT(fCount > 0); return fItemArray[0];}
 
     /**
-     * equivalent to operator[](count() - 1)
+     * equivalent to operator[](size() - 1)
      */
     T& back() { SkASSERT(fCount); return fItemArray[fCount - 1];}
 
     const T& back() const { SkASSERT(fCount > 0); return fItemArray[fCount - 1];}
 
     /**
-     * equivalent to operator[](count()-1-i)
+     * equivalent to operator[](size()-1-i)
      */
     T& fromBack(int i) {
         SkASSERT(i >= 0);
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->size());
         return fItemArray[fCount - i - 1];
     }
 
     const T& fromBack(int i) const {
         SkASSERT(i >= 0);
-        SkASSERT(i < this->count());
+        SkASSERT(i < this->size());
         return fItemArray[fCount - i - 1];
     }
 
     bool operator==(const SkTArray<T, MEM_MOVE>& right) const {
-        int leftCount = this->count();
-        if (leftCount != right.count()) {
+        int leftCount = this->size();
+        if (leftCount != right.size()) {
             return false;
         }
         for (int index = 0; index < leftCount; ++index) {
@@ -484,11 +472,16 @@ protected:
     }
 
 private:
+    // Growth factors for checkRealloc.
+    static constexpr double kExactFit = 1.0;
+    static constexpr double kGrowing = 1.5;
+
     static constexpr int kMinHeapAllocCount = 8;
     static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
+
     // Note for 32-bit machines kMaxCapacity will be <= SIZE_MAX. For 64-bit machines it will
     // just be INT_MAX if the sizeof(T) < 2^32.
-    static constexpr uint32_t kMaxCapacity = std::min(SIZE_MAX / sizeof(T), (size_t)INT_MAX);
+    static constexpr int kMaxCapacity = std::min(SIZE_MAX / sizeof(T), (size_t)INT_MAX);
 
     void setItemArray(SkSpan<std::byte> allocation) {
         fItemArray = TCast(allocation.data());
@@ -514,7 +507,7 @@ private:
     }
 
     size_t bytes(int n) const {
-        SkASSERT(n <= SkToInt(kMaxCapacity));
+        SkASSERT(n <= kMaxCapacity);
         return SkToSizeT(n) * sizeof(T);
     }
 
@@ -560,7 +553,7 @@ private:
                 sk_careful_memcpy(fItemArray, src, this->size_bytes());
             }
         } else {
-            for (int i = 0; i < this->count(); ++i) {
+            for (int i = 0; i < this->size(); ++i) {
                 new (fItemArray + i) T(src[i]);
             }
         }
@@ -581,7 +574,7 @@ private:
         if constexpr (MEM_MOVE) {
             sk_careful_memcpy(dst, fItemArray, this->bytes(fCount));
         } else {
-            for (int i = 0; i < this->count(); ++i) {
+            for (int i = 0; i < this->size(); ++i) {
                 new (static_cast<char*>(dst) + this->bytes(i)) T(std::move(fItemArray[i]));
                 fItemArray[i].~T();
             }
@@ -597,7 +590,7 @@ private:
         return ptr;
     }
 
-    void checkRealloc(int delta, ReallocType reallocType) {
+    void checkRealloc(int delta, double growthFactor) {
         // This constant needs to be declared in the function where it is used to work around
         // MSVC's persnickety nature about template definitions.
         SkASSERT(delta >= 0);
@@ -605,16 +598,17 @@ private:
         SkASSERT(fAllocCount >= 0);
 
         // Return if there are enough remaining allocated elements to satisfy the request.
-        if (SkToInt(fAllocCount) - fCount >= delta) { return; }
+        if (this->capacity() - fCount >= delta) {
+            return;
+        }
 
         // Don't overflow fCount or size_t later in the memory allocation. Overflowing memory
         // allocation really only applies to fCounts on 32-bit machines; on 64-bit machines this
         // will probably never produce a check. Since kMaxCapacity is bounded above by INT_MAX,
         // this also checks the bounds of fCount.
-        SkASSERT_RELEASE(delta <= SkToInt(kMaxCapacity) - fCount);
+        SkASSERT_RELEASE(delta <= kMaxCapacity - fCount);
         const int newCount = fCount + delta;
 
-        double growthFactor = reallocType == kExactFit ? 1.0 : 1.5;
         SkSpan<std::byte> allocation = Allocate(newCount, growthFactor);
 
         this->move(TCast(allocation.data()));
@@ -622,7 +616,7 @@ private:
             sk_free(fItemArray);
         }
         this->setItemArray(allocation);
-        SkASSERT(SkToInt(fAllocCount) >= newCount);
+        SkASSERT(this->capacity() >= newCount);
         SkASSERT(fItemArray != nullptr);
     }
 
@@ -654,11 +648,9 @@ public:
     SkSTArray(const T* array, int count)
         : STORAGE{}, INHERITED(array, count, static_cast<STORAGE*>(this)) {}
 
-    SkSTArray(std::initializer_list<T> data)
-        : SkSTArray(data.begin(), SkToInt(data.size())) {}
+    SkSTArray(std::initializer_list<T> data) : SkSTArray(data.begin(), SkToInt(data.size())) {}
 
-    explicit SkSTArray(int reserveCount)
-        : SkSTArray() {
+    explicit SkSTArray(int reserveCount) : SkSTArray() {
         this->reserve_back(reserveCount);
     }
 
