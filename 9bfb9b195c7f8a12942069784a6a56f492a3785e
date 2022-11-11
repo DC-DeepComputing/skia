@@ -16,6 +16,23 @@
       "message": "I made a GM, but then discovered that `dashbigrects` exercises this exact same case (and looks much better with this CL).",
       "revId": "9bfb9b195c7f8a12942069784a6a56f492a3785e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2835d57c_c766be06",
+        "filename": "src/utils/SkDashPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-11T18:29:36Z",
+      "side": 1,
+      "message": "Is there any difference between doing this and simply removing this entire block? (Basically, reverting https://skia-review.googlesource.com/c/skia/+/88201 )",
+      "revId": "9bfb9b195c7f8a12942069784a6a56f492a3785e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
