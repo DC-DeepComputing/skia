@@ -34,6 +34,24 @@
       "parentUuid": "ea9740b6_3b047b7b",
       "revId": "7e1cea7d3e71903c14c64fcdb818f10bf4701f1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f219aff_b8fe2e02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-11T15:32:52Z",
+      "side": 1,
+      "message": "I think the SkTypes.h has become the village for lost code. I also agree with Ben that SkTypes.h contains some structural foundations for Skia setting the different flags to provide environment context. It would be great to have the structural things passed in from the build system. Could we make a little tool that spits out those flags. Then you could run the tool to pass clang the flags:\nclang++ $(flag_tool)\n\nOn fly in the ointment would be if an external SK_USER_CONFIG_HEADER uses the environment flags because it\u0027s #included after the environment is calculated. I guess the build system would just pass the flags into the config header too.\n\nBut there is a bunch of stuff that just doesn\u0027t belong: SK_MaxS16, SkLeftShift, SK_HISTOGRAMS_*, SK_G32_SHIFT, etc.",
+      "parentUuid": "2b164af9_bde06a50",
+      "revId": "7e1cea7d3e71903c14c64fcdb818f10bf4701f1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
