@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe20d4d3_f88ed365",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-11-11T07:21:48Z",
+      "side": 1,
+      "message": "Can you add a short description of the changes made?",
+      "revId": "b84c0ecfca73c6e29487400453289dbb632c561a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ccd858a_b205192f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-11-11T07:21:48Z",
+      "side": 1,
+      "message": "LGTM % description",
+      "revId": "b84c0ecfca73c6e29487400453289dbb632c561a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
