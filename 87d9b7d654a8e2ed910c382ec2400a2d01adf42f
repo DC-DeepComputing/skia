@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87736b35_e88c997a",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "@egdaniel@google.com \n\nIt looks like Metal only cares about \u0027Protected\u0027 for the purposes of creation of graphite resource keys (which I believe are backend-independent?) from a textureInfo, so I did not add any checking of `this-\u003esupportsProtected()` into `MtlCaps`. Let me know if that is an erroneous conclusion.",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 63
+      },
+      "revId": "87d9b7d654a8e2ed910c382ec2400a2d01adf42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

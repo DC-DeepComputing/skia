@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d4225dd_596e394d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "I think it\u0027s fair to say that we\u0027d want to confirm the format can support the desired sample count. \n\nTo best support this, I actually made isRenderable \u0026 isTexturable methods of the FormatInfo struct. This negates the need for some repeated code to access member attributes of FormatInfo. isRenderable also now takes in a requested sample count and checks if it is present within the format info\u0027s supported sample counts.",
+      "parentUuid": "0528c805_582b6562",
+      "range": {
+        "startLine": 22,
+        "startChar": 9,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d60e9ec3_48324781",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 97,
+        "startChar": 42,
+        "endLine": 97,
+        "endChar": 55
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e491b79a_2d8ad4a3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d60e9ec3_48324781",
       "range": {
         "startLine": 97,
         "startChar": 42,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eea93645_b9239f41",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Yeah, we can rely upon the renderable/texturable checks instead of explicitly singling it out here. 👍",
+      "parentUuid": "af19dc98_a3a2ae89",
+      "range": {
+        "startLine": 98,
+        "startChar": 18,
+        "endLine": 98,
+        "endChar": 37
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "391aa7ff_5b907f0c",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "We only need to check is_renderable here if isRenderable that is passed in is kYes. No need to require renderable if the caller isn\u0027t asking for it.",
+      "range": {
+        "startLine": 99,
+        "startChar": 18,
+        "endLine": 99,
+        "endChar": 75
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12bd309c_72531f7a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Excellent point, I had incorrectly extrapolated that all the returned texture infos were presumed to be texturable/renderable by the caller, but that isn\u0027t the case if Renderable is no here.",
+      "parentUuid": "391aa7ff_5b907f0c",
       "range": {
         "startLine": 99,
         "startChar": 18,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e71913_ce01cbb0",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Added `Caps::supportsProtected()` which defaults to false; VulkanCaps now sets `fProtectedSupport` to true.",
+      "parentUuid": "30dea897_0cb6895a",
+      "range": {
+        "startLine": 107,
+        "startChar": 19,
+        "endLine": 107,
+        "endChar": 30
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6add6729_c8014497",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 125,
+        "startChar": 42,
+        "endLine": 125,
+        "endChar": 55
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f710bda5_a0a47ece",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6add6729_c8014497",
       "range": {
         "startLine": 125,
         "startChar": 42,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68250a6c_654d4126",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8436b32c_85016501",
+      "range": {
+        "startLine": 126,
+        "startChar": 28,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b852a1c1_71b51a64",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "we don\u0027t need msaa things to be texturable (i.e. sampleable in a shader)",
+      "range": {
+        "startLine": 128,
+        "startChar": 28,
+        "endLine": 128,
+        "endChar": 85
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2368fe6_1f63992e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b852a1c1_71b51a64",
       "range": {
         "startLine": 128,
         "startChar": 28,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25bd60f6_1b79a1a5",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Yep, you\u0027re absolutely right. Okay, I did a first pass at adding a `DepthStencilFormatInfo` struct. \n\nBoth `FormatInfo` and the new `DepthStencilFormatInfo` now both contain a newly-added `SupportedSampleCounts` struct. I added `SupportedSampleCounts` to reuse sample count code between the 2 format info structs.\n\nDepth stencil format operations have been added that mirror how the existing format table works. We now verify depth/stencil attachment support and that the requested sample count is supported in `getDefaultDepthStencilTextureInfo`.",
+      "parentUuid": "3d8056e6_ad2eb6af",
+      "range": {
+        "startLine": 163,
+        "startChar": 30,
+        "endLine": 164,
+        "endChar": 87
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "942c6877_c38bdd5b",
@@ -221,6 +437,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "can you just use depthStencilFormat from above?",
+      "range": {
+        "startLine": 172,
+        "startChar": 19,
+        "endLine": 172,
+        "endChar": 58
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32354aba_2dbe4d7a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "942c6877_c38bdd5b",
       "range": {
         "startLine": 172,
         "startChar": 19,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2fbb242_da772906",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Michael confirmed that depth/stencil attachments should be discardable, I will follow up with a smaller CL for that.",
+      "parentUuid": "299c8390_e8ed9f73",
+      "range": {
+        "startLine": 174,
+        "startChar": 28,
+        "endLine": 174,
+        "endChar": 71
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba267b14_546530d9",
@@ -267,6 +531,30 @@
       "writtenOn": "2022-11-09T14:58:06Z",
       "side": 1,
       "message": "Extra review :)\n\nSo this call returns a VkResult object and we\u0027re suppose to check to see if it returns VK_ERROR_FORMAT_NOT_SUPPORTED or not (well if you follow the general pattern in Vulkan). Now technically, what we\u0027re doing here is safe because this one function is weird and early specs didn\u0027t have the return value and said that all property values will be filled to 0 if unsupported. This is left in the current specs for backwards compatibility. But we should probably do things the intended way and check the return value. See https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#capabilities-image",
+      "range": {
+        "startLine": 190,
+        "startChar": 27,
+        "endLine": 190,
+        "endChar": 65
+      },
+      "revId": "a15d58e25db5c52cac51f8904f967d4244c7558b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b345ca00_7d3a6470",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-11T20:36:26Z",
+      "side": 1,
+      "message": "Good context to have! Alright, so it looks like GetPhysicalDeviceImageFormatProperties can return 3 possible failure modes (VK_ERROR_FORMAT_NOT_SUPPORTED, VK_ERROR_OUT_OF_DEVICE_MEMORY, VK_ERROR_OUT_OF_HOST_MEMORY). So I made it such that any result that is not VK_SUCCESS logs a warning and returns. Let me know if this is agreeable. We could do more in-depth failure mode messages depending upon the code returned if you think that would be worthwhile.",
+      "parentUuid": "ba267b14_546530d9",
       "range": {
         "startLine": 190,
         "startChar": 27,
