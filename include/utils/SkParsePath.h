@@ -20,6 +20,8 @@ public:
 
     enum class PathEncoding { Absolute, Relative };
     static void ToSVGString(const SkPath&, SkString*, PathEncoding = PathEncoding::Absolute);
+
+    static SkString ToSVGString(const SkPath&);
 };
 
 #endif

@@ -301,3 +301,9 @@ void SkParsePath::ToSVGString(const SkPath& path, SkString* str, PathEncoding en
         }
     }
 }
+
+SkString SkParsePath::ToSVGString(const SkPath& path) {
+    SkString str;
+    ToSVGString(path, &str);
+    return str;
+}
