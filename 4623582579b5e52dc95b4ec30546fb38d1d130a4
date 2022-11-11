@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38e225ea_fb787d44",
+        "filename": "infra/bots/recipe_modules/build/examples/full.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-11T15:54:32Z",
+      "side": 1,
+      "message": "Though do note that this builder will currently fail the compile step for reasons unrelated to this change.",
+      "revId": "4623582579b5e52dc95b4ec30546fb38d1d130a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
