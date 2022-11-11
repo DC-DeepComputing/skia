@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd976ec7_83ad7251",
+        "filename": "resources/sksl/spirv/DynamicIndexIntoConstantCompositeTypes.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-11T22:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c333ee8_c18fe055",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 1
+      },
+      "revId": "9325d41d32d9d3d84e4fe8abd8f59bb7904b5921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f86368b8_a819ebdd",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-11-10T21:54:27Z",
       "side": 1,
       "message": "This test checks the trouble cases, but we should also test non-trouble cases too. Based on chat, we apparently didn\u0027t have any existing test code which indexes into a constant array with a constant index?",
+      "revId": "9325d41d32d9d3d84e4fe8abd8f59bb7904b5921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78472051_448d40db",
+        "filename": "resources/sksl/spirv/DynamicIndexIntoConstantCompositeTypes.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-11T22:37:20Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "f86368b8_a819ebdd",
       "revId": "9325d41d32d9d3d84e4fe8abd8f59bb7904b5921",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

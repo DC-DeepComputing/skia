@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f1b479c_20b102ea",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-11T22:37:20Z",
+      "side": 1,
+      "message": "I know existing tests tend to lean on something like `colorGreen.r` in this situation but I find this a little more readable when looking at tests.",
+      "range": {
+        "startLine": 107,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 32
+      },
+      "revId": "30912944f05d16f96b11411d4d6b4c3778e92736",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
