@@ -36,6 +36,36 @@ DEF_TEST(SkRasterPipeline, r) {
     REPORTER_ASSERT(r, ((result >> 48) & 0xffff) == 0x3c00);
 }
 
+DEF_TEST(SkRasterPipeline_ImmediateStoreUnmasked, r) {
+    float val[SkRasterPipeline_kMaxStride_highp] = {};
+
+    float immVal = 123.0f;
+    const void* immValCtx = nullptr;
+    memcpy(&immValCtx, &immVal, sizeof(float));
+
+    SkRasterPipeline_<256> p;
+    p.append(SkRasterPipeline::immediate_f, immValCtx);
+    p.append(SkRasterPipeline::store_unmasked, val);
+    p.run(0,0,1,1);
+
+    // `val` should be populated with `123.0` in the first one, two, four or eight positions
+    // (depending on the architecture that SkRasterPipeline is targeting).
+    int index = 0;
+    for (; index < SkRasterPipeline_kMaxStride_highp; ++index) {
+        if (val[index] != immVal) {
+            break;
+        }
+    }
+    static_assert(SkRasterPipeline_kMaxStride_highp == 8);
+    REPORTER_ASSERT(r, index == 1 || index == 2 || index == 4 || index == 8);
+
+    // The remaining slots should have been left alone.
+    for (; index < SkRasterPipeline_kMaxStride_highp; ++index) {
+        REPORTER_ASSERT(r, val[index] == 0.0f);
+    }
+}
+
+
 DEF_TEST(SkRasterPipeline_empty, r) {
     // No asserts... just a test that this is safe to run.
     SkRasterPipeline_<256> p;

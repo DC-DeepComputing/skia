@@ -1808,6 +1808,7 @@ STAGE(set_rgb, const float* rgb) {
     g = rgb[1];
     b = rgb[2];
 }
+
 STAGE(unbounded_set_rgb, const float* rgb) {
     r = rgb[0];
     g = rgb[1];
@@ -2983,6 +2984,16 @@ STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     store4(c->rgba,0, r,g,b,a);
     c->fn(c, tail ? tail : N);
     load4(c->read_from,0, &r,&g,&b,&a);
+}
+
+STAGE(store_unmasked, float* ctx) {
+    sk_unaligned_store(ctx, r);
+}
+
+STAGE(immediate_f, void* ctx) {
+    float val;
+    memcpy(&val, &ctx, sizeof(val));
+    r = F(val);
 }
 
 STAGE(gauss_a_to_rgba, NoCtx) {
