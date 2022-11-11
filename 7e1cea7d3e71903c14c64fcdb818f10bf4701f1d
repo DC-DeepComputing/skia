@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea9740b6_3b047b7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-11T02:16:01Z",
+      "side": 1,
+      "message": "This particular change seems fine, but what\u0027s our longer term plan for ensuring we have a single guaranteed place that define-logic will be performed before potentially referencing those defines in other headers/translation units? Today, SkTypes.h is that funnel.",
+      "revId": "7e1cea7d3e71903c14c64fcdb818f10bf4701f1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
