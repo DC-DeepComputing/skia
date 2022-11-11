@@ -8,10 +8,10 @@
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
-#include "src/gpu/graphite/ComputePipeline.h"
-#include "src/gpu/graphite/GraphicsPipeline.h"
-#include "src/gpu/graphite/Sampler.h"
-#include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/dawn/DawnBuffer.h"
+#include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/gpu/graphite/dawn/DawnUtils.h"
+
 
 namespace skgpu::graphite {
 
@@ -21,40 +21,59 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
-sk_sp<Texture> DawnResourceProvider::createWrappedTexture(const BackendTexture&) {
-    return nullptr;
+sk_sp<Texture> DawnResourceProvider::createWrappedTexture(const BackendTexture& texture) {
+    SkASSERT(false);
+    return {};
 }
 
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
-        const SkRuntimeEffectDictionary*,
-        const GraphicsPipelineDesc&,
-        const RenderPassDesc&) {
-    return nullptr;
+        const SkRuntimeEffectDictionary* runtimeDict,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc) {
+    SkASSERT(false);
+    return {};
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
+    SkASSERT(false);
     return nullptr;
 }
 
-sk_sp<Texture> DawnResourceProvider::createTexture(SkISize, const TextureInfo&, SkBudgeted) {
+sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
+                                                   const TextureInfo& info,
+                                                   SkBudgeted budgeted) {
+    SkASSERT(false);
     return nullptr;
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
-                                                 PrioritizeGpuReads) {
-    return nullptr;
+                                                 PrioritizeGpuReads prioritizeGpuReads) {
+
+    return DawnBuffer::Make(dawnSharedContext(), size, type, prioritizeGpuReads);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions&,
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
                                                    SkTileMode xTileMode,
                                                    SkTileMode yTileMode) {
+    SkASSERT(false);
     return nullptr;
 }
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
-                                                              const TextureInfo&) {
+                                                            const TextureInfo& info) {
+    SkASSERT(false);
     return {};
+}
+
+void DawnResourceProvider::onDeleteBackendTexture(BackendTexture& texture) {
+    SkASSERT(texture.isValid());
+    SkASSERT(texture.backend() == BackendApi::kDawn);
+    SkASSERT(false);
+}
+
+const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
+    return static_cast<const DawnSharedContext*>(fSharedContext);
 }
 
 } // namespace skgpu::graphite
