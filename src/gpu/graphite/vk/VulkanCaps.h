@@ -62,6 +62,10 @@ private:
                          VkPhysicalDevice,
                          const VkPhysicalDeviceProperties&);
 
+    void initDepthStencilFormatTable(const skgpu::VulkanInterface*,
+                                     VkPhysicalDevice,
+                                     const VkPhysicalDeviceProperties&);
+
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override {
         return nullptr;
     }
@@ -83,6 +87,18 @@ private:
                                              SkColorType dstColorType) const override {
         return kUnknown_SkColorType;
     }
+
+    struct SupportedSampleCounts {
+        void initSampleCounts(const skgpu::VulkanInterface*,
+                              VkPhysicalDevice,
+                              const VkPhysicalDeviceProperties&,
+                              VkFormat,
+                              const VkImageUsageFlags&);
+
+        bool isSampleCountSupported(int requestedCount) const;
+
+        SkTDArray<int> fSampleCounts;
+    };
     struct FormatInfo {
         uint32_t colorTypeFlags(SkColorType colorType) const {
             for (int i = 0; i < fColorTypeInfoCount; ++i) {
@@ -97,23 +113,40 @@ private:
                   VkPhysicalDevice,
                   const VkPhysicalDeviceProperties&,
                   VkFormat);
-        void initSampleCounts(const skgpu::VulkanInterface*,
-                              VkPhysicalDevice,
-                              const VkPhysicalDeviceProperties&,
-                              VkFormat);
 
-        SkTDArray<int> fColorSampleCounts;
+
+        bool isTexturable(const VkImageTiling&) const;
+        bool isRenderable(const VkImageTiling&,
+                          const uint32_t& sampleCount) const;
 
         std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
         int fColorTypeInfoCount = 0;
 
         VkFormatProperties fFormatProperties;
+        SupportedSampleCounts fSupportedSampleCounts;
+
         // Indicates that a format is only supported if we are wrapping a texture with it.
         SkDEBUGCODE(bool fIsWrappedOnly;)
+
+    private:
+        bool isTexturable(const VkFormatFeatureFlags&) const;
+        bool isRenderable(const VkFormatFeatureFlags&) const;
     };
 
     FormatInfo& getFormatInfo(VkFormat);
     const FormatInfo& getFormatInfo(VkFormat) const;
+
+    // FormatInfo equivalent for depth stencil formats.
+    struct DepthStencilFormatInfo {
+        void init(const skgpu::VulkanInterface*,
+                  VkPhysicalDevice,
+                  const VkPhysicalDeviceProperties&,
+                  VkFormat);
+        bool isDepthStencilSupported(const VkFormatFeatureFlags&) const;
+
+        VkFormatProperties fFormatProperties;
+        SupportedSampleCounts fSupportedSampleCounts;
+    };
 
     VkFormat fColorTypeToFormatTable[kSkColorTypeCnt];
     void setColorType(SkColorType, std::initializer_list<VkFormat> formats);
@@ -121,6 +154,21 @@ private:
     static const size_t kNumVkFormats = 22;
     FormatInfo fFormatTable[kNumVkFormats];
 
+    static const size_t kNumDepthStencilVkFormats = 3;
+    DepthStencilFormatInfo fDepthStencilFormatTable[kNumDepthStencilVkFormats];
+
+    static const size_t kNumDepthStencilFlags = 4;
+    VkFormat fDepthStencilFlagsToFormatTable[kNumDepthStencilFlags];
+
+    DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat);
+    const DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat) const;
+
+    VkFormat getDepthStencilFormatFromDepthStencilFlags(
+        const SkEnumBitMask<DepthStencilFlags>& flags) const;
+
+    VkFormat getFormatFromColorType(SkColorType) const;
+
+    bool fSupportsMemorylessAttachments = false;
     // TODO: Assign real value to fSupportsYcbcrConversion.
     bool fSupportsYcbcrConversion = false;
 };
