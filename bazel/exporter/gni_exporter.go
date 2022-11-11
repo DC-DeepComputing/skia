@@ -74,12 +74,33 @@ var deprecatedFiles = []string{
 	"include/effects/SkLayerDrawLooper.h",
 }
 
-// The footer written to core.gni.
+// The footer written to gn/core.gni.
 const coreGNIFooter = `skia_core_sources += skia_pathops_sources
 skia_core_sources += skia_skpicture_sources
 
 skia_core_public += skia_pathops_public
 skia_core_public += skia_skpicture_public`
+
+// The footer written to gn/sksl_tests.gni.
+const skslTestsFooter = `sksl_glsl_tests_sources =
+    sksl_error_tests + sksl_glsl_tests + sksl_inliner_tests +
+    sksl_folding_tests + sksl_shared_tests
+
+sksl_glsl_settings_tests_sources = sksl_blend_tests + sksl_settings_tests
+
+sksl_metal_tests_sources =
+    sksl_metal_tests + sksl_blend_tests + sksl_shared_tests
+
+sksl_wgsl_tests_sources = sksl_wgsl_tests
+
+sksl_spirv_tests_sources =
+    sksl_blend_tests + sksl_shared_tests + sksl_spirv_tests
+
+sksl_skvm_tests_sources = sksl_rte_tests + sksl_rte_error_tests
+
+sksl_stage_tests_sources = sksl_rte_tests
+
+sksl_minify_tests_sources = sksl_rte_tests + sksl_folding_tests`
 
 // The footer written to modules/skshaper/skshaper.gni.
 const skshaperFooter = `
@@ -93,6 +114,7 @@ declare_args() {
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
 	"gn/core.gni":                   coreGNIFooter,
+	"gn/sksl_tests.gni":             skslTestsFooter,
 	"modules/skshaper/skshaper.gni": skshaperFooter,
 }
 
@@ -179,6 +201,11 @@ func makeRelativeFilePathForGNI(path string) (string, error) {
 	}
 	if strings.HasPrefix(path, "modules/") {
 		return "$_modules/" + strings.TrimPrefix(path, "modules/"), nil
+	}
+	// These sksl tests are purposely listed as an relative path underneath resources/sksl because
+	// that relative path is re-used by the GN logic to put stuff under //tests/sksl as well.
+	if strings.HasPrefix(path, "resources/sksl/") {
+		return strings.TrimPrefix(path, "resources/sksl/"), nil
 	}
 
 	return "", skerr.Fmt("can't find path for %q\n", path)
