@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c60a63_49ab6686",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-11T20:00:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba78e3f7_902d8578",
+      "range": {
+        "startLine": 205,
+        "startChar": 47,
+        "endLine": 205,
+        "endChar": 48
+      },
+      "revId": "5f6e7008b9ca06658db2ea93ea7f67d94f37f2b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1aeca18f_15a0b294",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-11-11T19:23:59Z",
       "side": 1,
       "message": "Do you want to pass stderr to the parent process stderr? If so:\n\n    print(result.stderr, file\u003dsys.stderr)",
+      "range": {
+        "startLine": 118,
+        "startChar": 4,
+        "endLine": 118,
+        "endChar": 9
+      },
+      "revId": "5f6e7008b9ca06658db2ea93ea7f67d94f37f2b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e9cc222_324544ff",
+        "filename": "tools/sksl-minify/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-11T20:00:01Z",
+      "side": 1,
+      "message": "I prefer it be on stdout because then if I\u0027m looking at our CI logs, I don\u0027t have to look in two places for potential errors.",
+      "parentUuid": "1aeca18f_15a0b294",
       "range": {
         "startLine": 118,
         "startChar": 4,
