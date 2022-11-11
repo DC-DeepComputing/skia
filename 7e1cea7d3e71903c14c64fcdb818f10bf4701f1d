@@ -16,6 +16,24 @@
       "message": "This particular change seems fine, but what\u0027s our longer term plan for ensuring we have a single guaranteed place that define-logic will be performed before potentially referencing those defines in other headers/translation units? Today, SkTypes.h is that funnel.",
       "revId": "7e1cea7d3e71903c14c64fcdb818f10bf4701f1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b164af9_bde06a50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-11T15:22:35Z",
+      "side": 1,
+      "message": "Well, for at least some of it, the build (gn, bazel, cmake, whatever). If there\u0027s something that should be defined for every translation unit then that should be set by the build. Things like `SK_BUILD_FOR_*`, `SK_CPU_ENDIAN`, `SK_CPU_X86`, `SK_CPU_SSE_LEVEL`, etc are currently set based on asking the compiler, but these should really be communicated from the build (they kinda are indirectly through the compiler, but that also means we need `SkTypes.h` included to get basic things instead of them just being provided). The nice part in favor of `SkTypes.h` though is that it means that someone using a different means of building Skia doesn\u0027t have to figure out all the defines to set. Basically, for almost any file where we include `SkTypes.h` by itself at the top to get a define and then `ifdef` out the rest of the file should have been handled by the build, and if we really needed the define that should come from the build as well and not from magically including `SkTypes.h`.\n\nOther things like `SkDebugf`, the asserts, `SkTAlign*`, `SkSetFourByteTag`, the `Abs`, and such should probably be in a different header(s). This is just using `SkTypes.h` as a dumping ground for \"small utils\".",
+      "parentUuid": "ea9740b6_3b047b7b",
+      "revId": "7e1cea7d3e71903c14c64fcdb818f10bf4701f1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
