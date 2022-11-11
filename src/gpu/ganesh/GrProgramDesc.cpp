@@ -102,8 +102,9 @@ static void gen_xp_key(const GrXferProcessor& xp,
 
     const GrSurfaceOrigin* originIfDstTexture = nullptr;
     GrSurfaceOrigin origin;
-    if (pipeline.dstProxyView().proxy()) {
-        origin = pipeline.dstProxyView().origin();
+    const GrSurfaceProxyView& dstView = pipeline.dstProxyView();
+    if (dstView.proxy()) {
+        origin = dstView.origin();
         originIfDstTexture = &origin;
     }
 
@@ -111,6 +112,12 @@ static void gen_xp_key(const GrXferProcessor& xp,
                 b,
                 originIfDstTexture,
                 pipeline.dstSampleFlags() & GrDstSampleFlags::kAsInputAttachment);
+
+    if (dstView.proxy()) {
+        uint32_t samplerKey = sampler_key(dstView.proxy()->backendFormat().textureType(),
+                                          dstView.swizzle(), caps);
+        b->add32(samplerKey);
+    }
 }
 
 static void gen_fp_key(const GrFragmentProcessor& fp,
