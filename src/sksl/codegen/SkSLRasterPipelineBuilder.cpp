@@ -9,38 +9,39 @@
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
 #include <algorithm>
+#include <utility>
 
 namespace SkSL {
 namespace RP {
 
 using SkRP = SkRasterPipeline;
 
-void Builder::optimize() {
+Program Builder::finish() {
+    return Program{std::move(fInstructions)};
+}
+
+void Program::optimize() {
     // TODO(johnstiles): perform any last-minute cleanup of the instruction stream here
 }
 
-Slot Builder::findHighestSlot() {
+Slot Program::findHighestSlot() {
     Slot s = NA;
     for (const Instruction& inst : fInstructions) {
-        s = std::max(s, inst.fSlotA);
-        s = std::max(s, inst.fSlotB);
-        s = std::max(s, inst.fSlotC);
+        for (Slot cur : {inst.fSlotA, inst.fSlotB, inst.fSlotC}) {
+            s = std::max(s, cur);
+        }
     }
     return s;
 }
 
-void Builder::finish() {
-    SkASSERT(fHighestSlot == NA);  // this program has already been finished
-
+Program::Program(SkTArray<Instruction> instrs) : fInstructions(std::move(instrs)) {
     this->optimize();
     fHighestSlot = this->findHighestSlot();
 }
 
-void Builder::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
+void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
     // skslc and sksl-minify do not actually include SkRasterPipeline.
 #if !defined(SKSL_STANDALONE)
-    SkASSERT(fHighestSlot >= 0);  // a program should be finished first
-
     // Allocate a contiguous slab of slot data. TODO(skia:13676): use an architecture-specific value
     // for N to avoid tons of dead space between slots.
     constexpr int N = SkRasterPipeline_kMaxStride_highp;
