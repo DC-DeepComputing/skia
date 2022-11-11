@@ -10,6 +10,7 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/vk/VulkanInterface.h"
 
 // Helper macros to call functions on the VulkanInterface
@@ -35,5 +36,8 @@
         (RESULT) = VULKAN_CALL(IFACE, X);            \
     } while (false)
 
+namespace skgpu::graphite {
+VkFormat VulkanDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mask);
+} // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanUtils_DEFINED
