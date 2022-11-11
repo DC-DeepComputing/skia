@@ -16,6 +16,23 @@
       "message": "What do y\u0027all think of this approach for enforcing IWYU on our headers? If we like it, I can use a Bazel macro to generate many different files for the headers we care about.",
       "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de37b02c_f1305ba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-11T21:12:35Z",
+      "side": 1,
+      "message": "This seems a little silly, when all we really want is for header files to be treated like any other regular source file, just compiled with `-xc++` (or more verbosely, `--language c++`). Is there any way we can tell Bazel to just do that? It seems a bit weird to try to hack in particular files like this.",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
