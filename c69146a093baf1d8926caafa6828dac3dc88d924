@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963cd566_af73ac44",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-11T17:05:27Z",
+      "side": 1,
+      "message": "It would probably make the transition smoother if we include a few more details here, since my muscle memory is going to be to visit this file and I just need a cheatsheet, not a full README.md experience.\n\n- The source of truth is `resources/sksl/BUILD.bazel`\n- To update this file, run `make -C bazel generate_gni`",
+      "range": {
+        "startLine": 1,
+        "startChar": 35,
+        "endLine": 1,
+        "endChar": 39
+      },
+      "revId": "c69146a093baf1d8926caafa6828dac3dc88d924",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
