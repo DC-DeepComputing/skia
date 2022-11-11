@@ -670,3 +670,28 @@ DEF_GM(return new Dashing3GM;)
 DEF_GM(return new Dashing4GM;)
 DEF_GM(return new Dashing5GM(true);)
 DEF_GM(return new Dashing5GM(false);)
+
+DEF_SIMPLE_GM(pdfium_stroke_bug, canvas, 256, 256) {
+    SkPath path;
+    path.moveTo(19.482002, 25.545959);
+    path.lineTo(45.882507, 25.545959);
+    path.lineTo(45.882507, 47.048645);
+    path.lineTo(19.482002, 47.048645);
+    path.close();
+
+    SkPaint p;
+    p.setColor(SK_ColorRED);
+    p.setStyle(SkPaint::kStroke_Style);
+    p.setStrokeWidth(6);
+
+    float intervals[] = {3, 3};
+    auto dash = SkDashPathEffect::Make(intervals, 2, 0);
+    p.setPathEffect(dash);
+
+    canvas->scale(4, 4);
+    canvas->drawPath(path, p);
+
+    p.reset();
+    p.setStyle(SkPaint::kStroke_Style);
+    canvas->drawPath(path, p);
+}
