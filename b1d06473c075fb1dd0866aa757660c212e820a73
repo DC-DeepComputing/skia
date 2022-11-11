@@ -33,6 +33,24 @@
       "message": "This seems a little silly, when all we really want is for header files to be treated like any other regular source file, just compiled with `-xc++` (or more verbosely, `--language c++`). Is there any way we can tell Bazel to just do that? It seems a bit weird to try to hack in particular files like this.",
       "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f4e406c_11e7d143",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-11T21:24:01Z",
+      "side": 1,
+      "message": "I guess not, since the docs for `cc_binary` `srcs` states that `.h`, `.hpp`, `.hxx`, `.hh`, `.inc`, `.inl`, and `.H` will be treated as header files and header files explicitly will not be compiled (with no option to do so, apparently). The unfortunate failures of abstractions.",
+      "parentUuid": "de37b02c_f1305ba5",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
