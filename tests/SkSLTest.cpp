@@ -95,6 +95,7 @@ static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
                                    SkSurface* surface,
                                    sk_sp<SkRuntimeEffect> effect) {
     static constexpr float kArray[5] = {1, 2, 3, 4, 5};
+    static constexpr float kArrayNegative[5] = {-1, -2, -3, -4, -5};
 
     SkRuntimeShaderBuilder builder(effect);
     set_uniform(&builder, "colorBlack",       SkV4{0, 0, 0, 1});
@@ -114,6 +115,7 @@ static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
                                                                    9,  10, 11, 12,
                                                                    13, 14, 15, 16});
     set_uniform_array(&builder, "testArray",  SkSpan(kArray));
+    set_uniform_array(&builder, "testArrayNegative", SkSpan(kArrayNegative));
 
     sk_sp<SkShader> shader = builder.makeShader();
     if (!shader) {
@@ -513,6 +515,8 @@ SKSL_TEST(CPU + GPU, kApiLevel_T, ScopedSymbol,                    "shared/Scope
 SKSL_TEST(CPU + GPU, kApiLevel_T, StackingVectorCasts,             "shared/StackingVectorCasts.sksl")
 SKSL_TEST(GPU_ES3,   kNever,      StaticSwitch,                    "shared/StaticSwitch.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, StructArrayFollowedByScalar,     "shared/StructArrayFollowedByScalar.sksl")
+// TODO(skia:13920): This test currently exposes a bug in SPIR-V codegen.
+// SKSL_TEST(GPU_ES3,   kNever,      StructComparison,                "shared/StructComparison.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, StructsInFunctions,              "shared/StructsInFunctions.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, Switch,                          "shared/Switch.sksl")
 SKSL_TEST(CPU + GPU, kApiLevel_T, SwitchDefaultOnly,               "shared/SwitchDefaultOnly.sksl")
