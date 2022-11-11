@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "485ff5d8_936e12e5",
+        "filename": "resources/sksl/shared/StructComparison.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-11T22:44:02Z",
+      "side": 1,
+      "message": "These 3 constructors each result in a different address space qualifier on `S::a` in Metal.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 56
+      },
+      "revId": "0d59495d5a6f900f41eccbfe240f63556082398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
