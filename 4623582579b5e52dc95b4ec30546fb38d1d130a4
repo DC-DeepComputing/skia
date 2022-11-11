@@ -16,6 +16,24 @@
       "message": "Though do note that this builder will currently fail the compile step for reasons unrelated to this change.",
       "revId": "4623582579b5e52dc95b4ec30546fb38d1d130a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd769f7e_d3c0d50a",
+        "filename": "infra/bots/recipe_modules/build/examples/full.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-11-11T16:02:47Z",
+      "side": 1,
+      "message": "Noted; thanks!",
+      "parentUuid": "38e225ea_fb787d44",
+      "revId": "4623582579b5e52dc95b4ec30546fb38d1d130a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
