@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f95072e_8ecf245e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-11T20:54:15Z",
+      "side": 1,
+      "message": "What do y\u0027all think of this approach for enforcing IWYU on our headers? If we like it, I can use a Bazel macro to generate many different files for the headers we care about.",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
