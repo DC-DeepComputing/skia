@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e38df647_b7ede269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-11T18:03:21Z",
+      "side": 1,
+      "message": "I made a GM, but then discovered that `dashbigrects` exercises this exact same case (and looks much better with this CL).",
+      "revId": "9bfb9b195c7f8a12942069784a6a56f492a3785e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
