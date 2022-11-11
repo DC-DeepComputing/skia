@@ -19,6 +19,7 @@ filegroup(
         "//src/shaders:srcs",
         "//src/text:srcs",
         "//src/utils:srcs",
+        ":gen/SkRefCnt.cpp",
     ] + select({
         "//src/gpu:has_gpu_backend": [
             "//src/gpu:srcs",
@@ -109,4 +110,14 @@ skia_cc_deps(
         "//src/pdf:enable_pdf_backend_true": ["//src/pdf:deps"],
         "//conditions:default": [],
     }),
+)
+
+_FAKE_SKREFCNT = """
+#include "include/core/SkRefCnt.h"
+"""
+
+genrule(
+    name = "gen_skrefcnt.cpp",
+    outs = ["gen/SkRefCnt.cpp"],
+    cmd = "echo '%s' > $@" % _FAKE_SKREFCNT,
 )
