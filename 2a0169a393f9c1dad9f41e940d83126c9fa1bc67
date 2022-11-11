@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ad865b0_f3b9edeb",
+        "filename": "tests/sksl/shared/StructComparison.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-11T22:41:12Z",
+      "side": 1,
+      "message": "I ended up making this change on a hunch (and sure enough it turned out to be necessary). Even though the struct member declaration for `S::a` does not have an address space qualifier, the qualifier is somehow retained on the field type depending on the constructor. I imagine there is some interesting type expansion going on under the hood but I can only guess at it.\n\nEither way, this test passes when we use `make_array_ref` in the struct comparison functions and fails if we don\u0027t.",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 63
+      },
+      "revId": "2a0169a393f9c1dad9f41e940d83126c9fa1bc67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
