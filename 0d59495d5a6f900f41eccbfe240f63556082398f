@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f3ae87b_6a1c10a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-12T00:18:20Z",
+      "side": 1,
+      "message": "SkSLCompiler.cpp:499: fatal error: \"SPIR-V validation error: ID \u00278\u0027 decorated with ArrayStride multiple times is not allowed.\n  %_arr_float_int_5 \u003d OpTypeArray %float %int_5\n\n\"\n\nCaught signal 4 [Illegal instruction] (2471MB RAM, peak 2534MB), was running:\n\tunit test  SkSLStructComparison_GPU",
+      "parentUuid": "751fa9ff_37702037",
+      "revId": "0d59495d5a6f900f41eccbfe240f63556082398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "485ff5d8_936e12e5",
