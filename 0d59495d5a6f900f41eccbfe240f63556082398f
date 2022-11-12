@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc0c339_14ec0180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-12T00:55:42Z",
+      "side": 1,
+      "message": "And another issue on Intel NUC OpenGL:\n```\nstart unit test  SkSLStructComparison_GPU\n---- glGetError 0x502(Invalid Operation) at\n\t../../../../../../skia/src/gpu/ganesh/gl/GrGLProgramDataManager.cpp(87) : \n\t\tUniform1fv(uni.fLocation, arrayCount, v)\n\n\nFAILURE: ../../../../../../skia/tests/SkSLTest.cpp:233\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLStructComparison_GPU, OpenGL]\n\n---- glGetError 0x502(Invalid Operation) at\n\t../../../../../../skia/src/gpu/ganesh/gl/GrGLProgramDataManager.cpp(87) : \n\t\tUniform1fv(uni.fLocation, arrayCount, v)\n\n\nFAILURE: ../../../../../../skia/tests/SkSLTest.cpp:233\tExpected (Unoptimized): solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLStructComparison_GPU, OpenGL]\n```",
+      "parentUuid": "6f3ae87b_6a1c10a7",
+      "revId": "0d59495d5a6f900f41eccbfe240f63556082398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "485ff5d8_936e12e5",
