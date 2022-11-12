@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "751fa9ff_37702037",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-12T00:17:11Z",
+      "side": 1,
+      "message": "Unfortunately the new tests also exposed an issue in SPIR-V :(",
+      "revId": "0d59495d5a6f900f41eccbfe240f63556082398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "485ff5d8_936e12e5",
