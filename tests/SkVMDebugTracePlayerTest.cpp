@@ -14,7 +14,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/ir/SkSLProgram.h" // IWYU pragma: keep
+#include "src/sksl/ir/SkSLFunctionDeclaration.h"
+#include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 #include "src/sksl/tracing/SkVMDebugTracePlayer.h"
 #include "tests/Test.h"
@@ -41,9 +42,9 @@ static sk_sp<SkSL::SkVMDebugTrace> make_trace(skiatest::Reporter* r, std::string
                                                                      src, settings);
     REPORTER_ASSERT(r, program);
 
-    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
+    const SkSL::FunctionDeclaration* main = program->getFunction("main");
     auto debugTrace = sk_make_sp<SkSL::SkVMDebugTrace>();
-    SkSL::ProgramToSkVM(*program, *main, &b, debugTrace.get(), /*uniforms=*/{});
+    SkSL::ProgramToSkVM(*program, *main->definition(), &b, debugTrace.get(), /*uniforms=*/{});
     skvm::Program p = b.done();
     REPORTER_ASSERT(r, p.nargs() == 1);
 
