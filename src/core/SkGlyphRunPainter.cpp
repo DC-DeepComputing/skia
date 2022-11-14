@@ -149,9 +149,31 @@ void SkGlyphRunListPainterCPU::drawForBitmapDevice(
             accepted->startDevicePositioning(
                     rejected->source(), positionMatrix, strike->roundingSpec());
 
-            strike->prepareForDrawingMasksCPU(accepted);
+            strike->prepareForMaskDrawing(accepted, rejected);
+
+            std::vector<SkPackedGlyphID> packedIDs;
+            std::vector<SkPoint> positions;
+            // SkAutoSTArray<kTypicalGlyphCount, const SkGlyph*> glyphs;
+            for (auto [variant, pos] : accepted->accepted()) {
+                packedIDs.push_back(variant.packedID());
+                positions.push_back(pos);
+            }
+
+            std::vector<const SkGlyph*> glyphs(packedIDs.size());
+            strike->prepareImages(packedIDs, glyphs.data());
+
+            std::vector<SkGlyphVariant> glyphs_var;
+            for (auto g : glyphs) {
+                glyphs_var.emplace_back();
+                glyphs_var.back() = g;
+            }
+
+            //            strike->prepareForDrawingMasksCPU(accepted);
+
             rejected->flipRejectsToSource();
-            bitmapDevice->paintMasks(accepted, paint);
+
+            bitmapDevice->paintMasks(SkZip(packedIDs.size(), glyphs_var.data(), positions.data()),
+                                     paint);
         }
         if (!rejected->source().empty()) {
             std::vector<SkPoint> sourcePositions;

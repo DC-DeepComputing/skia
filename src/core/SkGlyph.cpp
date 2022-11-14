@@ -33,7 +33,8 @@ SkMask SkGlyph::mask() const {
 SkMask SkGlyph::mask(SkPoint position) const {
     SkASSERT(SkScalarIsInt(position.x()) && SkScalarIsInt(position.y()));
     SkMask answer = this->mask();
-    answer.fBounds.offset(SkScalarFloorToInt(position.x()), SkScalarFloorToInt(position.y()));
+    answer.fBounds.offset(SkScalarFloorToInt(position.x() - fLeft),
+                          SkScalarFloorToInt(position.y() - fTop));
     return answer;
 }
 

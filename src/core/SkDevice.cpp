@@ -487,7 +487,7 @@ sk_sp<sktext::gpu::Slug> SkBaseDevice::convertGlyphRunListToSlug(
 }
 
 void SkBaseDevice::drawSlug(SkCanvas*, const sktext::gpu::Slug*, const SkPaint&) {
-    SK_ABORT("Slug drawing not supported.");
+    // SK_ABORT("Slug drawing not supported.");
 }
 #endif
 

@@ -95,6 +95,10 @@ protected:
     void drawAtlas(const SkRSXform[], const SkRect[], const SkColor[], int count, sk_sp<SkBlender>,
                    const SkPaint&) override;
 
+    void drawSlug(SkCanvas*, const sktext::gpu::Slug*, const SkPaint&) override;
+    void onDrawSlug(const sktext::gpu::Slug* slug,
+                    const SkPaint& paint,
+                    const SkGlyphRunListPainterCPU::BitmapDevicePainter*);
     ///////////////////////////////////////////////////////////////////////////
 
     void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override;

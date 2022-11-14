@@ -702,3 +702,12 @@ SkBaseDevice::ClipType SkBitmapDevice::onGetClipType() const {
 SkIRect SkBitmapDevice::onDevClipBounds() const {
     return fRCStack.rc().getBounds();
 }
+
+void SkBitmapDevice::drawSlug(SkCanvas* canvas,
+                              const sktext::gpu::Slug* slug,
+                              const SkPaint& drawingPaint) {
+    SkDrawTiler priv_tiler(this, nullptr);
+    while (const SkDraw* priv_draw = priv_tiler.next()) {
+        onDrawSlug(slug, drawingPaint, priv_draw);
+    }
+}

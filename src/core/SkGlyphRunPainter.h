@@ -26,7 +26,11 @@ public:
         BitmapDevicePainter(const BitmapDevicePainter&) = default;
         virtual ~BitmapDevicePainter() = default;
 
-        virtual void paintMasks(SkDrawableGlyphBuffer* accepted, const SkPaint& paint) const = 0;
+        void paintMasks(SkDrawableGlyphBuffer* accepted, const SkPaint& paint) const {
+            paintMasks(accepted->accepted(), paint);
+        }
+        virtual void paintMasks(SkZip<SkGlyphVariant, SkPoint> accepted,
+                                const SkPaint& paint) const = 0;
         virtual void drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
                                 const SkSamplingOptions&, const SkPaint&) const = 0;
     };

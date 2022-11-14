@@ -12,7 +12,9 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "include/private/chromium/Slug.h"
+#include "src/core/SkBitmapDevice.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPaintPriv.h"
@@ -215,6 +217,257 @@ sk_sp<SlugImpl> SlugImpl::Make(const SkMatrixProvider& viewMatrix,
 
     return slug;
 }
+
+class SlugImplCPU final : public Slug {
+private:
+    struct SubRun {
+        SubRun(sktext::SkStrikePromise promise) : strikePromise(std::move(promise)) {}
+        SubRun(SubRun&& other) : strikePromise(std::move(other.strikePromise)) {
+            type = other.type;
+            packedIDs = std::move(other.packedIDs);
+            positions = std::move(other.positions);
+        }
+
+        int type = 0;
+        std::vector<SkPackedGlyphID> packedIDs;
+        std::vector<SkPoint> positions;
+        sktext::SkStrikePromise strikePromise;
+    };
+
+public:
+    SlugImplCPU(SubRunAllocator&& alloc,
+                SkRect sourceBounds,
+                std::vector<SubRun> subRuns,
+                const SkPaint& paint,
+                SkPoint origin);
+    ~SlugImplCPU() override = default;
+
+    static sk_sp<SlugImplCPU> Make(const SkMatrixProvider& viewMatrix,
+                                   const sktext::GlyphRunList& glyphRunList,
+                                   const SkPaint& initialPaint,
+                                   const SkPaint& drawingPaint,
+                                   SkStrikeDeviceInfo strikeDeviceInfo,
+                                   sktext::StrikeForGPUCacheInterface* strikeCache);
+    static sk_sp<Slug> MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
+    void doFlatten(SkWriteBuffer& buffer) const override;
+
+#if SK_SUPPORT_GPU
+    void surfaceDraw(const SkPaint& paint, const SkGlyphRunListPainterCPU::BitmapDevicePainter*);
+#endif
+
+    SkRect sourceBounds() const override { return fSourceBounds; }
+    SkRect sourceBoundsWithOrigin() const override { return fSourceBounds.makeOffset(fOrigin); }
+    const SkPaint& initialPaint() const override { return fInitialPaint; }
+
+    // const SkMatrix& initialPositionMatrix() const { return fSubRuns->initialPosition(); }
+    SkPoint origin() const { return fOrigin; }
+
+    // Change memory management to handle the data after Slug, but in the same allocation
+    // of memory. Only allow placement new.
+    void operator delete(void* p) { ::operator delete(p); }
+    void* operator new(size_t) { SK_ABORT("All slugs are created by placement new."); }
+    void* operator new(size_t, void* p) { return p; }
+
+private:
+    std::vector<SubRun> subRuns;
+
+    // The allocator must come first because it needs to be destroyed last. Other fields of this
+    // structure may have pointers into it.
+    SubRunAllocator fAlloc;
+    const SkRect fSourceBounds;
+    std::vector<SubRun> fSubRuns;
+    const SkPaint fInitialPaint;
+    const SkMatrix fInitialPositionMatrix;
+    const SkPoint fOrigin;
+};
+
+SlugImplCPU::SlugImplCPU(SubRunAllocator&& alloc,
+                         SkRect sourceBounds,
+                         std::vector<SubRun> subRuns,
+                         const SkPaint& paint,
+                         SkPoint origin)
+        : fAlloc{std::move(alloc)}
+        , fSourceBounds{sourceBounds}
+        , fSubRuns(std::move(subRuns))
+        , fInitialPaint{paint}
+        , fOrigin{origin} {
+    SkDebugf("SlugImplCPU()");
+}
+
+#if SK_SUPPORT_GPU
+void SlugImplCPU::surfaceDraw(const SkPaint& drawingPaint,
+                              const SkGlyphRunListPainterCPU::BitmapDevicePainter* bitmapDevice) {
+    SkDebugf("Drawing CPU slug, has %d subruns", fSubRuns.size());
+    for (auto& subrun : fSubRuns) {
+        if (subrun.type == 0) {
+            SkStrike* sk_strike = subrun.strikePromise.strike();
+            auto strike = sk_strike->strikeSpec().findOrCreateStrike();
+
+            std::vector<const SkGlyph*> glyphs(subrun.packedIDs.size());
+            strike->prepareImages(subrun.packedIDs, glyphs.data());
+
+            std::vector<SkGlyphVariant> glyphs_var;
+            for (auto g : glyphs) {
+                glyphs_var.emplace_back();
+                glyphs_var.back() = g;
+            }
+
+            bitmapDevice->paintMasks(
+                    SkZip(glyphs_var.size(), glyphs_var.data(), subrun.positions.data()),
+                    drawingPaint);
+        }
+    }
+}
+#endif
+
+void SlugImplCPU::doFlatten(SkWriteBuffer& buffer) const {
+    buffer.writeRect(fSourceBounds);
+    SkPaintPriv::Flatten(fInitialPaint, buffer);
+    buffer.writePoint(fOrigin);
+
+    buffer.write32(SkTo<int32_t>(fSubRuns.size()));
+
+    SkDebugf("Serializing CPU slug, has %d subruns", fSubRuns.size());
+
+    for (auto& subrun : fSubRuns) {
+        subrun.strikePromise.flatten(buffer);
+
+        buffer.write32(SkTo<int32_t>(subrun.type));
+
+        buffer.write32(SkTo<int32_t>(subrun.packedIDs.size()));
+        for (auto id : subrun.packedIDs) {
+            buffer.writeUInt(id.value());
+        }
+
+        buffer.writePointArray(subrun.positions.data(), subrun.positions.size());
+    }
+}
+
+sk_sp<Slug> SlugImplCPU::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {
+    SkRect sourceBounds = buffer.readRect();
+    SkASSERT(!sourceBounds.isEmpty());
+    if (!buffer.validate(!sourceBounds.isEmpty())) {
+        return nullptr;
+    }
+    SkPaint paint = buffer.readPaint();
+    SkPoint origin = buffer.readPoint();
+
+    //    int allocSizeHint = SubRunContainer::AllocSizeHintFromBuffer(buffer);
+
+    auto [initializer, _, alloc] = SubRunAllocator::AllocateClassMemoryAndArena<SlugImplCPU>(1024);
+
+    int count = buffer.read32();
+    SkDebugf("Deserializing CPU slug, has %d subruns", count);
+    std::vector<SubRun> subRuns;
+
+    for (int k = 0; k < count; k++) {
+        SubRun subrun(*sktext::SkStrikePromise::MakeFromBuffer(
+                buffer, client, SkStrikeCache::GlobalStrikeCache()));
+
+        subrun.type = buffer.read32();
+        int ids_count = buffer.read32();
+        for (int i = 0; i < ids_count; i++) subrun.packedIDs.emplace_back(buffer.readUInt());
+
+        subrun.positions.resize(buffer.getArrayCount());
+        buffer.readPointArray(subrun.positions.data(), subrun.positions.size());
+
+        subRuns.push_back(std::move(subrun));
+    }
+
+    // SubRunContainerOwner container = SubRunContainer::MakeFromBufferInAlloc(buffer, client,
+    // &alloc);
+
+    // Something went wrong while reading.
+    SkASSERT(buffer.isValid());
+    if (!buffer.isValid()) {
+        return nullptr;
+    }
+
+    return sk_sp<SlugImplCPU>(initializer.initialize(
+            std::move(alloc), sourceBounds, std::move(subRuns), paint, origin));
+}
+
+sk_sp<SlugImplCPU> SlugImplCPU::Make(const SkMatrixProvider& viewMatrix,
+                                     const sktext::GlyphRunList& glyphRunList,
+                                     const SkPaint& initialPaint,
+                                     const SkPaint& drawingPaint,
+                                     SkStrikeDeviceInfo strikeDeviceInfo,
+                                     sktext::StrikeForGPUCacheInterface* strikeCache) {
+    size_t subRunSizeHint = SubRunContainer::EstimateAllocSize(glyphRunList);
+    auto [initializer, _, alloc] =
+            SubRunAllocator::AllocateClassMemoryAndArena<SlugImplCPU>(subRunSizeHint);
+
+    const SkMatrix positionMatrix =
+            position_matrix(viewMatrix.localToDevice(), glyphRunList.origin());
+
+    std::vector<SubRun> subRuns;
+
+    auto bufferScope = sktext::SkSubRunBuffers::EnsureBuffers(glyphRunList);
+    auto [accepted, rejected] = bufferScope.buffers();
+
+    // The bitmap blitters can only draw lcd text to a N32 bitmap in srcOver. Otherwise,
+    // convert the lcd text into A8 text. The props communicate this to the scaler.
+    auto props = strikeDeviceInfo.fSurfaceProps;
+    if (!drawingPaint.isSrcOver()) {
+        props = SkSurfaceProps{props.flags(), kUnknown_SkPixelGeometry};
+    }
+    const SkScalerContextFlags scalerContextFlags = strikeDeviceInfo.fScalerContextFlags;
+
+    SkPoint drawOrigin = glyphRunList.origin();
+    // SkMatrix positionMatrix{viewMatrix.localToDevice()};
+    // positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+
+    for (auto& glyphRun : glyphRunList) {
+        const SkFont& runFont = glyphRun.font();
+        SkDebugf("Glyph Run");
+        rejected->setSource(glyphRun.source());
+
+        if (!rejected->source().empty() && !positionMatrix.hasPerspective()) {
+            SkDebugf("Glyph Run 2");
+
+            SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
+                    runFont, drawingPaint, props, scalerContextFlags, positionMatrix);
+
+            auto strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+
+            accepted->startDevicePositioning(
+                    rejected->source(), positionMatrix, strike->roundingSpec());
+
+            strike->prepareForMaskDrawing(accepted, rejected);
+
+            std::vector<SkPackedGlyphID> packedIDs;
+            std::vector<SkPoint> positions;
+            for (auto [variant, pos] : accepted->accepted()) {
+                packedIDs.push_back(variant.packedID());
+                positions.push_back(pos);
+            }
+
+            SubRun run(strike->strikePromise());
+            run.packedIDs = std::move(packedIDs);
+            run.positions = std::move(positions);
+
+            subRuns.push_back(std::move(run));
+            rejected->flipRejectsToSource();
+        }
+    }
+
+    SkDebugf("Creating CPU slug, has %d subruns", subRuns.size());
+
+    sk_sp<SlugImplCPU> slug = sk_sp<SlugImplCPU>(initializer.initialize(std::move(alloc),
+                                                                        glyphRunList.sourceBounds(),
+                                                                        std::move(subRuns),
+                                                                        initialPaint,
+                                                                        glyphRunList.origin()));
+
+    // There is nothing to draw here. This is particularly a problem with RSX form blobs where a
+    // single space becomes a run with no glyphs.
+    if (slug->fSubRuns.empty()) {
+        return nullptr;
+    }
+
+    return slug;
+}
+
 }  // namespace
 
 namespace sktext::gpu {
@@ -427,9 +680,16 @@ TextBlob::TextBlob(SubRunAllocator&& alloc,
         , fInitialLuminance{initialLuminance} { }
 
 sk_sp<Slug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {
-    return SlugImpl::MakeFromBuffer(buffer, client);
+    return SlugImplCPU::MakeFromBuffer(buffer, client);
 }
 }  // namespace sktext::gpu
+
+void SkBitmapDevice::onDrawSlug(const Slug* slug,
+                                const SkPaint& drawingPaint,
+                                const SkGlyphRunListPainterCPU::BitmapDevicePainter* bitmapDevice) {
+    SlugImplCPU* slugImpl = const_cast<SlugImplCPU*>(static_cast<const SlugImplCPU*>(slug));
+    slugImpl->surfaceDraw(drawingPaint, bitmapDevice);
+}
 
 #if SK_SUPPORT_GPU
 namespace skgpu::v1 {
@@ -472,5 +732,16 @@ sk_sp<Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
     return SlugImpl::Make(
             drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, strikeCache);
 }
+
+sk_sp<Slug> MakeSlugCPU(const SkMatrixProvider& drawMatrix,
+                        const sktext::GlyphRunList& glyphRunList,
+                        const SkPaint& initialPaint,
+                        const SkPaint& drawingPaint,
+                        SkStrikeDeviceInfo strikeDeviceInfo,
+                        sktext::StrikeForGPUCacheInterface* strikeCache) {
+    return SlugImplCPU::Make(
+            drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, strikeCache);
+}
+
 }  // namespace skgpu::v1
 #endif

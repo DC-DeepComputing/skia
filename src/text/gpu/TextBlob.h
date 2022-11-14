@@ -159,5 +159,11 @@ sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
                                   const SkPaint& drawingPaint,
                                   SkStrikeDeviceInfo strikeDeviceInfo,
                                   sktext::StrikeForGPUCacheInterface* strikeCache);
+sk_sp<sktext::gpu::Slug> MakeSlugCPU(const SkMatrixProvider& drawMatrix,
+                                     const sktext::GlyphRunList& glyphRunList,
+                                     const SkPaint& initialPaint,
+                                     const SkPaint& drawingPaint,
+                                     SkStrikeDeviceInfo strikeDeviceInfo,
+                                     sktext::StrikeForGPUCacheInterface* strikeCache);
 }  // namespace skgpu::v1
 #endif  // sktext_gpu_TextBlob_DEFINED
