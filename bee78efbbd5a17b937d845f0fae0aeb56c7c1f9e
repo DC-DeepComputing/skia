@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a13549_23b03b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T15:21:21Z",
+      "side": 1,
+      "message": "I\u0027m starting to question this change and think maybe this code should just move into the Particles module. Originally it seemed like a useful sharable feature but in practice no one else is using it, and if it\u0027s going to be Particles-specific, it can live in Particles. But I\u0027m curious what you think.",
+      "revId": "bee78efbbd5a17b937d845f0fae0aeb56c7c1f9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
