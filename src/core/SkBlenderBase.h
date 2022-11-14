@@ -22,8 +22,7 @@ class SkKeyContext;
 
 namespace skgpu::graphite {
 class PaintParamsKeyBuilder;
-class PipelineDataGatherer;
-};
+}
 
 /**
  * Encapsulates a blend function, including non-public APIs.
