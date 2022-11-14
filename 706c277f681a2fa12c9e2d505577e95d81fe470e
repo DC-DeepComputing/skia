@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a688f5c_9b6bf44b",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T18:18:47Z",
+      "side": 1,
+      "message": "can this fit on one line now?",
+      "range": {
+        "startLine": 496,
+        "startChar": 18,
+        "endLine": 496,
+        "endChar": 19
+      },
+      "revId": "706c277f681a2fa12c9e2d505577e95d81fe470e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1391ae3b_dbf343dc",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T18:18:47Z",
+      "side": 1,
+      "message": "Do we really need to cast to void*?",
+      "range": {
+        "startLine": 568,
+        "startChar": 19,
+        "endLine": 568,
+        "endChar": 38
+      },
+      "revId": "706c277f681a2fa12c9e2d505577e95d81fe470e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
