@@ -22,6 +22,30 @@
       },
       "revId": "87d9b7d654a8e2ed910c382ec2400a2d01adf42f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d6bba85_abe2a432",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T14:49:40Z",
+      "side": 1,
+      "message": "Yeah I don\u0027t think mtl really needs it, and as of now I don\u0027t think there is a case where metal will be running in any sort of \"Protected\" context. But as an aside, gaphite resources keys are not backend independent. We have a virtual on caps buildKeyForTexture where each backend fills out the key how its needed.",
+      "parentUuid": "87736b35_e88c997a",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 63
+      },
+      "revId": "87d9b7d654a8e2ed910c382ec2400a2d01adf42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
