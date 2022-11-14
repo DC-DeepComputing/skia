@@ -231,6 +231,49 @@ sk_sp<SkSpecialImage> FilterResult::imageAndOffset(SkIPoint* offset) const {
     return image;
 }
 
+FilterResult FilterResult::applyColorFilter(const Context& ctx,
+                                            sk_sp<SkColorFilter> filter) const {
+    SkASSERT(filter); // This would be a no-op, but should have been detected earlier.
+    if (!fImage) {
+        // A null image is transparent black, but if the color filter modifies transparent black
+        // then we have to produce an output image filled with that color.
+        if (fColorFilter && as_CFB(fColorFilter)->affectsTransparentBlack()) {
+            auto surface = ctx.makeSurface(ctx.colorType(), ctx.getColorSpace(), SkISize(dstBounds.size()), kPremul_SkAlphaType, {});
+            if (!surface) {
+                return {};
+            }
+            SkCanvas* canvas = surface->getCanvas();
+            SkPaint paint;
+            paint.setBlendMode(SkBlendMode::kSrc);
+            paint.setColorFilter(fColorFilter);
+            canvas->drawPaint(paint);
+
+            return {surface->makeImageSnapshot(), dstBounds.topLeft()};
+        }
+        // Otherwise the image remains null
+        return {};
+    }
+
+    // Color filtering is the last step in resolving a FilterResult to an actual image, so
+    // we can always compose it with the current state instead of resolving to a new image.
+    FilterResult filtered = *this;
+    filtered.fColorFilter = SkColorFilters::Compose(std::move(filter), fColorFilter);
+    if (filtered->fillsLayerBounds()) {
+        // Regardless of prior crops and transforms that may have restricted the layer bounds, the
+        // effective image will now fill the desired output.
+        filtered.fLayerBounds = ctx.desiredOutput();
+    } else {
+        // The new color filter doesn't change the layer bounds, but the desired output might be
+        // further restricted relative to previous steps.
+        if (!filter.fLayerBounds.intersect(ctx.desiredOutput())) {
+            return {};
+        }
+    }
+
+    return filtered;
+}
+
+
 FilterResult FilterResult::applyCrop(const Context& ctx,
                                      const LayerSpace<SkIRect>& crop) const {
     LayerSpace<SkIRect> tightBounds = crop;
@@ -245,11 +288,11 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
         // The original crop does not affect the image (although the context's desired output might)
         // We can tighten fLayerBounds to the desired output without resolving the image, regardless
         // of the transform type.
-        // TODO(michaelludwig): If the crop would use mirror or repeat, the above isn't true.
         FilterResult restrictedOutput = *this;
         SkAssertResult(restrictedOutput.fLayerBounds.intersect(ctx.desiredOutput()));
         return restrictedOutput;
     } else {
+        // resolve() handles transparent-black affecting filters automatically.
         return this->resolve(tightBounds);
     }
 }
@@ -350,34 +393,48 @@ void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
     }
     fSamplingOptions = newSampling;
     fTransform.postConcat(transform);
-    // Rebuild the layer bounds and then restrict to the current desired output. The original value
-    // of fLayerBounds includes the image mapped by the original fTransform as well as any
-    // accumulated soft crops from desired outputs of prior stages. To prevent discarding that info,
-    // we map fLayerBounds by the additional transform, instead of re-mapping the image bounds.
-    fLayerBounds = transform.mapRect(fLayerBounds);
-    if (!fLayerBounds.intersect(desiredOutput)) {
-        // The transformed output doesn't touch the desired, so it would just be transparent black.
-        // TODO: This intersection only applies when the tile mode is kDecal.
-        fLayerBounds = LayerSpace<SkIRect>::Empty();
+    if (this->fillsLayerBounds()) {
+        // The transform doesn't change how the rest of the filter affects transparent black, so
+        // fill out to the desired bounds.
+        fLayerBounds = desiredOutput;
+    } else {
+        // Rebuild the layer bounds and then restrict to the current desired output. The original
+        // value of fLayerBounds included the image mapped by the original fTransform as well as any
+        // accumulated soft crops from desired outputs of prior stages. To prevent discarding that
+        // info, we map fLayerBounds by the additional transform, versus mapping the image bounds.
+        fLayerBounds = transform.mapRect(fLayerBounds);
+        if (!fLayerBounds.intersect(desiredOutput)) {
+            // The transformed output doesn't touch the desired, so it would just be transparent.
+            fLayerBounds = LayerSpace<SkIRect>::Empty();
+        }
     }
+}
+
+bool FilterResult::fillsLayerBounds() const {
+    // TODO: If fLayerBounds is completely contained by the transformed image's shape, then the
+    // color filter and tiling have no effect because nothing beyond the edges of the image data
+    // will be sampled.
+    if (fColorFilter) {
+        return as_CFB(fColorFilter)->affectsTransparentBlack();
+    }
+    // TODO: Tile modes other kDecal should return true here as well.
+    return false;
 }
 
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         LayerSpace<SkIRect> dstBounds) const {
-    // TODO(michaelludwig): Only valid for kDecal, although kClamp would only need 1 extra
-    // pixel of padding so some restriction could happen. We also should skip the intersection if
-    // we need to include transparent black pixels.
+    // TODO(michaelludwig): Only valid when the *next* tile mode is kDecal, although kClamp would
+    // only need 1 extra pixel of padding so some restriction could happen. This is required to
+    // preserve the span coordinates for mirror/repeat tiling.
     if (!fImage || !dstBounds.intersect(fLayerBounds)) {
         return {nullptr, {}};
     }
 
-    // TODO: This logic to skip a draw will also need to account for the tile mode, but we can
-    // always restrict to the intersection of dstBounds and the image's subset since we are
-    // currently always decal sampling.
+    const bool fillsLayer = this->fillsLayerBounds();
     // TODO(michaelludwig): If we get to the point where all filter results track bounds in
     // floating point, then we can extend this case to any S+T transform.
     LayerSpace<SkIPoint> origin;
-    if (is_nearly_integer_translation(fTransform, &origin)) {
+    if (!fillsLayer && is_nearly_integer_translation(fTransform, &origin)) {
         LayerSpace<SkIRect> imageBounds(SkIRect::MakeXYWH(origin.x(), origin.y(),
                                                           fImage->width(), fImage->height()));
         if (!imageBounds.intersect(dstBounds)) {
@@ -411,9 +468,8 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     SkPaint paint;
     paint.setAntiAlias(true);
     paint.setBlendMode(SkBlendMode::kSrc);
+    paint.setColorFilter(fColorFilter);
 
-    // TODO: When using a tile mode other than kDecal, we'll need to use SkSpecialImage::asShader()
-    // and use drawRect(fLayerBounds).
     if (!fLayerBounds.contains(dstBounds)) {
         // We're resolving to a larger than necessary image, so make sure transparency outside of
         // fLayerBounds is preserved.
@@ -421,7 +477,17 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         canvas->clipIRect(SkIRect(fLayerBounds));
     }
     canvas->concat(SkMatrix(fTransform)); // src's origin is embedded in fTransform
-    fImage->draw(canvas, 0.f, 0.f, fSamplingOptions, &paint);
+
+    if (fillsLayer) {
+        // The FilterResult's transform is handled by the canvas, which drawPaint respects, so we
+        // don't need to calculate any local matrix adjustment.
+        paint.setShader(fImage->asShader(SkTileMode::kDecal, fSamplingOptions, SkMatrix::I()));
+        canvas->drawPaint(paint);
+    } else {
+        // Neither the tiling nor color filter change the original transparent black of the surface,
+        // so we can use the image's geometry to apply the decal effect and reduce fill rate.
+        fImage->draw(canvas, 0.f, 0.f, fSamplingOptions, &paint);
+    }
 
     return {surface->makeImageSnapshot(), dstBounds.topLeft()};
 }

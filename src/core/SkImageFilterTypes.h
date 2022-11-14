@@ -621,6 +621,10 @@ public:
         return fLayerBounds;
     }
 
+    // Produce a new FilterResult that is this image evaluated by 'filter'. When possible, this will
+    // reuse the original image data.
+    FilterResult applyColorFilter(const Context& ctx, sk_sp<SkColorFilter> filter) const;
+
     // Produce a new FilterResult that has been cropped to 'crop', taking into account the context's
     // desired output. When possible, the returned FilterResult will reuse the underlying image and
     // adjust its metadata. This will depend on the current transform and tile mode as well as how
@@ -629,8 +633,7 @@ public:
     // require force-padding a decal FilterResult so these arguments aren't implemented yet.
     FilterResult applyCrop(const Context& ctx,
                            const LayerSpace<SkIRect>& crop) const;
-                           //  SkTileMode newTileMode=SkTileMode::kDecal,
-                           //  bool forcePad=false) const;
+                           //  SkTileMode newTileMode=SkTileMode::kDecal) const;
 
     // Produce a new FilterResult that is the transformation of this FilterResult. When this
     // result's sampling and transform are compatible with the new transformation, the returned
@@ -650,25 +653,32 @@ public:
     sk_sp<SkSpecialImage> imageAndOffset(SkIPoint* offset) const;
 
 private:
-    // Renders this FilterResult into a new, but visually equivalent, image that fills 'dstBounds',
-    // has nearest-neighbor sampling, and a transform that just translates by 'dstBounds' TL corner.
-    std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
-    resolve(LayerSpace<SkIRect> dstBounds) const;
-
     // Update metadata to concat the given transform directly.
     void concatTransform(const LayerSpace<SkMatrix>& transform,
                          const SkSamplingOptions& newSampling,
                          const LayerSpace<SkIRect>& outputBounds);
 
+    // Returns true if the output of tiling and color-filtering fImage flood-fills 'fLayerBounds'.
+    bool fillsLayerBounds() const;
+
+    // Renders this FilterResult into a new, but visually equivalent, image that fills 'dstBounds',
+    // has nearest-neighbor sampling, and a transform that just translates by 'dstBounds' TL corner,
+    // and evaluates any SkColorFilter.
+    std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
+    resolve(LayerSpace<SkIRect> dstBounds) const;
+
     // The effective image of a FilterResult is 'fImage' sampled by 'fSamplingOptions' and
-    // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform', clipped
-    // to 'fLayerBounds'.
+    // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform', and
+    // filtered by 'fColorFilter', with its output clipped to 'fLayerBounds'.
     sk_sp<SkSpecialImage> fImage;
     SkSamplingOptions     fSamplingOptions;
     // SkTileMode         fTileMode = SkTileMode::kDecal;
     // Typically this will be an integer translation that encodes the origin of the top left corner,
     // but can become more complex when combined with applyTransform().
     LayerSpace<SkMatrix>  fTransform;
+    // Typically this will be null. If it affects transparent black, the effective image fills out
+    // to fLayerBounds even when kDecal tiling is used.
+    sk_sp<SkColorFilter>  fColorFilter;
 
     // The layer bounds are initially fImage's dimensions mapped by fTransform. As the filter result
     // is processed by the image filter DAG, it can be further restricted by crop rects or the
