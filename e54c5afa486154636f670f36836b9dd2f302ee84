@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90094966_4f786f4b",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T15:12:05Z",
+      "side": 1,
+      "message": "Is this reserve-count comment still meaningful? pop_back_n doesn\u0027t shrink the allocation ever.",
+      "range": {
+        "startLine": 122,
+        "startChar": 29,
+        "endLine": 122,
+        "endChar": 57
+      },
+      "revId": "e54c5afa486154636f670f36836b9dd2f302ee84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7447c66_3ad10e7a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T15:12:05Z",
+      "side": 1,
+      "message": "Should we put SkToInt here just to prove that there\u0027s no truncation? (I can see that it\u0027s true but it requires a bit of thinking)",
+      "range": {
+        "startLine": 488,
+        "startChar": 39,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "e54c5afa486154636f670f36836b9dd2f302ee84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
