@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "44132473_974f79b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T20:04:19Z",
+      "side": 1,
+      "message": "Lets stop using this monorail bug. Instead lets us our buganizer component. This is the high level bug for Dawn in graphite, b/237106457. However, don\u0027t just link that to every change. Please add nested sub tasks for what is needed in the dawn backend.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 10
+      },
+      "revId": "6decae0262d27bf1382081490b40a81fa38083f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0fcad4de_40660d05",
@@ -14,6 +37,29 @@
       "writtenOn": "2022-11-11T14:40:17Z",
       "side": 1,
       "message": "Hi Greg, PTAL. Thanks",
+      "revId": "6decae0262d27bf1382081490b40a81fa38083f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4105cbf9_fca727ca",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T20:04:19Z",
+      "side": 1,
+      "message": "Can you explain what this is? This looks like something for the sprint and not something we want to land officially.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 28
+      },
       "revId": "6decae0262d27bf1382081490b40a81fa38083f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
