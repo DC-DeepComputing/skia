@@ -2,6 +2,10 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 110
+-------------
+  * Removed previously deprecated SkImageFilters::Paint factory. Use SkImageFilters::Shader instead.
+
 Milestone 109
 -------------
   * SkMesh vertex and fragment main() signatures have changed. See docs on SkMeshSpecification.

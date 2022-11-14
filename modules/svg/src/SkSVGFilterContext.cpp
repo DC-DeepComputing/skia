@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorSpace.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkImageFilters.h"
 #include "modules/svg/include/SkSVGFilterContext.h"
@@ -26,6 +27,21 @@ sk_sp<SkImageFilter> ConvertFilterColorspace(sk_sp<SkImageFilter>&& input,
         SkASSERT(src == SkSVGColorspace::kLinearRGB && dst == SkSVGColorspace::kSRGB);
         return SkImageFilters::ColorFilter(SkColorFilters::LinearToSRGBGamma(), input);
     }
+}
+
+sk_sp<SkShader> PaintAsShader(const SkPaint& paint) {
+    sk_sp<SkShader> shader = paint.refShader();
+    if (shader && paint.getAlphaf() < 1.f) {
+        // Multiply by paint alpha
+        shader = shader->makeWithColorFilter(
+                SkColorFilters::Blend(paint.getColor4f(), nullptr, SkBlendMode::kDstIn));
+    } else if (!shader) {
+        shader = SkShaders::Color(paint.getColor4f(), nullptr);
+    }
+    if (paint.getColorFilter()) {
+        shader = shader->makeWithColorFilter(paint.refColorFilter());
+    }
+    return shader;
 }
 
 }  // namespace
@@ -81,20 +97,20 @@ std::tuple<sk_sp<SkImageFilter>, SkSVGColorspace> SkSVGFilterContext::getInput(
         case SkSVGFeInputType::Type::kFillPaint: {
             const auto& fillPaint = ctx.fillPaint();
             if (fillPaint.isValid()) {
-                result = SkImageFilters::Paint(*fillPaint);
+                auto dither = fillPaint->isDither() ? SkImageFilters::Dither::kYes
+                                                    : SkImageFilters::Dither::kNo;
+                result = SkImageFilters::Shader(PaintAsShader(*fillPaint), dither);
             }
             break;
         }
         case SkSVGFeInputType::Type::kStrokePaint: {
-            // The paint filter doesn't handle stroke paints properly, so convert to fill for
-            // simplicity.
-            // TODO: Paint filter is deprecated, but the replacement (SkShaders::*())
-            //       requires some extra work to handle all paint features (gradients, etc).
+            // The paint filter doesn't apply fill/stroke styling, but use the paint settings
+            // defined for strokes.
             const auto& strokePaint = ctx.strokePaint();
             if (strokePaint.isValid()) {
-                SkPaint p = *strokePaint;
-                p.setStyle(SkPaint::kFill_Style);
-                result = SkImageFilters::Paint(p);
+                auto dither = strokePaint->isDither() ? SkImageFilters::Dither::kYes
+                                                      : SkImageFilters::Dither::kNo;
+                result = SkImageFilters::Shader(PaintAsShader(*strokePaint), dither);
             }
             break;
         }
