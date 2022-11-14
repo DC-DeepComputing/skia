@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b9b432_d0c166d5",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-14T16:56:18Z",
+      "side": 0,
+      "message": "This seems to be unneeded.",
+      "range": {
+        "startLine": 637,
+        "startChar": 73,
+        "endLine": 637,
+        "endChar": 91
+      },
+      "revId": "b458b76170e7c60879a9d5df897849cdc7e2e25b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
