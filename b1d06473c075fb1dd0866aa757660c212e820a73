@@ -69,6 +69,23 @@
       "parentUuid": "8f4e406c_11e7d143",
       "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae176a7_4808eb3b",
+        "filename": "src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-14T15:49:08Z",
+      "side": 1,
+      "message": "I\u0027m assuming before we attempt to land this that there will be some way to generalize or generate this sort of thing for some list of header files?",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
