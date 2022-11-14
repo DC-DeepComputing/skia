@@ -16,6 +16,190 @@
       "message": "Hi Greg, PTAL. Thanks",
       "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee75e628_ad2acbae",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "When/how do think we or developers should set this flag? Is the reason it is guarded for code size reasons or does it actually have a perf impact on things?",
+      "range": {
+        "startLine": 78,
+        "startChar": 7,
+        "endLine": 78,
+        "endChar": 32
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f9752bf_0975ffaa",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "No reason to assert here since the CreateSampler call could fail outside of Skia control",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 24
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71a4ed28_49951d86",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "So this call here is only going to be made from internal Skia calls. If we are asserting false here, that means we should be checking things higher up in Skia. In that case, can we just do:\n\n    SkASSERT(dimensions.width() \u003e caps-\u003emaxTextureSize() ||\n             dimensions.height() \u003e caps-\u003emaxTextureSize());",
+      "range": {
+        "startLine": 57,
+        "startChar": 2,
+        "endLine": 61,
+        "endChar": 5
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7fef5a1_352df888",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "This renderable check should probably also take the numSamples and confirm those are valid as well.",
+      "range": {
+        "startLine": 70,
+        "startChar": 16,
+        "endLine": 70,
+        "endChar": 34
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da36d5f_8590373c",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "We normally don\u0027t assert here. The device is allowed to fail to create something (e.g. oom), and we should fail gracefully and just return {}",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 24
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3967b0db_5d237d33",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "can you include our Log.h file and add something like:\nLOG_E(\"No valid dawn texture passed into MakeWrapped call\\n\");",
+      "range": {
+        "startLine": 133,
+        "startChar": 4,
+        "endLine": 133,
+        "endChar": 19
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73da9dac_94b601c1",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "same log statement",
+      "range": {
+        "startLine": 150,
+        "startChar": 16,
+        "endLine": 150,
+        "endChar": 23
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a0dd9b_93505928",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T21:37:32Z",
+      "side": 1,
+      "message": "2",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
