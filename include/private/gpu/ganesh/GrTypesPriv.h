@@ -244,13 +244,15 @@ enum class GrClampType {
  * These values are identical to SkCanvas::QuadAAFlags.
  */
 enum class GrQuadAAFlags {
-    kLeft   = 0b0001,
-    kTop    = 0b0010,
-    kRight  = 0b0100,
+    kLeft = 0b0001,
+    kTop = 0b0010,
+    kRight = 0b0100,
     kBottom = 0b1000,
 
+    kCompressed_QuadAAFlag = 0b10000,
+
     kNone = 0b0000,
-    kAll  = 0b1111,
+    kAll = 0b01111,
 };
 
 GR_MAKE_BITFIELD_CLASS_OPS(GrQuadAAFlags)
