@@ -88,6 +88,9 @@ namespace SkOpts {
     DEFINE_DEFAULT(S32_alpha_D32_filter_DX);
     DEFINE_DEFAULT(S32_alpha_D32_filter_DXDY);
 
+    DEFINE_DEFAULT(raster_pipeline_lowp_stride);
+    DEFINE_DEFAULT(raster_pipeline_highp_stride);
+
     DEFINE_DEFAULT(interpret_skvm);
 #undef DEFINE_DEFAULT
 
