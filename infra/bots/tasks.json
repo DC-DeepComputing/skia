@@ -93907,7 +93907,6 @@
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_Vulkan": {},
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {},
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs": {},
-    "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All": {},
     "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit": {},
     "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit": {
       "location_regexes": [
