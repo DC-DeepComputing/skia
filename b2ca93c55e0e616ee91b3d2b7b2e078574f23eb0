@@ -94,6 +94,30 @@
       },
       "revId": "b2ca93c55e0e616ee91b3d2b7b2e078574f23eb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c3ddc9e_0b2ff44a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-14T15:12:28Z",
+      "side": 1,
+      "message": "TYVM, that makes it a lot clearer",
+      "parentUuid": "cef9f4fa_5e55ce68",
+      "range": {
+        "startLine": 361,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 40
+      },
+      "revId": "b2ca93c55e0e616ee91b3d2b7b2e078574f23eb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
