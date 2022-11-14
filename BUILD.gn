@@ -60,6 +60,25 @@ config("skia_public") {
   if (is_wasm) {
     defines += wasm_defines
   }
+  if (skia_use_dawn) {
+    defines += [ "SK_DAWN" ]
+  }
+  if (skia_use_direct3d) {
+    defines += [ "SK_DIRECT3D" ]
+  }
+  if (skia_use_gl) {
+    defines += [ "SK_GL" ]
+  }
+  if (skia_use_metal) {
+    defines += [ "SK_METAL" ]
+  }
+  if (skia_use_mock_gpu) {
+    defines += [ "SK_MOCK_GPU" ]
+  }
+  if (skia_use_vulkan) {
+    defines += [ "SK_VULKAN" ]
+  }
+
   if (skia_gl_standard == "gles") {
     defines += [ "SK_ASSUME_GL_ES=1" ]
   } else if (skia_gl_standard == "gl") {
@@ -932,8 +951,6 @@ optional("gpu_shared") {
   }
 
   if (skia_use_dawn) {
-    public_defines += [ "SK_DAWN" ]
-
     # When building for WASM, the WebGPU headers are provided by Emscripten. For native builds we
     # have to depend on Dawn directly.
     if (!skia_use_webgpu) {
@@ -1010,7 +1027,6 @@ optional("gpu") {
   frameworks = []
 
   if (skia_use_gl) {
-    public_defines += [ "SK_GL" ]
     if (is_android) {
       sources += [
         "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
@@ -1073,7 +1089,6 @@ optional("gpu") {
   }
 
   if (skia_use_direct3d) {
-    public_defines += [ "SK_DIRECT3D" ]
     deps += [ "//third_party/d3d12allocator" ]
     sources += skia_direct3d_sources
     if (skia_enable_direct3d_debug_layer) {
@@ -1201,7 +1216,6 @@ optional("graphite") {
     sources += skia_graphite_dawn_sources
   }
   if (skia_use_metal) {
-    public_defines += [ "SK_METAL" ]
     sources += skia_graphite_mtl_sources
     if (skia_enable_metal_debug_info) {
       public_defines += [ "SK_ENABLE_MTL_DEBUG_INFO" ]
