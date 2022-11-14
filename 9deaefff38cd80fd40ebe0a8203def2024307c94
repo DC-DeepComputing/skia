@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85cfcd1_9618c8bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-14T20:08:56Z",
+      "side": 1,
+      "message": "This change is hard to review without any context of the objects the keys represent. Again I think you just broke your large Caps CL into 3 smaller CLs but still just filling in the \"Caps\" class. Instead you need to make changes where the pieces can all be understood together.\n\nFor example, I would first make a CL that creates Dawn\u0027s pipelines. Then I would have the same reviewer review a follow up CL where you fill in the keys for the graphics pipelines. I imagine graphics and compute are very different in terms of how we setup up the pipelines, so those should be kept in different sets of changes.\n\nThe texture key again should be connected to where we\u0027re making DawnTextures so that a reviewer can verify the key here makes sense.",
+      "revId": "9deaefff38cd80fd40ebe0a8203def2024307c94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
