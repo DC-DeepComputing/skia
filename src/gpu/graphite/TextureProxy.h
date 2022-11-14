@@ -33,10 +33,11 @@ public:
     int numSamples() const { return fInfo.numSamples(); }
     Mipmapped mipmapped() const { return fInfo.mipmapped(); }
 
-    SkISize dimensions() const { return fDimensions; }
+    SkISize dimensions() const;
     const TextureInfo& textureInfo() const { return fInfo; }
 
     bool isLazy() const;
+    bool isFullyLazy() const;
     bool isVolatile() const;
 
     bool instantiate(ResourceProvider*);
@@ -70,6 +71,10 @@ public:
                                         SkBudgeted,
                                         Volatile,
                                         LazyInstantiateCallback&&);
+    static sk_sp<TextureProxy> MakeFullyLazy(const TextureInfo&,
+                                             SkBudgeted,
+                                             Volatile,
+                                             LazyInstantiateCallback&&);
 
 private:
     TextureProxy(SkISize dimensions,

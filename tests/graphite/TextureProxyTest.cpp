@@ -64,6 +64,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context) 
                                       Renderable::kNo,
                                       SkBudgeted::kNo);
     REPORTER_ASSERT(reporter, !textureProxy->isLazy());
+    REPORTER_ASSERT(reporter, !textureProxy->isFullyLazy());
     REPORTER_ASSERT(reporter, !textureProxy->isVolatile());
     REPORTER_ASSERT(reporter, !textureProxy->isInstantiated());
     REPORTER_ASSERT(reporter, textureProxy->dimensions() == kValidSize);
@@ -82,6 +83,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context) 
     textureProxy = TextureProxy::MakeLazy(
             kValidSize, textureInfo, SkBudgeted::kNo, Volatile::kNo, nullCallback);
     REPORTER_ASSERT(reporter, textureProxy->isLazy());
+    REPORTER_ASSERT(reporter, !textureProxy->isFullyLazy());
     REPORTER_ASSERT(reporter, !textureProxy->isVolatile());
 
     instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
@@ -100,6 +102,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context) 
     textureProxy = TextureProxy::MakeLazy(
             kValidSize, textureInfo, SkBudgeted::kNo, Volatile::kYes, nullCallback);
     REPORTER_ASSERT(reporter, textureProxy->isLazy());
+    REPORTER_ASSERT(reporter, !textureProxy->isFullyLazy());
     REPORTER_ASSERT(reporter, textureProxy->isVolatile());
 
     instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
@@ -116,6 +119,19 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context) 
 
     textureProxy->deinstantiate();
     REPORTER_ASSERT(reporter, !textureProxy->isInstantiated());
+
+    // Fully-lazy TextureProxy.
+    textureProxy =
+            TextureProxy::MakeFullyLazy(textureInfo, SkBudgeted::kNo, Volatile::kYes, callback);
+    REPORTER_ASSERT(reporter, textureProxy->isLazy());
+    REPORTER_ASSERT(reporter, textureProxy->isFullyLazy());
+    REPORTER_ASSERT(reporter, textureProxy->isVolatile());
+
+    instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
+    REPORTER_ASSERT(reporter, instantiateSuccess);
+    REPORTER_ASSERT(reporter, textureProxy->isInstantiated());
+    REPORTER_ASSERT(reporter, textureProxy->isFullyLazy());
+    REPORTER_ASSERT(reporter, textureProxy->dimensions() == kValidSize);
 
     // InstantiateIfNotLazy tests.
     textureProxy = TextureProxy::Make(caps,
