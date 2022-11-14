@@ -69,6 +69,7 @@
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
+#include "src/sksl/spirv.h"
 
 #include <cmath>
 #include <set>
@@ -244,6 +245,8 @@ SPIRVCodeGenerator::Intrinsic SPIRVCodeGenerator::getIntrinsic(IntrinsicKind ik)
         case k_sampleGrad_IntrinsicKind:  return SPECIAL(TextureGrad);
         case k_sampleLod_IntrinsicKind:   return SPECIAL(TextureLod);
         case k_subpassLoad_IntrinsicKind: return SPECIAL(SubpassLoad);
+        case k_textureSize_IntrinsicKind:
+        return SPECIAL(TextureSize);
 
         case k_floatBitsToInt_IntrinsicKind:  return ALL_SPIRV(Bitcast);
         case k_floatBitsToUint_IntrinsicKind: return ALL_SPIRV(Bitcast);
@@ -1497,6 +1500,25 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                    SpvImageOperandsLodMask,
                                    this->writeExpression(*arguments[2], out),
                                    out);
+            break;
+        }
+        case kTextureSize_SpecialIntrinsic: {
+            // TODO: We are hacking to always assume a sampler2D. A correct
+            // implementation would probably look at the texture dimension and
+            // return an integer with the same dimension.
+            fCapabilities |= 1ULL << SpvCapabilityImageQuery;
+            SkASSERT(arguments.size() <= 2);
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SpvId sampler = this->writeExpression(*arguments[0], out);
+            // We need to extract the image out of the sampler.
+            SpvId image_id = this->nextId(nullptr);
+            SpvId image_type = this->getType(arguments[0]->type().textureType());
+            this->writeInstruction(SpvOpImage, image_type, image_id, sampler, out);
+
+            SpvId type = this->getType(callType);
+            SpvId lod = this->writeExpression(*arguments[1], out);
+            this->writeInstruction(SpvOpImageQuerySizeLod, type, result, image_id, lod, out);
+
             break;
         }
         case kMod_SpecialIntrinsic: {

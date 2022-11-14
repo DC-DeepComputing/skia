@@ -13,7 +13,7 @@
 
 namespace GrPersistentCacheUtils {
 
-static constexpr int kCurrentVersion = 9;
+static constexpr int kCurrentVersion = 30;
 
 int GetCurrentVersion() {
     // The persistent cache stores a copy of the SkSL::Program::Inputs struct. If you alter the
