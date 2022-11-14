@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9f4759_61a2cfe6",
+        "filename": "fuzz/FuzzCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-14T20:38:56Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "0fa3b407_1a0f5a84",
+      "range": {
+        "startLine": 750,
+        "startChar": 13,
+        "endLine": 759,
+        "endChar": 9
+      },
+      "revId": "0f8632f83a62776f25a08d648a25c8a3206e6dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c381eae_f9c056ad",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-14T19:24:14Z",
       "side": 0,
       "message": "I believe this was the source of the fuzzer bug. We\u0027d only really create SkPaints with shaders from the public API, but if an SkPicture was manufactured with a valid SkPaint with other effects, we\u0027d ingest it here.\n\nIn this case, the read paint had an SDFMaskFilter on it, which is an internal-only mask filter that is only attached to specific draws for text rendering processing, so it then completely confused the generic drawRect blitting code path. Overall a surprisingly good find from the fuzzer.",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 76
+      },
+      "revId": "0f8632f83a62776f25a08d648a25c8a3206e6dcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5fe2a1_f6f0caf5",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-14T20:38:56Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "7c381eae_f9c056ad",
       "range": {
         "startLine": 80,
         "startChar": 4,
