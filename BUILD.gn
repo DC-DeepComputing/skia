@@ -810,29 +810,6 @@ if (skia_compile_sksl_tests) {
     skslc_path += ".exe"
   }
 
-  # Build the test files using skslc.
-  import("gn/sksl_tests.gni")
-  template("compile_sksl") {
-    # Compile the passed-in `sources` into `outputs` using skslc, with the given language/settings.
-    action("compile_sksl_${target_name}") {
-      script = "gn/compile_sksl_tests.py"
-      deps = [
-        ":sksl_modules",
-        ":skslc(//gn/toolchain:$host_toolchain)",
-      ]
-      sources = []
-      outputs = []
-      response_file_contents = []
-      args = [
-        # Comments are the variable name in compile_sksl_tests.py
-        rebase_path(skslc_path),  # skslc
-        invoker.lang,  # lang
-        invoker.settings,  # settings
-        rebase_path("resources"),  # input_root_dir
-        rebase_path("tests"),  # output_root_dir
-        "{{response_file_name}}",  # input_file
-      ]
-
       testsDir = get_path_info("tests/sksl/", "abspath")
       resourcesDir = get_path_info("resources/sksl/", "abspath")
 
