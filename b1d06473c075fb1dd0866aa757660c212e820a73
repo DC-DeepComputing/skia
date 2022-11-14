@@ -51,6 +51,24 @@
       "parentUuid": "de37b02c_f1305ba5",
       "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5613911_63cbb055",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-14T13:20:37Z",
+      "side": 1,
+      "message": "That was my conclusion as well. It is possible that we might be able to make our toolchain rules do this, but that is complicated and would mean Skia builds with Bazel differently than other C++ builds, which is probably less than idea.",
+      "parentUuid": "8f4e406c_11e7d143",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
