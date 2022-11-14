@@ -33,6 +33,23 @@
       "message": "Good catch! Thank you for the contribution.",
       "revId": "016c6c466febad9d001a9603dfcf90002a656b43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6b9b48f_ea56e63d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-11-14T13:49:30Z",
+      "side": 1,
+      "message": "Could you please also add your name+email to the Skia top-level AUTHORS file in this CL?- https://skia.googlesource.com/skia/+/main/AUTHORS",
+      "revId": "016c6c466febad9d001a9603dfcf90002a656b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
