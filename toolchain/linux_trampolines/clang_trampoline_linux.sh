@@ -28,6 +28,7 @@ supported_files_or_dirs=(
   "tools/debugger/"
   "tests/"
 
+  "src/core/SkMalloc.cpp",
   # See //bazel/generate_cpp_files_for_headers.bzl and //src/BUILD.bazel for more.
   "src/gen/"
 )
