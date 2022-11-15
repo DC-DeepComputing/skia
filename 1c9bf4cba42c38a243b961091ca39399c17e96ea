@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b52fd128_429554b0",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-15T16:02:35Z",
+      "side": 1,
+      "message": "I\u0027m picturing that this is going to be deferred until the program gets baked into stages, too. (At least for child calls). That will let us build a program from an RTE once, even if it\u0027s reused to create multiple shaders with different child effects, etc. (We\u0027d need to do that in this new model anyway - for non-SkSL children, we can\u0027t actually call those callbacks without the actual RP and Alloc).",
+      "range": {
+        "startLine": 48,
+        "startChar": 55,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "1c9bf4cba42c38a243b961091ca39399c17e96ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
