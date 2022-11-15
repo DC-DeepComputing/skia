@@ -1,0 +1,18 @@
+load("//bazel:macros.bzl", "exports_files_legacy", "skia_cc_binary")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_cc_binary(
+    name = "fiddle",
+    srcs = [
+        "draw.cpp",
+        "fiddle_main.cpp",
+        "fiddle_main.h",
+    ],
+    deps = [
+        "//:skia_internal",
+        "//tools:skia_public_headers",
+    ],
+)
