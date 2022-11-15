@@ -277,6 +277,12 @@ void TextLine::ensureTextBlobCachePopulated() {
                    textRange,
                    StyleType::kForeground,
                    [this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
+                       /*
+                       SkDebugf("[%d:%d): [%d:%d): [%f:%f)\n",
+                                    textRange.start, textRange.end,
+                                    context.pos, context.pos + context.size,
+                                    context.clip.fLeft, context.clip.fRight);
+                       */
                        this->buildTextBlob(textRange, style, context);
                    });
                return true;
@@ -743,47 +749,36 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         }
         return result;
     }
+
     // Find [start:end] clusters for the text
-    Cluster* start = nullptr;
-    Cluster* end = nullptr;
     do {
+        // Update textRange by cluster edges (shift start up to the edge of the cluster)
+        // TODO: remove this limitation?
+        TextRange updatedTextRange;
         bool found;
-        ClusterIndex startIndex;
-        ClusterIndex endIndex;
-        std::tie(found, startIndex, endIndex) = run->findLimitingClusters(textRange);
+        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
+                                        run->findLimitingGlyphClusters(textRange);
+        // Updated text could only shift right from the initial text
+        // so this loop is going to break soon enough
+        SkASSERT(updatedTextRange.start >= textRange.start);
+        SkASSERT(updatedTextRange.end >= textRange.end);
         if (!found) {
             return result;
         }
-        start = &fOwner->cluster(startIndex);
-        end = &fOwner->cluster(endIndex);
 
         if (!limitToGraphemes) {
+            textRange = updatedTextRange;
             break;
         }
 
-        // Update textRange by cluster edges (shift start up to the edge of the cluster)
-        TextRange updatedTextRange(textRange);
-        if (run->leftToRight()) {
-            if (textRange.start != start->textRange().start) {
-                updatedTextRange.start = start->textRange().end;
-            }
-            updatedTextRange.end = end->textRange().end;
-        } else {
-            if (textRange.start != end->textRange().start) {
-                updatedTextRange.start = end->textRange().end;
-            }
-            updatedTextRange.end = start->textRange().end;
-        }
-        SkASSERT(updatedTextRange.start >= textRange.start);
-
         // Update text range by grapheme edges (shift start up to the edge of the grapheme)
         std::tie(found, updatedTextRange.start, updatedTextRange.end) =
-                run->findLimitingGraphemes(updatedTextRange);
+                                    run->findLimitingGraphemes(updatedTextRange);
+        // Updated text could only shift right from the initial text
+        // so this loop is going to break eventually
         SkASSERT(updatedTextRange.start >= textRange.start);
         SkASSERT(updatedTextRange.end >= textRange.end);
 
-        // Updated text could only shift right from the initial text
-        // so this loop is going to break soon enough
         if (updatedTextRange == textRange) {
             break;
         }
@@ -795,6 +790,13 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         // Move the start until it's on the grapheme edge (and glypheme, too)
     } while (true);
 
+    bool emptyEnd = textRange.width() == 0 && textRange.start >= run->fTextRange.start;
+
+    Cluster* start = &fOwner->cluster(fOwner->clusterIndex(textRange.start));
+    Cluster* end = &fOwner->cluster(fOwner->clusterIndex(textRange.end - (emptyEnd ? 0 : 1)));
+    if (!run->leftToRight()) {
+        std::swap(start, end);
+    }
     result.pos = start->startPos();
     result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - start->startPos();
 
