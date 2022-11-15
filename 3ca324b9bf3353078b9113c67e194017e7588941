@@ -169,6 +169,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ea14d68_c0fb40ce",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-15T18:38:40Z",
+      "side": 1,
+      "message": "With this latest change I just called it TargetSurface, WDYT?",
+      "parentUuid": "91f8e546_acef5772",
+      "range": {
+        "startLine": 35,
+        "startChar": 15,
+        "endLine": 35,
+        "endChar": 23
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33a8e2cf_3508455e",
         "filename": "include/gpu/graphite/Recorder.h",
         "patchSetId": 4
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "33a8e2cf_3508455e",
+      "range": {
+        "startLine": 123,
+        "startChar": 14,
+        "endLine": 123,
+        "endChar": 32
+      },
+      "revId": "3ca324b9bf3353078b9113c67e194017e7588941",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7a51f08_c755e943",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-15T18:38:40Z",
+      "side": 1,
+      "message": "Here I called it \"getDeferredCanvas\", and accordingly to get this special type of recorder you call \"Canvas::makeDeferredRecorder\". WDYT?",
+      "parentUuid": "5abba2fb_68f95aab",
       "range": {
         "startLine": 123,
         "startChar": 14,
