@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7f98e7_df824d88",
+        "filename": "tests/sksl/spirv/StructArrayMemberInDifferentLayouts.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-15T17:37:52Z",
+      "side": 1,
+      "message": "See skbug.com/13920",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "9a355cb76ac78dff1de02db1dc4becb39b183605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
