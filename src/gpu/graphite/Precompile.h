@@ -23,6 +23,8 @@ class SkRuntimeEffect;
 
 namespace skgpu::graphite {
 
+class PrecompileBasePriv;
+
 class PrecompileBase : public SkRefCnt {
 public:
     enum class Type {
@@ -38,7 +40,21 @@ public:
 
     Type type() const { return fType; }
 
+    // Provides access to functions that aren't part of the public API.
+    PrecompileBasePriv priv();
+    const PrecompileBasePriv priv() const;  // NOLINT(readability-const-return-type)
+
 private:
+    friend class PrecompileBasePriv;
+
+    // TODO: make these two pure virtual.
+    virtual int numIntrinsicCombos() const { return 1; }
+    virtual int numChildCombos() const { return 1; }
+
+    int numCombinations() const {
+        return this->numIntrinsicCombos() * this->numChildCombos();
+    }
+
     Type fType;
 };
 
@@ -100,6 +116,9 @@ public:
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
         fBlenders.assign(blenders.begin(), blenders.end());
     }
+
+    // TODO: hide this entry point?
+    int numCombinations() const;
 
 private:
     std::vector<sk_sp<PrecompileShader>> fShaders;
