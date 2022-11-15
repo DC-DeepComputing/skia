@@ -832,7 +832,7 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::clone() const {
     return std::unique_ptr<GrFragmentProcessor>(new GrTextureEffect(*this));
 }
 
-GR_DEFINE_FRAGMENT_PROCESSOR_TEST(GrTextureEffect);
+GR_DEFINE_FRAGMENT_PROCESSOR_TEST(GrTextureEffect)
 #if GR_TEST_UTILS
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::TestCreate(GrProcessorTestData* testData) {
     auto [view, ct, at] = testData->randomView();
