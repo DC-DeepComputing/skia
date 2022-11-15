@@ -1,0 +1,23 @@
+// In this test the same struct type `S` is used in contexts with different layout constraints.
+struct S {
+    float[2] a;
+};
+
+layout(push_constant) uniform testPushConstants {
+    float[2] pushConstantArray;
+    S pushConstantStruct;
+};
+
+layout(set = 0, binding = 0) uniform testUniforms {
+    float[2] uboArray;
+    S uboStruct;
+};
+
+void main() {
+    S s1 = S(pushConstantArray);
+    S s2 = S(uboArray);
+    S s3 = pushConstantStruct;
+    S s4 = uboStruct;
+
+    sk_FragColor = (s1 == s2) || (s3 == s4) ? half4(1) : half4(0);
+}
