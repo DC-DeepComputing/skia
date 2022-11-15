@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6dfc225_38f784c4",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:27:21Z",
+      "side": 1,
+      "message": "I think that\u0027s what we should do, since my remembering of our plan was for the Paint-precompile system to mimic an SkPaint, so if they didn\u0027t specify something they get the default behavior, which is src-over in this case.\n\nAs-is, if we have no blenders, we return 0 and that messes up the whole combination thing. Maybe we change the above `if(bmBased)` to be `if(bmBased||numBlendCombos\u003d\u003d0)`?\n\nOr are we going to have a special mode for src-over, and another for all other BMs? Maybe we separate out BMs that would require dst readback for coverage handling?",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 66
+      },
+      "revId": "356e914d79960dfc859db85a2affcae9906beda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d43c699_27b238a1",
+        "filename": "src/gpu/graphite/Precompile.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:27:21Z",
+      "side": 1,
+      "message": "What will intrinsic combinations be used for?\n\nnit: combos-\u003ecombinations (same for numChildCombos below) 😊",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 34
+      },
+      "revId": "356e914d79960dfc859db85a2affcae9906beda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ef0c6c_606ae72f",
+        "filename": "src/gpu/graphite/Precompile.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:27:21Z",
+      "side": 1,
+      "message": "Lets mark it as testOnly? \n\nI think the entry point that clients would find most useful would be the final number of pipelines, which requires the rest of the renderpass and geometry combinations. wdyt?",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 35
+      },
+      "revId": "356e914d79960dfc859db85a2affcae9906beda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d04cce5_2c6e6156",
+        "filename": "src/gpu/graphite/PrecompileBasePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:27:21Z",
+      "side": 1,
+      "message": "nit: use Combinations to be consistent with `numCombinations()`.",
+      "range": {
+        "startLine": 20,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "356e914d79960dfc859db85a2affcae9906beda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
