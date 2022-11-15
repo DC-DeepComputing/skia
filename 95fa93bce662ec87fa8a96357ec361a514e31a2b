@@ -16,6 +16,24 @@
       "message": "This looks to remove it from Debian 10 as well, is that intentional or did you mean to remove it only for \u003e\u003d 11?",
       "revId": "95fa93bce662ec87fa8a96357ec361a514e31a2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "713ec5d1_4dde4e4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T19:56:30Z",
+      "side": 1,
+      "message": "Intentional. It was going to be brittle or difficult to only target Debian10+ as well, so I figured to just remove it from everywhere.",
+      "parentUuid": "8f100478_27e0e9d5",
+      "revId": "95fa93bce662ec87fa8a96357ec361a514e31a2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
