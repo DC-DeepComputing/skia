@@ -22,6 +22,30 @@
       },
       "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a289f63c_d0707045",
+        "filename": "resources/sksl/spirv/StructArrayMemberInDifferentLayouts.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T20:13:37Z",
+      "side": 1,
+      "message": "Correction to first sentence above: \"AFAIK the rest of Skia has **no** way\"",
+      "parentUuid": "a1062aae_3a65fdfa",
+      "range": {
+        "startLine": 8,
+        "startChar": 6,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
