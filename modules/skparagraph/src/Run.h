@@ -172,6 +172,8 @@ private:
     friend class ParagraphCache;
     friend class OneLineShaper;
 
+    std::tuple<bool, TextIndex, TextIndex> findLimitingGlyphClusters(TextRange text) const;
+
     ParagraphImpl* fOwner;
     TextRange fTextRange;
     ClusterRange fClusterRange;

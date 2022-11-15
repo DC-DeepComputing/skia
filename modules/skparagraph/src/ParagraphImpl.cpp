@@ -525,7 +525,25 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
 
     this->applySpacingAndBuildClusterTable();
+    /* For debugging:
+    for (auto& run : fRuns) {
+        SkString ff;
+        run.fFont.getTypeface()->getFamilyName(&ff);
+        SkDebugf("Run%d: %s %fx%f\n", run.size(), ff.c_str(), run.advance().fX, run.advance().fY);
+        for (size_t i = 0ul; i < run.size(); ++i) {
+            SkDebugf("%d -> %d : %d %f %f\n",
+                     i,
+                     run.clusterIndex(i),
+                     run.glyphs()[i],
+                     run.positions()[i].fX,
+                     run.offsets()[i].fX);
+        }
+    }
 
+    for (size_t i = 0ul; i < fClustersIndexFromCodeUnit.size(); ++i) {
+        SkDebugf("%d : %d\n", i, fClustersIndexFromCodeUnit[i]);
+    }
+    */
     return result;
 }
 

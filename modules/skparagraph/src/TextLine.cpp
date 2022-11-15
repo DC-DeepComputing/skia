@@ -261,6 +261,7 @@ void TextLine::ensureTextBlobCachePopulated() {
                                /*clippingNeeded=*/false};                   // no need for that
         this->buildTextBlob(fTextExcludingSpaces, style, context);
     } else {
+        SkDebugf("Line[%d:%d) = %f\n", fText.start, fText.end, fAdvance.fX);
         this->iterateThroughVisualRuns(false,
            [this](const Run* run,
                   SkScalar runOffsetInLine,
@@ -270,6 +271,8 @@ void TextLine::ensureTextBlobCachePopulated() {
                    *runWidthInLine = run->advance().fX;
                    return true;
                }
+                SkDebugf("Run[%d:%d) = %f\n",
+                         run->fTextRange.start, run->fTextRange.end, run->fAdvance.fX);
                *runWidthInLine = this->iterateThroughSingleRunByStyles(
                    TextAdjustment::GlyphCluster,
                    run,
@@ -277,6 +280,7 @@ void TextLine::ensureTextBlobCachePopulated() {
                    textRange,
                    StyleType::kForeground,
                    [this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
+                       SkDebugf("[%d:%d) = %f\n", textRange.start, textRange.end, context.clip.width());
                        this->buildTextBlob(textRange, style, context);
                    });
                return true;
@@ -1011,7 +1015,13 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
             TextRange whitespaces = intersected(
                     TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
             if (whitespaces.width() > 0) {
-                auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                auto whitespacesLen = this->measureTextInsideOneRun(
+                                                        whitespaces,
+                                                        run,
+                                                        runOffset,
+                                                        0,
+                                                        true,
+                                                        TextAdjustment::GlyphCluster).clip.width();
                 runOffset -= whitespacesLen;
             }
         }
@@ -1035,6 +1045,35 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     // It asserts that 2 different ways of calculation come with the same results
     if (!includingGhostSpaces && compareRound(totalWidth, this->width()) != 0) {
         SkDebugf("ASSERT: %f != %f\n", totalWidth, this->width());
+        runOffset = 0;
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto lineIntersection = intersected(run->textRange(), textRange);
+            if (lineIntersection.width() == 0 && this->width() != 0) {
+                // TODO: deal with empty runs in a better way
+                continue;
+            }
+            auto len = this->measureTextInsideOneRun(lineIntersection, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+            SkDebugf("%d: @%f + %f = %f\n", runIndex, runOffset, len, runOffset + len);
+            for (auto i = lineIntersection.start; i <= lineIntersection.end; ++i) {
+                TextRange tr(lineIntersection.start, i);
+                auto len = this->measureTextInsideOneRun(tr, run, 0, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                SkDebugf("[%d:%d) = %f\n", lineIntersection.start, i, len);
+            }
+            ClusterIndex s = 0;
+            SkScalar ro = 0;
+            for (auto i = 0; i <= run->size(); ++i) {
+                if (s != run->fClusterIndexes[i]) {
+                    TextRange tr(s, run->fClusterIndexes[i]);
+                    auto len = this->measureTextInsideOneRun(tr, run, ro, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                    SkDebugf("%d: %f + %f = %f\n", s, ro, len, ro + len);
+                    ro += len;
+                    s = run->fClusterIndexes[i];
+                }
+
+            }
+            runOffset += len;
+        }
         SkASSERT(false);
     }
 }
