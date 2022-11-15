@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "795fb109_22c6f282",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T17:22:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f717f87_b1a0f74e",
+      "revId": "cb6691064712e6f9f38aeecc35c7d542a638fa5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dd92f99_c1459c0e",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-15T16:49:54Z",
       "side": 1,
       "message": "We shouldn\u0027t need this line now?",
+      "revId": "cb6691064712e6f9f38aeecc35c7d542a638fa5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d8977cb_598e5672",
+        "filename": "src/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T17:22:40Z",
+      "side": 1,
+      "message": "Good catch, done.",
+      "parentUuid": "5dd92f99_c1459c0e",
       "revId": "cb6691064712e6f9f38aeecc35c7d542a638fa5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
