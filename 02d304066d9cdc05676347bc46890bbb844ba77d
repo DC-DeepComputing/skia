@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccae6010_50e5aca8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T23:06:25Z",
+      "side": 1,
+      "message": "This allows the Android_Graphite_Dawn jobs to build. Since this uses Vulkan on Android as the test context for Dawn, this requires Android API 26 as well.\n\nIt isn\u0027t entirely clear if we should set all the other flags that are set for Vulkan on Android as well.",
+      "revId": "02d304066d9cdc05676347bc46890bbb844ba77d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41d28f12_3e97d5cd",
+        "filename": "tests/VkHardwareBufferTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T23:06:25Z",
+      "side": 1,
+      "message": "Without this `heapIndex` isn\u0027t used. It could be removed, but I believe it\u0027s interesting to have around for debugging. This assert should always be true, though it is testing the Vulkan implementation and not really Skia.",
+      "revId": "02d304066d9cdc05676347bc46890bbb844ba77d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
