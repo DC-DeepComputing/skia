@@ -466,7 +466,10 @@ void ParagraphImpl::buildClusterTable() {
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
         fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
+        fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
     }
+    fCodeUnitProperties[fRuns.back().textRange().end] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
+    fCodeUnitProperties[fRuns.back().textRange().end] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
     fClusters.reserve_back(cluster_count);
 
     // Walk through all the run in the direction of input text
@@ -497,8 +500,10 @@ void ParagraphImpl::buildClusterTable() {
                 }
                 SkSpan<const char> text(fText.c_str() + charStart, charEnd - charStart);
                 fClusters.emplace_back(this, runIndex, glyphStart, glyphEnd, text, width, height);
+                fCodeUnitProperties[charStart] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
             });
         }
+        fCodeUnitProperties[run.textRange().start] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
 
         run.setClusterRange(runStart, fClusters.size());
         fMaxIntrinsicWidth += run.advance().fX;
@@ -520,7 +525,25 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
 
     this->applySpacingAndBuildClusterTable();
+    /* For debugging:
+    for (auto& run : fRuns) {
+        SkString ff;
+        run.fFont.getTypeface()->getFamilyName(&ff);
+        SkDebugf("Run%d: %s %fx%f\n", run.size(), ff.c_str(), run.advance().fX, run.advance().fY);
+        for (size_t i = 0ul; i < run.size(); ++i) {
+            SkDebugf("%d -> %d : %d %f %f\n",
+                     i,
+                     run.clusterIndex(i),
+                     run.glyphs()[i],
+                     run.positions()[i].fX,
+                     run.offsets()[i].fX);
+        }
+    }
 
+    for (size_t i = 0ul; i < fClustersIndexFromCodeUnit.size(); ++i) {
+        SkDebugf("%d : %d\n", i, fClustersIndexFromCodeUnit[i]);
+    }
+    */
     return result;
 }
 
@@ -1067,6 +1090,22 @@ TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
     while (utf8 < fText.size() &&
           (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
         ++utf8;
+    }
+    return utf8;
+}
+
+TextIndex ParagraphImpl::findNextGlyphClusterBoundary(TextIndex utf8) {
+    while (utf8 < fText.size() &&
+          (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGlyphClusterStart) == 0) {
+        ++utf8;
+    }
+    return utf8;
+}
+
+TextIndex ParagraphImpl::findPreviousGlyphClusterBoundary(TextIndex utf8) {
+    while (utf8 > 0 &&
+          (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGlyphClusterStart) == 0) {
+        --utf8;
     }
     return utf8;
 }

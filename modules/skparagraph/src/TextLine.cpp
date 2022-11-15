@@ -261,6 +261,7 @@ void TextLine::ensureTextBlobCachePopulated() {
                                /*clippingNeeded=*/false};                   // no need for that
         this->buildTextBlob(fTextExcludingSpaces, style, context);
     } else {
+        SkDebugf("Line[%d:%d) = %f\n", fText.start, fText.end, fAdvance.fX);
         this->iterateThroughVisualRuns(false,
            [this](const Run* run,
                   SkScalar runOffsetInLine,
@@ -270,6 +271,8 @@ void TextLine::ensureTextBlobCachePopulated() {
                    *runWidthInLine = run->advance().fX;
                    return true;
                }
+                SkDebugf("Run[%d:%d) = %f\n",
+                         run->fTextRange.start, run->fTextRange.end, run->fAdvance.fX);
                *runWidthInLine = this->iterateThroughSingleRunByStyles(
                    TextAdjustment::GlyphCluster,
                    run,
@@ -277,6 +280,7 @@ void TextLine::ensureTextBlobCachePopulated() {
                    textRange,
                    StyleType::kForeground,
                    [this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
+                       SkDebugf("[%d:%d) = %f\n", textRange.start, textRange.end, context.clip.width());
                        this->buildTextBlob(textRange, style, context);
                    });
                return true;
@@ -742,43 +746,31 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
             result.clip = SkRect::MakeXYWH(runOffsetInLine, run->fFontMetrics.fAscent, run->advance().fX, 0);
         }
         return result;
+    } else if (textRange.width() == 0) {
+        return result;
     }
-    // Find [start:end] clusters for the text
-    Cluster* start = nullptr;
-    Cluster* end = nullptr;
 
+    TextRange originalTextRange(textRange); // We need it for proportional measurement
+    // Find [start:end] clusters for the text
     while (true) {
-        // Adjust the text to glyph cluster
-        ClusterRange clusterRange;
+        // Update textRange by cluster edges (shift start up to the edge of the cluster)
+        // TODO: remove this limitation?
+        TextRange updatedTextRange;
         bool found;
-        std::tie(found, clusterRange.start, clusterRange.end) =
-                                            run->findLimitingClusters(textRange);
+        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
+                                        run->findLimitingGlyphClusters(textRange);
         if (!found) {
             return result;
         }
-        start = &fOwner->cluster(clusterRange.start);
-        end = &fOwner->cluster(clusterRange.end);
 
         if ((textAdjustment & TextAdjustment::Grapheme) == 0) {
+            textRange = updatedTextRange;
             break;
         }
 
-        // Update textRange by cluster edges (shift start up to the edge of the cluster)
-        TextRange updatedTextRange(textRange);
-        if (run->leftToRight()) {
-            if (textRange.start != start->textRange().start) {
-                updatedTextRange.start = start->textRange().end;
-            }
-            updatedTextRange.end = end->textRange().end;
-        } else {
-            if (textRange.start != end->textRange().start) {
-                updatedTextRange.start = end->textRange().end;
-            }
-            updatedTextRange.end = start->textRange().end;
-        }
-        SkASSERT(updatedTextRange.start >= textRange.start);
-        // Updated text could only shift right from the initial text
-        // so this loop is going to break soon enough
+        // Update text range by grapheme edges (shift start up to the edge of the grapheme)
+        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
+                                    run->findLimitingGraphemes(updatedTextRange);
         if (updatedTextRange == textRange) {
             break;
         }
@@ -788,6 +780,11 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         textRange = updatedTextRange;
 
         // Move the start until it's on the grapheme edge (and glypheme, too)
+    }
+    Cluster* start = &fOwner->cluster(fOwner->clusterIndex(textRange.start));
+    Cluster* end = &fOwner->cluster(fOwner->clusterIndex(textRange.end - (textRange.width() == 0 ? 0 : 1)));
+    if (!run->leftToRight()) {
+        std::swap(start, end);
     }
 
     result.pos = start->startPos();
@@ -819,8 +816,8 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     // TODO: This is where we get smart about selecting a part of a cluster
     //  by shaping each grapheme separately and then use the result sizes
     //  to calculate the proportions
-    auto leftCorrection = start->sizeToChar(textRange.start);
-    auto rightCorrection = end->sizeFromChar(textRange.end - 1);
+    auto leftCorrection = start->sizeToChar(originalTextRange.start);
+    auto rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
     result.clip.fLeft += leftCorrection;
     result.clip.fRight -= rightCorrection;
     result.clippingNeeded = leftCorrection != 0 || rightCorrection != 0;
@@ -1018,7 +1015,13 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
             TextRange whitespaces = intersected(
                     TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
             if (whitespaces.width() > 0) {
-                auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                auto whitespacesLen = this->measureTextInsideOneRun(
+                                                        whitespaces,
+                                                        run,
+                                                        runOffset,
+                                                        0,
+                                                        true,
+                                                        TextAdjustment::GlyphCluster).clip.width();
                 runOffset -= whitespacesLen;
             }
         }
@@ -1042,6 +1045,35 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     // It asserts that 2 different ways of calculation come with the same results
     if (!includingGhostSpaces && compareRound(totalWidth, this->width()) != 0) {
         SkDebugf("ASSERT: %f != %f\n", totalWidth, this->width());
+        runOffset = 0;
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto lineIntersection = intersected(run->textRange(), textRange);
+            if (lineIntersection.width() == 0 && this->width() != 0) {
+                // TODO: deal with empty runs in a better way
+                continue;
+            }
+            auto len = this->measureTextInsideOneRun(lineIntersection, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+            SkDebugf("%d: @%f + %f = %f\n", runIndex, runOffset, len, runOffset + len);
+            for (auto i = lineIntersection.start; i <= lineIntersection.end; ++i) {
+                TextRange tr(lineIntersection.start, i);
+                auto len = this->measureTextInsideOneRun(tr, run, 0, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                SkDebugf("[%d:%d) = %f\n", lineIntersection.start, i, len);
+            }
+            ClusterIndex s = 0;
+            SkScalar ro = 0;
+            for (auto i = 0; i <= run->size(); ++i) {
+                if (s != run->fClusterIndexes[i]) {
+                    TextRange tr(s, run->fClusterIndexes[i]);
+                    auto len = this->measureTextInsideOneRun(tr, run, ro, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                    SkDebugf("%d: %f + %f = %f\n", s, ro, len, ro + len);
+                    ro += len;
+                    s = run->fClusterIndexes[i];
+                }
+
+            }
+            runOffset += len;
+        }
         SkASSERT(false);
     }
 }
