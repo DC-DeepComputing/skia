@@ -343,6 +343,7 @@ sksl_spirv_tests = [
   "/sksl/shared/SwitchDefaultOnly.sksl",
   "/sksl/shared/SwitchWithFallthrough.sksl",
   "/sksl/shared/SwitchWithLoops.sksl",
+  "/sksl/spirv/ArrayStrideInDifferentLayouts.sksl",
   "/sksl/spirv/ConstantVectorFromVector.sksl",
   "/sksl/spirv/ConstantVectorize.sksl",
   "/sksl/spirv/FunctionParametersOfTextureAndSamplerType.sksl",
@@ -354,6 +355,7 @@ sksl_spirv_tests = [
   "/sksl/spirv/Ossfuzz35916.sksl",
   "/sksl/spirv/Ossfuzz37627.sksl",
   "/sksl/spirv/Ossfuzz44096.sksl",
+  "/sksl/spirv/StructArrayMemberInDifferentLayouts.sksl",
   "/sksl/spirv/UnusedInterfaceBlock.sksl",
   "/sksl/workarounds/RewriteMatrixVectorMultiply.sksl",
 ]
