@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1062aae_3a65fdfa",
+        "filename": "resources/sksl/spirv/StructArrayMemberInDifferentLayouts.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T17:53:16Z",
+      "side": 1,
+      "message": "AFAIK the rest of Skia has any way to bind up a uniform that\u0027s struct-typed. To the best of my knowledge, Ganesh and Graphite only support a hardcoded list of uniform types (via an enum), and user types are just not in the list. I don\u0027t know if this is something we would ever want or intend to support.\n\nIOW, if Skia could never bind the uniform to a value, we probably don\u0027t need to worry if the codegen is wrong. We might just be OK emitting an error in the frontend? @brianosman@google.com WDYT?\n\n(IMO even if Runtime Effects exposed binding a uniform struct, it\u0027d probably be easier to treat the struct as a bunch of individual variables from a uniform binding perspective, and paper over it in the frontend somehow)",
+      "range": {
+        "startLine": 8,
+        "startChar": 6,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
