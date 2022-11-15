@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "395dd8f0_7557f440",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T18:18:06Z",
+      "side": 1,
+      "message": "nit: consider keeping the .size() and .data() on the same line for string_view formatting, since they are both associated to the same formatter (`%.*s`)",
+      "range": {
+        "startLine": 1695,
+        "startChar": 29,
+        "endLine": 1695,
+        "endChar": 40
+      },
+      "revId": "fea9799568f37d38f8db02e80940da3a2e6c6b16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11dd25b8_95f7fa61",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T18:18:06Z",
+      "side": 1,
+      "message": "You can just use `op.isEquality()` to do this",
+      "range": {
+        "startLine": 1765,
+        "startChar": 0,
+        "endLine": 1765,
+        "endChar": 30
+      },
+      "revId": "fea9799568f37d38f8db02e80940da3a2e6c6b16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
