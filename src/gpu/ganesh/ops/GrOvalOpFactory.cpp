@@ -254,7 +254,7 @@ private:
     using INHERITED = GrGeometryProcessor;
 };
 
-GR_DEFINE_GEOMETRY_PROCESSOR_TEST(CircleGeometryProcessor);
+GR_DEFINE_GEOMETRY_PROCESSOR_TEST(CircleGeometryProcessor)
 
 #if GR_TEST_UTILS
 GrGeometryProcessor* CircleGeometryProcessor::TestCreate(GrProcessorTestData* d) {
@@ -698,7 +698,7 @@ private:
     using INHERITED = GrGeometryProcessor;
 };
 
-GR_DEFINE_GEOMETRY_PROCESSOR_TEST(EllipseGeometryProcessor);
+GR_DEFINE_GEOMETRY_PROCESSOR_TEST(EllipseGeometryProcessor)
 
 #if GR_TEST_UTILS
 GrGeometryProcessor* EllipseGeometryProcessor::TestCreate(GrProcessorTestData* d) {
@@ -888,7 +888,7 @@ private:
     using INHERITED = GrGeometryProcessor;
 };
 
-GR_DEFINE_GEOMETRY_PROCESSOR_TEST(DIEllipseGeometryProcessor);
+GR_DEFINE_GEOMETRY_PROCESSOR_TEST(DIEllipseGeometryProcessor)
 
 #if GR_TEST_UTILS
 GrGeometryProcessor* DIEllipseGeometryProcessor::TestCreate(GrProcessorTestData* d) {
