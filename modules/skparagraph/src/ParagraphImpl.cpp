@@ -266,7 +266,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     // Get some information about trailing spaces / hard line breaks
     fTrailingSpaces = fText.size();
     TextIndex firstWhitespace = EMPTY_INDEX;
-    for (int i = 0; i < fCodeUnitProperties.size(); ++i) {
+    for (size_t i = 0ul; i < fCodeUnitProperties.size(); ++i) {
         auto flags = fCodeUnitProperties[i];
         if (SkUnicode::isPartOfWhiteSpaceBreak(flags)) {
             if (fTrailingSpaces  == fText.size()) {
@@ -457,6 +457,7 @@ void ParagraphImpl::buildClusterTable() {
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
         fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
+        fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
     }
     fClusters.reserve_back(cluster_count);
 
@@ -473,6 +474,7 @@ void ParagraphImpl::buildClusterTable() {
             fClusters.emplace_back(this, runIndex, 0ul, 1ul, this->text(run.textRange()), run.advance().fX, run.advance().fY);
             fCodeUnitProperties[run.textRange().start] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
             fCodeUnitProperties[run.textRange().end] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
+            fCodeUnitProperties[run.textRange().start] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
         } else {
             // Walk through the glyph in the direction of input text
             run.iterateThroughClustersInTextOrder([runIndex, this](size_t glyphStart,
@@ -488,6 +490,7 @@ void ParagraphImpl::buildClusterTable() {
                 }
                 SkSpan<const char> text(fText.c_str() + charStart, charEnd - charStart);
                 fClusters.emplace_back(this, runIndex, glyphStart, glyphEnd, text, width, height);
+                fCodeUnitProperties[charStart] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
             });
         }
 
@@ -511,7 +514,25 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
 
     this->applySpacingAndBuildClusterTable();
+    /* For debugging:
+    for (auto& run : fRuns) {
+        SkString ff;
+        run.fFont.getTypeface()->getFamilyName(&ff);
+        SkDebugf("Run%d: %s %fx%f\n", run.size(), ff.c_str(), run.advance().fX, run.advance().fY);
+        for (size_t i = 0ul; i < run.size(); ++i) {
+            SkDebugf("%d -> %d : %d %f %f\n",
+                     i,
+                     run.clusterIndex(i),
+                     run.glyphs()[i],
+                     run.positions()[i].fX,
+                     run.offsets()[i].fX);
+        }
+    }
 
+    for (size_t i = 0ul; i < fClustersIndexFromCodeUnit.size(); ++i) {
+        SkDebugf("%d : %d\n", i, fClustersIndexFromCodeUnit[i]);
+    }
+    */
     return result;
 }
 
@@ -663,7 +684,7 @@ void ParagraphImpl::resolveStrut() {
 BlockRange ParagraphImpl::findAllBlocks(TextRange textRange) {
     BlockIndex begin = EMPTY_BLOCK;
     BlockIndex end = EMPTY_BLOCK;
-    for (int index = 0; index < fTextStyles.size(); ++index) {
+    for (size_t index = 0ul; index < fTextStyles.size(); ++index) {
         auto& block = fTextStyles[index];
         if (block.fRange.end <= textRange.start) {
             continue;
@@ -1057,6 +1078,14 @@ TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
 TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
     while (utf8 < fText.size() &&
           (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
+        ++utf8;
+    }
+    return utf8;
+}
+
+TextIndex ParagraphImpl::findNextGlyphClusterBoundary(TextIndex utf8) {
+    while (utf8 < fText.size() &&
+          (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGlyphClusterStart) == 0) {
         ++utf8;
     }
     return utf8;
