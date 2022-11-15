@@ -130,6 +130,8 @@ GrSemaphoresSubmitted Surface::onFlush(BackendSurfaceAccess,
 }
 #endif
 
+TextureProxy* Surface::backingTextureProxy() { return fDevice->readSurfaceView().proxy(); }
+
 sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
                                        const SkImageInfo& info,
                                        SkBudgeted budgeted,

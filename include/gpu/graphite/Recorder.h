@@ -8,14 +8,18 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/Recording.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SingleOwner.h"
 #include "include/private/SkTHash.h"
 
 #include <vector>
 
+class SkCanvas;
 class SkPixmap;
 class SkRuntimeEffectDictionary;
 
@@ -39,12 +43,10 @@ class DrawBufferManager;
 class GlobalCache;
 class ImageProvider;
 class RecorderPriv;
-class Recording;
 class ResourceProvider;
 class SharedContext;
 class Task;
 class TaskGraph;
-class TextureInfo;
 class TextureDataBlock;
 class UniformDataBlock;
 class UploadBufferManager;
@@ -118,6 +120,10 @@ public:
      */
     void deleteBackendTexture(BackendTexture&);
 
+    // If this Recorder is recording to an uninstantiated proxy surface, this returns a canvas to
+    // draw to that surface, otherwise it returns null.
+    SkCanvas* getDeferredCanvas();
+
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -132,6 +138,14 @@ private:
     friend class RecorderPriv; // for ctor and hidden methods
 
     Recorder(sk_sp<SharedContext>, const RecorderOptions&);
+
+    // Creates a Recorder with an uninstantiated render target proxy, which must be instantiated on
+    // replay.
+    Recorder(sk_sp<SharedContext>, const RecorderOptions&, const SkImageInfo&, const TextureInfo&);
+
+    // Creates a new uninstantiated proxy surface on this recorder. Called whenever the currently-
+    // recorded-to proxy surface is snapped off onto a Recording.
+    void createNewTargetProxy();
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
@@ -179,6 +193,12 @@ private:
     // This guard is passed to the ResourceCache.
     // TODO: Should we also pass this to Device, DrawContext, and similar classes?
     mutable SingleOwner fSingleOwner;
+
+    sk_sp<Device> fTargetProxyDevice;
+    std::unique_ptr<SkCanvas> fTargetProxyCanvas;
+    std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
+    SkImageInfo fTargetProxyImageInfo;
+    TextureInfo fTargetProxyTextureInfo;
 
 #if GRAPHITE_TEST_UTILS
     // For testing use only -- the Context used to create this Recorder
