@@ -114,12 +114,33 @@ std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange
         }
     }
 
-    ClusterIndex startIndex = fOwner->clusterIndex(text.start);
-    ClusterIndex endIndex = fOwner->clusterIndex(text.end - 1);
-    if (!leftToRight()) {
-        std::swap(startIndex, endIndex);
+    ClusterRange clusterRange;
+    bool found = true;
+    // Deal with the case when either start or end are not align with glyph cluster edge
+    // In such case we shift the text range to the right
+    // (cutting from the left and adding to the right)
+    if (leftToRight()) {
+        // LTR: [start:end)
+        found = clusterRange.start != fClusterRange.end;
+        clusterRange.start = fOwner->clusterIndex(text.start);
+        clusterRange.end = fOwner->clusterIndex(text.end - 1);
+    } else {
+        // RTL: (start:end]
+        clusterRange.start = fOwner->clusterIndex(text.end);
+        clusterRange.end = fOwner->clusterIndex(text.start + 1);
+        found = clusterRange.end != fClusterRange.start;
     }
-    return std::make_tuple(startIndex != fClusterRange.end && endIndex != fClusterRange.end, startIndex, endIndex);
+
+    return std::make_tuple(
+            found,
+            clusterRange.start,
+            clusterRange.end);
+}
+
+std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGlyphClusters(TextRange text) const {
+    TextIndex start = fOwner->findNextGlyphClusterBoundary(text.start);
+    TextIndex end = fOwner->findNextGlyphClusterBoundary(text.end);
+    return std::make_tuple(true, start, end);
 }
 
 // Adjust the text to grapheme edges so the first grapheme start is in the text and the last grapheme start is in the text
