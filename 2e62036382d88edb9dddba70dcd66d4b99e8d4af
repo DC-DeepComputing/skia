@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4b171b_a2d9165d",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T17:11:09Z",
+      "side": 1,
+      "message": "This always drives me crazy. Yes, in C++17 the C headers are deprecated, but when changing to the `\u003cc*\u003e` versions it is not guaranteed that the `\u003cc*\u003e` versions will put the declarations into the global namespace (they\u0027re only required to put them into the `std` namespace). It used to be that they weren\u0027t supposed to pollute the global namespace at all (only provide the `std` ones, like `std::size_t`) but C++17 now allows the practice of polluting the global namespace by default since all the major implementations did. \n\nSection D.5 of the C++17 spec (at least draft n4659).\n\n[Example: The header \u003ccstdlib\u003e assuredly provides its declarations and definitions within the namespace std. It may also provide these names within the global namespace. The header \u003cstdlib.h\u003e assuredly provides the same declarations and definitions within the global namespace, much as in the C Standard. It may also provide these names within the namespace std. — end example ]\n\nIn other words, I don\u0027t really have an issue with using the `\u003cc*\u003e` versions, but that does mean that we should be using all of the declarations out of the `std` namespace.",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f08e80_f92dfe93",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T17:11:09Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this is here?",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
