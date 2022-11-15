@@ -1,4 +1,4 @@
-load("//bazel:macros.bzl", "exports_files_legacy", "skia_cc_deps")
+load("//bazel:macros.bzl", "exports_files_legacy", "generate_cpp_files_for_headers", "skia_cc_deps")
 
 licenses(["notice"])
 
@@ -39,6 +39,11 @@ filegroup(
         "//conditions:default": [],
     }) + select({
         "//src/lazy:enable_discardable_memory_true": ["//src/lazy:srcs"],
+        "//conditions:default": [],
+    }) + select({
+        # These sources are not checked in - Bazel generates them dynamically. We only want to
+        # generate and compile them when we are doing compile-time analysis, e.g. IWYU.
+        "//bazel/common_config_settings:compile_generated_cpp_files_for_headers_true": [":generated_srcs"],
         "//conditions:default": [],
     }),
     visibility = ["//:__pkg__"],
@@ -109,4 +114,9 @@ skia_cc_deps(
         "//src/pdf:enable_pdf_backend_true": ["//src/pdf:deps"],
         "//conditions:default": [],
     }),
+)
+
+generate_cpp_files_for_headers(
+    name = "generated_srcs",
+    headers = ["include/core/SkRefCnt.h"],
 )
