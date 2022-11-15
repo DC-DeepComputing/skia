@@ -46,6 +46,30 @@
       },
       "revId": "1c9bf4cba42c38a243b961091ca39399c17e96ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c42736_de1af315",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T16:14:40Z",
+      "side": 1,
+      "message": "For the short term, eliminated the callbacks since it seems like they will get passed to `RP::Program::appendStages` which is in a different header entirely.",
+      "parentUuid": "8f08212e_8c193df3",
+      "range": {
+        "startLine": 48,
+        "startChar": 55,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "1c9bf4cba42c38a243b961091ca39399c17e96ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
