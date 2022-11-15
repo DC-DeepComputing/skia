@@ -22,6 +22,30 @@
       },
       "revId": "1c9bf4cba42c38a243b961091ca39399c17e96ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f08212e_8c193df3",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-15T16:08:35Z",
+      "side": 1,
+      "message": "Hmm, I need to figure out a good mental model for how we incorporate evaluating child shaders. Maybe the callbacks get passed to `Program::appendStages` and the builder has \"invoke shader|colorfilter|blender N\" instructions?",
+      "parentUuid": "b52fd128_429554b0",
+      "range": {
+        "startLine": 48,
+        "startChar": 55,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "1c9bf4cba42c38a243b961091ca39399c17e96ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
