@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b5eb5f_09e6536f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T05:52:52Z",
+      "side": 1,
+      "message": "Note that it was also necessary here to manually rename the `WindowsKit/10` directory that was gathered by the depot_tools script to `win_sdk` to be compatible.",
+      "revId": "854e7d3129905597c1b1d0575e4103e766498599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
