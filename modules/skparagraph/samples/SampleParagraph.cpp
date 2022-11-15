@@ -3314,12 +3314,12 @@ protected:
     void onDrawContent(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
         std::string text("يَهْدِيْكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمُ");
-
-        //auto fontCollection = sk_make_sp<FontCollection>();
-        //fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
-        //fontCollection->enableFontFallback();
-        auto fontCollection = getFontCollection();
-        fontCollection->disableFontFallback();
+        //std::string text("اللَّهُ");
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        //auto fontCollection = getFontCollection();
+        //fontCollection->disableFontFallback();
 
         ParagraphStyle paragraph_style;
         paragraph_style.setTextDirection(TextDirection::kRtl);
@@ -3330,14 +3330,14 @@ protected:
         text_style.setFontSize(64);
         text_style.setColor(SK_ColorBLACK);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(0, 10).data());
+        //builder.addText(u"\u064A\u064E\u0647\u0652\u062F\u0650\u064A\u0652\u0643\u064F\u0645\u064F \u0627\u0644\u0644\u0651\u064E\u0647\u064F \u0648\u064E\u064A\u064F\u0635\u0652\u0644\u0650\u062D\u064F \u0628\u064E\u0627\u0644\u064E\u0643\u064F\u0645");
+        builder.addText(u"\u064A\u064E\u0647");
         text_style.setColor(SK_ColorRED);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(10, 20).data());
+        builder.addText(u"\u0652\u062F\u0650\u064A");
         text_style.setColor(SK_ColorBLACK);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(30, 50).data());
-
+        builder.addText(u"\u0652\u0643\u064F\u0645\u064F \u0627\u0644\u0644\u0651\u064E\u0647\u064F \u0648\u064E\u064A\u064F\u0635\u0652\u0644\u0650\u062D\u064F \u0628\u064E\u0627\u0644\u064E\u0643\u064F\u0645");
         auto paragraph = builder.Build();
         paragraph->layout(/*360*/width());
         paragraph->paint(canvas, 0, 0);

@@ -697,7 +697,10 @@ bool OneLineShaper::shape() {
 
 // When we extend TextRange to the grapheme edges, we also extend glyphs range
 TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
+<<<<<<< PATCH SET (02f925 Implement glyph-base styling)
+=======
     //return normalizeTextRange(glyphs);
+>>>>>>> BASE      (9b5a3b Implement glyph-base styling (1))
     enum class Dir { left, right };
     enum class Pos { inclusive, exclusive };
 
