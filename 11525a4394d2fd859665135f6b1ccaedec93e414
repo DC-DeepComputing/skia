@@ -46,6 +46,30 @@
       },
       "revId": "11525a4394d2fd859665135f6b1ccaedec93e414",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5478efb6_1eba425e",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-15T15:38:57Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s roughly what I was picturing. I\u0027m really hoping to keep the final RP build time low (like it is for all the other SkShader/SkColorFilter types), by leveraging reuse of the SkSL-\u003eRP::Builder results in an RTE.",
+      "parentUuid": "2fc0070c_9553205c",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 56
+      },
+      "revId": "11525a4394d2fd859665135f6b1ccaedec93e414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
