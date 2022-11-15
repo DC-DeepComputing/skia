@@ -217,7 +217,7 @@ protected:
 
     // DEPRECRATED - Call the Context-only filterInput()
     sk_sp<SkSpecialImage> filterInput(int index, const Context& ctx, SkIPoint* offset) const {
-        return this->filterInput(index, ctx).imageAndOffset(offset);
+        return this->filterInput(index, ctx).imageAndOffset(ctx, offset);
     }
 
     // Helper function to visit each of this filter's child filters and call their
