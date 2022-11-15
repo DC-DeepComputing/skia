@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78bfd93a_1550e8cd",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:29:39Z",
+      "side": 1,
+      "message": "Oops, i wasn\u0027t actually meaning to keep this change for the CL, so I\u0027m going back to 16kb.",
+      "parentUuid": "df10c412_5cac9c02",
+      "range": {
+        "startLine": 21,
+        "startChar": 45,
+        "endLine": 21,
+        "endChar": 46
+      },
+      "revId": "6b2d4f0b751b023f73962960f0dde3c5fb0ec0c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0de79ee2_b278bcb7",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-10T21:27:30Z",
       "side": 1,
       "message": "Nit: offsetting",
+      "range": {
+        "startLine": 378,
+        "startChar": 42,
+        "endLine": 378,
+        "endChar": 51
+      },
+      "revId": "6b2d4f0b751b023f73962960f0dde3c5fb0ec0c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36cc5451_f487c4e4",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:29:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0de79ee2_b278bcb7",
       "range": {
         "startLine": 378,
         "startChar": 42,

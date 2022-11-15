@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f833f22d_5b7261ed",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-15T20:29:39Z",
+      "side": 1,
+      "message": "had accidentally left this enabled as well, so it\u0027s back to 0.",
+      "range": {
+        "startLine": 58,
+        "startChar": 39,
+        "endLine": 58,
+        "endChar": 40
+      },
+      "revId": "1895e985e99190e181b09c92fe9f7129b749a3a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
