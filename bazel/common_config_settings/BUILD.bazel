@@ -187,6 +187,11 @@ string_flag_with_values(
 )
 
 bool_flag(
+    name = "compile_generated_cpp",
+    default = False,
+)
+
+bool_flag(
     name = "enable_effect_serialization",
     default = True,
 )
