@@ -920,6 +920,8 @@ filegroup(
         "shared/SwitchDefaultOnly.sksl",
         "shared/SwitchWithFallthrough.sksl",
         "shared/SwitchWithLoops.sksl",
+        "spirv/ArrayStrideInDifferentLayouts.sksl",
+        "spirv/StructArrayMemberInDifferentLayouts.sksl",
         "spirv/ConstantVectorFromVector.sksl",
         "spirv/ConstantVectorize.sksl",
         "spirv/FunctionParametersOfTextureAndSamplerType.sksl",
