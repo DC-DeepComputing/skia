@@ -3314,12 +3314,12 @@ protected:
     void onDrawContent(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
         std::string text("يَهْدِيْكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمُ");
-
-        //auto fontCollection = sk_make_sp<FontCollection>();
-        //fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
-        //fontCollection->enableFontFallback();
-        auto fontCollection = getFontCollection();
-        fontCollection->disableFontFallback();
+        //std::string text("اللَّهُ");
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        //auto fontCollection = getFontCollection();
+        //fontCollection->disableFontFallback();
 
         ParagraphStyle paragraph_style;
         paragraph_style.setTextDirection(TextDirection::kRtl);
@@ -3330,14 +3330,14 @@ protected:
         text_style.setFontSize(64);
         text_style.setColor(SK_ColorBLACK);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(0, 10).data());
+        //builder.addText(u"\u0627\u0644\u0644\u0651\u064E\u0647\u064F");
+        builder.addText(text.substr(0, 12).data());
         text_style.setColor(SK_ColorRED);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(10, 20).data());
+        builder.addText(text.substr(12, 16).data());
         text_style.setColor(SK_ColorBLACK);
         builder.pushStyle(text_style);
-        builder.addText(text.substr(30, 50).data());
-
+        builder.addText(text.substr(28, 52).data());
         auto paragraph = builder.Build();
         paragraph->layout(/*360*/width());
         paragraph->paint(canvas, 0, 0);
