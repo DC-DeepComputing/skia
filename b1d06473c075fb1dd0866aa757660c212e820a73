@@ -104,6 +104,24 @@
       "parentUuid": "dae176a7_4808eb3b",
       "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95eabc3b_e6b377a1",
+        "filename": "src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T13:16:17Z",
+      "side": 1,
+      "message": "PTAL at the Bazel macro. The follow-on CL shows that this list can be extended.",
+      "parentUuid": "1d69c05e_f282bc8e",
+      "revId": "b1d06473c075fb1dd0866aa757660c212e820a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
