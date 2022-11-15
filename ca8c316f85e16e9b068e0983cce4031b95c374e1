@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d258815_66d7f560",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T18:01:17Z",
+      "side": 1,
+      "message": "Also these.",
+      "revId": "ca8c316f85e16e9b068e0983cce4031b95c374e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
