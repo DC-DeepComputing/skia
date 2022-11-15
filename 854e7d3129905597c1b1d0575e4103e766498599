@@ -16,6 +16,23 @@
       "message": "Note that it was also necessary here to manually rename the `WindowsKit/10` directory that was gathered by the depot_tools script to `win_sdk` to be compatible.",
       "revId": "854e7d3129905597c1b1d0575e4103e766498599",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a0dcd02_d2ec5b7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T06:12:51Z",
+      "side": 1,
+      "message": "While this does fix the ICE on tint code, the MSVC-Graphite_Dawn bots now get past that and fail on a warning as error that two switches have only a `default` case (because the other cases are `ifdef`ed out). That can be fixed in a separate change, since updating the MSVC toolchain is interesting enough on its own.",
+      "revId": "854e7d3129905597c1b1d0575e4103e766498599",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
