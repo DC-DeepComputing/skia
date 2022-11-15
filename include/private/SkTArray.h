@@ -103,10 +103,27 @@ public:
     SkTArray& operator=(SkTArray&& that) {
         if (this != &that) {
             this->clear();
-            this->checkRealloc(that.size(), kExactFit);
-            fSize = that.fSize;
-            that.move(fData);
-            that.fSize = 0;
+            if (that.fOwnMemory) {
+                // The storage is on the heap, so move the data pointer.
+                if (fOwnMemory) {
+                    sk_free(fData);
+                }
+
+                fData = std::exchange(that.fData, nullptr);
+
+                // Can't use exchange with bitfields.
+                fCapacity = that.fCapacity;
+                that.fCapacity = 0;
+
+                fOwnMemory = true;
+            } else {
+                // The data is stored inline in that, so move it element-by-element.
+                if (this->capacity() < that.size()) {
+                    this->checkRealloc(that.size(), kExactFit);
+                }
+                that.move(fData);
+            }
+            fSize = std::exchange(that.fSize, 0);
         }
         return *this;
     }
