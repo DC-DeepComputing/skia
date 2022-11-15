@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9486287b_5567cfd0",
+        "filename": "tests/sksl/spirv/ArrayStrideInDifferentLayouts.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-15T05:11:54Z",
+      "side": 1,
+      "message": "Slightly different error message but same underlying root cause as the \"multiple ArrayStride decorations\" error (see lines 19 and 22 below).",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d4ca6ac5590ebeeaad63a9c38fd69a64110304cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
