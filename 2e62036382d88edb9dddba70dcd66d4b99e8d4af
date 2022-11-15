@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51bf88d3_17326b3d",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T17:27:54Z",
+      "side": 1,
+      "message": "I\u0027m a fan of using std:: instead of the global namespace too. I don\u0027t see anything that\u0027s broken yet, so I guess we can fix that up as the compiler gets mad? Or do we need to be proactive and use grep/sed some more?",
+      "parentUuid": "2e4b171b_a2d9165d",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91f08e80_f92dfe93",
         "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
         "patchSetId": 3
