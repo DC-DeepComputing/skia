@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6381ff56_aebd4f4e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-15T15:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ce8178a_01304a6a",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 9
+      },
+      "revId": "5f4fad536f2c8bf543474c5d8ec50f3b5032b2ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1182dc7a_924b6b46",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1316294_5212ca43",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-15T15:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1182dc7a_924b6b46",
+      "range": {
+        "startLine": 83,
+        "startChar": 9,
+        "endLine": 83,
+        "endChar": 10
+      },
+      "revId": "5f4fad536f2c8bf543474c5d8ec50f3b5032b2ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30b33c66_76b78a9e",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-11-14T14:49:40Z",
       "side": 1,
       "message": "no reason for this to be a const \u0026, just pass by value. Especially on devices where pointers are 64 bit, it is simply more data to pass across as a ref than by value.",
+      "range": {
+        "startLine": 122,
+        "startChar": 26,
+        "endLine": 122,
+        "endChar": 41
+      },
+      "revId": "5f4fad536f2c8bf543474c5d8ec50f3b5032b2ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178b68b1_9e04fabc",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-15T15:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30b33c66_76b78a9e",
       "range": {
         "startLine": 122,
         "startChar": 26,
