@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baf247fe_e6c95382",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-15T15:33:26Z",
+      "side": 1,
+      "message": "Looks good! I assume this will eventually get split in two, so we have one function that turns the SkSL Program into some compact representation that\u0027s easy to blast out, and a second one that takes that minimal representation and actually emits the stages?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 56
+      },
+      "revId": "11525a4394d2fd859665135f6b1ccaedec93e414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
