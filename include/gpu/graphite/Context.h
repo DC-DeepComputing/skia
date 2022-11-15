@@ -36,6 +36,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class TextureInfo;
 class TextureProxy;
 
 #ifdef SK_ENABLE_PRECOMPILE
@@ -66,6 +67,13 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    // Create a Recorder with an uninstantiated proxy surface. The replay target for this Recorder
+    // can be re-instantiated with a different surface on each playback. The uninstantiated proxy
+    // surface can be draw to via the canvas returned from Recorder::getTargetProxyCanvas().
+    std::unique_ptr<Recorder> makeRecorder(const RecorderOptions&,
+                                           const SkImageInfo&,
+                                           const TextureInfo&);
 
     bool insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
