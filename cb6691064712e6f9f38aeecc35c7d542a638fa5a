@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f717f87_b1a0f74e",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T16:49:54Z",
+      "side": 1,
+      "message": "This should be more obviously verbose, as we should always be compiling \"regular\" generated cpp files. Maybe something like `compile_generated_cpp_files_for_headers` to better match the new file and macro name? It\u0027s a bit long, but I think it should be (I would love to even include `_because_bazel_provides_no_way_to_build_header_files` but that\u0027s a bit long).",
+      "revId": "cb6691064712e6f9f38aeecc35c7d542a638fa5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd92f99_c1459c0e",
+        "filename": "src/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-15T16:49:54Z",
+      "side": 1,
+      "message": "We shouldn\u0027t need this line now?",
+      "revId": "cb6691064712e6f9f38aeecc35c7d542a638fa5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
