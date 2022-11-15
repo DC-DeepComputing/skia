@@ -277,6 +277,12 @@ void TextLine::ensureTextBlobCachePopulated() {
                    textRange,
                    StyleType::kForeground,
                    [this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
+                       /*
+                       SkDebugf("[%d:%d): [%d:%d): [%f:%f)\n",
+                                    textRange.start, textRange.end,
+                                    context.pos, context.pos + context.size,
+                                    context.clip.fLeft, context.clip.fRight);
+                       */
                        this->buildTextBlob(textRange, style, context);
                    });
                return true;
@@ -743,26 +749,61 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         }
         return result;
     }
+
     // Find [start:end] clusters for the text
+<<<<<<< PATCH SET (6c2511 Correct text adjustment (3))
+    do {
+        // Update textRange by cluster edges (shift start up to the edge of the cluster)
+        // TODO: remove this limitation?
+        TextRange updatedTextRange;
+=======
     Cluster* start = nullptr;
     Cluster* end = nullptr;
 
     while (true) {
         // Adjust the text to glyph cluster
         ClusterRange clusterRange;
+>>>>>>> BASE      (ccf6aa Correct text adjustment (2))
         bool found;
+<<<<<<< PATCH SET (6c2511 Correct text adjustment (3))
+        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
+                                        run->findLimitingGlyphClusters(textRange);
+        // Updated text could only shift right from the initial text
+        // so this loop is going to break soon enough
+        SkASSERT(updatedTextRange.start >= textRange.start);
+        SkASSERT(updatedTextRange.end >= textRange.end);
+=======
         std::tie(found, clusterRange.start, clusterRange.end) =
                                             run->findLimitingClusters(textRange);
+>>>>>>> BASE      (ccf6aa Correct text adjustment (2))
         if (!found) {
             return result;
         }
+<<<<<<< PATCH SET (6c2511 Correct text adjustment (3))
+=======
         start = &fOwner->cluster(clusterRange.start);
         end = &fOwner->cluster(clusterRange.end);
+>>>>>>> BASE      (ccf6aa Correct text adjustment (2))
 
+<<<<<<< PATCH SET (6c2511 Correct text adjustment (3))
+        if (!limitToGraphemes) {
+            textRange = updatedTextRange;
+=======
         if ((textAdjustment & TextAdjustment::Grapheme) == 0) {
+>>>>>>> BASE      (ccf6aa Correct text adjustment (2))
             break;
         }
 
+<<<<<<< PATCH SET (6c2511 Correct text adjustment (3))
+        // Update text range by grapheme edges (shift start up to the edge of the grapheme)
+        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
+                                    run->findLimitingGraphemes(updatedTextRange);
+        // Updated text could only shift right from the initial text
+        // so this loop is going to break eventually
+        SkASSERT(updatedTextRange.start >= textRange.start);
+        SkASSERT(updatedTextRange.end >= textRange.end);
+
+=======
         // Update textRange by cluster edges (shift start up to the edge of the cluster)
         TextRange updatedTextRange(textRange);
         if (run->leftToRight()) {
@@ -779,6 +820,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         SkASSERT(updatedTextRange.start >= textRange.start);
         // Updated text could only shift right from the initial text
         // so this loop is going to break soon enough
+>>>>>>> BASE      (ccf6aa Correct text adjustment (2))
         if (updatedTextRange == textRange) {
             break;
         }
@@ -790,6 +832,13 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         // Move the start until it's on the grapheme edge (and glypheme, too)
     }
 
+    bool emptyEnd = textRange.width() == 0 && textRange.start >= run->fTextRange.start;
+
+    Cluster* start = &fOwner->cluster(fOwner->clusterIndex(textRange.start));
+    Cluster* end = &fOwner->cluster(fOwner->clusterIndex(textRange.end - (emptyEnd ? 0 : 1)));
+    if (!run->leftToRight()) {
+        std::swap(start, end);
+    }
     result.pos = start->startPos();
     result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - start->startPos();
 
