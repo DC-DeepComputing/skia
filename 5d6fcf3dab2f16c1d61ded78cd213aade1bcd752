@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e1de4b_42175706",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-15T18:46:05Z",
+      "side": 1,
+      "message": "Belated +1, good catch.",
+      "revId": "5d6fcf3dab2f16c1d61ded78cd213aade1bcd752",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
