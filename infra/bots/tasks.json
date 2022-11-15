@@ -93524,6 +93524,7 @@
         "skia/resources",
         "skia/package.json",
         "skia/package-lock.json",
+        "skia/DEPS",
         "skia/.bazelrc",
         "skia/.bazelversion",
         "skia/BUILD.bazel",
