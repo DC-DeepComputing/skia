@@ -52,14 +52,14 @@ void no_blend_mode_option_test(ShaderCodeDictionary* dict, skiatest::Reporter* r
 
 void big_test_new(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 
-    // paintOptions
-    //  |- sweepGrad_0 | blendShader_0
-    //  |                     0: linearGrad_0 | solid_0
-    //  |                     1: linearGrad_1 | blendShader_1
-    //  |                                            0: radGrad_0 | solid_1
-    //  |                                            1: imageShader_0
+    // paintOptions (7)
+    //  |- sweepGrad_0 (1) | blendShader_0 (6)
+    //  |                     0: linearGrad_0 (1) | solid_0 (1)
+    //  |                     1: linearGrad_1 (1) | blendShader_1 (2)
+    //  |                                            0: radGrad_0 (1) | solid_1 (1)
+    //  |                                            1: imageShader_0 (1)
     //  |
-    //  |- 4-built-in-blend-modes
+    //  |- 4-built-in-blend-modes (just 1)
 
     PaintOptions paintOptions;
 
@@ -102,6 +102,8 @@ void big_test_new(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
     // now, blend modes
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
+    REPORTER_ASSERT(reporter, paintOptions.numCombinations() == 7);
+
 //    context->precompile({paintOptions});
 }
 
@@ -134,16 +136,16 @@ std::vector<sk_sp<T>> create_runtime_combos(
 }
 
 void runtime_effect_test(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
-    // paintOptions
-    //  |- combineShader
+    // paintOptions (8)
+    //  |- combineShader (2)
     //  |       0: redShader   | greenShader
     //  |       1: greenShader | redShader
     //  |
-    //  |- combineColorFilter
+    //  |- combineColorFilter (2)
     //  |       0: redColorFilter   | greenColorFilter
     //  |       1: greenColorFilter | redColorFilter
     //  |
-    //  |- combineBlender
+    //  |- combineBlender (2)
     //  |       0: redBlender   | greenBlender
     //  |       1: greenBlender | redBlender
 
@@ -227,6 +229,8 @@ void runtime_effect_test(ShaderCodeDictionary* dict, skiatest::Reporter* reporte
                                                          kCombineB);
         paintOptions.setBlenders(combinations);
     }
+
+    REPORTER_ASSERT(reporter, paintOptions.numCombinations() == 8);
 
     // context->precompile({paintOptions});
 }
