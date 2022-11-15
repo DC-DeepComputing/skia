@@ -33,6 +33,24 @@
       "message": "I don\u0027t understand why this is here?",
       "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cc11a3a_f84793e5",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-15T17:18:10Z",
+      "side": 1,
+      "message": "We don\u0027t generate a .cpp file for SkMalloc.h because one already exists. If we want to enforce IWYU on a file, either its directory or filename must be listed here.",
+      "parentUuid": "91f08e80_f92dfe93",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
