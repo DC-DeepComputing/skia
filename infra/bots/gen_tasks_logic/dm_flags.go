@@ -226,8 +226,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			if b.model("Pixel3a", "Pixel5") {
 				sampleCount = 0
 			}
-		} else if b.matchGpu("Intel") {
-			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926
+		} else if b.matchGpu("Intel") && !b.gpu("IntelIrisXe") {
+			// MSAA doesn't work well on older Intel GPUs chromium:527565, chromium:983926
 			sampleCount = 0
 		} else if b.os("ChromeOS") {
 			glPrefix = "gles"
@@ -396,7 +396,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.extraConfig("Vulkan") {
 			configs = []string{"vk"}
 			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926, skia:9023
-			if !b.matchGpu("Intel") {
+			if !b.matchGpu("Intel") || b.gpu("IntelIrisXe") {
 				configs = append(configs, "vkmsaa4")
 			}
 			// Temporarily limit the bots we test dynamic MSAA on.
@@ -548,6 +548,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = suffix(filter(configs, "gl", "vk", "mtl"), "ooprddl")
 			args = append(args, "--skpViewportSize", "2048")
 			args = append(args, "--gpuThreads", "0")
+		}
+		if b.gpu("IntelIrisXe") && b.matchOs("Win") && b.extraConfig("ANGLE") {
+			args = append(args, "--allowMSAAOnNewIntel", "true")
 		}
 	}
 
