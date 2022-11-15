@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15cae34_07ed2b6f",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "I changed it to SK_DEBUG, so in debug build, dawn validation will get more friendly error message. In release build, validation will be skipped, so it is not necessary to have the label.",
+      "parentUuid": "ee75e628_ad2acbae",
+      "range": {
+        "startLine": 78,
+        "startChar": 7,
+        "endLine": 78,
+        "endChar": 32
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f9752bf_0975ffaa",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-11-14T21:37:32Z",
       "side": 1,
       "message": "No reason to assert here since the CreateSampler call could fail outside of Skia control",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 24
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a0444d_59789716",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f9752bf_0975ffaa",
       "range": {
         "startLine": 104,
         "startChar": 8,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5108b476_cb2f5702",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71a4ed28_49951d86",
+      "range": {
+        "startLine": 57,
+        "startChar": 2,
+        "endLine": 61,
+        "endChar": 5
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7fef5a1_352df888",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-11-14T21:37:32Z",
       "side": 1,
       "message": "This renderable check should probably also take the numSamples and confirm those are valid as well.",
+      "range": {
+        "startLine": 70,
+        "startChar": 16,
+        "endLine": 70,
+        "endChar": 34
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69684c28_c6368ee2",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "sample count is checked in caps-\u003eisRenderable(info) as well.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnCaps.cpp;l\u003d59?q\u003disRenderable\u0026sq\u003d\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2Fsrc%2F",
+      "parentUuid": "f7fef5a1_352df888",
       "range": {
         "startLine": 70,
         "startChar": 16,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d651099d_2a2df7e9",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6da36d5f_8590373c",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 24
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3967b0db_5d237d33",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-11-14T21:37:32Z",
       "side": 1,
       "message": "can you include our Log.h file and add something like:\nLOG_E(\"No valid dawn texture passed into MakeWrapped call\\n\");",
+      "range": {
+        "startLine": 133,
+        "startChar": 4,
+        "endLine": 133,
+        "endChar": 19
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9196b4e9_2b1bdf3f",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3967b0db_5d237d33",
       "range": {
         "startLine": 133,
         "startChar": 4,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "329719ac_a855584c",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73da9dac_94b601c1",
+      "range": {
+        "startLine": 150,
+        "startChar": 16,
+        "endLine": 150,
+        "endChar": 23
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98a0dd9b_93505928",
@@ -192,6 +360,30 @@
       "writtenOn": "2022-11-14T21:37:32Z",
       "side": 1,
       "message": "2",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "34e5e12b174132f1abfe0a704a3be788c240f45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67d80050_5a7d40d6",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-15T15:05:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98a0dd9b_93505928",
       "range": {
         "startLine": 2,
         "startChar": 16,
