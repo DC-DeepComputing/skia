@@ -2983,6 +2983,53 @@ STAGE(immediate_f, void* ctx) {
     r = F(val);
 }
 
+SI void copy_n_slots_masked_fn(SkRasterPipeline_CopySlotsMaskedCtx* ctx, int numSlots) {
+    // Load the mask; if it's completely zero, we can stop here.
+    I32 mask = sk_unaligned_load<I32>(&ctx->slotPtr[N * ctx->maskIdx]);
+    if (any(mask)) {
+        // Get pointers to our slots.
+        F*  dst  = (F*) &ctx->slotPtr[N * ctx->dstIdx];
+        F*  src  = (F*) &ctx->slotPtr[N * ctx->srcIdx];
+
+        // We rely on the inliner to make this loop efficient when numSlots is known.
+        // (On Clang, the loop fully unrolls for all of our dedicated stages.)
+        for (int count = 0; count < numSlots; ++count) {
+            sk_unaligned_store(dst, if_then_else(mask, sk_unaligned_load<F>(src),
+                                                       sk_unaligned_load<F>(dst)));
+            dst += 1;
+            src += 1;
+        }
+    }
+}
+
+STAGE(copy_slot_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 1);
+}
+STAGE(copy_2_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 2);
+}
+STAGE(copy_3_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 3);
+}
+STAGE(copy_4_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 4);
+}
+STAGE(copy_6_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 6);
+}
+STAGE(copy_9_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 9);
+}
+STAGE(copy_12_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 12);
+}
+STAGE(copy_16_slots_masked, SkRasterPipeline_CopySlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, 16);
+}
+STAGE(copy_n_slots_masked, SkRasterPipeline_CopyNSlotsMaskedCtx* ctx) {
+    copy_n_slots_masked_fn(ctx, ctx->numSlots);
+}
+
 STAGE(gauss_a_to_rgba, NoCtx) {
     // x = 1 - x;
     // exp(-x * x * 4) - 0.018f;

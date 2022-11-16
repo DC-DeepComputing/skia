@@ -38,6 +38,7 @@ void SkRasterPipeline::append(Stage stage, void* ctx) {
     SkASSERT(stage !=               HLGinvish);  // Please use append_transfer_function().
     SkASSERT(stage !=        stack_checkpoint);  // Please use append_stack_rewind().
     SkASSERT(stage !=            stack_rewind);  // Please use append_stack_rewind().
+    SkASSERT(stage !=     copy_n_slots_masked);  // Please use append_copy_slots_masked().
     this->unchecked_append(stage, ctx);
 }
 void SkRasterPipeline::unchecked_append(Stage stage, void* ctx) {
@@ -135,6 +136,52 @@ void SkRasterPipeline::append_constant_color(SkArenaAlloc* alloc, const float rg
             this->unchecked_append(unbounded_uniform_color, ctx);
         }
     }
+}
+
+void SkRasterPipeline::append_copy_slots_masked(SkArenaAlloc* alloc,
+                                                float* slotPtr,
+                                                int dstIndex,
+                                                int srcIndex,
+                                                int maskIndex,
+                                                int numSlots) {
+    SkASSERT(numSlots >= 0);
+    if (numSlots == 0) {
+        return;
+    }
+
+    SkRasterPipeline::Stage stage;
+    switch (numSlots) {
+        default: {
+            // We don't have an unrolled implementation for this number of slots.
+            // (Another possible way to implement this would be to string together the existing ops.
+            // e.g. to copy 40 slots, we could emit "copy_16_slots_masked, copy_16_slots_masked,
+            // copy_9_slots_masked, copy_slot_masked". This would probably be just as efficient.)
+            auto ctx = alloc->make<SkRasterPipeline_CopyNSlotsMaskedCtx>();
+            ctx->slotPtr = slotPtr;
+            ctx->dstIdx = dstIndex;
+            ctx->srcIdx = srcIndex;
+            ctx->maskIdx = maskIndex;
+            ctx->numSlots = numSlots;
+            this->unchecked_append(SkRasterPipeline::copy_n_slots_masked, ctx);
+            return;
+        }
+
+        case 1:  stage = SkRasterPipeline::copy_slot_masked;     break;
+        case 2:  stage = SkRasterPipeline::copy_2_slots_masked;  break;
+        case 3:  stage = SkRasterPipeline::copy_3_slots_masked;  break;
+        case 4:  stage = SkRasterPipeline::copy_4_slots_masked;  break;
+        case 6:  stage = SkRasterPipeline::copy_6_slots_masked;  break;
+        case 9:  stage = SkRasterPipeline::copy_9_slots_masked;  break;
+        case 12: stage = SkRasterPipeline::copy_12_slots_masked; break;
+        case 16: stage = SkRasterPipeline::copy_16_slots_masked; break;
+    }
+
+    auto ctx = alloc->make<SkRasterPipeline_CopySlotsMaskedCtx>();
+    ctx->slotPtr = slotPtr;
+    ctx->dstIdx = dstIndex;
+    ctx->srcIdx = srcIndex;
+    ctx->maskIdx = maskIndex;
+    this->unchecked_append(stage, ctx);
 }
 
 void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix) {
