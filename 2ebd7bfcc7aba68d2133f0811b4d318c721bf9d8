@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b7c4c7e_fb3eae59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T15:03:00Z",
+      "side": 1,
+      "message": "This is really helpful when trying to inspect paths in a debugger (SVG strings are more-or-less human readable). It\u0027s particularly powerful when combined with CodeLLDB\u0027s HTML capabilities.",
+      "revId": "2ebd7bfcc7aba68d2133f0811b4d318c721bf9d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
