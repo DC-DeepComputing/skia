@@ -22,6 +22,7 @@
 #include "modules/sksg/include/SkSGPath.h"
 #include "modules/sksg/include/SkSGRect.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 #include "modules/sksg/include/SkSGTransform.h"
 
 // Enable for text layout debugging.
@@ -29,11 +30,15 @@
 
 namespace skottie::internal {
 
+namespace {
+
 class GlyphTextNode final : public sksg::GeometryNode {
 public:
-    explicit GlyphTextNode(skottie::Shaper::ShapedGlyphs&& glyphs) : fGlyphs(std::move(glyphs)) {}
+    explicit GlyphTextNode(Shaper::ShapedGlyphs&& glyphs) : fGlyphs(std::move(glyphs)) {}
 
     ~GlyphTextNode() override = default;
+
+    const Shaper::ShapedGlyphs& glyphs() const { return fGlyphs; }
 
 protected:
     SkRect onRevalidate(sksg::InvalidationController*, const SkMatrix&) override {
@@ -58,7 +63,45 @@ protected:
     }
 
 private:
-    const skottie::Shaper::ShapedGlyphs fGlyphs;
+    const Shaper::ShapedGlyphs fGlyphs;
+};
+
+class GlyphDecoratorNode final : public sksg::CustomRenderNode {
+public:
+    GlyphDecoratorNode(sk_sp<skottie::GlyphDecorator> decorator,
+                       const skottie::Shaper::ShapedGlyphs& glyphs,
+                       size_t index)
+        : INHERITED({})
+        , fDecorator(std::move(decorator))
+        , fGlyphs(glyphs)
+        , fIndex(index)
+    {}
+
+    void onRender(SkCanvas* canvas, const RenderContext* ctx) const override {
+        auto local_ctx = ScopedRenderContext(canvas, ctx).setIsolation(this->bounds(),
+                                                                       canvas->getTotalMatrix(),
+                                                                       true);
+        const GlyphDecorator::GlyphInfo ginfo = {
+            fGlyphs.computeBounds(Shaper::ShapedGlyphs::BoundsType::kTight),
+            fIndex
+        };
+        fDecorator->onDecorate(canvas, ginfo);
+    }
+
+    const RenderNode* onNodeAt(const SkPoint& p) const override {
+        return nullptr;
+    }
+
+    SkRect onRevalidate(sksg::InvalidationController*, const SkMatrix& ctm) override {
+        return fGlyphs.computeBounds(Shaper::ShapedGlyphs::BoundsType::kTight);
+    }
+
+private:
+    const sk_sp<GlyphDecorator> fDecorator;
+    const Shaper::ShapedGlyphs& fGlyphs;
+    const size_t                fIndex;
+
+    using INHERITED = sksg::CustomRenderNode;
 };
 
 static float align_factor(SkTextUtils::Align a) {
@@ -70,6 +113,8 @@ static float align_factor(SkTextUtils::Align a) {
 
     SkUNREACHABLE;
 };
+
+} // namespace
 
 // Text path semantics
 //
@@ -365,7 +410,7 @@ TextAdapter::buildGlyphCompNodes(Shaper::Fragment& frag) const {
     return draws;
 }
 
-void TextAdapter::addFragment(Shaper::Fragment& frag) {
+void TextAdapter::addFragment(Shaper::Fragment& frag, size_t frag_index) {
     // For a given shaped fragment, build a corresponding SG fragment:
     //
     //   [TransformEffect] -> [Transform]
@@ -392,7 +437,9 @@ void TextAdapter::addFragment(Shaper::Fragment& frag) {
     auto text_node = sk_make_sp<GlyphTextNode>(std::move(frag.fGlyphs));
 
     draws.reserve(draws.size() +
-                  static_cast<size_t>(fText->fHasFill) + static_cast<size_t>(fText->fHasStroke));
+                  static_cast<size_t>(fText->fHasFill) +
+                  static_cast<size_t>(fText->fHasStroke) +
+                  static_cast<size_t>(fText->fDecorator != nullptr));
 
     SkASSERT(fText->fHasFill || fText->fHasStroke);
 
@@ -423,6 +470,13 @@ void TextAdapter::addFragment(Shaper::Fragment& frag) {
     }
 
     SkASSERT(!draws.empty());
+
+    // optional glyph decorator
+    if (fText->fDecorator) {
+        draws.push_back(sk_make_sp<GlyphDecoratorNode>(fText->fDecorator,
+                                                       text_node->glyphs(),
+                                                       frag_index));
+    }
 
     if (SHOW_LAYOUT_BOXES) {
         // visualize fragment ascent boxes
@@ -522,7 +576,8 @@ uint32_t TextAdapter::shaperFlags() const {
     //   - when animating
     //   - when positioning on a path
     //   - when clamping the number or lines (for accurate line count)
-    if (!fAnimators.empty() || fPathInfo || fText->fMaxLines) {
+    //   - when a text decorator is present
+    if (!fAnimators.empty() || fPathInfo || fText->fMaxLines || fText->fDecorator) {
         flags |= Shaper::Flags::kFragmentGlyphs;
     }
 
@@ -612,8 +667,8 @@ void TextAdapter::reshape() {
 
     // N.B. addFragment moves shaped glyph data out of the fragment, so only the fragment
     // metrics are valid after this block.
-    for (auto& frag : shape_result.fFragments) {
-        this->addFragment(frag);
+    for (size_t i = 0; i < shape_result.fFragments.size(); ++i) {
+        this->addFragment(shape_result.fFragments[i], i);
     }
 
     if (!fAnimators.empty() || fPathInfo) {
