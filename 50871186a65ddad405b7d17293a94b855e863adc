@@ -34,6 +34,24 @@
       "parentUuid": "ee202e5c_f82a5299",
       "revId": "50871186a65ddad405b7d17293a94b855e863adc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4d12acb_5ce3538e",
+        "filename": "include/private/SkSafe_math.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-16T16:07:10Z",
+      "side": 1,
+      "message": "I don\u0027t see a change here? It does look like the purpose was to wrap `math.h`, so I think this is export?",
+      "parentUuid": "6efd4d52_f71c85d3",
+      "revId": "50871186a65ddad405b7d17293a94b855e863adc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
