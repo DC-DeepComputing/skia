@@ -9,6 +9,8 @@
 #define GrMatrixConvolutionEffect_DEFINED
 
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrProcessorUnitTest.h"
+
 #include <array>
 #include <new>
 
