@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "947159ae_4fc210ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "nit: capitalize implement ---\u003e Implement",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fcac67_940eff9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Per previous feedback from Greg, rather than tacking a bunch of CLs to one giant issue like \"Implement Dawn\", we should create subtasks (ie, child issues) to that overarching issue that are more bite-sized and targeted and refer to those in the CL instead. See  https://chat.google.com/room/AAAA2HlH94I/ViI1b44gToI",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "eb66e873_6afab4f7",
@@ -14,6 +60,293 @@
       "writtenOn": "2022-11-16T14:11:38Z",
       "side": 1,
       "message": "Greg told me, he has a large review queue. so add nicolettep@ as reviewer too.\n\nNicolette, PTAL. Thanks.",
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a18ca74_47fca119",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Here\u0027s a first pass to kick things off. 👍",
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3ef3906_bf1fbfbb",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Do we need to add this method to `Resource`? See the related comment with an alternative suggestion I left on `DawnBuffer::dawnSharedContext()`.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 73
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fc8b7f3_d9357fb8",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "nit: line length\n\nHave the comment extend up to the 100 char line limit (without breaking up any words) and only then continue on to a new comment line.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 58
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51690e86_7165f270",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Nit: Formatting\n\nExtend each comment line up to the 100 char limit, having any overflowing words go on to the following line.",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 70
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "143bcd66_91be194d",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Would this be trivial to add now, or no? Also nit: comment line length per other comments",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 19
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0181fd95_5303b86f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Break up to adhere to 100 char limit. You could try:\n\n```\nauto* status \u003d reinterpret_cast\u003cstd::optional\u003cWGPUBufferMapAsyncStatus\u003e*\u003e\n    (userData);\nstatus-\u003eemplace(s);\n```   \n\nIf it doesn\u0027t break up nicely, then in skia we indent from the left 8 spaces and put it there. \n^ I am still learning all of the skia style intricacies, so Greg may chime in with a preferable way to handle this.",
+      "range": {
+        "startLine": 112,
+        "startChar": 19,
+        "endLine": 112,
+        "endChar": 108
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a996579_fb7cc0b2",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Nit: Reorder includes alphabetically, separating standard library `\u003c\u003e` includes with a line break at the bottom like so. See `src/gpu/graphite/mtl/MtlBuffer.h` as an example.\n```\n#include \"include/core/SkRefCnt.h\"\n#include \"include/gpu/graphite/dawn/DawnTypes.h\"\n#include \"src/gpu/graphite/Buffer.h\"\n#include \"src/gpu/graphite/dawn/DawnSharedContext.h\"\n#include \"webgpu/webgpu_cpp.h\"\n\n#include \u003cvector\u003e\n```",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 52
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e532ceca_77e2cb47",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "These methods never seem to be defined nor called. Let\u0027s remove them.\n\nMaybe these come in to play in later CLs when other needs \u0026 interdependencies are introduced, but let\u0027s add them at that time and not in this CL where they are not referenced at all.\n\nRandom other thoughts: \"Internal\" makes me think these should be private methods. Additionally, we should camelcase all class methods (like `mapInternal()` and `unmapInternal()`).",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 25
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "227a52df_ba335e83",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Adding a `sharedContext()` method to `Resource.h`, calling that, and casting it to `DawnSharedContext` every time we need access to the Dawn shared context in this class seems a but unnecessary. It seems like you only use this method to have access to the `DawnSharedContext` within `onMap` and `onUnmap`.\n\nAs an alternative, could we simply store a pointer to the `DawnSharedContext` as a private class member of `DawnBuffer` when it\u0027s passed in to `DawnBuffer::Make(...)` and reference that instead?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "542156b8_30de20c0",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "This does not appear to be used or referenced in this CL, so let\u0027s remove it.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 25
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f12f243c_da410e1b",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "nit: remove extra space",
+      "range": {
+        "startLine": 52,
+        "startChar": 22,
+        "endLine": 52,
+        "endChar": 23
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d84844b_9899d240",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "Remove one of these duplicate includes",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 52
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8baade_d8014030",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-16T21:52:48Z",
+      "side": 1,
+      "message": "nit: remove extra line here",
       "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
