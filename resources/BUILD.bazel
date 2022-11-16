@@ -1,4 +1,4 @@
-filegroup(
+skia_filegroup(
     name = "resources",
     srcs = glob(["**"]),
     visibility = ["//tests:__pkg__"],
