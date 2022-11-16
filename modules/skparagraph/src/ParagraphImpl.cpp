@@ -1009,6 +1009,12 @@ SkString ParagraphImpl::getEllipsis() const {
     }
 }
 
+size_t ParagraphImpl::graphemeCount(TextIndex start, TextIndex end) const {
+    auto startGrapheme = this->findNextGraphemeBoundary(start);
+    auto endGrapheme = this->findNextGraphemeBoundary(end);
+    return endGrapheme - startGrapheme;
+}
+
 void ParagraphImpl::updateFontSize(size_t from, size_t to, SkScalar fontSize) {
 
   SkASSERT(from == 0 && to == fText.size());
@@ -1055,7 +1061,7 @@ void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint)
     }
 }
 
-TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
+TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) const {
     while (utf8 > 0 &&
           (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
         --utf8;
@@ -1063,7 +1069,7 @@ TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
     return utf8;
 }
 
-TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
+TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) const {
     while (utf8 < fText.size() &&
           (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
         ++utf8;

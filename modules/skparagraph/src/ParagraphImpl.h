@@ -140,11 +140,12 @@ public:
     sk_sp<FontCollection> fontCollection() const { return fFontCollection; }
     void formatLines(SkScalar maxWidth);
     void ensureUTF16Mapping();
-    TextIndex findNextGraphemeBoundary(TextIndex utf8);
-    TextIndex findPreviousGraphemeBoundary(TextIndex utf8);
+    TextIndex findNextGraphemeBoundary(TextIndex utf8) const;
+    TextIndex findPreviousGraphemeBoundary(TextIndex utf8) const;
     size_t getUTF16Index(TextIndex index) {
         return fUTF16IndexForUTF8Index[index];
     }
+    size_t graphemeCount(TextIndex start, TextIndex end) const;
 
     bool strutEnabled() const { return paragraphStyle().getStrutStyle().getStrutEnabled(); }
     bool strutForceHeight() const {

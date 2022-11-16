@@ -1417,7 +1417,24 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 // Find the grapheme range that contains the point
                 auto clusterIndex8 = context.run->globalClusterIndex(found);
                 auto clusterEnd8 = context.run->globalClusterIndex(found + 1);
+                auto graphemeCount = fOwner->graphemeCount(clusterIndex8, clusterEnd8);
+                if (graphemeCount == 0) {
+                    size_t utf16Index = fOwner->getUTF16Index(clusterIndex8);
+                    result = { SkToS32(utf16Index), kDownstream };
+                    return keepLooking = false;
+                }
 
+                auto step = glyphemePosWidth / graphemeCount;
+                if (context.run->leftToRight()) {
+                    auto shift = SkScalarFloorToInt((dx - glyphemePosLeft)/step);
+                    size_t utf16Index = fOwner->getUTF16Index(clusterIndex8 + shift);
+                    result = { SkToS32(utf16Index), kDownstream };
+                } else {
+                    auto shift = SkScalarFloorToInt((glyphemePosLeft + glyphemePosWidth - dx)/step);
+                    size_t utf16Index = fOwner->getUTF16Index(clusterEnd8 - shift);
+                    result = { SkToS32(utf16Index), kUpstream };
+                }
+                /*
                 SkScalar center = glyphemePosLeft + glyphemePosWidth / 2;
                 if ((dx < center) == context.run->leftToRight()) {
                     size_t utf16Index = context.run->leftToRight()
@@ -1430,7 +1447,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                                                 : fOwner->getUTF16Index(clusterIndex8) + 1;
                     result = { SkToS32(utf16Index), kUpstream };
                 }
-
+                */
                 return keepLooking = false;
 
             });

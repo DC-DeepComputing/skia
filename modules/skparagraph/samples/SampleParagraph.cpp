@@ -2158,9 +2158,9 @@ private:
     using INHERITED = Sample;
 };
 
-class ParagraphView29 : public ParagraphView_Base {
+class ParagraphFFI : public ParagraphView_Base {
 protected:
-    SkString name() override { return SkString("Paragraph29"); }
+    SkString name() override { return SkString("ParagraphFFI"); }
 
     void onDrawContent(SkCanvas* canvas) override {
 
@@ -4024,7 +4024,7 @@ DEF_SAMPLE(return new ParagraphView25();)
 DEF_SAMPLE(return new ParagraphView26();)
 DEF_SAMPLE(return new ParagraphView27();)
 DEF_SAMPLE(return new ParagraphView28();)
-DEF_SAMPLE(return new ParagraphView29();)
+DEF_SAMPLE(return new ParagraphFFI();)
 DEF_SAMPLE(return new ParagraphView30();)
 DEF_SAMPLE(return new ParagraphView31();)
 DEF_SAMPLE(return new ParagraphView32();)
