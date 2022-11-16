@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b89a183c_b2fe69e4",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-16T14:20:23Z",
+      "side": 1,
+      "message": "Doesn\u0027t checkRealloc already start off with an early-out check? Seems redundant.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 53
+      },
+      "revId": "f5bf5cb2641babcfd2204dcd4a86e645264e34d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
