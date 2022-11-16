@@ -40,54 +40,35 @@ template <typename T, bool MEM_MOVE = sk_is_trivially_relocatable_v<T>> class Sk
 public:
     using value_type = T;
 
-    /**
-     * Creates an empty array with no initial storage
-     */
-    SkTArray() { this->init(0); }
+    // Creates an empty array with no initial storage.
+    SkTArray() : fCapacity{0}, fOwnMemory(true) {}
 
-    /**
-     * Creates an empty array that will preallocate space for reserveCount
-     * elements.
-     */
+    // Creates an empty array that will preallocate space for reserveCount elements.
     explicit SkTArray(int reserveCount) : SkTArray() { this->reserve_back(reserveCount); }
 
-    /**
-     * Copies one array to another. The new array will be heap allocated.
-     */
-    SkTArray(const SkTArray& that)
-        : SkTArray(that.fData, that.fSize) {}
+    // Copies one array to another. The new array is heap allocated.
+    SkTArray(const SkTArray& that) : SkTArray(that.fData, that.fSize) {}
 
     SkTArray(SkTArray&& that) {
         if (that.fOwnMemory) {
-            fData = std::exchange(that.fData, nullptr);
-            fSize = std::exchange(that.fSize, 0);
-
-            // exchange does not work for bit fields.
-            fCapacity = that.fCapacity;
-            that.fCapacity = 0;
-
-            fOwnMemory = true;
+            this->setData(that);
+            that.setData({});
         } else {
-            this->init(that.fSize);
+            this->initData(that.fSize);
             that.move(fData);
-            that.fSize = 0;
         }
+        fSize = std::exchange(that.fSize, 0);
     }
 
-    /**
-     * Creates a SkTArray by copying contents of a standard C array. The new
-     * array will be heap allocated. Be careful not to use this constructor
-     * when you really want the (void*, int) version.
-     */
+    // Creates a SkTArray by copying contents of a standard C array. The new
+    // array is heap allocated.
     SkTArray(const T* array, int count) {
-        this->init(count);
+        this->initData(count);
         this->copy(array);
     }
-    /**
-     * Creates a SkTArray by copying contents of an initializer list.
-     */
-    SkTArray(std::initializer_list<T> data)
-        : SkTArray(data.begin(), data.size()) {}
+
+    // Creates a SkTArray by copying contents of an initializer list.
+    SkTArray(std::initializer_list<T> data) : SkTArray(data.begin(), data.size()) {}
 
     SkTArray& operator=(const SkTArray& that) {
         if (this == &that) {
@@ -390,7 +371,7 @@ public:
             if (fOwnMemory) {
                 sk_free(fData);
             }
-            this->setItemArray(allocation);
+            this->setDataFromBytes(allocation);
         }
     }
 
@@ -463,23 +444,30 @@ public:
     }
 
 protected:
-    /**
-     * Creates an empty array that will use the passed storage block until it
-     * is insufficiently large to hold the entire array.
-     */
-    template <int N>
-    SkTArray(SkAlignedSTStorage<N,T>* storage) {
-        this->initWithPreallocatedStorage(0, storage->get(), N);
+    // Creates an empty array that will use the passed storage block until it is insufficiently
+    // large to hold the entire array.
+    template <int InitialCapacity>
+    SkTArray(SkAlignedSTStorage<InitialCapacity, T>* storage, int size = 0) {
+        static_assert(InitialCapacity > 0);
+        SkASSERT(size >= 0);
+        SkASSERT(storage->get() != nullptr);
+        if (size > InitialCapacity) {
+            this->initData(size);
+        } else {
+            this->setDataFromBytes(*storage);
+            fSize = size;
+
+            // Normally setData sets fOwnMemory to true. Change it to reflect static storage.
+            fOwnMemory = false;
+        }
     }
 
-    /**
-     * Copy a C array, using preallocated storage if preAllocCount >=
-     * count. Otherwise storage will only be used when array shrinks
-     * to fit.
-     */
-    template <int N>
-    SkTArray(const T* array, int count, SkAlignedSTStorage<N,T>* storage) {
-        this->initWithPreallocatedStorage(count, storage->get(), N);
+    // Copy a C array, using pre-allocated storage if preAllocCount >= count. Otherwise, storage
+    // will only be used when array shrinks to fit.
+    template <int InitialCapacity>
+    SkTArray(const T* array, int size, SkAlignedSTStorage<InitialCapacity, T>* storage)
+        : SkTArray{storage, size}
+    {
         this->copy(array);
     }
 
@@ -495,13 +483,19 @@ private:
     // just be INT_MAX if the sizeof(T) < 2^32.
     static constexpr int kMaxCapacity = SkToInt(std::min(SIZE_MAX / sizeof(T), (size_t)INT_MAX));
 
-    void setItemArray(SkSpan<std::byte> allocation) {
-        fData = TCast(allocation.data());
+    void setDataFromBytes(SkSpan<std::byte> allocation) {
+        T* data = TCast(allocation.data());
         // We have gotten extra bytes back from the allocation limit, pin to kMaxCapacity. It
         // would seem like the SkContainerAllocator should handle the divide, but it would have
         // to a full divide instruction. If done here the size is known at compile, and usually
         // can be implemented by a right shift. The full divide takes ~50X longer than the shift.
-        fCapacity = SkToU32(std::min(allocation.size() / sizeof(T), SkToSizeT(kMaxCapacity)));
+        size_t size = std::min(allocation.size() / sizeof(T), SkToSizeT(kMaxCapacity));
+        setData(SkSpan<T>(data, size));
+    }
+
+    void setData(SkSpan<T> array) {
+        fData = array.data();
+        fCapacity = SkToU32(array.size());
         fOwnMemory = true;
     }
 
@@ -526,33 +520,9 @@ private:
         return SkContainerAllocator{sizeof(T), kMaxCapacity}.allocate(capacity, growthFactor);
     }
 
-    void init(int count) {
+    void initData(int count) {
+        this->setDataFromBytes(Allocate(count));
         fSize = count;
-        if (!count) {
-            fCapacity = 0;
-            fData = nullptr;
-        } else {
-            fCapacity = SkToU32(std::max(count, kMinHeapAllocCount));
-            this->setItemArray(Allocate(fCapacity));
-        }
-        fOwnMemory = true;
-    }
-
-    void initWithPreallocatedStorage(int count, void* preallocStorage, int preallocCount) {
-        SkASSERT(count >= 0);
-        SkASSERT(preallocCount > 0);
-        SkASSERT(preallocStorage);
-        fSize = count;
-        fData = nullptr;
-        if (count > preallocCount) {
-            fCapacity = SkToU32(std::max(count, kMinHeapAllocCount));
-            SkSpan<std::byte> allocation = Allocate(fCapacity);
-            this->setItemArray(allocation);
-        } else {
-            fCapacity = SkToU32(preallocCount);
-            fData = TCast(preallocStorage);
-            fOwnMemory = false;
-        }
     }
 
     /** In the following move and copy methods, 'dst' is assumed to be uninitialized raw storage.
@@ -628,15 +598,15 @@ private:
         if (fOwnMemory) {
             sk_free(fData);
         }
-        this->setItemArray(allocation);
+        this->setDataFromBytes(allocation);
         SkASSERT(this->capacity() >= newCount);
         SkASSERT(fData != nullptr);
     }
 
-    T* fData;
-    int fSize;
+    T* fData{nullptr};
+    int fSize{0};
     uint32_t fCapacity : 31;
-    uint32_t fOwnMemory  :  1;
+    uint32_t fOwnMemory : 1;
 };
 
 template <typename T, bool M> static inline void swap(SkTArray<T, M>& a, SkTArray<T, M>& b) {
