@@ -30341,7 +30341,7 @@
         "gpu:IntelUHDGraphics605",
         "os:ChromeOS",
         "pool:Skia",
-        "release_version:14233.0.0"
+        "release_version:15236.2.0"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -46624,7 +46624,7 @@
         "gpu:IntelUHDGraphics605",
         "os:ChromeOS",
         "pool:Skia",
-        "release_version:14233.0.0"
+        "release_version:15236.2.0"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -46717,7 +46717,7 @@
         "gpu:IntelUHDGraphics605",
         "os:ChromeOS",
         "pool:Skia",
-        "release_version:14233.0.0"
+        "release_version:15236.2.0"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
