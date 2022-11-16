@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df283e24_3ac1cb57",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T14:32:47Z",
+      "side": 1,
+      "message": "Any way we can share some of this code with the move constructor? (If nothing else, we should probably update it to also use std::exchange).",
+      "revId": "f5bf5cb2641babcfd2204dcd4a86e645264e34d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b89a183c_b2fe69e4",
         "filename": "include/private/SkTArray.h",
         "patchSetId": 1
