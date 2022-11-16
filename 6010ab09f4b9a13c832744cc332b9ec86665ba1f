@@ -16,6 +16,23 @@
       "message": "I\u0027m interested to see if this changes perf at all. I have a poor track record of predicting how SkTArray will behave.",
       "revId": "6010ab09f4b9a13c832744cc332b9ec86665ba1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be27f9ad_5bba2486",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-16T15:38:35Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "6010ab09f4b9a13c832744cc332b9ec86665ba1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
