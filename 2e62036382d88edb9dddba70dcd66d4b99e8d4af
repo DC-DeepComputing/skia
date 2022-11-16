@@ -69,6 +69,24 @@
       "parentUuid": "91f08e80_f92dfe93",
       "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19d709c1_a9955bcb",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-16T15:22:04Z",
+      "side": 1,
+      "message": "Ewww... that\u0027s gross, we don\u0027t want to have to keep track of which headers have associated cpp files, not keep up a list of them. We do want to build both SkPaint.cpp and SkPaint.h. I know iwyu has the silly \"associated header\" silliness that is a remnant of Google\u0027s original iwyu implementation, but I\u0027d hate to rely on it since it doesn\u0027t make any sense.\n\nWhy not just do this for all the headers in general? Why special case these at all? If the issue is that you\u0027re only getting iwyu to suggest changes because the include has the same base name as the generated cpp file (associated headers nonsense) then it might be better to structure this whole change as making a copy of (or a link to) the header files with a .cpp extension (like `SkRefCnt.h.cpp`) so that they can be directly compiled.",
+      "parentUuid": "0cc11a3a_f84793e5",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
