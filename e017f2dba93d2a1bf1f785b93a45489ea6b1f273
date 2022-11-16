@@ -16,6 +16,23 @@
       "message": "+egdaniel@ for API review",
       "revId": "e017f2dba93d2a1bf1f785b93a45489ea6b1f273",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfc408de_2f3b6b52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-16T14:21:26Z",
+      "side": 1,
+      "message": "I can ... uh ... handle that owners check ;)",
+      "revId": "e017f2dba93d2a1bf1f785b93a45489ea6b1f273",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
