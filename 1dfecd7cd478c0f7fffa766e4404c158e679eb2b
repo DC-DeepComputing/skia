@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "119dd7b7_f52916bc",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-16T20:07:03Z",
+      "side": 1,
+      "message": "Same here. `GraphicsPipeline` also need to be a complete type here.",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 46,
+        "endChar": 22
+      },
+      "revId": "1dfecd7cd478c0f7fffa766e4404c158e679eb2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3712c9_ae7d587d",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-16T20:07:03Z",
+      "side": 1,
+      "message": "Technically, the MSVC bot is correct here that in order to return a `sk_sp\u003cComputePipeline\u003e` then `ComputePipeline` must be a complete type, since returning one here requires that the `sk_sp\u003cComputePipeline\u003e` destructor be available and it will call the `ComputePipeline` destructor. In practice `ComputePipeline` obviously doesn\u0027t need to be complete here since there is no destructor called here, but the language rules demand that it be able to be instantiated here.",
+      "revId": "1dfecd7cd478c0f7fffa766e4404c158e679eb2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
