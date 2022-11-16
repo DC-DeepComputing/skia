@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95065fd7_f8952010",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T22:01:00Z",
+      "side": 1,
+      "message": "lgtm. The old stack-based interpreter lacked return masks (it didn\u0027t handle divergent returns, IIRC). It had four sets of masks, otherwise:\n - Conditional execution masks from if/else\n - Loop execution masks from lanes that had stopped running a loop\n - Continue masks, for lanes that needed to resume loop execution on the next iteration\n - A \"combined\" mask, that had the bitwise AND to know which lanes were active\n \nI think we may end up wanting that last one, just because the number of operations that use the total mask is much smaller than the set of operations that update any of them. That lets us amortize the cost. This might mean we spill into the non-d registers, but that\u0027s probably fine, if it comes to it.\n\nAgain, nothing to worry about now - we can easily retrofit all of this later, just wanted to remind us.",
+      "revId": "19e066e583e2c7ef37ab888919622e2fab311659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
