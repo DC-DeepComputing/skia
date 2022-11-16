@@ -16,6 +16,29 @@
       "message": "Greg told me, he has a large review queue. so add jvanverth@ as reviewer too.",
       "revId": "52e8de31e469ede0067394a4091a97e0d752ae72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832e2620_a9b5ac1e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-16T19:27:26Z",
+      "side": 1,
+      "message": "Just a nit, no need to change it right now: I think Skia has standardized on using nullptr in these cases to make it visually explicit that the sk_sp is null.",
+      "range": {
+        "startLine": 70,
+        "startChar": 11,
+        "endLine": 70,
+        "endChar": 13
+      },
+      "revId": "52e8de31e469ede0067394a4091a97e0d752ae72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
