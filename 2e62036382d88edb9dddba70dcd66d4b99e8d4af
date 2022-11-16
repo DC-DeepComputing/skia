@@ -87,6 +87,24 @@
       "parentUuid": "0cc11a3a_f84793e5",
       "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2df4396_70f6b2b9",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-16T15:33:38Z",
+      "side": 1,
+      "message": "From what I can tell (experimentally), IWYU associates a .cpp files with its .h by just looking at the base filename, which doesn\u0027t seem too silly to me.\n\nI had typed up a reason about why keeping \"header only\" files separate from \"header and cpp\" files would avoid issues, but I convinced myself that those issues wouldn\u0027t actually come up - the header\u0027s includes do not depend on the .cpp file (but the reverse may be true).\n\nSo, we don\u0027t need to special case any .cpp files, we can just list files in src/BUILD.bazel.\n\nAs far as why not do this for all headers in general? I\u0027d rather incrementally do this work, not all at once.",
+      "parentUuid": "19d709c1_a9955bcb",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
