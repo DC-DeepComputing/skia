@@ -143,7 +143,12 @@ WARNINGS = [
     "-Wdeprecated-this-capture",
     "-Wdeprecated-volatile",
     "-Wdeprecated-writable-strings",
-]
+] + select({
+    "//bazel/common_config_settings:compile_generated_cpp_files_for_headers_true": [
+        "-Wno-unused-template",
+    ],
+    "//conditions:default": [],
+})
 
 DEFAULT_COPTS = CORE_COPTS + OPT_LEVEL + WARNINGS
 
