@@ -108,6 +108,12 @@ public:
         fInstructions.push_back({SkRasterPipeline::store_unmasked, {slot}});
     }
 
+    void copy_slots_masked(SlotRange dst, SlotRange src, Slot mask) {
+        SkASSERT(dst.count == src.count);
+        fInstructions.push_back({SkRasterPipeline::copy_n_slots_masked,
+                                 {dst.index, src.index, mask}, 0.0f, dst.count});
+    }
+
 private:
     SkTArray<Instruction> fInstructions;
 };
