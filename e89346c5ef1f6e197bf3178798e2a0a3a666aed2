@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72d2f5a_dc29e03f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-16T19:55:27Z",
+      "side": 1,
+      "message": "I removed non-square matrix types from the specializations to save space.",
+      "revId": "e89346c5ef1f6e197bf3178798e2a0a3a666aed2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
