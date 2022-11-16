@@ -123,7 +123,10 @@ struct skcms_TransferFunction;
     M(mask_2pt_conical_nan)                                        \
     M(mask_2pt_conical_degenerates) M(apply_vector_mask)           \
     /* Dedicated SkSL stages begin here: */                        \
-    M(store_src_rg) M(immediate_f) M(store_unmasked)
+    M(store_src_rg) M(immediate_f) M(store_unmasked)               \
+    M(copy_slot_masked)     M(copy_2_slots_masked)  M(copy_3_slots_masked) \
+    M(copy_4_slots_masked)  M(copy_6_slots_masked)  M(copy_9_slots_masked) \
+    M(copy_12_slots_masked) M(copy_16_slots_masked) M(copy_n_slots_masked)
 
 // The combined list of all stages:
 #define SK_RASTER_PIPELINE_STAGES_ALL(M) \
@@ -247,6 +250,15 @@ struct SkRasterPipeline_TablesCtx {
     const uint8_t *r, *g, *b, *a;
 };
 
+struct SkRasterPipeline_CopySlotsMaskedCtx {
+    float *slotPtr;
+    int dstIdx, srcIdx, maskIdx;
+};
+
+struct SkRasterPipeline_CopyNSlotsMaskedCtx : SkRasterPipeline_CopySlotsMaskedCtx {
+    int numSlots;
+};
+
 class SkRasterPipeline {
 public:
     explicit SkRasterPipeline(SkArenaAlloc*);
@@ -304,6 +316,14 @@ public:
     void append_set_rgb(SkArenaAlloc* alloc, const SkColor4f& color) {
         this->append_set_rgb(alloc, color.vec());
     }
+
+    // Appends the matching `copy_??_slots_masked` stage, based on the value of `numSlots`.
+    void append_copy_slots_masked(SkArenaAlloc* alloc,
+                                  float* slotPtr,
+                                  int dstIndex,
+                                  int srcIndex,
+                                  int maskIndex,
+                                  int numSlots);
 
     void append_load    (SkColorType, const SkRasterPipeline_MemoryCtx*);
     void append_load_dst(SkColorType, const SkRasterPipeline_MemoryCtx*);
