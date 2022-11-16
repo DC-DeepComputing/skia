@@ -72,7 +72,7 @@ private:
     };
 
     void reshape();
-    void addFragment(Shaper::Fragment&);
+    void addFragment(Shaper::Fragment&, size_t frag_index);
     void buildDomainMaps(const Shaper::Result&);
     std::vector<sk_sp<sksg::RenderNode>> buildGlyphCompNodes(Shaper::Fragment&) const;
 
