@@ -16,6 +16,46 @@
       "message": "I removed non-square matrix types from the specializations to save space.",
       "revId": "e89346c5ef1f6e197bf3178798e2a0a3a666aed2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff777a9b_c1f8957f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T21:08:32Z",
+      "side": 1,
+      "message": "Do we think the mask will just live in a specific register (eg, dr), and not need to be part of the context?",
+      "revId": "e89346c5ef1f6e197bf3178798e2a0a3a666aed2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323e3302_e7b4e181",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T21:08:32Z",
+      "side": 1,
+      "message": "I was wondering about this kind of strategy, even for some of the existing specializations, just to keep code size under control (eg, implement copy_16 as 4xcopy_4). I think we\u0027ll end up seeing how this shakes out, particularly as we need more stages with this kind of size variability.",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 97
+      },
+      "revId": "e89346c5ef1f6e197bf3178798e2a0a3a666aed2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
