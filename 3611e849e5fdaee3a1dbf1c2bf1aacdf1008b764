@@ -22,6 +22,30 @@
       },
       "revId": "3611e849e5fdaee3a1dbf1c2bf1aacdf1008b764",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f08f32a_3afeb1bf",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-16T15:17:48Z",
+      "side": 1,
+      "message": "Yeah, I think you\u0027re right. This is all subject to change as we get further along. Right now I\u0027m of the mindset that code generation can allocate slots pretty wastefully (every temporary gets a slot!) and we can optimize that away at the end.",
+      "parentUuid": "523f9ac9_28e03873",
+      "range": {
+        "startLine": 130,
+        "startChar": 40,
+        "endLine": 130,
+        "endChar": 57
+      },
+      "revId": "3611e849e5fdaee3a1dbf1c2bf1aacdf1008b764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
