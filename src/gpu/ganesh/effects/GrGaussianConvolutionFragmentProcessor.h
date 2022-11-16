@@ -10,6 +10,7 @@
 
 #include "include/core/SkM44.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrProcessorUnitTest.h"
 
 /**
  * A 1D Gaussian convolution effect. The kernel is computed as an array of 2 * half-width weights.
