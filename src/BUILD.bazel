@@ -119,5 +119,15 @@ skia_cc_deps(
 
 generate_cpp_files_for_headers(
     name = "generated_srcs",
-    headers = ["include/core/SkRefCnt.h"],
+    headers = [
+        "include/config/SkUserConfig.h",
+        "include/core/SkAlphaType.h",
+        "include/core/SkFontTypes.h",
+        "include/core/SkRefCnt.h",
+        "include/private/SkMacros.h",
+        "include/private/SkSafe_math.h",
+        "include/private/SkTFitsIn.h",
+        "include/private/SkTPin.h",
+        "include/private/SkThreadAnnotations.h",
+    ],
 )
