@@ -142,3 +142,32 @@ DEF_TEST(RasterPipelineBuilderStoreUnmasked, r) {
     REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::store_unmasked);
     REPORTER_ASSERT(r, stages->ctx == slot0 + (12 * N));
 }
+
+DEF_TEST(RasterPipelineBuilderCopySlotsMasked, r) {
+    // Create a very simple nonsense program.
+    SkSL::RP::Builder builder;
+    builder.copy_slots_masked(two_slots_at(0),  two_slots_at(2),  4);
+    builder.copy_slots_masked(four_slots_at(1), four_slots_at(5), 0);
+    std::unique_ptr<SkSL::RP::Program> program = builder.finish();
+
+    // Instantiate this program.
+    SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
+    SkRasterPipeline pipeline(&alloc);
+    program->appendStages(&pipeline, &alloc);
+
+    // Double check that the resulting stage list contains the expected stores.
+    const auto* stages = TestingOnly_SkRasterPipelineInspector::GetStageList(&pipeline);
+    const auto* ctx = static_cast<const SkRasterPipeline_CopySlotsMaskedCtx*>(stages->ctx);
+
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_4_slots_masked);
+    REPORTER_ASSERT(r, ctx->dstIdx == 1);
+    REPORTER_ASSERT(r, ctx->srcIdx == 5);
+    REPORTER_ASSERT(r, ctx->maskIdx == 0);
+    stages = stages->prev;
+    ctx = static_cast<const SkRasterPipeline_CopySlotsMaskedCtx*>(stages->ctx);
+
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_2_slots_masked);
+    REPORTER_ASSERT(r, ctx->dstIdx == 0);
+    REPORTER_ASSERT(r, ctx->srcIdx == 2);
+    REPORTER_ASSERT(r, ctx->maskIdx == 4);
+}

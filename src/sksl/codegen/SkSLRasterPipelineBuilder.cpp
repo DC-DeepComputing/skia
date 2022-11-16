@@ -82,6 +82,11 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 pipeline->append(SkRP::store_unmasked, SlotA());
                 break;
 
+            case SkRP::copy_n_slots_masked:
+                pipeline->append_copy_slots_masked(alloc, slotPtr, inst.fSlotA, inst.fSlotB,
+                                                   inst.fSlotC, inst.fImmI32);
+                break;
+
             default:
                 SkDEBUGFAILF("Raster Pipeline: unsupported instruction %d", (int)inst.fOp);
                 break;
