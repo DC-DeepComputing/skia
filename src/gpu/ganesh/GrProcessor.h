@@ -8,16 +8,10 @@
 #ifndef GrProcessor_DEFINED
 #define GrProcessor_DEFINED
 
-#include "include/core/SkMath.h"
 #include "include/core/SkString.h"
-#include "src/gpu/ganesh/GrColor.h"
-#include "src/gpu/ganesh/GrGpuBuffer.h"
-#include "src/gpu/ganesh/GrProcessorUnitTest.h"
-#include "src/gpu/ganesh/GrProgramDesc.h"
-#include "src/gpu/ganesh/GrSamplerState.h"
-#include "src/gpu/ganesh/GrShaderVar.h"
-#include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
-#include "src/gpu/ganesh/GrTextureProxy.h"
+
+#include <cstddef>
+#include <new>
 
 class GrResourceProvider;
 
