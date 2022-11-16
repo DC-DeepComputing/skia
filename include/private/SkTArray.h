@@ -40,10 +40,8 @@ template <typename T, bool MEM_MOVE = sk_is_trivially_relocatable_v<T>> class Sk
 public:
     using value_type = T;
 
-    /**
-     * Creates an empty array with no initial storage
-     */
-    SkTArray() { this->init(0); }
+    // Creates an empty array with no initial storage
+    SkTArray() : fCapacity{0}, fOwnMemory(true) {}
 
     /**
      * Creates an empty array that will preallocate space for reserveCount
@@ -59,19 +57,13 @@ public:
 
     SkTArray(SkTArray&& that) {
         if (that.fOwnMemory) {
-            fData = std::exchange(that.fData, nullptr);
-            fSize = std::exchange(that.fSize, 0);
-
-            // exchange does not work for bit fields.
-            fCapacity = that.fCapacity;
-            that.fCapacity = 0;
-
-            fOwnMemory = true;
+            this->setData(that);
+            that.setData({});
         } else {
-            this->init(that.fSize);
+            this->initData(that.fSize);
             that.move(fData);
-            that.fSize = 0;
         }
+        fSize = std::exchange(that.fSize, 0);
     }
 
     /**
@@ -80,7 +72,7 @@ public:
      * when you really want the (void*, int) version.
      */
     SkTArray(const T* array, int count) {
-        this->init(count);
+        this->initData(count);
         this->copy(array);
     }
     /**
@@ -396,7 +388,7 @@ public:
             if (fOwnMemory) {
                 sk_free(fData);
             }
-            this->setItemArray(allocation);
+            this->setDataFromBytes(allocation);
         }
     }
 
@@ -501,13 +493,19 @@ private:
     // just be INT_MAX if the sizeof(T) < 2^32.
     static constexpr int kMaxCapacity = SkToInt(std::min(SIZE_MAX / sizeof(T), (size_t)INT_MAX));
 
-    void setItemArray(SkSpan<std::byte> allocation) {
-        fData = TCast(allocation.data());
+    void setDataFromBytes(SkSpan<std::byte> allocation) {
+        T* data = TCast(allocation.data());
         // We have gotten extra bytes back from the allocation limit, pin to kMaxCapacity. It
         // would seem like the SkContainerAllocator should handle the divide, but it would have
         // to a full divide instruction. If done here the size is known at compile, and usually
         // can be implemented by a right shift. The full divide takes ~50X longer than the shift.
-        fCapacity = SkToU32(std::min(allocation.size() / sizeof(T), SkToSizeT(kMaxCapacity)));
+        size_t size = std::min(allocation.size() / sizeof(T), SkToSizeT(kMaxCapacity));
+        setData(SkSpan<T>(data, size));
+    }
+
+    void setData(SkSpan<T> array) {
+        fData = array.data();
+        fCapacity = SkToU32(array.size());
         fOwnMemory = true;
     }
 
@@ -532,16 +530,9 @@ private:
         return SkContainerAllocator{sizeof(T), kMaxCapacity}.allocate(capacity, growthFactor);
     }
 
-    void init(int count) {
+    void initData(int count) {
+        this->setDataFromBytes(Allocate(count));
         fSize = count;
-        if (!count) {
-            fCapacity = 0;
-            fData = nullptr;
-        } else {
-            fCapacity = SkToU32(std::max(count, kMinHeapAllocCount));
-            this->setItemArray(Allocate(fCapacity));
-        }
-        fOwnMemory = true;
     }
 
     void initWithPreallocatedStorage(int count, void* preallocStorage, int preallocCount) {
@@ -553,7 +544,7 @@ private:
         if (count > preallocCount) {
             fCapacity = SkToU32(std::max(count, kMinHeapAllocCount));
             SkSpan<std::byte> allocation = Allocate(fCapacity);
-            this->setItemArray(allocation);
+            this->setDataFromBytes(allocation);
         } else {
             fCapacity = SkToU32(preallocCount);
             fData = TCast(preallocStorage);
@@ -632,15 +623,15 @@ private:
         if (fOwnMemory) {
             sk_free(fData);
         }
-        this->setItemArray(allocation);
+        this->setDataFromBytes(allocation);
         SkASSERT(this->capacity() >= newCount);
         SkASSERT(fData != nullptr);
     }
 
-    T* fData;
-    int fSize;
+    T* fData{nullptr};
+    int fSize{0};
     uint32_t fCapacity : 31;
-    uint32_t fOwnMemory  :  1;
+    uint32_t fOwnMemory : 1;
 };
 
 template <typename T, bool M> static inline void swap(SkTArray<T, M>& a, SkTArray<T, M>& b) {
