@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b29541_80dabef9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-16T16:07:22Z",
+      "side": 1,
+      "message": "Actually, I see zero usage of this API in our major clients, so I\u0027m just updating the function and adding to release notes.",
+      "revId": "21d077bdcb57d7c0e787fdfdbd1a09ca175ff7c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
