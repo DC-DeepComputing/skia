@@ -94,7 +94,6 @@ private:
                               const VkPhysicalDeviceProperties&,
                               VkFormat,
                               VkImageUsageFlags);
-
         bool isSampleCountSupported(int requestedCount) const;
 
         SkTDArray<int> fSampleCounts;
@@ -178,4 +177,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanCaps_DEFINED
-
