@@ -123,6 +123,24 @@
       "parentUuid": "a2df4396_70f6b2b9",
       "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efea7e19_a54e04d1",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-16T16:27:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5e1237f_7a97a44b",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
