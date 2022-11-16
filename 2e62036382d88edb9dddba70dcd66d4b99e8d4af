@@ -105,6 +105,24 @@
       "parentUuid": "19d709c1_a9955bcb",
       "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e1237f_7a97a44b",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-16T16:11:54Z",
+      "side": 1,
+      "message": "Ah, sorry for not being clear, By \"all headers in general\" I was more referring to adding all the header files to include checking in the same way, as opposed to attempting to check some header files by compiling a different file with the same base filename (when it already exists).",
+      "parentUuid": "a2df4396_70f6b2b9",
+      "revId": "2e62036382d88edb9dddba70dcd66d4b99e8d4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
