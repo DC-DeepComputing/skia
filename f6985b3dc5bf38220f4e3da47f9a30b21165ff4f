@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02913054_7478d566",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-17T18:14:55Z",
+      "side": 0,
+      "message": "This is no longer necessary, because the store stages implicitly clamp to [0,1] if necessary.",
+      "revId": "f6985b3dc5bf38220f4e3da47f9a30b21165ff4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
