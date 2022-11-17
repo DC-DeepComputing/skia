@@ -5,16 +5,14 @@
  * found in the LICENSE file.
  */
 
-#include "samplecode/Sample.h"
-
-#include "src/gpu/ganesh/geometry/GrQuad.h"
-#include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
-
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkTPin.h"
+#include "src/gpu/ganesh/geometry/GrQuad.h"
+#include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "tools/viewer/ClickHandlerSlide.h"
 
 using VertexSpec = skgpu::v1::QuadPerEdgeAA::VertexSpec;
 using ColorType = skgpu::v1::QuadPerEdgeAA::ColorType;
@@ -238,18 +236,19 @@ static SkScalar get_framed_coverage(const SkPoint outer[4], const SkScalar outer
 static constexpr SkScalar kViewScale = 100.f;
 static constexpr SkScalar kViewOffset = 200.f;
 
-class DegenerateQuadSample : public Sample {
+class DegenerateQuadSlide : public ClickHandlerSlide {
 public:
-    DegenerateQuadSample(const SkRect& rect)
+    DegenerateQuadSlide(const SkRect& rect)
             : fOuterRect(rect)
             , fCoverageMode(CoverageMode::kArea) {
         fOuterRect.toQuad(fCorners);
         for (int i = 0; i < 4; ++i) {
             fEdgeAA[i] = true;
         }
+        fName = "DegenerateQuad";
     }
 
-    void onDrawContent(SkCanvas* canvas) override {
+    void draw(SkCanvas* canvas) override {
         static const SkScalar kDotParams[2] = {1.f / kViewScale, 12.f / kViewScale};
         sk_sp<SkPathEffect> dots = SkDashPathEffect::Make(kDotParams, 2, 0.f);
         static const SkScalar kDashParams[2] = {8.f / kViewScale, 12.f / kViewScale};
@@ -386,10 +385,12 @@ public:
         }
     }
 
-    Sample::Click* onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey) override;
-    bool onClick(Sample::Click*) override;
     bool onChar(SkUnichar) override;
-    SkString name() override { return SkString("DegenerateQuad"); }
+
+
+protected:
+    Click* onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey) override;
+    bool onClick(Click*) override;
 
 private:
     class Click;
@@ -453,11 +454,9 @@ private:
 
         *domain = {vertices[52], vertices[53], vertices[54], vertices[55]};
     }
-
-    using INHERITED = Sample;
 };
 
-class DegenerateQuadSample::Click : public Sample::Click {
+class DegenerateQuadSlide::Click : public ClickHandlerSlide::Click {
 public:
     Click(const SkRect& clamp, int index)
             : fOuterRect(clamp)
@@ -485,7 +484,8 @@ private:
     }
 };
 
-Sample::Click* DegenerateQuadSample::onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey) {
+ClickHandlerSlide::Click* DegenerateQuadSlide::onFindClickHandler(SkScalar x, SkScalar y,
+                                                                  skui::ModifierKey) {
     SkPoint inCTM = SkPoint::Make((x - kViewOffset) / kViewScale, (y - kViewOffset) / kViewScale);
     for (int i = 0; i < 4; ++i) {
         if ((fCorners[i] - inCTM).length() < 10.f / kViewScale) {
@@ -495,13 +495,13 @@ Sample::Click* DegenerateQuadSample::onFindClickHandler(SkScalar x, SkScalar y, 
     return new Click(fOuterRect, -1);
 }
 
-bool DegenerateQuadSample::onClick(Sample::Click* click) {
+bool DegenerateQuadSlide::onClick(ClickHandlerSlide::Click* click) {
     Click* myClick = (Click*) click;
     myClick->doClick(fCorners);
     return true;
 }
 
-bool DegenerateQuadSample::onChar(SkUnichar code) {
+bool DegenerateQuadSlide::onChar(SkUnichar code) {
         switch(code) {
             case '1':
                 fEdgeAA[0] = !fEdgeAA[0];
@@ -528,4 +528,4 @@ bool DegenerateQuadSample::onChar(SkUnichar code) {
         return false;
 }
 
-DEF_SAMPLE(return new DegenerateQuadSample(SkRect::MakeWH(4.f, 4.f));)
+DEF_SLIDE(return new DegenerateQuadSlide(SkRect::MakeWH(4.f, 4.f));)
