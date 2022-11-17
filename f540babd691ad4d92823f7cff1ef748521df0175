@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28bbe611_326e0af4",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T19:30:22Z",
+      "side": 1,
+      "message": "Remove Gr",
+      "range": {
+        "startLine": 21,
+        "startChar": 22,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7025ed5d_bdd5a6c3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T19:30:22Z",
+      "side": 1,
+      "message": "Nit: capitalization? `NVIDIA`",
+      "range": {
+        "startLine": 52,
+        "startChar": 14,
+        "endLine": 52,
+        "endChar": 20
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4084117_3d53f246",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T19:30:22Z",
+      "side": 1,
+      "message": "Nit comment improvement suggestion (sorry to be a stickler)\nMight be more clear to say something like:\n```By default, we initialize the Android API version to 0 since we consider certain things \"fixed\" only once above a certain version.\nThis way, we default to enabling the workarounds.```",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 68,
+        "endChar": 19
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503cfad9_c0e3d061",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T19:30:22Z",
+      "side": 1,
+      "message": "Nit: I recognize that this is what we called it in Ganesh, but this name is a bit of a mouthful. How do you feel about `useDedicatedImageMemory` or `alwaysUseImageMemory`? With, of course, respective changes to the `fShouldAlwaysUseDedicatedImageMemory` member attribute.",
+      "range": {
+        "startLine": 52,
+        "startChar": 9,
+        "endLine": 52,
+        "endChar": 44
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d655eee6_2caf2cc7",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T19:30:22Z",
+      "side": 1,
+      "message": "Wouldn\u0027t we want `if (result !\u003d VK_SUCCESS)`?",
+      "range": {
+        "startLine": 121,
+        "startChar": 5,
+        "endLine": 121,
+        "endChar": 15
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
