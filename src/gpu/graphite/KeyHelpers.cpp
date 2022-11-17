@@ -517,6 +517,35 @@ void TableColorFilterBlock::BeginBlock(const KeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 namespace {
 
+void add_srgbgamma_colorfilter_uniform_data(
+        const ShaderCodeDictionary* dict,
+        const SRGBGammaColorFilterBlock::SRGBGammaColorFilterData& data,
+        PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kSRGBGammaColorFilter)
+    gatherer->write(SkTo<int>(data.fToLinear));
+
+    gatherer->addFlags(
+            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kSRGBGammaColorFilter));
+}
+
+} // anonymous namespace
+
+void SRGBGammaColorFilterBlock::BeginBlock(const KeyContext& keyContext,
+                                           PaintParamsKeyBuilder* builder,
+                                           PipelineDataGatherer* gatherer,
+                                           const SRGBGammaColorFilterData& data) {
+    auto dict = keyContext.dict();
+
+    if (gatherer) {
+        add_srgbgamma_colorfilter_uniform_data(dict, data, gatherer);
+    }
+
+    builder->beginBlock(SkBuiltInCodeSnippetID::kSRGBGammaColorFilter);
+}
+
+//--------------------------------------------------------------------------------------------------
+namespace {
+
 constexpr skgpu::BlendInfo make_simple_blendInfo(skgpu::BlendCoeff srcCoeff,
                                                  skgpu::BlendCoeff dstCoeff) {
     return { skgpu::BlendEquation::kAdd,

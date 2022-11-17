@@ -174,4 +174,14 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 ".x,.375))).x,sample(s,float2(half2(coords.y,.625))).x,sample(s,float2(half2"
 "(coords.z,.875))).x,1.);return color*sample(s,float2(half2(coords.w,.125)))"
 ".x;}$pure half4 sk_gaussian_colorfilter(half4 inColor){half factor=1.-inColor"
-".w;factor=exp((-factor*factor)*4.)-.018;return half4(factor);}";
+".w;factor=exp((-factor*factor)*4.)-.018;return half4(factor);}half apply_transfer_function"
+"(half x,half G,half A,half B,half C,half D,half E,half F){half s=sign(x);x="
+"abs(x);x=x<D?C*x+F:pow(A*x+B,G)+E;return s*x;}half4 sk_srgbgamma_colorfilter"
+"(half4 color,int toLinear){color=unpremul(color);if(bool(toLinear)){color.x"
+"=apply_transfer_function(color.x,1.,1.,0.,0.,0.,0.,0.);color.y=apply_transfer_function"
+"(color.y,1.,1.,0.,0.,0.,0.,0.);color.z=apply_transfer_function(color.z,1.,1."
+",0.,0.,0.,0.,0.);}else{color.x=apply_transfer_function(color.x,2.4,.947867334"
+",.0521327034,.07739938,.04045,0.,0.);color.y=apply_transfer_function(color."
+"y,2.4,.947867334,.0521327034,.07739938,.04045,0.,0.);color.z=apply_transfer_function"
+"(color.z,2.4,.947867334,.0521327034,.07739938,.04045,0.,0.);}color.xyz*=color"
+".w;return color;}";

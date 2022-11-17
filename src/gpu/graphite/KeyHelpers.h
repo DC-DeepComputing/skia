@@ -262,6 +262,21 @@ struct GaussianColorFilterBlock {
                            PipelineDataGatherer*);
 };
 
+struct SRGBGammaColorFilterBlock {
+    struct SRGBGammaColorFilterData {
+        SRGBGammaColorFilterData(bool toLinear)
+                : fToLinear(toLinear) {
+        }
+
+        bool fToLinear;
+    };
+
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const SRGBGammaColorFilterData&);
+};
+
 struct BlendModeBlock {
     /**
      * Blend mode blocks are used to blend a color attachment with the output of a shader.
