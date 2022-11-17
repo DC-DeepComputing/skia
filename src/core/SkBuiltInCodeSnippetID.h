@@ -40,6 +40,7 @@ enum class SkBuiltInCodeSnippetID : int32_t {
     kComposeColorFilter,
     kTableColorFilter,
     kGaussianColorFilter,
+    kSRGBGammaColorFilter,
 
     // BlendMode code snippets
     kFixedFunctionBlender,
