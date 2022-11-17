@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b200032c_7e5e2304",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T19:39:57Z",
+      "side": 1,
+      "message": "Why are you changing all the comment styles?\nI don\u0027t think this is an improvement.",
+      "range": {
+        "startLine": 405,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 0
+      },
+      "revId": "48a7f97a4af3cfa077c8284d50a90fe1bc50c6de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
