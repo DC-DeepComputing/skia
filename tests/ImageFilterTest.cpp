@@ -1910,7 +1910,7 @@ DEF_TEST(XfermodeImageFilterBounds, reporter) {
     }
 
     SkIRect intersection = background_rect;
-    intersection.intersect(foreground_rect);
+    SkAssertResult(intersection.intersect(foreground_rect));
     expectedBounds[static_cast<int>(SkBlendMode::kClear)] = SkIRect::MakeEmpty();
     expectedBounds[static_cast<int>(SkBlendMode::kSrc)] = foreground_rect;
     expectedBounds[static_cast<int>(SkBlendMode::kDst)] = background_rect;
@@ -1999,7 +1999,7 @@ static void test_arithmetic_combinations(skiatest::Reporter* reporter, float v) 
     SkIRect unionRect = bgRect;
     unionRect.join(fgRect);
     SkIRect intersection = bgRect;
-    intersection.intersect(fgRect);
+    SkAssertResult(intersection.intersect(fgRect));
 
     test_arithmetic_bounds(reporter, 0, 0, 0, 0, background, foreground, nullptr,
                            SkIRect::MakeEmpty());
