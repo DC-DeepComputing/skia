@@ -45,6 +45,8 @@ public:
         std::vector<SkGlyphID> fGlyphIDs;
         std::vector<SkPoint>   fGlyphPos;
 
+        std::vector<size_t>    fUTFClusters; // only available with Flags::kUTFClusters
+
         enum class BoundsType { kConservative, kTight };
         SkRect computeBounds(BoundsType) const;
 
@@ -133,6 +135,9 @@ public:
 
         // Compute the advance and ascent for each fragment.
         kTrackFragmentAdvanceAscent = 0x02,
+
+        // Return glyph cluster information.
+        kUTFClusters                = 0x04,
     };
 
     struct TextDesc {
