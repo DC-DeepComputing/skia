@@ -16,6 +16,24 @@
       "message": "Assert that std::size(data) \u003c\u003d maxStride_highp ?",
       "revId": "fff71ffacaed80f92f246937f8f990c851776d7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74d33d48_96dd8c13",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T19:41:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04c1aa19_1ae6b28f",
+      "revId": "fff71ffacaed80f92f246937f8f990c851776d7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
