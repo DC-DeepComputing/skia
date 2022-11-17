@@ -46,6 +46,30 @@
       },
       "revId": "48a7f97a4af3cfa077c8284d50a90fe1bc50c6de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6f7d6d9_c1ad9a37",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T20:17:31Z",
+      "side": 1,
+      "message": "Doc comments render differently in many editors versus `//` comments (including in Xcode!), and IDEs can extract them for things like hover tips. \n\nAnyway, we should be consistent--if we want to change these, we should be intentional about it, get a team consensus, and change them all for a class at once instead of changing one at a time when you edit something nearby. Having a mix of styles in one class is ugly.\n\nPlease change back for this CL and take a poll in chat/send an email to the team.",
+      "parentUuid": "c9d365d6_4be09875",
+      "range": {
+        "startLine": 405,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 0
+      },
+      "revId": "48a7f97a4af3cfa077c8284d50a90fe1bc50c6de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
