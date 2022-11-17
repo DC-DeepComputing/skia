@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb689b84_22d57104",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-17T18:32:56Z",
+      "side": 1,
+      "message": "Thankfully, renaming the namespace takes us back under 100 cols.",
+      "parentUuid": "ff629e1d_d75d133b",
+      "range": {
+        "startLine": 546,
+        "startChar": 101,
+        "endLine": 546,
+        "endChar": 102
+      },
+      "revId": "098f41dbe1b23e46f390797f27ce974c75a05a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fee5e216_588aaa49",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "It\u0027s not in codesearch http://screen/3Xq8jsGPx65sUYL",
       "parentUuid": "6d5ec462_559b5cca",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "098f41dbe1b23e46f390797f27ce974c75a05a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e190f14d_ce248689",
+        "filename": "src/gpu/ganesh/TestFormatColorTypeCombination.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-17T18:32:56Z",
+      "side": 1,
+      "message": "You are correct. I must have hallucinated its existence or mis-grepped something. Done.",
+      "parentUuid": "6c654c43_0cf1df39",
       "range": {
         "startLine": 11,
         "startChar": 10,
