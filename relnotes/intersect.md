@@ -1,0 +1,1 @@
+`SkIRect::intersect` and `SkRect::intersect` are now marked as warning on unused return value.
