@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315a701f_19a844bf",
+        "filename": "src/gpu/ganesh/GrSurfaceProxyView.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T23:24:25Z",
+      "side": 0,
+      "message": "Can we keep these two ctors also? They seem pretty benign, just copying pointers and enums.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "3f4b601abc0c5f84e684ba5e0420a475ced1d6ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
