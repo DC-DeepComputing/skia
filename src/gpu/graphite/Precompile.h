@@ -46,6 +46,9 @@ private:
 class PrecompileShader : public PrecompileBase {
 public:
     PrecompileShader() : PrecompileBase(Type::kShader) {}
+
+protected:
+    virtual int numCombos1() const = 0;
 };
 
 class PrecompileMaskFilter : public PrecompileBase {
@@ -70,6 +73,9 @@ public:
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
 
     static sk_sp<PrecompileBlender> Mode(SkBlendMode blendMode);
+
+protected:
+    virtual int numCombos2() const = 0;
 };
 
 //--------------------------------------------------------------------------------------------------

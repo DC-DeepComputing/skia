@@ -21,6 +21,9 @@ public:
 
     std::optional<SkBlendMode> asBlendMode() const final { return fBlendMode; }
 
+protected:
+    int numCombos2() const override { return 1; }
+
 private:
     SkBlendMode fBlendMode;
 };
@@ -30,14 +33,47 @@ sk_sp<PrecompileBlender> PrecompileBlender::Mode(SkBlendMode blendMode) {
 }
 
 //--------------------------------------------------------------------------------------------------
-class BlendPrecompileShader : public PrecompileShader {
+class PrecompileColorShader : public PrecompileShader {
 public:
-    BlendPrecompileShader(SkSpan<const sk_sp<PrecompileBlender>> blenders,
+    PrecompileColorShader() {}
+
+protected:
+    int numCombos1() const override { return 1; }
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::Color() {
+    return sk_make_sp<PrecompileColorShader>();
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompileBlendShader : public PrecompileShader {
+public:
+    PrecompileBlendShader(SkSpan<const sk_sp<PrecompileBlender>> blenders,
                           SkSpan<const sk_sp<PrecompileShader>> dsts,
                           SkSpan<const sk_sp<PrecompileShader>> srcs)
             : fBlenders(blenders.begin(), blenders.end())
             , fDsts(dsts.begin(), dsts.end())
             , fSrcs(srcs.begin(), srcs.end()) {
+    }
+
+protected:
+    int numCombos() const override {
+        int numBlenders = 0;
+        for (auto b : fBlenders) {
+            numBlenders += b->numCombos2();
+        }
+
+        int numDsts = 0;
+        for (auto d : fDsts) {
+            numDsts += d->numCombos1();
+        }
+
+        int numSrcs = 0;
+        for (auto s : fSrcs) {
+            numSrcs += s->numCombos1();
+        }
+
+        return numBlenders * numDsts * numSrcs;
     }
 
 private:
@@ -47,15 +83,13 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------
-sk_sp<PrecompileShader> PrecompileShaders::Color() {
-    return sk_make_sp<PrecompileShader>();
-}
+
 
 sk_sp<PrecompileShader> PrecompileShaders::Blend(
         SkSpan<const sk_sp<PrecompileBlender>> blenders,
         SkSpan<const sk_sp<PrecompileShader>> dsts,
         SkSpan<const sk_sp<PrecompileShader>> srcs) {
-    return sk_make_sp<BlendPrecompileShader>(std::move(blenders),
+    return sk_make_sp<PrecompileBlendShader>(std::move(blenders),
                                              std::move(dsts), std::move(srcs));
 }
 
@@ -69,25 +103,30 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
         tmp.emplace_back(PrecompileBlender::Mode(bm));
     }
 
-    return sk_make_sp<BlendPrecompileShader>(tmp, std::move(dsts), std::move(srcs));
+    return sk_make_sp<PrecompileBlendShader>(tmp, std::move(dsts), std::move(srcs));
 }
 
+//-------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
     return sk_make_sp<PrecompileShader>();
 }
 
+//-------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::LinearGradient() {
     return sk_make_sp<PrecompileShader>();
 }
 
+//-------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::RadialGradient() {
     return sk_make_sp<PrecompileShader>();
 }
 
+//-------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::TwoPointConicalGradient() {
     return sk_make_sp<PrecompileShader>();
 }
 
+//-------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::SweepGradient() {
     return sk_make_sp<PrecompileShader>();
 }
