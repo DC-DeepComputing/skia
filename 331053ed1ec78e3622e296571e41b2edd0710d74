@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "125ea6c2_507c5827",
+        "filename": "src/gpu/ganesh/GrSurfaceProxyView.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T20:58:26Z",
+      "side": 0,
+      "message": "Moving so much code out of the header can affect performance. It won\u0027t be inlined unless clients use LTO (which is slow and generally has a harder time doing the same work). For the simple accessors, can we move them back? (The bool cast is one obvious case. width/height/dimensions/proxy/refProxy/detachProxy also look like keepers.)",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 6
+      },
+      "revId": "331053ed1ec78e3622e296571e41b2edd0710d74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
