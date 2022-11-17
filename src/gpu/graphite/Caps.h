@@ -132,6 +132,9 @@ public:
     // correct results.
     bool storageBufferPreferred() const { return fStorageBufferPreferred; }
 
+    // Staging buffer is preferred for updating content of vertex, index and uniform buffers.
+    bool stagingBufferPreferred() const { return fStagingBufferPreferred; }
+
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
     skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
@@ -190,6 +193,7 @@ protected:
     bool fProtectedSupport = false;
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
+    bool fStagingBufferPreferred = false;
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Client-provided Caps

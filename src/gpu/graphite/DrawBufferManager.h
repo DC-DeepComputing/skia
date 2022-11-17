@@ -19,6 +19,7 @@
 namespace skgpu::graphite {
 
 class Buffer;
+class Caps;
 class Recording;
 class ResourceProvider;
 
@@ -56,18 +57,24 @@ public:
     void transferToRecording(Recording*);
 
 private:
+    const Caps* caps() const;
+
     ResourceProvider* fResourceProvider;
 
     sk_sp<Buffer> fCurrentVertexBuffer;
+    sk_sp<Buffer> fCurrentStagingVertexBuffer;
     size_t fVertexOffset = 0;
 
     sk_sp<Buffer> fCurrentIndexBuffer;
+    sk_sp<Buffer> fCurrentStagingIndexBuffer;
     size_t fIndexOffset = 0;
 
     sk_sp<Buffer> fCurrentUniformBuffer;
+    sk_sp<Buffer> fCurrentStagingUniformBuffer;
     size_t fUniformOffset = 0;
 
     sk_sp<Buffer> fCurrentStorageBuffer;
+    sk_sp<Buffer> fCurrentStagingStorageBuffer;
     size_t fSsboOffset = 0;
 
     const size_t fUniformStartAlignment;
