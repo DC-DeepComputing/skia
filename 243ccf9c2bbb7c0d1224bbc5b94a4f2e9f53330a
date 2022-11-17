@@ -152,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a16f10b_d77a7075",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-17T18:51:05Z",
+      "side": 1,
+      "message": "We resolved this in another comment. It can stay.",
+      "parentUuid": "f3ef3906_bf1fbfbb",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 73
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fc8b7f3_d9357fb8",
