@@ -1222,8 +1222,8 @@ bool GrMtlCaps::renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget* rt)
 }
 
 #if GR_TEST_UTILS
-std::vector<GrCaps::TestFormatColorTypeCombination> GrMtlCaps::getTestingCombinations() const {
-    std::vector<GrCaps::TestFormatColorTypeCombination> combos = {
+std::vector<GrTest::TestFormatColorTypeCombination> GrMtlCaps::getTestingCombinations() const {
+    std::vector<GrTest::TestFormatColorTypeCombination> combos = {
         { GrColorType::kAlpha_8,          GrBackendFormat::MakeMtl(MTLPixelFormatA8Unorm)         },
         { GrColorType::kAlpha_8,          GrBackendFormat::MakeMtl(MTLPixelFormatR8Unorm)         },
         { GrColorType::kBGR_565,          GrBackendFormat::MakeMtl(kMTLPixelFormatB5G6R5Unorm)    },
