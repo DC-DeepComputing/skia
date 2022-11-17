@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "include/utils/SkTextUtils.h"
@@ -18,6 +19,7 @@
 
 #include <functional>
 
+class SkCanvas;
 class SkMatrix;
 
 namespace sksg {
@@ -35,6 +37,19 @@ using OpacityPropertyValue = float;
 enum class TextPaintOrder : uint8_t {
     kFillStroke,
     kStrokeFill,
+};
+
+// EXPERIMENTAL
+// Optional callback invoked when drawing each individual glyph.
+// Allows clients to render custom text decorations.
+class GlyphDecorator : public SkRefCnt {
+public:
+    struct GlyphInfo {
+        SkRect fBounds;  // visual glyph bounds
+        size_t fIndex;   // glyph index within the current text layer
+    };
+
+    virtual void onDecorate(SkCanvas*, const GlyphInfo&) = 0;
 };
 
 struct TextPropertyValue {
@@ -61,6 +76,7 @@ struct TextPropertyValue {
     SkPaint::Join           fStrokeJoin     = SkPaint::Join::kMiter_Join;
     bool                    fHasFill        = false,
                             fHasStroke      = false;
+    sk_sp<GlyphDecorator>   fDecorator;
 
     bool operator==(const TextPropertyValue& other) const;
     bool operator!=(const TextPropertyValue& other) const;
