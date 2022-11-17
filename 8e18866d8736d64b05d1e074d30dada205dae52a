@@ -16,6 +16,24 @@
       "message": "The name here is interesting, since even the comment says \"glyph cluster information\" but the field name is `kUTFClusters`. This is why in shaper this is just called `clusters`, since each cluster[i] is really a mapping from returned glyph[i] to the index of the start of the slice of the input string which caused that glyph to be produced. The values are indexes into the input string of code units, so I can see why this might be seen as \"UTF Clusters\" but the keys are indexes into the glyph array, so these are also glyph clusters (runs of the same value in the array). `startUtfIndexFromGlyphIndex` might be a better name (making it obvious that this is really a dense map, not just an array of values), though we tend to give that concept a name and call it `clusters`.\n\nAnyhow, naming things is hard.",
       "revId": "8e18866d8736d64b05d1e074d30dada205dae52a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f24bd58_f2f11db0",
+        "filename": "modules/skottie/src/text/SkottieShaper.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-11-17T18:29:07Z",
+      "side": 1,
+      "message": "Ack, I went back and forth on naming.  Updated to `clusters` for simplicity, and added comments to (hopefully) clarify what it means.",
+      "parentUuid": "68544c82_e0a096c3",
+      "revId": "8e18866d8736d64b05d1e074d30dada205dae52a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
