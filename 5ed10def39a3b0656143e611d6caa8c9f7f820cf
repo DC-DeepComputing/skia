@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "142dfe36_682c52d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-17T21:33:59Z",
+      "side": 1,
+      "message": "lgtm. I suspect that the actual operation/stage will be slightly more complex. In the old stack interpreter, the corresponding instruction(s) [1] handled several things at once (because they\u0027re always clumped together in code-gen):\n\n- Store the current mask value to the mask stack\n- Take the most recently evaluated condition (old code got this from the value stack, new code probably gets it from \u0027r\u0027) ... turn it into a mask, stored at the new top of the stack (which would mean moving it to \u0027dr\u0027 here)\n\n[1] https://skia-review.googlesource.com/c/skia/+/356921/5/src/sksl/SkSLByteCode.cpp#b833",
+      "revId": "5ed10def39a3b0656143e611d6caa8c9f7f820cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
