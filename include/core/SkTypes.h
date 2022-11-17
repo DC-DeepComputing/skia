@@ -461,8 +461,14 @@
 //        return SkASSERT(x > 4),
 //               x - 4;
 //    }
-#define SkASSERT_RELEASE(cond) \
-        static_cast<void>( (cond) ? (void)0 : []{ SK_ABORT("assert(%s)", #cond); }() )
+
+#if defined(SK_ENABLE_OPTIMIZE_SIZE)
+    #define SkASSERT_RELEASE(cond) \
+            static_cast<void>( (cond) ? (void)0 : sk_abort_no_print() )
+#else
+    #define SkASSERT_RELEASE(cond) \
+            static_cast<void>( (cond) ? (void)0 : []{ SK_ABORT("assert(%s)", #cond); }() )
+#endif
 
 #ifdef SK_DEBUG
     #define SkASSERT(cond) SkASSERT_RELEASE(cond)
