@@ -10,6 +10,10 @@
 #ifdef SK_ENABLE_PRECOMPILE
 
 #include "src/gpu/graphite/FactoryFunctions.h"
+
+#include "src/core/SkKeyContext.h"
+#include "src/gpu/Blend.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
 
@@ -49,9 +53,30 @@ public:
             : fBlenders(blenders.begin(), blenders.end())
             , fDsts(dsts.begin(), dsts.end())
             , fSrcs(srcs.begin(), srcs.end()) {
+        for (auto b : fBlenders) {
+            if (b->asBlendMode().has_value()) {
+                SkASSERT(!fNeedRTEffectBased);
+
+                SkBlendMode bm = b->asBlendMode().value();
+
+                SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(bm);
+                if (!porterDuffConstants.empty()) {
+                    fNeedPorterDuffBased = true;
+                } else {
+                    fNeedBlendModeBased = true;
+                }
+            } else {
+                SkASSERT(!fNeedPorterDuffBased && !fNeedBlendModeBased);
+                fNeedRTEffectBased = true;
+            }
+        }
     }
 
 private:
+    int numIntrinsicCombinations() const override {
+
+    }
+
     int numChildCombinations() const override {
         int numBlenderCombos = CountBlenderCombos(fBlenders);
 
@@ -68,6 +93,26 @@ private:
         return numBlenderCombos * numDstCombos * numSrcCombos;
     }
 
+    void beginBlock(const SkKeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+        SkASSERT(intrinsicCombination == 0);
+
+        bool needSrcOver = !fNeedPorterDuffBased && !fNeedBlendModeBased && !fNeedRTEffectBased;
+
+        if (needSrcOver || fNeedPorterDuffBased) {
+            PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                                   {0, 0, 0, 0}); // Porter/Duff coeffs aren't used
+        } else if (fNeedBlendModeBased) {
+            BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                         { SkBlendMode::kSrc }); // the blendmode is unused
+        }
+
+    }
+
+    bool fNeedPorterDuffBased = false;
+    bool fNeedBlendModeBased = false;
+    bool fNeedRTEffectBased = false;
     std::vector<sk_sp<PrecompileBlender>> fBlenders;
     std::vector<sk_sp<PrecompileShader>> fDsts;
     std::vector<sk_sp<PrecompileShader>> fSrcs;
