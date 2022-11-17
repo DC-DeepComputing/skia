@@ -335,7 +335,7 @@ private:
                     { {run.fFont, 1} },
                     { glyphs[i] },
                     { {0,0} },
-                    fDesc.fFlags & Shaper::kUTFClusters
+                    fDesc.fFlags & Shaper::kClusters
                         ? std::vector<size_t>{ fUTF8Offset + clusters[i] }
                         : std::vector<size_t>({}),
                 },
@@ -372,10 +372,10 @@ private:
             fResult.fMissingGlyphCount += (glyphs[i] == kMissingGlyphID);
         }
 
-        if (fDesc.fFlags & Shaper::kUTFClusters) {
-            current_glyphs.fUTFClusters.reserve(current_glyphs.fUTFClusters.size() + run.fSize);
+        if (fDesc.fFlags & Shaper::kClusters) {
+            current_glyphs.fClusters.reserve(current_glyphs.fClusters.size() + run.fSize);
             for (size_t i = 0; i < run.fSize; ++i) {
-                current_glyphs.fUTFClusters.push_back(fUTF8Offset + clusters[i]);
+                current_glyphs.fClusters.push_back(fUTF8Offset + clusters[i]);
             }
         }
     }

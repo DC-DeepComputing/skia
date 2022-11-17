@@ -45,7 +45,10 @@ public:
         std::vector<SkGlyphID> fGlyphIDs;
         std::vector<SkPoint>   fGlyphPos;
 
-        std::vector<size_t>    fUTFClusters; // only available with Flags::kUTFClusters
+        // fClusters[i] is an input string index, pointing to the start of the UTF sequence
+        // associated with fGlyphs[i].  The number of entries matches the number of glyphs.
+        // Only available with Flags::kUTFClusters.
+        std::vector<size_t>    fClusters;
 
         enum class BoundsType { kConservative, kTight };
         SkRect computeBounds(BoundsType) const;
@@ -137,7 +140,7 @@ public:
         kTrackFragmentAdvanceAscent = 0x02,
 
         // Return glyph cluster information.
-        kUTFClusters                = 0x04,
+        kClusters                   = 0x04,
     };
 
     struct TextDesc {
