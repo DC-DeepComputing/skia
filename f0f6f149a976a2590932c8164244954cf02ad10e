@@ -16,6 +16,75 @@
       "message": "Hi Jim, PTAL. Thanks",
       "revId": "f0f6f149a976a2590932c8164244954cf02ad10e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03107943_b23c91a1",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T17:41:44Z",
+      "side": 1,
+      "message": "This function don\u0027t seem relevant to this change.",
+      "range": {
+        "startLine": 406,
+        "startChar": 0,
+        "endLine": 406,
+        "endChar": 91
+      },
+      "revId": "f0f6f149a976a2590932c8164244954cf02ad10e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "122e1371_6d2d3f92",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T17:41:44Z",
+      "side": 1,
+      "message": "This function don\u0027t seem relevant to this change.",
+      "range": {
+        "startLine": 427,
+        "startChar": 0,
+        "endLine": 427,
+        "endChar": 53
+      },
+      "revId": "f0f6f149a976a2590932c8164244954cf02ad10e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd3bdfe9_2bc2319b",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T17:41:44Z",
+      "side": 1,
+      "message": "Can the CreateShaderModule call actually fail for some reason? If so I don\u0027t think we can put the assert here and instead we need to be able to smoothly fail",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 22
+      },
+      "revId": "f0f6f149a976a2590932c8164244954cf02ad10e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
