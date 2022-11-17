@@ -170,6 +170,9 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
     colorFilters[3] = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kMultiply);
     colorFilters[4] = SkColorFilterPriv::MakeGaussian();
 
+    colorFilters[6] = SkColorFilters::LinearToSRGBGamma();
+    colorFilters[7] = SkColorFilters::SRGBToLinearGamma();
+
     SkPaint p;
 
     canvas->save();
@@ -249,7 +252,7 @@ protected:
     static constexpr int kTileHeight = 128;
     static constexpr int kWidth = 3 * kTileWidth;
     static constexpr int kHeight = 3 * kTileHeight;
-    static constexpr int kClipInset = 16;
+    static constexpr int kClipInset = 4;
 
     SkString onShortName() override {
         return SkString("graphitestart");

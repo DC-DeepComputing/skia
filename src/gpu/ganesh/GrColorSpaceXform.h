@@ -36,7 +36,7 @@ public:
 
     static sk_sp<GrColorSpaceXform> Make(const GrColorInfo& srcInfo, const GrColorInfo& dstInfo);
 
-    const SkColorSpaceXformSteps& steps() const { return fSteps; }
+    const SkColorSpaceXformSteps& steps1() const { return fSteps; }
 
     /**
      * GrFragmentProcessor::addToKey() must call this and include the returned value in its
@@ -78,7 +78,7 @@ public:
     const char* name() const override { return "ColorSpaceXform"; }
     std::unique_ptr<GrFragmentProcessor> clone() const override;
 
-    const GrColorSpaceXform* colorXform() const { return fColorXform.get(); }
+    const GrColorSpaceXform* colorXform1() const { return fColorXform.get(); }
 
 private:
     GrColorSpaceXformEffect(std::unique_ptr<GrFragmentProcessor> child,

@@ -646,6 +646,47 @@ void TableColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+void add_srgbgamma_colorfilter_uniform_data(
+        const SkShaderCodeDictionary* dict,
+        const SRGBGammaColorFilterBlock::SRGBGammaColorFilterData& data,
+        SkPipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kSRGBGammaColorFilter)
+    gatherer->write(SkTo<int>(data.fToLinear));
+
+    gatherer->addFlags(
+            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kSRGBGammaColorFilter));
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
+void SRGBGammaColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                           SkPaintParamsKeyBuilder* builder,
+                                           SkPipelineDataGatherer* gatherer,
+                                           const SRGBGammaColorFilterData& data) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        auto dict = keyContext.dict();
+
+        if (gatherer) {
+            add_srgbgamma_colorfilter_uniform_data(dict, data, gatherer);
+        }
+
+        builder->beginBlock(SkBuiltInCodeSnippetID::kSRGBGammaColorFilter);
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
+#ifdef SK_GRAPHITE_ENABLED
 namespace {
 
 constexpr skgpu::BlendInfo make_simple_blendInfo(skgpu::BlendCoeff srcCoeff,

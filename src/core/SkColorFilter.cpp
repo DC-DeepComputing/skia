@@ -294,6 +294,17 @@ public:
     }
 #endif
 
+#ifdef SK_ENABLE_SKSL
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override {
+        SRGBGammaColorFilterBlock::SRGBGammaColorFilterData data(fDir == Direction::kLinearToSRGB);
+
+        SRGBGammaColorFilterBlock::BeginBlock(keyContext, builder, gatherer, data);
+        builder->endBlock();
+    }
+#endif
+
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
         if (!shaderIsOpaque) {
             rec.fPipeline->append(SkRasterPipeline::unpremul);
@@ -391,7 +402,7 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
                 working = {dstColorInfo.colorType(), workingAT, workingCS};
 
         auto [ok, fp] = as_CFB(fChild)->asFragmentProcessor(
-                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working);
+                GrColorSpaceXformEffect::Make(std::move(inputFP), dst, working), context, working);
 
         return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
                   : GrFPFailure(std::move(fp));
