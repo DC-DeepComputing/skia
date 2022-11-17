@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e27e237_0b1f269d",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T15:43:27Z",
+      "side": 1,
+      "message": "API docs should remain in `/** ... */` style.\n\n`// ...` comments are for non-API.",
+      "range": {
+        "startLine": 198,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 7
+      },
+      "revId": "1497bbb2c6495d18b4ee72470556b3571d17428d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
