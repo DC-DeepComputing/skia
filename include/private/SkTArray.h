@@ -623,7 +623,9 @@ private:
         // allocation really only applies to fSizes on 32-bit machines; on 64-bit machines this
         // will probably never produce a check. Since kMaxCapacity is bounded above by INT_MAX,
         // this also checks the bounds of fSize.
-        SkASSERT_RELEASE(delta <= kMaxCapacity - fSize);
+        if (delta > kMaxCapacity - fSize) SK_ATTRIBUTE(likely) {
+            sk_report_container_overflow_and_die();
+        }
         const int newCount = fSize + delta;
 
         SkSpan<std::byte> allocation = Allocate(newCount, growthFactor);
