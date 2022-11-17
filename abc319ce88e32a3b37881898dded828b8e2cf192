@@ -22,6 +22,30 @@
       },
       "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8c89124_9ba4a297",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-17T15:19:45Z",
+      "side": 1,
+      "message": "Changed the comments to mention using BufferManagers. BTW I think it is not difficult to let dawn support mapping index, uniform and vertex buffers. So the staging buffer is not necessary, unless we find performance problems of using mappable buffers with shaders.",
+      "parentUuid": "cf006a58_ef1fd87f",
+      "range": {
+        "startLine": 96,
+        "startChar": 53,
+        "endLine": 96,
+        "endChar": 67
+      },
+      "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -505,6 +505,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "affa211b_cd8c3795",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-17T15:19:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60bca5f1_67799585",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "243ccf9c2bbb7c0d1224bbc5b94a4f2e9f53330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "542156b8_30de20c0",
