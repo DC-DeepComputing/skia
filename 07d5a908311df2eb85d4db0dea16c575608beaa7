@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f659653f_14a595a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T23:16:52Z",
+      "side": 1,
+      "message": "The fuzzer bug has been open for a week. Please try to disentangle this CL from ArrayStride-related issues so we can land a fix for the fuzzer issue.",
+      "revId": "07d5a908311df2eb85d4db0dea16c575608beaa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
