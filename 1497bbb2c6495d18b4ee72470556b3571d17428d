@@ -63,6 +63,30 @@
       },
       "revId": "1497bbb2c6495d18b4ee72470556b3571d17428d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62beac69_0e3b594a",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T15:46:28Z",
+      "side": 1,
+      "message": "It\u0027s internal to Skia but it\u0027s not private. I don\u0027t mean public-to-end-users API.",
+      "parentUuid": "7d7e3f7c_da747639",
+      "range": {
+        "startLine": 198,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 7
+      },
+      "revId": "1497bbb2c6495d18b4ee72470556b3571d17428d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
