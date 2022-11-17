@@ -106,7 +106,7 @@ public:
     bool standardSwizzleLayoutSupport() const { return fStandardSwizzleLayoutSupport; }
 
 #if GR_TEST_UTILS
-    std::vector<TestFormatColorTypeCombination> getTestingCombinations() const override;
+    std::vector<skgpu_test::TestFormatColorTypeCombination> getTestingCombinations() const override;
 #endif
 
 private:

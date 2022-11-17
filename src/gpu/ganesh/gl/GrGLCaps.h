@@ -495,7 +495,7 @@ public:
 #if GR_TEST_UTILS
     GrGLStandard standard() const { return fStandard; }
 
-    std::vector<TestFormatColorTypeCombination> getTestingCombinations() const override;
+    std::vector<skgpu_test::TestFormatColorTypeCombination> getTestingCombinations() const override;
 #endif
 
 private:
