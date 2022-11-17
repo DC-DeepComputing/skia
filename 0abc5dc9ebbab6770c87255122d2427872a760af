@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c619b051_1281d488",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-17T19:52:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03e8c2b8_14f49931",
+      "range": {
+        "startLine": 51,
+        "startChar": 35,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "0abc5dc9ebbab6770c87255122d2427872a760af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db8df072_b75d4921",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-11-17T19:34:36Z",
       "side": 1,
       "message": "nit: two blank lines",
+      "revId": "0abc5dc9ebbab6770c87255122d2427872a760af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b60949a_246cfc4b",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-17T19:52:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db8df072_b75d4921",
       "revId": "0abc5dc9ebbab6770c87255122d2427872a760af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
