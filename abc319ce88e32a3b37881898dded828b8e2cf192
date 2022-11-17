@@ -94,6 +94,30 @@
       },
       "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70551aa7_e372c176",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T17:13:49Z",
+      "side": 1,
+      "message": "I\u0027ll be honest, it doesn\u0027t actually seem like that large of a change in the Manager classes. All that really changes is which buffer they are getting their pointer from for various operations and then logic to add a copy. And one query needing to be added to caps doesn\u0027t seem that onerous. We pause development of our backends all the time in order to implement features higher up in our stack that will be needed to support features.\n\nI understand it may be a pain to have your exploration branch be out of sync with the main, but to be blunt, in terms of what lands in the main Skia branch, I don\u0027t really care that the exploration branch even exists. The goal here is to land things in Skia correctly. You said the exploration branch already has a bunch of hacks, but this is now just adding one of those hacks to the main branch.\n\nThe exploration branch should be used to help you quickly decide if something is worth doing. Once that is decided then we take the time to do correctly in main. There isn\u0027t a time crunch of the main branch.",
+      "parentUuid": "7faa4af3_9efbc8a2",
+      "range": {
+        "startLine": 96,
+        "startChar": 53,
+        "endLine": 96,
+        "endChar": 67
+      },
+      "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
