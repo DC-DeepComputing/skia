@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf006a58_ef1fd87f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T14:22:00Z",
+      "side": 1,
+      "message": "Part of me feels like we don\u0027t want to actually hide this staging buffer inside of DawnBuffer. I think I would prefer if DawnBuffer just failed to support calling map on buffers that don\u0027t work with it. Instead I would make the calling code deal with managing how the data gets uploaded. Previously I had suggested that our BufferManagers classes have two buffers on them. A \"mapped\" buffer and an \"gpu\" buffer. For backends that support mapping the buffer that will be used on the gpu (basically everything that isn\u0027t dawn), these two buffers will point to the same thing. For Dawn, we will create two different buffers. Then all our Writers will be writting data into the mapped buffer, but will return BindingInfo structs into the \"gpu\" buffer. It will be the job of the BufferManager classes to insert a copy form the mapped buffer to the gpu buffer if they are different.",
+      "range": {
+        "startLine": 96,
+        "startChar": 53,
+        "endLine": 96,
+        "endChar": 67
+      },
+      "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
