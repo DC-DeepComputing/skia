@@ -70,6 +70,30 @@
       },
       "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7faa4af3_9efbc8a2",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-17T16:27:03Z",
+      "side": 1,
+      "message": "To support this in BufferManagers I think it not small change. I guess we need to add new field in caps for it, and make BufferManagers behavior differently base on it. I feel it is not easy to implement and test without a workable dawn backend. So my plan is to land enough code from exploration branch, so we can have a workable dawn backend, and then we can start fixing those kind of issues step by step easily. Otherwise, we have to continue working on the exploration branch (which already have a lot of changes and hacks). Maintaining and sharing code will become harder and harder. I imagine the final CLs will become difficult to review too.",
+      "parentUuid": "d1781a51_c32bee0f",
+      "range": {
+        "startLine": 96,
+        "startChar": 53,
+        "endLine": 96,
+        "endChar": 67
+      },
+      "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
