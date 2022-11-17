@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2592268f_284a737c",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-17T18:39:41Z",
+      "side": 1,
+      "message": "This is writing directly to `buffer` but it looks like this should be writing to `deflateWStream` since the stream is always written out as `FlateDecode` (added in `emit_dict`). I\u0027m pretty sure this was accidental, because it looks like previously the deflate stream was always used.",
+      "revId": "a1211832046de9730dac317afaa8491e1f9019d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
