@@ -178,4 +178,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanCaps_DEFINED
-

@@ -864,4 +864,3 @@ const VulkanCaps::DepthStencilFormatInfo& VulkanCaps::getDepthStencilFormatInfo(
     return nonConstThis->getDepthStencilFormatInfo(format);
 }
 } // namespace skgpu::graphite
-
