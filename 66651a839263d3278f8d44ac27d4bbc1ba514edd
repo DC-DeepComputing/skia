@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6e7e121_cbddc9e7",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-17T22:31:08Z",
+      "side": 1,
+      "message": "I believe this may fix a long standing issue with encoding alpha, since this is writing to the stream without compression, but the stream will be marked as \"FlateDecode\".",
+      "revId": "66651a839263d3278f8d44ac27d4bbc1ba514edd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
