@@ -25,15 +25,17 @@ public:
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*) override;
 
-    const DawnCaps* dawnCaps() const;
+    const DawnCaps* dawnCaps() const { return static_cast<const DawnCaps*>(this->caps()); }
     const wgpu::Device& device() const { return fDevice; }
     const wgpu::Queue& queue() const { return fQueue; }
+    const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
 private:
     DawnSharedContext(const DawnBackendContext&,
                       std::unique_ptr<const DawnCaps> caps);
 
-    wgpu::Device fDevice;
-    wgpu::Queue  fQueue;
+    wgpu::Device       fDevice;
+    wgpu::Queue        fQueue;
+    wgpu::ShaderModule fNoopFragment;
 };
 
 } // namespace skgpu::graphite
