@@ -22,6 +22,30 @@
       },
       "revId": "48a7f97a4af3cfa077c8284d50a90fe1bc50c6de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d365d6_4be09875",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-17T19:59:47Z",
+      "side": 1,
+      "message": "There are three reasons:\n1) It follows the Google3 style guide.\n2) It is vertically more compact so I can see more on my screen.\n3) They are unneeded ASCII art that is time consuming to maintain.\n\nOverall, I find them harder to parse and read, and they are not worth maintaining in a time consuming format.",
+      "parentUuid": "b200032c_7e5e2304",
+      "range": {
+        "startLine": 405,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 0
+      },
+      "revId": "48a7f97a4af3cfa077c8284d50a90fe1bc50c6de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
