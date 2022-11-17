@@ -46,6 +46,30 @@
       },
       "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1781a51_c32bee0f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-17T15:29:26Z",
+      "side": 1,
+      "message": "But I don\u0027t want to land this while using a hidden staging buffer in this class. We should land this how we want it to work in the long run. And that will mean also doing the work to refactor the calling code. But that\u0027s fine, that\u0027s how process works. It\u0027s not like this needs to land immediately.\n\nI though Dawn couldn\u0027t support mapping of vertex, index, or uniform buffers? But assuming it can, on all tilers/unified memory gpus it will be just as performant as using a gpu only buffer (it is the same memory). The extra copy is simply a waste of power. On discrete GPUs, there is minimal performance cost to using a mapped buffer on the gpu for buffers that we are updating every frame (especially when you also consider the cost of copies in there). Now if we are making a static buffer that doesn\u0027t change frame to frame (we do have some of these), then there is a slight performance win to just copying to gpu only buffer once.\n\nBut regardless, we\u0027ll still need to the proposed two buffer system to always be an option, because remember we do this backed to also work as a WebGPU backend. So we could use dawn extensions to allow mapping, but we\u0027ll need to also run on non dawn implementations as well.",
+      "parentUuid": "d8c89124_9ba4a297",
+      "range": {
+        "startLine": 96,
+        "startChar": 53,
+        "endLine": 96,
+        "endChar": 67
+      },
+      "revId": "abc319ce88e32a3b37881898dded828b8e2cf192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
