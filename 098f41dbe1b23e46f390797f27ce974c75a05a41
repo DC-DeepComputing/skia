@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff629e1d_d75d133b",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-17T18:27:57Z",
+      "side": 1,
+      "message": "clang-format does this\n\n```\n#if GR_TEST_UTILS\n    virtual std::vector\u003cskgpu_test::TestFormatColorTypeCombination\u003e getTestingCombinations()\n            const \u003d 0;\n#endif\n```",
+      "parentUuid": "b93dad90_c313379c",
+      "range": {
+        "startLine": 546,
+        "startChar": 101,
+        "endLine": 546,
+        "endChar": 102
+      },
+      "revId": "098f41dbe1b23e46f390797f27ce974c75a05a41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fee5e216_588aaa49",
         "filename": "src/gpu/ganesh/TestFormatColorTypeCombination.h",
         "patchSetId": 1
