@@ -119,6 +119,24 @@
       "message": "What\u0027s probably going on is that the dawn code is being compiled with -fPIC but Skia is not.",
       "revId": "c6e5fbef8f64621ab262cf16451287703429ebd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac25ae22_bbdb8c43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T21:50:34Z",
+      "side": 1,
+      "message": "The Metal build is also failing though.",
+      "parentUuid": "db8a4c0f_3114c9d8",
+      "revId": "c6e5fbef8f64621ab262cf16451287703429ebd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
