@@ -312,6 +312,11 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
+ImageShaderBlock::ImageData::ImageData()
+        : fSubset(SkRect::MakeEmpty()) {
+    fTileModes[0] = fTileModes[1] = SkTileMode::kRepeat;
+}
+
 ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                        SkTileMode tileModeX,
                                        SkTileMode tileModeY,
