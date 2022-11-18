@@ -67,6 +67,24 @@
       "message": "Do you want to try running the new jobs on this CL before submitting?\nEg:\ngit cl try Build-Debian10-Clang-x86_64-OptimizeForSize-Graphite_Dawn -B luci.skia.skia.primary",
       "revId": "c6e5fbef8f64621ab262cf16451287703429ebd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "924ea0a0_c95674ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T20:40:02Z",
+      "side": 1,
+      "message": "Thanks, I can never remember the name of the bucket.",
+      "parentUuid": "8c22ac13_9413e714",
+      "revId": "c6e5fbef8f64621ab262cf16451287703429ebd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
