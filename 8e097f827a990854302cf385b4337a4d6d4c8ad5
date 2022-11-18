@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16454f88_8aa1e999",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:08:17Z",
+      "side": 1,
+      "message": "In general looks good to me, just some nits and one build issue.",
+      "revId": "8e097f827a990854302cf385b4337a4d6d4c8ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04b26c6_4aaa9729",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:08:17Z",
+      "side": 1,
+      "message": "Suggestion: \"a color attachment without a fragment\"",
+      "range": {
+        "startLine": 312,
+        "startChar": 33,
+        "endLine": 312,
+        "endChar": 70
+      },
+      "revId": "8e097f827a990854302cf385b4337a4d6d4c8ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0c1c1d_a1c8e1ed",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:08:17Z",
+      "side": 1,
+      "message": "Looks like this variable is missing?",
+      "range": {
+        "startLine": 373,
+        "startChar": 36,
+        "endLine": 373,
+        "endChar": 49
+      },
+      "revId": "8e097f827a990854302cf385b4337a4d6d4c8ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd19c87a_a944a415",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:08:17Z",
+      "side": 1,
+      "message": "Indent this?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 3
+      },
+      "revId": "8e097f827a990854302cf385b4337a4d6d4c8ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef75560f_a38e9850",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:08:17Z",
+      "side": 1,
+      "message": "I think this is worth a comment explaining what it\u0027s for. Maybe \"// Needed for pipeline generation when there is no fragment shader provided\"?",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 36
+      },
+      "revId": "8e097f827a990854302cf385b4337a4d6d4c8ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
