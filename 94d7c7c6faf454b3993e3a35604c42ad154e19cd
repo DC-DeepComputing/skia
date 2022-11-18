@@ -33,6 +33,24 @@
       "message": "I don\u0027t know how much we care about these Slides being clear/correct for folks looking at the code.  But `unichar \u003d\u003d \u0027+\u0027` is always false here.  On line 187, we handle the `unichar \u003d\u003d \u0027+\u0027` case and return from the method, so we would never get here.\n\nIt seems like we should either remove the `unichar \u003d\u003d \u0027+\u0027` part altogether here, or replace `+` with a different character.",
       "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1716f918_3e26006b",
+        "filename": "tools/viewer/StrokeVerbSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-18T15:32:42Z",
+      "side": 1,
+      "message": "Good point. I think removing the \u0027+\u0027 is probably the right call here. I don\u0027t think we need two ways to trigger the same functionality.",
+      "parentUuid": "28897571_67948cd9",
+      "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
