@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7f68470_1b9a63bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-11-18T14:57:50Z",
+      "side": 1,
+      "message": "I realize this issue wasn\u0027t introduced in this CL, and it might be something we don\u0027t care about.  But since I noticed it, I figured I\u0027d send a quick note.",
+      "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28897571_67948cd9",
+        "filename": "tools/viewer/StrokeVerbSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-11-18T14:57:50Z",
+      "side": 1,
+      "message": "I don\u0027t know how much we care about these Slides being clear/correct for folks looking at the code.  But `unichar \u003d\u003d \u0027+\u0027` is always false here.  On line 187, we handle the `unichar \u003d\u003d \u0027+\u0027` case and return from the method, so we would never get here.\n\nIt seems like we should either remove the `unichar \u003d\u003d \u0027+\u0027` part altogether here, or replace `+` with a different character.",
+      "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
