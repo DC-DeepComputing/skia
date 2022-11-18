@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18463bfa_84e0d8c9",
+        "filename": "include/private/SkTFitsIn.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-18T02:43:29Z",
+      "side": 1,
+      "message": "Use is_signed_v and is_unsigned_v?",
+      "range": {
+        "startLine": 82,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 19
+      },
+      "revId": "13195540b527327d105076ff6c6b437d66ce9201",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4b611a_3bd8f8ff",
+        "filename": "include/private/SkTFitsIn.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-18T02:43:29Z",
+      "side": 1,
+      "message": "Here too.",
+      "range": {
+        "startLine": 86,
+        "startChar": 10,
+        "endLine": 86,
+        "endChar": 19
+      },
+      "revId": "13195540b527327d105076ff6c6b437d66ce9201",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
