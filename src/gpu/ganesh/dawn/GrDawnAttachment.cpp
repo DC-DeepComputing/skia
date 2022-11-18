@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/dawn/GrDawnAttachment.h"
 
+#include "include/gpu/GrBackendSurface.h"
 #include "src/gpu/ganesh/dawn/GrDawnGpu.h"
 #include "src/gpu/ganesh/dawn/GrDawnUtil.h"
 
@@ -29,6 +30,10 @@ GrDawnAttachment::GrDawnAttachment(GrDawnGpu* gpu,
         , fTexture(texture)
         , fView(view) {
     this->registerWithCache(SkBudgeted::kYes);
+}
+
+GrBackendFormat GrDawnAttachment::backendFormat() const {
+    return GrBackendFormat::MakeDawn(wgpu::TextureFormat::Depth24PlusStencil8);
 }
 
 sk_sp<GrDawnAttachment> GrDawnAttachment::MakeStencil(GrDawnGpu* gpu,

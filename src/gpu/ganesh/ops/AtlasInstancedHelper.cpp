@@ -9,11 +9,20 @@
 
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/KeyBuilder.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 
 namespace skgpu::v1 {
+
+AtlasInstancedHelper::AtlasInstancedHelper(GrSurfaceProxyView atlasView, ShaderFlags shaderFlags)
+        : fAtlasProxy(atlasView.detachProxy())
+        , fAtlasSwizzle(atlasView.swizzle())
+        , fShaderFlags(shaderFlags) {
+    // Bottom left origin is not supported.
+    SkASSERT(atlasView.origin() == kTopLeft_GrSurfaceOrigin);
+}
 
 void AtlasInstancedHelper::getKeyBits(KeyBuilder* b) const {
     b->addBits(kNumShaderFlags, (int)fShaderFlags, "atlasFlags");
@@ -107,4 +116,4 @@ void AtlasInstancedHelper::setUniformData(
     pdman.set2f(atlasAdjustUniformHandle, 1.f / dimensions.width(), 1.f / dimensions.height());
 }
 
-} // namespace skgpu::v1
+}  // namespace skgpu::v1

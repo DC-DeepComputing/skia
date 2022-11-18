@@ -13,6 +13,8 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 
+class GrSurfaceProxy;
+
 namespace skgpu::v1 {
 
 // This class encapsulates all the necessary steps for an instanced GrGeometryProcessor to clip
@@ -29,13 +31,7 @@ public:
 
     constexpr static int kNumShaderFlags = 2;
 
-    AtlasInstancedHelper(GrSurfaceProxyView atlasView, ShaderFlags shaderFlags)
-            : fAtlasProxy(atlasView.detachProxy())
-            , fAtlasSwizzle(atlasView.swizzle())
-            , fShaderFlags(shaderFlags) {
-        // Bottom left origin is not supported.
-        SkASSERT(atlasView.origin() == kTopLeft_GrSurfaceOrigin);
-    }
+    AtlasInstancedHelper(GrSurfaceProxyView atlasView, ShaderFlags shaderFlags);
 
     GrSurfaceProxy* proxy() const { return fAtlasProxy.get(); }
     const skgpu::Swizzle& atlasSwizzle() const { return fAtlasSwizzle; }

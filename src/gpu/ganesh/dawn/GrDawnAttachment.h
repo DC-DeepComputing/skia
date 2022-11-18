@@ -13,6 +13,7 @@
 #include "webgpu/webgpu_cpp.h"
 
 class GrDawnGpu;
+class GrBackendFormat;
 
 class GrDawnAttachment : public GrAttachment {
 public:
@@ -20,9 +21,7 @@ public:
 
     ~GrDawnAttachment() override;
     wgpu::TextureView view() const { return fView; }
-    GrBackendFormat backendFormat() const override {
-        return GrBackendFormat::MakeDawn(wgpu::TextureFormat::Depth24PlusStencil8);
-    }
+    GrBackendFormat backendFormat() const override;
 
 protected:
     void onRelease() override;
