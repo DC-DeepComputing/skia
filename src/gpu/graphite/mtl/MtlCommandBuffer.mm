@@ -108,6 +108,18 @@ bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                        const Texture* depthStencilTexture,
                                        SkRect viewport,
                                        const std::vector<std::unique_ptr<DrawPass>>& drawPasses) {
+    MtlBlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
+    for (const auto& drawPass : drawPasses) {
+        for (auto[buffer, stagingBuffer] : drawPass->buffers()) {
+            SkASSERT(buffer);
+            SkASSERT(stagingBuffer.first);
+            SkASSERT(buffer->size() == stagingBuffer.first->size());
+            id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(buffer)->mtlBuffer();
+            id<MTLBuffer> mtlStaginBuffer = static_cast<const MtlBuffer*>(stagingBuffer.first)->mtlBuffer();
+            blitCmdEncoder->copyBufferToBuffer(mtlStaginBuffer, 0, mtlBuffer, 0, buffer->size());
+        }
+    }
+
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }

@@ -149,12 +149,16 @@ static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
  */
 struct BindBufferInfo {
     const Buffer* fBuffer = nullptr;
+    const Buffer* fStagingBuffer = nullptr;
     size_t fOffset = 0;
+    size_t fSize = 0;
 
     operator bool() const { return SkToBool(fBuffer); }
 
     bool operator==(const BindBufferInfo& o) const {
-        return fBuffer == o.fBuffer && (!fBuffer || fOffset == o.fOffset);
+        return fBuffer == o.fBuffer &&
+               fStagingBuffer == o.fStagingBuffer &&
+               (!fBuffer || fOffset == o.fOffset);
     }
     bool operator!=(const BindBufferInfo& o) const {
         return !(*this == o);

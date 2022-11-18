@@ -13,6 +13,8 @@
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/DrawTypes.h"
 
+#include <unordered_map>
+
 namespace skgpu::graphite {
 
 namespace DrawPassCommands {
@@ -123,6 +125,23 @@ public:
     List() = default;
     ~List() = default;
 
+    void bindBuffer(const BindBufferInfo& info) {
+        if (!info.fStagingBuffer) {
+            SkASSERT(fBuffers.find(info.fBuffer) == fBuffers.end());
+            return;
+        }
+
+        auto&[buffer, size] = fBuffers[info.fBuffer];
+        if (!buffer) {
+            buffer = info.fStagingBuffer;
+            size = info.fOffset + info.fSize;
+            return;
+        }
+
+        SkASSERT(buffer == info.fStagingBuffer);
+        size = std::max(size, info.fOffset + info.fSize);
+    }
+
     void bindGraphicsPipeline(uint32_t pipelineIndex) {
         this->add<BindGraphicsPipeline>(pipelineIndex);
     }
@@ -132,6 +151,7 @@ public:
     }
 
     void bindUniformBuffer(BindBufferInfo info, UniformSlot slot) {
+        bindBuffer(info);
         this->add<BindUniformBuffer>(info, slot);
     }
 
@@ -151,6 +171,9 @@ public:
     void bindDrawBuffers(BindBufferInfo vertexAttribs,
                          BindBufferInfo instanceAttribs,
                          BindBufferInfo indices) {
+        bindBuffer(vertexAttribs);
+        bindBuffer(instanceAttribs);
+        bindBuffer(indices);
         this->add<BindDrawBuffers>(vertexAttribs, instanceAttribs, indices);
     }
 
@@ -185,6 +208,9 @@ public:
     using Iter = SkTBlockList<Command>::CIter;
     Iter commands() const { return fCommands.items(); }
 
+    using BufferMap = std::unordered_map<const Buffer*, std::pair<const Buffer*, size_t>>;
+    const BufferMap& buffers() const { return fBuffers; }
+
 private:
     template <typename T, typename... Args>
     void add(Args&&... args) {
@@ -207,6 +233,9 @@ private:
     // fAlloc needs to be a data structure which can append variable length data in contiguous
     // chunks, returning a stable handle to that data for later retrieval.
     SkArenaAlloc fAlloc{256};
+
+    // Map between staging buffer and vertex, index, uniform and storage buffers used by commands.
+    BufferMap fBuffers;
 };
 
 } // namespace DrawPassCommands
