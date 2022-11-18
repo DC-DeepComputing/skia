@@ -13,6 +13,8 @@
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/DrawTypes.h"
 
+#include <map>
+
 namespace skgpu::graphite {
 
 namespace DrawPassCommands {
@@ -123,6 +125,15 @@ public:
     List() = default;
     ~List() = default;
 
+    void bindBuffer(const BindBufferInfo& info) {
+        if (info.fStagingBuffer) {
+            auto& buffer = fBuffers[info.fBuffer];
+            if (!buffer) {
+                buffer = info.fStagingBuffer;
+            }
+        }
+    }
+
     void bindGraphicsPipeline(uint32_t pipelineIndex) {
         this->add<BindGraphicsPipeline>(pipelineIndex);
     }
@@ -132,6 +143,7 @@ public:
     }
 
     void bindUniformBuffer(BindBufferInfo info, UniformSlot slot) {
+        bindBuffer(info);
         this->add<BindUniformBuffer>(info, slot);
     }
 
@@ -151,6 +163,9 @@ public:
     void bindDrawBuffers(BindBufferInfo vertexAttribs,
                          BindBufferInfo instanceAttribs,
                          BindBufferInfo indices) {
+        bindBuffer(vertexAttribs);
+        bindBuffer(instanceAttribs);
+        bindBuffer(indices);
         this->add<BindDrawBuffers>(vertexAttribs, instanceAttribs, indices);
     }
 
@@ -184,6 +199,7 @@ public:
     using Command = std::pair<Type, void*>;
     using Iter = SkTBlockList<Command>::CIter;
     Iter commands() const { return fCommands.items(); }
+    const std::map<const Buffer*, const Buffer*>& buffers() const { return fBuffers; }
 
 private:
     template <typename T, typename... Args>
@@ -207,6 +223,8 @@ private:
     // fAlloc needs to be a data structure which can append variable length data in contiguous
     // chunks, returning a stable handle to that data for later retrieval.
     SkArenaAlloc fAlloc{256};
+
+    std::map<const Buffer*, const Buffer*> fBuffers;
 };
 
 } // namespace DrawPassCommands
