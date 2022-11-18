@@ -22,6 +22,30 @@
       },
       "revId": "46900fb0816d77448bf0c8fe9918761bc1be04b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17d3ff0_6192aa9e",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-18T17:01:56Z",
+      "side": 0,
+      "message": "IWYU blamed some include on this that seemed unnecessary otherwise.",
+      "parentUuid": "5daf82bb_09cf5a0a",
+      "range": {
+        "startLine": 240,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 29
+      },
+      "revId": "46900fb0816d77448bf0c8fe9918761bc1be04b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
