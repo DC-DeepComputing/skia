@@ -46,6 +46,30 @@
       },
       "revId": "46900fb0816d77448bf0c8fe9918761bc1be04b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44e753c9_38e2d9d2",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-18T17:03:37Z",
+      "side": 0,
+      "message": "That\u0027s probably IWYU error? But there\u0027s no reason to fight it really, because we removed INHERITED from our style guide recently. Let\u0027s separate that change into its own CL (should be nice and simple/self-contained)",
+      "parentUuid": "d17d3ff0_6192aa9e",
+      "range": {
+        "startLine": 240,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 29
+      },
+      "revId": "46900fb0816d77448bf0c8fe9918761bc1be04b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
