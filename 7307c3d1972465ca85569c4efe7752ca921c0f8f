@@ -16,6 +16,29 @@
       "message": "Hi Jim, PTAL. Thanks",
       "revId": "7307c3d1972465ca85569c4efe7752ca921c0f8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f144370e_5c99ccc6",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-18T19:15:04Z",
+      "side": 1,
+      "message": "Looks like this is identical in both MtlCaps and DawnCaps, and we\u0027ll probably need it for Vulkan too -- maybe make it a protected static method of Caps?",
+      "range": {
+        "startLine": 36,
+        "startChar": 9,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "7307c3d1972465ca85569c4efe7752ca921c0f8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
