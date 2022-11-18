@@ -72,6 +72,8 @@ public:
     //---------------------------------------------------------------
     // Can only be used outside renderpasses
     //---------------------------------------------------------------
+    bool copyBufferToBuffer(sk_sp<Buffer>,
+                             sk_sp<Buffer>);
     bool copyTextureToBuffer(sk_sp<Texture>,
                              SkIRect srcRect,
                              sk_sp<Buffer>,
