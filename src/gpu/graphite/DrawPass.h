@@ -87,6 +87,10 @@ public:
         return fCommandList.commands();
     }
 
+    const std::map<const Buffer*, const Buffer*>& buffers() const {
+        return fCommandList.buffers();
+    }
+
     const GraphicsPipeline* getPipeline(size_t index) const {
         return fFullPipelines[index].get();
     }

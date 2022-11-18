@@ -13,12 +13,14 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include <array>
 #include <unordered_map>
 #include <vector>
 
 namespace skgpu::graphite {
 
 class Buffer;
+class Caps;
 class Recording;
 class ResourceProvider;
 
@@ -37,7 +39,7 @@ public:
     void returnVertexBytes(size_t unusedBytes);
 
     size_t alignUniformBlockSize(size_t dataSize) {
-        return SkAlignTo(dataSize, fUniformStartAlignment);
+        return SkAlignTo(dataSize, fCurrentBuffers[kUniformBufferIndex].fStartAlignment);
     }
 
     // Get the shared static buffer filled with contents computed by the InitializeBufferFn.
@@ -56,22 +58,25 @@ public:
     void transferToRecording(Recording*);
 
 private:
+    const Caps* caps() const;
+    bool prepareBuffer(int bufferIndex, size_t requiredBytes);
+
     ResourceProvider* fResourceProvider;
 
-    sk_sp<Buffer> fCurrentVertexBuffer;
-    size_t fVertexOffset = 0;
+    struct BufferInfo {
+        BufferInfo(size_t startAlighment);
+        ~BufferInfo();
+        sk_sp<Buffer> fBuffer;
+        sk_sp<Buffer> fStagingBuffer;
+        size_t fOffset = 0;
+        const size_t fStartAlignment;
+    };
+    std::array<BufferInfo, 4> fCurrentBuffers;
 
-    sk_sp<Buffer> fCurrentIndexBuffer;
-    size_t fIndexOffset = 0;
-
-    sk_sp<Buffer> fCurrentUniformBuffer;
-    size_t fUniformOffset = 0;
-
-    sk_sp<Buffer> fCurrentStorageBuffer;
-    size_t fSsboOffset = 0;
-
-    const size_t fUniformStartAlignment;
-    const size_t fSsboStartAlignment;
+    static constexpr int kVertexBufferIndex  = 0;
+    static constexpr int kIndexBufferIndex   = 1;
+    static constexpr int kUniformBufferIndex = 2;
+    static constexpr int kStorageBufferIndex = 3;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
     // TODO(skbug.com/13059): This is likely not the final location for static buffers, but makes it
