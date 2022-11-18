@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cdc6cb_8dcbe2f3",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-18T16:57:29Z",
+      "side": 1,
+      "message": "nit: add space",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 16
+      },
+      "revId": "8fcea9be96a078759f04ecffcbdf2bb5346735c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

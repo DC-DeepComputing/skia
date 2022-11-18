@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5daf82bb_09cf5a0a",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-18T16:57:29Z",
+      "side": 0,
+      "message": "This seems like an unrelated change? We know SkImage is available because it\u0027s our base class (you can\u0027t derive from a forward-declared thing)",
+      "range": {
+        "startLine": 240,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 29
+      },
+      "revId": "46900fb0816d77448bf0c8fe9918761bc1be04b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
