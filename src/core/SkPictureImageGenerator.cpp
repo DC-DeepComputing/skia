@@ -13,6 +13,7 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkSurface.h"
 #include "src/core/SkTLazy.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/image/SkImage_Base.h"
 
 class SkPictureImageGenerator : public SkImageGenerator {

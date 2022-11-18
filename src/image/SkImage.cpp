@@ -267,7 +267,7 @@ bool SkImage::isValid(GrRecordingContext* rContext) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkImage_Base::SkImage_Base(const SkImageInfo& info, uint32_t uniqueID)
-        : INHERITED(info, uniqueID), fAddedToRasterCache(false) {}
+        : SkImage(info, uniqueID), fAddedToRasterCache(false) {}
 
 SkImage_Base::~SkImage_Base() {
     if (fAddedToRasterCache.load()) {
@@ -468,6 +468,22 @@ GrSurfaceProxyView SkImage_Base::FindOrMakeCachedMipmappedView(GrRecordingContex
 GrBackendTexture SkImage_Base::onGetBackendTexture(bool flushPendingGrContextIO,
                                                    GrSurfaceOrigin* origin) const {
     return GrBackendTexture(); // invalid
+}
+
+GrSurfaceProxyView SkImage_Base::CopyView(GrRecordingContext* context,
+                                                 GrSurfaceProxyView src,
+                                                 GrMipmapped mipmapped,
+                                                 GrImageTexGenPolicy policy,
+                                                 std::string_view label) {
+    SkBudgeted budgeted = policy == GrImageTexGenPolicy::kNew_Uncached_Budgeted
+                          ? SkBudgeted::kYes
+                          : SkBudgeted::kNo;
+    return GrSurfaceProxyView::Copy(context,
+                                    std::move(src),
+                                    mipmapped,
+                                    SkBackingFit::kExact,
+                                    budgeted,
+                                    /*label=*/label);
 }
 
 #endif // SK_SUPPORT_GPU
