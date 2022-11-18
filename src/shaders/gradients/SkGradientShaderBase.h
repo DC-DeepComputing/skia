@@ -18,6 +18,7 @@
 
 class SkArenaAlloc;
 class SkColorSpace;
+struct SkColor4fXformer;
 class SkRasterPipeline;
 class SkReadBuffer;
 class SkWriteBuffer;
@@ -118,9 +119,11 @@ protected:
 public:
     static void AppendGradientFillStages(SkRasterPipeline* p,
                                          SkArenaAlloc* alloc,
-                                         const SkPMColor4f* colors,
+                                         const SkColor4fXformer* xformedColors,
                                          const SkScalar* positions,
-                                         int count);
+                                         bool colorsAreOpaque,
+                                         const Interpolation& interpolation,
+                                         const SkColorSpace* dstColorSpace);
 
     SkScalar getPos(int i) const {
         SkASSERT(i < fColorCount);

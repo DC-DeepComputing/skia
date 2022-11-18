@@ -21,8 +21,14 @@ public:
 
     // Assumes colors are compatible with the specified alphaType (e.g. if it's premul then colors
     // are already premultiplied). Thread safe.
-    void getGradient(const SkPMColor4f* colors, const SkScalar* positions, int count,
-                     SkColorType colorType, SkAlphaType alphaType, SkBitmap* bitmap);
+    void getGradient(const SkColor4fXformer* xformedColors,
+                     const SkScalar* positions,
+                     bool colorsAreOpaque,
+                     const SkGradientShaderBase::Interpolation& interpolation,
+                     const SkColorSpace* dstColorSpace,
+                     SkColorType colorType,
+                     SkAlphaType alphaType,
+                     SkBitmap* bitmap);
 
 private:
     SkMutex fMutex;
@@ -41,7 +47,11 @@ private:
     bool find(const void* buffer, size_t len, SkBitmap*) const;
     void add(const void* buffer, size_t len, const SkBitmap&);
 
-    void fillGradient(const SkPMColor4f* colors, const SkScalar* positions, int count,
+    void fillGradient(const SkColor4fXformer* xformedColors,
+                      const SkScalar* positions,
+                      bool colorsAreOpaque,
+                      const SkGradientShaderBase::Interpolation& interpolation,
+                      const SkColorSpace* dstColorSpace,
                       SkBitmap* bitmap);
 
 #ifdef SK_DEBUG
