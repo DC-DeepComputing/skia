@@ -362,8 +362,7 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
 #if GRAPHITE_TEST_UTILS
     if (Context* context = fRecorder->priv().context()) {
         this->flushPendingWorkToRecorder();
-        return context->priv().readPixels(fRecorder, pm, fDC->target(), this->imageInfo(),
-                                          srcX, srcY);
+        return context->priv().readPixels(pm, fDC->target(), this->imageInfo(), srcX, srcY);
     }
 #endif
     // We have no access to a context to do a read pixels here.
@@ -377,8 +376,7 @@ bool Device::readPixels(Context* context,
                         int srcX,
                         int srcY) {
     this->flushPendingWorkToRecorder();
-    return context->priv().readPixels(recorder, pm, fDC->target(), this->imageInfo(),
-                                      srcX, srcY);
+    return context->priv().readPixels(pm, fDC->target(), this->imageInfo(), srcX, srcY);
 }
 
 void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
