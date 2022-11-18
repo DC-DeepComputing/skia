@@ -8,6 +8,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkUtils.h"
 
 #include <cstdint>
 #include <cstring>
@@ -29,9 +30,17 @@ struct SlotRange {
     int count = 0;
 };
 
+// Ops that the builder will contextually rewrite into different RasterPipeline stages.
+namespace BuilderOp {
+    enum {
+        push_temp_immediate_f = SkRasterPipeline::kNumHighpStages + 1,
+        discard_temp,
+    };
+}
+
 // Represents a single raster-pipeline SkSL instruction.
 struct Instruction {
-    Instruction(SkRasterPipeline::Stage op, std::initializer_list<Slot> slots)
+    Instruction(int op, std::initializer_list<Slot> slots)
             : fOp(op), fImmF32(0.0f), fImmI32(0) {
         auto iter = slots.begin();
         if (iter != slots.end()) { fSlotA = *iter++; }
@@ -40,7 +49,7 @@ struct Instruction {
         SkASSERT(iter == slots.end());
     }
 
-    Instruction(SkRasterPipeline::Stage op, std::initializer_list<Slot> slots, float f, int i)
+    Instruction(int op, std::initializer_list<Slot> slots, float f, int i)
             : fOp(op), fImmF32(f), fImmI32(i) {
         auto iter = slots.begin();
         if (iter != slots.end()) { fSlotA = *iter++; }
@@ -49,7 +58,7 @@ struct Instruction {
         SkASSERT(iter == slots.end());
     }
 
-    SkRasterPipeline::Stage fOp;
+    int   fOp;
     Slot  fSlotA = NA;
     Slot  fSlotB = NA;
     Slot  fSlotC = NA;
@@ -66,10 +75,12 @@ public:
 private:
     void optimize();
     int numValueSlots();
+    int numTempStackSlots();
     int numConditionMaskSlots();
 
     SkTArray<Instruction> fInstructions;
     int fNumValueSlots = 0;
+    int fNumTempStackSlots = 0;
     int fNumConditionMaskSlots = 0;
 };
 
@@ -112,18 +123,30 @@ public:
         fInstructions.push_back({SkRasterPipeline::immediate_f, {}, val, 0});
     }
 
+    // SkRasterPipeline registers are floats, so it's easiest just to reuse immediate_f here.
     void immediate_i(int32_t val) {
-        // SkRasterPipeline registers are floats, so it's easiest just to reuse immediate_f here.
-        float immF;
-        memcpy(&immF, &val, sizeof(float));
-        fInstructions.push_back({SkRasterPipeline::immediate_f, {}, immF, 0});
+        fInstructions.push_back({SkRasterPipeline::immediate_f, {}, sk_bit_cast<float>(val), 0});
     }
 
     void immediate_u(uint32_t val) {
-        // SkRasterPipeline registers are floats, so it's easiest just to reuse immediate_f here.
-        float immF;
-        memcpy(&immF, &val, sizeof(float));
-        fInstructions.push_back({SkRasterPipeline::immediate_f, {}, immF, 0});
+        fInstructions.push_back({SkRasterPipeline::immediate_f, {}, sk_bit_cast<float>(val), 0});
+    }
+
+    void push_temp_f(float val) {
+        fInstructions.push_back({BuilderOp::push_temp_immediate_f, {}, val, 0});
+    }
+
+    // SkRasterPipeline registers are floats, so it's easiest just to reuse push_immediate_f here.
+    void push_temp_i(int32_t val) {
+        fInstructions.push_back({BuilderOp::push_temp_immediate_f, {}, sk_bit_cast<float>(val), 0});
+    }
+
+    void push_temp_u(uint32_t val) {
+        fInstructions.push_back({BuilderOp::push_temp_immediate_f, {}, sk_bit_cast<float>(val), 0});
+    }
+
+    void discard_temp() {
+        fInstructions.push_back({BuilderOp::discard_temp, {}});
     }
 
     void load_unmasked(Slot slot) {
