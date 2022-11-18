@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "563ca0a2_7375d72f",
+        "filename": "include/private/SkTFitsIn.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-18T16:59:19Z",
+      "side": 1,
+      "message": "Hmmm, could do that I suppose, don\u0027t remember if our public headers are C++14 or 17 now. If they\u0027re 17 then I think we want to re-write all of this anyway (again) since we now have way more expressive constexpr functions and if constexpr. Will do that as a non-behavior changing future change.",
+      "parentUuid": "18463bfa_84e0d8c9",
+      "range": {
+        "startLine": 82,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 19
+      },
+      "revId": "13195540b527327d105076ff6c6b437d66ce9201",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b4b611a_3bd8f8ff",
         "filename": "include/private/SkTFitsIn.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-18T02:43:29Z",
       "side": 1,
       "message": "Here too.",
+      "range": {
+        "startLine": 86,
+        "startChar": 10,
+        "endLine": 86,
+        "endChar": 19
+      },
+      "revId": "13195540b527327d105076ff6c6b437d66ce9201",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c37043c8_e1efdb24",
+        "filename": "include/private/SkTFitsIn.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-18T16:59:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8b4b611a_3bd8f8ff",
       "range": {
         "startLine": 86,
         "startChar": 10,
