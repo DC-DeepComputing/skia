@@ -141,6 +141,7 @@ struct LocalMatrixShaderBlock {
 struct ImageShaderBlock {
 
     struct ImageData {
+        ImageData();
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,

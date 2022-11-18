@@ -10,6 +10,10 @@
 #ifdef SK_ENABLE_PRECOMPILE
 
 #include "src/gpu/graphite/FactoryFunctions.h"
+
+#include "src/gpu/Blend.h"
+#include "src/gpu/graphite/KeyContext.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
 
@@ -23,6 +27,23 @@ public:
     std::optional<SkBlendMode> asBlendMode() const final { return fBlendMode; }
 
 private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        return 1;
+    }
+
+    void beginBlock(const KeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+        SkASSERT(intrinsicCombination == 0);
+
+        // The blend mode is used in this BeginBlock
+        BlendModeBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, fBlendMode);
+    }
+
     SkBlendMode fBlendMode;
 };
 
@@ -34,6 +55,27 @@ sk_sp<PrecompileBlender> PrecompileBlender::Mode(SkBlendMode blendMode) {
 class PrecompileColorShader : public PrecompileShader {
 public:
     PrecompileColorShader() {}
+
+private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        return 1;
+    }
+
+    void beginBlock(const KeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+        constexpr SkPMColor4f kUnusedColor = {1, 0, 0, 1};
+
+        SkASSERT(intrinsicCombination == 0);
+
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                          kUnusedColor); // color isn't used w/o gatherer
+    }
+
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Color() {
@@ -45,15 +87,51 @@ class PrecompileBlendShader : public PrecompileShader {
 public:
     PrecompileBlendShader(SkSpan<const sk_sp<PrecompileBlender>> blenders,
                           SkSpan<const sk_sp<PrecompileShader>> dsts,
-                          SkSpan<const sk_sp<PrecompileShader>> srcs)
-            : fBlenders(blenders.begin(), blenders.end())
+                          SkSpan<const sk_sp<PrecompileShader>> srcs,
+                          bool needsPorterDuffBased,
+                          bool needsBlendModeBased)
+            : fNeedsPorterDuffBased(needsPorterDuffBased)
+            , fNeedsBlendModeBased(needsBlendModeBased)
+            , fBlenders(blenders.begin(), blenders.end())
             , fDsts(dsts.begin(), dsts.end())
             , fSrcs(srcs.begin(), srcs.end()) {
+#ifdef SK_DEBUG
+        // Only RuntimeEffect blenders should be in this list
+        for (auto b : fBlenders) {
+            SkASSERT(!b->asBlendMode().has_value());
+        }
+#endif
     }
 
 private:
+    int numIntrinsicCombinations() const override {
+        int numIntrinsicCombinations = 0;
+
+        if (fNeedsPorterDuffBased) {
+            ++numIntrinsicCombinations;
+        }
+        if (fNeedsBlendModeBased) {
+            ++numIntrinsicCombinations;
+        }
+        if (!fBlenders.empty()) {
+            ++numIntrinsicCombinations;
+        }
+
+        SkASSERT(numIntrinsicCombinations);
+        return numIntrinsicCombinations;
+    }
+
     int numChildCombinations() const override {
-        int numBlenderCombos = CountBlenderCombos(fBlenders);
+
+        int numBlenderCombos = fBlenders.size();
+        if (fNeedsPorterDuffBased) {
+            ++numBlenderCombos;
+        }
+        if (fNeedsBlendModeBased) {
+            ++numBlenderCombos;
+        }
+
+        SkASSERT(numBlenderCombos >= 1);
 
         int numDstCombos = 0;
         for (auto d : fDsts) {
@@ -68,6 +146,45 @@ private:
         return numBlenderCombos * numDstCombos * numSrcCombos;
     }
 
+    void beginBlock(const KeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+
+        int PDIndex = -1;
+        int BMIndex = -1;
+        int BlenderIndex = -1;
+
+        if (fNeedsPorterDuffBased) {
+            PDIndex = 0;
+            if (fNeedsBlendModeBased) {
+                BMIndex = 1;
+                if (!fBlenders.empty()) {
+                    BlenderIndex = 2;
+                }
+            }
+        } else if (fNeedsBlendModeBased) {
+            BMIndex = 0;
+            if (!fBlenders.empty()) {
+                BlenderIndex = 1;
+            }
+        } else {
+            SkASSERT(!fBlenders.empty());
+            BlenderIndex = 0;
+        }
+
+        if (intrinsicCombination == PDIndex) {
+            PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                                   {}); // Porter/Duff coeffs aren't used
+        } else if (intrinsicCombination == BMIndex) {
+            BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                         { SkBlendMode::kSrcOver }); // the blendmode is unused
+        } else if (intrinsicCombination == BlenderIndex) {
+            // ??
+        }
+    }
+
+    bool fNeedsPorterDuffBased = false;
+    bool fNeedsBlendModeBased = false;
     std::vector<sk_sp<PrecompileBlender>> fBlenders;
     std::vector<sk_sp<PrecompileShader>> fDsts;
     std::vector<sk_sp<PrecompileShader>> fSrcs;
@@ -77,45 +194,139 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
         SkSpan<const sk_sp<PrecompileBlender>> blenders,
         SkSpan<const sk_sp<PrecompileShader>> dsts,
         SkSpan<const sk_sp<PrecompileShader>> srcs) {
-    return sk_make_sp<PrecompileBlendShader>(std::move(blenders),
-                                             std::move(dsts), std::move(srcs));
+    std::vector<const sk_sp<PrecompileBlender>> tmp;
+    tmp.reserve(blenders.size());
+
+    bool needsPorterDuffBased = false;
+    bool needsBlendModeBased = false;
+
+    for (auto b : blenders) {
+        if (b->asBlendMode().has_value()) {
+            SkBlendMode bm = b->asBlendMode().value();
+
+            SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(bm);
+            if (!porterDuffConstants.empty()) {
+                needsPorterDuffBased = true;
+            } else {
+                needsBlendModeBased = true;
+            }
+        } else {
+            tmp.push_back(b);
+        }
+    }
+
+    if (!needsPorterDuffBased && !needsBlendModeBased && tmp.empty()) {
+        needsPorterDuffBased = true; // fallback to kSrcOver
+    }
+
+    return sk_make_sp<PrecompileBlendShader>(SkSpan<const sk_sp<PrecompileBlender>>(tmp),
+                                             dsts, srcs,
+                                             needsPorterDuffBased, needsBlendModeBased);
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::Blend(
         SkSpan<SkBlendMode> blendModes,
         SkSpan<const sk_sp<PrecompileShader>> dsts,
         SkSpan<const sk_sp<PrecompileShader>> srcs) {
-    std::vector<sk_sp<PrecompileBlender>> tmp;
-    tmp.reserve(blendModes.size());
+
+    bool needsPorterDuffBased = false;
+    bool needsBlendModeBased = false;
+
     for (SkBlendMode bm : blendModes) {
-        tmp.emplace_back(PrecompileBlender::Mode(bm));
+        SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(bm);
+        if (!porterDuffConstants.empty()) {
+            needsPorterDuffBased = true;
+        } else {
+            needsBlendModeBased = true;
+        }
     }
 
-    return sk_make_sp<PrecompileBlendShader>(tmp, std::move(dsts), std::move(srcs));
+    if (!needsPorterDuffBased && !needsBlendModeBased) {
+        needsPorterDuffBased = true; // fallback to kSrcOver
+    }
+
+    return sk_make_sp<PrecompileBlendShader>(SkSpan<const sk_sp<PrecompileBlender>>(),
+                                             dsts, srcs,
+                                             needsPorterDuffBased, needsBlendModeBased);
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileImageShader : public PrecompileShader {
+public:
+    PrecompileImageShader() {}
+
+private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        return 1;
+    }
+
+    void beginBlock(const KeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+        SkASSERT(intrinsicCombination == 0);
+
+        // The ImageData is unused when there is no gatherer
+        ImageShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, {});
+    }
+};
+
 sk_sp<PrecompileShader> PrecompileShaders::Image() {
     return sk_make_sp<PrecompileShader>();
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileGradientShader : public PrecompileShader {
+public:
+    PrecompileGradientShader(SkShaderBase::GradientType type) : fType(type) {}
+
+private:
+    /*
+     * The gradients currently have two specializations based on the number of stops.
+     */
+    inline static constexpr int kNumStopVariants = 2;
+    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8 };
+
+    int numIntrinsicCombinations() const override {
+        return kNumStopVariants;
+    }
+
+    int numChildCombinations() const override {
+        return 1;
+    }
+
+    void beginBlock(const KeyContext& keyContext,
+                    int intrinsicCombination,
+                    PaintParamsKeyBuilder* builder) /* override */ {
+        SkASSERT(intrinsicCombination < kNumStopVariants);
+
+        // Only the type and number of stops are accessed when there is no gatherer
+        GradientShaderBlocks::GradientData gradData(fType, kStopVariants[intrinsicCombination]);
+
+        // TODO: we may need SkLocalMatrixShader-wrapped versions too
+        GradientShaderBlocks::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, gradData);
+    }
+
+    SkShaderBase::GradientType fType;
+};
+
 sk_sp<PrecompileShader> PrecompileShaders::LinearGradient() {
-    return sk_make_sp<PrecompileShader>();
+    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kLinear);
 }
 
-//--------------------------------------------------------------------------------------------------
 sk_sp<PrecompileShader> PrecompileShaders::RadialGradient() {
-    return sk_make_sp<PrecompileShader>();
-}
-
-//--------------------------------------------------------------------------------------------------
-sk_sp<PrecompileShader> PrecompileShaders::TwoPointConicalGradient() {
-    return sk_make_sp<PrecompileShader>();
+    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kRadial);
 }
 
 sk_sp<PrecompileShader> PrecompileShaders::SweepGradient() {
-    return sk_make_sp<PrecompileShader>();
+    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kSweep);
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::TwoPointConicalGradient() {
+    return sk_make_sp<PrecompileGradientShader>(SkShaderBase::GradientType::kConical);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -220,9 +431,32 @@ public:
     }
 
 private:
+    int numIntrinsicCombinations() const override {
+        // Externally supplied runtime effects cannot alter/specialize their code
+        return 1;
+    }
+
     int numChildCombinations() const override {
         return fChildOptions.size();
     }
+
+#if 0
+    int numChildCombinations() const override {
+        int numChildCombinations = 1;
+
+        for (const std::vector<SkPrecompileChildPtr>& oneChildsOptions : fChildOptions) {
+            int oneChildsCnt = 1;
+
+            for (const SkPrecompileChildPtr& childOption : oneChildsOptions) {
+                oneChildsCnt += childOption.base()->priv().numCombinations1(backend);
+            }
+
+            numChildCombinations *= oneChildsCnt;
+        }
+
+        return numChildCombinations;
+    }
+#endif
 
     sk_sp<SkRuntimeEffect> fEffect;
     std::vector<std::vector<PrecompileChildPtr>> fChildOptions;
