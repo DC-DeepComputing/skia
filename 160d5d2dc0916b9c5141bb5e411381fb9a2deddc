@@ -16,6 +16,24 @@
       "message": "Reconsidering--we presumably want masks in a register, not a slot.",
       "revId": "160d5d2dc0916b9c5141bb5e411381fb9a2deddc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf350439_93cd9256",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-19T14:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4035503d_4830389a",
+      "revId": "160d5d2dc0916b9c5141bb5e411381fb9a2deddc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
