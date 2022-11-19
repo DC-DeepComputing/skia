@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53040519_703f8088",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-19T00:33:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "395dd8f0_7557f440",
+      "range": {
+        "startLine": 1695,
+        "startChar": 29,
+        "endLine": 1695,
+        "endChar": 40
+      },
+      "revId": "fea9799568f37d38f8db02e80940da3a2e6c6b16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11dd25b8_95f7fa61",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-15T18:18:06Z",
       "side": 1,
       "message": "You can just use `op.isEquality()` to do this",
+      "range": {
+        "startLine": 1765,
+        "startChar": 0,
+        "endLine": 1765,
+        "endChar": 30
+      },
+      "revId": "fea9799568f37d38f8db02e80940da3a2e6c6b16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec27e2c8_54a643c1",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-19T00:33:47Z",
+      "side": 1,
+      "message": "Oh, nice! Done.",
+      "parentUuid": "11dd25b8_95f7fa61",
       "range": {
         "startLine": 1765,
         "startChar": 0,
