@@ -11,8 +11,21 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkTBlockList.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/DrawTypes.h"
 
+#include <unordered_map>
+
+namespace std {
+
+template <typename T>
+struct hash<sk_sp<T>> {
+    size_t operator()(const sk_sp<T>& key) const {
+        return hash<T*>()(key.get());
+    }
+};
+
+}
 namespace skgpu::graphite {
 
 namespace DrawPassCommands {
@@ -123,6 +136,23 @@ public:
     List() = default;
     ~List() = default;
 
+    void bindBuffer(const BindBufferInfo& info) {
+        if (!info.fStagingBuffer) {
+            SkASSERT(fBuffers.find(sk_ref_sp(info.fBuffer)) == fBuffers.end());
+            return;
+        }
+
+        auto&[stagingBuffer, end] = fBuffers[sk_ref_sp(info.fBuffer)];
+        if (!stagingBuffer) {
+            stagingBuffer = sk_ref_sp(info.fStagingBuffer);
+            end = info.fEnd;
+            return;
+        }
+
+        SkASSERT(stagingBuffer.get() == info.fStagingBuffer);
+        end = std::max(end, info.fEnd);
+    }
+
     void bindGraphicsPipeline(uint32_t pipelineIndex) {
         this->add<BindGraphicsPipeline>(pipelineIndex);
     }
@@ -132,6 +162,7 @@ public:
     }
 
     void bindUniformBuffer(BindBufferInfo info, UniformSlot slot) {
+        bindBuffer(info);
         this->add<BindUniformBuffer>(info, slot);
     }
 
@@ -151,6 +182,9 @@ public:
     void bindDrawBuffers(BindBufferInfo vertexAttribs,
                          BindBufferInfo instanceAttribs,
                          BindBufferInfo indices) {
+        bindBuffer(vertexAttribs);
+        bindBuffer(instanceAttribs);
+        bindBuffer(indices);
         this->add<BindDrawBuffers>(vertexAttribs, instanceAttribs, indices);
     }
 
@@ -185,6 +219,10 @@ public:
     using Iter = SkTBlockList<Command>::CIter;
     Iter commands() const { return fCommands.items(); }
 
+
+    using BufferMap = std::unordered_map<sk_sp<Buffer>, std::pair<sk_sp<Buffer>, size_t>>;
+    const BufferMap& buffers() const { return fBuffers; }
+
 private:
     template <typename T, typename... Args>
     void add(Args&&... args) {
@@ -207,6 +245,9 @@ private:
     // fAlloc needs to be a data structure which can append variable length data in contiguous
     // chunks, returning a stable handle to that data for later retrieval.
     SkArenaAlloc fAlloc{256};
+
+    // Map between staging buffer and vertex, index, uniform and storage buffers used by commands.
+    BufferMap fBuffers;
 };
 
 } // namespace DrawPassCommands
