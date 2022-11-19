@@ -70,6 +70,29 @@
       },
       "revId": "30912944f05d16f96b11411d4d6b4c3778e92736",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ae337e_eee954ea",
+        "filename": "tests/sksl/shared/ConstantCompositeAccessViaConstantIndex.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-19T02:09:39Z",
+      "side": 1,
+      "message": "The CL doesn\u0027t have input sksl for this test anymore.",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "30912944f05d16f96b11411d4d6b4c3778e92736",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
