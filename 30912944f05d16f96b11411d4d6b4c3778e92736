@@ -93,6 +93,30 @@
       },
       "revId": "30912944f05d16f96b11411d4d6b4c3778e92736",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "569ce470_f8820612",
+        "filename": "tests/sksl/shared/ConstantCompositeAccessViaConstantIndex.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-19T02:10:10Z",
+      "side": 1,
+      "message": "Never mind, crossed in the mail with PS11",
+      "parentUuid": "93ae337e_eee954ea",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "30912944f05d16f96b11411d4d6b4c3778e92736",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
