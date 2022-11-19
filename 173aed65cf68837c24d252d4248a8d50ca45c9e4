@@ -46,6 +46,30 @@
       },
       "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3d48d4e_295a3c24",
+        "filename": "resources/sksl/spirv/StructArrayMemberInDifferentLayouts.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-19T00:09:27Z",
+      "side": 1,
+      "message": "So thinking more about this, the one case that should be supported is an interface block member that is an array of structs which is useful in compute shaders (where operations are performed over buffers of arrays as varyings/attributes are not available). For a concrete example see https://chromium.googlesource.com/experimental/external/gob/skia/skia/+/refs/wip/armansito/compute-path-tessellator-exploration-latest/src/gpu/graphite/render/TessellateWedgesComputeStep.cpp#59. \n\nThat said I haven\u0027t yet encountered a situation where I wanted to use a struct with an array member in such a context. Using the same struct type in contexts with different layouts also may not be that necessary.\n\nAnyhow, I simplified this test to only demonstrate the struct construction part and removed the struct block members for now.",
+      "parentUuid": "a289f63c_d0707045",
+      "range": {
+        "startLine": 8,
+        "startChar": 6,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
