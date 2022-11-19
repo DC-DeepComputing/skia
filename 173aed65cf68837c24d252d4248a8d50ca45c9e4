@@ -70,6 +70,30 @@
       },
       "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf0a2ba_cae2eec7",
+        "filename": "resources/sksl/spirv/StructArrayMemberInDifferentLayouts.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-19T02:16:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e3d48d4e_295a3c24",
+      "range": {
+        "startLine": 8,
+        "startChar": 6,
+        "endLine": 8,
+        "endChar": 24
+      },
+      "revId": "173aed65cf68837c24d252d4248a8d50ca45c9e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

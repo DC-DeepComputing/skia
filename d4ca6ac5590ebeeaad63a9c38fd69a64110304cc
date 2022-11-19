@@ -22,6 +22,30 @@
       },
       "revId": "d4ca6ac5590ebeeaad63a9c38fd69a64110304cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67d8af8c_1366014c",
+        "filename": "tests/sksl/spirv/ArrayStrideInDifferentLayouts.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-19T02:16:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9486287b_5567cfd0",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d4ca6ac5590ebeeaad63a9c38fd69a64110304cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
