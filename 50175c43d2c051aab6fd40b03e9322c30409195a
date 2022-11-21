@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2120d22f_96bb25e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T18:07:13Z",
+      "side": 1,
+      "message": "Ummm... this will cause incorrect runtime asserts in PDF code.",
+      "revId": "50175c43d2c051aab6fd40b03e9322c30409195a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
