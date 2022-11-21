@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd6482b_2944d730",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-21T16:35:08Z",
+      "side": 1,
+      "message": "Should be able to use dataSize here, but using it cause rendering issue with viewer. Seems more data is in the staging buffer sometimes.",
+      "range": {
+        "startLine": 72,
+        "startChar": 66,
+        "endLine": 72,
+        "endChar": 80
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
