@@ -16,6 +16,91 @@
       "message": "Another attempt to avoid this licensing issue...",
       "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "225025c1_d183c35c",
+        "filename": "experimental/sktext/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T19:44:44Z",
+      "side": 1,
+      "message": "This should not care about the internals of `skunicode`.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b21ea63_b53044e6",
+        "filename": "gn/skia.gni",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T19:44:44Z",
+      "side": 1,
+      "message": "If this is false by default, then this change really needs to have a job (at least a `Build` job) added where this is true. There is currently nothing keeping any of this compiling, or even verifying here that it is compiling. In particular, since this basically enables building in parts of ICU, we really should be running an UBSAN build and test on this in some configuration that will complain loudly on ODR violations.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d852e373_add40640",
+        "filename": "modules/skplaintexteditor/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T19:44:44Z",
+      "side": 1,
+      "message": "This change is very wrong and implies that this build hasn\u0027t been tested properly locally. `word_boundaries.cpp` directly uses ICU and there are deps directly to it here. If `skia_use_icu` is removed here then the rest of this (the `skia_enable_skshaper` part) should be removed as well, since it\u0027s here for the same reason.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85da8aaa_894139d5",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T19:44:44Z",
+      "side": 1,
+      "message": "What is this added for? This is very carefully not true. The targets in this file only require that the `skunicode` dependency exist. Currently if `!skia_use_icu \u0026\u0026 !skia_use_client_icu` then there is no `skunicode` implementation, but that simply means that the `skunicode` target should not exist and so the dependency won\u0027t be there, so the build will fail to be created if depending on `skshaper` with `skia_use_harfbuzz`. In other words, this logic belongs somewhere else, not here. The `skshaper` build explicitly should not know anything about ICU or how it is built or any internals of `skunicode`.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555879f9_7f665ad7",
+        "filename": "third_party/icu/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-21T19:44:44Z",
+      "side": 1,
+      "message": "This is awkward, in that this is basically a small build of part of icu, and it should be obvious that this target is, in fact, a \"mini-icu\". In other words, this target and the \"icu\" target should be mutually exclusive, only one should be available to be depend on in a given build (somehow depending on this target and also depending on the `icu` target below should be impossible).\n\nIf that isn\u0027t possible then we need to ensure that none of these symbols end up exported. One would need to at least remove `U_DISABLE_RENAMING` and set things up so these symbols all have a `skia_icu` prefix on them or something.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
