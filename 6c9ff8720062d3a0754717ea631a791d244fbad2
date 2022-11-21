@@ -22,6 +22,30 @@
       },
       "revId": "6c9ff8720062d3a0754717ea631a791d244fbad2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f3365e_aef319ed",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-21T16:06:48Z",
+      "side": 1,
+      "message": "Changed to the suggested format.",
+      "parentUuid": "eb03e1a3_ec4315a5",
+      "range": {
+        "startLine": 20,
+        "startChar": 22,
+        "endLine": 22,
+        "endChar": 26
+      },
+      "revId": "6c9ff8720062d3a0754717ea631a791d244fbad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

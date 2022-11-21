@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26279e3e_339ce02a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-21T16:06:48Z",
+      "side": 1,
+      "message": "Hi Greg, PTAL include/gpu/graphite/TextureInof.h. thanks",
+      "revId": "7a663375ec35a6623c0702556baf434b823bca17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
