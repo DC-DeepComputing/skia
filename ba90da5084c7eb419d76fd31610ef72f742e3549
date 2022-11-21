@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc98aba4_a6f5045c",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-21T15:32:54Z",
+      "side": 1,
+      "message": "Static methods are capitalized in Skia.",
+      "range": {
+        "startLine": 167,
+        "startChar": 27,
+        "endLine": 167,
+        "endChar": 39
+      },
+      "revId": "ba90da5084c7eb419d76fd31610ef72f742e3549",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
