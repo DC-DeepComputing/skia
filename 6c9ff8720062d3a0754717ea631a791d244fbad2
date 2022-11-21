@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb03e1a3_ec4315a5",
+        "filename": "src/gpu/graphite/dawn/DawnSharedContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-21T15:54:19Z",
+      "side": 1,
+      "message": "Just a note for the future -- we\u0027ll be switching these string constants in Graphite\nto something like\n    source \u003d \"@fragment\\n\"\n             \"fn main() {}\";\n     \nThe R\"() format tends to add extra whitespace. I or someone else will handle this\none when we switch over.",
+      "range": {
+        "startLine": 20,
+        "startChar": 22,
+        "endLine": 22,
+        "endChar": 26
+      },
+      "revId": "6c9ff8720062d3a0754717ea631a791d244fbad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
