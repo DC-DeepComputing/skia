@@ -22,6 +22,30 @@
       },
       "revId": "b5b35f8dc919376c000feb1c7c7176fd0cc7b3de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9efedd6_a5916cb6",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-21T20:14:17Z",
+      "side": 1,
+      "message": "It doesn\u0027t. I will remove it.",
+      "parentUuid": "3e1c7046_ee7e84f9",
+      "range": {
+        "startLine": 397,
+        "startChar": 17,
+        "endLine": 397,
+        "endChar": 70
+      },
+      "revId": "b5b35f8dc919376c000feb1c7c7176fd0cc7b3de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
