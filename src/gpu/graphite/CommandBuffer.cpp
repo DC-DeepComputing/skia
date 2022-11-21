@@ -11,6 +11,7 @@
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"
+#include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
@@ -98,6 +99,26 @@ bool CommandBuffer::addComputePass(const ComputePassDesc& computePassDesc,
     for (const auto& binding : bindings) {
         this->trackResource(binding.fResource.fBuffer);
     }
+
+    SkDEBUGCODE(fHasWork = true;)
+
+    return true;
+}
+
+bool CommandBuffer::copyBufferToBuffer(sk_sp<Buffer> srcBuffer,
+                                       size_t srcOffset,
+                                       sk_sp<Buffer> dstBuffer,
+                                       size_t dstOffset,
+                                       size_t size) {
+    SkASSERT(srcBuffer);
+    SkASSERT(dstBuffer);
+
+    if (!this->onCopyBufferToBuffer(srcBuffer.get(), srcOffset, dstBuffer.get(), dstOffset, size)) {
+        return false;
+    }
+
+    this->trackResource(std::move(srcBuffer));
+    this->trackResource(std::move(dstBuffer));
 
     SkDEBUGCODE(fHasWork = true;)
 
