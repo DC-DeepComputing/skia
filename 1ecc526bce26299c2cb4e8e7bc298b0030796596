@@ -35,6 +35,69 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78986f3b_3015106b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "I like a lot of the consolidation within DrawBufferManager around tracking, but I think we should take it further. With a little bit of changing to the `transferToRecording` function, I think DrawBufferManager can entirely encapsulate the use of staging buffers from the users of the DBM, so we won\u0027t have to change the DrawCOmmands::List or BindBufferInfo, or any of the logic within DrawPass::Make.",
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9438a6e3_45924c2f",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "nit: \"Returns whether a staging buffer is preferred...\" to match style of comment in other caps functions.",
+      "range": {
+        "startLine": 135,
+        "startChar": 6,
+        "endLine": 135,
+        "endChar": 21
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75902738_5abf3a6c",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "nit: beginning",
+      "range": {
+        "startLine": 64,
+        "startChar": 71,
+        "endLine": 64,
+        "endChar": 76
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dd6482b_2944d730",
@@ -60,6 +123,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2847a96b_85118459",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "The eventual plan was to have these staging buffer copies handled as Tasks in the Recording\u0027s task graph, right? Can we add a TODO that these operations should be lifted higher so that we can re-order, combine, and skip them? That was where the offline conversion landed, right Jim?",
+      "range": {
+        "startLine": 72,
+        "startChar": 18,
+        "endLine": 72,
+        "endChar": 36
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9fcddabf_24cd1ac8",
         "filename": "src/gpu/graphite/DrawBufferManager.cpp",
         "patchSetId": 11
@@ -76,6 +162,253 @@
         "startChar": 54,
         "endLine": 61,
         "endChar": 55
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "806391c1_d409ab61",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "nit: Skia\u0027s styleguide uses `this-\u003e` for member calls",
+      "range": {
+        "startLine": 120,
+        "startChar": 9,
+        "endLine": 120,
+        "endChar": 22
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb43b09a_935a2964",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "Right now transferToRecording is just about handling ref tracking, but I think we can encapsulate staging buffer management completely into DrawBufferManager if we have transferToRecording() be responsible for creating the buffer-to-buffer copy tasks that move data from staging to private buffer.\n\nThe `fUsedBuffers` list can be updated to hold the pair of staging and private buffers, which means no one else needs to track that pairing (see other comments about how the existing returned pair of Writer and BindInfo should be sufficient from a DrawPass and DrawWriter point of view). But since DBM has the pairs remembered in a  list, we can easily run through them and add copy tasks to the recording (and maybe this means we return a new Task instead of being a void function).",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 67
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c52a61_0c1c01a1",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "We\u0027re only going to have a info.fStagingBuffer when `usesStagingBuffer` is true, so I think this can be simplified to:\n\n    if (info.fStagingBuffer) {\n        info.fStagingBuffer-\u003eunmap();\n        addResourceRef(fStagingBuffer);\n    } else {\n        info.fBuffer-\u003eunmap();\n    }\n    // Always add the buffer\n    addResourceRef(fBuffer);",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 209,
+        "endChar": 9
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29128067_d2d35eec",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "These functions aren\u0027t going to be called that much, so there\u0027s not a lot of benefit to keeping them in separate static functions, particularly if we then have to wrap them in `std::function`. \n\nLets just change sufficient_block_size to take the category\u0027s size as another argument. It may make sense to update the BufferInfo struct to include the block size and BufferType so we don\u0027t have these dependent constant arrays defined elsewhere.",
+      "range": {
+        "startLine": 241,
+        "startChar": 11,
+        "endLine": 241,
+        "endChar": 40
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184e7a65_da939135",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "nit: I\u0027d prefer we just removed this, since we\u0027re just accessing the caps off the resource provider\u0027s shared context, but having a private member function suggests they could differ down the road.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 29
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3053af_bce3d661",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment that says the staging buffer can be null if the buffer category is not using staging buffers.",
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19b91de7_3348d906",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "This is good clean up!",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 6
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae8f92d3_a8d28fde",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "We used to use unordered_map, but SkTHashMap has been found to consistently perform better, so we should switch to that when handling the rest of the feedback too.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90f61b66_d1671e1c",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "I don\u0027t think this type of tracking goes on DrawCommands::List. I think DrawBufferManager can handle the tracking internally, and if that\u0027s not sufficient, I think any more aggregate resource tracking would go into DrawPass alongside the other lists of resources that is has kept from DrawPass::Make.",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 23
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8bf84ec_d5734386",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "I don\u0027t think we should add fStagingBuffer to BindBufferInfo. DrawBufferManager already returns a Writer and a BindBufferInfo. Right now the Writer and the BindInfo point to the same data, but when staging buffers are involved I think it should be sufficient that the DrawBufferManager returns a Writer that points into the mapped void* of the staging buffer, but the BindBufferInfo has a `const Buffer*` that refers to the GPU-private buffer that is the target of the buffer-to-buffer copy.\n\nWhen DrawPass is recording commands, it only needs to record the GPU-private buffer for bindings, since that\u0027s holding the actual data. And if it is writing data dynamically to the VertexWriter it can continue to use that directly w/o even realizing that it\u0027s a separate buffer object under the hood.\n\nWe just need to track the staging buffer/private buffer pairs in a different place from DrawCommands::List. My initial thinking when starting this review had been that this would be tracked by DrawPass, but now I\u0027m thinking it should just be DrawBufferManager that can handle it entirely.",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 43
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "647dda7a_ffbe495e",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 11
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-21T18:29:47Z",
+      "side": 1,
+      "message": "I\u0027m just marking this with a comment so we can remove it before landing.",
+      "range": {
+        "startLine": 241,
+        "startChar": 5,
+        "endLine": 242,
+        "endChar": 35
       },
       "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
