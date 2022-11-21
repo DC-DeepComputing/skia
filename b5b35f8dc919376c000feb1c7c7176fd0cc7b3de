@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e1c7046_ee7e84f9",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-21T20:00:23Z",
+      "side": 1,
+      "message": "General question after the fact, does Dawn have a concept of Protected memory? If not can we remove this from the key?",
+      "range": {
+        "startLine": 397,
+        "startChar": 17,
+        "endLine": 397,
+        "endChar": 70
+      },
+      "revId": "b5b35f8dc919376c000feb1c7c7176fd0cc7b3de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
