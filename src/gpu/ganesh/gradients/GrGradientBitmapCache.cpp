@@ -12,6 +12,7 @@
 #include "include/private/SkHalf.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkRasterPipeline.h"
 
 #include <functional>
 
@@ -126,6 +127,12 @@ void GrGradientBitmapCache::add(const void* buffer, size_t len, const SkBitmap& 
 
 void GrGradientBitmapCache::fillGradient(const SkPMColor4f* colors, const SkScalar* positions,
                                          int count, SkColorType colorType, SkBitmap* bitmap) {
+    SkRasterPipeline_<256> p;
+    p.append(SkRasterPipeline::seed_shader);
+
+    const float tScale = 1.0f / (fResolution - 1);
+    p.append(SkRasterPipeline::scale_1_float, &tScale);
+
     SkHalf* pixelsF16 = reinterpret_cast<SkHalf*>(bitmap->getPixels());
     uint32_t* pixels32 = reinterpret_cast<uint32_t*>(bitmap->getPixels());
 
