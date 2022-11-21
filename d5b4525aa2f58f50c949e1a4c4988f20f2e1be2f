@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee78d80_ccdca342",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-21T20:07:18Z",
+      "side": 1,
+      "message": "Excellent. The flood-gates will soon be open.",
+      "revId": "d5b4525aa2f58f50c949e1a4c4988f20f2e1be2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
