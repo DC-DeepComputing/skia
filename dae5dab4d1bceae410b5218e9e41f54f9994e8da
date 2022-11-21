@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7acf41d9_b37117e0",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-11-21T16:13:08Z",
+      "side": 1,
+      "message": "This issue predates this CL, but do we want to initialize `direction` in here?  As it is, `direction` is uninitialized.  And until `onChar()` is called with `l` or `r`, `draw()` will use an uninitialized value.",
+      "revId": "dae5dab4d1bceae410b5218e9e41f54f9994e8da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
