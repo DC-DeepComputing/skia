@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43a20566_e64f8147",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-21T19:10:18Z",
+      "side": 1,
+      "message": "Do you have an example slide/GM to look at? I could help debug it.",
+      "parentUuid": "1dd6482b_2944d730",
+      "range": {
+        "startLine": 72,
+        "startChar": 66,
+        "endLine": 72,
+        "endChar": 80
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9fcddabf_24cd1ac8",
         "filename": "src/gpu/graphite/DrawBufferManager.cpp",
         "patchSetId": 11
@@ -181,6 +205,30 @@
       "writtenOn": "2022-11-21T16:55:01Z",
       "side": 1,
       "message": "I think this needs to be 4, as that\u0027s the requirement for the offset for attributes. Not sure about indices.",
+      "range": {
+        "startLine": 61,
+        "startChar": 54,
+        "endLine": 61,
+        "endChar": 55
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4541fc4_0417df18",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-21T19:10:18Z",
+      "side": 1,
+      "message": "I think the index needs to be 4 as well. Right now we use ushort16 which would be 2, but might as well future-proof it in case we start using uint32.",
+      "parentUuid": "9fcddabf_24cd1ac8",
       "range": {
         "startLine": 61,
         "startChar": 54,
@@ -296,6 +344,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "nit: I\u0027d prefer we just removed this, since we\u0027re just accessing the caps off the resource provider\u0027s shared context, but having a private member function suggests they could differ down the road.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 29
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ffe633_db58924f",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-21T19:10:18Z",
+      "side": 1,
+      "message": "A standard pattern with us is to grab a const Caps* at the top of the function and then use that local variable. See RecorderPriv::transferPixels().",
+      "parentUuid": "184e7a65_da939135",
       "range": {
         "startLine": 61,
         "startChar": 0,
