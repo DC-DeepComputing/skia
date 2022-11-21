@@ -539,142 +539,6 @@ private:
     using INHERITED = Sample;
 };
 
-class ParagraphView4 : public ParagraphView_Base {
-protected:
-    SkString name() override { return SkString("Paragraph4"); }
-
-    void drawFlutter(SkCanvas* canvas, SkScalar w, SkScalar h,
-                     const char* ff = "Google Sans", SkScalar fs = 30,
-                     size_t lineLimit = std::numeric_limits<size_t>::max(),
-                     const std::u16string& ellipsis = u"\u2026") {
-        SkAutoCanvasRestore acr(canvas, true);
-
-        canvas->clipRect(SkRect::MakeWH(w, h));
-
-        SkScalar margin = 20;
-
-        SkPaint black;
-        black.setAntiAlias(true);
-        black.setColor(SK_ColorBLACK);
-
-        SkPaint blue;
-        blue.setAntiAlias(true);
-        blue.setColor(SK_ColorBLUE);
-
-        SkPaint red;
-        red.setAntiAlias(true);
-        red.setColor(SK_ColorRED);
-
-        SkPaint green;
-        green.setAntiAlias(true);
-        green.setColor(SK_ColorGREEN);
-
-        SkPaint gray;
-        gray.setColor(SK_ColorLTGRAY);
-
-        SkPaint yellow;
-        yellow.setColor(SK_ColorYELLOW);
-
-        SkPaint magenta;
-        magenta.setAntiAlias(true);
-        magenta.setColor(SK_ColorMAGENTA);
-
-        TextStyle style;
-        style.setFontFamilies({SkString(ff)});
-        style.setFontSize(fs);
-
-        TextStyle style0;
-        style0.setForegroundColor(black);
-        style0.setBackgroundColor(gray);
-        style0.setFontFamilies({SkString(ff)});
-        style0.setFontSize(fs);
-        style0.setDecoration(TextDecoration::kUnderline);
-        style0.setDecorationStyle(TextDecorationStyle::kDouble);
-        style0.setDecorationColor(SK_ColorBLACK);
-
-        TextStyle style1;
-        style1.setForegroundColor(blue);
-        style1.setBackgroundColor(yellow);
-        style1.setFontFamilies({SkString(ff)});
-        style1.setFontSize(fs);
-        style1.setDecoration(TextDecoration::kOverline);
-        style1.setDecorationStyle(TextDecorationStyle::kWavy);
-        style1.setDecorationColor(SK_ColorBLACK);
-
-        TextStyle style2;
-        style2.setForegroundColor(red);
-        style2.setFontFamilies({SkString(ff)});
-        style2.setFontSize(fs);
-
-        TextStyle style3;
-        style3.setForegroundColor(green);
-        style3.setFontFamilies({SkString(ff)});
-        style3.setFontSize(fs);
-
-        TextStyle style4;
-        style4.setForegroundColor(magenta);
-        style4.setFontFamilies({SkString(ff)});
-        style4.setFontSize(fs);
-
-        ParagraphStyle paraStyle;
-        paraStyle.setTextStyle(style);
-        paraStyle.setMaxLines(lineLimit);
-
-        paraStyle.setEllipsis(ellipsis);
-
-        const char* logo1 = "google_";
-        const char* logo2 = "logo";
-        const char* logo3 = "go";
-        const char* logo4 = "ogle_logo";
-        const char* logo5 = "google_lo";
-        const char* logo6 = "go";
-        {
-            ParagraphBuilderImpl builder(paraStyle, getFontCollection());
-
-            builder.pushStyle(style0);
-            builder.addText(logo1, strlen(logo1));
-            builder.pop();
-            builder.pushStyle(style1);
-            builder.addText(logo2, strlen(logo2));
-            builder.pop();
-
-            builder.addText(" ", 1);
-
-            builder.pushStyle(style0);
-            builder.addText(logo3, strlen(logo3));
-            builder.pop();
-            builder.pushStyle(style1);
-            builder.addText(logo4, strlen(logo4));
-            builder.pop();
-
-            builder.addText(" ", 1);
-
-            builder.pushStyle(style0);
-            builder.addText(logo5, strlen(logo5));
-            builder.pop();
-            builder.pushStyle(style1);
-            builder.addText(logo6, strlen(logo6));
-            builder.pop();
-
-            auto paragraph = builder.Build();
-            paragraph->layout(w - margin * 2);
-            paragraph->paint(canvas, margin, margin);
-            canvas->translate(0, h + margin);
-        }
-    }
-
-    void onDrawContent(SkCanvas* canvas) override {
-        canvas->drawColor(SK_ColorWHITE);
-        SkScalar width = this->width();
-        SkScalar height = this->height();
-
-        drawFlutter(canvas, width, height / 2);
-    }
-
-private:
-    using INHERITED = Sample;
-};
-
 class ParagraphView5 : public ParagraphView_Base {
 protected:
     SkString name() override { return SkString("Paragraph5"); }
@@ -2158,75 +2022,6 @@ private:
     using INHERITED = Sample;
 };
 
-class ParagraphView29 : public ParagraphView_Base {
-protected:
-    SkString name() override { return SkString("Paragraph29"); }
-
-    void onDrawContent(SkCanvas* canvas) override {
-
-        const char* text = "ffi";
-        canvas->drawColor(SK_ColorWHITE);
-
-        auto collection = getFontCollection();
-
-        ParagraphStyle paragraph_style;
-        ParagraphBuilderImpl builder(paragraph_style, collection);
-        TextStyle text_style;
-        text_style.setColor(SK_ColorBLACK);
-        text_style.setFontFamilies({SkString("Roboto")});
-        text_style.setFontSize(60);
-        builder.pushStyle(text_style);
-        builder.addText(text);
-        auto paragraph = builder.Build();
-        paragraph->layout(width());
-        paragraph->paint(canvas, 0, 0);
-        auto width = paragraph->getLongestLine();
-        auto height = paragraph->getHeight();
-        if (this->isVerbose()) {
-            auto f1Pos = paragraph->getGlyphPositionAtCoordinate(width/6, height/2);
-            auto f2Pos = paragraph->getGlyphPositionAtCoordinate(width/2, height/2);
-            auto iPos = paragraph->getGlyphPositionAtCoordinate(width*5/6, height/2);
-            SkDebugf("%d(%s) %d(%s) %d(%s)\n",
-                     f1Pos.position, f1Pos.affinity == Affinity::kUpstream ? "up" : "down",
-                     f2Pos.position, f2Pos.affinity == Affinity::kUpstream ? "up" : "down",
-                     iPos.position, iPos.affinity == Affinity::kUpstream ? "up" : "down");
-
-            auto f1 = paragraph->getRectsForRange(0, 1, RectHeightStyle::kTight,
-                                                  RectWidthStyle::kTight);
-            if (f1.empty()) {
-                SkDebugf("F1 is empty\n");
-            } else {
-                auto rf1 = f1[0];
-                SkDebugf("f1: [%f:%f] %s\n", rf1.rect.fLeft, rf1.rect.fRight,
-                                             rf1.direction == TextDirection::kRtl ? "rtl" : "ltr");
-            }
-
-            auto f2 = paragraph->getRectsForRange(1, 2, RectHeightStyle::kTight,
-                                                  RectWidthStyle::kTight);
-            if (f2.empty()) {
-                SkDebugf("F2 is empty\n");
-            } else {
-                auto rf2 = f2[0];
-                SkDebugf("f2: [%f:%f] %s\n", rf2.rect.fLeft, rf2.rect.fRight,
-                                             rf2.direction == TextDirection::kRtl ? "rtl" : "ltr");
-            }
-
-            auto fi = paragraph->getRectsForRange(2, 3, RectHeightStyle::kTight,
-                                                  RectWidthStyle::kTight);
-            if (fi.empty()) {
-                SkDebugf("FI is empty\n");
-            } else {
-                auto rfi = fi[0];
-                SkDebugf("i:  [%f:%f] %s\n", rfi.rect.fLeft, rfi.rect.fRight,
-                                             rfi.direction == TextDirection::kRtl ? "rtl" : "ltr");
-            }
-        }
-    }
-
-private:
-    using INHERITED = Sample;
-};
-
 class ParagraphView30 : public ParagraphView_Base {
 protected:
     SkString name() override { return SkString("Paragraph30"); }
@@ -3006,7 +2801,6 @@ protected:
 private:
     using INHERITED = Sample;
 };
-
 
 class ParagraphView48 : public ParagraphView_Base {
 protected:
@@ -3965,6 +3759,418 @@ private:
     using INHERITED = Sample;
 };
 
+// Google logo is shown in one style (the first one)
+class ParagraphViewMultiStyle_Logo : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewMultiStyle_Logo"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        SkScalar width = this->width();
+        SkScalar height = this->height()/2;
+
+        SkAutoCanvasRestore acr(canvas, true);
+        canvas->clipRect(SkRect::MakeWH(width, height));
+
+        TextStyle style;
+        style.setFontFamilies({SkString("Google Sans")});
+        style.setFontSize(30);
+
+        TextStyle style0(style);
+        style0.setDecoration(TextDecoration::kUnderline);
+        style0.setDecorationColor(SK_ColorBLACK);
+
+        TextStyle style1(style);
+        style1.setDecoration(TextDecoration::kOverline);
+        style1.setDecorationColor(SK_ColorBLACK);
+
+        ParagraphStyle paraStyle;
+        paraStyle.setTextStyle(style);
+        paraStyle.setMaxLines(std::numeric_limits<size_t>::max());
+
+        const char* logo1 = "google_";
+        const char* logo2 = "logo";
+        const char* logo3 = "go";
+        const char* logo4 = "ogle_logo";
+        const char* logo5 = "google_lo";
+        const char* logo6 = "go";
+        {
+            ParagraphBuilderImpl builder(paraStyle, getFontCollection());
+            style0.setDecorationStyle(TextDecorationStyle::kDouble);
+            style0.setForegroundColor(SkPaint(SkColors::kBlack));
+            style0.setBackgroundColor(SkPaint(SkColors::kLtGray));
+            builder.pushStyle(style0);
+            builder.addText(logo1, strlen(logo1));
+            style1.setDecorationStyle(TextDecorationStyle::kWavy);
+            style1.setForegroundColor(SkPaint(SkColors::kBlue));
+            style1.setBackgroundColor(SkPaint(SkColors::kYellow));
+            builder.pushStyle(style1);
+            builder.addText(logo2, strlen(logo2));
+            builder.addText(" ", 1);
+
+            style0.setDecorationStyle(TextDecorationStyle::kSolid);
+            style0.setForegroundColor(SkPaint(SkColors::kBlue));
+            style0.setBackgroundColor(SkPaint(SkColors::kWhite));
+            builder.pushStyle(style0);
+            builder.addText(logo3, strlen(logo3));
+            style1.setDecorationStyle(TextDecorationStyle::kDotted);
+            style1.setForegroundColor(SkPaint(SkColors::kBlack));
+            style1.setBackgroundColor(SkPaint(SkColors::kMagenta));
+            builder.pushStyle(style1);
+            builder.addText(logo4, strlen(logo4));
+            builder.addText(" ", 1);
+
+            style0.setDecorationStyle(TextDecorationStyle::kDashed);
+            style0.setForegroundColor(SkPaint(SkColors::kGreen));
+            style0.setBackgroundColor(SkPaint(SkColors::kGray));
+            builder.pushStyle(style0);
+            builder.addText(logo5, strlen(logo5));
+            style1.setDecorationStyle(TextDecorationStyle::kDouble);
+            style1.setForegroundColor(SkPaint(SkColors::kBlue));
+            style1.setBackgroundColor(SkPaint(SkColors::kCyan));
+            builder.pushStyle(style1);
+            builder.addText(logo6, strlen(logo6));
+
+            auto paragraph = builder.Build();
+            paragraph->layout(width - 40);
+            paragraph->paint(canvas, 20, 20);
+        }
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
+// Ligature FFI should allow painting and querying by codepoints
+class ParagraphViewMultiStyle_FFI : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewMultiStyle_FFI"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+
+        canvas->drawColor(SK_ColorWHITE);
+
+        auto collection = getFontCollection();
+
+        ParagraphStyle paragraph_style;
+        ParagraphBuilderImpl builder(paragraph_style, collection);
+        TextStyle text_style;
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(60);
+        text_style.setBackgroundColor(SkPaint(SkColors::kGray));
+        builder.pushStyle(text_style);
+        builder.addText("f");
+        text_style.setBackgroundColor(SkPaint(SkColors::kYellow));
+        builder.pushStyle(text_style);
+        builder.addText("f");
+        text_style.setBackgroundColor(SkPaint(SkColors::kLtGray));
+        builder.pushStyle(text_style);
+        builder.addText("i");
+        auto paragraph = builder.Build();
+        paragraph->layout(width());
+        paragraph->paint(canvas, 0, 0);
+        auto width = paragraph->getLongestLine();
+        auto height = paragraph->getHeight();
+        if (this->isVerbose()) {
+            auto f1Pos = paragraph->getGlyphPositionAtCoordinate(width/6, height/2);
+            auto f2Pos = paragraph->getGlyphPositionAtCoordinate(width/2, height/2);
+            auto iPos = paragraph->getGlyphPositionAtCoordinate(width*5/6, height/2);
+            SkDebugf("%d(%s) %d(%s) %d(%s)\n",
+                     f1Pos.position, f1Pos.affinity == Affinity::kUpstream ? "up" : "down",
+                     f2Pos.position, f2Pos.affinity == Affinity::kUpstream ? "up" : "down",
+                     iPos.position, iPos.affinity == Affinity::kUpstream ? "up" : "down");
+
+            auto f1 = paragraph->getRectsForRange(0, 1, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f1.empty()) {
+                SkDebugf("F1 is empty\n");
+            } else {
+                auto rf1 = f1[0];
+                SkDebugf("f1: [%f:%f] %s\n", rf1.rect.fLeft, rf1.rect.fRight,
+                                             rf1.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto f2 = paragraph->getRectsForRange(1, 2, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f2.empty()) {
+                SkDebugf("F2 is empty\n");
+            } else {
+                auto rf2 = f2[0];
+                SkDebugf("f2: [%f:%f] %s\n", rf2.rect.fLeft, rf2.rect.fRight,
+                                             rf2.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto fi = paragraph->getRectsForRange(2, 3, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (fi.empty()) {
+                SkDebugf("FI is empty\n");
+            } else {
+                auto rfi = fi[0];
+                SkDebugf("i:  [%f:%f] %s\n", rfi.rect.fLeft, rfi.rect.fRight,
+                                             rfi.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+        }
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
+// Multiple code points/single glyph emoji family should be treated as a single glyph
+class ParagraphViewMultiStyle_EmojiFamily : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewMultiStyle_EmojiFamily"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+
+        canvas->drawColor(SK_ColorWHITE);
+
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+
+        ParagraphStyle paragraph_style;
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        TextStyle text_style;
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setFontFamilies({SkString("Noto Color Emoji")});
+        text_style.setFontSize(40);
+        builder.pushStyle(text_style);
+        builder.addText(u"\U0001F468\u200D\U0001F469\u200D\U0001F467\u200D\U0001F466");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->width());
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(1);
+        paint.setColor(SK_ColorLTGRAY);
+        canvas->drawRect(SkRect::MakeXYWH(0, 0, paragraph->getLongestLine(), paragraph->getHeight()), paint);
+        paragraph->paint(canvas, 0, 0);
+        auto width = paragraph->getLongestLine();
+        auto height = paragraph->getHeight();
+        if (this->isVerbose()) {
+            auto pos00 = paragraph->getGlyphPositionAtCoordinate(width/4, height/4);
+            auto pos10 = paragraph->getGlyphPositionAtCoordinate(width*3/4, height/2);
+            auto pos01 = paragraph->getGlyphPositionAtCoordinate(width/4, height/2);
+            auto pos11 = paragraph->getGlyphPositionAtCoordinate(width*3/4, height*3/4);
+            SkDebugf("%d(%s) %d(%s) %d(%s) %d(%s)\n",
+                     pos00.position, pos00.affinity == Affinity::kUpstream ? "up" : "down",
+                     pos01.position, pos01.affinity == Affinity::kUpstream ? "up" : "down",
+                     pos10.position, pos10.affinity == Affinity::kUpstream ? "up" : "down",
+                     pos11.position, pos11.affinity == Affinity::kUpstream ? "up" : "down");
+
+            auto f1 = paragraph->getRectsForRange(0, 2, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f1.empty()) {
+                SkDebugf("F1 is empty\n");
+            } else {
+                auto rf1 = f1[0];
+                SkDebugf("f1: [%f:%f] %s\n", rf1.rect.fLeft, rf1.rect.fRight,
+                                             rf1.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto f2 = paragraph->getRectsForRange(4, 6, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f2.empty()) {
+                SkDebugf("F2 is empty\n");
+            } else {
+                auto rf2 = f2[0];
+                SkDebugf("f2: [%f:%f] %s\n", rf2.rect.fLeft, rf2.rect.fRight,
+                                             rf2.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto f3 = paragraph->getRectsForRange(8, 10, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f3.empty()) {
+                SkDebugf("F3 is empty\n");
+            } else {
+                auto rf3 = f3[0];
+                SkDebugf("i:  [%f:%f] %s\n", rf3.rect.fLeft, rf3.rect.fRight,
+                                             rf3.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto f4 = paragraph->getRectsForRange(8, 10, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f4.empty()) {
+                SkDebugf("F4 is empty\n");
+            } else {
+                auto rf4 = f4[0];
+                SkDebugf("i:  [%f:%f] %s\n", rf4.rect.fLeft, rf4.rect.fRight,
+                                             rf4.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+        }
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
+// Arabic Ligature case should be painted into multi styles but queried as a single glyph
+class ParagraphViewMultiStyle_Arabic : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewMultiStyle_Arabic"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
+        text_style.setFontSize(50);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextDirection(TextDirection::kRtl);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        text_style.setColor(SK_ColorBLUE);
+        builder.pushStyle(text_style);
+        builder.addText("ك");
+        text_style.setColor(SK_ColorRED);
+        builder.pushStyle(text_style);
+        builder.addText("ِّ");
+        text_style.setColor(SK_ColorBLUE);
+        builder.pushStyle(text_style);
+        builder.addText("ـ");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->width());
+        paragraph->paint(canvas, 0, 0);
+
+        auto width = paragraph->getLongestLine();
+        auto height = paragraph->getHeight();
+        if (this->isVerbose()) {
+            auto f1Pos = paragraph->getGlyphPositionAtCoordinate(width/6, height/2);
+            auto f2Pos = paragraph->getGlyphPositionAtCoordinate(width/2, height/2);
+            auto iPos = paragraph->getGlyphPositionAtCoordinate(width*5/6, height/2);
+            SkDebugf("%d(%s) %d(%s) %d(%s)\n",
+                     f1Pos.position, f1Pos.affinity == Affinity::kUpstream ? "up" : "down",
+                     f2Pos.position, f2Pos.affinity == Affinity::kUpstream ? "up" : "down",
+                     iPos.position, iPos.affinity == Affinity::kUpstream ? "up" : "down");
+
+            auto f1 = paragraph->getRectsForRange(0, 1, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f1.empty()) {
+                SkDebugf("F1 is empty\n");
+            } else {
+                auto rf1 = f1[0];
+                SkDebugf("f1: [%f:%f] %s\n", rf1.rect.fLeft, rf1.rect.fRight,
+                                             rf1.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto f2 = paragraph->getRectsForRange(1, 2, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (f2.empty()) {
+                SkDebugf("F2 is empty\n");
+            } else {
+                auto rf2 = f2[0];
+                SkDebugf("f2: [%f:%f] %s\n", rf2.rect.fLeft, rf2.rect.fRight,
+                                             rf2.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto fi = paragraph->getRectsForRange(2, 3, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            if (fi.empty()) {
+                SkDebugf("FI is empty\n");
+            } else {
+                auto rfi = fi[0];
+                SkDebugf("i:  [%f:%f] %s\n", rfi.rect.fLeft, rfi.rect.fRight,
+                                             rfi.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+        }
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
+// Zalgo text should be painted into multi styles but queried as a single glyph
+class ParagraphViewMultiStyle_Zalgo : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphViewMultiStyle_Zalgo"); }
+
+    void onDrawContent(SkCanvas* canvas) override {
+
+        canvas->drawColor(SK_ColorWHITE);
+
+        SkString text(">S͛ͭ̋͆̈̔̇͗̍͑̎ͪͮͧͣ̽ͫͣ́ͬ̀͌͑͂͗͒̍̔̄ͧ̏̉̌̊̊̿̀̌̃̄͐̓̓̚̚҉̵̡͜͟͝͠͏̸̵̡̧͜҉̷̡͇̜̘̻̺̘̟̝͙̬̘̩͇̭̼̥̖̤̦͎k͉̩̘͚̜̹̗̗͍̤̥̱͉̳͕͖̤̲̣͚̮̞̬̲͍͔̯̻̮̞̭͈̗̫͓̂ͨ̉ͪ̒͋͛̀̍͊ͧ̿̅͆̓̔̔ͬ̇̑̿ͩ͗ͮ̎͌̿̄ͅP̴̵̡̡̛̪͙̼̣̟̩̭̫̱͙̬͔͉͍̘̠͉̦̝̘̥̟̗͖̫̤͕̙̬̦͍̱̖̮̱͑͐̎̃̒͐͋̚͘͞a̶̶̵̵̵̶̶̡̧̢̢̺͔̣͖̭̺͍̤͚̱̜̰̥͕̬̥̲̞̥̘͇͚̺̰͚̪̺͔̤͍̓̿͆̎͋̓ͦ̈́ͦ̌́̄͗̌̓͌̕͜͜͟͢͝͡ŕ͎̝͕͉̻͎̤̭͚̗̳̖̙̘͚̫͖͓͚͉͔͈̟̰̟̬̗͓̟͚̱̕͡ͅͅͅa̸̶̢̛̛̽ͮͩ̅͒ͫ͗͂̎ͦ̈́̓̚͘͜͢͡҉̷̵̶̢̡̜̮̦̜̥̜̯̙͓͔̼̗̻͜͜ͅḡ̢̛͕̗͖̖̤̦̘͔ͨͨ̊͒ͩͭͤ̍̅̃ͪ̋̏̓̍̋͗̋ͨ̏̽̈́̔̀̋̉ͫ̅̂ͭͫ̏͒͋ͥ̚͜r̶̢̧̧̥̤̼̀̂̒ͪ͌̿͌̅͛ͨͪ͒̍ͥ̉ͤ̌̿̆́ͭ͆̃̒ͤ͛̊ͧ̽͘͝͠a̧̢̧̢͑͑̓͑ͮ̃͂̄͛́̈́͋̂͌̽̄͒̔́̇ͨͧͭ͐ͦ̋ͨ̍ͦ̍̋͆̔ͧ͑͋͌̈̓͛͛̚͢͜͜͏̴̢̧̛̳͍̹͚̰̹̻͔p̨̡͆ͦͣ͊̽̔͂̉ͣ̔ͣ̌̌̉̃̋̂͒ͫ̄̎̐͗̉̌̃̽̽́̀̚͘͜͟҉̱͉h̭̮̘̗͔̜̯͔͈̯̺͔̗̣̭͚̱̰̙̼̹͚̣̻̥̲̮͍̤͜͝<");
+        auto K = text.find("k");
+        auto P = text.find("P");
+        auto h = text.find("h");
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        ParagraphStyle paragraph_style;
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorRED);
+        builder.pushStyle(text_style);
+        builder.addText(text.data(), K + 3);
+        text_style.setColor(SK_ColorBLUE);
+        text_style.setBackgroundColor(SkPaint(SkColors::kYellow));
+        builder.pushStyle(text_style);
+        builder.addText(text.data() + K + 3, P - K - 3 + 6);
+        text_style.setColor(SK_ColorGREEN);
+        builder.pushStyle(text_style);
+        builder.addText(text.data() + P + 6, h - P - 6);
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setBackgroundColor(SkPaint(SkColors::kLtGray));
+        builder.pushStyle(text_style);
+        builder.addText(text.data() + h, text.size() - h);
+        auto paragraph = builder.Build();
+        paragraph->layout(width());
+        paragraph->paint(canvas, 0, 0);
+        auto width = paragraph->getLongestLine();
+        auto height = paragraph->getHeight();
+        if (this->isVerbose()) {
+            auto resSK = paragraph->getRectsForRange(0, K, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            TextBox rectSK(SkRect::MakeEmpty(), TextDirection::kLtr);
+            if (resSK.empty()) {
+                SkDebugf("resSK is empty\n");
+            } else {
+                rectSK = resSK[0];
+                SkDebugf("rectSK: [%f:%f] %s\n", rectSK.rect.fLeft, rectSK.rect.fRight,
+                                             rectSK.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto resKP = paragraph->getRectsForRange(1, 2, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            TextBox rectKP(SkRect::MakeEmpty(), TextDirection::kLtr);
+            if (resKP.empty()) {
+                SkDebugf("resKP is empty\n");
+            } else {
+                rectKP = resKP[0];
+                SkDebugf("f2: [%f:%f] %s\n", rectKP.rect.fLeft, rectKP.rect.fRight,
+                                             rectKP.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+
+            auto resPh = paragraph->getRectsForRange(2, 3, RectHeightStyle::kTight,
+                                                  RectWidthStyle::kTight);
+            TextBox rectPh(SkRect::MakeEmpty(), TextDirection::kLtr);
+            if (resPh.empty()) {
+                SkDebugf("resPh is empty\n");
+            } else {
+                rectPh = resPh[0];
+                SkDebugf("i:  [%f:%f] %s\n", rectPh.rect.fLeft, rectPh.rect.fRight,
+                                             rectPh.direction == TextDirection::kRtl ? "rtl" : "ltr");
+            }
+            auto posK = paragraph->getGlyphPositionAtCoordinate(rectSK.rect.center().fX, height/2);
+            auto posP = paragraph->getGlyphPositionAtCoordinate(rectKP.rect.center().fX, height/2);
+            auto posH = paragraph->getGlyphPositionAtCoordinate(rectPh.rect.center().fX, height/2);
+            SkDebugf("%d(%s) %d(%s) %d(%s)\n",
+                     posK.position, posK.affinity == Affinity::kUpstream ? "up" : "down",
+                     posP.position, posP.affinity == Affinity::kUpstream ? "up" : "down",
+                     posH.position, posH.affinity == Affinity::kUpstream ? "up" : "down");
+        }
+    }
+
+private:
+    using INHERITED = Sample;
+};
+
 class ParagraphViewLast : public ParagraphView_Base {
 protected:
     SkString name() override { return SkString("ParagraphViewLast"); }
@@ -4000,7 +4206,6 @@ private:
 DEF_SAMPLE(return new ParagraphView1();)
 DEF_SAMPLE(return new ParagraphView2();)
 DEF_SAMPLE(return new ParagraphView3();)
-DEF_SAMPLE(return new ParagraphView4();)
 DEF_SAMPLE(return new ParagraphView5();)
 DEF_SAMPLE(return new ParagraphView6();)
 DEF_SAMPLE(return new ParagraphView7();)
@@ -4024,7 +4229,6 @@ DEF_SAMPLE(return new ParagraphView25();)
 DEF_SAMPLE(return new ParagraphView26();)
 DEF_SAMPLE(return new ParagraphView27();)
 DEF_SAMPLE(return new ParagraphView28();)
-DEF_SAMPLE(return new ParagraphView29();)
 DEF_SAMPLE(return new ParagraphView30();)
 DEF_SAMPLE(return new ParagraphView31();)
 DEF_SAMPLE(return new ParagraphView32();)
@@ -4063,4 +4267,9 @@ DEF_SAMPLE(return new ParagraphView65();)
 DEF_SAMPLE(return new ParagraphView66();)
 DEF_SAMPLE(return new ParagraphView67();)
 DEF_SAMPLE(return new ParagraphView68();)
+DEF_SAMPLE(return new ParagraphViewMultiStyle_Logo();)
+DEF_SAMPLE(return new ParagraphViewMultiStyle_FFI();)
+DEF_SAMPLE(return new ParagraphViewMultiStyle_EmojiFamily();)
+DEF_SAMPLE(return new ParagraphViewMultiStyle_Arabic();)
+DEF_SAMPLE(return new ParagraphViewMultiStyle_Zalgo();)
 DEF_SAMPLE(return new ParagraphViewLast();)
