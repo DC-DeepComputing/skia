@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b760a1ff_2ae1b938",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-21T17:30:24Z",
+      "side": 1,
+      "message": "Hi Jim, I just rebased the CL to fix the conflict. Please CQ+2 for me. Thanks.",
+      "revId": "eab92b8630e847f184d0b142e0c02cbebf614651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
