@@ -622,7 +622,7 @@ bool MtlCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
     }
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
-    blitCmdEncoder->pushDebugGroup(@"readOrTransferPixels");
+    blitCmdEncoder->pushDebugGroup(@"copyTextureToBuffer");
 #endif
     blitCmdEncoder->copyFromTexture(mtlTexture, srcRect, mtlBuffer, bufferOffset, bufferRowBytes);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
@@ -647,7 +647,7 @@ bool MtlCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     }
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
-    blitCmdEncoder->pushDebugGroup(@"uploadToTexture");
+    blitCmdEncoder->pushDebugGroup(@"copyBufferToTexture");
 #endif
     for (int i = 0; i < count; ++i) {
         if (!check_max_blit_width(copyData[i].fRect.width())) {
@@ -684,7 +684,7 @@ bool MtlCommandBuffer::onCopyTextureToTexture(const Texture* src,
     }
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
-    blitCmdEncoder->pushDebugGroup(@"copyTextureAsBlit");
+    blitCmdEncoder->pushDebugGroup(@"copyTextureToTexture");
 #endif
 
     blitCmdEncoder->copyTextureToTexture(srcMtlTexture, srcRect, dstMtlTexture, dstPoint);
