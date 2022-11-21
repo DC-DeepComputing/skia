@@ -1119,7 +1119,7 @@ DEF_SIMPLE_GM_BG(gradients_color_space, canvas, 265, 205, SK_ColorGRAY) {
     }
 }
 
-DEF_SIMPLE_GM_BG(gradients_hue_method, canvas, 285, 105, SK_ColorGRAY) {
+DEF_SIMPLE_GM_BG(gradients_hue_method, canvas, 285, 130, SK_ColorGRAY) {
     using HM = SkGradientShader::Interpolation::HueMethod;
 
     struct Config {
@@ -1151,6 +1151,18 @@ DEF_SIMPLE_GM_BG(gradients_hue_method, canvas, 285, 105, SK_ColorGRAY) {
                                SkFont{}, labelPaint);
         canvas->translate(0, 25);
     }
+
+    // Test a specific bug with how gradient shaders handle explicit positions. If there are no
+    // explicit positions at 0 or 1, those are automatically added, with copies of the first/last
+    // color. When using kLonger, this can produce extra gradient that should actually be solid.
+    // This gradient *should* be:
+    //   |- solid red -|- red to green, the long way -|- solid green -|
+    interpolation.fHueMethod = HM::kLonger;
+    SkScalar pos[] = { 0.3f, 0.7f };
+    p.setShader(SkGradientShader::MakeLinear(pts, colors, SkColorSpace::MakeSRGB(), pos, 2,
+                                             SkTileMode::kClamp, interpolation, nullptr));
+    canvas->drawRect({0, 0, 200, 20}, p);
+    canvas->translate(0, 25);
 }
 
 DEF_SIMPLE_GM_BG(gradients_color_space_tilemode, canvas, 360, 105, SK_ColorGRAY) {
