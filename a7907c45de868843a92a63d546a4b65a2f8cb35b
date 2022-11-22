@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1dd5d39_f20e35df",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "I tried tacking dataSize in staging buffer, and copy buffer with data size. However it cause many rendering issues with `viewer`. There is a bug somewhere. So I just copy the whole buffer for now, and then I will create a follow up CL to track data size, and Jim can help me debug the issue.",
+      "parentUuid": "58390d9a_99360e0d",
+      "range": {
+        "startLine": 39,
+        "startChar": 75,
+        "endLine": 39,
+        "endChar": 93
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac52fa50_c0449a38",
         "filename": "src/gpu/graphite/DrawBufferManager.cpp",
         "patchSetId": 14
@@ -95,6 +119,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "838242a9_b3d020c0",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "Right now, we do whole buffer copy. So the transfer buffer should follow the same alignment.",
+      "parentUuid": "8c49cc31_56046ae0",
+      "range": {
+        "startLine": 231,
+        "startChar": 66,
+        "endLine": 231,
+        "endChar": 86
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c09cd80e_5edc4eb2",
         "filename": "src/gpu/graphite/DrawBufferManager.cpp",
         "patchSetId": 14
@@ -106,6 +154,30 @@
       "writtenOn": "2022-11-22T15:10:06Z",
       "side": 1,
       "message": "Could this logic just go inside the if(!info.fBuffer) above? Seems like if we have to recreate the fBuffer that means we\u0027ll have to recreating the stagging buffer as well (assuming the cap check), right?",
+      "range": {
+        "startLine": 248,
+        "startChar": 3,
+        "endLine": 248,
+        "endChar": 50
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c8b4ebd_ab600d53",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "There is another case, fBuffer doesn\u0027t need to be recreated, but fStagingBuffer need. In `transferToRecording()`, we will not reset `fBuffer` if staging buffer is used, so the GPU private buffer can be reused in the DBM immediately.",
+      "parentUuid": "c09cd80e_5edc4eb2",
       "range": {
         "startLine": 248,
         "startChar": 3,
@@ -141,6 +213,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e4da87c_4976ab6f",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "How many draws per Buffer? do we have an estimation?",
+      "parentUuid": "317b394d_87e34883",
+      "range": {
+        "startLine": 249,
+        "startChar": 49,
+        "endLine": 249,
+        "endChar": 67
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85f87433_fef224ee",
         "filename": "src/gpu/graphite/DrawBufferManager.h",
         "patchSetId": 14
@@ -152,6 +248,30 @@
       "writtenOn": "2022-11-22T15:10:06Z",
       "side": 1,
       "message": "this isn\u0027t needed.",
+      "range": {
+        "startLine": 69,
+        "startChar": 29,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35db0298_d62b095a",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "Without this, initialize the array with \n`{ BufferType::kVertex,  /*fStartAlignment\u003d*/4, kVertexBufferSize  }` will cause compile warnings. I have to use `{ BufferType::kVertex,  /*fStartAlignment\u003d*/4, kVertexBufferSize, nullptr, nullptr }`. And the line will more than 100 chars.",
+      "parentUuid": "85f87433_fef224ee",
       "range": {
         "startLine": 69,
         "startChar": 29,
@@ -203,6 +323,54 @@
         "startChar": 36,
         "endLine": 72,
         "endChar": 38
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecaebc4c_526dfbc9",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7577e544_c460e3e8",
+      "range": {
+        "startLine": 72,
+        "startChar": 36,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e856a0e_c65b0297",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T19:02:12Z",
+      "side": 1,
+      "message": "I feel transferbuffer is a better name too.\nDone",
+      "parentUuid": "989e2e6a_8810d5d4",
+      "range": {
+        "startLine": 72,
+        "startChar": 22,
+        "endLine": 72,
+        "endChar": 36
       },
       "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
