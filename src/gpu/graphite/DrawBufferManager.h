@@ -60,14 +60,21 @@ public:
 private:
     struct BufferInfo {
         const BufferType fType;
-        const size_t     fStartAlignment;
-        const size_t     fBlockSize;
-        sk_sp<Buffer>    fBuffer = {};
-        size_t           fOffset = 0;
+        const size_t fStartAlignment;
+        const size_t fBlockSize;
+        sk_sp<Buffer> fBuffer{};
+        // The fTransferBuffer can be null, if transfer buffer is not used, see
+        // Caps::transferBufferPreferred() for detail.
+        sk_sp<Buffer> fTransferBuffer{};
+        size_t fOffset = 0;
+
+        Buffer* getMappableBuffer() {
+            return fTransferBuffer ? fTransferBuffer.get() : fBuffer.get();
+        }
     };
     std::optional<BindBufferInfo> prepareBindBuffer(BufferInfo* info, size_t requiredBytes);
 
-    ResourceProvider* fResourceProvider;
+    ResourceProvider* const fResourceProvider;
 
     static constexpr size_t kVertexBufferIndex  = 0;
     static constexpr size_t kIndexBufferIndex   = 1;
@@ -75,7 +82,8 @@ private:
     static constexpr size_t kStorageBufferIndex = 3;
     std::array<BufferInfo, 4> fCurrentBuffers;
 
-    std::vector<sk_sp<Buffer>> fUsedBuffers;
+    // Vector of buffer and transfer buffer pairs.
+    std::vector<std::pair<sk_sp<Buffer>, sk_sp<Buffer>>> fUsedBuffers;
     // TODO(skbug.com/13059): This is likely not the final location for static buffers, but makes it
     // convenient to maintain ownership and call trackResources() on the CommandBuffer.
     std::unordered_map<uintptr_t, sk_sp<Buffer>> fStaticBuffers;
