@@ -33,6 +33,24 @@
       "message": "Do these still crash in SPIRV-Cross, or will they fail gracefully now?",
       "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f11985_de41632b",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-22T23:41:54Z",
+      "side": 1,
+      "message": "The inverse hyperbolics still crash spirv-cross but the regular inverse trigonometrics (acos/asin/atan) translate correctly so I put them back in.\n\nWGSL supports acosh/asinh/atanh but the GLSL.std.450 instructions for them aren\u0027t implemented in tint\u0027s spirv-reader, so I couldn\u0027t include those in the next CL.",
+      "parentUuid": "6ed2e724_c8189d83",
+      "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
