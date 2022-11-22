@@ -46,6 +46,30 @@
       },
       "revId": "8a283f52dcc00c8e8ea9569b47a1882742f78ba7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3b48c2_29515c03",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T18:50:10Z",
+      "side": 1,
+      "message": "No, we can leave it as-is (but yes, this is confusing). I had also gone and looked at the WGSL and Metal specs, but not the SPRIV one, which is why I was somewhat lost initially.",
+      "parentUuid": "19fa6873_0f558456",
+      "range": {
+        "startLine": 16,
+        "startChar": 3,
+        "endLine": 16,
+        "endChar": 10
+      },
+      "revId": "8a283f52dcc00c8e8ea9569b47a1882742f78ba7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
