@@ -22,6 +22,76 @@
       },
       "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58a8fc0f_baf0242c",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T14:23:56Z",
+      "side": 1,
+      "message": "No, any gaps are just from now-deleted code that had other, different values in here. (They started as consecutive integers at 10000, and over time turned into this). We could definitely re-number them.",
+      "parentUuid": "5f2cdd06_56cb9776",
+      "range": {
+        "startLine": 26,
+        "startChar": 39,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a6444b_8235aac2",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1413,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T14:23:56Z",
+      "side": 1,
+      "message": "Up to you: You don\u0027t actually need the [[fallthrough]] if there\u0027s no other intervening code (per clang\u0027s warnings, or our coding standard, AFAIK). But fine to leave it, if you prefer.",
+      "range": {
+        "startLine": 1413,
+        "startChar": 12,
+        "endLine": 1413,
+        "endChar": 28
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "730366cc_6e9d410c",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T14:23:56Z",
+      "side": 1,
+      "message": "This is listed as deprecated in the SPIRV specification. Any chance we\u0027re going to end up removing this one?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 45
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
