@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f2cdd06_56cb9776",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-22T07:42:10Z",
+      "side": 1,
+      "message": "Is there a pattern to these values? I\u0027ve been wondering whether we could replace these with an enum containing consecutive integers since AFAICT `Layout::fBuiltin` always equals a distinct one of these (or -1) and never a mask of them.",
+      "range": {
+        "startLine": 26,
+        "startChar": 39,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
