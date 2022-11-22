@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "409daff0_eb921db7",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T14:36:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9d16a15_ffb95e3b",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 34
+      },
+      "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76cb1c21_56efb21e",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-11-22T01:41:10Z",
       "side": 1,
       "message": "Lets store BufferType in BufferInfo just like block size. Then I think we can get rid of `bufferIndex` and the index constants and instead just pass in a `BufferInfo*` to modify (skia style tends to use pointers when the function modifies them, vs. non-const \u0026, even if we can assume it\u0027s not null).",
+      "range": {
+        "startLine": 208,
+        "startChar": 32,
+        "endLine": 208,
+        "endChar": 44
+      },
+      "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6081f7db_48fb0e82",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T14:36:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76cb1c21_56efb21e",
       "range": {
         "startLine": 208,
         "startChar": 32,
