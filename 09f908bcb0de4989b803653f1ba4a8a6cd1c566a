@@ -188,6 +188,30 @@
       },
       "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c7d8b7_d9c8fd18",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-22T21:42:33Z",
+      "side": 1,
+      "message": "oh, I assigned these sort of randomly around the existing ID `28` without realizing that they actually matched the SPIR-V IDs. Does the SPIR-V codegen rely on this at all or is this a coincidence?",
+      "parentUuid": "54fb21c2_bcf46fa9",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 45
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
