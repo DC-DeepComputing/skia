@@ -16,6 +16,23 @@
       "message": "With a script, maybe we can update this more often than every year and a half.",
       "revId": "05898f6aee7e693d54e1351b7ecd2b958184425a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52d9a1f8_78e7a1ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-22T21:57:22Z",
+      "side": 1,
+      "message": "As a follow on, the bazel build also needs to be changed and this script updated to check that build and also update an `expat_config.h` over there as well.",
+      "revId": "05898f6aee7e693d54e1351b7ecd2b958184425a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
