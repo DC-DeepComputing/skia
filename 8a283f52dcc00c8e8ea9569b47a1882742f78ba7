@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84d1a72_ca59d952",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T13:58:45Z",
+      "side": 1,
+      "message": "As an aside: What does it even mean to apply ordering constraints to uniform memory? Is this assuming a world where uniforms can somehow be written to via aliasing another buffer?\n\nIt seems like Metal\u0027s uniform isn\u0027t actually an address space, it\u0027s just a type that uses the compiler to enforce uniformity (while the values are probably still in some other address space?)",
+      "range": {
+        "startLine": 16,
+        "startChar": 3,
+        "endLine": 16,
+        "endChar": 10
+      },
+      "revId": "8a283f52dcc00c8e8ea9569b47a1882742f78ba7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
