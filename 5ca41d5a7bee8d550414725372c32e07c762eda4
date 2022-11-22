@@ -16,6 +16,23 @@
       "message": "kjlubick@: PTAL at the bazel bits. I haven\u0027t actually tested them locally and I mostly cargo-culted existing test files.",
       "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ed2e724_c8189d83",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T21:52:13Z",
+      "side": 1,
+      "message": "Do these still crash in SPIRV-Cross, or will they fail gracefully now?",
+      "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
