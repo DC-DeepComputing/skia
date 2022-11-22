@@ -22,6 +22,30 @@
       },
       "revId": "8a283f52dcc00c8e8ea9569b47a1882742f78ba7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19fa6873_0f558456",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-22T18:34:26Z",
+      "side": 1,
+      "message": "It\u0027s confusing.\n\nI was following SPIR-V semantics when I phrased this, in which the `UniformMemory` memory semantics is defined to \"[a]pply the memory-ordering constraints to StorageBuffer, PhysicalStorageBuffer, or Uniform Storage Class memory\" (https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#Memory_Semantics_-id-). I\u0027m unsure about the guarantees on uniform storage class memory as it isn\u0027t expected to be mutable.\n\nIn Metal the `constant` address space is the equivalent of uniform. While buffers in this address space are specified to come from the `device` memory pool, they can have slightly different alignment requirements. According to Table 6.12 in the MSL spec, `mem_flags::mem_device` \"correctly orders the memory operations to device memory\" which I read as applying to buffers in both `constant` and `device` address space.\n\nAll that being said, the description for `storageBarrier` in the WGSL spec (https://www.w3.org/TR/WGSL/#storageBarrier-builtin) leaves out uniform: \"Executes a control barrier synchronization function that affects memory and atomic operations in the storage address space\", although it translates to `OpControlBarrier + UniformMemory` in SPIR-V and `threadgroupBarrier(mem_flags::mem_device)` in Metal.\n\nI think there is an implied guarantee on reads from uniform memory general but I\u0027m OK with leaving that out if you think it\u0027s redundant.",
+      "parentUuid": "f84d1a72_ca59d952",
+      "range": {
+        "startLine": 16,
+        "startChar": 3,
+        "endLine": 16,
+        "endChar": 10
+      },
+      "revId": "8a283f52dcc00c8e8ea9569b47a1882742f78ba7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
