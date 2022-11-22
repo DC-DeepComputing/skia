@@ -56,6 +56,30 @@
       },
       "revId": "102dcd03f3742e7562689c0454e25bbca8361a30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11b9f0ee_c67033bd",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T17:08:31Z",
+      "side": 1,
+      "message": "For Index buffer as well? You mentioned 4 for vertex buffer, but not index buffer. I will update it in the follow CL.",
+      "parentUuid": "1605cfaf_ee8101db",
+      "range": {
+        "startLine": 59,
+        "startChar": 60,
+        "endLine": 59,
+        "endChar": 61
+      },
+      "revId": "102dcd03f3742e7562689c0454e25bbca8361a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
