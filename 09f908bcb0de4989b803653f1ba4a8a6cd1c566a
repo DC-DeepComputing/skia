@@ -164,6 +164,30 @@
       },
       "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fb21c2_bcf46fa9",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T18:48:31Z",
+      "side": 1,
+      "message": "Oof, yes. And I was trying to also check the IDs against the spec, but I think that\u0027s where I got confused. It looks like NumWorkgroups should actually be `builtin\u003d24`?",
+      "parentUuid": "d848a3a2_b5f9725f",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 45
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
