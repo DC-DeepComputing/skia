@@ -1,68 +1,75 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_colorGreen : packoffset(c0);
-    float4 _10_colorRed : packoffset(c1);
-    float4 _10_testInputs : packoffset(c2);
+uint tint_pack2x16float(float2 param_0) {
+  uint2 i = f32tof16(param_0);
+  return i.x | (i.y << 16);
+}
+
+float2 tint_unpack2x16float(uint param_0) {
+  uint i = param_0;
+  return f16tof32(uint2(i & 0xffff, i >> 16));
+}
+
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[3];
 };
 
+float4 main(inout float2 x_24) {
+  uint xy = 0u;
+  uint zw = 0u;
+  float4 x_57 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_55 = false;
+  bool x_56 = false;
+  const float4 x_34 = asfloat(x_10[2]);
+  const uint x_29 = tint_pack2x16float(float2(x_34.x, x_34.y));
+  xy = x_29;
+  const float4 x_39 = asfloat(x_10[2]);
+  const uint x_37 = tint_pack2x16float(float2(x_39.z, x_39.w));
+  zw = x_37;
+  x_56 = false;
+  if (all((tint_unpack2x16float(x_29) == float2(-1.25f, 0.0f)))) {
+    x_55 = all((tint_unpack2x16float(x_37) == float2(0.75f, 2.25f)));
+    x_56 = x_55;
+  }
+  if (x_56) {
+    const float4 x_64 = asfloat(x_10[0]);
+    x_57 = x_64;
+  } else {
+    const float4 x_67 = asfloat(x_10[1]);
+    x_57 = x_67;
+  }
+  const float4 x_68 = x_57;
+  return x_68;
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-uint spvPackHalf2x16(float2 value)
-{
-    uint2 Packed = f32tof16(value);
-    return Packed.x | (Packed.y << 16);
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
 }
 
-float2 spvUnpackHalf2x16(uint value)
-{
-    return f16tof32(uint2(value & 0xffff, value >> 16));
-}
-
-float4 main(float2 _24)
-{
-    uint _29 = spvPackHalf2x16(_10_testInputs.xy);
-    uint xy = _29;
-    uint _37 = spvPackHalf2x16(_10_testInputs.zw);
-    uint zw = _37;
-    float2 _42 = spvUnpackHalf2x16(_29);
-    bool _56 = false;
-    if (all(bool2(_42.x == float2(-1.25f, 0.0f).x, _42.y == float2(-1.25f, 0.0f).y)))
-    {
-        float2 _50 = spvUnpackHalf2x16(_37);
-        _56 = all(bool2(_50.x == float2(0.75f, 2.25f).x, _50.y == float2(0.75f, 2.25f).y));
-    }
-    else
-    {
-        _56 = false;
-    }
-    float4 _57 = 0.0f.xxxx;
-    if (_56)
-    {
-        _57 = _10_colorGreen;
-    }
-    else
-    {
-        _57 = _10_colorRed;
-    }
-    return _57;
-}
-
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

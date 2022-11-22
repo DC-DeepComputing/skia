@@ -1,37 +1,52 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_colorGreen : packoffset(c0);
-    float _10_unknownInput : packoffset(c1);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[2];
 };
 
+float4 main(inout float2 x_24) {
+  float4 result = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  const float x_32 = asfloat(x_10[1].x);
+  const float4 x_36 = asfloat(x_10[0]);
+  result.x = x_36.x;
+  const float4 x_43 = asfloat(x_10[0]);
+  result.y = x_43.y;
+  const float4 x_50 = asfloat(x_10[0]);
+  result.z = x_50.z;
+  const float4 x_60 = asfloat(x_10[0]);
+  result.w = x_60.w;
+  const float4 x_64 = result;
+  return x_64;
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _24)
-{
-    float4 result = 0.0f.xxxx;
-    result.x = _10_colorGreen.x;
-    result.y = _10_colorGreen.y;
-    result.z = _10_colorGreen.z;
-    result.w = _10_colorGreen.w;
-    return result;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_5 = {sk_FragColor};
+  return tint_symbol_5;
 }
 
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

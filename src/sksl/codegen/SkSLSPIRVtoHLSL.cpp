@@ -7,43 +7,55 @@
 
 #include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
 
-#if defined(SK_ENABLE_SPIRV_CROSS)
+#if defined(SK_GENERATE_HLSL_WITH_TINT)
 
-#include <spirv_hlsl.hpp>
+#include "tint/tint.h"
 
 /*
- * This translation unit serves as a bridge between Skia/SkSL and SPIRV-Cross.
- * Each library is built with a separate copy of spirv.h (or spirv.hpp), so we
- * avoid conflicts by never including both in the same cpp.
+ * This translation unit serves as a bridge between Skia/SkSL and tint.
  */
 
 namespace SkSL {
 
-bool SPIRVtoHLSL(const std::string& spirv, std::string* hlsl) {
-    spirv_cross::CompilerHLSL hlslCompiler((const uint32_t*)spirv.c_str(),
-                                           spirv.size() / sizeof(uint32_t));
+bool SPIRVtoHLSL(const std::string& spirv, std::string* outResult) {
+    const uint32_t* spirvWords = reinterpret_cast<const uint32_t*>(spirv.c_str());
+    // TODO(armansito): IWBN if the tint SPIR-V reader accepted a raw pointer (or something
+    // like std::span) instead of a std::vector, which requires a copy from `spirv`.
+    const std::vector<uint32_t> spirvParserInput(spirvWords, spirvWords + spirv.size() / 4);
+    tint::Program program(tint::reader::spirv::Parse(spirvParserInput));
+    if (program.Diagnostics().count() > 0) {
+        tint::diag::Formatter diagFormatter;
+        *outResult = diagFormatter.format(program.Diagnostics());
+        return false;
+    }
 
-    spirv_cross::CompilerGLSL::Options optionsGLSL;
-    // Force all uninitialized variables to be 0, otherwise they will fail to compile
-    // by FXC.
-    optionsGLSL.force_zero_initialized_variables = true;
+    tint::writer::hlsl::Result tintResult = tint::writer::hlsl::Generate(&program, {});
+    if (!tintResult.success) {
+        *outResult = std::move(tintResult.error);
+        return false;
+    }
 
-    spirv_cross::CompilerHLSL::Options optionsHLSL;
-    optionsHLSL.shader_model = 51;
-    // PointCoord and PointSize are not supported in HLSL
-    optionsHLSL.point_coord_compat = true;
-    optionsHLSL.point_size_compat = true;
-
-    hlslCompiler.set_common_options(optionsGLSL);
-    hlslCompiler.set_hlsl_options(optionsHLSL);
-    hlsl->assign(hlslCompiler.compile());
+    // TODO(armansito): The spirv-cross version of this code used some compiler settings that are
+    // not supported in Tint's HLSL writer:
+    // - (GLSL) force_zero_initialized_variables = true
+    // - (HLSL) shader_model = 51
+    // - (HLSL) point_coord_compat = true
+    // - (HLSL) point_size_compat = true
+    *outResult = std::move(tintResult.hlsl);
     return true;
 }
 
-}
+}  // namespace SkSL
 
 #else
 
-namespace SkSL { bool SPIRVtoHLSL(const std::string&, std::string*) { return false; } }
+namespace SkSL {
+
+bool SPIRVtoHLSL(const std::string&, std::string* outResult) {
+    *outResult = "HLSL cross-compilation not enabled";
+    return false;
+}
+
+}  // namespace SkSL
 
 #endif

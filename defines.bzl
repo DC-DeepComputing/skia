@@ -34,7 +34,7 @@ GENERAL_DEFINES = [
     "//src/sksl:enable_skslc_true": [
         "SKSL_STANDALONE",
         "SK_DISABLE_TRACING",
-        "SK_ENABLE_SPIRV_CROSS",
+        "SK_GENERATE_HLSL_WITH_TINT",
         "SK_ENABLE_SPIRV_VALIDATION",
         "SK_ENABLE_WGSL_VALIDATION",
     ],

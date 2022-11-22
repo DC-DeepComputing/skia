@@ -12,7 +12,8 @@
 
 namespace SkSL {
 
-bool SPIRVtoHLSL(const std::string& spirv, std::string* hlsl);
+// `result` contains the HLSL shader text on success and an error text on failure.
+bool SPIRVtoHLSL(const std::string& spirv, std::string* result);
 
 }  // namespace SkSL
 

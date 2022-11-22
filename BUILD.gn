@@ -803,7 +803,7 @@ if (skia_compile_sksl_tests) {
       "SKSL_ENABLE_TRACING",
       "SKSL_STANDALONE",
       "SK_DISABLE_TRACING",
-      "SK_ENABLE_SPIRV_CROSS",
+      "SK_GENERATE_HLSL_WITH_TINT",
       "SK_ENABLE_SPIRV_VALIDATION",
       "SK_ENABLE_WGSL_VALIDATION",
     ]
@@ -837,7 +837,6 @@ if (skia_compile_sksl_tests) {
       "//third_party/externals/dawn/src/tint:libtint",
       "//third_party/externals/spirv-tools:spvtools",
       "//third_party/externals/spirv-tools:spvtools_val",
-      "//third_party/spirv-cross:spirv_cross",
     ]
   }
 
@@ -1010,8 +1009,8 @@ optional("gpu_shared") {
   if (skia_use_direct3d) {
     # Must be defined when 'skia_sksl_gpu_sources' is built, even if the rest of skia_use_direct3d
     # is handled only in the 'gpu' component.
-    public_defines += [ "SK_ENABLE_SPIRV_CROSS" ]
-    deps += [ "//third_party/spirv-cross:spirv_cross" ]
+    public_defines += [ "SK_GENERATE_HLSL_WITH_TINT" ]
+    deps += [ "//third_party/externals/dawn/src/tint:libtint" ]
   }
 
   sources = skia_shared_gpu_sources + skia_sksl_gpu_sources

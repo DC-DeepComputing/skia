@@ -1,93 +1,94 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_inputH4 : packoffset(c0);
-    float4 _10_expectedH4 : packoffset(c1);
-    float4 _10_colorGreen : packoffset(c2);
-    float4 _10_colorRed : packoffset(c3);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[4];
 };
 
+float4 main(inout float2 x_24) {
+  bool4 inputVal = bool4(false, false, false, false);
+  bool4 expected = bool4(false, false, false, false);
+  float4 x_88 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_68 = false;
+  bool x_69 = false;
+  bool x_74 = false;
+  bool x_75 = false;
+  bool x_78 = false;
+  bool x_79 = false;
+  bool x_82 = false;
+  bool x_83 = false;
+  bool x_86 = false;
+  bool x_87 = false;
+  const float4 x_33 = asfloat(x_10[0]);
+  const bool4 x_42 = bool4(!((x_33.x == 0.0f)), !((x_33.y == 0.0f)), !((x_33.z == 0.0f)), !((x_33.w == 0.0f)));
+  inputVal = x_42;
+  const float4 x_46 = asfloat(x_10[1]);
+  const bool4 x_55 = bool4(!((x_46.x == 0.0f)), !((x_46.y == 0.0f)), !((x_46.z == 0.0f)), !((x_46.w == 0.0f)));
+  expected = x_55;
+  const bool x_60 = x_55.x;
+  x_69 = false;
+  if ((any(bool2(x_42.x, x_42.y)) == x_60)) {
+    x_68 = (any(bool3(x_42.x, x_42.y, x_42.z)) == x_55.y);
+    x_69 = x_68;
+  }
+  x_75 = false;
+  if (x_69) {
+    x_74 = (any(x_42) == x_55.z);
+    x_75 = x_74;
+  }
+  x_79 = false;
+  if (x_75) {
+    x_78 = (false == x_60);
+    x_79 = x_78;
+  }
+  x_83 = false;
+  if (x_79) {
+    x_82 = x_55.y;
+    x_83 = x_82;
+  }
+  x_87 = false;
+  if (x_83) {
+    x_86 = x_55.z;
+    x_87 = x_86;
+  }
+  if (x_87) {
+    const float4 x_95 = asfloat(x_10[2]);
+    x_88 = x_95;
+  } else {
+    const float4 x_98 = asfloat(x_10[3]);
+    x_88 = x_98;
+  }
+  const float4 x_99 = x_88;
+  return x_99;
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _24)
-{
-    bool4 _42 = bool4(_10_inputH4.x != 0.0f, _10_inputH4.y != 0.0f, _10_inputH4.z != 0.0f, _10_inputH4.w != 0.0f);
-    bool4 inputVal = _42;
-    bool4 _55 = bool4(_10_expectedH4.x != 0.0f, _10_expectedH4.y != 0.0f, _10_expectedH4.z != 0.0f, _10_expectedH4.w != 0.0f);
-    bool4 expected = _55;
-    bool _60 = _55.x;
-    bool _69 = false;
-    if (any(_42.xy) == _60)
-    {
-        _69 = any(_42.xyz) == _55.y;
-    }
-    else
-    {
-        _69 = false;
-    }
-    bool _75 = false;
-    if (_69)
-    {
-        _75 = any(_42) == _55.z;
-    }
-    else
-    {
-        _75 = false;
-    }
-    bool _79 = false;
-    if (_75)
-    {
-        _79 = false == _60;
-    }
-    else
-    {
-        _79 = false;
-    }
-    bool _83 = false;
-    if (_79)
-    {
-        _83 = _55.y;
-    }
-    else
-    {
-        _83 = false;
-    }
-    bool _87 = false;
-    if (_83)
-    {
-        _87 = _55.z;
-    }
-    else
-    {
-        _87 = false;
-    }
-    float4 _88 = 0.0f.xxxx;
-    if (_87)
-    {
-        _88 = _10_colorGreen;
-    }
-    else
-    {
-        _88 = _10_colorRed;
-    }
-    return _88;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
 }
 
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

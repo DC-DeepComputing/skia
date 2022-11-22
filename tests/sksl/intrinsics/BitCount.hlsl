@@ -1,27 +1,37 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    int _10_a : packoffset(c0);
-    uint _10_b : packoffset(c0.y);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[1];
 };
 
-
-static float4 sk_FragColor;
-
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
-};
-
-void frag_main()
-{
-    sk_FragColor.x = float(countbits(_10_a));
-    sk_FragColor.y = float(int(countbits(_10_b)));
+void main_1() {
+  const int x_22 = asint(x_10[0].x);
+  sk_FragColor.x = float(asint(countbits(asuint(x_22))));
+  const uint x_30 = x_10[0].y;
+  sk_FragColor.y = float(asint(countbits(x_30)));
+  return;
 }
 
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+struct main_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
+};
+
+main_out main_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  main_1();
+  const main_out tint_symbol_5 = {sk_FragColor};
+  return tint_symbol_5;
+}
+
+tint_symbol_2 main(tint_symbol_1 tint_symbol) {
+  const main_out inner_result = main_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

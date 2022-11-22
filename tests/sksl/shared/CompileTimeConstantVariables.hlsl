@@ -1,68 +1,69 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_colorGreen : packoffset(c0);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[1];
 };
 
+float4 main(inout float2 x_24) {
+  int integerInput = 0;
+  int x_34 = 0;
+  const float4 x_32 = asfloat(x_10[0]);
+  x_34 = int(x_32.y);
+  integerInput = x_34;
+  if ((x_34 == 0)) {
+    return (2.140000105f).xxxx;
+  } else {
+    if ((x_34 == 1)) {
+      const float4 x_47 = asfloat(x_10[0]);
+      return x_47;
+    } else {
+      if ((x_34 == 2)) {
+        return float4(1.0f, 0.200000003f, 2.140000105f, 1.0f);
+      } else {
+        const float4 x_58 = asfloat(x_10[0]);
+        if ((3.140000105f < (x_58.x * 3.140000105f))) {
+          return (3.140000105f).xxxx;
+        } else {
+          const float4 x_67 = asfloat(x_10[0]);
+          if ((2.140000105f >= (x_67.x * 2.140000105f))) {
+            return (0.0f).xxxx;
+          } else {
+            return float4(1.0f, 0.0f, 0.0f, 1.0f);
+          }
+        }
+      }
+    }
+  }
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _24)
-{
-    int _34 = int(_10_colorGreen.y);
-    int integerInput = _34;
-    if (_34 == 0)
-    {
-        return 2.1400001049041748046875f.xxxx;
-    }
-    else
-    {
-        if (_34 == 1)
-        {
-            return _10_colorGreen;
-        }
-        else
-        {
-            if (_34 == 2)
-            {
-                return float4(1.0f, 0.20000000298023223876953125f, 2.1400001049041748046875f, 1.0f);
-            }
-            else
-            {
-                if (3.1400001049041748046875f < (_10_colorGreen.x * 3.1400001049041748046875f))
-                {
-                    return 3.1400001049041748046875f.xxxx;
-                }
-                else
-                {
-                    if (2.1400001049041748046875f >= (_10_colorGreen.x * 2.1400001049041748046875f))
-                    {
-                        return 0.0f.xxxx;
-                    }
-                    else
-                    {
-                        return float4(1.0f, 0.0f, 0.0f, 1.0f);
-                    }
-                }
-            }
-        }
-    }
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
 }
 
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }
