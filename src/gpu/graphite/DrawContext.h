@@ -79,6 +79,12 @@ public:
                       SkColorType colorType,
                       const std::vector<MipLevel>& levels,
                       const SkIRect& dstRect);
+    bool recordUpload(Recorder* recorder,
+                      sk_sp<TextureProxy> targetProxy,
+                      const SkColorInfo& srcColorInfo,
+                      const SkColorInfo& dstColorInfo,
+                      const std::vector<MipLevel>& levels,
+                      const SkIRect& dstRect);
 
 #ifdef SK_ENABLE_PIET_GPU
     bool recordPietSceneRender(Recorder* recorder,

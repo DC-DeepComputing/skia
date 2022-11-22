@@ -41,6 +41,12 @@ public:
                                SkColorType colorType,
                                const std::vector<MipLevel>& levels,
                                const SkIRect& dstRect);
+    static UploadInstance Make(Recorder*,
+                               sk_sp<TextureProxy> targetProxy,
+                               const SkColorInfo& srcColorInfo,
+                               const SkColorInfo& dstColorInfo,
+                               const std::vector<MipLevel>& levels,
+                               const SkIRect& dstRect);
 
     bool isValid() const { return fBuffer != nullptr; }
 
@@ -73,6 +79,12 @@ public:
     bool recordUpload(Recorder*,
                       sk_sp<TextureProxy> targetProxy,
                       SkColorType colorType,
+                      const std::vector<MipLevel>& levels,
+                      const SkIRect& dstRect);
+    bool recordUpload(Recorder*,
+                      sk_sp<TextureProxy> targetProxy,
+                      const SkColorInfo& srcColorInfo,
+                      const SkColorInfo& dstColorInfo,
                       const std::vector<MipLevel>& levels,
                       const SkIRect& dstRect);
 

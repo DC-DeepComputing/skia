@@ -116,6 +116,22 @@ bool DrawContext::recordUpload(Recorder* recorder,
                                          dstRect);
 }
 
+bool DrawContext::recordUpload(Recorder* recorder,
+                               sk_sp<TextureProxy> targetProxy,
+                               const SkColorInfo& srcColorInfo,
+                               const SkColorInfo& dstColorInfo,
+                               const std::vector<MipLevel>& levels,
+                               const SkIRect& dstRect) {
+    // Our caller should have clipped to the bounds of the surface already.
+    SkASSERT(SkIRect::MakeSize(targetProxy->dimensions()).contains(dstRect));
+    return fPendingUploads->recordUpload(recorder,
+                                         std::move(targetProxy),
+                                         srcColorInfo,
+                                         dstColorInfo,
+                                         levels,
+                                         dstRect);
+}
+
 #ifdef SK_ENABLE_PIET_GPU
 bool DrawContext::recordPietSceneRender(Recorder*,
                                         sk_sp<TextureProxy> targetProxy,

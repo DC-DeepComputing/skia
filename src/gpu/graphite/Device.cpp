@@ -412,21 +412,25 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     // TODO: check that surface supports writePixels
     // TODO: handle writePixels as draw if needed (e.g., canvas2DFastPath || !supportsWritePixels)
 
-    // TODO: check for flips and conversions and either handle here or pass info to UploadTask
-
-    // for now, until conversions are supported
-    if (!caps->areColorTypeAndTextureInfoCompatible(src.colorType(),
-                                                    target->textureInfo())) {
-        return false;
-    }
+    // TODO: check for flips and either handle here or pass info to UploadTask
 
     std::vector<MipLevel> levels;
     levels.push_back({src.addr(), src.rowBytes()});
 
     SkIRect dstRect = SkIRect::MakePtSize({x, y}, src.dimensions());
+    if (!SkIRect::MakeSize(target->dimensions()).contains(dstRect)) {
+        return false;
+    }
 
     this->flushPendingWorkToRecorder();
-    return fDC->recordUpload(fRecorder, sk_ref_sp(target), src.colorType(), levels, dstRect);
+
+    if (!caps->areColorTypeAndTextureInfoCompatible(src.colorType(),
+                                                    target->textureInfo())) {
+        return fDC->recordUpload(fRecorder, sk_ref_sp(target), src.info().colorInfo(),
+                                 this->imageInfo().colorInfo(), levels, dstRect);
+    } else {
+        return fDC->recordUpload(fRecorder, sk_ref_sp(target), src.colorType(), levels, dstRect);
+    }
 }
 
 

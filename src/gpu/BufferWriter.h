@@ -459,6 +459,15 @@ struct UploadWriter : public BufferWriter {
         void* dst = SkTAddOffset<void>(fPtr, offset);
         SkRectMemcpy(dst, trimRowBytes, src, srcRowBytes, trimRowBytes, rowCount);
     }
+
+    void convertAndWrite(size_t offset,
+                         const SkImageInfo& srcInfo, const void* src, size_t srcRowBytes,
+                         const SkImageInfo& dstInfo, size_t trimRowBytes) {
+        SkASSERT(srcInfo.width() == dstInfo.width() && srcInfo.height() == dstInfo.height());
+        this->validate(trimRowBytes * dstInfo.height());
+        void* dst = SkTAddOffset<void>(fPtr, offset);
+        SkAssertResult(SkConvertPixels(dstInfo, dst, trimRowBytes, srcInfo, src, srcRowBytes));
+    }
 };
 
 }  // namespace skgpu
