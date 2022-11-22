@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c0241ce_26bf1d45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-22T20:10:55Z",
+      "side": 1,
+      "message": "kjlubick@: PTAL at the bazel bits. I haven\u0027t actually tested them locally and I mostly cargo-culted existing test files.",
+      "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
