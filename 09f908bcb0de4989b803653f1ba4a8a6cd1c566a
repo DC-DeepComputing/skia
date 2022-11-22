@@ -212,6 +212,30 @@
       },
       "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac4acf1a_878929be",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-22T21:45:15Z",
+      "side": 1,
+      "message": "Yes, SPIRV actually passes these through (see line 3411 of the SPIRV generator).",
+      "parentUuid": "c4c7d8b7_d9c8fd18",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 45
+      },
+      "revId": "09f908bcb0de4989b803653f1ba4a8a6cd1c566a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
