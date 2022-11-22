@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dddbf4fe_b662af29",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9438a6e3_45924c2f",
+      "range": {
+        "startLine": 135,
+        "startChar": 6,
+        "endLine": 135,
+        "endChar": 21
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75902738_5abf3a6c",
@@ -88,6 +112,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "nit: beginning",
+      "range": {
+        "startLine": 64,
+        "startChar": 71,
+        "endLine": 64,
+        "endChar": 76
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a80d6b4_128a6be6",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75902738_5abf3a6c",
       "range": {
         "startLine": 64,
         "startChar": 71,
@@ -192,6 +240,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9039c364_c6e5b801",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e7433b4_fae58f91",
+      "range": {
+        "startLine": 72,
+        "startChar": 18,
+        "endLine": 72,
+        "endChar": 36
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b78483f7_7581cee8",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "many slides have rendering issues. For example, GM_aaclip",
+      "parentUuid": "43a20566_e64f8147",
+      "range": {
+        "startLine": 72,
+        "startChar": 66,
+        "endLine": 72,
+        "endChar": 80
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fcddabf_24cd1ac8",
@@ -239,6 +335,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eafbde0_6705b670",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fcddabf_24cd1ac8",
+      "range": {
+        "startLine": 61,
+        "startChar": 54,
+        "endLine": 61,
+        "endChar": 55
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "806391c1_d409ab61",
@@ -252,6 +372,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "nit: Skia\u0027s styleguide uses `this-\u003e` for member calls",
+      "range": {
+        "startLine": 120,
+        "startChar": 9,
+        "endLine": 120,
+        "endChar": 22
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e839c0c_23d6d5f3",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "806391c1_d409ab61",
       "range": {
         "startLine": 120,
         "startChar": 9,
@@ -285,6 +429,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d8a3861_955bcb94",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb43b09a_935a2964",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 67
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52c52a61_0c1c01a1",
@@ -308,6 +476,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cd80e8a_fcdb2c8e",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52c52a61_0c1c01a1",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 209,
+        "endChar": 9
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29128067_d2d35eec",
@@ -321,6 +513,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "These functions aren\u0027t going to be called that much, so there\u0027s not a lot of benefit to keeping them in separate static functions, particularly if we then have to wrap them in `std::function`. \n\nLets just change sufficient_block_size to take the category\u0027s size as another argument. It may make sense to update the BufferInfo struct to include the block size and BufferType so we don\u0027t have these dependent constant arrays defined elsewhere.",
+      "range": {
+        "startLine": 241,
+        "startChar": 11,
+        "endLine": 241,
+        "endChar": 40
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa28d912_6c833a06",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29128067_d2d35eec",
       "range": {
         "startLine": 241,
         "startChar": 11,
@@ -378,6 +594,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5067e4c4_d0db10e0",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "184e7a65_da939135",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 29
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e3053af_bce3d661",
@@ -395,6 +635,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3cfcd3d_bca846cd",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e3053af_bce3d661",
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19b91de7_3348d906",
@@ -408,6 +666,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "This is good clean up!",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 6
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8614cfd1_d03fde41",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Ack. :)",
+      "parentUuid": "19b91de7_3348d906",
       "range": {
         "startLine": 66,
         "startChar": 4,
@@ -441,6 +723,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77854c8_21a9cc71",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "The change is removed",
+      "parentUuid": "ae8f92d3_a8d28fde",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90f61b66_d1671e1c",
@@ -464,6 +770,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a04872ba_bf04d5c3",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90f61b66_d1671e1c",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 23
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8bf84ec_d5734386",
@@ -477,6 +807,30 @@
       "writtenOn": "2022-11-21T18:29:47Z",
       "side": 1,
       "message": "I don\u0027t think we should add fStagingBuffer to BindBufferInfo. DrawBufferManager already returns a Writer and a BindBufferInfo. Right now the Writer and the BindInfo point to the same data, but when staging buffers are involved I think it should be sufficient that the DrawBufferManager returns a Writer that points into the mapped void* of the staging buffer, but the BindBufferInfo has a `const Buffer*` that refers to the GPU-private buffer that is the target of the buffer-to-buffer copy.\n\nWhen DrawPass is recording commands, it only needs to record the GPU-private buffer for bindings, since that\u0027s holding the actual data. And if it is writing data dynamically to the VertexWriter it can continue to use that directly w/o even realizing that it\u0027s a separate buffer object under the hood.\n\nWe just need to track the staging buffer/private buffer pairs in a different place from DrawCommands::List. My initial thinking when starting this review had been that this would be tracked by DrawPass, but now I\u0027m thinking it should just be DrawBufferManager that can handle it entirely.",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 43
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9094ac3_ee1898ce",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8bf84ec_d5734386",
       "range": {
         "startLine": 152,
         "startChar": 0,
@@ -523,6 +877,30 @@
       "writtenOn": "2022-11-21T16:55:01Z",
       "side": 1,
       "message": "I believe the other labels were copied from Ganesh and so don\u0027t match Graphite\u0027s interface very well. I think this should match the method name and so be \"copyBufferToBuffer\". I can put together a CL to fix the others.",
+      "range": {
+        "startLine": 621,
+        "startChar": 37,
+        "endLine": 621,
+        "endChar": 51
+      },
+      "revId": "1ecc526bce26299c2cb4e8e7bc298b0030796596",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0caa08af_b178bfbb",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 11
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-22T12:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a21df8f9_94d830f6",
       "range": {
         "startLine": 621,
         "startChar": 37,
