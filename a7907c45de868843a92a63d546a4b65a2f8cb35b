@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58390d9a_99360e0d",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "I think we want to be tracking the copied size in DBM. This could cause use to do a significantly larger copy than required.",
+      "range": {
+        "startLine": 39,
+        "startChar": 75,
+        "endLine": 39,
+        "endChar": 93
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac52fa50_c0449a38",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "We don\u0027t really pass around const\u0026 to sk_sps, I would just pass in Buffer* to this function since we\u0027re not passing it ownership. Also can we just have this helper take a single Buffer* and the callers will make sure to pass the right buffer in?",
+      "range": {
+        "startLine": 28,
+        "startChar": 17,
+        "endLine": 28,
+        "endChar": 37
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "757d33f0_f6950325",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "maybe we just have a little helper,\n\n    Buffer* BufferInfo::getMappedBuffer() { return fStagging ? fStagging.get() : fBuffer.get(); }",
+      "range": {
+        "startLine": 106,
+        "startChar": 27,
+        "endLine": 106,
+        "endChar": 60
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c49cc31_56046ae0",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "Are the alignment requirements for data in the transfer buffer (and the eventual copy) the same for the alignment of the draw buffers?",
+      "range": {
+        "startLine": 231,
+        "startChar": 66,
+        "endLine": 231,
+        "endChar": 86
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09cd80e_5edc4eb2",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "Could this logic just go inside the if(!info.fBuffer) above? Seems like if we have to recreate the fBuffer that means we\u0027ll have to recreating the stagging buffer as well (assuming the cap check), right?",
+      "range": {
+        "startLine": 248,
+        "startChar": 3,
+        "endLine": 248,
+        "endChar": 50
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "317b394d_87e34883",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "This is more just to open discussion, and my gut right now doesn\u0027t think this suggestion is the way to go, but...\n\nHave we considered managing these transfers via the Upload manager? Like does it make any sense to have all things involving transfer buffers go through the same thing. Maybe it allows uploads to textures and to buffers to share an xfer buffer allocation? Also if there are any alignment or similar restrictions on the xfer buffers it can all be controlled in one spot.\n\nHowever, I think the down side of doing the above is that when we want to get a mapped pointer, we don\u0027t actually know the full size of the buffer space for all the draws yet. We map on a per draw basis. So I think we\u0027d end up with having to create a copy for every draw instead of doing one copy of an entire buffer to the gpu buffer as is now. But just wanted to throw this out there to see if there are other reasons to keep all the transfers in one place.",
+      "range": {
+        "startLine": 249,
+        "startChar": 49,
+        "endLine": 249,
+        "endChar": 67
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f87433_fef224ee",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "this isn\u0027t needed.",
+      "range": {
+        "startLine": 69,
+        "startChar": 29,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "989e2e6a_8810d5d4",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "Possible nit that I\u0027m definitely open to discussion: I feel like we\u0027ve mostly been using the name transfer instead of staging in Graphite. Maybe this gets name fTransferBuffer instead?",
+      "range": {
+        "startLine": 72,
+        "startChar": 22,
+        "endLine": 72,
+        "endChar": 36
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7577e544_c460e3e8",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-22T15:10:06Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 72,
+        "startChar": 36,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
