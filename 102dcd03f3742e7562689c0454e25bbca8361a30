@@ -80,6 +80,30 @@
       },
       "revId": "102dcd03f3742e7562689c0454e25bbca8361a30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d1a4b5_9a9a5241",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-22T17:25:57Z",
+      "side": 1,
+      "message": "I had a follow-on comment there. Since the indices are uint16 they should have an alignment of 2, but we might also use uint32 indices at some point so we might as well align to 4 now.",
+      "parentUuid": "11b9f0ee_c67033bd",
+      "range": {
+        "startLine": 59,
+        "startChar": 60,
+        "endLine": 59,
+        "endChar": 61
+      },
+      "revId": "102dcd03f3742e7562689c0454e25bbca8361a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
