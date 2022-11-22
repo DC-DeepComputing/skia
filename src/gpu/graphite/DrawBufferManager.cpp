@@ -157,21 +157,16 @@ BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
 
 void DrawBufferManager::transferToRecording(Recording* recording) {
     bool useTransferBuffer = !fResourceProvider->sharedContext()->caps()->drawBufferCanBeMapped();
-    for (auto&[buffer, transferBuffer] : fUsedBuffers) {
-        if (useTransferBuffer) {
-            if (transferBuffer) {
-                transferBuffer->unmap();
-                recording->priv().addTask(CopyBufferToBufferTask::Make(std::move(transferBuffer),
-                                                                       std::move(buffer)));
-            } else {
-                recording->priv().addResourceRef(std::move(buffer));
-            }
-        } else {
-           buffer->unmap();
-           recording->priv().addResourceRef(std::move(buffer));
-        }
+    for (auto& buffer : fUsedBuffers) {
+        buffer->unmap();
+        recording->priv().addResourceRef(std::move(buffer));
     }
     fUsedBuffers.clear();
+
+    for (auto& task : fUploadingTasks) {
+        recording->priv().addTask(std::move(task));
+    }
+    fUploadingTasks.clear();
 
     // The current draw buffers have not been added to fUsedBuffers,
     // so we need to handle them as well.
@@ -181,7 +176,6 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
         }
         if (useTransferBuffer) {
             if (info.fTransferBuffer) {
-                info.fTransferBuffer->unmap();
                 SkASSERT(info.fBuffer);
                 recording->priv().addTask(CopyBufferToBufferTask::Make(
                         std::move(info.fTransferBuffer), info.fBuffer));
@@ -211,7 +205,16 @@ std::optional<BindBufferInfo> DrawBufferManager::prepareBindBuffer(BufferInfo* i
     if (info->fBuffer &&
         !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, info->fStartAlignment)) {
         SkASSERT(!info->fTransferBuffer || info->fBuffer->size() == info->fTransferBuffer->size());
-        fUsedBuffers.emplace_back(std::move(info->fBuffer), std::move(info->fTransferBuffer));
+        if (useTransferBuffer) {
+            if (info->fTransferBuffer) {
+                fUploadingTasks.emplace_back(
+                        CopyBufferToBufferTask::Make(std::move(info->fTransferBuffer),
+                                                     std::move(info->fBuffer)));
+            }
+        } else {
+            info->fBuffer->unmap();
+            fUsedBuffers.emplace_back(std::move(info->fBuffer));
+        }
     }
 
     if (!info->fBuffer) {
