@@ -16,6 +16,69 @@
       "message": "Hi Michael, PTAL. Thanks.",
       "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b7ef0a4_45e7688a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-22T01:41:10Z",
+      "side": 1,
+      "message": "Thanks for splitting this out, I\u0027m +1\u0027ing since I\u0027ll be OOO tomorrow but there\u0027s just a few bits of further consoldation that we can do with this CL.",
+      "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d16a15_ffb95e3b",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-22T01:41:10Z",
+      "side": 1,
+      "message": "This gets repeated in all the getXWriter() functions. WDYT about having prepareBuffer() return a BindBufferInfo. In the cases where we return false, it returns a BindBufferInfo with a null Buffer*, and in the cases where we return true, it handles this logic of creating the BindBufferInfo and updating its own offset?\n\nAlternatively it could be a helper function defined on BufferInfo.",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 34
+      },
+      "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76cb1c21_56efb21e",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-11-22T01:41:10Z",
+      "side": 1,
+      "message": "Lets store BufferType in BufferInfo just like block size. Then I think we can get rid of `bufferIndex` and the index constants and instead just pass in a `BufferInfo*` to modify (skia style tends to use pointers when the function modifies them, vs. non-const \u0026, even if we can assume it\u0027s not null).",
+      "range": {
+        "startLine": 208,
+        "startChar": 32,
+        "endLine": 208,
+        "endChar": 44
+      },
+      "revId": "f61b0151186d4e0987d942a9787940a7549bcc88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
