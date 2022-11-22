@@ -1,84 +1,160 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float _10_unknownInput : packoffset(c0);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[1];
 };
 
-
-static float4 sk_FragColor;
-
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
-};
-
-void frag_main()
-{
-    bool b = true;
-    int _26 = int(_10_unknownInput);
-    int s = _26;
-    int _30 = int(_10_unknownInput);
-    int i = _30;
-    uint _36 = uint(_10_unknownInput);
-    uint us = _36;
-    uint _40 = uint(_10_unknownInput);
-    uint ui = _40;
-    float h = _10_unknownInput;
-    float f = _10_unknownInput;
-    int s2s = _26;
-    int i2s = _30;
-    int _51 = int(_36);
-    int us2s = _51;
-    int _53 = int(_40);
-    int ui2s = _53;
-    int _55 = int(_10_unknownInput);
-    int h2s = _55;
-    int _57 = int(_10_unknownInput);
-    int f2s = _57;
-    int _59 = int(true);
-    int b2s = _59;
-    int s2i = _26;
-    int i2i = _30;
-    int _64 = int(_36);
-    int us2i = _64;
-    int _66 = int(_40);
-    int ui2i = _66;
-    int _68 = int(_10_unknownInput);
-    int h2i = _68;
-    int _70 = int(_10_unknownInput);
-    int f2i = _70;
-    int _72 = int(true);
-    int b2i = _72;
-    uint _74 = uint(_26);
-    uint s2us = _74;
-    uint _76 = uint(_30);
-    uint i2us = _76;
-    uint us2us = _36;
-    uint ui2us = _40;
-    uint h2us = uint(_10_unknownInput);
-    uint f2us = uint(_10_unknownInput);
-    uint b2us = uint(true);
-    uint s2ui = uint(_26);
-    uint i2ui = uint(_30);
-    uint us2ui = _36;
-    uint ui2ui = _40;
-    uint h2ui = uint(_10_unknownInput);
-    uint f2ui = uint(_10_unknownInput);
-    uint b2ui = uint(true);
-    float s2f = float(_26);
-    float i2f = float(_30);
-    float us2f = float(_36);
-    float ui2f = float(_40);
-    float h2f = _10_unknownInput;
-    float f2f = _10_unknownInput;
-    float b2f = float(true);
-    sk_FragColor.x = (((((((((((((((((((((float(_26) + float(_30)) + float(_36)) + float(_40)) + _10_unknownInput) + _10_unknownInput) + float(_26)) + float(_30)) + float(_51)) + float(_53)) + float(_55)) + float(_57)) + float(_59)) + float(_26)) + float(_30)) + float(_64)) + float(_66)) + float(_68)) + float(_70)) + float(_72)) + float(_74)) + float(_76)) + float(_36);
-    sk_FragColor.x += (((((((((((((((((float(ui2us) + float(h2us)) + float(f2us)) + float(b2us)) + float(s2ui)) + float(i2ui)) + float(us2ui)) + float(ui2ui)) + float(h2ui)) + float(f2ui)) + float(b2ui)) + s2f) + i2f) + us2f) + ui2f) + h2f) + f2f) + b2f);
+void main_1() {
+  bool b = false;
+  int s = 0;
+  int i = 0;
+  uint us = 0u;
+  uint ui = 0u;
+  float h = 0.0f;
+  float f = 0.0f;
+  int s2s = 0;
+  int i2s = 0;
+  int us2s = 0;
+  int ui2s = 0;
+  int h2s = 0;
+  int f2s = 0;
+  int b2s = 0;
+  int s2i = 0;
+  int i2i = 0;
+  int us2i = 0;
+  int ui2i = 0;
+  int h2i = 0;
+  int f2i = 0;
+  int b2i = 0;
+  uint s2us = 0u;
+  uint i2us = 0u;
+  uint us2us = 0u;
+  uint ui2us = 0u;
+  uint h2us = 0u;
+  uint f2us = 0u;
+  uint b2us = 0u;
+  uint s2ui = 0u;
+  uint i2ui = 0u;
+  uint us2ui = 0u;
+  uint ui2ui = 0u;
+  uint h2ui = 0u;
+  uint f2ui = 0u;
+  uint b2ui = 0u;
+  float s2f = 0.0f;
+  float i2f = 0.0f;
+  float us2f = 0.0f;
+  float ui2f = 0.0f;
+  float h2f = 0.0f;
+  float f2f = 0.0f;
+  float b2f = 0.0f;
+  b = true;
+  const float x_25 = asfloat(x_10[0].x);
+  const int x_26 = int(x_25);
+  s = x_26;
+  const float x_29 = asfloat(x_10[0].x);
+  const int x_30 = int(x_29);
+  i = x_30;
+  const float x_35 = asfloat(x_10[0].x);
+  const uint x_36 = uint(x_35);
+  us = x_36;
+  const float x_39 = asfloat(x_10[0].x);
+  const uint x_40 = uint(x_39);
+  ui = x_40;
+  const float x_44 = asfloat(x_10[0].x);
+  h = x_44;
+  const float x_47 = asfloat(x_10[0].x);
+  f = x_47;
+  s2s = x_26;
+  i2s = x_30;
+  const int x_51 = asint(x_36);
+  us2s = x_51;
+  const int x_53 = asint(x_40);
+  ui2s = x_53;
+  const int x_55 = int(x_44);
+  h2s = x_55;
+  const int x_57 = int(x_47);
+  f2s = x_57;
+  const int x_59 = 1;
+  b2s = x_59;
+  s2i = x_26;
+  i2i = x_30;
+  const int x_64 = asint(x_36);
+  us2i = x_64;
+  const int x_66 = asint(x_40);
+  ui2i = x_66;
+  const int x_68 = int(x_44);
+  h2i = x_68;
+  const int x_70 = int(x_47);
+  f2i = x_70;
+  const int x_72 = 1;
+  b2i = x_72;
+  const uint x_74 = asuint(x_26);
+  s2us = x_74;
+  const uint x_76 = asuint(x_30);
+  i2us = x_76;
+  us2us = x_36;
+  ui2us = x_40;
+  h2us = uint(x_44);
+  f2us = uint(x_47);
+  b2us = 1u;
+  s2ui = asuint(x_26);
+  i2ui = asuint(x_30);
+  us2ui = x_36;
+  ui2ui = x_40;
+  h2ui = uint(x_44);
+  f2ui = uint(x_47);
+  b2ui = 1u;
+  s2f = float(x_26);
+  i2f = float(x_30);
+  us2f = float(x_36);
+  ui2f = float(x_40);
+  h2f = x_44;
+  f2f = x_47;
+  b2f = 1.0f;
+  sk_FragColor.x = ((((((((((((((((((((((float(x_26) + float(x_30)) + float(x_36)) + float(x_40)) + x_44) + x_47) + float(x_26)) + float(x_30)) + float(x_51)) + float(x_53)) + float(x_55)) + float(x_57)) + float(x_59)) + float(x_26)) + float(x_30)) + float(x_64)) + float(x_66)) + float(x_68)) + float(x_70)) + float(x_72)) + float(x_74)) + float(x_76)) + float(x_36));
+  const float x_159 = sk_FragColor.x;
+  const uint x_160 = ui2us;
+  const uint x_162 = h2us;
+  const uint x_165 = f2us;
+  const uint x_168 = b2us;
+  const uint x_171 = s2ui;
+  const uint x_174 = i2ui;
+  const uint x_177 = us2ui;
+  const uint x_180 = ui2ui;
+  const uint x_183 = h2ui;
+  const uint x_186 = f2ui;
+  const uint x_189 = b2ui;
+  const float x_192 = s2f;
+  const float x_194 = i2f;
+  const float x_196 = us2f;
+  const float x_198 = ui2f;
+  const float x_200 = h2f;
+  const float x_202 = f2f;
+  const float x_204 = b2f;
+  sk_FragColor.x = (x_159 + (((((((((((((((((float(x_160) + float(x_162)) + float(x_165)) + float(x_168)) + float(x_171)) + float(x_174)) + float(x_177)) + float(x_180)) + float(x_183)) + float(x_186)) + float(x_189)) + x_192) + x_194) + x_196) + x_198) + x_200) + x_202) + x_204));
+  return;
 }
 
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+struct main_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
+};
+
+main_out main_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  main_1();
+  const main_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
+}
+
+tint_symbol_2 main(tint_symbol_1 tint_symbol) {
+  const main_out inner_result = main_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

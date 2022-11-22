@@ -1,34 +1,50 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_src : packoffset(c0);
-    float4 _10_dst : packoffset(c1);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[2];
 };
 
-
-static float4 sk_FragColor;
-
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
-};
-
-void frag_main()
-{
-    float4 _32 = _10_src + (_10_dst * (1.0f - _10_src.w));
-    float4 _RESERVED_IDENTIFIER_FIXUP_0_a = _32;
-    float3 _47 = (_10_src.xyz * (1.0f - _10_dst.w)) + _10_dst.xyz;
-    float3 _RESERVED_IDENTIFIER_FIXUP_1_b = _47;
-    float3 _48 = min(_32.xyz, _47);
-    float4 _50 = _RESERVED_IDENTIFIER_FIXUP_0_a;
-    float4 _51 = float4(_48.x, _48.y, _48.z, _50.w);
-    _RESERVED_IDENTIFIER_FIXUP_0_a = _51;
-    sk_FragColor = _51;
+void main_1() {
+  float4 x_0_a = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  float3 x_1_b = float3(0.0f, 0.0f, 0.0f);
+  const float4 x_22 = asfloat(x_10[0]);
+  const float4 x_25 = asfloat(x_10[0]);
+  const float4 x_30 = asfloat(x_10[1]);
+  const float4 x_32 = (x_22 + (x_30 * (1.0f - x_25.w)));
+  x_0_a = x_32;
+  const float4 x_37 = asfloat(x_10[1]);
+  const float4 x_41 = asfloat(x_10[0]);
+  const float4 x_45 = asfloat(x_10[1]);
+  const float3 x_47 = ((float3(x_41.x, x_41.y, x_41.z) * (1.0f - x_37.w)) + float3(x_45.x, x_45.y, x_45.z));
+  x_1_b = x_47;
+  const float3 x_48 = min(float3(x_32.x, x_32.y, x_32.z), x_47);
+  const float4 x_50 = x_0_a;
+  const float4 x_51 = float4(x_48.x, x_48.y, x_48.z, x_50.w);
+  x_0_a = x_51;
+  sk_FragColor = x_51;
+  return;
 }
 
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+struct main_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
+};
+
+main_out main_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  main_1();
+  const main_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
+}
+
+tint_symbol_2 main(tint_symbol_1 tint_symbol) {
+  const main_out inner_result = main_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

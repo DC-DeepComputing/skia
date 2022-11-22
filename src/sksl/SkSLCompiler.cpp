@@ -574,11 +574,13 @@ bool Compiler::toHLSL(Program& program, std::string* out) {
         return false;
     }
 
-    if (!SPIRVtoHLSL(spirv, out)) {
-        fErrorText += "HLSL cross-compilation not enabled";
+    std::string result;
+    if (!SPIRVtoHLSL(spirv, &result)) {
+        fErrorText += result;
         return false;
     }
 
+    *out = std::move(result);
     return true;
 }
 

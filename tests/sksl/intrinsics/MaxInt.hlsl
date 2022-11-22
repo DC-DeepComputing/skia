@@ -1,192 +1,162 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_testInputs : packoffset(c0);
-    float4 _10_colorGreen : packoffset(c1);
-    float4 _10_colorRed : packoffset(c2);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[3];
 };
 
+float4 main(inout float2 x_24) {
+  int4 intValues = int4(0, 0, 0, 0);
+  int4 intGreen = int4(0, 0, 0, 0);
+  int4 expectedA = int4(0, 0, 0, 0);
+  int4 expectedB = int4(0, 0, 0, 0);
+  float4 x_171 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_80 = false;
+  bool x_81 = false;
+  bool x_91 = false;
+  bool x_92 = false;
+  bool x_99 = false;
+  bool x_100 = false;
+  bool x_104 = false;
+  bool x_109 = false;
+  bool x_110 = false;
+  bool x_116 = false;
+  bool x_117 = false;
+  bool x_120 = false;
+  bool x_125 = false;
+  bool x_126 = false;
+  bool x_134 = false;
+  bool x_135 = false;
+  bool x_143 = false;
+  bool x_144 = false;
+  bool x_149 = false;
+  bool x_150 = false;
+  bool x_153 = false;
+  bool x_159 = false;
+  bool x_160 = false;
+  bool x_166 = false;
+  bool x_167 = false;
+  bool x_170 = false;
+  const float4 x_33 = asfloat(x_10[0]);
+  const float4 x_35 = (x_33 * 100.0f);
+  const int4 x_44 = int4(int(x_35.x), int(x_35.y), int(x_35.z), int(x_35.w));
+  intValues = x_44;
+  const float4 x_48 = asfloat(x_10[1]);
+  const float4 x_49 = (x_48 * 100.0f);
+  const int4 x_58 = int4(int(x_49.x), int(x_49.y), int(x_49.z), int(x_49.w));
+  intGreen = x_58;
+  expectedA = int4(50, 50, 75, 225);
+  expectedB = int4(0, 100, 75, 225);
+  const int x_69 = x_44.x;
+  x_81 = false;
+  if ((max(x_69, 50) == 50)) {
+    x_80 = all((max(int2(x_44.x, x_44.y), (50).xx) == (50).xx));
+    x_81 = x_80;
+  }
+  x_92 = false;
+  if (x_81) {
+    x_91 = all((max(int3(x_44.x, x_44.y, x_44.z), (50).xxx) == int3(50, 50, 75)));
+    x_92 = x_91;
+  }
+  x_100 = false;
+  if (x_92) {
+    x_99 = all((max(x_44, (50).xxxx) == int4(50, 50, 75, 225)));
+    x_100 = x_99;
+  }
+  x_104 = false;
+  if (x_100) {
+    x_104 = true;
+  }
+  x_110 = false;
+  if (x_104) {
+    x_109 = true;
+    x_110 = x_109;
+  }
+  x_117 = false;
+  if (x_110) {
+    x_116 = true;
+    x_117 = x_116;
+  }
+  x_120 = false;
+  if (x_117) {
+    x_120 = true;
+  }
+  x_126 = false;
+  if (x_120) {
+    x_125 = (max(x_69, x_58.x) == 0);
+    x_126 = x_125;
+  }
+  x_135 = false;
+  if (x_126) {
+    x_134 = all((max(int2(x_44.x, x_44.y), int2(x_58.x, x_58.y)) == int2(0, 100)));
+    x_135 = x_134;
+  }
+  x_144 = false;
+  if (x_135) {
+    x_143 = all((max(int3(x_44.x, x_44.y, x_44.z), int3(x_58.x, x_58.y, x_58.z)) == int3(0, 100, 75)));
+    x_144 = x_143;
+  }
+  x_150 = false;
+  if (x_144) {
+    x_149 = all((max(x_44, x_58) == int4(0, 100, 75, 225)));
+    x_150 = x_149;
+  }
+  x_153 = false;
+  if (x_150) {
+    x_153 = true;
+  }
+  x_160 = false;
+  if (x_153) {
+    x_159 = true;
+    x_160 = x_159;
+  }
+  x_167 = false;
+  if (x_160) {
+    x_166 = true;
+    x_167 = x_166;
+  }
+  x_170 = false;
+  if (x_167) {
+    x_170 = true;
+  }
+  if (x_170) {
+    const float4 x_177 = asfloat(x_10[1]);
+    x_171 = x_177;
+  } else {
+    const float4 x_180 = asfloat(x_10[2]);
+    x_171 = x_180;
+  }
+  const float4 x_181 = x_171;
+  return x_181;
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _24)
-{
-    float4 _35 = _10_testInputs * 100.0f;
-    int4 _44 = int4(int(_35.x), int(_35.y), int(_35.z), int(_35.w));
-    int4 intValues = _44;
-    float4 _49 = _10_colorGreen * 100.0f;
-    int4 _58 = int4(int(_49.x), int(_49.y), int(_49.z), int(_49.w));
-    int4 intGreen = _58;
-    int4 expectedA = int4(50, 50, 75, 225);
-    int4 expectedB = int4(0, 100, 75, 225);
-    int _69 = _44.x;
-    bool _81 = false;
-    if (max(_69, 50) == 50)
-    {
-        int2 _73 = max(_44.xy, int2(50, 50));
-        _81 = all(bool2(_73.x == int4(50, 50, 75, 225).xy.x, _73.y == int4(50, 50, 75, 225).xy.y));
-    }
-    else
-    {
-        _81 = false;
-    }
-    bool _92 = false;
-    if (_81)
-    {
-        int3 _84 = max(_44.xyz, int3(50, 50, 50));
-        _92 = all(bool3(_84.x == int4(50, 50, 75, 225).xyz.x, _84.y == int4(50, 50, 75, 225).xyz.y, _84.z == int4(50, 50, 75, 225).xyz.z));
-    }
-    else
-    {
-        _92 = false;
-    }
-    bool _100 = false;
-    if (_92)
-    {
-        int4 _95 = max(_44, int4(50, 50, 50, 50));
-        _100 = all(bool4(_95.x == int4(50, 50, 75, 225).x, _95.y == int4(50, 50, 75, 225).y, _95.z == int4(50, 50, 75, 225).z, _95.w == int4(50, 50, 75, 225).w));
-    }
-    else
-    {
-        _100 = false;
-    }
-    bool _104 = false;
-    if (_100)
-    {
-        _104 = true;
-    }
-    else
-    {
-        _104 = false;
-    }
-    bool _110 = false;
-    if (_104)
-    {
-        _110 = all(bool2(int2(50, 50).x == int4(50, 50, 75, 225).xy.x, int2(50, 50).y == int4(50, 50, 75, 225).xy.y));
-    }
-    else
-    {
-        _110 = false;
-    }
-    bool _117 = false;
-    if (_110)
-    {
-        _117 = all(bool3(int3(50, 50, 75).x == int4(50, 50, 75, 225).xyz.x, int3(50, 50, 75).y == int4(50, 50, 75, 225).xyz.y, int3(50, 50, 75).z == int4(50, 50, 75, 225).xyz.z));
-    }
-    else
-    {
-        _117 = false;
-    }
-    bool _120 = false;
-    if (_117)
-    {
-        _120 = true;
-    }
-    else
-    {
-        _120 = false;
-    }
-    bool _126 = false;
-    if (_120)
-    {
-        _126 = max(_69, _58.x) == 0;
-    }
-    else
-    {
-        _126 = false;
-    }
-    bool _135 = false;
-    if (_126)
-    {
-        int2 _129 = max(_44.xy, _58.xy);
-        _135 = all(bool2(_129.x == int4(0, 100, 75, 225).xy.x, _129.y == int4(0, 100, 75, 225).xy.y));
-    }
-    else
-    {
-        _135 = false;
-    }
-    bool _144 = false;
-    if (_135)
-    {
-        int3 _138 = max(_44.xyz, _58.xyz);
-        _144 = all(bool3(_138.x == int4(0, 100, 75, 225).xyz.x, _138.y == int4(0, 100, 75, 225).xyz.y, _138.z == int4(0, 100, 75, 225).xyz.z));
-    }
-    else
-    {
-        _144 = false;
-    }
-    bool _150 = false;
-    if (_144)
-    {
-        int4 _147 = max(_44, _58);
-        _150 = all(bool4(_147.x == int4(0, 100, 75, 225).x, _147.y == int4(0, 100, 75, 225).y, _147.z == int4(0, 100, 75, 225).z, _147.w == int4(0, 100, 75, 225).w));
-    }
-    else
-    {
-        _150 = false;
-    }
-    bool _153 = false;
-    if (_150)
-    {
-        _153 = true;
-    }
-    else
-    {
-        _153 = false;
-    }
-    bool _160 = false;
-    if (_153)
-    {
-        _160 = all(bool2(int2(0, 100).x == int4(0, 100, 75, 225).xy.x, int2(0, 100).y == int4(0, 100, 75, 225).xy.y));
-    }
-    else
-    {
-        _160 = false;
-    }
-    bool _167 = false;
-    if (_160)
-    {
-        _167 = all(bool3(int3(0, 100, 75).x == int4(0, 100, 75, 225).xyz.x, int3(0, 100, 75).y == int4(0, 100, 75, 225).xyz.y, int3(0, 100, 75).z == int4(0, 100, 75, 225).xyz.z));
-    }
-    else
-    {
-        _167 = false;
-    }
-    bool _170 = false;
-    if (_167)
-    {
-        _170 = true;
-    }
-    else
-    {
-        _170 = false;
-    }
-    float4 _171 = 0.0f.xxxx;
-    if (_170)
-    {
-        _171 = _10_colorGreen;
-    }
-    else
-    {
-        _171 = _10_colorRed;
-    }
-    return _171;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
 }
 
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

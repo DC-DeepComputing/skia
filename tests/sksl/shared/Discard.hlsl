@@ -1,19 +1,34 @@
-static float4 sk_FragColor;
+static bool tint_discarded = false;
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
-};
-
-void frag_main()
-{
-    discard;
+void main_1() {
+  tint_discarded = true;
 }
 
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+struct main_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
+};
+
+main_out main_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  main_1();
+  const main_out tint_symbol_3 = {sk_FragColor};
+  return tint_symbol_3;
+}
+
+tint_symbol_2 main(tint_symbol_1 tint_symbol) {
+  const main_out inner_result = main_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  if (tint_discarded) {
+    discard;
+  }
+  return wrapper_result;
 }

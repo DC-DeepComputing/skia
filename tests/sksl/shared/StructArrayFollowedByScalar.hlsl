@@ -1,36 +1,55 @@
-struct S
-{
-    float rgb[3];
-    float a;
+struct strided_arr {
+  float el;
+};
+struct S {
+  strided_arr rgb[3];
+  float a;
 };
 
-static float4 sk_FragColor;
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+float4 main(inout float2 x_21) {
+  S s = (S)0;
+  s.rgb[0].el = 0.0f;
+  s.rgb[1].el = 1.0f;
+  s.rgb[2].el = 0.0f;
+  s.a = 1.0f;
+  const float x_39 = s.rgb[0].el;
+  const float x_41 = s.rgb[1].el;
+  const float x_43 = s.rgb[2].el;
+  const float x_45 = s.a;
+  return float4(x_39, x_41, x_43, x_45);
+}
+
+void _entrypoint_1() {
+  float2 x_17 = float2(0.0f, 0.0f);
+  x_17 = (0.0f).xx;
+  const float4 x_19 = main(x_17);
+  sk_FragColor = x_19;
+  return;
+}
+
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _21)
-{
-    S s = { { 0.0f, 0.0f, 0.0f }, 0.0f };
-    s.rgb[0] = 0.0f;
-    s.rgb[1] = 1.0f;
-    s.rgb[2] = 0.0f;
-    s.a = 1.0f;
-    return float4(s.rgb[0], s.rgb[1], s.rgb[2], s.a);
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_3 = {sk_FragColor};
+  return tint_symbol_3;
 }
 
-void frag_main()
-{
-    float2 _17 = 0.0f.xx;
-    sk_FragColor = main(_17);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

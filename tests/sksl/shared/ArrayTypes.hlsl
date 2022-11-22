@@ -1,45 +1,77 @@
-struct S
-{
-    float2 v;
+struct S {
+  float2 v;
+};
+struct strided_arr {
+  S el;
+};
+struct strided_arr_1 {
+  float2 el;
 };
 
-static float4 sk_FragColor;
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+void initialize_vS(inout strided_arr x_27[2]) {
+  x_27[0].el.v = float2(0.0f, 1.0f);
+  x_27[1].el.v = float2(2.0f, 1.0f);
+  return;
+}
+
+float4 main(inout float2 x_38) {
+  strided_arr_1 x[2] = (strided_arr_1[2])0;
+  strided_arr_1 y[2] = (strided_arr_1[2])0;
+  strided_arr z[2] = (strided_arr[2])0;
+  strided_arr x_52[2] = (strided_arr[2])0;
+  x[0].el = (0.0f).xx;
+  x[1].el = float2(1.0f, 0.0f);
+  y[0].el = float2(0.0f, 1.0f);
+  y[1].el = float2(-1.0f, 2.0f);
+  initialize_vS(x_52);
+  const strided_arr x_54[2] = x_52;
+  z = x_54;
+  const float2 x_56 = x[0].el;
+  const float2 x_59 = x[0].el;
+  const float2 x_63 = z[0].el.v;
+  const float2 x_67 = x[1].el;
+  const float2 x_70 = x[1].el;
+  const float2 x_73 = z[0].el.v;
+  const float2 x_78 = y[0].el;
+  const float2 x_81 = y[0].el;
+  const float2 x_85 = z[1].el.v;
+  const float2 x_89 = y[1].el;
+  const float2 x_92 = y[1].el;
+  const float2 x_95 = z[1].el.v;
+  return float4(((x_56.x * x_59.y) + x_63.x), (x_67.x - (x_70.y * x_73.y)), ((x_78.x / x_81.y) / x_85.x), (x_89.x + (x_92.y * x_95.y)));
+}
+
+void _entrypoint_1() {
+  float2 x_18 = float2(0.0f, 0.0f);
+  x_18 = (0.0f).xx;
+  const float4 x_20 = main(x_18);
+  sk_FragColor = x_20;
+  return;
+}
+
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-void initialize_vS(inout S _27[2])
-{
-    _27[0].v = float2(0.0f, 1.0f);
-    _27[1].v = float2(2.0f, 1.0f);
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_3 = {sk_FragColor};
+  return tint_symbol_3;
 }
 
-float4 main(float2 _38)
-{
-    float2 x[2] = { 0.0f.xx, 0.0f.xx };
-    x[0] = 0.0f.xx;
-    x[1] = float2(1.0f, 0.0f);
-    float2 y[2] = { 0.0f.xx, 0.0f.xx };
-    y[0] = float2(0.0f, 1.0f);
-    y[1] = float2(-1.0f, 2.0f);
-    S _52[2] = { { 0.0f.xx }, { 0.0f.xx } };
-    initialize_vS(_52);
-    S z[2] = _52;
-    return float4((x[0].x * x[0].y) + z[0].v.x, x[1].x - (x[1].y * z[0].v.y), (y[0].x / y[0].y) / z[1].v.x, y[1].x + (y[1].y * z[1].v.y));
-}
-
-void frag_main()
-{
-    float2 _18 = 0.0f.xx;
-    sk_FragColor = main(_18);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

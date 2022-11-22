@@ -1,124 +1,122 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _10_colorGreen : packoffset(c0);
-    float4 _10_colorRed : packoffset(c1);
-    float _10_unknownInput : packoffset(c2);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_10 : register(b0, space0) {
+  uint4 x_10[3];
 };
 
+float4 main(inout float2 x_24) {
+  float x = 0.0f;
+  float y = 0.0f;
+  int z = 0;
+  bool b = false;
+  bool c = false;
+  bool d = false;
+  bool e = false;
+  bool f = false;
+  float4 x_107 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_65 = false;
+  bool x_66 = false;
+  bool x_67 = false;
+  bool x_77 = false;
+  bool x_81 = false;
+  bool x_103 = false;
+  bool x_106 = false;
+  x = 1.0f;
+  y = 2.0f;
+  z = 3;
+  const float x_40 = 2.0f;
+  x = x_40;
+  const float x_42 = ((x_40 / 2.0f) / x_40);
+  y = x_42;
+  const int x_48 = 5;
+  z = x_48;
+  x_67 = true;
+  if (((x_40 > 4.0f) == (x_40 < 2.0f))) {
+  } else {
+    const float x_61 = asfloat(x_10[2].x);
+    x_66 = false;
+    if ((2.0f >= x_61)) {
+      x_65 = (x_42 <= x_40);
+      x_66 = x_65;
+    }
+    x_67 = x_66;
+  }
+  b = x_67;
+  const float x_70 = asfloat(x_10[2].x);
+  const bool x_71 = (x_70 > 2.0f);
+  c = x_71;
+  const bool x_73 = (x_67 != x_71);
+  d = x_73;
+  x_77 = false;
+  if (x_67) {
+    x_77 = x_71;
+  }
+  e = x_77;
+  x_81 = true;
+  if (x_67) {
+  } else {
+    x_81 = x_71;
+  }
+  f = x_81;
+  const float x_83 = (x_40 + 12.0f);
+  x = x_83;
+  const float x_84 = (x_83 - 12.0f);
+  x = x_84;
+  const float x_86 = (x_42 / 10.0f);
+  y = x_86;
+  x = (x_84 * x_86);
+  x = 6.0f;
+  y = (((((x_67 ? 1.0f : 0.0f) * (x_71 ? 1.0f : 0.0f)) * (x_73 ? 1.0f : 0.0f)) * (x_77 ? 1.0f : 0.0f)) * (x_81 ? 1.0f : 0.0f));
+  y = 6.0f;
+  z = (x_48 - 1);
+  z = 6;
+  x_103 = false;
+  if (true) {
+    x_103 = true;
+  }
+  x_106 = false;
+  if (x_103) {
+    x_106 = true;
+  }
+  if (x_106) {
+    const float4 x_115 = asfloat(x_10[0]);
+    x_107 = x_115;
+  } else {
+    const float4 x_117 = asfloat(x_10[1]);
+    x_107 = x_117;
+  }
+  const float4 x_118 = x_107;
+  return x_118;
+}
 
-static float4 sk_FragColor;
+void _entrypoint_1() {
+  float2 x_20 = float2(0.0f, 0.0f);
+  x_20 = (0.0f).xx;
+  const float4 x_22 = main(x_20);
+  sk_FragColor = x_22;
+  return;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 main(float2 _24)
-{
-    float x = 1.0f;
-    float y = 2.0f;
-    int z = 3;
-    float _40 = (1.0f - 1.0f) + (((2.0f * 1.0f) * 1.0f) * (2.0f - 1.0f));
-    x = _40;
-    float _42 = (_40 / 2.0f) / _40;
-    y = _42;
-    int _48 = (((3 / 2) * 3) + 4) - 2;
-    z = _48;
-    bool _67 = false;
-    if ((_40 > 4.0f) == (_40 < 2.0f))
-    {
-        _67 = true;
-    }
-    else
-    {
-        bool _66 = false;
-        if (2.0f >= _10_unknownInput)
-        {
-            _66 = _42 <= _40;
-        }
-        else
-        {
-            _66 = false;
-        }
-        _67 = _66;
-    }
-    bool b = _67;
-    bool _71 = _10_unknownInput > 2.0f;
-    bool c = _71;
-    bool _73 = _67 != _71;
-    bool d = _73;
-    bool _77 = false;
-    if (_67)
-    {
-        _77 = _71;
-    }
-    else
-    {
-        _77 = false;
-    }
-    bool e = _77;
-    bool _81 = false;
-    if (_67)
-    {
-        _81 = true;
-    }
-    else
-    {
-        _81 = _71;
-    }
-    bool f = _81;
-    float _83 = _40 + 12.0f;
-    x = _83;
-    float _84 = _83 - 12.0f;
-    x = _84;
-    float _86 = _42 / 10.0f;
-    y = _86;
-    x = _84 * _86;
-    x = 6.0f;
-    y = (((float(_67) * float(_71)) * float(_73)) * float(_77)) * float(_81);
-    y = 6.0f;
-    z = _48 - 1;
-    z = 6;
-    bool _103 = false;
-    if (true)
-    {
-        _103 = true;
-    }
-    else
-    {
-        _103 = false;
-    }
-    bool _106 = false;
-    if (_103)
-    {
-        _106 = true;
-    }
-    else
-    {
-        _106 = false;
-    }
-    float4 _107 = 0.0f.xxxx;
-    if (_106)
-    {
-        _107 = _10_colorGreen;
-    }
-    else
-    {
-        _107 = _10_colorRed;
-    }
-    return _107;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_5 = {sk_FragColor};
+  return tint_symbol_5;
 }
 
-void frag_main()
-{
-    float2 _20 = 0.0f.xx;
-    sk_FragColor = main(_20);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

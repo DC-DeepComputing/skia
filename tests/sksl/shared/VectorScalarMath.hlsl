@@ -1,440 +1,417 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _11_colorRed : packoffset(c0);
-    float4 _11_colorGreen : packoffset(c1);
-    float _11_unknownInput : packoffset(c2);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_11 : register(b0, space0) {
+  uint4 x_11[3];
 };
 
+int2 tint_div(int2 lhs, int2 rhs) {
+  return (lhs / (((rhs == (0).xx) | ((lhs == (-2147483648).xx) & (rhs == (-1).xx))) ? (1).xx : rhs));
+}
 
-static float4 sk_FragColor;
+int4 tint_div_1(int4 lhs, int4 rhs) {
+  return (lhs / (((rhs == (0).xxxx) | ((lhs == (-2147483648).xxxx) & (rhs == (-1).xxxx))) ? (1).xxxx : rhs));
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+bool test_int_b() {
+  bool ok = false;
+  int4 inputRed = int4(0, 0, 0, 0);
+  int4 inputGreen = int4(0, 0, 0, 0);
+  int4 x = int4(0, 0, 0, 0);
+  bool x_70 = false;
+  bool x_71 = false;
+  bool x_80 = false;
+  bool x_81 = false;
+  bool x_89 = false;
+  bool x_90 = false;
+  bool x_102 = false;
+  bool x_103 = false;
+  bool x_115 = false;
+  bool x_116 = false;
+  bool x_125 = false;
+  bool x_126 = false;
+  bool x_131 = false;
+  bool x_132 = false;
+  bool x_141 = false;
+  bool x_142 = false;
+  bool x_150 = false;
+  bool x_151 = false;
+  bool x_162 = false;
+  bool x_163 = false;
+  bool x_175 = false;
+  bool x_176 = false;
+  bool x_185 = false;
+  bool x_186 = false;
+  bool x_195 = false;
+  bool x_196 = false;
+  bool x_204 = false;
+  bool x_205 = false;
+  ok = true;
+  const float4 x_36 = asfloat(x_11[0]);
+  const int4 x_45 = int4(int(x_36.x), int(x_36.y), int(x_36.z), int(x_36.w));
+  inputRed = x_45;
+  const float4 x_49 = asfloat(x_11[1]);
+  const int4 x_58 = int4(int(x_49.x), int(x_49.y), int(x_49.z), int(x_49.w));
+  inputGreen = x_58;
+  const int4 x_62 = (x_45 + (2).xxxx);
+  x = x_62;
+  x_71 = false;
+  if (true) {
+    x_70 = all((x_62 == int4(3, 2, 2, 3)));
+    x_71 = x_70;
+  }
+  ok = x_71;
+  const int4 x_73 = (int4(x_58.y, x_58.w, x_58.x, x_58.z) - (2).xxxx);
+  x = x_73;
+  x_81 = false;
+  if (x_71) {
+    x_80 = all((x_73 == int4(-1, -1, -2, -2)));
+    x_81 = x_80;
+  }
+  ok = x_81;
+  const int x_82 = x_58.y;
+  const int4 x_84 = (x_45 + int4(x_82, x_82, x_82, x_82));
+  x = x_84;
+  x_90 = false;
+  if (x_81) {
+    x_89 = all((x_84 == int4(2, 1, 1, 2)));
+    x_90 = x_89;
+  }
+  ok = x_90;
+  const int3 x_95 = (int3(x_58.w, x_58.y, x_58.w) * (9).xxx);
+  const int4 x_96 = x;
+  const int4 x_97 = int4(x_95.x, x_95.y, x_95.z, x_96.w);
+  x = x_97;
+  x_103 = false;
+  if (x_90) {
+    x_102 = all((x_97 == int4(9, 9, 9, 2)));
+    x_103 = x_102;
+  }
+  ok = x_103;
+  const int2 x_108 = tint_div(int2(x_97.z, x_97.w), (4).xx);
+  const int4 x_109 = x;
+  const int4 x_110 = int4(x_108.x, x_108.y, x_109.z, x_109.w);
+  x = x_110;
+  x_116 = false;
+  if (x_103) {
+    x_115 = all((x_110 == int4(2, 0, 9, 2)));
+    x_116 = x_115;
+  }
+  ok = x_116;
+  const int4 x_119 = (x_45 * (5).xxxx);
+  const int4 x_120 = int4(x_119.y, x_119.x, x_119.w, x_119.z);
+  x = x_120;
+  x_126 = false;
+  if (x_116) {
+    x_125 = all((x_120 == int4(0, 5, 5, 0)));
+    x_126 = x_125;
+  }
+  ok = x_126;
+  const int4 x_127 = ((2).xxxx + x_45);
+  x = x_127;
+  x_132 = false;
+  if (x_126) {
+    x_131 = all((x_127 == int4(3, 2, 2, 3)));
+    x_132 = x_131;
+  }
+  ok = x_132;
+  const int4 x_136 = ((10).xxxx - int4(x_58.y, x_58.w, x_58.x, x_58.z));
+  x = x_136;
+  x_142 = false;
+  if (x_132) {
+    x_141 = all((x_136 == int4(9, 9, 10, 10)));
+    x_142 = x_141;
+  }
+  ok = x_142;
+  const int x_143 = x_45.x;
+  const int4 x_145 = (int4(x_143, x_143, x_143, x_143) + x_58);
+  x = x_145;
+  x_151 = false;
+  if (x_142) {
+    x_150 = all((x_145 == int4(1, 2, 1, 2)));
+    x_151 = x_150;
+  }
+  ok = x_151;
+  const int3 x_155 = ((8).xxx * int3(x_58.w, x_58.y, x_58.w));
+  const int4 x_156 = x;
+  const int4 x_157 = int4(x_155.x, x_155.y, x_155.z, x_156.w);
+  x = x_157;
+  x_163 = false;
+  if (x_151) {
+    x_162 = all((x_157 == int4(8, 8, 8, 2)));
+    x_163 = x_162;
+  }
+  ok = x_163;
+  const int2 x_167 = tint_div((36).xx, int2(x_157.z, x_157.w));
+  const int4 x_168 = x;
+  const int4 x_169 = int4(x_167.x, x_167.y, x_168.z, x_168.w);
+  x = x_169;
+  x_176 = false;
+  if (x_163) {
+    x_175 = all((x_169 == int4(4, 18, 8, 2)));
+    x_176 = x_175;
+  }
+  ok = x_176;
+  const int4 x_179 = tint_div_1((37).xxxx, x_169);
+  const int4 x_180 = int4(x_179.y, x_179.x, x_179.w, x_179.z);
+  x = x_180;
+  x_186 = false;
+  if (x_176) {
+    x_185 = all((x_180 == int4(2, 9, 18, 4)));
+    x_186 = x_185;
+  }
+  ok = x_186;
+  const int4 x_187 = (x_180 + (2).xxxx);
+  x = x_187;
+  const int4 x_188 = (x_187 * (2).xxxx);
+  x = x_188;
+  const int4 x_190 = (x_188 - (4).xxxx);
+  x = x_190;
+  const int4 x_191 = tint_div_1(x_190, (2).xxxx);
+  x = x_191;
+  x_196 = false;
+  if (x_186) {
+    x_195 = all((x_191 == int4(2, 9, 18, 4)));
+    x_196 = x_195;
+  }
+  ok = x_196;
+  const int4 x_197 = (x_191 + (2).xxxx);
+  x = x_197;
+  const int4 x_198 = (x_197 * (2).xxxx);
+  x = x_198;
+  const int4 x_199 = (x_198 - (4).xxxx);
+  x = x_199;
+  const int4 x_200 = tint_div_1(x_199, (2).xxxx);
+  x = x_200;
+  x_205 = false;
+  if (x_196) {
+    x_204 = all((x_200 == int4(2, 9, 18, 4)));
+    x_205 = x_204;
+  }
+  ok = x_205;
+  return x_205;
+}
+
+float4 main(inout float2 x_207) {
+  bool x_0_ok = false;
+  float4 x_1_inputRed = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  float4 x_2_inputGreen = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  float4 x_3_x = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  float4 x_364 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_226 = false;
+  bool x_227 = false;
+  bool x_236 = false;
+  bool x_237 = false;
+  bool x_246 = false;
+  bool x_247 = false;
+  bool x_258 = false;
+  bool x_259 = false;
+  bool x_270 = false;
+  bool x_271 = false;
+  bool x_279 = false;
+  bool x_280 = false;
+  bool x_285 = false;
+  bool x_286 = false;
+  bool x_295 = false;
+  bool x_296 = false;
+  bool x_304 = false;
+  bool x_305 = false;
+  bool x_315 = false;
+  bool x_316 = false;
+  bool x_328 = false;
+  bool x_329 = false;
+  bool x_337 = false;
+  bool x_338 = false;
+  bool x_348 = false;
+  bool x_349 = false;
+  bool x_358 = false;
+  bool x_359 = false;
+  bool x_362 = false;
+  bool x_363 = false;
+  x_0_ok = true;
+  const float4 x_213 = asfloat(x_11[0]);
+  x_1_inputRed = x_213;
+  const float4 x_216 = asfloat(x_11[1]);
+  x_2_inputGreen = x_216;
+  const float4 x_220 = (x_213 + (2.0f).xxxx);
+  x_3_x = x_220;
+  x_227 = false;
+  if (true) {
+    x_226 = all((x_220 == float4(3.0f, 2.0f, 2.0f, 3.0f)));
+    x_227 = x_226;
+  }
+  x_0_ok = x_227;
+  const float4 x_229 = (float4(x_216.y, x_216.w, x_216.x, x_216.z) - (2.0f).xxxx);
+  x_3_x = x_229;
+  x_237 = false;
+  if (x_227) {
+    x_236 = all((x_229 == float4(-1.0f, -1.0f, -2.0f, -2.0f)));
+    x_237 = x_236;
+  }
+  x_0_ok = x_237;
+  const float x_238 = x_216.y;
+  const float4 x_240 = (x_213 + float4(x_238, x_238, x_238, x_238));
+  x_3_x = x_240;
+  x_247 = false;
+  if (x_237) {
+    x_246 = all((x_240 == float4(2.0f, 1.0f, 1.0f, 2.0f)));
+    x_247 = x_246;
+  }
+  x_0_ok = x_247;
+  const float3 x_251 = (float3(x_216.w, x_216.y, x_216.w) * 9.0f);
+  const float4 x_252 = x_3_x;
+  const float4 x_253 = float4(x_251.x, x_251.y, x_251.z, x_252.w);
+  x_3_x = x_253;
+  x_259 = false;
+  if (x_247) {
+    x_258 = all((x_253 == float4(9.0f, 9.0f, 9.0f, 2.0f)));
+    x_259 = x_258;
+  }
+  x_0_ok = x_259;
+  const float2 x_261 = (float2(x_253.z, x_253.w) * 2.0f);
+  const float4 x_262 = x_3_x;
+  const float4 x_263 = float4(x_261.x, x_261.y, x_262.z, x_262.w);
+  x_3_x = x_263;
+  x_271 = false;
+  if (x_259) {
+    x_270 = all((x_263 == float4(18.0f, 4.0f, 9.0f, 2.0f)));
+    x_271 = x_270;
+  }
+  x_0_ok = x_271;
+  const float4 x_273 = (x_213 * 5.0f);
+  const float4 x_274 = float4(x_273.y, x_273.x, x_273.w, x_273.z);
+  x_3_x = x_274;
+  x_280 = false;
+  if (x_271) {
+    x_279 = all((x_274 == float4(0.0f, 5.0f, 5.0f, 0.0f)));
+    x_280 = x_279;
+  }
+  x_0_ok = x_280;
+  const float4 x_281 = ((2.0f).xxxx + x_213);
+  x_3_x = x_281;
+  x_286 = false;
+  if (x_280) {
+    x_285 = all((x_281 == float4(3.0f, 2.0f, 2.0f, 3.0f)));
+    x_286 = x_285;
+  }
+  x_0_ok = x_286;
+  const float4 x_290 = ((10.0f).xxxx - float4(x_216.y, x_216.w, x_216.x, x_216.z));
+  x_3_x = x_290;
+  x_296 = false;
+  if (x_286) {
+    x_295 = all((x_290 == float4(9.0f, 9.0f, 10.0f, 10.0f)));
+    x_296 = x_295;
+  }
+  x_0_ok = x_296;
+  const float x_297 = x_213.x;
+  const float4 x_299 = (float4(x_297, x_297, x_297, x_297) + x_216);
+  x_3_x = x_299;
+  x_305 = false;
+  if (x_296) {
+    x_304 = all((x_299 == float4(1.0f, 2.0f, 1.0f, 2.0f)));
+    x_305 = x_304;
+  }
+  x_0_ok = x_305;
+  const float3 x_308 = (float3(x_216.w, x_216.y, x_216.w) * 8.0f);
+  const float4 x_309 = x_3_x;
+  const float4 x_310 = float4(x_308.x, x_308.y, x_308.z, x_309.w);
+  x_3_x = x_310;
+  x_316 = false;
+  if (x_305) {
+    x_315 = all((x_310 == float4(8.0f, 8.0f, 8.0f, 2.0f)));
+    x_316 = x_315;
+  }
+  x_0_ok = x_316;
+  const float2 x_320 = ((32.0f).xx / float2(x_310.z, x_310.w));
+  const float4 x_321 = x_3_x;
+  const float4 x_322 = float4(x_320.x, x_320.y, x_321.z, x_321.w);
+  x_3_x = x_322;
+  x_329 = false;
+  if (x_316) {
+    x_328 = all((x_322 == float4(4.0f, 16.0f, 8.0f, 2.0f)));
+    x_329 = x_328;
+  }
+  x_0_ok = x_329;
+  const float4 x_331 = ((32.0f).xxxx / x_322);
+  const float4 x_332 = float4(x_331.y, x_331.x, x_331.w, x_331.z);
+  x_3_x = x_332;
+  x_338 = false;
+  if (x_329) {
+    x_337 = all((x_332 == float4(2.0f, 8.0f, 16.0f, 4.0f)));
+    x_338 = x_337;
+  }
+  x_0_ok = x_338;
+  const float4 x_339 = (x_332 + (2.0f).xxxx);
+  x_3_x = x_339;
+  const float4 x_340 = (x_339 * 2.0f);
+  x_3_x = x_340;
+  const float4 x_342 = (x_340 - (4.0f).xxxx);
+  x_3_x = x_342;
+  const float4 x_344 = (x_342 * 0.5f);
+  x_3_x = x_344;
+  x_349 = false;
+  if (x_338) {
+    x_348 = all((x_344 == float4(2.0f, 8.0f, 16.0f, 4.0f)));
+    x_349 = x_348;
+  }
+  x_0_ok = x_349;
+  const float4 x_350 = (x_344 + (2.0f).xxxx);
+  x_3_x = x_350;
+  const float4 x_351 = (x_350 * 2.0f);
+  x_3_x = x_351;
+  const float4 x_352 = (x_351 - (4.0f).xxxx);
+  x_3_x = x_352;
+  const float4 x_354 = (x_352 * 0.5f);
+  x_3_x = x_354;
+  x_359 = false;
+  if (x_349) {
+    x_358 = all((x_354 == float4(2.0f, 8.0f, 16.0f, 4.0f)));
+    x_359 = x_358;
+  }
+  x_0_ok = x_359;
+  x_363 = false;
+  if (x_359) {
+    x_362 = test_int_b();
+    x_363 = x_362;
+  }
+  if (x_363) {
+    const float4 x_369 = asfloat(x_11[1]);
+    x_364 = x_369;
+  } else {
+    const float4 x_371 = asfloat(x_11[0]);
+    x_364 = x_371;
+  }
+  const float4 x_372 = x_364;
+  return x_372;
+}
+
+void _entrypoint_1() {
+  float2 x_21 = float2(0.0f, 0.0f);
+  x_21 = (0.0f).xx;
+  const float4 x_23 = main(x_21);
+  sk_FragColor = x_23;
+  return;
+}
+
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-bool test_int_b()
-{
-    bool ok = true;
-    int4 _45 = int4(int(_11_colorRed.x), int(_11_colorRed.y), int(_11_colorRed.z), int(_11_colorRed.w));
-    int4 inputRed = _45;
-    int4 _58 = int4(int(_11_colorGreen.x), int(_11_colorGreen.y), int(_11_colorGreen.z), int(_11_colorGreen.w));
-    int4 inputGreen = _58;
-    int4 _62 = _45 + int4(2, 2, 2, 2);
-    int4 x = _62;
-    bool _71 = false;
-    if (true)
-    {
-        _71 = all(bool4(_62.x == int4(3, 2, 2, 3).x, _62.y == int4(3, 2, 2, 3).y, _62.z == int4(3, 2, 2, 3).z, _62.w == int4(3, 2, 2, 3).w));
-    }
-    else
-    {
-        _71 = false;
-    }
-    ok = _71;
-    int4 _73 = _58.ywxz - int4(2, 2, 2, 2);
-    x = _73;
-    bool _81 = false;
-    if (_71)
-    {
-        _81 = all(bool4(_73.x == int4(-1, -1, -2, -2).x, _73.y == int4(-1, -1, -2, -2).y, _73.z == int4(-1, -1, -2, -2).z, _73.w == int4(-1, -1, -2, -2).w));
-    }
-    else
-    {
-        _81 = false;
-    }
-    ok = _81;
-    int4 _84 = _45 + _58.y.xxxx;
-    x = _84;
-    bool _90 = false;
-    if (_81)
-    {
-        _90 = all(bool4(_84.x == int4(2, 1, 1, 2).x, _84.y == int4(2, 1, 1, 2).y, _84.z == int4(2, 1, 1, 2).z, _84.w == int4(2, 1, 1, 2).w));
-    }
-    else
-    {
-        _90 = false;
-    }
-    ok = _90;
-    int3 _95 = _58.wyw * int3(9, 9, 9);
-    int4 _96 = x;
-    int4 _97 = int4(_95.x, _95.y, _95.z, _96.w);
-    x = _97;
-    bool _103 = false;
-    if (_90)
-    {
-        _103 = all(bool4(_97.x == int4(9, 9, 9, 2).x, _97.y == int4(9, 9, 9, 2).y, _97.z == int4(9, 9, 9, 2).z, _97.w == int4(9, 9, 9, 2).w));
-    }
-    else
-    {
-        _103 = false;
-    }
-    ok = _103;
-    int2 _108 = _97.zw / int2(4, 4);
-    int4 _109 = x;
-    int4 _110 = int4(_108.x, _108.y, _109.z, _109.w);
-    x = _110;
-    bool _116 = false;
-    if (_103)
-    {
-        _116 = all(bool4(_110.x == int4(2, 0, 9, 2).x, _110.y == int4(2, 0, 9, 2).y, _110.z == int4(2, 0, 9, 2).z, _110.w == int4(2, 0, 9, 2).w));
-    }
-    else
-    {
-        _116 = false;
-    }
-    ok = _116;
-    int4 _120 = (_45 * int4(5, 5, 5, 5)).yxwz;
-    x = _120;
-    bool _126 = false;
-    if (_116)
-    {
-        _126 = all(bool4(_120.x == int4(0, 5, 5, 0).x, _120.y == int4(0, 5, 5, 0).y, _120.z == int4(0, 5, 5, 0).z, _120.w == int4(0, 5, 5, 0).w));
-    }
-    else
-    {
-        _126 = false;
-    }
-    ok = _126;
-    int4 _127 = int4(2, 2, 2, 2) + _45;
-    x = _127;
-    bool _132 = false;
-    if (_126)
-    {
-        _132 = all(bool4(_127.x == int4(3, 2, 2, 3).x, _127.y == int4(3, 2, 2, 3).y, _127.z == int4(3, 2, 2, 3).z, _127.w == int4(3, 2, 2, 3).w));
-    }
-    else
-    {
-        _132 = false;
-    }
-    ok = _132;
-    int4 _136 = int4(10, 10, 10, 10) - _58.ywxz;
-    x = _136;
-    bool _142 = false;
-    if (_132)
-    {
-        _142 = all(bool4(_136.x == int4(9, 9, 10, 10).x, _136.y == int4(9, 9, 10, 10).y, _136.z == int4(9, 9, 10, 10).z, _136.w == int4(9, 9, 10, 10).w));
-    }
-    else
-    {
-        _142 = false;
-    }
-    ok = _142;
-    int4 _145 = _45.x.xxxx + _58;
-    x = _145;
-    bool _151 = false;
-    if (_142)
-    {
-        _151 = all(bool4(_145.x == int4(1, 2, 1, 2).x, _145.y == int4(1, 2, 1, 2).y, _145.z == int4(1, 2, 1, 2).z, _145.w == int4(1, 2, 1, 2).w));
-    }
-    else
-    {
-        _151 = false;
-    }
-    ok = _151;
-    int3 _155 = int3(8, 8, 8) * _58.wyw;
-    int4 _156 = x;
-    int4 _157 = int4(_155.x, _155.y, _155.z, _156.w);
-    x = _157;
-    bool _163 = false;
-    if (_151)
-    {
-        _163 = all(bool4(_157.x == int4(8, 8, 8, 2).x, _157.y == int4(8, 8, 8, 2).y, _157.z == int4(8, 8, 8, 2).z, _157.w == int4(8, 8, 8, 2).w));
-    }
-    else
-    {
-        _163 = false;
-    }
-    ok = _163;
-    int2 _167 = int2(36, 36) / _157.zw;
-    int4 _168 = x;
-    int4 _169 = int4(_167.x, _167.y, _168.z, _168.w);
-    x = _169;
-    bool _176 = false;
-    if (_163)
-    {
-        _176 = all(bool4(_169.x == int4(4, 18, 8, 2).x, _169.y == int4(4, 18, 8, 2).y, _169.z == int4(4, 18, 8, 2).z, _169.w == int4(4, 18, 8, 2).w));
-    }
-    else
-    {
-        _176 = false;
-    }
-    ok = _176;
-    int4 _180 = (int4(37, 37, 37, 37) / _169).yxwz;
-    x = _180;
-    bool _186 = false;
-    if (_176)
-    {
-        _186 = all(bool4(_180.x == int4(2, 9, 18, 4).x, _180.y == int4(2, 9, 18, 4).y, _180.z == int4(2, 9, 18, 4).z, _180.w == int4(2, 9, 18, 4).w));
-    }
-    else
-    {
-        _186 = false;
-    }
-    ok = _186;
-    int4 _187 = _180 + int4(2, 2, 2, 2);
-    x = _187;
-    int4 _188 = _187 * int4(2, 2, 2, 2);
-    x = _188;
-    int4 _190 = _188 - int4(4, 4, 4, 4);
-    x = _190;
-    int4 _191 = _190 / int4(2, 2, 2, 2);
-    x = _191;
-    bool _196 = false;
-    if (_186)
-    {
-        _196 = all(bool4(_191.x == int4(2, 9, 18, 4).x, _191.y == int4(2, 9, 18, 4).y, _191.z == int4(2, 9, 18, 4).z, _191.w == int4(2, 9, 18, 4).w));
-    }
-    else
-    {
-        _196 = false;
-    }
-    ok = _196;
-    int4 _197 = _191 + int4(2, 2, 2, 2);
-    x = _197;
-    int4 _198 = _197 * int4(2, 2, 2, 2);
-    x = _198;
-    int4 _199 = _198 - int4(4, 4, 4, 4);
-    x = _199;
-    int4 _200 = _199 / int4(2, 2, 2, 2);
-    x = _200;
-    bool _205 = false;
-    if (_196)
-    {
-        _205 = all(bool4(_200.x == int4(2, 9, 18, 4).x, _200.y == int4(2, 9, 18, 4).y, _200.z == int4(2, 9, 18, 4).z, _200.w == int4(2, 9, 18, 4).w));
-    }
-    else
-    {
-        _205 = false;
-    }
-    ok = _205;
-    return _205;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_4 = {sk_FragColor};
+  return tint_symbol_4;
 }
 
-float4 main(float2 _207)
-{
-    bool _RESERVED_IDENTIFIER_FIXUP_0_ok = true;
-    float4 _RESERVED_IDENTIFIER_FIXUP_1_inputRed = _11_colorRed;
-    float4 _RESERVED_IDENTIFIER_FIXUP_2_inputGreen = _11_colorGreen;
-    float4 _220 = _11_colorRed + 2.0f.xxxx;
-    float4 _RESERVED_IDENTIFIER_FIXUP_3_x = _220;
-    bool _227 = false;
-    if (true)
-    {
-        _227 = all(bool4(_220.x == float4(3.0f, 2.0f, 2.0f, 3.0f).x, _220.y == float4(3.0f, 2.0f, 2.0f, 3.0f).y, _220.z == float4(3.0f, 2.0f, 2.0f, 3.0f).z, _220.w == float4(3.0f, 2.0f, 2.0f, 3.0f).w));
-    }
-    else
-    {
-        _227 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _227;
-    float4 _229 = _11_colorGreen.ywxz - 2.0f.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _229;
-    bool _237 = false;
-    if (_227)
-    {
-        _237 = all(bool4(_229.x == float4(-1.0f, -1.0f, -2.0f, -2.0f).x, _229.y == float4(-1.0f, -1.0f, -2.0f, -2.0f).y, _229.z == float4(-1.0f, -1.0f, -2.0f, -2.0f).z, _229.w == float4(-1.0f, -1.0f, -2.0f, -2.0f).w));
-    }
-    else
-    {
-        _237 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _237;
-    float4 _240 = _11_colorRed + _11_colorGreen.y.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _240;
-    bool _247 = false;
-    if (_237)
-    {
-        _247 = all(bool4(_240.x == float4(2.0f, 1.0f, 1.0f, 2.0f).x, _240.y == float4(2.0f, 1.0f, 1.0f, 2.0f).y, _240.z == float4(2.0f, 1.0f, 1.0f, 2.0f).z, _240.w == float4(2.0f, 1.0f, 1.0f, 2.0f).w));
-    }
-    else
-    {
-        _247 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _247;
-    float3 _251 = _11_colorGreen.wyw * 9.0f;
-    float4 _252 = _RESERVED_IDENTIFIER_FIXUP_3_x;
-    float4 _253 = float4(_251.x, _251.y, _251.z, _252.w);
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _253;
-    bool _259 = false;
-    if (_247)
-    {
-        _259 = all(bool4(_253.x == float4(9.0f, 9.0f, 9.0f, 2.0f).x, _253.y == float4(9.0f, 9.0f, 9.0f, 2.0f).y, _253.z == float4(9.0f, 9.0f, 9.0f, 2.0f).z, _253.w == float4(9.0f, 9.0f, 9.0f, 2.0f).w));
-    }
-    else
-    {
-        _259 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _259;
-    float2 _261 = _253.zw * 2.0f;
-    float4 _262 = _RESERVED_IDENTIFIER_FIXUP_3_x;
-    float4 _263 = float4(_261.x, _261.y, _262.z, _262.w);
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _263;
-    bool _271 = false;
-    if (_259)
-    {
-        _271 = all(bool4(_263.x == float4(18.0f, 4.0f, 9.0f, 2.0f).x, _263.y == float4(18.0f, 4.0f, 9.0f, 2.0f).y, _263.z == float4(18.0f, 4.0f, 9.0f, 2.0f).z, _263.w == float4(18.0f, 4.0f, 9.0f, 2.0f).w));
-    }
-    else
-    {
-        _271 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _271;
-    float4 _274 = (_11_colorRed * 5.0f).yxwz;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _274;
-    bool _280 = false;
-    if (_271)
-    {
-        _280 = all(bool4(_274.x == float4(0.0f, 5.0f, 5.0f, 0.0f).x, _274.y == float4(0.0f, 5.0f, 5.0f, 0.0f).y, _274.z == float4(0.0f, 5.0f, 5.0f, 0.0f).z, _274.w == float4(0.0f, 5.0f, 5.0f, 0.0f).w));
-    }
-    else
-    {
-        _280 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _280;
-    float4 _281 = 2.0f.xxxx + _11_colorRed;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _281;
-    bool _286 = false;
-    if (_280)
-    {
-        _286 = all(bool4(_281.x == float4(3.0f, 2.0f, 2.0f, 3.0f).x, _281.y == float4(3.0f, 2.0f, 2.0f, 3.0f).y, _281.z == float4(3.0f, 2.0f, 2.0f, 3.0f).z, _281.w == float4(3.0f, 2.0f, 2.0f, 3.0f).w));
-    }
-    else
-    {
-        _286 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _286;
-    float4 _290 = 10.0f.xxxx - _11_colorGreen.ywxz;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _290;
-    bool _296 = false;
-    if (_286)
-    {
-        _296 = all(bool4(_290.x == float4(9.0f, 9.0f, 10.0f, 10.0f).x, _290.y == float4(9.0f, 9.0f, 10.0f, 10.0f).y, _290.z == float4(9.0f, 9.0f, 10.0f, 10.0f).z, _290.w == float4(9.0f, 9.0f, 10.0f, 10.0f).w));
-    }
-    else
-    {
-        _296 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _296;
-    float4 _299 = _11_colorRed.x.xxxx + _11_colorGreen;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _299;
-    bool _305 = false;
-    if (_296)
-    {
-        _305 = all(bool4(_299.x == float4(1.0f, 2.0f, 1.0f, 2.0f).x, _299.y == float4(1.0f, 2.0f, 1.0f, 2.0f).y, _299.z == float4(1.0f, 2.0f, 1.0f, 2.0f).z, _299.w == float4(1.0f, 2.0f, 1.0f, 2.0f).w));
-    }
-    else
-    {
-        _305 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _305;
-    float3 _308 = _11_colorGreen.wyw * 8.0f;
-    float4 _309 = _RESERVED_IDENTIFIER_FIXUP_3_x;
-    float4 _310 = float4(_308.x, _308.y, _308.z, _309.w);
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _310;
-    bool _316 = false;
-    if (_305)
-    {
-        _316 = all(bool4(_310.x == float4(8.0f, 8.0f, 8.0f, 2.0f).x, _310.y == float4(8.0f, 8.0f, 8.0f, 2.0f).y, _310.z == float4(8.0f, 8.0f, 8.0f, 2.0f).z, _310.w == float4(8.0f, 8.0f, 8.0f, 2.0f).w));
-    }
-    else
-    {
-        _316 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _316;
-    float2 _320 = 32.0f.xx / _310.zw;
-    float4 _321 = _RESERVED_IDENTIFIER_FIXUP_3_x;
-    float4 _322 = float4(_320.x, _320.y, _321.z, _321.w);
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _322;
-    bool _329 = false;
-    if (_316)
-    {
-        _329 = all(bool4(_322.x == float4(4.0f, 16.0f, 8.0f, 2.0f).x, _322.y == float4(4.0f, 16.0f, 8.0f, 2.0f).y, _322.z == float4(4.0f, 16.0f, 8.0f, 2.0f).z, _322.w == float4(4.0f, 16.0f, 8.0f, 2.0f).w));
-    }
-    else
-    {
-        _329 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _329;
-    float4 _332 = (32.0f.xxxx / _322).yxwz;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _332;
-    bool _338 = false;
-    if (_329)
-    {
-        _338 = all(bool4(_332.x == float4(2.0f, 8.0f, 16.0f, 4.0f).x, _332.y == float4(2.0f, 8.0f, 16.0f, 4.0f).y, _332.z == float4(2.0f, 8.0f, 16.0f, 4.0f).z, _332.w == float4(2.0f, 8.0f, 16.0f, 4.0f).w));
-    }
-    else
-    {
-        _338 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _338;
-    float4 _339 = _332 + 2.0f.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _339;
-    float4 _340 = _339 * 2.0f;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _340;
-    float4 _342 = _340 - 4.0f.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _342;
-    float4 _344 = _342 * (1.0f / 2.0f);
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _344;
-    bool _349 = false;
-    if (_338)
-    {
-        _349 = all(bool4(_344.x == float4(2.0f, 8.0f, 16.0f, 4.0f).x, _344.y == float4(2.0f, 8.0f, 16.0f, 4.0f).y, _344.z == float4(2.0f, 8.0f, 16.0f, 4.0f).z, _344.w == float4(2.0f, 8.0f, 16.0f, 4.0f).w));
-    }
-    else
-    {
-        _349 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _349;
-    float4 _350 = _344 + 2.0f.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _350;
-    float4 _351 = _350 * 2.0f;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _351;
-    float4 _352 = _351 - 4.0f.xxxx;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _352;
-    float4 _354 = _352 * 0.5f;
-    _RESERVED_IDENTIFIER_FIXUP_3_x = _354;
-    bool _359 = false;
-    if (_349)
-    {
-        _359 = all(bool4(_354.x == float4(2.0f, 8.0f, 16.0f, 4.0f).x, _354.y == float4(2.0f, 8.0f, 16.0f, 4.0f).y, _354.z == float4(2.0f, 8.0f, 16.0f, 4.0f).z, _354.w == float4(2.0f, 8.0f, 16.0f, 4.0f).w));
-    }
-    else
-    {
-        _359 = false;
-    }
-    _RESERVED_IDENTIFIER_FIXUP_0_ok = _359;
-    bool _363 = false;
-    if (_359)
-    {
-        _363 = test_int_b();
-    }
-    else
-    {
-        _363 = false;
-    }
-    float4 _364 = 0.0f.xxxx;
-    if (_363)
-    {
-        _364 = _11_colorGreen;
-    }
-    else
-    {
-        _364 = _11_colorRed;
-    }
-    return _364;
-}
-
-void frag_main()
-{
-    float2 _21 = 0.0f.xx;
-    sk_FragColor = main(_21);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

@@ -1,62 +1,77 @@
-struct S
-{
-    int i;
+struct S {
+  int i;
 };
 
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _12_colorGreen : packoffset(c0);
-    float4 _12_colorRed : packoffset(c1);
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_12 : register(b0, space0) {
+  uint4 x_12[2];
 };
 
+float4 fnGreen_h4bf2(inout bool x_27, inout float2 x_28) {
+  const float4 x_34 = asfloat(x_12[0]);
+  return x_34;
+}
 
-static float4 sk_FragColor;
+float4 fnRed_h4ifS(inout int x_40, inout float x_41, inout S x_42) {
+  const float4 x_46 = asfloat(x_12[1]);
+  return x_46;
+}
 
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+float4 main(inout float2 x_48) {
+  float4 x_54 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_60 = false;
+  float2 x_62 = float2(0.0f, 0.0f);
+  int x_65 = 0;
+  float x_67 = 0.0f;
+  S x_69 = (S)0;
+  const float4 x_51 = asfloat(x_12[0]);
+  if (!((x_51.y == 0.0f))) {
+    x_60 = true;
+    const float2 x_61 = x_48;
+    x_62 = x_61;
+    const float4 x_63 = fnGreen_h4bf2(x_60, x_62);
+    x_54 = x_63;
+  } else {
+    x_65 = 123;
+    x_67 = 3.140000105f;
+    const S tint_symbol_4 = (S)0;
+    x_69 = tint_symbol_4;
+    const float4 x_70 = fnRed_h4ifS(x_65, x_67, x_69);
+    x_54 = x_70;
+  }
+  const float4 x_71 = x_54;
+  return x_71;
+}
+
+void _entrypoint_1() {
+  float2 x_22 = float2(0.0f, 0.0f);
+  x_22 = (0.0f).xx;
+  const float4 x_24 = main(x_22);
+  sk_FragColor = x_24;
+  return;
+}
+
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
 };
 
-float4 fnGreen_h4bf2(bool _27, float2 _28)
-{
-    return _12_colorGreen;
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_5 = {sk_FragColor};
+  return tint_symbol_5;
 }
 
-float4 fnRed_h4ifS(int _40, float _41, S _42)
-{
-    return _12_colorRed;
-}
-
-float4 main(float2 _48)
-{
-    float4 _54 = 0.0f.xxxx;
-    if (_12_colorGreen.y != 0.0f)
-    {
-        bool _60 = true;
-        float2 _62 = _48;
-        _54 = fnGreen_h4bf2(_60, _62);
-    }
-    else
-    {
-        int _65 = 123;
-        float _67 = 3.1400001049041748046875f;
-        S _68 = { 0 };
-        S _69 = _68;
-        _54 = fnRed_h4ifS(_65, _67, _69);
-    }
-    return _54;
-}
-
-void frag_main()
-{
-    float2 _22 = 0.0f.xx;
-    sk_FragColor = main(_22);
-}
-
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }

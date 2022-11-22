@@ -1,161 +1,209 @@
-cbuffer _UniformBuffer : register(b0, space0)
-{
-    float4 _16_colorWhite : packoffset(c0);
-    float4 _16_colorGreen : packoffset(c1);
-    float4 _16_colorRed : packoffset(c2);
-    row_major float2x2 _16_testMatrix2x2 : packoffset(c3);
-    row_major float3x3 _16_testMatrix3x3 : packoffset(c5);
-    row_major float4x4 _16_testMatrix4x4 : packoffset(c8);
+struct strided_arr {
+  float2 el;
 };
 
-
-static float4 sk_FragColor;
-
-struct SPIRV_Cross_Output
-{
-    float4 sk_FragColor : SV_Target0;
+static bool sk_Clockwise = false;
+static float4 sk_FragColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+cbuffer cbuffer_x_16 : register(b0, space0) {
+  uint4 x_16[12];
 };
 
-bool test_iscalar_b()
-{
-    int _43 = int(_16_colorWhite.x);
-    int x = _43;
-    int _44 = -_43;
-    x = _44;
-    return _44 == (-1);
+bool test_iscalar_b() {
+  int x = 0;
+  const float4 x_41 = asfloat(x_16[0]);
+  const int x_43 = int(x_41.x);
+  x = x_43;
+  const int x_44 = -(x_43);
+  x = x_44;
+  return (x_44 == -1);
 }
 
-bool test_fvec_b()
-{
-    float2 x = _16_colorWhite.xy;
-    float2 _52 = -_16_colorWhite.xy;
-    x = _52;
-    return all(bool2(_52.x == (-1.0f).xx.x, _52.y == (-1.0f).xx.y));
+bool test_fvec_b() {
+  float2 x_1 = float2(0.0f, 0.0f);
+  const float4 x_50 = asfloat(x_16[0]);
+  const float2 x_51 = float2(x_50.x, x_50.y);
+  x_1 = x_51;
+  const float2 x_52 = -(x_51);
+  x_1 = x_52;
+  return all((x_52 == (-1.0f).xx));
 }
 
-bool test_ivec_b()
-{
-    int2 _66 = int(_16_colorWhite.x).xx;
-    int2 x = _66;
-    int2 _67 = -_66;
-    x = _67;
-    return all(bool2(_67.x == int2(-1, -1).x, _67.y == int2(-1, -1).y));
+bool test_ivec_b() {
+  int2 x_2 = int2(0, 0);
+  const float4 x_63 = asfloat(x_16[0]);
+  const int x_65 = int(x_63.x);
+  const int2 x_66 = int2(x_65, x_65);
+  x_2 = x_66;
+  const int2 x_67 = -(x_66);
+  x_2 = x_67;
+  return all((x_67 == (-1).xx));
 }
 
-bool test_mat2_b()
-{
-    float2x2 negated = float2x2(float2(-1.0f, -2.0f), float2(-3.0f, -4.0f));
-    float2x2 x = _16_testMatrix2x2;
-    float2 _86 = -_16_testMatrix2x2[0];
-    float2 _88 = -_16_testMatrix2x2[1];
-    x = float2x2(_86, _88);
-    return all(bool2(_86.x == float2(-1.0f, -2.0f).x, _86.y == float2(-1.0f, -2.0f).y)) && all(bool2(_88.x == float2(-3.0f, -4.0f).x, _88.y == float2(-3.0f, -4.0f).y));
+float2x2 arr_to_mat2x2_stride_16(strided_arr arr[2]) {
+  return float2x2(arr[0u].el, arr[1u].el);
 }
 
-bool test_mat3_b()
-{
-    float3x3 negated = float3x3(float3(-1.0f, -2.0f, -3.0f), float3(-4.0f, -5.0f, -6.0f), float3(-7.0f, -8.0f, -9.0f));
-    float3x3 x = _16_testMatrix3x3;
-    float3 _113 = -_16_testMatrix3x3[0];
-    float3 _115 = -_16_testMatrix3x3[1];
-    float3 _117 = -_16_testMatrix3x3[2];
-    x = float3x3(_113, _115, _117);
-    return (all(bool3(_113.x == float3(-1.0f, -2.0f, -3.0f).x, _113.y == float3(-1.0f, -2.0f, -3.0f).y, _113.z == float3(-1.0f, -2.0f, -3.0f).z)) && all(bool3(_115.x == float3(-4.0f, -5.0f, -6.0f).x, _115.y == float3(-4.0f, -5.0f, -6.0f).y, _115.z == float3(-4.0f, -5.0f, -6.0f).z))) && all(bool3(_117.x == float3(-7.0f, -8.0f, -9.0f).x, _117.y == float3(-7.0f, -8.0f, -9.0f).y, _117.z == float3(-7.0f, -8.0f, -9.0f).z));
+strided_arr tint_symbol_5(uint4 buffer[12], uint offset) {
+  const uint scalar_offset = ((offset + 0u)) / 4;
+  uint4 ubo_load = buffer[scalar_offset / 4];
+  const strided_arr tint_symbol_10 = {asfloat(((scalar_offset & 2) ? ubo_load.zw : ubo_load.xy))};
+  return tint_symbol_10;
 }
 
-bool test_mat4_b()
-{
-    float4x4 negated = float4x4(float4(-1.0f, -2.0f, -3.0f, -4.0f), float4(-5.0f, -6.0f, -7.0f, -8.0f), float4(-9.0f, -10.0f, -11.0f, -12.0f), float4(-13.0f, -14.0f, -15.0f, -16.0f));
-    float4x4 x = _16_testMatrix4x4;
-    float4 _149 = -_16_testMatrix4x4[0];
-    float4 _151 = -_16_testMatrix4x4[1];
-    float4 _153 = -_16_testMatrix4x4[2];
-    float4 _155 = -_16_testMatrix4x4[3];
-    x = float4x4(_149, _151, _153, _155);
-    return ((all(bool4(_149.x == float4(-1.0f, -2.0f, -3.0f, -4.0f).x, _149.y == float4(-1.0f, -2.0f, -3.0f, -4.0f).y, _149.z == float4(-1.0f, -2.0f, -3.0f, -4.0f).z, _149.w == float4(-1.0f, -2.0f, -3.0f, -4.0f).w)) && all(bool4(_151.x == float4(-5.0f, -6.0f, -7.0f, -8.0f).x, _151.y == float4(-5.0f, -6.0f, -7.0f, -8.0f).y, _151.z == float4(-5.0f, -6.0f, -7.0f, -8.0f).z, _151.w == float4(-5.0f, -6.0f, -7.0f, -8.0f).w))) && all(bool4(_153.x == float4(-9.0f, -10.0f, -11.0f, -12.0f).x, _153.y == float4(-9.0f, -10.0f, -11.0f, -12.0f).y, _153.z == float4(-9.0f, -10.0f, -11.0f, -12.0f).z, _153.w == float4(-9.0f, -10.0f, -11.0f, -12.0f).w))) && all(bool4(_155.x == float4(-13.0f, -14.0f, -15.0f, -16.0f).x, _155.y == float4(-13.0f, -14.0f, -15.0f, -16.0f).y, _155.z == float4(-13.0f, -14.0f, -15.0f, -16.0f).z, _155.w == float4(-13.0f, -14.0f, -15.0f, -16.0f).w));
+typedef strided_arr tint_symbol_4_ret[2];
+tint_symbol_4_ret tint_symbol_4(uint4 buffer[12], uint offset) {
+  strided_arr arr_1[2] = (strided_arr[2])0;
+  {
+    for(uint i = 0u; (i < 2u); i = (i + 1u)) {
+      arr_1[i] = tint_symbol_5(buffer, (offset + (i * 16u)));
+    }
+  }
+  return arr_1;
 }
 
-float4 main(float2 _170)
-{
-    float _RESERVED_IDENTIFIER_FIXUP_0_x = _16_colorWhite.x;
-    float _177 = -_16_colorWhite.x;
-    _RESERVED_IDENTIFIER_FIXUP_0_x = _177;
-    bool _183 = false;
-    if (_177 == (-1.0f))
-    {
-        _183 = test_iscalar_b();
-    }
-    else
-    {
-        _183 = false;
-    }
-    bool _187 = false;
-    if (_183)
-    {
-        _187 = test_fvec_b();
-    }
-    else
-    {
-        _187 = false;
-    }
-    bool _191 = false;
-    if (_187)
-    {
-        _191 = test_ivec_b();
-    }
-    else
-    {
-        _191 = false;
-    }
-    bool _195 = false;
-    if (_191)
-    {
-        _195 = test_mat2_b();
-    }
-    else
-    {
-        _195 = false;
-    }
-    bool _199 = false;
-    if (_195)
-    {
-        _199 = test_mat3_b();
-    }
-    else
-    {
-        _199 = false;
-    }
-    bool _203 = false;
-    if (_199)
-    {
-        _203 = test_mat4_b();
-    }
-    else
-    {
-        _203 = false;
-    }
-    float4 _204 = 0.0f.xxxx;
-    if (_203)
-    {
-        _204 = _16_colorGreen;
-    }
-    else
-    {
-        _204 = _16_colorRed;
-    }
-    return _204;
+bool test_mat2_b() {
+  float2x2 negated = float2x2(0.0f, 0.0f, 0.0f, 0.0f);
+  float2x2 x_3 = float2x2(0.0f, 0.0f, 0.0f, 0.0f);
+  negated = float2x2(float2(-1.0f, -2.0f), float2(-3.0f, -4.0f));
+  const float2x2 x_84 = arr_to_mat2x2_stride_16(tint_symbol_4(x_16, 48u));
+  x_3 = x_84;
+  const float2 x_86 = -(x_84[0u]);
+  const float2 x_88 = -(x_84[1u]);
+  x_3 = float2x2(x_86, x_88);
+  return (all((x_86 == float2(-1.0f, -2.0f))) & all((x_88 == float2(-3.0f, -4.0f))));
 }
 
-void frag_main()
-{
-    float2 _30 = 0.0f.xx;
-    sk_FragColor = main(_30);
+float3x3 tint_symbol_7(uint4 buffer[12], uint offset) {
+  const uint scalar_offset_1 = ((offset + 0u)) / 4;
+  const uint scalar_offset_2 = ((offset + 16u)) / 4;
+  const uint scalar_offset_3 = ((offset + 32u)) / 4;
+  return float3x3(asfloat(buffer[scalar_offset_1 / 4].xyz), asfloat(buffer[scalar_offset_2 / 4].xyz), asfloat(buffer[scalar_offset_3 / 4].xyz));
 }
 
-SPIRV_Cross_Output main()
-{
-    frag_main();
-    SPIRV_Cross_Output stage_output;
-    stage_output.sk_FragColor = sk_FragColor;
-    return stage_output;
+bool test_mat3_b() {
+  float3x3 negated_1 = float3x3(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  float3x3 x_4 = float3x3(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  negated_1 = float3x3(float3(-1.0f, -2.0f, -3.0f), float3(-4.0f, -5.0f, -6.0f), float3(-7.0f, -8.0f, -9.0f));
+  const float3x3 x_111 = tint_symbol_7(x_16, 80u);
+  x_4 = x_111;
+  const float3 x_113 = -(x_111[0u]);
+  const float3 x_115 = -(x_111[1u]);
+  const float3 x_117 = -(x_111[2u]);
+  x_4 = float3x3(x_113, x_115, x_117);
+  return ((all((x_113 == float3(-1.0f, -2.0f, -3.0f))) & all((x_115 == float3(-4.0f, -5.0f, -6.0f)))) & all((x_117 == float3(-7.0f, -8.0f, -9.0f))));
+}
+
+float4x4 tint_symbol_9(uint4 buffer[12], uint offset) {
+  const uint scalar_offset_4 = ((offset + 0u)) / 4;
+  const uint scalar_offset_5 = ((offset + 16u)) / 4;
+  const uint scalar_offset_6 = ((offset + 32u)) / 4;
+  const uint scalar_offset_7 = ((offset + 48u)) / 4;
+  return float4x4(asfloat(buffer[scalar_offset_4 / 4]), asfloat(buffer[scalar_offset_5 / 4]), asfloat(buffer[scalar_offset_6 / 4]), asfloat(buffer[scalar_offset_7 / 4]));
+}
+
+bool test_mat4_b() {
+  float4x4 negated_2 = float4x4(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  float4x4 x_5 = float4x4(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  negated_2 = float4x4(float4(-1.0f, -2.0f, -3.0f, -4.0f), float4(-5.0f, -6.0f, -7.0f, -8.0f), float4(-9.0f, -10.0f, -11.0f, -12.0f), float4(-13.0f, -14.0f, -15.0f, -16.0f));
+  const float4x4 x_147 = tint_symbol_9(x_16, 128u);
+  x_5 = x_147;
+  const float4 x_149 = -(x_147[0u]);
+  const float4 x_151 = -(x_147[1u]);
+  const float4 x_153 = -(x_147[2u]);
+  const float4 x_155 = -(x_147[3u]);
+  x_5 = float4x4(x_149, x_151, x_153, x_155);
+  return (((all((x_149 == float4(-1.0f, -2.0f, -3.0f, -4.0f))) & all((x_151 == float4(-5.0f, -6.0f, -7.0f, -8.0f)))) & all((x_153 == float4(-9.0f, -10.0f, -11.0f, -12.0f)))) & all((x_155 == float4(-13.0f, -14.0f, -15.0f, -16.0f))));
+}
+
+float4 main(inout float2 x_170) {
+  float x_0_x = 0.0f;
+  float4 x_204 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+  bool x_182 = false;
+  bool x_183 = false;
+  bool x_186 = false;
+  bool x_187 = false;
+  bool x_190 = false;
+  bool x_191 = false;
+  bool x_194 = false;
+  bool x_195 = false;
+  bool x_198 = false;
+  bool x_199 = false;
+  bool x_202 = false;
+  bool x_203 = false;
+  const float4 x_175 = asfloat(x_16[0]);
+  const float x_176 = x_175.x;
+  x_0_x = x_176;
+  const float x_177 = -(x_176);
+  x_0_x = x_177;
+  x_183 = false;
+  if ((x_177 == -1.0f)) {
+    x_182 = test_iscalar_b();
+    x_183 = x_182;
+  }
+  x_187 = false;
+  if (x_183) {
+    x_186 = test_fvec_b();
+    x_187 = x_186;
+  }
+  x_191 = false;
+  if (x_187) {
+    x_190 = test_ivec_b();
+    x_191 = x_190;
+  }
+  x_195 = false;
+  if (x_191) {
+    x_194 = test_mat2_b();
+    x_195 = x_194;
+  }
+  x_199 = false;
+  if (x_195) {
+    x_198 = test_mat3_b();
+    x_199 = x_198;
+  }
+  x_203 = false;
+  if (x_199) {
+    x_202 = test_mat4_b();
+    x_203 = x_202;
+  }
+  if (x_203) {
+    const float4 x_211 = asfloat(x_16[1]);
+    x_204 = x_211;
+  } else {
+    const float4 x_214 = asfloat(x_16[2]);
+    x_204 = x_214;
+  }
+  const float4 x_215 = x_204;
+  return x_215;
+}
+
+void _entrypoint_1() {
+  float2 x_30 = float2(0.0f, 0.0f);
+  x_30 = (0.0f).xx;
+  const float4 x_32 = main(x_30);
+  sk_FragColor = x_32;
+  return;
+}
+
+struct _entrypoint_out {
+  float4 sk_FragColor_1;
+};
+struct tint_symbol_1 {
+  bool sk_Clockwise_param : SV_IsFrontFace;
+};
+struct tint_symbol_2 {
+  float4 sk_FragColor_1 : SV_Target0;
+};
+
+_entrypoint_out _entrypoint_inner(bool sk_Clockwise_param) {
+  sk_Clockwise = sk_Clockwise_param;
+  _entrypoint_1();
+  const _entrypoint_out tint_symbol_11 = {sk_FragColor};
+  return tint_symbol_11;
+}
+
+tint_symbol_2 _entrypoint(tint_symbol_1 tint_symbol) {
+  const _entrypoint_out inner_result = _entrypoint_inner(tint_symbol.sk_Clockwise_param);
+  tint_symbol_2 wrapper_result = (tint_symbol_2)0;
+  wrapper_result.sk_FragColor_1 = inner_result.sk_FragColor_1;
+  return wrapper_result;
 }
