@@ -11,8 +11,21 @@
 #include "include/core/SkRect.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkTBlockList.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/DrawTypes.h"
 
+#include <unordered_map>
+
+namespace std {
+
+template <typename T>
+struct hash<sk_sp<T>> {
+    size_t operator()(const sk_sp<T>& key) const {
+        return hash<T*>()(key.get());
+    }
+};
+
+}
 namespace skgpu::graphite {
 
 namespace DrawPassCommands {

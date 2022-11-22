@@ -154,7 +154,8 @@ struct BindBufferInfo {
     operator bool() const { return SkToBool(fBuffer); }
 
     bool operator==(const BindBufferInfo& o) const {
-        return fBuffer == o.fBuffer && (!fBuffer || fOffset == o.fOffset);
+        return fBuffer == o.fBuffer &&
+               (!fBuffer || fOffset == o.fOffset);
     }
     bool operator!=(const BindBufferInfo& o) const {
         return !(*this == o);
