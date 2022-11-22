@@ -199,8 +199,8 @@ void SkSweepGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                             fTBias, fTScale,
                                             fTileMode,
                                             fColorCount,
-                                            fOrigColors4f,
-                                            fOrigPos);
+                                            fColors,
+                                            fPositions);
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();

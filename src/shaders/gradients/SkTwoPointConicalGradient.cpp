@@ -542,8 +542,8 @@ void SkTwoPointConicalGradient::addToKey(const skgpu::graphite::KeyContext& keyC
                                             0.0f, 0.0f,
                                             fTileMode,
                                             fColorCount,
-                                            fOrigColors4f,
-                                            fOrigPos);
+                                            fColors,
+                                            fPositions);
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();

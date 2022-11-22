@@ -53,11 +53,6 @@ public:
 
         bool unflatten(SkReadBuffer&, SkMatrix* legacyLocalMatrix);
 
-        // fColors and fPos always point into local memory, so they can be safely mutated
-        //
-        SkColor4f* mutableColors() { return const_cast<SkColor4f*>(fColors); }
-        SkScalar* mutablePos() { return const_cast<SkScalar*>(fPos); }
-
     private:
         SkSTArray<16, SkColor4f, true> fColorStorage;
         SkSTArray<16, SkScalar , true> fPosStorage;
@@ -123,16 +118,16 @@ protected:
 public:
     SkScalar getPos(int i) const {
         SkASSERT(i < fColorCount);
-        return fOrigPos ? fOrigPos[i] : SkIntToScalar(i) / (fColorCount - 1);
+        return fPositions ? fPositions[i] : SkIntToScalar(i) / (fColorCount - 1);
     }
 
     SkColor getLegacyColor(int i) const {
         SkASSERT(i < fColorCount);
-        return fOrigColors4f[i].toSkColor();
+        return fColors[i].toSkColor();
     }
 
-    SkColor4f*          fOrigColors4f; // original colors, as floats
-    SkScalar*           fOrigPos;      // original positions
+    SkColor4f*          fColors;       // points into fStorage
+    SkScalar*           fPositions;    // points into fStorage, or nullptr
     int                 fColorCount;
     sk_sp<SkColorSpace> fColorSpace;   // color space of gradient stops
     Interpolation       fInterpolation;
