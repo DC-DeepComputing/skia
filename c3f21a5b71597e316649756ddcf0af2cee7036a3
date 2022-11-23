@@ -34,6 +34,24 @@
       "parentUuid": "9b4061af_cf8e9823",
       "revId": "c3f21a5b71597e316649756ddcf0af2cee7036a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e36b17_585ffea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-11-23T18:48:51Z",
+      "side": 1,
+      "message": "I also do not know why it is checking for licenses in these patch files. The license script works in mysterious ways.\nYes, I think moving a LICENSE file to third_party/expat should work (hopefully).",
+      "parentUuid": "7331eee3_fd2e2eb1",
+      "revId": "c3f21a5b71597e316649756ddcf0af2cee7036a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
