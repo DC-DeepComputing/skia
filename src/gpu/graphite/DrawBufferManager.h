@@ -23,6 +23,7 @@ namespace skgpu::graphite {
 class Buffer;
 class Recording;
 class ResourceProvider;
+class Task;
 
 class DrawBufferManager {
 public:
@@ -82,8 +83,10 @@ private:
     static constexpr size_t kStorageBufferIndex = 3;
     std::array<BufferInfo, 4> fCurrentBuffers;
 
-    // Vector of buffer and transfer buffer pairs.
-    std::vector<std::pair<sk_sp<Buffer>, sk_sp<Buffer>>> fUsedBuffers;
+    // Vector of used buffers which are not referenced by fCopyTasks.
+    std::vector<sk_sp<Buffer>> fUsedBuffers;
+    // Vector of copy tasks for uploading data from transfer buffers.
+    std::vector<sk_sp<Task>> fUploadingTasks;
     // TODO(skbug.com/13059): This is likely not the final location for static buffers, but makes it
     // convenient to maintain ownership and call trackResources() on the CommandBuffer.
     std::unordered_map<uintptr_t, sk_sp<Buffer>> fStaticBuffers;

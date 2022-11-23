@@ -36,6 +36,9 @@ bool CopyBufferToBufferTask::prepareResources(ResourceProvider*, const SkRuntime
 }
 
 bool CopyBufferToBufferTask::addCommands(ResourceProvider*, CommandBuffer* commandBuffer) {
+    if (fSrcBuffer->isMapped()) {
+        fSrcBuffer->unmap();
+    }
     return commandBuffer->copyBufferToBuffer(fSrcBuffer, 0, fDstBuffer, 0, fDstBuffer->size());
 }
 
