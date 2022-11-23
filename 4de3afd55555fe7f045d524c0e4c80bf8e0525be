@@ -16,6 +16,24 @@
       "message": "The `Canary-Flutter` has been in pending state for some time. Is there some way to know if it is making progress or if this is alleviating the license check issue?",
       "revId": "4de3afd55555fe7f045d524c0e4c80bf8e0525be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae0f43d4_0dd92b8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-23T20:09:53Z",
+      "side": 1,
+      "message": "Well, it finally started running on the flutter side and the license check appears to have passed. There is some other unrelated test failure, but other than that I\u0027m guessing this works.",
+      "parentUuid": "373e7bf9_ea9642a3",
+      "revId": "4de3afd55555fe7f045d524c0e4c80bf8e0525be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
