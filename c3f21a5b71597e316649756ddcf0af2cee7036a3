@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b4061af_cf8e9823",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-11-23T18:03:08Z",
+      "side": 1,
+      "message": "FYI: The flutter license script seems to be failing due to this change:\n```\n      5263 of 5298 █████████░ 99% (0 missing licenses)  ../../../third_party/skia/third_party/etc1/etc1.h                                            \nerror searching for copyright in: ../../../third_party/skia/third_party/expat/0001-Do-not-claim-getrandom.patch\nno license file found in scope for ../../../third_party/skia/third_party/expat/0001-Do-not-claim-getrandom.patch\n\n\n\nerror searching for copyright in: ../../../third_party/skia/third_party/expat/0002-Do-not-claim-arc4random_buf.patch\nno license file found in scope for ../../../third_party/skia/third_party/expat/0002-Do-not-claim-arc4random_buf.patch\n\n\n      5296 of 5298 ██████████ 100% (2 missing licenses)  ../../../third_party/skia/package-lock.jsonfailure: Had failures while collecting licenses.\n#0      _collectLicensesForComponent (package:licenses/main.dart:2855:5)\n\u003casynchronous suspension\u003e\n#1      main (package:licenses/main.dart:3028:9)\n\u003casynchronous suspension\u003e\n```",
+      "revId": "c3f21a5b71597e316649756ddcf0af2cee7036a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
