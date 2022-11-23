@@ -51,6 +51,24 @@
       "parentUuid": "6ed2e724_c8189d83",
       "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ef8c8f3_58fc0ddc",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-23T13:31:17Z",
+      "side": 1,
+      "message": "Right, makes sense. I just noticed that missing intrinsics fail nicely in the tint patch, so presumably we could remove all the build machinery we had to add here if/when we switch over.",
+      "parentUuid": "74f11985_de41632b",
+      "revId": "5ca41d5a7bee8d550414725372c32e07c762eda4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
