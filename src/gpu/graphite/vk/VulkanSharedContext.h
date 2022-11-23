@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 
 namespace skgpu {
 struct VulkanBackendContext;
@@ -35,7 +36,11 @@ public:
     VkDevice device() const { return fDevice; }
     uint32_t  queueIndex() const { return fQueueIndex; }
 
+    const VulkanCaps& vulkanCaps() const { return static_cast<const VulkanCaps&>(*this->caps()); }
+
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*) override;
+
+    bool checkVkResult(VkResult result) const;
 
 private:
     VulkanSharedContext(const VulkanBackendContext&,
@@ -47,6 +52,7 @@ private:
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;
 
     VkDevice fDevice;
+    bool fDeviceIsLost;
     uint32_t fQueueIndex;
 
 };
