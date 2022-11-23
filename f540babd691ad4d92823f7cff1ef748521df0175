@@ -236,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78b0d83a_6768d5a2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-23T16:20:49Z",
+      "side": 1,
+      "message": "Fair enough, it lives on then",
+      "parentUuid": "b57ae45e_6f5c1c63",
+      "range": {
+        "startLine": 52,
+        "startChar": 9,
+        "endLine": 52,
+        "endChar": 44
+      },
+      "revId": "f540babd691ad4d92823f7cff1ef748521df0175",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d655eee6_2caf2cc7",
