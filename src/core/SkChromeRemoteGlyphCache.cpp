@@ -80,8 +80,10 @@ public:
     }
 
     void* allocate(size_t size, size_t alignment) {
-        size_t aligned = pad(fBuffer->size(), alignment);
+        size_t old_size = fBuffer->size();
+        size_t aligned = pad(old_size, alignment);
         fBuffer->resize(aligned + size);
+        memset(&(*fBuffer)[old_size], 0, aligned - old_size);
         return &(*fBuffer)[aligned];
     }
 
