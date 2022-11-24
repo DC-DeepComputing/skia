@@ -19,9 +19,8 @@ class SharedContext;
 
 class DawnQueueManager : public QueueManager {
 public:
-    DawnQueueManager(wgpu::Queue fQueue, const SharedContext*);
+    DawnQueueManager(wgpu::Queue, const SharedContext*);
     ~DawnQueueManager() override {}
-
 private:
     const DawnSharedContext* dawnSharedContext() const;
 
