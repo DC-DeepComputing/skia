@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c8ae8a8_cf192e24",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-25T18:02:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac52fa50_c0449a38",
+      "range": {
+        "startLine": 28,
+        "startChar": 17,
+        "endLine": 28,
+        "endChar": 37
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "757d33f0_f6950325",
@@ -84,6 +108,30 @@
       "writtenOn": "2022-11-22T15:10:06Z",
       "side": 1,
       "message": "maybe we just have a little helper,\n\n    Buffer* BufferInfo::getMappedBuffer() { return fStagging ? fStagging.get() : fBuffer.get(); }",
+      "range": {
+        "startLine": 106,
+        "startChar": 27,
+        "endLine": 106,
+        "endChar": 60
+      },
+      "revId": "a7907c45de868843a92a63d546a4b65a2f8cb35b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d09040e_9d30e84f",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-25T18:02:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "757d33f0_f6950325",
       "range": {
         "startLine": 106,
         "startChar": 27,
