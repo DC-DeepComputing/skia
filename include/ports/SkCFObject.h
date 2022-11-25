@@ -23,14 +23,14 @@
  */
 template <typename T> static inline T SkCFSafeRetain(T obj) {
     if (obj) {
-        CFRetain(obj);
+        CFRetain((CFTypeRef)obj);
     }
     return obj;
 }
 
 template <typename T> static inline void SkCFSafeRelease(T obj) {
     if (obj) {
-        CFRelease(obj);
+        CFRelease((CFTypeRef)obj);
     }
 }
 
