@@ -95,8 +95,7 @@ bool DawnCommandBuffer::onAddComputePass(const ComputePassDesc& computePassDesc,
     this->beginComputePass();
     this->bindComputePipeline(pipeline);
     for (const ResourceBinding& binding : bindings) {
-        this->bindBuffer(
-                binding.fResource.fBuffer.get(), binding.fResource.fOffset, binding.fIndex);
+        this->bindBuffer(binding.fBuffer.fBuffer, binding.fBuffer.fOffset, binding.fIndex);
     }
     this->dispatchThreadgroups(computePassDesc.fGlobalDispatchSize,
                                computePassDesc.fLocalDispatchSize);
@@ -491,7 +490,7 @@ void DawnCommandBuffer::draw(PrimitiveType type,
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
 
-    syncUniformBuffers();
+    this->syncUniformBuffers();
 
     fActiveRenderPassEncoder.Draw(vertexCount, /*instanceCount=*/1, baseVertex);
 }
@@ -503,7 +502,7 @@ void DawnCommandBuffer::drawIndexed(PrimitiveType type,
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
 
-    syncUniformBuffers();
+    this->syncUniformBuffers();
 
     fActiveRenderPassEncoder.DrawIndexed(indexCount, /*instanceCount=*/1, baseIndex, baseVertex);
 }
@@ -516,7 +515,7 @@ void DawnCommandBuffer::drawInstanced(PrimitiveType type,
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
 
-    syncUniformBuffers();
+    this->syncUniformBuffers();
 
     fActiveRenderPassEncoder.Draw(vertexCount, instanceCount, baseVertex, baseInstance);
 }
@@ -530,7 +529,7 @@ void DawnCommandBuffer::drawIndexedInstanced(PrimitiveType type,
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
 
-    syncUniformBuffers();
+    this->syncUniformBuffers();
 
     fActiveRenderPassEncoder.DrawIndexed(
             indexCount, instanceCount, baseIndex, baseVertex, baseInstance);
@@ -587,28 +586,20 @@ bool DawnCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
 
     wgpu::ImageCopyTexture src;
     src.texture = wgpuTexture;
-    src.origin.x = srcRect.fLeft;
-    src.origin.y = srcRect.fTop;
+    src.origin.x = srcRect.x();
+    src.origin.y = srcRect.y();
 
     wgpu::ImageCopyBuffer dst;
     dst.buffer = wgpuBuffer;
-    // Dawn requires buffer's alignment to be multiples of 256.
-    dst.layout.bytesPerRow = (bufferRowBytes + 0xFF) & ~0xFF;
     dst.layout.offset = bufferOffset;
+    // Dawn requires buffer's alignment to be multiples of 256.
+    // https://b.corp.google.com/issues/259264489
+    SkASSERT((bufferRowBytes & 0xFF) == 0);
+    dst.layout.bytesPerRow = bufferRowBytes;
 
-    if (dst.layout.bytesPerRow == bufferRowBytes) {
-        wgpu::Extent3D copySize = {
-                static_cast<uint32_t>(srcRect.width()), static_cast<uint32_t>(srcRect.height()), 1};
-        fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
-    } else {
-        // TODO: optimize this copy. https://b.corp.google.com/issues/259264489
-        wgpu::Extent3D copySize = {static_cast<uint32_t>(srcRect.width()), 1, 1};
-        while (src.origin.y < static_cast<uint32_t>(srcRect.bottom())) {
-            fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
-            dst.layout.offset += bufferRowBytes;
-            ++src.origin.y;
-        }
-    }
+    wgpu::Extent3D copySize = {
+            static_cast<uint32_t>(srcRect.width()), static_cast<uint32_t>(srcRect.height()), 1};
+    fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
 
     return true;
 }
@@ -630,26 +621,19 @@ bool DawnCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     dst.texture = wgpuTexture;
 
     for (int i = 0; i < count; ++i) {
+        src.layout.offset = copyData[i].fBufferOffset;
+        // Dawn requires buffer's alignment to be multiples of 256.
+        // https://b.corp.google.com/issues/259264489
+        SkASSERT((copyData[i].fBufferRowBytes & 0xFF) == 0);
+        src.layout.bytesPerRow = copyData[i].fBufferRowBytes;
+
         dst.origin.x = copyData[i].fRect.x();
         dst.origin.y = copyData[i].fRect.y();
-        // Dawn requires buffer's alignment to be multiples of 256.
-        src.layout.bytesPerRow = (copyData[i].fBufferRowBytes + 0xFF) & ~0xFF;
-        src.layout.offset = copyData[i].fBufferOffset;
-        // If row is not aligned with 256 bytes, we have to copy for each rows.
-        // TODO: optimize this copy. https://b.corp.google.com/issues/259264489
-        if (src.layout.bytesPerRow != copyData[i].fBufferRowBytes) {
-            wgpu::Extent3D copySize = {static_cast<uint32_t>(copyData[i].fRect.width()), 1, 1};
-            while (dst.origin.y < static_cast<uint32_t>(copyData[i].fRect.bottom())) {
-                fCommandEncoder.CopyBufferToTexture(&src, &dst, &copySize);
-                src.layout.offset += copyData[i].fBufferRowBytes;
-                ++dst.origin.y;
-            }
-        } else {
-            wgpu::Extent3D copySize = {static_cast<uint32_t>(copyData[i].fRect.width()),
-                                       static_cast<uint32_t>(copyData[i].fRect.height()),
-                                       1};
-            fCommandEncoder.CopyBufferToTexture(&src, &dst, &copySize);
-        }
+
+        wgpu::Extent3D copySize = {static_cast<uint32_t>(copyData[i].fRect.width()),
+                                   static_cast<uint32_t>(copyData[i].fRect.height()),
+                                   1};
+        fCommandEncoder.CopyBufferToTexture(&src, &dst, &copySize);
     }
 
     return true;
