@@ -159,6 +159,16 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
 
 void DawnTexture::freeGpuData() {
     fTexture = nullptr;
+    fTextureView = nullptr;
+}
+
+const wgpu::TextureView& DawnTexture::dawnTextureView() const {
+    if (!fTextureView) {
+        SkASSERT(fTexture);
+        fTextureView = fTexture.CreateView();
+    }
+
+    return fTextureView;
 }
 
 } // namespace skgpu::graphite
