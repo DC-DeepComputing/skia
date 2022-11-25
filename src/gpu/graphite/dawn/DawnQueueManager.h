@@ -19,7 +19,7 @@ class SharedContext;
 
 class DawnQueueManager : public QueueManager {
 public:
-    DawnQueueManager(wgpu::Queue fQueue, const SharedContext*);
+    DawnQueueManager(wgpu::Queue, const SharedContext*);
     ~DawnQueueManager() override {}
 
 private:
@@ -36,6 +36,6 @@ private:
     wgpu::Queue fQueue;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_DawnQueueManager_DEFINED
+#endif  // skgpu_graphite_DawnQueueManager_DEFINED
