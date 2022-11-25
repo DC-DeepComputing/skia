@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98295834_a8292e6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19439
+      },
+      "writtenOn": "2022-11-25T10:36:56Z",
+      "side": 1,
+      "message": "This commit fixes \u0027No matching func for call to CFRelease\u0027 error on Xcode 14.1.",
+      "revId": "4654a57a35cbbdeb77044c8b00f3ccb8c2b7a898",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
