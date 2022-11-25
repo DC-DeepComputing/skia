@@ -1,0 +1,305 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3db6bf_0547e6ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "Thanks this is a really interesting investigation!\n\nI made notes about known issues, gaps etc.\n- easy: missing feature of spirv-reader\n- no combined image samplers in WGSL, but also none in HLSL\n- uniformity errors. We\u0027re designing an opt-out that spirv-reader will generate. This is mainly arguing at standards committee now.\n- WGSL requires vertex shaders to have a \u0027position\u0027 output.  At least one sample here breaks.\n\nGenerally it looks like Tint\u0027s output is more chatty and harder to read.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab5da5c4_90eb2b65",
+        "filename": "src/sksl/codegen/SkSLSPIRVtoHLSL.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "WGSL variables are zero-initialized, so hopefully this is already assumed.",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 55
+      },
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2747b656_151a1a67",
+        "filename": "src/sksl/codegen/SkSLSPIRVtoHLSL.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "amaiorano@ says Tint generates SM 5.1\n\nFor all the details including the many workarounds Tint implements.  go/webgpu-dealing-with-fxc",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72ccfd49_e4f6eef4",
+        "filename": "src/sksl/codegen/SkSLSPIRVtoHLSL.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "These options tell SPIRV-Cross to ignore the PointSize vertex output and PointCoord fragment input.\n\nWGSL doesn\u0027t support these, and the SPIR-V reader in Tint:\n-  drops PointSize on the floor\n-  doesn\u0027t know about PointCoord, and errors out with a cryptic message.  :-)\n   I filed https://bugs.chromium.org/p/tint/issues/detail?id\u003d1770 for this, with low urgency\n\nI would guess SkSL doesn\u0027t emit them anyway?",
+      "range": {
+        "startLine": 42,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db823089_d32dc40a",
+        "filename": "tests/sksl/intrinsics/DFdx.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "uniformity again",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e372a26e_50ace0af",
+        "filename": "tests/sksl/intrinsics/Frexp.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "frexp is missing from spirv-reader\n\nhttps://bugs.chromium.org/p/tint/issues/detail?id\u003d1063",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fe2fad1_f44a6ecb",
+        "filename": "tests/sksl/intrinsics/Fwidth.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "WGSL has a conservative uniformity analysis to try to protect developers from ill-defined derivatives and anisotropic filtering.\n\nI\u0027d be interested in seeing the original SkSL that led to this, to see if this catches a real bug or if the analysis is too conservative.\n\nWe\u0027re designing an opt-out of this analysis, to support Unity and others.\nhttps://github.com/gpuweb/gpuweb/issues/3554\n\nThe spirv-reader will at least have a knob to opt-out, or opt-out by default.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fa701ff_926a2b58",
+        "filename": "tests/sksl/intrinsics/IsInf.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "WGSL doesn\u0027t have isInf because we can\u0027t guarantee infinities are respected or propagated.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1911b4fb_bb920437",
+        "filename": "tests/sksl/intrinsics/IsNan.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "WGSL doesn\u0027t have NaNs. Similar to inf.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40818d70_c680fc36",
+        "filename": "tests/sksl/intrinsics/Modf.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "modf is missing in SPIR-V reader.\n\nhttps://bugs.chromium.org/p/tint/issues/detail?id\u003d1060",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c6f2917_d85643aa",
+        "filename": "tests/sksl/intrinsics/SampleGrad.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "WGSL doesn\u0027t support combined image-sampler variables.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b84b41b0_d45f6c27",
+        "filename": "tests/sksl/intrinsics/SignInt.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "ssign is missing from spirv-reader\n\nhttps://bugs.chromium.org/p/tint/issues/detail?id\u003d1062",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff8c74c_bffb865d",
+        "filename": "tests/sksl/shared/ComplexDelete.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "combined image-samplers",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8c53bc_f3713774",
+        "filename": "tests/sksl/shared/Control.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "transitional issue;  WGSL has changed how you break out of the bottom of a continuing block.  dsinclair@ just landed the update to spirv-reader to match the new language spec.\nSuggest rebasing on a later version of Dawn and trying again.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3781ca8_e824d8cc",
+        "filename": "tests/sksl/shared/EmptyBlocksES3.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "rebase to pick up later codegen for breaking out of bottom of loop.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f3ceee_e933e29c",
+        "filename": "tests/sksl/shared/GaussianBlur.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "combined image samplers",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d4e54b_23f891b9",
+        "filename": "tests/sksl/shared/InstanceID.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2022-11-25T18:46:47Z",
+      "side": 1,
+      "message": "A WGSL constraint.",
+      "revId": "ee448f4fdcc0c2d58d42dd964ebf3a179c9d298a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
