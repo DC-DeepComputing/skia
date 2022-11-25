@@ -160,5 +160,14 @@ void DawnTexture::freeGpuData() {
     fTexture = nullptr;
 }
 
+const wgpu::TextureView& DawnTexture::dawnTextureView() const {
+    if (!fTextureView) {
+        SkASSERT(fTexture);
+        fTextureView = fTexture.CreateView();
+    }
+
+    return fTextureView;
+}
+
 } // namespace skgpu::graphite
 
