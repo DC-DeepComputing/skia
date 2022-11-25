@@ -40,7 +40,7 @@ public:
     ~DawnTexture() override {}
 
     const wgpu::Texture& dawnTexture() const { return fTexture; }
-    const wgpu::TextureView& dawnTextureView() const { return fTextureView; }
+    const wgpu::TextureView& dawnTextureView() const;
 
 private:
     DawnTexture(const DawnSharedContext* sharedContext,
@@ -54,7 +54,7 @@ private:
     void freeGpuData() override;
 
     wgpu::Texture     fTexture;
-    wgpu::TextureView fTextureView;
+    mutable wgpu::TextureView fTextureView;
 };
 
 } // namepsace skgpu::graphite
