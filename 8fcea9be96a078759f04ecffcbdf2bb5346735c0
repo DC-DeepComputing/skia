@@ -22,6 +22,30 @@
       },
       "revId": "8fcea9be96a078759f04ecffcbdf2bb5346735c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bcbc6c6_fc03e334",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T14:23:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74cdc6cb_8dcbe2f3",
+      "range": {
+        "startLine": 31,
+        "startChar": 15,
+        "endLine": 31,
+        "endChar": 16
+      },
+      "revId": "8fcea9be96a078759f04ecffcbdf2bb5346735c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
