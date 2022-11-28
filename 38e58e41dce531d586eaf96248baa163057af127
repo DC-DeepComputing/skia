@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c72f5ea_63932f68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-28T17:15:57Z",
+      "side": 1,
+      "message": "Can you provide more info about the build error you\u0027re hitting? I\u0027m able to build everything in Skia with Xcode 14.1, without these changes.",
+      "revId": "38e58e41dce531d586eaf96248baa163057af127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
