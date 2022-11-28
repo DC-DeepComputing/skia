@@ -34,6 +34,24 @@
       "parentUuid": "daaa561e_7d81af4a",
       "revId": "57b084ba542700ccba88915984df078b1ccdbc2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e0fbdf7_bd6dc2ff",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-28T18:20:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5ad15b40_d0f96956",
+      "revId": "57b084ba542700ccba88915984df078b1ccdbc2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
