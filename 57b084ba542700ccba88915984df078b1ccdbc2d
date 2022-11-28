@@ -16,6 +16,24 @@
       "message": "This file seemed like a good home for BindBufferInfo but let me know if there is another more suitable place for common types that are not draw or compute specific.",
       "revId": "57b084ba542700ccba88915984df078b1ccdbc2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ad15b40_d0f96956",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T18:13:49Z",
+      "side": 1,
+      "message": "This seems like a fine place. I suppose if we ever end up with lots of different \"Buffer\" type objects, we could consider splitting them off to a BufferTypes.h, but for now this seems reasonable to me.",
+      "parentUuid": "daaa561e_7d81af4a",
+      "revId": "57b084ba542700ccba88915984df078b1ccdbc2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
