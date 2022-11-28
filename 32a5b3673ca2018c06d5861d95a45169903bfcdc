@@ -16,6 +16,24 @@
       "message": "Was this done by gen_tasks somehow?",
       "revId": "32a5b3673ca2018c06d5861d95a45169903bfcdc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abe82dc_a5dd99ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T18:50:21Z",
+      "side": 1,
+      "message": "I don\u0027t know when it happened. I just noticed Gerrit said it was \"executable\".",
+      "parentUuid": "f5d459cd_d81c81b5",
+      "revId": "32a5b3673ca2018c06d5861d95a45169903bfcdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
