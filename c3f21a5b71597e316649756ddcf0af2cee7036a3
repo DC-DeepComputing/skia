@@ -70,6 +70,24 @@
       "parentUuid": "21e36b17_585ffea2",
       "revId": "c3f21a5b71597e316649756ddcf0af2cee7036a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2267272d_ed3a2025",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T14:01:00Z",
+      "side": 1,
+      "message": "Looks like I\u0027ll need to update the Bazel rules to use the expat_config.h from here instead of generating its own (I think the expat rules predate me knowing how to do this for freetype): https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bazel/external/expat/BUILD.bazel;l\u003d7;bpv\u003d1;bpt\u003d0",
+      "parentUuid": "b6a25049_3d0fae49",
+      "revId": "c3f21a5b71597e316649756ddcf0af2cee7036a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
