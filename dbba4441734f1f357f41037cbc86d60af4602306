@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f80265_457264d0",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-28T14:22:18Z",
+      "side": 1,
+      "message": "This counts both colors and positions, right? That is, it\u0027s really a striped array of gradient stops where fColors and fPositions always have the same length. Might be nice to have a comment here (especially if my explanation is wrong!). Otherwise it seems like this just tells the size of fColors.",
+      "range": {
+        "startLine": 43,
+        "startChar": 28,
+        "endLine": 43,
+        "endChar": 39
+      },
+      "revId": "dbba4441734f1f357f41037cbc86d60af4602306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
