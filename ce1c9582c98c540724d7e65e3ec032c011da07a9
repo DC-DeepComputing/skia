@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4611bf3c_d6da1c7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T14:03:48Z",
+      "side": 1,
+      "message": "FYI: I had to add DEPS to the compile CAS spec",
+      "revId": "ce1c9582c98c540724d7e65e3ec032c011da07a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
