@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127d3bb6_d0b0d5e0",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-28T17:47:34Z",
+      "side": 1,
+      "message": "We do want to fix this. Ignoring this will cause runtime crashes in wasm. See discussion at https://github.com/emscripten-core/emscripten/issues/16126 .",
+      "revId": "6f65f0631e5aba06582c59502b1274f8714fa127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
