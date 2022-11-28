@@ -66,6 +66,11 @@ $pure half4 sampleGrad(sampler2D s, float2, float2 dPdx, float2 dPdy);
 $pure half4 subpassLoad(subpassInput subpass);
 $pure half4 subpassLoad(subpassInputMS subpass, int sample);
 
+// We currently only support atomic operations on uint.
+$pure uint atomicLoad(atomic_uint atomic);
+void atomicStore(atomic_uint atomic, uint value);
+void atomicAdd(atomic_uint atomic, uint value);
+
 // Definitions of functions implementing all of the SkBlendMode blends.
 
 $pure half4 blend_clear(half4 src, half4 dst) { return half4(0); }

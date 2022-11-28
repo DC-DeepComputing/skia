@@ -1,10 +1,27 @@
 layout(metal, binding = 0) buffer ssbo {
-    atomic_uint ssboCounterA;
-    atomic_uint ssboCounterB;
+    atomic_uint ssboCounter;
 };
 
 workgroup atomic_uint wgCounter;
 
 void main() {
-    // TODO: reference `wgCounter` to exercise codegen.
+    // Initialize the local counter.
+    if (sk_LocalInvocationID.x == 0) {
+        atomicStore(wgCounter, 0);
+    }
+
+    // Synchronize the threads in the workgroup so they all see the initial value.
+    workgroupBarrier();
+
+    // All threads increment the counter.
+    atomicAdd(wgCounter, 1);
+
+    // Synchronize the threads again to ensure they have all executed the increment and the
+    // following load reads the same value across all threads in the workgroup.
+    workgroupBarrier();
+
+    // Add the workgroup-only tally to the global counter.
+    if (sk_LocalInvocationID.x == 0) {
+        atomicAdd(ssboCounter, atomicLoad(wgCounter));
+    }
 }

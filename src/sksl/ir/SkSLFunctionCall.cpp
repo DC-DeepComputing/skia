@@ -1049,6 +1049,12 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
         const Variable& child = *arguments.back()->as<VariableReference>().variable();
         arguments.pop_back();
         return ChildCall::Make(context, pos, returnType, child, std::move(arguments));
+    } else if (function.intrinsicKind() == k_atomicStore_IntrinsicKind ||
+               function.intrinsicKind() == k_atomicAdd_IntrinsicKind) {
+        if (!Analysis::UpdateVariableRefKind(
+                    arguments[0].get(), VariableReference::RefKind::kReadWrite, context.fErrors)) {
+            return nullptr;
+        }
     }
 
     return Make(context, pos, returnType, function, std::move(arguments));

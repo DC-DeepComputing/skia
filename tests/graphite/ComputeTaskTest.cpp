@@ -107,3 +107,100 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ComputeTaskTest, reporter, context) {
         outputBuffer->unmap();
     }
 }
+
+// TODO(b/260622403): The shader tested here is identical to
+// `resources/sksl/compute/Atomics.compute`. It would be nice to be able to exercise SkSL features
+// like this as part of SkSLTest.cpp instead of as a graphite test.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ComputeShaderAtomicOperationsTest, reporter, context) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    // Construct a kernel that increments a global (device memory) counter across multiple
+    // workgroups. Each workgroup maintains its own independent tally in a workgroup-shared counter
+    // which is then added to the global count.
+    //
+    // This exercises atomic store/load/add and coherent reads and writes over memory in storage and
+    // workgroup address spaces.
+    ComputePipelineDesc pipelineDesc;
+    pipelineDesc.setProgram(
+            R"(
+                layout(metal, binding = 0) buffer ssbo {
+                    atomic_uint ssboCounter;
+                };
+
+                workgroup atomic_uint wgCounter;
+
+                void main() {
+                    // Initialize the local counter.
+                    if (sk_LocalInvocationID.x == 0) {
+                        atomicStore(wgCounter, 0);
+                    }
+
+                    // Synchronize the threads in the workgroup so they all see the initial value.
+                    workgroupBarrier();
+
+                    // All threads increment the counter.
+                    atomicAdd(wgCounter, 1);
+
+                    // Synchronize the threads again to ensure they have all executed the increment
+                    // and the following load reads the same value across all threads in the
+                    // workgroup.
+                    workgroupBarrier();
+
+                    // Add the workgroup-only tally to the global counter.
+                    if (sk_LocalInvocationID.x == 0) {
+                        atomicAdd(ssboCounter, atomicLoad(wgCounter));
+                    }
+                }
+            )",
+            "TestAtomicOperations");
+
+    ResourceProvider* provider = recorder->priv().resourceProvider();
+    sk_sp<Buffer> ssbo = provider->findOrCreateBuffer(
+            sizeof(uint32_t), BufferType::kStorage, PrioritizeGpuReads::kNo);
+
+    std::vector<ResourceBinding> bindings;
+    bindings.push_back({/*index=*/0, {ssbo.get(), /*offset=*/0}});
+
+    // Initialize the global counter to 0.
+    {
+        uint32_t* ssboData = static_cast<uint32_t*>(ssbo->map());
+        ssboData[0] = 0;
+        ssbo->unmap();
+    }
+
+    constexpr uint32_t kWorkgroupCount = 32;
+    constexpr uint32_t kWorkgroupSize = 1024;
+
+    ComputePassDesc desc;
+    desc.fGlobalDispatchSize = WorkgroupSize(kWorkgroupCount, 1, 1);
+    desc.fLocalDispatchSize = WorkgroupSize(kWorkgroupSize, 1, 1);
+
+    // Record the compute pass task.
+    recorder->priv().add(ComputePassTask::Make(std::move(bindings), pipelineDesc, desc));
+
+    // Ensure the output buffer is synchronized to the CPU once the GPU submission has finished.
+    recorder->priv().add(SynchronizeToCpuTask::Make(ssbo));
+
+    // Submit the work and wait for it to complete.
+    std::unique_ptr<Recording> recording = recorder->snap();
+    if (!recording) {
+        ERRORF(reporter, "Failed to make recording");
+        return;
+    }
+
+    InsertRecordingInfo insertInfo;
+    insertInfo.fRecording = recording.get();
+    context->insertRecording(insertInfo);
+    context->submit(SyncToCpu::kYes);
+
+    // Verify the contents of the output buffer.
+    {
+        constexpr uint32_t kExpectedCount = kWorkgroupCount * kWorkgroupSize;
+        const uint32_t result = static_cast<const uint32_t*>(ssbo->map())[0];
+        REPORTER_ASSERT(reporter,
+                        result == kExpectedCount,
+                        "expected '%d', found '%d'",
+                        kExpectedCount, result);
+        ssbo->unmap();
+    }
+}
