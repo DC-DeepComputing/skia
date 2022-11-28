@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daaa561e_7d81af4a",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-28T17:52:19Z",
+      "side": 1,
+      "message": "This file seemed like a good home for BindBufferInfo but let me know if there is another more suitable place for common types that are not draw or compute specific.",
+      "revId": "57b084ba542700ccba88915984df078b1ccdbc2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
