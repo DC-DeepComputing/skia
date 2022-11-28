@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72459e18_8694cb3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-28T14:23:18Z",
+      "side": 1,
+      "message": "I don\u0027t love this impl, but it\u0027s probably fine. How concerned are we about performance ... because I\u0027d much rather see this written as:\n\n   fBuffer-\u003eresize(aligned + size, 0);",
+      "revId": "5715ef665470c438ecc6641c1b0f49347ccfa9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
