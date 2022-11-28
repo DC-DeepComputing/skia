@@ -68,6 +68,13 @@ static bool check_valid_uniform_type(Position pos,
                     pos, "variables of type '" + t->displayName() + "' may not be uniform");
             return false;
         }
+
+        // We disallow atomic variables in uniforms (as we do in readonly storage blocks).
+        if (error || t->isAtomic() || (t->isArray() && ct.isAtomic())) {
+            context.fErrors->error(
+                    pos, "variables of type '" + t->displayName() + "' may not be uniform");
+            return false;
+        }
     }
 
     // In non-RTE SkSL we allow structs and interface blocks to be uniforms but we must make sure
@@ -86,6 +93,22 @@ static bool check_valid_uniform_type(Position pos,
         }
     }
     return true;
+}
+
+static bool struct_has_atomic_member(const Type* type) {
+    SkASSERT(type->isStruct());
+
+    bool result = false;
+    for (const Type::Field& field : type->fields()) {
+        const Type& fieldType = *field.fType;
+        if (fieldType.isAtomic() || (fieldType.isArray() && fieldType.componentType().isAtomic())) {
+            return true;
+        }
+        if (fieldType.isStruct()) {
+            result |= struct_has_atomic_member(&fieldType);
+        }
+    }
+    return result;
 }
 
 }  // namespace
@@ -190,6 +213,24 @@ void VarDeclaration::ErrorCheck(const Context& context,
     if (baseType->isEffectChild() && (context.fConfig->fKind == ProgramKind::kMeshVertex ||
                                       context.fConfig->fKind == ProgramKind::kMeshFragment)) {
         context.fErrors->error(pos, "effects are not permitted in custom mesh shaders");
+    }
+    if (baseType->isAtomic() && !(modifiers.fFlags & Modifiers::kWorkgroup_Flag) &&
+        storage != Variable::Storage::kInterfaceBlock) {
+        context.fErrors->error(
+                pos,
+                "atomics are only permitted in workgroup variables and writable storage blocks");
+    }
+    // Atomics are allowed as a struct member but only if the struct is instantiated in an address
+    // space that supports atomics (workgroup or interface block)
+    if (baseType->isStruct() && struct_has_atomic_member(baseType)) {
+        if (!(modifiers.fFlags & Modifiers::kWorkgroup_Flag) &&
+            storage != Variable::Storage::kInterfaceBlock &&
+            !(type->isInterfaceBlock() && modifiers.fFlags & Modifiers::kBuffer_Flag &&
+              !(modifiers.fFlags & Modifiers::kReadOnly_Flag))) {
+            context.fErrors->error(pos,
+                                   "struct with atomic member only permitted in workgroup "
+                                   "variables and writable storage blocks");
+        }
     }
     if (modifiers.fLayout.fFlags & Layout::kColor_Flag) {
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {

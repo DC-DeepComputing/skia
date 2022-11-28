@@ -1,0 +1,67 @@
+workgroup atomic_uint wgAtomic;          // valid
+workgroup atomic_uint wgAtomicArray[2];  // valid
+
+atomic_uint globalAtomic;          // invalid
+atomic_uint globalAtomicArray[2];  // invalid
+
+struct S {
+    atomic_uint structMemberAtomic;
+    atomic_uint structMemberAtomicArray[2];
+};
+
+struct NestedS {
+    S nestedStructWithAtomicMember;
+};
+
+workgroup S wgStructWithAtomicMember;              // valid
+workgroup S wgStructWithAtomicMemberArray[2];      // valid
+workgroup NestedS wgStructWithNestedAtomicMember;  // valid
+
+S globalStructWithAtomicMember;              // invalid
+S globalStructWithAtomicMemberArray[2];      // invalid
+NestedS globalStructWithNestedAtomicMember;  // invalid
+
+layout(metal, binding = 0) buffer ssbo {
+    atomic_uint ssboAtomic;          // valid
+    atomic_uint ssboAtomicArray[2];  // valid
+    S ssboStructWithAtomicMember;         // valid
+    S ssboStructWithAtomicMemberArray[2]; // valid
+};
+
+layout(metal, binding = 1) uniform ubo {
+    atomic_uint uboAtomic;                    // invalid
+    atomic_uint uboAtomicArray[2];            // invalid
+    S uboStructWithAtomicMember;              // invalid
+    S uboStructWithAtomicMemberArray[2];      // invalid
+    NestedS uboStructWithNestedAtomicMember;  // invalid
+};
+
+layout(metal, binding = 2) readonly buffer roSsbo {
+    atomic_uint readonlySsboAtomic;                    // invalid
+    atomic_uint readonlySsboAtomicArray[2];            // invalid
+    S readonlySsboStructWithAtomicMember;              // invalid
+    S readonlySsboStructWithAtomicMemberArray[2];      // invalid
+    NestedS readonlySsboStructWithNestedAtomicMember;  // invalid
+};
+
+void main() {
+    atomic_uint localAtomic;                // invalid
+    atomic_uint localAtomicArray[2];        // invalid
+    S localStructWithAtomicMember;          // invalid
+    S localStructWithAtomicMemberArray[2];  // invalid
+}
+
+/*%%*
+atomics are only permitted in workgroup variables and writable storage blocks
+atomics are only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+variables of type 'atomic_uint' may not be uniform
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+atomics are only permitted in workgroup variables and writable storage blocks
+atomics are only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+struct with atomic member only permitted in workgroup variables and writable storage blocks
+*%%*/

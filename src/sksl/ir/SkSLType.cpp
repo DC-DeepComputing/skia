@@ -360,6 +360,26 @@ private:
     int8_t fBitWidth;
 };
 
+class AtomicType final : public Type {
+public:
+    inline static constexpr TypeKind kTypeKind = TypeKind::kAtomic;
+
+    AtomicType(std::string_view name, const char* abbrev, const Type& scalarType)
+            : INHERITED(name, abbrev, kTypeKind), fScalarType(scalarType) {
+        SkASSERT(scalarType.isScalar());
+        SkASSERT(fScalarType.numberKind() == NumberKind::kUnsigned);
+    }
+
+    const Type& componentType() const override { return fScalarType; }
+
+    bool isAllowedInES2() const override { return false; }
+
+private:
+    using INHERITED = Type;
+
+    const Type& fScalarType;
+};
+
 class MatrixType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kMatrix;
@@ -625,7 +645,12 @@ std::unique_ptr<Type> Type::MakeScalarType(std::string_view name, const char* ab
                                            Type::NumberKind numberKind, int8_t priority,
                                            int8_t bitWidth) {
     return std::make_unique<ScalarType>(name, abbrev, numberKind, priority, bitWidth);
+}
 
+std::unique_ptr<Type> Type::MakeAtomicType(std::string_view name,
+                                           const char* abbrev,
+                                           const Type& scalarType) {
+    return std::make_unique<AtomicType>(name, abbrev, scalarType);
 }
 
 static bool is_too_deeply_nested(const Type* t, int limit) {
