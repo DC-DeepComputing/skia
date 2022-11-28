@@ -154,6 +154,10 @@ public:
         return true;
     }
 
+    bool hasAtomicMember() const override {
+        return fComponentType.isAtomic() || fComponentType.hasAtomicMember();
+    }
+
     bool isUnsizedArray() const override {
         return fCount == kUnsizedArray;
     }
@@ -360,6 +364,24 @@ private:
     int8_t fBitWidth;
 };
 
+class AtomicType final : public Type {
+public:
+    inline static constexpr TypeKind kTypeKind = TypeKind::kAtomic;
+
+    AtomicType(std::string_view name, const char* abbrev, const Type& scalarType)
+            : INHERITED(name, abbrev, kTypeKind), fScalarType(scalarType) {
+        SkASSERT(scalarType.isScalar());
+        SkASSERT(fScalarType.numberKind() == NumberKind::kUnsigned);
+    }
+
+    bool isAllowedInES2() const override { return false; }
+
+private:
+    using INHERITED = Type;
+
+    const Type& fScalarType;
+};
+
 class MatrixType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kMatrix;
@@ -496,9 +518,14 @@ public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kStruct;
 
     StructType(Position pos, std::string_view name, std::vector<Field> fields, bool interfaceBlock)
-        : INHERITED(std::move(name), "S", kTypeKind, pos)
-        , fFields(std::move(fields))
-        , fInterfaceBlock(interfaceBlock) {}
+            : INHERITED(std::move(name), "S", kTypeKind, pos)
+            , fFields(std::move(fields))
+            , fInterfaceBlock(interfaceBlock)
+            , fHasAtomicMember(false) {
+        for (const Field& f : fFields) {
+            fHasAtomicMember |= (f.fType->isAtomic() || f.fType->hasAtomicMember());
+        }
+    }
 
     const std::vector<Field>& fields() const override {
         return fFields;
@@ -506,6 +533,10 @@ public:
 
     bool isStruct() const override {
         return true;
+    }
+
+    bool hasAtomicMember() const override {
+        return fHasAtomicMember;
     }
 
     bool isInterfaceBlock() const override {
@@ -531,6 +562,7 @@ private:
 
     std::vector<Field> fFields;
     bool fInterfaceBlock;
+    bool fHasAtomicMember;
 };
 
 class VectorType final : public Type {
@@ -625,7 +657,12 @@ std::unique_ptr<Type> Type::MakeScalarType(std::string_view name, const char* ab
                                            Type::NumberKind numberKind, int8_t priority,
                                            int8_t bitWidth) {
     return std::make_unique<ScalarType>(name, abbrev, numberKind, priority, bitWidth);
+}
 
+std::unique_ptr<Type> Type::MakeAtomicType(std::string_view name,
+                                           const char* abbrev,
+                                           const Type& scalarType) {
+    return std::make_unique<AtomicType>(name, abbrev, scalarType);
 }
 
 static bool is_too_deeply_nested(const Type* t, int limit) {
@@ -668,7 +705,7 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
         if (field.fType->isVoid()) {
             context.fErrors->error(field.fPosition, "type 'void' is not permitted in a struct");
         }
-        if (field.fType->isOpaque()) {
+        if (field.fType->isOpaque() && !field.fType->isAtomic()) {
             context.fErrors->error(field.fPosition, "opaque type '" + field.fType->displayName() +
                                                     "' is not permitted in a struct");
         }
@@ -1121,7 +1158,7 @@ bool Type::checkIfUsableInArray(const Context& context, Position arrayPos) const
         context.fErrors->error(arrayPos, "type 'void' may not be used in an array");
         return false;
     }
-    if (this->isOpaque()) {
+    if (this->isOpaque() && !this->isAtomic()) {
         context.fErrors->error(arrayPos, "opaque type '" + std::string(this->name()) +
                                          "' may not be used in an array");
         return false;

@@ -1,0 +1,18 @@
+struct S {
+    atomic_uint aCount;
+};
+
+workgroup atomic_uint wgCounter;
+workgroup atomic_uint wgCounterArray[2];
+workgroup S wgStructWithCounter;
+
+layout(metal, binding = 0) buffer ssbo {
+    atomic_uint ssboCounterA;
+    atomic_uint ssboCounterB;
+    S ssboStructWithCounter;
+    atomic_uint ssboCounterArray[];
+};
+
+void main() {
+    // TODO: reference all counter types to exercise codegen.
+}
