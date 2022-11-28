@@ -12,18 +12,22 @@
 
 #define GET_PROC_LOCAL(F) GrGL##F##Fn* F = (GrGL##F##Fn*)get(ctx, "gl" #F)
 
-sk_sp<const GrGLInterface> GrGLMakeAssembledInterface(void *ctx, GrGLGetProc get) {
-    GET_PROC_LOCAL(GetString);
-    if (nullptr == GetString) {
-        return nullptr;
+sk_sp<const GrGLInterface> GrGLMakeAssembledInterface(void* ctx,
+                                                      GrGLGetProc get,
+                                                      const char* versionString) {
+    if (nullptr == versionString) {
+        GET_PROC_LOCAL(GetString);
+        if (nullptr == GetString) {
+            return nullptr;
+        }
+
+        versionString = reinterpret_cast<const char*>(GetString(GR_GL_VERSION));
+        if (nullptr == versionString) {
+            return nullptr;
+        }
     }
 
-    const char* verStr = reinterpret_cast<const char*>(GetString(GR_GL_VERSION));
-    if (nullptr == verStr) {
-        return nullptr;
-    }
-
-    GrGLStandard standard = GrGLGetStandardInUseFromString(verStr);
+    GrGLStandard standard = GrGLGetStandardInUseFromString(versionString);
     // standard can be unused (optimzed away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
 
