@@ -159,6 +159,9 @@ std::string MetalCodeGenerator::typeName(const Type& type) {
                 default:                              SkUNREACHABLE;
             }
             break;
+        case Type::TypeKind::kAtomic:
+            // SkSL currently only supports the atomicUint type.
+            return "atomic_uint";
         default:
             return std::string(type.name());
     }
