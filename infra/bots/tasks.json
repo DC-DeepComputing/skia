@@ -94173,6 +94173,7 @@
         "skia/.vpython",
         "skia/BUILD.bazel",
         "skia/BUILD.gn",
+        "skia/DEPS",
         "skia/WORKSPACE.bazel",
         "skia/bazel",
         "skia/bench",
