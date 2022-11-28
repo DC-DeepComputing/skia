@@ -25,6 +25,12 @@ public:
         return fPrecompileBase->numCombinations();
     }
 
+    void addToKey(const KeyContext& keyContext,
+                  int desiredCombination,
+                  PaintParamsKeyBuilder* builder) const {
+        fPrecompileBase->addToKey(keyContext, desiredCombination, builder);
+    }
+
 private:
     friend class PrecompileBase; // to construct/copy this type.
 

@@ -23,7 +23,10 @@ class SkRuntimeEffect;
 
 namespace skgpu::graphite {
 
+class KeyContext;
+class PaintParamsKeyBuilder;
 class PrecompileBasePriv;
+class ShaderCodeDictionary;
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -44,16 +47,25 @@ public:
     PrecompileBasePriv priv();
     const PrecompileBasePriv priv() const;  // NOLINT(readability-const-return-type)
 
+    // TODO: some of this should be protected NOT private
 private:
     friend class PrecompileBasePriv;
 
-    // TODO: make these two pure virtual.
-    virtual int numIntrinsicCombinations() const { return 1; }
-    virtual int numChildCombinations() const { return 1; }
+    virtual int numIntrinsicCombinations() const = 0; /*{ return 1; } */
+    virtual int numChildCombinations() const = 0; /*{ return 1; }*/
 
     int numCombinations() const {
         return this->numIntrinsicCombinations() * this->numChildCombinations();
     }
+
+    // TODO: remove this
+    virtual void beginBlock(const KeyContext&,
+                            int intrinsicCombination,
+                            PaintParamsKeyBuilder*) const {}
+
+    virtual void addToKey(const KeyContext&,
+                          int desiredCombination,
+                          PaintParamsKeyBuilder*) const = 0;
 
     Type fType;
 };
@@ -94,29 +106,29 @@ class PaintOptionsPriv;
 class PaintOptions {
 public:
     void setShaders(SkSpan<const sk_sp<PrecompileShader>> shaders) {
-        fShaders.assign(shaders.begin(), shaders.end());
+        fShaderOptions.assign(shaders.begin(), shaders.end());
     }
 
     void setMaskFilters(SkSpan<const sk_sp<PrecompileMaskFilter>> maskFilters) {
-        fMaskFilters.assign(maskFilters.begin(), maskFilters.end());
+        fMaskFilterOptions.assign(maskFilters.begin(), maskFilters.end());
     }
 
     void setColorFilters(SkSpan<const sk_sp<PrecompileColorFilter>> colorFilters) {
-        fColorFilters.assign(colorFilters.begin(), colorFilters.end());
+        fColorFilterOptions.assign(colorFilters.begin(), colorFilters.end());
     }
 
     void setImageFilters(SkSpan<const sk_sp<PrecompileImageFilter>> imageFilters) {
-        fImageFilters.assign(imageFilters.begin(), imageFilters.end());
+        fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
     }
 
     void setBlendModes(SkSpan<SkBlendMode> blendModes) {
-        fBlenders.reserve(blendModes.size());
+        fBlenderOptions.reserve(blendModes.size());
         for (SkBlendMode bm : blendModes) {
-            fBlenders.emplace_back(PrecompileBlender::Mode(bm));
+            fBlenderOptions.emplace_back(PrecompileBlender::Mode(bm));
         }
     }
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
-        fBlenders.assign(blenders.begin(), blenders.end());
+        fBlenderOptions.assign(blenders.begin(), blenders.end());
     }
 
     // Provides access to functions that aren't part of the public API.
@@ -126,13 +138,22 @@ public:
 private:
     friend class PaintOptionsPriv;
 
-    int numCombinations() const;
+    int numShaderCombinations() const;
+    int numMaskFilterCombinations() const;
+    int numColorFilterCombinations() const;
+    // TODO: need to decompose imagefilters into component draws
+    int numBlendModeCombinations() const;
 
-    std::vector<sk_sp<PrecompileShader>> fShaders;
-    std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilters;
-    std::vector<sk_sp<PrecompileColorFilter>> fColorFilters;
-    std::vector<sk_sp<PrecompileImageFilter>> fImageFilters;
-    std::vector<sk_sp<PrecompileBlender>> fBlenders;
+    int numCombinations() const;
+    // 'desiredCombination' must be less than the result of the numCombinations call
+    void createKey(const KeyContext&, int desiredCombination, PaintParamsKeyBuilder*) const;
+    void buildCombinations(ShaderCodeDictionary*) const;
+
+    std::vector<sk_sp<PrecompileShader>> fShaderOptions;
+    std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
+    std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
+    std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
+    std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
 };
 
 } // namespace skgpu::graphite

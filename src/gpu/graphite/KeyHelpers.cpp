@@ -312,6 +312,11 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
+ImageShaderBlock::ImageData::ImageData()
+        : fSubset(SkRect::MakeEmpty()) {
+    fTileModes[0] = fTileModes[1] = SkTileMode::kRepeat;
+}
+
 ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                        SkTileMode tileModeX,
                                        SkTileMode tileModeY,
@@ -423,11 +428,11 @@ void add_matrix_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
 void MatrixColorFilterBlock::BeginBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
-                                        const MatrixColorFilterData& matrixCFData) {
+                                        const MatrixColorFilterData* matrixCFData) {
     auto dict = keyContext.dict();
 
     if (gatherer) {
-        add_matrix_colorfilter_uniform_data(dict, matrixCFData, gatherer);
+        add_matrix_colorfilter_uniform_data(dict, *matrixCFData, gatherer);
     }
 
     builder->beginBlock(SkBuiltInCodeSnippetID::kMatrixColorFilter);
