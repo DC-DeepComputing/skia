@@ -130,7 +130,7 @@ class SK_API SkRefCnt : public SkRefCntBase {
  */
 template <typename T> static inline T* SkRef(T* obj) {
     SkASSERT(obj);
-    obj->ref();
+    ((SkRefCnt *)obj)->ref();
     return obj;
 }
 
@@ -138,7 +138,7 @@ template <typename T> static inline T* SkRef(T* obj) {
  */
 template <typename T> static inline T* SkSafeRef(T* obj) {
     if (obj) {
-        obj->ref();
+        ((SkRefCnt *)obj)->ref();
     }
     return obj;
 }
@@ -147,7 +147,7 @@ template <typename T> static inline T* SkSafeRef(T* obj) {
  */
 template <typename T> static inline void SkSafeUnref(T* obj) {
     if (obj) {
-        obj->unref();
+        ((SkRefCnt *)obj)->unref();
     }
 }
 
