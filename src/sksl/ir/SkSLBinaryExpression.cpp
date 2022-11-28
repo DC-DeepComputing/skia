@@ -116,6 +116,13 @@ std::unique_ptr<Expression> BinaryExpression::Convert(const Context& context,
                 "' are not permitted");
         return nullptr;
     }
+    if (isAssignment &&
+        (leftType->isAtomic() || (leftType->isArray() && leftType->componentType().isAtomic()))) {
+        context.fErrors->error(pos,
+                               "assignments to atomic type '" + left->type().displayName() +
+                                       "' are not permitted");
+        return nullptr;
+    }
     if (context.fConfig->strictES2Mode()) {
         if (!op.isAllowedInStrictES2Mode()) {
             context.fErrors->error(pos, "operator '" + std::string(op.tightOperatorName()) +
