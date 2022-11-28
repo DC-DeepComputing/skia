@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f0d0ec_db299f67",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-11-28T17:44:59Z",
+      "side": 1,
+      "message": "Should we also do this whenever any *.bazel file is modified? That\u0027s the most common cause if a *.gni file getting out of date isn\u0027t it?",
+      "revId": "a45a45dc782192e639a32edf4668561f48974b8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
