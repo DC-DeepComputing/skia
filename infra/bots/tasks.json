@@ -94496,6 +94496,8 @@
     "Housekeeper-OnDemand-Presubmit": {},
     "Housekeeper-PerCommit-CheckGeneratedFiles": {
       "location_regexes": [
+        "gn/.*.gni",
+        "modules/.*.gni",
         "src/gpu/effects/generated/.*",
         "src/sksl/.*",
         "src/gpu/gpu_workaround_list.txt"
