@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b2008b_80cd87bc",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-28T23:18:12Z",
+      "side": 1,
+      "message": "Can we get a similar effect in a less hard-coded way by marking these params as `out` or `inout` in the module? (We may need to update Metal to avoid emitting helper functions for the `atomic_uint` type, but that should be simple enough.)",
+      "range": {
+        "startLine": 1052,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 0
+      },
+      "revId": "f98c178bb1bf44c21b7cfb20d4fd80951ece3fce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
