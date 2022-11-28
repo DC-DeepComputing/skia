@@ -283,7 +283,7 @@ public:
     T* release() { return fPtr.release(); }
 
 private:
-    std::unique_ptr<T, SkFunctionWrapper<void(void*), sk_free>> fPtr;
+    std::unique_ptr<T, SkWrapFree> fPtr;
 };
 
 template <size_t kCountRequested,
@@ -411,7 +411,7 @@ private:
     alignas(T) char fStorage[sizeof(T)*N];
 };
 
-using SkAutoFree = std::unique_ptr<void, SkFunctionWrapper<void(void*), sk_free>>;
+using SkAutoFree = std::unique_ptr<void, SkWrapFree>;
 
 template<typename C, std::size_t... Is>
 constexpr auto SkMakeArrayFromIndexSequence(C c, std::index_sequence<Is...> is)
