@@ -70,6 +70,7 @@ WARNINGS = [
     #### Warnings we are unlikely to fix ####
     "-Wno-c++98-compat",
     "-Wno-c++98-compat-pedantic",
+    "-Wno-cast-function-type-strict",
     "-Wno-covered-switch-default",
     "-Wno-declaration-after-statement",
     "-Wno-deprecated",
