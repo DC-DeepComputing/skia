@@ -72,10 +72,7 @@ public:
     }
 
 private:
-    struct WrapFree {
-        void operator()(void* p) { sk_free(p); }
-    };
-    std::unique_ptr<void, WrapFree> fPtr;
+    std::unique_ptr<void, SkFreeDeleter> fPtr;
     size_t fSize;  // can be larger than the requested size (see kReuse)
 };
 

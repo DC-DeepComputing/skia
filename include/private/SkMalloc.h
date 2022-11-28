@@ -21,6 +21,15 @@
 SK_API extern void sk_free(void*);
 
 /**
+ * Convenience struct for unique_ptr when dealing with void* data. Using SkFreeDeleter
+ * works around a problem where sk_free collides with the same symbol in OpenSSL in larger
+ * projects.
+ */
+struct SkFreeDeleter {
+    void operator()(void* p) { sk_free(p); }
+};
+
+/**
  *  Called internally if we run out of memory. The platform implementation must
  *  not return, but should either throw an exception or otherwise exit.
  */
