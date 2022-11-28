@@ -91,6 +91,7 @@ public:
 
     enum class TypeKind : int8_t {
         kArray,
+        kAtomic,
         kGeneric,
         kLiteral,
         kMatrix,
@@ -185,6 +186,10 @@ public:
     /** Create a vector type. */
     static std::unique_ptr<Type> MakeVectorType(std::string_view name, const char* abbrev,
                                                 const Type& componentType, int columns);
+
+    /** Create an atomic type. */
+    static std::unique_ptr<Type> MakeAtomicType(std::string_view name,
+                                                const char* abbrev);
 
     template <typename T>
     bool is() const {
@@ -324,6 +329,7 @@ public:
      */
     bool isOpaque() const {
         switch (fTypeKind) {
+            case TypeKind::kAtomic:
             case TypeKind::kBlender:
             case TypeKind::kColorFilter:
             case TypeKind::kSampler:
@@ -448,6 +454,15 @@ public:
 
     bool isGeneric() const {
         return fTypeKind == TypeKind::kGeneric;
+    }
+
+    bool isAtomic() const { return this->typeKind() == TypeKind::kAtomic; }
+
+    /**
+     * Returns true if this type is a struct or array that has an atomic constituent.
+     */
+    virtual bool hasAtomicMember() const {
+        return false;
     }
 
     virtual bool isScalar() const {
