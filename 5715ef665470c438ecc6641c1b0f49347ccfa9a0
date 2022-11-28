@@ -51,6 +51,24 @@
       "parentUuid": "17282aca_c5c5d521",
       "revId": "5715ef665470c438ecc6641c1b0f49347ccfa9a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "656bcf8e_9747f2f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5639
+      },
+      "writtenOn": "2022-11-28T16:32:56Z",
+      "side": 1,
+      "message": "I am not an expert at deciphering MSAN reports, but my understanding of the reports tied to this bug (they\u0027re not all identical) is that the uninitialized memory is allocated at glyph cache serialization time, and ends up being consumed in various places. Sometimes the crash is in deserialization code, sometimes it\u0027s in SwiftShader, sometimes it in the raster decoder, etc.  My understanding is that MSAN attempts to track uninitialized bytes as they get copied around, transferred to other processes via shared memory, etc. And MSAN finally crashes at a point in the code that is not a trivial copy, where the bytes finally get consumed.  That\u0027s why the report are made up of multiple stack traces, showing the history of how the uninitialized memory got propagated.  We usually try to fix these problems at the source, by focusing on the stack trace that shows where the memory was allocated, not where it was read.\n\nBrian, your suggestion of \"fBuffer-\u003eresize(aligned + size, 0)\" would be fine IMHO, but it would initialize all of the newly allocated bytes, as opposed to just the padding bytes.\n\nI\u0027m not 100% sure why this is flaky, but if I had to guess, I would say that there are probably non-deterministic factors in the ordering of tasks that are dispatched to the Chromium\u0027s RasterInterface.  Therefore it might not always be the same task that serializes a given chunk of glyph data, depending on which task gets dispatched first. \n\nWhat I think is happening is that whatever was serialized just before the data structure that added the padding bytes, is probably reading (and therefore propagating) the padding bytes at deserialization time. For example say you have an 8-bit value followed by three padding bytes (because the next structure needs to by 32-bit aligned), then the code that reads the 8-bit values may by performing a 32-bit read under the hood, thus causing a false positive in MSAN, because MSAN does not track bitwise operations that may be safely isolating the initialized bits. To know for sure, we have to look at the disassembly.\n\nRegardless of whether this is a false positive or not, we need to modify this code in a way that allows MSAN to do its job correctly, to guarantee data safety.",
+      "parentUuid": "b638b383_1336e213",
+      "revId": "5715ef665470c438ecc6641c1b0f49347ccfa9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
