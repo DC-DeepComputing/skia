@@ -99,27 +99,27 @@ public:
 
     void store_src_rg(SlotRange slots) {
         SkASSERT(slots.count == 2);
-        fInstructions.push_back({BuilderOp::store_src_rg, {slots.index}});
+        fInstructions.push_back({BuilderOp::store_src_rg, {First(slots), Last(slots)}});
     }
 
     void store_src(SlotRange slots) {
         SkASSERT(slots.count == 4);
-        fInstructions.push_back({BuilderOp::store_src, {slots.index}});
+        fInstructions.push_back({BuilderOp::store_src, {First(slots), Last(slots)}});
     }
 
     void store_dst(SlotRange slots) {
         SkASSERT(slots.count == 4);
-        fInstructions.push_back({BuilderOp::store_dst, {slots.index}});
+        fInstructions.push_back({BuilderOp::store_dst, {First(slots), Last(slots)}});
     }
 
     void load_src(SlotRange slots) {
         SkASSERT(slots.count == 4);
-        fInstructions.push_back({BuilderOp::load_src, {slots.index}});
+        fInstructions.push_back({BuilderOp::load_src, {First(slots), Last(slots)}});
     }
 
     void load_dst(SlotRange slots) {
         SkASSERT(slots.count == 4);
-        fInstructions.push_back({BuilderOp::load_dst, {slots.index}});
+        fInstructions.push_back({BuilderOp::load_dst, {First(slots), Last(slots)}});
     }
 
     // Use the same SkRasterPipeline op regardless of the literal type.
@@ -149,13 +149,13 @@ public:
 
     void push_slots(SlotRange src) {
         // Translates into copy_slots_unmasked (from values into temp stack) in Raster Pipeline.
-        fInstructions.push_back({BuilderOp::push_slots, {src.index}, src.count});
+        fInstructions.push_back({BuilderOp::push_slots, {First(src), Last(src)}});
     }
 
     void copy_stack_to_slots(SlotRange dst) {
         // Translates into copy_slots_unmasked (from temp stack to values) in Raster Pipeline.
         // Does not discard any values on the temp stack.
-        fInstructions.push_back({BuilderOp::copy_stack_to_slots, {dst.index}, dst.count});
+        fInstructions.push_back({BuilderOp::copy_stack_to_slots, {First(dst), Last(dst)}});
     }
 
     void discard_stack(int32_t count = 1) {
@@ -190,16 +190,17 @@ public:
 
     void copy_slots_masked(SlotRange dst, SlotRange src) {
         SkASSERT(dst.count == src.count);
-        fInstructions.push_back({BuilderOp::copy_slot_masked, {dst.index, src.index}, dst.count});
+        fInstructions.push_back({BuilderOp::copy_slot_masked, {First(dst), Last(dst), First(src)}});
     }
 
     void copy_slots_unmasked(SlotRange dst, SlotRange src) {
         SkASSERT(dst.count == src.count);
-        fInstructions.push_back({BuilderOp::copy_slot_unmasked, {dst.index, src.index}, dst.count});
+        fInstructions.push_back({BuilderOp::copy_slot_unmasked,
+                                {First(dst), Last(dst), First(src)}});
     }
 
     void zero_slots_unmasked(SlotRange dst) {
-        fInstructions.push_back({BuilderOp::zero_slot_unmasked, {dst.index}, dst.count});
+        fInstructions.push_back({BuilderOp::zero_slot_unmasked, {First(dst), Last(dst)}});
     }
 
     void push_condition_mask() {
@@ -213,6 +214,9 @@ public:
     }
 
 private:
+    static Slot First(SlotRange r) { return r.index; }
+    static Slot Last(SlotRange r)  { return r.index + r.count - 1; }
+
     SkTArray<Instruction> fInstructions;
 };
 

@@ -19,6 +19,10 @@ namespace RP {
 
 using SkRP = SkRasterPipeline;
 
+static int slot_range_AB(const Instruction& inst) {
+    return inst.fSlotB - inst.fSlotA + 1;
+}
+
 std::unique_ptr<Program> Builder::finish() {
     return std::make_unique<Program>(std::move(fInstructions));
 }
@@ -48,7 +52,7 @@ int Program::numTempStackSlots() {
                 break;
 
             case BuilderOp::push_slots:
-                current += inst.fImmA;
+                current += slot_range_AB(inst);
                 largest = std::max(current, largest);
                 break;
 
@@ -130,6 +134,9 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
     for (const Instruction& inst : fInstructions) {
         auto SlotA = [&]() { return &slotPtr[N * inst.fSlotA]; };
         auto SlotB = [&]() { return &slotPtr[N * inst.fSlotB]; };
+        auto SlotC = [&]() { return &slotPtr[N * inst.fSlotC]; };
+
+        auto SlotRangeAB = [&]() { return slot_range_AB(inst); };
 
         switch (inst.fOp) {
             case BuilderOp::init_lane_masks:
@@ -173,20 +180,20 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 break;
 
             case BuilderOp::copy_slot_masked:
-                pipeline->append_copy_slots_masked(alloc, SlotA(), SlotB(), inst.fImmA);
+                pipeline->append_copy_slots_masked(alloc, SlotA(), SlotC(), SlotRangeAB());
                 break;
 
             case BuilderOp::copy_slot_unmasked:
-                pipeline->append_copy_slots_unmasked(alloc, SlotA(), SlotB(), inst.fImmA);
+                pipeline->append_copy_slots_unmasked(alloc, SlotA(), SlotB(), SlotRangeAB());
                 break;
 
             case BuilderOp::zero_slot_unmasked:
-                pipeline->append_zero_slots_unmasked(SlotA(), inst.fImmA);
+                pipeline->append_zero_slots_unmasked(SlotA(), SlotRangeAB());
                 break;
 
             case BuilderOp::push_slots:
-                pipeline->append_copy_slots_unmasked(alloc, tempStackPtr, SlotA(), inst.fImmA);
-                tempStackPtr += N * inst.fImmA;
+                pipeline->append_copy_slots_unmasked(alloc, tempStackPtr, SlotA(), SlotRangeAB());
+                tempStackPtr += N * SlotRangeAB();
                 break;
 
             case BuilderOp::store_condition_mask:
@@ -210,8 +217,8 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 break;
 
             case BuilderOp::copy_stack_to_slots: {
-                float* src = tempStackPtr - N * inst.fImmA;
-                pipeline->append_copy_slots_masked(alloc, SlotA(), src, inst.fImmA);
+                float* src = tempStackPtr - N * SlotRangeAB();
+                pipeline->append_copy_slots_masked(alloc, SlotA(), src, SlotRangeAB());
                 break;
             }
             case BuilderOp::duplicate:
