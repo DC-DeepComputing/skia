@@ -447,6 +447,8 @@ static void gather_gold() {
 static SkTHashSet<SkString>* gUninterestingHashes = new SkTHashSet<SkString>;
 
 static void gather_uninteresting_hashes() {
+    const char *s = NULL;
+    printf( "%c\n", s[0] );
     if (!FLAGS_uninterestingHashesFile.isEmpty()) {
         sk_sp<SkData> data(SkData::MakeFromFileName(FLAGS_uninterestingHashesFile[0]));
         if (!data) {
