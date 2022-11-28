@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eecdc72_d8c0633e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-28T18:48:37Z",
+      "side": 1,
+      "message": "Does this cause a measurable performance improvement? That\u0027d be kinda surprising. It\u0027s definitely interesting to mull over, though; `fSize+i` isn\u0027t safe to hoist because `~T()` could technically change the array size. Of course we are not interested in preserving this behavior",
+      "revId": "3949b02b42f18862d9770d29a715b97f6b8b1bd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
