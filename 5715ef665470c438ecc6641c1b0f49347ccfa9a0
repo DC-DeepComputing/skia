@@ -33,6 +33,24 @@
       "message": "Now that I\u0027m back from holiday. I\u0027m digging into this more. From the msan backtrace:\nhttps://paste.googleplex.com/6667167461277696\n\nIt looks like the uninitialized memory comes from SwiftShader by way of Vulkan.\n#1 0x7f40ce1532b1 in allocate third_party/swiftshader/src/System/Memory.cpp:81:42\n\nI see later that there is a MSAN report that shows the glyph cache serialization software. Can I get the full MSAN report?\n\nSo, the SwiftShader MSAN report and the report in the bug that shows glyph serialization are unrelated?",
       "revId": "5715ef665470c438ecc6641c1b0f49347ccfa9a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b638b383_1336e213",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-28T15:16:44Z",
+      "side": 1,
+      "message": "Did this solve the flaky problem?",
+      "parentUuid": "17282aca_c5c5d521",
+      "revId": "5715ef665470c438ecc6641c1b0f49347ccfa9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
