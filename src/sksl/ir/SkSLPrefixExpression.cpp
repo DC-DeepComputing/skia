@@ -163,7 +163,7 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
     const Type& baseType = base->type();
     switch (op.kind()) {
         case Operator::Kind::PLUS:
-            if (baseType.isArray() || !baseType.componentType().isNumber()) {
+            if (baseType.isArray() || baseType.isAtomic() || !baseType.componentType().isNumber()) {
                 context.fErrors->error(pos,
                                        "'+' cannot operate on '" + baseType.displayName() + "'");
                 return nullptr;
@@ -171,7 +171,7 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
             break;
 
         case Operator::Kind::MINUS:
-            if (baseType.isArray() || !baseType.componentType().isNumber()) {
+            if (baseType.isArray() || baseType.isAtomic() || !baseType.componentType().isNumber()) {
                 context.fErrors->error(pos,
                                        "'-' cannot operate on '" + baseType.displayName() + "'");
                 return nullptr;
