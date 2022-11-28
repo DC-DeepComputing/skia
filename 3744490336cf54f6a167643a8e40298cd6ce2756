@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749bddd2_9bde8fc2",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T13:34:21Z",
+      "side": 1,
+      "message": "To avoid this surprise failure again, I\u0027ll add the CheckGeneratedFiles job to the CQ if this file is updated.",
+      "revId": "3744490336cf54f6a167643a8e40298cd6ce2756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
