@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1e4924_667797ea",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T19:30:50Z",
+      "side": 1,
+      "message": "Nothing to do for this CL, but I wonder if some how it would make sense to surface these constants and need for another buffer higher up in Graphite. There is a lot of talk about managing bind groups higher in graphite and in that world I feel like we\u0027d want to know about extra buffers like this as well (in some sense same for metal and when it will use set*Bytes calls). Also not sure if we could get some advantage from sharing buffers instead of every command buffer needing to make a single small allocation here.",
+      "range": {
+        "startLine": 449,
+        "startChar": 9,
+        "endLine": 449,
+        "endChar": 34
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e87e13fe_7a624b0c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T19:30:50Z",
+      "side": 1,
+      "message": "this-\u003esyncUniforBuffers(), and all other uses of this call. In Skia\u0027s style we always include this-\u003e when calling member functions",
+      "range": {
+        "startLine": 494,
+        "startChar": 4,
+        "endLine": 494,
+        "endChar": 22
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ccdb73b_b79f13cb",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T19:30:50Z",
+      "side": 1,
+      "message": "As described below, we can\u0027t be changing this value here since the calling code is assuming the rowBytes passed into this function. Alignment requirements should be set correctly before this function.",
+      "range": {
+        "startLine": 596,
+        "startChar": 30,
+        "endLine": 596,
+        "endChar": 44
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5bdeba_4a17c839",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T19:30:50Z",
+      "side": 1,
+      "message": "This seems dangerous to do here? Like haven\u0027t we already written the data to the buffer? Where ever we wrote the CPU data should have been handling this alignment requirement. At this point we should just be trusting the copyData is valid. We can add SkASSERTs to make sure, but shouldn\u0027t be modifying anything.",
+      "range": {
+        "startLine": 636,
+        "startChar": 33,
+        "endLine": 636,
+        "endChar": 77
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dcb4945_2fc916b9",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-28T19:30:50Z",
+      "side": 1,
+      "message": "Is there really I use case where we wouldn\u0027t end up creating a TextureView for a Texture? I feel like it will always be needed. Thus maybe it makes more sense to just create this in the DawnTexture factory and then this getter can stay const without needing the mutable view.",
+      "range": {
+        "startLine": 166,
+        "startChar": 8,
+        "endLine": 166,
+        "endChar": 45
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
