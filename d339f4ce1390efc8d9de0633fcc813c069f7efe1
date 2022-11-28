@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03e12a96_cba0f4f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T20:27:05Z",
+      "side": 1,
+      "message": "Brian, downgrading all debug Linux builds to Dwarf 4 is ok, right?",
+      "revId": "d339f4ce1390efc8d9de0633fcc813c069f7efe1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
