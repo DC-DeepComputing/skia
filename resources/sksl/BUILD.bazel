@@ -243,6 +243,7 @@ skia_filegroup(
         "errors/InterfaceBlockWithNoMembers.sksl",
         "errors/IntrinsicInGlobalVariable.sksl",
         "errors/InvalidAssignment.rts",
+        "errors/InvalidAtomics.compute",
         "errors/InvalidExtensionDirective.sksl",
         "errors/InvalidOutParams.rts",
         "errors/InvalidToken.rts",
@@ -526,6 +527,7 @@ skia_filegroup(
     name = "sksl_metal_tests",
     srcs = [
         "compute/ArrayAdd.compute",
+        "compute/Atomics.compute",
         "compute/Barrier.compute",
         "compute/BuiltinStageInputs.compute",
         "compute/Desaturate.compute",

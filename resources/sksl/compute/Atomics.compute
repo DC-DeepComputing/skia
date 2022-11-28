@@ -1,0 +1,10 @@
+layout(metal, binding = 0) buffer ssbo {
+    atomic_uint ssboCounterA;
+    atomic_uint ssboCounterB;
+};
+
+workgroup atomic_uint wgCounter;
+
+void main() {
+    // TODO: reference `wgCounter` to exercise codegen.
+}

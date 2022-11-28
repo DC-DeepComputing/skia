@@ -191,6 +191,12 @@ void VarDeclaration::ErrorCheck(const Context& context,
                                       context.fConfig->fKind == ProgramKind::kMeshFragment)) {
         context.fErrors->error(pos, "effects are not permitted in custom mesh shaders");
     }
+    if (baseType->isAtomic() && !(modifiers.fFlags & Modifiers::kWorkgroup_Flag) &&
+        storage != Variable::Storage::kInterfaceBlock) {
+        // TODO: how to enforce writable buffer block here?
+        context.fErrors->error(
+                pos, "atomics are only permitted in workgroup variables and storage blocks");
+    }
     if (modifiers.fLayout.fFlags & Layout::kColor_Flag) {
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
             context.fErrors->error(pos, "'layout(color)' is only permitted in runtime effects");

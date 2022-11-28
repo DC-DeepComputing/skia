@@ -73,6 +73,8 @@ public:
         switch (type.typeKind()) {
             case Type::TypeKind::kScalar:
                 return this->size(type);
+            case Type::TypeKind::kAtomic:
+                return this->alignment(type.componentType());
             case Type::TypeKind::kVector:
                 return GetVectorAlignment(this->size(type.componentType()), type.columns());
             case Type::TypeKind::kMatrix:
@@ -137,6 +139,8 @@ public:
                     return 2;
                 }
                 return 4;
+            case Type::TypeKind::kAtomic:
+                return this->size(type.componentType());
             case Type::TypeKind::kVector:
                 if (this->isMetal() && type.columns() == 3) {
                     return 4 * this->size(type.componentType());
@@ -178,6 +182,7 @@ public:
             case Type::TypeKind::kVector:
             case Type::TypeKind::kMatrix:
             case Type::TypeKind::kArray:
+            case Type::TypeKind::kAtomic:
                 return this->isSupported(type.componentType());
 
             case Type::TypeKind::kStruct:

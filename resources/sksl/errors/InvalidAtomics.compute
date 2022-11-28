@@ -1,0 +1,16 @@
+layout(metal, binding = 0) buffer ssbo {
+    atomic_uint ssboAtomic;  // valid
+};
+
+workgroup atomic_uint wgAtomic;  // valid
+
+atomic_uint globalAtomic;  // invalid
+
+void main() {
+    atomic_uint localAtomic;  // invalid
+}
+
+/*%%*
+atomics are only permitted in workgroup variables and storage blocks
+atomics are only permitted in workgroup variables and storage blocks
+*%%*/
