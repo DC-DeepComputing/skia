@@ -16,6 +16,24 @@
       "message": "Should we also do this whenever any *.bazel file is modified? That\u0027s the most common cause if a *.gni file getting out of date isn\u0027t it?",
       "revId": "a45a45dc782192e639a32edf4668561f48974b8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe3af97_fb3b8963",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T17:48:50Z",
+      "side": 1,
+      "message": "That\u0027s probably the second most common cause; I would wager manual edits of the .gni files (e.g. muscle memory of previous procedures) are going to be the most common cause for a while.\n\nIn any case, the task is fast enough to run if BUILD.bazel files change also.",
+      "parentUuid": "d7f0d0ec_db299f67",
+      "revId": "a45a45dc782192e639a32edf4668561f48974b8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
