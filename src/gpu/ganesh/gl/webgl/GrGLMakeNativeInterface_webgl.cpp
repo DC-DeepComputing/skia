@@ -6,6 +6,7 @@
  */
 #include "include/gpu/gl/GrGLAssembleInterface.h"
 #include "include/gpu/gl/GrGLInterface.h"
+#include "src/gpu/ganesh/gl/GrGLUtil.h"
 
 #include <emscripten/html5.h>
 #include <webgl/webgl1.h>
@@ -14,11 +15,6 @@
 #include <webgl/webgl2_ext.h>
 
 static GrGLFuncPtr webgl_get_gl_proc(void* ctx, const char name[]) {
-
-    #define M(X) if (0 == strcmp(#X, name)) { return (GrGLFuncPtr) emscripten_##X; }
-    M(glGetString)
-    #undef M
-
     // We explicitly do not use GetProcAddress or something similar because
     // its code size is quite large. We shouldn't need GetProcAddress
     // because emscripten provides us all the valid function pointers
@@ -29,5 +25,8 @@ static GrGLFuncPtr webgl_get_gl_proc(void* ctx, const char name[]) {
 }
 
 sk_sp<const GrGLInterface> GrGLMakeNativeInterface() {
-    return GrGLMakeAssembledInterface(nullptr, webgl_get_gl_proc);
+    return GrGLMakeAssembledInterface(
+            nullptr,
+            webgl_get_gl_proc,
+            reinterpret_cast<const char*>(emscripten_glGetString(GR_GL_VERSION)));
 }
