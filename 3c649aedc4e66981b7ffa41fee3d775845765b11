@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a55329_8ba63fb5",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-28T14:36:21Z",
+      "side": 1,
+      "message": "I\u0027m guessing if you forward declare this all the time, IWYU complains? Otherwise it seems like having an #ifdef wrapping a forward declaration is silly.\n\nAlso, tiny nit: namespaces generally don\u0027t add an indentation level",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "3c649aedc4e66981b7ffa41fee3d775845765b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
