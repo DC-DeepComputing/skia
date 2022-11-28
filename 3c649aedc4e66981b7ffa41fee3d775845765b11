@@ -22,6 +22,30 @@
       },
       "revId": "3c649aedc4e66981b7ffa41fee3d775845765b11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1282d249_3a1d5589",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-11-28T14:52:16Z",
+      "side": 1,
+      "message": "Yes, since IWYU doesn\u0027t see the forward declare be used.\n\nDone.",
+      "parentUuid": "31a55329_8ba63fb5",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "3c649aedc4e66981b7ffa41fee3d775845765b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
