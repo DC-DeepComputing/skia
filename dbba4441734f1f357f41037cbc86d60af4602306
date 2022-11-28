@@ -46,6 +46,30 @@
       },
       "revId": "dbba4441734f1f357f41037cbc86d60af4602306",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0189244f_d604f1b9",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-28T14:39:17Z",
+      "side": 1,
+      "message": "When I first wrote the comment, I wrote it suggesting fStopCount, then I came to the same conclusion that this name was weird. At any rate, a comment can\u0027t hurt.",
+      "parentUuid": "43a6d517_56730ee7",
+      "range": {
+        "startLine": 43,
+        "startChar": 28,
+        "endLine": 43,
+        "endChar": 39
+      },
+      "revId": "dbba4441734f1f357f41037cbc86d60af4602306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
