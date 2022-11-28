@@ -434,6 +434,8 @@ static void test_huge(skiatest::Reporter* reporter) {
     int big = 0x70000000;
     SkIRect r = { -big, -big, big, big };
     SkASSERT(r.width() < 0 && r.height() < 0);
+    SkASSERT_RELEASE(false);
+    SkASSERT_RELEASE(true);
 
     clip.setRect(r);
 }
