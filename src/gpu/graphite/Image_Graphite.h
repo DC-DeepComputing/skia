@@ -10,6 +10,7 @@
 
 #include "src/image/SkImage_Base.h"
 
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 
 namespace skgpu {
