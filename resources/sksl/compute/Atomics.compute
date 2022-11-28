@@ -2,17 +2,40 @@ struct S {
     atomic_uint aCount;
 };
 
-workgroup atomic_uint wgCounter;
-workgroup atomic_uint wgCounterArray[2];
-workgroup S wgStructWithCounter;
-
 layout(metal, binding = 0) buffer ssbo {
-    atomic_uint ssboCounterA;
-    atomic_uint ssboCounterB;
+    atomic_uint globalCounter;
     S ssboStructWithCounter;
     atomic_uint ssboCounterArray[];
 };
 
+workgroup atomic_uint localCounter;
+workgroup atomic_uint localCounterArray[2];
+workgroup S localStructWithCounter;
+
 void main() {
-    // TODO: reference all counter types to exercise codegen.
+    // Initialize the local counter.
+    if (sk_LocalInvocationID.x == 0) {
+        atomicStore(localCounter, 0);
+        atomicStore(ssboStructWithCounter.aCount, 0);
+    }
+
+    // Synchronize the threads in the workgroup so they all see the initial value.
+    workgroupBarrier();
+
+    // All threads increment the counters.
+    atomicAdd(localCounter, 1);
+    atomicAdd(localCounterArray[0], 1);
+    atomicAdd(localCounterArray[1], 1);
+    atomicAdd(localStructWithCounter.aCount, 1);
+    atomicAdd(ssboStructWithCounter.aCount, 1);
+    atomicAdd(ssboCounterArray[sk_LocalInvocationID.x], 1);
+
+    // Synchronize the threads again to ensure they have all executed the increment and the
+    // following load reads the same value across all threads in the workgroup.
+    workgroupBarrier();
+
+    // Add the workgroup-only tally to the global counter.
+    if (sk_LocalInvocationID.x == 0) {
+        atomicAdd(globalCounter, atomicLoad(localCounter));
+    }
 }
