@@ -141,6 +141,7 @@ struct LocalMatrixShaderBlock {
 struct ImageShaderBlock {
 
     struct ImageData {
+        ImageData();
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,
@@ -214,7 +215,7 @@ struct MatrixColorFilterBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
-                           const MatrixColorFilterData&);
+                           const MatrixColorFilterData*);
 };
 
 struct BlendColorFilterBlock {
