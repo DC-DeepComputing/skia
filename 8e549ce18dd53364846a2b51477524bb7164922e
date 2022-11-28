@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19ec5d2d_af071b50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-28T20:57:59Z",
+      "side": 1,
+      "message": "It looks like this change broke all the MSVC-Vulkan bots with\n\n```\n[366/3443] compile ../../../../../../skia/src/gpu/graphite/vk/VulkanResourceProvider.cpp\nFAILED: obj/src/gpu/graphite/vk/graphite.VulkanResourceProvider.obj \n\"c:\\b\\s\\w\\ir\\win_toolchain/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/cl.exe\" /nologo /showIncludes /FC -D_CRT_SECURE_NO_WARNINGS -D_HAS_EXCEPTIONS\u003d0 -DWIN32_LEAN_AND_MEAN -DNOMINMAX -DSK_ENABLE_SKSL -DSK_ENABLE_PRECOMPILE -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS\u003d1 -DGR_TEST_UTILS\u003d1 -DGRAPHITE_TEST_UTILS\u003d1 -DSK_USE_VMA -DSKIA_IMPLEMENTATION\u003d1 -DSK_SUPPORT_GPU\u003d1 -DSK_GRAPHITE_ENABLED -DSK_VULKAN -DSK_ENABLE_VK_LAYERS -Ic:/b/s/w/ir/win_toolchain/VC/Tools/MSVC/14.29.30133/include -Ic:/b/s/w/ir/win_toolchain/win_sdk/Include/10.0.22000.0/shared -Ic:/b/s/w/ir/win_toolchain/win_sdk/Include/10.0.22000.0/ucrt -Ic:/b/s/w/ir/win_toolchain/win_sdk/Include/10.0.22000.0/um -Ic:/b/s/w/ir/win_toolchain/win_sdk/Include/10.0.22000.0/winrt -I../../../../../../skia -I../../../../../../skia/third_party/vulkanmemoryallocator -I../../../../../../skia/third_party/externals/vulkanmemoryallocator/include /wd5030 /wd5051 /bigobj /utf-8 /Z7 /WX /W3 /wd4244 /wd4267 /wd4800 /wd4291 /wd4251 /wd4275 /wd5041  /std:c++17 /GR- /c ../../../../../../skia/src/gpu/graphite/vk/VulkanResourceProvider.cpp /Foobj/src/gpu/graphite/vk/graphite.VulkanResourceProvider.obj /Fd\"obj/graphite_c.pdb\"\nc:\\b\\s\\w\\ir\\skia\\include\\core\\SkRefCnt.h(150): error C2027: use of undefined type \u0027skgpu::graphite::Buffer\u0027\nc:\\b\\s\\w\\ir\\skia\\src\\gpu\\graphite\\ResourceProvider.h(32): note: see declaration of \u0027skgpu::graphite::Buffer\u0027\nc:\\b\\s\\w\\ir\\skia\\include\\core\\SkRefCnt.h(260): note: see reference to function template instantiation \u0027void SkSafeUnref\u003cT\u003e(T *)\u0027 being compiled\n        with\n        [\n            T\u003dskgpu::graphite::Buffer\n        ]\nc:\\b\\s\\w\\ir\\skia\\include\\core\\SkRefCnt.h(259): note: while compiling class template member function \u0027sk_sp\u003cskgpu::graphite::Buffer\u003e::~sk_sp(void)\u0027\nc:\\b\\s\\w\\ir\\skia\\src\\gpu\\graphite\\vk\\VulkanResourceProvider.cpp(47): note: see reference to function template instantiation \u0027sk_sp\u003cskgpu::graphite::Buffer\u003e::~sk_sp(void)\u0027 being compiled\nc:\\b\\s\\w\\ir\\skia\\src\\gpu\\graphite\\DrawBufferManager.h(65): note: see reference to class template instantiation \u0027sk_sp\u003cskgpu::graphite::Buffer\u003e\u0027 being compiled\n```\n\nThis is just saying that something here needs to be able to define a destructor but the type (skgpu::graphite::Buffer) isn\u0027t complete in `VulkanResourceProvider.cpp(47)`. This is most likely just due to the changes to the includes here, so `VulkanResourceProvider.cpp` should get some iwyu treatment.",
+      "revId": "8e549ce18dd53364846a2b51477524bb7164922e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
