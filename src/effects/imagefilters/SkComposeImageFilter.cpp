@@ -57,6 +57,7 @@ sk_sp<SkImageFilter> SkImageFilters::Compose(sk_sp<SkImageFilter> outer,
     if (!inner) {
         return outer;
     }
+    SkDebugf("Make compose image filter: %p %p\n", outer.get(), inner.get());
     sk_sp<SkImageFilter> inputs[2] = { std::move(outer), std::move(inner) };
     return sk_sp<SkImageFilter>(new SkComposeImageFilter(inputs));
 }

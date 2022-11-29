@@ -60,6 +60,7 @@ public:
           , fBlender(std::move(blender))
     {
         SkASSERT(fBlender);
+        SkDebugf("blend filter pointer: %p\n", this);
     }
 
 protected:
@@ -96,6 +97,7 @@ sk_sp<SkImageFilter> SkImageFilters::Blend(SkBlendMode mode,
                                            sk_sp<SkImageFilter> background,
                                            sk_sp<SkImageFilter> foreground,
                                            const CropRect& cropRect) {
+    SkDebugf("blend IF %d, bg: %p, fg: %p\n", (int) mode, background.get(), foreground.get());
     sk_sp<SkImageFilter> inputs[2] = { std::move(background), std::move(foreground) };
     return sk_sp<SkImageFilter>(new SkBlendImageFilter(SkBlender::Mode(mode), inputs, cropRect));
 }
@@ -150,9 +152,10 @@ void SkBlendImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 sk_sp<SkSpecialImage> SkBlendImageFilter::onFilterImage(const Context& ctx,
                                                         SkIPoint* offset) const {
+    SkDebugf("blend onFilterImage background\n");
     SkIPoint backgroundOffset = SkIPoint::Make(0, 0);
     sk_sp<SkSpecialImage> background(this->filterInput(0, ctx, &backgroundOffset));
-
+    SkDebugf("blend onFilterImage foreground\n");
     SkIPoint foregroundOffset = SkIPoint::Make(0, 0);
     sk_sp<SkSpecialImage> foreground(this->filterInput(1, ctx, &foregroundOffset));
 
@@ -161,13 +164,16 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::onFilterImage(const Context& ctx,
         foregroundBounds = SkIRect::MakeXYWH(foregroundOffset.x(), foregroundOffset.y(),
                                              foreground->width(), foreground->height());
     }
+    SkDebugf("foreground bounds: %d %d %d %d\n", foregroundBounds.fLeft, foregroundBounds.fTop,
+        foregroundBounds.fRight, foregroundBounds.fBottom);
 
     SkIRect srcBounds = SkIRect::MakeEmpty();
     if (background) {
         srcBounds = SkIRect::MakeXYWH(backgroundOffset.x(), backgroundOffset.y(),
                                       background->width(), background->height());
     }
-
+    SkDebugf("bg bounds: %d %d %d %d\n",
+        srcBounds.fLeft, srcBounds.fTop, srcBounds.fRight, srcBounds.fBottom);
     srcBounds.join(foregroundBounds);
     if (srcBounds.isEmpty()) {
         return nullptr;
@@ -216,6 +222,7 @@ SkIRect SkBlendImageFilter::onFilterBounds(const SkIRect& src,
                                            const SkMatrix& ctm,
                                            MapDirection dir,
                                            const SkIRect* inputRect) const {
+    SkDebugf("blend image filter onFilterBounsd\n");
     if (kReverse_MapDirection == dir) {
         return INHERITED::onFilterBounds(src, ctm, dir, inputRect);
     }

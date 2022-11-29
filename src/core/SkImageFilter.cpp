@@ -572,6 +572,10 @@ skif::FilterResult SkImageFilter_Base::filterInput(int index, const skif::Contex
     skif::FilterResult result = as_IFB(input)->filterImage(this->mapContext(ctx));
     SkASSERT(!result.image() || ctx.gpuBacked() == result.image()->isTextureBacked());
 
+    SkDebugf("filter input %d result with layer bounds: %d %d %d %d\n", index,
+        result.layerBounds().left(), result.layerBounds().top(),
+        result.layerBounds().right(), result.layerBounds().bottom());
+
     return result;
 }
 

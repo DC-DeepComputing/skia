@@ -27,6 +27,7 @@ public:
             , fCropRect(cropRect) {
         SkASSERT(cropRect.isFinite());
         SkASSERT(cropRect.isSorted());
+        SkDebugf("crop filter pointer: %p\n", this);
     }
 
     SkRect computeFastBounds(const SkRect& bounds) const override;
@@ -66,6 +67,9 @@ sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect, sk_sp<SkImageFilt
     if (!rect.isFinite()) {
         return nullptr;
     }
+    SkDebugf("Making crop filter for %f %f %f %f, input: %p\n",
+        rect.fLeft, rect.fTop, rect.fRight, rect.fBottom,
+        input.get());
     return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, std::move(input)));
 }
 
@@ -117,17 +121,31 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetInputLayerBounds(
     // Assuming unbounded desired output, this filter only needs to process an image that's at most
     // sized to our crop rect.
     skif::LayerSpace<SkIRect> requiredInput = this->cropRect(mapping);
+    SkDebugf("mapped crop rect: %d %d %d %d\n",
+        requiredInput.left(),
+        requiredInput.top(),
+        requiredInput.right(),
+        requiredInput.bottom());
     // But we can restrict the crop rect to just what's requested, since anything beyond that won't
     // be rendered.
     if (!requiredInput.intersect(desiredOutput)) {
         // We wouldn't draw anything when filtering, so return empty bounds now to skip a layer.
+        SkDebugf("no input, we won't be visible\n");
         return skif::LayerSpace<SkIRect>::Empty();
     }
 
+    SkDebugf("final required input: %d %d %d %d\n",
+        requiredInput.left(),
+        requiredInput.top(),
+        requiredInput.right(),
+        requiredInput.bottom());
+
     if (recurse == VisitChildren::kNo) {
+        SkDebugf("no recursion\n");
         return requiredInput;
     } else {
         // Our required input is the desired output for our child image filter.
+        SkDebugf("visiting children with required input\n");
         return this->visitInputLayerBounds(mapping, requiredInput, contentBounds);
     }
 }
@@ -135,16 +153,28 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetInputLayerBounds(
 skif::LayerSpace<SkIRect> SkCropImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
+    SkDebugf("crop output layer bounds, content bounds = %d %d %d %d\n",
+        contentBounds.left(),
+        contentBounds.top(),
+        contentBounds.right(),
+        contentBounds.bottom());
     // Assuming unbounded child content, our output is a decal-tiled image sized to our crop rect.
     skif::LayerSpace<SkIRect> output = this->cropRect(mapping);
+    SkDebugf(" - mapped corp rect = %d %d %d %d\n",
+        output.left(), output.top(), output.right(), output.bottom());
     // But the child output image is drawn into our output surface with its own decal tiling, which
     // may allow the output dimensions to be reduced.
     skif::LayerSpace<SkIRect> childOutput = this->visitOutputLayerBounds(mapping, contentBounds);
+    SkDebugf(" - child output: %d %d %d %d\n",
+        childOutput.left(), childOutput.top(), childOutput.right(), childOutput.bottom());
 
     if (output.intersect(childOutput)) {
+        SkDebugf(" - crop output = %d %d %d %d\n",
+            output.left(), output.top(), output.right(), output.bottom());
         return output;
     } else {
         // Nothing would be drawn into our crop rect, so nothing would be output.
+        SkDebugf("  - no intersection\n");
         return skif::LayerSpace<SkIRect>::Empty();
     }
 }
@@ -160,14 +190,20 @@ SkRect SkCropImageFilter::computeFastBounds(const SkRect& bounds) const {
     // nodes that affect transparent black, then fastBounds() and onAffectsTransparentBlack() impls
     // can go away entirely. That's not feasible until everything else is migrated onto the new crop
     // rect filter and the new APIs.
+    SkDebugf("crop computeFastBounds, input = %f %f %f %f\n",
+        bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
     if (this->getInput(0) && !this->getInput(0)->canComputeFastBounds()) {
         // The input bounds to the crop are effectively infinite so the output fills the crop rect.
+        SkDebugf(" - affects transparent black -> fCropRect\n");
         return SkRect(fCropRect);
     }
 
     SkRect inputBounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(bounds) : bounds;
     if (!inputBounds.intersect(SkRect(fCropRect))) {
+        SkDebugf(" - no intersection\n");
         return SkRect::MakeEmpty();
     }
+    SkDebugf(" - restricted to %f %f %f %f\n",
+        inputBounds.fLeft, inputBounds.fTop, inputBounds.fRight, inputBounds.fBottom);
     return inputBounds;
 }
