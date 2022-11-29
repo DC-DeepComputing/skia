@@ -131,7 +131,9 @@ struct skcms_TransferFunction;
     M(copy_slot_unmasked)    M(copy_2_slots_unmasked)              \
     M(copy_3_slots_unmasked) M(copy_4_slots_unmasked)              \
     M(zero_slot_unmasked)    M(zero_2_slots_unmasked)              \
-    M(zero_3_slots_unmasked) M(zero_4_slots_unmasked)
+    M(zero_3_slots_unmasked) M(zero_4_slots_unmasked)              \
+    M(add_float) M(add_2_floats) M(add_3_floats) M(add_4_floats) M(add_n_floats) \
+    M(add_int)   M(add_2_ints)   M(add_3_ints)   M(add_4_ints)   M(add_n_ints)
 
 // The combined list of all stages:
 #define SK_RASTER_PIPELINE_STAGES_ALL(M) \
@@ -324,6 +326,12 @@ public:
     // Appends one or more `zero_n_slots_unmasked` stages, based on `numSlots`.
     void append_zero_slots_unmasked(float* dst, int numSlots);
 
+    // Appends math operations. Src must be _immediately_ after dst in memory.
+    // (Note that all ops take float*, even integer-based ops, because we generally represent slot
+    // memory as a float array.)
+    void append_add_floats(SkArenaAlloc* alloc, float* dst, float* src, int numSlots);
+    void append_add_ints(SkArenaAlloc* alloc, float* dst, float* src, int numSlots);
+
     void append_load    (SkColorType, const SkRasterPipeline_MemoryCtx*);
     void append_load_dst(SkColorType, const SkRasterPipeline_MemoryCtx*);
     void append_store   (SkColorType, const SkRasterPipeline_MemoryCtx*);
@@ -337,6 +345,12 @@ public:
     bool empty() const { return fStages == nullptr; }
 
 private:
+    void append_adjacent_math_op(SkArenaAlloc* alloc,
+                                 const SkRasterPipeline::Stage* stages,
+                                 float* dst,
+                                 float* src,
+                                 int numSlots);
+
     struct StageList {
         StageList* prev;
         Stage      stage;
