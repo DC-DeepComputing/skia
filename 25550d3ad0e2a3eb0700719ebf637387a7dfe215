@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d173e755_a559b4d1",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:24:11Z",
+      "side": 1,
+      "message": "Not required, but ... at the risk of making things slightly less explicit (but still safe if we want to add static_asserts), we can ensure that the set of stages for a particular binary op are always consecutive in a particular order, pass the first one, and do math to get the others. That\u0027ll definitely make the wrapper functions less chatty as we add more of them.",
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb9b76fe_2c708abe",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
@@ -14,6 +31,30 @@
       "writtenOn": "2022-11-29T17:09:52Z",
       "side": 1,
       "message": "Interestingly, `ApplyFn(dst++, src++)` generates slightly worse code for the `n_floats` case (it uses one more register, which ends up costing one extra instruction in the inner loop). I don\u0027t really understand why though.",
+      "range": {
+        "startLine": 3080,
+        "startChar": 8,
+        "endLine": 3082,
+        "endChar": 17
+      },
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8c18cd_5700696c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3082,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:24:11Z",
+      "side": 1,
+      "message": "Maybe has to account for potential aliasing in the middle of the expression evaluation / call invalidating the other pointer?",
+      "parentUuid": "fb9b76fe_2c708abe",
       "range": {
         "startLine": 3080,
         "startChar": 8,
