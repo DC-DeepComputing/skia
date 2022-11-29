@@ -47,6 +47,8 @@ int Program::numTempStackSlots() {
                 largest = std::max(current, largest);
                 break;
 
+            case BuilderOp::add_float:
+            case BuilderOp::add_int:
             case BuilderOp::discard_stack:
                 current -= inst.fImmA;
                 break;
@@ -163,6 +165,18 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 pipeline->append(SkRP::store_masked, SlotA());
                 break;
 
+            case BuilderOp::add_float: {
+                tempStackPtr -= N * inst.fImmA;              // pop the source value
+                float* dst = tempStackPtr - N * inst.fImmA;  // overwrite the dest value
+                pipeline->append_add_floats(alloc, dst, tempStackPtr, inst.fImmA);
+                break;
+            }
+            case BuilderOp::add_int: {
+                tempStackPtr -= N * inst.fImmA;              // pop the source value
+                float* dst = tempStackPtr - N * inst.fImmA;  // overwrite the dest value
+                pipeline->append_add_ints(alloc, dst, tempStackPtr, inst.fImmA);
+                break;
+            }
             case BuilderOp::copy_slot_masked:
                 pipeline->append_copy_slots_masked(alloc, SlotA(), SlotB(), inst.fImmA);
                 break;
