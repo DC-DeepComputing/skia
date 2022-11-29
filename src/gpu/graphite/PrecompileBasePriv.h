@@ -17,12 +17,18 @@ namespace skgpu::graphite {
     data members or virtual methods. */
 class PrecompileBasePriv {
 public:
-    int numChildCombinations() const {
-        return fPrecompileBase->numChildCombinations();
-    }
+//    int numChildCombinations() const {
+//        return fPrecompileBase->numChildCombinations();
+//    }
 
-    int numCombinations() const {
-        return fPrecompileBase->numCombinations();
+//    int numCombinations() const {
+//        return fPrecompileBase->numCombinations();
+//    }
+
+    void addToKey(const KeyContext& keyContext,
+                  int desiredCombination,
+                  PaintParamsKeyBuilder* builder) const {
+        fPrecompileBase->addToKey(keyContext, desiredCombination, builder);
     }
 
 private:
@@ -47,8 +53,6 @@ inline PrecompileBasePriv PrecompileBase::priv() { return PrecompileBasePriv(thi
 inline const PrecompileBasePriv PrecompileBase::priv() const {
     return PrecompileBasePriv(const_cast<PrecompileBase *>(this));
 }
-
-int CountBlenderCombos(const std::vector<sk_sp<PrecompileBlender>>&);
 
 } // namespace skgpu::graphite
 

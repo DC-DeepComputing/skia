@@ -51,7 +51,7 @@ void no_blend_mode_option_test(ShaderCodeDictionary* dict, skiatest::Reporter* r
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
 }
 
-void big_test_new(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
+void big_test_new(Context* context, skiatest::Reporter* reporter) {
 
     // paintOptions (7)
     //  |- sweepGrad_0 (1) | blendShader_0 (6)
@@ -105,7 +105,7 @@ void big_test_new(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 7);
 
-//    context->precompile({paintOptions});
+    context->precompile({paintOptions});
 }
 
 template <typename T>
@@ -343,7 +343,7 @@ void epoch_test(ShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    big_test_new(dict, reporter);
+    big_test_new(context, reporter);
     runtime_effect_test(dict, reporter);
 
     empty_test(dict, reporter);
