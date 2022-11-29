@@ -31,7 +31,7 @@ ExtractPaintData(Recorder* recorder,
                  const PaintParams& p) {
 
     SkDEBUGCODE(gatherer->checkReset());
-    SkDEBUGCODE(builder->checkReset());
+    SkDEBUGCODE(builder->checkReset1());
 
     KeyContext keyContext(recorder, local2Dev);
 

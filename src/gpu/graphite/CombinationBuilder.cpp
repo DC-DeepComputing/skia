@@ -705,7 +705,7 @@ void CombinationBuilder::dump() const {
 void CombinationBuilder::createKey(const KeyContext& keyContext,
                                    int desiredCombination,
                                    PaintParamsKeyBuilder* keyBuilder) {
-    SkDEBUGCODE(keyBuilder->checkReset();)
+    SkDEBUGCODE(keyBuilder->checkReset1();)
     SkASSERT(desiredCombination < this->numCombinations());
 
     int numBlendModeCombos = this->numBlendModeCombinations();
