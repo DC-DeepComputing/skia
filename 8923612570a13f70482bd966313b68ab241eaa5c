@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e2412ea_c34e613c",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-29T18:50:09Z",
+      "side": 1,
+      "message": "I think I would put here that the primary reason for this existing is the presence of another `sk_free` with a different signature in openssl (even if they\u0027re supposed to be internal and `OPENSSL_` prefixed, since Chromium doesn\u0027t seem to actually do that).",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb75674_6606eff2",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-29T18:50:09Z",
+      "side": 1,
+      "message": "Maybe name like `SkFreeWrapper`? That does seem to be how it\u0027s written in the commit message. On the other hand, this is technically an `SkFreeDeleter` since the point is to use it as the `Deleter` template argument to `std::unique_ptr`. Though it does seem an odd name, since this is not for deleting `sk_free` but is a concrete instantiation of the `Deleter` concept / interface (though apparently it isn\u0027t spec\u0027ed as a Concept yet). On my third hand this is `SkFreeFunctionObject` since the actual \"C++ named requirement\" this is implementing is `FunctionObject`.\n\nUgh, naming things.",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
