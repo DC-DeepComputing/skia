@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50f3b29c_346f91e7",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-29T21:12:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e2412ea_c34e613c",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adb75674_6606eff2",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "792330b3_3c1108df",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-29T21:12:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adb75674_6606eff2",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c4b6b86_9801aa27",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-11-29T21:11:01Z",
       "side": 1,
       "message": "In fact, I would much prefer that `SkFunctionWrapper` be left alone in general (so that it can be used both for `sk_free` and other things in the future that may require disambiguation) and prefer to introduce something here like\n\n`template \u003cauto p\u003e using SkFunctionObject \u003d SkFunctionWrapper\u003cstd::remove_pointer_t\u003cdecltype(p)\u003e, p\u003e;`\n\nand then use `SkFunctionObject` where it can be used (when the function is not overloaded). In fact, at the same time `SkFunctionWrapper` could be renamed to `SkOverloadedFunctionWrapper`, since that\u0027s essentially the only time it would be used.",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98a1590c_91f3cc79",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-29T21:12:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5c4b6b86_9801aa27",
       "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
