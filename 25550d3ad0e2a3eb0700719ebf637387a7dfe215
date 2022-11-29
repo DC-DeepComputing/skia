@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3feb4101_ded5875d",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-29T18:36:36Z",
+      "side": 1,
+      "message": "Do you mean remove the `float* src` param and replace the assertion with `float* src \u003d dst + SkOpts::raster_pipeline_highp_stride * numSlots` (for the \u003e4 case)?",
+      "parentUuid": "d173e755_a559b4d1",
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb9b76fe_2c708abe",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
