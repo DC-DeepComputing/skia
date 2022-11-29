@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3600e4af_3c410e0a",
+        "filename": "include/private/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-29T21:27:01Z",
+      "side": 1,
+      "message": "I don\u0027t mind the extra name, but I think I would much prefer this to be\n\n`using SkFreeDeleter \u003d SkOverloadedFunctionObject\u003cvoid(void*), sk_free\u003e;`\n\nThough I realize this probably means splitting `SkOverloadedFunctionObject` and `SkFunctionObject` out of `SkTemplates.h` (or splitting everything else out of there) so that these can be included here. Then the `using` makes it obvious in the code that this is a convenience type, the `Overloaded` part makes it obvious in the code that we\u0027re doing this because we believe the function may be overloaded, and then the comment only needs to be \"OpenSSL declares a function which may be named sk_free.\"",
+      "revId": "37733581329b59092a61997b2810828b76a5d7aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
