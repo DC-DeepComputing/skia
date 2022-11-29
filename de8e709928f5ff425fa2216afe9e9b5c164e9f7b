@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8368fa_db805a3c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2973,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-29T20:55:43Z",
+      "side": 1,
+      "message": "Add a \u0027\\n\u0027 after this ?",
+      "revId": "de8e709928f5ff425fa2216afe9e9b5c164e9f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a38a5335_672ae6de",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-11-29T20:55:43Z",
+      "side": 1,
+      "message": "Do you actually want \"glserializeslug\" w/o the \u0027s\u0027 ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "de8e709928f5ff425fa2216afe9e9b5c164e9f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
