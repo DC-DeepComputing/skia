@@ -81,6 +81,30 @@
       },
       "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80e1402_e8038383",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3082,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-29T18:37:35Z",
+      "side": 1,
+      "message": "I\u0027m still not clear how one representation is meaningfully different from another, though. If one way could alias, AFAICS the other way could too?",
+      "parentUuid": "2a8c18cd_5700696c",
+      "range": {
+        "startLine": 3080,
+        "startChar": 8,
+        "endLine": 3082,
+        "endChar": 17
+      },
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
