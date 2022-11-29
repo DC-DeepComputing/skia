@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c017eb6c_6907a449",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:46:22Z",
+      "side": 1,
+      "message": "Yeah, I know we used this trick previously (in the ByteCode stuff). It\u0027s nice here, because it probably eliminates the need for the append_add_float, etc... entirely. The signature of append_adjacent_math_op would be simple enough for the builder to use directly.",
+      "parentUuid": "502d932a_7926b48f",
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb9b76fe_2c708abe",
