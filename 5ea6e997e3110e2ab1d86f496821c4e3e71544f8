@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "405bac6a_e45a52cc",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T15:53:26Z",
+      "side": 1,
+      "message": "This new format is going to completely ignore the `dstInfo` color space. (We normally apply conversion from within `readRows`). Is that intended?",
+      "revId": "5ea6e997e3110e2ab1d86f496821c4e3e71544f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a1a1bd_5d2b757d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T15:53:26Z",
+      "side": 1,
+      "message": "\u003d std::make_unique\u003cRecoveryMap\u003e()",
+      "range": {
+        "startLine": 616,
+        "startChar": 49,
+        "endLine": 616,
+        "endChar": 68
+      },
+      "revId": "5ea6e997e3110e2ab1d86f496821c4e3e71544f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20e5b252_93532836",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T15:53:26Z",
+      "side": 1,
+      "message": "Why do we need to do this (lie about the encoded format), if we\u0027re just going to ignore everything we\u0027d do with that information, and used a single hard-coded path anyway?",
+      "range": {
+        "startLine": 1104,
+        "startChar": 0,
+        "endLine": 1105,
+        "endChar": 72
+      },
+      "revId": "5ea6e997e3110e2ab1d86f496821c4e3e71544f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
