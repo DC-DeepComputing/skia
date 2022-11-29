@@ -16,6 +16,24 @@
       "message": "Can you provide more info about the build error you\u0027re hitting? I\u0027m able to build everything in Skia with Xcode 14.1, without these changes.",
       "revId": "38e58e41dce531d586eaf96248baa163057af127",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc5065ce_d4293234",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19439
+      },
+      "writtenOn": "2022-11-29T06:23:30Z",
+      "side": 1,
+      "message": "```\nShowing Recent Messages\n/Users/pookjw/git/editor-engine-swift/EditorSample/Presentation/Editor/Canvas/SkiaSVG/EditorSkiaSVGCanvasViewController.mm:10:10: in file included from /Users/pookjw/git/editor-engine-swift/EditorSample/Presentation/Editor/Canvas/SkiaSVG/EditorSkiaSVGCanvasViewController.mm:10:\n\n/Users/pookjw/git/editor-engine-swift/EditorSample/Frameworks/skia/include/core/SkSurface.h:25:10: in file included from EditorSample/Frameworks/skia/include/core/SkSurface.h:25:\n\n/Users/pookjw/git/editor-engine-swift/EditorSample/Frameworks/skia/include/gpu/mtl/GrMtlTypes.h:12:10: in file included from EditorSample/Frameworks/skia/include/gpu/mtl/GrMtlTypes.h:12:\n\n/Users/pookjw/git/editor-engine-swift/EditorSample/Frameworks/skia/include/ports/SkCFObject.h:69:9: In instantiation of function template specialization \u0027SkCFSafeRelease\u003cid\u003cMTLCommandQueue\u003e\u003e\u0027 requested here\n\n/Users/pookjw/git/editor-engine-swift/EditorSample/Presentation/Editor/Canvas/SkiaSVG/EditorSkiaSVGCanvasViewController.mm:73:31: In instantiation of member function \u0027sk_cfp\u003cid\u003cMTLCommandQueue\u003e\u003e::~sk_cfp\u0027 requested here\n\n/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFBase.h:681:6: Candidate function not viable: cannot implicitly convert argument of type \u0027__strong id\u003cMTLCommandQueue\u003e\u0027 to \u0027CFTypeRef\u0027 (aka \u0027const void *\u0027) for 1st argument under ARC\n\n```\n\nWhen I include `/include/core/SkSurface.h` to my project, I see this error.\n\nImages : https://ibb.co/w468nHj https://ibb.co/h9x9QDX",
+      "parentUuid": "3c72f5ea_63932f68",
+      "revId": "38e58e41dce531d586eaf96248baa163057af127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
