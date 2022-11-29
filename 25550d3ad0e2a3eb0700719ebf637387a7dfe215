@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5298c60_7729afd2",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:41:19Z",
+      "side": 1,
+      "message": "Ah, no I meant replace the `stages` parameter with a single `stage`, then do something like:\n\n    if (numSlots \u003e 4) {\n      ...\n      this-\u003eunchecked_append(stage + 4, ctx);\n    } else if (numSlots \u003e 0) {\n      this-\u003eunchecked_append(stage + numSlots - 1, dst);\n    }\n    \nThat, in turn, lets you write append_add_floats (and all the others that are going to be coming) as simple one-liners.",
+      "parentUuid": "3feb4101_ded5875d",
+      "revId": "25550d3ad0e2a3eb0700719ebf637387a7dfe215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb9b76fe_2c708abe",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
