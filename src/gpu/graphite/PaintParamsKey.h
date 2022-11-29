@@ -199,7 +199,7 @@ public:
 
 #ifdef SK_DEBUG
     // Check that the builder has been reset to its initial state prior to creating a new key.
-    void checkReset();
+    void checkReset1();
     uint8_t byte(int offset) const { return fData[offset]; }
 #endif
 
@@ -220,7 +220,7 @@ public:
         fBlendInfo = {};
 
         SkDEBUGCODE(fLocked = false;)
-        SkDEBUGCODE(this->checkReset();)
+        SkDEBUGCODE(this->checkReset1();)
     }
 
     SkDEBUGCODE(bool isLocked() const { return fLocked; })

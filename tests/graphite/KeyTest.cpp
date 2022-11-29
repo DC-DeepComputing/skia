@@ -19,7 +19,7 @@ namespace {
 PaintParamsKey create_key_with_data(PaintParamsKeyBuilder* builder,
                                     int snippetID,
                                     SkSpan<const uint8_t> dataPayload) {
-    SkDEBUGCODE(builder->checkReset());
+    SkDEBUGCODE(builder->checkReset1());
 
     builder->beginBlock(snippetID);
     builder->addBytes(dataPayload.size(), dataPayload.data());

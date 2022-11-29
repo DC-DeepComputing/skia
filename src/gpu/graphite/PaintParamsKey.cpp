@@ -33,7 +33,7 @@ PaintParamsKeyBuilder::PaintParamsKeyBuilder(const ShaderCodeDictionary* dict)
         : fDict(dict) {}
 
 #ifdef SK_DEBUG
-void PaintParamsKeyBuilder::checkReset() {
+void PaintParamsKeyBuilder::checkReset1() {
     SkASSERT(!this->isLocked());
     SkASSERT(this->sizeInBytes() == 0);
     SkASSERT(fIsValid);
