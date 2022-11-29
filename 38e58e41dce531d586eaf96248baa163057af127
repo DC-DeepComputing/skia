@@ -34,6 +34,24 @@
       "parentUuid": "3c72f5ea_63932f68",
       "revId": "38e58e41dce531d586eaf96248baa163057af127",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b594f866_c5b1cdf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-11-29T15:36:02Z",
+      "side": 1,
+      "message": "The error from your second screenshot indicates that you haven\u0027t included include/core/SkColorSpace.h in the code that\u0027s using an `sk_sp\u003cSkColorSpace\u003e`.\n\nThe error you posted is a little more mysterious to me, and besides we do have code in Skia that creates `sk_cfp\u003cid\u003cMTLCommandQueue\u003e\u003e`s and is compiling fine in our internal tests. If you could post a small code sample that reproduces this error, that might be helpful.\n\nIn the meantime we won\u0027t want to merge this CL as we really only want to be able to create `sk_sp`s of objects that implement `ref()` and `unref()`.",
+      "parentUuid": "cc5065ce_d4293234",
+      "revId": "38e58e41dce531d586eaf96248baa163057af127",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
