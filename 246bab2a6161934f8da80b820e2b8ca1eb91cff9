@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "485cd413_488ba7fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-29T21:00:34Z",
+      "side": 1,
+      "message": "I think this is worth fixing -- rectangles shouldn\u0027t need to go through the stroker, and we have other test cases for this bug now. Note this is only for Miter joins as the AALCPathRenderer doesn\u0027t support Round.",
+      "revId": "246bab2a6161934f8da80b820e2b8ca1eb91cff9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
