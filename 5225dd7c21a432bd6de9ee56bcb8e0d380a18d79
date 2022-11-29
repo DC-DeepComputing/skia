@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41433a27_9dd62a4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T21:30:57Z",
+      "side": 1,
+      "message": "This CL reminded me of some subtlety in the old stack machine: You can share code for add/sub/eq/neq between int and uint, but not for lt/lte, where you need separate ops.",
+      "revId": "5225dd7c21a432bd6de9ee56bcb8e0d380a18d79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
