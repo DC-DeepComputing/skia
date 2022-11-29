@@ -20,6 +20,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42d18329_35bdfa24",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:04:43Z",
+      "side": 1,
+      "message": "I know we talked about which set of types to support (and having this as a wrapper over a scalar type makes sense), but I\u0027d suggest that if we have this assert, we pin it down to the set of types we support today (just unsigned), or remove this assertion entirely, and just rely on the isScalar one?",
+      "range": {
+        "startLine": 370,
+        "startChar": 17,
+        "endLine": 371,
+        "endChar": 61
+      },
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22fdec89_de445786",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:04:43Z",
+      "side": 1,
+      "message": "Do we need this override? I\u0027d assume that callers always call `componentType` before trying to call `numberKind`. Although I guess that having this here makes other helpers work (like `isInteger`, etc.). Though - again - I\u0027d assume that anyone using those facilities is already peeling away the outer type layers with `componentType` first?",
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2552e055_147131d5",
         "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
         "patchSetId": 1
