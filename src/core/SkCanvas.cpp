@@ -2971,6 +2971,32 @@ void SkTestCanvas<SkSlugTestKey>::onDrawGlyphRunList(
         }
     }
 }
+SkTestCanvas<SkSerializeSlugTestKey>::SkTestCanvas(SkCanvas* canvas)
+        : SkCanvas(sk_ref_sp(canvas->baseDevice())) {}
+
+void SkTestCanvas<SkSerializeSlugTestKey>::onDrawGlyphRunList(
+        const sktext::GlyphRunList& glyphRunList, const SkPaint& paint) {
+    SkRect bounds = glyphRunList.sourceBoundsWithOrigin();
+    if (this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+    auto layer = this->aboutToDraw(this, paint, &bounds);
+    if (layer) {
+        if (glyphRunList.hasRSXForm()) {
+            this->SkCanvas::onDrawGlyphRunList(glyphRunList, layer->paint());
+        } else {
+            sk_sp<SkData> bytes;
+            {
+                auto slug = this->onConvertGlyphRunListToSlug(glyphRunList, layer->paint());
+                bytes = slug->serialize();
+            }
+            {
+                auto slug = Slug::Deserialize(bytes->data(), bytes->size());
+                this->drawSlug(slug.get());
+            }
+        }
+    }
+}
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
