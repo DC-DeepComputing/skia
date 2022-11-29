@@ -147,6 +147,19 @@ bool create_img_shader_paint(sk_sp<SkImage> image,
     return true;
 }
 
+bool is_simple_shape(const Shape& shape, SkStrokeRec::Style type) {
+#if ENABLE_ANALYTIC_RRECT_RENDERER
+    // We send regular filled [round] rectangles and quadrilaterals, and stroked [r]rects with
+    // circular corners to a single Renderer that does not trigger MSAA.
+    return !shape.inverted() && type != SkStrokeRec::kStrokeAndFill_Style &&
+            (shape.isRect() || shape.isRRect() /* || shape.isQuadrilateral()*/) &&
+            (!shape.isRRect() || type == SkStrokeRec::kFill_Style ||
+                    SkRRectPriv::AllCornersCircular(shape.rrect()));
+#else
+    return false;
+#endif
+}
+
 } // anonymous namespace
 
 /**
@@ -228,15 +241,6 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
-    return Make(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
-}
-
-sk_sp<Device> Device::Make(Recorder* recorder,
-                           sk_sp<TextureProxy> target,
-                           SkISize deviceSize,
-                           const SkColorInfo& colorInfo,
-                           const SkSurfaceProps& props,
-                           bool addInitialClear) {
     if (!recorder) {
         return nullptr;
     }
@@ -244,7 +248,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props);
+    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), colorInfo, props);
     if (!dc) {
         return nullptr;
     }
@@ -358,16 +362,35 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
     return { std::move(dest), srcView.swizzle() };
 }
 
-bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
-#if GRAPHITE_TEST_UTILS
-    if (Context* context = fRecorder->priv().context()) {
-        this->flushPendingWorkToRecorder();
-        return context->priv().readPixels(fRecorder, pm, fDC->target(), this->imageInfo(),
-                                          srcX, srcY);
-    }
-#endif
+bool Device::onReadPixels(const SkPixmap& pm, int x, int y) {
     // We have no access to a context to do a read pixels here.
     return false;
+}
+
+bool Device::readPixels(Context* context,
+                        Recorder* recorder,
+                        const SkPixmap& pm,
+                        int srcX,
+                        int srcY) {
+    return ReadPixelsHelper([this]() {
+                                this->flushPendingWorkToRecorder();
+                            },
+                            context,
+                            recorder,
+                            fDC->target(),
+                            pm.info(),
+                            pm.writable_addr(),
+                            pm.rowBytes(),
+                            srcX,
+                            srcY);
+}
+
+void Device::asyncReadPixels(const SkImageInfo& info,
+                             SkIRect srcRect,
+                             ReadPixelsCallback callback,
+                             ReadPixelsContext context) {
+    // TODO: implement for Graphite
+    callback(context, nullptr);
 }
 
 void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
@@ -376,7 +399,7 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                        RescaleMode rescaleMode,
                                        ReadPixelsCallback callback,
                                        ReadPixelsContext context) {
-    // Not supported for Graphite
+    // TODO: implement for Graphite
     callback(context, nullptr);
 }
 
@@ -631,9 +654,9 @@ void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
         // Force the style to be a stroke, using the radius and cap from the paint
         SkStrokeRec stroke(paint, SkPaint::kStroke_Style);
         size_t inc = (mode == SkCanvas::kLines_PointMode) ? 2 : 1;
-        for (size_t i = 0; i < count-1; i += inc) {
+        for (size_t i = 0; i < count; i += inc) {
             this->drawGeometry(this->localToDeviceTransform(),
-                               Geometry(Shape(points[i], points[i + 1])),
+                               Geometry(Shape(points[i], points[(i + 1) % count])),
                                paint, stroke);
         }
     }
@@ -795,11 +818,8 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // TODO: The tessellating path renderers haven't implemented perspective yet, so transform to
     // device space so we draw something approximately correct (barring local coord issues).
-    if (geometry.isShape() && localToDevice.type() == Transform::Type::kProjection
-#if ENABLE_ANALYTIC_RRECT_RENDERER
-        && (geometry.shape().isPath() || !style.isFillStyle())
-#endif
-    ) {
+    if (geometry.isShape() && localToDevice.type() == Transform::Type::kProjection &&
+        !is_simple_shape(geometry.shape(), style.getStyle())) {
         SkPath devicePath = geometry.shape().asPath();
         devicePath.transform(localToDevice.matrix().asM33());
         this->drawGeometry(Transform::Identity(), Geometry(Shape(devicePath)), paint, style, flags,
@@ -857,15 +877,6 @@ void Device::drawGeometry(const Transform& localToDevice,
 
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
-
-    // A primitive blender should be ignored if there is no primitive color to blend against.
-    // Additionally, if a renderer emits a primitive color, then a null primitive blender should
-    // be interpreted as SrcOver blending mode.
-    if (!renderer->emitsPrimitiveColor()) {
-        primitiveBlender = nullptr;
-    } else if (!SkToBool(primitiveBlender)) {
-        primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
-    }
 
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
@@ -979,19 +990,10 @@ const Renderer* Device::chooseRenderer(const Geometry& geometry,
     }
 
     const Shape& shape = geometry.shape();
-#if ENABLE_ANALYTIC_RRECT_RENDERER
-    // We send regular filled [round] rectangles and quadrilaterals, and stroked [r]rects with
-    // circular corners to a single Renderer that does not trigger MSAA. We can't use this renderer
-    // if we require MSAA for an effect (i.e. clipping or stroke-and-fill).
-    const bool simpleShape =
-            !requireMSAA && !shape.inverted() && type != SkStrokeRec::kStrokeAndFill_Style &&
-            (shape.isRect() || shape.isRRect() /* || shape.isQuadrilateral()*/) &&
-            (!shape.isRRect() || type == SkStrokeRec::kFill_Style ||
-                    SkRRectPriv::AllCornersCircular(shape.rrect()));
-    if (simpleShape) {
+    // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
+    if (!requireMSAA && is_simple_shape(shape, type)) {
         return renderers->analyticRRect();
     }
-#endif
 
     // If we got here, it requires tessellated path rendering or an MSAA technique applied to a
     // simple shape (so we interpret them as paths to reduce the number of pipelines we need).
