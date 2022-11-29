@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3d48de9_fa4166fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T16:41:53Z",
+      "side": 1,
+      "message": "I\u0027ve been talking with Chris. He\u0027s advocating for a slight change in API direction (directly exposing the gainmap, rather than converting to 1010102 HDR). Going to hold off on further review - that idea sounds better to me overall, and definitely sounds better in the context of this CL -- doing so would address my concerns about how this creates a non-orthogonal feature.",
+      "revId": "5ea6e997e3110e2ab1d86f496821c4e3e71544f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "405bac6a_e45a52cc",
