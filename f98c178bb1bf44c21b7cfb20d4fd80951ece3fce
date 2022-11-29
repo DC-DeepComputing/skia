@@ -22,6 +22,30 @@
       },
       "revId": "f98c178bb1bf44c21b7cfb20d4fd80951ece3fce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be8a996_0a43b467",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-29T18:14:04Z",
+      "side": 1,
+      "message": "+1, having the intrinsics look like they take atomic_uint by value is somewhat confusing. More generally, though -- does anything prevent people from using these types in (for example) binary expressions? Pretty sure we want to disallow that completely, right? (Up to and including assignment?)",
+      "parentUuid": "f2b2008b_80cd87bc",
+      "range": {
+        "startLine": 1052,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 0
+      },
+      "revId": "f98c178bb1bf44c21b7cfb20d4fd80951ece3fce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
