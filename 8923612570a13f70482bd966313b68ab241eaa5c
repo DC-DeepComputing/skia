@@ -33,6 +33,23 @@
       "message": "Maybe name like `SkFreeWrapper`? That does seem to be how it\u0027s written in the commit message. On the other hand, this is technically an `SkFreeDeleter` since the point is to use it as the `Deleter` template argument to `std::unique_ptr`. Though it does seem an odd name, since this is not for deleting `sk_free` but is a concrete instantiation of the `Deleter` concept / interface (though apparently it isn\u0027t spec\u0027ed as a Concept yet). On my third hand this is `SkFreeFunctionObject` since the actual \"C++ named requirement\" this is implementing is `FunctionObject`.\n\nUgh, naming things.",
       "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4b6b86_9801aa27",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-11-29T21:11:01Z",
+      "side": 1,
+      "message": "In fact, I would much prefer that `SkFunctionWrapper` be left alone in general (so that it can be used both for `sk_free` and other things in the future that may require disambiguation) and prefer to introduce something here like\n\n`template \u003cauto p\u003e using SkFunctionObject \u003d SkFunctionWrapper\u003cstd::remove_pointer_t\u003cdecltype(p)\u003e, p\u003e;`\n\nand then use `SkFunctionObject` where it can be used (when the function is not overloaded). In fact, at the same time `SkFunctionWrapper` could be renamed to `SkOverloadedFunctionWrapper`, since that\u0027s essentially the only time it would be used.",
+      "revId": "8923612570a13f70482bd966313b68ab241eaa5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
