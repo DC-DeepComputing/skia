@@ -72,6 +72,10 @@ protected:
     bool onDimensionsSupported(const SkISize&) override;
 
     bool conversionSupported(const SkImageInfo&, bool, bool) override;
+#ifdef SK_CODEC_DECODES_JPEGR
+    bool onSetHDRDecodeMode(bool isHDRDecodeMode) override;
+#endif
+
 
 private:
     /*
@@ -114,9 +118,10 @@ private:
      * @param stream the encoded image data
      * @param decoderMgr holds decompress struct, src manager, and error manager
      *                   takes ownership
+     * @param isHDRData is true if HDR data was detected in the headers
      */
     SkJpegCodec(SkEncodedInfo&& info, std::unique_ptr<SkStream> stream,
-            JpegDecoderMgr* decoderMgr, SkEncodedOrigin origin);
+            JpegDecoderMgr* decoderMgr, SkEncodedOrigin origin, bool isHDRData);
 
     void initializeSwizzler(const SkImageInfo& dstInfo, const Options& options,
                             bool needsCMYKToRGB);
@@ -149,6 +154,9 @@ private:
     SkIRect                            fSwizzlerSubset;
 
     std::unique_ptr<SkSwizzler>        fSwizzler;
+
+    bool                               fHDRDataPresent;
+    bool                               fHDRDecodeMode;
 
     friend class SkRawCodec;
 

@@ -248,6 +248,14 @@ public:
         return fColorDepth;
     }
 
+    void updateColorDepth(uint8_t newColorDepth) {
+        fColorDepth = newColorDepth;
+    }
+
+    void updateColor(Color newColor) {
+        fColor = newColor;
+    }
+
 private:
     SkEncodedInfo(int width, int height, Color color, Alpha alpha,
             uint8_t bitsPerComponent, uint8_t colorDepth, std::unique_ptr<ICCProfile> profile)

@@ -745,6 +745,15 @@ public:
         return this->onGetRepetitionCount();
     }
 
+    /*
+     * Set codec into HDR Decode mode. By default for the content that contains both SDR and HDR
+     * data, the codec will decode SDR part only. If codec doesn't support this switch, or content
+     * doesn't contain HDR data, this function does nothing.
+     */
+    void setHDRDecodeMode(bool isHDRDecodeMode) {
+        this->onSetHDRDecodeMode(isHDRDecodeMode);
+    }
+
     // Register a decoder at runtime by passing two function pointers:
     //    - peek() to return true if the span of bytes appears to be your encoded format;
     //    - make() to attempt to create an SkCodec from the given stream.
@@ -755,6 +764,7 @@ public:
 
 protected:
     const SkEncodedInfo& getEncodedInfo() const { return fEncodedInfo; }
+    SkEncodedInfo& getMutableEncodedInfo() {return fEncodedInfo; }
 
     using XformFormat = skcms_PixelFormat;
 
@@ -885,8 +895,15 @@ protected:
         return 0;
     }
 
+    /*
+     * Do nothing. Codecs that support SDR/HDR Decode mode switch should override it.
+     */
+    virtual bool onSetHDRDecodeMode(bool) {
+        return false;
+    }
+
 private:
-    const SkEncodedInfo                fEncodedInfo;
+    SkEncodedInfo                      fEncodedInfo;
     XformFormat                        fSrcXformFormat;
     std::unique_ptr<SkStream>          fStream;
     bool                               fNeedsRewind;

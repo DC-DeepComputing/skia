@@ -262,6 +262,12 @@ public:
         return this->getAndroidPixels(info, pixels, rowBytes);
     }
 
+    /*
+     * Set codec into HDR Decode mode. By default for the content that contains both SDR and HDR
+     * data, the codec will decode SDR part only. If codec doesn't support this switch, or content
+     * doesn't contain HDR data, this function does nothing.
+     */
+    void setHDRDecodeMode(bool isHDRDecodeMode) { fCodec->setHDRDecodeMode(isHDRDecodeMode); }
     SkCodec* codec() const { return fCodec.get(); }
 
 protected:

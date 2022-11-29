@@ -27,11 +27,17 @@
 #include "src/codec/SkJpegPriv.h"
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/codec/SkSwizzler.h"
+#include "src/core/SkStreamPriv.h"
 
 #include <array>
 #include <csetjmp>
 #include <cstring>
 #include <utility>
+
+#ifdef SK_CODEC_DECODES_JPEGR
+    #include "jpegrecoverymap/recoverymap.h"
+    using namespace android::recoverymap;
+#endif
 
 class SkSampler;
 
@@ -87,6 +93,22 @@ static bool is_icc_marker(jpeg_marker_struct* marker) {
 
     return !memcmp(marker->data, kICCSig, sizeof(kICCSig));
 }
+
+#ifdef SK_CODEC_DECODES_JPEGR
+static bool is_hdr_data_present(jpeg_decompress_struct* dinfo) {
+    // TODO: Better HDR detection is needed.
+    const std::string nameSpace = "http://ns.adobe.com/xap/1.0/";
+    const size_t nameSpaceLength = nameSpace.size();
+    for (jpeg_marker_struct* marker = dinfo->marker_list; marker; marker = marker->next) {
+        if (marker->marker == kExifMarker && marker->data_length > nameSpaceLength+2) {
+            if (!strncmp(reinterpret_cast<char*>(marker->data), nameSpace.c_str(), nameSpaceLength)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+#endif
 
 /*
  * ICC profiles may be stored using a sequence of multiple markers.  We obtain the ICC profile
@@ -200,6 +222,11 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
             return kInvalidInput;
         }
 
+        bool isHDRData = false;
+#ifdef SK_CODEC_DECODES_JPEGR
+        isHDRData = is_hdr_data_present(dinfo);
+#endif
+
         SkEncodedOrigin orientation = get_exif_orientation(dinfo);
         auto profile = read_color_profile(dinfo);
         if (profile) {
@@ -234,7 +261,7 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
                                                  std::move(profile));
 
         SkJpegCodec* codec = new SkJpegCodec(std::move(info), std::unique_ptr<SkStream>(stream),
-                                             decoderMgr.release(), orientation);
+                                             decoderMgr.release(), orientation, isHDRData);
         *codecOut = codec;
     } else {
         SkASSERT(nullptr != decoderMgrOut);
@@ -262,13 +289,15 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> s
 }
 
 SkJpegCodec::SkJpegCodec(SkEncodedInfo&& info, std::unique_ptr<SkStream> stream,
-                         JpegDecoderMgr* decoderMgr, SkEncodedOrigin origin)
+                         JpegDecoderMgr* decoderMgr, SkEncodedOrigin origin, bool isHDRData)
     : INHERITED(std::move(info), skcms_PixelFormat_RGBA_8888, std::move(stream), origin)
     , fDecoderMgr(decoderMgr)
     , fReadyState(decoderMgr->dinfo()->global_state)
     , fSwizzleSrcRow(nullptr)
     , fColorXformSrcRow(nullptr)
     , fSwizzlerSubset(SkIRect::MakeEmpty())
+    , fHDRDataPresent(isHDRData)
+    , fHDRDecodeMode(false)
 {}
 SkJpegCodec::~SkJpegCodec() = default;
 
@@ -299,6 +328,11 @@ void calc_output_dimensions(jpeg_decompress_struct* dinfo, unsigned int num, uns
  * Return a valid set of output dimensions for this decoder, given an input scale
  */
 SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return this->dimensions();
+    }
+#endif
     // libjpeg-turbo supports scaling by 1/8, 1/4, 3/8, 1/2, 5/8, 3/4, 7/8, and 1/1, so we will
     // support these as well
     unsigned int num;
@@ -334,6 +368,11 @@ SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
 }
 
 bool SkJpegCodec::onRewind() {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return false;
+    }
+#endif
     JpegDecoderMgr* decoderMgr = nullptr;
     if (kSuccess != ReadHeader(this->stream(), nullptr, &decoderMgr, nullptr)) {
         return fDecoderMgr->returnFalse("onRewind");
@@ -361,6 +400,18 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
         SkCodecPrintf("Warning: an opaque image should be decoded as opaque "
                       "- it is being decoded as non-opaque, which will draw slower\n");
     }
+#ifdef SK_CODEC_DECODES_JPEGR
+    // Only RGB1010102 to RGB1010102 for HDR mode
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        switch (dstInfo.colorType()) {
+            case kRGBA_1010102_SkColorType:
+                this->setSrcXformFormat(skcms_PixelFormat_RGBA_1010102);
+                return true;
+            default:
+                return false;
+        }
+    }
+#endif
 
     J_COLOR_SPACE encodedColorType = fDecoderMgr->dinfo()->jpeg_color_space;
 
@@ -419,6 +470,11 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
  * dimensions if possible
  */
 bool SkJpegCodec::onDimensionsSupported(const SkISize& size) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return false;
+    }
+#endif
     skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());
     if (setjmp(jmp)) {
         return fDecoderMgr->returnFalse("onDimensionsSupported");
@@ -544,6 +600,45 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
         // Subsets are not supported.
         return kUnimplemented;
     }
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        const SkColorType dstColorType = dstInfo.colorType();
+        if (dstColorType != kRGBA_1010102_SkColorType) {
+            // We only support RGBA1010102 color
+            return kUnimplemented;
+        }
+
+        if (this->dimensions() != dstInfo.dimensions()) {
+            // No Scaling
+            return kUnimplemented;
+        }
+
+        std::unique_ptr<RecoveryMap> jpegRDecoder(new RecoveryMap());
+        sk_sp<SkData> data = nullptr;
+        if (!this->stream()->rewind()) {
+            SkCodecPrintf("Encoded image data could not rewind to decode!\n");
+            return kUnimplemented;
+        }
+        if (this->stream()->getMemoryBase()) {
+            data = SkData::MakeWithoutCopy(this->stream()->getMemoryBase(), this->stream()->getLength());
+        } else {
+            data = SkCopyStreamToData(this->stream());
+        }
+
+        jpegr_compressed_struct compressedImage;
+        jpegr_uncompressed_struct decompressedImage;
+        compressedImage.data = (void*)data->data();
+        compressedImage.length = data->size();
+
+        decompressedImage.data = dst;
+        if (jpegRDecoder->decodeJPEGR(&compressedImage, &decompressedImage) != android::NO_ERROR) {
+            return kInternalError;
+        }
+
+        *rowsDecoded = dstInfo.height();
+        return kSuccess;
+    }
+#endif
 
     // Get a pointer to the decompress info since we will use it quite frequently
     jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
@@ -656,6 +751,12 @@ void SkJpegCodec::initializeSwizzler(const SkImageInfo& dstInfo, const Options& 
 }
 
 SkSampler* SkJpegCodec::getSampler(bool createIfNecessary) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return nullptr;
+    }
+#endif
+
     if (!createIfNecessary || fSwizzler) {
         SkASSERT(!fSwizzler || (fSwizzleSrcRow && fStorage.get() == fSwizzleSrcRow));
         return fSwizzler.get();
@@ -673,6 +774,11 @@ SkSampler* SkJpegCodec::getSampler(bool createIfNecessary) {
 
 SkCodec::Result SkJpegCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
         const Options& options) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return kUnimplemented;
+    }
+#endif
     // Set the jump location for libjpeg errors
     skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());
     if (setjmp(jmp)) {
@@ -738,6 +844,11 @@ SkCodec::Result SkJpegCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
 }
 
 int SkJpegCodec::onGetScanlines(void* dst, int count, size_t dstRowBytes) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return 0;
+    }
+#endif
     int rows = this->readRows(this->dstInfo(), dst, dstRowBytes, count, this->options());
     if (rows < count) {
         // This allows us to skip calling jpeg_finish_decompress().
@@ -748,6 +859,11 @@ int SkJpegCodec::onGetScanlines(void* dst, int count, size_t dstRowBytes) {
 }
 
 bool SkJpegCodec::onSkipScanlines(int count) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return false;
+    }
+#endif
     // Set the jump location for libjpeg errors
     skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());
     if (setjmp(jmp)) {
@@ -852,11 +968,21 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
 
 bool SkJpegCodec::onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
                                   SkYUVAPixmapInfo* yuvaPixmapInfo) const {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return false;
+    }
+#endif
     jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
     return is_yuv_supported(dinfo, *this, &supportedDataTypes, yuvaPixmapInfo);
 }
 
 SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
+#ifdef SK_CODEC_DECODES_JPEGR
+    if (fHDRDataPresent && fHDRDecodeMode) {
+        return kUnimplemented;
+    }
+#endif
     // Get a pointer to the decompress info since we will use it quite frequently
     jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
     if (!is_yuv_supported(dinfo, *this, nullptr, nullptr)) {
@@ -971,6 +1097,18 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
 
     return kSuccess;
 }
+
+#ifdef SK_CODEC_DECODES_JPEGR
+bool SkJpegCodec::onSetHDRDecodeMode(bool isHDRDecodeMode) {
+    if (fHDRDataPresent) {
+        getMutableEncodedInfo().updateColorDepth(10);
+        getMutableEncodedInfo().updateColor(SkEncodedInfo::kRGBA_Color);
+        fHDRDecodeMode = isHDRDecodeMode;
+        return true;
+    }
+    return false;
+}
+#endif
 
 // This function is declared in SkJpegInfo.h, used by SkPDF.
 bool SkGetJpegInfo(const void* data, size_t len,
