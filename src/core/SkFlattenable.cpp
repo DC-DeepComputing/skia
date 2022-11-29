@@ -5,11 +5,18 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkData.h"
 #include "include/core/SkFlattenable.h"
+#include "include/private/SkTDArray.h"
 #include "src/core/SkPtrRecorder.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkWriteBuffer.h"
 
 #include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <iterator>
+#include <utility>
 
 SkNamedFactorySet::SkNamedFactorySet() : fNextAddedFactory(0) {}
 
