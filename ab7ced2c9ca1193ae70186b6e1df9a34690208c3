@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d1df85b_f78bf286",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-30T18:15:30Z",
+      "side": 1,
+      "message": "I likely don\u0027t have the complete picture here (and my Vulkan knowledge is lacking) but could this generally address a mappable vertex buffer that\u0027s populated on the CPU, as well as an unmapped GPU-private buffer (as in `MTLResourceStorageModePrivate` in Metal) that, say, a compute shader would populate?",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 100
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c28c70be_ec5c1719",
         "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
         "patchSetId": 5
@@ -14,6 +37,30 @@
       "writtenOn": "2022-11-30T17:56:49Z",
       "side": 1,
       "message": "I would like to call your attention here to confirm is this is the right buffer usage flag or not.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 57
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17763916_7706d56b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-11-30T18:15:30Z",
+      "side": 1,
+      "message": "Can we make it so that this can be assigned `BufferUsage::kGpuOnly` based on a combination of `requiresMappable` and/or a client provided usage flag? I\u0027m thinking of the compute pipeline use cases where we\u0027ll want to be able to configure this based on the use case. (Compute pipelines will use storage buffers to store data in more ways than the existing usage of storing uniforms).",
+      "parentUuid": "c28c70be_ec5c1719",
       "range": {
         "startLine": 70,
         "startChar": 0,
