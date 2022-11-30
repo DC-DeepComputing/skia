@@ -40,6 +40,8 @@ public:
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*) override;
 
+    bool checkVkResult(VkResult result);
+
 private:
     VulkanSharedContext(const VulkanBackendContext&,
                         sk_sp<const skgpu::VulkanInterface> interface,
@@ -51,6 +53,9 @@ private:
 
     VkDevice fDevice;
     uint32_t fQueueIndex;
+    // TODO: Handle fallout if the device is lost or out of memory (OOM).
+    bool fDeviceIsLost = false;
+    bool fOOMed = false;
 
 };
 
