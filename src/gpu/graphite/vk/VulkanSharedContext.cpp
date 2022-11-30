@@ -129,5 +129,22 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
     return std::unique_ptr<ResourceProvider>(new VulkanResourceProvider(this, singleOwner));
 }
 
+bool VulkanSharedContext::checkVkResult(VkResult result) const {
+    switch (result) {
+        case VK_SUCCESS:
+            return true;
+        case VK_ERROR_DEVICE_LOST:
+            // fDeviceIsLost = true; TODO: Add means to signal the device is lost
+            return false;
+        case VK_ERROR_OUT_OF_DEVICE_MEMORY:
+        case VK_ERROR_OUT_OF_HOST_MEMORY:
+            // TODO: Add way to signal OOM and associated methods.
+            //this->setOOMed();
+            return false;
+        default:
+            return false;
+    }
+}
+
 } // namespace skgpu::graphite
 
