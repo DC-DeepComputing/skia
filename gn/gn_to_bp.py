@@ -279,9 +279,14 @@ cc_defaults {
         "libwuffs_mirror_release_c",
     ],
     target: {
-      android: {
+      host: {
         shared_libs: [
-            "libheif",
+            "libicui18n",
+            "libicuuc",
+        ],
+        export_shared_lib_headers: [
+            "libicui18n",
+            "libicuuc",
         ],
       },
       darwin: {
