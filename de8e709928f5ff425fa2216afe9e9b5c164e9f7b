@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "690d730e_94f7efb6",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2973,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-30T16:39:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f8368fa_db805a3c",
+      "revId": "de8e709928f5ff425fa2216afe9e9b5c164e9f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a38a5335_672ae6de",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-29T20:55:43Z",
       "side": 1,
       "message": "Do you actually want \"glserializeslug\" w/o the \u0027s\u0027 ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "de8e709928f5ff425fa2216afe9e9b5c164e9f7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65cb428_6d7b22ea",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-11-30T16:39:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a38a5335_672ae6de",
       "range": {
         "startLine": 72,
         "startChar": 7,
