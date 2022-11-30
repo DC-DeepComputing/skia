@@ -21,6 +21,7 @@ go_library(
         "@org_skia_go_infra//go/gitiles",
         "@org_skia_go_infra//go/now",
         "@org_skia_go_infra//go/skerr",
+        "@org_skia_go_infra//go/sklog",
         "@org_skia_go_infra//perf/go/ingest/format",
         "@org_skia_go_infra//task_driver/go/lib/auth_steps",
         "@org_skia_go_infra//task_driver/go/lib/checkout",
