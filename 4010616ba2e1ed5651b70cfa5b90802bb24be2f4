@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7608d0f_de32c73d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-30T17:56:49Z",
+      "side": 1,
+      "message": "Going ahead and adding you so you can start taking a look at the first CL that starts the implementation of VulkanBuffer.",
+      "revId": "4010616ba2e1ed5651b70cfa5b90802bb24be2f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

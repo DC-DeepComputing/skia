@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0e8644_f0c3bc27",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-30T17:56:49Z",
+      "side": 1,
+      "message": "Question: Do we plan to support SkMesh buffer updates in graphite?",
+      "range": {
+        "startLine": 46,
+        "startChar": 7,
+        "endLine": 46,
+        "endChar": 39
+      },
+      "revId": "023e2733284a4296338864921dcaf7ef8c510100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

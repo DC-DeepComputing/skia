@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28c70be_ec5c1719",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-30T17:56:49Z",
+      "side": 1,
+      "message": "I would like to call your attention here to confirm is this is the right buffer usage flag or not.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 57
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67916406_a9995ec7",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-30T17:56:49Z",
+      "side": 1,
+      "message": "FYI: I am currently working on a follow-up CL which will add the necessary classes for descriptor set handling.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 8
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be8c8967_57d43a40",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-11-30T17:56:49Z",
+      "side": 1,
+      "message": "Another callout: In Ganesh, we track OOM and DeviceIsLost in `GrGpu`. What is your opinion on storing these within the shared context for graphite? \n\nI currently added them in Vulkan\u0027s shared context, but if you\u0027re on board with this plan then we will probably want to relocate these member attributes into the upper-level `SharedContext.h` since losing a device and running out of memory are universal problems for any backend. LMKWYT.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 58
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
