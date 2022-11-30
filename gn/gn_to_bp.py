@@ -281,7 +281,21 @@ cc_defaults {
     target: {
       android: {
         shared_libs: [
+            "libandroidicu",
             "libheif",
+        ],
+        export_shared_lib_headers: [
+            "libandroidicu",
+        ],
+      },
+      host: {
+        shared_libs: [
+            "libicui18n",
+            "libicuuc",
+        ],
+        export_shared_lib_headers: [
+            "libicui18n",
+            "libicuuc",
         ],
       },
       darwin: {
