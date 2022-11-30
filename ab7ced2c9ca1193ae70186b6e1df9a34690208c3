@@ -139,6 +139,30 @@
       },
       "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e338cf9b_04189133",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-30T18:29:41Z",
+      "side": 1,
+      "message": "Yeah I\u0027ve been putting doing this, because it is a little more involved. Specifically this could end up getting called on multiple threads at the same time, so this whole system needs to be made thread safe.",
+      "parentUuid": "be8c8967_57d43a40",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 58
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
