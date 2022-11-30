@@ -3611,10 +3611,12 @@ public:
             ++pos;
         }
 
-        auto paragraph = builder.BuildWithClientInfo(std::move(bidis),
-                                                     std::move(words),
-                                                     std::move(graphemes),
-                                                     std::move(breaks));
+        builder.setBidiRegionsUtf8(std::move(bidis));
+        builder.setWordsUtf8(std::move(words));
+        builder.setGraphemeBreaksUtf8(std::move(graphemes));
+        builder.setLineBreaksUtf8(std::move(breaks));
+        auto paragraph = builder.Build();
+
         paragraph->layout(600);
         paragraph->paint(canvas, 0, 0);
     }
