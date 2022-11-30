@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b98fd2_e8727926",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-30T16:50:09Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we just flip the inequality and the position? Turning `x \u003e y` into `y \u003c\u003d x` produces different answers when `x \u003d\u003d y`",
+      "range": {
+        "startLine": 354,
+        "startChar": 15,
+        "endLine": 354,
+        "endChar": 75
+      },
+      "revId": "7ac3aeedd1c1b2f038f7a6de988c20c21eda4a0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
