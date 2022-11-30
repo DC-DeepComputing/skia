@@ -1149,7 +1149,7 @@ describe('Paragraph Behavior', function() {
 
         // Pass 1 bidi region as a triple of integers, [start:end), direction
         const mallocedBidis = CanvasKit.Malloc(Uint32Array, 3);
-        mallocedBidis.toTypedArray().set([0, text.length, CanvasKit.TextDirection.LTR.value]);
+        mallocedBidis.toTypedArray().set([0, text.length, 0]);
 
         // Pass the entire text as one word. It's only used for the method
         // getWords
@@ -1182,12 +1182,11 @@ describe('Paragraph Behavior', function() {
         const text2 = builder.getText();
         expect(text2).toEqual(text);
 
-        const paragraph = builder.buildWithClientInfo(
-            mallocedBidis,
-            mallocedWords,
-            graphemesArr,
-            mallocedLineBreaks
-        );
+        builder.setBidiRegionsUtf8(mallocedBidis);
+        builder.setWordsUtf8(mallocedWords);
+        builder.setGraphemeBreaksUtf8(mallocedGraphemes);
+        builder.setLineBreaksUtf8(mallocedLineBreaks);
+        const paragraph = builder.build();
 
         paragraph.layout(600);
 
