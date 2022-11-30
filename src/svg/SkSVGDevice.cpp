@@ -60,6 +60,8 @@
 #include <string>
 #include <utility>
 
+using namespace skia_private;
+
 #if SK_SUPPORT_GPU
 class SkMesh;
 #endif
@@ -971,7 +973,7 @@ void SkSVGDevice::drawBitmapCommon(const MxCp& mc, const SkBitmap& bm, const SkP
     }
 
     size_t b64Size = SkBase64::Encode(pngData->data(), pngData->size(), nullptr);
-    SkAutoTMalloc<char> b64Data(b64Size);
+    AutoTMalloc<char> b64Data(b64Size);
     SkBase64::Encode(pngData->data(), pngData->size(), b64Data.get());
 
     SkString svgImageData("data:image/png;base64,");
