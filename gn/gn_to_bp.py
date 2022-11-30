@@ -284,6 +284,16 @@ cc_defaults {
             "libheif",
         ],
       },
+      host: {
+        shared_libs: [
+            "libicui18n",
+            "libicuuc",
+        ],
+        export_shared_lib_headers: [
+            "libicui18n",
+            "libicuuc",
+        ],
+      },
       darwin: {
         host_ldlibs: [
             "-framework AppKit",
