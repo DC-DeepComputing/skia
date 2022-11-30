@@ -38,6 +38,8 @@
 #include <cstring>
 #include <utility>
 
+using namespace skia_internal;
+
 class SkSampler;
 struct SkGainmapInfo;
 
