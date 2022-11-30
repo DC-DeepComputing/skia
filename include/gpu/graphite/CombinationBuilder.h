@@ -119,7 +119,7 @@ private:
     Option* fDataInArena;
 };
 
-class CombinationBuilder {
+class CombinationBuilder1 {
 public:
     enum class BlendModeGroup {
         kPorterDuff,         // [ kClear .. kScreen ]
@@ -128,8 +128,8 @@ public:
         kAll
     };
 
-    CombinationBuilder(ShaderCodeDictionary*);
-    ~CombinationBuilder();
+    CombinationBuilder1(ShaderCodeDictionary*);
+    ~CombinationBuilder1();
 
     // Blend Modes
     void addOption(SkBlendMode);

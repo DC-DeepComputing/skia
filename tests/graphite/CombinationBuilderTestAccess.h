@@ -13,6 +13,7 @@
 
 namespace skgpu::graphite {
 
+#if 0
 class CombinationBuilderTestAccess {
 public:
     static int NumCombinations(skgpu::graphite::CombinationBuilder* builder) {
@@ -39,6 +40,7 @@ public:
     }
 #endif
 };
+#endif
 
 } // namespace skgpu::graphite
 
