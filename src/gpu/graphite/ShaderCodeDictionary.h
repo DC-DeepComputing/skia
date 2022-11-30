@@ -214,6 +214,10 @@ public:
         skgpu::BlendInfo fBlendInfo;
     };
 
+#if GR_TEST_UTILS
+    int numEntries() const SK_EXCLUDES(fSpinLock);
+#endif
+
     const Entry* findOrCreate(PaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
 
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
