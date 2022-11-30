@@ -149,6 +149,7 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
     float* tempStackBase = slotPtrEnd;
     float* tempStackPtr = tempStackBase;
     [[maybe_unused]] float* tempStackEnd = tempStackBase + (N * fNumTempStackSlots);
+    int numConditionals = 0;
 
     for (const Instruction& inst : fInstructions) {
         auto SlotA = [&]() { return &slotPtr[N * inst.fSlotA]; };
@@ -179,20 +180,23 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 pipeline->append(SkRP::load_dst, SlotA());
                 break;
 
-            case BuilderOp::immediate_f: {
+            case BuilderOp::immediate_f:
                 pipeline->append(SkRP::immediate_f, context_bit_pun(inst.fImmA));
                 break;
-            }
+
             case BuilderOp::load_unmasked:
                 pipeline->append(SkRP::load_unmasked, SlotA());
                 break;
 
+            case BuilderOp::store_masked:
+                if (numConditionals > 0) {
+                    pipeline->append(SkRP::store_masked, SlotA());
+                    break;
+                }
+                [[fallthrough]];
+
             case BuilderOp::store_unmasked:
                 pipeline->append(SkRP::store_unmasked, SlotA());
-                break;
-
-            case BuilderOp::store_masked:
-                pipeline->append(SkRP::store_masked, SlotA());
                 break;
 
             case ALL_SINGLE_SLOT_UNARY_OP_CASES: {
@@ -214,8 +218,11 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 break;
             }
             case BuilderOp::copy_slot_masked:
-                pipeline->append_copy_slots_masked(alloc, SlotA(), SlotB(), inst.fImmA);
-                break;
+                if (numConditionals > 0) {
+                    pipeline->append_copy_slots_masked(alloc, SlotA(), SlotB(), inst.fImmA);
+                    break;
+                }
+                [[fallthrough]];
 
             case BuilderOp::copy_slot_unmasked:
                 pipeline->append_copy_slots_unmasked(alloc, SlotA(), SlotB(), inst.fImmA);
@@ -233,9 +240,11 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
             case BuilderOp::push_condition_mask:
                 pipeline->append(SkRP::combine_condition_mask, tempStackPtr - N);
                 tempStackPtr += N;
+                ++numConditionals;
                 break;
 
             case BuilderOp::pop_condition_mask:
+                --numConditionals;
                 tempStackPtr -= N;
                 pipeline->append(SkRP::load_condition_mask, tempStackPtr);
                 break;
@@ -250,11 +259,14 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
                 tempStackPtr += N;
                 break;
 
-            case BuilderOp::copy_stack_to_slots: {
-                float* src = tempStackPtr - N * inst.fImmA;
-                pipeline->append_copy_slots_masked(alloc, SlotA(), src, inst.fImmA);
-                break;
-            }
+            case BuilderOp::copy_stack_to_slots:
+                if (numConditionals > 0) {
+                    float* src = tempStackPtr - N * inst.fImmA;
+                    pipeline->append_copy_slots_masked(alloc, SlotA(), src, inst.fImmA);
+                    break;
+                }
+                [[fallthrough]];
+
             case BuilderOp::copy_stack_to_slots_unmasked: {
                 float* src = tempStackPtr - N * inst.fImmA;
                 pipeline->append_copy_slots_unmasked(alloc, SlotA(), src, inst.fImmA);

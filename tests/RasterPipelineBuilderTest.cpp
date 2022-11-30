@@ -141,10 +141,14 @@ DEF_TEST(RasterPipelineBuilderImmediate, r) {
 DEF_TEST(RasterPipelineBuilderLoadStoreAccumulator, r) {
     // Create a very simple nonsense program.
     SkSL::RP::Builder builder;
+    builder.push_literal_i(~0);    // set up a condition mask so that store_masked
+    builder.push_condition_mask(); // won't be optimized into store_unmasked
     builder.load_unmasked(12);
     builder.store_unmasked(34);
     builder.store_unmasked(56);
     builder.store_masked(0);
+    builder.pop_condition_mask();  // jettison the condition mask
+    builder.discard_stack();       // and the literal it needed
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/57);
 
     // Instantiate this program.
@@ -154,11 +158,13 @@ DEF_TEST(RasterPipelineBuilderLoadStoreAccumulator, r) {
 
     // Double check that the resulting stage list contains the expected stores.
     const auto* stages = TestingOnly_SkRasterPipelineInspector::GetStageList(&pipeline);
-    const float* slot0 = (const float*)stages->ctx;
     const int N = SkOpts::raster_pipeline_highp_stride;
 
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::load_condition_mask);
+    stages = stages->prev;
+
     REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::store_masked);
-    REPORTER_ASSERT(r, stages->ctx == slot0 + (0 * N));
+    const float* slot0 = (const float*)stages->ctx;
     stages = stages->prev;
 
     REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::store_unmasked);
@@ -310,8 +316,16 @@ DEF_TEST(RasterPipelineBuilderPushPopTempImmediates, r) {
 DEF_TEST(RasterPipelineBuilderCopySlotsMasked, r) {
     // Create a very simple nonsense program.
     SkSL::RP::Builder builder;
+    // This will be rewritten into an unmasked-copy because it's non-conditional.
     builder.copy_slots_masked(two_slots_at(0),  two_slots_at(2));
+
+    // This will be written as a masked copy because it's conditional.
+    builder.push_literal_i(0);
+    builder.push_condition_mask();
     builder.copy_slots_masked(four_slots_at(1), four_slots_at(5));
+    builder.pop_condition_mask();
+    builder.discard_stack();
+
     builder.load_unmasked(0);  // make it easy to find the first slot
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/9);
 
@@ -325,17 +339,26 @@ DEF_TEST(RasterPipelineBuilderCopySlotsMasked, r) {
     REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::load_unmasked);
     const float* slot0 = (const float*)stages->ctx;
     const int N = SkOpts::raster_pipeline_highp_stride;
-
     stages = stages->prev;
+
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::load_condition_mask);
+    stages = stages->prev;
+
     const auto* ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(stages->ctx);
 
     REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_4_slots_masked);
     REPORTER_ASSERT(r, ctx->dst == slot0 + (1 * N));
     REPORTER_ASSERT(r, ctx->src == slot0 + (5 * N));
     stages = stages->prev;
+
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::combine_condition_mask);
+    stages = stages->prev;
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::zero_slot_unmasked);
+    stages = stages->prev;
+
     ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(stages->ctx);
 
-    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_2_slots_masked);
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_2_slots_unmasked);
     REPORTER_ASSERT(r, ctx->dst == slot0 + (0 * N));
     REPORTER_ASSERT(r, ctx->src == slot0 + (2 * N));
 }
@@ -405,13 +428,13 @@ DEF_TEST(RasterPipelineBuilderPushPopSlots, r) {
     stages = stages->prev;
     const auto* ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(stages->ctx);
 
-    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_slot_masked);
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_slot_unmasked);
     REPORTER_ASSERT(r, ctx->src == slot0 + (54 * N));
     REPORTER_ASSERT(r, ctx->dst == slot0 + (4 * N));
     stages = stages->prev;
     ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(stages->ctx);
 
-    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_4_slots_masked);
+    REPORTER_ASSERT(r, stages->stage == SkRasterPipeline::copy_4_slots_unmasked);
     REPORTER_ASSERT(r, ctx->src == slot0 + (50 * N));
     REPORTER_ASSERT(r, ctx->dst == slot0 + (0 * N));
     stages = stages->prev;
