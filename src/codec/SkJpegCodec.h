@@ -150,7 +150,7 @@ private:
     const int                          fReadyState;
 
 
-    SkAutoTMalloc<uint8_t>             fStorage;
+    skia_internal::SkAutoTMalloc<uint8_t>             fStorage;
     uint8_t* fSwizzleSrcRow = nullptr;
     uint32_t* fColorXformSrcRow = nullptr;
 
