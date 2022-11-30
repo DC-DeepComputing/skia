@@ -51,11 +51,56 @@ public:
     PrecompileBasePriv priv();
     const PrecompileBasePriv priv() const;  // NOLINT(readability-const-return-type)
 
+protected:
+    template<typename T>
+    static sk_sp<T> Get(const KeyContext&,
+                        PaintParamsKeyBuilder*,
+                        const std::vector<sk_sp<T>>& options,
+                        int* desiredOption);
+    template<typename T>
+    static void AddToKey(const KeyContext&,
+                         PaintParamsKeyBuilder*,
+                         const std::vector<sk_sp<T>>& options,
+                         int desiredOption);
+
 private:
+    friend class PaintOptions;
     friend class PrecompileBasePriv;
+
+    virtual void addToKey(const KeyContext&,
+                          int desiredCombination,
+                          PaintParamsKeyBuilder*) const = 0;
 
     Type fType;
 };
+
+//--------------------------------------------------------------------------------------------------
+template<typename T>
+sk_sp<T> PrecompileBase::Get(const KeyContext& keyContext,
+                             PaintParamsKeyBuilder* builder,
+                             const std::vector<sk_sp<T>>& options,
+                             int* desiredOption) {
+    for (const sk_sp<T>& option : options) {
+        if (*desiredOption < option->numCombinations()) {
+            return option;
+        }
+
+        *desiredOption -= option->numCombinations();
+    }
+
+    return nullptr;
+}
+
+template<typename T>
+void PrecompileBase::AddToKey(const KeyContext& keyContext,
+                              PaintParamsKeyBuilder* builder,
+                              const std::vector<sk_sp<T>>& options,
+                              int desiredOption) {
+    sk_sp<T> option = Get(keyContext, builder, options, &desiredOption);
+    if (option) {
+        option->priv().addToKey(keyContext, desiredOption, builder);
+    }
+}
 
 //--------------------------------------------------------------------------------------------------
 class PrecompileShader : public PrecompileBase {
@@ -132,6 +177,9 @@ private:
     int numBlendModeCombinations() const;
 
     int numCombinations() const;
+    // 'desiredCombination' must be less than the result of the numCombinations call
+    void createKey(const KeyContext&, int desiredCombination, PaintParamsKeyBuilder*) const;
+    void buildCombinations(ShaderCodeDictionary*) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
