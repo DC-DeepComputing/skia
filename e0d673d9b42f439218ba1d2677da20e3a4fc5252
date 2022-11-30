@@ -16,6 +16,24 @@
       "message": "Does this produce better code with `dr \u003d sk_bit_cast\u003cF\u003e(sk_bit_cast\u003cI32\u003e(dr) \u0026 stack[0]);` ?",
       "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a1a50c_455d2163",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-30T22:29:07Z",
+      "side": 1,
+      "message": "Both approaches lead to the same (optimal) codegen. Below `%ymm4` maps to `dr`, `(%rax)` is `stack[0]`, `32(%rax)` is `stack[1]`. I actually wrote it your way at first and then decided `stack[0] \u0026 stack[1]` was easier to read, but I can change it if you want to be explicit about using the register.\n\n```\n    d760: 48 8b 46 08                  \tmovq\t8(%rsi), %rax\n    d764: c5 fc 11 60 20               \tvmovups\t%ymm4, 32(%rax)\n    d769: c5 dc 54 20                  \tvandps\t(%rax), %ymm4, %ymm4\n    d76d: 48 8b 46 10                  \tmovq\t16(%rsi), %rax\n    d771: 48 83 c6 10                  \taddq\t$16, %rsi\n    d775: ff e0                        \tjmpq\t*%rax\n```",
+      "parentUuid": "9248742b_6a4cc877",
+      "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
