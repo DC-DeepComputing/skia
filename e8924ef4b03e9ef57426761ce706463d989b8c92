@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef1de51_30b80690",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-11-30T21:52:08Z",
+      "side": 1,
+      "message": "I\u0027m sure there\u0027s a way to reduce the duplication in this CL. Please teach me if that\u0027s possible 😊",
+      "revId": "e8924ef4b03e9ef57426761ce706463d989b8c92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
