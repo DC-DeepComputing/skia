@@ -16,6 +16,24 @@
       "message": "Hmm. Might want to wait to implement this until we have loops, too? (And functions, depending on how early returns are going to be handled). Both features are going to impact the active lane mask (in ways that aren\u0027t directly tied to the condition mask).",
       "revId": "78784fb325e9247134e92bb73b306782c2831d5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5748e059_73c7eb75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-30T22:31:23Z",
+      "side": 1,
+      "message": "OK.",
+      "parentUuid": "45617995_a418dc20",
+      "revId": "78784fb325e9247134e92bb73b306782c2831d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
