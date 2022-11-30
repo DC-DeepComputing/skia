@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43532a47_034a7677",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-30T19:49:25Z",
+      "side": 1,
+      "message": "We could also have changed this code to look at the transformed colors (pmColors), rather than the original colors (fColors), and got the same result. But given that we already have cached booleans telling us the thing we actually want to know...",
+      "range": {
+        "startLine": 380,
+        "startChar": 0,
+        "endLine": 381,
+        "endChar": 83
+      },
+      "revId": "1a08b490435e4e5c4638bd7d6399c544da6e064b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
