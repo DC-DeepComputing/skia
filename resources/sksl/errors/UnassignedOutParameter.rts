@@ -1,16 +1,27 @@
-// Expect 2 errors in "testOut"
+struct S { float2 value; };
 
 void testIn(in float2 a, in float2 b, in float2 c)             { a = float2(1); }
 void testOut(out float2 a, out float2 b, out float2 c)         { a = float2(1); }
 void testInout(inout float2 a, inout float2 b, inout float2 c) { a = float2(1); }
 
+void testIn(in S a, in S b, in S c)             { a.value = float2(1); }
+void testOut(out S a, out S b, out S c)         { a.value = float2(1); }
+void testInout(inout S a, inout S b, inout S c) { a.value = float2(1); }
+
 void func(float2 p) {
     testIn(p, p, p);
     testOut(p, p, p);
     testInout(p, p, p);
+
+    S s;
+    testIn(s, s, s);
+    testOut(s, s, s);
+    testInout(s, s, s);
 }
 
 /*%%*
+function 'testOut' never assigns a value to out parameter 'b'
+function 'testOut' never assigns a value to out parameter 'c'
 function 'testOut' never assigns a value to out parameter 'b'
 function 'testOut' never assigns a value to out parameter 'c'
 *%%*/
