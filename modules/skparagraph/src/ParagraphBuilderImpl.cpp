@@ -148,6 +148,20 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
 
     // Add one fake placeholder with the rest of the text
     addPlaceholder(PlaceholderStyle(), true);
+
+    if (fUsingClientInfo) {
+        fUTF8IndexForUTF16Index.reset();
+
+        // This is the place where SkUnicode is paired with SkParagraph
+        fUnicode =
+                SkUnicode::Make(this->getText(),
+                                std::move(fBidiRegionsUtf8),
+                                std::move(fWordsUtf8),
+                                std::move(fGraphemeBreaksUtf8),
+                                std::move(fLineBreaksUtf8));
+    }
+
+    SkASSERT(fUnicode);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
 }
@@ -161,6 +175,13 @@ const ParagraphStyle& ParagraphBuilderImpl::getParagraphStyle() const {
     return fParagraphStyle;
 }
 
+<<<<<<< PATCH SET (9f1f7e Add setters for providing client info to SkParagraphBuilder)
+void ParagraphBuilderImpl::ensureUTF16Mapping() {
+    fillUTF16MappingOnce([&] {
+        SkUnicode::extractUtfConversionMapping(
+                this->getText(),
+                [&](size_t index) { fUTF8IndexForUTF16Index.emplace_back(index); },
+=======
 std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
                 std::vector<SkUnicode::BidiRegion> bidiRegionsUtf16,
                 std::vector<SkUnicode::Position> wordsUtf16,
@@ -176,31 +197,67 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
     SkUnicode::extractUtfConversionMapping(
                 text,
                 [&](size_t index) { utf8IndexForUtf16Index.emplace_back(index); },
+>>>>>>> BASE      (1dba1a Breaking down Copy ReorderVisuals (4))
                 [&](size_t index) {});
+    });
+}
 
+void ParagraphBuilderImpl::setBidiRegionsUtf8(std::vector<SkUnicode::BidiRegion> bidiRegionsUtf8) {
+    fUsingClientInfo = true;
+    fBidiRegionsUtf8 = std::move(bidiRegionsUtf8);
+}
+void ParagraphBuilderImpl::setBidiRegionsUtf16(std::vector<SkUnicode::BidiRegion> bidiRegionsUtf16) {
+    ensureUTF16Mapping();
     std::vector<SkUnicode::BidiRegion> bidiRegionsUtf8;
     for (SkUnicode::BidiRegion bidiRegionUtf16: bidiRegionsUtf16) {
         bidiRegionsUtf8.emplace_back(
-                SkUnicode::BidiRegion(utf8IndexForUtf16Index[bidiRegionUtf16.start],
-                                      utf8IndexForUtf16Index[bidiRegionUtf16.end],
+                SkUnicode::BidiRegion(fUTF8IndexForUTF16Index[bidiRegionUtf16.start],
+                                      fUTF8IndexForUTF16Index[bidiRegionUtf16.end],
                                       bidiRegionUtf16.level));
     }
+    setBidiRegionsUtf8(bidiRegionsUtf8);
+}
 
+void ParagraphBuilderImpl::setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) {
+    fUsingClientInfo = true;
+    fWordsUtf8 = std::move(wordsUtf8);
+}
+void ParagraphBuilderImpl::setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) {
+    ensureUTF16Mapping();
     std::vector<SkUnicode::Position> wordsUtf8;
     for (SkUnicode::Position indexUtf16: wordsUtf16) {
-        wordsUtf8.emplace_back(utf8IndexForUtf16Index[indexUtf16]);
+        wordsUtf8.emplace_back(fUTF8IndexForUTF16Index[indexUtf16]);
     }
+    setWordsUtf8(wordsUtf8);
+}
 
+void ParagraphBuilderImpl::setGraphemeBreaksUtf8(std::vector<SkUnicode::Position> graphemeBreaksUtf8) {
+    fUsingClientInfo = true;
+    fGraphemeBreaksUtf8 = std::move(graphemeBreaksUtf8);
+}
+void ParagraphBuilderImpl::setGraphemeBreaksUtf16(std::vector<SkUnicode::Position> graphemeBreaksUtf16) {
+    ensureUTF16Mapping();
     std::vector<SkUnicode::Position> graphemeBreaksUtf8;
     for (SkUnicode::Position indexUtf16: graphemeBreaksUtf16) {
-        graphemeBreaksUtf8.emplace_back(utf8IndexForUtf16Index[indexUtf16]);
+        graphemeBreaksUtf8.emplace_back(fUTF8IndexForUTF16Index[indexUtf16]);
     }
+    setGraphemeBreaksUtf8(graphemeBreaksUtf8);
+}
 
+void ParagraphBuilderImpl::setLineBreaksUtf8(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8) {
+    fUsingClientInfo = true;
+    fLineBreaksUtf8 = std::move(lineBreaksUtf8);
+}
+void ParagraphBuilderImpl::setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf16) {
+    ensureUTF16Mapping();
     std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8;
     for (SkUnicode::LineBreakBefore lineBreakUtf16: lineBreaksUtf16) {
         lineBreaksUtf8.emplace_back(SkUnicode::LineBreakBefore(
-                utf8IndexForUtf16Index[lineBreakUtf16.pos], lineBreakUtf16.breakType));
+                fUTF8IndexForUTF16Index[lineBreakUtf16.pos], lineBreakUtf16.breakType));
     }
+<<<<<<< PATCH SET (9f1f7e Add setters for providing client info to SkParagraphBuilder)
+    setLineBreaksUtf8(lineBreaksUtf8);
+=======
 
     utf8IndexForUtf16Index.clear();
 
@@ -212,6 +269,7 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
                                 std::move(lineBreaksUtf8));
     return this->Build();
 #endif
+>>>>>>> BASE      (1dba1a Breaking down Copy ReorderVisuals (4))
 }
 
 void ParagraphBuilderImpl::Reset() {
