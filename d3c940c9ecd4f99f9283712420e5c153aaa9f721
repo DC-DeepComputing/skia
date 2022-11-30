@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe67cceb_4b0bdcf3",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-11-30T17:22:43Z",
+      "side": 1,
+      "message": "I think this would be clearer as (shape.isRect() || shape.isQuad() ||\n(shape.isRRect() \u0026\u0026 (type \u003d\u003d Fill || AllCornersCircular))",
+      "range": {
+        "startLine": 155,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 66
+      },
+      "revId": "d3c940c9ecd4f99f9283712420e5c153aaa9f721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
