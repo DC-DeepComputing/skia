@@ -8,6 +8,8 @@
 #ifndef CombinationBuilderTestAccess_DEFINED
 #define CombinationBuilderTestAccess_DEFINED
 
+#if 0
+
 #include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/private/SkUniquePaintParamsID.h"
 
@@ -43,3 +45,5 @@ public:
 } // namespace skgpu::graphite
 
 #endif // CombinationBuilderTestAccess_DEFINED
+
+#endif

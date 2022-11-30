@@ -32,13 +32,14 @@ class ContextPriv;
 struct DawnBackendContext;
 class GlobalCache;
 struct MtlBackendContext;
+class PaintOptions;
 class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 class BlenderID;
 class CombinationBuilder;
 #endif
@@ -88,11 +89,15 @@ public:
     void checkAsyncWorkCompletion();
 
 #ifdef SK_ENABLE_PRECOMPILE
+#if 0
     // TODO: add "ShaderID addUserDefinedShader(sk_sp<SkRuntimeEffect>)" here
     // TODO: add "ColorFilterID addUserDefinedColorFilter(sk_sp<SkRuntimeEffect>)" here
     BlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
 
     void precompile(CombinationBuilder*);
+#endif
+
+    void precompile(const PaintOptions&);
 #endif
 
     /**

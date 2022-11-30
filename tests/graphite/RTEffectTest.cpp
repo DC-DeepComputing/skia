@@ -17,7 +17,7 @@
 
 using namespace skgpu::graphite;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 
 namespace {
 

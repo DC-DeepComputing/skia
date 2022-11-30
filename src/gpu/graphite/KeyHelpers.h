@@ -159,7 +159,7 @@ struct ImageShaderBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
-                           const ImageData&);
+                           const ImageData*);
 
 };
 
@@ -214,7 +214,7 @@ struct MatrixColorFilterBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
-                           const MatrixColorFilterData&);
+                           const MatrixColorFilterData*);
 };
 
 struct BlendColorFilterBlock {
