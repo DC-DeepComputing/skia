@@ -33,6 +33,24 @@
       "message": "this seems like an ok approach to me",
       "revId": "0ec55e54bc0e103305c8c6477801477def462615",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c73e46_1ac6b004",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-30T19:50:55Z",
+      "side": 1,
+      "message": "I was about to say the same thing. So long as we stick to one internal namespace (which I expect we\u0027d want to, anyway), the impact on our internal code is pretty small -- we\u0027ll end up with a `using namespace` in lots of translation units over time, and a handful of types will be prefixed in headers. No concerns here.",
+      "parentUuid": "0bca4be6_5bc5cb7e",
+      "revId": "0ec55e54bc0e103305c8c6477801477def462615",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
