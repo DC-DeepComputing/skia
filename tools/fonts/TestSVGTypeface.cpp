@@ -48,6 +48,8 @@
 
 #include <utility>
 
+using namespace skia::internal;
+
 class SkDescriptor;
 
 TestSVGTypeface::TestSVGTypeface(const char*                              name,
