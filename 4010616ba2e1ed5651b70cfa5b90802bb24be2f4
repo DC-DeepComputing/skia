@@ -16,6 +16,29 @@
       "message": "Going ahead and adding you so you can start taking a look at the first CL that starts the implementation of VulkanBuffer.",
       "revId": "4010616ba2e1ed5651b70cfa5b90802bb24be2f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3c51aa3_dbf47b08",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-30T18:27:16Z",
+      "side": 1,
+      "message": "sharedContext-\u003eisProtected() \u003d\u003d Protected::kYes ||\n!prioritizeGpuReads ||\n!sharedContext-\u003evulkanCaps().gpuOnlyBuffersMorePerformant()",
+      "range": {
+        "startLine": 33,
+        "startChar": 28,
+        "endLine": 33,
+        "endChar": 87
+      },
+      "revId": "4010616ba2e1ed5651b70cfa5b90802bb24be2f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ccb229a3_5388e085",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-11-30T18:27:16Z",
+      "side": 1,
+      "message": "So in terms of kCpuWritesGpuReads vs kGpuOnly, both of these can be read by the gpu. On mobile kGpuOnly never makes sense for buffers since it isn\u0027t really a thing. On discrete gpus, gpu only buffers generally do have better memory access performance than buffers that are visible on the CPU. However, we currently only try to make a gpu only buffer if we know that buffer will have data written to it once (or few times) and read many times. Then the improved read performance will win out over the extra copy needed. We signal that we prefer a buffer that optimize gpu reads over data upload overhead by passing in the prioritizeGpuReads flag.\n\nNow with compute I imagine that we\u0027ll never want to map a vertex buffer filled in by compute on the CPU. So I think the higher up code that eventually asks for a new buffer would always pass in the prioritizeGpuReads flag when getting its buffer. Now on mobile devices this still may return a mappable buffer but thats fine. What we don\u0027t currently have here (and we can wait till we are adding compute stuff) is the right usage flags. I\u0027m not positive which one we\u0027d need to add, maybe VK_BUFFER_USAGE_STORAGE_BUFFER_BIT to allow writes in a compute shader?",
+      "parentUuid": "9d1df85b_f78bf286",
+      "range": {
+        "startLine": 49,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 100
+      },
+      "revId": "ab7ced2c9ca1193ae70186b6e1df9a34690208c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c28c70be_ec5c1719",
         "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
         "patchSetId": 5
