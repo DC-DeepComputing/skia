@@ -40,6 +40,8 @@
 
 struct SkImageInfo;
 
+using namespace skia_internal;
+
 const int GrResourceProvider::kMinScratchTextureSize = 16;
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
