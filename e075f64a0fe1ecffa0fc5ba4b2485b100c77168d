@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4eac52c7_5c43391d",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "I discussed it with Greg and we think the drawBufferCanBeMapped() should be a better name for now.",
+      "parentUuid": "649997d9_a46da515",
+      "range": {
+        "startLine": 142,
+        "startChar": 9,
+        "endLine": 142,
+        "endChar": 30
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32df7d38_f3247b60",
         "filename": "src/gpu/graphite/CopyTask.cpp",
         "patchSetId": 18
@@ -71,6 +95,30 @@
       "writtenOn": "2022-11-30T17:10:56Z",
       "side": 1,
       "message": "I don\u0027t think it has to be for this CL, but I can see generalizing the CopyBufferToBufferTask to have src offset + size, and dst offset. \n\nOnce we\u0027re no longer passing fDstBuffer-\u003esize() into `copyBufferToBuffer()` within `addCommands`, this assert is overly strict (since if we assume the src and dst offsets are 0s, and that we\u0027re copying all of srcBuffer, then we just need dstBuffer.size() \u003e\u003d srcBUffer.size()).",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 53
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4214a708_e3d049b4",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "Right now, we don\u0027t pass offset and size, So I added the assumption. If we need copy part of a buffer, we can always change it later easily. Just not add some data which are not needed right now.",
+      "parentUuid": "32df7d38_f3247b60",
       "range": {
         "startLine": 22,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8d226be_2fe32104",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c92daf5_a1e503e4",
+      "range": {
+        "startLine": 160,
+        "startChar": 14,
+        "endLine": 160,
+        "endChar": 15
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97da57d5_4b386f78",
@@ -117,6 +189,30 @@
       "writtenOn": "2022-11-30T17:10:56Z",
       "side": 1,
       "message": "We shouldn\u0027t have a situation where we\u0027re expecting to use transfer buffers but have a null transferBuffer and non-null buffer. Should we just assert that buffer is null here?",
+      "range": {
+        "startLine": 167,
+        "startChar": 16,
+        "endLine": 167,
+        "endChar": 68
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f203ffb4_135bc753",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97da57d5_4b386f78",
       "range": {
         "startLine": 167,
         "startChar": 16,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d267635_61ee8f1d",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a578690_7a7d4341",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 29
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d011fc19_15dead37",
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "076bdb2d_bbe40e56",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "if `DrawBufferManager::transferToRecording()` is called, the `info-\u003efTransferBuffer` will be null, but not `info-\u003efBuffer`. In that case, `info-\u003efOffset` is not 0 here. I will reset fOffset in `DrawBufferManager::transferToRecording()`",
+      "parentUuid": "d011fc19_15dead37",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 235,
+        "endChar": 26
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6099c7f4_07f635e1",
@@ -186,6 +330,30 @@
       "writtenOn": "2022-11-30T17:10:56Z",
       "side": 1,
       "message": "nit: out of date with Caps function.",
+      "range": {
+        "startLine": 67,
+        "startChar": 17,
+        "endLine": 67,
+        "endChar": 40
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f92f0360_f470faf1",
+        "filename": "src/gpu/graphite/DrawBufferManager.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-11-30T19:05:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6099c7f4_07f635e1",
       "range": {
         "startLine": 67,
         "startChar": 17,
