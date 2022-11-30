@@ -61,6 +61,8 @@
 #include <iostream>
 #include <utility>
 
+using namespace skia_internal;
+
 static DEFINE_bool2(gpuInfo, g, false, "Display GPU information on relevant targets.");
 
 // TODO:

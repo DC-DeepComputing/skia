@@ -43,6 +43,8 @@
 
 #include <utility>
 
+using namespace skia_internal;
+
 static SkPaint make_paint_with_image(const SkPaint& origPaint, const SkBitmap& bitmap,
                                      const SkSamplingOptions& sampling,
                                      SkMatrix* matrix = nullptr) {
