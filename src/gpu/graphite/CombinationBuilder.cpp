@@ -7,6 +7,8 @@
 
 #include "include/gpu/graphite/CombinationBuilder.h"
 
+#if 0
+
 #include "src/core/SkMathPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -770,3 +772,5 @@ void CombinationBuilder::buildCombinations(
 }
 
 } // namespace skgpu::graphite
+
+#endif
