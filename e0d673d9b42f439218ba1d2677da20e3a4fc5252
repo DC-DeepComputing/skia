@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "824e341a_61799ddf",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-11-30T21:48:14Z",
+      "side": 0,
+      "message": "This code was written early; it feels cleaner and less surprising to just dedicate a BuilderOp to pushes/pops here instead of overloading the meaning of an op.",
+      "range": {
+        "startLine": 227,
+        "startChar": 35,
+        "endLine": 227,
+        "endChar": 40
+      },
+      "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
