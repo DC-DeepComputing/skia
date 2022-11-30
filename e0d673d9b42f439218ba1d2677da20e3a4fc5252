@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9248742b_6a4cc877",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-11-30T22:17:12Z",
+      "side": 1,
+      "message": "Does this produce better code with `dr \u003d sk_bit_cast\u003cF\u003e(sk_bit_cast\u003cI32\u003e(dr) \u0026 stack[0]);` ?",
+      "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
