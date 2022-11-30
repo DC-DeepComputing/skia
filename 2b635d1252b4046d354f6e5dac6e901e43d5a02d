@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674d3c87_30c05531",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-11-30T20:58:43Z",
+      "side": 1,
+      "message": "I broke this here:\nhttps://skia-review.googlesource.com/c/skia/+/587541/10/src/pdf/SkPDFShader.cpp\n\nThe old code actually just ignored the result of getLocalMatrix() as shaderTransform was just overwritten later by calling setTranslate on it. So my change to use the inner shader matrix broke it.",
+      "revId": "2b635d1252b4046d354f6e5dac6e901e43d5a02d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
