@@ -16,6 +16,8 @@
 #include <algorithm>
 #include <utility>
 
+using namespace skia_internal;
+
 /* Region Layout
  *
  *  TOP

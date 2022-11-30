@@ -30,6 +30,8 @@
 
 #include <string>
 
+using namespace skia_internal;
+
 #define ABORT_TEST(r, cond, ...)                                   \
     do {                                                           \
         if (cond) {                                                \

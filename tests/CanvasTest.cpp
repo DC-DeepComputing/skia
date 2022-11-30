@@ -50,6 +50,8 @@
 #include <memory>
 #include <utility>
 
+using namespace skia_internal;
+
 class SkPicture;
 class SkReadBuffer;
 

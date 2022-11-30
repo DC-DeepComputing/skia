@@ -27,6 +27,8 @@
 #include <memory>
 #include <string>
 
+using namespace skia_internal;
+
 //#define DUMP_TABLES
 //#define DUMP_TTC_TABLES
 

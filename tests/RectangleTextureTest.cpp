@@ -52,6 +52,8 @@
 #include <memory>
 #include <utility>
 
+using namespace skia_internal;
+
 struct GrContextOptions;
 
 // skbug.com/5932
