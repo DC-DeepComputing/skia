@@ -25,6 +25,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -284,8 +285,29 @@ func runSteps(ctx context.Context, args runStepsArgs) error {
 	if err = uploadFileToGCS(ctx, args.codesizeGCS, fmt.Sprintf("%s/%s.tsv", gcsDir, args.binaryName), []byte(bloatyOutput)); err != nil {
 		return skerr.Wrap(err)
 	}
-
+	fmt.Println("HERE HERE HERE")
 	if args.repoState.IsTryJob() {
+		// HERE HERE
+		// Parse bloatyDiffOutput
+		tokens := strings.Split(strings.Trim(bloatyDiffOutput, "\n"), "\n")
+		if len(tokens) > 0 {
+			// Final line in bloaty output is the line with the results.
+			outputLine := tokens[len(tokens)-1]
+			words := strings.Fields(outputLine)
+			// Format is expected to look like this:
+			// +0.0% +832 TOTAL +848 +0.0%
+			if len(words) == 5 {
+				td.StepText(ctx, "VM Diff", words[1])
+				td.StepText(ctx, "File Diff", words[3])
+			}
+		}
+
+		// td.StepText(ctx, "File Diff", strconv.FormatInt(diffBytes, 10))
+		// td.StepText(ctx, "VM Diff", strconv.FormatInt(diffBytes, 10))
+
+		// TODO(rmistry): Remove the below after the above works and is integrated with the
+		// codesize plugin.
+
 		// Add diff results to the step data. This is consumed by the codesize plugin to display
 		// results on the Gerrit CL for tryjob runs.
 		s, err := os_steps.Stat(ctx, filepath.Join("build", args.binaryName+"_stripped"))
