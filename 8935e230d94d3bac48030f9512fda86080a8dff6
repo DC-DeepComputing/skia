@@ -22,6 +22,30 @@
       },
       "revId": "8935e230d94d3bac48030f9512fda86080a8dff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2420ce_b465b424",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T03:29:18Z",
+      "side": 0,
+      "message": "I don\u0027t have a use for it right now, and don\u0027t foresee one; I\u0027ll strip it out later once I\u0027m more confident that it\u0027s dead.",
+      "parentUuid": "ae347f46_807d2172",
+      "range": {
+        "startLine": 234,
+        "startChar": 39,
+        "endLine": 234,
+        "endChar": 59
+      },
+      "revId": "8935e230d94d3bac48030f9512fda86080a8dff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
