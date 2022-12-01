@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdcdda3d_2f045787",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T18:10:31Z",
+      "side": 1,
+      "message": "Nice! Looks like this saves around 0.5 - 0.75K.",
+      "revId": "8a388ef0b8354f678e722413aa7b924446808556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0917f7f1_0dd06ec6",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T18:10:31Z",
+      "side": 1,
+      "message": "Please revert comment-style changes",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 6
+      },
+      "revId": "8a388ef0b8354f678e722413aa7b924446808556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e17958e9_e7275c4c",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T18:10:31Z",
+      "side": 1,
+      "message": "Is there something in this code which works incorrectly when InitialCapacity is zero? I\u0027m not seeing the rationale for this check. (Esp. when we don\u0027t have a similar check on the other constructor below.)\n\nSure, it seems silly to have an SkSTArray with a zero-capacity buffer, but if we want to forbid it on principle, wouldn\u0027t it make more sense to enforce that in SkSTArray itself? (Might be a good idea, actually?)",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 43
+      },
+      "revId": "8a388ef0b8354f678e722413aa7b924446808556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
