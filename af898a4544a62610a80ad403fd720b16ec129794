@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d8d1c9_f85e444f",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-01T19:36:42Z",
+      "side": 1,
+      "message": "It being wrong is not intuitive to me, can we add more details, in the event you\u0027re not the one to handle the TODO?",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 26
+      },
+      "revId": "af898a4544a62610a80ad403fd720b16ec129794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6c1503_f3321138",
+        "filename": "src/gpu/graphite/Precompile.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-01T19:36:42Z",
+      "side": 1,
+      "message": "just a random thought that came into my head, but can we get away from virtual class hierarchy if these combination counts are passed to the base class in the constructor?",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 58
+      },
+      "revId": "af898a4544a62610a80ad403fd720b16ec129794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
