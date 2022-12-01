@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10c01b79_ae41e092",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-01T15:38:33Z",
+      "side": 1,
+      "message": "They are at present. Originally I wanted to do extra verification in check_gni like verifying that certain GNI variables were being exported. This would help ensure we don\u0027t break downstream projects that rely on specific GNI variables. I\u0027m not sure that\u0027s worth the effort and I\u0027m tempted to remove check_gni altogether. WDYT?",
+      "parentUuid": "98f882ad_5a5186d5",
+      "range": {
+        "startLine": 350,
+        "startChar": 16,
+        "endLine": 350,
+        "endChar": 42
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44369c84_410c822c",
         "filename": "PRESUBMIT.py",
         "patchSetId": 5
