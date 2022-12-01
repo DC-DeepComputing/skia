@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61e754bf_597f3422",
+        "filename": "src/gpu/graphite/CombinationBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-01T19:32:46Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think we include spaces between the `/*` and `*/` for these labels.",
+      "range": {
+        "startLine": 407,
+        "startChar": 35,
+        "endLine": 407,
+        "endChar": 36
+      },
+      "revId": "a6bf1e044bff8aea16c932f72855d05a431f893e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
