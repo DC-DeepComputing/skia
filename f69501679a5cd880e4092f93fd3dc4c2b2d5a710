@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05ccae28_9a4744bb",
+        "filename": "gm/graphitestart.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acf628a4_d34ad0da",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51ec6f7f_21508410",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-12-01T15:18:42Z",
       "side": 1,
       "message": "Probably needs ColorFilter suffix",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8810c07_fa1fdb51",
+        "filename": "src/core/SkBuiltInCodeSnippetID.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51ec6f7f_21508410",
       "range": {
         "startLine": 45,
         "startChar": 4,
@@ -95,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d41c228_f482a000",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "Well, if we share it but define it in KeyHelpers then we\u0027d have a circular reference between KeyHelpers and ShaderCodeDictionary.",
+      "parentUuid": "51ce7ae7_3b3ee5e4",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dbc2a862_bfd94661",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 1
@@ -106,6 +166,24 @@
       "writtenOn": "2022-12-01T15:18:42Z",
       "side": 1,
       "message": "I\u0027ve taken to making the data parameter be a pointer when the data object is large or a pain to default construct.",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "812abdcb_f91a3633",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "I made a pass at creating the data object on the heap, but personally I\u0027m not sure which I prefer. WDYT?",
+      "parentUuid": "dbc2a862_bfd94661",
       "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -127,6 +205,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8b59fcd_5de50ee6",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e098acd_eb80f156",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b8d2ee2_44f411c9",
@@ -140,6 +236,24 @@
       "writtenOn": "2022-12-01T15:18:42Z",
       "side": 1,
       "message": "No \u0027\\n\u0027 here",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36a71b3a_b0dcf640",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1352,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T15:50:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b8d2ee2_44f411c9",
       "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
