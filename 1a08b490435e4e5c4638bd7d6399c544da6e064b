@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d6291af8_d778e357",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-01T14:31:51Z",
+      "side": 1,
+      "message": "Yes, I wondered if that was going to happen - I\u0027ll fix it. (I think that when we serialize, we just write out the entire (post-fixup) set of stops, so the deserialized version has no idea that those were implicitly inserted.",
+      "parentUuid": "e11a5fca_5106eb74",
+      "revId": "1a08b490435e4e5c4638bd7d6399c544da6e064b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "43532a47_034a7677",
         "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
         "patchSetId": 5
