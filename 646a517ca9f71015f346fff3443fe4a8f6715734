@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dfc9a24_0c54773d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T12:49:13Z",
+      "side": 1,
+      "message": "We may not need this anymore now that we have the CheckGeneratedFiles job verifying this",
+      "revId": "646a517ca9f71015f346fff3443fe4a8f6715734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
