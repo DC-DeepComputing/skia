@@ -52,6 +52,24 @@
       "parentUuid": "bf5f3dc8_39fe935c",
       "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b34ea5_0b3e06c2",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T21:50:07Z",
+      "side": 1,
+      "message": "Still lgtm",
+      "parentUuid": "59547146_7b0e15cb",
+      "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
