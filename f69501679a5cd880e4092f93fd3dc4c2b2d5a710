@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8656d829_95b7f5c0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T14:49:31Z",
+      "side": 1,
+      "message": "This is duplicated between ShaderCodeDictionary.cpp and KeyHelpers.cpp; could it be worth it to try to share the definition? My only idea was to make it a static field of ShaderCodeDictionary.",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
