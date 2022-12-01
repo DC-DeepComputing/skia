@@ -16,6 +16,24 @@
       "message": "I assume that the changes to the `include/core` headers here means that they will be iwyu clean as well after this change, but they don\u0027t appear to be added to any enforcement list?",
       "revId": "69949cf4413aacba7cb3ff6e516277b4622867a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "026d0813_b48c96d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T15:43:19Z",
+      "side": 1,
+      "message": "I wanted to also make the .cpp files clean, so I added them to the list in \"clang_trampoline_linux.sh\". This relies on the magic of associating the header with the .cpp file, so if you want I can also add them to the list in includes/BUILD.bazel (and hopefully that doesn\u0027t cause disagreements between the two)",
+      "parentUuid": "c3383c3e_5e9411a1",
+      "revId": "69949cf4413aacba7cb3ff6e516277b4622867a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
