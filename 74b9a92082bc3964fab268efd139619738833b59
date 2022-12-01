@@ -39,6 +39,30 @@
       },
       "revId": "74b9a92082bc3964fab268efd139619738833b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daadd916_b3d0e835",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T19:37:45Z",
+      "side": 1,
+      "message": "Done. As for the switching, yea... we\u0027ve been consistently focused on correctness and not performance, but if we find this is slow we can always try splitting up the shader.",
+      "parentUuid": "f7ff257f_de0592be",
+      "range": {
+        "startLine": 645,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 0
+      },
+      "revId": "74b9a92082bc3964fab268efd139619738833b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
