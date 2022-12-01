@@ -52,6 +52,24 @@
       "parentUuid": "f9a1a50c_455d2163",
       "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68cd7a1b_bb2c1438",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T15:07:26Z",
+      "side": 1,
+      "message": "`sk_bit_cast` also boils down to a `memcpy`, so as it turns out, all roads lead to copies which the optimizer needs to detect and eliminate.",
+      "parentUuid": "829d8f61_4155963d",
+      "revId": "e0d673d9b42f439218ba1d2677da20e3a4fc5252",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
