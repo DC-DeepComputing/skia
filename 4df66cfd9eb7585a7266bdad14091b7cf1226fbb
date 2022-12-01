@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b9e35fd_91ba9f43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-01T18:54:07Z",
+      "side": 1,
+      "message": "PS6 (plus the new parent CL) fixes the test failure on serialize-8888, by serializing the stops as they were originally supplied to the factory (omitting any implicit stops).",
+      "revId": "4df66cfd9eb7585a7266bdad14091b7cf1226fbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
