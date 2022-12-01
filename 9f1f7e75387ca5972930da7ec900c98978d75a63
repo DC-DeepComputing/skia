@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480365b9_95f67e40",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-01T13:59:40Z",
+      "side": 1,
+      "message": "Ending the run \u0026 adding a placeholder were not being done in BuildWithClientInfo. Was that intentional?",
+      "revId": "9f1f7e75387ca5972930da7ec900c98978d75a63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
