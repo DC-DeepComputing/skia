@@ -48,6 +48,10 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #endif
 
+#ifdef SK_ENABLE_PRECOMPILE
+#include "src/gpu/graphite/PaintOptionsPriv.h"
+#endif
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
@@ -313,6 +317,14 @@ void Context::checkAsyncWorkCompletion() {
 
 #ifdef SK_ENABLE_PRECOMPILE
 
+void Context::precompile(const PaintOptions& options) {
+    ASSERT_SINGLE_OWNER
+
+    options.priv().buildCombinations(fSharedContext->shaderCodeDictionary());
+}
+
+#if 0
+
 BlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     return fSharedContext->shaderCodeDictionary()->addUserDefinedBlender(std::move(effect));
 }
@@ -340,6 +352,7 @@ void Context::precompile(CombinationBuilder* combinationBuilder) {
     // TODO: Iterate over the renderers and make descriptions for the steps that don't perform
     // shading, and just use ShaderType::kNone.
 }
+#endif
 
 #endif // SK_ENABLE_PRECOMPILE
 
