@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acf628a4_d34ad0da",
+        "filename": "gm/graphitestart.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "Why skip 5 ?",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ec6f7f_21508410",
+        "filename": "src/core/SkBuiltInCodeSnippetID.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "Probably needs ColorFilter suffix",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8656d829_95b7f5c0",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 1
@@ -14,6 +54,75 @@
       "writtenOn": "2022-12-01T14:49:31Z",
       "side": 1,
       "message": "This is duplicated between ShaderCodeDictionary.cpp and KeyHelpers.cpp; could it be worth it to try to share the definition? My only idea was to make it a static field of ShaderCodeDictionary.",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ce7ae7_3b3ee5e4",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "Probably - I guess it could go in KeyHelpers.h in the ColorSpaceTransformBlock",
+      "parentUuid": "8656d829_95b7f5c0",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc2a862_bfd94661",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "I\u0027ve taken to making the data parameter be a pointer when the data object is large or a pain to default construct.",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e098acd_eb80f156",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "Insert a \u0027 \u0027 here and in the following ?",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b8d2ee2_44f411c9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1352,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T15:18:42Z",
+      "side": 1,
+      "message": "No \u0027\\n\u0027 here",
       "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
