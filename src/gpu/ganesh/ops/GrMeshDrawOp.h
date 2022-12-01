@@ -20,6 +20,7 @@ class GrAtlasManager;
 class GrCaps;
 class GrMeshDrawTarget;
 class GrOpFlushState;
+class GrProgramInfo;
 struct GrSimpleMesh;
 
 /**
