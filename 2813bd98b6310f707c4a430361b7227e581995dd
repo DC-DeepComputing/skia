@@ -22,6 +22,30 @@
       },
       "revId": "2813bd98b6310f707c4a430361b7227e581995dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48485e61_a8efd662",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-01T22:00:54Z",
+      "side": 1,
+      "message": "No, it\u0027s not too bad (especially with the comments you added to the two stage types right below). Certainly better than my copy-paste of the whole thing in the other CL.",
+      "parentUuid": "473b9d5d_9aedfe2f",
+      "range": {
+        "startLine": 1105,
+        "startChar": 37,
+        "endLine": 1105,
+        "endChar": 59
+      },
+      "revId": "2813bd98b6310f707c4a430361b7227e581995dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
