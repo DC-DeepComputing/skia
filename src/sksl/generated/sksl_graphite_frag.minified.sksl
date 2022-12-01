@@ -102,4 +102,15 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "(sample(b,float2(half2(c.x,.375))).x,sample(b,float2(half2(c.y,.625))).x,sample"
 "(b,float2(half2(c.z,.875))).x,1.);return d*sample(b,float2(half2(c.w,.125))"
 ").x;}$pure half4 sk_gaussian_colorfilter(half4 a){half b=1.-a.w;b=exp((-b*b"
-")*4.)-.018;return half4(b);}";
+")*4.)-.018;return half4(b);}$pure half $v(int a,half b,half c,half d,half e"
+",half f,half g,half h,half i){half j=sign(b);b=abs(b);switch(a){case 1:b=b<"
+"g?f*b+i:pow(d*b+e,c)+h;break;case 2:b=pow(max(d+e*pow(b,f),0.)/(g+h*pow(b,f"
+")),i);break;case 3:b=b*d<=1.?pow(b*d,e):exp((b-h)*f)+g;b*=i+1.;break;case 4"
+":b/=i+1.;b=b<=1.?d*pow(b,e):f*log(b-g)+h;break;}return j*b;}half4 sk_color_space_transform"
+"(half4 a,int b,int c,int d,half[7]e,half[7]f,half3x3 g){if(bool(b&1)){a=unpremul"
+"(a);}if(bool(b&2)){a.x=$v(c,a.x,e[0],e[1],e[2],e[3],e[4],e[5],e[6]);a.y=$v("
+"c,a.y,e[0],e[1],e[2],e[3],e[4],e[5],e[6]);a.z=$v(c,a.z,e[0],e[1],e[2],e[3],"
+"e[4],e[5],e[6]);}if(bool(b&4)){a.xyz=g*a.xyz;}if(bool(b&8)){a.x=$v(d,a.x,f["
+"0],f[1],f[2],f[3],f[4],f[5],f[6]);a.y=$v(d,a.y,f[0],f[1],f[2],f[3],f[4],f[5"
+"],f[6]);a.z=$v(d,a.z,f[0],f[1],f[2],f[3],f[4],f[5],f[6]);}if(bool(b&16)){a."
+"xyz*=a.w;}return a;}";
