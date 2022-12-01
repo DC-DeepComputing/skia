@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b47d975_a55ba24c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-01T15:00:27Z",
+      "side": 1,
+      "message": "Kevin: I excluded Windows and added check for *.gni in addition to BUILD.bazel changes. PS2 was LGTM\u0027ed, but can you give this one more look before landing? I did verify the change on Windows.",
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
