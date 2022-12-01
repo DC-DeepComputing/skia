@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "473b9d5d_9aedfe2f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T21:46:15Z",
+      "side": 1,
+      "message": "It took a bunch of false starts before I landed on this STAGE_RET/INC/OFFSET approach. I hope you don\u0027t find it too horribly unreadable.",
+      "range": {
+        "startLine": 1105,
+        "startChar": 37,
+        "endLine": 1105,
+        "endChar": 59
+      },
+      "revId": "2813bd98b6310f707c4a430361b7227e581995dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
