@@ -16,6 +16,23 @@
       "message": "Some more dependencies I got rid of, PTAL.",
       "revId": "27dc02a6c8cdafe78d12a76a9b00060d9d9e43c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ecbce2_010d5a2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T20:10:04Z",
+      "side": 1,
+      "message": "LGTM. I added all the BazelBuild jobs too, just in case.",
+      "revId": "27dc02a6c8cdafe78d12a76a9b00060d9d9e43c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
