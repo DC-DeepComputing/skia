@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97879405_dc8ced2f",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-01T20:01:25Z",
+      "side": 1,
+      "message": "I think this one can be removed -- it\u0027s only included for SkStrikeDeviceInfo. It could be moved elsewhere I think.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "29ff7c12981774110247885a5c65c6c52f1bd3ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
