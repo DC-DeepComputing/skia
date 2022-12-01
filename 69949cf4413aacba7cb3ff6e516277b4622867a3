@@ -34,6 +34,24 @@
       "parentUuid": "c3383c3e_5e9411a1",
       "revId": "69949cf4413aacba7cb3ff6e516277b4622867a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8353d07_a7d340e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-12-01T16:03:51Z",
+      "side": 1,
+      "message": "Ah, well, I always prefer explicit to implicit, but this is fine for now I suppose.",
+      "parentUuid": "026d0813_b48c96d0",
+      "revId": "69949cf4413aacba7cb3ff6e516277b4622867a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
