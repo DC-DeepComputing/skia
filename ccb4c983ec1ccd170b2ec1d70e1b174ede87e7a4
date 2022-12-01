@@ -16,6 +16,24 @@
       "message": "Should a TextureProxy still be considered fully-lazy after instantiation? This would be consistent with the existing notion of TextureProxy laziness, which remains true after instantiation, but from my reading of https://crsrc.org/c/third_party/skia/src/gpu/ganesh/GrSurfaceProxy.h I think it\u0027s inconsistent with Ganesh\u0027s GrSurfaceProxy\u0027s notions of lazy/fully-lazy, which are no longer true for a proxy once it\u0027s instantiated.\n\n(However, it also looks like we don\u0027t reset dimensions when we deinstantiate a GrSurfaceProxy, so an instantiated and then deinstantiated fully-lazy proxy will neither think it\u0027s instantiated nor fully-lazy?)",
       "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf5f3dc8_39fe935c",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T18:03:57Z",
+      "side": 1,
+      "message": "Let\u0027s talk off line - I think we can land this as-is",
+      "parentUuid": "81b31799_9b6f6019",
+      "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
