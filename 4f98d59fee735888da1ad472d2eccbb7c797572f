@@ -16,6 +16,52 @@
       "message": "Kevin: I excluded Windows and added check for *.gni in addition to BUILD.bazel changes. PS2 was LGTM\u0027ed, but can you give this one more look before landing? I did verify the change on Windows.",
       "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f882ad_5a5186d5",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T15:19:15Z",
+      "side": 1,
+      "message": "Do we need to both do the GitDiff check and check_gni? Their name suggests they are redundant.",
+      "range": {
+        "startLine": 350,
+        "startChar": 16,
+        "endLine": 350,
+        "endChar": 42
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44369c84_410c822c",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T15:19:15Z",
+      "side": 1,
+      "message": "This should probably be a PresubmitError, right?",
+      "range": {
+        "startLine": 361,
+        "startChar": 23,
+        "endLine": 361,
+        "endChar": 45
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
