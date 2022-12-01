@@ -57,6 +57,30 @@
       },
       "revId": "1a08b490435e4e5c4638bd7d6399c544da6e064b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "260a7710_3f6983a1",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-01T19:24:10Z",
+      "side": 1,
+      "message": "... I went back and did it this way, actually. In a follow-up, I\u0027ve extracted this code to use in the Ganesh texture-fallback, where we only have the pmColors, not the underlying shader. That makes it a drop-in replacement (and doesn\u0027t change the behavior here in any real way).",
+      "parentUuid": "43532a47_034a7677",
+      "range": {
+        "startLine": 380,
+        "startChar": 0,
+        "endLine": 381,
+        "endChar": 83
+      },
+      "revId": "1a08b490435e4e5c4638bd7d6399c544da6e064b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
