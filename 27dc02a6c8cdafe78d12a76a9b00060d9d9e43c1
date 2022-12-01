@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e5e8531_058fb026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-01T19:57:50Z",
+      "side": 1,
+      "message": "Some more dependencies I got rid of, PTAL.",
+      "revId": "27dc02a6c8cdafe78d12a76a9b00060d9d9e43c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
