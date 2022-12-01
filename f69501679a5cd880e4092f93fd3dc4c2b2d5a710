@@ -190,6 +190,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1083a2ef_a1971b58",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-01T16:49:52Z",
+      "side": 1,
+      "message": "I was proposing having it on the stack in SkSRGBGammaColorFilter::addToKey but just passing a pointer to it here.",
+      "parentUuid": "812abdcb_f91a3633",
+      "revId": "f69501679a5cd880e4092f93fd3dc4c2b2d5a710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e098acd_eb80f156",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 1
