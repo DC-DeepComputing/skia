@@ -16,6 +16,29 @@
       "message": "Adding John for SkSL review",
       "revId": "74b9a92082bc3964fab268efd139619738833b59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7ff257f_de0592be",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-01T18:38:25Z",
+      "side": 1,
+      "message": "I wonder if it might make the code a little smaller to pass the array variable and then unpack it into ABCDEFG here?\n\n```\n$pure half $apply_xfer_fn(int kind, half x, half cs[7]) {\n  half G \u003d cs[0], A \u003d cs[1], B \u003d cs[2], C \u003d cs[3], D \u003d cs[4], E \u003d cs[5], F \u003d cs[6];\n```\n\nProbably not a big deal either way, though. The minifier will probably split up each vardecl into its own statement, too (which actually costs space) so it might be a wash.\n\nHopefully the compilers can make switching on a uniform fast, since we do it on each channel! I think it should be OK.",
+      "range": {
+        "startLine": 645,
+        "startChar": 0,
+        "endLine": 648,
+        "endChar": 0
+      },
+      "revId": "74b9a92082bc3964fab268efd139619738833b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
