@@ -16,6 +16,24 @@
       "message": "I decided to add this. LMK if you prefer prior (silent) impl.",
       "revId": "33d6540660bbacc27e48f38db1a294fc0e7ff15b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5355528_b39663c0",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T16:34:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c7643721_f6ceb59c",
+      "revId": "33d6540660bbacc27e48f38db1a294fc0e7ff15b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
