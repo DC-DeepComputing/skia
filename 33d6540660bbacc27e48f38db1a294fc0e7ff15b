@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7643721_f6ceb59c",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-01T16:30:35Z",
+      "side": 1,
+      "message": "I decided to add this. LMK if you prefer prior (silent) impl.",
+      "revId": "33d6540660bbacc27e48f38db1a294fc0e7ff15b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

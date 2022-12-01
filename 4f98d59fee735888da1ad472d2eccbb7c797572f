@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b534870_a6b225c2",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-01T16:30:35Z",
+      "side": 1,
+      "message": "Done. For other viewers check_gni is being removed in http://review.skia.org/612258.",
+      "parentUuid": "094901e4_2e70e095",
+      "range": {
+        "startLine": 350,
+        "startChar": 16,
+        "endLine": 350,
+        "endChar": 42
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44369c84_410c822c",
@@ -126,6 +150,30 @@
       "writtenOn": "2022-12-01T15:19:15Z",
       "side": 1,
       "message": "This should probably be a PresubmitError, right?",
+      "range": {
+        "startLine": 361,
+        "startChar": 23,
+        "endLine": 361,
+        "endChar": 45
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86dba42d_b4c3817f",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-01T16:30:35Z",
+      "side": 1,
+      "message": "now deleted.",
+      "parentUuid": "44369c84_410c822c",
       "range": {
         "startLine": 361,
         "startChar": 23,
