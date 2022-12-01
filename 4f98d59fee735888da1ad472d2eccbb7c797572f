@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b8a3963_4f1979e1",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-01T15:39:33Z",
+      "side": 1,
+      "message": "Let\u0027s drop generate_gni",
+      "parentUuid": "10c01b79_ae41e092",
+      "range": {
+        "startLine": 350,
+        "startChar": 16,
+        "endLine": 350,
+        "endChar": 42
+      },
+      "revId": "4f98d59fee735888da1ad472d2eccbb7c797572f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44369c84_410c822c",
         "filename": "PRESUBMIT.py",
         "patchSetId": 5
