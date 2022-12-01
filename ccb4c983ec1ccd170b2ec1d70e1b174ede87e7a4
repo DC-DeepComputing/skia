@@ -34,6 +34,24 @@
       "parentUuid": "81b31799_9b6f6019",
       "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59547146_7b0e15cb",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-01T19:29:43Z",
+      "side": 1,
+      "message": "Added comment and tests regarding the permanence of fully-laziness -- PTAL.",
+      "parentUuid": "bf5f3dc8_39fe935c",
+      "revId": "ccb4c983ec1ccd170b2ec1d70e1b174ede87e7a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
