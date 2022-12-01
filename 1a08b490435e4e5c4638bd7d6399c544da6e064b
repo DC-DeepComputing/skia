@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e11a5fca_5106eb74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-01T14:23:13Z",
+      "side": 1,
+      "message": "I don\u0027t see why but the implicitness of the stops seems to be getting lost in serialization.",
+      "revId": "1a08b490435e4e5c4638bd7d6399c544da6e064b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "43532a47_034a7677",
         "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
         "patchSetId": 5
