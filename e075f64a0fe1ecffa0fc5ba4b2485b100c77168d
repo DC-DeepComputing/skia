@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e48b5aa_aa2c6c97",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-01T19:30:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4eac52c7_5c43391d",
+      "range": {
+        "startLine": 142,
+        "startChar": 9,
+        "endLine": 142,
+        "endChar": 30
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32df7d38_f3247b60",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "Right now, we don\u0027t pass offset and size, So I added the assumption. If we need copy part of a buffer, we can always change it later easily. Just not add some data which are not needed right now.",
       "parentUuid": "32df7d38_f3247b60",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 53
+      },
+      "revId": "e075f64a0fe1ecffa0fc5ba4b2485b100c77168d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54100890_33b864ab",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-01T19:30:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4214a708_e3d049b4",
       "range": {
         "startLine": 22,
         "startChar": 0,
