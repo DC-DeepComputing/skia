@@ -193,6 +193,15 @@ size_t ShaderCodeDictionary::RuntimeEffectKey::Hash::operator()(RuntimeEffectKey
     return SkOpts::hash_fn(&k, sizeof(k), 0);
 }
 
+#if GR_TEST_UTILS
+int ShaderCodeDictionary::numEntries() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    SkASSERT(fHash.count()+1 == static_cast<int>(fEntryVector.size()));
+    return fHash.count();
+}
+#endif
+
 const ShaderCodeDictionary::Entry* ShaderCodeDictionary::findOrCreate(
         PaintParamsKeyBuilder* builder) {
     const PaintParamsKey& key = builder->lockAsKey();
@@ -922,6 +931,8 @@ int ShaderCodeDictionary::addUserDefinedSnippet(
 }
 
 #if defined(SK_ENABLE_PRECOMPILE)
+
+#if 0
 BlenderID ShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     if (!effect) {
         return {};
@@ -946,6 +957,7 @@ BlenderID ShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> eff
 const ShaderSnippet* ShaderCodeDictionary::getEntry(BlenderID id) const {
     return this->getEntry(id.asUInt());
 }
+#endif
 
 #endif // SK_ENABLE_PRECOMPILE
 
