@@ -50,6 +50,47 @@
       "message": "If I\u0027m following this and the way I remember the GPU shader\u0027s being evaluated, this means that the texture fallback stores the results of interpolating the color stops in the intermediate color space. Once it\u0027s read from the texture, we just flow through the existing sksl to handle converting from the intermediate to the dst?\n\nAnd we\u0027ve already transformed the colors/positions to account for the interpolation directions, so they shouldn\u0027t impact the cache key. And we don\u0027t really need to include the interpolation mode in the key anyways, since even if two different interpolations arrived at exactly the same set of intermediate color values/positions, that means this bitmap lookup is correct for both. The extra color space conversion is handled by the rest of the shader that still knows about the interpolation to differentiate the two.",
       "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7401fbfc_dae03b46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:25:25Z",
+      "side": 1,
+      "message": "I agree that they seem to be lining up better with the CPU\u0027s placement and that a little more blurriness is not unexpected given the texture fallback.\n\nThe sampling for hardstop_gradients_many is a little odd, though. Are we just getting unlucky with the mapping from the full-width gradient to the reduced dimensionality of the cache? Or do we need to offset by 1/2px maybe?",
+      "parentUuid": "e565beba_ca5e8653",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644a01ac_e0047262",
+        "filename": "src/gpu/ganesh/gradients/GrGradientBitmapCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:25:25Z",
+      "side": 1,
+      "message": "Does RP already adjust local coordinates to be at pixel centers? Or should we shift this?",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 75
+      },
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
