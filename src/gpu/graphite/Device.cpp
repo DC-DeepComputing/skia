@@ -362,8 +362,9 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
 #if GRAPHITE_TEST_UTILS
     if (Context* context = fRecorder->priv().context()) {
         this->flushPendingWorkToRecorder();
-        return context->priv().readPixels(fRecorder, pm, fDC->target(), this->imageInfo(),
-                                          srcX, srcY);
+        //*** Removing the recorder here won't work -- we end up adding the readPixels to
+        //    the command buffer before we snap and add the Recording.
+        return context->priv().readPixels(pm, fDC->target(), this->imageInfo(), srcX, srcY);
     }
 #endif
     // We have no access to a context to do a read pixels here.

@@ -43,9 +43,8 @@ public:
 
     void deregisterRecorder(const Recorder*);
 
-    bool readPixels(Recorder*,
-                    const SkPixmap&,
-                    const TextureProxy*,
+    bool readPixels(const SkPixmap&,
+                    TextureProxy*,
                     const SkImageInfo& srcImageInfo,
                     int srcX, int srcY);
 #endif
