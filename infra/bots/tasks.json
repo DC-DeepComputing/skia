@@ -94211,7 +94211,6 @@
         "skia/platform_tools/libraries/include/arcore_c_api.h",
         "skia/requirements.txt",
         "skia/resources",
-        "skia/samplecode",
         "skia/src",
         "skia/tests",
         "skia/third_party",
