@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6322968_fe2479b4",
+        "filename": "src/sksl/tracing/SkSLDebugInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-02T20:25:58Z",
+      "side": 1,
+      "message": "The SkRP code generator isn\u0027t going to have line number information, and I don\u0027t want to bodge it in (like we did for SkVM), so for now we\u0027ll have both.",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 37
+      },
+      "revId": "048c8004a7ac02465417e5973f9384a269772aec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
