@@ -16,6 +16,93 @@
       "message": "Any idea what is up with housekeeper failure? - https://ci.chromium.org/raw/build/logs.chromium.org/skia/5ee848d9ce2fc711/+/annotations",
       "revId": "ee744fedc69632a612f4b26a9675bf8a12336db5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da53f16_53b378a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-02T13:26:01Z",
+      "side": 1,
+      "message": "Presubmit appears to be trying to run bazelisk to update any BUILD.bazel files because go files changed. It cannot find bazelisk. I\u0027ll address that in a parallel CL.",
+      "parentUuid": "13e44254_d72e34d7",
+      "revId": "ee744fedc69632a612f4b26a9675bf8a12336db5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0802f811_95ce813f",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-02T13:26:01Z",
+      "side": 1,
+      "message": "Would TrimSpace work or is it important not to strip spaces also?",
+      "range": {
+        "startLine": 340,
+        "startChar": 33,
+        "endLine": 340,
+        "endChar": 37
+      },
+      "revId": "ee744fedc69632a612f4b26a9675bf8a12336db5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a3b072_55a7ebdd",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-02T13:26:01Z",
+      "side": 1,
+      "message": "Did not know this existed. Handy.",
+      "range": {
+        "startLine": 344,
+        "startChar": 19,
+        "endLine": 344,
+        "endChar": 25
+      },
+      "revId": "ee744fedc69632a612f4b26a9675bf8a12336db5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "159072d2_49e34a06",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-02T13:26:01Z",
+      "side": 1,
+      "message": "I prefer table-structured tests to be implemented with a function and a closure: https://github.com/google/skia/blob/c432cb7480b5c562b024a67ed2117f9cf58f079d/bazel/exporter/gni_exporter_test.go#L109-L119\n\nWhen a testcase fails, the stacktrace also tells you which case failed, where here one has to add the test.desc to all asserts or that information is lacking.\n\n(Also no anonymous structs, which I find to be a mild readability annoyance).",
+      "range": {
+        "startLine": 482,
+        "startChar": 22,
+        "endLine": 482,
+        "endChar": 27
+      },
+      "revId": "ee744fedc69632a612f4b26a9675bf8a12336db5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
