@@ -33,6 +33,23 @@
       "message": "FYI: This does change the GPU many_stops GMs, but I honestly think the new ones look a little better. (Still not as nice as CPU, given the filtering, but not as blurry). The linked gold results are misleading, because the new closest image is the CPU. When I diff\u0027d against the existing GPU results, the old images had very uneven spacing of stops.",
       "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f52202d_1d61d07c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:18:52Z",
+      "side": 1,
+      "message": "If I\u0027m following this and the way I remember the GPU shader\u0027s being evaluated, this means that the texture fallback stores the results of interpolating the color stops in the intermediate color space. Once it\u0027s read from the texture, we just flow through the existing sksl to handle converting from the intermediate to the dst?\n\nAnd we\u0027ve already transformed the colors/positions to account for the interpolation directions, so they shouldn\u0027t impact the cache key. And we don\u0027t really need to include the interpolation mode in the key anyways, since even if two different interpolations arrived at exactly the same set of intermediate color values/positions, that means this bitmap lookup is correct for both. The extra color space conversion is handled by the rest of the shader that still knows about the interpolation to differentiate the two.",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
