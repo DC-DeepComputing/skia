@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0de01d1_f520e1ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-12-02T16:46:25Z",
+      "side": 1,
+      "message": "The bazel builders are failing here because they don\u0027t have the new files listed so they aren\u0027t available to the build. That is fairly trivial to fix Skia side. However, the dm failures on the Test-Dawn bots are something else which will need to be investigated.",
+      "revId": "b837e74eea9e86b1f0f286bf31840a9ae27b29da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
