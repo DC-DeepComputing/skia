@@ -84,7 +84,7 @@ static std::string make_vars_string(
             continue;
         }
 
-        const SkSL::SkVMSlotInfo& slot = trace.fSlotInfo[var.fSlotIndex];
+        const SkSL::SlotDebugInfo& slot = trace.fSlotInfo[var.fSlotIndex];
         text += var.fDirty ? "##": "";
         text += slot.name;
         text += trace.getSlotComponentSuffix(var.fSlotIndex);

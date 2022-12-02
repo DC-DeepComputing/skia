@@ -139,7 +139,7 @@ DEF_TEST(SkVMDebugTraceRead, r) {
 }
 
 DEF_TEST(SkVMDebugTraceGetSlotComponentSuffix, r) {
-    // SkVMSlotInfo fields:
+    // SlotDebugInfo fields:
     // - name
     // - columns
     // - rows
