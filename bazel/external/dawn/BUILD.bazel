@@ -1052,6 +1052,7 @@ TINT_SRCS = [
     "src/tint/sem/abstract_numeric.h",
     "src/tint/sem/array.cc",
     "src/tint/sem/array.h",
+    "src/tint/sem/array_count.h",
     "src/tint/sem/atomic.cc",
     "src/tint/sem/atomic.h",
     "src/tint/sem/behavior.cc",
