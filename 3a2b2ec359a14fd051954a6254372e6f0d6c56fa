@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44bf0bd1_73cde8cf",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T21:02:38Z",
+      "side": 1,
+      "message": "Are these sorted wrong?",
+      "range": {
+        "startLine": 1572,
+        "startChar": 0,
+        "endLine": 1574,
+        "endChar": 40
+      },
+      "revId": "3a2b2ec359a14fd051954a6254372e6f0d6c56fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
