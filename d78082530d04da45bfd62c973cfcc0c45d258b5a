@@ -70,6 +70,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34814e20_c1f0acf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T19:35:09Z",
+      "side": 1,
+      "message": "I suspect that\u0027s what\u0027s happening. I could try playing with the mapping - I wondered if we should be mapping the first texture entry to 0, rather then 0.5, but this feels more correct, given that we\u0027re going to directly map the local coordinates to texture coordinates when we use this colorizer (and the fact that RP is evaluating at pixel centers).",
+      "parentUuid": "7401fbfc_dae03b46",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b8bbab_ff086b4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T19:35:09Z",
+      "side": 1,
+      "message": "Yes, that\u0027s the situation right now, but you\u0027ll notice that the gradients_color_space_many_stops GM is wrong on GPU (in 8888 configs). That\u0027s because the interpolated values can be stored in a fixed-point format like that. The follow-up will be to plumb the interpolation struct here (and put it in the key), and move that portion of the RP code into the new helper as well. Then the texture fallback path will produce a texture in destination space, and we\u0027ll skip the final transformation if we used a texture colorizer.",
+      "parentUuid": "4f52202d_1d61d07c",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "644a01ac_e0047262",
@@ -83,6 +119,30 @@
       "writtenOn": "2022-12-02T19:25:25Z",
       "side": 1,
       "message": "Does RP already adjust local coordinates to be at pixel centers? Or should we shift this?",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 75
+      },
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d9a4d4_55ee8529",
+        "filename": "src/gpu/ganesh/gradients/GrGradientBitmapCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T19:35:09Z",
+      "side": 1,
+      "message": "Yes, seed_shader populates coordinates with pixel-center values (integers + 0.5).",
+      "parentUuid": "644a01ac_e0047262",
       "range": {
         "startLine": 135,
         "startChar": 4,
