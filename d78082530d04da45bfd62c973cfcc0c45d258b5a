@@ -16,6 +16,23 @@
       "message": "Chromium canary actually looks ok (one compile failure, but the blink bots were happy). The other canaries look like infra issues or existing compile failure on G3, but chromium is the only one I was really worried about.",
       "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e565beba_ca5e8653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T19:09:01Z",
+      "side": 1,
+      "message": "FYI: This does change the GPU many_stops GMs, but I honestly think the new ones look a little better. (Still not as nice as CPU, given the filtering, but not as blurry). The linked gold results are misleading, because the new closest image is the CPU. When I diff\u0027d against the existing GPU results, the old images had very uneven spacing of stops.",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
