@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6faf8be6_e59c87bd",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-02T18:28:08Z",
+      "side": 1,
+      "message": "This chunk is a mechanical extraction, with no logic changes.",
+      "revId": "5d6be8009eb45f9aa77b9d365bac884caed356b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
