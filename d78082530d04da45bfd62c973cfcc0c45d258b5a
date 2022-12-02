@@ -142,6 +142,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "829499f1_b18fde1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:55:59Z",
+      "side": 1,
+      "message": "We\u0027ve had plenty of complaints about the quality of the texture fallback case. Do you think it\u0027s reasonable to move up to 1024 or 512? Or have a heuristic based on the number of stops/projected size? Maybe that would be going farther than useful for Ganesh these days. A size increase is easy but could have negative impacts on memory usage.",
+      "parentUuid": "20f44751_50871a69",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "644a01ac_e0047262",
