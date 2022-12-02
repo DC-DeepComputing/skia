@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3404bf4a_b8c601f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:39:29Z",
+      "side": 1,
+      "message": "Agreed, with seed_shader setting up the pixel-center values, I feel like it\u0027s consistent and just a resolution issue. Locally, if you bump up the size of the texture to a much larger dimension, does it get closer to the CPU result? If so, that would be evidence that that\u0027s the issue, vs. some bug in the use of the RP and its stop searching.",
+      "parentUuid": "34814e20_c1f0acf2",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "644a01ac_e0047262",
@@ -143,6 +161,30 @@
       "side": 1,
       "message": "Yes, seed_shader populates coordinates with pixel-center values (integers + 0.5).",
       "parentUuid": "644a01ac_e0047262",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 75
+      },
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6024df93_6110c74d",
+        "filename": "src/gpu/ganesh/gradients/GrGradientBitmapCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-02T19:39:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b4d9a4d4_55ee8529",
       "range": {
         "startLine": 135,
         "startChar": 4,
