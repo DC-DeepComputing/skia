@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef836a67_16b763bb",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-02T18:45:36Z",
+      "side": 1,
+      "message": "It\u0027s broken on Mac, not slow",
+      "range": {
+        "startLine": 369,
+        "startChar": 8,
+        "endLine": 369,
+        "endChar": 85
+      },
+      "revId": "f3289952858b7e2f69bec8549c546307a1454b37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
