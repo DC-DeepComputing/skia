@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71bc9ae1_a8207f2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-12-02T19:53:08Z",
+      "side": 1,
+      "message": "When attempting to reland, please select at least tryjobs `Build-Debian10-Clang-x86_64-Release-Graphite_Vulkan` and `Build-Win-MSVC-x86_64-Release-Graphite_Vulkan`.",
+      "revId": "ef89a4b906269f00e74fdd2b705b12e91f0031bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bba04256_7b33fdbd",
