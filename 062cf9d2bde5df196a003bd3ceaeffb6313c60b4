@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ec0cf89_4f36feeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-02T18:24:40Z",
+      "side": 1,
+      "message": "UniformManager changes lgtm % one minor nit.",
+      "revId": "062cf9d2bde5df196a003bd3ceaeffb6313c60b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28fdc8c4_300f04a5",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-02T18:24:40Z",
+      "side": 1,
+      "message": "Perhaps rename this to `writeHalf` to mirror `writeHalfArray` (also I imagine `writeHalf(float)` is a perfectly reasonable overload of this function which makes more sense in the singular.",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 93,
+        "endChar": 20
+      },
+      "revId": "062cf9d2bde5df196a003bd3ceaeffb6313c60b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
