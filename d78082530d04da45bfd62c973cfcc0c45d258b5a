@@ -160,6 +160,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7939e7d_b30b6747",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-03T13:12:09Z",
+      "side": 1,
+      "message": "We could play with it, although I think I agree - I\u0027m not real interested in spending time tuning this (and then fighting with memory complaints).\n\nOne other point though: This CL has also fixed a long-standing bug in the linear_gradient and linear_gradient_nodither GMs on low-end GPUs (that need to use the texture fallback at smaller stop counts). They used to have a really jagged effect down the left edge (as the stop count increases), which is no longer there. I\u0027m not surprised -- as I was looking at the old code, I noticed several strange issues with how the texture was populated: consecutive \"filling\" loops would always overlap a point, so in the limit, every pixel would be written twice, and no pixel would ever have a blended color (just a pure-stop color). I\u0027m sure the sampling got strange.\n\nhttps://gold.skia.org/search?blame\u003d001000011384\u0026corpus\u003dgm",
+      "parentUuid": "829499f1_b18fde1b",
+      "revId": "d78082530d04da45bfd62c973cfcc0c45d258b5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "644a01ac_e0047262",
