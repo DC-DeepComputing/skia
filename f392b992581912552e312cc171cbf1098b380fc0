@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e929ca0d_b62ee9d4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-05T14:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "889917be_ed81eedf",
+      "range": {
+        "startLine": 290,
+        "startChar": 4,
+        "endLine": 290,
+        "endChar": 38
+      },
+      "revId": "f392b992581912552e312cc171cbf1098b380fc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aff63208_d9c9e34c",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Yeah that\u0027s what I was thinking. QueueManager has an addTask function or something similar.",
       "parentUuid": "aff63208_d9c9e34c",
+      "range": {
+        "startLine": 345,
+        "startChar": 4,
+        "endLine": 346,
+        "endChar": 35
+      },
+      "revId": "f392b992581912552e312cc171cbf1098b380fc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc94f74b_93ed4e14",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-05T14:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdd75d33_02929854",
       "range": {
         "startLine": 345,
         "startChar": 4,
