@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8882e1a_5a5ceb4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-05T19:57:06Z",
+      "side": 1,
+      "message": "Good sleuthing!",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f46a3a7_30dd96d8",
@@ -31,6 +48,24 @@
       "writtenOn": "2022-12-05T19:50:51Z",
       "side": 1,
       "message": "Change the loadAction to Load here too? (after the creation of the RenderCommandEncoder)",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7453eff4_0221a507",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-05T19:57:06Z",
+      "side": 1,
+      "message": "I think it makes sense to do so. If we\u0027ve got to update the load actions any time we create the render encoder, we should probably move the logic you added in setupRenderPass() into a helper function.",
+      "parentUuid": "5f46a3a7_30dd96d8",
       "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
