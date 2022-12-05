@@ -47,7 +47,15 @@ public:
                     const TextureProxy*,
                     const SkImageInfo& srcImageInfo,
                     int srcX, int srcY);
-#endif
+
+#ifdef SK_ENABLE_PRECOMPILE
+    void precompile(const PaintOptions& paintOptions,
+                    const std::function<void(SkUniquePaintParamsID)>& func) {
+        fContext->precompile(paintOptions, func);
+    }
+#endif // SK_ENABLE_PRECOMPILE
+
+#endif // GRAPHITE_TEST_UTILS
 
 private:
     friend class Context; // to construct/copy this type.
