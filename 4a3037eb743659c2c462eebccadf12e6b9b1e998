@@ -22,6 +22,30 @@
       },
       "revId": "4a3037eb743659c2c462eebccadf12e6b9b1e998",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a503f73_2ce1657e",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-05T16:59:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e415726_5e732837",
+      "range": {
+        "startLine": 475,
+        "startChar": 15,
+        "endLine": 475,
+        "endChar": 55
+      },
+      "revId": "4a3037eb743659c2c462eebccadf12e6b9b1e998",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
