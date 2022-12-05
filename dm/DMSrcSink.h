@@ -19,6 +19,7 @@
 #include "tools/gpu/MemoryCache.h"
 
 #include <functional>
+#include <memory>
 
 //#define TEST_VIA_SVG
 
@@ -431,6 +432,13 @@ public:
 class GPUSerializeSlugSink : public GPUSink {
 public:
     GPUSerializeSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+};
+
+class GPURemoteSlugSink : public GPUSink {
+public:
+    GPURemoteSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
 };
