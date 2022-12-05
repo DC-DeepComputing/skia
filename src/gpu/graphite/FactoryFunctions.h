@@ -49,6 +49,12 @@ public:
     static sk_sp<PrecompileShader> TwoPointConicalGradient();
     static sk_sp<PrecompileShader> SweepGradient();
 
+    // TODO: hide this?
+    static sk_sp<PrecompileShader> LocalMatrix(sk_sp<PrecompileShader> wrapped);
+    // TODO: hide this too?
+    static sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
+                                               sk_sp<PrecompileColorFilter>);
+
 private:
     PrecompileShaders() = delete;
 };
