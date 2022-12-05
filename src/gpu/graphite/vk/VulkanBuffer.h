@@ -10,10 +10,9 @@
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
-
-class VulkanSharedContext;
 
 class VulkanBuffer final : public Buffer {
 public:
@@ -21,12 +20,23 @@ public:
     void freeGpuData() override {}
 
 private:
-    VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer);
+    VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer,
+                 const skgpu::VulkanAlloc&);
 
-    void onMap() override {}
-    void onUnmap() override {}
+    void onMap() override;
+    void onUnmap() override;
+
+    void map(size_t readOffset, size_t readSize);
+    void unmap(size_t flushOffset, size_t flushSize);
+
+    bool isMappable() const { return fAlloc.fFlags & skgpu::VulkanAlloc::kMappable_Flag; }
+
+    const VulkanSharedContext* vulkanSharedContext() const {
+        return static_cast<const VulkanSharedContext*>(this->sharedContext());
+    }
 
     VkBuffer fBuffer;
+    skgpu::VulkanAlloc fAlloc;
 };
 
 } // namespace skgpu::graphite
