@@ -10,6 +10,7 @@
 #include "include/private/SkSLProgramKind.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkStreamPriv.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
@@ -57,6 +58,14 @@ static void test(skiatest::Reporter* r,
         ERRORF(r, "MakeRasterPipelineProgram should have failed, but didn't");
         return;
     }
+
+#if 1
+    // Dump the program instructions via SkDebugf.
+    SkDebugf("-----\n\n");
+    SkDebugfStream stream;
+    rasterProg->dump(&stream);
+    SkDebugf("\n-----\n\n");
+#endif
 
     // Append the SkSL program to the raster pipeline.
     rasterProg->appendStages(&pipeline, &alloc);
