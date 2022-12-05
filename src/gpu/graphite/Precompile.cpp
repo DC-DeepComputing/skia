@@ -105,7 +105,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
 }
 
-void PaintOptions::buildCombinations(ShaderCodeDictionary* dict) const {
+void PaintOptions::buildCombinations(ShaderCodeDictionary* dict,
+                                     const std::function<void(SkUniquePaintParamsID)>& func) const {
     KeyContext keyContext(dict);
     PaintParamsKeyBuilder builder(dict);
 
@@ -113,7 +114,9 @@ void PaintOptions::buildCombinations(ShaderCodeDictionary* dict) const {
     for (int i = 0; i < numCombinations; ++i) {
         this->createKey(keyContext, i, &builder);
 
-        [[maybe_unused]] auto entry = dict->findOrCreate(&builder);
+        auto entry = dict->findOrCreate(&builder);
+
+        func(entry->uniqueID());
     }
 }
 
