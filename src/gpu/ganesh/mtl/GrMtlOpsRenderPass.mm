@@ -286,11 +286,19 @@ void GrMtlOpsRenderPass::setupRenderPass(
                                      color->dimensions().height());
             fActiveRenderCmdEncoder =
                     fGpu->commandBuffer()->getRenderCommandEncoder(fRenderPassDesc, nullptr, this);
+            // Any future RenderCommandEncoders we create for this OpsRenderPass should load,
+            // unless onClear or onClearStencilClip are explicitly called.
+            if (colorInfo.fLoadOp == GrLoadOp::kClear) {
+                colorAttachment.loadAction = MTLLoadActionLoad;
+            }
+            if (stencilInfo.fLoadOp == GrLoadOp::kClear) {
+                mtlStencil.loadAction = MTLLoadActionLoad;
+            }
         } else {
             fBounds.setEmpty();
             // For now, we lazily create the renderCommandEncoder because we may have no draws,
             // and an empty renderCommandEncoder can still produce output. This can cause issues
-            // when we've cleared a texture upon creation -- we'll subsequently discard the contents.
+            // when we clear a texture upon creation -- we'll subsequently discard the contents.
             // This can be removed when that ordering is fixed.
         }
     }
