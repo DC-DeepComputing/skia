@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e415726_5e732837",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-05T14:54:35Z",
+      "side": 1,
+      "message": "The \"normally\" here confused me for a bit (it _always_ sets it, but we counteract it). Maybe rephrase to something like this?\n\n`// setDataFromBytes always sets fOwnMemory to true, but we are actually using static storage here, which shouldn\u0027t ever be freed.`\n\nIf code size weren\u0027t a concern I wonder if it would be clearer for `setDataFromBytes` to take an \"ownsMemory\" parameter which defaults to true, but almost certainly this would grow the binary, so this is probably best.",
+      "range": {
+        "startLine": 475,
+        "startChar": 15,
+        "endLine": 475,
+        "endChar": 55
+      },
+      "revId": "4a3037eb743659c2c462eebccadf12e6b9b1e998",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
