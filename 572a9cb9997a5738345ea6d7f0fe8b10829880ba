@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8daff000_afc0743e",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-05T20:00:03Z",
+      "side": 1,
+      "message": "instead of changing this back to load in all these places, should we instead follow the pattern used here for clear and where ever we\u0027re creating a new encoder after the first that is the code that makes sure things are using load?",
+      "parentUuid": "7453eff4_0221a507",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "829c57a0_ce1b99d0",
         "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
         "patchSetId": 1
