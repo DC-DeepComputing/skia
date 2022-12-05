@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97c5aea9_99440d32",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-05T20:04:42Z",
+      "side": 1,
+      "message": "Like vulkan has an \"addAdditionalRenderPass\" helper that manages this stuff",
+      "parentUuid": "8daff000_afc0743e",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "829c57a0_ce1b99d0",
         "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
         "patchSetId": 1
