@@ -105,6 +105,19 @@ protected:
     Resource(const SharedContext*, Ownership, SkBudgeted);
     virtual ~Resource();
 
+    const SharedContext* sharedContext() const { return fSharedContext; }
+
+    // TODO: See if this is OK or if we need to define a separate internal hasCommandBufferRef call.
+    bool hasCommandBufferRef() const {
+        if (0 == fCommandBufferRefCnt.load(std::memory_order_acquire)) {
+            // The acquire barrier is only really needed if we return true.  It
+            // prevents code conditioned on the result of hasCommandBufferRef() from running
+            // until previous owners are all totally done calling unrefCommandBuffer().
+            return false;
+        }
+        return true;
+    }
+
     // Overridden to free GPU resources in the backend API.
     virtual void freeGpuData() = 0;
 
@@ -176,16 +189,6 @@ private:
             // The acquire barrier is only really needed if we return true.  It
             // prevents code conditioned on the result of hasUsageRef() from running until previous
             // owners are all totally done calling unref().
-            return false;
-        }
-        return true;
-    }
-
-    bool hasCommandBufferRef() const {
-        if (0 == fCommandBufferRefCnt.load(std::memory_order_acquire)) {
-            // The acquire barrier is only really needed if we return true.  It
-            // prevents code conditioned on the result of hasCommandBufferRef() from running
-            // until previous owners are all totally done calling unrefCommandBuffer().
             return false;
         }
         return true;
