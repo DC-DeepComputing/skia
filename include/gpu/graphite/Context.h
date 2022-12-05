@@ -20,6 +20,10 @@
 
 class SkRuntimeEffect;
 
+#if GRAPHITE_TEST_UTILS && defined(SK_ENABLE_PRECOMPILE)
+class SkUniquePaintParamsID;
+#endif
+
 namespace skgpu { struct VulkanBackendContext; }
 
 namespace skgpu::graphite {
@@ -32,13 +36,14 @@ class ContextPriv;
 struct DawnBackendContext;
 class GlobalCache;
 struct MtlBackendContext;
+class PaintOptions;
 class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 class BlenderID;
 class CombinationBuilder;
 #endif
@@ -88,11 +93,15 @@ public:
     void checkAsyncWorkCompletion();
 
 #ifdef SK_ENABLE_PRECOMPILE
+#if 0
     // TODO: add "ShaderID addUserDefinedShader(sk_sp<SkRuntimeEffect>)" here
     // TODO: add "ColorFilterID addUserDefinedColorFilter(sk_sp<SkRuntimeEffect>)" here
     BlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
 
     void precompile(CombinationBuilder*);
+#endif
+
+    void precompile(const PaintOptions&);
 #endif
 
     /**
@@ -170,6 +179,11 @@ private:
     mutable SingleOwner fSingleOwner;
 
 #if GRAPHITE_TEST_UTILS
+#ifdef SK_ENABLE_PRECOMPILE
+    void precompile(const PaintOptions&,
+                    const std::function<void(SkUniquePaintParamsID)>&);
+#endif
+
     // In test builds a Recorder may track the Context that was used to create it.
     bool fStoreContextRefInRecorder = false;
     // If this tracking is on, to allow the client to safely delete this Context or its Recorders

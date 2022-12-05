@@ -9,10 +9,32 @@
 
 #ifdef SK_ENABLE_PRECOMPILE
 
+#include "src/gpu/graphite/FactoryFunctions.h"
+#include "src/gpu/graphite/KeyContext.h"
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 namespace skgpu::graphite {
+
+//--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
+    if (this->priv().isALocalMatrixShader()) {
+        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
+        // follow suit here
+        return sk_ref_sp(this);
+    }
+
+    return PrecompileShaders::LocalMatrix(sk_ref_sp(this));
+}
+
+sk_sp<PrecompileShader> PrecompileShader::makeWithColorFilter(sk_sp<PrecompileColorFilter> cf) const {
+
+    // need to add SkColorFilterShader
+    return nullptr;
+}
 
 //--------------------------------------------------------------------------------------------------
 int PaintOptions::numShaderCombinations() const {
@@ -70,6 +92,64 @@ int PaintOptions::numCombinations() const {
            this->numMaskFilterCombinations() *
            this->numColorFilterCombinations() *
            this->numBlendModeCombinations();
+}
+
+void PaintOptions::createKey(const KeyContext& keyContext,
+                             int desiredCombination,
+                             PaintParamsKeyBuilder* keyBuilder) const {
+    SkDEBUGCODE(keyBuilder->checkReset();)
+    SkASSERT(desiredCombination < this->numCombinations());
+
+    int numBlendModeCombos = this->numBlendModeCombinations();
+    int numColorFilterCombinations = this->numColorFilterCombinations();
+    int numMaskFilterCombinations = this->numMaskFilterCombinations();
+
+    int desiredBlendCombination = desiredCombination % numBlendModeCombos;
+    int remainingCombinations = desiredCombination / numBlendModeCombos;
+
+    int desiredColorFilterCombination = remainingCombinations % numColorFilterCombinations;
+    remainingCombinations /= numColorFilterCombinations;
+
+    int desiredMaskFilterCombination = remainingCombinations % numMaskFilterCombinations;
+    remainingCombinations /= numMaskFilterCombinations;
+
+    int desiredShaderCombination = remainingCombinations;
+    SkASSERT(desiredShaderCombination < this->numShaderCombinations());
+
+    if (fShaderOptions.empty()) {
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                          {1, 0, 0, 1});
+        keyBuilder->endBlock();
+    } else {
+        PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
+    }
+
+    PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
+                            desiredMaskFilterCombination);
+    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
+                             desiredColorFilterCombination);
+    if (fBlenderOptions.empty()) {
+        BlendModeBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                   SkBlendMode::kSrcOver);
+        keyBuilder->endBlock();
+    } else {
+        PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+    }
+}
+
+void PaintOptions::buildCombinations(ShaderCodeDictionary* dict,
+                                     const std::function<void(SkUniquePaintParamsID)>& func) const {
+    KeyContext keyContext(dict);
+    PaintParamsKeyBuilder builder(dict);
+
+    int numCombinations = this->numCombinations();
+    for (int i = 0; i < numCombinations; ++i) {
+        this->createKey(keyContext, i, &builder);
+
+        auto entry = dict->findOrCreate(&builder);
+
+        func(entry->uniqueID());
+    }
 }
 
 } // namespace skgpu::graphite
