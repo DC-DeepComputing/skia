@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99da070f_10c8032f",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-05T21:00:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eff5513c_c0de9aa2",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "829c57a0_ce1b99d0",
@@ -137,6 +155,24 @@
       "writtenOn": "2022-12-05T19:50:51Z",
       "side": 1,
       "message": "Change the loadAction to Load here too?",
+      "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b447bf2_a75ff085",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-05T21:00:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "829c57a0_ce1b99d0",
       "revId": "572a9cb9997a5738345ea6d7f0fe8b10829880ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
