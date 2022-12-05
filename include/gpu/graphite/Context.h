@@ -20,6 +20,10 @@
 
 class SkRuntimeEffect;
 
+#if GRAPHITE_TEST_UTILS && defined(SK_ENABLE_PRECOMPILE)
+class SkUniquePaintParamsID;
+#endif
+
 namespace skgpu { struct VulkanBackendContext; }
 
 namespace skgpu::graphite {
@@ -173,12 +177,17 @@ private:
     mutable SingleOwner fSingleOwner;
 
 #if GRAPHITE_TEST_UTILS
+#ifdef SK_ENABLE_PRECOMPILE
+    void precompile(const PaintOptions&,
+                    const std::function<void(SkUniquePaintParamsID)>&);
+#endif // SK_ENABLE_PRECOMPILE
+
     // In test builds a Recorder may track the Context that was used to create it.
     bool fStoreContextRefInRecorder = false;
     // If this tracking is on, to allow the client to safely delete this Context or its Recorders
     // in any order we must also track the Recorders created here.
     std::vector<Recorder*> fTrackedRecorders;
-#endif
+#endif // GRAPHITE_TEST_UTILS
 
     // Needed for MessageBox handling
     const ContextID fContextID;
