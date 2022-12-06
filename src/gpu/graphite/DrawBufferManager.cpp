@@ -134,14 +134,21 @@ BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
     // Create a new buffer and fill it in.
     // TODO: Ideally created once and then copied into a vertex buffer with PrioritizeGpuReads::kYes
     // but this lets us easily lazily initialize it for now.
+    sk_sp<Buffer> buffer;
     size_t size = sizeFn();
-    auto buffer = fResourceProvider->findOrCreateBuffer(size, type, PrioritizeGpuReads::kNo);
+    buffer = fResourceProvider->createStaticBuffer(
+            size, type, [size, initFn] (void* ptr){
+                initFn(VertexWriter{ptr, size}, size);
+            });
     if (!buffer) {
-        return {};
-    }
+        buffer = fResourceProvider->findOrCreateBuffer(size, type, PrioritizeGpuReads::kNo);
+        if (!buffer) {
+            return {};
+        }
 
-    initFn(VertexWriter{buffer->map(), size}, size);
-    buffer->unmap();
+        initFn(VertexWriter{buffer->map(), size}, size);
+        buffer->unmap();
+    }
     fStaticBuffers.insert({key, buffer});
     return {buffer.get(), 0};
 }

@@ -15,6 +15,8 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
+#include <functional>
+
 namespace skgpu::graphite {
 
 class DawnBuffer : public Buffer {
@@ -23,7 +25,11 @@ public:
                               size_t size,
                               BufferType type,
                               PrioritizeGpuReads);
-
+    using InitFn = std::function<void(void*)>;
+    static sk_sp<Buffer> MakeStatic(const DawnSharedContext*,
+                                    size_t size,
+                                    BufferType type,
+                                    InitFn initFn);
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
 
 private:
