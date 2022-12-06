@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a02fe05_c3b8c91e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-06T15:31:50Z",
+      "side": 1,
+      "message": "To pipe Graphite\u0027s destination ColorInfo to SkWorkingFormatColorFilter::addToKey, I had to add an SkColorInfo parameter to lots of methods (even methods of non-color-filter effects since they can have color-filter child effects). This seems a little annoying, but I\u0027m not sure how else to pipe the info down. Also, I don\u0027t know how to test that this makes a difference vs. e.g. always using sRGB as the destination color space.",
+      "revId": "4291da1abb2a6eda6f2c64af9c5d8e616079e17c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
