@@ -51,6 +51,24 @@
       "parentUuid": "28897571_67948cd9",
       "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f838ea1_fe5cb161",
+        "filename": "tools/viewer/StrokeVerbSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-06T14:18:59Z",
+      "side": 1,
+      "message": "Fixed in this CL: https://skia-review.googlesource.com/c/skia/+/613079",
+      "parentUuid": "1716f918_3e26006b",
+      "revId": "94d7c7c6faf454b3993e3a35604c42ad154e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
