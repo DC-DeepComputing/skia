@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 
+class SkColorInfo;
 class SkShader;
 
 namespace skgpu::graphite {
@@ -60,6 +61,7 @@ public:
     bool skipColorXform() const { return fSkipColorXform; }
 
     void toKey(const KeyContext&,
+               const SkColorInfo& dstColorInfo,
                PaintParamsKeyBuilder*,
                PipelineDataGatherer*) const;
 

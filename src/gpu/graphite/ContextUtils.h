@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineDataCache.h"
 
+class SkColorInfo;
 class SkM44;
 class SkRuntimeEffectDictionary;
 class SkUniquePaintParamsID;
@@ -32,6 +33,7 @@ ExtractPaintData(Recorder*,
                  PaintParamsKeyBuilder* builder,
                  const Layout layout,
                  const SkM44& local2Dev,
+                 const SkColorInfo& dstColorInfo,
                  const PaintParams&);
 
 std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepData(

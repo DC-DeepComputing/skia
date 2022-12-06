@@ -93,6 +93,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext&,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder*,
                   skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
@@ -292,6 +293,7 @@ GrFPResult SkTable_ColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentPr
 #ifdef SK_GRAPHITE_ENABLED
 
 void SkTable_ColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                   const SkColorInfo& dstColorInfo,
                                    skgpu::graphite::PaintParamsKeyBuilder* builder,
                                    skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;

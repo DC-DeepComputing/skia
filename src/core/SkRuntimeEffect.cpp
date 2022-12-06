@@ -948,6 +948,7 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
 static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children,
                                 SkSpan<const SkRuntimeEffect::Child> childInfo,
                                 const skgpu::graphite::KeyContext& keyContext,
+                                const SkColorInfo& dstColorInfo,
                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
                                 skgpu::graphite::PipelineDataGatherer* gatherer) {
     using namespace skgpu::graphite;
@@ -958,11 +959,11 @@ static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children
         const SkRuntimeEffect::ChildPtr& child = children[index];
         std::optional<ChildType> type = child.type();
         if (type == ChildType::kShader) {
-            as_SB(child.shader())->addToKey(keyContext, builder, gatherer);
+            as_SB(child.shader())->addToKey(keyContext, dstColorInfo, builder, gatherer);
         } else if (type == ChildType::kColorFilter) {
-            as_CFB(child.colorFilter())->addToKey(keyContext, builder, gatherer);
+            as_CFB(child.colorFilter())->addToKey(keyContext, dstColorInfo, builder, gatherer);
         } else if (type == ChildType::kBlender) {
-            as_BB(child.blender())->addToKey(keyContext, builder, gatherer,
+            as_BB(child.blender())->addToKey(keyContext, dstColorInfo, builder, gatherer,
                                              /*primitiveColorBlender=*/false);
         } else {
             // We don't have a child effect. Substitute in a no-op effect.
@@ -1085,13 +1086,15 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
-        add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+        add_children_to_key(
+                fChildren, fEffect->children(), keyContext, dstColorInfo, builder, gatherer);
 
         builder->endBlock();
     }
@@ -1265,13 +1268,15 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
-        add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+        add_children_to_key(
+                fChildren, fEffect->children(), keyContext, dstColorInfo, builder, gatherer);
 
         builder->endBlock();
     }
@@ -1439,6 +1444,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer,
                   bool primitiveColorBlender) const override {
@@ -1446,7 +1452,8 @@ public:
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
 
-        add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+        add_children_to_key(
+                fChildren, fEffect->children(), keyContext, dstColorInfo, builder, gatherer);
 
         builder->endBlock();
     }

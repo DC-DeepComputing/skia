@@ -409,6 +409,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
                                          SkISize deviceSize,
+                                         const SkColorInfo& deviceColorInfo,
                                          std::pair<LoadOp, StoreOp> ops,
                                          std::array<float, 4> clearColor) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
@@ -475,6 +476,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                      &builder,
                                      shadingUniformLayout,
                                      draw.fDrawParams.transform(),
+                                     deviceColorInfo,
                                      draw.fPaintParams.value());
         } // else depth-only
 

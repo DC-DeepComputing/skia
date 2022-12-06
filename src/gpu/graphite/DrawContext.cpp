@@ -134,6 +134,7 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
                                std::move(fPendingDraws),
                                fTarget,
                                this->imageInfo().dimensions(),
+                               this->imageInfo().colorInfo(),
                                std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                fPendingClearColor);
     fDrawPasses.push_back(std::move(pass));

@@ -66,6 +66,7 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkBlenderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                             const SkColorInfo& dstColorInfo,
                              skgpu::graphite::PaintParamsKeyBuilder* builder,
                              skgpu::graphite::PipelineDataGatherer* gatherer,
                              bool primitiveColorBlender) const {

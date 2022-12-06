@@ -149,6 +149,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkColorFilterBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                 const SkColorInfo& dstColorInfo,
                                  skgpu::graphite::PaintParamsKeyBuilder* builder,
                                  skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
@@ -211,14 +212,15 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
         ComposeColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
 
-        as_CFB(fInner)->addToKey(keyContext, builder, gatherer);
-        as_CFB(fOuter)->addToKey(keyContext, builder, gatherer);
+        as_CFB(fInner)->addToKey(keyContext, dstColorInfo, builder, gatherer);
+        as_CFB(fOuter)->addToKey(keyContext, dstColorInfo, builder, gatherer);
 
         builder->endBlock();
     }
@@ -305,6 +307,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
@@ -430,6 +433,36 @@ public:
 
         return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
                   : GrFPFailure(std::move(fp));
+    }
+#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+    void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  const SkColorInfo& dstColorInfo,
+                  skgpu::graphite::PaintParamsKeyBuilder* builder,
+                  skgpu::graphite::PipelineDataGatherer* gatherer) const override {
+        using namespace skgpu::graphite;
+
+        const SkAlphaType dstAT = dstColorInfo.alphaType();
+        sk_sp<SkColorSpace> dstCS = dstColorInfo.refColorSpace();
+        if (!dstCS) {
+            dstCS = SkColorSpace::MakeSRGB();
+        }
+
+        SkAlphaType workingAT;
+        sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
+
+        ColorSpaceTransformBlock::ColorSpaceTransformData data1(
+                dstCS.get(), dstAT, workingCS.get(), workingAT);
+        ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data1);
+        builder->endBlock();
+
+        as_CFB(fChild)->addToKey(keyContext, dstColorInfo, builder, gatherer);
+
+        ColorSpaceTransformBlock::ColorSpaceTransformData data2(
+                workingCS.get(), workingAT, dstCS.get(), dstAT);
+        ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data2);
+        builder->endBlock();
     }
 #endif
 

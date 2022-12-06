@@ -388,6 +388,7 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                             const SkColorInfo& dstColorInfo,
                              skgpu::graphite::PaintParamsKeyBuilder* builder,
                              skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;

@@ -449,6 +449,7 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkPictureShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                               const SkColorInfo& dstColorInfo,
                                skgpu::graphite::PaintParamsKeyBuilder* builder,
                                skgpu::graphite::PipelineDataGatherer* gatherer) const {
 
@@ -500,6 +501,6 @@ void SkPictureShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
         return;
     }
 
-    as_SB(shader)->addToKey(keyContext, builder, gatherer);
+    as_SB(shader)->addToKey(keyContext, dstColorInfo, builder, gatherer);
 }
 #endif // SK_GRAPHITE_ENABLED

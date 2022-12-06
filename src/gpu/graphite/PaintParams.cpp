@@ -61,6 +61,7 @@ sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; 
 sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
 
 void PaintParams::toKey(const KeyContext& keyContext,
+                        const SkColorInfo& dstColorInfo,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
 
@@ -69,11 +70,11 @@ void PaintParams::toKey(const KeyContext& keyContext,
     builder->endBlock();
 
     if (fShader) {
-        as_SB(fShader)->addToKey(keyContext, builder, gatherer);
+        as_SB(fShader)->addToKey(keyContext, dstColorInfo, builder, gatherer);
     }
 
     if (fPrimitiveBlender) {
-        as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer,
+        as_BB(fPrimitiveBlender)->addToKey(keyContext, dstColorInfo, builder, gatherer,
                                            /*primitiveColorBlender=*/true);
     }
 
@@ -82,15 +83,15 @@ void PaintParams::toKey(const KeyContext& keyContext,
                                                   /*colorSpace*/nullptr,
                                                   SkBlendMode::kDstIn);
     if (alphaColorFilter) {
-        as_CFB(alphaColorFilter)->addToKey(keyContext, builder, gatherer);
+        as_CFB(alphaColorFilter)->addToKey(keyContext, dstColorInfo, builder, gatherer);
     }
 
     if (fColorFilter) {
-        as_CFB(fColorFilter)->addToKey(keyContext, builder, gatherer);
+        as_CFB(fColorFilter)->addToKey(keyContext, dstColorInfo, builder, gatherer);
     }
 
     if (fFinalBlender) {
-        as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer,
+        as_BB(fFinalBlender)->addToKey(keyContext, dstColorInfo, builder, gatherer,
                                        /*primitiveColorBlender=*/false);
     } else {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);

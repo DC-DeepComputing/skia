@@ -89,11 +89,13 @@ public:
         Add implementation details, for the specified backend, of this SkColorFilter to the
         provided key.
 
-        @param keyContext backend context for key creation
-        @param builder    builder for creating the key for this SkShader
-        @param gatherer   if non-null, storage for this colorFilter's data
+        @param keyContext   backend context for key creation
+        @param dstColorInfo info about the draw destination
+        @param builder      builder for creating the key for this SkShader
+        @param gatherer     if non-null, storage for this colorFilter's data
     */
     virtual void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                          const SkColorInfo& dstColorInfo,
                           skgpu::graphite::PaintParamsKeyBuilder* builder,
                           skgpu::graphite::PipelineDataGatherer* gatherer) const;
 #endif

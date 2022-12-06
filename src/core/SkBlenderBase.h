@@ -67,6 +67,7 @@ public:
      * blending the result of the paint evaluation with the back buffer.
      */
     virtual void addToKey(const skgpu::graphite::KeyContext&,
+                          const SkColorInfo& dstColorInfo,
                           skgpu::graphite::PaintParamsKeyBuilder*,
                           skgpu::graphite::PipelineDataGatherer*,
                           bool primitiveColorBlender) const;

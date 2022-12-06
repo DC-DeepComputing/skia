@@ -64,6 +64,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext&,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder*,
                   skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
@@ -178,6 +179,7 @@ std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkShader_Blend::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                              const SkColorInfo& dstColorInfo,
                               skgpu::graphite::PaintParamsKeyBuilder* builder,
                               skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
@@ -190,8 +192,8 @@ void SkShader_Blend::addToKey(const skgpu::graphite::KeyContext& keyContext,
         BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, {fMode});
     }
 
-    as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
-    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
+    as_SB(fSrc)->addToKey(keyContext, dstColorInfo, builder, gatherer);
+    as_SB(fDst)->addToKey(keyContext, dstColorInfo, builder, gatherer);
 
     builder->endBlock();
 }

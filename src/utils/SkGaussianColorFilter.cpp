@@ -58,6 +58,7 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void addToKey(const skgpu::graphite::KeyContext&,
+                  const SkColorInfo& dstColorInfo,
                   skgpu::graphite::PaintParamsKeyBuilder*,
                   skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
@@ -117,6 +118,7 @@ GrFPResult SkGaussianColorFilter::asFragmentProcessor(std::unique_ptr<GrFragment
 #ifdef SK_GRAPHITE_ENABLED
 
 void SkGaussianColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                     const SkColorInfo& dstColorInfo,
                                      skgpu::graphite::PaintParamsKeyBuilder* builder,
                                      skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;

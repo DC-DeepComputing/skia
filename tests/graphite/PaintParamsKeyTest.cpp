@@ -204,8 +204,13 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
             for (auto bm : { SkBlendMode::kSrc, SkBlendMode::kSrcOver }) {
                 auto [ p, expectedNumTextures ] = create_paint(recorder.get(), s, tm, bm);
 
-                auto [uniqueID1, uData, tData] = ExtractPaintData(
-                        recorder.get(), &gatherer, &builder, Layout::kMetal, {}, PaintParams(p));
+                auto [uniqueID1, uData, tData] = ExtractPaintData(recorder.get(),
+                                                                  &gatherer,
+                                                                  &builder,
+                                                                  Layout::kMetal,
+                                                                  {},
+                                                                  {},
+                                                                  PaintParams(p));
 
                 SkUniquePaintParamsID uniqueID2 = create_key(context, &builder, s, tm, bm);
                 // ExtractPaintData and CreateKey agree

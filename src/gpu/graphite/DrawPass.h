@@ -21,6 +21,7 @@
 
 #include <memory>
 
+class SkColorInfo;
 class SkRuntimeEffectDictionary;
 
 namespace skgpu::graphite {
@@ -58,6 +59,7 @@ public:
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy>,
                                           SkISize deviceSize,
+                                          const SkColorInfo& deviceColorInfo,
                                           std::pair<LoadOp, StoreOp>,
                                           std::array<float, 4> clearColor);
 
