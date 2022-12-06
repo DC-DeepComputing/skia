@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40d46fb5_e40eb1d5",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-06T15:05:34Z",
+      "side": 1,
+      "message": "We need this to be supported without Dawn and run on generic WebGPU. Can we figure out an alternative to using Tick? Or at least figure out how we want to handle this for generic WebGPU?",
+      "range": {
+        "startLine": 106,
+        "startChar": 8,
+        "endLine": 106,
+        "endChar": 51
+      },
+      "revId": "b157c6eacaeaebdba35762d4a3c0cd4a3ab2b3fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
