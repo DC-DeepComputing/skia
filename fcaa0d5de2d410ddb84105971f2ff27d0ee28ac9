@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf7dfd58_5b214200",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-06T15:09:49Z",
+      "side": 1,
+      "message": "I think we can do in the following up patch. Maybe this story https://b.corp.google.com/issues/259267703 is appropriate for tracking it?\n\nbtw, letting higher level layer manage the uniform buffer is a bit wasteful since it will have to use 2 buffers (one staging buffer and one uniform buffer) since Dawn doesn\u0027t allow mapping uniform buffer directly.",
+      "parentUuid": "6e1e4924_667797ea",
+      "range": {
+        "startLine": 449,
+        "startChar": 9,
+        "endLine": 449,
+        "endChar": 34
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e87e13fe_7a624b0c",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-28T19:30:50Z",
       "side": 1,
       "message": "this-\u003esyncUniforBuffers(), and all other uses of this call. In Skia\u0027s style we always include this-\u003e when calling member functions",
+      "range": {
+        "startLine": 494,
+        "startChar": 4,
+        "endLine": 494,
+        "endChar": 22
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94dc6f1c_e3e4a88a",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-06T15:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e87e13fe_7a624b0c",
       "range": {
         "startLine": 494,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c178c8_2b16d638",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-06T15:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ccdb73b_b79f13cb",
+      "range": {
+        "startLine": 596,
+        "startChar": 30,
+        "endLine": 596,
+        "endChar": 44
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c5bdeba_4a17c839",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfee5f65_7be89dcb",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-06T15:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c5bdeba_4a17c839",
+      "range": {
+        "startLine": 636,
+        "startChar": 33,
+        "endLine": 636,
+        "endChar": 77
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dcb4945_2fc916b9",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-11-28T19:30:50Z",
       "side": 1,
       "message": "Is there really I use case where we wouldn\u0027t end up creating a TextureView for a Texture? I feel like it will always be needed. Thus maybe it makes more sense to just create this in the DawnTexture factory and then this getter can stay const without needing the mutable view.",
+      "range": {
+        "startLine": 166,
+        "startChar": 8,
+        "endLine": 166,
+        "endChar": 45
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea2b8c8a_6bbe9f31",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-06T15:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1dcb4945_2fc916b9",
       "range": {
         "startLine": 166,
         "startChar": 8,
