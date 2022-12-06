@@ -67,7 +67,7 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
         k1, k2, k3, k4,
         enforcePremul ? 0.0f : 1.0f,
     };
-    return gArithmeticEffect->makeBlender(SkData::MakeWithCopy(array, sizeof(array)));
+    return gArithmeticEffect->makeBlender1(SkData::MakeWithCopy(array, sizeof(array)));
 }
 #else // SK_ENABLE_SKSL
 sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,

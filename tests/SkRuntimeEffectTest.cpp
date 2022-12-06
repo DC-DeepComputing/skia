@@ -802,7 +802,7 @@ static void test_RuntimeEffectObeysCapabilities(skiatest::Reporter* r, SkSurface
         )")).effect;
         REPORTER_ASSERT(r, effect);
         SkPaint paint;
-        paint.setBlender(effect->makeBlender(/*uniforms=*/nullptr, /*children=*/{}));
+        paint.setBlender(effect->makeBlender1(/*uniforms=*/nullptr, /*children=*/{}));
         REPORTER_ASSERT(r, paint.getBlender());
         verify_draw_obeys_capabilities(r, effect.get(), surface, paint);
     }
@@ -818,7 +818,7 @@ static void test_RuntimeEffectObeysCapabilities(skiatest::Reporter* r, SkSurface
         )")).effect;
         REPORTER_ASSERT(r, effect);
         SkPaint paint;
-        paint.setBlender(effect->makeBlender(/*uniforms=*/nullptr, /*children=*/{}));
+        paint.setBlender(effect->makeBlender1(/*uniforms=*/nullptr, /*children=*/{}));
         REPORTER_ASSERT(r, paint.getBlender());
         verify_draw_obeys_capabilities(r, effect.get(), surface, paint);
     }

@@ -550,8 +550,8 @@ sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
         uint32_t skslHashB;
 
         bool operator==(const Key& that) const {
-            return this->skslHashA == that.skslHashA
-                && this->skslHashB == that.skslHashB;
+            return this->skslHashA == that.skslHashA &&
+                   this->skslHashB == that.skslHashB;
         }
 
         explicit Key(const SkString& sksl)
@@ -1492,7 +1492,7 @@ sk_sp<SkFlattenable> SkRuntimeBlender::CreateProc(SkReadBuffer& buffer) {
     }
 #endif
 
-    return effect->makeBlender(std::move(uniforms), SkSpan(children));
+    return effect->makeBlender1(std::move(uniforms), SkSpan(children));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1648,7 +1648,7 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> unifor
     return this->makeColorFilter(std::move(uniforms), /*children=*/{});
 }
 
-sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
+sk_sp<SkBlender> SkRuntimeEffect::makeBlender1(sk_sp<const SkData> uniforms,
                                               SkSpan<ChildPtr> children) const {
     if (!this->allowBlender()) {
         return nullptr;
@@ -1750,7 +1750,7 @@ SkRuntimeBlendBuilder::SkRuntimeBlendBuilder(sk_sp<SkRuntimeEffect> effect)
 SkRuntimeBlendBuilder::~SkRuntimeBlendBuilder() = default;
 
 sk_sp<SkBlender> SkRuntimeBlendBuilder::makeBlender() {
-    return this->effect()->makeBlender(this->uniforms(),
+    return this->effect()->makeBlender1(this->uniforms(),
                                        SkSpan(this->children(), this->numChildren()));
 }
 

@@ -223,7 +223,7 @@ public:
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms,
                                          SkSpan<ChildPtr> children) const;
 
-    sk_sp<SkBlender> makeBlender(sk_sp<const SkData> uniforms,
+    sk_sp<SkBlender> makeBlender1(sk_sp<const SkData> uniforms,
                                  SkSpan<ChildPtr> children = {}) const;
 
     /**

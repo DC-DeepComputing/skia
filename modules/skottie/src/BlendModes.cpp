@@ -33,7 +33,7 @@ static sk_sp<SkBlender> hardMix() {
         auto result = SkRuntimeEffect::MakeForBlender(SkString(hardMix));
         return result.effect.release();
     }();
-    return hardMixEffect->makeBlender(nullptr);
+    return hardMixEffect->makeBlender1(nullptr);
 }
 
 static sk_sp<SkBlender> get_blender(const skjson::ObjectValue& jobject,
