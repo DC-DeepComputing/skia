@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "580154d5_cc7c850d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-12-06T17:45:27Z",
+      "side": 1,
+      "message": "Looks like Windows Patch Tuesday updated a lot of Win machines. This should clear up many of the BotUnemployed alerts.",
+      "revId": "b7ec4e0d71a144614083f7e570adfe5dee8bf080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
