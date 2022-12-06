@@ -61,7 +61,7 @@ void SkPerfettoTrace::openNewTracingSession(const std::string& baseFileName) {
         args.shmem_size_hint_kb = 2000;
     }
     perfetto::Tracing::Initialize(args);
-    perfetto::TrackEvent::Register();
+    ::skia::TrackEvent::Register();
 
     // Set up event tracing configuration.
     perfetto::protos::gen::TrackEventConfig track_event_cfg;
@@ -98,7 +98,7 @@ void SkPerfettoTrace::openNewTracingSession(const std::string& baseFileName) {
 }
 
 void SkPerfettoTrace::closeTracingSession() {
-    perfetto::TrackEvent::Flush();
+    ::skia::TrackEvent::Flush();
     tracingSession->StopBlocking();
     if (!FLAGS_longPerfettoTrace) {
         std::vector<char> trace_data(tracingSession->ReadTraceBlocking());

@@ -247,8 +247,21 @@ cc_defaults {
             "libvulkan",
             "libnativewindow",
         ],
+        static_libs: [
+            "libperfetto_client_experimental",
+        ],
         export_shared_lib_headers: [
             "libvulkan",
+        ],
+      },
+      darwin: {
+        static_libs: [
+            "libperfetto_client_experimental",
+        ],
+      },
+      linux: {
+        static_libs: [
+            "libperfetto_client_experimental",
         ],
       },
     },
@@ -505,7 +518,10 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     'skia_include_multiframe_procs':        'false',
     # Required for some SKSL tests
     'skia_enable_sksl_tracing':             'true',
-    'skia_use_perfetto':                    'false'
+    # Generally enabled, except for Windows (Android host-mode builds) and SkQP
+    'skia_use_perfetto_macro_overrides':    'true',
+    # The two Perfetto integrations are currently mutually exclusive due to complexity.
+    'skia_use_perfetto':                    'false',
   }
   d['target_os'] = target_os
   if target_os == '"android"':
@@ -528,6 +544,10 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     d['win_vc'] = '"placeholder_version"'
     d['win_sdk_version'] = '"placeholder_version"'
     d['win_toolchain_version'] = '"placeholder_version"'
+
+    # Perfetto does not appear to support being built within Android for Windows (host-mode) from
+    # Linux (e.g. being cross-compiled with MinGW). This is a confusing soup of OSes, but it's real.
+    d['skia_use_perfetto_macro_overrides'] = 'false'
 
   if target_os == '"android"' and not renderengine:
     d['skia_use_libheif']  = 'true'
@@ -692,6 +712,7 @@ gn_to_bp_utils.GrabDependentValues(js_skqp, '//:libskqp_app', 'defines',
 skqp_defines.add("SK_ENABLE_DUMP_GPU")
 skqp_defines.add("SK_BUILD_FOR_SKQP")
 skqp_defines.add("SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1")
+skqp_defines.remove("SK_USE_PERFETTO")
 
 skqp_srcs = strip_headers(skqp_srcs)
 skqp_cflags = gn_to_bp_utils.CleanupCFlags(skqp_cflags)
