@@ -1,0 +1,11 @@
+cc_library(
+    name = "base",
+    hdrs = ["base.h"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "base_priv",
+    srcs = ["base_priv.h"],
+    visibility = ["//experimental/bazel_test/core:__pkg__"],
+)
