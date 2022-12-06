@@ -273,13 +273,14 @@ void add_localmatrixshader_uniform_data(const ShaderCodeDictionary* dict,
 void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
-                                        const LMShaderData& lmShaderData) {
+                                        const LMShaderData* lmShaderData) {
+
     auto dict = keyContext.dict();
     // When extracted into ShaderInfo::SnippetEntries the children will appear after their
     // parent. Thus, the parent's uniform data must appear in the uniform block before the
     // uniform data of the children.
     if (gatherer) {
-        add_localmatrixshader_uniform_data(dict, lmShaderData.fLocalMatrix, gatherer);
+        add_localmatrixshader_uniform_data(dict, lmShaderData->fLocalMatrix, gatherer);
     }
 
     builder->beginBlock(SkBuiltInCodeSnippetID::kLocalMatrixShader);
@@ -696,7 +697,9 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
     ShaderCodeDictionary* dict = keyContext.dict();
     int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
 
-    add_effect_to_recorder(keyContext.recorder(), codeSnippetID, shaderData.fEffect);
+    if (keyContext.recorder()) {
+        add_effect_to_recorder(keyContext.recorder(), codeSnippetID, shaderData.fEffect);
+    }
 
     if (gatherer) {
         const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
