@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2dd6633_657ee7ef",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-06T19:35:25Z",
+      "side": 1,
+      "message": "Is moving this method into `protected` space acceptable? Or is there motivation to instead mirror Ganesh\u0027s `internalHasNoCommandBufferUsages`?",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 5
+      },
+      "revId": "0f0a47ea25f2e48b3e056d648b7e7b199bb758f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

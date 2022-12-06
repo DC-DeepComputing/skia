@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a706e81_bbaa0d72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-06T19:35:25Z",
+      "side": 1,
+      "message": "I have a question or two for you on this review (which follows up the vulkan buffer review) that I will ask you about in our one-on-one :)",
+      "revId": "aab451b75c2c19acbb1784f1d64da7aab4bc88ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bab077_7034d303",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-06T19:35:25Z",
+      "side": 1,
+      "message": "I have a question about map/unmap... In Ganesh, we determined the readSize (for mapping) and the flushSize (for unmapping) based upon a passed-in MapType (WriteDiscard, or Read). Should we be inferring if a buffer is read or write/discard through a different means within graphite? Or do we make certain assumptions in graphite now that allow us to not care either way? \n\nIf the former is the case, then I\u0027d like to make sure I understand what information to reference in order to make that determination. My main 2 ideas would be to look at `VulkanMemoryAllocator::BufferUsage` (uniform, storage, etc.), or maybe more directly at the attributes within `VulkanAlloc`.",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 33
+      },
+      "revId": "aab451b75c2c19acbb1784f1d64da7aab4bc88ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
