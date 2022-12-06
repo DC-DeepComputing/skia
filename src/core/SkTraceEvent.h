@@ -14,6 +14,11 @@
 #include "src/core/SkTraceEventCommon.h"
 #include <atomic>
 
+#if defined(SK_USE_PERFETTO_MACRO_OVERRIDES)
+#include <string>
+#include <utility>
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // Implementation specific tracing API definitions.
 
@@ -221,6 +226,13 @@ class TraceStringWithCopy {
  public:
   explicit TraceStringWithCopy(const char* str) : str_(str) {}
   operator const char* () const { return str_; }
+
+  #if defined(SK_USE_PERFETTO_MACRO_OVERRIDES)
+  void WriteIntoTrace(::perfetto::TracedValue context) {
+    std::move(context).WriteString(std::string(str_));
+  }
+  #endif
+
  private:
   const char* str_;
 };
