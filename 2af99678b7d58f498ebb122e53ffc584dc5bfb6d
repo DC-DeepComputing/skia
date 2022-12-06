@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "714a4419_b43bda05",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-06T15:20:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62ed9954_1d209670",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 45
+      },
+      "revId": "2af99678b7d58f498ebb122e53ffc584dc5bfb6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2e63425_3bda9e7f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34dff94a_77f9162a",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-06T15:20:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2e63425_3bda9e7f",
+      "range": {
+        "startLine": 192,
+        "startChar": 3,
+        "endLine": 197,
+        "endChar": 5
+      },
+      "revId": "2af99678b7d58f498ebb122e53ffc584dc5bfb6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c16d137b_9bbbf9cd",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-12-06T14:57:39Z",
       "side": 1,
       "message": "I think we always want to set this to do Load",
+      "range": {
+        "startLine": 317,
+        "startChar": 8,
+        "endLine": 317,
+        "endChar": 57
+      },
+      "revId": "2af99678b7d58f498ebb122e53ffc584dc5bfb6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dee14cac_c22e577c",
+        "filename": "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-06T15:20:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c16d137b_9bbbf9cd",
       "range": {
         "startLine": 317,
         "startChar": 8,
