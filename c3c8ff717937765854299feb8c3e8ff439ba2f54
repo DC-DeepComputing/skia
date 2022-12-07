@@ -22,6 +22,30 @@
       },
       "revId": "c3c8ff717937765854299feb8c3e8ff439ba2f54",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f94e2c51_a869a18b",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-07T21:29:52Z",
+      "side": 1,
+      "message": "Oops! Done",
+      "parentUuid": "38f87cf0_b8754f1d",
+      "range": {
+        "startLine": 142,
+        "startChar": 46,
+        "endLine": 142,
+        "endChar": 47
+      },
+      "revId": "c3c8ff717937765854299feb8c3e8ff439ba2f54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
