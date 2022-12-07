@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c1d860_1f2d92f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Some feedback to get you started :^)",
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f03f856f_57f74907",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "I have some questions for your consideration: Is it intentional that we pass in a *copy* of a Dawn queue into the queue manager? I do see that you call std::move on the queue in the constructor, but it\u0027s not immediately apparent that both classes can\u0027t have their own copies. I believe we want the backend context and the queue manager to point towards one synchronous queue object, so it might be more explicit to pass around the queue by reference (either a smart pointer, an actual reference, etc.). \n\nBasically, between the queue manager and the backend context, who *owns* the queue and who should be able to change it? The answer to that question can guide what we do next.",
+      "range": {
+        "startLine": 107,
+        "startChar": 47,
+        "endLine": 107,
+        "endChar": 68
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd985622_5c06639a",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Rename this variable to be camelcase (`userData`)",
+      "range": {
+        "startLine": 25,
+        "startChar": 50,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf39c8d_23bf7983",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "For clarity, I would recommend adding:\n`fQueue.Submit(/*commandCount\u003d*/1, \u0026wgpuCmdBuffer);` or defining 1 as a constexpr w/ a descriptive variable name so we know what 1 is intended to represent.",
+      "range": {
+        "startLine": 62,
+        "startChar": 18,
+        "endLine": 62,
+        "endChar": 19
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d6c91e_2b5ecd2b",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Is there a TODO or task or some other capture of effort to implement these methods? I see we actually implement them in `src/gpu/graphite/mtl/MtlQueueManager.mm` and have a TODO to do so in `src/gpu/graphite/vk/VulkanQueueManager.h`, so I imagine we want to actually utilize these methods in testing.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 39
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4aff61_bd9090b8",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Remove extra space",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 3
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab62804_20cde756",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Remove extra space addition",
+      "range": {
+        "startLine": 41,
+        "startChar": 2,
+        "endLine": 41,
+        "endChar": 3
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9ace300_d6500e68",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-07T17:04:41Z",
+      "side": 1,
+      "message": "Remove extra space here",
+      "range": {
+        "startLine": 43,
+        "startChar": 7,
+        "endLine": 43,
+        "endChar": 8
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
