@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3c2e99c_70aa2c18",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-07T16:07:38Z",
+      "side": 1,
+      "message": "Yeah it would be ideal to avoid the second buffer if its not needed. I guess I was wondering if there is a clean way to also abstract the WriteBuffer. Like in some sense the usage here is similar to pushConstants, set*Bytes, etc., but now there is an explicit buffer. So maybe the abstraction is just around \"fast setting\" of uniform bytes and the buffer stays hidden in the backend. Or maybe it does get exposed higher. Anyways nothing that needs to be solved here or now, just some things to think about.",
+      "parentUuid": "cf7dfd58_5b214200",
+      "range": {
+        "startLine": 449,
+        "startChar": 9,
+        "endLine": 449,
+        "endChar": 34
+      },
+      "revId": "fcaa0d5de2d410ddb84105971f2ff27d0ee28ac9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e87e13fe_7a624b0c",
