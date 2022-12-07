@@ -47,6 +47,7 @@ public:
                     const TextureProxy*,
                     const SkImageInfo& srcImageInfo,
                     int srcX, int srcY);
+
 #endif
 
 private:
