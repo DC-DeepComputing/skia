@@ -96,7 +96,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("slides") {
-      if (skia_use_icu) {
+      if (skia_use_icu || skia_use_libgrapheme) {
         testonly = true
         sources = [ "slides/ParagraphSlide.cpp" ]
         deps = [

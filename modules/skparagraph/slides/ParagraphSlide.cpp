@@ -4046,7 +4046,6 @@ public:
     }
 };
 
-
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
@@ -4056,27 +4055,17 @@ public:
         fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
         fontCollection->enableFontFallback();
         TextStyle text_style;
-        text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
+        text_style.setFontFamilies({SkString("Roboto")});
         text_style.setFontSize(100);
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
         paragraph_style.setTextStyle(text_style);
-        paragraph_style.setTextAlign(TextAlign::kStart);
-        paragraph_style.setEllipsis(u"\u2026");
-        auto draw = [&](std::u16string text) {
-            paragraph_style.setMaxLines(1);
-            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
-            builder.pushStyle(text_style);
-            builder.addText(text);
-            auto paragraph = builder.Build();
-            paragraph->layout(this->size().width());
-            paragraph->paint(canvas, 0, 0);
-            canvas->translate(0, paragraph->getHeight() + 10);
-        };
-
-        draw(u"你abcdefsdasdsasas");
-        draw(u"한111111111111111111");
-        draw(u"abcdefsdasds1112222");
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Hello world!");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+        paragraph->paint(canvas, 0, 0);
     }
 };
 }  // namespace
