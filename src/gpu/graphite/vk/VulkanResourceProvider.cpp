@@ -48,6 +48,12 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
     return nullptr;
 }
 
+sk_sp<Buffer> VulkanResourceProvider::onCreateStaticBuffer(size_t size,
+                                                           BufferType type,
+                                                           StaticBufferInitFn initFn) {
+    return nullptr;
+}
+
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions&,
                                                      SkTileMode xTileMode,
                                                      SkTileMode yTileMode) {

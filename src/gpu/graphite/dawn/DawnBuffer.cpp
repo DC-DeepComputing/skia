@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
+namespace {
 
 #ifdef SK_DEBUG
 static const char* kBufferTypeNames[kBufferTypeCount] = {
@@ -23,12 +24,13 @@ static const char* kBufferTypeNames[kBufferTypeCount] = {
 };
 #endif
 
-sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
-                               size_t size,
-                               BufferType type,
-                               PrioritizeGpuReads prioritizeGpuReads) {
-    if (size <= 0) {
-        return nullptr;
+wgpu::Buffer CreateBuffer(const DawnSharedContext* sharedContext,
+                          size_t size,
+                          BufferType type,
+                          PrioritizeGpuReads prioritizeGpuReads,
+                          bool mappedAtCreation) {
+    if (!size) {
+        return {};
     }
 
     const DawnCaps* dawnCaps = sharedContext->dawnCaps();
@@ -62,19 +64,44 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 #endif
     desc.usage = usage;
     desc.size  = size;
-    // For wgpu::Buffer can be mapped at creation time for the initial data uploading. we should use
-    // it for better performance?
-    desc.mappedAtCreation = false;
+    desc.mappedAtCreation = mappedAtCreation;
 
-    auto buffer = sharedContext->device().CreateBuffer(&desc);
+    return sharedContext->device().CreateBuffer(&desc);
+}
+
+}
+
+sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
+                               size_t size,
+                               BufferType type,
+                               PrioritizeGpuReads prioritizeGpuReads) {
+    auto buffer = CreateBuffer(sharedContext, size, type, prioritizeGpuReads, false);
     if (!buffer) {
         return {};
     }
-
     return sk_sp<Buffer>(new DawnBuffer(sharedContext,
                                         size,
                                         type,
                                         prioritizeGpuReads,
+                                        std::move(buffer)));
+}
+
+sk_sp<Buffer> DawnBuffer::MakeStatic(const DawnSharedContext* sharedContext,
+                                     size_t size,
+                                     BufferType type,
+                                     InitFn initFn) {
+    auto buffer = CreateBuffer(sharedContext, size, type, PrioritizeGpuReads::kYes, true);
+    if (!buffer) {
+        return {};
+    }
+
+    initFn(buffer.GetMappedRange());
+    buffer.Unmap();
+
+    return sk_sp<Buffer>(new DawnBuffer(sharedContext,
+                                        size,
+                                        type,
+                                        PrioritizeGpuReads::kYes,
                                         std::move(buffer)));
 }
 
