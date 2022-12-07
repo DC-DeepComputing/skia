@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c923e29b_15f0d452",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-07T18:48:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "90c14dbf_d8d6a289",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 69
+      },
+      "revId": "aa884f925ad09bd5ce88cf9a46be21e391ae356a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "940c872d_e07518a4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-07T14:25:22Z",
       "side": 1,
       "message": "I expect that the mask filters will end up needing to be handled similarly to image filters, somehow. If we\u0027re doing an image-based blur for the coverage mask, we\u0027d need to have a simple pipeline for drawing the original geometry, a blur pipeline, and then a pipeline with the rest of the paint effects combined with the sampling of the blurred mask.\n\nOn the other hand, if it\u0027s a simple shape and we provide a fast-path for blurring rects/rrects, then that changes what we\u0027d add in the pipeline, which interacts with the RenderStep visiting pattern. It\u0027s close to when we have to figure this out, but I\u0027m betting it shouldn\u0027t complicate the rest of the shader/colorfilter/runtime-effect precompilation system, it end up more orthogonal.",
+      "range": {
+        "startLine": 305,
+        "startChar": 8,
+        "endLine": 306,
+        "endChar": 55
+      },
+      "revId": "aa884f925ad09bd5ce88cf9a46be21e391ae356a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c571d49_46997411",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-07T18:48:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "940c872d_e07518a4",
       "range": {
         "startLine": 305,
         "startChar": 8,
