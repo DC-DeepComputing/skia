@@ -148,8 +148,10 @@ cc_toolchain(
     compiler_files = ":compile_mac_files",
     dwp_files = ":not_implemented",
     linker_files = ":link_mac_files",
+    module_map = "@clang_mac//:generated_module_map",
     objcopy_files = ":not_implemented",
     strip_files = ":not_implemented",
+    supports_header_parsing = True,
     supports_param_files = False,
     toolchain_config = ":mac_toolchain_config",
 )
