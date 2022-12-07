@@ -22,6 +22,30 @@
       },
       "revId": "0f0a47ea25f2e48b3e056d648b7e7b199bb758f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa408094_c902ce1d",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-07T15:33:09Z",
+      "side": 1,
+      "message": "So in some sense these types of queries should stay private since no user should need to ever actually query anything about the current refs (assuming we\u0027ve setup the system correctly). However, I do see the value in the assert that uses this, because if we did mess up it would be a very frustrating bug to debug without such an assert.\n\nMaybe instead we add a debug only query in `protected` that just calls into the private one. That way no one could accidentally try to use the call for making a real decision.",
+      "parentUuid": "f2dd6633_657ee7ef",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 5
+      },
+      "revId": "0f0a47ea25f2e48b3e056d648b7e7b199bb758f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
