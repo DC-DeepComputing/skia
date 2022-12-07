@@ -29,6 +29,9 @@ private:
 
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, SkBudgeted) override;
     sk_sp<Buffer> createBuffer(size_t size, BufferType type, PrioritizeGpuReads) override;
+    sk_sp<Buffer> createStaticBuffer(size_t size,
+                                     BufferType type,
+                                     StaticBufferInitFn initFn) override;
 
     sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                  SkTileMode xTileMode,

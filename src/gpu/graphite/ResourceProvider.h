@@ -67,6 +67,11 @@ public:
 
     sk_sp<Buffer> findOrCreateBuffer(size_t size, BufferType type, PrioritizeGpuReads);
 
+    using StaticBufferInitFn = std::function<void(void*)>;
+    virtual sk_sp<Buffer> createStaticBuffer(size_t size,
+                                             BufferType type,
+                                             StaticBufferInitFn initFn);
+
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SkSamplingOptions&,
                                                  SkTileMode xTileMode,
                                                  SkTileMode yTileMode);
