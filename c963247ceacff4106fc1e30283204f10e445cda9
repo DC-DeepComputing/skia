@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b5a8e4f_c091e9fd",
+        "filename": "experimental/sktext/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-07T18:30:36Z",
+      "side": 1,
+      "message": "Yes. I also remove skia_use_harfbuzz since it\u0027s skshaper internals?",
+      "parentUuid": "225025c1_d183c35c",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b21ea63_b53044e6",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-11-21T19:44:44Z",
       "side": 1,
       "message": "If this is false by default, then this change really needs to have a job (at least a `Build` job) added where this is true. There is currently nothing keeping any of this compiling, or even verifying here that it is compiling. In particular, since this basically enables building in parts of ICU, we really should be running an UBSAN build and test on this in some configuration that will complain loudly on ODR violations.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6236c62e_ba4e2d6d",
+        "filename": "gn/skia.gni",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-07T18:30:36Z",
+      "side": 1,
+      "message": "Yes, it\u0027s in the plans. For now Web Flutter tests this configuration.",
+      "parentUuid": "3b21ea63_b53044e6",
       "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e811b685_a4253d6e",
+        "filename": "modules/skplaintexteditor/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-07T18:30:36Z",
+      "side": 1,
+      "message": "Yes, it\u0027s all wrong. Mainly because I didn\u0027t move plain editor to SkUnicode (and it\u0027s not a part of the build, so it did not come up). Fixing it now.",
+      "parentUuid": "d852e373_add40640",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85da8aaa_894139d5",
@@ -86,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a2a037_0f77380d",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-07T18:30:36Z",
+      "side": 1,
+      "message": "Done.\nAnd yes, it\u0027s very awkward not to have skunicode implementation for !skia_use_icu \u0026\u0026 !skia_use_client_icu, so eventually I will add a primitive implementation.",
+      "parentUuid": "85da8aaa_894139d5",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "555879f9_7f665ad7",
@@ -99,6 +171,24 @@
       "writtenOn": "2022-11-21T19:44:44Z",
       "side": 1,
       "message": "This is awkward, in that this is basically a small build of part of icu, and it should be obvious that this target is, in fact, a \"mini-icu\". In other words, this target and the \"icu\" target should be mutually exclusive, only one should be available to be depend on in a given build (somehow depending on this target and also depending on the `icu` target below should be impossible).\n\nIf that isn\u0027t possible then we need to ensure that none of these symbols end up exported. One would need to at least remove `U_DISABLE_RENAMING` and set things up so these symbols all have a `skia_icu` prefix on them or something.",
+      "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d0dea23_900acbc0",
+        "filename": "third_party/icu/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-07T18:30:36Z",
+      "side": 1,
+      "message": "I cannot build SkUnicode with both icu and just bidi at the same time (I can only set U_DISABLE_RENAMING once or the build system complains). All i could come up with is to use bidi methods from full icu lib instead of bidi/icu lib (that is for the case of both SkUnicode version linked at the same time which we only need for testing).",
+      "parentUuid": "555879f9_7f665ad7",
       "revId": "c963247ceacff4106fc1e30283204f10e445cda9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
