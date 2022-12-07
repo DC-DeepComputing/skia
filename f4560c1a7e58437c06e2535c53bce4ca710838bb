@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "941395c4_60a48909",
+        "filename": "gm/mirrortile.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-07T21:57:06Z",
+      "side": 1,
+      "message": "Up to you, you could also write this as:\n\n    SkPixmap unused;\n    if (!canvas-\u003epeekPixels(\u0026unused)) { ... }\n    \nI think that would also let you disable the second check later, after you make the surface.",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 98
+      },
+      "revId": "f4560c1a7e58437c06e2535c53bce4ca710838bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
