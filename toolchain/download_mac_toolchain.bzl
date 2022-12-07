@@ -70,18 +70,42 @@ def _download_mac_toolchain_impl(ctx):
         "./symlinks/xcode/MacSDK/Frameworks",
     )
 
+    # This list of files lines up with _make_default_flags() in mac_toolchain_config.bzl
+    # It is all locations that our toolchain could find a system header.
+    builtin_include_directories = [
+        "lib/clang/15.0.1/include",
+        "include/c++/v1",
+        "symlinks/xcode/include",
+        "symlinks/xcode/Frameworks",
+    ]
+
+    # https://github.com/bazelbuild/bazel/blob/8f5b626acea0086be8a314d5efbf6bc6d3473cd2/tools/cpp/generate_system_module_map.sh
+    script_path = ctx.path(Label("@bazel_tools//tools/cpp:generate_system_module_map.sh"))
+
+    # https://bazel.build/rules/lib/repository_ctx#file
+    ctx.file(
+        "toolchain_system_headers.modulemap",
+        content = _generate_system_module_map(ctx, script_path, builtin_include_directories),
+        executable = False,
+    )
+
     # Create a BUILD.bazel file that makes the files necessary for compiling,
     # linking and creating archive files visible to Bazel.
     # The smaller the globs are, the more performant the sandboxed builds will be.
     # Additionally, globs that are too wide can pick up infinite symlink loops,
     # and be difficult to quash: https://github.com/bazelbuild/bazel/issues/13950
     # https://bazel.build/rules/lib/repository_ctx#file
-    #
     ctx.file(
         "BUILD.bazel",
         content = """
 # DO NOT EDIT THIS BAZEL FILE DIRECTLY
 # Generated from ctx.file action in download_mac_toolchain.bzl
+filegroup(
+    name = "generated_module_map",
+    srcs = ["toolchain_system_headers.modulemap"],
+    visibility = ["//visibility:public"],
+)
+
 filegroup(
     name = "archive_files",
     srcs = [
@@ -97,7 +121,7 @@ filegroup(
     ] + glob(
         include = [
             "include/c++/v1/**",
-            "lib/clang/15.0.1/**",
+            "lib/clang/15.0.1/include/**",
             "symlinks/xcode/MacSDK/Frameworks/AppKit.Framework/**",
             "symlinks/xcode/MacSDK/Frameworks/ApplicationServices.Framework/**",
             "symlinks/xcode/MacSDK/Frameworks/Carbon.Framework/**",
@@ -144,6 +168,28 @@ filegroup(
 """,
         executable = False,
     )
+
+# Generates a module map [1] for all the "system" headers in the toolchain.
+# https://clang.llvm.org/docs/Modules.html#module-map-language
+# It looks something like:
+#   module "crosstool" [system] {
+#     textual header "lib/clang/15.0.1/include/__clang_cuda_builtin_vars.h"
+#     textual header "lib/clang/15.0.1/include/__clang_cuda_cmath.h"
+#     ...
+#     textual header "include/c++/v1/climits"
+#     textual header "include/c++/v1/clocale"
+#     textual header "include/c++/v1/cmath"
+#     textual header "symlinks/xcode/MacSDK/usr/share/man/mann/zip.n"
+#  }
+# Notice how all the file paths are relative to *this* directory, where
+# the toolchain_system_headers.modulemap. Annoyingly, Clang will silently
+# ignore a file that is declared if it does not actually exist on disk.
+def _generate_system_module_map(ctx, gen_script, folders):
+    # https://bazel.build/rules/lib/repository_ctx#execute
+    res = ctx.execute([gen_script] + folders)
+    if res.return_code != 0:
+        fail("Could not generate module")
+    return res.stdout
 
 # https://bazel.build/rules/repository_rules
 download_mac_toolchain = repository_rule(

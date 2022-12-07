@@ -123,7 +123,7 @@ def _make_action_configs():
     # https://github.com/emscripten-core/emsdk/blob/7f39d100d8cd207094decea907121df72065517e/bazel/emscripten_toolchain/crosstool.bzl#L143
     # By default, there are no flags or libraries passed to the llvm-ar tool, so
     # we need to specify them. The variables mentioned by expand_if_available are defined
-    # https://docs.bazel.build/versions/main/cc-toolchain-config-reference.html#cctoolchainconfiginfo-build-variables
+    # https://bazel.build/docs/cc-toolchain-config-reference#cctoolchainconfiginfo-build-variables
     cpp_link_static_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_static_library,
         flag_sets = [

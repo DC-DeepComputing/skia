@@ -16,6 +16,7 @@ load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "action_config",
     "feature",
+    "feature_set",
     "flag_group",
     "flag_set",
     "tool",
@@ -40,6 +41,7 @@ def _mac_toolchain_info(ctx):
     action_configs = _make_action_configs()
     features = []
     features += _make_default_flags()
+    features += _make_layering_check()
     features += _make_diagnostic_flags()
     features += _make_target_specific_flags(ctx)
 
@@ -118,45 +120,65 @@ def _make_action_configs():
     assemble_action = action_config(
         action_name = ACTION_NAMES.assemble,
         tools = [clang_tool],
+        enabled = True,
     )
     c_compile_action = action_config(
         action_name = ACTION_NAMES.c_compile,
         tools = [clang_tool],
+        enabled = True,
     )
     cpp_compile_action = action_config(
         action_name = ACTION_NAMES.cpp_compile,
         tools = [clang_tool],
+        enabled = True,
     )
     objc_compile_action = action_config(
         action_name = ACTION_NAMES.objc_compile,
         tools = [clang_tool],
+        enabled = True,
     )
     objcpp_compile_action = action_config(
         action_name = ACTION_NAMES.objcpp_compile,
         tools = [clang_tool],
+        enabled = True,
     )
     linkstamp_compile_action = action_config(
         action_name = ACTION_NAMES.linkstamp_compile,
         tools = [clang_tool],
+        enabled = True,
     )
     preprocess_assemble_action = action_config(
         action_name = ACTION_NAMES.preprocess_assemble,
         tools = [clang_tool],
+        enabled = True,
+    )
+    header_parsing_action = action_config(
+        action_name = ACTION_NAMES.cpp_header_parsing,
+        tools = [clang_tool],
+        enabled = True,
+    )
+    module_compile_action = action_config(
+        action_name = ACTION_NAMES.cpp_module_compile,
+        tools = [clang_tool],
+        enabled = True,
     )
 
     cpp_link_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_dynamic_library,
         tools = [lld_tool],
+        enabled = True,
     )
     cpp_link_executable_action = action_config(
         action_name = ACTION_NAMES.cpp_link_executable,
         # Bazel assumes it is talking to clang when building an executable. There are
         # "-Wl" flags on the command: https://releases.llvm.org/6.0.1/tools/clang/docs/ClangCommandLineReference.html#cmdoption-clang-Wl
         tools = [clang_tool],
+        enabled = True,
     )
     cpp_link_nodeps_dynamic_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_nodeps_dynamic_library,
         tools = [lld_tool],
+        enabled = True,
     )
 
     # objc archiver and cpp archiver actions use the same base flags
@@ -215,7 +237,7 @@ def _make_action_configs():
     # https://github.com/emscripten-core/emsdk/blob/7f39d100d8cd207094decea907121df72065517e/bazel/emscripten_toolchain/crosstool.bzl#L143
     # By default, there are no flags or libraries passed to the llvm-ar tool, so
     # we need to specify them. The variables mentioned by expand_if_available are defined
-    # https://docs.bazel.build/versions/main/cc-toolchain-config-reference.html#cctoolchainconfiginfo-build-variables
+    # https://bazel.build/docs/cc-toolchain-config-reference#cctoolchainconfiginfo-build-variables
     cpp_link_static_library_action = action_config(
         action_name = ACTION_NAMES.cpp_link_static_library,
         flag_sets = common_archive_flags,
@@ -241,6 +263,8 @@ def _make_action_configs():
         objc_compile_action,
         objcpp_compile_action,
         preprocess_assemble_action,
+        header_parsing_action,
+        module_compile_action,
     ]
     return action_configs
 
@@ -362,6 +386,66 @@ def _make_default_flags():
             objc_compile_flags,
         ],
     )]
+
+# See https://maskray.me/blog/2022-09-25-layering-check-with-clang and
+# https://github.com/bazelbuild/bazel/commit/8b9f74649512ee17ac52815468bf3d7e5e71c9fa
+# for more on this (implemented basically the same here as there).
+def _make_layering_check():
+    return [
+        feature(
+            name = "use_module_maps",
+            enabled = True,
+            requires = [feature_set(features = ["module_maps"])],
+            flag_sets = [
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                    ],
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "-fmodule-name=%{module_name}",
+                                "-fmodule-map-file=%{module_map_file}",
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+        # This feature name is baked into Bazel
+        # https://github.com/bazelbuild/bazel/blob/8f5b626acea0086be8a314d5efbf6bc6d3473cd2/src/main/java/com/google/devtools/build/lib/rules/cpp/CompileBuildVariables.java#L471
+        feature(name = "module_maps", enabled = True),
+        feature(
+            name = "layering_check",
+            enabled = True,
+            implies = ["use_module_maps"],
+            flag_sets = [
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                    ],
+                    flag_groups = [
+                        flag_group(flags = [
+                            "-fmodules-strict-decluse",
+                            "-Wprivate-header",
+                        ]),
+                        flag_group(
+                            iterate_over = "dependent_module_map_files",
+                            flags = [
+                                "-fmodule-map-file=%{dependent_module_map_files}",
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ]
 
 def _make_diagnostic_flags():
     """Here we define the flags that can be turned on via features to yield debug info."""

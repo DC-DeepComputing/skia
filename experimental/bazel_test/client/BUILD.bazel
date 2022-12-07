@@ -1,0 +1,15 @@
+cc_library(
+    name = "client_lib",
+    srcs = ["gizmo.cpp"],
+    hdrs = ["gizmo.h"],
+    deps = [
+        "//experimental/bazel_test/base",
+        "//experimental/bazel_test/core",
+    ],
+)
+
+cc_binary(
+    name = "client",
+    srcs = ["main.cpp"],
+    deps = [":client_lib"],
+)
