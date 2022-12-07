@@ -30,6 +30,15 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "libgrapheme",
+    srcs = [
+        "SkUnicode.cpp",
+        "SkUnicode_libgrapheme.cpp",
+    ],
+    visibility = ["//modules/skunicode:__pkg__"],
+)
+
+skia_filegroup(
     name = "no_icu",
     srcs = [
         "SkUnicode.cpp",
