@@ -60,6 +60,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43985e9c_8fd8758e",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-07T13:54:13Z",
+      "side": 1,
+      "message": "If we\u0027re unhappy with this change, then building things like I suggested before would let you remove it:\n\n- Have SkJpegRCodec own an instance of SkJpegCodec\n- In the decoders list, have JPEGR use the same matcher as JPEG (so it only needs 32 bytes)\n- In JPEGR::MakeFromStream, first construct a JPEG codec from the stream. Then, examine the parsed dinfo (held by the JPEG codec) to determine if it\u0027s actually a JPEGR...\n  - If it isn\u0027t, just return the JPEG codec\n  - If it is, create an instance of JPEGR, and pass the JPEG codec to it\n\nThis isn\u0027t strictly necessary with the way you\u0027ve rearranged things (you\u0027ve already addressed the big API issues with the current version), and it may not help that much...\n\n...\n\nHmm, can we assume the streams are always rewindable? If so, we could do something similar, but not need the JPEGR codec to own a JPEG codec. Instead, set this value back to 32 bytes, use the IsJPEG for JPEGR, and have the JPEGR factory pull 1k from the stream, then do the more detailed check of the header. With that, it could decide whether to create a JPEG or JPEGR codec?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b886e2fd_77e78023",
         "filename": "src/codec/SkJpegRCodec.cpp",
         "patchSetId": 4
