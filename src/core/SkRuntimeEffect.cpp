@@ -551,7 +551,7 @@ sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
 
         bool operator==(const Key& that) const {
             return this->skslHashA == that.skslHashA
-                && this->skslHashB == that.skslHashB;
+                   && this->skslHashB == that.skslHashB;
         }
 
         explicit Key(const SkString& sksl)
