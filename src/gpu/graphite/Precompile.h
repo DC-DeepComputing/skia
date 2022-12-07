@@ -21,13 +21,16 @@
 #include <vector>
 
 class SkRuntimeEffect;
+class SkUniquePaintParamsID;
 
 // TODO: move SkUniquePaintParamsID to the skgpu::graphite namespace
 class SkUniquePaintParamsID;
 
 namespace skgpu::graphite {
-
+class KeyContext;
+class PaintParamsKeyBuilder;
 class PrecompileBasePriv;
+class ShaderCodeDictionary;
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -115,6 +118,8 @@ public:
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
+
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
 };
 
 class PrecompileImageFilter : public PrecompileBase {
@@ -128,7 +133,7 @@ public:
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
 
-    static sk_sp<PrecompileBlender> Mode(SkBlendMode blendMode);
+    static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
 //--------------------------------------------------------------------------------------------------

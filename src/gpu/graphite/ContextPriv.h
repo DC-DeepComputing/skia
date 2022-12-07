@@ -47,7 +47,8 @@ public:
                     const TextureProxy*,
                     const SkImageInfo& srcImageInfo,
                     int srcX, int srcY);
-#endif
+
+#endif // GRAPHITE_TEST_UTILS
 
 private:
     friend class Context; // to construct/copy this type.
