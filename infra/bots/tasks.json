@@ -13881,7 +13881,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -13977,7 +13978,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14096,7 +14098,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14192,7 +14195,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14288,7 +14292,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14384,7 +14389,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14480,7 +14486,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14599,7 +14606,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14695,7 +14703,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -14791,7 +14800,8 @@
       ],
       "dimensions": [
         "cpu:x86-64",
-        "os:Debian-11.2",
+        "gpu:10de:2489",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33591,8 +33601,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -33693,8 +33703,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -53883,8 +53893,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -53987,8 +53997,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -54089,8 +54099,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -54191,8 +54201,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
@@ -54293,8 +54303,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-460.91.03",
-        "os:Debian-11.2",
+        "gpu:10de:2489-470.141.03",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "environment": {
