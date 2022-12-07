@@ -33,6 +33,24 @@
       "message": "There\u0027s a somewhat convoluted interaction between Recorder and Recording to instantiate the target TextureProxy, loosely based on LazyProxyData in Ganesh (https://source.chromium.org/chromium/chromium/src/+/685e09b3:third_party/skia/include/core/SkDeferredDisplayList.h;l\u003d72).\n\nThe Recorder creates this LazyProxyData struct, which contains only a shared pointer to a Texture, initially null. It moves the struct to the Recorder on snap. The Recorder assigns the Texture pointer on replay, which is then used by the TextureProxy to instantiate itself, via the callback we define here in the Recorder.\n\nOne potential concern about this approach, assuming we don\u0027t find it overly convoluted in the first place, is thread-safety. I figure it doesn\u0027t make sense to record and snap simultaneously from multiple threads using the same Recorder. But maybe we want to support replay to different surfaces simultaneously from multiple threads using the same Recording? In which case I guess the Recorder\u0027s work would need to be locked.",
       "revId": "2b382872fad66bd9129316a46e763d68f4e130d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091d0afd_3491000e",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-07T18:14:46Z",
+      "side": 1,
+      "message": "All Recordings must be replayed into the Context which is not a thread safe object. So as long as the only interactions with the LazyProxyData on the Recording on done on the Context during insert I think we should be safe.",
+      "parentUuid": "bedb4c7f_57fdc199",
+      "revId": "2b382872fad66bd9129316a46e763d68f4e130d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
