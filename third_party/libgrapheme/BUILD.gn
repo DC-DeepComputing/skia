@@ -1,0 +1,21 @@
+# Copyright 2022 Google LLC
+#
+# Use of this source code is governed by a ISC-License license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+third_party("libgrapheme") {
+  public_include_dirs = [ "../externals/libgrapheme" ]
+
+  sources = [
+    "../externals/libgrapheme/src/bidirectional.c",
+    "../externals/libgrapheme/src/case.c",
+    "../externals/libgrapheme/src/character.c",
+    "../externals/libgrapheme/src/line.c",
+    "../externals/libgrapheme/src/sentence.c",
+    "../externals/libgrapheme/src/utf8.c",
+    "../externals/libgrapheme/src/util.c",
+    "../externals/libgrapheme/src/word.c",
+  ]
+}
