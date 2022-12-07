@@ -17,6 +17,10 @@ namespace skgpu::graphite {
     data members or virtual methods. */
 class PrecompileBasePriv {
 public:
+    bool isALocalMatrixShader() {
+        return fPrecompileBase->isALocalMatrixShader();
+    }
+
     void addToKey(const KeyContext& keyContext,
                   int desiredCombination,
                   PaintParamsKeyBuilder* builder) const {
@@ -45,8 +49,6 @@ inline PrecompileBasePriv PrecompileBase::priv() { return PrecompileBasePriv(thi
 inline const PrecompileBasePriv PrecompileBase::priv() const {
     return PrecompileBasePriv(const_cast<PrecompileBase *>(this));
 }
-
-int CountBlenderCombos(const std::vector<sk_sp<PrecompileBlender>>&);
 
 } // namespace skgpu::graphite
 

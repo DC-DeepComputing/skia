@@ -20,13 +20,16 @@
 #include <vector>
 
 class SkRuntimeEffect;
+class SkUniquePaintParamsID;
 
 // TODO: move SkUniquePaintParamsID to the skgpu::graphite namespace
 class SkUniquePaintParamsID;
 
 namespace skgpu::graphite {
-
+class KeyContext;
+class PaintParamsKeyBuilder;
 class PrecompileBasePriv;
+class ShaderCodeDictionary;
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -69,6 +72,8 @@ private:
     friend class PaintOptions;
     friend class PrecompileBasePriv;
 
+    virtual bool isALocalMatrixShader() const { return false; }
+
     virtual void addToKey(const KeyContext&,
                           int desiredCombination,
                           PaintParamsKeyBuilder*) const = 0;
@@ -93,9 +98,17 @@ void PrecompileBase::AddToKey(const KeyContext& keyContext,
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileColorFilter;
+
 class PrecompileShader : public PrecompileBase {
 public:
     PrecompileShader() : PrecompileBase(Type::kShader) {}
+
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
+
+    sk_sp<PrecompileShader> makeWithLocalMatrix();
+
+    sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
 };
 
 class PrecompileMaskFilter : public PrecompileBase {
@@ -106,6 +119,8 @@ public:
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
+
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
 };
 
 class PrecompileImageFilter : public PrecompileBase {
@@ -119,7 +134,7 @@ public:
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
 
-    static sk_sp<PrecompileBlender> Mode(SkBlendMode blendMode);
+    static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
 //--------------------------------------------------------------------------------------------------

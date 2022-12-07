@@ -9,13 +9,34 @@
 
 #ifdef SK_ENABLE_PRECOMPILE
 
+#include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/KeyContext.h"
+#include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/PrecompileBasePriv.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 namespace skgpu::graphite {
+
+//--------------------------------------------------------------------------------------------------
+sk_sp<PrecompileShader> PrecompileShader::makeWithLocalMatrix() {
+    if (this->priv().isALocalMatrixShader()) {
+        // SkShader::makeWithLocalMatrix collapses chains of localMatrix shaders so we need to
+        // follow suit here
+        return sk_ref_sp(this);
+    }
+
+    return PrecompileShaders::LocalMatrix(sk_ref_sp(this));
+}
+
+sk_sp<PrecompileShader> PrecompileShader::makeWithColorFilter(sk_sp<PrecompileColorFilter> cf) {
+    if (!cf) {
+        return sk_ref_sp(this);
+    }
+
+    return PrecompileShaders::ColorFilter(sk_ref_sp(this), std::move(cf));
+}
 
 //--------------------------------------------------------------------------------------------------
 int PaintOptions::numShaderCombinations() const {
@@ -97,12 +118,25 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     const int desiredShaderCombination = remainingCombinations;
     SkASSERT(desiredShaderCombination < this->numShaderCombinations());
 
-    PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
+    if (fShaderOptions.empty()) {
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                          {1, 0, 0, 1});
+        keyBuilder->endBlock();
+    } else {
+        PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
+    }
+
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
-                             desiredMaskFilterCombination);
+                            desiredMaskFilterCombination);
     PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
                              desiredColorFilterCombination);
-    PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+    if (fBlenderOptions.empty()) {
+        BlendModeBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                   SkBlendMode::kSrcOver);
+        keyBuilder->endBlock();
+    } else {
+        PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+    }
 }
 
 void PaintOptions::buildCombinations(
