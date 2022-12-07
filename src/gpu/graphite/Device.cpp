@@ -558,7 +558,7 @@ void Device::onReplaceClip(const SkIRect& rect) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Device::drawPaint(const SkPaint& paint) {
-    if (this->clipIsWideOpen()) {
+    if (this->clipIsWideOpen() && !fDC->target()->isFullyLazy()) {
         if (!paint_depends_on_dst(paint)) {
             if (std::optional<SkColor4f> color = extract_paint_color(paint)) {
                 // do fullscreen clear

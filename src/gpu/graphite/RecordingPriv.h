@@ -12,6 +12,8 @@
 
 namespace skgpu::graphite {
 
+class Surface;
+
 class RecordingPriv {
 public:
     bool hasVolatileLazyProxies() const;
@@ -26,7 +28,7 @@ public:
     int numNonVolatilePromiseImages() const;
 #endif
 
-    bool addCommands(ResourceProvider*, CommandBuffer*);
+    bool addCommands(ResourceProvider*, CommandBuffer*, Surface* targetSurface);
     void addResourceRef(sk_sp<Resource> resource);
 
 
@@ -37,6 +39,8 @@ private:
     // No taking addresses of this type.
     const RecordingPriv* operator&() const = delete;
     RecordingPriv* operator&() = delete;
+
+    bool instantiateTargetProxy(Surface*, ResourceProvider*);
 
     Recording* fRecording;
 
