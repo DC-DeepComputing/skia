@@ -83,6 +83,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8449c719_d17ad29f",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-07T13:55:11Z",
+      "side": 1,
+      "message": "To be clear: Everything before the ... was my thought process. I actually think the second idea is even cleaner now (unless we want the JPEGR codec to be able to forward calls to the JPEG codec in some cases).",
+      "parentUuid": "43985e9c_8fd8758e",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b886e2fd_77e78023",
         "filename": "src/codec/SkJpegRCodec.cpp",
         "patchSetId": 4
