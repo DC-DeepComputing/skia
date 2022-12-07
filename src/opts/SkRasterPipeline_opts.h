@@ -3027,6 +3027,30 @@ STAGE(merge_condition_mask, I32* ptr) {
     update_execution_mask();
 }
 
+STAGE(load_loop_mask, F* ctx) {
+    dg = sk_unaligned_load<F>(ctx);
+    update_execution_mask();
+}
+
+STAGE(store_loop_mask, F* ctx) {
+    sk_unaligned_store(ctx, dg);
+}
+
+STAGE(merge_loop_mask, I32* ptr) {
+    // Set the loop-mask to the intersection of two adjacent masks at the pointer.
+    dg = sk_bit_cast<F>(ptr[0] & ptr[1]);
+    update_execution_mask();
+}
+
+STAGE(load_return_mask, F* ctx) {
+    db = sk_unaligned_load<F>(ctx);
+    update_execution_mask();
+}
+
+STAGE(store_return_mask, F* ctx) {
+    sk_unaligned_store(ctx, db);
+}
+
 STAGE(update_return_mask, NoCtx) {
     // We encountered a return statement. If a lane was active, it should be masked off now, and
     // stay masked-off until the end of the function.
@@ -3035,11 +3059,11 @@ STAGE(update_return_mask, NoCtx) {
 }
 
 STAGE_BRANCH(branch_if_any_active_lanes, int* offset) {
-    return any(sk_bit_cast<I32>(da)) ? *offset : 1;
+    return any(execution_mask()) ? *offset : 1;
 }
 
 STAGE_BRANCH(branch_if_no_active_lanes, int* offset) {
-    return any(sk_bit_cast<I32>(da)) ? 1 : *offset;
+    return any(execution_mask()) ? 1 : *offset;
 }
 
 STAGE_BRANCH(jump, int* offset) {
