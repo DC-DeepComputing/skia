@@ -13881,6 +13881,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -13977,6 +13978,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14096,6 +14098,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14192,6 +14195,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14288,6 +14292,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14384,6 +14389,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14480,6 +14486,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14599,6 +14606,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14695,6 +14703,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
@@ -14791,6 +14800,7 @@
       ],
       "dimensions": [
         "cpu:x86-64",
+        "gpu:10de:2489",
         "os:Debian-11.2",
         "pool:Skia"
       ],
