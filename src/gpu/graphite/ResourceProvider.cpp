@@ -235,6 +235,13 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
     return buffer;
 }
 
+sk_sp<Buffer> ResourceProvider::createStaticBuffer(size_t size,
+                                                   BufferType type,
+                                                   StaticBufferInitFn initFn) {
+    return this->onCreateStaticBuffer(size, type, std::move(initFn));
+}
+
+
 BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
     const auto maxTextureSize = fSharedContext->caps()->maxTextureSize();
     if (dimensions.isEmpty() ||

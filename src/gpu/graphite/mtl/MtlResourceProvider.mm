@@ -192,6 +192,11 @@ sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
                                                 PrioritizeGpuReads prioritizeGpuReads) {
     return MtlBuffer::Make(this->mtlSharedContext(), size, type, prioritizeGpuReads);
 }
+sk_sp<Buffer> MtlResourceProvider::onCreateStaticBuffer(size_t size,
+                                                        BufferType type,
+                                                        StaticBufferInitFn initFn) {
+    return {};
+}
 
 sk_sp<Sampler> MtlResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
                                                   SkTileMode xTileMode,

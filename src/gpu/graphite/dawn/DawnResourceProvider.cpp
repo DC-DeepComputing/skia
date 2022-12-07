@@ -74,6 +74,12 @@ sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
     return DawnBuffer::Make(dawnSharedContext(), size, type, prioritizeGpuReads);
 }
 
+sk_sp<Buffer> DawnResourceProvider::onCreateStaticBuffer(size_t size,
+                                                         BufferType type,
+                                                         StaticBufferInitFn initFn) {
+    return DawnBuffer::MakeStatic(dawnSharedContext(), size, type, initFn);
+}
+
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
                                                    SkTileMode xTileMode,
                                                    SkTileMode yTileMode) {
