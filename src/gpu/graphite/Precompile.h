@@ -101,6 +101,8 @@ class PrecompileShader : public PrecompileBase {
 public:
     PrecompileShader() : PrecompileBase(Type::kShader) {}
 
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
+
     sk_sp<PrecompileShader> makeWithLocalMatrix();
 
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
@@ -114,6 +116,8 @@ public:
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
+
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
 };
 
 class PrecompileImageFilter : public PrecompileBase {
@@ -126,6 +130,8 @@ public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
+
+    virtual sk_sp<SkRuntimeEffect> asRuntimeEffect() const { return nullptr; }
 
     static sk_sp<PrecompileBlender> Mode(SkBlendMode blendMode);
 };
