@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25be91e8_b243aa9a",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-07T21:27:03Z",
+      "side": 1,
+      "message": "I\u0027m fine with this name, but WDYT about `if_then_else`, or `select`, to use names that we\u0027ve already had for the same concept in other libraries?",
+      "range": {
+        "startLine": 213,
+        "startChar": 9,
+        "endLine": 213,
+        "endChar": 14
+      },
+      "revId": "69cbdc9c09c89e568fe602712137d110e42e4f1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704e079f_6a36db63",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-07T21:27:03Z",
+      "side": 1,
+      "message": "Ah, ok. When I read the first CL that added multiple stacks, I was wondering how we were going to do the bookkeeping, if we ended up with multiple stacks needed (recursive ?:, etc...). But I realize we can really just assign them statically in this case, so we\u0027re fine!",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 43
+      },
+      "revId": "69cbdc9c09c89e568fe602712137d110e42e4f1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
