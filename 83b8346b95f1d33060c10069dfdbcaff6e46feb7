@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31260748_d43e1ba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2022-12-07T19:06:20Z",
+      "side": 1,
+      "message": "Anyone else know what this failure might be? (I could just be talking to bots here.)\n\nIs the Bazel build related to Skia-in-Google3? Or maybe canvaskit?",
+      "revId": "83b8346b95f1d33060c10069dfdbcaff6e46feb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
