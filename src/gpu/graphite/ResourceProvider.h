@@ -67,6 +67,11 @@ public:
 
     sk_sp<Buffer> findOrCreateBuffer(size_t size, BufferType type, PrioritizeGpuReads);
 
+    using StaticBufferInitFn = std::function<void(void*)>;
+    sk_sp<Buffer> createStaticBuffer(size_t size,
+                                     BufferType type,
+                                     StaticBufferInitFn initFn);
+
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SkSamplingOptions&,
                                                  SkTileMode xTileMode,
                                                  SkTileMode yTileMode);
@@ -94,7 +99,9 @@ private:
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, SkBudgeted) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t size, BufferType type, PrioritizeGpuReads) = 0;
-
+    virtual sk_sp<Buffer> onCreateStaticBuffer(size_t size,
+                                               BufferType type,
+                                               StaticBufferInitFn initFn) = 0;
     virtual sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                          SkTileMode xTileMode,
                                          SkTileMode yTileMode) = 0;
