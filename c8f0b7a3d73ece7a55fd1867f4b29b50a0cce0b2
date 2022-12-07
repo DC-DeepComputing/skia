@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cb05c4c_e29f6504",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-07T21:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55a2a574_dc7f8631",
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42d18329_35bdfa24",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-29T18:04:43Z",
       "side": 1,
       "message": "I know we talked about which set of types to support (and having this as a wrapper over a scalar type makes sense), but I\u0027d suggest that if we have this assert, we pin it down to the set of types we support today (just unsigned), or remove this assertion entirely, and just rely on the isScalar one?",
+      "range": {
+        "startLine": 370,
+        "startChar": 17,
+        "endLine": 371,
+        "endChar": 61
+      },
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d429f62_a2d26c39",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-07T21:51:41Z",
+      "side": 1,
+      "message": "Done, I decided to narrow down the assertion to just atomic_uint.",
+      "parentUuid": "42d18329_35bdfa24",
       "range": {
         "startLine": 370,
         "startChar": 17,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfd559c_5543dbd1",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-07T21:51:41Z",
+      "side": 1,
+      "message": "Thinking through this a bit more, I think you\u0027re right - this should just return nonnumeric since it doesn\u0027t make sense to treat an atomic scalar like a non-atomic scalar. It can\u0027t be coerced, cannot be used in any numeric operators, and the only valid operations are using atomic intrinsics.\n\nDone.",
+      "parentUuid": "22fdec89_de445786",
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2552e055_147131d5",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-11-28T23:14:08Z",
       "side": 1,
       "message": "Please add a little more detail. I wouldn\u0027t know how to fix this TODO, or determine whether it\u0027s already fixed or not, if I found this comment two years from now...",
+      "range": {
+        "startLine": 196,
+        "startChar": 17,
+        "endLine": 196,
+        "endChar": 59
+      },
+      "revId": "c8f0b7a3d73ece7a55fd1867f4b29b50a0cce0b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e72d2a_b1bcefec",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-07T21:51:41Z",
+      "side": 1,
+      "message": "Ah yeah, sorry about that. I had originally intended to address this before uploading the CL but forgot to do so.\n\nIn defining valid atomic variable declarations, I wanted to follow WGSL where an atomic type is only allowed in global scope in workgroup storage and inside a writable storage buffer (so having an atomic in a `uniform` block or a `readonly buffer` block would be invalid since atomic builtins that mutate should be disallowed in that case).\n\nI added some enforcement around this now and added test cases for invalid use. PTAL.",
+      "parentUuid": "2552e055_147131d5",
       "range": {
         "startLine": 196,
         "startChar": 17,
