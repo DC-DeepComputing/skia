@@ -279,6 +279,8 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+        static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
 };
 
 namespace sknonstd {

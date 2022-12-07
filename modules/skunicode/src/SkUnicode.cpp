@@ -20,6 +20,12 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
         return unicode;
     }
 #endif
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
     return nullptr;
 }
 
