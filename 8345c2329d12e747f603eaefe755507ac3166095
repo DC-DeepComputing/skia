@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ec17a2_6fd7786c",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-07T14:19:09Z",
+      "side": 1,
+      "message": "It doesn\u0027t impact what you\u0027ve added here, but with Brian S\u0027s recent changes, the gradient and image shader factories that take a SkMatrix* wrap the image/gradient shader in a local matrix shader automatically.\n\nFor parity with that API, it seems like we\u0027d want to have those options in the precompile factories too, even if under the hood they just call the precompile makeWithLocalMatrix you\u0027re adding here.",
+      "range": {
+        "startLine": 144,
+        "startChar": 4,
+        "endLine": 144,
+        "endChar": 47
+      },
+      "revId": "8345c2329d12e747f603eaefe755507ac3166095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
