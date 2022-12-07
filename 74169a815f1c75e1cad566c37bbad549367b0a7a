@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "330d54fb_c1a98a15",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-07T15:12:29Z",
+      "side": 1,
+      "message": "I do think we need to pass a valid function in here, I would just have the function check if result \u003d\u003d VK_SUCCESS. See the version in texture, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/vk/VulkanTexture.cpp;l\u003d101.\n\nOnce we figure out how to more universally handle device_lost state we can update these calls to something closer to what you originally had.",
+      "range": {
+        "startLine": 102,
+        "startChar": 48,
+        "endLine": 102,
+        "endChar": 94
+      },
+      "revId": "74169a815f1c75e1cad566c37bbad549367b0a7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
