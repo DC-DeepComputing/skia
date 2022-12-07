@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a8dd3c3_c2c5eb66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-07T14:31:59Z",
+      "side": 1,
+      "message": "The getStaticBuffer() functions in DrawBufferManager are a temporary solution for managing static buffers. This issue https://bugs.chromium.org/p/skia/issues/detail?id\u003d13059 in comment 2 describes the longer term solution that we want to implement. \n\nMy guess is that we will end up using the CopyBufferToBufferTask that you added previously, so while it\u0027s not necessarily as fast as writing to the static buffer once, it does mean we have a universal approach to getting a tightly-sized GPU-private buffer for the data that is only created once.",
+      "revId": "89578d6f7d47c7e16303fb6ed806c2652ec6e2b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
