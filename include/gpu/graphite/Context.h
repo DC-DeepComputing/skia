@@ -37,6 +37,7 @@ class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
+class TextureInfo;
 class TextureProxy;
 
 #ifdef SK_ENABLE_PRECOMPILE
@@ -67,6 +68,13 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    // Creates a Recorder whose final render target must be provided on replay as an SkSurface.
+    // Commands should be recorded on a proxy surface accessed by Recorder::getDeferredCanvas().
+    // Different surfaces can be used as the final render target between replays.
+    std::unique_ptr<Recorder> makeDeferredRecorder(const RecorderOptions&,
+                                                   const SkImageInfo&,
+                                                   const TextureInfo&);
 
     bool insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);

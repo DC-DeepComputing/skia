@@ -13,6 +13,8 @@
 
 #include <memory>
 
+class SkSurface;
+
 namespace skgpu::graphite {
 
 class Recording;
@@ -31,6 +33,7 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  */
 struct InsertRecordingInfo {
     Recording* fRecording = nullptr;
+    SkSurface* fTargetSurface = nullptr;
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;
 };
@@ -65,8 +68,10 @@ enum class Mipmapped : bool {
 };
 
 /*
- * Only relevant for Promise Images - should the Promise Image be fulfilled every time a
- * Recording that references it is inserted into the Context.
+ * For Promise Images - should the Promise Image be fulfilled every time a Recording that references
+ * it is inserted into the Context.
+ * For Recordings - should a texture proxy be instantiated while recording commands, or will an
+ * instantiating texture be provided on replay.
  */
 enum class Volatile : bool {
     kNo = false,              // only fulfilled once

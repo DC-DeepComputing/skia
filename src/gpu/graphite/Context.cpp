@@ -171,6 +171,14 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     return recorder;
 }
 
+std::unique_ptr<Recorder> Context::makeDeferredRecorder(const RecorderOptions& options,
+                                                        const SkImageInfo& imageInfo,
+                                                        const TextureInfo& textureInfo) {
+    ASSERT_SINGLE_OWNER
+
+    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, imageInfo, textureInfo));
+}
+
 bool Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 

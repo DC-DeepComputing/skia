@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -29,6 +30,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/TaskGraph.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/UploadTask.h"
 #include "src/gpu/graphite/text/AtlasManager.h"
@@ -105,6 +107,37 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     SkASSERT(fResourceProvider);
 }
 
+Recorder::Recorder(sk_sp<SharedContext> sharedContext,
+                   const RecorderOptions& options,
+                   const SkImageInfo& imageInfo,
+                   const TextureInfo& textureInfo)
+        : Recorder(sharedContext, options) {
+    fTargetProxyImageInfo = imageInfo;
+    fTargetProxyTextureInfo = textureInfo;
+    this->createNewTargetProxy();
+}
+
+void Recorder::createNewTargetProxy() {
+    fTargetProxyData = std::make_unique<Recording::LazyProxyData>();
+    fTargetProxyDevice =
+            Device::Make(this,
+                         TextureProxy::MakeFullyLazy(
+                                 fTargetProxyTextureInfo,
+                                 SkBudgeted::kNo,
+                                 Volatile::kYes,
+                                 // Called on replay. targetProxyData->fReplayDest must be set, and
+                                 // then TextureProxy::lazyInstantiate called.
+                                 [targetProxyData = fTargetProxyData.get()](ResourceProvider*) {
+                                     SkASSERT(SkToBool(targetProxyData->fReplayDest));
+                                     return std::move(targetProxyData->fReplayDest);
+                                 }),
+                         fTargetProxyImageInfo.dimensions(),
+                         fTargetProxyImageInfo.colorInfo(),
+                         {},
+                         false);
+    fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
+}
+
 Recorder::~Recorder() {
     ASSERT_SINGLE_OWNER
     for (auto& device : fTrackedDevices) {
@@ -161,9 +194,19 @@ std::unique_ptr<Recording> Recorder::snap() {
         return nullptr;
     }
 
+    sk_sp<TextureProxy> targetProxy;
+    std::unique_ptr<Recording::LazyProxyData> targetProxyData;
+    if (fTargetProxyDevice) {
+        targetProxy = fTargetProxyDevice->readSurfaceView().refProxy();
+        targetProxyData = std::move(fTargetProxyData);
+        this->createNewTargetProxy();
+    }
     std::unique_ptr<Recording> recording(new Recording(std::move(fGraph),
                                                        std::move(nonVolatileLazyProxies),
-                                                       std::move(volatileLazyProxies)));
+                                                       std::move(volatileLazyProxies),
+                                                       std::move(targetProxy),
+                                                       std::move(targetProxyData)));
+
     fDrawBufferManager->transferToRecording(recording.get());
     fUploadBufferManager->transferToRecording(recording.get());
 
@@ -172,6 +215,11 @@ std::unique_ptr<Recording> Recorder::snap() {
     fTextureDataCache = std::make_unique<TextureDataCache>();
     fAtlasManager->evictAtlases();
     return recording;
+}
+
+SkCanvas* Recorder::getDeferredCanvas() {
+    SkASSERT(SkToBool(fTargetProxyCanvas));
+    return fTargetProxyCanvas.get();
 }
 
 void Recorder::registerDevice(Device* device) {
