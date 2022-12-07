@@ -1,0 +1,284 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51808b28_c26e3607",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "General direction looks fine to me. This doesn\u0027t go as far as Chris or Brian would probably like to see long term, but it also doesn\u0027t change the API in ways we don\u0027t like.",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f86648_fbb641be",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "Is a separate patch going to add encoding?",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85052869_e3677e2b",
+        "filename": "gn/skia.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "nit: I would make this `use` to match the other codecs.",
+      "range": {
+        "startLine": 57,
+        "startChar": 7,
+        "endLine": 57,
+        "endChar": 13
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b886e2fd_77e78023",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "Did this happen, or did you copy it from existing code? I think we always build with clang these days.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 6
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca5763d6_ff1dc099",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "search*",
+      "range": {
+        "startLine": 51,
+        "startChar": 15,
+        "endLine": 51,
+        "endChar": 21
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c64689_acc2b301",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "FYI: This is fine for documentation, but note that these don\u0027t get included in Android framework builds. If you really want to see this while running Android (maybe temporarily for testing), you can use `SkABORT`.",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aedb64b1_59466c4d",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "Always use braces. See https://skia.org/docs/dev/contrib/style/#braces. Same elsewhere.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 21
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d1754e0_490509cb",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "Can you use consistent names? You\u0027re referring to a recovery map, right? Or name the type as a decoder. It looks like it does all of the decoding, too.",
+      "range": {
+        "startLine": 75,
+        "startChar": 16,
+        "endLine": 75,
+        "endChar": 27
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d62cd7f8_74b8e971",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "You won\u0027t need the original stream anymore, so I would set it to `nullptr` here.",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb11a621_18914638",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "This doesn\u0027t really hurt anything, but it is redundant, and note that you didn\u0027t do this in the prior failure case (line 91).",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4869afb_05693b43",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "depth*",
+      "range": {
+        "startLine": 104,
+        "startChar": 44,
+        "endLine": 104,
+        "endChar": 50
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb354150_3de64c48",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "nit: please line break at or before 100 characters.",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84a034d_29b0d2da",
+        "filename": "src/codec/SkJpegRCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "`recoveryMapOut`?",
+      "range": {
+        "startLine": 94,
+        "startChar": 26,
+        "endLine": 94,
+        "endChar": 41
+      },
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04e399fe_04af3f1a",
+        "filename": "src/codec/SkJpegRCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-07T12:44:31Z",
+      "side": 1,
+      "message": "As I understand it, we\u0027ve stopped using this convention, but haven\u0027t updated all the old code.",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
