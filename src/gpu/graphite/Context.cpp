@@ -10,7 +10,6 @@
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
-#include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -27,6 +26,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/SharedContext.h"
@@ -394,6 +394,8 @@ void Context::precompile(const PaintOptions& options) {
         });
 }
 
+#if 0
+
 BlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     return fSharedContext->shaderCodeDictionary()->addUserDefinedBlender(std::move(effect));
 }
@@ -421,6 +423,7 @@ void Context::precompile(CombinationBuilder* combinationBuilder) {
     // TODO: Iterate over the renderers and make descriptions for the steps that don't perform
     // shading, and just use ShaderType::kNone.
 }
+#endif
 
 #endif // SK_ENABLE_PRECOMPILE
 

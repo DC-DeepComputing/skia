@@ -8,7 +8,6 @@
 #include "tests/Test.h"
 
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Context.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -17,7 +16,7 @@
 
 using namespace skgpu::graphite;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 
 namespace {
 
