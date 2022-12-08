@@ -8,14 +8,18 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/Recording.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SingleOwner.h"
 #include "include/private/SkTHash.h"
 
 #include <vector>
 
+class SkCanvas;
 class SkPixmap;
 class SkRuntimeEffectDictionary;
 
@@ -39,12 +43,10 @@ class DrawBufferManager;
 class GlobalCache;
 class ImageProvider;
 class RecorderPriv;
-class Recording;
 class ResourceProvider;
 class SharedContext;
 class Task;
 class TaskGraph;
-class TextureInfo;
 class TextureDataBlock;
 class UniformDataBlock;
 class UploadBufferManager;
@@ -118,6 +120,9 @@ public:
      */
     void deleteBackendTexture(BackendTexture&);
 
+    // Returns a canvas that will record to a proxy surface, which must be instantiated on replay.
+    SkCanvas* makeDeferredCanvas(const SkImageInfo&, const TextureInfo&);
+
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -179,6 +184,10 @@ private:
     // This guard is passed to the ResourceCache.
     // TODO: Should we also pass this to Device, DrawContext, and similar classes?
     mutable SingleOwner fSingleOwner;
+
+    sk_sp<Device> fTargetProxyDevice;
+    std::unique_ptr<SkCanvas> fTargetProxyCanvas;
+    std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
 #if GRAPHITE_TEST_UTILS
     // For testing use only -- the Context used to create this Recorder
