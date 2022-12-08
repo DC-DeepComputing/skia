@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a0c82d_158a3ea9",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T21:52:48Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to add a new job. We already have Vulkan build jobs. I think you just want to add the cq_config part to one of the exisiting graphite Vulkan jobs",
+      "range": {
+        "startLine": 187,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "357171e147f39acf4b13f8f677ba51b16dafc3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
