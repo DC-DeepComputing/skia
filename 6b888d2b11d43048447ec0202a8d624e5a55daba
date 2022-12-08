@@ -22,6 +22,30 @@
       },
       "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02051f33_97e636eb",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-08T18:25:51Z",
+      "side": 1,
+      "message": "Well right now `fType` and `bufferType()` are private members of `Buffer.h`. Would you prefer / be OK with having bufferType() become a permanent method (right now it\u0027s marked as temporary) and moving that to \u0027protected\u0027?",
+      "parentUuid": "836de32a_b2d41883",
+      "range": {
+        "startLine": 154,
+        "startChar": 10,
+        "endLine": 154,
+        "endChar": 27
+      },
+      "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
