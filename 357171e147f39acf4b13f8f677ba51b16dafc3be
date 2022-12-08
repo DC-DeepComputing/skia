@@ -22,6 +22,30 @@
       },
       "revId": "357171e147f39acf4b13f8f677ba51b16dafc3be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f89357c_78ac12e5",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T21:53:28Z",
+      "side": 1,
+      "message": "Also side note, Vulkan isn\u0027t going to be able to run on mac (well not unless we\u0027re using swiftshader)",
+      "parentUuid": "b9a0c82d_158a3ea9",
+      "range": {
+        "startLine": 187,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "357171e147f39acf4b13f8f677ba51b16dafc3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
