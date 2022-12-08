@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64f8c0cb_c512a1ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-08T21:32:31Z",
+      "side": 1,
+      "message": "This looks like it does what we want. It\u0027s a little disheartening that it takes so much machinery to get this check to work.",
+      "revId": "41dab53f23c3bab3a40322ad7b2426d9f60eee69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84888126_febb8321",
+        "filename": "experimental/bazel_test/client/main.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-08T21:32:31Z",
+      "side": 1,
+      "message": "argc",
+      "range": {
+        "startLine": 8,
+        "startChar": 13,
+        "endLine": 8,
+        "endChar": 17
+      },
+      "revId": "41dab53f23c3bab3a40322ad7b2426d9f60eee69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
