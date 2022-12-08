@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6af5cd7f_a85a1083",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-08T21:49:47Z",
+      "side": 1,
+      "message": "Hi Joe, you are my chosen victim to take a look at this small CL. I haven\u0027t added a build to the jobs list before, so please let me know if I missed anything. Thank you :D",
+      "revId": "69bc9ea2a90a730bc732f2d6a381ab7132fbf46d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
