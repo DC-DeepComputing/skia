@@ -185,6 +185,8 @@ namespace SK_OPTS_NS {
     SI F   rcp_precise (F v) { auto e = rcp_fast(v); return vrecpsq_f32 (v,e  ) * e; }
     SI F   rsqrt (F v)   { auto e = vrsqrteq_f32(v); return vrsqrtsq_f32(v,e*e) * e; }
 
+    SI U32 and_(U32 a, U32 b) { return vandq_u32(a, b); }
+
     SI U16 pack(U32 v)                           { return __builtin_convertvector(v, U16); }
     SI U8  pack(U16 v)                           { return __builtin_convertvector(v,  U8); }
 
@@ -2583,7 +2585,17 @@ SI F exclusive_repeat(F v, const SkRasterPipeline_TileCtx* ctx) {
 SI F exclusive_mirror(F v, const SkRasterPipeline_TileCtx* ctx) {
     auto limit = ctx->scale;
     auto invLimit = ctx->invScale;
-    return abs_( (v-limit) - (limit+limit)*floor_((v-limit)*(invLimit*0.5f)) - limit );
+
+    // This is "repeat" over the range 0..2*scale
+    auto u = v - floor_(v*invLimit*0.5f)*2*limit;
+    // s will be 0 when moving forward (e.g. from 0 to scale) and 1 when moving backward (e.g. from
+    // scale to 2*scale).
+    auto s = floor_(u*invLimit);
+    // This is the mirror result.
+    auto m = u - 2*s*(u - limit);
+    // Apply a bias to m if running backwards so that we snap consistently at exact integer coords.
+    auto biasInUlps = trunc_(s);
+    return sk_bit_cast<F>(sk_bit_cast<U32>(m) + ctx->mirrorBiasDir*biasInUlps);
 }
 // Tile x or y to [0,limit) == [0,limit - 1 ulp] (think, sampling from images).
 // The gather stages will hard clamp the output of these stages to [0,limit)...
@@ -2866,6 +2878,9 @@ STAGE(save_xy, SkRasterPipeline_SamplerCtx* c) {
     F fx = fract(r + 0.5f),
       fy = fract(g + 0.5f);
 
+    if (all(g == 4.5)) {
+        int breakpoint = 9;
+    }
     // Samplers will need to load x and fx, or y and fy.
     sk_unaligned_store(c->x,  r);
     sk_unaligned_store(c->y,  g);
