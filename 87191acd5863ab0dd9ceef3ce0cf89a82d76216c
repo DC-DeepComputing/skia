@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98f7f3de_903c6887",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-08T08:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd985622_5c06639a",
+      "range": {
+        "startLine": 25,
+        "startChar": 50,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbf39c8d_23bf7983",
@@ -125,6 +149,30 @@
       "writtenOn": "2022-12-07T17:04:41Z",
       "side": 1,
       "message": "For clarity, I would recommend adding:\n`fQueue.Submit(/*commandCount\u003d*/1, \u0026wgpuCmdBuffer);` or defining 1 as a constexpr w/ a descriptive variable name so we know what 1 is intended to represent.",
+      "range": {
+        "startLine": 62,
+        "startChar": 18,
+        "endLine": 62,
+        "endChar": 19
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "335a0a9c_b77afe75",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-08T08:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbf39c8d_23bf7983",
       "range": {
         "startLine": 62,
         "startChar": 18,
@@ -158,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c78c44c_88e62210",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-08T08:34:34Z",
+      "side": 1,
+      "message": "Done. Added TODO. But I don\u0027t think we can do anything at least in near future. Since unliked native graphics API such as metal, dawn doesn\u0027t have any capturing feature implemented yet nor any capturing tool we could use.",
+      "parentUuid": "46d6c91e_2b5ecd2b",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 39
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee4aff61_bd9090b8",
@@ -181,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd228269_17194ff5",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-08T08:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee4aff61_bd9090b8",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 3
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ab62804_20cde756",
@@ -194,6 +290,30 @@
       "writtenOn": "2022-12-07T17:04:41Z",
       "side": 1,
       "message": "Remove extra space addition",
+      "range": {
+        "startLine": 41,
+        "startChar": 2,
+        "endLine": 41,
+        "endChar": 3
+      },
+      "revId": "87191acd5863ab0dd9ceef3ce0cf89a82d76216c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7440159_4da7260d",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-08T08:34:34Z",
+      "side": 1,
+      "message": "Done. It\u0027s weird, I used clang format and it inserted an extra space here. Are we sure the extra space is not what we intended for the format? I saw that `SpacesBeforeTrailingComments` is configured as `2` here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/.clang-format;drc\u003deed3b0162fc4f328a524267aa72acd99c90950e7;l\u003d106",
+      "parentUuid": "7ab62804_20cde756",
       "range": {
         "startLine": 41,
         "startChar": 2,
