@@ -455,20 +455,6 @@ private:
     const SkImageShader& fImageShader;
 };
 
-static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatrix& matrix) {
-    SkFilterMode filter = sampling.filter;
-
-    // When the matrix is just an integer translate, bilerp == nearest neighbor.
-    if (filter == SkFilterMode::kLinear &&
-            matrix.getType() <= SkMatrix::kTranslate_Mask &&
-            matrix.getTranslateX() == (int)matrix.getTranslateX() &&
-            matrix.getTranslateY() == (int)matrix.getTranslateY()) {
-        filter = SkFilterMode::kNearest;
-    }
-
-    return SkSamplingOptions(filter, sampling.mipmap);
-}
-
 bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset));  // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
@@ -510,12 +496,6 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     if (updater) {
         updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
     } else {
-        if (!sampling.useCubic) {
-            // TODO: can tweak_sampling sometimes for cubic too when B=0
-            if (rec.fMatrixProvider.localToDeviceHitsPixelCenters()) {
-                sampling = tweak_sampling(sampling, sampleM);
-            }
-        }
         p->append_matrix(alloc, sampleM);
     }
 
@@ -782,13 +762,6 @@ skvm::Color SkImageShader::makeProgram(
 
     auto [upper, upperInv] = access->level();
     upperInv.preConcat(baseInv);
-    // If we are using a coordShader, then we can't make guesses about the state of the matrix.
-    if (!sampling.useCubic && !coordShader) {
-        // TODO: can tweak_sampling sometimes for cubic too when B=0
-        if (matrices.localToDeviceHitsPixelCenters()) {
-            sampling = tweak_sampling(sampling, upperInv);
-        }
-    }
 
     SkPixmap lowerPixmap;
     SkMatrix lowerInv;
