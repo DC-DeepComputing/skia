@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9efb807_e15ea824",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T19:56:40Z",
+      "side": 1,
+      "message": "Got it. I ran against the limits (for vertex, index, and specifically storage buffers) in the compute proof-of-concept. The storage limit is easy to surpass when you want to encode a path with a 1000 verbs, for instance.",
+      "parentUuid": "db71f061_64326f65",
+      "range": {
+        "startLine": 25,
+        "startChar": 44,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33f3eb5b_ba3026e9",
