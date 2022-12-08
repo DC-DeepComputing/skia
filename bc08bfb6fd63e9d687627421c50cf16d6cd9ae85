@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c601cf1e_d25d274b",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T21:45:48Z",
+      "side": 1,
+      "message": "These should be marked with `// valid` or `// invalid`.\nThis implementation has them defined as valid, but GLSL docs seem to state they are not?\n\n`Atomic counters are Opaque Types; as such, they can only be declared as uniforms or as a in function parameter.`\n\nAgain from https://www.khronos.org/opengl/wiki/Atomic_Counter",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
