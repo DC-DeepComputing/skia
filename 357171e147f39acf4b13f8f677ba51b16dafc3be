@@ -46,6 +46,30 @@
       },
       "revId": "357171e147f39acf4b13f8f677ba51b16dafc3be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bed1aff4_afc4e387",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-08T22:04:51Z",
+      "side": 1,
+      "message": "Makes sense, whoops, removed the new job which doesn\u0027t serve any real purpose and instead now added the config part to the existing debug-graphite_vulkan builds (4 of them, 2 for windows and 2 for debian)",
+      "parentUuid": "5f89357c_78ac12e5",
+      "range": {
+        "startLine": 187,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 58
+      },
+      "revId": "357171e147f39acf4b13f8f677ba51b16dafc3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
