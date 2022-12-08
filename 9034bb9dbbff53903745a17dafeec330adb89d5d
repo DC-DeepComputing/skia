@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd98638b_350e0a00",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T18:12:39Z",
+      "side": 1,
+      "message": "Yeah I don\u0027t think there is any reason to have a second function",
+      "parentUuid": "0cd0813a_98e020ab",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 71
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f540ea9_e4253446",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 10
@@ -379,6 +403,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20502bc4_9bb1888d",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T18:12:39Z",
+      "side": 1,
+      "message": "Okay so talking with Rob, apparently we had already discussed this a couple months ago. If we instantiate all SkSurface proxies at creation time, then we should never hit this issue. I think today we may defer instantiation until snapRecording time. But I think it is fine to just instantiation them immediately in the SkSurface factories for graphite.",
+      "parentUuid": "398199b2_bf4cfc23",
+      "range": {
+        "startLine": 112,
+        "startChar": 12,
+        "endLine": 112,
+        "endChar": 59
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8726605_9345bc0d",
         "filename": "src/gpu/graphite/Surface_Graphite.cpp",
         "patchSetId": 10
@@ -414,6 +462,30 @@
       "side": 1,
       "message": "I don\u0027t see the concept of a write surface exposed in Device or DrawContext. Would that be the TextureProxy target stored on the DrawPass, or something else?",
       "parentUuid": "f8726605_9345bc0d",
+      "range": {
+        "startLine": 125,
+        "startChar": 63,
+        "endLine": 125,
+        "endChar": 78
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b92ea6d_c05d1d61",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T18:12:39Z",
+      "side": 1,
+      "message": "yeah I think it should probably just get the target() instead.",
+      "parentUuid": "27afca9a_cf2b71c1",
       "range": {
         "startLine": 125,
         "startChar": 63,
