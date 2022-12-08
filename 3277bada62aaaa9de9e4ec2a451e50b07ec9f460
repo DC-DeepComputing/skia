@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33172edf_7d8a5517",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T19:30:32Z",
+      "side": 1,
+      "message": "nit: This name confused me at first because Porter-Duff blends are still represented as an SkBlendMode (at some level, not in the blender functions that uses coefficient uniforms). `needsBlendModeBased` is really any SkBlendMode that\u0027s not Porter-Duff. But we also have the advanced blend modes like hue, saturation, color, and luminosity.\n\nSkBlendMode defines three values `kLastCoeffMode` for porter duff, `kLastSeparableMode` for the remaining non-advanced mode, and then just `kLastMode` to have the advanced modes.\n\nI don\u0027t feel strongly about using Coefficient vs. Porter-Duff, although it does emphasize how the sksl effect is structured differently, but I think using `needsSeparableMode` would be clearer than `needsBlendMode`. Alternatively maybe we make this a bit field so we can OR in coefficient, separable, and (later?) advanced blend modes?",
+      "range": {
+        "startLine": 83,
+        "startChar": 31,
+        "endLine": 83,
+        "endChar": 50
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7773a6b_69bde5c4",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T19:30:32Z",
+      "side": 1,
+      "message": "Given that kSrcOver ends up being handled by the PorterDuffBlendShaderBlock (if I read it right), maybe we go with the PorterDuff+1? It\u0027s not used but makes things feel more consistent to me.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 95
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "123184a8_5e866331",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T19:30:32Z",
+      "side": 1,
+      "message": "I can\u0027t quite recall on where we landed in terms of matching up RuntimeEffects, but will any runtime effect instance with the same SkSL and uniforms/children slots get the same code snippet ID?\n\nIf so, this works, but definitely creates a lot of coupling to what is used inside `SkShaders::Blend`. I think we can address it later on by organizing where we define our internal \"runtime\" effects so that both precompile and main systems can refer to them.",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 71
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9fd6acb_4d847196",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T19:30:32Z",
+      "side": 1,
+      "message": "Can just do `bm \u003c\u003d SkBlendMode::kLastCoeffMode` I think",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 93
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
