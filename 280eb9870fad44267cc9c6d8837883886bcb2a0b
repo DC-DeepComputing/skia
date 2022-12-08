@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0038f178_cde861cb",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T03:17:48Z",
+      "side": 1,
+      "message": "Here onwards are the modifications to BufferManager.cpp outside of the file rename.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 22
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a04f4327_dbf8bc05",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T03:17:48Z",
+      "side": 1,
+      "message": "Here onwards are the actual changes to the BufferManager header, since it\u0027s not being detected as a move",
+      "range": {
+        "startLine": 83,
+        "startChar": 1,
+        "endLine": 83,
+        "endChar": 2
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
