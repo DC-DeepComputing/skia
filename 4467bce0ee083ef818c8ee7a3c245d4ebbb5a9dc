@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7298d50a_7f257333",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 31
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-08T21:37:21Z",
+      "side": 1,
+      "message": "I tried using this CL as our dependency in flutter web (by changing the SHA here: https://github.com/flutter/engine/blob/main/DEPS#L21). I also set `skia_use_icu\u003dFalse` and `skia_use_client_icu\u003dTrue`.\n\nWhen I do that I get an error because it tries to find `icu_bidi` in OUR third_party instead of Skia\u0027s. Any ideas?",
+      "revId": "4467bce0ee083ef818c8ee7a3c245d4ebbb5a9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
