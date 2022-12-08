@@ -149,6 +149,12 @@ public:
     bool assign(const Expression& e);
     bool binaryOp(SkSL::Type::NumberKind numberKind, int slots, const BinaryOps& ops);
     void foldWithOp(BuilderOp op, int elements);
+    int setCurrentStack(int newStack) {
+        int originalStack = fCurrentStack;
+        fCurrentStack = newStack;
+        fBuilder.set_current_stack(newStack);
+        return originalStack;
+    }
 
 private:
     const SkSL::Program& fProgram;
@@ -162,6 +168,7 @@ private:
 
     static constexpr int kPrimaryStack = 0;
     static constexpr int kTernaryStack = 1;
+    int fCurrentStack = kPrimaryStack;
 };
 
 struct LValue {
@@ -653,12 +660,12 @@ bool Generator::pushLiteral(const Literal& l) {
 
 bool Generator::pushTernaryExpression(const TernaryExpression& t) {
     // Apply the test-expression as a condition on its own separate stack.
-    fBuilder.change_stack(kTernaryStack);
+    int originalStack = this->setCurrentStack(kTernaryStack);
     if (!this->pushExpression(*t.test())) {
         return false;
     }
     fBuilder.push_condition_mask();
-    fBuilder.change_stack(kPrimaryStack);
+    this->setCurrentStack(originalStack);
 
     // Push the true-expression onto the primary stack.
     if (!this->pushExpression(*t.ifTrue())) {
@@ -666,11 +673,11 @@ bool Generator::pushTernaryExpression(const TernaryExpression& t) {
     }
 
     // Negate the test condition.
-    fBuilder.change_stack(kTernaryStack);
+    originalStack = this->setCurrentStack(kTernaryStack);
     fBuilder.pop_condition_mask();
     fBuilder.unary_op(BuilderOp::bitwise_not, /*slots=*/1);
     fBuilder.push_condition_mask();
-    fBuilder.change_stack(kPrimaryStack);
+    this->setCurrentStack(originalStack);
 
     // Push the false-expression onto the main stack after the true-expression.
     if (!this->pushExpression(*t.ifFalse())) {
@@ -682,10 +689,11 @@ bool Generator::pushTernaryExpression(const TernaryExpression& t) {
     fBuilder.select(/*slots=*/t.ifTrue()->type().slotCount());
 
     // Jettison the test condition.
-    fBuilder.change_stack(kTernaryStack);
+    originalStack = this->setCurrentStack(kTernaryStack);
     fBuilder.pop_condition_mask();
     this->discardExpression(/*slots=*/1);
-    fBuilder.change_stack(kPrimaryStack);
+    this->setCurrentStack(originalStack);
+
     return true;
 }
 
@@ -735,6 +743,7 @@ bool Generator::writeProgram(const FunctionDefinition& function) {
     }
 
     // Initialize the program.
+    this->setCurrentStack(kPrimaryStack);
     fBuilder.init_lane_masks();
 
     // Invoke main().
