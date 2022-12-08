@@ -46,6 +46,30 @@
       },
       "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d572cb_9886c3a5",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T19:55:13Z",
+      "side": 1,
+      "message": "Hmm interesting. What happens if we just delete fType and fPrioritizeGpuReads from Buffer.h? Does anything use them? If so we can land this as is.\n\nThough future thought, I wonder if it would make sense to have our api reflect Dawn a little more in the sense there is a different mapRead and mapWrite calls. Have the caller be explicit how they want it mapped.",
+      "parentUuid": "02051f33_97e636eb",
+      "range": {
+        "startLine": 154,
+        "startChar": 10,
+        "endLine": 154,
+        "endChar": 27
+      },
+      "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
