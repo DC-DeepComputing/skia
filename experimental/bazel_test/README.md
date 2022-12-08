@@ -1,0 +1,1 @@
+This contains files what we can use to test our Bazel toolchains or prototype new BUILD rules.
