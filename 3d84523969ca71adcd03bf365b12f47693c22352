@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db17c942_022c0772",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:08:58Z",
+      "side": 1,
+      "message": "These don\u0027t seem to be reporting errors--if it\u0027s only reporting the first case, maybe we need to split the test struct up into multiple structs?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 56
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947fda0f_820e9057",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:08:58Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 65
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad69d09_293becf2",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:08:58Z",
+      "side": 1,
+      "message": "`~` as well for completeness?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 5
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "218b415d_f6bfbda9",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:08:58Z",
+      "side": 1,
+      "message": "More things to try:\nComparison ops, those go down a different path. `\u003d\u003d` `\u003c` `!\u003d` etc.\nFolding ops, just in case: `wgCounterA + 0` `1 * wgCounterA` `0 * wgCounterA`\nAlso might want to add in a few bitwise ops for completeness (`wgCounterA \u0026 wgCounterB`) but I don\u0027t think those will actually tickle anything new.",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a754ed7a_0a1cc795",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:08:58Z",
+      "side": 1,
+      "message": "This isn\u0027t reporting an error.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 64
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
