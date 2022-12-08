@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c62348d_123feb97",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-08T21:50:28Z",
+      "side": 1,
+      "message": "I\u0027ve gone with needsSeparableMode and fSeparableModeIndex",
+      "parentUuid": "33172edf_7d8a5517",
+      "range": {
+        "startLine": 83,
+        "startChar": 31,
+        "endLine": 83,
+        "endChar": 50
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7773a6b_69bde5c4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-08T19:30:32Z",
       "side": 1,
       "message": "Given that kSrcOver ends up being handled by the PorterDuffBlendShaderBlock (if I read it right), maybe we go with the PorterDuff+1? It\u0027s not used but makes things feel more consistent to me.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 95
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bdf05f7_b68a68e2",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-08T21:50:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7773a6b_69bde5c4",
       "range": {
         "startLine": 156,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25457118_78cc3369",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-08T21:50:28Z",
+      "side": 1,
+      "message": "Right - I\u0027ve added the following comment:\n\n// TODO: share this with the copy over in SkComposeShader.cpp. For now, the block \n// ID is determined by a hash of the code so both copies will generate the same key\n// and the SkPaint vs. PaintOptions key match testing will trigger if they get out \n// of sync.",
+      "parentUuid": "123184a8_5e866331",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 71
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9fd6acb_4d847196",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-12-08T19:30:32Z",
       "side": 1,
       "message": "Can just do `bm \u003c\u003d SkBlendMode::kLastCoeffMode` I think",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 93
+      },
+      "revId": "3277bada62aaaa9de9e4ec2a451e50b07ec9f460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cf464e8_076b273e",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-08T21:50:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9fd6acb_4d847196",
       "range": {
         "startLine": 212,
         "startChar": 0,
