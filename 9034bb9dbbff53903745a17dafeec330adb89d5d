@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cd0813a_98e020ab",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Done. If we don\u0027t have a separate function signature for making these types of Recorders, do we even need a separate function (I took this one out for now)? We could keep two separate functions, and have some kind of flag on the Recorder that allows it either a) make deferred canvases, or b) register arbitrary real-surface devices, but not both?",
+      "parentUuid": "24dd1427_77bb75c5",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 71
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f540ea9_e4253446",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-07T18:14:46Z",
       "side": 1,
       "message": "Comments should be added above about what this is. Include requirements that it must match the TextureInfo and passed in up in the recorder.",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 40
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c1cb1f_ca2d9950",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f540ea9_e4253446",
       "range": {
         "startLine": 36,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc795947_17a6be86",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58e07843_e44ae196",
+      "range": {
+        "startLine": 73,
+        "startChar": 29,
+        "endLine": 73,
+        "endChar": 42
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40ba0f66_81ed13ce",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-12-07T18:14:46Z",
       "side": 1,
       "message": "If we do my suggestion where we create the special proxy when getDeferredCanvas is called, I don\u0027t believe we need to store these values. Also FWIW the TextureInfo is already accessible from the Proxy",
+      "range": {
+        "startLine": 200,
+        "startChar": 2,
+        "endLine": 201,
+        "endChar": 40
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac9d780_32b5ab01",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40ba0f66_81ed13ce",
       "range": {
         "startLine": 200,
         "startChar": 2,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f6b811_1e6e98b6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1b7574e_145034b5",
+      "range": {
+        "startLine": 573,
+        "startChar": 34,
+        "endLine": 573,
+        "endChar": 63
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fbbf054_8bf113e5",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4987357b_22239a95",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "We need this to be a graphite Surface since we get its backing graphite texture proxy in addCommands. Actually I\u0027ve just added a check that this is a graphite-backed surface here in QueueManager::addRecording, before doing any work. I think it makes sense to do this cast here, in the same scope we do that check.",
+      "parentUuid": "7fbbf054_8bf113e5",
+      "range": {
+        "startLine": 103,
+        "startChar": 44,
+        "endLine": 103,
+        "endChar": 86
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2999422d_5b42bbf8",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-12-07T18:14:46Z",
       "side": 1,
       "message": "Is there a case where we may have one of these but not the other? Could we just check for 1 of these values? You can assert the other if want",
+      "range": {
+        "startLine": 106,
+        "startChar": 20,
+        "endLine": 106,
+        "endChar": 64
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4793c3db_0385b609",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "We assert that either both or neither are null in the constructor; I was just being defensive here but perhaps unnecessarily so.",
+      "parentUuid": "2999422d_5b42bbf8",
       "range": {
         "startLine": 106,
         "startChar": 20,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "398199b2_bf4cfc23",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "Right. Do we want to make TextureProxy thread-safe? If not, should we try to protect against this at the Recorder/Recording level? Also, are there any valid use-cases where we would get a race condition? I guess we\u0027d have to be snapping from a surface while replaying to it, or replaying to it from multiple threads at once, neither of which seem valid.",
+      "parentUuid": "5d22a9a7_ba5c15d6",
+      "range": {
+        "startLine": 112,
+        "startChar": 12,
+        "endLine": 112,
+        "endChar": 59
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8726605_9345bc0d",
         "filename": "src/gpu/graphite/Surface_Graphite.cpp",
         "patchSetId": 10
@@ -198,6 +390,30 @@
       "writtenOn": "2022-12-07T18:14:46Z",
       "side": 1,
       "message": "I\u0027m sure that the proxy backing the readSurfaceView and writeSurfaceView are the same, but maybe we should add an assert here to confirm that?\n\nI can\u0027t really see what we\u0027d end up this situation, but maybe one day the proxies will be different. Then we\u0027d need to pass a param into this query for which one we want. But for now I think the assert would be satisfactory.",
+      "range": {
+        "startLine": 125,
+        "startChar": 63,
+        "endLine": 125,
+        "endChar": 78
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27afca9a_cf2b71c1",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-08T13:59:43Z",
+      "side": 1,
+      "message": "I don\u0027t see the concept of a write surface exposed in Device or DrawContext. Would that be the TextureProxy target stored on the DrawPass, or something else?",
+      "parentUuid": "f8726605_9345bc0d",
       "range": {
         "startLine": 125,
         "startChar": 63,
