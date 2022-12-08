@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33f3eb5b_ba3026e9",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T03:18:51Z",
+      "side": 1,
+      "message": "Also new changes, so that static and draw buffers can share alignment definitions, and a little bit of an open question about the sizing policy of the intermediate transfer buffer and static buffer.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 49
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0038f178_cde861cb",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 1
