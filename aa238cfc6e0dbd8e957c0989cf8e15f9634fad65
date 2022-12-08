@@ -34,6 +34,24 @@
       "parentUuid": "67118dc8_22e3c29f",
       "revId": "aa238cfc6e0dbd8e957c0989cf8e15f9634fad65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed5cb3e9_17a23c59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T16:16:26Z",
+      "side": 1,
+      "message": "Stack changes are free ops (no RP code generated)",
+      "parentUuid": "e65e3e77_511f0e2f",
+      "revId": "aa238cfc6e0dbd8e957c0989cf8e15f9634fad65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
