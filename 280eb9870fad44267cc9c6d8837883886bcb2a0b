@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db71f061_64326f65",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T19:06:18Z",
+      "side": 1,
+      "message": "In this case the edit to 128KB in DrawBufferManager.cpp was an accidental change from an earlier CL that was supposed to be switched back to 16. I often bump it up to 128 for testing batching, but didn\u0027t mean to land it, so this fixes that mismatch.\n\nIf we do bump the size up, which I think we\u0027ll want to, that should be its own CL and might likely be a smaller number like 32 or 64 (or perhaps from caps).",
+      "parentUuid": "a1235d4a_030afe24",
+      "range": {
+        "startLine": 25,
+        "startChar": 44,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33f3eb5b_ba3026e9",
