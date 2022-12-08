@@ -1,0 +1,134 @@
+/*
+ * Copyright 2021 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_BufferManager_DEFINED
+#define skgpu_graphite_BufferManager_DEFINED
+
+#include "include/core/SkRefCnt.h"
+#include "src/gpu/BufferWriter.h"
+#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+
+#include <array>
+#include <vector>
+
+namespace skgpu::graphite {
+
+class Buffer;
+class GlobalCache;
+class QueueManager;
+class Recording;
+class ResourceProvider;
+
+/**
+ * DrawBufferManager controls writing to buffer data ranges within larger, cacheable Buffers and
+ * automatically handles either mapping or copying via transfer buffer depending on what the GPU
+ * hardware supports for the requested buffer type and use case. It is intended for repeatedly
+ * uploading dynamic data to the GPU.
+*/
+class DrawBufferManager {
+public:
+    DrawBufferManager(ResourceProvider*, size_t uniformStartAlignment, size_t ssboStartAlignment);
+    ~DrawBufferManager();
+
+    std::tuple<VertexWriter, BindBufferInfo> getVertexWriter(size_t requiredBytes);
+    std::tuple<IndexWriter, BindBufferInfo> getIndexWriter(size_t requiredBytes);
+    std::tuple<UniformWriter, BindBufferInfo> getUniformWriter(size_t requiredBytes);
+    std::tuple<UniformWriter, BindBufferInfo> getSsboWriter(size_t requiredBytes);
+
+    // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
+    // 'unusedBytes' is less than the 'requiredBytes' to the original allocation.
+    void returnVertexBytes(size_t unusedBytes);
+
+    size_t alignUniformBlockSize(size_t dataSize) {
+        return SkAlignTo(dataSize, fCurrentBuffers[kUniformBufferIndex].fStartAlignment);
+    }
+
+    // Finalizes all buffers and transfers ownership of them to a Recording.
+    void transferToRecording(Recording*);
+
+private:
+    struct BufferInfo {
+        const BufferType fType;
+        const size_t fStartAlignment;
+        const size_t fBlockSize;
+        sk_sp<Buffer> fBuffer{};
+        // The fTransferBuffer can be null, if draw buffer cannot be mapped,
+        // see Caps::drawBufferCanBeMapped() for detail.
+        sk_sp<Buffer> fTransferBuffer{};
+        size_t fOffset = 0;
+
+        Buffer* getMappableBuffer() {
+            return fTransferBuffer ? fTransferBuffer.get() : fBuffer.get();
+        }
+    };
+    std::pair<void*, BindBufferInfo> prepareBindBuffer(BufferInfo* info, size_t requiredBytes);
+
+    ResourceProvider* const fResourceProvider;
+
+    static constexpr size_t kVertexBufferIndex  = 0;
+    static constexpr size_t kIndexBufferIndex   = 1;
+    static constexpr size_t kUniformBufferIndex = 2;
+    static constexpr size_t kStorageBufferIndex = 3;
+    std::array<BufferInfo, 4> fCurrentBuffers;
+
+    // Vector of buffer and transfer buffer pairs.
+    std::vector<std::pair<sk_sp<Buffer>, sk_sp<Buffer>>> fUsedBuffers;
+};
+
+/**
+ * The StaticBufferManager is the one-time-only analog to DrawBufferManager and provides "static"
+ * Buffers to RenderSteps and other Context-lifetime-tied objects, where the Buffers' contents will
+ * not change and can benefit from prioritizing GPU reads. The assumed use case is that they remain
+ * read-only on the GPU as well, so a single static buffer can be shared by all Recorders.
+ *
+ * Unlike DrawBufferManager's getXWriter() functions that return both a Writer and a BindBufferInfo,
+ * StaticBufferManager returns only a Writer and accepts a BindBufferInfo* as an argument. This will
+ * be re-written with the final binding info for the GPU-private data once that can be determined
+ * after *all* static buffers have been requested.
+ */
+class StaticBufferManager {
+public:
+    StaticBufferManager(ResourceProvider*);
+    ~StaticBufferManager();
+
+    // The passed in BindBufferInfos are updated when finalize() is later called, to point to the
+    // packed, GPU-private buffer at the appropriate offset. The data written to the returned Writer
+    // is copied to the private buffer at that offset. 'binding' must live until finalize() returns.
+    VertexWriter getVertexWriter(size_t size, BindBufferInfo* binding);
+    VertexWriter getIndexWriter(size_t size, BindBufferInfo* binding);
+
+    // Finalizes all buffers and records a copy task to compact and privatize static data. The
+    // final static buffers will become owned by the provided GlobalCache.
+    bool finalize(QueueManager* queueManager, GlobalCache* cache);
+
+private:
+    struct BufferData {
+        BufferType      fBufferType;   // The buffer type of the final static buffer
+        size_t          fAlignment;    // The required alignment of the offset in the final buffer
+
+        BindBufferInfo  fTransferInfo; // The CPU-to-GPU buffer written to by caller
+        size_t          fSize;         // The number of bytes to copy from transfer buffer
+
+        BindBufferInfo* fTargetInfo;   // Where to store the binding of the final static buffer
+    };
+
+    void* prepareStaticData(BufferType type, size_t alignment, size_t size, BindBufferInfo* target);
+
+    ResourceProvider* const fResourceProvider;
+
+    // The source data that's copied into a final GPU-private buffer
+    std::vector<BufferData>    fStaticBufferData;
+    std::vector<sk_sp<Buffer>> fUsedBuffers;
+
+    sk_sp<Buffer> fCurrentTransferBuffer;
+    size_t        fCurrentOffset;
+};
+
+} // namespace skgpu::graphite
+
+#endif // skgpu_graphite_BufferManager_DEFINED
