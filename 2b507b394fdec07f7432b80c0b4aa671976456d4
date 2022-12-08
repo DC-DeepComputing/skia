@@ -22,6 +22,30 @@
       },
       "revId": "2b507b394fdec07f7432b80c0b4aa671976456d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef09bb5_6538a42c",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-08T18:29:20Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a good point. In this case I will be removing it in this CL which should be landing soon: https://skia-review.googlesource.com/c/skia/+/614056, but that\u0027s good to keep in mind. Thanks John :^)",
+      "parentUuid": "7daa48f2_f0d8c9ad",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 11
+      },
+      "revId": "2b507b394fdec07f7432b80c0b4aa671976456d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
