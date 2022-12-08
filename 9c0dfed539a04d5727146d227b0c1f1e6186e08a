@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fd9dd33_a2a3beef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "I\u0027ll do another pass on this tomorrow, but other than my first comment I think it looks okay.",
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "008cdca1_538266af",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "Was this intended? If so you might want to change the comment.",
+      "range": {
+        "startLine": 225,
+        "startChar": 15,
+        "endLine": 225,
+        "endChar": 39
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f2a980_8943f214",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "Nit: Capitalize XY to match Z and W?",
+      "range": {
+        "startLine": 410,
+        "startChar": 32,
+        "endLine": 410,
+        "endChar": 34
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3cb3171_7bb6499a",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "Define magic number? (and in its use below). Why this value?",
+      "range": {
+        "startLine": 484,
+        "startChar": 33,
+        "endLine": 484,
+        "endChar": 41
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffea65b2_ac45ae01",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "Here",
+      "range": {
+        "startLine": 512,
+        "startChar": 0,
+        "endLine": 512,
+        "endChar": 69
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6dbd532_b6aa0d18",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-08T20:54:54Z",
+      "side": 1,
+      "message": "And here",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 63
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
