@@ -16,6 +16,23 @@
       "message": "Kevin:\n\nNot positive this is the correct way to move this swarming job. I followed the procedure outlined in //infra/bots/README.md.",
       "revId": "4fe61f11c3d29ef94da47314c423d66a20831e98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1461211_f3f25d87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-08T21:41:17Z",
+      "side": 1,
+      "message": "Looks like what I would have done",
+      "revId": "4fe61f11c3d29ef94da47314c423d66a20831e98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
