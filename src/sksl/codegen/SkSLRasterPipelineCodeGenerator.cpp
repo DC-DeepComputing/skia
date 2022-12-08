@@ -413,30 +413,33 @@ bool Generator::writeExpressionStatement(const ExpressionStatement& e) {
 }
 
 bool Generator::writeIfStatement(const IfStatement& i) {
+    // Save the current condition-mask.
+    fBuilder.push_condition_mask();
+
+    // Push the test condition mask.
     if (!this->pushExpression(*i.test())) {
         return false;
     }
 
-    // Apply the test-expression as a condition, then run the if-true branch.
-    fBuilder.push_condition_mask();
+    // Merge the current condition-mask with the test condition, then run the if-true branch.
+    fBuilder.merge_condition_mask();
     if (!this->writeStatement(*i.ifTrue())) {
         return false;
     }
-    fBuilder.pop_condition_mask();
 
     if (i.ifFalse()) {
-        // The test condition is still at the top of the stack. Negate it, apply it as a condition
-        // mask again, and run the if-false branch.
+        // Negate the test-condition, then reapply it to the condition-mask.
+        // Then, run the if-false branch.
         fBuilder.unary_op(BuilderOp::bitwise_not, /*slots=*/1);
-        fBuilder.push_condition_mask();
+        fBuilder.merge_condition_mask();
         if (!this->writeStatement(*i.ifFalse())) {
             return false;
         }
-        fBuilder.pop_condition_mask();
     }
 
-    // Jettison the test condition.
+    // Jettison the test-expression, and restore the the condition-mask.
     this->discardExpression(/*slots=*/1);
+    fBuilder.pop_condition_mask();
     return true;
 }
 
@@ -659,12 +662,15 @@ bool Generator::pushLiteral(const Literal& l) {
 }
 
 bool Generator::pushTernaryExpression(const TernaryExpression& t) {
-    // Apply the test-expression as a condition on its own separate stack.
+    // Save the current condition-mask to a separate ternary-stack.
     int originalStack = this->setCurrentStack(kTernaryStack);
+    fBuilder.push_condition_mask();
+
+    // Emit the test-expression and merge it with the condition-mask.
     if (!this->pushExpression(*t.test())) {
         return false;
     }
-    fBuilder.push_condition_mask();
+    fBuilder.merge_condition_mask();
     this->setCurrentStack(originalStack);
 
     // Push the true-expression onto the primary stack.
@@ -672,11 +678,10 @@ bool Generator::pushTernaryExpression(const TernaryExpression& t) {
         return false;
     }
 
-    // Negate the test condition.
+    // Switch back to the ternary-stack temporarily, and negate the test condition.
     originalStack = this->setCurrentStack(kTernaryStack);
-    fBuilder.pop_condition_mask();
     fBuilder.unary_op(BuilderOp::bitwise_not, /*slots=*/1);
-    fBuilder.push_condition_mask();
+    fBuilder.merge_condition_mask();
     this->setCurrentStack(originalStack);
 
     // Push the false-expression onto the main stack after the true-expression.
@@ -688,10 +693,10 @@ bool Generator::pushTernaryExpression(const TernaryExpression& t) {
     // set up for this.
     fBuilder.select(/*slots=*/t.ifTrue()->type().slotCount());
 
-    // Jettison the test condition.
+    // Jettison the test-expression, and restore the condition-mask to its original state.
     originalStack = this->setCurrentStack(kTernaryStack);
-    fBuilder.pop_condition_mask();
     this->discardExpression(/*slots=*/1);
+    fBuilder.pop_condition_mask();
     this->setCurrentStack(originalStack);
 
     return true;
