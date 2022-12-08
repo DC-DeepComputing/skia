@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7daa48f2_f0d8c9ad",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T18:22:54Z",
+      "side": 1,
+      "message": "(FYI: Generally we want `TODO(nicolettep):` or `TODO(b/12345):` so that there\u0027s some form of ownership behind it, to prevent TODOs lingering forever. In this case I don\u0027t think there\u0027s any concern of that.)",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 11
+      },
+      "revId": "2b507b394fdec07f7432b80c0b4aa671976456d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
