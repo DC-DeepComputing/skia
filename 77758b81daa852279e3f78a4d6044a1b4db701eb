@@ -579,6 +579,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0adce70_f065d66f",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2022-12-08T19:06:06Z",
+      "side": 1,
+      "message": "Ah, right. Good catch. I\u0027ll fix it.",
+      "parentUuid": "b07bb08e_b7d2d108",
+      "revId": "77758b81daa852279e3f78a4d6044a1b4db701eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb11a621_18914638",
