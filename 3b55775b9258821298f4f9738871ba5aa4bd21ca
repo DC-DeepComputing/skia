@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b26ea18e_87e4585e",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-08T16:20:45Z",
+      "side": 0,
+      "message": "Cleaning up this header (to just need SkVertices),renaming DrawBufferManager to BufferManager, and having SharedContext just forward declare RendererProvider meant most of the touched files in this CL are just correcting includes.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "3b55775b9258821298f4f9738871ba5aa4bd21ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
