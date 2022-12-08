@@ -184,6 +184,9 @@
   {"name": "Build-Mac-Clang-x86_64-Debug-Graphite_Metal",
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*"]}
   },
+  {"name": "Build-Mac-Clang-x86_64-Debug-Graphite_Vulkan",
+   "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*"]}
+  },
   {"name": "Build-Mac-Clang-x86_64-Debug-Metal"},
   {"name": "Build-Mac-Clang-x86_64-Release",
    "cq_config": {}
