@@ -6,8 +6,10 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
