@@ -46,6 +46,30 @@
       },
       "revId": "0f0a47ea25f2e48b3e056d648b7e7b199bb758f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edc54b4_f3f726a9",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-08T17:53:17Z",
+      "side": 1,
+      "message": "Greg, that is a big brain move. This must be why they pay you the big bucks. Done",
+      "parentUuid": "fa408094_c902ce1d",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 5
+      },
+      "revId": "0f0a47ea25f2e48b3e056d648b7e7b199bb758f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
