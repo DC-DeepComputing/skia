@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9296adf3_3ca39fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "The `componentType` is currently used to calculate alignment and size for layout purposes. This is currently limited to just `uint` but we may want support for other types in the future (e.g. `int`). So I opted to leave the underlying integer type generic.\n\nThat said, we could just hard-code the size and alignment to be always 4 instead of relying on the componentType. I think this is OK since WGSL only has `atomic\u003cu32\u003e` and `atomic\u003ci32\u003e` both of which occupy 4-bytes and we won\u0027t be able to represent other types until they add support for them. Plus, removing the `componentType` override simplifies all the error checking code a little bit.\n\nI went ahead and removed the `componentType` override but left the `fScalarType` field in there for now. I made `AtomicType` opaque and added special exceptions for restrictions on opaque types (these were around the workgroup keyword and their use as a struct/block member).\n\nI also decided to go back to making the intrinsics (`atomicAdd`, etc) take the opaque type by value instead of as `inout`. We currently don\u0027t allow opaque types to be declared as an `out` parameter so it felt odd to make an exception just for atomics. For example, the `sample` intrinsics all take a sampler by value, so I decided to follow that. This is also how the GLSL intrinsics on the opaque `atomic_uint` type are declared. Let me know what you think!",
+      "parentUuid": "5877fb44_d9de0510",
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db17c942_022c0772",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 4
@@ -49,6 +67,30 @@
       "writtenOn": "2022-12-08T15:08:58Z",
       "side": 1,
       "message": "These don\u0027t seem to be reporting errors--if it\u0027s only reporting the first case, maybe we need to split the test struct up into multiple structs?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 56
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c24f7b_1b86870e",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db17c942_022c0772",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c90d910_427ec936",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "947fda0f_820e9057",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 65
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aad69d09_293becf2",
@@ -95,6 +161,30 @@
       "writtenOn": "2022-12-08T15:08:58Z",
       "side": 1,
       "message": "`~` as well for completeness?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 5
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f50201_722c8bfe",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aad69d09_293becf2",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -128,6 +218,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e3ffa8e_b7aeed3a",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "218b415d_f6bfbda9",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a754ed7a_0a1cc795",
@@ -151,6 +265,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95c682b0_3d72982e",
+        "filename": "resources/sksl/errors/InvalidAtomicOperations.compute",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a754ed7a_0a1cc795",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 64
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dc482e9_eef0c736",
@@ -164,6 +302,30 @@
       "writtenOn": "2022-12-08T15:20:38Z",
       "side": 1,
       "message": "These could be merged into a shared `if (isAssignment) {` block.\n\nMerging the ref-kind update at L94 into this block as well is also an idea. It could affect error reporting on existing tests, but other than that it seems like it should work. Up to you if you want to try it.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 20
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851debcb_ce4f85e0",
+        "filename": "src/sksl/ir/SkSLBinaryExpression.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T21:00:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dc482e9_eef0c736",
       "range": {
         "startLine": 114,
         "startChar": 4,
