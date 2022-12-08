@@ -39,7 +39,7 @@ class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 class BlenderID;
 class CombinationBuilder;
 #endif
@@ -89,13 +89,15 @@ public:
     void checkAsyncWorkCompletion();
 
 #ifdef SK_ENABLE_PRECOMPILE
+#if 0
     // TODO: add "ShaderID addUserDefinedShader(sk_sp<SkRuntimeEffect>)" here
     // TODO: add "ColorFilterID addUserDefinedColorFilter(sk_sp<SkRuntimeEffect>)" here
     BlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
 
-    void precompile(const PaintOptions&);
-
     void precompile(CombinationBuilder*);
+#endif
+
+    void precompile(const PaintOptions&);
 #endif
 
     /**
