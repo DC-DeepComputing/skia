@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d295c067_4e9ebc29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:20:38Z",
+      "side": 1,
+      "message": "Is it important that the `componentType` of an atomic-type is a primitive numeric type? I am wondering if it would be simpler for atomics to just be treated as a fully opaque type, and rely on the existing opaque-type limitations. It could make the implementation a lot simpler and still be correct.\n\nThe GLSL docs define them as such: \"Atomic counters are Opaque Types\" https://www.khronos.org/opengl/wiki/Atomic_Counter\n\nAFAICS the only interaction with an atomic variable is via intrinsic functions, and there\u0027s no direct relation between the `uint` and `atomic_uint` types.",
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db17c942_022c0772",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 4
@@ -111,6 +128,29 @@
         "startChar": 0,
         "endLine": 49,
         "endChar": 64
+      },
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc482e9_eef0c736",
+        "filename": "src/sksl/ir/SkSLBinaryExpression.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:20:38Z",
+      "side": 1,
+      "message": "These could be merged into a shared `if (isAssignment) {` block.\n\nMerging the ref-kind update at L94 into this block as well is also an idea. It could affect error reporting on existing tests, but other than that it seems like it should work. Up to you if you want to try it.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 20
       },
       "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
