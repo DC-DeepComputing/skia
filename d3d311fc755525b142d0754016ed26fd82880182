@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fb94a5_ec148d2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-08T21:35:42Z",
+      "side": 1,
+      "message": "Excellent! At this point, we probably want to think about when to call `append_stack_rewind`. Seems like the obvious place is right before any backward branch, so we could simply do it in the translation from builder ops to stages?",
+      "revId": "d3d311fc755525b142d0754016ed26fd82880182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
