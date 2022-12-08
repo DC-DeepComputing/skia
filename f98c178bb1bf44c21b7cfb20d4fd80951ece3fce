@@ -46,6 +46,30 @@
       },
       "revId": "f98c178bb1bf44c21b7cfb20d4fd80951ece3fce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ededcba_884215b9",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T03:30:06Z",
+      "side": 1,
+      "message": "\u003e Can we get a similar effect in a less hard-coded way by marking these params as out or inout in the module? (We may need to update Metal to avoid emitting helper functions for the atomic_uint type, but that should be simple enough.)\n\nDone. I had initially mirrored the GLSL \"atomic counter\" operations (the only typed-atomic in GLSL that I know of) that take the variable by value. Then again Metal, SPIR-V, and WGSL all define atomic operations over a pointer, the HLSL ones mark them as `in` and the newer GLSL ones mark them as `inout`. The latter define their operations over a primitive scalar type (e.g. `atomicAdd(inout uint mem, uint data)` https://registry.khronos.org/OpenGL-Refpages/gl4/html/atomicAdd.xhtml), so there is precedent.\n\nI went with `in` for atomicLoad and `inout` for atomicAdd|Store.\n\n\u003e More generally, though -- does anything prevent people from using these types in (for example) binary expressions? Pretty sure we want to disallow that completely, right? (Up to and including assignment?)\n\nGood point, it\u0027s important to disallow pretty much any operation over an atomic that doesn\u0027t involve directly passing it to one of the atomic intrinsics. I just pushed a new Patch Set to the previous CL (review.skia.org/610177) that adds tests and introduces new checks.",
+      "parentUuid": "2be8a996_0a43b467",
+      "range": {
+        "startLine": 1052,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 0
+      },
+      "revId": "f98c178bb1bf44c21b7cfb20d4fd80951ece3fce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
