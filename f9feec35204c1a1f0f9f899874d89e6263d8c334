@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "363d559f_4f0a85f2",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-08T18:38:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31f5a4ab_9eebf5b8",
+      "range": {
+        "startLine": 623,
+        "startChar": 59,
+        "endLine": 623,
+        "endChar": 72
+      },
+      "revId": "f9feec35204c1a1f0f9f899874d89e6263d8c334",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa6a3546_dae63739",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-12-08T18:13:38Z",
       "side": 1,
       "message": "Why do we need this header now?",
+      "revId": "f9feec35204c1a1f0f9f899874d89e6263d8c334",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a896859f_760b67dd",
+        "filename": "tools/flags/CommonFlagsConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-08T18:38:59Z",
+      "side": 1,
+      "message": "I left a comment about it above. It quiets some warnings.",
+      "parentUuid": "fa6a3546_dae63739",
       "revId": "f9feec35204c1a1f0f9f899874d89e6263d8c334",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
