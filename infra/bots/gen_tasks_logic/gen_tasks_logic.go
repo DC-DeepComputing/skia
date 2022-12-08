@@ -2231,6 +2231,8 @@ func (b *jobBuilder) bazelTest() {
 			}
 		case "cpu_tests":
 			break
+		case "toolchain_layering_check":
+			break
 		default:
 			panic("Unsupported Bazel taskdriver " + taskdriverName)
 		}
