@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "836de32a_b2d41883",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-08T18:18:22Z",
+      "side": 1,
+      "message": "Do we really need to store this extra data since we\u0027re already storing the BufferType? If you don\u0027t want to have to type `type \u003d\u003d BufferType::kXferGpuToCpu` multiple times where its used, you could add a helper function for it.",
+      "range": {
+        "startLine": 154,
+        "startChar": 10,
+        "endLine": 154,
+        "endChar": 27
+      },
+      "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
