@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0e3517_44526479",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-12-08T20:40:03Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 15,
+        "startChar": 27,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "1c78384f6a531b4889c8554dd99073c1c796781d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bd2cdd_26fc1c52",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-12-08T20:40:03Z",
+      "side": 1,
+      "message": "Clang generates the map files, is it then Bazel that checks that the maps created are valid, or is it clang that produces an error?",
+      "range": {
+        "startLine": 42,
+        "startChar": 6,
+        "endLine": 42,
+        "endChar": 11
+      },
+      "revId": "1c78384f6a531b4889c8554dd99073c1c796781d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
