@@ -16,6 +16,24 @@
       "message": "Re-reading this code, and thinking about my comment on the previous CL -- I think that the actual begin/end of this function needs to be: save off the current stack, restore the current stack. Otherwise, nested `?:` have the potential to be using the wrong stack, right?\n\neg: `half x \u003d (a \u003e (b \u003e c ? 3 : 4)) ? 1 : 2;`\n\nWe will recurse into pushTernary when we evaluate the the inner condition from the outer condition. The inner condition will set the primary stack as active when it finishes evaluating, but we\u0027ll be at line 665 when we come back to the outer ternary -- we will then call merge_condition_mask with the primary stack active.",
       "revId": "8da911a9420dcf9fca9fe94c2c4a1ae5b422dc0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a190aea4_f0393730",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-08T15:56:43Z",
+      "side": 1,
+      "message": "Believe it or not, I actually had a similar thought at one point when I was AFK, then forgot to take action on it later. Oops :) Thanks for reminding me. PTAL http://review.skia.org/615696",
+      "parentUuid": "af8d83a8_025a3fdb",
+      "revId": "8da911a9420dcf9fca9fe94c2c4a1ae5b422dc0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
