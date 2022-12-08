@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1235d4a_030afe24",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-08T17:40:36Z",
+      "side": 1,
+      "message": "DrawBufferManager.cpp previously defined this as 128 KB (even though the comment said 16 KB). Should that be the value here too?",
+      "range": {
+        "startLine": 25,
+        "startChar": 44,
+        "endLine": 25,
+        "endChar": 46
+      },
+      "revId": "280eb9870fad44267cc9c6d8837883886bcb2a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33f3eb5b_ba3026e9",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 1
