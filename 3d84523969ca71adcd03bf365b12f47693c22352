@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5877fb44_d9de0510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-08T15:22:08Z",
+      "side": 1,
+      "message": "This was actually what I was in the process of writing up, as well. I realize that we need the underlying type for certain things (alignment, size, etc...), but making them opaque would automatically cover all of the expression stuff.",
+      "parentUuid": "d295c067_4e9ebc29",
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db17c942_022c0772",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 4
