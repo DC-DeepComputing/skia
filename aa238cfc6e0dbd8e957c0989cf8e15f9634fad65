@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67118dc8_22e3c29f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-08T16:12:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure this fixes the problem? If you have a ternary inside the condition of another ternary, then the inner ternary is going to have both kTernaryStack and originalStack point at the same place. So it\u0027s going to evaluate the true/false values onto that stack as well, right?",
+      "revId": "aa238cfc6e0dbd8e957c0989cf8e15f9634fad65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
