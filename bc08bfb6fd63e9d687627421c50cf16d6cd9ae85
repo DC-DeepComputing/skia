@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de8531bb_a0c28290",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-09T21:14:19Z",
+      "side": 1,
+      "message": "Following our discussion, I renamed this to `atomicUint`, which should hopefully prevent any confusion with the GLSL atomic counter type.",
+      "parentUuid": "49559b8d_9ee76d1f",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce1feb21_53d99a9a",
         "filename": "src/sksl/ir/SkSLBinaryExpression.cpp",
         "patchSetId": 5
