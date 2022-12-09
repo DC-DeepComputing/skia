@@ -452,7 +452,7 @@ public:
         return SkUnicode_icu::extractBidi(utf8, utf8Units, dir, results);
     }
 
-    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
+    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results, const char* locale) override {
 
         // Convert to UTF16 since we want the results in utf16
         auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);

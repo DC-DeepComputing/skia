@@ -226,7 +226,7 @@ public:
         return true;
     }
 
-    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
+    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results, const char* locale) override {
         *results = fData->fWords;
         return true;
     }
