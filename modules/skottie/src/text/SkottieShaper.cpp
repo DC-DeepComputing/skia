@@ -539,11 +539,9 @@ public:
         case Shaper::Capitalization::kNone:
             break;
         case Shaper::Capitalization::kUpperCase:
-#ifdef SK_UNICODE_AVAILABLE
             if (auto skuni = SkUnicode::Make()) {
                 *fText.writable() = skuni->toUpper(*fText);
             }
-#endif
             break;
         }
     }
