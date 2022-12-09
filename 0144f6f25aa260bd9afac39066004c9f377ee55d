@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af09c6f1_72c6cd83",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T21:30:48Z",
+      "side": 1,
+      "message": "Sounds good.",
+      "parentUuid": "6b2b666d_28924a6e",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 28
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d453ffd9_ef727372",
@@ -220,6 +244,30 @@
       "side": 1,
       "message": "Ended up rewriting this, but please do take another look if you feel so inclined.",
       "parentUuid": "f4dbc659_f40817bd",
+      "range": {
+        "startLine": 37,
+        "startChar": 40,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529e809c_6f5dde63",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T21:30:48Z",
+      "side": 1,
+      "message": "Sounds good to me.",
+      "parentUuid": "c213390d_5bc670e3",
       "range": {
         "startLine": 37,
         "startChar": 40,
@@ -457,6 +505,30 @@
       "side": 1,
       "message": "Yea, I like this better, PTAL.",
       "parentUuid": "2f53c5f2_deda4c55",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 59
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f4982ac_beb53b7b",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T21:30:48Z",
+      "side": 1,
+      "message": "LGTM!",
+      "parentUuid": "1664979c_b0b49790",
       "range": {
         "startLine": 107,
         "startChar": 0,
