@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee2a3ca_83f1fa36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-09T19:45:32Z",
+      "side": 1,
+      "message": "PTAL. The intention is that we\u0027d be able to use this to handle conditional texture uploads as well as the Plot uploads.",
+      "revId": "661d31c44e2c38d54a25b36ec635da5ad049125c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
