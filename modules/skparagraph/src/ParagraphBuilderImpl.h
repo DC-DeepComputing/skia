@@ -62,6 +62,7 @@ public:
     // Support for "Client" unicode
     SkSpan<char> getText();
     const ParagraphStyle& getParagraphStyle() const;
+#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
     std::unique_ptr<Paragraph> BuildWithClientInfo(
                     std::vector<SkUnicode::BidiRegion> bidiRegions,
                     std::vector<SkUnicode::Position> words,
@@ -70,7 +71,7 @@ public:
     void SetUnicode(std::unique_ptr<SkUnicode> unicode) {
         fUnicode = std::move(unicode);
     }
-
+#endif
     // Support for Flutter optimization
     void Reset() override;
 

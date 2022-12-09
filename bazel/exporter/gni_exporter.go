@@ -116,11 +116,21 @@ declare_args() {
   skia_enable_skshaper_tests = skia_enable_skshaper
 }`
 
+// The footer written to modules/skunicode/skunicode.gni.
+const skunicodeFooter = `
+declare_args() {
+  skia_enable_skunicode = true
+}
+declare_args() {
+  skia_use_runtime_icu = false
+}`
+
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
 	"gn/core.gni":                   coreGNIFooter,
 	"gn/sksl_tests.gni":             skslTestsFooter,
 	"modules/skshaper/skshaper.gni": skshaperFooter,
+	"modules/skunicode/skunicode.gni": skunicodeFooter,
 }
 
 // Match variable definition of a list in a *.gni file. For example:
