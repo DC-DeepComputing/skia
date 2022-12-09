@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d90b50de_c91dfbbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-09T19:10:39Z",
+      "side": 1,
+      "message": "That makes sense, I think the RefKind related change was an error on my part. We should treat them as opaque black-boxes as you described.\n\nAs for `in`: we don\u0027t currently require `in` for sampler/texture parameters to intrinsics and user-defined helpers. I don\u0027t know if that should be a requirement or not, though the backend code generators should probably do the right thing for that backend if they encounter an atomic parameter to a function (e.g. pass them by pointer in WGSL, Metal, and SPIR-V). GLSL appears to be more restrictive in that regard, for example, I ran this example through glslang and got these results:\n\n```\n#version 450\n\nshared uint wgAtomic;\n\nvoid helper(in uint a) {\n    atomicAdd(a, 1);  // Causes an error: Atomic memory function can only be used for shader storage block member or shared variable.\n}\n\nvoid main() {\n    atomicAdd(wgAtomic, 1);  // This is valid\n}\n```\nso, maybe we can\u0027t universally support helper functions that deal with atomics if we wanted to support them in GLSL too.",
+      "parentUuid": "5ff6ac36_38118b53",
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db17c942_022c0772",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 4
