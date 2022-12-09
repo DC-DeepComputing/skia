@@ -280,6 +280,7 @@ VkResult VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory& m
     return vmaInvalidateAllocation(fAllocator, allocation, offset, size);
 }
 
+#if defined(SK_USE_LEGACY_VMA_MEMORY_QUERY)
 uint64_t VulkanAMDMemoryAllocator::totalUsedMemory() const {
     VmaTotalStatistics stats;
     vmaCalculateStatistics(fAllocator, &stats);
@@ -291,6 +292,15 @@ uint64_t VulkanAMDMemoryAllocator::totalAllocatedMemory() const {
     vmaCalculateStatistics(fAllocator, &stats);
     return stats.total.statistics.blockBytes;
 }
+#else
+void VulkanAMDMemoryAllocator::totalAllocatedAndUsedMemory(uint64_t& allocated_memory,
+                                                           uint64_t& used_memory) const {
+    VmaTotalStatistics stats;
+    vmaCalculateStatistics(fAllocator, &stats);
+    allocated_memory = stats.total.statistics.blockBytes;
+    used_memory = stats.total.statistics.allocationBytes;
+}
+#endif  // SK_USE_LEGACY_VMA_MEMORY_QUERY
 
 #endif // SK_USE_VMA
 

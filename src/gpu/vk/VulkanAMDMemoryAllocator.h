@@ -65,8 +65,12 @@ public:
     VkResult invalidateMemory(const VulkanBackendMemory&, VkDeviceSize offset,
                               VkDeviceSize size) override;
 
+#if defined(SK_USE_LEGACY_VMA_MEMORY_QUERY)
     uint64_t totalUsedMemory() const override;
     uint64_t totalAllocatedMemory() const override;
+#else
+    void totalAllocatedAndUsedMemory(uint64_t&, uint64_t&) const override;
+#endif
 
 private:
     VulkanAMDMemoryAllocator(VmaAllocator allocator, sk_sp<const VulkanInterface> interface,
