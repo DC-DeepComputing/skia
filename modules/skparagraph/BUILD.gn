@@ -10,7 +10,7 @@ declare_args() {
   paragraph_bench_enabled = false
 }
 
-if (skia_enable_skparagraph && skia_enable_skshaper) {
+if (skia_enable_skparagraph && (skia_use_icu || skia_use_client_icu) && skia_enable_skshaper) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
     include_dirs = [
@@ -72,6 +72,9 @@ if (skia_enable_skparagraph && skia_enable_skshaper) {
           "../..:test",
           "../skshaper",
         ]
+        if (skia_use_client_icu) {
+          defines = [ "SKUNICODE_TEST_AVAILABLE" ]
+        }
       } else {
         sources = []
       }
