@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "560ce795_e55901f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-09T08:39:51Z",
+      "side": 1,
+      "message": "Could anyone CQ+2 this? I think I don\u0027t have committer permission on skia repo.",
+      "revId": "5ce18464a00d39f6f7b9ace2b48f4df2819054c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
