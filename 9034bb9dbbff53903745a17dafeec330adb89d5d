@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b563d416_72c8cfdc",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T18:59:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd98638b_350e0a00",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 71
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f540ea9_e4253446",
@@ -425,6 +449,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b46aaa3_df128a8d",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T18:59:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20502bc4_9bb1888d",
+      "range": {
+        "startLine": 112,
+        "startChar": 12,
+        "endLine": 112,
+        "endChar": 59
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8726605_9345bc0d",
@@ -486,6 +534,30 @@
       "side": 1,
       "message": "yeah I think it should probably just get the target() instead.",
       "parentUuid": "27afca9a_cf2b71c1",
+      "range": {
+        "startLine": 125,
+        "startChar": 63,
+        "endLine": 125,
+        "endChar": 78
+      },
+      "revId": "9034bb9dbbff53903745a17dafeec330adb89d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "befaa525_f68d1360",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T18:59:25Z",
+      "side": 1,
+      "message": "I added a refTarget() method as well, which is used by the Recorder while snapping.",
+      "parentUuid": "3b92ea6d_c05d1d61",
       "range": {
         "startLine": 125,
         "startChar": 63,

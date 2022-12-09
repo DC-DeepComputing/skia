@@ -22,6 +22,30 @@
       },
       "revId": "71348547631a1e4bfdd667f89d4e8857d8bdac33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20cf64cc_14bfa290",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T18:59:25Z",
+      "side": 1,
+      "message": "Done. Assuming we\u0027ll hold off on adding getDeferredCanvas until we find we need it.",
+      "parentUuid": "64ef6d4f_2b27ee04",
+      "range": {
+        "startLine": 123,
+        "startChar": 5,
+        "endLine": 123,
+        "endChar": 98
+      },
+      "revId": "71348547631a1e4bfdd667f89d4e8857d8bdac33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
