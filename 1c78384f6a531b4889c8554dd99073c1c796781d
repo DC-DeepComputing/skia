@@ -93,6 +93,30 @@
       },
       "revId": "1c78384f6a531b4889c8554dd99073c1c796781d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e131724_8b670ac1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-09T15:01:33Z",
+      "side": 1,
+      "message": "I stand corrected. *Bazel* generates these .cppmap files; clang consumes them and verifies the relationships.\n\nhttps://github.com/bazelbuild/bazel/blob/4e940a73151e2e68f8eb8725a3c743ea30013691/src/main/java/com/google/devtools/build/lib/rules/cpp/CppModuleMapAction.java#L42",
+      "parentUuid": "4c8d328f_3addbf90",
+      "range": {
+        "startLine": 42,
+        "startChar": 6,
+        "endLine": 42,
+        "endChar": 11
+      },
+      "revId": "1c78384f6a531b4889c8554dd99073c1c796781d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
