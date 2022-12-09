@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71dca06a_3d648ea4",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T19:47:07Z",
+      "side": 1,
+      "message": "we definitely use iff in other parts of Skia. So I would fine keeping this as is. But also doesn\u0027t hurt to spell it out either.",
+      "parentUuid": "951a0d36_a443f649",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 28
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d453ffd9_ef727372",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 14
@@ -193,6 +217,30 @@
       "writtenOn": "2022-12-09T19:43:04Z",
       "side": 1,
       "message": "In the replay case, it\u0027s hypothetically possible to just pass the Texture directly into lazyInstantiate() that we want to use, which would simplify the LazyProxyData approach. Is the LazyInstantiateCallback here also part of the Promise image system? If so, then I can see why we\u0027re keeping the replay target as close to the other lazy images, although I would be curious to hear others\u0027 thoughts on if having a lazyInstantiate(Texture*) that skipped the callback would be worth it to simplify the target instantiation on replay.",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 59
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b240ab45_a23c1a78",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T19:47:07Z",
+      "side": 1,
+      "message": "Yeah we considered adding an additional instantiation that took the texture directly. But we went with this approach so that the whole concept of Lazy stays consistent and instantiates the same way with a callback. Otherwise we\u0027d need two different types of Lazy since we still want the general properties of checking lazy to not instantiate on snap.",
+      "parentUuid": "a1f04817_e180b0ff",
       "range": {
         "startLine": 107,
         "startChar": 0,
