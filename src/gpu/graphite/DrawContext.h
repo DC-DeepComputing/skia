@@ -57,6 +57,7 @@ public:
     const SkImageInfo&  imageInfo() const { return fImageInfo;    }
     TextureProxy* target()                { return fTarget.get(); }
     const TextureProxy* target()    const { return fTarget.get(); }
+    sk_sp<TextureProxy> refTarget()       { return fTarget; }
 
     TextureProxyView readSurfaceView(const Caps*);
 
