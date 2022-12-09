@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2fe564_c69a7121",
+        "filename": "infra/bots/task_drivers/toolchain_layering_check/toolchain_layering_check.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-12-09T15:47:40Z",
+      "side": 1,
+      "message": "Nit: having these failed steps will show up at the top level may be confusing in the UI; the steps get expanded because they failed but the run as a whole is successful.  I might suggest wrapping them in a \"verify build failed\" step or some such, which should prevent them from getting auto-expanded and will make it clearer that they\u0027re supposed to fail.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "ac06ac152a9794424a7e7316b2ae6b99fbac58c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
