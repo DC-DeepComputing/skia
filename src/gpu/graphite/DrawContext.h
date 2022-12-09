@@ -78,7 +78,17 @@ public:
                       sk_sp<TextureProxy> targetProxy,
                       SkColorType colorType,
                       const std::vector<MipLevel>& levels,
-                      const SkIRect& dstRect);
+                      const SkIRect& dstRect,
+                      std::unique_ptr<ConditionalUploadContext>);
+
+    // This upload will occur on playback only if certain conditions are met.
+    // Example: plot uploads for the DrawAtlas can be skipped on playback if their data is already
+    // loaded into the atlas.
+    bool recordConditionalUpload(Recorder* recorder,
+                                 sk_sp<TextureProxy> targetProxy,
+                                 SkColorType colorType,
+                                 const std::vector<MipLevel>& levels,
+                                 const SkIRect& dstRect);
 
 #ifdef SK_ENABLE_PIET_GPU
     bool recordPietSceneRender(Recorder* recorder,
