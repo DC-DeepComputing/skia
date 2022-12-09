@@ -4,9 +4,10 @@
 # found in the LICENSE file.
 
 import("../../gn/skia.gni")
+import("../skunicode/skunicode.gni")
 import("skshaper.gni")
 
-if (skia_enable_skshaper) {
+if (skia_enable_skunicode && skia_enable_skshaper) {
   config("public_config") {
     include_dirs = [ "include" ]
     defines = []

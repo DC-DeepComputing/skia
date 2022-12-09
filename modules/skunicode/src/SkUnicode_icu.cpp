@@ -566,7 +566,7 @@ public:
     }
 };
 
-std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedInicode() {
+std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedUnicode() {
     #if defined(SK_USING_THIRD_PARTY_ICU)
     if (!SkLoadICU()) {
         static SkOnce once;

@@ -23,10 +23,6 @@ std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(
         const ParagraphStyle& style, sk_sp<FontCollection> fontCollection) {
-    auto unicode = SkUnicode::Make();
-    if (nullptr == unicode) {
-        return nullptr;
-    }
     return std::make_unique<ParagraphBuilderImpl>(style, fontCollection);
 }
 
@@ -165,6 +161,7 @@ const ParagraphStyle& ParagraphBuilderImpl::getParagraphStyle() const {
     return fParagraphStyle;
 }
 
+#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
 std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
                 std::vector<SkUnicode::BidiRegion> bidiRegionsUtf16,
                 std::vector<SkUnicode::Position> wordsUtf16,
@@ -207,14 +204,14 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::BuildWithClientInfo(
     utf8IndexForUtf16Index.clear();
 
     // This is the place where SkUnicode is paired with SkParagraph
-    fUnicode =
-            SkUnicode::MakeClientBasedUnicode(text,
-                            std::move(bidiRegionsUtf8),
-                            std::move(wordsUtf8),
-                            std::move(graphemeBreaksUtf8),
-                            std::move(lineBreaksUtf8));
+    fUnicode = SkUnicode::MakeClientBasedUnicode(text,
+                                std::move(bidiRegionsUtf8),
+                                std::move(wordsUtf8),
+                                std::move(graphemeBreaksUtf8),
+                                std::move(lineBreaksUtf8));
     return this->Build();
 }
+#endif
 
 void ParagraphBuilderImpl::Reset() {
     fTextStyles.clear();
