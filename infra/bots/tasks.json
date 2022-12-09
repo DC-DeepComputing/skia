@@ -94440,6 +94440,11 @@
     "Build-Debian10-Clang-arm-Release-Android_API26": {},
     "Build-Debian10-Clang-arm64-Debug-Android": {},
     "Build-Debian10-Clang-x86_64-Debug": {},
+    "Build-Debian10-Clang-x86_64-Debug-Graphite_Vulkan": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
     "Build-Debian10-Clang-x86_64-Debug-Tidy": {},
     "Build-Debian10-Clang-x86_64-Debug-Wuffs": {
       "location_regexes": [
@@ -94494,6 +94499,11 @@
     "Build-Win-Clang-x86_64-Release-Direct3D": {},
     "Build-Win-Clang-x86_64-Release-Vulkan": {},
     "Build-Win-MSVC-arm64-Release-ANGLE": {},
+    "Build-Win-MSVC-x86_64-Debug-Graphite_Vulkan": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
     "Build-Win-MSVC-x86_64-Release-Vulkan": {},
     "BuildStats-Debian10-EMCC-wasm-Release-CanvasKit": {
       "location_regexes": [
