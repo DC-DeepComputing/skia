@@ -226,8 +226,13 @@ public:
         return true;
     }
 
+<<<<<<< PATCH SET (b35e3c Breaking down Copy ReorderVisuals (3))
+    bool getWords(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
+        *results = fWords;
+=======
     bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
         *results = fData->fWords;
+>>>>>>> BASE      (bfcf3e Breaking down Copy ReorderVisuals (2))
         return true;
     }
 
