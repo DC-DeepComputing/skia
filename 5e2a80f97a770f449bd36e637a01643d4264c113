@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6babd267_04f3681b",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-09T15:00:25Z",
+      "side": 1,
+      "message": "This was necessary because otherwise the test output would have whitespace at the end of `stack_rewind` lines, which gets eliminated by most text editors automatically (and probably triggers Gerrit errors).",
+      "range": {
+        "startLine": 828,
+        "startChar": 39,
+        "endLine": 828,
+        "endChar": 51
+      },
+      "revId": "5e2a80f97a770f449bd36e637a01643d4264c113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
