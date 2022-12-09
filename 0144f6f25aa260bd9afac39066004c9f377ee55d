@@ -88,6 +88,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ed14fa3_7ab4f99b",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Good call, I ended up reworking the whole description.",
+      "parentUuid": "ce280489_75d3958e",
+      "range": {
+        "startLine": 35,
+        "startChar": 64,
+        "endLine": 35,
+        "endChar": 84
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b2b666d_28924a6e",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "I don\u0027t have super strong feelings about this, but I slightly prefer iff (and fwiw have seen this in code documentation in various places).",
+      "parentUuid": "71dca06a_3d648ea4",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 28
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d453ffd9_ef727372",
@@ -111,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0438f679_a3f77af2",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d453ffd9_ef727372",
+      "range": {
+        "startLine": 36,
+        "startChar": 69,
+        "endLine": 36,
+        "endChar": 70
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4dbc659_f40817bd",
@@ -124,6 +196,30 @@
       "writtenOn": "2022-12-09T19:43:04Z",
       "side": 1,
       "message": "\"passed into makeDeferredCanvas()\"?",
+      "range": {
+        "startLine": 37,
+        "startChar": 40,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c213390d_5bc670e3",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Ended up rewriting this, but please do take another look if you feel so inclined.",
+      "parentUuid": "f4dbc659_f40817bd",
       "range": {
         "startLine": 37,
         "startChar": 40,
@@ -181,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2c6e376_0641d4f6",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07e9a0db_b82963d9",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 68
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c76cf13_38d56185",
@@ -217,6 +337,30 @@
       "writtenOn": "2022-12-09T19:43:04Z",
       "side": 1,
       "message": "+1",
+      "parentUuid": "1c76cf13_38d56185",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 71
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d47fa8db_dec4fc13",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Whoops, good call.",
       "parentUuid": "1c76cf13_38d56185",
       "range": {
         "startLine": 140,
@@ -289,6 +433,30 @@
       "side": 1,
       "message": "Okay that makes sense. In that case, wdyt about having LazyProxyData be defined like:\n\n    class LazyProxyData {\n        LazyProxyData(TextureInfo ) {\n            fTargetProxy \u003d MakeFullyLazy(..., [this](Rp*) {\n                SkASSERT(SkToBool(fReplayDest));\n                return std::move(fReplayDest);\n            }),\n        }\n        \n        // Passed into Device::Make()\n        sk_sp\u003cTextureProxy\u003e refLazyProxy() { return fTargetProxy; }\n    \n        void lazyInstantiate(ResourceProvider, sk_sp\u003cTexture\u003e texture) {\n            fReplayDest \u003d std::move(texture);\n            fTargetProxy-\u003elazyInstantiate(rp);\n        }\n    private:\n        sk_sp\u003cTextureProxy\u003e fTargetProxy;\n        sk_ps\u003cTexture\u003e fReplayDest;\n    }",
       "parentUuid": "b240ab45_a23c1a78",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 59
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1664979c_b0b49790",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-12-09T21:03:42Z",
+      "side": 1,
+      "message": "Yea, I like this better, PTAL.",
+      "parentUuid": "2f53c5f2_deda4c55",
       "range": {
         "startLine": 107,
         "startChar": 0,
