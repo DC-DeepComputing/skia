@@ -14,9 +14,9 @@
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkTFitsIn.h"
-#include "src/core/SkTHash.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkTHash.h"
 #include "src/utils/SkUTF.h"
 
 #include <functional>
