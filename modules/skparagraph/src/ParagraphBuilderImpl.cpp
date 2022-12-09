@@ -23,10 +23,6 @@ std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(
 
 std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(
         const ParagraphStyle& style, sk_sp<FontCollection> fontCollection) {
-    auto unicode = SkUnicode::Make();
-    if (nullptr == unicode) {
-        return nullptr;
-    }
     return std::make_unique<ParagraphBuilderImpl>(style, fontCollection);
 }
 

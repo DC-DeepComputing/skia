@@ -44,7 +44,7 @@ void SkShaper::PurgeCaches() {
 
 std::unique_ptr<SkShaper::BiDiRunIterator>
 SkShaper::MakeBiDiRunIterator(const char* utf8, size_t utf8Bytes, uint8_t bidiLevel) {
-#ifdef SK_UNICODE_AVAILABLE
+#ifdef SK_UNICODE_ICU_IMPLEMENTATION
     auto unicode = SkUnicode::Make();
     if (!unicode) {
         return nullptr;
@@ -63,7 +63,7 @@ SkShaper::MakeBiDiRunIterator(const char* utf8, size_t utf8Bytes, uint8_t bidiLe
 
 std::unique_ptr<SkShaper::ScriptRunIterator>
 SkShaper::MakeScriptRunIterator(const char* utf8, size_t utf8Bytes, SkFourByteTag scriptTag) {
-#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_UNICODE_AVAILABLE)
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
     auto unicode = SkUnicode::Make();
     if (!unicode) {
         return nullptr;
