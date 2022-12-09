@@ -22,6 +22,30 @@
       },
       "revId": "ac06ac152a9794424a7e7316b2ae6b99fbac58c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9105584e_9dd6b92b",
+        "filename": "infra/bots/task_drivers/toolchain_layering_check/toolchain_layering_check.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-09T19:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d2fe564_c69a7121",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "ac06ac152a9794424a7e7316b2ae6b99fbac58c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
