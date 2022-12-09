@@ -3024,7 +3024,7 @@ void SkTestCanvas<SkSerializeSlugTestKey>::onDrawGlyphRunList(
     }
 }
 
-class HandleManager : public SkStrikeServer::DiscardableHandleManager {
+class ServerHandleManager : public SkStrikeServer::DiscardableHandleManager {
 public:
     SkDiscardableHandleId createHandle() override {
         return 0;
@@ -3039,10 +3039,42 @@ public:
     }
 };
 
+class ClientHandleManager : public SkStrikeClient::DiscardableHandleManager {
+public:
+    bool deleteHandle(SkDiscardableHandleId id) override {
+        return fIsLocked;
+    }
+
+    void assertHandleValid(SkDiscardableHandleId id) override {
+        DiscardableHandleManager::assertHandleValid(id);
+    }
+
+    void notifyCacheMiss(SkStrikeClient::CacheMissType type, int fontSize) override {
+
+    }
+
+    void notifyReadFailure(const ReadFailureData& data) override {
+        DiscardableHandleManager::notifyReadFailure(data);
+    }
+
+    void unlock() {
+        fIsLocked = false;
+    }
+
+private:
+    bool fIsLocked{true};
+};
+
 SkTestCanvas<SkRemoteSlugTestKey>::SkTestCanvas(SkCanvas* canvas)
         : SkCanvas(sk_ref_sp(canvas->baseDevice()))
-        , fHandleManager(new HandleManager{})
-        , fStrikeServer(fHandleManager.get()) {}
+        , fServerHandleManager(new ServerHandleManager{})
+        , fClientHandleManager(new ClientHandleManager{})
+        , fStrikeServer(fServerHandleManager.get())
+        , fStrikeClient(fClientHandleManager) {}
+
+SkTestCanvas<SkRemoteSlugTestKey>::~SkTestCanvas() {
+    static_cast<ClientHandleManager*>(fClientHandleManager.get())->unlock();
+}
 
 void SkTestCanvas<SkRemoteSlugTestKey>::onDrawGlyphRunList(
         const sktext::GlyphRunList& glyphRunList, const SkPaint& paint) {
@@ -3056,6 +3088,7 @@ void SkTestCanvas<SkRemoteSlugTestKey>::onDrawGlyphRunList(
             this->SkCanvas::onDrawGlyphRunList(glyphRunList, layer->paint());
         } else {
             sk_sp<SkData> bytes;
+            std::vector<uint8_t> glyphBytes;
             {
                 auto analysisCanvas = fStrikeServer.makeAnalysisCanvas(
                         this->topDevice()->width(),
@@ -3069,10 +3102,12 @@ void SkTestCanvas<SkRemoteSlugTestKey>::onDrawGlyphRunList(
                 if (slug != nullptr) {
                     bytes = slug->serialize();
                 }
+                fStrikeServer.writeStrikeData(&glyphBytes);
             }
             {
+                fStrikeClient.readStrikeData(glyphBytes.data(), glyphBytes.size());
                 if (bytes != nullptr) {
-                    auto slug = Slug::Deserialize(bytes->data(), bytes->size());
+                    auto slug = Slug::Deserialize(bytes->data(), bytes->size(), &fStrikeClient);
                     this->drawSlug(slug.get());
                 }
             }
