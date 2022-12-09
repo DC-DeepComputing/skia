@@ -260,6 +260,8 @@ class SKUNICODE_API SkUnicode {
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
 
+        virtual std::unique_ptr<SkUnicode> copy() = 0;
+
         static std::unique_ptr<SkUnicode> Make();
 
         static std::unique_ptr<SkUnicode> Make(SkSpan<char> text,
