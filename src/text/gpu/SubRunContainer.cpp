@@ -1339,12 +1339,18 @@ SubRunOwner DirectMaskSubRun::MakeFromBuffer(const SkMatrix& initialPositionMatr
     SkRect runBounds = buffer.readRect();
 
     SkSpan<SkPoint> leftTop = make_points_from_buffer(buffer, alloc);
-    if (leftTop.empty()) { return nullptr; }
+    if (leftTop.empty()) {
+        return nullptr;
+    }
     const int glyphCount = SkCount(leftTop);
 
     auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
-    if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
-    if (!buffer.validate(SkCount(glyphVector->glyphs()) == glyphCount)) { return nullptr; }
+    if (!buffer.validate(glyphVector.has_value())) {
+        return nullptr;
+    }
+    if (!buffer.validate(SkCount(glyphVector->glyphs()) == glyphCount)) {
+        return nullptr;
+    }
     SkASSERT(buffer.isValid());
     return alloc->makeUnique<DirectMaskSubRun>(
             maskType, initialPositionMatrix, runBounds, leftTop,
@@ -2230,7 +2236,9 @@ SubRunOwner SubRun::MakeFromBuffer(const SkMatrix& initialPositionMatrix,
         return nullptr;
     }
     auto maker = makers[subRunTypeInt];
-    if (!buffer.validate(maker != nullptr)) { return nullptr; }
+    if (!buffer.validate(maker != nullptr)) {
+        return nullptr;
+    }
     return maker(initialPositionMatrix, buffer, alloc, client);
 }
 
@@ -2274,16 +2282,22 @@ SubRunContainerOwner SubRunContainer::MakeFromBufferInAlloc(SkReadBuffer& buffer
                                                             SubRunAllocator* alloc) {
     SkMatrix positionMatrix;
     buffer.readMatrix(&positionMatrix);
-    if (!buffer.isValid()) { return nullptr; }
+    if (!buffer.isValid()) {
+        return nullptr;
+    }
     SubRunContainerOwner container = alloc->makeUnique<SubRunContainer>(positionMatrix);
 
     int subRunCount = buffer.readInt();
     SkASSERT(subRunCount > 0);
-    if (!buffer.validate(subRunCount > 0)) { return nullptr; }
+    if (!buffer.validate(subRunCount > 0)) {
+        return nullptr;
+    }
     for (int i = 0; i < subRunCount; ++i) {
         auto subRunOwner = SubRun::MakeFromBuffer(
                 container->initialPosition(), buffer, alloc, client);
-        if (!buffer.validate(subRunOwner != nullptr)) { return nullptr; }
+        if (!buffer.validate(subRunOwner != nullptr)) {
+            return nullptr;
+        }
         if (subRunOwner != nullptr) {
             container->fSubRuns.append(std::move(subRunOwner));
         }
