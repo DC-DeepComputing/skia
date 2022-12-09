@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a2f164_2a012650",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T21:10:45Z",
+      "side": 1,
+      "message": "I think you need to update VulkanAMDMemoryAllocator to handle the new virtuals",
+      "revId": "47a90b07845988e60fd8afc151028c09eaf6b71c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
