@@ -1118,7 +1118,7 @@ describe('Paragraph Behavior', function() {
         fontMgr.delete();
         builder.delete();
     });
-
+/* It would only work now with skia_use_icu=true skia_use_client_icu=true
     // The purpose of this text is to make sure that we can use Client ICU
     // API for English text and get the results reasonably similar to the
     // normal paragraph API.
@@ -1202,7 +1202,7 @@ describe('Paragraph Behavior', function() {
         console.log('paragraph.getMinIntrinsicWidth', paragraph.getMinIntrinsicWidth(), '?= 341.399');
 
         const lineMetrics = paragraph.getLineMetrics();
-        console.log('lineMetrics.length', lineMetrics.length, '?= 3'); // 3 lines worth of metrics
+        //console.log('lineMetrics.length', lineMetrics.length, '?= 3'); // 3 lines worth of metrics
         const flm = lineMetrics[0]; // First Line Metric
         console.log('flm.startIndex', flm.startIndex, '?= 0');
         console.log('flm.endExcludingWhitespaces', flm.endExcludingWhitespaces, '?= 19');
@@ -1228,7 +1228,7 @@ describe('Paragraph Behavior', function() {
         CanvasKit.Free(mallocedGraphemes);
         CanvasKit.Free(mallocedLineBreaks);
     });
-
+*/
     gm('paragraph_fontSize_and_heightMultiplier_0', (canvas) => {
         const fontMgr = CanvasKit.FontMgr.FromData(robotoFontBuffer);
 

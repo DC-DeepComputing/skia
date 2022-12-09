@@ -39,6 +39,13 @@
     #endif
 #endif
 
+// Make SK_UNICODE_ICU_IMPLEMENTATION default
+#ifdef SK_UNICODE_AVAILABLE
+    #if !defined(SK_UNICODE_ICU_IMPLEMENTATION) && !defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+        #define SK_UNICODE_ICU_IMPLEMENTATION
+    #endif
+#endif
+
 class SKUNICODE_API SkBidiIterator {
 public:
     typedef int32_t Position;
@@ -265,6 +272,26 @@ class SKUNICODE_API SkUnicode {
 
         static std::unique_ptr<SkUnicode> Make();
 
+<<<<<<< PATCH SET (d528a2 Breaking down Copy ReorderVisuals (4))
+        static std::unique_ptr<SkUnicode> Make(
+                SkSpan<char> text,
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> words,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+#ifdef SK_UNICODE_ICU_IMPLEMENTATION
+        static std::unique_ptr<SkUnicode> MakeIcuUnicode();
+#endif
+
+#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
+        static std::unique_ptr<SkUnicode> MakeClientUnicode(
+                SkSpan<char> text,
+                std::vector<SkUnicode::BidiRegion> bidiRegions,
+                std::vector<SkUnicode::Position> words,
+                std::vector<SkUnicode::Position> graphemeBreaks,
+                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+=======
 #ifdef SKUNICODE_IMPLEMENTATION
         static std::unique_ptr<SkUnicode> MakeClientBasedUnicode
                   (SkSpan<char> text,
@@ -274,6 +301,7 @@ class SKUNICODE_API SkUnicode {
                    std::vector<SkUnicode::LineBreakBefore> lineBreaks);
 
         static std::unique_ptr<SkUnicode> MakeIcuBasedInicode();
+>>>>>>> BASE      (a95750 Breaking down Copy ReorderVisuals (3))
 #endif
 };
 
