@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0399a2b9_6c01f5a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-09T13:35:56Z",
+      "side": 1,
+      "message": "It\u0027s not *that* bad. 5 clang flags and 1 file we need to generate doesn\u0027t seem like too much. A lot of this change is documentation and the test cases.",
+      "parentUuid": "64f8c0cb_c512a1ef",
+      "revId": "41dab53f23c3bab3a40322ad7b2426d9f60eee69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84888126_febb8321",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-08T21:32:31Z",
       "side": 1,
       "message": "argc",
+      "range": {
+        "startLine": 8,
+        "startChar": 13,
+        "endLine": 8,
+        "endChar": 17
+      },
+      "revId": "41dab53f23c3bab3a40322ad7b2426d9f60eee69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db21db8c_866884ae",
+        "filename": "experimental/bazel_test/client/main.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-09T13:35:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84888126_febb8321",
       "range": {
         "startLine": 8,
         "startChar": 13,
