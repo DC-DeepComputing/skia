@@ -326,6 +326,7 @@ void RemoteStrike::writePendingGlyphs(Serializer* serializer) {
 void RemoteStrike::ensureScalerContext() {
     if (fContext == nullptr) {
         fContext = fStrikeSpec->createScalerContext();
+        fStrikeSpec->findOrCreateStrike();
     }
 }
 
