@@ -10,7 +10,11 @@ declare_args() {
   text_bench_enabled = false
 }
 
+<<<<<<< PATCH SET (8e18ad Breaking down Copy ReorderVisuals (4))
+if (skia_use_icu && skia_enable_sktext && skia_enable_skshaper) {
+=======
 if (skia_enable_sktext && skia_enable_skshaper && skia_use_harfbuzz) {
+>>>>>>> BASE      (aedfc8 [graphite] Fix Dawn validation error due to hasDynamicOffset)
   config("public_config") {
     include_dirs = [ "include" ]
   }
