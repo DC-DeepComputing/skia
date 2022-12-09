@@ -264,7 +264,6 @@ cc_defaults {
         "libexpat",
         "libft2",
         // Required by Skottie
-        "libicu",
         "libharfbuzz_ng",
     ],
     // Required by Skottie
@@ -281,14 +280,28 @@ cc_defaults {
     target: {
       android: {
         shared_libs: [
+            "libandroidicu",
             "libheif",
             "libimage_io",
+        ],
+        export_shared_lib_headers: [
+            "libandroidicu",
         ],
         static_libs: [
             "libjpegrecoverymap",
             "libjpegdecoder",
             "libjpegencoder",
-        ]
+        ],
+      },
+      host: {
+        shared_libs: [
+            "libicui18n",
+            "libicuuc",
+        ],
+        export_shared_lib_headers: [
+            "libicui18n",
+            "libicuuc",
+        ],
       },
       darwin: {
         host_ldlibs: [
