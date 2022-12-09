@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62168aa2_bd57b086",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-09T18:28:57Z",
+      "side": 1,
+      "message": "FYI, I tested your CL and got below errors. Maybe we should make transfer buffer and draw buffer have same data layout, so we can copy data with just one copy.\n\n```\nCommand line arguments: -b grdawn \nDevice error: Copy size (306) is not a multiple of 4.\n - While encoding [CommandEncoder].CopyBufferToBuffer([Buffer \"Xfer CPU to GPU\"], 2128, [Buffer \"Index\"], 192, 306).\n\n../../tools/sk_app/GraphiteDawnWindowContext.cpp:130: fatal error: \"assert(false)\"\n```",
+      "range": {
+        "startLine": 260,
+        "startChar": 69,
+        "endLine": 260,
+        "endChar": 84
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
