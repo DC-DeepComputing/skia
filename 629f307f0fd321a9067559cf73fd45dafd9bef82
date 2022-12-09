@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f5a2e1b_4762b8a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-09T19:55:32Z",
+      "side": 1,
+      "message": "I am breaking down \"Copy ReorderVisuals\" CL because it sort of got out of hands and is very hard to review and follow...",
+      "revId": "629f307f0fd321a9067559cf73fd45dafd9bef82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
