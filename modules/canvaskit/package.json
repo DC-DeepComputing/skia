@@ -17,5 +17,8 @@
     "test": "make test-continuous"
   },
   "author": "",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "canvaskit-wasm": "^0.37.2"
+  }
 }
