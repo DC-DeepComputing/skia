@@ -3,9 +3,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("../skunicode/skunicode.gni")
 import("../../gn/skia.gni")
 
-if (skia_enable_skottie) {
+if (skia_enable_skottie && skia_enable_skunicode) {
   config("public_config") {
     defines = [ "SK_ENABLE_SKOTTIE" ]
     include_dirs = [ "include" ]
