@@ -147,7 +147,7 @@ VulkanBuffer::VulkanBuffer(const VulkanSharedContext* sharedContext,
                            PrioritizeGpuReads prioritizeGpuReads,
                            VkBuffer buffer,
                            const skgpu::VulkanAlloc& alloc)
-        : Buffer(sharedContext, size, type, prioritizeGpuReads)
+        : Buffer(sharedContext, size)
         , fBuffer(std::move(buffer))
         , fAlloc(alloc)
         // For now, we can assume write buffers for all types except BufferType::XferGpuToCpu.
