@@ -43,6 +43,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "951a0d36_a443f649",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "Is this meant to be \"if-and-only-if\"? If so, it might be useful to spell it out since I\u0027m not sure how commonly used that is outside of math proofs, and could look like a typo.",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 28
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d453ffd9_ef727372",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "nit: Graphite?",
+      "range": {
+        "startLine": 36,
+        "startChar": 69,
+        "endLine": 36,
+        "endChar": 70
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4dbc659_f40817bd",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "\"passed into makeDeferredCanvas()\"?",
+      "range": {
+        "startLine": 37,
+        "startChar": 40,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17344cbc_f7bbcc8c",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "Would this, and some of the data movement during snap, be simpler if LazyProxyData owned (and possibly constructed) the target proxy as well, and then the `fTargetProxyDevice` took a ref to it after fTargetProxyData was created?",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 68
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c76cf13_38d56185",
         "filename": "src/gpu/graphite/Surface_Graphite.cpp",
         "patchSetId": 14
@@ -59,6 +151,53 @@
         "startChar": 4,
         "endLine": 140,
         "endChar": 71
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "926808f3_9e9c6110",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "1c76cf13_38d56185",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 71
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f04817_e180b0ff",
+        "filename": "src/gpu/graphite/TextureProxy.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-09T19:43:04Z",
+      "side": 1,
+      "message": "In the replay case, it\u0027s hypothetically possible to just pass the Texture directly into lazyInstantiate() that we want to use, which would simplify the LazyProxyData approach. Is the LazyInstantiateCallback here also part of the Promise image system? If so, then I can see why we\u0027re keeping the replay target as close to the other lazy images, although I would be curious to hear others\u0027 thoughts on if having a lazyInstantiate(Texture*) that skipped the callback would be worth it to simplify the target instantiation on replay.",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 59
       },
       "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
