@@ -22,6 +22,108 @@
       },
       "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce1feb21_53d99a9a",
+        "filename": "src/sksl/ir/SkSLBinaryExpression.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "Now that atomics resolve to opaque types, I don\u0027t think we need the extra check here.",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9983d302_570b40d7",
+        "filename": "src/sksl/ir/SkSLConstructorArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "Is this check still needed, or does something higher up prevent it now?",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae2d81f_24dcb80a",
+        "filename": "src/sksl/ir/SkSLConstructorStruct.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "Same question here.",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bf6ea28_493e20d0",
+        "filename": "src/sksl/ir/SkSLPrefixExpression.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "These seem unnecessary now (isNumber will return false, right?)",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5958b5b9_fa2b1d0a",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "All of the other queries compute their answer on demand, rather than caching the result. Probably best to keep the same pattern for consistency.",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36757437_8bc2fcd7",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-09T13:55:27Z",
+      "side": 1,
+      "message": "`error` can\u0027t be true here. Might be better to just combine this with the previous condition (or add a check before it that looks for atomics, and sets error to true?)",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
