@@ -131,6 +131,9 @@ public:
     bool pushExpression(const Expression& e);
     bool pushLiteral(const Literal& l);
     bool pushTernaryExpression(const TernaryExpression& t);
+    bool pushTernaryExpression(const Expression& test,
+                               const Expression& ifTrue,
+                               const Expression& ifFalse);
     bool pushVariableReference(const VariableReference& v);
 
     /** Copies an expression from the value stack and copies it into slots. */
@@ -616,6 +619,21 @@ bool Generator::pushBinaryExpression(const BinaryExpression& e) {
     Operator basicOp = e.getOperator().removeAssignment();
 
     switch (basicOp.kind()) {
+        case OperatorKind::LOGICALAND: {
+            // We rewrite `a && b` as `a ? b : false`.
+            // This generates pretty solid code and gives us the required short-circuit behavior.
+            SkASSERT(!e.getOperator().isAssignment());
+            SkASSERT(numberKind == Type::NumberKind::kBoolean);
+            Literal falseLiteral{Position{}, 0.0, &e.right()->type()};
+            return this->pushTernaryExpression(*e.left(), *e.right(), falseLiteral);
+        }
+        case OperatorKind::LOGICALOR: {
+            // We rewrite `a || b` as `a ? true : b`.
+            SkASSERT(!e.getOperator().isAssignment());
+            SkASSERT(numberKind == Type::NumberKind::kBoolean);
+            Literal trueLiteral{Position{}, 1.0, &e.right()->type()};
+            return this->pushTernaryExpression(*e.left(), trueLiteral, *e.right());
+        }
         case OperatorKind::GT:
         case OperatorKind::GTEQ:
             // We replace `x > y` with `y < x`, and `x >= y` with `y <= x`.
@@ -789,17 +807,23 @@ bool Generator::pushLiteral(const Literal& l) {
 }
 
 bool Generator::pushTernaryExpression(const TernaryExpression& t) {
+    return this->pushTernaryExpression(*t.test(), *t.ifTrue(), *t.ifFalse());
+}
+
+bool Generator::pushTernaryExpression(const Expression& test,
+                                      const Expression& ifTrue,
+                                      const Expression& ifFalse) {
     // Merge the current condition-mask with the test-expression in a separate stack.
     this->nextTempStack();
     fBuilder.push_condition_mask();
-    if (!this->pushExpression(*t.test())) {
+    if (!this->pushExpression(test)) {
         return unsupported();
     }
     fBuilder.merge_condition_mask();
     this->previousTempStack();
 
     // Push the true-expression onto the primary stack.
-    if (!this->pushExpression(*t.ifTrue())) {
+    if (!this->pushExpression(ifTrue)) {
         return unsupported();
     }
 
@@ -810,13 +834,13 @@ bool Generator::pushTernaryExpression(const TernaryExpression& t) {
     this->previousTempStack();
 
     // Push the false-expression onto the primary stack, immediately after the true-expression.
-    if (!this->pushExpression(*t.ifFalse())) {
+    if (!this->pushExpression(ifFalse)) {
         return unsupported();
     }
 
     // Use a select to conditionally mask-merge the true-expression and false-expression lanes;
     // the mask is already set up for this.
-    fBuilder.select(/*slots=*/t.ifTrue()->type().slotCount());
+    fBuilder.select(/*slots=*/ifTrue.type().slotCount());
 
     // Switch back to the test-expression stack one last time, in order to restore the
     // condition-mask to its original state and jettison the test-expression.
