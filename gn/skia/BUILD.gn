@@ -24,6 +24,11 @@ declare_args() {
   xcode_sysroot = ""
 }
 
+# In some cases undefined sanitize craches the build
+if (!defined(sanitize)) {
+  sanitize = ""
+}
+
 if (is_ios && xcode_sysroot == "") {
   if (is_tvos) {
     sdk = "appletvos"
