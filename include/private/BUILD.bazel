@@ -82,3 +82,15 @@ skia_filegroup(
     }),
     visibility = ["//include:__pkg__"],
 )
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkMacros.h",
+        "SkSafe_math.h",
+        "SkTFitsIn.h",
+        "SkTPin.h",
+        "SkThreadAnnotations.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

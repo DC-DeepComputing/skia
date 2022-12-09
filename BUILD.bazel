@@ -49,6 +49,13 @@ skia_cc_library(
     ],
 )
 
+# WIP Modular Skia build
+alias(
+    name = "base",
+    actual = "//src:base",
+    visibility = ["//visibility:public"],
+)
+
 # gazelle:prefix go.skia.org/skia
 gazelle(name = "gazelle")
 

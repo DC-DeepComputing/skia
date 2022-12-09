@@ -115,3 +115,13 @@ skia_filegroup(
     ],
     visibility = ["//include:__pkg__"],
 )
+
+skia_filegroup(
+    name = "base_hdrs",
+    srcs = [
+        "SkAlphaType.h",
+        "SkFontTypes.h",
+        "SkTypes.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

@@ -130,3 +130,28 @@ generate_cpp_files_for_headers(
         "src/image/SkImage_Base.h",
     ],
 )
+
+# Experimental rules for a modular, "buffet" Skia build
+
+cc_library(
+    name = "base",
+    srcs = [
+        # We don't want any other Skia files (other than SkTypes.h) to include
+        # SkUserConfig.h
+        "//include/config:base_hdrs",
+    ],
+    hdrs = [
+        "//include/core:base_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "base_priv",
+    hdrs = [
+        "//include/private:base_priv_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//visibility:private"],
+)
