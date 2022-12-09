@@ -3538,6 +3538,8 @@ public:
     }
 };
 
+<<<<<<< PATCH SET (06f3be Breaking down Copy ReorderVisuals (4))
+=======
 class ParagraphSlide65 : public ParagraphSlide_Base {
 public:
     ParagraphSlide65() { fName = "Paragraph65"; }
@@ -3625,6 +3627,7 @@ public:
     }
 };
 
+>>>>>>> BASE      (fe9516 Add floor/ceil stages to RP builder and codegen.)
 // Non-monotonic glyph placement
 class ParagraphSlide66 : public ParagraphSlide_Base {
 public:
@@ -3902,7 +3905,6 @@ DEF_SLIDE(return new ParagraphSlide61();)
 DEF_SLIDE(return new ParagraphSlide62();)
 DEF_SLIDE(return new ParagraphSlide63();)
 DEF_SLIDE(return new ParagraphSlide64();)
-DEF_SLIDE(return new ParagraphSlide65();)
 DEF_SLIDE(return new ParagraphSlide66();)
 DEF_SLIDE(return new ParagraphSlide67();)
 DEF_SLIDE(return new ParagraphSlide68();)

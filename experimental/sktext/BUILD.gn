@@ -10,7 +10,11 @@ declare_args() {
   text_bench_enabled = false
 }
 
+<<<<<<< PATCH SET (06f3be Breaking down Copy ReorderVisuals (4))
+if (skia_use_icu && skia_enable_sktext && skia_enable_skshaper) {
+=======
 if (skia_enable_sktext && skia_enable_skshaper && skia_use_harfbuzz) {
+>>>>>>> BASE      (fe9516 Add floor/ceil stages to RP builder and codegen.)
   config("public_config") {
     include_dirs = [ "include" ]
   }
