@@ -561,7 +561,11 @@ public:
     }
 };
 
+<<<<<<< PATCH SET (6ec872 Breaking down Copy ReorderVisuals (4))
+std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedUnicode() {
+=======
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
+>>>>>>> BASE      (b35e3c Breaking down Copy ReorderVisuals (3))
     #if defined(SK_USING_THIRD_PARTY_ICU)
     if (!SkLoadICU()) {
         static SkOnce once;
