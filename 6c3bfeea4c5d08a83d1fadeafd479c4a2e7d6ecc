@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d17859be_c2c8d63a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-12-09T13:28:44Z",
+      "side": 1,
+      "message": "Handing over to Ravi for CQ changes.",
+      "revId": "6c3bfeea4c5d08a83d1fadeafd479c4a2e7d6ecc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
