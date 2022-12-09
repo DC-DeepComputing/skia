@@ -25,6 +25,7 @@
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
+#include "src/sksl/ir/SkSLContinueStatement.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
@@ -114,6 +115,7 @@ public:
     bool writeStatement(const Statement& s);
     bool writeBlock(const Block& b);
     bool writeBreakStatement(const BreakStatement& b);
+    bool writeContinueStatement(const ContinueStatement& b);
     bool writeDoStatement(const DoStatement& d);
     bool writeExpressionStatement(const ExpressionStatement& e);
     bool writeIfStatement(const IfStatement& i);
@@ -171,6 +173,7 @@ private:
     int fSlotCount = 0;
 
     SkTArray<SlotRange> fFunctionStack;
+    SlotRange fCurrentContinueMask;
     int fCurrentTempStack = 0;
 };
 
@@ -385,6 +388,9 @@ bool Generator::writeStatement(const Statement& s) {
         case Statement::Kind::kBreak:
             return this->writeBreakStatement(s.as<BreakStatement>());
 
+        case Statement::Kind::kContinue:
+            return this->writeContinueStatement(s.as<ContinueStatement>());
+
         case Statement::Kind::kDo:
             return this->writeDoStatement(s.as<DoStatement>());
 
@@ -422,16 +428,36 @@ bool Generator::writeBreakStatement(const BreakStatement&) {
     return true;
 }
 
+bool Generator::writeContinueStatement(const ContinueStatement&) {
+    // This could be written as one hand-tuned RasterPipeline op, but for now, we reuse existing ops
+    // to assemble a continue op.
+
+    // Set any currently-executing lanes in the continue-mask to true via push-pop.
+    fBuilder.push_literal_i(~0);
+    this->popToSlotRange(fCurrentContinueMask);
+
+    // Disable any currently-executing lanes from the loop mask.
+    fBuilder.mask_off_loop_mask();
+    return true;
+}
+
 bool Generator::writeDoStatement(const DoStatement& d) {
     // Save off the original loop mask.
     fBuilder.push_loop_mask();
 
+    // Create a dedicated slot for continue-mask storage.
+    SlotRange previousContinueMask = fCurrentContinueMask;
+    fCurrentContinueMask = this->createSlots(/*slots=*/1);
+
     // Write the do-loop body.
     int labelID = fBuilder.nextLabelID();
     fBuilder.label(labelID);
+
+    fBuilder.zero_slots_unmasked(fCurrentContinueMask);
     if (!this->writeStatement(*d.statement())) {
         return false;
     }
+    fBuilder.reenable_loop_mask(fCurrentContinueMask);
 
     // Emit the test-expression, in order to combine it with the loop mask.
     if (!this->pushExpression(*d.test())) {
@@ -446,8 +472,10 @@ bool Generator::writeDoStatement(const DoStatement& d) {
     // If any lanes are still running, go back to the top and run the loop body again.
     fBuilder.branch_if_any_active_lanes(labelID);
 
-    // Restore the loop mask.
+    // Restore the loop and continue masks.
     fBuilder.pop_loop_mask();
+    fCurrentContinueMask = previousContinueMask;
+
     return true;
 }
 
