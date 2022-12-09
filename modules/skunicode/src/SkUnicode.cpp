@@ -10,6 +10,16 @@
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTemplates.h"
 
+std::unique_ptr<SkUnicode> SkUnicode::Make() {
+#ifdef SK_UNICODE_ICU_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcuBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
 SkString SkUnicode::convertUtf16ToUtf8(const char16_t* utf16, int utf16Units) {
 
     int utf8Units = SkUTF::UTF16ToUTF8(nullptr, 0, (uint16_t*)utf16, utf16Units);
@@ -70,6 +80,8 @@ bool SkUnicode::isControl(SkUnicode::CodeUnitFlags flags) {
 bool SkUnicode::isPartOfWhiteSpaceBreak(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
 }
+<<<<<<< PATCH SET (c7d3c1 Breaking down Copy ReorderVisuals (4))
+=======
 
 
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
@@ -79,3 +91,4 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
     return nullptr;
 #endif
 }
+>>>>>>> BASE      (21c26b Breaking down Copy ReorderVisuals (3))
