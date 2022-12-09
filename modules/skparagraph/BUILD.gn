@@ -2,6 +2,8 @@
 
 import("../../gn/skia.gni")
 import("../skshaper/skshaper.gni")
+import("../skunicode/skunicode.gni")
+import("skparagraph.gni")
 
 declare_args() {
   skia_enable_skparagraph = true
@@ -10,7 +12,15 @@ declare_args() {
   paragraph_bench_enabled = false
 }
 
+<<<<<<< PATCH SET (2a922b Breaking down Copy ReorderVisuals (4))
+<<<<<<< PATCH SET (06f3be Breaking down Copy ReorderVisuals (4))
+if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode) {
+=======
+if (skia_enable_skparagraph && skia_enable_skshaper && skia_use_harfbuzz) {
+>>>>>>> BASE      (fe9516 Add floor/ceil stages to RP builder and codegen.)
+=======
 if (skia_enable_skparagraph && skia_enable_skshaper) {
+>>>>>>> BASE      (52ac4f Breaking down Copy ReorderVisuals (3))
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
     include_dirs = [
@@ -71,6 +81,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper) {
           "../..:skia",
           "../..:test",
           "../skshaper",
+          "../skunicode",
         ]
       } else {
         sources = []
