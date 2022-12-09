@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ff6ac36_38118b53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-09T13:45:37Z",
+      "side": 1,
+      "message": "I think it makes sense to take opaque types as `in` if-and-only-if they are treated as opaque black-boxes that we can only interact with via the atomic-function API. Previously we were updating the RefKind of the `atomic_uint` variable based on the atomic op being applied, and this wouldn\u0027t make sense for an opaque object. i.e. `atomicAdd(myHandle, 123)` doesn\u0027t mutate `myHandle`, it mutates a black-boxed value referenced by `myHandle` that we can\u0027t see directly. We shouldn\u0027t need to change the RefKind of `myHandle` because reaching into the black box doesn\u0027t mutate the handle itself.",
+      "parentUuid": "9296adf3_3ca39fbb",
+      "revId": "3d84523969ca71adcd03bf365b12f47693c22352",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db17c942_022c0772",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 4
