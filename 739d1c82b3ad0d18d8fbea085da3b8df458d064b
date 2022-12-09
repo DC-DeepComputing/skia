@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4068c8_f88df332",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-09T18:59:09Z",
+      "side": 1,
+      "message": "Didn\u0027t get dev feedback for this move, but these two jobs match the Test* jobs, so a parallel move here seems OK.",
+      "revId": "739d1c82b3ad0d18d8fbea085da3b8df458d064b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
