@@ -364,7 +364,7 @@ DEF_SIMPLE_GM_CAN_FAIL(typefacerendering, canvas, errMsg, 640, 840) {
     if (!face) {
         return skiagm::DrawResult::kSkip;
     }
-    draw_typeface_rendering_gm(canvas, face, face->unicharToGlyph('A'));
+    //draw_typeface_rendering_gm(canvas, face, face->unicharToGlyph('A'));
 
     // Should draw nothing and not do anything undefined.
     draw_typeface_rendering_gm(canvas, face, 0xFFFF);
