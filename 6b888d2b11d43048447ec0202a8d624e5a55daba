@@ -70,6 +70,30 @@
       },
       "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d865bb65_1fc1580a",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-09T21:38:39Z",
+      "side": 1,
+      "message": "Being more explicit seems preferable to me, so I like the idea of splitting up the calls that way in the future.\n\n`fType` and `fPrioritizeGpuReads` are not currently used beyond just passing them into the `Buffer` constructor to sit there as member attributes, so they can safely be removed unless we have intentions for them... Demonstrative CL: https://skia-review.googlesource.com/c/skia/+/616820\n\nDid you mean to say that if anything does, in fact, use those attributes then we could land this as-is? I imagine if `fBufferType` and `fPrioritizeGpuReads` are unsued/deleted, then that would justify landing this in this way, not the other way around. Let me know if I misunderstood.",
+      "parentUuid": "46d572cb_9886c3a5",
+      "range": {
+        "startLine": 154,
+        "startChar": 10,
+        "endLine": 154,
+        "endChar": 27
+      },
+      "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
