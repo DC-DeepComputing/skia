@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5435ee1b_52ff475d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T19:21:28Z",
+      "side": 1,
+      "message": "LGTM after fixes",
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce280489_75d3958e",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T19:21:28Z",
+      "side": 1,
+      "message": "since there isn\u0027t a deferred recorder anymore, maybe if a deferred canvas is used in the recording.",
+      "range": {
+        "startLine": 35,
+        "startChar": 64,
+        "endLine": 35,
+        "endChar": 84
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c76cf13_38d56185",
+        "filename": "src/gpu/graphite/Surface_Graphite.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T19:21:28Z",
+      "side": 1,
+      "message": "We should check that the instantiate succeeds. If we are making the assumption things are instantiated later on, we should return nullptr here if we fail to instantiate.",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 71
+      },
+      "revId": "0144f6f25aa260bd9afac39066004c9f377ee55d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
