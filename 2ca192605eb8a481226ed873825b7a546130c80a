@@ -22,6 +22,52 @@
       },
       "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c780ba1c_8eb690c4",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T18:48:32Z",
+      "side": 1,
+      "message": "If we\u0027re going to assert srcBuffer is valid in the next factory anyways, do we just duplicate that assert and always was in srcBuffer-\u003esize() instead of doing this check every time?",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bff0cdc_ddc74b02",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-09T18:48:32Z",
+      "side": 1,
+      "message": "Does this need to be public and guarded by the spinLock? In some ways this is kind of a hidden thing on the global cache that we\u0027re just taking advantage of its lifetime. What if this function was private and we friended StaticBufferManager? Also it should all be single threaded on Context creation so I don\u0027t think you need the lock.",
+      "range": {
+        "startLine": 53,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 67
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
