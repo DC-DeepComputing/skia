@@ -2,6 +2,8 @@
 
 import("../../gn/skia.gni")
 import("../skshaper/skshaper.gni")
+import("../skunicode/skunicode.gni")
+import("skparagraph.gni")
 
 declare_args() {
   skia_enable_skparagraph = true
@@ -10,7 +12,7 @@ declare_args() {
   paragraph_bench_enabled = false
 }
 
-if (skia_enable_skparagraph && skia_enable_skshaper) {
+if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
     include_dirs = [
@@ -71,6 +73,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper) {
           "../..:skia",
           "../..:test",
           "../skshaper",
+          "../skunicode",
         ]
       } else {
         sources = []
