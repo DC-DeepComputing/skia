@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cda43369_c3d36905",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-10T02:04:38Z",
+      "side": 1,
+      "message": "Looking at both Dawn and Metal specs I think it\u0027s a little more complicated than that. Dawn always requires size and offsets to be aligned to 4 bytes, and Metal has the same limitation when on macOS. This is contrary to my assumption that they\u0027d behave like memcpy and function for unaligned source data to an aligned dest.\n\nHowever, we can\u0027t just align based on what we\u0027d end up doing with the draw buffer in all cases. For vertex data we\u0027re likely going to always be 4-byte aligned and a multiple of 4 for size because of using float data, but most/all index buffers that Skia uses are uint16\u0027s. As a data type those only require 2 byte alignment, so while we could always start the offset on a 4 byte boundary, we\u0027d need to pad and fill with zeros the range of data to 4 bytes as well.\n\nThis shouldn\u0027t be too hard to work into the logic as the transfer buffer hands out VertexWriters.",
+      "parentUuid": "62168aa2_bd57b086",
+      "range": {
+        "startLine": 260,
+        "startChar": 69,
+        "endLine": 260,
+        "endChar": 84
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c780ba1c_8eb690c4",
         "filename": "src/gpu/graphite/CopyTask.cpp",
         "patchSetId": 5
@@ -60,6 +84,30 @@
       "writtenOn": "2022-12-09T18:48:32Z",
       "side": 1,
       "message": "Does this need to be public and guarded by the spinLock? In some ways this is kind of a hidden thing on the global cache that we\u0027re just taking advantage of its lifetime. What if this function was private and we friended StaticBufferManager? Also it should all be single threaded on Context creation so I don\u0027t think you need the lock.",
+      "range": {
+        "startLine": 53,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 67
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4926ea2_353d8a24",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-10T02:04:38Z",
+      "side": 1,
+      "message": "I originally chose to make it public (and guarded by the spin lock) because I wasn\u0027t sure if there would end up being utility in being able to stash a resource in the global cache later on as you\u0027re using the context. That\u0027s also why I typed it as Resource instead of just for Buffers.\n\nBut if that\u0027s the case there ought to be a matching way to remove a Resource from static resources or we could get ourselves in trouble with leaks, and we don\u0027t want to have too many permanent resources anyways so it makes sense to restrict who can actual add resources. If we restrict it to just StaticBufferManager then you\u0027re right that we don\u0027t need to guard its access because it will always be single threaded before the Context is returned. That said, keeping it guarded won\u0027t hurt performance in this case and makes it obvious GlobalCache remains thread safe, since we don\u0027t have a great way to assert when addStaticResource() is called that we\u0027re still in the initialization phase.",
+      "parentUuid": "0bff0cdc_ddc74b02",
       "range": {
         "startLine": 53,
         "startChar": 3,
