@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3828cfc_215b7ec7",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-10T01:51:29Z",
+      "side": 1,
+      "message": "Ah no, I\u0027d changed that early on when debugging something and intended to change it back (although I\u0027ll confirm that it works they way it should when it returns infinity before updating the CL).",
+      "parentUuid": "008cdca1_538266af",
+      "range": {
+        "startLine": 225,
+        "startChar": 15,
+        "endLine": 225,
+        "endChar": 39
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57f2a980_8943f214",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 4
@@ -77,6 +101,30 @@
       "writtenOn": "2022-12-08T20:54:54Z",
       "side": 1,
       "message": "Define magic number? (and in its use below). Why this value?",
+      "range": {
+        "startLine": 484,
+        "startChar": 33,
+        "endLine": 484,
+        "endChar": 41
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9ea7ef_463a8984",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-10T01:51:29Z",
+      "side": 1,
+      "message": "This is the value of SK_ScalarNearlyZero (unless I remembered it wrong...), but I\u0027m also not 100% sure this should use this test, vs. estimating the radii in device space, or just strictly testing against 0.\n\nIf you had a round rect with this radii of 0.000124 and a scale factor of 10k you\u0027d expect to see some curvature on the screen, but estimating that effect gets less trivial if the matrix has high skew.",
+      "parentUuid": "e3cb3171_7bb6499a",
       "range": {
         "startLine": 484,
         "startChar": 33,
