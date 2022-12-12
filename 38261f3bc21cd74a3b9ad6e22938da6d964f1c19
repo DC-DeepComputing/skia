@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea5773a_0a5535af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-12T19:47:20Z",
+      "side": 1,
+      "message": "Putting `icu_bidi` inside Skia\u0027s third_party folder is problematic for us. Is it possible to put it in its own repo (sibling to skia) so we can add it to our DEPS?\n\nThere are similar examples here: https://skia.googlesource.com/ (e.g. \"third_party/harfbuzz\" and \"third_party/freetype2\")",
+      "revId": "38261f3bc21cd74a3b9ad6e22938da6d964f1c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
