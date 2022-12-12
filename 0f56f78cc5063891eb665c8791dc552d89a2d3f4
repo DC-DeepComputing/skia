@@ -16,6 +16,24 @@
       "message": "The binary size diffs are alarming but I\u0027m not sure I actually believe them.",
       "revId": "0f56f78cc5063891eb665c8791dc552d89a2d3f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "181c0e58_7dd919a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-12T15:39:51Z",
+      "side": 1,
+      "message": "I did some local tests, and they\u0027re real. It looks like making `inclusiveZ` not static will actually get back much of the size and probably produce faster code).",
+      "parentUuid": "7655b49a_72dcf026",
+      "revId": "0f56f78cc5063891eb665c8791dc552d89a2d3f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
