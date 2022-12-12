@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77661dbd_aac3bafe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-12T23:30:54Z",
+      "side": 1,
+      "message": "This is what I\u0027ve been working with and testing locally. I\u0027m of course happy to rework things since we haven\u0027t discussed the design of this part much. A big question I have is generally how detailed should we try to get with testing here during what should be a transitionary phase? And thoughts on how I should approach testing some of this macro logic that just calls right into macros defined by other libraries? Thanks!",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c675a68c_7c4e7589",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-12T23:30:54Z",
+      "side": 1,
+      "message": "Note: while this direct macro approach of using Perfetto is only used on Android, then if someone starts tracing to a new category not defined here, it will result in a compilation error that won\u0027t be caught until the next Android roll. Does this seem like a blocker, or just something to notify folks about during the transition phase?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7b6428b_9aa4cda7",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-12T23:30:54Z",
+      "side": 1,
+      "message": "This logic in particular (and mirrored logic for _BEGIN events below) is sort of the most complicated part IMO. Should I try to figure out how to test this aspect somehow?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9355b48_14d94acd",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-12T23:30:54Z",
+      "side": 1,
+      "message": "I put the \\ line continuation characters at uniform column positions for clarity. Unfortunately sometimes the closest multiple of four column widths meant going past 100 chars. Happy to rework wrapping if maintaining \u003c\u003d 100 chars is preferable.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
