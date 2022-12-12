@@ -127,7 +127,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
 
 void PaintOptions::buildCombinations(
         ShaderCodeDictionary* dict,
-        const std::function<void(SkUniquePaintParamsID)>& processCombination) const {
+        const std::function<void(UniquePaintParamsID)>& processCombination) const {
     KeyContext keyContext(dict);
     PaintParamsKeyBuilder builder(dict);
 

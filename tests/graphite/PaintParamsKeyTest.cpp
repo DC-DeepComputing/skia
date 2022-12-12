@@ -17,7 +17,6 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -29,6 +28,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/shaders/SkImageShader.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
@@ -110,11 +110,11 @@ std::tuple<SkPaint, int> create_paint(Recorder* recorder,
     return { p, numTextures };
 }
 
-SkUniquePaintParamsID create_key(Context* context,
-                                 PaintParamsKeyBuilder* keyBuilder,
-                                 ShaderType shaderType,
-                                 SkTileMode tileMode,
-                                 SkBlendMode blendMode) {
+UniquePaintParamsID create_key(Context* context,
+                               PaintParamsKeyBuilder* keyBuilder,
+                               ShaderType shaderType,
+                               SkTileMode tileMode,
+                               SkBlendMode blendMode) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     CombinationBuilder combinationBuilder(context->priv().shaderCodeDictionary());
@@ -152,7 +152,7 @@ SkUniquePaintParamsID create_key(Context* context,
 
     combinationBuilder.addOption(blendMode);
 
-    std::vector<SkUniquePaintParamsID> uniqueIDs = CombinationBuilderTestAccess::BuildCombinations(
+    std::vector<UniquePaintParamsID> uniqueIDs = CombinationBuilderTestAccess::BuildCombinations(
             dict, &combinationBuilder);
 
     SkASSERT(uniqueIDs.size() == 1);
@@ -207,7 +207,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                 auto [uniqueID1, uData, tData] = ExtractPaintData(
                         recorder.get(), &gatherer, &builder, Layout::kMetal, {}, PaintParams(p));
 
-                SkUniquePaintParamsID uniqueID2 = create_key(context, &builder, s, tm, bm);
+                UniquePaintParamsID uniqueID2 = create_key(context, &builder, s, tm, bm);
                 // ExtractPaintData and CreateKey agree
                 REPORTER_ASSERT(reporter, uniqueID1 == uniqueID2);
 

@@ -136,7 +136,6 @@ skia_core_sources = [
   "$_include/private/SkThreadAnnotations.h",
   "$_include/private/SkThreadID.h",
   "$_include/private/SkTo.h",
-  "$_include/private/SkUniquePaintParamsID.h",
   "$_include/private/SkVx.h",
   "$_include/private/SkWeakRefCnt.h",
   "$_include/private/chromium/SkChromeRemoteGlyphCache.h",

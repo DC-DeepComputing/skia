@@ -378,7 +378,7 @@ void Context::precompile(const PaintOptions& options) {
 
     options.priv().buildCombinations(
         fSharedContext->shaderCodeDictionary(),
-        [&](SkUniquePaintParamsID uniqueID) {
+        [&](UniquePaintParamsID uniqueID) {
             for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
                 for (auto&& s : r->steps()) {
                     if (s->performsShading()) {
@@ -404,7 +404,7 @@ void Context::precompile(CombinationBuilder* combinationBuilder) {
 
     combinationBuilder->buildCombinations(
             fSharedContext->shaderCodeDictionary(),
-            [&](SkUniquePaintParamsID uniqueID) {
+            [&](UniquePaintParamsID uniqueID) {
                 for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
                     for (auto&& s : r->steps()) {
                         if (s->performsShading()) {
