@@ -131,6 +131,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ca5de67_8b3a7c1c",
+        "filename": "src/sksl/ir/SkSLBinaryExpression.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-12T15:05:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e7e8adb0_9ced1d5d",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9983d302_570b40d7",
@@ -166,6 +184,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "803616af_cb8ed2db",
+        "filename": "src/sksl/ir/SkSLConstructorArray.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-12T15:05:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0cfeefa9_2cd4de45",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ae2d81f_24dcb80a",
@@ -197,6 +233,24 @@
       "side": 1,
       "message": "This is still necessary since an array of atomics is valid but constructing one is not. The existing checks for opaque types don\u0027t seem to prevent this but existing opaque types are not allowed to be a struct member.",
       "parentUuid": "5ae2d81f_24dcb80a",
+      "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a15180_131f7e01",
+        "filename": "src/sksl/ir/SkSLConstructorStruct.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-12T15:05:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "de7dfbd2_97cd51f1",
       "revId": "bc08bfb6fd63e9d687627421c50cf16d6cd9ae85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
