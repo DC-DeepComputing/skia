@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ce1806f_2a337fda",
+        "filename": "src/core/SkPaint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-12T13:45:28Z",
+      "side": 0,
+      "message": "Do you mean for Flatten and Unflatten to be part if this CL? If so, mention the change in the CL description.",
+      "range": {
+        "startLine": 292,
+        "startChar": 4,
+        "endLine": 292,
+        "endChar": 26
+      },
+      "revId": "2691cd7b41104b8434fc2c06445d5cb968444314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
