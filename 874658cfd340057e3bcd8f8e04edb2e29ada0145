@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8437c04e_d9a3187f",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-12T17:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "987dcef4_c9170eac",
+      "range": {
+        "startLine": 27,
+        "startChar": 11,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "874658cfd340057e3bcd8f8e04edb2e29ada0145",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71358e2a_2bfa8588",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-12-12T16:50:50Z",
       "side": 1,
       "message": "So lets maybe add a comment a explaining this a little. In some sense our \"ReadOnly\" buffer is writable when mapped by the CPU, but that\u0027s not how we\u0027re intending to use it. And technically it is writable by the GPU since that\u0027s where it gets the data. Maybe we rename this to be fBufferUsedForCPUReads or something along those lines?\n\nI would leave this as is for now, but the more I think about this, the more I feel like having a separate mapRead and mapWrite calls may be the better approach long term.",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "874658cfd340057e3bcd8f8e04edb2e29ada0145",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "693eaf3f_f654061b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-12T17:38:20Z",
+      "side": 1,
+      "message": "Added comment documentation, a TODO w/ bug number to split up map() calls, and renamed the member attribute per your suggestion. 👍",
+      "parentUuid": "71358e2a_2bfa8588",
       "range": {
         "startLine": 40,
         "startChar": 9,
