@@ -94,6 +94,30 @@
       },
       "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59285a11_5cd390c3",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-12T14:46:33Z",
+      "side": 1,
+      "message": "Yes I was suggesting removing the two unused members on `Buffer` and then keeping the value you added to `VulkanBuffer`",
+      "parentUuid": "d865bb65_1fc1580a",
+      "range": {
+        "startLine": 154,
+        "startChar": 10,
+        "endLine": 154,
+        "endChar": 27
+      },
+      "revId": "6b888d2b11d43048447ec0202a8d624e5a55daba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
