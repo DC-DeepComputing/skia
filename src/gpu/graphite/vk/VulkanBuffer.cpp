@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanMemory.h"
@@ -95,14 +96,11 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     bool shouldPersistentlyMapCpuToGpu =
         sharedContext->vulkanCaps().shouldPersistentlyMapCpuToGpuBuffers();
     //AllocBufferMemory
-    auto checkResult = [](VkResult result) {
-        return result == VK_SUCCESS;
-    };
     if (!skgpu::VulkanMemory::AllocBufferMemory(allocator,
                                                 buffer,
                                                 allocUsage,
                                                 shouldPersistentlyMapCpuToGpu,
-                                                checkResult,
+                                                /*const std::function<CheckResult>&=*/nullptr,
                                                 &alloc)) {
         VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
                 buffer,
@@ -123,8 +121,8 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         return nullptr;
     }
 
-    // TODO: If this is a uniform buffer, we must set up a descriptor set.
-    // const GrVkDescriptorSet* uniformDescSet = nullptr;
+    // If this is a uniform buffer, we must set up a descriptor set.
+    const VulkanDescriptorSet* uniformDescSet = nullptr;
     // if (bufferType == kUniform::kUniform) {
     //     uniformDescSet = make_uniform_desc_set(gpu, buffer, size);
     //     if (!uniformDescSet) {

@@ -25,8 +25,6 @@ private:
 
     void onMap() override {}
     void onUnmap() override {}
-    // TODO: Remove this getter method. This silences a compiler unused member warning for fBuffer.
-    VkBuffer getVkBuffer() const { return fBuffer; }
 
     VkBuffer fBuffer;
 };
