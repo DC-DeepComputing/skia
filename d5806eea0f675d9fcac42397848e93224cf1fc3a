@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df716615_2699644c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-12T14:22:15Z",
+      "side": 1,
+      "message": "Thanks for iterating on this with us!",
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c413352_0408581d",
         "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
         "patchSetId": 8
@@ -19,6 +36,75 @@
         "startChar": 10,
         "endLine": 13,
         "endChar": 35
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fc4ca85_7c095d83",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-12T14:22:15Z",
+      "side": 1,
+      "message": "Seems like a perfect place for an assertion?\n`SkASSERT(type.matches(*fContext-\u003efTypes.fAtomicUint));`",
+      "range": {
+        "startLine": 163,
+        "startChar": 11,
+        "endLine": 163,
+        "endChar": 64
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9366bac0_2971697f",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-12T14:22:15Z",
+      "side": 1,
+      "message": "It seems like we are going out of our way not to define `AtomicType::hasAtomicMember` as true. Is it in some way beneficial that \"has atomic member\" returns `false` for a plain/unwrapped atomic type?\n\nContrast with `Type::isOrContainsArray` and `Type::isOrContainsUnsizedArray`--these helpers return true if you have an array, _or_ if you have a struct with an array nested inside. It seems like that pattern makes it easier on callers, and is just as easy to implement. I don\u0027t feel strongly about it per se, and if `hasAtomicMember` returning false for a plain `atomicUint` is making things easier elsewhere, that SGTM. Just trying to noodle through the rationale for this pattern.",
+      "range": {
+        "startLine": 158,
+        "startChar": 15,
+        "endLine": 158,
+        "endChar": 76
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9eaf8d7_ae4a47a3",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-12T14:22:15Z",
+      "side": 1,
+      "message": "This is way too hard to read. Please split things apart somehow. Maybe named helper variables? e.g.\n\n```\nconst bool isWorkgroup \u003d modifiers.fFlags \u0026 Modifiers::kWorkgroup_Flag;\nconst bool isWritableBuffer \u003d \n       type-\u003eisInterfaceBlock() \u0026\u0026 \n       (modifiers.fFlags \u0026 Modifiers::kBuffer_Flag) \u0026\u0026\n       !(modifiers.fFlags \u0026 Modifiers::kReadOnly_Flag);\n// etc       \n```\n\nFYI I originally named the second one `isReadOnlyBuffer` when I started typing the example, case in point :)",
+      "range": {
+        "startLine": 205,
+        "startChar": 12,
+        "endLine": 208,
+        "endChar": 62
       },
       "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
