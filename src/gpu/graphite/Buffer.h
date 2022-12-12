@@ -24,13 +24,9 @@ public:
 
 protected:
     Buffer(const SharedContext* sharedContext,
-           size_t size,
-           BufferType type,
-           PrioritizeGpuReads prioritizeGpuReads)
+           size_t size)
         : Resource(sharedContext, Ownership::kOwned, SkBudgeted::kYes)
-        , fSize(size)
-        , fType(type)
-        , fPrioritizeGpuReads(prioritizeGpuReads) {}
+        , fSize(size) {}
 
     void* fMapPtr = nullptr;
 
@@ -38,14 +34,7 @@ private:
     virtual void onMap() = 0;
     virtual void onUnmap() = 0;
 
-    // TODO: Remove these getters once we start using fType and fPrioritizeGpuReads in key
-    // generation. For now this silences compiler unused member warnings.
-    BufferType bufferType() const { return fType; }
-    PrioritizeGpuReads prioritizeGpuReads() const { return fPrioritizeGpuReads; }
-
     size_t             fSize;
-    BufferType         fType;
-    PrioritizeGpuReads fPrioritizeGpuReads;
 };
 
 } // namespace skgpu::graphite
