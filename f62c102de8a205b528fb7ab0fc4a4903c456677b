@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d5a025_7460487d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-12T14:11:54Z",
+      "side": 1,
+      "message": "Nothing changed here from first time around (other than minor addition of a comment that the bias in exclusive_mirror is only applied to values \u003e 0).",
+      "revId": "f62c102de8a205b528fb7ab0fc4a4903c456677b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
