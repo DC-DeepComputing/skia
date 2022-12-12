@@ -16,6 +16,23 @@
       "message": "To pipe Graphite\u0027s destination ColorInfo to SkWorkingFormatColorFilter::addToKey, I had to add an SkColorInfo parameter to lots of methods (even methods of non-color-filter effects since they can have color-filter child effects). This seems a little annoying, but I\u0027m not sure how else to pipe the info down. Also, I don\u0027t know how to test that this makes a difference vs. e.g. always using sRGB as the destination color space.",
       "revId": "4291da1abb2a6eda6f2c64af9c5d8e616079e17c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "299741fe_25f3e978",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-12T16:19:30Z",
+      "side": 1,
+      "message": "I think this is actually okay. Backing off my previous statement a bit:\n\n1) Even if we removed the working-format thing and put all the logic in high-contrast, I think we\u0027d still need all these changes to plumb the dstColorInfo, so we wouldn\u0027t really simplify this CL.\n\n2) I had to go look at the history of the high-contrast filter again to be reminded that the old version had slightly different behavior, which then impacted layout tests in chrome. I\u0027m not excited to try and undo that.",
+      "revId": "4291da1abb2a6eda6f2c64af9c5d8e616079e17c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
