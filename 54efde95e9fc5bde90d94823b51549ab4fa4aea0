@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f062667_f14e5c93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-12T13:06:53Z",
+      "side": 1,
+      "message": "FYI Tyler, as you were the last one to touch the ResScale code.",
+      "revId": "54efde95e9fc5bde90d94823b51549ab4fa4aea0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
