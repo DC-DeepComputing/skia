@@ -16,6 +16,23 @@
       "message": "Putting `icu_bidi` inside Skia\u0027s third_party folder is problematic for us. Is it possible to put it in its own repo (sibling to skia) so we can add it to our DEPS?\n\nThere are similar examples here: https://skia.googlesource.com/ (e.g. \"third_party/harfbuzz\" and \"third_party/freetype2\")",
       "revId": "38261f3bc21cd74a3b9ad6e22938da6d964f1c19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb1c076_c9a9f087",
+        "filename": "third_party/icu_bidi/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-12T20:12:28Z",
+      "side": 1,
+      "message": "And if I manually copy `icu_bidi` into our `third_party` folder, these relative paths will break because they are assuming `icu_bidi` is always inside `skia`.\n\nI think icu_bidi needs to be a little more decoupled from skia in order for it to work in the flutter engine. That said, I\u0027m not too familiar with how gn and deps work, so there may be other issues into play here.",
+      "revId": "38261f3bc21cd74a3b9ad6e22938da6d964f1c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
