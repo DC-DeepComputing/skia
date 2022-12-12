@@ -42,6 +42,18 @@ void Caps::finishInitialization(const ContextOptions& options) {
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }
 
+size_t Caps::requiredAlignment(BufferType type) const {
+    switch (type) {
+        case BufferType::kVertex:      [[fallthrough]];
+        case BufferType::kIndex:        return 4; // float or uint32 are both 4 bytes
+        case BufferType::kUniform:      return fRequiredUniformBufferAlignment;
+        case BufferType::kStorage:      return fRequiredStorageBufferAlignment;
+        case BufferType::kXferCpuToGpu: [[fallthrough]];
+        case BufferType::kXferGpuToCpu: return fRequiredTransferBufferAlignment;
+    }
+    SkUNREACHABLE;
+}
+
 bool Caps::isTexturable(const TextureInfo& info) const {
     if (info.numSamples() > 1) {
         return false;

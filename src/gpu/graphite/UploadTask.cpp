@@ -98,7 +98,7 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     }
 
     size_t bpp = SkColorTypeBytesPerPixel(dataColorType);
-    size_t minAlignment = caps->getTransferBufferAlignment(bpp);
+    size_t minAlignment = std::max(bpp, caps->requiredAlignment(BufferType::kXferCpuToGpu));
     SkTArray<size_t> individualMipOffsets(mipLevelCount);
     size_t combinedBufferSize = compute_combined_buffer_size(mipLevelCount, bpp, minAlignment,
                                                              dstRect.size(), &individualMipOffsets);

@@ -50,7 +50,7 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
         }
     }
 
-    size = SkAlignTo(size, mtlCaps.getMinBufferAlignment());
+    size = SkAlignTo(size, mtlCaps.requiredAlignment(type));
     sk_cfp<id<MTLBuffer>> buffer([sharedContext->device() newBufferWithLength:size
                                                                       options:options]);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
@@ -99,4 +99,3 @@ void MtlBuffer::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-

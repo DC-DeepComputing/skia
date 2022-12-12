@@ -24,6 +24,7 @@ namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
 
+enum class BufferType : int;
 struct ContextOptions;
 class ComputePipelineDesc;
 class GraphicsPipelineDesc;
@@ -69,23 +70,17 @@ public:
                                     Shareable,
                                     GraphiteResourceKey*) const = 0;
 
-    // Returns the required alignment in bytes for the offset into a uniform buffer when binding it
-    // to a draw.
-    size_t requiredUniformBufferAlignment() const { return fRequiredUniformBufferAlignment; }
-
-    // Returns the required alignment in bytes for the offset into a storage buffer when binding it
-    // to a draw.
-    size_t requiredStorageBufferAlignment() const { return fRequiredStorageBufferAlignment; }
+    // Returns the required alignment in bytes for the offset (and size, depending on use case) for
+    // reading/writing/copying data to a Buffer of the given type. Depending on how the Buffer is
+    // used there may be additional alignment requirements, such as matching the alignment of data
+    // types within a uniform block, or pixel format for a texture.
+    size_t requiredAlignment(BufferType) const;
 
     // Returns the required data layout rules for the contents of a uniform buffer.
     Layout uniformBufferLayout() const { return fUniformBufferLayout; }
 
     // Returns the required data layout rules for the contents of a storage buffer.
     Layout storageBufferLayout() const { return fStorageBufferLayout; }
-
-    // Returns the alignment in bytes for the offset into a Buffer when using it
-    // to transfer to or from a Texture with the given bytes per pixel.
-    virtual size_t getTransferBufferAlignment(size_t bytesPerPixel) const = 0;
 
     // Returns the aligned rowBytes when transfering to or from a Texture
     size_t getAlignedTextureDataRowBytes(size_t rowBytes) const {
@@ -210,6 +205,7 @@ protected:
     int fMaxTextureSize = 0;
     size_t fRequiredUniformBufferAlignment = 0;
     size_t fRequiredStorageBufferAlignment = 0;
+    size_t fRequiredTransferBufferAlignment = 0;
     size_t fTextureDataRowBytesAlignment = 1;
     Layout fUniformBufferLayout = Layout::kInvalid;
     Layout fStorageBufferLayout = Layout::kInvalid;

@@ -20,7 +20,7 @@ namespace skgpu::graphite {
 namespace {
 
 // TODO: Tune these values on real world data
-static constexpr size_t kVertexBufferSize = 128 << 10; // 16 KB
+static constexpr size_t kVertexBufferSize = 16 << 10; // 16 KB
 static constexpr size_t kIndexBufferSize =   2 << 10; //  2 KB
 static constexpr size_t kUniformBufferSize = 2 << 10; //  2 KB
 static constexpr size_t kStorageBufferSize = 2 << 10; //  2 KB
@@ -46,17 +46,27 @@ bool can_fit(size_t requestedSize,
 
 } // anonymous namespace
 
-DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
-                                     size_t uniformStartAlignment,
-                                     size_t ssboStartAlignment)
+DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider, const Caps* caps)
         : fResourceProvider(resourceProvider)
+        , fTransferBufferAlignment(caps->requiredAlignment(BufferType::kXferCpuToGpu))
         , fCurrentBuffers{{
-                { BufferType::kVertex,  /*fStartAlignment=*/4, kVertexBufferSize  },
-                { BufferType::kIndex,   /*fStartAlignment=*/4, kIndexBufferSize   },
-                { BufferType::kUniform, uniformStartAlignment, kUniformBufferSize },
-                { BufferType::kStorage, ssboStartAlignment,    kStorageBufferSize } }} {}
+                { BufferType::kVertex,  kVertexBufferSize,  caps },
+                { BufferType::kIndex,   kIndexBufferSize,   caps },
+                { BufferType::kUniform, kUniformBufferSize, caps },
+                { BufferType::kStorage, kStorageBufferSize, caps } }} {}
 
 DrawBufferManager::~DrawBufferManager() {}
+
+// For simplicity, if transfer buffers are being used, we align the data to the max alignment of
+// either the final buffer type or cpu->gpu transfer alignment so that the buffers are laid out
+// the same in memory.
+DrawBufferManager::BufferInfo::BufferInfo(BufferType type, size_t blockSize, const Caps* caps)
+        : fType(type)
+        , fStartAlignment(
+                std::max(caps->requiredAlignment(type),
+                         !caps->drawBufferCanBeMapped() ?
+                              caps->requiredAlignment(BufferType::kXferCpuToGpu) : 1))
+        , fBlockSize(SkAlignTo(blockSize, fStartAlignment)) {}
 
 std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t requiredBytes) {
     if (!requiredBytes) {
@@ -193,12 +203,11 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
 }
 
 std::pair<void*, BindBufferInfo> DrawBufferManager::prepareBindBuffer(BufferInfo* info,
-                                                                   size_t requiredBytes) {
+                                                                      size_t requiredBytes) {
     SkASSERT(info);
     SkASSERT(requiredBytes);
 
     bool useTransferBuffer = !fResourceProvider->sharedContext()->caps()->drawBufferCanBeMapped();
-
     if (info->fBuffer &&
         !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, info->fStartAlignment)) {
         SkASSERT(!info->fTransferBuffer || info->fBuffer->size() == info->fTransferBuffer->size());
