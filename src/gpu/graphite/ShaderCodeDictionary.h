@@ -38,7 +38,7 @@ namespace skgpu::graphite {
 enum class Layout;
 class RenderStep;
 
-#ifdef SK_ENABLE_PRECOMPILE
+#if 0
 class BlenderID;
 #endif
 
@@ -241,7 +241,7 @@ public:
     int addUserDefinedSnippet(const char* name,
                               SkSpan<const PaintParamsKey::DataPayloadField> expectations);
 
-#if defined(SK_ENABLE_PRECOMPILE)
+#if 0
     BlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
     const ShaderSnippet* getEntry(BlenderID) const;
 #endif
