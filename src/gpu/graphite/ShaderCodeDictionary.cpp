@@ -23,10 +23,6 @@
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
-#ifdef SK_ENABLE_PRECOMPILE
-#include "include/gpu/graphite/CombinationBuilder.h"
-#endif
-
 #include <new>
 
 namespace {
@@ -961,6 +957,8 @@ int ShaderCodeDictionary::addUserDefinedSnippet(
 }
 
 #if defined(SK_ENABLE_PRECOMPILE)
+
+#if 0
 BlenderID ShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     if (!effect) {
         return {};
@@ -985,6 +983,7 @@ BlenderID ShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> eff
 const ShaderSnippet* ShaderCodeDictionary::getEntry(BlenderID id) const {
     return this->getEntry(id.asUInt());
 }
+#endif
 
 #endif // SK_ENABLE_PRECOMPILE
 
