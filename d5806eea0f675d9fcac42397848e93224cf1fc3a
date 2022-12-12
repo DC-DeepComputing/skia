@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c413352_0408581d",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-12T13:59:40Z",
+      "side": 1,
+      "message": "Please mark these as `// valid` per original comment",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
