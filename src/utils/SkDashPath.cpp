@@ -445,11 +445,6 @@ bool SkDashPath::InternalFilter(SkPath* dst, const SkPath& src, SkStrokeRec* rec
         }
     } while (meas.nextContour());
 
-    // TODO: do we still need this?
-    if (segCount > 1) {
-        SkPathPriv::SetConvexity(*dst, SkPathConvexity::kConcave);
-    }
-
     return true;
 }
 
