@@ -68,7 +68,6 @@ skia_filegroup(
         "SkThreadAnnotations.h",
         "SkThreadID.h",
         "SkTo.h",
-        "SkUniquePaintParamsID.h",
         "SkVx.h",
         "SkWeakRefCnt.h",
         ":shared_gpu_private_hdrs",

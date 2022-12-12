@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/UniquePaintParamsID.h"
 
 #include <memory>
 
