@@ -16,6 +16,29 @@
       "message": "nit: I don\u0027t think I like this name. It was already slightly strange when it was SkPaint::getFillPath, but that at least made it clear that you were getting a path back, so you could maybe reason about what it does (just apply the path effect and/or stroking). With the new name, it sounds like you\u0027re actually filling a path with a paint (eg, using the shader somehow). I\u0027ll see if I can think of a name I like better.",
       "revId": "25b3c3991296525f96411f6c60f40a531a584ddf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df8a99b_d86cef9c",
+        "filename": "bench/PathBench.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-12T19:05:27Z",
+      "side": 1,
+      "message": "Line size",
+      "range": {
+        "startLine": 1000,
+        "startChar": 100,
+        "endLine": 1000,
+        "endChar": 105
+      },
+      "revId": "25b3c3991296525f96411f6c60f40a531a584ddf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
