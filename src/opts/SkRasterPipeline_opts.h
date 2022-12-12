@@ -2594,7 +2594,19 @@ SI F exclusive_repeat(F v, const SkRasterPipeline_TileCtx* ctx) {
 SI F exclusive_mirror(F v, const SkRasterPipeline_TileCtx* ctx) {
     auto limit = ctx->scale;
     auto invLimit = ctx->invScale;
-    return abs_( (v-limit) - (limit+limit)*floor_((v-limit)*(invLimit*0.5f)) - limit );
+
+    // This is "repeat" over the range 0..2*limit
+    auto u = v - floor_(v*invLimit*0.5f)*2*limit;
+    // s will be 0 when moving forward (e.g. [0, limit)) and 1 when moving backward (e.g.
+    // [limit, 2*limit)).
+    auto s = floor_(u*invLimit);
+    // This is the mirror result.
+    auto m = u - 2*s*(u - limit);
+    // Apply a bias to m if moving backwards so that we snap consistently at exact integer coords in
+    // the logical infinite image. This is tested by mirror_tile GM. Note that all values
+    // that have a non-zero bias applied are > 0.
+    auto biasInUlps = trunc_(s);
+    return sk_bit_cast<F>(sk_bit_cast<U32>(m) + ctx->mirrorBiasDir*biasInUlps);
 }
 // Tile x or y to [0,limit) == [0,limit - 1 ulp] (think, sampling from images).
 // The gather stages will hard clamp the output of these stages to [0,limit)...
