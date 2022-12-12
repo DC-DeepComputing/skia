@@ -10,12 +10,10 @@
 #ifdef SK_GRAPHITE_ENABLED
 
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/graphite/CombinationBuilder.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/PaintOptionsPriv.h"
 #include "src/gpu/graphite/Precompile.h"
-#include "tests/graphite/CombinationBuilderTestAccess.h"
 
 #include <array>
 
