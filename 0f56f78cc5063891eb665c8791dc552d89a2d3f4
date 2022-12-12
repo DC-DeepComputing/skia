@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7655b49a_72dcf026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-12T14:07:58Z",
+      "side": 1,
+      "message": "The binary size diffs are alarming but I\u0027m not sure I actually believe them.",
+      "revId": "0f56f78cc5063891eb665c8791dc552d89a2d3f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
