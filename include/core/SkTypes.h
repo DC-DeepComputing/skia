@@ -8,6 +8,8 @@
 #ifndef SkTypes_DEFINED
 #define SkTypes_DEFINED
 
+#include "include/private/SkAPI.h"
+
 /** \file SkTypes.h
 */
 
@@ -165,26 +167,6 @@
 // DLL/.so exports.
 #if !defined(SKIA_IMPLEMENTATION)
     #define SKIA_IMPLEMENTATION 0
-#endif
-#if !defined(SK_API)
-    #if defined(SKIA_DLL)
-        #if defined(_MSC_VER)
-            #if SKIA_IMPLEMENTATION
-                #define SK_API __declspec(dllexport)
-            #else
-                #define SK_API __declspec(dllimport)
-            #endif
-        #else
-            #define SK_API __attribute__((visibility("default")))
-        #endif
-    #else
-        #define SK_API
-    #endif
-#endif
-
-// SK_SPI is functionally identical to SK_API, but used within src to clarify that it's less stable
-#if !defined(SK_SPI)
-    #define SK_SPI SK_API
 #endif
 
 // IWYU pragma: begin_exports

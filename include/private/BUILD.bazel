@@ -33,6 +33,7 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
+        "SkAPI.h",
         "SkBitmaskEnum.h",
         "SkChecksum.h",
         "SkColorData.h",
@@ -81,4 +82,34 @@ skia_filegroup(
         "//conditions:default": [],
     }),
     visibility = ["//include:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkAPI.h",
+        "SkFloatBits.h",
+        "SkFloatingPoint.h",
+        "SkMacros.h",
+        "SkMalloc.h",
+        "SkSafe32.h",
+        "SkSafe_math.h",
+        "SkTFitsIn.h",
+        "SkTLogic.h",
+        "SkTPin.h",
+        "SkTemplates.h",
+        "SkThreadAnnotations.h",
+        "SkTo.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkContainers.h",
+        "SkTArray.h",
+        "SkTDArray.h",
+    ],
+    visibility = ["//src:__pkg__"],
 )

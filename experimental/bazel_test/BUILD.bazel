@@ -47,3 +47,11 @@ genrule(
     cmd = "$(location :print_os) $@",
     exec_tools = [":print_os"],
 )
+
+cc_binary(
+    name = "skia_with_pathops",
+    deps = [
+        "//:core",
+        "//:pathops",
+    ],
+)

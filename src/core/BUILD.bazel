@@ -455,3 +455,35 @@ skia_filegroup(
     }),
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_core_priv_hdrs",
+    srcs = [],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_core_srcs",
+    srcs = [
+        "SkPath.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkASAN.h",
+        "SkArenaAlloc.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_srcs",
+    srcs = [
+        "SkArenaAlloc.cpp",
+        "SkTDArray.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
