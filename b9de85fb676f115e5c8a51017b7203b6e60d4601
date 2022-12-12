@@ -39,6 +39,30 @@
       },
       "revId": "b9de85fb676f115e5c8a51017b7203b6e60d4601",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42c790eb_ec22a067",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-12T15:42:32Z",
+      "side": 1,
+      "message": "Ah, that\u0027s a leftover from an older approach. Removed.",
+      "parentUuid": "3ea41d33_6ad8ddd3",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 32
+      },
+      "revId": "b9de85fb676f115e5c8a51017b7203b6e60d4601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
