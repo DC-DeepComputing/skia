@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae7b9ac4_c1f47368",
+        "filename": "src/gpu/graphite/DrawBufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T15:41:50Z",
+      "side": 1,
+      "message": "This being 128 was a leak from a testing-only change in a previous CL of mine...",
+      "range": {
+        "startLine": 23,
+        "startChar": 44,
+        "endLine": 23,
+        "endChar": 46
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00686457_99ccb7ea",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T15:41:50Z",
+      "side": 1,
+      "message": "Both Dawn and Metal backends handle aligning the buffer allocation size, but I wonder if we should just require the buffer manager\u0027s to be responsible for this, since they are already handling offset alignment?\n\nOn a semi-related note, DrawBufferManager currently only aligns offsets but maybe should also be aligning each sub-allocation\u0027s size as well? When it uses transfer buffer copies, the size should be aligned too. I think I will make that as a follow up change, including logic to handle zeroing the padded bytes.",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
