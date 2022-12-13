@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "351181cf_a8f7722d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-12-13T18:32:44Z",
+      "side": 1,
+      "message": "LGTM pending addressing Greg\u0027s comment.",
+      "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e076e9e_a8c32149",
