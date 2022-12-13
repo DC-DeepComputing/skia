@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0cc7a33_974dd88e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-13T18:12:36Z",
+      "side": 1,
+      "message": "I tested your CL with dawn backend. Dawn doesn\u0027t complain the align problem anymore. thanks",
+      "parentUuid": "af2da8f8_a2853feb",
+      "range": {
+        "startLine": 260,
+        "startChar": 69,
+        "endLine": 260,
+        "endChar": 84
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c780ba1c_8eb690c4",
