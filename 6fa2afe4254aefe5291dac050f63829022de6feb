@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e343ca3_71575fe6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Is there a design document that describes the transition? How long will we be in transition?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62615236_87db72a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "This should be `b/259248961`. By default, Skia reviews convert your `Bug:` to a Chromium bug.",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "77661dbd_aac3bafe",
@@ -14,6 +60,212 @@
       "writtenOn": "2022-12-12T23:30:54Z",
       "side": 1,
       "message": "This is what I\u0027ve been working with and testing locally. I\u0027m of course happy to rework things since we haven\u0027t discussed the design of this part much. A big question I have is generally how detailed should we try to get with testing here during what should be a transitionary phase? And thoughts on how I should approach testing some of this macro logic that just calls right into macros defined by other libraries? Thanks!",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94d2aa9a_325cb723",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "lso",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a9bd1c_8f1f1064",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Regarding tests: See https://skia-review.googlesource.com/c/skia/+/614318/comment/f7b6428b_9aa4cda7/",
+      "parentUuid": "77661dbd_aac3bafe",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "053f9ac6_e8cca446",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: This might be redundant with a `BUILD.gn` change?",
+      "range": {
+        "startLine": 511,
+        "startChar": 0,
+        "endLine": 513,
+        "endChar": 52
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3292fcf8_cb7e6e22",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Again, maybe redundant?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49e1d27_15d978e8",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "I think this will turn it on for both SurfaceFlinger and HWUI? Is that the intent?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f36ece3_1a5c188e",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: What\u0027s the line length here? Note that this doesn\u0027t match be block starting on line 533. I\u0027m guessing that it\u0027s more than 80 characters. See https://google.github.io/styleguide/pyguide.html for more info.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7efa61d_a471bd5f",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "I was tempted to suggest that you don\u0027t need to set this here, since it should be set in a `BUILD.gn` file, but this seems like a reasonable second check, for when we do set it elsewhere.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb2a32ee_957e1300",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: I like these indented, like the set beginning on line 26, but I\u0027m not aware of a rule around it.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 18
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ddc6a4_2571645b",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: These should *not* be indented.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64fc1f01_29234b68",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "What do other projects use for this? I wonder whether it would make sense to give this its own name, like `SkiaTracing`?",
+      "range": {
+        "startLine": 98,
+        "startChar": 39,
+        "endLine": 98,
+        "endChar": 43
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9f9cad5_33cb7779",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: should wrap at/before 100 chars.",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -37,6 +289,161 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04e202cd_e0dd89dd",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "This seems fine to me. Some other options:\n- Make it happen automatically. I\u0027m guessing this doesn\u0027t work, or at least it\u0027s not clear how to make it work, though.\n- Make this a compilation error for *all* builds. Then it would be caught during development. I lean towards this, if it\u0027s not too hard.",
+      "parentUuid": "c675a68c_7c4e7589",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d922f3e_96a2fe63",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "I\u0027m assuming there\u0027s some cost to allowing this? (Not saying we shouldn\u0027t do it, but it\u0027s interesting that we have to define a macro in order to allow it.)\n\nCould callers just manually use `::perfetto::DynamicString`?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc79512a_8d805c8f",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "This isn\u0027t a case convention I\u0027ve seen in Skia. (Though let me know if I\u0027ve missed something!) In [the style guide](https://skia.org/docs/dev/contrib/style/#naming), I think this probably maps to\n\n\u003e Externed functions or static class functions are camel-capped with an initial cap:\n\neven though it\u0027s not using `extern`. So I would name this `SkUnboxPerfettoDynamicString`.",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72fa423e_f4bd4021",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: Line too long",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7201aa5c_e22ae570",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "This already isn\u0027t threadsafe, but you\u0027ve introduced more things (methods, variables), making me think we should do something about it.\n\nOne option would be to document that it\u0027s not threadsafe. But it sounds like we want to be able to change at runtime? What does that look like? If we just document this, does that make things harder for the caller?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f042ef5_87d168ad",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "I think we might want to be more aggressive here than a print statement that might be missed. Maybe make it an `SK_ABORT`?",
+      "range": {
+        "startLine": 227,
+        "startChar": 8,
+        "endLine": 227,
+        "endChar": 16
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a646205_294ff2ed",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "My macro-fu is not that great, so surely I\u0027m missing something. Why is this needed?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ee14219_8d8a9825",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Is this to support our `ALWAYS` versions of the macros? I think the plan is to *not* carry this over to the new system. If Android always wants a category, they should just turn it on always.\n\nSee go/skia-tracing-2022. I thought I had shared this with you, but it looks like I have not :face-palm",
+      "range": {
+        "startLine": 352,
+        "startChar": 49,
+        "endLine": 352,
+        "endChar": 67
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7b6428b_9aa4cda7",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 4
@@ -54,6 +461,139 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7212ad96_c95355e9",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Do we have other tests for tracing? Do other perfetto clients have tests for tracing? I\u0027m not opposed to writing a test, but I don\u0027t know what that would look like.",
+      "parentUuid": "f7b6428b_9aa4cda7",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce2612f4_30a75976",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Why does this appear in both branches? Why not have a single check for this? (Ah, I guess it relates to `force_always_trace`, which I\u0027m not sure we need.)",
+      "range": {
+        "startLine": 364,
+        "startChar": 61,
+        "endLine": 364,
+        "endChar": 77
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afed8305_f36a4160",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "nit: Same line as the `{`",
+      "range": {
+        "startLine": 368,
+        "startChar": 16,
+        "endLine": 368,
+        "endChar": 20
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0e510d_e5d9ecad",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Why does this need to be `inline`d if it\u0027s `delete`d? What does that mean?",
+      "range": {
+        "startLine": 375,
+        "startChar": 12,
+        "endLine": 375,
+        "endChar": 18
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ce796b_e70d4850",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Same line as `{`",
+      "range": {
+        "startLine": 386,
+        "startChar": 12,
+        "endLine": 386,
+        "endChar": 16
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e027721_e8e6476a",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "How was this chosen?",
+      "range": {
+        "startLine": 399,
+        "startChar": 45,
+        "endLine": 399,
+        "endChar": 48
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9355b48_14d94acd",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 4
@@ -65,6 +605,116 @@
       "writtenOn": "2022-12-12T23:30:54Z",
       "side": 1,
       "message": "I put the \\ line continuation characters at uniform column positions for clarity. Unfortunately sometimes the closest multiple of four column widths meant going past 100 chars. Happy to rework wrapping if maintaining \u003c\u003d 100 chars is preferable.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8658be99_f9eaaf18",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "This makes it a little harder to review, but probably easier to read in the code base. I think this is fine as-is",
+      "parentUuid": "a9355b48_14d94acd",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeaf4bda_98004644",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "same line as {",
+      "range": {
+        "startLine": 456,
+        "startChar": 8,
+        "endLine": 456,
+        "endChar": 12
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517db26d_4eb6c9af",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Move to previous line",
+      "range": {
+        "startLine": 478,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 8
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030bd914_57ab6982",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "Does this mean the Android framework? Skia can also be built as a library which an Android app/executable can link to, separate from the framework version. Is this included?",
+      "range": {
+        "startLine": 64,
+        "startChar": 66,
+        "endLine": 64,
+        "endChar": 73
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "340f539c_69322ed7",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:31:58Z",
+      "side": 1,
+      "message": "What does this mean?",
+      "range": {
+        "startLine": 64,
+        "startChar": 24,
+        "endLine": 64,
+        "endChar": 43
+      },
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
