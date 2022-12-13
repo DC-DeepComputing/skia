@@ -16,6 +16,24 @@
       "message": "gentle ping",
       "revId": "a66a16a9be91d064bb135a20ed6dc8ac0cd7d17d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de921a74_660127d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-13T17:45:21Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "07639db2_506db746",
+      "revId": "a66a16a9be91d064bb135a20ed6dc8ac0cd7d17d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
