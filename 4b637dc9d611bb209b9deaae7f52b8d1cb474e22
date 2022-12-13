@@ -39,6 +39,30 @@
       },
       "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e91f47d6_160e435f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T18:56:38Z",
+      "side": 1,
+      "message": "In most cases I think we are already logging a more specific error; this was the only case wehre submitToGpu\u0027s return value was being ignored and I struggled with exactly how we should handle it.\n\nI considered skipping the checkForFinishedWork() and just returning, but that didn\u0027t seem right since there could have been other submissions to wait on. We could update Context::submit() to return a bool reflecting what submitToGpu() returned, even if it blocks on the CPU before doing so.\n\nSince the result of the submit is otherwise suppressed, I had added the logging message so that it would more clearly tie back to the lower-level error.\n\nAny thoughts on how it should proceed? I\u0027m leaning towards submit() returning a bool.",
+      "parentUuid": "9e076e9e_a8c32149",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
