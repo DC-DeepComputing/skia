@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa45600f_8068d0c7",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-13T19:13:41Z",
+      "side": 1,
+      "message": "Probably -- should I change write() as well?",
+      "parentUuid": "b7c001a8_1eeae3c8",
+      "range": {
+        "startLine": 465,
+        "startChar": 60,
+        "endLine": 465,
+        "endChar": 72
+      },
+      "revId": "cff92af5cb435cbfe771cff1a05d1c1e36b2af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "035c01fb_bec4a251",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 14
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-13T19:10:09Z",
       "side": 1,
       "message": "This seems odd given line 448",
+      "range": {
+        "startLine": 454,
+        "startChar": 32,
+        "endLine": 454,
+        "endChar": 67
+      },
+      "revId": "cff92af5cb435cbfe771cff1a05d1c1e36b2af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d36353d9_8c86607c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-13T19:13:41Z",
+      "side": 1,
+      "message": "dstRect.intersect(bounds) can change the top-left location of dstRect.",
+      "parentUuid": "035c01fb_bec4a251",
       "range": {
         "startLine": 454,
         "startChar": 32,
