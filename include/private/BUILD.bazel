@@ -33,11 +33,14 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
+        "SkAPI.h",
+        "SkAssert.h",
         "SkBitmaskEnum.h",
         "SkChecksum.h",
         "SkColorData.h",
         "SkContainers.h",
         "SkDeque.h",
+        "SkDebug.h",
         "SkEncodedInfo.h",
         "SkFixed.h",
         "SkFloatBits.h",
@@ -81,4 +84,50 @@ skia_filegroup(
         "//conditions:default": [],
     }),
     visibility = ["//include:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkAPI.h",
+        "SkAssert.h",
+        "SkDebug.h",
+        "SkFloatBits.h",
+        "SkFloatingPoint.h",
+        "SkMacros.h",
+        "SkMalloc.h",
+        "SkSafe32.h",
+        "SkSafe_math.h",
+        "SkTFitsIn.h",
+        "SkTLogic.h",
+        "SkTPin.h",
+        "SkTemplates.h",
+        "SkThreadAnnotations.h",
+        "SkTo.h",
+        "SkMutex.h",
+        "SkSemaphore.h",
+        "SkOnce.h",
+        "SkThreadID.h",
+        "SkIDChangeListener.h",
+        "SkVx.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkContainers.h",
+        "SkTArray.h",
+        "SkTDArray.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_srcs",
+    srcs = [
+        "SkPathRef.h",
+    ],
+    visibility = ["//src:__pkg__"],
 )

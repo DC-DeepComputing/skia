@@ -10,10 +10,11 @@
 
 #include "include/core/SkMath.h"
 #include "include/core/SkSpan.h"
-#include "include/core/SkTypes.h"
+//#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkContainers.h"
 #include "include/private/SkMalloc.h"
-#include "include/private/SkTemplates.h"
+//#include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 
 #include <algorithm>

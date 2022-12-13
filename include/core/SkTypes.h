@@ -8,6 +8,11 @@
 #ifndef SkTypes_DEFINED
 #define SkTypes_DEFINED
 
+// TODO(kjlubick, bungeman) remove these pragmas
+#include "include/private/SkAPI.h" // IWYU pragma: export
+#include "include/private/SkDebug.h" // IWYU pragma: export
+#include "include/private/SkAssert.h" // IWYU pragma: export
+
 /** \file SkTypes.h
 */
 
@@ -166,26 +171,6 @@
 #if !defined(SKIA_IMPLEMENTATION)
     #define SKIA_IMPLEMENTATION 0
 #endif
-#if !defined(SK_API)
-    #if defined(SKIA_DLL)
-        #if defined(_MSC_VER)
-            #if SKIA_IMPLEMENTATION
-                #define SK_API __declspec(dllexport)
-            #else
-                #define SK_API __declspec(dllimport)
-            #endif
-        #else
-            #define SK_API __attribute__((visibility("default")))
-        #endif
-    #else
-        #define SK_API
-    #endif
-#endif
-
-// SK_SPI is functionally identical to SK_API, but used within src to clarify that it's less stable
-#if !defined(SK_SPI)
-    #define SK_SPI SK_API
-#endif
 
 // IWYU pragma: begin_exports
 #if defined (SK_USER_CONFIG_HEADER)
@@ -260,32 +245,6 @@
 #  else
 #    define SkUNREACHABLE __builtin_trap()
 #  endif
-#endif
-
-#if defined(SK_BUILD_FOR_GOOGLE3)
-    void SkDebugfForDumpStackTrace(const char* data, void* unused);
-    namespace base {
-        void DumpStackTrace(int skip_count, void w(const char*, void*), void* arg);
-    }
-#  define SK_DUMP_GOOGLE3_STACK() ::base::DumpStackTrace(0, SkDebugfForDumpStackTrace, nullptr)
-#else
-#  define SK_DUMP_GOOGLE3_STACK()
-#endif
-
-#ifndef SK_ABORT
-#  ifdef SK_BUILD_FOR_WIN
-     // This style lets Visual Studio follow errors back to the source file.
-#    define SK_DUMP_LINE_FORMAT "%s(%d)"
-#  else
-#    define SK_DUMP_LINE_FORMAT "%s:%d"
-#  endif
-#  define SK_ABORT(message, ...) \
-    do { \
-        SkDebugf(SK_DUMP_LINE_FORMAT ": fatal error: \"" message "\"\n", \
-                 __FILE__, __LINE__, ##__VA_ARGS__); \
-        SK_DUMP_GOOGLE3_STACK(); \
-        sk_abort_no_print(); \
-    } while (false)
 #endif
 
 // If SK_R32_SHIFT is set, we'll use that to choose RGBA or BGRA.
@@ -367,14 +326,6 @@
 #  endif
 #endif
 
-#ifndef SK_PRINTF_LIKE
-#  if defined(__clang__) || defined(__GNUC__)
-#    define SK_PRINTF_LIKE(A, B) __attribute__((format(printf, (A), (B))))
-#  else
-#    define SK_PRINTF_LIKE(A, B)
-#  endif
-#endif
-
 #ifndef SK_ALLOW_STATIC_GLOBAL_INITIALIZERS
     #define SK_ALLOW_STATIC_GLOBAL_INITIALIZERS 0
 #endif
@@ -439,53 +390,6 @@
 
 #if defined(SK_BUILD_FOR_LIBFUZZER) || defined(SK_BUILD_FOR_AFL_FUZZ)
     #define SK_BUILD_FOR_FUZZER
-#endif
-
-/** Called internally if we hit an unrecoverable error.
-    The platform implementation must not return, but should either throw
-    an exception or otherwise exit.
-*/
-[[noreturn]] SK_API extern void sk_abort_no_print(void);
-
-#ifndef SkDebugf
-    SK_API void SkDebugf(const char format[], ...) SK_PRINTF_LIKE(1, 2);
-#endif
-
-// SkASSERT, SkASSERTF and SkASSERT_RELEASE can be used as stand alone assertion expressions, e.g.
-//    uint32_t foo(int x) {
-//        SkASSERT(x > 4);
-//        return x - 4;
-//    }
-// and are also written to be compatible with constexpr functions:
-//    constexpr uint32_t foo(int x) {
-//        return SkASSERT(x > 4),
-//               x - 4;
-//    }
-#define SkASSERT_RELEASE(cond) \
-        static_cast<void>( (cond) ? (void)0 : []{ SK_ABORT("assert(%s)", #cond); }() )
-
-#ifdef SK_DEBUG
-    #define SkASSERT(cond) SkASSERT_RELEASE(cond)
-    #define SkASSERTF(cond, fmt, ...) static_cast<void>( (cond) ? (void)0 : [&]{ \
-                                          SkDebugf(fmt"\n", ##__VA_ARGS__);      \
-                                          SK_ABORT("assert(%s)", #cond);         \
-                                      }() )
-    #define SkDEBUGFAIL(message)        SK_ABORT("%s", message)
-    #define SkDEBUGFAILF(fmt, ...)      SK_ABORT(fmt, ##__VA_ARGS__)
-    #define SkDEBUGCODE(...)            __VA_ARGS__
-    #define SkDEBUGF(...)               SkDebugf(__VA_ARGS__)
-    #define SkAssertResult(cond)        SkASSERT(cond)
-#else
-    #define SkASSERT(cond)            static_cast<void>(0)
-    #define SkASSERTF(cond, fmt, ...) static_cast<void>(0)
-    #define SkDEBUGFAIL(message)
-    #define SkDEBUGFAILF(fmt, ...)
-    #define SkDEBUGCODE(...)
-    #define SkDEBUGF(...)
-
-    // unlike SkASSERT, this macro executes its condition in the non-debug build.
-    // The if is present so that this can be used with functions marked SK_WARN_UNUSED_RESULT.
-    #define SkAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
