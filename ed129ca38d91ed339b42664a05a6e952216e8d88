@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b95c2e5_3c46e644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-13T21:58:45Z",
+      "side": 1,
+      "message": "FYI: We had a bug in our Android roller that seems to have been resolved. I just kicked off another `Canary-Android` run.",
+      "revId": "ed129ca38d91ed339b42664a05a6e952216e8d88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
