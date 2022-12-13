@@ -24,6 +24,10 @@ public:
     static sk_sp<CopyBufferToBufferTask> Make(sk_sp<Buffer> srcBuffer,
                                               sk_sp<Buffer> dstBuffer);
 
+    static sk_sp<CopyBufferToBufferTask> Make(sk_sp<Buffer> srcBuffer, size_t srcOffset,
+                                              sk_sp<Buffer> dstBuffer, size_t dstOffset,
+                                              size_t size);
+
     ~CopyBufferToBufferTask() override;
 
     bool prepareResources(ResourceProvider*, const SkRuntimeEffectDictionary*) override;
@@ -31,11 +35,15 @@ public:
     bool addCommands(ResourceProvider*, CommandBuffer*) override;
 
 private:
-    CopyBufferToBufferTask(sk_sp<Buffer> srcBuffer,
-                           sk_sp<Buffer> dstBuffer);
+    CopyBufferToBufferTask(sk_sp<Buffer> srcBuffer, size_t srcOffset,
+                           sk_sp<Buffer> dstBuffer, size_t dstOffset,
+                           size_t size);
 
     sk_sp<Buffer> fSrcBuffer;
+    size_t        fSrcOffset;
     sk_sp<Buffer> fDstBuffer;
+    size_t        fDstOffset;
+    size_t        fSize;
 };
 
 class CopyTextureToBufferTask final : public Task {
