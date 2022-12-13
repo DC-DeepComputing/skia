@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b78a3d22_98308837",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-13T21:14:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa45600f_8068d0c7",
+      "range": {
+        "startLine": 465,
+        "startChar": 60,
+        "endLine": 465,
+        "endChar": 72
+      },
+      "revId": "cff92af5cb435cbfe771cff1a05d1c1e36b2af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "035c01fb_bec4a251",
