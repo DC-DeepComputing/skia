@@ -17,7 +17,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<RenderPassTask> RenderPassTask::Make(std::vector<std::unique_ptr<DrawPass>> passes,
+sk_sp<RenderPassTask> RenderPassTask::Make1(std::vector<std::unique_ptr<DrawPass>> passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target) {
     // For now we have one DrawPass per RenderPassTask
@@ -51,7 +51,7 @@ bool RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     for (const auto& drawPass: fDrawPasses) {
-        if (!drawPass->prepareResources(resourceProvider, runtimeDict, fRenderPassDesc)) {
+        if (!drawPass->prepareResources1(resourceProvider, runtimeDict, fRenderPassDesc)) {
             return false;
         }
     }

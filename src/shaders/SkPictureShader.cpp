@@ -454,7 +454,7 @@ void SkPictureShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
     using namespace skgpu::graphite;
 
-    Recorder* recorder = keyContext.recorder();
+    Recorder* recorder = keyContext.recorder1();
     const Caps* caps = recorder->priv().caps();
 
     // TODO: We'll need additional plumbing to get the correct props from our callers. In

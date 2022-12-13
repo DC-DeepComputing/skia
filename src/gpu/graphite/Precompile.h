@@ -26,8 +26,10 @@ class SkRuntimeEffect;
 class SkUniquePaintParamsID;
 
 namespace skgpu::graphite {
-
+class KeyContext;
+class PaintParamsKeyBuilder;
 class PrecompileBasePriv;
+class ShaderCodeDictionary;
 
 class PrecompileBase : public SkRefCnt {
 public:
@@ -128,7 +130,7 @@ public:
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
 
-    static sk_sp<PrecompileBlender> Mode(SkBlendMode blendMode);
+    static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
 //--------------------------------------------------------------------------------------------------
@@ -179,7 +181,7 @@ private:
     // 'desiredCombination' must be less than the result of the numCombinations call
     void createKey(const KeyContext&, int desiredCombination, PaintParamsKeyBuilder*) const;
     void buildCombinations(
-        ShaderCodeDictionary*,
+        const KeyContext&,
         const std::function<void(SkUniquePaintParamsID)>& processCombination) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
