@@ -502,7 +502,6 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                     for (auto iter : precompileIDs) {
                         dump(dict, iter);
                     }
-                    SkASSERT(0);
                 }
 #endif
 
