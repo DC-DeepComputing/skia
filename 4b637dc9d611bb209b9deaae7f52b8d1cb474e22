@@ -87,6 +87,30 @@
       },
       "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99693d2b_29950d55",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T21:18:15Z",
+      "side": 1,
+      "message": "Context::submit now returns a bool, so QueueManager::submitToGpu()\u0027s return isn\u0027t being ignored. Given that, I removed the log statement I\u0027d added, since it should have been logged at the point of failure, as you said.",
+      "parentUuid": "25d0619a_4daaaf34",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
