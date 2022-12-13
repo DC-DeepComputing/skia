@@ -22,6 +22,30 @@
       },
       "revId": "f4560c1a7e58437c06e2535c53bce4ca710838bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27345aa_1cc9e378",
+        "filename": "gm/mirrortile.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-13T17:30:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "941395c4_60a48909",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 98
+      },
+      "revId": "f4560c1a7e58437c06e2535c53bce4ca710838bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
