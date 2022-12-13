@@ -40,11 +40,16 @@ ParagraphBuilderImpl::ParagraphBuilderImpl(
         , fUtf8()
         , fFontCollection(std::move(fontCollection))
         , fParagraphStyle(style)
+<<<<<<< PATCH SET (240413 Correct ParagraphBuilder::getText() behavior)
+        , fTextIsFinalized(false)
+        , fUnicode(std::move(unicode)) {
+=======
         , fUnicode(std::move(unicode))
 #ifndef SK_UNICODE_ICU_IMPLEMENTATION
         , fUsingClientInfo(false)
 #endif
 {
+>>>>>>> BASE      (0c4a46 Add setters for providing client info to SkParagraphBuilder)
     startStyledBlock();
 }
 
@@ -74,7 +79,7 @@ void ParagraphBuilderImpl::pop() {
         SkDEBUGF("SkParagraphBuilder.Pop() called too many times.\n");
     }
 
-    startStyledBlock();
+    this->startStyledBlock();
 }
 
 const TextStyle& ParagraphBuilderImpl::internalPeekStyle() {
@@ -86,27 +91,32 @@ const TextStyle& ParagraphBuilderImpl::internalPeekStyle() {
 }
 
 TextStyle ParagraphBuilderImpl::peekStyle() {
-    return internalPeekStyle();
+    return this->internalPeekStyle();
 }
 
 void ParagraphBuilderImpl::addText(const std::u16string& text) {
+    SkASSERT(!fTextIsFinalized);
     auto utf8 = SkUnicode::convertUtf16ToUtf8(text);
     fUtf8.append(utf8);
 }
 
 void ParagraphBuilderImpl::addText(const char* text) {
+    SkASSERT(!fTextIsFinalized);
     fUtf8.append(text);
 }
 
 void ParagraphBuilderImpl::addText(const char* text, size_t len) {
+    SkASSERT(!fTextIsFinalized);
     fUtf8.append(text, len);
 }
 
 void ParagraphBuilderImpl::addPlaceholder(const PlaceholderStyle& placeholderStyle) {
+    SkASSERT(!fTextIsFinalized);
     addPlaceholder(placeholderStyle, false);
 }
 
 void ParagraphBuilderImpl::addPlaceholder(const PlaceholderStyle& placeholderStyle, bool lastOne) {
+    SkASSERT(!fTextIsFinalized);
     if (!fUtf8.isEmpty() && !lastOne) {
         // We keep the very last text style
         this->endRunIfNeeded();
@@ -145,12 +155,22 @@ void ParagraphBuilderImpl::startStyledBlock() {
     fStyledBlocks.emplace_back(fUtf8.size(), fUtf8.size(), internalPeekStyle());
 }
 
-std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
+void ParagraphBuilderImpl::finalize() {
+    if (fTextIsFinalized) {
+        return;
+    }
     if (!fUtf8.isEmpty()) {
         this->endRunIfNeeded();
     }
-
     // Add one fake placeholder with the rest of the text
+<<<<<<< PATCH SET (240413 Correct ParagraphBuilder::getText() behavior)
+    this->addPlaceholder(PlaceholderStyle(), true);
+    fTextIsFinalized = true;
+}
+
+std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
+    this->finalize();
+=======
     addPlaceholder(PlaceholderStyle(), true);
 
 #ifndef SK_UNICODE_ICU_IMPLEMENTATION
@@ -165,12 +185,13 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
                                                  std::move(fLineBreaksUtf8));
 #endif
     SkASSERT(fUnicode);
+>>>>>>> BASE      (0c4a46 Add setters for providing client info to SkParagraphBuilder)
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
 }
 
-
 SkSpan<char> ParagraphBuilderImpl::getText() {
+    this->finalize();
     return SkSpan<char>(fUtf8.isEmpty() ? nullptr : fUtf8.data(), fUtf8.size());
 }
 
@@ -252,6 +273,14 @@ void ParagraphBuilderImpl::setBidiRegionsUtf8(std::vector<SkUnicode::BidiRegion>
     SkASSERT(false);
 }
 
+<<<<<<< PATCH SET (240413 Correct ParagraphBuilder::getText() behavior)
+void ParagraphBuilderImpl::Reset() {
+    fTextStyles.reset();
+    fUtf8.reset();
+    fStyledBlocks.reset();
+    fPlaceholders.reset();
+    fTextIsFinalized = false;
+=======
 void ParagraphBuilderImpl::setBidiRegionsUtf16(std::vector<SkUnicode::BidiRegion> bidiRegionsUtf16) {
     SkASSERT(false);
 }
@@ -295,6 +324,7 @@ void ParagraphBuilderImpl::Reset() {
     fGraphemeBreaksUtf8.clear();
     fLineBreaksUtf8.clear();
 #endif
+>>>>>>> BASE      (0c4a46 Add setters for providing client info to SkParagraphBuilder)
     startStyledBlock();
 }
 

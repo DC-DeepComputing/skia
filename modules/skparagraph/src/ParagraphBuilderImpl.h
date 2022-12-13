@@ -95,6 +95,7 @@ protected:
     void endRunIfNeeded();
     const TextStyle& internalPeekStyle();
     void addPlaceholder(const PlaceholderStyle& placeholderStyle, bool lastOne);
+    void finalize();
 
     SkString fUtf8;
     SkSTArray<4, TextStyle, true> fTextStyles;
@@ -102,6 +103,7 @@ protected:
     SkSTArray<4, Placeholder, true> fPlaceholders;
     sk_sp<FontCollection> fFontCollection;
     ParagraphStyle fParagraphStyle;
+    bool fTextIsFinalized;
 
     std::shared_ptr<SkUnicode> fUnicode;
 
