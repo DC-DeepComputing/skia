@@ -63,6 +63,30 @@
       },
       "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d0619a_4daaaf34",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-13T19:03:11Z",
+      "side": 1,
+      "message": "Oh wow yeah I\u0027m a little surprised that submit doesn\u0027t return anything. So I think it should be fine to return a bool unless I\u0027m missing something.\n\nI don\u0027t think we should mention anything about checkForFinishedWork. That\u0027s an implementation detail the client doesn\u0027t need to know about. I.e. they don\u0027t need to know what our system for checking completion of previous work is. Just that we do occasionally check at some frequency.",
+      "parentUuid": "e91f47d6_160e435f",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
