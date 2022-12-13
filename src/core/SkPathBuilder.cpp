@@ -31,9 +31,9 @@ SkPathBuilder::~SkPathBuilder() {
 }
 
 SkPathBuilder& SkPathBuilder::reset() {
-    fPts.reset();
-    fVerbs.reset();
-    fConicWeights.reset();
+    fPts.clear();
+    fVerbs.clear();
+    fConicWeights.clear();
     fFillType = SkPathFillType::kWinding;
     fIsVolatile = false;
 
