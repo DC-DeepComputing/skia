@@ -20,6 +20,8 @@ class SkRuntimeEffect;
 // paint, and gives us a way to retrieve their shader text when we see an their code-snippet ID.
 class SkRuntimeEffectDictionary {
 public:
+    SkRuntimeEffectDictionary(bool whatwhat) {}
+
     const SkRuntimeEffect* find(int codeSnippetID) const {
         sk_sp<const SkRuntimeEffect>* effect = fDict.find(codeSnippetID);
         return effect ? effect->get() : nullptr;

@@ -83,7 +83,7 @@ static int32_t next_id() {
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options)
         : fSharedContext(std::move(sharedContext))
-        , fRuntimeEffectDict(std::make_unique<SkRuntimeEffectDictionary>())
+        , fRuntimeEffectDict(std::make_unique<SkRuntimeEffectDictionary>(true)) //$$
         , fGraph(new TaskGraph)
         , fUniformDataCache(new UniformDataCache)
         , fTextureDataCache(new TextureDataCache)

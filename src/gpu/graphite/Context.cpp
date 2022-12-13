@@ -10,7 +10,6 @@
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
-#include "include/gpu/graphite/CombinationBuilder.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -21,8 +20,10 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/CopyTask.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
@@ -34,6 +35,7 @@
 #include "src/gpu/graphite/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/UploadTask.h"
+
 
 #ifdef SK_DAWN
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
@@ -382,8 +384,18 @@ void Context::precompile(const PaintOptions& options) {
             for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
                 for (auto&& s : r->steps()) {
                     if (s->performsShading()) {
-                        GraphicsPipelineDesc desc(s, uniqueID);
-                        (void) desc;
+                        GraphicsPipelineDesc pipelineDesc(s, uniqueID);
+
+                        RenderPassDesc renderPassDesc;
+
+                        auto pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
+                                nullptr, /*runtimeDict, */
+                                pipelineDesc,
+                                renderPassDesc);
+                        if (!pipeline) {
+                            SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+                            return;
+                        }
 
                         // TODO: Combine the desc with the renderpass description set to generate a
                         // full GraphicsPipeline and MSL program. Cache that compiled pipeline on
@@ -393,34 +405,6 @@ void Context::precompile(const PaintOptions& options) {
                 }
             }
         });
-}
-
-BlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
-    return fSharedContext->shaderCodeDictionary()->addUserDefinedBlender(std::move(effect));
-}
-
-void Context::precompile(CombinationBuilder* combinationBuilder) {
-    ASSERT_SINGLE_OWNER
-
-    combinationBuilder->buildCombinations(
-            fSharedContext->shaderCodeDictionary(),
-            [&](SkUniquePaintParamsID uniqueID) {
-                for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
-                    for (auto&& s : r->steps()) {
-                        if (s->performsShading()) {
-                            GraphicsPipelineDesc desc(s, uniqueID);
-                            (void) desc;
-                            // TODO: Combine with renderpass description set to generate full
-                            // GraphicsPipeline and MSL program. Cache that compiled pipeline on
-                            // the resource provider in a map from desc -> pipeline so that any
-                            // later desc created from equivalent RenderStep + Combination get it.
-                        }
-                    }
-                }
-            });
-
-    // TODO: Iterate over the renderers and make descriptions for the steps that don't perform
-    // shading, and just use ShaderType::kNone.
 }
 
 #endif // SK_ENABLE_PRECOMPILE
