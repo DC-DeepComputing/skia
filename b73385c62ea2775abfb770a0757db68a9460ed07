@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843551b3_f3c8afc2",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T17:18:13Z",
+      "side": 1,
+      "message": "false?",
+      "range": {
+        "startLine": 505,
+        "startChar": 29,
+        "endLine": 505,
+        "endChar": 30
+      },
+      "revId": "b73385c62ea2775abfb770a0757db68a9460ed07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
