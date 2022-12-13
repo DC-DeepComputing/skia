@@ -26,6 +26,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9956c9dc_0df98e9a",
+        "filename": "resources/sksl/compute/Atomics.compute",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-13T18:06:05Z",
+      "side": 1,
+      "message": "There\u0027s an atomicLoad on line 39",
+      "parentUuid": "56a8e1c4_65fe0f69",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 2
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f56013_a5c924bf",
+        "filename": "resources/sksl/compute/Atomics.compute",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-13T18:06:05Z",
+      "side": 1,
+      "message": "I realize this test is really about making sure the generated code-gen properly reflects the declarations and intrinsics, but for my own clarity:\n\nThis is the situation where the thing we\u0027re storing to is actually in device memory, so the workgroupBarrier below isn\u0027t sufficient, if the dispatch spans more than one workgroup, right?",
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f1304ca_2ce4d700",
         "filename": "src/sksl/sksl_gpu.sksl",
         "patchSetId": 11
