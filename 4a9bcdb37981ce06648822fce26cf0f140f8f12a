@@ -16,6 +16,23 @@
       "message": "PTAL, StaticBufferManager should keep everything aligned now. The last unresolved issue is how public to make the `addStaticResource` and locking in GlobalCache.",
       "revId": "4a9bcdb37981ce06648822fce26cf0f140f8f12a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d513f797_8b63d980",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T17:06:49Z",
+      "side": 1,
+      "message": "I\u0027ve updated StaticBufferManager to return whether or not it succeeded with GPU work, or if there was no work necessary, to handle the future Context initialization case where the active renderers may not require static buffers.",
+      "revId": "4a9bcdb37981ce06648822fce26cf0f140f8f12a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
