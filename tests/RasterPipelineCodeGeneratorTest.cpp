@@ -24,7 +24,7 @@
 #include <optional>
 #include <string>
 
-//#define DUMP_PROGRAMS 1
+#define DUMP_PROGRAMS 1
 #if defined(DUMP_PROGRAMS)
 #include "src/core/SkStreamPriv.h"
 #endif
@@ -158,6 +158,20 @@ DEF_TEST(SkSLRasterPipelineCodeGeneratorAdditionTest, r) {
              }
          )__SkSL__",
          SkColor4f{0.0f, 1.0f, 0.0f, 1.0f});
+}
+
+DEF_TEST(SkSLRasterPipelineCodeGeneratorSwizzleLValueTest, r) {
+    // Add in your SkSL here.
+    test(r,
+         R"__SkSL__(
+             half4 main(float2 coords) {
+                 half4 color = half4(0);
+                 color.ga = half2(0.499, 1.0);
+                 color.br = half2(0.249);
+                 return color;
+             }
+         )__SkSL__",
+         SkColor4f{0.249f, 0.499f, 0.249f, 1.0f});
 }
 
 DEF_TEST(SkSLRasterPipelineCodeGeneratorIfElseTest, r) {

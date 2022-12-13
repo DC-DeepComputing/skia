@@ -36,6 +36,7 @@
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
+#include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -45,6 +46,7 @@
 #include "src/sksl/tracing/SkSLDebugInfo.h"
 
 #include <cstddef>
+#include <numeric>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -191,23 +193,70 @@ struct LValue {
     static std::unique_ptr<LValue> Make(const Expression& e);
 
     /** Copies the top-of-stack value into this lvalue, without discarding it from the stack. */
-    virtual bool store(Generator* gen) = 0;
+    bool store(Generator* gen) {
+        // TODO(skia:13676): coalesce storage into consecutive value slots
+        SlotMap out = this->getSlotMap(gen);
+        for (int index = 0; index < out.slots.size(); ++index) {
+            Slot dst = out.slots[index];
+            int offsetFromStackTop = out.slots.size() - index;
+            gen->builder()->copy_stack_to_slots(SlotRange{dst, 1}, offsetFromStackTop);
+        }
+        return true;
+    }
+
+    struct SlotMap {
+        SkTArray<int> slots;  // the destination slots
+    };
+    virtual SlotMap getSlotMap(Generator* gen) = 0;
 };
 
 struct VariableLValue : public LValue {
     VariableLValue(const Variable* v) : fVariable(v) {}
 
-    bool store(Generator* gen) override {
-        gen->copyToSlotRange(gen->getSlots(*fVariable));
-        return true;
+    SlotMap getSlotMap(Generator* gen) override {
+        // Map every slot in the variable, in consecutive order, e.g. a half4 at slot 5 = {5,6,7,8}.
+        SlotMap out;
+        SlotRange range = gen->getSlots(*fVariable);
+        out.slots.resize(range.count);
+        std::iota(out.slots.begin(), out.slots.end(), range.index);
+        return out;
     }
 
     const Variable* fVariable;
 };
 
+struct SwizzleLValue : public LValue {
+    SwizzleLValue(std::unique_ptr<LValue> p, const ComponentArray& c)
+            : fParent(std::move(p))
+            , fComponents(c) {}
+
+    SlotMap getSlotMap(Generator* gen) override {
+        // Get slots from the parent variable.
+        SlotMap in = fParent->getSlotMap(gen);
+
+        // Rearrange the slots based on the swizzle.
+        SlotMap out;
+        out.slots.resize(fComponents.size());
+        for (int index = 0; index < fComponents.size(); ++index) {
+            SkASSERT(fComponents[index] < in.slots.size());
+            out.slots[index] = in.slots[fComponents[index]];
+        }
+
+        return out;
+    }
+
+    std::unique_ptr<LValue> fParent;
+    const ComponentArray& fComponents;
+};
+
 std::unique_ptr<LValue> LValue::Make(const Expression& e) {
     if (e.is<VariableReference>()) {
         return std::make_unique<VariableLValue>(e.as<VariableReference>().variable());
+    }
+    if (e.is<Swizzle>()) {
+        if (std::unique_ptr<LValue> base = LValue::Make(*e.as<Swizzle>().base())) {
+            return std::make_unique<SwizzleLValue>(std::move(base), e.as<Swizzle>().components());
+        }
     }
     // TODO(skia:13676): add support for other kinds of lvalues
     return nullptr;
