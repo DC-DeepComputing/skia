@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e076e9e_a8c32149",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-13T18:02:09Z",
+      "side": 1,
+      "message": "Are we don\u0027t already logging this error where the actual error occurred? In general I think errors should be reported fairly low.",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 90
+      },
+      "revId": "4b637dc9d611bb209b9deaae7f52b8d1cb474e22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
