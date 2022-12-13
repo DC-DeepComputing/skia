@@ -8,15 +8,52 @@
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
 namespace skgpu::graphite {
 
+static const VulkanDescriptorSet* make_uniform_desc_set(const VulkanSharedContext* context,
+                                                        VkBuffer buffer,
+                                                        size_t size,
+                                                        const VulkanResourceProvider* rsrcProvider) {
+    // const VulkanDescriptorSet* descriptorSet = rsrcProvider.getUniformDescriptorSet();
+    // if (!descriptorSet) {
+        return nullptr;
+    // }
+
+    // VkDescriptorBufferInfo bufferInfo;
+    // memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+    // bufferInfo.buffer = buffer;
+    // bufferInfo.offset = 0;
+    // bufferInfo.range = size;
+
+    // VkWriteDescriptorSet descriptorWrite;
+    // memset(&descriptorWrite, 0, sizeof(VkWriteDescriptorSet));
+    // descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    // descriptorWrite.pNext = nullptr;
+    // descriptorWrite.dstSet = *descriptorSet->descriptorSet();
+    // descriptorWrite.dstBinding = GrVkUniformHandler::kUniformBinding;
+    // descriptorWrite.dstArrayElement = 0;
+    // descriptorWrite.descriptorCount = 1;
+    // descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    // descriptorWrite.pImageInfo = nullptr;
+    // descriptorWrite.pBufferInfo = &bufferInfo;
+    // descriptorWrite.pTexelBufferView = nullptr;
+
+    // GR_VK_CALL(gpu->vkInterface(),
+    //            UpdateDescriptorSets(gpu->device(), 1, &descriptorWrite, 0, nullptr));
+    // return descriptorSet;
+}
+
 sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                                  size_t size,
                                  BufferType type,
-                                 PrioritizeGpuReads prioritizeGpuReads) {
+                                 PrioritizeGpuReads prioritizeGpuReads,
+                                 const VulkanResourceProvider* resourceProvider) {
     if (size <= 0) {
         return nullptr;
     }
@@ -94,14 +131,11 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     bool shouldPersistentlyMapCpuToGpu =
         sharedContext->vulkanCaps().shouldPersistentlyMapCpuToGpuBuffers();
     //AllocBufferMemory
-    auto checkResult = [](VkResult result) {
-        return result == VK_SUCCESS;
-    };
     if (!skgpu::VulkanMemory::AllocBufferMemory(allocator,
                                                 buffer,
                                                 allocUsage,
                                                 shouldPersistentlyMapCpuToGpu,
-                                                checkResult,
+                                                /*const std::function<CheckResult>&=*/nullptr,
                                                 &alloc)) {
         VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
                 buffer,
@@ -122,23 +156,26 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         return nullptr;
     }
 
-    // TODO: If this is a uniform buffer, we must set up a descriptor set.
-    // const GrVkDescriptorSet* uniformDescSet = nullptr;
-    // if (bufferType == kUniform::kUniform) {
-    //     uniformDescSet = make_uniform_desc_set(gpu, buffer, size);
-    //     if (!uniformDescSet) {
-    //         VK_CALL(gpu, DestroyBuffer(gpu->device(), buffer, nullptr));
-    //         skgpu::VulkanMemory::FreeBufferMemory(allocator, alloc);
-    //         return nullptr;
-    //     }
-    // }
+    // If this is a uniform buffer, we must set up a descriptor set. TODO - Move upwards
+    const VulkanDescriptorSet* uniformDescSet = nullptr;
+    if (type == BufferType::kUniform) {
+        uniformDescSet = make_uniform_desc_set(sharedContext, buffer, size, resourceProvider);
+        if (!uniformDescSet) {
+            VULKAN_CALL(sharedContext->interface(), DestroyBuffer(sharedContext->device(),
+                    buffer,
+                    /*const VkAllocationCallbacks*=*/nullptr));
+            skgpu::VulkanMemory::FreeBufferMemory(allocator, alloc);
+            return nullptr;
+        }
+    }
 
     return sk_sp<Buffer>(new VulkanBuffer(sharedContext,
                                           size,
                                           type,
                                           prioritizeGpuReads,
                                           std::move(buffer),
-                                          alloc));
+                                          alloc,
+                                          uniformDescSet));
 }
 
 VulkanBuffer::VulkanBuffer(const VulkanSharedContext* sharedContext,
@@ -146,12 +183,14 @@ VulkanBuffer::VulkanBuffer(const VulkanSharedContext* sharedContext,
                            BufferType type,
                            PrioritizeGpuReads prioritizeGpuReads,
                            VkBuffer buffer,
-                           const skgpu::VulkanAlloc& alloc)
+                           const skgpu::VulkanAlloc& alloc,
+                           const VulkanDescriptorSet* uniformDescriptorSet))
         : Buffer(sharedContext, size)
         , fBuffer(std::move(buffer))
         , fAlloc(alloc)
         // We assume a buffer is used for CPU reads only in the case of GPU->CPU transfer buffers.
-        , fBufferUsedForCPURead(type == BufferType::kXferGpuToCpu) {}
+        , fBufferUsedForCPURead(type == BufferType::kXferGpuToCpu)
+        , fUniformDescriptorSet(uniformDescriptorSet) {}
 
 void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
     SkASSERT(!fMapPtr);
