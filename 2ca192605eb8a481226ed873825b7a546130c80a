@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af2da8f8_a2853feb",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T16:11:17Z",
+      "side": 1,
+      "message": "StaticBufferManager has been updated to align offsets and sizes to the max of the copy alignment and final buffer type alignment, so both the source and dest are consistent.",
+      "parentUuid": "cda43369_c3d36905",
+      "range": {
+        "startLine": 260,
+        "startChar": 69,
+        "endLine": 260,
+        "endChar": 84
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c780ba1c_8eb690c4",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-12-09T18:48:32Z",
       "side": 1,
       "message": "If we\u0027re going to assert srcBuffer is valid in the next factory anyways, do we just duplicate that assert and always was in srcBuffer-\u003esize() instead of doing this check every time?",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "2ca192605eb8a481226ed873825b7a546130c80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff228133_a380ddae",
+        "filename": "src/gpu/graphite/CopyTask.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-13T16:11:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c780ba1c_8eb690c4",
       "range": {
         "startLine": 20,
         "startChar": 4,
