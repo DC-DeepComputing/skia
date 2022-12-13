@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b02736dd_612b4cf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-13T18:40:42Z",
+      "side": 1,
+      "message": "The IntelIris640 machines are all offline, so these jobs need a new home. These jobs have failures on the RTX3060(1), but have fewer issues with the IntelBayTrail GPUs. Not sure if its best to land this change and fix the tests, or maybe try to find other Intel GPUs where this test passes.\n\n(1) https://skia-review.googlesource.com/c/skia/+/616536?checksPatchset\u003d2\u0026tab\u003dchecks",
+      "revId": "2f6220a209b3182e7b25147450c498e2fdd1ded4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
