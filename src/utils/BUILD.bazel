@@ -142,3 +142,19 @@ skia_filegroup(
     }),
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "base_priv_srcs",
+    srcs = [
+        "SkUTF.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkUTF.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

@@ -127,6 +127,105 @@ generate_cpp_files_for_headers(
     to_generate = [
         "src/core/SkAutoMalloc.h",
         "src/core/SkScopeExit.h",
+        "src/core/SkPathPriv.h",
+        "src/core/SkSafeMath.h",
         "src/image/SkImage_Base.h",
+    ],
+)
+
+# Experimental rules for a modular, "buffet" Skia build
+
+cc_library(
+    name = "base",
+    srcs = [
+        # We don't want any other Skia files (other than SkTypes.h) to include
+        # SkUserConfig.h
+        "//include/config:base_hdrs",
+    ],
+    hdrs = [
+        "//include/core:base_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base_priv",
+    ],
+)
+
+cc_library(
+    name = "base_priv",
+    srcs = [
+        "//src/core:base_priv_srcs",
+        "//src/utils:base_priv_srcs",
+    ],
+    hdrs = [
+        "//include/private:base_priv_hdrs",
+        "//src/core:base_priv_hdrs",
+        "//src/utils:base_priv_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = "core",
+    srcs = [
+        "//include/private:core_srcs",
+        "//src/core:buffet_core_srcs",
+    ],
+    hdrs = [
+        "//include/core:core_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":base_priv",
+    ],
+)
+
+cc_library(
+    name = "core_priv",
+    srcs = [
+        #"//src/core:core_priv_srcs",
+    ],
+    hdrs = [
+        "//src/core:core_priv_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":base_priv",
+    ],
+)
+
+cc_library(
+    name = "memory",
+    srcs = ["//src/core:memory_srcs"],
+    hdrs = [
+        "//src/core:memory_hdrs",
+    ],
+    visibility = ["//visibility:private"],
+    deps = [":base"],
+)
+
+cc_library(
+    name = "pathops",
+    srcs = [
+        "//src/pathops:private_hdrs",
+        "//src/pathops:srcs",
+    ],
+    hdrs = [
+        "//include/pathops:public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":base_priv",
+        ":core",
+        ":core_priv",
+        ":memory",
     ],
 )
