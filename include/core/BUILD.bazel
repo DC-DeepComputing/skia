@@ -116,3 +116,36 @@ skia_filegroup(
     ],
     visibility = ["//include:__pkg__"],
 )
+
+skia_filegroup(
+    name = "base_hdrs",
+    srcs = [
+        "SkAlphaType.h",
+        "SkColor.h",
+        "SkFontTypes.h",
+        "SkMath.h",
+        "SkRefCnt.h",
+        "SkScalar.h",
+        "SkSpan.h",
+        "SkTypes.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_hdrs",
+    srcs = [
+        "SkData.h",
+        "SkMatrix.h",
+        "SkPath.h",
+        "SkPathBuilder.h",
+        "SkPathTypes.h",
+        "SkPoint.h",
+        "SkRRect.h",
+        "SkRect.h",
+        "SkSize.h",
+        "SkStream.h",
+        "SkString.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

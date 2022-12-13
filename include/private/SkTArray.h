@@ -8,11 +8,11 @@
 #ifndef SkTArray_DEFINED
 #define SkTArray_DEFINED
 
-#include "include/core/SkMath.h"
-#include "include/core/SkSpan.h"
-#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkContainers.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkSpan_impl.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 
@@ -24,6 +24,11 @@
 #include <initializer_list>
 #include <new>
 #include <utility>
+
+// Copied from SkMath.h to avoid extra dependency
+static constexpr inline bool isPow2(int value) {
+    return (value & (value - 1)) == 0;
+}
 
 /** SkTArray<T> implements a typical, mostly std::vector-like array.
     Each T will be default-initialized on allocation, and ~T will be called on destruction.
@@ -492,7 +497,7 @@ private:
     static constexpr double kGrowing = 1.5;
 
     static constexpr int kMinHeapAllocCount = 8;
-    static_assert(SkIsPow2(kMinHeapAllocCount), "min alloc count not power of two.");
+    static_assert(isPow2(kMinHeapAllocCount), "min alloc count not power of two.");
 
     // Note for 32-bit machines kMaxCapacity will be <= SIZE_MAX. For 64-bit machines it will
     // just be INT_MAX if the sizeof(T) < 2^32.
