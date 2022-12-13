@@ -14,8 +14,13 @@
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
+
+const VulkanSharedContext* VulkanResourceProvider::vulkanSharedContext() {
+    return static_cast<const VulkanSharedContext*>(fSharedContext);
+}
 
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner)
@@ -44,8 +49,8 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize, const TextureInfo&
 
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
                                                    BufferType type,
-                                                   PrioritizeGpuReads) {
-    return nullptr;
+                                                   PrioritizeGpuReads prioritizeGpuReads) {
+    return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, prioritizeGpuReads, this);
 }
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions&,

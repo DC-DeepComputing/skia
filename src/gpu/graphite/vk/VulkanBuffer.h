@@ -13,22 +13,25 @@
 
 namespace skgpu::graphite {
 
+class VulkanDescriptorSet;
+class VulkanResourceProvider;
 class VulkanSharedContext;
 
 class VulkanBuffer final : public Buffer {
 public:
-    static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads);
+    static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads,
+                              const VulkanResourceProvider*);
     void freeGpuData() override {}
 
 private:
-    VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer);
+    VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer,
+                 const VulkanDescriptorSet* uniformDescriptorSet);
 
     void onMap() override {}
     void onUnmap() override {}
-    // TODO: Remove this getter method. This silences a compiler unused member warning for fBuffer.
-    VkBuffer getVkBuffer() const { return fBuffer; }
 
     VkBuffer fBuffer;
+    const VulkanDescriptorSet* fUniformDescriptorSet;
 };
 
 } // namespace skgpu::graphite
