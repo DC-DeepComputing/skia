@@ -20,7 +20,7 @@
 
 using namespace skgpu::graphite;
 
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ComputeTaskTest, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(ComputeTaskTest, reporter, context) {
     constexpr uint32_t kProblemSize = 512;
     constexpr float kFactor = 4.f;
 
@@ -111,7 +111,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ComputeTaskTest, reporter, context) {
 // TODO(b/260622403): The shader tested here is very similar to
 // `resources/sksl/compute/Atomics.compute`. It would be nice to be able to exercise SkSL features
 // like this as part of SkSLTest.cpp instead of as a graphite test.
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ComputeShaderAtomicOperationsTest, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(ComputeShaderAtomicOperationsTest, reporter, context) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     // Construct a kernel that increments a global (device memory) counter across multiple
