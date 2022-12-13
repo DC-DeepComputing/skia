@@ -22,6 +22,30 @@
       },
       "revId": "c90341f7993d697996ef4b0e9d6c21ef152828e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bb1a90b_7de99f95",
+        "filename": "include/gpu/vk/VulkanMemoryAllocator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 9825
+      },
+      "writtenOn": "2022-12-13T07:21:12Z",
+      "side": 1,
+      "message": "Done. thanks.",
+      "parentUuid": "ac2ca371_477e1c24",
+      "range": {
+        "startLine": 118,
+        "startChar": 45,
+        "endLine": 118,
+        "endChar": 65
+      },
+      "revId": "c90341f7993d697996ef4b0e9d6c21ef152828e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
