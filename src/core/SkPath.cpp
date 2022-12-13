@@ -28,7 +28,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTLazy.h"
-#include "src/pathops/SkPathOpsPoint.h"
+#include "src/core/SkDoubleVector.h"
 
 #include <algorithm>
 #include <cmath>
@@ -1401,9 +1401,9 @@ SkPath& SkPath::arcTo(SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2, SkScal
     this->getLastPt(&start);
 
     // need double precision for these calcs.
-    SkDVector befored, afterd;
-    befored.set({x1 - start.fX, y1 - start.fY}).normalize();
-    afterd.set({x2 - x1, y2 - y1}).normalize();
+    SkDoubleVector befored, afterd;
+    befored.set(x1 - start.fX, y1 - start.fY).normalize();
+    afterd.set(x2 - x1, y2 - y1).normalize();
     double cosh = befored.dot(afterd);
     double sinh = befored.cross(afterd);
 

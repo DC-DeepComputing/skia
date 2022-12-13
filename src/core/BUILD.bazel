@@ -128,16 +128,17 @@ CORE_FILES = [
     "SkDistanceFieldGen.cpp",
     "SkDistanceFieldGen.h",
     "SkDocument.cpp",
+    "SkDoubleVector.h",
     "SkDraw.cpp",
     "SkDraw.h",
-    "SkDrawLooper.cpp",
-    "SkDrawProcs.h",
-    "SkDrawShadowInfo.cpp",
-    "SkDrawShadowInfo.h",
     "SkDraw_atlas.cpp",
     "SkDraw_text.cpp",
     "SkDraw_vertices.cpp",
     "SkDrawable.cpp",
+    "SkDrawLooper.cpp",
+    "SkDrawProcs.h",
+    "SkDrawShadowInfo.cpp",
+    "SkDrawShadowInfo.h",
     "SkEdge.cpp",
     "SkEdge.h",
     "SkEdgeBuilder.cpp",
@@ -454,5 +455,72 @@ skia_filegroup(
         ],
         "//conditions:default": [],
     }),
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_core_srcs",
+    srcs = [
+        "SkGeometry.h",  # Is it ok to have a header in two groups? Or does that indicate it should be elsewhere?
+        "SkPath.cpp",
+        "SkString.cpp",
+        "SkDoubleVector.h",
+        # This is probably not the forever home for these.
+        "SkUtils.h",
+        "SkUtils.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkSafeMath.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_srcs",
+    srcs = [
+        "SkTDArray.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_hdrs",
+    srcs = [
+        "SkGeometry.h",
+        "SkMathPriv.h",
+        "SkPathPriv.h",
+        "SkPointPriv.h",
+        "SkTSort.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_srcs",
+    srcs = [
+        "SkUtils.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkASAN.h",
+        "SkArenaAlloc.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_srcs",
+    srcs = [
+        "SkArenaAlloc.cpp",
+    ],
     visibility = ["//src:__pkg__"],
 )

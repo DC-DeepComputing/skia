@@ -433,6 +433,7 @@ template<size_t N, typename C> constexpr auto SkMakeArray(C c)
     return SkMakeArrayFromIndexSequence(c, std::make_index_sequence<N>{});
 }
 
+// FIXME extract these into an SkTraits.h
 /**
  * Trait for identifying types which are relocatable via memcpy, for container optimizations.
  *
