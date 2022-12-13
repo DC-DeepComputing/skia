@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e74198f_d94563cf",
+        "filename": "resources/sksl/compute/Atomics.compute",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T22:36:53Z",
+      "side": 1,
+      "message": "Correct. Even in the single workgroup case, this would actually needs an additional `storageBarrier()` call to make sure all threads see the value stored in `ssboStructWithCounter.aCount` as it is in device memory. If the dispatch spans more than one workgroup then you\u0027re out of luck and need to break this portion out into a separate dispatch or blit command.",
+      "parentUuid": "58f56013_a5c924bf",
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f1304ca_2ce4d700",
@@ -112,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1fb5309_aaa77951",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T22:36:53Z",
+      "side": 1,
+      "message": "Done. I ended up taking the GLSL verbiage for `atomicLoad` and `atomicStore` from https://github.com/KhronosGroup/GLSL/blob/master/extensions/khr/GL_KHR_memory_scope_semantics.txt and `atomicAdd` from https://registry.khronos.org/OpenGL-Refpages/gl4/html/atomicAdd.xhtml.",
+      "parentUuid": "4f1304ca_2ce4d700",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1519a49e_e61f8fb2",
@@ -125,6 +167,30 @@
       "writtenOn": "2022-12-13T18:00:00Z",
       "side": 1,
       "message": "Should we update this code to more closely match the test file, with arrays/structs?\n\n```\nworkgroup atomicUint localCounter;\nworkgroup atomicUint localCounterArray[2];\nworkgroup S localStructWithCounter;\n```\n\nAlso, as above, please use `atomicLoad`.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 21
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96cf3c7_ab05c8e2",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T22:36:53Z",
+      "side": 1,
+      "message": "`atomicLoad` is used in line 151 to add the workgroup-local count to the global count.\n\nI thought about making this look more like `Atomics.compute` but I think the way this is written right now is better scoped to the operations we are testing (atomic operations over one local and one global counter and memory coherency using `workgroupBarrier`).\n\nInstead, I decided to add a second test here that exercises the intrinsics on atomics that are struct and array members and added two new files in resources/sksl/compute that match the tests here. I repurposed the existing `Atomics.compute` test to exercise the codegen for the valid declarations that were previously in resources/sksl/errors/InvalidAtomicDeclarations.sksl.\n\nPTAL.",
+      "parentUuid": "1519a49e_e61f8fb2",
       "range": {
         "startLine": 130,
         "startChar": 0,
