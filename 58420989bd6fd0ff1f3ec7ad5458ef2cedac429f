@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a8e1c4_65fe0f69",
+        "filename": "resources/sksl/compute/Atomics.compute",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-13T18:00:00Z",
+      "side": 1,
+      "message": "Please use `atomicLoad`.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 2
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f1304ca_2ce4d700",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-13T18:00:00Z",
+      "side": 1,
+      "message": "We ought to document these somehow, since (unlike most SkSL APIs) you can\u0027t look them up in the GLSL docs. It might be sufficient to adapt the verbiage from the Metal docs? e.g.\n\n```\n/** Atomically obtains the value pointed to by `a` with `value`. */\n/** Atomically replaces the value pointed to by `a` with `value`. */\n/** Atomically replaces the value pointed to by `a` with the result of the specified computation. The function returns the value that `a` held previously. */\n```",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1519a49e_e61f8fb2",
+        "filename": "tests/graphite/ComputeTaskTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-13T18:00:00Z",
+      "side": 1,
+      "message": "Should we update this code to more closely match the test file, with arrays/structs?\n\n```\nworkgroup atomicUint localCounter;\nworkgroup atomicUint localCounterArray[2];\nworkgroup S localStructWithCounter;\n```\n\nAlso, as above, please use `atomicLoad`.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 21
+      },
+      "revId": "58420989bd6fd0ff1f3ec7ad5458ef2cedac429f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
