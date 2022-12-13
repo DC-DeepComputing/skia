@@ -11,33 +11,44 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 
+#include "src/core/SkRuntimeEffectDictionary.h"
+//class SkRuntimeEffectDictionary;
+
 namespace skgpu::graphite {
 
 class Recorder;
 class ShaderCodeDictionary;
 
-// The key context must always be able to provide a valid ShaderCodeDictionary. Depending
-// on the calling context it can also supply a backend-specific resource providing
-// object (e.g., a Recorder).
+// The key context must always be able to provide a valid ShaderCodeDictionary and
+// SkRuntimeEffectDictionary. Depending on the calling context it can also supply a
+// backend-specific resource providing object (e.g., a Recorder).
 class KeyContext {
 public:
-    // Constructor for the pre-compile code path
-    KeyContext(ShaderCodeDictionary* dict) : fDictionary(dict) {}
-    KeyContext(Recorder*, const SkM44& local2Dev);
+    // Constructor for the pre-compile code path (i.e., no Recorder)
+    KeyContext(ShaderCodeDictionary* dict, SkRuntimeEffectDictionary* rtEffectDict)
+               : fDictionary(dict)
+               , fRTEffectDict(rtEffectDict) {
+    }
+
+    // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
+    KeyContext(Recorder*, const SkM44& local2Dev, bool);
+
     KeyContext(const KeyContext&);
 
-    Recorder* recorder() const { return fRecorder; }
+    Recorder* recorder1() const { return fRecorder; }
 
     const SkM44& local2Dev() const { return fLocal2Dev; }
     const SkMatrix* localMatrix() const { return fLocalMatrix; }
 
     ShaderCodeDictionary* dict() const { return fDictionary; }
+    SkRuntimeEffectDictionary* rtEffectDict() const { return fRTEffectDict; }
 
 protected:
     Recorder* fRecorder = nullptr;
     SkM44 fLocal2Dev;
     SkMatrix* fLocalMatrix = nullptr;
     ShaderCodeDictionary* fDictionary;
+    SkRuntimeEffectDictionary* fRTEffectDict;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {

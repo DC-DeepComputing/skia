@@ -301,12 +301,12 @@ void SkTable_ColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext
     // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
     // Recorder-level caching story is going to be.
     sk_sp<SkImage> image = SkImage::MakeFromBitmap(fBitmap);
-    image = image->makeTextureImage(keyContext.recorder(), { skgpu::graphite::Mipmapped::kNo });
+    image = image->makeTextureImage(keyContext.recorder1(), { skgpu::graphite::Mipmapped::kNo });
 
     if (as_IB(image)->isGraphiteBacked()) {
         skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(image.get());
 
-        auto [view, _] = grImage->asView(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
+        auto [view, _] = grImage->asView(keyContext.recorder1(), skgpu::graphite::Mipmapped::kNo);
         data.fTextureProxy = view.refProxy();
     }
 

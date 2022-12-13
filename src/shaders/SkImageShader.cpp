@@ -394,7 +394,7 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
 
-    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
+    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder1(),
                                                                            fImage.get(),
                                                                            fSampling);
 
@@ -404,7 +404,7 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                                    ? skgpu::graphite::Mipmapped::kYes
                                                    : skgpu::graphite::Mipmapped::kNo;
 
-        auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
+        auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder1(), mipmapped);
         imgData.fTextureProxy = view.refProxy();
     }
 
