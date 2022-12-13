@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c001a8_1eeae3c8",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-13T19:10:09Z",
+      "side": 1,
+      "message": "Should this be dstRowBytes ?",
+      "range": {
+        "startLine": 465,
+        "startChar": 60,
+        "endLine": 465,
+        "endChar": 72
+      },
+      "revId": "cff92af5cb435cbfe771cff1a05d1c1e36b2af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "035c01fb_bec4a251",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-13T19:10:09Z",
+      "side": 1,
+      "message": "This seems odd given line 448",
+      "range": {
+        "startLine": 454,
+        "startChar": 32,
+        "endLine": 454,
+        "endChar": 67
+      },
+      "revId": "cff92af5cb435cbfe771cff1a05d1c1e36b2af47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
