@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00e8983e_6168a87c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T00:39:34Z",
+      "side": 1,
+      "message": "Thanks for all the feedback!",
+      "parentUuid": "df716615_2699644c",
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c413352_0408581d",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-12T13:59:40Z",
       "side": 1,
       "message": "Please mark these as `// valid` per original comment",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05599782_4a732dba",
+        "filename": "resources/sksl/errors/InvalidAtomicDeclarations.compute",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T00:39:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c413352_0408581d",
       "range": {
         "startLine": 7,
         "startChar": 10,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68aba92e_57d32c48",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T00:39:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fc4ca85_7c095d83",
+      "range": {
+        "startLine": 163,
+        "startChar": 11,
+        "endLine": 163,
+        "endChar": 64
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9366bac0_2971697f",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c93c37_9d67f338",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T00:39:34Z",
+      "side": 1,
+      "message": "Done. A `Type::isOrContainsAtomic` should work just as well here (I wasn\u0027t aware of the existing pattern before).",
+      "parentUuid": "9366bac0_2971697f",
+      "range": {
+        "startLine": 158,
+        "startChar": 15,
+        "endLine": 158,
+        "endChar": 76
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9eaf8d7_ae4a47a3",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-12-12T14:22:15Z",
       "side": 1,
       "message": "This is way too hard to read. Please split things apart somehow. Maybe named helper variables? e.g.\n\n```\nconst bool isWorkgroup \u003d modifiers.fFlags \u0026 Modifiers::kWorkgroup_Flag;\nconst bool isWritableBuffer \u003d \n       type-\u003eisInterfaceBlock() \u0026\u0026 \n       (modifiers.fFlags \u0026 Modifiers::kBuffer_Flag) \u0026\u0026\n       !(modifiers.fFlags \u0026 Modifiers::kReadOnly_Flag);\n// etc       \n```\n\nFYI I originally named the second one `isReadOnlyBuffer` when I started typing the example, case in point :)",
+      "range": {
+        "startLine": 205,
+        "startChar": 12,
+        "endLine": 208,
+        "endChar": 62
+      },
+      "revId": "d5806eea0f675d9fcac42397848e93224cf1fc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f50269a0_81fbde46",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-13T00:39:34Z",
+      "side": 1,
+      "message": "Done. Now that we have a `isOrContainsAtomic`, I combined the struct and non-struct check into one and unified their error message (`\"struct with atomic member...\"` wasn\u0027t always the best error message to show for interface blocks after all).",
+      "parentUuid": "d9eaf8d7_ae4a47a3",
       "range": {
         "startLine": 205,
         "startChar": 12,
