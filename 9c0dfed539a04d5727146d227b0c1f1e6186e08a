@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c081da30_3d2cee9b",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-14T15:52:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3828cfc_215b7ec7",
+      "range": {
+        "startLine": 225,
+        "startChar": 15,
+        "endLine": 225,
+        "endChar": 39
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57f2a980_8943f214",
@@ -78,6 +102,30 @@
       "writtenOn": "2022-12-08T20:54:54Z",
       "side": 1,
       "message": "Nit: Capitalize XY to match Z and W?",
+      "range": {
+        "startLine": 410,
+        "startChar": 32,
+        "endLine": 410,
+        "endChar": 34
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d108de13_3412876c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-14T15:52:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57f2a980_8943f214",
       "range": {
         "startLine": 410,
         "startChar": 32,
@@ -135,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eabf39b3_d98b8083",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-14T15:52:08Z",
+      "side": 1,
+      "message": "Done, but updated to .00024, which is the the actual value for SK_ScalarNearlyZero, and added a comment for where it came from.",
+      "parentUuid": "fc9ea7ef_463a8984",
+      "range": {
+        "startLine": 484,
+        "startChar": 33,
+        "endLine": 484,
+        "endChar": 41
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffea65b2_ac45ae01",
@@ -158,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7afb0aed_9f04b219",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-14T15:52:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffea65b2_ac45ae01",
+      "range": {
+        "startLine": 512,
+        "startChar": 0,
+        "endLine": 512,
+        "endChar": 69
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6dbd532_b6aa0d18",
@@ -171,6 +267,30 @@
       "writtenOn": "2022-12-08T20:54:54Z",
       "side": 1,
       "message": "And here",
+      "range": {
+        "startLine": 567,
+        "startChar": 0,
+        "endLine": 567,
+        "endChar": 63
+      },
+      "revId": "9c0dfed539a04d5727146d227b0c1f1e6186e08a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad12469_f6af0b78",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-14T15:52:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6dbd532_b6aa0d18",
       "range": {
         "startLine": 567,
         "startChar": 0,
