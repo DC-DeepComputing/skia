@@ -591,7 +591,7 @@ DEF_TEST(SkRasterPipeline_Swizzle, r) {
         SkRasterPipeline_SwizzleCtx ctx;
         ctx.ptr = slots;
         for (size_t index = 0; index < std::size(ctx.offsets); ++index) {
-            ctx.offsets[index] = pattern.swizzle[index] * N;
+            ctx.offsets[index] = pattern.swizzle[index] * N * sizeof(float);
         }
         p.append(pattern.stage, &ctx);
         p.run(0,0,4,1);
