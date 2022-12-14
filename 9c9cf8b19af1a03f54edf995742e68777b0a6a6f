@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0a55a9d_58c3a9cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T23:00:41Z",
+      "side": 1,
+      "message": "Never mind, it only matters when first detecting an unsupported case; these are all propagating an already-detected-as-unsupported case.",
+      "revId": "9c9cf8b19af1a03f54edf995742e68777b0a6a6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
