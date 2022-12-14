@@ -531,13 +531,13 @@ bool Generator::writeDoStatement(const DoStatement& d) {
 
     fBuilder.zero_slots_unmasked(fCurrentContinueMask);
     if (!this->writeStatement(*d.statement())) {
-        return false;
+        return unsupported();
     }
     fBuilder.reenable_loop_mask(fCurrentContinueMask);
 
     // Emit the test-expression, in order to combine it with the loop mask.
     if (!this->pushExpression(*d.test())) {
-        return false;
+        return unsupported();
     }
 
     // Mask off any lanes in the loop mask where the test-expression is false; this breaks the loop.
@@ -727,14 +727,14 @@ bool Generator::pushBinaryExpression(const BinaryExpression& e) {
             // We replace `x > y` with `y < x`, and `x >= y` with `y <= x`.
             if (!this->pushExpression(*e.right()) ||
                 !this->pushExpression(*e.left())) {
-                return false;
+                return unsupported();
             }
             break;
 
         default:
             if (!this->pushExpression(*e.left()) ||
                 !this->pushExpression(*e.right())) {
-                return false;
+                return unsupported();
             }
             break;
     }
@@ -916,7 +916,7 @@ bool Generator::pushLiteral(const Literal& l) {
 bool Generator::pushSwizzle(const Swizzle& s) {
     // Push the input expression.
     if (!this->pushExpression(*s.base())) {
-        return false;
+        return unsupported();
     }
     // Perform the swizzle.
     fBuilder.swizzle(s.base()->type().slotCount(), s.components());
