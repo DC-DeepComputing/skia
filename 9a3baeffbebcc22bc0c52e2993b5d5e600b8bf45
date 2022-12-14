@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1116fedd_a5402286",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-14T15:56:53Z",
+      "side": 1,
+      "message": "I\u0027m not a big fan of this TBH. There is current thought about changing BufferType to be more a flags thing anyways. I think it is more obvious to ask for the specific alignment for the use case you need it.",
+      "range": {
+        "startLine": 77,
+        "startChar": 29,
+        "endLine": 77,
+        "endChar": 39
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ae7b9ac4_c1f47368",
         "filename": "src/gpu/graphite/DrawBufferManager.cpp",
         "patchSetId": 2
@@ -37,6 +60,30 @@
       "writtenOn": "2022-12-13T15:41:50Z",
       "side": 1,
       "message": "Both Dawn and Metal backends handle aligning the buffer allocation size, but I wonder if we should just require the buffer manager\u0027s to be responsible for this, since they are already handling offset alignment?\n\nOn a semi-related note, DrawBufferManager currently only aligns offsets but maybe should also be aligning each sub-allocation\u0027s size as well? When it uses transfer buffer copies, the size should be aligned too. I think I will make that as a follow up change, including logic to handle zeroing the padded bytes.",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38e3fdf4_6c1f07f1",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-14T15:56:53Z",
+      "side": 1,
+      "message": "So this is why part of me wanted things that needed a buffer transfer to go through the transfer buffer manager class so all the logic could be in there. Like it would be great if the GPU vertex buffer just had to worry and aligning things for offsets and possibly total size. Is the total size a restriction from the copying or is that something that comes from the actual use of the buffer as a draw buffer?\n\nAnyways, the downsides and why we didn\u0027t end up using the UploadBufferManager is that we have to accept doing N vertex copies (one per draw) since we can\u0027t request one large buffer since we don\u0027t know what size we\u0027ll need yet.",
+      "parentUuid": "00686457_99ccb7ea",
       "range": {
         "startLine": 53,
         "startChar": 4,
