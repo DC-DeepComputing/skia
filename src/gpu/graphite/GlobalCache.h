@@ -44,10 +44,15 @@ public:
     sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
                                                 sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
 
+#if GRAPHITE_TEST_UTILS
+    int numGraphicsPipelines() const SK_EXCLUDES(fSpinLock);
+#endif
+
     // Find amd add operations for ComputePipelines, with the same pattern as GraphicsPipelines.
     sk_sp<ComputePipeline> findComputePipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
     sk_sp<ComputePipeline> addComputePipeline(const UniqueKey&,
                                               sk_sp<ComputePipeline>) SK_EXCLUDES(fSpinLock);
+
 
 private:
     struct KeyHash {

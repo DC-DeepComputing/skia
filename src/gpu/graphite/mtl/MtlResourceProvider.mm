@@ -98,7 +98,7 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
-    std::string vsMSL, fsMSL;
+    std::string vsMSL, fsMSL; //$$
     SkSL::Program::Inputs vsInputs, fsInputs;
     SkSL::ProgramSettings settings;
 

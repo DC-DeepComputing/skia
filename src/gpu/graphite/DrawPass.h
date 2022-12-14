@@ -53,7 +53,7 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    static std::unique_ptr<DrawPass> Make(Recorder*,
+    static std::unique_ptr<DrawPass> Make2(Recorder*,
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy>,
                                           SkISize deviceSize,
@@ -78,7 +78,7 @@ public:
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
     // etc.
-    bool prepareResources(ResourceProvider*,
+    bool prepareResources1(ResourceProvider*,
                           const RuntimeEffectDictionary*,
                           const RenderPassDesc&);
 
