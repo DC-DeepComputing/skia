@@ -427,10 +427,6 @@ static SkM44 inv(const SkM44& m) {
     return inverse;
 }
 
-static SkHalfPlane half_plane_w0(const SkMatrix& m) {
-    return { m[SkMatrix::kMPersp0], m[SkMatrix::kMPersp1], m[SkMatrix::kMPersp2] - 0.05f };
-}
-
 class CameraSlide : public ClickHandlerSlide {
     float   fNear = 0.05f;
     float   fFar = 4;
@@ -491,70 +487,6 @@ public:
         return false;
     }
 };
-
-class HalfPlaneSlide3 : public CameraSlide {
-    SkPath fPath;
-    sk_sp<SkShader> fShader;
-    bool fShowUnclipped = false;
-
-public:
-    HalfPlaneSlide3() { fName = "halfplane3"; }
-
-    void load(SkScalar w, SkScalar h) override {
-        fPath = make_path();
-        fShader = GetResourceAsImage("images/mandrill_128.png")
-                        ->makeShader(SkSamplingOptions(), SkMatrix::Scale(3, 3));
-    }
-
-    bool onChar(SkUnichar uni) override {
-        switch (uni) {
-            case 'u': fShowUnclipped = !fShowUnclipped; return true;
-            default: break;
-        }
-        return this->CameraSlide::onChar(uni);
-    }
-
-    void draw(SkCanvas* canvas) override {
-        SkM44 mx = this->get44({0, 0, 400, 400});
-
-        SkPaint paint;
-        paint.setColor({0.75, 0.75, 0.75, 1});
-        canvas->drawPath(fPath, paint);
-
-        paint.setShader(fShader);
-
-        if (fShowUnclipped) {
-            canvas->save();
-            canvas->concat(mx);
-            paint.setAlphaf(0.33f);
-            canvas->drawPath(fPath, paint);
-            paint.setAlphaf(1.f);
-            canvas->restore();
-        }
-
-
-        SkColor planeColor = SK_ColorBLUE;
-        SkPath clippedPath, *path = &fPath;
-        if (SkPathPriv::PerspectiveClip(fPath, mx.asM33(), &clippedPath)) {
-            path = &clippedPath;
-            planeColor = SK_ColorRED;
-        }
-        canvas->save();
-        canvas->concat(mx);
-        canvas->drawPath(*path, paint);
-        canvas->restore();
-
-        SkHalfPlane hpw = half_plane_w0(mx.asM33());
-        draw_halfplane(canvas, hpw, planeColor);
-    }
-
-protected:
-    Click* onFindClickHandler(SkScalar x, SkScalar y, skui::ModifierKey) override {
-        return nullptr;
-    }
-    bool onClick(Click* click) override { return false; }
-};
-DEF_SLIDE( return new HalfPlaneSlide3(); )
 
 class HalfPlaneCoonsSlide : public CameraSlide {
     SkPoint fPatch[12];

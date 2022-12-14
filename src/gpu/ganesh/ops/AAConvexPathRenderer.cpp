@@ -243,7 +243,7 @@ inline bool get_direction(const SkPath& path, const SkMatrix& m, SkPathFirstDire
     SkScalar det2x2 = m.get(SkMatrix::kMScaleX) * m.get(SkMatrix::kMScaleY) -
                       m.get(SkMatrix::kMSkewX)  * m.get(SkMatrix::kMSkewY);
     if (det2x2 < 0) {
-        *dir = SkPathPriv::OppositeFirstDirection(*dir);
+        *dir = skpathenums::OppositeFirstDirection(*dir);
     }
 
     return true;

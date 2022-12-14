@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/geometry/GrQuadUtils.h"
 
 #include "include/core/SkRect.h"
+#include "include/private/SkConstants.h"
 #include "include/private/SkVx.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkPathPriv.h"
@@ -321,7 +322,7 @@ SkRect GrQuad::projectedBounds() const {
     float4 xs = this->x4f();
     float4 ys = this->y4f();
     float4 ws = this->w4f();
-    mask4 clipW = ws < SkPathPriv::kW0PlaneDistance;
+    mask4 clipW = ws < kW0PlaneDistance;
     if (any(clipW)) {
         float4 x2d = xs / ws;
         float4 y2d = ys / ws;
@@ -334,11 +335,11 @@ SkRect GrQuad::projectedBounds() const {
         };
         // Calculate clipped coordinates by following CCW edges, only keeping points where the w
         // actually changes sign between the vertices.
-        float4 t = (SkPathPriv::kW0PlaneDistance - ws) / (next_ccw(ws) - ws);
-        x2d = (t * next_ccw(xs) + (1.f - t) * xs) / SkPathPriv::kW0PlaneDistance;
-        y2d = (t * next_ccw(ys) + (1.f - t) * ys) / SkPathPriv::kW0PlaneDistance;
+        float4 t = (kW0PlaneDistance - ws) / (next_ccw(ws) - ws);
+        x2d = (t * next_ccw(xs) + (1.f - t) * xs) / kW0PlaneDistance;
+        y2d = (t * next_ccw(ys) + (1.f - t) * ys) / kW0PlaneDistance;
         // True if (w < e) xor (ccw(w) < e), i.e. crosses the w = epsilon plane
-        clipW = clipW ^ (next_ccw(ws) < SkPathPriv::kW0PlaneDistance);
+        clipW = clipW ^ (next_ccw(ws) < kW0PlaneDistance);
         return {
             min(if_then_else(clipW, x2d, float4(frontBounds.fLeft))),
             min(if_then_else(clipW, y2d, float4(frontBounds.fTop))),
@@ -401,7 +402,7 @@ int ClipToW0(DrawQuad* quad, DrawQuad* extraVertices) {
         return 1;
     }
 
-    mask4 validW = quad->fDevice.w4f() >= SkPathPriv::kW0PlaneDistance;
+    mask4 validW = quad->fDevice.w4f() >= kW0PlaneDistance;
     if (all(validW)) {
         // Nothing to clip, can proceed normally drawing just 'quad'
         return 1;
@@ -427,19 +428,19 @@ int ClipToW0(DrawQuad* quad, DrawQuad* extraVertices) {
     SkASSERT(clipCount >= 1 && clipCount <= 3);
 
     // FIXME de-duplicate from the projectedBounds() calculations.
-    float4 t = (SkPathPriv::kW0PlaneDistance - v.fW) / (next_ccw(v.fW) - v.fW);
+    float4 t = (kW0PlaneDistance - v.fW) / (next_ccw(v.fW) - v.fW);
 
     Vertices clip;
     clip.fX = (t * next_ccw(v.fX) + (1.f - t) * v.fX);
     clip.fY = (t * next_ccw(v.fY) + (1.f - t) * v.fY);
-    clip.fW = SkPathPriv::kW0PlaneDistance;
+    clip.fW = kW0PlaneDistance;
 
     clip.fU = (t * next_ccw(v.fU) + (1.f - t) * v.fU);
     clip.fV = (t * next_ccw(v.fV) + (1.f - t) * v.fV);
     clip.fR = (t * next_ccw(v.fR) + (1.f - t) * v.fR);
 
-    mask4 ccwValid = next_ccw(v.fW) >= SkPathPriv::kW0PlaneDistance;
-    mask4 cwValid  = next_cw(v.fW)  >= SkPathPriv::kW0PlaneDistance;
+    mask4 ccwValid = next_ccw(v.fW) >= kW0PlaneDistance;
+    mask4 cwValid  = next_cw(v.fW)  >= kW0PlaneDistance;
 
     if (clipCount != 1) {
         // Simplest case, replace behind-w0 points with their clipped points by following CCW edge

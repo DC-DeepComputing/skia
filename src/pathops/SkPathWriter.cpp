@@ -7,6 +7,7 @@
 #include "src/pathops/SkPathWriter.h"
 
 #include "include/core/SkTypes.h"
+#include "src/core/SkPathPriv.h"
 #include "src/core/SkTSort.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
@@ -374,7 +375,7 @@ void SkPathWriter::assemble() {
                         first ? SkPath::kAppend_AddPathMode : SkPath::kExtend_AddPathMode);
             } else {
                 SkASSERT(!first);
-                fPathPtr->reversePathTo(contour);
+                *fPathPtr = SkPathPriv::ReversePathTo(*fPathPtr, contour);
             }
             if (first) {
                 first = false;
