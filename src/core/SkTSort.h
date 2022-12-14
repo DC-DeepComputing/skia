@@ -12,6 +12,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkMathPriv.h"
 
+#include <cstddef>
 #include <utility>
 
 ///////////////////////////////////////////////////////////////////////////////

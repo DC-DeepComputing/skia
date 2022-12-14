@@ -1528,8 +1528,6 @@ private:
     /** \class SkPath::RangeIter
         Iterates through a raw range of path verbs, points, and conics. All values are returned
         unaltered.
-
-        NOTE: This class will be moved into SkPathPriv once RangeIter is removed.
     */
     class RangeIter {
     public:
@@ -1597,6 +1595,28 @@ private:
         const SkScalar* fWeights = nullptr;
         SkDEBUGCODE(const SkPoint* fInitialPoints = nullptr;)
     };
+
+    /**
+     * Iterable object for traversing verbs, points, and conic weights in a path:
+     *
+     *   for (auto [verb, pts, weights] : SkPathPriv::Iterate(skPath)) {
+     *       ...
+     *   }
+     */
+    struct Iterate {
+    public:
+        Iterate(const SkPath& path);
+        Iterate(const uint8_t* verbsBegin, const uint8_t* verbsEnd, const SkPoint* points,
+                const SkScalar* weights);
+        SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
+        SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
+    private:
+        const uint8_t* fVerbsBegin;
+        const uint8_t* fVerbsEnd;
+        const SkPoint* fPoints;
+        const SkScalar* fWeights;
+    };
+
 public:
 
     /** \class SkPath::RawIter
@@ -1872,6 +1892,82 @@ private:
      *        this path should be discarded after calling shrinkToFit().
      */
     void shrinkToFit();
+
+    /**
+     * Gets the number of GenIDChangeListeners. If another thread has access to this path then
+     * this may be stale before return and only indicates that the count was the return value
+     * at some point during the execution of the function.
+     */
+    int genIDChangeListenersCount() const;
+
+    bool isAxisAligned() const;
+
+    int leadingMoveToCount() const;
+
+    /** Returns true if SkPath is equivalent to nested SkRect pair when filled.
+     If false, rect and dirs are unchanged.
+     If true, rect and dirs are written to if not nullptr:
+     setting rect[0] to outer SkRect, and rect[1] to inner SkRect;
+     setting dirs[0] to SkPathDirection of outer SkRect, and dirs[1] to SkPathDirection of
+     inner SkRect.
+
+     @param rect  storage for SkRect pair; may be nullptr
+     @param dirs  storage for SkPathDirection pair; may be nullptr
+     @return      true if SkPath contains nested SkRect pair
+     */
+     bool isNestedFillRects(SkRect rects[2], SkPathDirection dirs[2]) const;
+
+     bool isRectContour(bool allowPartial, int* currVerb,
+                        const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
+                        SkRect* rect) const;
+
+     /** Returns true if constructed by addRoundRect(), addRRect(); and if construction
+     is not empty, not SkRect, and not oval. SkPath constructed with other calls
+     will not return true though SkPath draws SkRRect.
+
+     rrect receives bounds of SkRRect.
+     dir receives SkPathDirection of oval: kCW_Direction if clockwise, kCCW_Direction if
+     counterclockwise.
+     start receives start of SkRRect: 0 for top, 1 for right, 2 for bottom, 3 for left.
+
+     rrect, dir, and start are unmodified if SkRRect is not found.
+
+     Triggers performance optimizations on some GPU surface implementations.
+
+     @param rrect  storage for bounding SkRect of SkRRect; may be nullptr
+     @param dir    storage for SkPathDirection; may be nullptr
+     @param start  storage for start of SkRRect; may be nullptr
+     @return       true if SkPath contains only SkRRect
+     */
+     bool isRRect(SkRRect* rrect, SkPathDirection* dir, unsigned* start) const;
+
+     /** Returns true if constructed by addCircle(), addOval(); and in some cases,
+     addRoundRect(), addRRect(). SkPath constructed with conicTo() or rConicTo() will not
+     return true though SkPath draws oval.
+
+     rect receives bounds of oval.
+     dir receives SkPathDirection of oval: kCW_Direction if clockwise, kCCW_Direction if
+     counterclockwise.
+     start receives start of oval: 0 for top, 1 for right, 2 for bottom, 3 for left.
+
+     rect, dir, and start are unmodified if oval is not found.
+
+     Triggers performance optimizations on some GPU surface implementations.
+
+     @param rect   storage for bounding SkRect of oval; may be nullptr
+     @param dir    storage for SkPathDirection; may be nullptr
+     @param start  storage for start of oval; may be nullptr
+     @return       true if SkPath was constructed by method that reduces to oval
+     */
+     bool isOval(SkRect* bounds, SkPathDirection* dir, unsigned* start) const;
+
+    /**
+     *  Tries to compute the direction of the outer-most non-degenerate
+     *  contour. If it can be computed, return that direction. If it cannot be determined,
+     *  or the contour is known to be convex, return kUnknown. If the direction was determined,
+     *  it is cached to make subsequent calls return quickly.
+     */
+    SkPathFirstDirection computeFirstDirection() const;
 
     friend class SkAutoPathBoundsUpdate;
     friend class SkAutoDisableOvalCheck;

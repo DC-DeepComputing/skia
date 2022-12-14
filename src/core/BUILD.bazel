@@ -128,6 +128,7 @@ CORE_FILES = [
     "SkDistanceFieldGen.cpp",
     "SkDistanceFieldGen.h",
     "SkDocument.cpp",
+    "SkDoubleVector.h",
     "SkDraw.cpp",
     "SkDraw.h",
     "SkDrawLooper.cpp",
@@ -242,6 +243,7 @@ CORE_FILES = [
     "SkPathMakers.h",
     "SkPathMeasure.cpp",
     "SkPathMeasurePriv.h",
+    "SkPathPriv.cpp",
     "SkPathPriv.h",
     "SkPathRef.cpp",
     "SkPathUtils.cpp",
@@ -260,6 +262,7 @@ CORE_FILES = [
     "SkQuadClipper.cpp",
     "SkQuadClipper.h",
     "SkRRect.cpp",
+    "SkRRectPriv.cpp",
     "SkRRectPriv.h",
     "SkRTree.cpp",
     "SkRTree.h",
@@ -316,6 +319,7 @@ CORE_FILES = [
     "SkSpinlock.cpp",
     "SkSpriteBlitter.h",
     "SkSpriteBlitter_ARGB32.cpp",
+    "SkStreamPriv.cpp",
     "SkStreamPriv.h",
     "SkStrikeCache.cpp",
     "SkStrikeCache.h",
@@ -454,5 +458,92 @@ skia_filegroup(
         ],
         "//conditions:default": [],
     }),
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_core_srcs",
+    srcs = [
+        "SkCubicClipper.cpp",
+        "SkCubicClipper.h",
+        "SkDoubleVector.h",
+        "SkEdgeClipper.cpp",
+        "SkEdgeClipper.h",
+        "SkPath.cpp",
+        "SkRRect.cpp",
+        "SkScaleToSides.h",
+        "SkStream.cpp",
+        "SkString.cpp",
+        # Is it ok to have a header in two groups? Or does that indicate it should be elsewhere?
+        "SkGeometry.h",
+        # TODO(kjlubick) would need platform-specific .cpp files
+        "SkOSFile.h",
+        # This is probably not the forever home for these.
+        "SkUtils.h",
+        "SkUtils.cpp",
+        "SkStringUtils.h",
+        "SkStringUtils.cpp",
+        "SkLineClipper.h",
+        "SkLineClipper.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkSafeMath.h",
+        "SkTLazy.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_srcs",
+    srcs = [
+        "SkTDArray.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_hdrs",
+    srcs = [
+        "SkGeometry.h",
+        "SkMathPriv.h",
+        "SkPathPriv.h",
+        "SkPointPriv.h",
+        "SkRRectPriv.h",
+        "SkStreamPriv.h",
+        "SkTSort.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_srcs",
+    srcs = [
+        "SkPathPriv.cpp",
+        "SkRRectPriv.cpp",
+        "SkStreamPriv.cpp",
+        "SkUtils.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkASAN.h",
+        "SkArenaAlloc.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_srcs",
+    srcs = [
+        "SkArenaAlloc.cpp",
+    ],
     visibility = ["//src:__pkg__"],
 )
