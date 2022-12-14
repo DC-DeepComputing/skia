@@ -22,6 +22,30 @@
       },
       "revId": "ca9d0fce8118e5f18f0273b28e93873a98035ac7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc28f2e5_6b520254",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-14T16:46:38Z",
+      "side": 1,
+      "message": "I will remove in a smaller future CL. That way if there is a client problem, I can revert the smaller CL, and keep the bulk of the changes.",
+      "parentUuid": "268c2ad6_936c4d6d",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 7
+      },
+      "revId": "ca9d0fce8118e5f18f0273b28e93873a98035ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
