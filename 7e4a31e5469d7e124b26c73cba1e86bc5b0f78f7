@@ -70,6 +70,30 @@
       },
       "revId": "7e4a31e5469d7e124b26c73cba1e86bc5b0f78f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1658c0f6_e91c0add",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T14:59:33Z",
+      "side": 1,
+      "message": "Verified that the codegen works out; updated to uint16",
+      "parentUuid": "315939ca_4fc92d1d",
+      "range": {
+        "startLine": 286,
+        "startChar": 61,
+        "endLine": 286,
+        "endChar": 73
+      },
+      "revId": "7e4a31e5469d7e124b26c73cba1e86bc5b0f78f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
