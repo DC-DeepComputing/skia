@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7481cc3d_eb363a06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "LGTM other than minor formatting nits!",
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bf7f734_3f264bde",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "tiny nit: wrap here to avoid going over 100 char lines",
+      "range": {
+        "startLine": 96,
+        "startChar": 76,
+        "endLine": 96,
+        "endChar": 77
+      },
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26bb6979_2a9f6375",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "wrap here",
+      "range": {
+        "startLine": 97,
+        "startChar": 85,
+        "endLine": 97,
+        "endChar": 86
+      },
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf6a37d8_e96291b3",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "It\u0027s fine I guess, but it feels wrong to me to promise semantics that match an unfinished and rapidly fluctuating standard. Probably this will stay the same, I hope? :)",
+      "range": {
+        "startLine": 102,
+        "startChar": 70,
+        "endLine": 102,
+        "endChar": 96
+      },
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f79494c_a080e9d2",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "tiny nit: wrap",
+      "range": {
+        "startLine": 122,
+        "startChar": 97,
+        "endLine": 122,
+        "endChar": 101
+      },
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97e8ca3_67bd691c",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T16:04:52Z",
+      "side": 1,
+      "message": "tiny nit: wrap",
+      "range": {
+        "startLine": 154,
+        "startChar": 95,
+        "endLine": 154,
+        "endChar": 100
+      },
+      "revId": "9b9e7c7fa62038191bf03c8a2c46d8d291dc1d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
