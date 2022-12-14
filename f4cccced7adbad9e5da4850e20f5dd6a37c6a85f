@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df13cba7_3caf6a58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-14T20:21:07Z",
+      "side": 1,
+      "message": "I had been trying to do this piecemeal but it would require multiple rebaselinings of Chrome tests to stage this.\n\nChrome side change: https://chromium-review.googlesource.com/c/chromium/src/+/4108309\n\nThe final web test results look like an improvement to wavy underlines and neutral on the one other affected test:\nhttps://ci.chromium.org/ui/p/chromium/builders/try/linux-blink-rel/83834/overview",
+      "revId": "f4cccced7adbad9e5da4850e20f5dd6a37c6a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
