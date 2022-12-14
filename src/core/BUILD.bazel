@@ -128,6 +128,7 @@ CORE_FILES = [
     "SkDistanceFieldGen.cpp",
     "SkDistanceFieldGen.h",
     "SkDocument.cpp",
+    "SkDoubleVector.h",
     "SkDraw.cpp",
     "SkDraw.h",
     "SkDrawLooper.cpp",
@@ -316,6 +317,7 @@ CORE_FILES = [
     "SkSpinlock.cpp",
     "SkSpriteBlitter.h",
     "SkSpriteBlitter_ARGB32.cpp",
+    "SkStreamPriv.cpp",
     "SkStreamPriv.h",
     "SkStrikeCache.cpp",
     "SkStrikeCache.h",
@@ -454,5 +456,82 @@ skia_filegroup(
         ],
         "//conditions:default": [],
     }),
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_core_srcs",
+    srcs = [
+        "SkGeometry.h",  # Is it ok to have a header in two groups? Or does that indicate it should be elsewhere?
+        "SkPath.cpp",
+        "SkString.cpp",
+        "SkDoubleVector.h",
+        "SkStream.cpp",
+        "SkRRect.cpp",
+        "SkCubicClipper.h",
+        "SkCubicClipper.cpp",
+        # This is probably not the forever home for these.
+        "SkUtils.h",
+        "SkUtils.cpp",
+        "SkStringUtils.h",
+        "SkStringUtils.cpp",
+        "SkOSFile.h",  # TODO(kjlubick) would need platform-specific .cpp file
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkSafeMath.h",
+        "SkTLazy.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_srcs",
+    srcs = [
+        "SkTDArray.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_hdrs",
+    srcs = [
+        "SkGeometry.h",
+        "SkMathPriv.h",
+        "SkPathPriv.h",
+        "SkPointPriv.h",
+        "SkStreamPriv.h",
+        "SkTSort.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_srcs",
+    srcs = [
+        "SkStreamPriv.cpp",
+        "SkUtils.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_hdrs",
+    srcs = [
+        "SkASAN.h",
+        "SkArenaAlloc.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "memory_srcs",
+    srcs = [
+        "SkArenaAlloc.cpp",
+    ],
     visibility = ["//src:__pkg__"],
 )

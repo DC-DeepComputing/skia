@@ -7,8 +7,10 @@
 
 
 #include "src/core/SkCubicClipper.h"
+#include "include/core/SkPoint.h"
 #include "src/core/SkGeometry.h"
 
+#include <cstring>
 #include <utility>
 
 SkCubicClipper::SkCubicClipper() {
