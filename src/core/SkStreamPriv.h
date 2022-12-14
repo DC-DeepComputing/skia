@@ -11,6 +11,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 
+#include <cstddef>
+
 class SkData;
 
 /**
