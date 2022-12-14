@@ -405,7 +405,7 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
-std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
+std::unique_ptr<DrawPass> DrawPass::Make2(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
                                          SkISize deviceSize,
@@ -592,7 +592,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     return drawPass;
 }
 
-bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
+bool DrawPass::prepareResources1(ResourceProvider* resourceProvider,
                                 const SkRuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
     fFullPipelines.reserve_back(fPipelineDescs.size());

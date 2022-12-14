@@ -118,16 +118,17 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     const int desiredShaderCombination = remainingCombinations;
     SkASSERT(desiredShaderCombination < this->numShaderCombinations());
 
-    if (fShaderOptions.empty()) {
-        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                          {1, 0, 0, 1});
-        keyBuilder->endBlock();
-    } else {
+    // TODO: eliminate this block for the Paint's color when it isn't needed
+    SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                      {1, 0, 0, 1});
+    keyBuilder->endBlock();
+
+    if (!fShaderOptions.empty()) {
         PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
     }
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
-                             desiredMaskFilterCombination);
+                            desiredMaskFilterCombination);
     PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
                              desiredColorFilterCombination);
 
@@ -141,10 +142,10 @@ void PaintOptions::createKey(const KeyContext& keyContext,
 }
 
 void PaintOptions::buildCombinations(
-        ShaderCodeDictionary* dict,
+        const KeyContext& keyContext,
         const std::function<void(SkUniquePaintParamsID)>& processCombination) const {
-    KeyContext keyContext(dict);
-    PaintParamsKeyBuilder builder(dict);
+
+    PaintParamsKeyBuilder builder(keyContext.dict());
 
     int numCombinations = this->numCombinations();
     for (int i = 0; i < numCombinations; ++i) {
@@ -152,7 +153,7 @@ void PaintOptions::buildCombinations(
 
         // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
         // PaintParamsKey. This serves to reset the builder.
-        auto entry = dict->findOrCreate(&builder);
+        auto entry = keyContext.dict()->findOrCreate(&builder);
 
         processCombination(entry->uniqueID());
     }
