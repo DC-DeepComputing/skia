@@ -16,6 +16,24 @@
       "message": "Isn\u0027t this problematic ?",
       "revId": "b42035b82e4ed53a14debf98f1e686219fe1d44f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59020d0a_1c08ac03",
+        "filename": "tests/WritePixelsTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-14T14:37:07Z",
+      "side": 1,
+      "message": "Good catch, done.",
+      "parentUuid": "f45dc724_56edfd28",
+      "revId": "b42035b82e4ed53a14debf98f1e686219fe1d44f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
