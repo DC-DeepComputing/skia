@@ -16,6 +16,23 @@
       "message": "FYI: We had a bug in our Android roller that seems to have been resolved. I just kicked off another `Canary-Android` run.",
       "revId": "ed129ca38d91ed339b42664a05a6e952216e8d88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41f9d074_c6706e5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-14T15:44:29Z",
+      "side": 1,
+      "message": "-1 while until the CTS test discussed over email is fixed. Apparently the change in `MinBufferedBytesNeeded` exposed a bug in how we read the Java `InputStream`",
+      "revId": "ed129ca38d91ed339b42664a05a6e952216e8d88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
