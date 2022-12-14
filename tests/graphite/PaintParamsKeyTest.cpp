@@ -484,7 +484,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                         PaintParams(paint));
 
                 std::vector<SkUniquePaintParamsID> precompileIDs;
-                paintOptions.priv().buildCombinations(dict,
+                paintOptions.priv().buildCombinations(keyContext,
                                                       [&](SkUniquePaintParamsID id) {
                                                           precompileIDs.push_back(id);
                                                       });
@@ -507,6 +507,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
 #endif
 
                 REPORTER_ASSERT(reporter, result != precompileIDs.end());
+
+                context->precompile(paintOptions);
             }
         }
     }
