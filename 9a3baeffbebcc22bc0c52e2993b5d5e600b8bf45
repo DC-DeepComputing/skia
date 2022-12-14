@@ -92,6 +92,30 @@
       },
       "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f480772_e4626fde",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-14T16:42:45Z",
+      "side": 1,
+      "message": "IIRC, the minBufferAlignment is only a Metal on non-Apple GPUs thing -- at least in the past they needed to be aligned to 4 byte boundaries regardless of how they\u0027re used (a lot of those requirements seem to have changed with Monterey).",
+      "parentUuid": "38e3fdf4_6c1f07f1",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
