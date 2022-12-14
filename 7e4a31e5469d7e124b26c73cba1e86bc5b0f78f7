@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a10846b4_556071ec",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-14T14:51:23Z",
+      "side": 1,
+      "message": "This encoding caps us at highp-stride being 16, right? (If we ever went bigger, we\u0027d need to encode `4 * 32 * 3 \u003d\u003d 384`). Not a big deal, I don\u0027t think we\u0027re going to end up with larger stride (unless we do the one-big-switch, double-pump thing again). Still, worth adding an assert somewhere?",
+      "range": {
+        "startLine": 286,
+        "startChar": 61,
+        "endLine": 286,
+        "endChar": 73
+      },
+      "revId": "7e4a31e5469d7e124b26c73cba1e86bc5b0f78f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
