@@ -26,6 +26,7 @@ static inline int64_t sk_64_mul(int64_t a, int64_t b) {
 /**
  *  Returns true if value is a power of 2. Does not explicitly check for
  *  value <= 0.
+ *  TODO(kjlubick, herb) This could probably be moved to SkMathPriv.h
  */
 template <typename T> constexpr inline bool SkIsPow2(T value) {
     return (value & (value - 1)) == 0;

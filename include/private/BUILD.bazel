@@ -33,12 +33,16 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
-        "SkAlignedStorage.h",
+        "SkAPI.h",
+"SkAlignedStorage.h",
+        "SkAssert.h",
+        "SkAttributes.h",
         "SkBitmaskEnum.h",
         "SkChecksum.h",
         "SkColorData.h",
         "SkContainers.h",
         "SkDeque.h",
+        "SkDebug.h",
         "SkEncodedInfo.h",
         "SkFixed.h",
         "SkFloatBits.h",
@@ -73,6 +77,7 @@ skia_filegroup(
         "SkUniquePaintParamsID.h",
         "SkVx.h",
         "SkWeakRefCnt.h",
+        "SkSpan_impl.h",
         ":shared_gpu_private_hdrs",
         ":sksl_private_hdrs",
         "//include/private/chromium:private_hdrs",
@@ -83,4 +88,45 @@ skia_filegroup(
         "//conditions:default": [],
     }),
     visibility = ["//include:__pkg__"],
+)
+
+skia_filegroup(
+    name = "base_priv_hdrs",
+    srcs = [
+        "SkAPI.h",
+        "SkAssert.h",
+        "SkAttributes.h",
+        "SkContainers.h",
+        "SkDebug.h",
+        "SkFloatBits.h",
+        "SkFloatingPoint.h",
+        "SkIDChangeListener.h",
+        "SkMacros.h",
+        "SkMalloc.h",
+        "SkMutex.h",
+        "SkOnce.h",
+        "SkSafe32.h",
+        "SkSafe_math.h",
+        "SkSemaphore.h",
+        "SkSpan_impl.h",
+        "SkTArray.h",
+        "SkTDArray.h",
+        "SkTFitsIn.h",
+        "SkTLogic.h",
+        "SkTPin.h",
+        "SkTemplates.h",
+        "SkThreadAnnotations.h",
+        "SkThreadID.h",
+        "SkTo.h",
+        "SkVx.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_srcs",
+    srcs = [
+        "SkPathRef.h",
+    ],
+    visibility = ["//src:__pkg__"],
 )
