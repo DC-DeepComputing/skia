@@ -40,6 +40,14 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
     return *entry;
 }
 
+#if GRAPHITE_TEST_UTILS
+int GlobalCache::numGraphicsPipelines() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    return fGraphicsPipelineCache.count();
+}
+#endif
+
 sk_sp<ComputePipeline> GlobalCache::findComputePipeline(const UniqueKey& key) {
     SkAutoSpinlock lock{fSpinLock};
     sk_sp<ComputePipeline>* entry = fComputePipelineCache.find(key);

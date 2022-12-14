@@ -33,6 +33,9 @@ public:
     ShaderCodeDictionary* shaderCodeDictionary() {
         return fContext->fSharedContext->shaderCodeDictionary();
     }
+    const GlobalCache* globalCache() const {
+        return fContext->fSharedContext->globalCache1();
+    }
 
     void startCapture() {
         fContext->fQueueManager->startCapture();
