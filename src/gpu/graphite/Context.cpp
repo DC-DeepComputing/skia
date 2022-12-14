@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/core/SkRuntimeEffectDictionary.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ClientMappedBufferManager.h"
@@ -23,6 +24,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -383,14 +385,18 @@ void Context::checkAsyncWorkCompletion() {
 void Context::precompile(const PaintOptions& options) {
     ASSERT_SINGLE_OWNER
 
+    auto rtEffectDict = std::make_unique<SkRuntimeEffectDictionary>();
+
+    KeyContext keyContext(fSharedContext->shaderCodeDictionary(),
+                          rtEffectDict.get());
+
     options.priv().buildCombinations(
-        fSharedContext->shaderCodeDictionary(),
+        keyContext,
         [&](SkUniquePaintParamsID uniqueID) {
             for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
                 for (auto&& s : r->steps()) {
                     if (s->performsShading()) {
-                        GraphicsPipelineDesc desc(s, uniqueID);
-                        (void) desc;
+                        GraphicsPipelineDesc pipelineDesc(s, uniqueID);
 
                         // TODO: Combine the desc with the renderpass description set to generate a
                         // full GraphicsPipeline and MSL program. Cache that compiled pipeline on
