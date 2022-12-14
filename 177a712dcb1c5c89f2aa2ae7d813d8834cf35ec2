@@ -34,6 +34,24 @@
       "parentUuid": "5cc6b60e_0b2af236",
       "revId": "177a712dcb1c5c89f2aa2ae7d813d8834cf35ec2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ded7ffd_417b8c85",
+        "filename": "include/core/SkPathUtils.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-14T20:01:40Z",
+      "side": 1,
+      "message": "Looking at our other namespaces, we\u0027re not 100% consistent, but I see mostly all lowercase (e.g. `sktext`, `skgpu`), so I would lean towards `skpathutils`.",
+      "parentUuid": "964e0949_1a53084c",
+      "revId": "177a712dcb1c5c89f2aa2ae7d813d8834cf35ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
