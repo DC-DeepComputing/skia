@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e23d17f2_cfbd0b3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-12-14T13:28:53Z",
+      "side": 1,
+      "message": "Looks like kill-server is slightly better at getting a device back online.",
+      "revId": "27f75af235c471bc265d3df03b41b2c4384e51df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
