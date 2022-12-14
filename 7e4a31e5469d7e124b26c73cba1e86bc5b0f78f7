@@ -22,6 +22,30 @@
       },
       "revId": "7e4a31e5469d7e124b26c73cba1e86bc5b0f78f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4686c026_d001d107",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-14T14:54:03Z",
+      "side": 1,
+      "message": "I think it\u0027d be ~free to use a uint16_t here if you think this is a possibility. (The struct is going to pad out to 16b either way, and I think we\u0027ll get similar codegen)\n\nThere isn\u0027t anywhere to add an assert in this CL (AFAICS?), since the builder isn\u0027t plumbed yet. But the builder could assert for sure.",
+      "parentUuid": "a10846b4_556071ec",
+      "range": {
+        "startLine": 286,
+        "startChar": 61,
+        "endLine": 286,
+        "endChar": 73
+      },
+      "revId": "7e4a31e5469d7e124b26c73cba1e86bc5b0f78f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
