@@ -158,7 +158,6 @@ std::string MetalCodeGenerator::typeName(const Type& type) {
                 case Type::TextureAccess::kReadWrite: return "texture2d<half, access::read_write>";
                 default:                              SkUNREACHABLE;
             }
-            break;
         case Type::TypeKind::kAtomic:
             // SkSL currently only supports the atomicUint type.
             SkASSERT(type.matches(*fContext.fTypes.fAtomicUInt));

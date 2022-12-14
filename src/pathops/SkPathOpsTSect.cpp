@@ -201,7 +201,6 @@ int SkTSpan::hullCheck(const SkTSpan* opp,
     } else {  // hull is not linear; check set true if intersected at the end points
         return ((int) ptsInCommon) << 1;  // 0 or 2
     }
-    return 0;
 }
 
 // OPTIMIZE ? If at_most_end_pts_in_common detects that one quad is near linear,

@@ -794,7 +794,6 @@ bool SkOpAngle::insert(SkOpAngle* angle) {
         }
         next = next->fNext;
     } while (true);
-    return true;
 }
 
 SkOpSpanBase* SkOpAngle::lastMarked() const {
