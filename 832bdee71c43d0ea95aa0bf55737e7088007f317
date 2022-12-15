@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f40c7ed_942c6bc5",
+        "filename": "src/sksl/ir/SkSLSwitchCase.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T15:24:21Z",
+      "side": 1,
+      "message": "Does it work to change this to `cinttypes`?\n\nWe require C++17 to build Skia, and by the spec, C++17\u0027s `cinttypes` should provide `PRId64`. If we\u0027re not getting that, then AFAICS the toolchain isn\u0027t C++17 compliant.",
+      "range": {
+        "startLine": 21,
+        "startChar": 10,
+        "endLine": 21,
+        "endChar": 20
+      },
+      "revId": "832bdee71c43d0ea95aa0bf55737e7088007f317",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
