@@ -30,8 +30,7 @@ private:
     };
 
 public:
-    explicit SkLRUCache(int maxCount)
-    : fMaxCount(maxCount) {}
+    explicit SkLRUCache(int maxCount) : fMaxCount(maxCount) {}
 
     ~SkLRUCache() {
         Entry* node = fLRU.head();
@@ -76,8 +75,12 @@ public:
         }
     }
 
-    int count() {
+    int count() const {
         return fMap.count();
+    }
+
+    int maxCount() const {
+        return fMaxCount;
     }
 
     template <typename Fn>  // f(K*, V*)

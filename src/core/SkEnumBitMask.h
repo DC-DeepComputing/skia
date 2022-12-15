@@ -55,7 +55,7 @@ public:
     SK_ALWAYS_INLINE SkEnumBitMask& operator&=(SkEnumBitMask m) { return *this = *this & m; }
     SK_ALWAYS_INLINE SkEnumBitMask& operator^=(SkEnumBitMask m) { return *this = *this ^ m; }
 
-private:
+public:
     SK_ALWAYS_INLINE constexpr explicit SkEnumBitMask(int value) : fValue(value) {}
 
     int fValue;

@@ -144,26 +144,21 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     fPendingStoreOp = StoreOp::kStore;
 }
 
-sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
-    this->snapDrawPass(recorder);
-    if (fDrawPasses.empty()) {
-        return nullptr;
-    }
+RenderPassDesc MakeRenderPassDesc(const Caps* caps,
+                                  const TextureInfo& targetInfo,
+                                  LoadOp loadOp,
+                                  StoreOp storeOp,
+                                  SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
+                                  const std::array<float, 4>& clearColor,
+                                  bool requiresMSAA) {
+    RenderPassDesc desc(true);
 
-    const Caps* caps = recorder->priv().caps();
+    SkDebugf("DSFlags %d\n", depthStencilFlags.fValue);
 
-    // TODO: At this point we would determine all the targets used by the drawPasses,
-    // build up the union of them and store them in the RenderPassDesc. However, for
-    // the moment we should have only one drawPass.
-    SkASSERT(fDrawPasses.size() == 1);
-    RenderPassDesc desc;
-    auto& drawPass = fDrawPasses[0];
-    const TextureInfo& targetInfo = drawPass->target()->textureInfo();
-    auto [loadOp, storeOp] = drawPass->ops();
     // It doesn't make sense to have a storeOp for our main target not be store. Why are we doing
     // this DrawPass then
     SkASSERT(storeOp == StoreOp::kStore);
-    if (drawPass->requiresMSAA()) {
+    if (requiresMSAA) {
         // TODO: If the resolve texture isn't readable, the MSAA color attachment will need to be
         // persistently associated with the framebuffer, in which case it's not discardable.
         desc.fColorAttachment.fTextureInfo = caps->getDefaultMSAATextureInfo(targetInfo,
@@ -187,11 +182,11 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
         desc.fColorAttachment.fLoadOp = loadOp;
         desc.fColorAttachment.fStoreOp = storeOp;
     }
-    desc.fClearColor = drawPass->clearColor();
+    desc.fClearColor = clearColor;
 
-    if (drawPass->depthStencilFlags() != DepthStencilFlags::kNone) {
+    if (depthStencilFlags != DepthStencilFlags::kNone) {
         desc.fDepthStencilAttachment.fTextureInfo = caps->getDefaultDepthStencilTextureInfo(
-                drawPass->depthStencilFlags(),
+                depthStencilFlags,
                 desc.fColorAttachment.fTextureInfo.numSamples(),
                 Protected::kNo);
         // Always clear the depth and stencil to 0 at the start of a DrawPass, but discard at the
@@ -202,8 +197,53 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+    SkDebugf("color attachment --- numSamples: %d mipmapped: %d protected: %d load: %d store: %d ",
+             desc.fColorAttachment.fTextureInfo.numSamples(),
+             (int) desc.fColorAttachment.fTextureInfo.mipmapped(),
+             (int) desc.fColorAttachment.fTextureInfo.isProtected(),
+             (int) desc.fColorAttachment.fLoadOp,
+             (int) desc.fColorAttachment.fStoreOp);
+
+    MtlTextureInfo info;
+    desc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&info);
+    SkDebugf("format %d sampleCnt: %d\n", info.fFormat, info.fSampleCount);
+
+    SkDebugf("DS attachment --- numSamples: %d mipmapped: %d protected: %d load: %d store: %d ",
+             desc.fDepthStencilAttachment.fTextureInfo.numSamples(),
+             (int) desc.fDepthStencilAttachment.fTextureInfo.mipmapped(),
+             (int) desc.fDepthStencilAttachment.fTextureInfo.isProtected(),
+             (int) desc.fDepthStencilAttachment.fLoadOp,
+             (int) desc.fDepthStencilAttachment.fStoreOp);
+
+    desc.fDepthStencilAttachment.fTextureInfo.getMtlTextureInfo(&info);
+    SkDebugf("format %d sampleCnt: %d\n", info.fFormat, info.fSampleCount);
+
+    return desc;
+}
+
+sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
+    this->snapDrawPass(recorder);
+    if (fDrawPasses.empty()) {
+        return nullptr;
+    }
+
+    const Caps* caps = recorder->priv().caps();
+
+    // TODO: At this point we would determine all the targets used by the drawPasses,
+    // build up the union of them and store them in the RenderPassDesc. However, for
+    // the moment we should have only one drawPass.
+    SkASSERT(fDrawPasses.size() == 1);
+    auto& drawPass = fDrawPasses[0];
+    const TextureInfo& targetInfo = drawPass->target()->textureInfo();
+    auto [loadOp, storeOp] = drawPass->ops();
+
+    RenderPassDesc desc = MakeRenderPassDesc(caps, targetInfo, loadOp, storeOp,
+                                             drawPass->depthStencilFlags(),
+                                             drawPass->clearColor(),
+                                             drawPass->requiresMSAA());
+
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
-    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+    return RenderPassTask::Make1(std::move(fDrawPasses), desc, std::move(targetProxy));
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
