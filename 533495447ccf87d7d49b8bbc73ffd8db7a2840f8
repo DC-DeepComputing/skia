@@ -87,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "462620a5_ea3c7d4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-15T02:46:36Z",
+      "side": 1,
+      "message": "Done. Sorry, I\u0027m not sure how to kick out the default bot list.",
+      "parentUuid": "b14f14a8_c1dd49fd",
+      "revId": "533495447ccf87d7d49b8bbc73ffd8db7a2840f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8e2555d_4413ccef",
