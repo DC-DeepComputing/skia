@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1003082d_6cdc63c8",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-15T14:09:38Z",
+      "side": 1,
+      "message": "nit: expression",
+      "range": {
+        "startLine": 228,
+        "startChar": 37,
+        "endLine": 228,
+        "endChar": 45
+      },
+      "revId": "cf3e74baa1de93f45583207a920ddbf4c52f05fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9ab81c_e45a038f",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-15T14:09:38Z",
+      "side": 1,
+      "message": "`SkASSERT(offsetFromStackTop \u003d\u003d 0);` ?",
+      "revId": "cf3e74baa1de93f45583207a920ddbf4c52f05fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
