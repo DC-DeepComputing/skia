@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6438916f_32e222d4",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-15T22:24:37Z",
+      "side": 1,
+      "message": "Is this necessary? Can we use the fLastUpload DrawToken instead? Maybe -- but a) we don\u0027t set it now and b) it comes from the Recorder so there\u0027s no guarantee that it will be the same number on playback.\n\nCome to think of it... how do I know that the genID will be the same?",
+      "range": {
+        "startLine": 446,
+        "startChar": 13,
+        "endLine": 446,
+        "endChar": 24
+      },
+      "revId": "24168fd6938a9d2aa47ca944a6fe70983e5ca797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
