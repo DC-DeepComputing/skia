@@ -5,16 +5,21 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkGeometry.h"
+
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint3.h"
+#include "include/core/SkRect.h"
+#include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkVx.h"
-#include "src/core/SkGeometry.h"
 #include "src/core/SkPointPriv.h"
 
+#include <cstddef>
 #include <algorithm>
-#include <tuple>
-#include <utility>
+#include <array>
+#include <cmath>
+#include <cstdint>
 
 namespace {
 
@@ -1138,31 +1143,39 @@ SkScalar SkFindCubicCusp(const SkPoint src[4]) {
     return -1;
 }
 
-#include "src/pathops/SkPathOpsCubic.h"
+// FIXME(kjlubick)
+//
+//typedef int (SkDCubic::*InterceptProc)(double intercept, double roots[3]) const;
+//
+//static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, SkPoint dst[7],
+//                                     InterceptProc method) {
+//    SkDCubic cubic;
+//    double roots[3];
+//    int count = (cubic.set(src).*method)(intercept, roots);
+//    if (count > 0) {
+//        SkDCubicPair pair = cubic.chopAt(roots[0]);
+//        for (int i = 0; i < 7; ++i) {
+//            dst[i] = pair.pts[i].asSkPoint();
+//        }
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool SkChopMonoCubicAtY(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
+//    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
+//}
+//
+//bool SkChopMonoCubicAtX(SkPoint src[4], SkScalar x, SkPoint dst[7]) {
+//    return cubic_dchop_at_intercept(src, x, dst, &SkDCubic::verticalIntersect);
+//}
 
-typedef int (SkDCubic::*InterceptProc)(double intercept, double roots[3]) const;
-
-static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, SkPoint dst[7],
-                                     InterceptProc method) {
-    SkDCubic cubic;
-    double roots[3];
-    int count = (cubic.set(src).*method)(intercept, roots);
-    if (count > 0) {
-        SkDCubicPair pair = cubic.chopAt(roots[0]);
-        for (int i = 0; i < 7; ++i) {
-            dst[i] = pair.pts[i].asSkPoint();
-        }
-        return true;
-    }
+bool SkChopMonoCubicAtY(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
     return false;
 }
 
-bool SkChopMonoCubicAtY(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
-    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
-}
-
 bool SkChopMonoCubicAtX(SkPoint src[4], SkScalar x, SkPoint dst[7]) {
-    return cubic_dchop_at_intercept(src, x, dst, &SkDCubic::verticalIntersect);
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

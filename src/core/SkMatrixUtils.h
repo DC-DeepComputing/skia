@@ -8,11 +8,10 @@
 #ifndef SkMatrixUtils_DEFINED
 #define SkMatrixUtils_DEFINED
 
-#include "include/core/SkPoint.h"
-#include "include/core/SkSize.h"
-
 class SkMatrix;
 class SkPaint;
+struct SkISize;
+struct SkPoint;
 struct SkSamplingOptions;
 
 /**
