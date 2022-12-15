@@ -29,7 +29,7 @@ class ResourceProvider;
  */
 class RenderPassTask final : public Task {
 public:
-    static sk_sp<RenderPassTask> Make(std::vector<std::unique_ptr<DrawPass>> passes,
+    static sk_sp<RenderPassTask> Make1(std::vector<std::unique_ptr<DrawPass>> passes,
                                       const RenderPassDesc&,
                                       sk_sp<TextureProxy> target);
 
@@ -42,7 +42,7 @@ public:
 private:
     RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                    const RenderPassDesc&,
-                   sk_sp<TextureProxy> target);
+                   sk_sp<TextureProxy> target, bool);
 
     std::vector<std::unique_ptr<DrawPass>> fDrawPasses;
     RenderPassDesc fRenderPassDesc;

@@ -41,11 +41,17 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
+
+    SkDebugf("findOrCreateGraphicsPipeline %d/%d - ",
+             pipelineDesc.paintParamsID().asUInt(),
+             pipelineDesc.renderStepID());
+
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
     if (!pipeline) {
+        SkDebugf("not found - ");
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
         // threads. If this happens, GlobalCache returns the first-through-gate pipeline and we
@@ -53,10 +59,17 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         // it allows pipeline creation to be performed without locking the global cache.
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc);
         if (pipeline) {
+            SkDebugf("got pipeline - ");
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+            SkDebugf("%d ", globalCache->numGraphicsPipelines());
+            pipelineKey.dump("");
+        } else {
+            SkDebugf("no pipeline!\n");
         }
+    } else {
+        SkDebugf("found\n");
     }
     return pipeline;
 }
