@@ -10,6 +10,7 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 #include <array>
 
@@ -57,6 +58,16 @@ struct RenderPassDesc {
     // * bounds (TBD whether exact bounds vs. granular)
     // * input attachments
 };
+
+class Caps;
+
+RenderPassDesc MakeRenderPassDesc(const Caps* caps,
+                                  const TextureInfo& targetInfo,
+                                  LoadOp loadOp,
+                                  StoreOp storeOp,
+                                  SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
+                                  const std::array<float, 4>& clearColor,
+                                  bool requiresMSAA);
 
 };  // namespace skgpu::graphite
 
