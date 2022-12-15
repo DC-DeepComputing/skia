@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a564dbdb_2f64fe62",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-15T21:54:08Z",
+      "side": 1,
+      "message": "add a TODO to generate the different TextureInfo\u0027s here?",
+      "range": {
+        "startLine": 392,
+        "startChar": 76,
+        "endLine": 395,
+        "endChar": 94
+      },
+      "revId": "433fa5d357b93203c43943c55f8725cd922a7184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67df011c_0863f422",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-15T21:54:08Z",
+      "side": 1,
+      "message": "Future thoughts that can be in differen CL.\n\nHmm so like these aren\u0027t really inputs into the pipeline creation (i.e. pipelines created with equal render passes but different load/stores are equivalent). Though they are needed for actually beginning a render pass. So I think leaving the values on this desc makes sense since that\u0027s also how all the gpu apis set things up. I wonder though if there is anything to gain breaking up the helper Make. One just fills in the relevant info needed for pipelines, then a second that fills in the appropriate load/stores. The runtime thing in snap would just call both, and this would just have default values in the load and stores for the attachments. Though I\u0027m not sure how entangled all that is.\n\nFor now maybe at least comment these values shouldn\u0027t modify the pipeline we create.",
+      "range": {
+        "startLine": 402,
+        "startChar": 57,
+        "endLine": 404,
+        "endChar": 83
+      },
+      "revId": "433fa5d357b93203c43943c55f8725cd922a7184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
