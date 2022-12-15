@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e91252_6a4ccf25",
+        "filename": "tools/remote_demo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T16:35:59Z",
+      "side": 0,
+      "message": "I originally noticed these calls because unreachable-code warnings were flagging these `return`s as unreachable, but I had no idea what `err()` was.",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 21
+      },
+      "revId": "df0715c8ed2b53e61847f24671b414635f2f1550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
