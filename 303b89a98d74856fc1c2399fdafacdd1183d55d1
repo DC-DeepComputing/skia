@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37ab7797_d8cdeafa",
+        "filename": "src/pathops/SkOpAngle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T00:16:44Z",
+      "side": 1,
+      "message": "Would be clearer to change this to `break` and restore the `return true` at the end of the function; otherwise it looks like we\u0027re missing a return at the end.",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 787,
+        "endChar": 24
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6aa3f5f_2f7f4e1a",
+        "filename": "src/pathops/SkPathOpsTSect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T00:16:44Z",
+      "side": 1,
+      "message": "Remove `else` to make it clear that all paths return",
+      "range": {
+        "startLine": 201,
+        "startChar": 6,
+        "endLine": 201,
+        "endChar": 10
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1058881_30555ac2",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T00:16:44Z",
+      "side": 1,
+      "message": "for clarity about lack of fallthrough let\u0027s do\n\n```\n     default: break;\n }\n SkUNREACHABLE;\n````",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 0
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
