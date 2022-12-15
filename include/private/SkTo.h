@@ -7,7 +7,7 @@
 #ifndef SkTo_DEFINED
 #define SkTo_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTFitsIn.h"
 
 #include <cstddef>

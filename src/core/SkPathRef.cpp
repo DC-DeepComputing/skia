@@ -13,7 +13,6 @@
 #include "include/private/SkOnce.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkBuffer.h"
-#include "src/core/SkPathPriv.h"
 
 #include <cstring>
 
@@ -43,24 +42,6 @@ SkPathRef::Editor::Editor(sk_sp<SkPathRef>* pathRef,
     fPathRef->fGenerationID = 0;
     fPathRef->fBoundsIsDirty = true;
     SkDEBUGCODE(fPathRef->fEditorsAttached++;)
-}
-
-// Sort of like makeSpace(0) but the the additional requirement that we actively shrink the
-// allocations to just fit the current needs. makeSpace() will only grow, but never shrinks.
-//
-void SkPath::shrinkToFit() {
-    // Since this can relocate the allocated arrays, we have to defensively copy ourselves if
-    // we're not the only owner of the pathref... since relocating the arrays will invalidate
-    // any existing iterators.
-    if (!fPathRef->unique()) {
-        SkPathRef* pr = new SkPathRef;
-        pr->copy(*fPathRef, 0, 0);
-        fPathRef.reset(pr);
-    }
-    fPathRef->fPoints.shrink_to_fit();
-    fPathRef->fVerbs.shrink_to_fit();
-    fPathRef->fConicWeights.shrink_to_fit();
-    SkDEBUGCODE(fPathRef->validate();)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -479,7 +460,7 @@ SkPoint* SkPathRef::growForVerb(int /* SkPath::Verb*/ verb, SkScalar weight) {
 
 uint32_t SkPathRef::genID() const {
     SkASSERT(fEditorsAttached.load() == 0);
-    static const uint32_t kMask = (static_cast<int64_t>(1) << SkPathPriv::kPathRefGenIDBitCnt) - 1;
+    static const uint32_t kMask = (static_cast<int64_t>(1) << kPathRefGenIDBitCnt) - 1;
 
     if (fGenerationID == 0) {
         if (fPoints.empty() && fVerbs.empty()) {
@@ -715,19 +696,4 @@ bool SkPathRef::dataMatchesVerbs() const {
            info.segmentMask == fSegmentMask    &&
            info.points      == fPoints.size()  &&
            info.weights     == fConicWeights.size();
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-SkPathEdgeIter::SkPathEdgeIter(const SkPath& path) {
-    fMoveToPtr = fPts = path.fPathRef->points();
-    fVerbs = path.fPathRef->verbsBegin();
-    fVerbsStop = path.fPathRef->verbsEnd();
-    fConicWeights = path.fPathRef->conicWeights();
-    if (fConicWeights) {
-        fConicWeights -= 1;  // begin one behind
-    }
-
-    fNeedsCloseLine = false;
-    fNextIsNewContour = false;
-    SkDEBUGCODE(fIsConic = false;)
 }
