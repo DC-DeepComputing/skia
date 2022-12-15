@@ -76,13 +76,11 @@ static bool write_SkData(int fd, const SkData& data) {
     ssize_t bytesWritten = ::write(fd, &size, sizeof(size));
     if (bytesWritten < 0) {
         err(1,"Failed write %zu", size);
-        return false;
     }
 
     bytesWritten = ::write(fd, data.data(), data.size());
     if (bytesWritten < 0) {
         err(1,"Failed write %zu", size);
-        return false;
     }
 
     return true;
