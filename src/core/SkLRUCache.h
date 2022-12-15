@@ -76,7 +76,7 @@ public:
         }
     }
 
-    int count() {
+    int count() const {
         return fMap.count();
     }
 

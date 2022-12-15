@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/CopyTask.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -388,6 +389,21 @@ void Context::precompile(const PaintOptions& options) {
 
     KeyContext keyContext(fSharedContext->shaderCodeDictionary(), rtEffectDict.get());
 
+    TextureInfo foo = fSharedContext->caps()->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+                                                                           Mipmapped::kNo,
+                                                                           Protected::kNo,
+                                                                           Renderable::kYes);
+
+    TextureInfo targetInfo = fSharedContext->caps()->getDefaultMSAATextureInfo(foo,
+                                                                               Discardable::kYes);
+
+    RenderPassDesc renderPassDesc = MakeRenderPassDesc(fSharedContext->caps(), targetInfo,
+                                                       LoadOp::kClear,
+                                                       StoreOp::kStore,
+                                                       DepthStencilFlags::kDepthStencil,
+                                                       { 0.0f, 0.0f, 0.0f, 0.0f },
+                                                       /* requiresMSAA= */ true);
+
     options.priv().buildCombinations(
         keyContext,
         [&](UniquePaintParamsID uniqueID) {
@@ -395,7 +411,15 @@ void Context::precompile(const PaintOptions& options) {
                 for (auto&& s : r->steps()) {
                     if (s->performsShading()) {
                         GraphicsPipelineDesc pipelineDesc(s, uniqueID);
-                        (void) pipelineDesc;
+
+                        auto pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
+                                keyContext.rtEffectDict(),
+                                pipelineDesc,
+                                renderPassDesc);
+                        if (!pipeline) {
+                            SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+                            return;
+                        }
 
                         // TODO: Combine the desc with the renderpass description set to generate a
                         // full GraphicsPipeline and MSL program. Cache that compiled pipeline on
