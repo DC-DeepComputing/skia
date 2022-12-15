@@ -29,12 +29,6 @@ public:
     }
 
     typedef SkMatrix::MapXYProc MapXYProc;
-    typedef SkMatrix::MapPtsProc MapPtsProc;
-
-
-    static MapPtsProc GetMapPtsProc(const SkMatrix& matrix) {
-        return SkMatrix::GetMapPtsProc(matrix.getType());
-    }
 
     static MapXYProc GetMapXYProc(const SkMatrix& matrix) {
         return SkMatrix::GetMapXYProc(matrix.getType());

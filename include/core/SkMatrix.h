@@ -1980,6 +1980,7 @@ private:
     friend class SkPerspIter;
     friend class SkMatrixPriv;
     friend class SerializationTest;
+    friend class SkPath; // needs getMapPtsProc()
 };
 SK_END_REQUIRE_DENSE
 

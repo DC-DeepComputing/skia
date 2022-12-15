@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
+#include "include/private/SkConstants.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
@@ -142,7 +143,7 @@ bool shape_contains_rect(const GrShape& a, const SkMatrix& aToDevice, const SkMa
     // Test each corner for contains; since a is convex, if all 4 corners of b's bounds are
     // contained, then the entirety of b is within a.
     GrQuad deviceQuad = GrQuad::MakeFromRect(b, bToDevice);
-    if (any(deviceQuad.w4f() < SkPathPriv::kW0PlaneDistance)) {
+    if (any(deviceQuad.w4f() < kW0PlaneDistance)) {
         // Something in B actually projects behind the W = 0 plane and would be clipped to infinity,
         // so it's extremely unlikely that A can contain B.
         return false;

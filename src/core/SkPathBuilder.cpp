@@ -9,10 +9,9 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRRect.h"
-#include "include/private/SkPathRef.h"
+#include "include/private/SkPathEnums.h"
 #include "include/private/SkSafe32.h"
 #include "src/core/SkGeometry.h"
-#include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsPoint.h"
 
 #include <algorithm>
@@ -58,7 +57,7 @@ SkPathBuilder& SkPathBuilder::reset() {
 SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->reset().setFillType(src.getFillType());
 
-    for (auto [verb, pts, w] : SkPathPriv::Iterate(src)) {
+    for (auto [verb, pts, w] : SkPath::Iterate(src)) {
         switch (verb) {
             case SkPathVerb::kMove:  this->moveTo(pts[0]); break;
             case SkPathVerb::kLine:  this->lineTo(pts[1]); break;
@@ -87,7 +86,7 @@ SkRect SkPathBuilder::computeBounds() const {
  *
  *  After each edit (i.e. adding a verb)
         this->setConvexityType(SkPathConvexity::kUnknown);
-        this->setFirstDirection(SkPathPriv::kUnknown_FirstDirection);
+        this->setFirstDirection(SkPathFirstDirection::kUnknown);
  */
 
 SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
@@ -825,7 +824,7 @@ SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
     bool needClose = false;
     while (verbs > verbsBegin) {
         uint8_t v = *--verbs;
-        int n = SkPathPriv::PtsInVerb(v);
+        int n = SkPath::PtsInVerb(v);
 
         if (needMove) {
             --pts;
