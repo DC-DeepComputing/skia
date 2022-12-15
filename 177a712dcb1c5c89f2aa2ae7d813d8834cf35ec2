@@ -52,6 +52,24 @@
       "parentUuid": "964e0949_1a53084c",
       "revId": "177a712dcb1c5c89f2aa2ae7d813d8834cf35ec2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "460a5c8c_c2299390",
+        "filename": "include/core/SkPathUtils.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-15T13:49:29Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/619099",
+      "parentUuid": "2ded7ffd_417b8c85",
+      "revId": "177a712dcb1c5c89f2aa2ae7d813d8834cf35ec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
