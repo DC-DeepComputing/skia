@@ -4,7 +4,11 @@
 #ifndef SkContainers_DEFINED
 #define SkContainers_DEFINED
 
-#include "include/core/SkSpan.h"
+#include "include/private/SkSpan_impl.h"
+#include "include/private/SkAPI.h"
+
+#include <cstddef>
+#include <cstdint>
 
 class SK_SPI SkContainerAllocator {
 public:

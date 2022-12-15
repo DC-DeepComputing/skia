@@ -315,3 +315,22 @@ skia_cc_deps(
         "//conditions:default": [],
     }),
 )
+
+cc_library(
+    name = "default_logging",
+    srcs = [":skdebug"],
+    features = ["layering_check"],
+    visibility = ["//:__pkg__"],
+    deps = ["//:base"],
+)
+
+cc_library(
+    name = "default_malloc",
+    srcs = [":malloc"],
+    features = ["layering_check"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        "//:base",
+        "//src:base_priv",
+    ],
+)
