@@ -201,8 +201,9 @@ static jlong Surface_CreateGL(JNIEnv* env, jobject, jobject jsurface) {
     }
 
     return reinterpret_cast<jlong>(sk_make_sp<WindowSurface>(win, std::move(winctx)).release());
-#endif // SK_GL
+#else // SK_GL
     return 0;
+#endif
 }
 
 static void Surface_Release(JNIEnv* env, jobject, jlong native_surface) {

@@ -427,6 +427,12 @@ config("warnings") {
       "-Wno-noexcept-type",
       "-Wno-redundant-move",  #TODO: gcc conflict with return-std-move-in-c++11
     ]
+
+    if (is_clang) {
+      cflags_cc += [ "-Wunreachable-code-aggressive" ]
+    } else {
+      cflags_cc += [ "-Wunreachable-code" ]
+    }
   }
 
   if (is_clang) {
