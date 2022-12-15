@@ -16,6 +16,23 @@
       "message": "LGTM!",
       "revId": "533495447ccf87d7d49b8bbc73ffd8db7a2840f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d552de_a1eeb54b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-15T00:28:32Z",
+      "side": 1,
+      "message": "johnstiles@, sorry for my lack of knowledge about the specifics of this repo, but it looks like I don\u0027t have the permission to submit my CL here. Would you mind providing some direction what is the process?",
+      "revId": "533495447ccf87d7d49b8bbc73ffd8db7a2840f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
