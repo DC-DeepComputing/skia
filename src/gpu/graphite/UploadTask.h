@@ -40,7 +40,7 @@ class ConditionalUploadContext {
 public:
     virtual ~ConditionalUploadContext() {}
 
-    virtual bool needsUpload() = 0;
+    virtual bool needsUpload() const = 0;
 };
 
 /**

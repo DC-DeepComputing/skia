@@ -237,7 +237,7 @@ public:
     inline static constexpr int kMaxPlots = 32;
 
     PlotLocator(uint32_t pageIdx, uint32_t plotIdx, uint64_t generation)
-            : fGenID(generation)
+            : fEvictionGenID(generation)
             , fPlotIndex(plotIdx)
             , fPageIndex(pageIdx) {
         SkASSERT(pageIdx < kMaxMultitexturePages);
@@ -246,31 +246,32 @@ public:
     }
 
     PlotLocator()
-            : fGenID(AtlasGenerationCounter::kInvalidGeneration)
+            : fEvictionGenID(AtlasGenerationCounter::kInvalidGeneration)
             , fPlotIndex(0)
             , fPageIndex(0) {}
 
     bool isValid() const {
-        return fGenID != 0 || fPlotIndex != 0 || fPageIndex != 0;
+        return fEvictionGenID != AtlasGenerationCounter::kInvalidGeneration ||
+               fPlotIndex != 0 || fPageIndex != 0;
     }
 
     void makeInvalid() {
-        fGenID = 0;
+        fEvictionGenID = AtlasGenerationCounter::kInvalidGeneration;
         fPlotIndex = 0;
         fPageIndex = 0;
     }
 
     bool operator==(const PlotLocator& other) const {
-        return fGenID == other.fGenID &&
+        return fEvictionGenID == other.fEvictionGenID &&
                fPlotIndex == other.fPlotIndex &&
                fPageIndex == other.fPageIndex; }
 
     uint32_t pageIndex() const { return fPageIndex; }
     uint32_t plotIndex() const { return fPlotIndex; }
-    uint64_t genID() const { return fGenID; }
+    uint64_t evictionGenID() const { return fEvictionGenID; }
 
 private:
-    uint64_t fGenID:48;
+    uint64_t fEvictionGenID:48;
     uint64_t fPlotIndex:8;
     uint64_t fPageIndex:8;
 };
@@ -294,7 +295,7 @@ public:
 
     uint32_t plotIndex() const { return fPlotLocator.plotIndex(); }
 
-    uint64_t genID() const { return fPlotLocator.genID(); }
+    uint64_t evictionGenID() const { return fPlotLocator.evictionGenID(); }
 
     SkIPoint topLeft() const {
         return {fUVs[0] & 0x1FFF, fUVs[1]};
@@ -434,10 +435,15 @@ public:
     /** plotIndex() is a unique id for the plot relative to the owning GrAtlas and page. */
     uint32_t plotIndex() const { return fPlotIndex; }
     /**
-     * genID() is incremented when the plot is evicted due to a atlas spill. It is used to know
-     * if a particular subimage is still present in the atlas.
+     * evictionGenID() is incremented when the plot is evicted due to a atlas spill. It is used to
+     * know if a particular subimage is still present in the atlas.
      */
-    uint64_t genID() const { return fGenID; }
+    uint64_t evictionGenID() const { return fEvictionGenID; }
+    /**
+     * uploadGenID() is incremented when the plot is uploaded (via Plot::prepareForUpload()).
+     * It is used to determine if a plot needs to be reupload during Recording replay in Graphite.
+     */
+    uint64_t uploadGenID() const { return fUploadGenID; }
     PlotLocator plotLocator() const {
         SkASSERT(fPlotLocator.isValid());
         return fPlotLocator;
@@ -495,7 +501,8 @@ private:
         const uint32_t fPlotIndex : 16;
     };
     AtlasGenerationCounter* const fGenerationCounter;
-    uint64_t fGenID;
+    uint64_t fEvictionGenID;
+    uint64_t fUploadGenID;
     PlotLocator fPlotLocator;
     unsigned char* fData;
     const int fWidth;

@@ -120,8 +120,8 @@ public:
 
         uint32_t plot = plotLocator.plotIndex();
         uint32_t page = plotLocator.pageIndex();
-        uint64_t plotGeneration = fPages[page].fPlotArray[plot]->genID();
-        uint64_t locatorGeneration = plotLocator.genID();
+        uint64_t plotGeneration = fPages[page].fPlotArray[plot]->evictionGenID();
+        uint64_t locatorGeneration = plotLocator.evictionGenID();
         return plot < fNumPlots && page < fNumActivePages && plotGeneration == locatorGeneration;
     }
 

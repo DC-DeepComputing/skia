@@ -20,8 +20,9 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
         , fPageIndex(pageIndex)
         , fPlotIndex(plotIndex)
         , fGenerationCounter(generationCounter)
-        , fGenID(fGenerationCounter->next())
-        , fPlotLocator(fPageIndex, fPlotIndex, fGenID)
+        , fEvictionGenID(fGenerationCounter->next())
+        , fUploadGenID(fEvictionGenID)
+        , fPlotLocator(fPageIndex, fPlotIndex, fEvictionGenID)
         , fData(nullptr)
         , fWidth(width)
         , fHeight(height)
@@ -109,14 +110,15 @@ std::pair<const void*, SkIRect> Plot::prepareForUpload() {
     SkIRect offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
     fDirtyRect.setEmpty();
     SkDEBUGCODE(fDirty = false;)
+    fUploadGenID = fGenerationCounter->next();
 
     return { dataPtr, offsetRect };
 }
 
 void Plot::resetRects() {
     fRectanizer.reset();
-    fGenID = fGenerationCounter->next();
-    fPlotLocator = PlotLocator(fPageIndex, fPlotIndex, fGenID);
+    fEvictionGenID = fGenerationCounter->next();
+    fPlotLocator = PlotLocator(fPageIndex, fPlotIndex, fEvictionGenID);
     fLastUpload = DrawToken::AlreadyFlushedToken();
     fLastUse = DrawToken::AlreadyFlushedToken();
 
