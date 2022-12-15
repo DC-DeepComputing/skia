@@ -8,8 +8,8 @@
 #ifndef SkMutex_DEFINED
 #define SkMutex_DEFINED
 
-#include "include/core/SkTypes.h"
-#include "include/private/SkMacros.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
 #include "include/private/SkSemaphore.h"
 #include "include/private/SkThreadAnnotations.h"
 #include "include/private/SkThreadID.h"
