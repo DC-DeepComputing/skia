@@ -17,7 +17,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<RenderPassTask> RenderPassTask::Make(std::vector<std::unique_ptr<DrawPass>> passes,
+sk_sp<RenderPassTask> RenderPassTask::Make1(std::vector<std::unique_ptr<DrawPass>> passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target) {
     // For now we have one DrawPass per RenderPassTask
@@ -26,12 +26,12 @@ sk_sp<RenderPassTask> RenderPassTask::Make(std::vector<std::unique_ptr<DrawPass>
         return nullptr;
     }
 
-    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes), desc, target));
+    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes), desc, target, true));
 }
 
 RenderPassTask::RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                                const RenderPassDesc& desc,
-                               sk_sp<TextureProxy> target)
+                               sk_sp<TextureProxy> target, bool)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
         , fTarget(std::move(target)) {}
