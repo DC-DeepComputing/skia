@@ -21,6 +21,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <initializer_list>
 #include <tuple>
 #include <type_traits>
@@ -1528,8 +1529,6 @@ private:
     /** \class SkPath::RangeIter
         Iterates through a raw range of path verbs, points, and conics. All values are returned
         unaltered.
-
-        NOTE: This class will be moved into SkPathPriv once RangeIter is removed.
     */
     class RangeIter {
     public:
@@ -1597,10 +1596,137 @@ private:
         const SkScalar* fWeights = nullptr;
         SkDEBUGCODE(const SkPoint* fInitialPoints = nullptr;)
     };
+
+    /**
+     * Iterable object for traversing verbs, points, and conic weights in a path:
+     *
+     *   for (auto [verb, pts, weights] : SkPathPriv::Iterate(skPath)) {
+     *       ...
+     *   }
+     */
+    struct Iterate {
+    public:
+        Iterate(const SkPath& path);
+        Iterate(const uint8_t* verbsBegin, const uint8_t* verbsEnd, const SkPoint* points,
+                const SkScalar* weights);
+        SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
+        SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
+    private:
+        const uint8_t* fVerbsBegin;
+        const uint8_t* fVerbsEnd;
+        const SkPoint* fPoints;
+        const SkScalar* fWeights;
+    };
+
+    // Lightweight variant of SkPath::Iter that only returns segments (e.g. lines/conics).
+    // Does not return kMove or kClose.
+    // Always "auto-closes" each contour.
+    // Roughly the same as SkPath::Iter(path, true), but does not return moves or closes
+    class EdgeIter {
+        const uint8_t *fVerbs;
+        const uint8_t *fVerbsStop;
+        const SkPoint *fPts;
+        const SkPoint *fMoveToPtr;
+        const SkScalar *fConicWeights;
+        SkPoint fScratch[2];    // for auto-close lines
+        bool fNeedsCloseLine;
+        bool fNextIsNewContour;
+        SkDEBUGCODE(bool
+        fIsConic;)
+
+        enum {
+            kIllegalEdgeValue = 99
+        };
+
+        public:
+        EdgeIter(
+        const SkPath &path);
+
+        SkScalar conicWeight() const {
+            SkASSERT(fIsConic);
+            return *fConicWeights;
+        }
+
+        enum class Edge {
+            kLine = SkPath::kLine_Verb,
+            kQuad = SkPath::kQuad_Verb,
+            kConic = SkPath::kConic_Verb,
+            kCubic = SkPath::kCubic_Verb,
+        };
+
+        static SkPath::Verb EdgeToVerb(Edge e) {
+            return SkPath::Verb(e);
+        }
+
+        struct Result {
+            const SkPoint *fPts;   // points for the segment, or null if done
+            Edge fEdge;
+            bool fIsNewContour;
+
+            // Returns true when it holds an Edge, false when the path is done.
+            explicit operator bool() { return fPts != nullptr; }
+        };
+
+        Result next() {
+            auto closeline = [&]() {
+                fScratch[0] = fPts[-1];
+                fScratch[1] = *fMoveToPtr;
+                fNeedsCloseLine = false;
+                fNextIsNewContour = true;
+                return Result{fScratch, Edge::kLine, false};
+            };
+
+            for (;;) {
+                SkASSERT(fVerbs <= fVerbsStop);
+                if (fVerbs == fVerbsStop) {
+                    return fNeedsCloseLine
+                           ? closeline()
+                           : Result{nullptr, Edge(kIllegalEdgeValue), false};
+                }
+
+                SkDEBUGCODE(fIsConic = false;)
+
+                const auto v = *fVerbs++;
+                switch (v) {
+                    case SkPath::kMove_Verb: {
+                        if (fNeedsCloseLine) {
+                            auto res = closeline();
+                            fMoveToPtr = fPts++;
+                            return res;
+                        }
+                        fMoveToPtr = fPts++;
+                        fNextIsNewContour = true;
+                    }
+                        break;
+                    case SkPath::kClose_Verb:
+                        if (fNeedsCloseLine) return closeline();
+                        break;
+                    default: {
+                        // Actual edge.
+                        const int pts_count = (v + 2) / 2,
+                                cws_count = (v & (v - 1)) / 2;
+                        SkASSERT(pts_count == SkPath::PtsInIter(v) - 1);
+
+                        fNeedsCloseLine = true;
+                        fPts += pts_count;
+                        fConicWeights += cws_count;
+
+                        SkDEBUGCODE(fIsConic = (v == SkPath::kConic_Verb);)
+                        SkASSERT(fIsConic == (cws_count > 0));
+
+                        bool isNewContour = fNextIsNewContour;
+                        fNextIsNewContour = false;
+                        return {&fPts[-(pts_count + 1)], Edge(v), isNewContour};
+                    }
+                }
+            }
+        }
+    };
+
 public:
 
     /** \class SkPath::RawIter
-        Use Iter instead. This class will soon be removed and RangeIter will be made private.
+        Use Iter instead. This class will soon be removed.
     */
     class SK_API RawIter {
     public:
@@ -1794,10 +1920,6 @@ private:
     size_t readAsRRect(const void*, size_t);
     size_t readFromMemory_EQ4Or5(const void*, size_t);
 
-    friend class Iter;
-    friend class SkPathPriv;
-    friend class SkPathStroker;
-
     /*  Append, in reverse order, the first contour of path, ignoring path's
         last point. If no moveTo() call has been made for this contour, the
         first point is automatically set to (0,0).
@@ -1873,15 +1995,167 @@ private:
      */
     void shrinkToFit();
 
+    /**
+     * Gets the number of GenIDChangeListeners. If another thread has access to this path then
+     * this may be stale before return and only indicates that the count was the return value
+     * at some point during the execution of the function.
+     */
+    int genIDChangeListenersCount() const;
+
+    bool isAxisAligned() const;
+
+    int leadingMoveToCount() const;
+
+    /** Returns true if SkPath is equivalent to nested SkRect pair when filled.
+     If false, rect and dirs are unchanged.
+     If true, rect and dirs are written to if not nullptr:
+     setting rect[0] to outer SkRect, and rect[1] to inner SkRect;
+     setting dirs[0] to SkPathDirection of outer SkRect, and dirs[1] to SkPathDirection of
+     inner SkRect.
+
+     @param rect  storage for SkRect pair; may be nullptr
+     @param dirs  storage for SkPathDirection pair; may be nullptr
+     @return      true if SkPath contains nested SkRect pair
+     */
+     bool isNestedFillRects(SkRect rects[2], SkPathDirection dirs[2]) const;
+
+     bool isRectContour(bool allowPartial, int* currVerb,
+                        const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
+                        SkRect* rect) const;
+
+     /** Returns true if constructed by addRoundRect(), addRRect(); and if construction
+     is not empty, not SkRect, and not oval. SkPath constructed with other calls
+     will not return true though SkPath draws SkRRect.
+
+     rrect receives bounds of SkRRect.
+     dir receives SkPathDirection of oval: kCW_Direction if clockwise, kCCW_Direction if
+     counterclockwise.
+     start receives start of SkRRect: 0 for top, 1 for right, 2 for bottom, 3 for left.
+
+     rrect, dir, and start are unmodified if SkRRect is not found.
+
+     Triggers performance optimizations on some GPU surface implementations.
+
+     @param rrect  storage for bounding SkRect of SkRRect; may be nullptr
+     @param dir    storage for SkPathDirection; may be nullptr
+     @param start  storage for start of SkRRect; may be nullptr
+     @return       true if SkPath contains only SkRRect
+     */
+     bool isRRect(SkRRect* rrect, SkPathDirection* dir, unsigned* start) const;
+
+     /** Returns true if constructed by addCircle(), addOval(); and in some cases,
+     addRoundRect(), addRRect(). SkPath constructed with conicTo() or rConicTo() will not
+     return true though SkPath draws oval.
+
+     rect receives bounds of oval.
+     dir receives SkPathDirection of oval: kCW_Direction if clockwise, kCCW_Direction if
+     counterclockwise.
+     start receives start of oval: 0 for top, 1 for right, 2 for bottom, 3 for left.
+
+     rect, dir, and start are unmodified if oval is not found.
+
+     Triggers performance optimizations on some GPU surface implementations.
+
+     @param rect   storage for bounding SkRect of oval; may be nullptr
+     @param dir    storage for SkPathDirection; may be nullptr
+     @param start  storage for start of oval; may be nullptr
+     @return       true if SkPath was constructed by method that reduces to oval
+     */
+     bool isOval(SkRect* bounds, SkPathDirection* dir, unsigned* start) const;
+
+    /**
+     *  Tries to compute the direction of the outer-most non-degenerate
+     *  contour. If it can be computed, return that direction. If it cannot be determined,
+     *  or the contour is known to be convex, return kUnknown. If the direction was determined,
+     *  it is cached to make subsequent calls return quickly.
+     */
+    SkPathFirstDirection computeFirstDirection() const;
+
+    /**
+     * This returns true for a rect that has a move followed by 3 or 4 lines and a close. If
+     * 'isSimpleFill' is true, an uncloseed rect will also be accepted as long as it starts and
+     * ends at the same corner. This does not permit degenerate line or point rectangles.
+     */
+     bool isSimpleRect(bool isSimpleFill, SkRect* rect, SkPathDirection* direction,
+                       unsigned* start) const;
+
+     /**
+     * Creates a path from arc params using the semantics of SkCanvas::drawArc. This function
+     * assumes empty ovals and zero sweeps have already been filtered out.
+     */
+    static void CreateDrawArcPath(SkPath* path, const SkRect& oval, SkScalar startAngle,
+                                  SkScalar sweepAngle, bool useCenter, bool isFillNoPathEffect);
+
+    // Returns number of valid points for each verb, not including the "starter"
+    // point that the Iterator adds for line/quad/conic/cubic
+    static int PtsInVerb(unsigned verb) {
+        static const uint8_t gPtsInVerb[] = {
+            1,  // kMove    pts[0]
+            1,  // kLine    pts[0..1]
+            2,  // kQuad    pts[0..2]
+            2,  // kConic   pts[0..2]
+            3,  // kCubic   pts[0..3]
+            0,  // kClose
+            0   // kDone
+        };
+
+        SkASSERT(verb < std::size(gPtsInVerb));
+        return gPtsInVerb[verb];
+    }
+
+        // Returns number of valid points for each SkPath::Iter verb
+    static int PtsInIter(unsigned verb) {
+        static const uint8_t gPtsInVerb[] = {
+            1,  // kMove    pts[0]
+            2,  // kLine    pts[0..1]
+            3,  // kQuad    pts[0..2]
+            3,  // kConic   pts[0..2]
+            4,  // kCubic   pts[0..3]
+            0,  // kClose
+            0   // kDone
+        };
+
+        SkASSERT(verb < std::size(gPtsInVerb));
+        return gPtsInVerb[verb];
+    }
+
+    static bool AllPointsEq(const SkPoint pts[], int count) {
+        for (int i = 1; i < count; ++i) {
+            if (pts[0] != pts[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Determines whether an arc produced by CreateDrawArcPath will be convex. Assumes a non-empty
+     * oval.
+     */
+    static bool DrawArcIsConvex(SkScalar sweepAngle, bool useCenter, bool isFillNoPathEffect) {
+        if (isFillNoPathEffect && SkScalarAbs(sweepAngle) >= 360.f) {
+            // This gets converted to an oval.
+            return true;
+        }
+        if (useCenter) {
+            // This is a pie wedge. It's convex if the angle is <= 180.
+            return SkScalarAbs(sweepAngle) <= 180.f;
+        }
+        // When the angle exceeds 360 this wraps back on top of itself. Otherwise it is a
+        // circle clipped to a secant, i.e. convex.
+        return SkScalarAbs(sweepAngle) <= 360.f;
+    }
+
+    friend class EdgeIter;
+    friend class Iter;
+    friend class SkPathPriv;
+    friend class SkPathStroker;
     friend class SkAutoPathBoundsUpdate;
     friend class SkAutoDisableOvalCheck;
     friend class SkAutoDisableDirectionCheck;
     friend class SkPathBuilder;
-    friend class SkPathEdgeIter;
-    friend class SkPathWriter;
-    friend class SkOpBuilder;
-    friend class SkBench_AddPathTest; // perf test reversePathTo
-    friend class PathTest_Private; // unit test reversePathTo
+    friend class SkEdgeClipper;
+    friend class PathTest_Private; // unit test setPt
     friend class ForceIsRRect_Private; // unit test isRRect
     friend class FuzzPath; // for legacy access to validateRef
 };

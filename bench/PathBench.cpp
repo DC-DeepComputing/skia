@@ -20,6 +20,7 @@
 
 #include "src/core/SkDraw.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkPathPriv.h"
 
 enum Flags {
     kStroke_Flag = 1 << 0,
@@ -634,7 +635,7 @@ protected:
                 for (int i = 0; i < loops; ++i) {
                     int idx = i & (kPathCnt - 1);
                     SkPath result = fPaths0[idx];
-                    result.reversePathTo(fPaths1[idx]);
+                    SkPathPriv::ReversePathTo(result, fPaths1[idx]);
                 }
                 break;
         }

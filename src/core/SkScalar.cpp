@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkScalar.h"
+#include "include/private/SkAssert.h"
 
 SkScalar SkScalarInterpFunc(SkScalar searchKey, const SkScalar keys[],
                             const SkScalar values[], int length) {

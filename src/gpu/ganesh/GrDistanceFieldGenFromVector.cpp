@@ -780,18 +780,18 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
     init_distances(dataPtr, width * height);
 
     // polygonize path into line and quad segments
-    SkPathEdgeIter iter(workingPath);
+    SkPathPriv::EdgeIter iter(workingPath);
     SkSTArray<15, PathSegment, true> segments;
     while (auto e = iter.next()) {
         switch (e.fEdge) {
-            case SkPathEdgeIter::Edge::kLine: {
+            case SkPathPriv::EdgeIter::Edge::kLine: {
                 add_line(e.fPts, &segments);
                 break;
             }
-            case SkPathEdgeIter::Edge::kQuad:
+            case SkPathPriv::EdgeIter::Edge::kQuad:
                 add_quad(e.fPts, &segments);
                 break;
-            case SkPathEdgeIter::Edge::kConic: {
+            case SkPathPriv::EdgeIter::Edge::kConic: {
                 SkScalar weight = iter.conicWeight();
                 SkAutoConicToQuads converter;
                 const SkPoint* quadPts = converter.computeQuads(e.fPts, weight, kConicTolerance);
@@ -800,7 +800,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
                 }
                 break;
             }
-            case SkPathEdgeIter::Edge::kCubic: {
+            case SkPathPriv::EdgeIter::Edge::kCubic: {
                 add_cubic(e.fPts, &segments);
                 break;
             }

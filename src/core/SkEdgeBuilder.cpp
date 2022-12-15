@@ -5,11 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkEdgeBuilder.h"
+
 #include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkFixed.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAnalyticEdge.h"
 #include "src/core/SkEdge.h"
-#include "src/core/SkEdgeBuilder.h"
 #include "src/core/SkEdgeClipper.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkLineClipper.h"
@@ -244,13 +249,13 @@ int SkEdgeBuilder::buildPoly(const SkPath& path, const SkIRect* iclip, bool canC
     char** edgePtr = fAlloc.makeArrayDefault<char*>(maxEdgeCount);
     fEdgeList = (void**)edgePtr;
 
-    SkPathEdgeIter iter(path);
+    SkPathPriv::EdgeIter iter(path);
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
 
         while (auto e = iter.next()) {
             switch (e.fEdge) {
-                case SkPathEdgeIter::Edge::kLine: {
+                case SkPathPriv::EdgeIter::Edge::kLine: {
                     SkPoint lines[SkLineClipper::kMaxPoints];
                     int lineCount = SkLineClipper::ClipLine(e.fPts, clip, lines, canCullToTheRight);
                     SkASSERT(lineCount <= SkLineClipper::kMaxClippedLineSegments);
@@ -272,7 +277,7 @@ int SkEdgeBuilder::buildPoly(const SkPath& path, const SkIRect* iclip, bool canC
     } else {
         while (auto e = iter.next()) {
             switch (e.fEdge) {
-                case SkPathEdgeIter::Edge::kLine: {
+                case SkPathPriv::EdgeIter::Edge::kLine: {
                     switch( this->addPolyLine(e.fPts, edge, edgePtr) ) {
                         case kTotal_Combine:   edgePtr--; break;
                         case kPartial_Combine:            break;
@@ -297,7 +302,7 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
     const SkScalar conicTol = SK_Scalar1 / 4;
     bool is_finite = true;
 
-    SkPathEdgeIter iter(path);
+    SkPathPriv::EdgeIter iter(path);
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
         struct Rec {
@@ -336,14 +341,14 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
         };
         while (auto e = iter.next()) {
             switch (e.fEdge) {
-                case SkPathEdgeIter::Edge::kLine:
+                case SkPathPriv::EdgeIter::Edge::kLine:
                     this->addLine(e.fPts);
                     break;
-                case SkPathEdgeIter::Edge::kQuad: {
+                case SkPathPriv::EdgeIter::Edge::kQuad: {
                     handle_quad(e.fPts);
                     break;
                 }
-                case SkPathEdgeIter::Edge::kConic: {
+                case SkPathPriv::EdgeIter::Edge::kConic: {
                     const SkPoint* quadPts = quadder.computeQuads(
                                           e.fPts, iter.conicWeight(), conicTol);
                     for (int i = 0; i < quadder.countQuads(); ++i) {
@@ -351,7 +356,7 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
                         quadPts += 2;
                     }
                 } break;
-                case SkPathEdgeIter::Edge::kCubic: {
+                case SkPathPriv::EdgeIter::Edge::kCubic: {
                     SkPoint monoY[10];
                     int n = SkChopCubicAtYExtrema(e.fPts, monoY);
                     for (int i = 0; i <= n; i++) {
