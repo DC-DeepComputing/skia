@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "855d99ee_dc585ea6",
+        "filename": "src/pathops/SkOpAngle.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-15T00:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37ab7797_d8cdeafa",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 787,
+        "endChar": 24
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6aa3f5f_2f7f4e1a",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "844546a9_485ab611",
+        "filename": "src/pathops/SkPathOpsTSect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-15T00:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6aa3f5f_2f7f4e1a",
+      "range": {
+        "startLine": 201,
+        "startChar": 6,
+        "endLine": 201,
+        "endChar": 10
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1058881_30555ac2",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-12-15T00:16:44Z",
       "side": 1,
       "message": "for clarity about lack of fallthrough let\u0027s do\n\n```\n     default: break;\n }\n SkUNREACHABLE;\n````",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 0
+      },
+      "revId": "303b89a98d74856fc1c2399fdafacdd1183d55d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2be0d509_1ba04b1c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-15T00:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1058881_30555ac2",
       "range": {
         "startLine": 159,
         "startChar": 0,
