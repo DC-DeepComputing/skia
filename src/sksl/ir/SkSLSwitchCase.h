@@ -12,6 +12,12 @@
 #include "include/private/SkSLString.h"
 #include "src/sksl/ir/SkSLExpression.h"
 
+// Must be set before including inttypes.h to ensure the PRI* format string macros
+// get defined on some old glibc version.
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+
 #include <inttypes.h>
 
 namespace SkSL {
