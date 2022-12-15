@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153bacc9_acb9f926",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T15:18:35Z",
+      "side": 1,
+      "message": "Fixme?",
+      "range": {
+        "startLine": 491,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 37
+      },
+      "revId": "871d236de59273966f466e814a821707dee222a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea688060_d8adf7cd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T15:18:35Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 3
+      },
+      "revId": "871d236de59273966f466e814a821707dee222a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
