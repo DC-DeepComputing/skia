@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e08809b8_40cfedcb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-15T21:43:46Z",
+      "side": 1,
+      "message": "Some nits, but mostly lgtm. I would like some others to review, though.",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e723d6ee_dfec64f4",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-15T21:43:46Z",
+      "side": 1,
+      "message": "I\u0027d love it if we could think of another name for this. Oh! I think I understand - normally, if we use perfetto, we use their macros? This is our weird mode where we use our own macros? But are we \"overriding\" anything?\n\nIs it possible we\u0027ll use this version in Chrome, when they transition? Just trying to think whether \"android framework\" is a good way to describe it. It\u0027s \"currently only support in Android framework\", so I\u0027m guessing yes. Maybe name this something with \"transition\"?",
+      "range": {
+        "startLine": 1612,
+        "startChar": 18,
+        "endLine": 1612,
+        "endChar": 49
+      },
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da892064_d2b06ac3",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-15T21:43:46Z",
+      "side": 1,
+      "message": "Maybe I missed this in the doc, but why do we need an always for new categories? I would expect we only need it for backwards compatibility - we don\u0027t want to lose our existing `always` traces.",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
