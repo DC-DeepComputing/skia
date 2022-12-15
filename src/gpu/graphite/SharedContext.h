@@ -41,8 +41,8 @@ public:
     BackendApi backend() const { return fBackend; }
     Protected isProtected() const { return fProtected; }
 
-    GlobalCache* globalCache() { return &fGlobalCache; }
-    const GlobalCache* globalCache() const { return &fGlobalCache; }
+    GlobalCache* globalCache1() { return &fGlobalCache; }
+    const GlobalCache* globalCache1() const { return &fGlobalCache; }
 
     const RendererProvider* rendererProvider() const { return &fRendererProvider; }
 

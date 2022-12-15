@@ -41,7 +41,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
-    auto globalCache = fSharedContext->globalCache();
+    auto globalCache = fSharedContext->globalCache1();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
@@ -63,7 +63,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
 
 sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
         const ComputePipelineDesc& pipelineDesc) {
-    auto globalCache = fSharedContext->globalCache();
+    auto globalCache = fSharedContext->globalCache1();
     UniqueKey pipelineKey = fSharedContext->caps()->makeComputePipelineKey(pipelineDesc);
     sk_sp<ComputePipeline> pipeline = globalCache->findComputePipeline(pipelineKey);
     if (!pipeline) {

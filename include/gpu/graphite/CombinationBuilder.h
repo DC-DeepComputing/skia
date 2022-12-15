@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_CombinationBuilder_DEFINED
 #define skgpu_graphite_CombinationBuilder_DEFINED
 
+#if 0
+
 #include "include/core/SkTypes.h"
 
 #ifdef SK_ENABLE_PRECOMPILE
@@ -193,3 +195,5 @@ private:
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // skgpu_graphite_CombinationBuilder_DEFINED
+
+#endif
