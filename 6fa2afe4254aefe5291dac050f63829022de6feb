@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3899804e_292a502c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Fleshed out a proposal for stages in go/skia-perfetto\n\nExactly \"how long\" in real time depends on how fast I can work, and if we encounter any system health issues that might need work from the Perfetto team.\n\nNot sure how much this helps, but I\u0027d say \u003e \"weeks\" but \u003c \"years\", so... \"months\"?",
+      "parentUuid": "9e343ca3_71575fe6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62615236_87db72a1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "This should be `b/259248961`. By default, Skia reviews convert your `Bug:` to a Chromium bug.",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e91db6f5_a270b4eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Ohh makes sense, thanks.",
+      "parentUuid": "62615236_87db72a1",
       "range": {
         "startLine": 9,
         "startChar": 5,
@@ -122,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "130beb28_0a4615ea",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done. Was redundant with `skia.gni` change.",
+      "parentUuid": "053f9ac6_e8cca446",
+      "range": {
+        "startLine": 511,
+        "startChar": 0,
+        "endLine": 513,
+        "endChar": 52
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3292fcf8_cb7e6e22",
@@ -135,6 +207,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "Again, maybe redundant?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a7b81f5_017b1975",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "This one is actually needed IIUC, because in `skia.gni` we have:\n`skia_use_perfetto \u003d is_linux || is_mac || is_android`\n\nSo this needs to override that.",
+      "parentUuid": "3292fcf8_cb7e6e22",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -156,6 +246,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91932f5c_6d8ec4f7",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Correct, intentional. HWUI has gotten more attention in go/skia-perfetto and general discussions because that\u0027s where most of the potential gotchas of including Perfetto in Skia come from, and its where we currently want it the most for zero-jank efforts.\n\nHowever, getting richer Skia trace data in SurfaceFlinger also seems like a win, is basically free, and aligns with the intended direction of tracing system unification anyway.",
+      "parentUuid": "a49e1d27_15d978e8",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f36ece3_1a5c188e",
@@ -169,6 +277,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "nit: What\u0027s the line length here? Note that this doesn\u0027t match be block starting on line 533. I\u0027m guessing that it\u0027s more than 80 characters. See https://google.github.io/styleguide/pyguide.html for more info.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b452d15_13266e04",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Fixed line lengths. Also thanks for pointing out this block in particular! It was recently made redundant but I forgot to remove it.",
+      "parentUuid": "5f36ece3_1a5c188e",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -213,6 +339,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9b506fa_b849dbb1",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb2a32ee_957e1300",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 18
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25ddc6a4_2571645b",
@@ -226,6 +376,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "nit: These should *not* be indented.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a99e8ad8_e5cf5577",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25ddc6a4_2571645b",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -253,6 +421,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "483b0d5d_85ded779",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "This naming pattern aligns with other usage in my opinion. Not sure if I should link here, but search for \"#define PERFETTO_TRACK_EVENT_NAMESPACE\" (with quotes) for reference.",
+      "parentUuid": "64fc1f01_29234b68",
+      "range": {
+        "startLine": 98,
+        "startChar": 39,
+        "endLine": 98,
+        "endChar": 43
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9f9cad5_33cb7779",
@@ -266,6 +458,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "nit: should wrap at/before 100 chars.",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2195752_235a7968",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9f9cad5_33cb7779",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -307,6 +517,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a142715_b33a3bde",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "I think it will be possible to make it a compilation error for _some_ builds that will at least be exercised in Skia\u0027s presubmits, but it\u0027s actually a tricky enough situation that I\u0027m afraid to spend time on it at this moment. I\u0027ve filed b/262718654 as a fast follow (P1), will make an announcement warning folks, and also volunteer to be the one to handle adding them here if someone forgets and a roll breaks. Does that seem OK for now?",
+      "parentUuid": "04e202cd_e0dd89dd",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d922f3e_96a2fe63",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 4
@@ -318,6 +546,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "I\u0027m assuming there\u0027s some cost to allowing this? (Not saying we shouldn\u0027t do it, but it\u0027s interesting that we have to define a macro in order to allow it.)\n\nCould callers just manually use `::perfetto::DynamicString`?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16a4f346_57ad2fa5",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Correct, there\u0027s apparently a slight cost to using any string that Perfetto doesn\u0027t know about at compile time.\n\nCallers using ::perfetto::DynamicString manually would require the caller to wrap their TRACE_EVENT call in #ifdef to check if Perfetto is actually present.\n\n(Sidenote: I was going to say this won\u0027t be necessary at the proposed stage 4 of go/skia-perfetto, but actually AFAIK we would still want to let some clients to opt out of Perfetto entirely (e.g. very size-sensitive clients that don\u0027t care about tracing), so we can\u0027t guarantee we have it.)",
+      "parentUuid": "0d922f3e_96a2fe63",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -345,6 +591,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec02d279_47f46a01",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Oh makes sense, thanks!",
+      "parentUuid": "fc79512a_8d805c8f",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72fa423e_f4bd4021",
@@ -362,6 +632,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09788c6a_1ab0ddb7",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72fa423e_f4bd4021",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7201aa5c_e22ae570",
@@ -375,6 +663,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "This already isn\u0027t threadsafe, but you\u0027ve introduced more things (methods, variables), making me think we should do something about it.\n\nOne option would be to document that it\u0027s not threadsafe. But it sounds like we want to be able to change at runtime? What does that look like? If we just document this, does that make things harder for the caller?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ca34d6_56acf976",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "AFAIK our \"runtime\" usage of this will be limited to during process initialization when other sysprop values are read (e.g. ag/20646748 for HWUI), and shouldn\u0027t need to be threadsafe.\n\nThat makes me lean towards just documenting for now, but I\u0027m unsure. Do you think thread safety would be strongly preferable?",
+      "parentUuid": "7201aa5c_e22ae570",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -404,6 +710,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "751b8f1a_625dc945",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "That definitely seems nicer, but I\u0027m a little nervous about how that might play out in some edge cases:\n\nHWUI is built (in some capacity) for Windows in host mode. Often that will mean means cross-compiling from a Linux machine using MinGW, which is currently unsupported by Perfetto, so it\u0027s a scenario that we don\u0027t support here and would hit this `return false` case.\n\nI\u0027m unclear whether whatever HWUI is doing on Windows in host mode would hit the same code that will set this from a sysprop during HWUI\u0027s initialization, but I\u0027m skeptical enough of our \"Android framework stuff on Windows cross-compiled from Linux\" testing story to be a little nervous about doing a runtime abort here in that scenario. Though it\u0027s certainly possible I\u0027m misunderstanding the situation.\n\nWhat about a higher priority logging message, like a WARN or ERROR (if those are supported in Skia on Android)? Alternatively we could log a warning/error at the call site in HWUI if this returns false.",
+      "parentUuid": "2f042ef5_87d168ad",
+      "range": {
+        "startLine": 227,
+        "startChar": 8,
+        "endLine": 227,
+        "endChar": 16
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a646205_294ff2ed",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 4
@@ -415,6 +745,24 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "My macro-fu is not that great, so surely I\u0027m missing something. Why is this needed?",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c6cf78e_f92a1ebc",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "The arcane levels of indirection? :D Apparently it lets `__LINE__` expand at the right time/place. I\u0027ve added a comment.\n\nThis isn\u0027t where it\u0027s from, but https://stackoverflow.com/a/17624752 explains the concept in the context of `__COUNTER__`.",
+      "parentUuid": "7a646205_294ff2ed",
       "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -432,6 +780,30 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "Is this to support our `ALWAYS` versions of the macros? I think the plan is to *not* carry this over to the new system. If Android always wants a category, they should just turn it on always.\n\nSee go/skia-tracing-2022. I thought I had shared this with you, but it looks like I have not :face-palm",
+      "range": {
+        "startLine": 352,
+        "startChar": 49,
+        "endLine": 352,
+        "endChar": 67
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53d04375_78292463",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Correct, this is to support the current `_ALWAYS` variants. I 100% agree we should eventually be using more granular categories instead of `_ALWAYS`, but I believe we need to keep this around during the transitionary stages(s). For two reasons:\n1. Most apps will still use ATrace at the start, and I don\u0027t want to impact the traces we get for random apps on bug reports (and the traces looked at by automated systems), which likely won\u0027t have the `debug.hwui.skia_atrace_enabled` sysprop enabled, so they\u0027ll be relying on `_ALWAYS`.\n2. This will allow for a fairer A/B performance comparison IMO.\n\nLeaving open to discuss, but see the proposed stages I just fleshed out on go/skia-perfetto",
+      "parentUuid": "9ee14219_8d8a9825",
       "range": {
         "startLine": 352,
         "startChar": 49,
@@ -502,6 +874,48 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "131ab1a4_74385447",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "We have tests in https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/TracingTest.cpp for our main/legacy-Chrome tracing system, but that\u0027s because our code is actually doing the heavy lifting in that case.\n\nOnce we give something to Perfetto, I trust that their own testing is plenty sufficient. The main area I was concerned about was the weird logic that used to be in `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE`, but I\u0027ve since simplified that to be pretty straight-forward.\n\nI\u0027m also not sure what tests for these macros would look like. I\u0027m leaning towards omitting tests here, but I\u0027m happy to investigate more if you\u0027d like me to? Personally I think something closer to integration/end-to-end tests in Android-land would be a lot more helpful for us.",
+      "parentUuid": "7212ad96_c95355e9",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1895719b_64bc9820",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Correct, it was some weird logic to handle routing `_ALWAYS` events to ATrace when \"overall\" / \"broad\" / \"all the things\" tracing (`setEnableTracing`) was OFF, but Perfetto was actually selected as the tracing backend.\n\nIn hindsight everything will be simpler and 1:1 comparisons will be easier if we just always route to the selected backend, regardless of `_ALWAYS` or `setEnableTracing`. So I\u0027ve reworked this logic and tweaked the Perfetto initialization logic to reflect that.\n\nI still believe we need `_ALWAYS` (and thus `force_always_trace`), but happy to reopen and discuss more.\n\nRelated: I\u0027ve also now added the `.always` suffix to category names used in `_ALWAYS` trace events. This is so we can selectively enable only these categories sometimes in Perfetto when doing 1:1 comparisons.",
+      "parentUuid": "ce2612f4_30a75976",
+      "range": {
+        "startLine": 364,
+        "startChar": 61,
+        "endLine": 364,
+        "endChar": 77
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afed8305_f36a4160",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 4
@@ -513,6 +927,30 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "nit: Same line as the `{`",
+      "range": {
+        "startLine": 368,
+        "startChar": 16,
+        "endLine": 368,
+        "endChar": 20
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c21b57_1b61a66e",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afed8305_f36a4160",
       "range": {
         "startLine": 368,
         "startChar": 16,
@@ -546,6 +984,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50185ca0_0bc211e2",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Oh huh, good point. It sounds like `delete` also means `inline` implicitly. Removing `inline` here still compiles, sooo... I\u0027ve removed it. :shrug:",
+      "parentUuid": "fa0e510d_e5d9ecad",
+      "range": {
+        "startLine": 375,
+        "startChar": 12,
+        "endLine": 375,
+        "endChar": 18
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6ce796b_e70d4850",
@@ -569,6 +1031,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ec7e27_7d3daa09",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6ce796b_e70d4850",
+      "range": {
+        "startLine": 386,
+        "startChar": 12,
+        "endLine": 386,
+        "endChar": 16
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e027721_e8e6476a",
@@ -582,6 +1068,30 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "How was this chosen?",
+      "range": {
+        "startLine": 399,
+        "startChar": 45,
+        "endLine": 399,
+        "endChar": 48
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23f9eee_733197dc",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "This came from BUFFER_SIZE in SkAndroidFrameworkTraceUtil. I meant to move it up there and share the same macro in both places. Done now, and renamed to `SK_ANDROID_FRAMEWORK_ATRACE_BUFFER_SIZE`. Thoughts on naming?",
+      "parentUuid": "9e027721_e8e6476a",
       "range": {
         "startLine": 399,
         "startChar": 45,
@@ -627,6 +1137,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6c101a_c56474f2",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Ack. Fixed up a few instances that were unnecessarily egregious. :)",
+      "parentUuid": "8658be99_f9eaaf18",
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eeaf4bda_98004644",
@@ -650,6 +1178,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4430d48_1d0f3fd4",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eeaf4bda_98004644",
+      "range": {
+        "startLine": 456,
+        "startChar": 8,
+        "endLine": 456,
+        "endChar": 12
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "517db26d_4eb6c9af",
@@ -663,6 +1215,30 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "Move to previous line",
+      "range": {
+        "startLine": 478,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 8
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f31675ee_2a8da538",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "517db26d_4eb6c9af",
       "range": {
         "startLine": 478,
         "startChar": 4,
@@ -709,6 +1285,54 @@
       "writtenOn": "2022-12-13T21:31:58Z",
       "side": 1,
       "message": "What does this mean?",
+      "range": {
+        "startLine": 64,
+        "startChar": 24,
+        "endLine": 64,
+        "endChar": 43
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b6395c_3ad8dc90",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "Only Android framework at the moment. I\u0027ve updated the comment (and some others in this file) for clarity.",
+      "parentUuid": "030bd914_57ab6982",
+      "range": {
+        "startLine": 64,
+        "startChar": 66,
+        "endLine": 64,
+        "endChar": 73
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2942cc2e_788177ee",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-15T18:52:06Z",
+      "side": 1,
+      "message": "This is probably an oversimplification, but Perfetto buffers data from trace events, and then either dumps those buffers into a file or an IPC socket. This is called either \"in-process\" or \"system\" tracing, respectively.\n\nNot sure if this is the best page, but https://perfetto.dev/docs/#system-wide-tracing-on-android-and-linux mentions some of this.\n\nShould we try to explain more of this in the error message?",
+      "parentUuid": "340f539c_69322ed7",
       "range": {
         "startLine": 64,
         "startChar": 24,
