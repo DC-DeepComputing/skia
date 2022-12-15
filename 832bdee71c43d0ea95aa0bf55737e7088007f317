@@ -22,6 +22,30 @@
       },
       "revId": "832bdee71c43d0ea95aa0bf55737e7088007f317",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed86944_66d6c503",
+        "filename": "src/sksl/ir/SkSLSwitchCase.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-15T15:25:10Z",
+      "side": 1,
+      "message": "https://en.cppreference.com/w/cpp/header/cinttypes\n\n(In fact this is a C++11 feature, not C++17)",
+      "parentUuid": "2f40c7ed_942c6bc5",
+      "range": {
+        "startLine": 21,
+        "startChar": 10,
+        "endLine": 21,
+        "endChar": 20
+      },
+      "revId": "832bdee71c43d0ea95aa0bf55737e7088007f317",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
