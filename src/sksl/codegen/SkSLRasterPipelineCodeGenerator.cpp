@@ -1094,10 +1094,10 @@ bool Generator::pushTernaryExpression(const Expression& test,
 bool Generator::pushVariableReference(const VariableReference& v) {
     const Variable& var = *v.variable();
     if (IsUniform(var)) {
-        [[maybe_unused]] SlotRange r = this->getUniformSlots(var);
+        SlotRange r = this->getUniformSlots(var);
         SkASSERT(r.count == (int)var.type().slotCount());
-        // TODO(skia:13676): push value from the uniform map onto the stack
-        return unsupported();
+        fBuilder.push_uniform(r);
+        return true;
     }
     fBuilder.push_slots(this->getVariableSlots(var));
     return true;

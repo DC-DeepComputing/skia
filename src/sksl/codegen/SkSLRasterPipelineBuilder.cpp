@@ -125,6 +125,7 @@ static int stack_usage(const Instruction& inst) {
             return 1;
 
         case BuilderOp::push_slots:
+        case BuilderOp::push_uniform:
             return inst.fImmA;
 
         case ALL_SINGLE_SLOT_BINARY_OP_CASES:
@@ -204,29 +205,33 @@ template <typename T>
     return contextBits;
 }
 
-float* Program::allocateSlotData(SkArenaAlloc* alloc) {
-    float* slotPtr = nullptr;
-
+SkSpan<float> Program::allocateSlotData(SkArenaAlloc* alloc) {
     // Allocate a contiguous slab of slot data.
     const int N = SkOpts::raster_pipeline_highp_stride;
     const int vectorWidth = N * sizeof(float);
     const int allocSize = vectorWidth * (fNumValueSlots + fNumTempStackSlots);
-    slotPtr = static_cast<float*>(alloc->makeBytesAlignedTo(allocSize, vectorWidth));
+    float* slotPtr = static_cast<float*>(alloc->makeBytesAlignedTo(allocSize, vectorWidth));
     sk_bzero(slotPtr, allocSize);
 
-    return slotPtr;
+    return SkSpan{slotPtr, N * (fNumValueSlots + fNumTempStackSlots)};
 }
 
-void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
-    this->appendStages(pipeline, alloc, this->allocateSlotData(alloc));
+void Program::appendStages(SkRasterPipeline* pipeline,
+                           SkArenaAlloc* alloc,
+                           SkSpan<const float> uniformPtr) {
+    this->appendStages(pipeline, alloc, uniformPtr, this->allocateSlotData(alloc));
 }
 
-void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, float* slotPtr) {
+void Program::appendStages(SkRasterPipeline* pipeline,
+                           SkArenaAlloc* alloc,
+                           SkSpan<const float> uniformSpan,
+                           SkSpan<float> slotSpan) {
     // Store the temp stack immediately after the values.
     const int N = SkOpts::raster_pipeline_highp_stride;
-    float* slotPtrEnd = slotPtr + (N * fNumValueSlots);
+    float* slotPtrEnd = slotSpan.data() + (N * fNumValueSlots);
     float* tempStackBase = slotPtrEnd;
     [[maybe_unused]] float* tempStackEnd = tempStackBase + (N * fNumTempStackSlots);
+    SkASSERT(tempStackEnd == slotSpan.end());
     StackDepthMap tempStackDepth;
     int currentStack = 0;
 
@@ -255,8 +260,9 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, floa
     SkTHashMap<int, int*> constantLookupMap; // <constant value, pointer into arena>
 
     for (const Instruction& inst : fInstructions) {
-        auto SlotA = [&]() { return &slotPtr[N * inst.fSlotA]; };
-        auto SlotB = [&]() { return &slotPtr[N * inst.fSlotB]; };
+        auto SlotA    = [&]() { return &slotSpan[N * inst.fSlotA]; };
+        auto SlotB    = [&]() { return &slotSpan[N * inst.fSlotB]; };
+        auto UniformA = [&]() { return &uniformSpan[inst.fSlotA]; };
         float*& tempStackPtr = tempStackMap[currentStack];
 
         switch (inst.fOp) {
@@ -384,6 +390,11 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, floa
                 builderUtils.appendCopySlotsUnmasked(alloc, dst, SlotA(), inst.fImmA);
                 break;
             }
+            case BuilderOp::push_uniform: {
+                float* dst = tempStackPtr;
+                builderUtils.appendCopyConstants(alloc, dst, UniformA(), inst.fImmA);
+                break;
+            }
             case BuilderOp::push_condition_mask: {
                 float* dst = tempStackPtr;
                 builderUtils.append(SkRP::store_condition_mask, dst);
@@ -488,7 +499,7 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, floa
     }
 }
 
-void Program::dump(SkWStream* out) {
+void Program::dump(SkWStream* out, SkSpan<const float> uniformSpan) {
     // TODO: skslc will want to dump these programs; we'll need to include some portion of
     // SkRasterPipeline into skslc for this to work properly.
 
@@ -498,14 +509,17 @@ void Program::dump(SkWStream* out) {
     // those pointers are pointing at unallocated memory.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     const int N = SkOpts::raster_pipeline_highp_stride;
-    float* slotBase = this->allocateSlotData(&alloc);
+    SkSpan<float> slotSpan = this->allocateSlotData(&alloc);
+    const float* slotBase = slotSpan.data();
     const float* slotEnd = slotBase + (N * fNumValueSlots);
     const float* tempStackBase = slotEnd;
     const float* tempStackEnd = tempStackBase + (N * fNumTempStackSlots);
+    const float* uniformBase = uniformSpan.data();
+    const float* uniformEnd = uniformSpan.end();
 
     // Instantiate this program.
     SkRasterPipeline pipeline(&alloc);
-    this->appendStages(&pipeline, &alloc, slotBase);
+    this->appendStages(&pipeline, &alloc, uniformSpan, slotSpan);
     const SkRP::StageList* st = pipeline.getStageList();
 
     // The stage list is in reverse order, so let's flip it.
@@ -552,8 +566,80 @@ void Program::dump(SkWStream* out) {
             return Imm(f);
         };
 
+        // Print `1` for single slots and `1..3` for ranges of slots.
+        auto AsRange = [](int first, int count) -> std::string {
+            std::string text = std::to_string(first);
+            if (count > 1) {
+                text += ".." + std::to_string(first + count - 1);
+            }
+            return text;
+        };
+
+        // Attempts to interpret the passed-in pointer as a uniform range.
+        auto UniformPtrCtx = [&](const float* ptr, int numSlots) -> std::string {
+            if (fDebugTrace) {
+                // Handle pointers to named uniform slots.
+                if (ptr >= uniformBase && ptr < uniformEnd) {
+                    int slotIdx = ptr - uniformBase;
+                    if (slotIdx < (int)fDebugTrace->fUniformInfo.size()) {
+                        const SlotDebugInfo& slotInfo = fDebugTrace->fUniformInfo[slotIdx];
+                        if (!slotInfo.name.empty()) {
+                            // If we're covering the entire uniform, return `uniName`.
+                            if (numSlots == slotInfo.columns * slotInfo.rows) {
+                                return slotInfo.name;
+                            }
+                            // If we are only covering part of the uniform, return `uniName(1..2)`.
+                            return slotInfo.name + "(" +
+                                   AsRange(slotInfo.componentIndex, numSlots) + ")";
+                        }
+                    }
+                }
+            }
+            // Handle pointers to uniforms (when no debug info exists).
+            if (ptr >= uniformBase && ptr < uniformEnd) {
+                int uniformIdx = ptr - uniformBase;
+                return "u" + AsRange(uniformIdx, numSlots);
+            }
+            return {};
+        };
+
+        // Attempts to interpret the passed-in pointer as a value slot range.
+        auto ValuePtrCtx = [&](const float* ptr, int numSlots) -> std::string {
+            if (fDebugTrace) {
+                // Handle pointers to named value slots.
+                if (ptr >= slotBase && ptr < slotEnd) {
+                    int slotIdx = ptr - slotBase;
+                    SkASSERT((slotIdx % N) == 0);
+                    slotIdx /= N;
+                    if (slotIdx < (int)fDebugTrace->fSlotInfo.size()) {
+                        const SlotDebugInfo& slotInfo = fDebugTrace->fSlotInfo[slotIdx];
+                        if (!slotInfo.name.empty()) {
+                            // If we're covering the entire slot, return `valueName`.
+                            if (numSlots == slotInfo.columns * slotInfo.rows) {
+                                return slotInfo.name;
+                            }
+                            // If we are only covering part of the slot, return `valueName(1..2)`.
+                            return slotInfo.name + "(" +
+                                   AsRange(slotInfo.componentIndex, numSlots) + ")";
+                        }
+                    }
+                }
+            }
+            // Handle pointers to value slots (when no debug info exists).
+            if (ptr >= slotBase && ptr < slotEnd) {
+                int valueIdx = ptr - slotBase;
+                SkASSERT((valueIdx % N) == 0);
+                return "v" + AsRange(valueIdx / N, numSlots);
+            }
+            return {};
+        };
+
         // Interpret the context value as a pointer to `count` immediate values.
         auto MultiImmCtx = [&](const float* ptr, int count) -> std::string {
+            // If this is a uniform, print it by name.
+            if (std::string text = UniformPtrCtx(ptr, count); !text.empty()) {
+                return text;
+            }
             // Emit a single unbracketed immediate.
             if (count == 1) {
                 return Imm(*ptr);
@@ -568,43 +654,15 @@ void Program::dump(SkWStream* out) {
             return text + "]";
         };
 
-        // Print `1` for single slots and `1..3` for ranges of slots.
-        auto AsRange = [](int first, int count) -> std::string {
-            std::string text = std::to_string(first);
-            if (count > 1) {
-                text += ".." + std::to_string(first + count - 1);
-            }
-            return text;
-        };
-
-        // Interpret the context value as a pointer, most likely to a slot range.
+        // Interpret the context value as a generic pointer.
         auto PtrCtx = [&](const void* ctx, int numSlots) -> std::string {
             const float *ctxAsSlot = static_cast<const float*>(ctx);
-            if (fDebugTrace) {
-                // Handle pointers to named slots.
-                if (ctxAsSlot >= slotBase && ctxAsSlot < slotEnd) {
-                    int slotIdx = ctxAsSlot - slotBase;
-                    SkASSERT((slotIdx % N) == 0);
-                    slotIdx /= N;
-                    if (slotIdx < (int)fDebugTrace->fSlotInfo.size()) {
-                        const SlotDebugInfo& slotInfo = fDebugTrace->fSlotInfo[slotIdx];
-                        if (!slotInfo.name.empty()) {
-                            // If we're covering the entire slot, return `name`.
-                            if (numSlots == slotInfo.columns * slotInfo.rows) {
-                                return slotInfo.name;
-                            }
-                            // If we are only covering part of the slot, return `name(1..2)`.
-                            return slotInfo.name + "(" +
-                                   AsRange(slotInfo.componentIndex, numSlots) + ")";
-                        }
-                    }
-                }
+            // Check for uniform and value pointers.
+            if (std::string uniform = UniformPtrCtx(ctxAsSlot, numSlots); !uniform.empty()) {
+                return uniform;
             }
-            // Handle pointers to value slots (when no debug info exists).
-            if (ctxAsSlot >= slotBase && ctxAsSlot < slotEnd) {
-                int valueIdx = ctxAsSlot - slotBase;
-                SkASSERT((valueIdx % N) == 0);
-                return "v" + AsRange(valueIdx / N, numSlots);
+            if (std::string value = ValuePtrCtx(ctxAsSlot, numSlots); !value.empty()) {
+                return value;
             }
             // Handle pointers to temporary stack slots.
             if (ctxAsSlot >= tempStackBase && ctxAsSlot < tempStackEnd) {
@@ -612,7 +670,7 @@ void Program::dump(SkWStream* out) {
                 SkASSERT((stackIdx % N) == 0);
                 return "$" + AsRange(stackIdx / N, numSlots);
             }
-            // This pointer is out of our expected bounds; this might happen at the program edges.
+            // This pointer is out of our expected bounds; this generally isn't expected to happen.
             return "ExternalPtr(" + AsRange(0, numSlots) + ")";
         };
 
