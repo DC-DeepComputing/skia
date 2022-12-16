@@ -48,7 +48,7 @@ struct AttachmentDesc {
 };
 
 struct RenderPassDesc {
-    static RenderPassDesc Make(const Caps* caps,
+    static RenderPassDesc Make1(const Caps* caps,
                                const TextureInfo& targetInfo,
                                LoadOp loadOp,
                                StoreOp storeOp,

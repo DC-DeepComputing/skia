@@ -439,7 +439,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
 
-    GraphicsPipelineCache pipelineCache;
+    GraphicsPipelineCache pipelineCache1;
 
     // Geometry uniforms are currently always UBO-backed.
     Layout geometryUniformLayout = recorder->priv().caps()->uniformBufferLayout();
@@ -482,8 +482,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
-            GraphicsPipelineCache::Index pipelineIndex = pipelineCache.insert(
+            GraphicsPipelineCache::Index pipelineIndex = pipelineCache1.insert(
                     {step, performsShading ? shaderID : UniquePaintParamsID::InvalidID()});
+
+            SkDebugf("DrawPass %s %d\n", draw.fRenderer->name(),
+                     performsShading ? shaderID.asUInt() : UniquePaintParamsID::InvalidID().asUInt());
+
             auto [geometryUniforms, stepTextures] = ExtractRenderStepData(&geometryUniformDataCache,
                                                                           textureDataCache,
                                                                           &gatherer,
@@ -585,7 +589,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     drawWriter.flush();
 
 
-    drawPass->fPipelineDescs   = pipelineCache.detach();
+    drawPass->fPipelineDescs1   = pipelineCache1.detach();
     drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();
     drawPass->fSampledTextures = textureBindingTracker.detachTextures();
 
@@ -595,8 +599,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
-    fFullPipelines.reserve_back(fPipelineDescs.size());
-    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+    fFullPipelines.reserve_back(fPipelineDescs1.size());
+    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs1) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
                                                                        renderPassDesc);
@@ -608,7 +612,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     }
     // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
     // once we've created pipelines, so we drop the storage for them here.
-    fPipelineDescs.clear();
+    fPipelineDescs1.clear();
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // TODO: We need to remove this check once we are creating valid SkImages from things like

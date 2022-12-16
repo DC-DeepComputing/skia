@@ -167,7 +167,7 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     fPendingStoreOp = StoreOp::kStore;
 }
 
-RenderPassDesc RenderPassDesc::Make(const Caps* caps,
+RenderPassDesc RenderPassDesc::Make1(const Caps* caps,
                                     const TextureInfo& targetInfo,
                                     LoadOp loadOp,
                                     StoreOp storeOp,
@@ -237,7 +237,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
     const TextureInfo& targetInfo = drawPass->target()->textureInfo();
     auto [loadOp, storeOp] = drawPass->ops();
 
-    RenderPassDesc desc = RenderPassDesc::Make(caps, targetInfo, loadOp, storeOp,
+    RenderPassDesc desc = RenderPassDesc::Make1(caps, targetInfo, loadOp, storeOp,
                                                drawPass->depthStencilFlags(),
                                                drawPass->clearColor(),
                                                drawPass->requiresMSAA());
