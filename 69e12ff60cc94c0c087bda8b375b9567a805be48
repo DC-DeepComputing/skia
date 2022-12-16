@@ -100,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "893726fe_20c5f929",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T16:30:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "10999026_0c8d86c5",
+      "range": {
+        "startLine": 413,
+        "startChar": 6,
+        "endLine": 413,
+        "endChar": 14
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d329aaa7_074f4ebd",
@@ -137,6 +161,30 @@
       "side": 1,
       "message": "Reply in the other comment.",
       "parentUuid": "d329aaa7_074f4ebd",
+      "range": {
+        "startLine": 435,
+        "startChar": 6,
+        "endLine": 435,
+        "endChar": 21
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27937f27_d1834d44",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T16:30:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8345cd87_af4e16c0",
       "range": {
         "startLine": 435,
         "startChar": 6,
