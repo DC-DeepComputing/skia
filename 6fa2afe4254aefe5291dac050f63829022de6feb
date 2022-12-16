@@ -145,6 +145,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "199ebe3d_7e6f9658",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "Oops, local changes to the commit description didn\u0027t end up propagating I guess. Fixed for real this time. :)",
+      "parentUuid": "e6bc2c4c_d12ba026",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "77661dbd_aac3bafe",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4

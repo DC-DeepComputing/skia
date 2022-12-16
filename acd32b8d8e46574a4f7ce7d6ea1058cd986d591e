@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c83866c_7b5c9afd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "Ack, thanks!",
+      "parentUuid": "e08809b8_40cfedcb",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e723d6ee_dfec64f4",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11178ebb_a2bcb4cc",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "I agree `SK_USE_PERFETTO_MACRO_OVERRIDES` might be a little wonky. My intent was to both describe how we\u0027re \"overriding\" (perhaps not the best term) our own standard tracing macros that route to `SkTraceEvent` (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkTraceEventCommon.h;l\u003d212-308;drc\u003de3772d2cae13ed606403aee8783825840a0dbd94) to instead route to Perfetto, and also how this integration with Perfetto is (currently) distinct from the other `SK_USE_PERFETTO`.\n\nBut as it stands right now, this code really is too specific to the Android framework to be directly usable elsewhere. So we\u0027ll have to iterate in the future anyway, at which point we could reword the #define to be more general. So perhaps for now we should just be more specific that this is only for Android framework?\n\nPerhaps one of the following?\n- `SK_USE_PERFETTO_ANDROID_FRAMEWORK`\n- `SK_USE_ANDROID_FRAMEWORK_PERFETTO`\n- `SK_ANDROID_FRAMEWORK_USE_PERFETTO`\n\nUnfortunately we can\u0027t just simply gate on `#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK` because that captures weird edge cases (e.g. host mode builds) where this isn\u0027t supported.",
+      "parentUuid": "e723d6ee_dfec64f4",
+      "range": {
+        "startLine": 1612,
+        "startChar": 18,
+        "endLine": 1612,
+        "endChar": 49
+      },
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da892064_d2b06ac3",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 5
@@ -54,6 +96,24 @@
       "writtenOn": "2022-12-15T21:43:46Z",
       "side": 1,
       "message": "Maybe I missed this in the doc, but why do we need an always for new categories? I would expect we only need it for backwards compatibility - we don\u0027t want to lose our existing `always` traces.",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c21ed98_fda71a6f",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "Technically I think we might only need to add \"new_category.always\" sometimes, or only \"new_category\" sometimes. It just depends on whether the new category was introduced as part of a call to TRACE_EVENT0_ALWAYS or a different tracing macro. While TRACE_EVENT0_ALWAYS continues to exist in the interim, there\u0027s nothing stopping folks from referencing it in more places, potentially with new categories.\n\nSo it seemed simpler and less confusing (to me at least) to just say \"if you add a new category, put both variants here just in case.\"\n\nOtherwise I could see something like the following happening:\n1. $dev adds a call to TRACE_EVENT0(\"new_category\", \"stuff\"), and doesn\u0027t update this list.\n2. It explodes on the next Skia -\u003e Android roll, so they (or I) update this list. $dev is frustrated by this, but moves on.\n3. Later $dev uses that same new category again, but in a call to TRACE_EVENT0_ALWAYS.\n4. The roll explodes again, since they didn\u0027t add \"new_category.always\" to this list in step 2. Now they\u0027re extra frustrated because it seems they\u0027re being bitten by the same issue that should have already been fixed.\n\nBut maybe that\u0027s unlikely and I\u0027m overthinking it? FWIW I don\u0027t think adding potentially unnecessary categories here is harmful, other than verbosity.\n\nI\u0027m also happy to just explain in the comments here when to add \"new_category\" vs. \"new_category.always\" and let folks figure it out based on their needs.",
+      "parentUuid": "da892064_d2b06ac3",
       "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa11dc26_099c884a",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "Ah, thanks for pointing this out! I believe TRACE_STR_COPY should actually map to perfetto::DynamicString when we\u0027re using Perfetto, and as mentioned in https://skia-review.googlesource.com/c/skia/+/614318/comment/8e35dc9e_dff0d0f2/ that prior usage of DynamicString should really be StaticString. Again, leaving this open until I rework.",
+      "parentUuid": "da33dbc7_89ea2533",
+      "range": {
+        "startLine": 159,
+        "startChar": 8,
+        "endLine": 159,
+        "endChar": 28
+      },
+      "revId": "0500520d4d458ae542968b34c454300b5c4698a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e35dc9e_dff0d0f2",
         "filename": "src/gpu/ganesh/ops/GrOp.h",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-16T16:54:40Z",
       "side": 1,
       "message": "I don\u0027t think you need this. `name()` always returns a pointer to a string literal with process lifetime. (The existing TRACE macros and system have the same limitation and associated costs for dynamic strings).",
+      "range": {
+        "startLine": 176,
+        "startChar": 40,
+        "endLine": 176,
+        "endChar": 60
+      },
+      "revId": "0500520d4d458ae542968b34c454300b5c4698a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c99e14_b36d52a9",
+        "filename": "src/gpu/ganesh/ops/GrOp.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-16T17:50:14Z",
+      "side": 1,
+      "message": "Yes I think this should actually be wrapped in a perfetto::StaticString to denote that it won\u0027t change. I\u0027ll resolve this comment after reworking. Thanks!",
+      "parentUuid": "8e35dc9e_dff0d0f2",
       "range": {
         "startLine": 176,
         "startChar": 40,
