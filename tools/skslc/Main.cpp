@@ -12,6 +12,7 @@
 #include "src/core/SkCpu.h"
 #include "src/core/SkOpts.h"
 #include "src/opts/SkChecksum_opts.h"
+#include "src/opts/SkRasterPipeline_opts.h"
 #include "src/opts/SkVM_opts.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLFileOutputStream.h"
@@ -45,6 +46,23 @@ void SkDebugf(const char format[], ...) {
 namespace SkOpts {
     decltype(hash_fn) hash_fn = skslc_standalone::hash_fn;
     decltype(interpret_skvm) interpret_skvm = skslc_standalone::interpret_skvm;
+
+    size_t raster_pipeline_lowp_stride  = SK_OPTS_NS::raster_pipeline_lowp_stride();
+    size_t raster_pipeline_highp_stride = SK_OPTS_NS::raster_pipeline_highp_stride();
+
+#define M(st) (StageFn)SK_OPTS_NS::st,
+    StageFn stages_highp[] = { SK_RASTER_PIPELINE_STAGES_ALL(M) };
+    StageFn just_return_highp = (StageFn)SK_OPTS_NS::just_return;
+    void (*start_pipeline_highp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*) =
+            SK_OPTS_NS::start_pipeline;
+#undef M
+
+#define M(st) (StageFn)SK_OPTS_NS::lowp::st,
+    StageFn stages_lowp[] = { SK_RASTER_PIPELINE_STAGES_LOWP(M) };
+    StageFn just_return_lowp = (StageFn)SK_OPTS_NS::lowp::just_return;
+    void (*start_pipeline_lowp)(size_t, size_t, size_t, size_t, SkRasterPipelineStage*) =
+            SK_OPTS_NS::lowp::start_pipeline;
+#undef M
 }
 
 static std::unique_ptr<SkWStream> as_SkWStream(SkSL::OutputStream& s) {
