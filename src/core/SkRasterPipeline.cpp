@@ -248,6 +248,7 @@ void SkRasterPipeline::append_adjacent_single_slot_op(SkRasterPipeline::Stage st
 }
 
 void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix) {
+#if !defined(SKSL_STANDALONE)
     SkMatrix::TypeMask mt = matrix.getType();
 
     if (mt == SkMatrix::kIdentity_Mask) {
@@ -276,6 +277,7 @@ void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix
             this->append(SkRasterPipeline::matrix_perspective, storage);
         }
     }
+#endif
 }
 
 void SkRasterPipeline::append_load(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
