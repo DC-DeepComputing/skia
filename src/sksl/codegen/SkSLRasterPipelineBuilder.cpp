@@ -182,14 +182,12 @@ template <typename T>
 float* Program::allocateSlotData(SkArenaAlloc* alloc) {
     float* slotPtr = nullptr;
 
-#if !defined(SKSL_STANDALONE)
     // Allocate a contiguous slab of slot data.
     const int N = SkOpts::raster_pipeline_highp_stride;
     const int vectorWidth = N * sizeof(float);
     const int allocSize = vectorWidth * (fNumValueSlots + fNumTempStackSlots);
     slotPtr = static_cast<float*>(alloc->makeBytesAlignedTo(allocSize, vectorWidth));
     sk_bzero(slotPtr, allocSize);
-#endif
 
     return slotPtr;
 }
@@ -199,7 +197,6 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc) {
 }
 
 void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, float* slotPtr) {
-#if !defined(SKSL_STANDALONE)
     // Store the temp stack immediately after the values.
     const int N = SkOpts::raster_pipeline_highp_stride;
     float* slotPtrEnd = slotPtr + (N * fNumValueSlots);
@@ -452,15 +449,12 @@ void Program::appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, floa
         int branchToIdx = labelOffsets[branchGoesToLabel[index]];
         branchTargets[index] = branchToIdx - branchFromIdx;
     }
-
-#endif
 }
 
 void Program::dump(SkWStream* out) {
     // TODO: skslc will want to dump these programs; we'll need to include some portion of
     // SkRasterPipeline into skslc for this to work properly.
 
-#if !defined(SKSL_STANDALONE)
     // Allocate a block of memory for the slot data, even though the program won't ever be executed.
     // The program requires a pointer range for managing its data, and ASAN will report errors if
     // those pointers are pointing at unallocated memory.
@@ -946,7 +940,6 @@ void Program::dump(SkWStream* out) {
 
         out->writeText(line.c_str());
     }
-#endif
 }
 
 }  // namespace RP

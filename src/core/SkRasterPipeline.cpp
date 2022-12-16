@@ -248,6 +248,10 @@ void SkRasterPipeline::append_adjacent_single_slot_op(SkRasterPipeline::Stage st
 }
 
 void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix) {
+    // skslc links against this module (for the RP code generator). Some SkMatrix methods are in
+    // the .cpp, and the transitive dependencies get out of hand. We terminate the chain here.
+    // Note that skslc's usage of RP never cares about matrices.
+#if !defined(SKSL_STANDALONE)
     SkMatrix::TypeMask mt = matrix.getType();
 
     if (mt == SkMatrix::kIdentity_Mask) {
@@ -276,6 +280,7 @@ void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix
             this->append(SkRasterPipeline::matrix_perspective, storage);
         }
     }
+#endif
 }
 
 void SkRasterPipeline::append_load(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
