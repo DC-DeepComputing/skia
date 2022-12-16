@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1938e12d_a5ec9992",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-16T20:33:38Z",
+      "side": 1,
+      "message": "But we may somehow rework this to support other platforms? At that point, I assume we\u0027d want to use the same name, for simplicity?\n\nAnother option might be to have this be a second level macro - i.e. if both this flag and `SK_USE_PERFETTO` are set, we take this path. But I don\u0027t know how complex that is in practice.\n\nI don\u0027t have a strong preference for any of these, or a suggestion for something better.",
+      "parentUuid": "11178ebb_a2bcb4cc",
+      "range": {
+        "startLine": 1612,
+        "startChar": 18,
+        "endLine": 1612,
+        "endChar": 49
+      },
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da892064_d2b06ac3",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 5
@@ -114,6 +138,24 @@
       "side": 1,
       "message": "Technically I think we might only need to add \"new_category.always\" sometimes, or only \"new_category\" sometimes. It just depends on whether the new category was introduced as part of a call to TRACE_EVENT0_ALWAYS or a different tracing macro. While TRACE_EVENT0_ALWAYS continues to exist in the interim, there\u0027s nothing stopping folks from referencing it in more places, potentially with new categories.\n\nSo it seemed simpler and less confusing (to me at least) to just say \"if you add a new category, put both variants here just in case.\"\n\nOtherwise I could see something like the following happening:\n1. $dev adds a call to TRACE_EVENT0(\"new_category\", \"stuff\"), and doesn\u0027t update this list.\n2. It explodes on the next Skia -\u003e Android roll, so they (or I) update this list. $dev is frustrated by this, but moves on.\n3. Later $dev uses that same new category again, but in a call to TRACE_EVENT0_ALWAYS.\n4. The roll explodes again, since they didn\u0027t add \"new_category.always\" to this list in step 2. Now they\u0027re extra frustrated because it seems they\u0027re being bitten by the same issue that should have already been fixed.\n\nBut maybe that\u0027s unlikely and I\u0027m overthinking it? FWIW I don\u0027t think adding potentially unnecessary categories here is harmful, other than verbosity.\n\nI\u0027m also happy to just explain in the comments here when to add \"new_category\" vs. \"new_category.always\" and let folks figure it out based on their needs.",
       "parentUuid": "da892064_d2b06ac3",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7dd8108_3485a9ac",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-16T20:33:38Z",
+      "side": 1,
+      "message": "Haha, that makes sense. I agree with the desire for simplicity. I\u0027m fine with this rule - maybe with an updated comment that says \"here\u0027s why we want you to add `.always`\"?",
+      "parentUuid": "9c21ed98_fda71a6f",
       "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

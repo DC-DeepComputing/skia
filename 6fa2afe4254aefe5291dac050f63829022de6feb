@@ -169,6 +169,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ab078854_2316d946",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-12-16T20:33:38Z",
+      "side": 1,
+      "message": "Yeah, this depends on how you\u0027re uploading. If you\u0027re using `git cl-upload`, it doesn\u0027t update the commit message.",
+      "parentUuid": "199ebe3d_7e6f9658",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6fa2afe4254aefe5291dac050f63829022de6feb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "77661dbd_aac3bafe",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
