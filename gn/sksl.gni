@@ -245,6 +245,8 @@ skia_sksl_gpu_sources = [
 skslc_deps = [
   "$_src/core/SkArenaAlloc.cpp",
   "$_src/core/SkBlockAllocator.cpp",
+  "$_src/core/SkColorSpace.cpp",
+  "$_src/core/SkColorSpaceXformSteps.cpp",
   "$_src/core/SkContainers.cpp",
   "$_src/core/SkCpu.cpp",
   "$_src/core/SkData.cpp",
@@ -252,6 +254,7 @@ skslc_deps = [
   "$_src/core/SkMalloc.cpp",
   "$_src/core/SkMath.cpp",
   "$_src/core/SkMatrixInvert.cpp",
+  "$_src/core/SkRasterPipeline.cpp",
   "$_src/core/SkSemaphore.cpp",
   "$_src/core/SkStream.cpp",
   "$_src/core/SkString.cpp",
