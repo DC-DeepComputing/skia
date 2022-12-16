@@ -8,9 +8,7 @@
 #ifndef SkASAN_DEFINED
 #define SkASAN_DEFINED
 
-#include "include/core/SkTypes.h"
-
-#include <string.h>
+#include <cstddef>
 
 #ifdef __SANITIZE_ADDRESS__
     #define SK_SANITIZE_ADDRESS 1

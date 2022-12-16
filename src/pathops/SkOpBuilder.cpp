@@ -11,7 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
-#include "include/private/SkPathRef.h"
+#include "include/private/SkPathEnums.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkArenaAlloc.h"
@@ -44,7 +44,7 @@ void SkOpBuilder::ReversePath(SkPath* path) {
     SkPoint lastPt;
     SkAssertResult(path->getLastPt(&lastPt));
     temp.moveTo(lastPt);
-    temp.reversePathTo(*path);
+    SkPathPriv::ReversePathTo(temp, *path);
     temp.close();
     *path = temp;
 }

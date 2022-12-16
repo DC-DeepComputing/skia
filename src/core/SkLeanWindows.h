@@ -7,7 +7,7 @@
 #ifndef SkLeanWindows_DEFINED
 #define SkLeanWindows_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkFeatures.h"
 
 #ifdef SK_BUILD_FOR_WIN
 #  ifndef WIN32_LEAN_AND_MEAN

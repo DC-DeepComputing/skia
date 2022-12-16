@@ -70,6 +70,7 @@
   { symbol: ["uint32_t", "private", "<cstdint>", "public"]},
   { symbol: ["uint64_t", "private", "<cstdint>", "public"]},
 
+  { include: ["<__stddef_max_align_t.h>", "private", "<cstddef>", "public"] },
 
   { symbol: ["FILE", "private", "<cstdio>", "public"]},
 
