@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b2e769_c426b1b6",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T07:11:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "153bacc9_acb9f926",
+      "range": {
+        "startLine": 491,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 37
+      },
+      "revId": "871d236de59273966f466e814a821707dee222a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea688060_d8adf7cd",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ba799f_368412f9",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T07:11:36Z",
+      "side": 1,
+      "message": "Done.\n\nI hadn\u0027t seen this. I\u0027m limiting the flag to clang only in this patch.",
+      "parentUuid": "ea688060_d8adf7cd",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 3
+      },
+      "revId": "871d236de59273966f466e814a821707dee222a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9763a42c_f951b611",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-12-15T15:46:33Z",
       "side": 1,
       "message": "^",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 0
+      },
+      "revId": "871d236de59273966f466e814a821707dee222a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e0446fe_3f4afd35",
+        "filename": "modules/jetski/src/Surface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T07:11:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9763a42c_f951b611",
       "range": {
         "startLine": 185,
         "startChar": 0,
