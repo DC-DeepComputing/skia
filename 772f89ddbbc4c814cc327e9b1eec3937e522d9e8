@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f780dcc_da4d0c00",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T17:16:39Z",
+      "side": 0,
+      "message": "Thinking about it some more, you may want to land the fixes first, then land the actual flag-deletion in its own separate CL, in case it breaks something unexpected and we need to roll back. Dry Run isn\u0027t 100% coverage.",
+      "range": {
+        "startLine": 485,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 37
+      },
+      "revId": "772f89ddbbc4c814cc327e9b1eec3937e522d9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
