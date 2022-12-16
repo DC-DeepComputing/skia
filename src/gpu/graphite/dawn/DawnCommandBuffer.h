@@ -86,6 +86,8 @@ private:
                               unsigned int baseVertex,
                               unsigned int baseInstance,
                               unsigned int instanceCount);
+    void drawIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer);
+    void drawIndexedIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer);
 
     // Methods for populating a Dawn ComputePassEncoder:
     void beginComputePass();

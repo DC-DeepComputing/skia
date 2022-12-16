@@ -284,6 +284,16 @@ void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                            draw->fInstanceCount);
                 break;
             }
+            case DrawPassCommands::Type::kDrawIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndirect*>(cmdPtr);
+                this->drawIndirect(draw->fType, draw->fIndirectBuffer);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexedIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexedIndirect*>(cmdPtr);
+                this->drawIndexedIndirect(draw->fType, draw->fIndirectBuffer);
+                break;
+            }
         }
     }
 }
@@ -533,6 +543,29 @@ void DawnCommandBuffer::drawIndexedInstanced(PrimitiveType type,
 
     fActiveRenderPassEncoder.DrawIndexed(
             indexCount, instanceCount, baseIndex, baseVertex, baseInstance);
+}
+
+void DawnCommandBuffer::drawIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    this->syncUniformBuffers();
+
+    auto& wgpuBuffer = static_cast<const DawnBuffer*>(indirectBuffer.fBuffer)->dawnBuffer();
+
+    fActiveRenderPassEncoder.DrawIndirect(wgpuBuffer, indirectBuffer.fOffset);
+}
+
+void DawnCommandBuffer::drawIndexedIndirect(PrimitiveType type,
+                                            const BindBufferInfo& indirectBuffer) {
+    SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
+
+    this->syncUniformBuffers();
+
+    auto& wgpuBuffer = static_cast<const DawnBuffer*>(indirectBuffer.fBuffer)->dawnBuffer();
+
+    fActiveRenderPassEncoder.DrawIndexedIndirect(wgpuBuffer, indirectBuffer.fOffset);
 }
 
 void DawnCommandBuffer::beginComputePass() { SkASSERT(false); }
