@@ -659,3 +659,24 @@ DEF_TEST(Geometry, reporter) {
     test_measure_rotation(reporter);
     test_chop_at_midtangent(reporter);
 }
+
+DEF_TEST(GeometryChopMonoCubic, reporter) {
+    const SkPoint inputs[] = {
+        { 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 },
+    };
+
+    SkPoint outputs[7];
+    REPORTER_ASSERT(reporter, SkChopMonoCubicAtY(inputs, 2.5, outputs));
+
+    const SkPoint expectedOutputs[] = {
+        {  0.000000,  0.000000 }, {  0.000000,  0.000000 }, {  1.065055,  1.065055 },
+        {  2.500000,  2.500000 },
+        {  5.461981,  5.461981 }, { 10.000000, 10.000000 }, { 10.000000, 10.000000 },
+    };
+    for (int i = 0; i < 7; ++i) {
+        REPORTER_ASSERT(reporter, nearly_equal(expectedOutputs[i], outputs[i]),
+                        "(%f, %f) != (%f, %f) at index %d",
+                        expectedOutputs[i].x(), expectedOutputs[i].y(),
+                        outputs[i].x(), outputs[i].y(), i);
+    }
+}
