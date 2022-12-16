@@ -12,7 +12,9 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkTextBlob.h"
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -33,6 +35,7 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/shaders/SkImageShader.h"
+#include "tools/ToolUtils.h"
 
 using namespace skgpu::graphite;
 
@@ -444,6 +447,80 @@ void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
 }
 #endif
 
+SkPath make_path() {
+    SkPathBuilder path;
+    path.moveTo(0, 0);
+    path.lineTo(8, 2);
+    path.lineTo(16, 0);
+    path.lineTo(14, 8);
+    path.lineTo(16, 16);
+    path.lineTo(8, 14);
+    path.lineTo(0, 16);
+    path.lineTo(2, 8);
+    path.close();
+    return path.detach();
+}
+
+struct DrawData {
+    SkPath fPath;
+    sk_sp<SkTextBlob> fBlob;
+    sk_sp<SkVertices> fVerts;
+};
+
+void check_draws(skiatest::Reporter* reporter,
+                 Context* context,
+                 Recorder* recorder,
+                 const SkPaint& paint,
+                 DrawTypeFlags drawTypes,
+                 const DrawData& drawData) {
+    for (auto dt : { DrawTypeFlags::kSimple,
+                     DrawTypeFlags::kPaths,
+                     DrawTypeFlags::kText,
+                     DrawTypeFlags::kDrawVertices }) {
+        if (dt & drawTypes) {
+            int before = context->priv().globalCache()->numGraphicsPipelines();
+
+            {
+                // TODO: vary the colorType of the target surface too
+                SkImageInfo ii = SkImageInfo::Make(16, 16,
+                                                   kRGBA_8888_SkColorType,
+                                                   kPremul_SkAlphaType);
+
+                sk_sp<SkSurface> surf = SkSurface::MakeGraphite(recorder, ii);
+                SkCanvas* canvas = surf->getCanvas();
+
+                switch (dt) {
+                    case DrawTypeFlags::kSimple:
+                        canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+                        break;
+                    case DrawTypeFlags::kPaths:
+                        canvas->drawPath(drawData.fPath, paint);
+                        break;
+                    case DrawTypeFlags::kText:
+                        canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
+                        break;
+                    case DrawTypeFlags::kDrawVertices:
+                        canvas->drawVertices(drawData.fVerts, SkBlendMode::kDst, paint);
+                        break;
+                    default:
+                        SkASSERT(false);
+                        break;
+                }
+
+                std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+                context->insertRecording({ recording.get() });
+                context->submit(SyncToCpu::kYes);
+            }
+
+            int after = context->priv().globalCache()->numGraphicsPipelines();
+
+            // Actually using the SkPaint with the specified type of draw shouldn't have caused
+            // any additional compilation
+            REPORTER_ASSERT(reporter, before == after);
+        }
+    }
+}
+
 } // anonymous namespace
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
@@ -456,6 +533,19 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
     auto recorder = context->makeRecorder();
     KeyContext keyContext(recorder.get(), {});
     auto dict = keyContext.dict();
+
+    SkFont font(ToolUtils::create_portable_typeface(), 16);
+    const char text[] = "hambur";
+
+    constexpr SkPoint kPositions[4] { {0,0}, {0,16}, {16,16}, {16,0} };
+    constexpr SkColor kColors[] = {SK_ColorBLUE, SK_ColorGREEN, SK_ColorCYAN, SK_ColorYELLOW};
+
+    DrawData drawData = {
+            make_path(),
+            SkTextBlob::MakeFromText(text, strlen(text), font),
+            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4,
+                                 kPositions, kPositions, kColors),
+    };
 
     SkRandom rand;
 
@@ -510,36 +600,15 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                 REPORTER_ASSERT(reporter, result != precompileIDs.end());
                 {
                     int before = context->priv().globalCache()->numGraphicsPipelines();
-                    context->precompile(paintOptions);
+                    context->precompile(paintOptions, DrawTypeFlags::kAll);
                     int after = context->priv().globalCache()->numGraphicsPipelines();
 
                     REPORTER_ASSERT(reporter, before == 0);
                     REPORTER_ASSERT(reporter, after > before);
                 }
 
-                {
-                    int before = context->priv().globalCache()->numGraphicsPipelines();
-
-                    {
-                        SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                                           kRGBA_8888_SkColorType,
-                                                           kPremul_SkAlphaType);
-
-                        sk_sp<SkSurface> surf = SkSurface::MakeGraphite(recorder.get(), ii);
-                        SkCanvas* canvas = surf->getCanvas();
-
-                        canvas->drawRect(SkRect::MakeWH(16, 16), paint);
-
-                        std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
-                        context->insertRecording({ recording.get() });
-                        context->submit(SyncToCpu::kYes);
-                    }
-
-                    int after = context->priv().globalCache()->numGraphicsPipelines();
-
-                    // Actually using the SkPaint shouldn't have caused any additional compilation
-                    REPORTER_ASSERT(reporter, before == after);
-                }
+                check_draws(reporter, context, recorder.get(), paint,
+                            DrawTypeFlags::kAll, drawData);
             }
         }
     }
