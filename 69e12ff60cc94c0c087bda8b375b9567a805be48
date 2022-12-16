@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8eebf6b_86d53785",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T15:19:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7b9342c_398236d0",
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50c58cf9_8546b56f",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-12-16T12:49:52Z",
       "side": 1,
       "message": "^",
+      "range": {
+        "startLine": 413,
+        "startChar": 6,
+        "endLine": 413,
+        "endChar": 14
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10999026_0c8d86c5",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T15:19:09Z",
+      "side": 1,
+      "message": "Reply in the other comment.",
+      "parentUuid": "50c58cf9_8546b56f",
       "range": {
         "startLine": 413,
         "startChar": 6,
@@ -83,6 +125,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8345cd87_af4e16c0",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T15:19:09Z",
+      "side": 1,
+      "message": "Reply in the other comment.",
+      "parentUuid": "d329aaa7_074f4ebd",
+      "range": {
+        "startLine": 435,
+        "startChar": 6,
+        "endLine": 435,
+        "endChar": 21
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bcecc55_0848b4af",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 4
@@ -94,6 +160,30 @@
       "writtenOn": "2022-12-16T12:49:52Z",
       "side": 1,
       "message": "This section is for warning _disables_. We already set `-Wall` _and_ `-Weverything` above. I don\u0027t think you need to add anything--just remove the flag-disables and you\u0027re good to go.",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 38
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a2498f2_c709043a",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 19484
+      },
+      "writtenOn": "2022-12-16T15:19:09Z",
+      "side": 1,
+      "message": "I hope we are not misunderstanding each other. This block is adding warning flags for the C++ compiler only. Whether a flag disables or enables a warning depends of whether or not it starts with `-Wno-`. The first two flags do start that way, and therefore are being disabled. The flag I\u0027m adding starts doesn\u0027t has a `no` prefix, so it is enabling the warning.\n\nRegarding `-Wall`, and `-Weverything`, I have tested locally and I can confirmed those two flags do not enable `-Wunreachable-code-aggressive`",
+      "parentUuid": "3bcecc55_0848b4af",
       "range": {
         "startLine": 497,
         "startChar": 0,
