@@ -444,6 +444,39 @@ void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
 }
 #endif
 
+void check_draws(Context* context,
+                 Context::DrawTypeFlags drawTypes) {
+    for (auto dt : { Context::DrawTypeFlags::kSimple,
+                     Context::DrawTypeFlags::kPaths,
+                     Context::DrawTypeFlags::kText,
+                     Context::DrawTypeFlags::kDrawVertices) {
+        if (dt & drawTypes) {
+            int before = context->priv().globalCache()->numGraphicsPipelines();
+
+            {
+                SkImageInfo ii = SkImageInfo::Make(16, 16,
+                                                   kRGBA_8888_SkColorType,
+                                                   kPremul_SkAlphaType);
+
+                sk_sp<SkSurface> surf = SkSurface::MakeGraphite(recorder.get(), ii);
+                SkCanvas* canvas = surf->getCanvas();
+
+                canvas->drawRect(SkRect::MakeWH(16, 16), paint);
+
+                std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+                context->insertRecording({ recording.get() });
+                context->submit(SyncToCpu::kYes);
+            }
+
+            int after = context->priv().globalCache()->numGraphicsPipelines();
+
+            // Actually using the SkPaint shouldn't have caused any additional compilation
+            REPORTER_ASSERT(reporter, before == after);
+        }
+    }
+}
+
+
 } // anonymous namespace
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
@@ -510,36 +543,14 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                 REPORTER_ASSERT(reporter, result != precompileIDs.end());
                 {
                     int before = context->priv().globalCache()->numGraphicsPipelines();
-                    context->precompile(paintOptions);
+                    context->precompile(paintOptions, Context::DrawTypeFlags::kAll);
                     int after = context->priv().globalCache()->numGraphicsPipelines();
 
                     REPORTER_ASSERT(reporter, before == 0);
                     REPORTER_ASSERT(reporter, after > before);
                 }
 
-                {
-                    int before = context->priv().globalCache()->numGraphicsPipelines();
-
-                    {
-                        SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                                           kRGBA_8888_SkColorType,
-                                                           kPremul_SkAlphaType);
-
-                        sk_sp<SkSurface> surf = SkSurface::MakeGraphite(recorder.get(), ii);
-                        SkCanvas* canvas = surf->getCanvas();
-
-                        canvas->drawRect(SkRect::MakeWH(16, 16), paint);
-
-                        std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
-                        context->insertRecording({ recording.get() });
-                        context->submit(SyncToCpu::kYes);
-                    }
-
-                    int after = context->priv().globalCache()->numGraphicsPipelines();
-
-                    // Actually using the SkPaint shouldn't have caused any additional compilation
-                    REPORTER_ASSERT(reporter, before == after);
-                }
+                check_draws(Context::DrawTypeFlags::kAll);
             }
         }
     }
