@@ -117,6 +117,8 @@ private:
     void drawIndexedInstanced(PrimitiveType type, unsigned int baseIndex,
                               unsigned int indexCount, unsigned int baseVertex,
                               unsigned int baseInstance, unsigned int instanceCount);
+    void drawIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer);
+    void drawIndexedIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer);
 
     // Methods for populating a MTLComputeCommandEncoder:
     void beginComputePass();

@@ -32,8 +32,10 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
 void DrawWriter::setTemplate(BindBufferInfo vertices,
                              BindBufferInfo indices,
                              BindBufferInfo instances,
+                             BindBufferInfo indirect,
                              int templateCount) {
-    if (vertices != fVertices || instances != fInstances || fIndices != indices) {
+    if (vertices != fVertices || instances != fInstances || fIndices != indices ||
+        fIndirect != indirect) {
         if (fPendingCount > 0) {
             this->flush();
         }
@@ -47,13 +49,17 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
             fPendingBase = 0;
         }
 
+        // A change of the indirect buffer alone should not cause buffers to be re-bound, as its an
+        // argument to the draw command.
+        fPendingBufferBinds =
+                (vertices != fVertices || instances != fInstances || fIndices != indices);
+
         fVertices = vertices;
         fInstances = instances;
         fIndices = indices;
+        fIndirect = indirect;
 
         fTemplateCount = templateCount;
-
-        fPendingBufferBinds = true;
     } else if ((templateCount >= 0 && templateCount != fTemplateCount) || // vtx or reg. instances
                (templateCount < 0 && fTemplateCount >= 0)) {              // dynamic index instances
         if (fPendingCount > 0) {
@@ -70,6 +76,7 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
     SkASSERT(fVertices  == vertices);
     SkASSERT(fInstances == instances);
     SkASSERT(fIndices   == indices);
+    SkASSERT(fIndirect == indirect);
     // NOTE: This allows 'fTemplateCount' to update across multiple DynamicInstances as long
     // as they have the same vertex and index buffers.
     SkASSERT((fTemplateCount < 0) == (templateCount < 0));
@@ -106,7 +113,11 @@ void DrawWriter::flush() {
         }
     } else {
         SkASSERT(!fInstances);
-        if (fIndices) {
+        if (fIndirect && fIndices) {
+            fCommandList->drawIndexedIndirect(fPrimitiveType, fIndirect);
+        } else if (fIndirect) {
+            fCommandList->drawIndirect(fPrimitiveType, fIndirect);
+        } else if (fIndices) {
             fCommandList->drawIndexed(fPrimitiveType, 0, fPendingCount, fPendingBase);
         } else {
             fCommandList->draw(fPrimitiveType, fPendingBase, fPendingCount);
