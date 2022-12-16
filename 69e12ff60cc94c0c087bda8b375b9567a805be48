@@ -16,6 +16,75 @@
       "message": "Sorry for the late reply. I was swamped yesterday.",
       "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50c58cf9_8546b56f",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T12:49:52Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 413,
+        "startChar": 6,
+        "endLine": 413,
+        "endChar": 14
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d329aaa7_074f4ebd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T12:49:52Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 435,
+        "startChar": 6,
+        "endLine": 435,
+        "endChar": 21
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bcecc55_0848b4af",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T12:49:52Z",
+      "side": 1,
+      "message": "This section is for warning _disables_. We already set `-Wall` _and_ `-Weverything` above. I don\u0027t think you need to add anything--just remove the flag-disables and you\u0027re good to go.",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 38
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
