@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41fab79a_e9aba691",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-16T15:08:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a564dbdb_2f64fe62",
+      "range": {
+        "startLine": 392,
+        "startChar": 76,
+        "endLine": 395,
+        "endChar": 94
+      },
+      "revId": "433fa5d357b93203c43943c55f8725cd922a7184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67df011c_0863f422",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-15T21:54:08Z",
       "side": 1,
       "message": "Future thoughts that can be in differen CL.\n\nHmm so like these aren\u0027t really inputs into the pipeline creation (i.e. pipelines created with equal render passes but different load/stores are equivalent). Though they are needed for actually beginning a render pass. So I think leaving the values on this desc makes sense since that\u0027s also how all the gpu apis set things up. I wonder though if there is anything to gain breaking up the helper Make. One just fills in the relevant info needed for pipelines, then a second that fills in the appropriate load/stores. The runtime thing in snap would just call both, and this would just have default values in the load and stores for the attachments. Though I\u0027m not sure how entangled all that is.\n\nFor now maybe at least comment these values shouldn\u0027t modify the pipeline we create.",
+      "range": {
+        "startLine": 402,
+        "startChar": 57,
+        "endLine": 404,
+        "endChar": 83
+      },
+      "revId": "433fa5d357b93203c43943c55f8725cd922a7184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "963c1ca0_a68f2d75",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 70
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-16T15:08:25Z",
+      "side": 1,
+      "message": "Ack - I\u0027ve added a comment for now and we will have a meeting next week.",
+      "parentUuid": "67df011c_0863f422",
       "range": {
         "startLine": 402,
         "startChar": 57,
