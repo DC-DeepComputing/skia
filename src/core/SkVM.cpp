@@ -85,21 +85,6 @@ bool gSkVMJITViaDylib{false};
     #endif
 #endif
 
-#if defined(SKSL_STANDALONE)
-    // skslc needs to link against this module (for the VM code generator). This module pulls in
-    // color-space code, but attempting to add those transitive dependencies to skslc gets out of
-    // hand. So we terminate the chain here with stub functions. Note that skslc's usage of SkVM
-    // never cares about color management.
-    skvm::F32 sk_program_transfer_fn(
-        skvm::F32 v, skcms_TFType tf_type,
-        skvm::F32 G, skvm::F32 A, skvm::F32 B, skvm::F32 C, skvm::F32 D, skvm::F32 E, skvm::F32 F) {
-            return v;
-    }
-
-    const skcms_TransferFunction* skcms_sRGB_TransferFunction() { return nullptr; }
-    const skcms_TransferFunction* skcms_sRGB_Inverse_TransferFunction() { return nullptr; }
-#endif
-
 namespace skvm {
 
     static Features detect_features() {
