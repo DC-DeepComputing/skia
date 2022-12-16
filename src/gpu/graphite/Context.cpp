@@ -382,7 +382,7 @@ void Context::checkAsyncWorkCompletion() {
 
 #ifdef SK_ENABLE_PRECOMPILE
 
-void Context::precompile(const PaintOptions& options) {
+void Context::precompile(const PaintOptions& options, DrawTypeFlags drawTypes) {
     ASSERT_SINGLE_OWNER
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
