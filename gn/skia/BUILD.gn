@@ -482,8 +482,6 @@ config("warnings") {
       "-Wno-switch-enum",
       "-Wno-thread-safety-negative",
       "-Wno-undef",
-      "-Wno-unreachable-code-break",
-      "-Wno-unreachable-code-return",
       "-Wno-unused-macros",
       "-Wno-unused-member-function",
       "-Wno-non-c-typedef-for-linkage",  # Dawn, not Skia per se.
@@ -496,6 +494,7 @@ config("warnings") {
     cflags_cc += [
       "-Wno-abstract-vbase-init",
       "-Wno-weak-vtables",
+      "-Wunreachable-code-aggressive",
     ]
 
     # We are unlikely to want to fix these.
