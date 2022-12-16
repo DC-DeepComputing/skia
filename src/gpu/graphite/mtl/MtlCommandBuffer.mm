@@ -334,6 +334,16 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                            draw->fInstanceCount);
                 break;
             }
+            case DrawPassCommands::Type::kDrawIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndirect*>(cmdPtr);
+                this->drawIndirect(draw->fType, draw->fIndirectBuffer);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexedIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexedIndirect*>(cmdPtr);
+                this->drawIndexedIndirect(draw->fType, draw->fIndirectBuffer);
+                break;
+            }
         }
     }
 }
@@ -552,6 +562,43 @@ void MtlCommandBuffer::drawIndexedInstanced(PrimitiveType type,
                                                            MTLIndexTypeUInt16, fCurrentIndexBuffer,
                                                            indexOffset, instanceCount,
                                                            baseVertex, baseInstance);
+    } else {
+        // TODO: Do nothing, fatal failure, or just the regular graphite error reporting?
+        SKGPU_LOG_W("Skipping unsupported draw call.");
+    }
+}
+
+void MtlCommandBuffer::drawIndirect(PrimitiveType type, const BindBufferInfo& indirectBuffer) {
+    SkASSERT(fActiveRenderCommandEncoder);
+    SkASSERT(indirectBuffer.fBuffer);
+
+    if (@available(macOS 10.11, iOS 9.0, *)) {
+        auto mtlPrimitiveType = graphite_to_mtl_primitive(type);
+        id<MTLBuffer> mtlBuffer =
+                static_cast<const MtlBuffer*>(indirectBuffer.fBuffer)->mtlBuffer();
+        fActiveRenderCommandEncoder->drawPrimitives(
+                mtlPrimitiveType, mtlBuffer, indirectBuffer.fOffset);
+    } else {
+        // TODO: Do nothing, fatal failure, or just the regular graphite error reporting?
+        SKGPU_LOG_W("Skipping unsupported draw call.");
+    }
+}
+
+void MtlCommandBuffer::drawIndexedIndirect(PrimitiveType type,
+                                           const BindBufferInfo& indirectBuffer) {
+    SkASSERT(fActiveRenderCommandEncoder);
+    SkASSERT(indirectBuffer.fBuffer);
+
+    if (@available(macOS 10.11, iOS 9.0, *)) {
+        auto mtlPrimitiveType = graphite_to_mtl_primitive(type);
+        id<MTLBuffer> mtlBuffer =
+                static_cast<const MtlBuffer*>(indirectBuffer.fBuffer)->mtlBuffer();
+        fActiveRenderCommandEncoder->drawIndexedPrimitives(mtlPrimitiveType,
+                                                           MTLIndexTypeUInt32,
+                                                           fCurrentIndexBuffer,
+                                                           fCurrentIndexBufferOffset,
+                                                           mtlBuffer,
+                                                           indirectBuffer.fOffset);
     } else {
         // TODO: Do nothing, fatal failure, or just the regular graphite error reporting?
         SKGPU_LOG_W("Skipping unsupported draw call.");
