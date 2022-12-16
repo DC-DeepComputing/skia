@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "027551d9_fa365de5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-16T18:32:49Z",
+      "side": 1,
+      "message": "In addition to the regular testing any SkParagraph changes must be tested with Google3. \nI will do it Monday. It\u0027s possible that the current behavior is used and will fail some tests.\nWe need to know in advance and deal with it.",
+      "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
