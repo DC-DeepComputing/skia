@@ -192,6 +192,30 @@
       },
       "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efcf98f0_314c6297",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-16T16:28:52Z",
+      "side": 1,
+      "message": "It would be very surprising if `-Weverything` failed to enable a warning. Are you entirely sure? It is documented as enabling _every_ warning. https://clang.llvm.org/docs/UsersManual.html#enabling-all-diagnostics\n\nWe generally should not need to enable any additional warning flags at all after `-Weverything` is set, unless we have a `-Wno-feature` which disables a broad set of warning flags; in that case we may need a `-Wsubset-of-feature` to reenable portions of the `feature` that we do want to be warned about.\n\nIs it possible that when you tested this originally, these disables were still present?\n\n```\n      \"-Wno-unreachable-code-break\",\n      \"-Wno-unreachable-code-return\",\n```",
+      "parentUuid": "4a2498f2_c709043a",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 38
+      },
+      "revId": "69e12ff60cc94c0c087bda8b375b9567a805be48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
