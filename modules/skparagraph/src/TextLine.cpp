@@ -1347,7 +1347,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                         result = { SkToS32(utf16Index), kDownstream};
                         keepLooking = false;
                     } else {
-                        result = { SkToS32(utf16Index), kDownstream};
+                        result = { SkToS32(utf16Index + 1), kUpstream};
                         // If we haven't reached the end of the run we need to keep looking
                         keepLooking = context.pos != 0;
                     }
@@ -1393,9 +1393,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
 
                 SkScalar center = glyphemePosLeft + glyphemePosWidth / 2;
                 if ((dx < center) == context.run->leftToRight()) {
-                    size_t utf16Index = context.run->leftToRight()
-                                                ? fOwner->getUTF16Index(clusterIndex8)
-                                                : fOwner->getUTF16Index(clusterEnd8) + 1;
+                    size_t utf16Index = fOwner->getUTF16Index(clusterIndex8);
                     result = { SkToS32(utf16Index), kDownstream };
                 } else {
                     size_t utf16Index = context.run->leftToRight()
