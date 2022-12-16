@@ -169,21 +169,29 @@ public:
     // This will not merge with any already appended instance or vertex data, pending data is issued
     // in its own draw call first.
     void draw(BindBufferInfo vertices, unsigned int vertexCount) {
-        this->bindAndFlush(vertices, {}, {}, 0, vertexCount);
+        this->bindAndFlush(vertices, {}, {}, {}, 0, vertexCount);
     }
     void drawIndexed(BindBufferInfo vertices, BindBufferInfo indices, unsigned int indexCount) {
-        this->bindAndFlush(vertices, indices, {}, 0, indexCount);
+        this->bindAndFlush(vertices, indices, {}, {}, 0, indexCount);
     }
     void drawInstanced(BindBufferInfo vertices, unsigned int vertexCount,
                        BindBufferInfo instances, unsigned int instanceCount) {
         SkASSERT(vertexCount > 0);
-        this->bindAndFlush(vertices, {}, instances, vertexCount, instanceCount);
+        this->bindAndFlush(vertices, {}, instances, {}, vertexCount, instanceCount);
     }
     void drawIndexedInstanced(BindBufferInfo vertices, BindBufferInfo indices,
                               unsigned int indexCount, BindBufferInfo instances,
                               unsigned int instanceCount) {
         SkASSERT(indexCount > 0);
-        this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
+        this->bindAndFlush(vertices, indices, instances, {}, indexCount, instanceCount);
+    }
+    void drawIndirect(BindBufferInfo vertices, BindBufferInfo indirect) {
+        this->bindAndFlush(vertices, {}, {}, indirect, /*templateCount=*/0, /*drawCount=*/1);
+    }
+    void drawIndexedIndirect(BindBufferInfo vertices,
+                             BindBufferInfo indices,
+                             BindBufferInfo indirect) {
+        this->bindAndFlush(vertices, indices, {}, indirect, /*templateCount=*/0, /*drawCount=*/1);
     }
 
 private:
@@ -200,6 +208,7 @@ private:
     BindBufferInfo fVertices;
     BindBufferInfo fIndices;
     BindBufferInfo fInstances;
+    BindBufferInfo fIndirect;
     // Vertex/index count for [pseudo]-instanced rendering:
     // == 0 is vertex-only drawing; > 0 is regular instanced drawing; < 0 is dynamic index count
     // instanced drawing, where real index count = max(-fTemplateCount-1)
@@ -209,15 +218,22 @@ private:
     unsigned int fPendingBase; // vertex/instance offset (depending on mode) applied to buffer
     bool fPendingBufferBinds; // true if {fVertices,fIndices,fInstances} has changed since last draw
 
-    void setTemplate(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
+    void setTemplate(BindBufferInfo vertices,
+                     BindBufferInfo indices,
+                     BindBufferInfo instances,
+                     BindBufferInfo indirect,
                      int templateCount);
     // NOTE: bindAndFlush's templateCount is unsigned because dynamic index count instancing
     // isn't applicable.
-    void bindAndFlush(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
-                      unsigned int templateCount, unsigned int drawCount) {
+    void bindAndFlush(BindBufferInfo vertices,
+                      BindBufferInfo indices,
+                      BindBufferInfo instances,
+                      BindBufferInfo indirect,
+                      unsigned int templateCount,
+                      unsigned int drawCount) {
         SkASSERT(drawCount > 0);
         SkASSERT(!fAppender); // shouldn't be appending and manually drawing at the same time.
-        this->setTemplate(vertices, indices, instances, SkTo<int>(templateCount));
+        this->setTemplate(vertices, indices, instances, indirect, SkTo<int>(templateCount));
         fPendingBase = 0;
         fPendingCount = drawCount;
         this->flush();
@@ -305,7 +321,7 @@ protected:
 class DrawWriter::Vertices : private DrawWriter::Appender {
 public:
     Vertices(DrawWriter& w) : Appender(w, Target::kVertices) {
-        w.setTemplate(w.fVertices, {}, {}, 0);
+        w.setTemplate(w.fVertices, {}, {}, {}, 0);
     }
 
     using Appender::reserve;
@@ -320,7 +336,7 @@ public:
               unsigned int vertexCount)
             : Appender(w, Target::kInstances) {
         SkASSERT(vertexCount > 0);
-        w.setTemplate(vertices, indices, w.fInstances, SkTo<int>(vertexCount));
+        w.setTemplate(vertices, indices, w.fInstances, {}, SkTo<int>(vertexCount));
     }
 
     using Appender::reserve;
@@ -334,7 +350,7 @@ public:
                      BindBufferInfo vertices,
                      BindBufferInfo indices)
             : Appender(w, Target::kInstances) {
-        w.setTemplate(vertices, indices, w.fInstances, -1);
+        w.setTemplate(vertices, indices, w.fInstances, {}, -1);
     }
 
     ~DynamicInstances() override {
