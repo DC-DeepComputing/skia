@@ -22,6 +22,30 @@
       },
       "revId": "f39bf4663276b63555bd2bda25ae25bdd200b785",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc939af_e5351c9e",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-12-16T18:04:49Z",
+      "side": 1,
+      "message": "so much prettier!",
+      "parentUuid": "266bd179_727798ba",
+      "range": {
+        "startLine": 1067,
+        "startChar": 81,
+        "endLine": 1067,
+        "endChar": 85
+      },
+      "revId": "f39bf4663276b63555bd2bda25ae25bdd200b785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
