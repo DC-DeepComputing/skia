@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ddf1539_440d38fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-16T21:25:38Z",
+      "side": 1,
+      "message": "PTAL. Just some cleanup since I\u0027ll be using some of this for the Recording replay.",
+      "revId": "afe88872e06ce2d4cca06e5ee97509b6e21d3b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f874ecd0_23c795da",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-16T21:25:38Z",
+      "side": 1,
+      "message": "Alternatively, I could rename this to nextTokenToDraw(). Another possibility is tokenForNext{Draw|Flush}. I\u0027m not sure which is clearer, just trying to make them consistent.",
+      "range": {
+        "startLine": 208,
+        "startChar": 15,
+        "endLine": 208,
+        "endChar": 28
+      },
+      "revId": "afe88872e06ce2d4cca06e5ee97509b6e21d3b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
