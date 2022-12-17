@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc8dff6d_99a1395c",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-17T00:28:47Z",
+      "side": 1,
+      "message": "This is the code I was referring to in my previous comment above. How should instanced indirect draws be abstracted? The `DrawPassCommands::List::drawIndirect` and `DrawPassCommands::List::drawIndexedIndirect` functions inherently support instances (since the instance count/offset are encoded in the indirect buffer).\n\nI can imagine changing this to just check if `fIndirect` is assigned above and routing to one of these functions. Though in the case where an indirect draw uses a CPU-populated static vertex/index buffer, I think `fTemplateCount`/`realVertexCount` above will need to be communicated to the compute shader somehow so it can write it into the indirect buffer (unless we map the buffer indirect buffer first and write the vertex/index counts on the CPU).",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 66
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2e0880b_3efc9ee7",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-17T00:28:47Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure what the right value here should be. `drawInstanced` and `drawIndexedInstanced` above assign `vertexCount` and `indexCount` to this but in an indirect draw these may get determined on the GPU and may be unknown at the time the command is sent (except perhaps in the case of an indirect instanced draw that reuses the existing static vertex and index buffers - unless we populate those on demand on the GPU too).\n\nThe `templateCount` appears to be used as a toggle to issue an instanced draw command in `flush()`. I assigned `0` here and made `flush()` instead use the presence of an indirect buffer to route the call to these functions instead. I\u0027m not sure if this is correct for an instanced indirect draw that uses a CPU-populated static vertex/index buffer though (also see my comment in DrawWriter.cpp).",
+      "range": {
+        "startLine": 189,
+        "startChar": 55,
+        "endLine": 189,
+        "endChar": 74
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3025c712_61d35705",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-17T00:28:47Z",
+      "side": 1,
+      "message": "Should either of these functions take an `instances` buffer as well? Or should there be separate `drawInstancedIndirect` and `drawIndexedInstancedIndirect` variants that define an `instanced` parameter?",
+      "range": {
+        "startLine": 191,
+        "startChar": 9,
+        "endLine": 191,
+        "endChar": 28
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
