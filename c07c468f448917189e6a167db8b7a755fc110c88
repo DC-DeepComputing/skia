@@ -34,6 +34,24 @@
       "parentUuid": "64516ec3_bae2d93e",
       "revId": "c07c468f448917189e6a167db8b7a755fc110c88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b123a02b_846e5ffb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-19T14:54:10Z",
+      "side": 1,
+      "message": "na this is fine for this CL. I was more worried if there was a larger number of lost jobs that were all running on this bot. But we have lots of different intel debian bots looking at status.",
+      "parentUuid": "4e29d2ce_21a8d6ce",
+      "revId": "c07c468f448917189e6a167db8b7a755fc110c88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
