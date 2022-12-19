@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8aa76c4_37e7dd06",
+        "filename": "tests/SkTBlockListTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-19T14:25:00Z",
+      "side": 0,
+      "message": "Thanks for fixing this for me.",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "d2df79c60ee88e15020aa54207c3967b11b6c948",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
