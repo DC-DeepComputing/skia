@@ -107,6 +107,10 @@ protected:
 
     const SharedContext* sharedContext() const { return fSharedContext; }
 
+    // The resoure is returned the resource cache, the backend may wait to reset state of the
+    // resource and prepare for the next usage.
+    virtual void onReturnedToCache();
+
     // Overridden to free GPU resources in the backend API.
     virtual void freeGpuData() = 0;
 
