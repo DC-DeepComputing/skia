@@ -171,6 +171,7 @@ bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef
     fReturnQueue.push_back(std::make_pair(resource, removedRef));
     *resource->accessReturnIndex() = fReturnQueue.size() - 1;
     resource->refCache();
+    resource->onReturnedToCache();
     return true;
 }
 
