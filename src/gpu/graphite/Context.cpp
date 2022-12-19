@@ -411,6 +411,7 @@ void Context::precompile(const PaintOptions& options, DrawTypeFlags drawTypes) {
 
     options.priv().buildCombinations(
         keyContext,
+        /* addPrimitiveBlender= */ false,
         [&](UniquePaintParamsID uniqueID) {
             for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
                 if (!(r->drawTypes() & drawTypes)) {
