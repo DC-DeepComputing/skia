@@ -659,3 +659,52 @@ DEF_TEST(Geometry, reporter) {
     test_measure_rotation(reporter);
     test_chop_at_midtangent(reporter);
 }
+
+static void testChopMonoCubicAtY(skiatest::Reporter* reporter, std::string name,
+                                 std::initializer_list<SkPoint> curveInputs, SkScalar yToChopAt,
+                                 std::initializer_list<SkPoint> twoCurvesWithSharedPoint) {
+
+    SkPoint outputs[7];
+    // Make sure it actually chopped
+    REPORTER_ASSERT(reporter, SkChopMonoCubicAtY(curveInputs.begin(), yToChopAt, outputs));
+
+    SkSpan expectedOutputs(twoCurvesWithSharedPoint);
+    for (int i = 0; i < 7; ++i) {
+        REPORTER_ASSERT(reporter, nearly_equal(expectedOutputs[i], outputs[i]),
+                        "%s: (%f, %f) != (%f, %f) at index %d", name.c_str(),
+                        expectedOutputs[i].x(), expectedOutputs[i].y(),
+                        outputs[i].x(), outputs[i].y(), i);
+    }
+}
+
+DEF_TEST(GeometryChopMonoCubicAtY, reporter) {
+
+    testChopMonoCubicAtY(reporter, "straight line 1",
+        {{ 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 }},
+        2.5,
+        {{  0.000000,  0.000000 }, {  0.000000,  0.000000 }, {  1.065055,  1.065055 },
+         {  2.500000,  2.500000 },
+         {  5.461981,  5.461981 }, { 10.000000, 10.000000 }, { 10.000000, 10.000000 }}
+    );
+    testChopMonoCubicAtY(reporter, "straight line 2",
+        {{ 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 }},
+        5.0,
+        {{  0.000000,  0.000000 }, {  0.000000,  0.000000 }, {  2.500000,  2.500000 },
+         {  5.000000,  5.000000 },
+         {  7.500000,  7.500000 }, { 10.000000, 10.000000 }, { 10.000000, 10.000000 }}
+    );
+    testChopMonoCubicAtY(reporter, "straight line 3",
+        {{ 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 }},
+        9.0,
+        {{  0.000000,  0.000000 }, {  0.000000,  0.000000 }, {  6.467375,  6.467375 },
+         {  9.000000,  9.000000 },
+         {  9.616623,  9.616623 }, { 10.000000, 10.000000 }, { 10.000000, 10.000000 }}
+    );
+    testChopMonoCubicAtY(reporter, "straight line 4",
+        {{ 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 }},
+        10.0,
+        {{  0.000000,  0.000000 }, {  0.000000,  0.000000 }, { 10.000000, 10.000000 },
+         { 10.000000, 10.000000 },
+         { 10.000000, 10.000000 }, { 10.000000, 10.000000 }, { 10.000000, 10.000000 }}
+    );
+}
