@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae9bff26_cf32c2f7",
+        "filename": "include/private/SkFeatures.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-19T18:58:52Z",
+      "side": 1,
+      "message": "Missing copyright header",
+      "revId": "76742c80bf9ea9f2b86214850c2e8db88b4e7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87bbeb35_41398630",
+        "filename": "include/private/SkFeatures.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-19T18:58:52Z",
+      "side": 1,
+      "message": "The logic pre-dates this CL, but this pair of checks (and the nested checks within) is really strange. The top-level comments are unrelated to the code (other than GCC/Clang probably uses the __ARCH__ defines consistently at all levels, and MSVC doesn\u0027t?). But the first several checks in each block are identical. Feels like maybe this should be merged into a single block, as a follow-up?",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 24
+      },
+      "revId": "76742c80bf9ea9f2b86214850c2e8db88b4e7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbda0aab_21f251ab",
+        "filename": "include/private/SkLoadUserConfig.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-19T18:58:52Z",
+      "side": 1,
+      "message": "Copyright...",
+      "revId": "76742c80bf9ea9f2b86214850c2e8db88b4e7709",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
