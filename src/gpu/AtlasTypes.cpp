@@ -40,6 +40,7 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
     // The padding for faster uploads only works for 1, 2 and 4 byte texels
     SkASSERT(fBytesPerPixel != 3 && fBytesPerPixel <= 4);
     fDirtyRect.setEmpty();
+    fCachedRect.setEmpty();
 }
 
 Plot::~Plot() {
@@ -91,7 +92,7 @@ bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* a
     return true;
 }
 
-std::pair<const void*, SkIRect> Plot::prepareForUpload() {
+std::pair<const void*, SkIRect> Plot::prepareForUpload(bool useCachedUploads) {
     // We should only be issuing uploads if we are in fact dirty
     SkASSERT(fDirty && fData);
     size_t rowBytes = fBytesPerPixel * fWidth;
@@ -107,8 +108,17 @@ std::pair<const void*, SkIRect> Plot::prepareForUpload() {
     dataPtr += fBytesPerPixel * fDirtyRect.fLeft;
 
     SkIRect offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
+    fCachedRect.join(fDirtyRect);
     fDirtyRect.setEmpty();
     SkDEBUGCODE(fDirty = false;)
+
+    if (useCachedUploads) {
+        // use the entire cached rect rather than just the dirty rect
+        dataPtr = fData;
+        dataPtr += rowBytes * fCachedRect.fTop;
+        dataPtr += fBytesPerPixel * fCachedRect.fLeft;
+        offsetRect = fCachedRect.makeOffset(fOffset.fX, fOffset.fY);
+    }
 
     return { dataPtr, offsetRect };
 }
@@ -126,6 +136,7 @@ void Plot::resetRects() {
     }
 
     fDirtyRect.setEmpty();
+    fCachedRect.setEmpty();
     SkDEBUGCODE(fDirty = false;)
 }
 

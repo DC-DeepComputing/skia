@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/UploadTask.h"
 
 namespace skgpu::graphite {
 
@@ -28,6 +29,18 @@ static const constexpr bool kDumpAtlasData = true;
 #else
 static const constexpr bool kDumpAtlasData = false;
 #endif
+
+class PlotUploadContext : public ConditionalUploadContext {
+public:
+    static std::unique_ptr<ConditionalUploadContext> Make() {
+        return std::make_unique<PlotUploadContext>();
+    }
+    ~PlotUploadContext() override {}
+
+    bool needsUpload() const override { return true; }
+private:
+    // useful stuff
+};
 
 #ifdef SK_DEBUG
 void DrawAtlas::validate(const AtlasLocator& atlasLocator) const {
@@ -125,25 +138,30 @@ bool DrawAtlas::addToPage(unsigned int pageIdx, int width, int height, const voi
     return false;
 }
 
-bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
+bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder, bool useCachedUploads) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     for (uint32_t pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
         PlotList::Iter plotIter;
         plotIter.init(fPages[pageIdx].fPlotList, PlotList::Iter::kHead_IterStart);
         for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
-            if (plot->needsUpload()) {
+            if (useCachedUploads || plot->needsUpload()) {
                 TextureProxy* proxy = fProxies[pageIdx].get();
                 SkASSERT(proxy);
 
                 const void* dataPtr;
                 SkIRect dstRect;
-                std::tie(dataPtr, dstRect) = plot->prepareForUpload();
+                std::tie(dataPtr, dstRect) = plot->prepareForUpload(useCachedUploads);
+                if (dstRect.isEmpty()) {
+                    continue;
+                }
 
                 std::vector<MipLevel> levels;
                 levels.push_back({dataPtr, fBytesPerPixel*fPlotWidth});
 
+                auto uploadContext = PlotUploadContext::Make();
+
                 if (!dc->recordUpload(recorder, sk_ref_sp(proxy), fColorType, levels, dstRect,
-                                      nullptr)) {
+                                      std::move(uploadContext))) {
                     return false;
                 }
             }
