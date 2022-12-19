@@ -81,6 +81,20 @@ enum class Volatile : bool {
     kYes = true               // fulfilled on every insertion call
 };
 
+/*
+ * Graphite's different rendering methods each only apply to certain types of draws. This
+ * enum supports decision making regarding the different renderers and what is being drawn.
+ */
+enum DrawTypeFlags : uint8_t {
+    kSimple       = 0b0001,     // rects, round rects, circles, convex shapes
+    kPaths        = 0b0010,
+    kText         = 0b0100,
+    kDrawVertices = 0b1000,     // the SkCanvas::drawVertices call
+
+    kMostCommon = kSimple | kPaths | kText,
+    kAll = kSimple | kPaths | kText | kDrawVertices
+};
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_GraphiteTypes_DEFINED
