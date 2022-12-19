@@ -86,6 +86,7 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "src/gpu/graphite/ContextPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
@@ -2226,6 +2227,52 @@ Result GraphiteSink::draw(const Src& src,
         return Result::Fatal("Context::insertRecording failed.");
     }
     context->submit(skgpu::graphite::SyncToCpu::kYes);
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType);
+
+    skiatest::graphite::ContextFactory factory;
+    auto [_, context] = factory.getContextInfo(fContextType);
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    if (!recorder) {
+        return Result::Fatal("Could not create a recorder.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    {
+        sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder.get(), ii);
+        if (!surface) {
+            return Result::Fatal("Could not create a surface.");
+        }
+        Result result = src.draw(context, nullptr, surface->getCanvas());
+        if (!result.isOk()) {
+            return result;
+        }
+
+        std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+        if (!recording) {
+            return Result::Fatal("Could not create a recording.");
+        }
+
+        skgpu::graphite::InsertRecordingInfo info;
+        info.fRecording = recording.get();
+        if (!context->insertRecording(info)) {
+            return Result::Fatal("Context::insertRecording failed.");
+        }
+        context->submit(skgpu::graphite::SyncToCpu::kYes);
+    }
 
     return Result::Ok();
 }
