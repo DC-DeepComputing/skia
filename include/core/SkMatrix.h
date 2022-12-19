@@ -13,6 +13,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
+#include "include/private/SkTo.h"
 
 #include <cstdint>
 #include <cstring>
@@ -1979,6 +1980,12 @@ private:
      */
     size_t readFromMemory(const void* buffer, size_t length);
 
+    static double determinant(const float mat[9], int isPerspective);
+    static double inv_determinant(const float mat[9], int isPerspective);
+    static void mapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 dst[],
+                                               size_t dstStride, const SkPoint3 src[],
+                                               size_t srcStride, int count);
+
     // legacy method -- still needed? why not just postScale(1/divx, ...)?
     bool postIDiv(int divx, int divy);
     void doNormalizePerspective();
@@ -1986,6 +1993,7 @@ private:
     friend class SkPerspIter;
     friend class SkMatrixPriv;
     friend class SerializationTest;
+    friend class SkPath; // needs getMapPtsProc()
 };
 SK_END_REQUIRE_DENSE
 

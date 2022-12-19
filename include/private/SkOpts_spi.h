@@ -8,7 +8,10 @@
 #ifndef SkOpts_spi_DEFINED
 #define SkOpts_spi_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkAPI.h"
+
+#include <cstddef>
+#include <cstdint>
 
 // These are exposed as SK_SPI (e.g. SkParagraph), the rest of SkOpts is
 // declared in src/core

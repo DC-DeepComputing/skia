@@ -25,19 +25,12 @@
 
 class SkMatrix;
 class SkRRect;
-class SkWBuffer;
 
-enum class SkPathConvexity {
-    kConvex,
-    kConcave,
-    kUnknown,
-};
-
-enum class SkPathFirstDirection {
-    kCW,         // == SkPathDirection::kCW
-    kCCW,        // == SkPathDirection::kCCW
-    kUnknown,
-};
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    static const int kPathRefGenIDBitCnt = 30; // leave room for the fill type (skbug.com/1762)
+#else
+    static const int kPathRefGenIDBitCnt = 32;
+#endif
 
 // These are computed from a stream of verbs
 struct SkPathVerbAnalysis {
@@ -326,11 +319,6 @@ public:
     const SkPoint& atPoint(int index) const { return fPoints[index]; }
 
     bool operator== (const SkPathRef& ref) const;
-
-    /**
-     * Writes the path points and verbs to a buffer.
-     */
-    void writeToBuffer(SkWBuffer* buffer) const;
 
     /**
      * Gets the number of bytes that would be written in writeBuffer()

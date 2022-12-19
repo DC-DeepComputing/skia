@@ -7,7 +7,6 @@
 
 #include "include/core/SkMatrix.h"
 
-#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRSXform.h"
@@ -18,14 +17,8 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
-#include "src/core/SkMatrixPriv.h"
-#include "src/core/SkMatrixUtils.h"
-#include "src/core/SkSamplingPriv.h"
 
 #include <algorithm>
-#include <cmath>
-
-struct SkSamplingOptions;
 
 void SkMatrix::doNormalizePerspective() {
     // If the bottom row of the matrix is [0, 0, not_one], we will treat the matrix as if it
@@ -175,8 +168,6 @@ uint8_t SkMatrix::computeTypeMask() const {
     return SkToU8(mask);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 bool operator==(const SkMatrix& a, const SkMatrix& b) {
     const SkScalar* SK_RESTRICT ma = a.fMat;
     const SkScalar* SK_RESTRICT mb = b.fMat;
@@ -194,8 +185,6 @@ static inline bool is_degenerate_2x2(SkScalar scaleX, SkScalar skewX,
     SkScalar perp_dot = scaleX*scaleY - skewX*skewY;
     return SkScalarNearlyZero(perp_dot, SK_ScalarNearlyZero*SK_ScalarNearlyZero);
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 bool SkMatrix::isSimilarity(SkScalar tol) const {
     // if identity or translate matrix
@@ -726,7 +715,7 @@ static inline SkScalar dcross_dscale(double a, double b,
     return SkDoubleToScalar(dcross(a, b, c, d) * scale);
 }
 
-static double sk_determinant(const float mat[9], int isPerspective) {
+double SkMatrix::determinant(const float mat[9], int isPerspective) {
     if (isPerspective) {
         return mat[SkMatrix::kMScaleX] *
                     dcross(mat[SkMatrix::kMScaleY], mat[SkMatrix::kMPersp2],
@@ -745,8 +734,8 @@ static double sk_determinant(const float mat[9], int isPerspective) {
     }
 }
 
-static double sk_inv_determinant(const float mat[9], int isPerspective) {
-    double det = sk_determinant(mat, isPerspective);
+double SkMatrix::inv_determinant(const float mat[9], int isPerspective) {
+    double det = SkMatrix::determinant(mat, isPerspective);
 
     // Since the determinant is on the order of the cube of the matrix members,
     // compare to the cube of the default nearly-zero constant (although an
@@ -868,7 +857,7 @@ bool SkMatrix::invertNonIdentity(SkMatrix* inv) const {
     }
 
     int    isPersp = mask & kPerspective_Mask;
-    double invDet = sk_inv_determinant(fMat, isPersp);
+    double invDet = SkMatrix::inv_determinant(fMat, isPersp);
 
     if (invDet == 0) { // underflow
         return false;
@@ -1039,9 +1028,9 @@ const SkMatrix::MapPtsProc SkMatrix::gMapPtsProcs[] = {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SkMatrixPriv::MapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 dst[],
-                                                  size_t dstStride, const SkPoint3 src[],
-                                                  size_t srcStride, int count) {
+void SkMatrix::mapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 dst[],
+                                              size_t dstStride, const SkPoint3 src[],
+                                              size_t srcStride, int count) {
     SkASSERT((dst && src && count > 0) || 0 == count);
     // no partial overlap
     SkASSERT(src == dst || &dst[count] <= &src[0] || &src[count] <= &dst[0]);
@@ -1080,8 +1069,8 @@ void SkMatrixPriv::MapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 d
 }
 
 void SkMatrix::mapHomogeneousPoints(SkPoint3 dst[], const SkPoint3 src[], int count) const {
-    SkMatrixPriv::MapHomogeneousPointsWithStride(*this, dst, sizeof(SkPoint3), src,
-                                                 sizeof(SkPoint3), count);
+    mapHomogeneousPointsWithStride(*this, dst, sizeof(SkPoint3), src,
+                                   sizeof(SkPoint3), count);
 }
 
 void SkMatrix::mapHomogeneousPoints(SkPoint3 dst[], const SkPoint src[], int count) const {
@@ -1633,256 +1622,4 @@ void SkMatrix::dump() const {
              fMat[0], fMat[1], fMat[2], fMat[3], fMat[4], fMat[5],
              fMat[6], fMat[7], fMat[8]);
     SkDebugf("%s\n", str.c_str());
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-bool SkTreatAsSprite(const SkMatrix& mat, const SkISize& size, const SkSamplingOptions& sampling,
-                     const SkPaint& paint) {
-    if (!SkSamplingPriv::NoChangeWithIdentityMatrix(sampling)) {
-        return false;
-    }
-
-    // Our path aa is 2-bits, and our rect aa is 8, so we could use 8,
-    // but in practice 4 seems enough (still looks smooth) and allows
-    // more slightly fractional cases to fall into the fast (sprite) case.
-    static const unsigned kAntiAliasSubpixelBits = 4;
-
-    const unsigned subpixelBits = paint.isAntiAlias() ? kAntiAliasSubpixelBits : 0;
-
-    // quick reject on affine or perspective
-    if (mat.getType() & ~(SkMatrix::kScale_Mask | SkMatrix::kTranslate_Mask)) {
-        return false;
-    }
-
-    // quick success check
-    if (!subpixelBits && !(mat.getType() & ~SkMatrix::kTranslate_Mask)) {
-        return true;
-    }
-
-    // mapRect supports negative scales, so we eliminate those first
-    if (mat.getScaleX() < 0 || mat.getScaleY() < 0) {
-        return false;
-    }
-
-    SkRect dst;
-    SkIRect isrc = SkIRect::MakeSize(size);
-
-    {
-        SkRect src;
-        src.set(isrc);
-        mat.mapRect(&dst, src);
-    }
-
-    // just apply the translate to isrc
-    isrc.offset(SkScalarRoundToInt(mat.getTranslateX()),
-                SkScalarRoundToInt(mat.getTranslateY()));
-
-    if (subpixelBits) {
-        isrc.fLeft = SkLeftShift(isrc.fLeft, subpixelBits);
-        isrc.fTop = SkLeftShift(isrc.fTop, subpixelBits);
-        isrc.fRight = SkLeftShift(isrc.fRight, subpixelBits);
-        isrc.fBottom = SkLeftShift(isrc.fBottom, subpixelBits);
-
-        const float scale = 1 << subpixelBits;
-        dst.fLeft *= scale;
-        dst.fTop *= scale;
-        dst.fRight *= scale;
-        dst.fBottom *= scale;
-    }
-
-    SkIRect idst;
-    dst.round(&idst);
-    return isrc == idst;
-}
-
-// A square matrix M can be decomposed (via polar decomposition) into two matrices --
-// an orthogonal matrix Q and a symmetric matrix S. In turn we can decompose S into U*W*U^T,
-// where U is another orthogonal matrix and W is a scale matrix. These can be recombined
-// to give M = (Q*U)*W*U^T, i.e., the product of two orthogonal matrices and a scale matrix.
-//
-// The one wrinkle is that traditionally Q may contain a reflection -- the
-// calculation has been rejiggered to put that reflection into W.
-bool SkDecomposeUpper2x2(const SkMatrix& matrix,
-                         SkPoint* rotation1,
-                         SkPoint* scale,
-                         SkPoint* rotation2) {
-
-    SkScalar A = matrix[SkMatrix::kMScaleX];
-    SkScalar B = matrix[SkMatrix::kMSkewX];
-    SkScalar C = matrix[SkMatrix::kMSkewY];
-    SkScalar D = matrix[SkMatrix::kMScaleY];
-
-    if (is_degenerate_2x2(A, B, C, D)) {
-        return false;
-    }
-
-    double w1, w2;
-    SkScalar cos1, sin1;
-    SkScalar cos2, sin2;
-
-    // do polar decomposition (M = Q*S)
-    SkScalar cosQ, sinQ;
-    double Sa, Sb, Sd;
-    // if M is already symmetric (i.e., M = I*S)
-    if (SkScalarNearlyEqual(B, C)) {
-        cosQ = 1;
-        sinQ = 0;
-
-        Sa = A;
-        Sb = B;
-        Sd = D;
-    } else {
-        cosQ = A + D;
-        sinQ = C - B;
-        SkScalar reciplen = SkScalarInvert(SkScalarSqrt(cosQ*cosQ + sinQ*sinQ));
-        cosQ *= reciplen;
-        sinQ *= reciplen;
-
-        // S = Q^-1*M
-        // we don't calc Sc since it's symmetric
-        Sa = A*cosQ + C*sinQ;
-        Sb = B*cosQ + D*sinQ;
-        Sd = -B*sinQ + D*cosQ;
-    }
-
-    // Now we need to compute eigenvalues of S (our scale factors)
-    // and eigenvectors (bases for our rotation)
-    // From this, should be able to reconstruct S as U*W*U^T
-    if (SkScalarNearlyZero(SkDoubleToScalar(Sb))) {
-        // already diagonalized
-        cos1 = 1;
-        sin1 = 0;
-        w1 = Sa;
-        w2 = Sd;
-        cos2 = cosQ;
-        sin2 = sinQ;
-    } else {
-        double diff = Sa - Sd;
-        double discriminant = sqrt(diff*diff + 4.0*Sb*Sb);
-        double trace = Sa + Sd;
-        if (diff > 0) {
-            w1 = 0.5*(trace + discriminant);
-            w2 = 0.5*(trace - discriminant);
-        } else {
-            w1 = 0.5*(trace - discriminant);
-            w2 = 0.5*(trace + discriminant);
-        }
-
-        cos1 = SkDoubleToScalar(Sb); sin1 = SkDoubleToScalar(w1 - Sa);
-        SkScalar reciplen = SkScalarInvert(SkScalarSqrt(cos1*cos1 + sin1*sin1));
-        cos1 *= reciplen;
-        sin1 *= reciplen;
-
-        // rotation 2 is composition of Q and U
-        cos2 = cos1*cosQ - sin1*sinQ;
-        sin2 = sin1*cosQ + cos1*sinQ;
-
-        // rotation 1 is U^T
-        sin1 = -sin1;
-    }
-
-    if (scale) {
-        scale->fX = SkDoubleToScalar(w1);
-        scale->fY = SkDoubleToScalar(w2);
-    }
-    if (rotation1) {
-        rotation1->fX = cos1;
-        rotation1->fY = sin1;
-    }
-    if (rotation2) {
-        rotation2->fX = cos2;
-        rotation2->fY = sin2;
-    }
-
-    return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkRSXform::toQuad(SkScalar width, SkScalar height, SkPoint quad[4]) const {
-#if 0
-    // This is the slow way, but it documents what we're doing
-    quad[0].set(0, 0);
-    quad[1].set(width, 0);
-    quad[2].set(width, height);
-    quad[3].set(0, height);
-    SkMatrix m;
-    m.setRSXform(*this).mapPoints(quad, quad, 4);
-#else
-    const SkScalar m00 = fSCos;
-    const SkScalar m01 = -fSSin;
-    const SkScalar m02 = fTx;
-    const SkScalar m10 = -m01;
-    const SkScalar m11 = m00;
-    const SkScalar m12 = fTy;
-
-    quad[0].set(m02, m12);
-    quad[1].set(m00 * width + m02, m10 * width + m12);
-    quad[2].set(m00 * width + m01 * height + m02, m10 * width + m11 * height + m12);
-    quad[3].set(m01 * height + m02, m11 * height + m12);
-#endif
-}
-
-void SkRSXform::toTriStrip(SkScalar width, SkScalar height, SkPoint strip[4]) const {
-    const SkScalar m00 = fSCos;
-    const SkScalar m01 = -fSSin;
-    const SkScalar m02 = fTx;
-    const SkScalar m10 = -m01;
-    const SkScalar m11 = m00;
-    const SkScalar m12 = fTy;
-
-    strip[0].set(m02, m12);
-    strip[1].set(m01 * height + m02, m11 * height + m12);
-    strip[2].set(m00 * width + m02, m10 * width + m12);
-    strip[3].set(m00 * width + m01 * height + m02, m10 * width + m11 * height + m12);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-SkScalar SkMatrixPriv::DifferentialAreaScale(const SkMatrix& m, const SkPoint& p) {
-    //              [m00 m01 m02]                                 [f(u,v)]
-    // Assuming M = [m10 m11 m12], define the projected p'(u,v) = [g(u,v)] where
-    //              [m20 m12 m22]
-    //                                                        [x]     [u]
-    // f(u,v) = x(u,v) / w(u,v), g(u,v) = y(u,v) / w(u,v) and [y] = M*[v]
-    //                                                        [w]     [1]
-    //
-    // Then the differential scale factor between p = (u,v) and p' is |det J|,
-    // where J is the Jacobian for p': [df/du dg/du]
-    //                                 [df/dv dg/dv]
-    // and df/du = (w*dx/du - x*dw/du)/w^2,   dg/du = (w*dy/du - y*dw/du)/w^2
-    //     df/dv = (w*dx/dv - x*dw/dv)/w^2,   dg/dv = (w*dy/dv - y*dw/dv)/w^2
-    //
-    // From here, |det J| can be rewritten as |det J'/w^3|, where
-    //      [x     y     w    ]   [x   y   w  ]
-    // J' = [dx/du dy/du dw/du] = [m00 m10 m20]
-    //      [dx/dv dy/dv dw/dv]   [m01 m11 m21]
-    SkPoint3 xyw;
-    m.mapHomogeneousPoints(&xyw, &p, 1);
-
-    if (xyw.fZ < SK_ScalarNearlyZero) {
-        // Reaching the discontinuity of xy/w and where the point would clip to w >= 0
-        return SK_ScalarInfinity;
-    }
-    SkMatrix jacobian = SkMatrix::MakeAll(xyw.fX, xyw.fY, xyw.fZ,
-                                          m.getScaleX(), m.getSkewY(), m.getPerspX(),
-                                          m.getSkewX(), m.getScaleY(), m.getPerspY());
-
-    double denom = 1.0 / xyw.fZ;   // 1/w
-    denom = denom * denom * denom; // 1/w^3
-    return SkScalarAbs(SkDoubleToScalar(sk_determinant(jacobian.fMat, true) * denom));
-}
-
-SkScalar SkMatrixPriv::ComputeResScaleForStroking(const SkMatrix& matrix) {
-    // Not sure how to handle perspective differently, so we just don't try (yet)
-    SkScalar sx = SkPoint::Length(matrix[SkMatrix::kMScaleX], matrix[SkMatrix::kMSkewY]);
-    SkScalar sy = SkPoint::Length(matrix[SkMatrix::kMSkewX],  matrix[SkMatrix::kMScaleY]);
-    if (SkScalarsAreFinite(sx, sy)) {
-        SkScalar scale = std::max(sx, sy);
-        if (scale > 0) {
-            return scale;
-        }
-    }
-    return 1;
 }

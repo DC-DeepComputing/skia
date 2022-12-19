@@ -7,8 +7,8 @@
 
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/private/SkConstants.h"
 #include "include/private/SkVx.h"
-
 #include "src/core/SkMatrixInvert.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPathPriv.h"
@@ -178,16 +178,16 @@ static SkRect map_rect_perspective(const SkRect& src, const float mat[16]) {
     const skvx::float4 flip{1.f, 1.f, -1.f, -1.f};
     auto project = [&flip](const skvx::float4& p0, const skvx::float4& p1, const skvx::float4& p2) {
         float w0 = p0[3];
-        if (w0 >= SkPathPriv::kW0PlaneDistance) {
+        if (w0 >= kW0PlaneDistance) {
             // Unclipped, just divide by w
             return flip * skvx::shuffle<0,1,0,1>(p0) / w0;
         } else {
             auto clip = [&](const skvx::float4& p) {
                 float w = p[3];
-                if (w >= SkPathPriv::kW0PlaneDistance) {
-                    float t = (SkPathPriv::kW0PlaneDistance - w0) / (w - w0);
+                if (w >= kW0PlaneDistance) {
+                    float t = (kW0PlaneDistance - w0) / (w - w0);
                     auto c = (t * skvx::shuffle<0,1>(p) + (1.f - t) * skvx::shuffle<0,1>(p0)) /
-                                  SkPathPriv::kW0PlaneDistance;
+                                  kW0PlaneDistance;
 
                     return flip * skvx::shuffle<0,1,0,1>(c);
                 } else {

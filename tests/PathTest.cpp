@@ -4271,10 +4271,6 @@ static void test_contains(skiatest::Reporter* reporter) {
 
 class PathRefTest_Private {
 public:
-    static size_t GetFreeSpace(const SkPathRef& ref) {
-        return   (ref.fPoints.capacity() - ref.fPoints.size()) * sizeof(SkPoint)
-               + (ref.fVerbs.capacity()  - ref.fVerbs.size())  * sizeof(uint8_t);
-    }
 
     static void TestPathRef(skiatest::Reporter* reporter) {
         static const int kRepeatCnt = 10;
@@ -4438,24 +4434,21 @@ private:
 
 class PathTest_Private {
 public:
-    static size_t GetFreeSpace(const SkPath& path) {
-        return PathRefTest_Private::GetFreeSpace(*path.fPathRef);
-    }
 
     static void TestPathTo(skiatest::Reporter* reporter) {
         SkPath p, q;
         p.lineTo(4, 4);
-        p.reversePathTo(q);
+        SkPathPriv::ReversePathTo(p, q);
         check_path_is_line(reporter, &p, 4, 4);
         q.moveTo(-4, -4);
-        p.reversePathTo(q);
+        SkPathPriv::ReversePathTo(p, q);
         check_path_is_line(reporter, &p, 4, 4);
         q.lineTo(7, 8);
         q.conicTo(8, 7, 6, 5, 0.5f);
         q.quadTo(6, 7, 8, 6);
         q.cubicTo(5, 6, 7, 8, 7, 5);
         q.close();
-        p.reversePathTo(q);
+        SkPathPriv::ReversePathTo(p, q);
         SkRect reverseExpected = {-4, -4, 8, 8};
         REPORTER_ASSERT(reporter, p.getBounds() == reverseExpected);
     }
@@ -5689,11 +5682,11 @@ static void test_edger(skiatest::Reporter* r,
         }
     }
 
-    SkPathEdgeIter iter(path);
+    SkPathPriv::EdgeIter iter(path);
     for (auto v : expected) {
         auto e = iter.next();
         REPORTER_ASSERT(r, e);
-        REPORTER_ASSERT(r, SkPathEdgeIter::EdgeToVerb(e.fEdge) == v);
+        REPORTER_ASSERT(r, SkPathPriv::EdgeIter::EdgeToVerb(e.fEdge) == v);
     }
     REPORTER_ASSERT(r, !iter.next());
 }

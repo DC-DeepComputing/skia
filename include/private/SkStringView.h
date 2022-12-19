@@ -8,7 +8,7 @@
 #ifndef SkStringView_DEFINED
 #define SkStringView_DEFINED
 
-#include <string.h>
+#include <cstring>
 #include <string_view>
 
 namespace skstd {
@@ -18,7 +18,7 @@ inline constexpr bool starts_with(std::string_view str, std::string_view prefix)
     if (prefix.length() > str.length()) {
         return false;
     }
-    return prefix.length() == 0 || !memcmp(str.data(), prefix.data(), prefix.length());
+    return prefix.length() == 0 || !std::memcmp(str.data(), prefix.data(), prefix.length());
 }
 
 inline constexpr bool starts_with(std::string_view str, std::string_view::value_type c) {
@@ -29,8 +29,8 @@ inline constexpr bool ends_with(std::string_view str, std::string_view suffix) {
     if (suffix.length() > str.length()) {
         return false;
     }
-    return suffix.length() == 0 || !memcmp(str.data() + str.length() - suffix.length(),
-                                           suffix.data(), suffix.length());
+    return suffix.length() == 0 || !std::memcmp(str.data() + str.length() - suffix.length(),
+                                                suffix.data(), suffix.length());
 }
 
 inline constexpr bool ends_with(std::string_view str, std::string_view::value_type c) {

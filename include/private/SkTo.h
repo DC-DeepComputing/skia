@@ -7,7 +7,7 @@
 #ifndef SkTo_DEFINED
 #define SkTo_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTFitsIn.h"
 
 #include <cstddef>
@@ -29,5 +29,11 @@ template <typename S> constexpr uint64_t SkToU64(S x)   { return SkTo<uint64_t>(
 template <typename S> constexpr int      SkToInt(S x)   { return SkTo<int>(x);      }
 template <typename S> constexpr unsigned SkToUInt(S x)  { return SkTo<unsigned>(x); }
 template <typename S> constexpr size_t   SkToSizeT(S x) { return SkTo<size_t>(x);   }
+
+/** @return false or true based on the condition
+*/
+template <typename T> static constexpr bool SkToBool(const T& x) {
+    return (bool)x;
+}
 
 #endif  // SkTo_DEFINED
