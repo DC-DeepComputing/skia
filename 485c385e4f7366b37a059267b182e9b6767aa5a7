@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b12906_b1b8164d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "This seems like an effective strategy to mitigate the delays around async mapping, and notifying the resource implementation of when it goes back into the cache seems like a useful signal that we might be able to take advantage of for other purposes (not sure what).\n\nThis impacts performance for all vertex and uniform data copies, as well as texture uploads (either from SkImages or glyph atlas updates), since even though we use a transfer buffer to move the data to the actual vertex/index/SSBO buffer, the input copy buffer still has to be mapped. It seems like a bad plan to instead throw away the buffers entirely so that we can always rely on the map at creation, vs. this.\n\nHowever, I want Greg to think about this too and see if he has objections that I haven\u0027t thought of.",
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dec37101_c909f0fe",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "nit: Skia style uses `this-\u003eisMappable()`",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 18
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a83e14_d3109816",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "and here",
+      "range": {
+        "startLine": 91,
+        "startChar": 13,
+        "endLine": 91,
+        "endChar": 23
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492ab73a_319c588c",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "And here, but I\u0027d also be fine removing this assert since it\u0027s presumably covered by `this-\u003eisMapped()` assert above.",
+      "range": {
+        "startLine": 101,
+        "startChar": 13,
+        "endLine": 101,
+        "endChar": 23
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71863ead_ce23f156",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "And here",
+      "range": {
+        "startLine": 108,
+        "startChar": 9,
+        "endLine": 108,
+        "endChar": 19
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "156f8385_9941bde6",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "const bool",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 8
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1955fd9_cc622189",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:16:35Z",
+      "side": 1,
+      "message": "nit: space in front of |",
+      "range": {
+        "startLine": 41,
+        "startChar": 64,
+        "endLine": 41,
+        "endChar": 65
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
