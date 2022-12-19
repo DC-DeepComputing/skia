@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69241261_efba6bab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "FYI, If the dawn buffer isn\u0027t mappable but created with mappedAtCreation \u003d true, dawn will create a staging buffer[1] internally, and issue a buffer to buffer cmd when the buffer\u0027s unmap() is called. And looks like dawn doesn\u0027t cache staging buffers or draw buffers for reusing. \n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/Buffer.cpp;drc\u003d727666becab9ab1b26080180df45f043cac5f0aa;bpv\u003d1;bpt\u003d1;l\u003d292",
+      "parentUuid": "c7b12906_b1b8164d",
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dec37101_c909f0fe",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-19T19:16:35Z",
       "side": 1,
       "message": "nit: Skia style uses `this-\u003eisMappable()`",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 18
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33381211_7c2727e9",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dec37101_c909f0fe",
       "range": {
         "startLine": 83,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d8fd08_a377837f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76a83e14_d3109816",
+      "range": {
+        "startLine": 91,
+        "startChar": 13,
+        "endLine": 91,
+        "endChar": 23
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "492ab73a_319c588c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-12-19T19:16:35Z",
       "side": 1,
       "message": "And here, but I\u0027d also be fine removing this assert since it\u0027s presumably covered by `this-\u003eisMapped()` assert above.",
+      "range": {
+        "startLine": 101,
+        "startChar": 13,
+        "endLine": 101,
+        "endChar": 23
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58dc48d3_c92113bd",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "492ab73a_319c588c",
       "range": {
         "startLine": 101,
         "startChar": 13,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "234ae7ad_8071f1e2",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71863ead_ce23f156",
+      "range": {
+        "startLine": 108,
+        "startChar": 9,
+        "endLine": 108,
+        "endChar": 19
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "156f8385_9941bde6",
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76bfdb36_e1f07f7b",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "156f8385_9941bde6",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 8
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1955fd9_cc622189",
@@ -146,6 +284,30 @@
       "writtenOn": "2022-12-19T19:16:35Z",
       "side": 1,
       "message": "nit: space in front of |",
+      "range": {
+        "startLine": 41,
+        "startChar": 64,
+        "endLine": 41,
+        "endChar": 65
+      },
+      "revId": "485c385e4f7366b37a059267b182e9b6767aa5a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d43adc9_d27f67b3",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-19T19:58:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1955fd9_cc622189",
       "range": {
         "startLine": 41,
         "startChar": 64,
