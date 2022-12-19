@@ -32,10 +32,10 @@ public:
                 sk_sp<SkShader>,
                 sk_sp<SkColorFilter>,
                 sk_sp<SkBlender> primitiveBlender,
-                bool skipColorXform);
+                bool skipColorXform, bool);
     explicit PaintParams(const SkPaint&,
-                         sk_sp<SkBlender> primitiveBlender = nullptr,
-                         bool skipColorXform = false);
+                         sk_sp<SkBlender> primitiveBlender,
+                         bool skipColorXform, bool);
 
     PaintParams(const PaintParams&);
     ~PaintParams();

@@ -114,7 +114,7 @@ private:
 
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines.
-    SkTArray<GraphicsPipelineDesc> fPipelineDescs;
+    SkTArray<GraphicsPipelineDesc> fPipelineDescs1;
     SkTArray<SamplerDesc> fSamplerDescs;
 
     // These resources all get instantiated during prepareResources.

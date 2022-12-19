@@ -382,7 +382,7 @@ void Context::checkAsyncWorkCompletion() {
 
 #ifdef SK_ENABLE_PRECOMPILE
 
-void Context::precompile(const PaintOptions& options) {
+void Context::precompile(const PaintOptions& options, DrawTypeFlags drawTypes) {
     ASSERT_SINGLE_OWNER
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
@@ -396,27 +396,55 @@ void Context::precompile(const PaintOptions& options) {
                                                                             Protected::kNo,
                                                                             Renderable::kYes);
 
-    TextureInfo targetInfo = fSharedContext->caps()->getDefaultMSAATextureInfo(info,
-                                                                               Discardable::kYes);
-
     // Note: at least on Metal, the LoadOp, StoreOp and clearColor fields don't influence the
     // actual RenderPassDescKey.
-    RenderPassDesc renderPassDesc = RenderPassDesc::Make(fSharedContext->caps(),
-                                                         targetInfo,
-                                                         LoadOp::kClear,
-                                                         StoreOp::kStore,
-                                                         DepthStencilFlags::kDepth,
-                                                         /* clearColor= */ { .0f, .0f, .0f, .0f },
-                                                         /* requiresMSAA= */ true);
+    RenderPassDesc renderPassDescs[] = {
+        RenderPassDesc::Make1(fSharedContext->caps(),
+                              info,
+                              LoadOp::kClear,
+                              StoreOp::kStore,
+                              DepthStencilFlags::kDepth,
+                              /* clearColor= */ { .0f, .0f, .0f, .0f },
+                              /* requiresMSAA= */ true),
+        RenderPassDesc::Make1(fSharedContext->caps(),
+                              info,
+                              LoadOp::kClear,
+                              StoreOp::kStore,
+                              DepthStencilFlags::kDepthStencil,
+                              /* clearColor= */ { .0f, .0f, .0f, .0f },
+                              /* requiresMSAA= */ true),
+        RenderPassDesc::Make1(fSharedContext->caps(),
+                              info,
+                              LoadOp::kClear,
+                              StoreOp::kStore,
+                              DepthStencilFlags::kDepth,
+                              /* clearColor= */ { .0f, .0f, .0f, .0f },
+                              /* requiresMSAA= */ false),
+        RenderPassDesc::Make1(fSharedContext->caps(),
+                              info,
+                              LoadOp::kClear,
+                              StoreOp::kStore,
+                              DepthStencilFlags::kDepthStencil,
+                              /* clearColor= */ { .0f, .0f, .0f, .0f },
+                              /* requiresMSAA= */ false),
+    };
 
     options.priv().buildCombinations(
         keyContext,
         [&](UniquePaintParamsID uniqueID) {
             for (const Renderer* r : fSharedContext->rendererProvider()->renderers()) {
-                for (auto&& s : r->steps()) {
-                    if (s->performsShading()) {
-                        GraphicsPipelineDesc pipelineDesc(s, uniqueID);
+                if (!(r->drawTypes() & drawTypes)) {
+                    continue;
+                }
 
+                SkDebugf("precompile: %s %d\n", r->name(), uniqueID.asUInt());
+
+                for (auto&& s : r->steps()) {
+                    GraphicsPipelineDesc pipelineDesc(s,
+                                                      s->performsShading() ? uniqueID
+                                                                           : UniquePaintParamsID::InvalidID());
+
+                    for (RenderPassDesc renderPassDesc : renderPassDescs) {
                         auto pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
                                 keyContext.rtEffectDict(),
                                 pipelineDesc,
@@ -425,11 +453,6 @@ void Context::precompile(const PaintOptions& options) {
                             SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
                             return;
                         }
-
-                        // TODO: Combine the desc with the renderpass description set to generate a
-                        // full GraphicsPipeline and MSL program. Cache that compiled pipeline on
-                        // the resource provider in a map from desc -> pipeline so that any
-                        // later desc created from equivalent RenderStep + Combination maps to it.
                     }
                 }
             }
