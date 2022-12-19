@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/UploadTask.h"
 
 namespace skgpu::graphite {
 
@@ -28,6 +29,18 @@ static const constexpr bool kDumpAtlasData = true;
 #else
 static const constexpr bool kDumpAtlasData = false;
 #endif
+
+class PlotUploadContext : public ConditionalUploadContext {
+public:
+    static std::unique_ptr<ConditionalUploadContext> Make() {
+        return std::make_unique<PlotUploadContext>();
+    }
+    ~PlotUploadContext() override {}
+
+    bool needsUpload() const override { return true; }
+private:
+    // useful stuff
+};
 
 #ifdef SK_DEBUG
 void DrawAtlas::validate(const AtlasLocator& atlasLocator) const {
@@ -142,8 +155,10 @@ bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
                 std::vector<MipLevel> levels;
                 levels.push_back({dataPtr, fBytesPerPixel*fPlotWidth});
 
+                auto uploadContext = PlotUploadContext::Make();
+
                 if (!dc->recordUpload(recorder, sk_ref_sp(proxy), fColorType, levels, dstRect,
-                                      nullptr)) {
+                                      std::move(uploadContext))) {
                     return false;
                 }
             }
