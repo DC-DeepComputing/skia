@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e484f81b_01b29c23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-19T14:40:19Z",
+      "side": 1,
+      "message": "I had to update the BUILD.bazel rules for @vulkan_headers",
+      "revId": "305da638b6519d1276680cd2a87649a2b853cd3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
