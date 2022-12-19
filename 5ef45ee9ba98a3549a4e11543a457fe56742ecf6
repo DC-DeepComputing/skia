@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f8a6b5_756a6c96",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T19:28:36Z",
+      "side": 1,
+      "message": "hitch or jank for a specific instance of lag?",
+      "range": {
+        "startLine": 89,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 48
+      },
+      "revId": "5ef45ee9ba98a3549a4e11543a457fe56742ecf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
