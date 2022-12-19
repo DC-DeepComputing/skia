@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64516ec3_bae2d93e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-19T14:34:30Z",
+      "side": 1,
+      "message": "Side question, do we still have a set of Debian intel bots? Given intel is the most common GPU out there don\u0027t want to lose to much coverage by the loss of these bots.",
+      "revId": "c07c468f448917189e6a167db8b7a755fc110c88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
