@@ -22,6 +22,30 @@
       },
       "revId": "24168fd6938a9d2aa47ca944a6fe70983e5ca797",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d19aa35_a6d31f4c",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-19T14:10:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6438916f_32e222d4",
+      "range": {
+        "startLine": 446,
+        "startChar": 13,
+        "endLine": 446,
+        "endChar": 24
+      },
+      "revId": "24168fd6938a9d2aa47ca944a6fe70983e5ca797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
