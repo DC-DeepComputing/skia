@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8fc767c_d043267b",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-19T21:55:05Z",
+      "side": 1,
+      "message": "After discussing with Greg, we realized this isn\u0027t the right place to handle the map async. \n\nWhile it is when something is returned to the cache, the ResourceCache is subtly complex in graphite and this can be called when the usage refs get brought down to 0, but there are still active commandbuffer/GPU refs. Later on the ResourceCache will check these resources in processReturnedResources() and possibly mark things as purgeable. Given how Buffers are ref\u0027ed, their usage and command buffer refs stay in sync for the time being, so it would probably have the appearance of working.\n\nThere\u0027s potentially the better place to do this in `returnResourceToCache()` when its added to the purgeable queue. But I think for the time being we walk back some of this change to keep things simple:\n - DawnBuffer can map at creation to benefit from first-time mapping, still. That\u0027s a safe change.\n - We remove onReturnToCache() and don\u0027t do the MapAsync early. We can have a TODO that captures what it would look like, but leave it out for now.\n   - This is under the assumption that on native, these MapAsync operations should be pretty cheap. It won\u0027t be until WASM webgpu builds that we\u0027d see more significant performance benefits from this approach.\n   - If that assumption is wrong, can you provide actual timing numbers to help us quantify what we\u0027d gain by doing this on Dawn native.\n   - And, would those numbers instead be better justification for Dawn native to instead support persistently mapped buffers for Graphite to use? That would simply let Dawn behave like every other GPU backend for Graphite.",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
