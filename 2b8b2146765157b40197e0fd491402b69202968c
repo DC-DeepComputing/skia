@@ -16,6 +16,24 @@
       "message": "Is this safe to land now? Looks like the Flutter PR hasn\u0027t merged yet? (And when it does, do we need to wait for it to land in G3 first?)",
       "revId": "2b8b2146765157b40197e0fd491402b69202968c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90ea473c_66e32103",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-19T18:36:08Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure it is safe to land because SkToBool is available from GrTypes.h, so the symbol should be visible. If I guessed wrong, I\u0027ll talk to the Skia Gardener (me).",
+      "parentUuid": "59462aa0_c378dcf7",
+      "revId": "2b8b2146765157b40197e0fd491402b69202968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
