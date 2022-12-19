@@ -396,28 +396,56 @@ void Context::precompile(const PaintOptions& options, DrawTypeFlags drawTypes) {
                                                                             Protected::kNo,
                                                                             Renderable::kYes);
 
-    TextureInfo targetInfo = fSharedContext->caps()->getDefaultMSAATextureInfo(info,
-                                                                               Discardable::kYes);
-
     // Note: at least on Metal, the LoadOp, StoreOp and clearColor fields don't influence the
     // actual RenderPassDescKey.
     RenderPassDesc renderPassDescs[] = {
         RenderPassDesc::Make(fSharedContext->caps(),
-                             targetInfo,
+                             info,
                              LoadOp::kClear,
                              StoreOp::kStore,
                              DepthStencilFlags::kDepth,
                              /* clearColor= */ { .0f, .0f, .0f, .0f },
-                             /* requiresMSAA= */ true)
+                             /* requiresMSAA= */ true),
+        RenderPassDesc::Make(fSharedContext->caps(),
+                             info,
+                             LoadOp::kClear,
+                             StoreOp::kStore,
+                             DepthStencilFlags::kDepthStencil,
+                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* requiresMSAA= */ true),
+        RenderPassDesc::Make(fSharedContext->caps(),
+                             info,
+                             LoadOp::kClear,
+                             StoreOp::kStore,
+                             DepthStencilFlags::kDepth,
+                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* requiresMSAA= */ false),
+        RenderPassDesc::Make(fSharedContext->caps(),
+                             info,
+                             LoadOp::kClear,
+                             StoreOp::kStore,
+                             DepthStencilFlags::kDepthStencil,
+                             /* clearColor= */ { .0f, .0f, .0f, .0f },
+                             /* requiresMSAA= */ false),
     };
 
     options.priv().buildCombinations(
         keyContext,
         /* addPrimitiveBlender= */ false,
-        [&](UniquePaintParamsID uniqueID) {
-            compile(keyContext, uniqueID, drawTypes, renderPassDescs,
-                    /* withPrimitiveBlender= */ false);
-        });
+         [&](UniquePaintParamsID uniqueID) {
+             compile(keyContext, uniqueID, drawTypes, renderPassDescs,
+                     /* withPrimitiveBlender= */ false);
+         });
+
+    if (drawTypes & DrawTypeFlags::kDrawVertices) {
+        options.priv().buildCombinations(
+            keyContext,
+            /* addPrimitiveBlender= */ true,
+            [&](UniquePaintParamsID uniqueID) {
+                compile(keyContext, uniqueID, drawTypes, renderPassDescs,
+                        /* withPrimitiveBlender= */ true);
+            });
+    }
 }
 
 void Context::compile(const KeyContext& keyContext,
@@ -454,7 +482,6 @@ void Context::compile(const KeyContext& keyContext,
         }
     }
 }
-
 #endif // SK_ENABLE_PRECOMPILE
 
 void Context::deleteBackendTexture(BackendTexture& texture) {
