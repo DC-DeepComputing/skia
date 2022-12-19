@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59462aa0_c378dcf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-19T18:32:16Z",
+      "side": 1,
+      "message": "Is this safe to land now? Looks like the Flutter PR hasn\u0027t merged yet? (And when it does, do we need to wait for it to land in G3 first?)",
+      "revId": "2b8b2146765157b40197e0fd491402b69202968c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
