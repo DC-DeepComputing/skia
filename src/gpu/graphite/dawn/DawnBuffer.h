@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
@@ -33,14 +34,19 @@ private:
 
     void onMap() override;
     void onUnmap() override;
-
+    void onReturnedToCache() override;
     void freeGpuData() override;
+
+    bool isMappable() const {
+        return fBuffer.GetUsage() & (wgpu::BufferUsage::MapWrite| wgpu::BufferUsage::MapRead);
+    }
 
     const DawnSharedContext* dawnSharedContext() const {
         return static_cast<const DawnSharedContext*>(this->sharedContext());
     }
 
     wgpu::Buffer fBuffer;
+    DawnAsyncWait fAsyncWait;
 };
 
 } // namespace skgpu::graphite

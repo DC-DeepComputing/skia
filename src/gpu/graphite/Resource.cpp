@@ -28,6 +28,8 @@ Resource::~Resource() {
     SkASSERT(this->wasDestroyed());
 }
 
+void Resource::onReturnedToCache() {}
+
 void Resource::registerWithCache(sk_sp<ResourceCache> returnCache) {
     SkASSERT(!fReturnCache);
     SkASSERT(returnCache);
