@@ -146,6 +146,112 @@ void SkRasterPipeline::append_constant_color(SkArenaAlloc* alloc, const float rg
     }
 }
 
+void SkRasterPipeline::append_copy(SkArenaAlloc* alloc,
+                                   SkRasterPipeline::Stage baseStage,
+                                   float* dst, int dstStride,
+                                   float* src, int srcStride,
+                                   int numSlots) {
+    SkASSERT(numSlots >= 0);
+    while (numSlots > 4) {
+        this->append_copy(alloc, baseStage, dst, dstStride, src, srcStride,  /*numSlots=*/4);
+        dst += 4 * dstStride;
+        src += 4 * srcStride;
+        numSlots -= 4;
+    }
+
+    if (numSlots > 0) {
+        SkASSERT(numSlots <= 4);
+        auto stage = (SkRasterPipeline::Stage)((int)baseStage + numSlots - 1);
+        auto* ctx = alloc->make<SkRasterPipeline_CopySlotsCtx>();
+        ctx->dst = dst;
+        ctx->src = src;
+        this->append(stage, ctx);
+    }
+}
+
+void SkRasterPipeline::append_copy_slots_masked(SkArenaAlloc* alloc,
+                                                float* dst,
+                                                float* src,
+                                                int numSlots) {
+    this->append_copy(alloc,
+                      SkRasterPipeline::copy_slot_masked,
+                      dst, /*dstStride=*/SkOpts::raster_pipeline_highp_stride,
+                      src, /*srcStride=*/SkOpts::raster_pipeline_highp_stride,
+                      numSlots);
+}
+
+void SkRasterPipeline::append_copy_slots_unmasked(SkArenaAlloc* alloc,
+                                                  float* dst,
+                                                  float* src,
+                                                  int numSlots) {
+    this->append_copy(alloc,
+                      SkRasterPipeline::copy_slot_unmasked,
+                      dst, /*dstStride=*/SkOpts::raster_pipeline_highp_stride,
+                      src, /*srcStride=*/SkOpts::raster_pipeline_highp_stride,
+                      numSlots);
+}
+
+void SkRasterPipeline::append_copy_constants(SkArenaAlloc* alloc,
+                                             float* dst,
+                                             float* src,
+                                             int numSlots) {
+    this->append_copy(alloc,
+                      SkRasterPipeline::copy_constant,
+                      dst, /*dstStride=*/SkOpts::raster_pipeline_highp_stride,
+                      src, /*srcStride=*/1,
+                      numSlots);
+}
+
+void SkRasterPipeline::append_zero_slots_unmasked(float* dst, int numSlots) {
+    SkASSERT(numSlots >= 0);
+    while (numSlots > 4) {
+        this->append_zero_slots_unmasked(dst, /*numSlots=*/4);
+        dst += 4 * SkOpts::raster_pipeline_highp_stride;
+        numSlots -= 4;
+    }
+
+    SkRasterPipeline::Stage stage;
+    switch (numSlots) {
+        case 0:  return;
+        case 1:  stage = SkRasterPipeline::zero_slot_unmasked;     break;
+        case 2:  stage = SkRasterPipeline::zero_2_slots_unmasked;  break;
+        case 3:  stage = SkRasterPipeline::zero_3_slots_unmasked;  break;
+        case 4:  stage = SkRasterPipeline::zero_4_slots_unmasked;  break;
+        default: SkUNREACHABLE;
+    }
+
+    this->unchecked_append(stage, dst);
+}
+
+void SkRasterPipeline::append_adjacent_multi_slot_op(SkArenaAlloc* alloc,
+                                                     SkRasterPipeline::Stage baseStage,
+                                                     float* dst,
+                                                     float* src,
+                                                     int numSlots) {
+    // The source and destination must be directly next to one another.
+    SkASSERT(numSlots >= 0);
+    SkASSERT((dst + SkOpts::raster_pipeline_highp_stride * numSlots) == src);
+
+    if (numSlots > 4) {
+        auto ctx = alloc->make<SkRasterPipeline_CopySlotsCtx>();
+        ctx->dst = dst;
+        ctx->src = src;
+        this->unchecked_append(baseStage, ctx);
+        return;
+    } else if (numSlots > 0) {
+        auto specializedStage = (SkRasterPipeline::Stage)(baseStage + numSlots);
+        this->unchecked_append(specializedStage, dst);
+    }
+}
+
+void SkRasterPipeline::append_adjacent_single_slot_op(SkRasterPipeline::Stage stage,
+                                                      float* dst,
+                                                      float* src) {
+    // The source and destination must be directly next to one another.
+    SkASSERT((dst + SkOpts::raster_pipeline_highp_stride) == src);
+    this->unchecked_append(stage, dst);
+}
+
 void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix) {
     SkMatrix::TypeMask mt = matrix.getType();
 
