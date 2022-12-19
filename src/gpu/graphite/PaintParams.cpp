@@ -25,7 +25,7 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkShader> shader,
                          sk_sp<SkColorFilter> colorFilter,
                          sk_sp<SkBlender> primitiveBlender,
-                         bool skipColorXform)
+                         bool skipColorXform, bool foo, bool bar)
         : fColor(color)
         , fFinalBlender(std::move(finalBlender))
         , fShader(std::move(shader))

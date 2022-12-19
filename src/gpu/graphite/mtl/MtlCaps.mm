@@ -639,6 +639,11 @@ uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) con
     renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&colorInfo);
     renderPassDesc.fDepthStencilAttachment.fTextureInfo.getMtlTextureInfo(&depthStencilInfo);
     SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
+
+    SkDebugf("--- %d %d %d %d\n",
+             colorInfo.fFormat, colorInfo.fSampleCount,
+             depthStencilInfo.fFormat, depthStencilInfo.fSampleCount);
+
     uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
     uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
     return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;

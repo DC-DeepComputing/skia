@@ -176,9 +176,11 @@ private:
 
     int numCombinations() const;
     // 'desiredCombination' must be less than the result of the numCombinations call
-    void createKey(const KeyContext&, int desiredCombination, PaintParamsKeyBuilder*) const;
+    void createKey(const KeyContext&, int desiredCombination,
+                   PaintParamsKeyBuilder*, bool addPrimitiveBlender) const;
     void buildCombinations(
         const KeyContext&,
+        bool foo,
         const std::function<void(UniquePaintParamsID)>& processCombination) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
