@@ -233,6 +233,9 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
         fRequiredUniformBufferAlignment = 16;
     }
 
+    // XXX: testing
+    fTextureDataRowBytesAlignment = 256;
+
     fUniformBufferLayout = Layout::kMetal;
 
     // Metal does not distinguish between uniform and storage buffers.
