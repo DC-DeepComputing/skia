@@ -8,13 +8,10 @@
 #ifndef skgpu_graphite_Precompile_DEFINED
 #define skgpu_graphite_Precompile_DEFINED
 
-#include "include/core/SkTypes.h"
-
-#ifdef SK_ENABLE_PRECOMPILE
-
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkTypes.h"
 
 #include <functional>
 #include <optional>
@@ -191,7 +188,5 @@ private:
 };
 
 } // namespace skgpu::graphite
-
-#endif // SK_ENABLE_PRECOMPILE
 
 #endif // skgpu_graphite_Precompile_DEFINED
