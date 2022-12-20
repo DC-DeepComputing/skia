@@ -16,6 +16,24 @@
       "message": "Please take a look at the steps at https://skia.org/docs/dev/contrib/#contribute-code\n\nYou will need to agree to the CLA and add your name to the AUTHORS file.",
       "revId": "259dddc3bc2df0d1237b1912f01c4172ee1d754b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10fb86bb_622b3fa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19514
+      },
+      "writtenOn": "2022-12-20T19:06:24Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "4de15dbb_edfcf151",
+      "revId": "259dddc3bc2df0d1237b1912f01c4172ee1d754b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
