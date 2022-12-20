@@ -46,6 +46,7 @@ enum class BuilderOp {
     // `appendStages`.
     push_literal_f,
     push_slots,
+    push_uniform,
     copy_stack_to_slots,
     copy_stack_to_slots_unmasked,
     discard_stack,
@@ -89,8 +90,10 @@ public:
             int numBranches,
             SkRPDebugTrace* debugTrace);
 
-    void appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc);
-    void dump(SkWStream* s);
+    void appendStages(SkRasterPipeline* pipeline,
+                      SkArenaAlloc* alloc,
+                      SkSpan<const float> uniforms);
+    void dump(SkWStream* s, SkSpan<const float> uniforms);
 
 private:
     using StackDepthMap = SkTHashMap<int, int>; // <stack index, depth of stack>
@@ -100,7 +103,10 @@ private:
         SkSpan<float> stack;
     };
     SlotData allocateSlotData(SkArenaAlloc* alloc);
-    void appendStages(SkRasterPipeline* pipeline, SkArenaAlloc* alloc, const SlotData& slots);
+    void appendStages(SkRasterPipeline* pipeline,
+                      SkArenaAlloc* alloc,
+                      SkSpan<const float> uniforms,
+                      const SlotData& slots);
     void optimize();
     int numValueSlots();
     StackDepthMap tempStackMaxDepths();
@@ -242,6 +248,11 @@ public:
 
     void push_literal_u(uint32_t val) {
         fInstructions.push_back({BuilderOp::push_literal_f, {}, sk_bit_cast<int32_t>(val)});
+    }
+
+    void push_uniform(SlotRange src) {
+        // Translates into copy_slots_unmasked (from uniforms into temp stack) in Raster Pipeline.
+        fInstructions.push_back({BuilderOp::push_uniform, {src.index}, src.count});
     }
 
     void push_slots(SlotRange src) {

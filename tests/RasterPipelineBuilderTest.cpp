@@ -12,10 +12,13 @@
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "tests/Test.h"
 
-static void check(skiatest::Reporter* r, SkSL::RP::Program& program, std::string_view expected) {
+static void check(skiatest::Reporter* r,
+                  SkSL::RP::Program& program,
+                  SkSpan<float> uniformSpan,
+                  std::string_view expected) {
     // Verify that the program matches expectations.
     SkDynamicMemoryWStream stream;
-    program.dump(&stream);
+    program.dump(&stream, uniformSpan);
     sk_sp<SkData> out = stream.detachAsData();
     std::string_view actual(static_cast<const char*>(out->data()), out->size());
     REPORTER_ASSERT(r, actual == expected, "Output did not match expectation:\n%.*s",
@@ -56,7 +59,7 @@ DEF_TEST(RasterPipelineBuilder, r) {
     builder.load_dst(four_slots_at(3));
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/10);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. store_src_rg                   v0..1 = src.rg
     2. store_src                      v2..5 = src.rgba
     3. store_dst                      v6..9 = dst.rgba
@@ -79,7 +82,7 @@ DEF_TEST(RasterPipelineBuilderImmediate, r) {
     builder.immediate_u(456);
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/0);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. immediate_f                    src.r = 0x43A68000 (333.0)
     2. immediate_f                    src.r = 0x00000000 (0.0)
     3. immediate_f                    src.r = 0xC5AD9800 (-5555.0)
@@ -97,7 +100,7 @@ DEF_TEST(RasterPipelineBuilderLoadStoreAccumulator, r) {
     builder.store_masked(0);
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/57);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. load_unmasked                  src.r = v12
     2. store_unmasked                 v34 = src.r
     3. store_unmasked                 v56 = src.r
@@ -122,7 +125,7 @@ DEF_TEST(RasterPipelineBuilderPushPopMaskRegisters, r) {
     builder.pop_condition_mask();   // pop from 0
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/0);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. store_condition_mask           $0 = CondMask
     2. store_loop_mask                $1 = LoopMask
     3. store_return_mask              $2 = RetMask
@@ -155,7 +158,7 @@ DEF_TEST(RasterPipelineBuilderPushPopTempImmediates, r) {
     builder.discard_stack(2);      // discard 0 and 1
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/1);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. copy_constant                  $2 = 0x000003E7 (1.399897e-42)
     2. copy_constant                  $0 = 0x41580000 (13.5)
     3. copy_constant                  $1 = 0xFFFFFF0A
@@ -171,7 +174,7 @@ DEF_TEST(RasterPipelineBuilderCopySlotsMasked, r) {
     builder.copy_slots_masked(four_slots_at(1), four_slots_at(5));
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/9);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. copy_2_slots_masked            v0..1 = Mask(v2..3)
     2. copy_4_slots_masked            v1..4 = Mask(v5..8)
 )");
@@ -184,7 +187,7 @@ DEF_TEST(RasterPipelineBuilderCopySlotsUnmasked, r) {
     builder.copy_slots_unmasked(five_slots_at(1),  five_slots_at(5));
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/10);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. copy_3_slots_unmasked          v0..2 = v2..4
     2. copy_4_slots_unmasked          v1..4 = v5..8
     3. copy_slot_unmasked             v5 = v9
@@ -202,7 +205,7 @@ DEF_TEST(RasterPipelineBuilderPushPopSlots, r) {
     builder.pop_slots(five_slots_at(0));             // pop from $0~$4 into 0~4 (masked)
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/50);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. copy_4_slots_unmasked          $0..3 = v10..13
     2. copy_slot_masked               v5 = Mask($1)
     3. copy_2_slots_unmasked          v20..21 = $2..3
@@ -230,7 +233,7 @@ DEF_TEST(RasterPipelineBuilderDuplicateSelectAndSwizzleSlots, r) {
     builder.discard_stack(1);               // balance stack
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/1);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. copy_constant                  $0 = 0x3F800000 (1.0)
     2. swizzle_2                      $0..1 = ($0..1).xx
     3. swizzle_3                      $1..3 = ($1..3).xxx
@@ -265,7 +268,7 @@ DEF_TEST(RasterPipelineBuilderBranches, r) {
 
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/1);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. jump                           jump +5 (#6)
     2. immediate_f                    src.r = 0x3F800000 (1.0)
     3. immediate_f                    src.r = 0x40000000 (2.0)
@@ -303,7 +306,7 @@ DEF_TEST(RasterPipelineBuilderUnaryAndBinaryOps, r) {
     builder.discard_stack(2);                      // balance stack
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/0);
 
-    check(r, *program,
+    check(r, *program, /*uniformSpan=*/{},
 R"(    1. zero_slot_unmasked             $0 = 0
     2. copy_constant                  $1 = 0x3F800000 (1.0)
     3. copy_constant                  $2 = 0x40000000 (2.0)
