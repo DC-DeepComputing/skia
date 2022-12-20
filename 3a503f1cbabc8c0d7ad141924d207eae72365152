@@ -70,6 +70,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad67f118_8f56cfb0",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 19079
+      },
+      "writtenOn": "2022-12-20T06:21:00Z",
+      "side": 1,
+      "message": "AFAIK `Tick` only calls submit if we didn\u0027t submit the pending command buffer priorly (and only if the command buffer contains some commands i.e not empty) [1]. So I think `Tick` is not always that expensive. It may have spiked overhead some time and then a few subsequent calls would be cheaper. I am not aware that `Tick` calls `vkWaitForFence` (why is there a wait here?). I only saw `vkWaitForFence` is used for Device\u0027s destruction or device lost event [2]. Device destruction/lost could be caused by unhandled errors.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/vulkan/DeviceVk.cpp;drc\u003db38b3b0f8c4f2fa9dbcc7c607c0a2c0974316300;l\u003d250\n[2] https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/vulkan/DeviceVk.cpp;drc\u003db38b3b0f8c4f2fa9dbcc7c607c0a2c0974316300;l\u003d1100\n\nGiven that the cost of individual `Tick` call is complicated, not always constant. I think we should do some profiling to compare \"before vs after\" to see if the change is worth it, i.e improving the performance significantly.\n\nFurthermore, I agree the best way to improve graphite/dawn\u0027s buffer mapping is probably making Dawn allow persistent mapping (get rid of `MapAsync` + `Tick` polling).",
+      "parentUuid": "008123cf_c06a51d5",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
