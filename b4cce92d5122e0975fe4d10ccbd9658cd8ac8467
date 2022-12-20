@@ -16,6 +16,24 @@
       "message": "`std::plus\u003cfloat\u003e`, `std::minus\u003cfloat\u003e`, `std::multiplies\u003cfloat\u003e`, `std::divides\u003cfloat\u003e` ? (I don\u0027t feel strongly either way, just figured I\u0027d throw it out there as an option).",
       "revId": "b4cce92d5122e0975fe4d10ccbd9658cd8ac8467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72af4625_e6e8d500",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-20T20:19:54Z",
+      "side": 1,
+      "message": "I\u0027ll do it if you think it\u0027s better; personally I don\u0027t prefer it, but I also don\u0027t have a strong opinion. (like `std::for_each`, it feels more complicated than just doing it yourself)",
+      "parentUuid": "d07f3224_3e15e4aa",
+      "revId": "b4cce92d5122e0975fe4d10ccbd9658cd8ac8467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
