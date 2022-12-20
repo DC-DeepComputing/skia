@@ -8,7 +8,7 @@
 #ifndef SkSurfaceProps_DEFINED
 #define SkSurfaceProps_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkAPI.h"
 #include "include/private/SkTo.h"
 
 /**

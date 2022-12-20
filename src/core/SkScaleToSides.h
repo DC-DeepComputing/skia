@@ -61,4 +61,4 @@ public:
                   limit, *a + *b, *a, *b, scale);
     }
 };
-#endif // ScaleToSides_DEFINED
+#endif // SkScaleToSides_DEFINED

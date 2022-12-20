@@ -8,10 +8,14 @@
 #ifndef SkTHash_DEFINED
 #define SkTHash_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkChecksum.h"
+#include "include/private/SkDebug.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <initializer_list>
 #include <new>
 #include <utility>

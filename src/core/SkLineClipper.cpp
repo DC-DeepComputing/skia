@@ -10,7 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTo.h"
 
 #include <cstring>

@@ -6,6 +6,8 @@
  */
 
 #include "include/private/SkDeque.h"
+
+#include "include/private/SkAssert.h"
 #include "include/private/SkMalloc.h"
 
 struct SkDeque::Block {
