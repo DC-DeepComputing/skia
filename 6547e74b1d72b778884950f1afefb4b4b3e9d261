@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c06a25ef_b4a6df30",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-20T14:22:13Z",
+      "side": 1,
+      "message": "As a public API I think we should make this comment much more explicit. Like which calls on SkCanvas. Does this handle all these shapes under arbitrary transformations, strokes, etc?",
+      "range": {
+        "startLine": 89,
+        "startChar": 32,
+        "endLine": 89,
+        "endChar": 77
+      },
+      "revId": "6547e74b1d72b778884950f1afefb4b4b3e9d261",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
