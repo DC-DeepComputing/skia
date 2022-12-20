@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07f3224_3e15e4aa",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-20T20:16:45Z",
+      "side": 1,
+      "message": "`std::plus\u003cfloat\u003e`, `std::minus\u003cfloat\u003e`, `std::multiplies\u003cfloat\u003e`, `std::divides\u003cfloat\u003e` ? (I don\u0027t feel strongly either way, just figured I\u0027d throw it out there as an option).",
+      "revId": "b4cce92d5122e0975fe4d10ccbd9658cd8ac8467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
