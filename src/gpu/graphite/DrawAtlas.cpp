@@ -34,14 +34,41 @@ static const constexpr bool kDumpAtlasData = false;
 
 class PlotUploadContext : public ConditionalUploadContext {
 public:
-    static std::unique_ptr<ConditionalUploadContext> Make() {
-        return std::make_unique<PlotUploadContext>();
+    static std::unique_ptr<ConditionalUploadContext> Make(PlotLocator plotLocator,
+                                                          SkColorType colorType,
+                                                          AtlasToken uploadToken,
+                                                          uint32_t recorderID) {
+        return std::make_unique<PlotUploadContext>(plotLocator,
+                                                   colorType,
+                                                   uploadToken,
+                                                   recorderID);
     }
     ~PlotUploadContext() override {}
 
-    bool needsUpload() const override { return true; }
+    bool needsUpload(ResourceProvider* resourceProvider) const override {
+        // use PlotUploadTracker in ResourceProvider to determine if this needs upload
+
+        // if needs upload, update information in Tracker
+
+        return true;
+    }
+
+    // why does this need to be public?
+    PlotUploadContext(PlotLocator plotLocator,
+                      SkColorType colorType,
+                      AtlasToken uploadToken,
+                      uint32_t recorderID)
+        : ConditionalUploadContext()
+        , fPlotLocator(plotLocator)
+        , fColorType(colorType)
+        , fUploadToken(uploadToken)
+        , fRecorderID(recorderID) {}
 private:
-    // useful stuff
+    // identifiers
+    PlotLocator fPlotLocator; // has plot index, page index, and eviction gen ID
+    SkColorType fColorType;   // to identify the particular atlas (may need MaskFormat)
+    AtlasToken fUploadToken;
+    uint32_t fRecorderID;
 };
 
 #ifdef SK_DEBUG
@@ -160,7 +187,13 @@ bool DrawAtlas::recordUploads(UploadList* ul, Recorder* recorder, bool useCached
                 std::vector<MipLevel> levels;
                 levels.push_back({dataPtr, fBytesPerPixel*fPlotWidth});
 
-                auto uploadContext = PlotUploadContext::Make();
+                // Pass this token in instead?
+                plot->setLastUploadToken(recorder->priv().tokenTracker()->nextFlushToken());
+
+                auto uploadContext = PlotUploadContext::Make(plot->plotLocator(),
+                                                             fColorType,
+                                                             plot->lastUploadToken(),
+                                                             recorder->priv().id());
 
                 // Src and dst colorInfo are the same
                 SkColorInfo colorInfo(fColorType, kUnknown_SkAlphaType, nullptr);

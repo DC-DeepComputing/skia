@@ -40,7 +40,7 @@ class ConditionalUploadContext {
 public:
     virtual ~ConditionalUploadContext() {}
 
-    virtual bool needsUpload() const = 0;
+    virtual bool needsUpload(ResourceProvider*) const = 0;
 };
 
 /**
@@ -62,7 +62,7 @@ public:
     bool prepareResources(ResourceProvider*);
 
     // Adds upload command to the given CommandBuffer
-    void addCommand(CommandBuffer*) const;
+    void addCommand(ResourceProvider*, CommandBuffer*) const;
 
 private:
     UploadInstance() {}
