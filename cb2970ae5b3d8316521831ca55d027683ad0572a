@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7ed4bf_fe325b71",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-20T20:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bd8fda0_f70a545c",
+      "range": {
+        "startLine": 88,
+        "startChar": 60,
+        "endLine": 88,
+        "endChar": 78
+      },
+      "revId": "cb2970ae5b3d8316521831ca55d027683ad0572a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f0c089b_e9d79863",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1a53f95_1169c562",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-20T20:20:08Z",
+      "side": 1,
+      "message": "Discussed off-line. Currently, Graphite will draw an SkPath w/ a circle in it differently than a drawCircle call. Changing this behavior is a topic of discussion w/in the larger Skia team.\n\nWrt kPaths vs kSimple drawTypes, we\u0027ve resolved to fuse them together into a kShape drawType.",
+      "parentUuid": "4f0c089b_e9d79863",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 34
+      },
+      "revId": "cb2970ae5b3d8316521831ca55d027683ad0572a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a56ea6c3_5a88a660",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-12-20T16:36:08Z",
       "side": 1,
       "message": "text draws from the client can also trigger path drawing, so make sure if kText is the only type we also add the renders for paths.",
+      "range": {
+        "startLine": 49,
+        "startChar": 46,
+        "endLine": 49,
+        "endChar": 51
+      },
+      "revId": "cb2970ae5b3d8316521831ca55d027683ad0572a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f62000d_d41858fa",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-20T20:20:08Z",
+      "side": 1,
+      "message": "Done - down below\n\nI guess, theoretically, some of the simple RenderSteps (e.g., the AnalyticRRectRenderStep) could come into play (like if we ever needed to render a bullet point as a path) but that should be pretty rare",
+      "parentUuid": "a56ea6c3_5a88a660",
       "range": {
         "startLine": 49,
         "startChar": 46,
