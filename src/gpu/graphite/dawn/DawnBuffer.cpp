@@ -55,7 +55,6 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         break;
     }
 
-    size = SkAlignTo(size, dawnCaps->getMinBufferAlignment());
     wgpu::BufferDescriptor desc;
 #ifdef SK_DEBUG
     desc.label = kBufferTypeNames[static_cast<int>(type)];
