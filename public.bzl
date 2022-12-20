@@ -395,6 +395,7 @@ BASE_SRCS_ALL = [
     "src/core/SkDistanceFieldGen.cpp",
     "src/core/SkDistanceFieldGen.h",
     "src/core/SkDocument.cpp",
+    "src/core/SkDoubleVector.h",
     "src/core/SkDraw.cpp",
     "src/core/SkDraw.h",
     "src/core/SkDrawLooper.cpp",

@@ -130,6 +130,7 @@ CORE_FILES = [
     "SkDistanceFieldGen.cpp",
     "SkDistanceFieldGen.h",
     "SkDocument.cpp",
+    "SkDoubleVector.h",
     "SkDraw.cpp",
     "SkDraw.h",
     "SkDrawLooper.cpp",

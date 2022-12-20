@@ -12,9 +12,9 @@
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkSafe32.h"
+#include "src/core/SkDoubleVector.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
-#include "src/pathops/SkPathOpsPoint.h"
 
 #include <algorithm>
 #include <cmath>
@@ -425,9 +425,9 @@ SkPathBuilder& SkPathBuilder::arcTo(SkPoint p1, SkPoint p2, SkScalar radius) {
     SkPoint start = fPts.back();
 
     // need double precision for these calcs.
-    SkDVector befored, afterd;
-    befored.set({p1.fX - start.fX, p1.fY - start.fY}).normalize();
-    afterd.set({p2.fX - p1.fX, p2.fY - p1.fY}).normalize();
+    SkDoubleVector befored, afterd;
+    befored.set(p1.fX - start.fX, p1.fY - start.fY).normalize();
+    afterd.set(p2.fX - p1.fX, p2.fY - p1.fY).normalize();
     double cosh = befored.dot(afterd);
     double sinh = befored.cross(afterd);
 
