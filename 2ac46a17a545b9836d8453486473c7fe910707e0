@@ -22,6 +22,30 @@
       },
       "revId": "2ac46a17a545b9836d8453486473c7fe910707e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7485a864_a04ebd68",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-12-20T18:25:43Z",
+      "side": 1,
+      "message": "In this instance we might want to remove the #define but have two impl files. One that actually does something when precompile is selected in the buffet build and another that is just stubs for the public API.",
+      "parentUuid": "6fbe7886_277101bb",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 6
+      },
+      "revId": "2ac46a17a545b9836d8453486473c7fe910707e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
