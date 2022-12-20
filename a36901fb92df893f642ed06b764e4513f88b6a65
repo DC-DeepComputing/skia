@@ -33,6 +33,24 @@
       "message": "This fix breaks one Flutter test: \"mouse can select across bidi text\".\npackages/flutter/test/widgets/selectable_region_test.dart (line 784).\nI need to discuss it with the test owner which is going to happen in January.",
       "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53071d22_d8cf5ea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18984
+      },
+      "writtenOn": "2022-12-20T16:42:13Z",
+      "side": 1,
+      "message": "Alright, thanks. This patchset is to help fix some bidi selection problems I found in Flutter on iOS. So I would expect some breakage if anything relied on the incorrect behaviour.",
+      "parentUuid": "f56146ab_53744613",
+      "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
