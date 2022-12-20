@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c0d131e_03f8b3ac",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T18:19:09Z",
+      "side": 1,
+      "message": "Updated to keep requiredUniform/StorageBufferAlignment() as separate functions, and added requiredTransferBufferAlignment() as well. This removed the need for MtlCaps and DawnCaps\u0027s specific getMinimumBufferAlignments(), and their asserts on buffer allocation size are now handled in ResourceProvider globally.",
+      "parentUuid": "4e6e07bd_1a99fcdc",
+      "range": {
+        "startLine": 77,
+        "startChar": 29,
+        "endLine": 77,
+        "endChar": 39
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae7b9ac4_c1f47368",
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "I\u0027m not sure on the alignment requirement for the total size if the buffer were only a vertex/index buffer. But if you planned on copying into it, all copy offsets and sizes have to be aligned for Dawn/Metal, so if you planned to copy the whole source buffer, the dst buffer ought to be aligned. On the other hand, we likely never saw this because all the requested allocations to the DBM were aligned on 4 bytes already.\n\nI like the general idea of using the UploadBufferManager to handle these copies, and I wonder if there\u0027s a way for the DrawBufferManager to refer to the UBM if needed, but the more I think about it, the more I want these alignment requirements to be in Caps, and then let the backend buffers just assert that the necessary conditions have been met. WDYT?",
       "parentUuid": "8f480772_e4626fde",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "9a3baeffbebcc22bc0c52e2993b5d5e600b8bf45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a44318a0_f1ad0107",
+        "filename": "src/gpu/graphite/mtl/MtlBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T18:19:09Z",
+      "side": 1,
+      "message": "ResourceProvider now asserts that all buffer findOrCreates have an appropriately aligned total size.",
+      "parentUuid": "9b7887e9_621b51a6",
       "range": {
         "startLine": 53,
         "startChar": 4,

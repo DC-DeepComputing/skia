@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b1b849e_3366e4de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T18:19:09Z",
+      "side": 1,
+      "message": "Updated based on short term plan following offline discussion. PTAL",
+      "revId": "2e34e6431ba8de80fd74be348230129edb3aa529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
