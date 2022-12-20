@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f57eb512_b2eaf649",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T16:40:47Z",
+      "side": 1,
+      "message": "Let\u0027s try using std::optional and getting rid of these extra types so we don\u0027t have to add the new header. If that turns out to be less straight forward, I\u0027m happy to revisit this approach.",
+      "parentUuid": "3f24d129_ee4740b0",
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79196dbb_de1b27a9",
         "filename": "include/private/SkPathEnums.h",
         "patchSetId": 4
