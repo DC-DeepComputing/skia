@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41602e3f_1c8d026c",
+        "filename": "src/ports/SkFontHost_win.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-20T15:21:31Z",
+      "side": 1,
+      "message": "Use `uint8_t` (the type of `dst[i]`), not `unsigned int`.",
+      "range": {
+        "startLine": 1076,
+        "startChar": 34,
+        "endLine": 1076,
+        "endChar": 46
+      },
+      "revId": "f05163ae98af049d22b33b770ab2e06399fd3a97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
