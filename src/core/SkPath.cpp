@@ -29,7 +29,6 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTLazy.h"
-#include "src/pathops/SkPathOpsPoint.h"
 
 #include <algorithm>
 #include <cmath>
@@ -1335,6 +1334,7 @@ SkPath& SkPath::arcTo(SkScalar rx, SkScalar ry, SkScalar angle, SkPath::ArcSize 
             for (SkPoint& point : mapped) {
                 point.fX = SkScalarRoundToScalar(point.fX);
                 point.fY = SkScalarRoundToScalar(point.fY);
+                point.fY = SkScalarRoundToScalar(point.fY);
             }
         }
         this->conicTo(mapped[0], mapped[1], w);
@@ -1397,22 +1397,24 @@ SkPath& SkPath::arcTo(SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2, SkScal
     this->getLastPt(&start);
 
     // need double precision for these calcs.
-    SkDVector befored, afterd;
-    befored.set({x1 - start.fX, y1 - start.fY}).normalize();
-    afterd.set({x2 - x1, y2 - y1}).normalize();
-    double cosh = befored.dot(afterd);
-    double sinh = befored.cross(afterd);
+    skvx::double2 befored({x1 - start.fX, y1 - start.fY});
+    skvx::double2 afterd({x2 - x1, y2 - y1});
+    double beforeLen = skvx::normalize(befored);
+    double afterLen = skvx::normalize(afterd);
+    double cosh = skvx::dot(befored, afterd);
+    double sinh = skvx::cross(befored, afterd);
 
-    if (!befored.isFinite() || !afterd.isFinite() || SkScalarNearlyZero(SkDoubleToScalar(sinh))) {
+    if (!std::isfinite(beforeLen) || !std::isfinite(afterLen) ||
+         SkScalarNearlyZero(SkDoubleToScalar(sinh))) {
         return this->lineTo(x1, y1);
     }
 
     // safe to convert back to floats now
-    SkVector before = befored.asSkVector();
-    SkVector after = afterd.asSkVector();
     SkScalar dist = SkScalarAbs(SkDoubleToScalar(radius * (1 - cosh) / sinh));
-    SkScalar xx = x1 - dist * before.fX;
-    SkScalar yy = y1 - dist * before.fY;
+    SkScalar xx = x1 - dist * SkDoubleToScalar(befored[0]);
+    SkScalar yy = y1 - dist * SkDoubleToScalar(befored[1]);
+
+    SkVector after = SkVector::Make(afterd[0], afterd[1]);
     after.setLength(dist);
     this->lineTo(xx, yy);
     SkScalar weight = SkScalarSqrt(SkDoubleToScalar(SK_ScalarHalf + cosh * 0.5));
@@ -1714,7 +1716,7 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveCl
                 matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
             if (det2x2 < 0) {
                 dst->setFirstDirection(
-                        SkPathPriv::OppositeFirstDirection(
+                        skpathenums::OppositeFirstDirection(
                             (SkPathFirstDirection)this->getFirstDirection()));
             } else if (det2x2 > 0) {
                 dst->setFirstDirection(this->getFirstDirection());

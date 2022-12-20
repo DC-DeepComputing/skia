@@ -871,9 +871,29 @@ SINT T dot(const Vec<N, T>& a, const Vec<N, T>& b) {
     }
 }
 
-SI float cross(const Vec<2, float>& a, const Vec<2, float>& b) {
+SIT T cross(const Vec<2, T>& a, const Vec<2, T>& b) {
     auto x = a * shuffle<1,0>(b);
     return x[0] - x[1];
+}
+
+SIN double length(const Vec<N, double>& v) {
+    return std::sqrt(dot(v, v));
+}
+
+SINT float length(const Vec<N, T>& v) {
+    return std::sqrt(dot(v, v));
+}
+
+SIN double normalize(Vec<N, double>& v) {
+    double len = length(v);
+    v /= len;
+    return len;
+}
+
+SINT float normalize(Vec<N, T>& v) {
+    float len = length(v);
+    v /= len;
+    return len;
 }
 
 // De-interleaving load of 4 vectors.

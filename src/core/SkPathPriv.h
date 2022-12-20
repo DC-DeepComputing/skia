@@ -44,17 +44,6 @@ public:
     }
 
     /**
-     *  Return the opposite of the specified direction. kUnknown is its own
-     *  opposite.
-     */
-    static SkPathFirstDirection OppositeFirstDirection(SkPathFirstDirection dir) {
-        static const SkPathFirstDirection gOppositeDir[] = {
-            SkPathFirstDirection::kCCW, SkPathFirstDirection::kCW, SkPathFirstDirection::kUnknown,
-        };
-        return gOppositeDir[(unsigned)dir];
-    }
-
-    /**
      *  Tries to compute the direction of the outer-most non-degenerate
      *  contour. If it can be computed, return that direction. If it cannot be determined,
      *  or the contour is known to be convex, return kUnknown. If the direction was determined,
