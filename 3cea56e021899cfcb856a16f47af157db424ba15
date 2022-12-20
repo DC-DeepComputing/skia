@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab53cff2_7cbe5d55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-12-20T16:33:51Z",
+      "side": 1,
+      "message": "Looks like there are no machines available to run the stuck CQ job",
+      "revId": "3cea56e021899cfcb856a16f47af157db424ba15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
