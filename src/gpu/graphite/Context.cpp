@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ClientMappedBufferManager.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -29,6 +30,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
@@ -96,6 +98,27 @@ Context::~Context() {
 #endif
 }
 
+bool Context::finishInitialization() {
+    SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
+
+    StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
+    std::unique_ptr<RendererProvider> renderers{new RendererProvider(&bufferManager)};
+
+    auto result = bufferManager.finalize(fQueueManager.get(), fSharedContext->globalCache());
+    if (result == StaticBufferManager::FinishResult::kFailure) {
+        // If something went wrong filling out the static vertex buffers, any Renderer that would
+        // use it will draw incorrectly, so it's better to fail the Context creation.
+        return false;
+    }
+    if (result == StaticBufferManager::FinishResult::kSuccess &&
+        !fQueueManager->submitToGpu()) {
+        SKGPU_LOG_W("Failed to submit initial command buffer for Context creation.\n");
+        return false;
+    } // else result was kNoWork so skip submitting to the GPU
+    fSharedContext->setRendererProvider(std::move(renderers));
+    return true;
+}
+
 BackendApi Context::backend() const { return fSharedContext->backend(); }
 
 #ifdef SK_DAWN
@@ -115,8 +138,11 @@ std::unique_ptr<Context> Context::MakeDawn(const DawnBackendContext& backendCont
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));
-    SkASSERT(context);
-    return context;
+    if (context && context->finishInitialization()) {
+        return context;
+    } else {
+        return nullptr;
+    }
 }
 #endif
 
@@ -136,8 +162,11 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));
-    SkASSERT(context);
-    return context;
+    if (context && context->finishInitialization()) {
+        return context;
+    } else {
+        return nullptr;
+    }
 }
 #endif
 
@@ -158,8 +187,11 @@ std::unique_ptr<Context> Context::MakeVulkan(const VulkanBackendContext& backend
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));
-    SkASSERT(context);
-    return context;
+    if (context && context->finishInitialization()) {
+        return context;
+    } else {
+        return nullptr;
+    }
 }
 #endif
 

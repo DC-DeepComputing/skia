@@ -16,6 +16,8 @@
 
 namespace skgpu::graphite {
 
+class StaticBufferManager;
+
 /**
  * Graphite defines a limited set of renderers in order to increase the likelihood of batching
  * across draw calls, and reducing the number of shader permutations required. These Renderers are
@@ -69,10 +71,10 @@ private:
     static constexpr int kPathTypeCount = 4;
     static constexpr int kVerticesCount = 8; // 2 modes * 2 color configs * 2 tex coord configs
 
-    friend class SharedContext; // for ctor
+    friend class Context; // for ctor
 
-    // TODO: Take in caps and provide some mechanism for one-time initialization of GPU resources.
-    RendererProvider();
+    // TODO: Take in caps that determines which Renderers to use for each category
+    RendererProvider(StaticBufferManager* bufferManager);
 
     // Cannot be moved or copied
     RendererProvider(const RendererProvider&) = delete;
