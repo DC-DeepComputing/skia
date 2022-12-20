@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0b3cbe7_e7863d2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-20T17:37:06Z",
+      "side": 1,
+      "message": "I thought that we want to pass locale as a parameter... So you just take the current locale? What if the text consists of few bidi regions each one with different locale?",
+      "revId": "4694044d29818470f95191745107d51998ed000a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
