@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70742c1c_16bc3a93",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T15:22:15Z",
+      "side": 1,
+      "message": "Renderer\u0027s emitsPrimitiveColor() is the OR of each RenderStep\u0027s emitsPrimitiveColor().\n\nThe primitive color would only be used for RenderSteps that also perform shading, so I think everything works out here in the event we have a multi-step Renderer that uses primitive blending (which we also don\u0027t have). But maybe we add a defensive assert like `SkASSERT(!s-\u003eperformsShading() || s-\u003eemitsPrimitiveColor() \u003d\u003d withPrimitiveBlender);`?",
+      "range": {
+        "startLine": 440,
+        "startChar": 12,
+        "endLine": 442,
+        "endChar": 12
+      },
+      "revId": "63f3f476c7126d3c7b0f0cdd9064bf00b5612ba4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
