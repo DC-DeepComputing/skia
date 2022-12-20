@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abc18228_c9648d54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T20:24:39Z",
+      "side": 1,
+      "message": "That ended up being really involved, so someone who knows Path better should come back to that later.",
+      "parentUuid": "f57eb512_b2eaf649",
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79196dbb_de1b27a9",
@@ -91,6 +109,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "79196dbb_de1b27a9",
+      "range": {
+        "startLine": 25,
+        "startChar": 10,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a832309_2a5eecf4",
+        "filename": "include/private/SkPathEnums.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T20:24:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a096f921_339f710a",
       "range": {
         "startLine": 25,
         "startChar": 10,
