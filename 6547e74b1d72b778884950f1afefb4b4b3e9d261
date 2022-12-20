@@ -22,6 +22,30 @@
       },
       "revId": "6547e74b1d72b778884950f1afefb4b4b3e9d261",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce3cde29_a0634999",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-20T14:24:23Z",
+      "side": 1,
+      "message": "Like the way we set up the precompile paint stuff it is very obvious the direct correspondence between the pre-comiple paint/shaders/filters/etc. and there normal usages. I don\u0027t think we need to list out every canvas call here as its own enum value, but we just need to make it very clear and obvious to a client what the ones we do have represent",
+      "parentUuid": "c06a25ef_b4a6df30",
+      "range": {
+        "startLine": 89,
+        "startChar": 32,
+        "endLine": 89,
+        "endChar": 77
+      },
+      "revId": "6547e74b1d72b778884950f1afefb4b4b3e9d261",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
