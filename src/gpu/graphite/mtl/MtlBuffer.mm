@@ -30,8 +30,6 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
         return nullptr;
     }
 
-    const MtlCaps& mtlCaps = sharedContext->mtlCaps();
-
     NSUInteger options = 0;
     if (@available(macOS 10.11, iOS 9.0, *)) {
         if (prioritizeGpuReads == PrioritizeGpuReads::kNo) {
@@ -50,7 +48,6 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
         }
     }
 
-    size = SkAlignTo(size, mtlCaps.getMinBufferAlignment());
     sk_cfp<id<MTLBuffer>> buffer([sharedContext->device() newBufferWithLength:size
                                                                       options:options]);
 #ifdef SK_ENABLE_MTL_DEBUG_INFO
@@ -95,4 +92,3 @@ void MtlBuffer::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-
