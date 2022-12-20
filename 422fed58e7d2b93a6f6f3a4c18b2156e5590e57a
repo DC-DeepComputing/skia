@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5449901f_40e774f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-20T18:43:19Z",
+      "side": 1,
+      "message": "Tweaked how dynamic vs. static strings are handled since last time, and got rid of the now unused direct ATrace route in Android framework. The conditional compilation in SkTraceEventCommon has gotten a bit messy, and this is just one way of doing it. LMK if another (possibly cleaner) approach would be preferred, otherwise this is _functionally_ in a good place now IMO.",
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

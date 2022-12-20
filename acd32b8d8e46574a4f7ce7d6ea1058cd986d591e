@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65b547a_8129d371",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-20T18:43:19Z",
+      "side": 1,
+      "message": "\u003e But we may somehow rework this to support other platforms? At that point, I assume we\u0027d want to use the same name, for simplicity?\n\nAt that point yes, but for now this is interconnected enough with `SK_BUILD_FOR_ANDROID_FRAMEWOK` that I\u0027ve begun to lean towards `SK_ANDROID_FRAMEWORK_USE_PERFETTO` to make this connection as explicit as possible.\n\n\u003e Another option might be to have this be a second level macro - i.e. if both this flag and `SK_USE_PERFETTO` are set, we take this path. But I don\u0027t know how complex that is in practice.\n\nI tried this approach initially, but it quickly became prohibitively complex. :/ I think a simple name like that is where we\u0027ll eventually end up though, but not quite yet IMO.",
+      "parentUuid": "1938e12d_a5ec9992",
+      "range": {
+        "startLine": 1612,
+        "startChar": 18,
+        "endLine": 1612,
+        "endChar": 49
+      },
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da892064_d2b06ac3",
@@ -156,6 +180,24 @@
       "side": 1,
       "message": "Haha, that makes sense. I agree with the desire for simplicity. I\u0027m fine with this rule - maybe with an updated comment that says \"here\u0027s why we want you to add `.always`\"?",
       "parentUuid": "9c21ed98_fda71a6f",
+      "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c5e53fc_a1dfaffc",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-20T18:43:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7dd8108_3485a9ac",
       "revId": "acd32b8d8e46574a4f7ce7d6ea1058cd986d591e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
