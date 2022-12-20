@@ -118,6 +118,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7786306f_65fee07d",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2022-12-20T13:50:02Z",
+      "side": 1,
+      "message": "\u003e So MapAsync() must put a pipeline barrier to transfer it to CPU host stage[1]. so the following Tick() call has to submit the pending command buffer with barrier, right?\n\nI see. You are right. Multiple `MapAsync` following by a `Tick` would unnecessarily submit multiple command buffers.",
+      "parentUuid": "b0ea1234_ea0d25cc",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
