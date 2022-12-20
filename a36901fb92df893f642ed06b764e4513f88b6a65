@@ -16,6 +16,23 @@
       "message": "In addition to the regular testing any SkParagraph changes must be tested with Google3. \nI will do it Monday. It\u0027s possible that the current behavior is used and will fail some tests.\nWe need to know in advance and deal with it.",
       "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f56146ab_53744613",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-12-20T16:31:39Z",
+      "side": 1,
+      "message": "This fix breaks one Flutter test: \"mouse can select across bidi text\".\npackages/flutter/test/widgets/selectable_region_test.dart (line 784).\nI need to discuss it with the test owner which is going to happen in January.",
+      "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
