@@ -55,16 +55,13 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         break;
     }
 
-    size = SkAlignTo(size, dawnCaps->getMinBufferAlignment());
     wgpu::BufferDescriptor desc;
 #ifdef SK_DEBUG
     desc.label = kBufferTypeNames[static_cast<int>(type)];
 #endif
     desc.usage = usage;
-    desc.size  = size;
-    // For wgpu::Buffer can be mapped at creation time for the initial data uploading. we should use
-    // it for better performance?
-    desc.mappedAtCreation = false;
+    desc.size  = SkAlignTo(size, dawnCaps->getMinBufferAlignment());
+    desc.mappedAtCreation = usage & (wgpu::BufferUsage::MapWrite | wgpu::BufferUsage::MapRead);
 
     auto buffer = sharedContext->device().CreateBuffer(&desc);
     if (!buffer) {
@@ -72,7 +69,7 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
     }
 
     return sk_sp<Buffer>(new DawnBuffer(sharedContext,
-                                        size,
+                                        desc.size,
                                         std::move(buffer)));
 }
 
@@ -80,24 +77,31 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        size_t size,
                        wgpu::Buffer buffer)
         : Buffer(sharedContext, size)
-        , fBuffer(std::move(buffer)) {}
+        , fBuffer(std::move(buffer))
+        , fIsMapped(this->isMappable()) {}
 
 void DawnBuffer::onMap() {
     SkASSERT(fBuffer);
     SkASSERT(!this->isMapped());
-    SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
-             (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
+    SkASSERT(this->isMappable());
 
-    DawnAsyncWait wait(dawnSharedContext()->device());
-    bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
-    fBuffer.MapAsync(isWrite ? wgpu::MapMode::Write: wgpu::MapMode::Read,
-                     0,
-                     fBuffer.GetSize(),
-                     [](WGPUBufferMapAsyncStatus s, void* userData) {
-                        reinterpret_cast<DawnAsyncWait*>(userData)->signal();
-                     },
-                     &wait);
-    wait.busyWait();
+    if (!fIsMapped) {
+        // MapAsync() and busyWait() are expensive, MapAsync() may need to record pipeline barrier
+        // into the pending command buffer, and busyWait() will submit the pending command buffer,
+        // and busy wait until the submitted buffer is done.
+        // TODO(b/263110359): call MapAsync() earlier, so don't need to submit the command buffer
+        // for each onMap() call.
+        const bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
+        DawnAsyncWait asyncWait(dawnSharedContext()->device());
+        fBuffer.MapAsync(isWrite ? wgpu::MapMode::Write: wgpu::MapMode::Read,
+                        0,
+                        fBuffer.GetSize(),
+                        [](WGPUBufferMapAsyncStatus s, void* userData) {
+                            reinterpret_cast<DawnAsyncWait*>(userData)->signal();
+                        },
+                        &asyncWait);
+        asyncWait.busyWait();
+    }
     fMapPtr = fBuffer.GetMappedRange();
     SkASSERT(fMapPtr);
 }
@@ -105,8 +109,9 @@ void DawnBuffer::onMap() {
 void DawnBuffer::onUnmap() {
     SkASSERT(fBuffer);
     SkASSERT(this->isMapped());
-    SkASSERT(fBuffer.GetUsage() & (wgpu::BufferUsage::MapRead | wgpu::BufferUsage::MapWrite));
+    SkASSERT(this->isMappable());
 
+    fIsMapped = true;
     fBuffer.Unmap();
     fMapPtr = nullptr;
 }

@@ -33,14 +33,18 @@ private:
 
     void onMap() override;
     void onUnmap() override;
-
     void freeGpuData() override;
+
+    bool isMappable() const {
+        return fBuffer.GetUsage() & (wgpu::BufferUsage::MapWrite | wgpu::BufferUsage::MapRead);
+    }
 
     const DawnSharedContext* dawnSharedContext() const {
         return static_cast<const DawnSharedContext*>(this->sharedContext());
     }
 
     wgpu::Buffer fBuffer;
+    bool fIsMapped;
 };
 
 } // namespace skgpu::graphite
