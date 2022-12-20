@@ -94,6 +94,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0ea1234_ea0d25cc",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-20T12:41:33Z",
+      "side": 1,
+      "message": "Sorry my mistake. `asyncWait.busyWait()` calls `Tick()` in a loop until the submit fence is passed and `MapAsync()` callback is called. It doesn\u0027t use `vkWaitForFence()`. So actually, it is worse than using it.\n\nFor this `DawnBuffer` use case, because the buffer is used for data transfer already, so I assume the `wgpu::Buffer` is not in CPU host stage. So `MapAsync()` must put a pipeline barrier to transfer it to CPU host stage[1]. so the following `Tick()` call has to submit the pending command buffer with barrier, right?\nIf a frame needs modify multiple `DawnBuffer`s, the cost should be bigger comparing to calling `MapAsync()`s in advance, so barriers can be submitted together instead of multiple `vkQueueSubmit()` calls. Assuming `vkQueueSubmit()` is expensive.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/vulkan/BufferVk.cpp;l\u003d315;drc\u003d1b9dea23074ba65c0f16113bb22848e2c579f193;bpv\u003d1;bpt\u003d1",
+      "parentUuid": "ad67f118_8f56cfb0",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
