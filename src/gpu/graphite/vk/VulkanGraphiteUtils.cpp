@@ -30,7 +30,11 @@ std::unique_ptr<Context> MakeVulkanContext(const VulkanBackendContext& backendCo
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));
-    return context;
-}
+    if (context && context->finishInitialization()) {
+        return context;
+    } else {
+        return nullptr;
+    }
+    }
 
 } // namespace skgpu::graphite
