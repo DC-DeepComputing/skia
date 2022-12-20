@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fbe7886_277101bb",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-20T17:02:03Z",
+      "side": 1,
+      "message": "So I think this would have to be a separate CL since we already have precompile in this header which would also need to change, but I\u0027m thinking we may need to move around where all this precompile code lives. With the Skia goal of trying to remove these feature specific defines from headers, I think we\u0027ll probably want to have all the precompile specific code living in its own set of files so that Context can be compiled the same with or without it.",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 6
+      },
+      "revId": "2ac46a17a545b9836d8453486473c7fe910707e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
