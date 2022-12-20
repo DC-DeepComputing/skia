@@ -62,7 +62,7 @@ public:
     bool prepareResources(ResourceProvider*);
 
     // Adds upload command to the given CommandBuffer
-    void addCommand(CommandBuffer*) const;
+    void addCommand(ResourceProvider*, CommandBuffer*) const;
 
 private:
     UploadInstance() {}
