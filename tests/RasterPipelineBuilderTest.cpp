@@ -12,7 +12,9 @@
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "tests/Test.h"
 
-static void check(skiatest::Reporter* r, SkSL::RP::Program& program, std::string_view expected) {
+static void check(skiatest::Reporter* r,
+                  SkSL::RP::Program& program,
+                  std::string_view expected) {
     // Verify that the program matches expectations.
     SkDynamicMemoryWStream stream;
     program.dump(&stream);
