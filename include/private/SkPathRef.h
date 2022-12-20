@@ -25,6 +25,15 @@
 
 class SkMatrix;
 class SkRRect;
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    static const int kPathRefGenIDBitCnt = 30; // leave room for the fill type (skbug.com/1762)
+#else
+    static const int kPathRefGenIDBitCnt = 32;
+#endif
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 
 // These are computed from a stream of verbs
 struct SkPathVerbAnalysis {
@@ -314,6 +323,14 @@ public:
 
     bool operator== (const SkPathRef& ref) const;
 
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+    /**
+     * Gets the number of bytes that would be written in writeBuffer()
+     */
+    uint32_t writeSize() const;
+
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
     void interpolate(const SkPathRef& ending, SkScalar weight, SkPathRef* out) const;
 
     /**

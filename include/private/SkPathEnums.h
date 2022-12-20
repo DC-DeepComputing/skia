@@ -22,4 +22,21 @@ enum class SkPathFirstDirection {
     kUnknown,
 };
 
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+namespace skpathenums {
+    /**
+     *  Return the opposite of the specified direction. kUnknown is its own
+     *  opposite.
+     */
+    inline SkPathFirstDirection OppositeFirstDirection(SkPathFirstDirection dir) {
+        static const SkPathFirstDirection gOppositeDir[] = {
+                SkPathFirstDirection::kCCW, SkPathFirstDirection::kCW,
+                SkPathFirstDirection::kUnknown,
+        };
+        return gOppositeDir[(unsigned) dir];
+    }
+}
+
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 #endif

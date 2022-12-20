@@ -252,6 +252,11 @@ skslc_deps = [
   "$_src/core/SkMalloc.cpp",
   "$_src/core/SkMath.cpp",
   "$_src/core/SkMatrixInvert.cpp",
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+  "$_src/core/SkSafeMath.cpp",
+  "$_src/core/SkRasterPipelineUtils.cpp",
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
   "$_src/core/SkSemaphore.cpp",
   "$_src/core/SkStream.cpp",
   "$_src/core/SkString.cpp",

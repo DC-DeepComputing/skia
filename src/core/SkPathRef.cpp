@@ -263,6 +263,15 @@ bool SkPathRef::operator== (const SkPathRef& ref) const {
     return true;
 }
 
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+uint32_t SkPathRef::writeSize() const {
+    return uint32_t(5 * sizeof(uint32_t) +
+                    fVerbs.size_bytes() + fPoints.size_bytes() + fConicWeights.size_bytes() +
+                    sizeof(SkRect));
+}
+
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 void SkPathRef::copy(const SkPathRef& ref,
                      int additionalReserveVerbs,
                      int additionalReservePoints) {

@@ -15,13 +15,11 @@
 #include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkPointPriv.h"
-#include "src/pathops/SkPathOpsCubic.h"
-#include "src/pathops/SkPathOpsPoint.h"
 
+#include <cstddef>
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <cstddef>
 #include <cstdint>
 
 namespace {
@@ -1146,29 +1144,48 @@ SkScalar SkFindCubicCusp(const SkPoint src[4]) {
     return -1;
 }
 
-typedef int (SkDCubic::*InterceptProc)(double intercept, double roots[3]) const;
+// FIXME(kjlubick)
+//
+//typedef int (SkDCubic::*InterceptProc)(double intercept, double roots[3]) const;
+//
+//static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, SkPoint dst[7],
+//                                     InterceptProc method) {
+//    SkDCubic cubic;
+//    double roots[3];
+//    int count = (cubic.set(src).*method)(intercept, roots);
+//    if (count > 0) {
+//        SkDCubicPair pair = cubic.chopAt(roots[0]);
+//        for (int i = 0; i < 7; ++i) {
+//            dst[i] = pair.pts[i].asSkPoint();
+//        }
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool SkChopMonoCubicAtY(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
+//    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
+//}
+//
+//bool SkChopMonoCubicAtX(SkPoint src[4], SkScalar x, SkPoint dst[7]) {
+//    return cubic_dchop_at_intercept(src, x, dst, &SkDCubic::verticalIntersect);
+//}
 
-static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, SkPoint dst[7],
-                                     InterceptProc method) {
-    SkDCubic cubic;
-    double roots[3];
-    int count = (cubic.set(src).*method)(intercept, roots);
-    if (count > 0) {
-        SkDCubicPair pair = cubic.chopAt(roots[0]);
-        for (int i = 0; i < 7; ++i) {
-            dst[i] = pair.pts[i].asSkPoint();
-        }
-        return true;
-    }
+bool SkChopMonoCubicAtY(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
     return false;
 }
 
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+bool SkChopMonoCubicAtX(SkPoint src[4], SkScalar x, SkPoint dst[7]) {
+    return false;
+=======
 bool SkChopMonoCubicAtY(const SkPoint src[4], SkScalar y, SkPoint dst[7]) {
     return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
 }
 
 bool SkChopMonoCubicAtX(const SkPoint src[4], SkScalar x, SkPoint dst[7]) {
     return cubic_dchop_at_intercept(src, x, dst, &SkDCubic::verticalIntersect);
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 }
 
 ///////////////////////////////////////////////////////////////////////////////

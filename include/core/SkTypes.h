@@ -8,9 +8,27 @@
 #ifndef SkTypes_DEFINED
 #define SkTypes_DEFINED
 
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+// TODO(kjlubick) remove this export
+#include "include/private/SkAlign.h" // IWYU pragma: export
+
+=======
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 // All of these files should be independent of things users can set via the user config file.
 // They should also be able to be included in any order.
 // IWYU pragma: begin_exports
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+#include "include/private/SkAPI.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
+#include "include/private/SkFeatures.h"
+
+// Load and verify defines from the user config file.
+#include "include/private/SkLoadUserConfig.h"
+
+// Any includes or defines below can be configured by the user config file.
+#include "include/private/SkDebug.h"
+=======
 #include "include/base/SkAPI.h"
 #include "include/base/SkAttributes.h"
 #include "include/base/SkFeatures.h"
@@ -21,6 +39,7 @@
 // Any includes or defines below can be configured by the user config file.
 #include "include/base/SkAssert.h"
 #include "include/base/SkDebug.h"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 // IWYU pragma: end_exports
 
 #include <climits>

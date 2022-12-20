@@ -8,8 +8,10 @@
 #ifndef SkWeakRefCnt_DEFINED
 #define SkWeakRefCnt_DEFINED
 
-#include "include/core/SkRefCnt.h"
-#include "include/core/SkTypes.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
+#include "include/private/SkRefCnt_impl.h"
 
 #include <atomic>
 #include <cstdint>

@@ -9,7 +9,10 @@
 #define SkMathPriv_DEFINED
 
 #include "include/core/SkTypes.h"
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+=======
 #include "include/private/SkTemplates.h"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 
 #include <cstddef>
 #include <cstdint>

@@ -32,7 +32,11 @@ supported_files_or_dirs=(
   "src/core/SkColorSpace.cpp"
   "src/core/SkContainers.cpp"
   "src/core/SkCubicClipper.cpp"
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+  "src/core/SkDeque.cpp"
+=======
   "src/core/SkCubicMap.cpp"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
   "src/core/SkEdgeBuilder.cpp"
   "src/core/SkEdgeClipper.cpp"
   "src/core/SkFlattenable.cpp"
@@ -41,6 +45,7 @@ supported_files_or_dirs=(
   "src/core/SkLineClipper.cpp"
   "src/core/SkMaskFilter.cpp"
   "src/core/SkMatrix.cpp"
+  "src/core/SkMatrixUtils.cpp"
   "src/core/SkPaint.cpp"
   "src/core/SkPath.cpp"
   "src/core/SkPathBuilder.cpp"
@@ -48,10 +53,13 @@ supported_files_or_dirs=(
   "src/core/SkPathUtils.cpp"
   "src/core/SkPoint.cpp"
   "src/core/SkRRect.cpp"
+  "src/core/SkRSXform.cpp"
   "src/core/SkRect.cpp"
+  "src/core/SkRectPriv.cpp"
   "src/core/SkSafeMath.cpp"
   "src/core/SkScalar.cpp"
   "src/core/SkStream.cpp"
+  "src/core/SkStreamPriv.cpp"
   "src/core/SkString.cpp"
   "src/core/SkTDArray.cpp"
   "src/gpu/ganesh/GrCaps.cpp"

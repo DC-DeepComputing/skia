@@ -413,25 +413,25 @@ bool GrAAConvexTessellator::extractFromPath(const SkMatrix& m, const SkPath& pat
     // TODO: is there a faster way to extract the points from the path? Perhaps
     // get all the points via a new entry point, transform them all in bulk
     // and then walk them to find duplicates?
-    SkPathEdgeIter iter(path);
+    SkPathPriv::EdgeIter iter(path);
     while (auto e = iter.next()) {
         switch (e.fEdge) {
-            case SkPathEdgeIter::Edge::kLine:
+            case SkPathPriv::EdgeIter::Edge::kLine:
                 if (!SkPathPriv::AllPointsEq(e.fPts, 2)) {
                     this->lineTo(m, e.fPts[1], kSharp_CurveState);
                 }
                 break;
-            case SkPathEdgeIter::Edge::kQuad:
+            case SkPathPriv::EdgeIter::Edge::kQuad:
                 if (!SkPathPriv::AllPointsEq(e.fPts, 3)) {
                     this->quadTo(m, e.fPts);
                 }
                 break;
-            case SkPathEdgeIter::Edge::kCubic:
+            case SkPathPriv::EdgeIter::Edge::kCubic:
                 if (!SkPathPriv::AllPointsEq(e.fPts, 4)) {
                     this->cubicTo(m, e.fPts);
                 }
                 break;
-            case SkPathEdgeIter::Edge::kConic:
+            case SkPathPriv::EdgeIter::Edge::kConic:
                 if (!SkPathPriv::AllPointsEq(e.fPts, 3)) {
                     this->conicTo(m, e.fPts, iter.conicWeight());
                 }

@@ -8,16 +8,19 @@
 #ifndef skgpu_SingleOwner_DEFINED
 #define skgpu_SingleOwner_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/SkDebug.h" // IWYU pragma: keep
 
-#ifdef SK_DEBUG
+#if defined(SK_DEBUG)
+#include "include/private/SkAssert.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkThreadAnnotations.h"
 #include "include/private/SkThreadID.h"
+
 #endif
 
 namespace skgpu {
 
-#ifdef SK_DEBUG
+#if defined(SK_DEBUG)
 
 #define SKGPU_ASSERT_SINGLE_OWNER(obj) \
     skgpu::SingleOwner::AutoEnforce debug_SingleOwner(obj, __FILE__, __LINE__);

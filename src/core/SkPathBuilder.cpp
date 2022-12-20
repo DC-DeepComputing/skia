@@ -10,11 +10,21 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRRect.h"
 #include "include/private/SkPathEnums.h"
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+=======
 #include "include/private/SkPathRef.h"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 #include "include/private/SkSafe32.h"
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+#include "src/core/SkDoubleVector.h"
+=======
 #include "include/private/SkVx.h"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 #include "src/core/SkGeometry.h"
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+=======
 #include "src/core/SkPathPriv.h"
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 
 #include <algorithm>
 #include <cmath>
@@ -59,7 +69,7 @@ SkPathBuilder& SkPathBuilder::reset() {
 SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->reset().setFillType(src.getFillType());
 
-    for (auto [verb, pts, w] : SkPathPriv::Iterate(src)) {
+    for (auto [verb, pts, w] : SkPath::Iterate(src)) {
         switch (verb) {
             case SkPathVerb::kMove:  this->moveTo(pts[0]); break;
             case SkPathVerb::kLine:  this->lineTo(pts[1]); break;
@@ -88,7 +98,7 @@ SkRect SkPathBuilder::computeBounds() const {
  *
  *  After each edit (i.e. adding a verb)
         this->setConvexityType(SkPathConvexity::kUnknown);
-        this->setFirstDirection(SkPathPriv::kUnknown_FirstDirection);
+        this->setFirstDirection(SkPathFirstDirection::kUnknown);
  */
 
 SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
@@ -425,10 +435,18 @@ SkPathBuilder& SkPathBuilder::arcTo(SkPoint p1, SkPoint p2, SkScalar radius) {
     SkPoint start = fPts.back();
 
     // need double precision for these calcs.
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+    SkDoubleVector befored, afterd;
+    befored.set(p1.fX - start.fX, p1.fY - start.fY).normalize();
+    afterd.set(p2.fX - p1.fX, p2.fY - p1.fY).normalize();
+    double cosh = befored.dot(afterd);
+    double sinh = befored.cross(afterd);
+=======
     skvx::double2 befored = normalize(skvx::double2{p1.fX - start.fX, p1.fY - start.fY});
     skvx::double2 afterd = normalize(skvx::double2{p2.fX - p1.fX, p2.fY - p1.fY});
     double cosh = dot(befored, afterd);
     double sinh = cross(befored, afterd);
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
 
     // If the previous point equals the first point, befored will be denormalized.
     // If the two points equal, afterd will be denormalized.
@@ -829,7 +847,7 @@ SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
     bool needClose = false;
     while (verbs > verbsBegin) {
         uint8_t v = *--verbs;
-        int n = SkPathPriv::PtsInVerb(v);
+        int n = SkPath::PtsInVerb(v);
 
         if (needMove) {
             --pts;

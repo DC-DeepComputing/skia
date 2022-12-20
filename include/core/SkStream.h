@@ -19,6 +19,7 @@
 #include <cstring>
 #include <memory>
 #include <utility>
+
 class SkStreamAsset;
 
 /**

@@ -249,5 +249,10 @@
   # IWYU seems to get confused on where the namespace sktext is "defined". Any files in
   # this list are ok.
   { symbol: ["sktext", "private", "\"src/text/StrikeForGPU.h\"", "public"] },
-  { symbol: ["sktext", "private", "\"src/text/GlyphRun.h\"", "public"] }
+  { symbol: ["sktext", "private", "\"src/text/GlyphRun.h\"", "public"] },
+
+  { symbol: ["SK_DEBUG", "private", "\"include/core/SkTypes.h\"", "public"] },
+  { symbol: ["SK_DEBUG", "private", "\"include/private/SkDebug.h\"", "public"] },
+  { symbol: ["SK_RELEASE", "private", "\"include/core/SkTypes.h\"", "public"] },
+  { symbol: ["SK_RELEASE", "private", "\"include/private/SkDebug.h\"", "public"] }
 ]

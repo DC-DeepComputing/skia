@@ -11,14 +11,15 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkVx.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
-struct SkPoint3;
 
 class SkMatrixPriv {
 public:
@@ -36,12 +37,6 @@ public:
     }
 
     typedef SkMatrix::MapXYProc MapXYProc;
-    typedef SkMatrix::MapPtsProc MapPtsProc;
-
-
-    static MapPtsProc GetMapPtsProc(const SkMatrix& matrix) {
-        return SkMatrix::GetMapPtsProc(matrix.getType());
-    }
 
     static MapXYProc GetMapXYProc(const SkMatrix& matrix) {
         return SkMatrix::GetMapXYProc(matrix.getType());
@@ -151,9 +146,6 @@ public:
         }
     }
 
-    static void MapHomogeneousPointsWithStride(const SkMatrix& mx, SkPoint3 dst[], size_t dstStride,
-                                               const SkPoint3 src[], size_t srcStride, int count);
-
     static bool PostIDiv(SkMatrix* matrix, int divx, int divy) {
         return matrix->postIDiv(divx, divy);
     }
@@ -186,9 +178,53 @@ public:
     // This can be crudely thought of as "device pixel area" / "local pixel area" at 'p'.
     //
     // Returns positive infinity if the transformed homogeneous point has w <= 0.
-    static SkScalar DifferentialAreaScale(const SkMatrix& m, const SkPoint& p);
+    static SkScalar DifferentialAreaScale(const SkMatrix& m, const SkPoint& p) {
+        //              [m00 m01 m02]                                 [f(u,v)]
+        // Assuming M = [m10 m11 m12], define the projected p'(u,v) = [g(u,v)] where
+        //              [m20 m12 m22]
+        //                                                        [x]     [u]
+        // f(u,v) = x(u,v) / w(u,v), g(u,v) = y(u,v) / w(u,v) and [y] = M*[v]
+        //                                                        [w]     [1]
+        //
+        // Then the differential scale factor between p = (u,v) and p' is |det J|,
+        // where J is the Jacobian for p': [df/du dg/du]
+        //                                 [df/dv dg/dv]
+        // and df/du = (w*dx/du - x*dw/du)/w^2,   dg/du = (w*dy/du - y*dw/du)/w^2
+        //     df/dv = (w*dx/dv - x*dw/dv)/w^2,   dg/dv = (w*dy/dv - y*dw/dv)/w^2
+        //
+        // From here, |det J| can be rewritten as |det J'/w^3|, where
+        //      [x     y     w    ]   [x   y   w  ]
+        // J' = [dx/du dy/du dw/du] = [m00 m10 m20]
+        //      [dx/dv dy/dv dw/dv]   [m01 m11 m21]
+        SkPoint3 xyw;
+        m.mapHomogeneousPoints(&xyw, &p, 1);
 
-    static SkScalar ComputeResScaleForStroking(const SkMatrix& matrix);
+        if (xyw.fZ < SK_ScalarNearlyZero) {
+            // Reaching the discontinuity of xy/w and where the point would clip to w >= 0
+            return SK_ScalarInfinity;
+        }
+        SkMatrix jacobian = SkMatrix::MakeAll(xyw.fX, xyw.fY, xyw.fZ,
+                                              m.getScaleX(), m.getSkewY(), m.getPerspX(),
+                                              m.getSkewX(), m.getScaleY(), m.getPerspY());
+
+        double denom = 1.0 / xyw.fZ;   // 1/w
+        denom = denom * denom * denom; // 1/w^3
+
+        return SkScalarAbs(SkDoubleToScalar(SkMatrix::determinant(jacobian.fMat, true) * denom));
+    }
+
+    static SkScalar ComputeResScaleForStroking(const SkMatrix& matrix) {
+        // Not sure how to handle perspective differently, so we just don't try (yet)
+        SkScalar sx = SkPoint::Length(matrix[SkMatrix::kMScaleX], matrix[SkMatrix::kMSkewY]);
+        SkScalar sy = SkPoint::Length(matrix[SkMatrix::kMSkewX],  matrix[SkMatrix::kMScaleY]);
+        if (SkScalarsAreFinite(sx, sy)) {
+            SkScalar scale = std::max(sx, sy);
+            if (scale > 0) {
+                return scale;
+            }
+        }
+        return 1;
+    }
 };
 
 #endif

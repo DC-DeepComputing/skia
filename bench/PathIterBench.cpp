@@ -106,7 +106,7 @@ protected:
                 break;
             case PathIterType::kEdge:
                 for (int i = 0; i < loops; ++i) {
-                    SkPathEdgeIter iter(fPath);
+                    SkPathPriv::EdgeIter iter(fPath);
                     while (auto r = iter.next()) {
                         handle((int)r.fEdge, r.fPts);
                     }

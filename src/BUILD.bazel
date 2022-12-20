@@ -127,13 +127,82 @@ generate_cpp_files_for_headers(
     to_generate = [
         "src/core/SkAutoMalloc.h",
         "src/core/SkASAN.h",
+<<<<<<< PATCH SET (a9c989 Proof of concept Skia Buffet build)
+=======
         "src/core/SkMatrixPriv.h",
         "src/core/SkPathPriv.h",
         "src/core/SkSafeMath.h",
         "src/core/SkMathPriv.h",
+>>>>>>> BASE      (9423a8 Roll vulkan-deps from 61636505d609 to 7ed449387d3b (1 revisi)
         "src/core/SkScopeExit.h",
-        "src/core/SkTLazy.h",
+        "src/core/SkPathPriv.h",
+        "src/core/SkMatrixPriv.h",
+        "src/core/SkSafeMath.h",
         "src/core/SkTBlockList.h",
+        "src/core/SkDoubleVector.h",
+        "src/core/SkTLazy.h",
         "src/image/SkImage_Base.h",
+    ],
+)
+
+# Experimental rules for a modular, "buffet" Skia build
+
+cc_library(
+    name = "base",
+    srcs = [
+        # We don't want any other Skia files (other than SkTypes.h) to include
+        # SkUserConfig.h
+        "//include/config:base_srcs",
+        "//src/core:base_srcs",
+        "//src/utils:base_srcs",
+    ],
+    hdrs = [
+        "//include/core:base_hdrs",
+        "//include/private:base_hdrs",
+        "//src/core:base_hdrs",
+        "//src/utils:base_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//src/ports:__pkg__"],
+)
+
+cc_library(
+    name = "core",
+    srcs = [
+        "//include/private:core_srcs",
+        "//src/core:buffet_core_srcs",
+    ],
+    hdrs = [
+        "//include/core:core_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [":base"],
+)
+
+cc_library(
+    name = "core_priv",
+    hdrs = [
+        "//src/core:core_priv_hdrs",
+    ],
+    features = ["layering_check"],
+    deps = [":base"],
+)
+
+cc_library(
+    name = "pathops",
+    srcs = [
+        "//src/pathops:private_hdrs",
+        "//src/pathops:srcs",
+    ],
+    hdrs = [
+        "//include/pathops:public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":core",
+        ":core_priv",
     ],
 )

@@ -45,7 +45,7 @@ void SkOpBuilder::ReversePath(SkPath* path) {
     SkPoint lastPt;
     SkAssertResult(path->getLastPt(&lastPt));
     temp.moveTo(lastPt);
-    temp.reversePathTo(*path);
+    SkPathPriv::ReversePathTo(temp, *path);
     temp.close();
     *path = temp;
 }
