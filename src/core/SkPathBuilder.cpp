@@ -12,9 +12,9 @@
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkSafe32.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
-#include "src/pathops/SkPathOpsPoint.h"
 
 #include <algorithm>
 #include <cmath>
@@ -425,22 +425,24 @@ SkPathBuilder& SkPathBuilder::arcTo(SkPoint p1, SkPoint p2, SkScalar radius) {
     SkPoint start = fPts.back();
 
     // need double precision for these calcs.
-    SkDVector befored, afterd;
-    befored.set({p1.fX - start.fX, p1.fY - start.fY}).normalize();
-    afterd.set({p2.fX - p1.fX, p2.fY - p1.fY}).normalize();
-    double cosh = befored.dot(afterd);
-    double sinh = befored.cross(afterd);
+    skvx::double2 befored({p1.fX - start.fX, p1.fY - start.fY});
+    skvx::double2 afterd({p2.fX - p1.fX, p2.fY - p2.fY});
+    double beforeLen = skvx::normalize(befored);
+    double afterLen = skvx::normalize(afterd);
+    double cosh = skvx::dot(befored, afterd);
+    double sinh = skvx::cross(befored, afterd);
 
-    if (!befored.isFinite() || !afterd.isFinite() || SkScalarNearlyZero(SkDoubleToScalar(sinh))) {
+    if (!std::isfinite(beforeLen) || !std::isfinite(afterLen) ||
+         SkScalarNearlyZero(SkDoubleToScalar(sinh))) {
         return this->lineTo(p1);
     }
 
     // safe to convert back to floats now
-    SkVector before = befored.asSkVector();
-    SkVector after = afterd.asSkVector();
     SkScalar dist = SkScalarAbs(SkDoubleToScalar(radius * (1 - cosh) / sinh));
-    SkScalar xx = p1.fX - dist * before.fX;
-    SkScalar yy = p1.fY - dist * before.fY;
+    SkScalar xx = p1.fX - dist * SkDoubleToScalar(befored[0]);
+    SkScalar yy = p1.fY - dist * SkDoubleToScalar(befored[1]);
+
+    SkVector after = SkVector::Make(afterd[0], afterd[1]);
     after.setLength(dist);
     this->lineTo(xx, yy);
     SkScalar weight = SkScalarSqrt(SkDoubleToScalar(SK_ScalarHalf + cosh * 0.5));

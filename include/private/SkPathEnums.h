@@ -22,4 +22,18 @@ enum class SkPathFirstDirection {
     kUnknown,
 };
 
+namespace skpathenums {
+    /**
+     *  Return the opposite of the specified direction. kUnknown is its own
+     *  opposite.
+     */
+    inline SkPathFirstDirection OppositeFirstDirection(SkPathFirstDirection dir) {
+        static const SkPathFirstDirection gOppositeDir[] = {
+                SkPathFirstDirection::kCCW, SkPathFirstDirection::kCW,
+                SkPathFirstDirection::kUnknown,
+        };
+        return gOppositeDir[(unsigned) dir];
+    }
+}
+
 #endif

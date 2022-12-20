@@ -244,11 +244,11 @@ DEF_TEST(SkVx_xyzw, r) {
 }
 
 DEF_TEST(SkVx_cross_dot, r) {
-    REPORTER_ASSERT(r, cross({0,1}, {0,1}) == 0);
-    REPORTER_ASSERT(r, cross({1,0}, {1,0}) == 0);
-    REPORTER_ASSERT(r, cross({1,1}, {1,1}) == 0);
-    REPORTER_ASSERT(r, cross({1,1}, {1,-1}) == -2);
-    REPORTER_ASSERT(r, cross({1,1}, {-1,1}) == 2);
+    REPORTER_ASSERT(r, cross(int2{0,1}, int2{0,1}) == 0);
+    REPORTER_ASSERT(r, cross(int2{1,0}, int2{1,0}) == 0);
+    REPORTER_ASSERT(r, cross(int2{1,1}, int2{1,1}) == 0);
+    REPORTER_ASSERT(r, cross(int2{1,1}, int2{1,-1}) == -2);
+    REPORTER_ASSERT(r, cross(int2{1,1}, int2{-1,1}) == 2);
 
     REPORTER_ASSERT(r, dot(int2{0,1}, int2{1,0}) == 0);
     REPORTER_ASSERT(r, dot(int2{1,0}, int2{0,1}) == 0);
@@ -262,10 +262,17 @@ DEF_TEST(SkVx_cross_dot, r) {
               d=rand.nextRangeF(-1,1);
         constexpr static float kTolerance = 1.f / (1 << 20);
         REPORTER_ASSERT(r, SkScalarNearlyEqual(
-                cross({a,b}, {c,d}), SkPoint::CrossProduct({a,b}, {c,d}), kTolerance));
+                cross(float2{a,b}, float2{c,d}), SkPoint::CrossProduct({a,b}, {c,d}), kTolerance));
         REPORTER_ASSERT(r, SkScalarNearlyEqual(
                 dot(float2{a,b}, float2{c,d}), SkPoint::DotProduct({a,b}, {c,d}), kTolerance));
     }
+
+    auto assertDoublesEqual = [&](double left, double right) {
+        REPORTER_ASSERT(r, SkScalarNearlyEqual(left, right), "%f != %f", left, right);
+    };
+    assertDoublesEqual(cross(double2{1.2, 3.4}, double2{3.4, -1.2}),          -13.000000);
+    assertDoublesEqual(cross(double2{12.34, 5.6}, double2{7.8, -9.0}),       -154.740000);
+    assertDoublesEqual(cross(double2{12.34, 5.6}, double2{7.8, 9.012345678}),  67.532346);
 }
 
 template<int N, typename T> void check_strided_loads(skiatest::Reporter* r) {
@@ -354,6 +361,50 @@ DEF_TEST(SkVx_saturated_add, r) {
             REPORTER_ASSERT(r, saturated_add(skvx::byte16(a), skvx::byte16(b))[0] == exact);
         }
     }
+}
+
+DEF_TEST(SkVx_length, r) {
+    auto assertFloatsEqual = [&](float left, float right) {
+        REPORTER_ASSERT(r, SkScalarNearlyEqual(left, right), "%f != %f", left, right);
+    };
+    auto assertDoublesEqual = [&](double left, double right) {
+        REPORTER_ASSERT(r, SkScalarNearlyEqual(left, right), "%f != %f", left, right);
+    };
+
+    assertFloatsEqual(length(int2{0, 1}),        1.000000);
+    assertFloatsEqual(length(int2{2, 0}),        2.000000);
+    assertFloatsEqual(length(int2{3, 4}),        5.000000);
+    assertFloatsEqual(length(int2{1, 1}),        1.414214);
+    assertFloatsEqual(length(int4{1, 2, 3, 4}),  5.477226);
+
+    assertFloatsEqual(length(float2{2.5f, 2.5f}), 3.535534);
+
+    assertDoublesEqual(length(double2{2.5, 2.5}),           3.535534);
+    assertDoublesEqual(length(double4{1.5, 2.5, 3.5, 4.5}), 6.403124);
+}
+
+DEF_TEST(SkVx_normalize, r) {
+    // No tests for normalizing int vectors because all the channels would be 0.
+    // It is unlikely someone would want to actually use skvx::normalize on int
+    // vectors for that reason.
+
+    auto assertDoublesEqual = [&](double left, double right) {
+        REPORTER_ASSERT(r, SkScalarNearlyEqual(left, right), "%f != %f", left, right);
+    };
+
+    skvx::double2 twoDoubles({1.2, 3.4});
+    double oldLen = normalize(twoDoubles);
+    assertDoublesEqual(twoDoubles[0], 0.332820);
+    assertDoublesEqual(twoDoubles[1], 0.942990);
+    assertDoublesEqual(oldLen,        3.605551);
+
+    skvx::double4 fourDoubles({1.2, 3.4, 5.6, 7.8});
+    oldLen = normalize(fourDoubles);
+    assertDoublesEqual(fourDoubles[0],  0.116997);
+    assertDoublesEqual(fourDoubles[1],  0.331490);
+    assertDoublesEqual(fourDoubles[2],  0.545984);
+    assertDoublesEqual(fourDoubles[3],  0.760478);
+    assertDoublesEqual(oldLen,         10.256705);
 }
 
 }  // namespace skvx
