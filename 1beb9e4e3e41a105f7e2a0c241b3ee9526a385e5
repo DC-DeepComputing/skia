@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a05feb9b_92b32f5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-12-20T14:21:25Z",
+      "side": 1,
+      "message": "It seems pretty strange that the overhead of one function call is accounting for 1% in MotionMark.  How hot is that loop, is it truly involving \u003c 100 function calls?\n\nIf the cost of Swizzle construction is non-trivial, maybe there are opportunities for retaining/reusing.",
+      "revId": "1beb9e4e3e41a105f7e2a0c241b3ee9526a385e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
