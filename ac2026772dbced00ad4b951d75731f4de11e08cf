@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a48f6dd_e394f25f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-20T21:18:04Z",
+      "side": 1,
+      "message": "Removal of Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All is in a follow-on CL. Will manually submit this if all other jobs pass.",
+      "revId": "ac2026772dbced00ad4b951d75731f4de11e08cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
