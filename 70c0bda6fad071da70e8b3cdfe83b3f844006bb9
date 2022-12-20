@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36adc072_9f94ac90",
+        "filename": "src/core/SkDoubleVector.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T20:25:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d065f49e_cd302f25",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "70c0bda6fad071da70e8b3cdfe83b3f844006bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e0e9e75_c00d82d8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-20T16:38:48Z",
       "side": 1,
       "message": "Just `return {SkDoubleToScalar(fX), SkDoubleToScalar(fY)}`? or `return SkVector{x,y}`?",
+      "range": {
+        "startLine": 48,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 17
+      },
+      "revId": "70c0bda6fad071da70e8b3cdfe83b3f844006bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c73025d0_1b4a07fc",
+        "filename": "src/core/SkDoubleVector.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T20:25:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e0e9e75_c00d82d8",
       "range": {
         "startLine": 48,
         "startChar": 8,
