@@ -214,6 +214,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d65f223_23920a90",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-20T14:38:54Z",
+      "side": 1,
+      "message": "Yeah you\u0027re right that without the data or expertise from the Dawn team it\u0027s hard to really make a good call here. FWIW my expectation would be that on native when we call MapAsync it would generally return in one \"Tick\" call which I would expect to be low overhead. Unlike when running WebGPU where your process may be backgrounded and you end up needing to wait longer to wake up again.",
+      "parentUuid": "1722c5a0_2e6d93ce",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
