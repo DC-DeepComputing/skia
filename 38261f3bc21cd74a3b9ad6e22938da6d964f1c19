@@ -33,6 +33,24 @@
       "message": "And if I manually copy `icu_bidi` into our `third_party` folder, these relative paths will break because they are assuming `icu_bidi` is always inside `skia`.\n\nI think icu_bidi needs to be a little more decoupled from skia in order for it to work in the flutter engine. That said, I\u0027m not too familiar with how gn and deps work, so there may be other issues into play here.",
       "revId": "38261f3bc21cd74a3b9ad6e22938da6d964f1c19",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f5bf7a8_88ce0dae",
+        "filename": "third_party/icu_bidi/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-20T19:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cb1c076_c9a9f087",
+      "revId": "38261f3bc21cd74a3b9ad6e22938da6d964f1c19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

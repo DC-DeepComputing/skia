@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee091ea_23c54f60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2022-12-20T19:15:22Z",
+      "side": 1,
+      "message": "After patch 13, we are able to build CanvasKit without ICU in the flutter/engine repo! 🎉",
+      "revId": "d92853ebd3175fdefec05a565aa31199335a34ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
