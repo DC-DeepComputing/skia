@@ -170,7 +170,8 @@ bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
     return true;
 }
 
-void UploadInstance::addCommand(CommandBuffer* commandBuffer) const {
+void UploadInstance::addCommand(ResourceProvider* resourceProvider,
+                                CommandBuffer* commandBuffer) const {
     SkASSERT(fTextureProxy && fTextureProxy->isInstantiated());
 
     if (!fConditionalContext || fConditionalContext->needsUpload()) {
@@ -234,10 +235,10 @@ bool UploadTask::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool UploadTask::addCommands(ResourceProvider*,
+bool UploadTask::addCommands(ResourceProvider* resourceProvider,
                              CommandBuffer* commandBuffer) {
     for (unsigned int i = 0; i < fInstances.size(); ++i) {
-        fInstances[i].addCommand(commandBuffer);
+        fInstances[i].addCommand(resourceProvider, commandBuffer);
     }
 
     return true;
