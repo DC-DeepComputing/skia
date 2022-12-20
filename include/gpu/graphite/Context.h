@@ -123,11 +123,15 @@ protected:
 private:
     friend class ContextPriv;
 
-    // For ctors
+    // For ctors and finishInitialization()
     friend std::unique_ptr<Context> MakeVulkanContext(const VulkanBackendContext&,
                                                       const ContextOptions&);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
+
+    // Must be called in Make() to handle one-time GPU setup operations that can possibly fail and
+    // require Context::Make() to return a nullptr.
+    bool finishInitialization();
 
     void asyncReadPixels(const TextureProxy* textureProxy,
                          const SkImageInfo& srcImageInfo,
