@@ -88,7 +88,7 @@ private:
         }
 
         void toArray(SkTArray<ProgramData>* dst) {
-            fMap.foreach([dst](CacheKey* programDesc, CacheValue* programInfo) {
+            fMap.foreach1([dst](CacheKey* programDesc, CacheValue* programInfo) {
                              // TODO: remove this allocation once the program descs are stored
                              // in the record-time arena.
                              dst->emplace_back(std::make_unique<const GrProgramDesc>(*programDesc),

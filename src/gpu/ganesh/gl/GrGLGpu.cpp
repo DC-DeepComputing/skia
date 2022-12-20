@@ -298,7 +298,7 @@ public:
     }
 
     void abandon() {
-        fSamplers.foreach([](uint32_t* key, Sampler* sampler) { sampler->abandon(); });
+        fSamplers.foreach1([](uint32_t* key, Sampler* sampler) { sampler->abandon(); });
         fTextureUnitStates.reset();
         fNumTextureUnits = 0;
     }

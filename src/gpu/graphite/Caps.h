@@ -20,15 +20,26 @@ class SkCapabilities;
 
 namespace SkSL { struct ShaderCaps; }
 
-namespace skgpu { class ShaderErrorHandler; }
+namespace skgpu {
+enum class Protected : bool;
+class ShaderErrorHandler;
+class UniqueKey;
+}
 
 namespace skgpu::graphite {
 
 struct ContextOptions;
 class ComputePipelineDesc;
+enum class DepthStencilFlags : int;
+enum class Discardable : bool;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+enum class Layout;
+enum class Mipmapped : bool;
+enum class Renderable : bool;
 struct RenderPassDesc;
+using ResourceType = uint32_t;
+enum class Shareable : bool;
 class TextureInfo;
 class TextureProxy;
 
@@ -54,6 +65,8 @@ public:
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
+    virtual void reverse(const UniqueKey&) const = 0;
+
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;

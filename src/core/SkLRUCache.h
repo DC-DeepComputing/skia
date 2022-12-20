@@ -80,7 +80,7 @@ public:
     }
 
     template <typename Fn>  // f(K*, V*)
-    void foreach(Fn&& fn) {
+    void foreach1(Fn&& fn) {
         typename SkTInternalLList<Entry>::Iter iter;
         for (Entry* e = iter.init(fLRU, SkTInternalLList<Entry>::Iter::kHead_IterStart); e;
              e = iter.next()) {
