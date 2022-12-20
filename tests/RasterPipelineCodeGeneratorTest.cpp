@@ -24,7 +24,7 @@
 #include <optional>
 #include <string>
 
-//#define DUMP_PROGRAMS 1
+#define DUMP_PROGRAMS 1
 #if defined(DUMP_PROGRAMS)
 #include "src/core/SkStreamPriv.h"
 #endif
@@ -75,7 +75,7 @@ static void test(skiatest::Reporter* r,
 #endif
 
     // Append the SkSL program to the raster pipeline.
-    rasterProg->appendStages(&pipeline, &alloc);
+    rasterProg->appendStages(&pipeline, &alloc, /*uniforms=*/{});
 
     // Move the float values from RGBA into an 8888 memory buffer.
     uint32_t out[SkRasterPipeline_kMaxStride_highp] = {};
