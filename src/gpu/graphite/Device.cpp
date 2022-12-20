@@ -1064,7 +1064,7 @@ void Device::flushPendingWorkToRecorder() {
 
     // push any pending uploads from the atlasmanager
     auto atlasManager = fRecorder->priv().atlasManager();
-    if (!atlasManager->recordUploads(fDC.get())) {
+    if (!fDC->recordTextUploads(atlasManager, false)) {
         SKGPU_LOG_E("AtlasManager uploads have failed -- may see invalid results.");
     }
 
