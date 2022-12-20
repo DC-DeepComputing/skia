@@ -7,8 +7,6 @@
 
 #include "include/core/SkTypes.h"
 
-#ifdef SK_ENABLE_PRECOMPILE
-
 #include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
@@ -168,5 +166,3 @@ void PaintOptions::buildCombinations(
 }
 
 } // namespace skgpu::graphite
-
-#endif // SK_ENABLE_PRECOMPILE
