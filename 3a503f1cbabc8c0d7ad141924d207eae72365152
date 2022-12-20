@@ -190,6 +190,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1722c5a0_2e6d93ce",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2022-12-20T14:33:54Z",
+      "side": 1,
+      "message": "I think we should do some benchmarks first (once the backend is testable).\n\nRight now, from reading the Dawn\u0027s source code alone, it seems they do track the resources\u0027 usages. However, my understanding is limited, I\u0027m not sure their tracking works properly or not, and whether the barriers indeed happen if we call `MapAsync` after the submitted commands already finish.\n\nWe should ask Dawn team as well.",
+      "parentUuid": "abd80440_d27cbd2e",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
