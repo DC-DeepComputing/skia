@@ -22,6 +22,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947eba25_80c387a1",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-20T00:12:31Z",
+      "side": 1,
+      "message": "Done. However `DawnBuffer::onMap()` is expensive for native as well. Right now, `DawnBuffer::onMap()` calls `MapAsync()` followed with `Tick()` call immediately.\n\n* `MapAsync()` is equal to `vkCmdPipelineBarrier()` call with vulkan,\n* `Tick()` is equal to `vkQueueSubmit()` and `vkWaitForFence()`, and then call complete callback of the `MapAsync()`.\n\nThat is why we want to call `MapAsync()` earlier. So all `MapAsync()` call will record the pipeline barriers into the same pending command buffer, that command buffer could be submitted with either one `Tick()` call or when the graphite submits a recorded graphite\u0027s command buffer.",
+      "parentUuid": "d8fc767c_d043267b",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
