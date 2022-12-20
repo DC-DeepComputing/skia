@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f00f49_d15d640e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T16:28:15Z",
+      "side": 1,
+      "message": "It looks like the SkGlyph dependencies are just more instances of the `horizontalIntersect` function (although for both cubics and quads), so since that has to be moved over for SkGeometry, hopefully SkGlyph can come along for the ride then.",
+      "revId": "8b01c47cf245fdcdbdac7310ae4804191dae4778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
