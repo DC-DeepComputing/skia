@@ -34,6 +34,24 @@
       "parentUuid": "d07f3224_3e15e4aa",
       "revId": "b4cce92d5122e0975fe4d10ccbd9658cd8ac8467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdccb9db_6a8ff01d",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-20T20:24:26Z",
+      "side": 1,
+      "message": "No, I\u0027m pretty ambivalent. I like the formatting niceness with the explicit version, where everything lines up nicely, and that\u0027s pretty much my tie-breaker in this case.",
+      "parentUuid": "72af4625_e6e8d500",
+      "revId": "b4cce92d5122e0975fe4d10ccbd9658cd8ac8467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
