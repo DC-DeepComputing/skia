@@ -16,6 +16,23 @@
       "message": "See if this gets http://review.skia.org/621140 unstuck.",
       "revId": "d5af60f311f385374aa9dd4feb8248efcf18f8ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9873cc8d_9fb55c6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-20T20:33:44Z",
+      "side": 1,
+      "message": "Removal of `Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All` is in a follow-on CL. Will manually submit this if `Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_Vulkan` passes.",
+      "revId": "d5af60f311f385374aa9dd4feb8248efcf18f8ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
