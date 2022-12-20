@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f24d129_ee4740b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T16:31:00Z",
+      "side": 1,
+      "message": "I\u0027m just the janitor here, no strong preferences on the API. What you outlined seems fine to me - these are internal enums currently, so changing them should be pretty straightforward.",
+      "parentUuid": "9c152977_9a9309fa",
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79196dbb_de1b27a9",
         "filename": "include/private/SkPathEnums.h",
         "patchSetId": 4
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-20T16:08:06Z",
       "side": 1,
       "message": "Stylistically I\u0027m not a fan of these very specific namespaces, particularly for rarely used functions. I\u0027d rather find a way to make OppositeFirstDirection just go away given its relative simplicity.",
+      "range": {
+        "startLine": 25,
+        "startChar": 10,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a096f921_339f710a",
+        "filename": "include/private/SkPathEnums.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T16:31:00Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "79196dbb_de1b27a9",
       "range": {
         "startLine": 25,
         "startChar": 10,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c90b9bb_d61db5ff",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T16:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cddcd388_2d3b69b4",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 32,
+        "endChar": 16
+      },
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eda9b64f_be02e79f",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cd8cbc1_c120a880",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T16:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eda9b64f_be02e79f",
+      "range": {
+        "startLine": 360,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 6
+      },
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fe03e06_464d971c",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-12-20T16:08:06Z",
       "side": 1,
       "message": "This appears to be the only reference to `kPathRefGenIDBitCnt`; can we move it into SkPathRef.cpp instead of having it in a header. If it has to stay in the header, can we make it part of SkPathRef so it\u0027s scoped?",
+      "range": {
+        "startLine": 428,
+        "startChar": 62,
+        "endLine": 428,
+        "endChar": 81
+      },
+      "revId": "92a65d3ae9268e1d5766f91753b66329c7d3682d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0405a9a9_243f3867",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-20T16:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fe03e06_464d971c",
       "range": {
         "startLine": 428,
         "startChar": 62,
