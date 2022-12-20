@@ -100,6 +100,7 @@ enum class Volatile : bool {
  */
 enum DrawTypeFlags : uint8_t {
 
+    kNone         = 0b0000,
     // Filled rects, rrects and quadrilaterals
     // Stroked rects and rrects with circular corners
     // w/o MSAA
