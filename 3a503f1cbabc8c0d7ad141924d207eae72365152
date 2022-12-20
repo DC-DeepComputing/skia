@@ -142,6 +142,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1890b220_a8a231a4",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-20T14:07:28Z",
+      "side": 1,
+      "message": "RE Michael,\n\nI don\u0027t have the data right now, since dawn backend is not working because the static buffer issue and shader issue which Arman is working on.\n\nRight now, the easiest way is notify `DawnBuffer` that all command buffers use it has been submitted, it will not be used by other subsequence submissions, so it can be prepared for next usage.",
+      "parentUuid": "7786306f_65fee07d",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
