@@ -6,9 +6,13 @@
  */
 
 #include "include/core/SkCubicMap.h"
+
+#include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkOpts.h"
+
+#include <algorithm>
 
 //#define CUBICMAP_TRACK_MAX_ERROR
 
