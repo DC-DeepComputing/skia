@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0564c43d_7f0f7b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T15:25:02Z",
+      "side": 1,
+      "message": "Woooo! Nice milestone",
+      "revId": "01646b24675de35fd33fc48d7a3c620abe4d643b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b1a3f7_05cde385",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T15:25:02Z",
+      "side": 1,
+      "message": "I know we skip over mismatched draw types inside compile, but could we just pass in drawTypes \u0026 ~kDrawVertices?",
+      "range": {
+        "startLine": 438,
+        "startChar": 43,
+        "endLine": 438,
+        "endChar": 52
+      },
+      "revId": "01646b24675de35fd33fc48d7a3c620abe4d643b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f2ff93_f2fc7a70",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-20T15:25:02Z",
+      "side": 1,
+      "message": "Can this be just DrawTypeFlags::kDrawVertices?",
+      "range": {
+        "startLine": 447,
+        "startChar": 46,
+        "endLine": 447,
+        "endChar": 55
+      },
+      "revId": "01646b24675de35fd33fc48d7a3c620abe4d643b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
