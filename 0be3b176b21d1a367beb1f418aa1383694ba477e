@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e00a81_e3fe92d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-20T15:20:24Z",
+      "side": 1,
+      "message": "Rather than living in SkRP, I think this code should live in the Builder instead. The tests just need to be fixed to allow for that to happen.",
+      "revId": "0be3b176b21d1a367beb1f418aa1383694ba477e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
