@@ -81,6 +81,41 @@ enum class Volatile : bool {
     kYes = true               // fulfilled on every insertion call
 };
 
+/*
+ * Graphite's different rendering methods each only apply to certain types of draws. This
+ * enum supports decision making regarding the different renderers and what is being drawn.
+ *
+ * In general, Graphite's rendering operates in two regimes, MSAA and non-MSAA. The
+ * kSimple flag refers to drawing strictly in the non-MSAA regime while kDrawVertices and
+ * kText draws can operate in either. kPaths-style draws operate only in the MSAA regime.
+ * The upshot of this is that which flags an app may require for its draws depends on what
+ * is drawn as a whole. For example, a compositor that just draw filled rects, simple rrects
+ * and quads might only require kSimple rendering for all its draws. However, and app that
+ * drew a lot of rects, but sometimes complex paths, would need both kSimple and kPaths
+ * type draws (since the draws could be intermingled and either force or not force MSAA).
+ *
+ * Most applications should anticipate needing the kMostCommon set of draw types unless
+ * special knowledge allows reducing the set to kSimple|kText. kDrawVertices should only
+ * be used when drawVertices calls are required.
+ */
+enum DrawTypeFlags : uint8_t {
+
+    // Filled rects, rrects and quadrilaterals
+    // Stroked rects and rrects with circular corners
+    // w/o MSAA
+    kSimple       = 0b0001,
+    // SkCanvas::drawVertices
+    kDrawVertices = 0b1000,
+    // SkCanvas:: drawSimpleText, drawString, drawGlyphs, drawTextBlob
+    kText         = 0b0100,
+    // kPaths includes all of kSimple's draws but also includes complicated paths.
+    // These draws force MSAA to be on within Graphite.
+    kPaths        = 0b0010,
+
+    kMostCommon = kSimple | kPaths | kText,
+    kAll = kSimple | kPaths | kText | kDrawVertices
+};
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_GraphiteTypes_DEFINED
