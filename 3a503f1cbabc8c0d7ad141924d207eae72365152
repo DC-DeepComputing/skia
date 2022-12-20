@@ -166,6 +166,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd80440_d27cbd2e",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-20T14:10:04Z",
+      "side": 1,
+      "message": "Okay catching up on this thread. Does dawn really need to be doing a whole extra command submission for to be in a barrier in this case? This seems crazy to me. Like in theory if you were doing this in Vulkan there is no need for any sort of barrier in our use case. First we are not remapping the buffer until after the submitted commands finished, so there is no worry of synchronization for host writes after gpu reads. Second the GPU is not writing to these buffers at all, so there is no need for a barrier to perform an availability/visibility/domain operation on the memory for the host to be able to access it.\n\nI suppose the issue here is that Dawn is not tracking how a buffer is used at all with a command buffer, so it has no idea if a write has been done or not. I think this is a pretty large performance hole in dawn to truly be advertised as a good native option. If dawn really wanted to hide the barriers from clients as well as not track usages, I would almost suggest that Dawn appends barriers for every mapple buffer at the end of every command buffer submission. When using native dawn, no client would expect a map call to be an expensive operation since no other API makes it an expensive operation.",
+      "parentUuid": "7786306f_65fee07d",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
