@@ -1064,7 +1064,7 @@ void Device::flushPendingWorkToRecorder() {
 
     // push any pending uploads from the atlasmanager
     auto atlasManager = fRecorder->priv().atlasManager();
-    if (!atlasManager->recordUploads(fDC.get())) {
+    if (!atlasManager->recordUploads(fDC.get(), false)) {
         SKGPU_LOG_E("AtlasManager uploads have failed -- may see invalid results.");
     }
 
@@ -1093,6 +1093,16 @@ void Device::flushPendingWorkToRecorder() {
     fCurrentDepth = DrawOrder::kClearDepth;
     // NOTE: fDrawsOverlap is not reset here because that is a persistent property of everything
     // drawn into the Device, and not just the currently accumulating pass.
+}
+
+void Device::storePreuploadsInRecorder() {
+    SkASSERT(fRecorder);
+
+    // push any cached uploads from the atlasmanager
+    auto atlasManager = fRecorder->priv().atlasManager();
+    if (!atlasManager->recordUploads(fDC.get(), true)) {
+        SKGPU_LOG_E("AtlasManager uploads have failed -- may see invalid results.");
+    }
 }
 
 bool Device::needsFlushBeforeDraw(int numNewDraws) const {

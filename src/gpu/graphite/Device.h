@@ -70,6 +70,9 @@ public:
     // from the DrawContext as a RenderPassTask and records it in the Device's recorder.
     void flushPendingWorkToRecorder();
 
+    // Stores any preliminary uploads needed to set up the state for the next Recording
+    void storePreuploadsInRecorder();
+
     TextureProxyView createCopy(const SkIRect* subset, Mipmapped);
 
     void asyncRescaleAndReadPixels(const SkImageInfo& info,
