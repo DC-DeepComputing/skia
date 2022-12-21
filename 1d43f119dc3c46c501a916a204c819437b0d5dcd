@@ -16,6 +16,63 @@
       "message": "Still WIP, but do you like how the tests of the existing functionality look so far?",
       "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e98b5f5_616b9e3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:38:57Z",
+      "side": 1,
+      "message": "These look like really solid tests, thanks!",
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40bca663_58c72f73",
+        "filename": "tests/GeometryTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:38:57Z",
+      "side": 1,
+      "message": "I\u0027ve used initializer_list like this and John and Herb recommended that taking an SkSpan is safer, due to the somewhat confusing lifetime of the things within an initializer list (I can\u0027t remember the full details, so maybe that\u0027s not that helpful). I believe an initializer list can automatically turn into a span if it\u0027s created directly in the functional call parameter list, since it will remain alive until the function returns. But I could be wrong, and it\u0027s also less of a big deal for tests vs. real code, but figured I\u0027d try to pass the info on.",
+      "range": {
+        "startLine": 664,
+        "startChar": 38,
+        "endLine": 664,
+        "endChar": 54
+      },
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d13c3a5_80732324",
+        "filename": "tests/GeometryTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:38:57Z",
+      "side": 1,
+      "message": "Could add an additional assert/check that both the expected output and actual output\u0027s Y for the 4th point are equal to `yToChopAt`, to help catch mistakes in specifying the test cases.",
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
