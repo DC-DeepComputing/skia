@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f9ad91_de2e762f",
+        "filename": "include/private/SkPathEnums.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "Did this sneak back in during a rebase?",
+      "range": {
+        "startLine": 25,
+        "startChar": 10,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71949977_1f7cd36a",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "I would be fine just having a double and a float version. It seems unlikely that we\u0027d be using non-floating point vectors in this way. (If we were using integer vectors to represent things, they\u0027d likely be fixed point and then I\u0027m not sure if passing them to std::sqrt would behave as expected).",
+      "range": {
+        "startLine": 883,
+        "startChar": 31,
+        "endLine": 883,
+        "endChar": 32
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52fe96c0_66124cc6",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "Other than the strided_load functions below (which are rarely used, and hopefully on the chopping block), the skvx functions always return a new value instead of modifying the input, so this structure is a little surprising to me.\n\nOn the other hand, it\u0027s very handy to be able to pass back the computed length too.\nWhat do you think about having them be:\n\n    SIN std::pair\u003cVec\u003cN, double\u003e, double\u003e normalize(const Vec\u003cN, double\u003e\u0026 v) {\n        double len \u003d length(v);\n        return {v / len, len};\n    }\n    \nI suppose we could run into issues if std::pair\u003c\u003e doesn\u0027t play nice with over-aligned types, but the compilers will let us know.",
+      "range": {
+        "startLine": 887,
+        "startChar": 21,
+        "endLine": 887,
+        "endChar": 36
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b57bcb2_7925915f",
+        "filename": "public.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "Gone?",
+      "range": {
+        "startLine": 398,
+        "startChar": 14,
+        "endLine": 398,
+        "endChar": 28
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e29ae1a_7f7d2d25",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1337,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 1337,
+        "startChar": 0,
+        "endLine": 1337,
+        "endChar": 59
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44d9c335_e6d25298",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T01:55:35Z",
+      "side": 1,
+      "message": "This could be compacted to:\n\n     auto [befored, beforeLen] \u003d normalize(skvx::double2{p1.fX - start.fX, p1.fY - start.fY});\n     auto [afterd, afterLen] \u003d normalize(skvx::double2{p2.fX - p1.fX, p2.fY - p2.fY});\n     \nassuming there are no issues with adjusting skvx::normalize to return a pair.\n     \nI don\u0027t think we need to use `({})` for constructing the doubles, and the free skvx functions are all discoverable without using the skvx namespace, unless they are templates.\n\nThe same goes for down below dot and cross.\n\nIf there are issues updating the signature of skvx::normalize, we can still drop the skvx:: from the function calls, which matches the style of other code that uses skvx.",
+      "range": {
+        "startLine": 428,
+        "startChar": 4,
+        "endLine": 431,
+        "endChar": 46
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
