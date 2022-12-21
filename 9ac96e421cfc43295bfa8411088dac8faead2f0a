@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a108cba_99fb8dab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T02:05:50Z",
+      "side": 1,
+      "message": "This was originally https://skia-review.googlesource.com/c/skia/+/615436/8 but my git history was getting very confused about commit relationships so I restarted it.\n\nPTAL a look again. The last open question from before had been about whether or not GlobalCache\u0027s addStaticResource() needs to use a mutex or if it should even be public. I\u0027m inclined to leave it guarded and flexible, but holding resources forever could be a footgun so maybe it\u0027s better to lock it down to just StaticBufferManager.\n\nLastly, I will need to rebase this with all of Greg\u0027s changes that are moving the Context::Make functions because of the change to add `Context::finishInitialization()` to each backend\u0027s factory.",
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
