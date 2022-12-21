@@ -11,14 +11,15 @@
 #include "include/core/SkTypes.h"
 #include <memory>
 
-namespace skgpu { struct MtlBackendContext; }
-
 namespace skgpu::graphite {
 
 class Context;
 struct ContextOptions;
+struct MtlBackendContext;
 
-std::unique_ptr<Context> MakeMetalContext(const MtlBackendContext&, const ContextOptions&);
+namespace ContextFactory {
+std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&);
+} // namespace ContextFactory
 
 } // namespace skgpu::graphite
 
