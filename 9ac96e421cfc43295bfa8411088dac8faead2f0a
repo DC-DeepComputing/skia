@@ -56,6 +56,52 @@
       },
       "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "092ad7dd_962f0e5e",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-21T21:39:24Z",
+      "side": 1,
+      "message": "Nit: line wrap",
+      "range": {
+        "startLine": 44,
+        "startChar": 92,
+        "endLine": 44,
+        "endChar": 105
+      },
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25aff7af_fbea9caf",
+        "filename": "tests/graphite/GraphitePromiseImageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-21T21:39:24Z",
+      "side": 1,
+      "message": "Needed (and below)?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
