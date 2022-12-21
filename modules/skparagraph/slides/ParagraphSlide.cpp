@@ -3813,28 +3813,75 @@ public:
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+
     void draw(SkCanvas* canvas) override {
-        canvas->drawColor(SK_ColorWHITE);
-        auto fontCollection = getFontCollection();
-        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
-        fontCollection->enableFontFallback();
-        TextStyle text_style;
-        text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
-        text_style.setFontSize(50);
-        text_style.setColor(SK_ColorBLACK);
-        ParagraphStyle paragraph_style;
-        paragraph_style.setTextStyle(text_style);
-        paragraph_style.setTextDirection(TextDirection::kRtl);
-        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
-        text_style.setColor(SK_ColorRED);
-        builder.pushStyle(text_style);
-        builder.addText(u"\u062c\u064e\u0627\u0653");
-        text_style.setColor(SK_ColorBLUE);
-        builder.pushStyle(text_style);
-        builder.addText(u"\u064e\u0647\u064f");
-        auto paragraph = builder.Build();
-        paragraph->layout(this->size().width());
-        paragraph->paint(canvas, 0, 0);
+        auto builder = makeParagraphBuilder();
+        drawParagraph({"First line of paragraph"}, builder.get(), canvas);
+    }
+    
+    sk_sp<FontCollection> loadDefaultFontCollection() {
+        std::vector<std::string> fonts = {
+                "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Roboto-Bold.ttf",
+                "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Roboto-Regular.ttf",
+                "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Roboto-Light.ttf",
+                "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Roboto-Thin.ttf",
+                "/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Roboto-Black.ttf",
+        };
+
+        sk_sp<TypefaceFontProvider> font_provider = sk_make_sp<TypefaceFontProvider>();
+        for (auto& font : fonts) {
+            font_provider->registerTypeface(SkTypeface::MakeFromFile(font.c_str()));
+        }
+
+        sk_sp<FontCollection> font_collection = sk_make_sp<FontCollection>();
+        font_collection->setAssetFontManager(std::move(font_provider));
+
+        font_collection->getParagraphCache()->turnOn(false);
+
+        return font_collection;
+    }
+
+    void drawParagraph(std::vector<std::string> paragraphs,
+                       ParagraphBuilder* builder,
+                       SkCanvas* canvas) {
+        canvas->save();
+        builder->Reset();
+
+        TextStyle style;
+        style.setFontFamilies({SkString("Roboto")});
+        SkFontStyle fontStyle = SkFontStyle::Normal();
+        style.setFontStyle(fontStyle);
+        style.setFontSize(30);
+        style.setColor(SK_ColorBLACK);
+        builder->pushStyle(style);
+        const auto& text = paragraphs[0];
+        builder->addText(text.c_str(), text.length());
+        builder->pop();
+
+        auto paragraph = builder->Build();
+        paragraph->layout(800);
+        paragraph->paint(canvas, 20, 20);
+        canvas->restore();
+    }
+
+    std::unique_ptr<ParagraphBuilder> makeParagraphBuilder() {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(SK_ColorWHITE);
+        SkPaint blue;
+        blue.setColor(SK_ColorBLUE);
+
+        TextStyle defaultStyle;
+        defaultStyle.setBackgroundColor(blue);
+        defaultStyle.setForegroundColor(paint);
+        defaultStyle.setFontSize(18);
+        defaultStyle.setFontStyle(SkFontStyle::Bold());
+        defaultStyle.setFontFamilies(std::vector<SkString>({SkString("Roboto")}));
+        ParagraphStyle paraStyle;
+        paraStyle.setTextStyle(defaultStyle);
+        auto fontCollection = loadDefaultFontCollection();
+        auto builder = skia::textlayout::ParagraphBuilder::make(paraStyle, fontCollection);
+        return builder;
     }
 };
 }  // namespace
