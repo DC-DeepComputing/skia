@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7e4dbd4_eda88f1e",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "I was wondering the same, but the top of this file already had a big block of `//` so I was wondering if consistency with that would be preferable in this case. Relatedly, `SkTraceEvent.h` also seems to use `//` for fairly large comments. Thoughts?",
+      "parentUuid": "49b193b9_038c60d7",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 98
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5daadbb_1669a240",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 8
@@ -54,6 +78,30 @@
       "writtenOn": "2022-12-20T20:45:57Z",
       "side": 1,
       "message": "It would be helpful to specify who to reach out to (nscobie@?) or where to file a bug.",
+      "range": {
+        "startLine": 194,
+        "startChar": 17,
+        "endLine": 194,
+        "endChar": 33
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15bf65c3_eabcbd1f",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "Good idea, went with skia-android@.",
+      "parentUuid": "e5daadbb_1669a240",
       "range": {
         "startLine": 194,
         "startChar": 17,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24bfc9fa_72104557",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "Woah that\u0027s much better, thanks!\n\nAlso, the `.always` suffix requirement is now enforced at compile time! :D",
+      "parentUuid": "d23dcecd_a5de81c3",
+      "range": {
+        "startLine": 262,
+        "startChar": 3,
+        "endLine": 271,
+        "endChar": 16
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76fdc9dd_9739403c",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1044dd10_32db4015",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76fdc9dd_9739403c",
+      "range": {
+        "startLine": 275,
+        "startChar": 15,
+        "endLine": 275,
+        "endChar": 28
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23c7568b_8f0e9e9d",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-12-20T20:45:57Z",
       "side": 1,
       "message": "Clarity suggestion to elaborate on why arguments are only recorded for Perfetto: \"Keep in mind that Atrace does not support trace arguments, so they are only recorded when Perfetto is set as the current backend.\"",
+      "range": {
+        "startLine": 334,
+        "startChar": 25,
+        "endLine": 334,
+        "endChar": 97
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a65524_4ba90e13",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "Thanks! Also in hindsight the previous comment could likely be interpreted as yelling at the user. :)",
+      "parentUuid": "23c7568b_8f0e9e9d",
       "range": {
         "startLine": 334,
         "startChar": 25,
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6c6372b_2127a60b",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "Related to https://skia-review.googlesource.com/c/skia/+/614318/comment/49b193b9_038c60d7/, it seems `//` are also used for multi-line comments elsewhere in this file, excluding the license text. Thoughts?",
+      "parentUuid": "7530295a_b1d3e8c1",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 63
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e0c6cda_6fc56295",
         "filename": "tools/trace/EventTracingPriv.cpp",
         "patchSetId": 8
@@ -169,6 +313,30 @@
       "writtenOn": "2022-12-20T20:45:57Z",
       "side": 1,
       "message": "Would it make sense to reference go/skia-perfetto here as well? Is that a public page? If not, what is the plan for client-facing documentation?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 99
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c964aa9_6d825702",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-21T22:47:44Z",
+      "side": 1,
+      "message": "I think this comment change made a bit more sense in a prior iteration of mine. \nAfter reworking the new define to `SK_ANDROID_FRAMEWORK_USE_PERFETTO` (for the time being) and checking for mutual exclusivity above, I personally feel the only clarification this comment needs now is the \"tools\" part.\n\nGood point re. docs. go/skia-perfetto is not a public page at the moment, but I think that\u0027s OK while this is contained to Android framework, since \u003cimagine meme template: i_am_the_senate (we_are*)\u003e. The numbering may change, but right now \"stage 4.2\" on go/skia-perfetto is where I think it would make the most sense to modify public docs?",
+      "parentUuid": "7e0c6cda_6fc56295",
       "range": {
         "startLine": 61,
         "startChar": 0,
