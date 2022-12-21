@@ -8,6 +8,7 @@
 #ifndef SkSurface_DEFINED
 #define SkSurface_DEFINED
 
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"

@@ -6,6 +6,8 @@ Milestone 111
 -------------
   * SkToBool is no longer part of the public API.
   * SkAbs32 and SkTAbs are no longer part of the public API.
+  * SkBackingFit is no longer part of the public API.
+  * SkBudgeted was moved from include/core/SkTypes.h to include/core/SkBudgeted.h
 
 Milestone 110
 -------------

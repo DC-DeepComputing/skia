@@ -24,7 +24,10 @@
 class GrRecordingContext;
 class GrRenderTargetProxy;
 class GrTextureProxy;
+enum class SkBackingFit;
+enum class SkBudgeted : bool;
 struct SkIRect;
+
 
 class GrSurfaceProxyView {
 public:
