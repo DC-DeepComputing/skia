@@ -125,7 +125,7 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
 bool Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
-    return fQueueManager->addRecording(info, fResourceProvider.get());
+    return fQueueManager->addRecording(info, this);
 }
 
 bool Context::submit(SyncToCpu syncToCpu) {
@@ -297,11 +297,11 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
                                                                             buffer,
                                                                             /*bufferOffset=*/0,
                                                                             rowBytes);
-    if (!copyTask || !fQueueManager->addTask(copyTask.get(), fResourceProvider.get())) {
+    if (!copyTask || !fQueueManager->addTask(copyTask.get(), this)) {
         return {};
     }
     sk_sp<SynchronizeToCpuTask> syncTask = SynchronizeToCpuTask::Make(buffer);
-    if (!syncTask || !fQueueManager->addTask(syncTask.get(), fResourceProvider.get())) {
+    if (!syncTask || !fQueueManager->addTask(syncTask.get(), this)) {
         return {};
     }
 

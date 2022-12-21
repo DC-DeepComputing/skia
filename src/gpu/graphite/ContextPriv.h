@@ -39,6 +39,9 @@ public:
     GlobalCache* globalCache() {
         return fContext->fSharedContext->globalCache();
     }
+    ResourceProvider* resourceProvider() {
+        return fContext->fResourceProvider.get();
+    }
 
     void startCapture() {
         fContext->fQueueManager->startCapture();
