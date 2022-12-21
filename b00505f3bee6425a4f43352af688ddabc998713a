@@ -56,6 +56,30 @@
       },
       "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c3d9db_059b0015",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-21T15:25:37Z",
+      "side": 1,
+      "message": "Assuming that the cached rect and the data is the same I could probably come up with something to handle that. But it\u0027s possible we\u0027re uploading a different area in a given Plot, as glyphs are added/evicted from Recording to Recording.",
+      "parentUuid": "0c0b88db_bc7d96e4",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 54
+      },
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
