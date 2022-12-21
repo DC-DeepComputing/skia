@@ -871,9 +871,40 @@ SINT T dot(const Vec<N, T>& a, const Vec<N, T>& b) {
     }
 }
 
-SI float cross(const Vec<2, float>& a, const Vec<2, float>& b) {
+SIT T cross(const Vec<2, T>& a, const Vec<2, T>& b) {
     auto x = a * shuffle<1,0>(b);
     return x[0] - x[1];
+}
+
+SIN float length(const Vec<N, float>& v) {
+    return std::sqrt(dot(v, v));
+}
+
+SIN double length(const Vec<N, double>& v) {
+    return std::sqrt(dot(v, v));
+}
+
+SIN Vec<N, float> normalize(const Vec<N, float>& v) {
+    return v / length(v);
+}
+
+SIN Vec<N, double> normalize(const Vec<N, double>& v) {
+    return v / length(v);
+}
+
+SINT bool isfinite(const Vec<N, T>& v) {
+    if constexpr (N == 2) {
+        return std::isfinite(v[0]) && std::isfinite(v[1]);
+    } else if constexpr (N == 4) {
+        return std::isfinite(v[0]) && std::isfinite(v[1]) &&
+               std::isfinite(v[2]) && std::isfinite(v[3]);
+    }
+    for (int i = 0; i < N; ++i) {
+        if (!std::isfinite(v[i])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // De-interleaving load of 4 vectors.
