@@ -39,6 +39,8 @@ class GrResourceProvider;
 class GrSurfaceProxyPriv;
 class GrTexture;
 class GrTextureProxy;
+enum class SkBackingFit;
+enum class SkBudgeted : bool;
 
 class GrSurfaceProxy : public SkNVRefCnt<GrSurfaceProxy> {
 public:

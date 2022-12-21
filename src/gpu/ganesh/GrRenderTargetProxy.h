@@ -26,6 +26,8 @@ class GrCaps;
 class GrResourceProvider;
 class GrSurface;
 enum class GrProtected : bool;
+enum class SkBackingFit;
+enum class SkBudgeted : bool;
 struct SkISize;
 
 // GrArenas matches the lifetime of a single frame. It is created and held on the
