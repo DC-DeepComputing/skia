@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23feee35_aa41543e",
+        "filename": "tests/RasterPipelineCodeGeneratorTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-21T22:33:48Z",
+      "side": 1,
+      "message": "These will be optimized away during IR generation, but I decided to keep the whole test (why not)",
+      "range": {
+        "startLine": 725,
+        "startChar": 24,
+        "endLine": 728,
+        "endChar": 74
+      },
+      "revId": "acc49f11361a359ff6be7998980bf2e9fec477dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
