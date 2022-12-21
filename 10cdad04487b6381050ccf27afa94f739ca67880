@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3647a48f_e7b595da",
+        "filename": "include/private/SkPathEnums.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Curses!",
+      "parentUuid": "80f9ad91_de2e762f",
+      "range": {
+        "startLine": 25,
+        "startChar": 10,
+        "endLine": 25,
+        "endChar": 21
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71949977_1f7cd36a",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-21T01:55:35Z",
       "side": 1,
       "message": "I would be fine just having a double and a float version. It seems unlikely that we\u0027d be using non-floating point vectors in this way. (If we were using integer vectors to represent things, they\u0027d likely be fixed point and then I\u0027m not sure if passing them to std::sqrt would behave as expected).",
+      "range": {
+        "startLine": 883,
+        "startChar": 31,
+        "endLine": 883,
+        "endChar": 32
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ceaf2d_df74f5b5",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71949977_1f7cd36a",
       "range": {
         "startLine": 883,
         "startChar": 31,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5edd281_eac0c2fe",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Done, although I ended up not needing the length.",
+      "parentUuid": "52fe96c0_66124cc6",
+      "range": {
+        "startLine": 887,
+        "startChar": 21,
+        "endLine": 887,
+        "endChar": 36
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b57bcb2_7925915f",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-12-21T01:55:35Z",
       "side": 1,
       "message": "Gone?",
+      "range": {
+        "startLine": 398,
+        "startChar": 14,
+        "endLine": 398,
+        "endChar": 28
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133789c9_037afa04",
+        "filename": "public.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b57bcb2_7925915f",
       "range": {
         "startLine": 398,
         "startChar": 14,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b96dc3ab_41a22f2a",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1337,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e29ae1a_7f7d2d25",
+      "range": {
+        "startLine": 1337,
+        "startChar": 0,
+        "endLine": 1337,
+        "endChar": 59
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44d9c335_e6d25298",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-12-21T01:55:35Z",
       "side": 1,
       "message": "This could be compacted to:\n\n     auto [befored, beforeLen] \u003d normalize(skvx::double2{p1.fX - start.fX, p1.fY - start.fY});\n     auto [afterd, afterLen] \u003d normalize(skvx::double2{p2.fX - p1.fX, p2.fY - p2.fY});\n     \nassuming there are no issues with adjusting skvx::normalize to return a pair.\n     \nI don\u0027t think we need to use `({})` for constructing the doubles, and the free skvx functions are all discoverable without using the skvx namespace, unless they are templates.\n\nThe same goes for down below dot and cross.\n\nIf there are issues updating the signature of skvx::normalize, we can still drop the skvx:: from the function calls, which matches the style of other code that uses skvx.",
+      "range": {
+        "startLine": 428,
+        "startChar": 4,
+        "endLine": 431,
+        "endChar": 46
+      },
+      "revId": "10cdad04487b6381050ccf27afa94f739ca67880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f6e0bac_07cc6cc4",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T16:34:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44d9c335_e6d25298",
       "range": {
         "startLine": 428,
         "startChar": 4,
