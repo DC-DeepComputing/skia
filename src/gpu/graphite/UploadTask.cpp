@@ -238,10 +238,10 @@ bool UploadTask::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool UploadTask::addCommands(Context* context,
+bool UploadTask::addCommands(ResourceProvider*,
                              CommandBuffer* commandBuffer) {
     for (unsigned int i = 0; i < fInstances.size(); ++i) {
-        fInstances[i].addCommand(context, commandBuffer);
+        fInstances[i].addCommand(commandBuffer);
     }
 
     return true;
