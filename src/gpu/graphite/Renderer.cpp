@@ -17,15 +17,15 @@ static uint32_t next_id() {
 }
 
 RenderStep::RenderStep(std::string_view className,
-               std::string_view variantName,
-               SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
-               PrimitiveType primitiveType,
-               DepthStencilSettings depthStencilSettings,
-               SkSpan<const Attribute> vertexAttrs,
-               SkSpan<const Attribute> instanceAttrs,
-               SkSpan<const Varying> varyings)
-        : fUniqueID(next_id())
+                       std::string_view variantName,
+                       SkEnumBitMask<Flags> flags,
+                       std::initializer_list<Uniform> uniforms,
+                       PrimitiveType primitiveType,
+                       DepthStencilSettings depthStencilSettings,
+                       SkSpan<const Attribute> vertexAttrs,
+                       SkSpan<const Attribute> instanceAttrs,
+                       SkSpan<const Varying> varyings)
+        : fUniqueID1(next_id())
         , fFlags(flags)
         , fPrimitiveType(primitiveType)
         , fDepthStencilSettings(depthStencilSettings)

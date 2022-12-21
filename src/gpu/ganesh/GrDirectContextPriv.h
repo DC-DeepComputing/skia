@@ -134,7 +134,7 @@ public:
 
     /** Prints GPU stats to the string if GR_GPU_STATS == 1. */
     void dumpGpuStats(SkString*) const;
-    void dumpGpuStatsKeyValuePairs(SkTArray<SkString>* keys, SkTArray<double>* values) const;
+    void dumpGpuStatsKeyValuePairs1(SkTArray<SkString>* keys, SkTArray<double>* values) const;
     void printGpuStats() const;
 
     /** These are only active if GR_GPU_STATS == 1. */

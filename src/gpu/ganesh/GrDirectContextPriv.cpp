@@ -117,12 +117,12 @@ void GrDirectContextPriv::dumpGpuStats(SkString* out) const {
 #endif
 }
 
-void GrDirectContextPriv::dumpGpuStatsKeyValuePairs(SkTArray<SkString>* keys,
+void GrDirectContextPriv::dumpGpuStatsKeyValuePairs1(SkTArray<SkString>* keys,
                                                     SkTArray<double>* values) const {
 #if GR_GPU_STATS
-    this->context()->fGpu->stats()->dumpKeyValuePairs(keys, values);
+    this->context()->fGpu->stats()->dumpKeyValuePairs1(keys, values);
     if (auto builder = this->context()->fGpu->pipelineBuilder()) {
-        builder->stats()->dumpKeyValuePairs(keys, values);
+        builder->stats()->dumpKeyValuePairs1(keys, values);
     }
 #endif
 }

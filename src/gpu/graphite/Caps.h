@@ -14,21 +14,33 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/text/gpu/SDFTControl.h"
 
 class SkCapabilities;
 
 namespace SkSL { struct ShaderCaps; }
 
-namespace skgpu { class ShaderErrorHandler; }
+namespace skgpu {
+enum class Protected : bool;
+class ShaderErrorHandler;
+class UniqueKey;
+}
 
 namespace skgpu::graphite {
 
 struct ContextOptions;
 class ComputePipelineDesc;
+enum class DepthStencilFlags : int;
+enum class Discardable : bool;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+enum class Layout;
+enum class Mipmapped : bool;
+enum class Renderable : bool;
 struct RenderPassDesc;
+using ResourceType = uint32_t;
+enum class Shareable : bool;
 class TextureInfo;
 class TextureProxy;
 
@@ -54,6 +66,20 @@ public:
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
+
+    struct Foobar {
+        uint32_t fRenderStepID = 0;
+        UniquePaintParamsID fPaintParamsID;
+
+        DepthStencilFlags fDSFlags = DepthStencilFlags::kNone;
+        uint32_t fDSSampleCount = 1;
+
+        SkColorType fColorType = kUnknown_SkColorType;
+        uint32_t fColorSampleCount = 1;
+    };
+
+    virtual void reverse1(const UniqueKey&, Foobar*) const = 0;
+
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
@@ -143,11 +169,11 @@ public:
 
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
+    ::skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
 
     // Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
     // SkColorType and TextureInfo.
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
+    ::skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 

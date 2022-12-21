@@ -843,7 +843,7 @@ void GrGpu::Stats::dump(SkString* out) {
 #endif
 }
 
-void GrGpu::Stats::dumpKeyValuePairs(SkTArray<SkString>* keys, SkTArray<double>* values) {
+void GrGpu::Stats::dumpKeyValuePairs1(SkTArray<SkString>* keys, SkTArray<double>* values) {
     keys->push_back(SkString("render_passes"));
     values->push_back(fRenderPasses);
     keys->push_back(SkString("reordered_dags_over_budget"));

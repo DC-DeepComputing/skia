@@ -50,9 +50,10 @@ void GrThreadSafePipelineBuilder::Stats::dump(SkString* out) {
     out->appendf("Total number of compilation successes %d\n", fNumCompilationSuccesses.load());
 }
 
-void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(SkTArray<SkString>* keys,
+void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs1(SkTArray<SkString>* keys,
                                                            SkTArray<double>* values) {
-    keys->push_back(SkString("shader_compilations")); values->push_back(fShaderCompilations);
+    keys->push_back(SkString("shader_compilations"));
+    values->push_back(fShaderCompilations);
 }
 
 #endif // GR_TEST_UTILS
