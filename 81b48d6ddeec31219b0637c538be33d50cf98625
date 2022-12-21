@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7352280e_34f0a4d7",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-21T15:49:49Z",
+      "side": 1,
+      "message": "Follow-up: Probably need to normalize number-kind before this? (half and float are the same, as far the generator is concerned). (Or do we insert implicit casts in the IR for those?)",
+      "range": {
+        "startLine": 781,
+        "startChar": 4,
+        "endLine": 781,
+        "endChar": 38
+      },
+      "revId": "81b48d6ddeec31219b0637c538be33d50cf98625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
