@@ -18,7 +18,9 @@ namespace skgpu::graphite {
 class Context;
 struct ContextOptions;
 
-std::unique_ptr<Context> MakeVulkanContext(const VulkanBackendContext&, const ContextOptions&);
+namespace ContextFactory {
+std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext&, const ContextOptions&);
+} // namespace ContextFactory
 
 } // namespace skgpu::graphite
 

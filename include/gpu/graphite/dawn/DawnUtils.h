@@ -1,0 +1,30 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_DawnUtils_DEFINED
+#define skgpu_graphite_DawnUtils_DEFINED
+
+#include "include/core/SkTypes.h"
+#include <memory>
+
+namespace skgpu::graphite {
+
+class Context;
+struct ContextOptions;
+struct DawnBackendContext;
+
+namespace ContextFactory {
+std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
+} // namespace ContextFactory
+
+} // namespace skgpu::graphite
+
+//namespace skgpu {
+//std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
+//}
+
+#endif // skgpu_graphite_DawnUtils_DEFINED
