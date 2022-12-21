@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee1869b5_eaf54874",
+        "filename": "tests/GeometryTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T19:37:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40bca663_58c72f73",
+      "range": {
+        "startLine": 664,
+        "startChar": 38,
+        "endLine": 664,
+        "endChar": 54
+      },
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d13c3a5_80732324",
@@ -71,6 +95,24 @@
       "writtenOn": "2022-12-21T01:38:57Z",
       "side": 1,
       "message": "Could add an additional assert/check that both the expected output and actual output\u0027s Y for the 4th point are equal to `yToChopAt`, to help catch mistakes in specifying the test cases.",
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "864e1ed4_b7d59c5f",
+        "filename": "tests/GeometryTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-12-21T19:37:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d13c3a5_80732324",
       "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
