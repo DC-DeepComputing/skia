@@ -12,6 +12,7 @@
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkSafe32.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsPoint.h"
@@ -431,6 +432,10 @@ SkPathBuilder& SkPathBuilder::arcTo(SkPoint p1, SkPoint p2, SkScalar radius) {
     double cosh = befored.dot(afterd);
     double sinh = befored.cross(afterd);
 
+    // If the previous point equals the first point, befored will be denormalized.
+    // If the two points equal, afterd will be denormalized.
+    // If the second point equals the first point, sinh will be zero.
+    // In all these cases, we cannot construct an arc, so we construct a line to the first point.
     if (!befored.isFinite() || !afterd.isFinite() || SkScalarNearlyZero(SkDoubleToScalar(sinh))) {
         return this->lineTo(p1);
     }

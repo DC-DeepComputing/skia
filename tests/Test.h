@@ -56,6 +56,9 @@ public:
     void push(const SkString& message) {
         fContextStack.push_back(message);
     }
+    void push(const std::string message) {
+        fContextStack.push_back(SkString(message));
+    }
     void pop() {
         fContextStack.pop_back();
     }

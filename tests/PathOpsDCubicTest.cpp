@@ -26,3 +26,4 @@ DEF_TEST(PathOpsCubicHull, reporter) {
         cubic.convexHull(order);
     }
 }
+
