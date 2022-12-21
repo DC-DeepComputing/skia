@@ -47,6 +47,7 @@ public:
 #if GRAPHITE_TEST_UTILS
     int numGraphicsPipelines() const SK_EXCLUDES(fSpinLock);
     void resetGraphicsPipelines() SK_EXCLUDES(fSpinLock);
+    void getKeys(std::vector<UniqueKey>* keys) SK_EXCLUDES(fSpinLock);
 #endif
 
     // Find amd add operations for ComputePipelines, with the same pattern as GraphicsPipelines.

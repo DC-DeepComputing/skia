@@ -36,6 +36,8 @@ public:
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+    void reverse(const UniqueKey& key) const override;
+
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
     // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other

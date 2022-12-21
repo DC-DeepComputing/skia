@@ -613,11 +613,12 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
     return nullptr;
 }
 
+static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
+
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
         // 4 uint32_t's (render step id, paint id, uint64 renderpass desc)
         UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 4, "GraphicsPipeline");
         // add graphicspipelinedesc key
@@ -633,6 +634,11 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
 
     return pipelineKey;
 }
+
+void MtlCaps::reverse(const UniqueKey& key) const {
+
+}
+
 
 uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
     MtlTextureInfo colorInfo, depthStencilInfo;
