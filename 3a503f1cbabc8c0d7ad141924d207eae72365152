@@ -238,6 +238,30 @@
       },
       "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "202dcec0_4ef58959",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-12-21T11:13:14Z",
+      "side": 1,
+      "message": "We call `MapAsync()` with `wgpu::MapMode::Write` in most cases, the previous mode must not include `Write` usage (it should be `CopySrc`), so dawn must use barrier for our case if I read the code correctly. I will confirm it when the dawn backend works.\n\nAnd I don\u0027t see dawn track buffer usage with submissions, so `MapAsync()` has to wait all submitted command buffers are done. I will create a doc about the map issue for discussion with webgpu team.",
+      "parentUuid": "abd80440_d27cbd2e",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 34
+      },
+      "revId": "3a503f1cbabc8c0d7ad141924d207eae72365152",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
