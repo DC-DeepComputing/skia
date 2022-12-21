@@ -13,6 +13,8 @@
 #include <string_view>
 #include <vector>
 
+#include "include/private/SkTHash.h"
+
 #include "src/core/SkIPoint16.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/RectanizerSkyline.h"
@@ -107,6 +109,7 @@ public:
 
     const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
 
+    uint32_t atlasID() const { return fAtlasID; }
     uint64_t atlasGeneration() const { return fAtlasGeneration; }
 
     bool hasID(const PlotLocator& plotLocator) {
@@ -200,6 +203,7 @@ private:
     int                   fPlotHeight;
     unsigned int          fNumPlots;
     const std::string     fLabel;
+    uint32_t              fAtlasID;   // unique identifier for this atlas
 
     // A counter to track the atlas eviction state for Glyphs. Each Glyph has a PlotLocator
     // which contains its current generation. When the atlas evicts a plot, it increases
@@ -258,6 +262,25 @@ private:
 
     SkISize fARGBDimensions;
     int     fMaxTextureSize;
+};
+
+// For tracking when Plots have been uploaded for Recording replay
+class PlotUploadTracker {
+public:
+    PlotUploadTracker() = default;
+
+    bool needsUpload(PlotLocator plotLocator, AtlasToken uploadToken, uint32_t atlasID);
+
+private:
+    struct PlotAgeData {
+        uint64_t genID;
+        AtlasToken uploadToken;
+    };
+
+    // mapping from page+plot pair to PlotAgeData
+    using PlotAgeHashSet = SkTHashMap<uint32_t, PlotAgeData>;
+
+    SkTHashMap<uint32_t, PlotAgeHashSet> fAtlasData;
 };
 
 }  // namespace skgpu::graphite
