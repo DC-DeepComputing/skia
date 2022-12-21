@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f96547_73272ea2",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-12-21T14:30:04Z",
+      "side": 1,
+      "message": "hey I was going to suggest we have a separate list for procompile in gni and surprise its already here :)",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 32
+      },
+      "revId": "3380e0e51ebd06949d3c59c5f8694df0cb597933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
