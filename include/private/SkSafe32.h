@@ -33,4 +33,12 @@ static constexpr int32_t Sk32_can_overflow_sub(int32_t a, int32_t b) {
     return (int32_t)((uint32_t)a - (uint32_t)b);
 }
 
+static inline int32_t SkAbs32(int32_t value) {
+    SkASSERT(value != SK_NaN32);  // The most negative int32_t can't be negated.
+    if (value < 0) {
+        value = -value;
+    }
+    return value;
+}
+
 #endif
