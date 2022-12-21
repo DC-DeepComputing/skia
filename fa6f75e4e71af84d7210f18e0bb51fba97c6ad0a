@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37083673_a750693f",
+        "filename": "tests/RasterPipelineCodeGeneratorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-21T16:05:57Z",
+      "side": 1,
+      "message": "https://paste.googleplex.com/5717420084822016",
+      "range": {
+        "startLine": 513,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 14
+      },
+      "revId": "fa6f75e4e71af84d7210f18e0bb51fba97c6ad0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
