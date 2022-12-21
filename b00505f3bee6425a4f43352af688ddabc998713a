@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb76d6f_46745b5c",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T15:13:42Z",
+      "side": 1,
+      "message": "nit: add `/*useCachedUploads\u003d*/`",
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05badbc3_df1efa54",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T15:13:42Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c0b88db_bc7d96e4",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-21T15:13:42Z",
+      "side": 1,
+      "message": "I know some of this performance will be improved once we get to conditionally execute the uploads, but we also have the potential issue of extra transfer buffer allocations that we\u0027re filling out, even if the copies don\u0027t get executed, right?\n\nWill it be possible when recording cached uploads to remember where the cached plot had been written to in a prior transfer buffer and point to that?",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 54
+      },
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
