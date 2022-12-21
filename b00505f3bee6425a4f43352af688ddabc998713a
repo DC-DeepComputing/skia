@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78db5b5b_ffe6fa42",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-21T15:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cb76d6f_46745b5c",
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05badbc3_df1efa54",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-12-21T15:13:42Z",
       "side": 1,
       "message": "same comment",
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ed9ee9_8e006b39",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-12-21T15:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05badbc3_df1efa54",
       "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
