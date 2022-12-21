@@ -20,7 +20,6 @@
 
 class SkRuntimeEffect;
 
-namespace skgpu { struct VulkanBackendContext; }
 
 namespace skgpu::graphite {
 
@@ -29,9 +28,8 @@ class Buffer;
 class ClientMappedBufferManager;
 class Context;
 class ContextPriv;
-struct DawnBackendContext;
 class GlobalCache;
-struct MtlBackendContext;
+class KeyContext;
 class PaintOptions;
 class QueueManager;
 class Recording;
@@ -47,10 +45,6 @@ public:
     Context& operator=(Context&&) = delete;
 
     ~Context();
-
-#ifdef SK_DAWN
-    static std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
-#endif
 
     BackendApi backend() const;
 
@@ -115,12 +109,7 @@ protected:
 
 private:
     friend class ContextPriv;
-
-    // For ctors
-    friend std::unique_ptr<Context> MakeMetalContext(const MtlBackendContext&,
-                                                     const ContextOptions&);
-    friend std::unique_ptr<Context> MakeVulkanContext(const VulkanBackendContext&,
-                                                      const ContextOptions&);
+    friend class ContextCtorAccessor;
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
