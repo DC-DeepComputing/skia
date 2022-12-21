@@ -33,6 +33,13 @@
  */
 template<typename T> inline void sk_ignore_unused_variable(const T&) { }
 
+template <typename T> static inline T SkTAbs(T value) {
+    if (value < 0) {
+        value = -value;
+    }
+    return value;
+}
+
 /**
  *  Returns a pointer to a D which comes immediately after S[count].
  */

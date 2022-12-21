@@ -5,6 +5,7 @@ This file includes a list of high level updates for each milestone release.
 Milestone 111
 -------------
   * SkToBool is no longer part of the public API.
+  * SkAbs32 and SkTAbs are no longer part of the public API.
 
 Milestone 110
 -------------
