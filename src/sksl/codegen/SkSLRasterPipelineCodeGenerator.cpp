@@ -179,7 +179,11 @@ public:
     [[nodiscard]] bool pushConstructorSplat(const ConstructorSplat& c);
     [[nodiscard]] bool pushExpression(const Expression& e);
     [[nodiscard]] bool pushFunctionCall(const FunctionCall& e);
-    [[nodiscard]] bool pushIntrinsic(const FunctionCall& e);
+    [[nodiscard]] bool pushIntrinsic(const FunctionCall& c);
+    [[nodiscard]] bool pushIntrinsic(IntrinsicKind intrinsic, const Expression& arg0);
+    [[nodiscard]] bool pushIntrinsic(IntrinsicKind intrinsic,
+                                     const Expression& arg0,
+                                     const Expression& arg1);
     [[nodiscard]] bool pushLiteral(const Literal& l);
     [[nodiscard]] bool pushPrefixExpression(const PrefixExpression& p);
     [[nodiscard]] bool pushPrefixExpression(Operator op, const Expression& expr);
@@ -209,7 +213,7 @@ public:
     };
 
     [[nodiscard]] bool assign(const Expression& e);
-    [[nodiscard]] bool binaryOp(SkSL::Type::NumberKind numberKind, int slots, const BinaryOps& ops);
+    [[nodiscard]] bool binaryOp(const SkSL::Type& type, const BinaryOps& ops);
     void foldWithMultiOp(BuilderOp op, int elements);
     void foldWithOp(BuilderOp op, int elements);
     void nextTempStack() {
@@ -233,6 +237,43 @@ private:
     SkTArray<SlotRange> fFunctionStack;
     SlotRange fCurrentContinueMask;
     int fCurrentTempStack = 0;
+
+    static constexpr auto kAddOps = BinaryOps{BuilderOp::add_n_floats,
+                                              BuilderOp::add_n_ints,
+                                              BuilderOp::add_n_ints,
+                                              BuilderOp::unsupported};
+    static constexpr auto kSubtractOps = BinaryOps{BuilderOp::sub_n_floats,
+                                                   BuilderOp::sub_n_ints,
+                                                   BuilderOp::sub_n_ints,
+                                                   BuilderOp::unsupported};
+    // TODO(skia:13676): add support for unsigned *
+    static constexpr auto kMultiplyOps = BinaryOps{BuilderOp::mul_n_floats,
+                                                   BuilderOp::mul_n_ints,
+                                                   BuilderOp::unsupported,
+                                                   BuilderOp::unsupported};
+    // TODO(skia:13676): add support for unsigned /
+    static constexpr auto kDivideOps = BinaryOps{BuilderOp::div_n_floats,
+                                                 BuilderOp::div_n_ints,
+                                                 BuilderOp::unsupported,
+                                                 BuilderOp::unsupported};
+    // TODO(skia:13676): add support for uint <
+    static constexpr auto kLessThanOps = BinaryOps{BuilderOp::cmplt_n_floats,
+                                                   BuilderOp::cmplt_n_ints,
+                                                   BuilderOp::unsupported,
+                                                   BuilderOp::unsupported};
+    // TODO(skia:13676): add support for uint <=
+    static constexpr auto kLessThanEqualOps = BinaryOps{BuilderOp::cmple_n_floats,
+                                                        BuilderOp::cmple_n_ints,
+                                                        BuilderOp::unsupported,
+                                                        BuilderOp::unsupported};
+    static constexpr auto kEqualOps = BinaryOps{BuilderOp::cmpeq_n_floats,
+                                                BuilderOp::cmpeq_n_ints,
+                                                BuilderOp::cmpeq_n_ints,
+                                                BuilderOp::cmpeq_n_ints};
+    static constexpr auto kNotEqualOps = BinaryOps{BuilderOp::cmpne_n_floats,
+                                                   BuilderOp::cmpne_n_ints,
+                                                   BuilderOp::cmpne_n_ints,
+                                                   BuilderOp::cmpne_n_ints};
 };
 
 struct LValue {
@@ -756,9 +797,9 @@ bool Generator::pushExpression(const Expression& e) {
     }
 }
 
-bool Generator::binaryOp(SkSL::Type::NumberKind numberKind, int slots, const BinaryOps& ops) {
+bool Generator::binaryOp(const SkSL::Type& type, const BinaryOps& ops) {
     BuilderOp op = BuilderOp::unsupported;
-    switch (numberKind) {
+    switch (type.componentType().numberKind()) {
         case Type::NumberKind::kFloat:    op = ops.fFloatOp;    break;
         case Type::NumberKind::kSigned:   op = ops.fSignedOp;   break;
         case Type::NumberKind::kUnsigned: op = ops.fUnsignedOp; break;
@@ -768,7 +809,7 @@ bool Generator::binaryOp(SkSL::Type::NumberKind numberKind, int slots, const Bin
     if (op == BuilderOp::unsupported) {
         return unsupported();
     }
-    fBuilder.binary_op(op, slots);
+    fBuilder.binary_op(op, type.slotCount());
     return true;
 }
 
@@ -887,96 +928,60 @@ bool Generator::pushBinaryExpression(const Expression& left, Operator op, const 
     }
 
     switch (basicOp.kind()) {
-        case OperatorKind::PLUS: {
-            static constexpr auto kAdd = BinaryOps{BuilderOp::add_n_floats,
-                                                   BuilderOp::add_n_ints,
-                                                   BuilderOp::add_n_ints,
-                                                   BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kAdd)) {
+        case OperatorKind::PLUS:
+            if (!this->binaryOp(type, kAddOps)) {
                 return unsupported();
             }
             break;
-        }
-        case OperatorKind::MINUS: {
-            static constexpr auto kSubtract = BinaryOps{BuilderOp::sub_n_floats,
-                                                        BuilderOp::sub_n_ints,
-                                                        BuilderOp::sub_n_ints,
-                                                        BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kSubtract)) {
+
+        case OperatorKind::MINUS:
+            if (!this->binaryOp(type, kSubtractOps)) {
                 return unsupported();
             }
             break;
-        }
-        case OperatorKind::STAR: {
-            // TODO(skia:13676): add support for unsigned *
-            static constexpr auto kMultiply = BinaryOps{BuilderOp::mul_n_floats,
-                                                        BuilderOp::mul_n_ints,
-                                                        BuilderOp::unsupported,
-                                                        BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kMultiply)) {
+
+        case OperatorKind::STAR:
+            if (!this->binaryOp(type, kMultiplyOps)) {
                 return unsupported();
             }
             break;
-        }
-        case OperatorKind::SLASH: {
-            // TODO(skia:13676): add support for unsigned /
-            static constexpr auto kDivide = BinaryOps{BuilderOp::div_n_floats,
-                                                      BuilderOp::div_n_ints,
-                                                      BuilderOp::unsupported,
-                                                      BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kDivide)) {
+
+        case OperatorKind::SLASH:
+            if (!this->binaryOp(type, kDivideOps)) {
                 return unsupported();
             }
             break;
-        }
+
         case OperatorKind::LT:
-        case OperatorKind::GT: {
-            // TODO(skia:13676): add support for unsigned <
-            static constexpr auto kLessThan = BinaryOps{BuilderOp::cmplt_n_floats,
-                                                        BuilderOp::cmplt_n_ints,
-                                                        BuilderOp::unsupported,
-                                                        BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kLessThan)) {
+        case OperatorKind::GT:
+            if (!this->binaryOp(type, kLessThanOps)) {
                 return unsupported();
             }
             SkASSERT(type.slotCount() == 1);  // operator< only works with scalar types
             break;
-        }
+
         case OperatorKind::LTEQ:
-        case OperatorKind::GTEQ: {
-            // TODO(skia:13676): add support for unsigned <=
-            static constexpr auto kLessThanEquals = BinaryOps{BuilderOp::cmple_n_floats,
-                                                              BuilderOp::cmple_n_ints,
-                                                              BuilderOp::unsupported,
-                                                              BuilderOp::unsupported};
-            if (!this->binaryOp(numberKind, type.slotCount(), kLessThanEquals)) {
+        case OperatorKind::GTEQ:
+            if (!this->binaryOp(type, kLessThanEqualOps)) {
                 return unsupported();
             }
             SkASSERT(type.slotCount() == 1);  // operator<= only works with scalar types
             break;
-        }
-        case OperatorKind::EQEQ: {
-            static constexpr auto kEquals = BinaryOps{BuilderOp::cmpeq_n_floats,
-                                                      BuilderOp::cmpeq_n_ints,
-                                                      BuilderOp::cmpeq_n_ints,
-                                                      BuilderOp::cmpeq_n_ints};
-            if (!this->binaryOp(numberKind, type.slotCount(), kEquals)) {
+
+        case OperatorKind::EQEQ:
+            if (!this->binaryOp(type, kEqualOps)) {
                 return unsupported();
             }
             this->foldWithOp(BuilderOp::bitwise_and, type.slotCount());  // fold vector result
             break;
-        }
-        case OperatorKind::NEQ: {
-            static constexpr auto kNotEquals = BinaryOps{BuilderOp::cmpne_n_floats,
-                                                         BuilderOp::cmpne_n_ints,
-                                                         BuilderOp::cmpne_n_ints,
-                                                         BuilderOp::cmpne_n_ints};
-            if (!this->binaryOp(numberKind, type.slotCount(), kNotEquals)) {
+
+        case OperatorKind::NEQ:
+            if (!this->binaryOp(type, kNotEqualOps)) {
                 return unsupported();
             }
             this->foldWithOp(BuilderOp::bitwise_or, type.slotCount());  // fold vector result
             break;
-        }
+
         case OperatorKind::LOGICALAND:
             // We verified above that the RHS does not have side effects, so we don't need to worry
             // about short-circuiting side effects.
@@ -1046,23 +1051,103 @@ bool Generator::pushFunctionCall(const FunctionCall& c) {
 
 bool Generator::pushIntrinsic(const FunctionCall& c) {
     const ExpressionArray& args = c.arguments();
+    switch (args.size()) {
+        case 1:
+            return this->pushIntrinsic(c.function().intrinsicKind(), *args[0]);
 
-    switch (c.function().intrinsicKind()) {
+        case 2:
+            return this->pushIntrinsic(c.function().intrinsicKind(), *args[0], *args[1]);
+
+        default:
+            break;
+    }
+
+    return unsupported();
+}
+
+bool Generator::pushIntrinsic(IntrinsicKind intrinsic, const Expression& arg0) {
+    switch (intrinsic) {
+        case IntrinsicKind::k_not_IntrinsicKind:
+            return this->pushPrefixExpression(OperatorKind::LOGICALNOT, arg0);
+
+        default:
+            break;
+    }
+    return unsupported();
+}
+
+bool Generator::pushIntrinsic(IntrinsicKind intrinsic,
+                              const Expression& arg0,
+                              const Expression& arg1) {
+    switch (intrinsic) {
         case IntrinsicKind::k_dot_IntrinsicKind:
-            SkASSERT(args.size() == 2);
-            SkASSERT(args[0]->type().matches(args[1]->type()));
-
-            if (!this->pushExpression(*args[0]) ||
-                !this->pushExpression(*args[1])) {
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
                 return unsupported();
             }
-            fBuilder.binary_op(BuilderOp::mul_n_floats, args[0]->type().slotCount());
-            this->foldWithMultiOp(BuilderOp::add_n_floats, args[0]->type().slotCount());
+            fBuilder.binary_op(BuilderOp::mul_n_floats, arg0.type().slotCount());
+            this->foldWithMultiOp(BuilderOp::add_n_floats, arg0.type().slotCount());
             return true;
 
-        case IntrinsicKind::k_not_IntrinsicKind:
-            SkASSERT(args.size() == 1);
-            return this->pushPrefixExpression(OperatorKind::LOGICALNOT, *args[0]);
+        case IntrinsicKind::k_equal_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kEqualOps)) {
+                return unsupported();
+            }
+            return true;
+
+        case IntrinsicKind::k_notEqual_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kNotEqualOps)) {
+                return unsupported();
+            }
+            return true;
+
+        case IntrinsicKind::k_lessThan_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kLessThanOps)) {
+                return unsupported();
+            }
+            return true;
+
+        case IntrinsicKind::k_greaterThan_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg1) || !this->pushExpression(arg0)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kLessThanOps)) {
+                return unsupported();
+            }
+            return true;
+
+        case IntrinsicKind::k_lessThanEqual_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kLessThanEqualOps)) {
+                return unsupported();
+            }
+            return true;
+
+        case IntrinsicKind::k_greaterThanEqual_IntrinsicKind:
+            SkASSERT(arg0.type().matches(arg1.type()));
+            if (!this->pushExpression(arg1) || !this->pushExpression(arg0)) {
+                return unsupported();
+            }
+            if (!this->binaryOp(arg0.type(), kLessThanEqualOps)) {
+                return unsupported();
+            }
+            return true;
 
         default:
             break;
