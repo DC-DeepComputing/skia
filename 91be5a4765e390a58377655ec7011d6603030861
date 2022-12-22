@@ -16,6 +16,24 @@
       "message": "Took me a minute (and a repeat read-through) to understand the problem, but yeah - good catch!",
       "revId": "91be5a4765e390a58377655ec7011d6603030861",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ce8043_50d1329b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-22T14:49:22Z",
+      "side": 1,
+      "message": "It\u0027s a lot easier to conceptualize if you imagine that the test-expression is a function call, but I don\u0027t have those yet, so I needed to improvise :)",
+      "parentUuid": "fdbbe68f_c44407d9",
+      "revId": "91be5a4765e390a58377655ec7011d6603030861",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
