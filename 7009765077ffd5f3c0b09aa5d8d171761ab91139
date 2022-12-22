@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f82e83a_690a4a4f",
+        "filename": "include/private/SkSafe32.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-22T14:28:59Z",
+      "side": 1,
+      "message": "Having these in different files from each other feels strange, but I don\u0027t have a good alternative suggestion. Also: Putting this here adds to the dependency chain for this header (without the assert, it could get away with just needing cstdint, now it\u0027s going to keep SkAssert.h, which I assume it\u0027s picking up because of SkTypes.h). We\u0027ve also got some form of abs in four different files now (although SkFixedAbs -- which refers to this one -- is never called. We should just delete it).",
+      "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
