@@ -24,6 +24,9 @@ class AndroidFlavor(default.DefaultFlavor):
       self.ADB_PUB_KEY = ('/home/chrome-bot/.android/'
                           'chrome_infrastructure_adbkey')
 
+    self.TAR_GZ_TRANSFER_FILENAME = 'transfer.tar.gz'
+
+
     # Data should go in android_data_dir, which may be preserved across runs.
     android_data_dir = '/sdcard/revenge_of_the_skiabot/'
     self.device_dirs = default.DeviceDirs(
@@ -566,11 +569,32 @@ time.sleep(60)
     self._adb('push %s %s' % (host, device), 'push', host, device)
 
   def copy_directory_contents_to_device(self, host, device):
-    contents = self.m.file.glob_paths('ls %s/*' % host,
-                                      host, '*',
-                                      test_data=['foo.png', 'bar.jpg'])
-    args = contents + [device]
+    tar_gz_basename = self.m.path.basename(device)
+    device_tar_gz_file = device + ".tar.gz"
+
+    tmp = self.m.path.mkdtemp('host_tar_gz')
+
+    host_tar_gz_file =  self.m.path.join(tmp, tar_gz_basename + "tar.gz")
+
+    # Create tar.gz of host directory.
+    self.m.run(self.m.step,
+           'create tar.gz of directory %s' % (host),
+           cmd=['tar', '-czvf', host_tar_gz_file, host],
+           infra_step=True, timeout=60, abort_on_failure=True,
+           fail_build_on_failure=True)
+
+    args = [host_tar_gz_file, device_tar_gz_file]
+
+    # Push the .tar.gz file.
     self._adb('push %s/* %s' % (host, device), 'push', *args)
+
+    # Extract .tag.gz file.
+    args = ['tar', '-xzf',  device_tar_gz_file]
+    self._adb('extract %s' % (device_tar_gz_file), 'shell', *args)
+
+    # Delete the .tar.gz file from the host.
+    self.remove_file_on_device(device_tar_gz_file)
+
 
   def copy_directory_contents_to_host(self, device, host):
     # TODO(borenet): When all of our devices are on Android 6.0 and up, we can
