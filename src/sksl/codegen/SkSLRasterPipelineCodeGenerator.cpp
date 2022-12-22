@@ -1120,6 +1120,14 @@ bool Generator::pushSwizzle(const Swizzle& s) {
     if (!this->pushExpression(*s.base())) {
         return false;
     }
+    // A identity swizzle doesn't rearrange the data; it just (potentially) discards tail elements.
+    static constexpr int8_t kIdentitySwizzle[] = {0, 1, 2, 3};
+    if (std::equal(s.components().begin(), s.components().end(), std::begin(kIdentitySwizzle))) {
+        int discardedElements = s.base()->type().slotCount() - s.components().size();
+        SkASSERT(discardedElements >= 0);
+        fBuilder.discard_stack(discardedElements);
+        return true;
+    }
     // Perform the swizzle.
     fBuilder.swizzle(s.base()->type().slotCount(), s.components());
     return true;
