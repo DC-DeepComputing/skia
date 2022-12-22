@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa8370d_73c2a089",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-22T20:50:46Z",
+      "side": 1,
+      "message": "nit: entirely entirely",
+      "range": {
+        "startLine": 1144,
+        "startChar": 7,
+        "endLine": 1144,
+        "endChar": 15
+      },
+      "revId": "df7f07dd97302417d50acdbce5be4c3ac0713c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
