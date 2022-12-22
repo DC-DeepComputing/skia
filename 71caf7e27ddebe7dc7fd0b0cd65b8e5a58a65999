@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c0fd0a_87fd788f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-12-22T14:28:58Z",
+      "side": 1,
+      "message": "Just so I\u0027m clear: this fixes things because the function is now running after failed steps where we only use a single attempt and therefore weren\u0027t running the function before?",
+      "revId": "71caf7e27ddebe7dc7fd0b0cd65b8e5a58a65999",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
