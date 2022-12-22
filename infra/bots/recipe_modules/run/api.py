@@ -78,6 +78,9 @@ class SkiaStepApi(recipe_api.RecipeApi):
       if abort_on_failure:
         raise
 
+  # between_attempts_fn is now a misnomer, it should actually be called
+  # after_failed_attempts_fn, but that would require updating every call site
+  # that passes in  between_attempts_fn by name.
   def with_retry(self, steptype, name, attempts, between_attempts_fn=None,
                  abort_on_failure=True, fail_build_on_failure=True, **kwargs):
     for attempt in range(attempts):
@@ -91,8 +94,8 @@ class SkiaStepApi(recipe_api.RecipeApi):
           del self._failed[-attempt:]
         return res
       except self.m.step.StepFailure:
+        if between_attempts_fn:
+          between_attempts_fn(attempt+1)
         if attempt == attempts - 1:
           if abort_on_failure:
             raise
-        elif between_attempts_fn:
-          between_attempts_fn(attempt+1)

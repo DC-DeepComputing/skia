@@ -86,7 +86,7 @@ class AndroidFlavor(default.DefaultFlavor):
 
     self._ever_ran_adb = True
     # ADB seems to be occasionally flaky on every device, so always retry.
-    attempts = kwargs.pop('attempts', 3)
+    attempts = kwargs.pop('attempts', 1)
 
     def wait_for_device(attempt):
       self.m.run(self.m.step,
@@ -587,6 +587,8 @@ time.sleep(60)
         self.m.file.copy('copy %s' % self.m.path.basename(p), p, host)
 
   def read_file_on_device(self, path, **kwargs):
+    # Here we need to first `test -f path` and check for a non-zero
+    # exit code, which means the file doesn't exist, so return None.
     rv = self._adb('read %s' % path,
                    'shell', 'cat', path, stdout=self.m.raw_io.output(),
                    **kwargs)
