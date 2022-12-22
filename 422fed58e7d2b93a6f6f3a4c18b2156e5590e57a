@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7be2f7de_7a57ce37",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-12-22T14:05:57Z",
+      "side": 1,
+      "message": "Nicolette is right that most Skia code uses block comments for longer chunks (though not 100%). This file in particular started life as a copy of the widely-shared/propagated chromium trace-event stuff, which is (I think) how it ended up somewhat non-standard relative to the rest of Skia. My usual stance in times of uncertainty is to match the surrounding code, so I\u0027d probably leave it as is (but then again, there\u0027s a third style of extremely non-standard comment later in the file -- designed to work well within a macro), so ... up to yo.",
+      "parentUuid": "c7e4dbd4_eda88f1e",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 98
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5daadbb_1669a240",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 8
