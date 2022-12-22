@@ -396,6 +396,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fdd42b_9b33bb72",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-22T18:58:30Z",
+      "side": 1,
+      "message": "Closing for now to match https://skia-review.googlesource.com/c/skia/+/614318/comment/49b193b9_038c60d7/",
+      "parentUuid": "e6c6372b_2127a60b",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 63
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e0c6cda_6fc56295",
