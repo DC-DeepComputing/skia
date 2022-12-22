@@ -86,9 +86,11 @@ class AndroidFlavor(default.DefaultFlavor):
 
     self._ever_ran_adb = True
     # ADB seems to be occasionally flaky on every device, so always retry.
-    attempts = kwargs.pop('attempts', 3)
+    attempts = kwargs.pop('attempts', 1)
 
     def wait_for_device(attempt):
+      # If the device was in root, then these steps might knock it out of being
+      # in `adb root`?
       self.m.run(self.m.step,
                  'adb kill-server after failure of \'%s\' (attempt %d)' % (
                      title, attempt),
@@ -587,6 +589,8 @@ time.sleep(60)
         self.m.file.copy('copy %s' % self.m.path.basename(p), p, host)
 
   def read_file_on_device(self, path, **kwargs):
+    # Here we need to first `test -f path` and check for a non-zero
+    # exit code, which means the file doesn't exist, so return None.
     rv = self._adb('read %s' % path,
                    'shell', 'cat', path, stdout=self.m.raw_io.output(),
                    **kwargs)
@@ -596,6 +600,9 @@ time.sleep(60)
     self.m.run.with_retry(self.m.python.inline, 'rm %s' % path, 3, program="""
         import subprocess
         import sys
+
+# First check here if the file is already gone, i.e. don't
+# try to remove a file that's already gone.
 
         # Remove the path.
         adb = sys.argv[1]
