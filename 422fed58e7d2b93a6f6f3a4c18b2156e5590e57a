@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c3084b5_dff413c9",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-22T18:57:42Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "38340bb8_adac71bf",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 98
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5daadbb_1669a240",
