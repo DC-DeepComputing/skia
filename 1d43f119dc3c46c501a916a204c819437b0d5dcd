@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f0ce42_15c8301c",
+        "filename": "tests/GeometryTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-12-22T17:51:51Z",
+      "side": 1,
+      "message": "You can use the same check that SkSpan uses to make sure initializer_lists have the right scope.\n\nSK_CHECK_IL_LIFETIME : SkSpan.h:27\n\nThis macro would need to be hoisted to a common file.",
+      "parentUuid": "ee1869b5_eaf54874",
+      "range": {
+        "startLine": 664,
+        "startChar": 38,
+        "endLine": 664,
+        "endChar": 54
+      },
+      "revId": "1d43f119dc3c46c501a916a204c819437b0d5dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d13c3a5_80732324",
