@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7df0e6bf_4987980c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-22T17:56:24Z",
+      "side": 1,
+      "message": "drive by comments.",
+      "revId": "4d0c5e92a603a429f43f750a5f76765a24f82395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77197f73_7e56b7e4",
+        "filename": "infra/bots/recipe_modules/flavor/android.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-22T17:56:24Z",
+      "side": 1,
+      "message": "Ok to keep retry count 3 here, or should that be changed?",
+      "range": {
+        "startLine": 600,
+        "startChar": 64,
+        "endLine": 600,
+        "endChar": 66
+      },
+      "revId": "4d0c5e92a603a429f43f750a5f76765a24f82395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2308029a_43889662",
+        "filename": "infra/bots/recipe_modules/run/api.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-22T17:56:24Z",
+      "side": 1,
+      "message": "nit: prefer \"named\" instead of \"called\" as functions are called.",
+      "range": {
+        "startLine": 81,
+        "startChar": 65,
+        "endLine": 81,
+        "endChar": 71
+      },
+      "revId": "4d0c5e92a603a429f43f750a5f76765a24f82395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109869c9_14bc7552",
+        "filename": "infra/bots/recipe_modules/run/api.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-12-22T17:56:24Z",
+      "side": 1,
+      "message": "nit: extra space.",
+      "revId": "4d0c5e92a603a429f43f750a5f76765a24f82395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
