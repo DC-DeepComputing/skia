@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b222aad_aa149b51",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2022-12-22T15:53:02Z",
+      "side": 1,
+      "message": "Thanks, makes sense. I\u0027m personally leaning slightly towards leaving `//` for now, then reworking the whole file to `/** * */` when both this comment and the comment at the top of the file need to be changed again to reflect later stages of the transition.\n\nAlternatively, I could just change them both now if we don\u0027t mind the blame layer of the top comment getting clobbered.\n\nI\u0027m very much open to someone else making an executive decision though. :-)",
+      "parentUuid": "7be2f7de_7a57ce37",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 98
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5daadbb_1669a240",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 8
