@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c93b96_159b2fe0",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-23T02:18:46Z",
+      "side": 1,
+      "message": "Done, ContextCtorAccessor::Make is perfect.",
+      "parentUuid": "963b946f_c9f2c7e2",
+      "range": {
+        "startLine": 135,
+        "startChar": 28,
+        "endLine": 135,
+        "endChar": 49
+      },
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "092ad7dd_962f0e5e",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67021bd2_574416d3",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-23T02:18:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "092ad7dd_962f0e5e",
+      "range": {
+        "startLine": 44,
+        "startChar": 92,
+        "endLine": 44,
+        "endChar": 105
+      },
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25aff7af_fbea9caf",
@@ -94,6 +142,30 @@
       "writtenOn": "2022-12-21T21:39:24Z",
       "side": 1,
       "message": "Needed (and below)?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "9ac96e421cfc43295bfa8411088dac8faead2f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6048303_39b16b9b",
+        "filename": "tests/graphite/GraphitePromiseImageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-12-23T02:18:46Z",
+      "side": 1,
+      "message": "Oh yep, RendererProvider.h had been including SkCanvas when it didn\u0027t need to. Removing it highlighted these IWYU issues.\n\nBut in migrating to a different CL, I had lost the cleanup to RendererProvider.h so now SkCanvas.h is properly removed from its includes.",
+      "parentUuid": "25aff7af_fbea9caf",
       "range": {
         "startLine": 9,
         "startChar": 0,
