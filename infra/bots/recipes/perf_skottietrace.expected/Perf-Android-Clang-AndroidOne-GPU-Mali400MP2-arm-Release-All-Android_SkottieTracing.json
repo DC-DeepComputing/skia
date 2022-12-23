@@ -108,6 +108,7 @@
       "tar",
       "-C",
       "[START_DIR]/skia/resources",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
       "."
@@ -350,6 +351,7 @@
       "tar",
       "-C",
       "[START_DIR]/lottie-samples",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_2/lotties.tar.gz",
       "."
@@ -587,6 +589,7 @@
       "tar",
       "-C",
       "[CLEANUP]/lwa_tmp_1/nosymlinks",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_3/lotties_with_assets.tar.gz",
       "."

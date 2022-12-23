@@ -581,7 +581,7 @@ time.sleep(60)
     # Use -h to deref links.
     self.m.run(self.m.step,
            'create tar.gz of directory %s' % (host),
-           cmd=['tar', '-C', host, '-chzf', host_tar_gz_file, '.'],
+           cmd=['tar', '-C', host, '--hard-dereference', '-chzf', host_tar_gz_file, '.'],
            infra_step=True, timeout=60, abort_on_failure=True,
            fail_build_on_failure=True)
 

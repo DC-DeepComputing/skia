@@ -684,6 +684,7 @@
       "tar",
       "-C",
       "[START_DIR]/mskp",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_1/mskp.tar.gz",
       "."

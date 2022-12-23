@@ -371,6 +371,7 @@
       "tar",
       "-C",
       "[START_DIR]/text_blob_traces",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_1/text_blob_traces.tar.gz",
       "."
@@ -472,6 +473,7 @@
       "tar",
       "-C",
       "[START_DIR]/skia/resources",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_2/resources.tar.gz",
       "."
@@ -714,6 +716,7 @@
       "tar",
       "-C",
       "[START_DIR]/skp",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_3/skps.tar.gz",
       "."
@@ -972,6 +975,7 @@
       "tar",
       "-C",
       "[START_DIR]/skimage",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_4/images.tar.gz",
       "."
@@ -1230,6 +1234,7 @@
       "tar",
       "-C",
       "[START_DIR]/svg",
+      "--hard-dereference",
       "-chzf",
       "[CLEANUP]/host_tar_gz_tmp_5/svgs.tar.gz",
       "."
