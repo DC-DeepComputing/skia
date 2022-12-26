@@ -105,30 +105,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/skia/resources",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/skia/resources/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/skia/resources",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[START_DIR]/skia/resources/bar.jpg",
-      "[START_DIR]/skia/resources/foo.png",
-      "/sdcard/revenge_of_the_skiabot/resources"
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -138,6 +136,58 @@
     },
     "infra_step": true,
     "name": "push [START_DIR]/skia/resources/* /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/resources"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create directory /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/resources",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/resources.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/resources.tar.gz"
   },
   {
     "cmd": [
@@ -177,10 +227,28 @@
   },
   {
     "cmd": [
+      "tar",
+      "-C",
+      "[START_DIR]/lottie-samples",
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_2/lotties.tar.gz",
+      "."
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/lottie-samples",
+    "timeout": 60
+  },
+  {
+    "cmd": [
       "/opt/infra-android/tools/adb",
-      "shell",
-      "cat",
-      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
+      "push",
+      "[CLEANUP]/host_tar_gz_tmp_2/lotties.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/lotties.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -189,95 +257,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "read /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/opt/infra-android/tools/adb",
-      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/opt/infra-android/tools/adb",
-      "/sdcard/revenge_of_the_skiabot/lotties"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/lotties",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
+    "name": "push [START_DIR]/lottie-samples/* /sdcard/revenge_of_the_skiabot/lotties"
   },
   {
     "cmd": [
@@ -294,34 +274,17 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "mkdir /sdcard/revenge_of_the_skiabot/lotties"
-  },
-  {
-    "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
-      "[START_DIR]/lottie-samples",
-      "*"
-    ],
-    "infra_step": true,
-    "name": "ls [START_DIR]/lottie-samples/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/lottie-samples/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/lottie-samples/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create directory /sdcard/revenge_of_the_skiabot/lotties"
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "push",
-      "[START_DIR]/lottie-samples/bar.jpg",
-      "[START_DIR]/lottie-samples/foo.png",
-      "/sdcard/revenge_of_the_skiabot/lotties"
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/lotties",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/lotties.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -330,14 +293,14 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/lottie-samples/* /sdcard/revenge_of_the_skiabot/lotties"
+    "name": "extract /sdcard/revenge_of_the_skiabot/lotties.tar.gz"
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "push",
-      "[START_DIR]/tmp/LOTTIE_VERSION",
-      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/lotties.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -346,7 +309,71 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/LOTTIE_VERSION /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
+    "name": "remove /sdcard/revenge_of_the_skiabot/lotties.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/LOTTIE_VERSION.tar.gz",
+      "[START_DIR]/tmp/LOTTIE_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of file [START_DIR]/tmp/LOTTIE_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/LOTTIE_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/LOTTIE_VERSION/* /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/LOTTIE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/LOTTIE_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -486,30 +513,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[CLEANUP]/lwa_tmp_1/nosymlinks",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_3/lotties_with_assets.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [CLEANUP]/lwa_tmp_1/nosymlinks/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[CLEANUP]/lwa_tmp_1/nosymlinks/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[CLEANUP]/lwa_tmp_1/nosymlinks/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [CLEANUP]/lwa_tmp_1/nosymlinks",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[CLEANUP]/lwa_tmp_1/nosymlinks/bar.jpg",
-      "[CLEANUP]/lwa_tmp_1/nosymlinks/foo.png",
-      "/sdcard/revenge_of_the_skiabot/lotties_with_assets"
+      "[CLEANUP]/host_tar_gz_tmp_3/lotties_with_assets.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/lotties_with_assets.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -519,6 +544,58 @@
     },
     "infra_step": true,
     "name": "push [CLEANUP]/lwa_tmp_1/nosymlinks/* /sdcard/revenge_of_the_skiabot/lotties_with_assets"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/lotties_with_assets"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create directory /sdcard/revenge_of_the_skiabot/lotties_with_assets"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/lotties_with_assets",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/lotties_with_assets.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/lotties_with_assets.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/lotties_with_assets.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/lotties_with_assets.tar.gz"
   },
   {
     "cmd": [
@@ -619,6 +696,23 @@
       "@@@STEP_LOG_LINE@python.inline@  sys.exit(1)@@@",
       "@@@STEP_LOG_END@python.inline@@@"
     ]
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
+      "/sdcard/revenge_of_the_skiabot/dm_out/1.json"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if /sdcard/revenge_of_the_skiabot/dm_out/1.json exists"
   },
   {
     "cmd": [
