@@ -43,7 +43,7 @@ class AndroidFlavor(default.DefaultFlavor):
     # on the list, we fail the task to avoid perf inconsistencies.
     self.cant_root = ['GalaxyS7_G930FD', 'GalaxyS9',
                       'GalaxyS20', 'MotoG4', 'NVIDIA_Shield',
-                      'P30', 'Pixel4','Pixel4XL', 'Pixel5', 'TecnoSpark3Pro', 'JioNext']
+                      'P30', 'Pixel4','Pixel4XL', 'Pixel5', 'TecnoSpark3Pro', 'JioNext', 'Pixel7']
 
     # Maps device type -> CPU ids that should be scaled for nanobench.
     # Many devices have two (or more) different CPUs (e.g. big.LITTLE
@@ -563,14 +563,72 @@ time.sleep(60)
       args=[self.device_dirs.bin_dir, sh])
 
   def copy_file_to_device(self, host, device):
-    self._adb('push %s %s' % (host, device), 'push', host, device)
+    tar_gz_basename = self.m.path.basename(device)
+    device_tar_gz_file = device + ".tar.gz"
+
+    tmp = self.m.path.mkdtemp('host_file_tar_gz')
+
+    host_tar_gz_file =  self.m.path.join(tmp, tar_gz_basename + ".tar.gz")
+
+    # Create a .tar.gz file of the host file.
+    self.m.run(self.m.step,
+           'create tar.gz of file %s' % (host),
+           cmd=['tar', '-chzf', host_tar_gz_file, host],
+           infra_step=True, timeout=60, abort_on_failure=True,
+           fail_build_on_failure=True)
+
+    # Push the .tar.gz file.
+    args = [host_tar_gz_file, device_tar_gz_file]
+    self._adb('push %s/* %s' % (host, device), 'push', *args)
+
+    # Extract .tag.gz file.
+    args = ['tar', '-xzf', device_tar_gz_file]
+    self._adb('extract %s' % (device_tar_gz_file), 'shell', *args)
+
+    # Delete the .tar.gz file from the host.
+    args = ['rm', device_tar_gz_file]
+    self._adb('remove %s' % (device_tar_gz_file), 'shell', *args)
 
   def copy_directory_contents_to_device(self, host, device):
-    contents = self.m.file.glob_paths('ls %s/*' % host,
-                                      host, '*',
-                                      test_data=['foo.png', 'bar.jpg'])
-    args = contents + [device]
+    tar_gz_basename = self.m.path.basename(device)
+    device_tar_gz_file = device + ".tar.gz"
+
+    tmp = self.m.path.mkdtemp('host_tar_gz')
+
+    host_tar_gz_file =  self.m.path.join(tmp, tar_gz_basename + ".tar.gz")
+
+    # Create tar.gz of host directory.
+    #
+    # Create a tar.gz where the parent directory is '.', i.e. use ['-C', host]
+    # to cd into the host directory.
+    #
+    # Use -h to deref soft links, and --hard-dereference to defer hard links,
+    # which CAS creates when two files share the same hash.
+    self.m.run(self.m.step,
+           'create tar.gz of directory %s' % (host),
+           cmd=['tar', '-C', host, '--hard-dereference', '-chzf', host_tar_gz_file, '.'],
+           infra_step=True, timeout=60, abort_on_failure=True,
+           fail_build_on_failure=True)
+
+    # Push the .tar.gz file.
+    args = [host_tar_gz_file, device_tar_gz_file]
     self._adb('push %s/* %s' % (host, device), 'push', *args)
+
+    # Create the device directory.
+    args = ['mkdir', '-p', device]
+    self._adb('create directory %s' % (device), 'shell', *args)
+
+    # Extract .tag.gz file.
+    #
+    # Note we also use ['-C', device] here so the extraction is done inside the
+    # directory, mirroring how we created the .tar.gz file above.
+    args = ['tar', '-C', device, '-xzf', device_tar_gz_file]
+    self._adb('extract %s' % (device_tar_gz_file), 'shell', *args)
+
+    # Delete the .tar.gz file from the host.
+    args = ['rm', device_tar_gz_file]
+    self._adb('remove %s' % (device_tar_gz_file), 'shell', *args)
+
 
   def copy_directory_contents_to_host(self, device, host):
     # TODO(borenet): When all of our devices are on Android 6.0 and up, we can
@@ -587,6 +645,16 @@ time.sleep(60)
         self.m.file.copy('copy %s' % self.m.path.basename(p), p, host)
 
   def read_file_on_device(self, path, **kwargs):
+    testKwargs = {
+      'attempts': 1,
+      'abort_on_failure': False,
+      'fail_build_on_failure': False,
+    }
+    rv = self._adb('check if %s exists' % path,
+                   'shell', 'test', '-f', path, **testKwargs)
+    if not rv: # pragma: nocover
+      return None
+
     rv = self._adb('read %s' % path,
                    'shell', 'cat', path, stdout=self.m.raw_io.output(),
                    **kwargs)
