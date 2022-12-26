@@ -345,30 +345,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/skia/resources",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/skia/resources/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/skia/resources",
+    "timeout": 300
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
       "push",
-      "[START_DIR]/skia/resources/bar.jpg",
-      "[START_DIR]/skia/resources/foo.png",
-      "/sdcard/revenge_of_the_skiabot/resources"
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -378,6 +376,58 @@
     },
     "infra_step": true,
     "name": "push [START_DIR]/skia/resources/* /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/resources"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create directory /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/resources",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/resources.tar.gz"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/resources.tar.gz"
   },
   {
     "cmd": [
@@ -417,10 +467,28 @@
   },
   {
     "cmd": [
+      "tar",
+      "-C",
+      "[START_DIR]/skp",
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_2/skps.tar.gz",
+      "."
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/skp",
+    "timeout": 300
+  },
+  {
+    "cmd": [
       "/usr/bin/adb.1.0.35",
-      "shell",
-      "cat",
-      "/sdcard/revenge_of_the_skiabot/SKP_VERSION"
+      "push",
+      "[CLEANUP]/host_tar_gz_tmp_2/skps.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -429,95 +497,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "read /sdcard/revenge_of_the_skiabot/SKP_VERSION"
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/SKP_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/SKP_VERSION",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/skps"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/skps",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
+    "name": "push [START_DIR]/skp/* /sdcard/revenge_of_the_skiabot/skps"
   },
   {
     "cmd": [
@@ -534,34 +514,17 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "mkdir /sdcard/revenge_of_the_skiabot/skps"
-  },
-  {
-    "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
-      "[START_DIR]/skp",
-      "*"
-    ],
-    "infra_step": true,
-    "name": "ls [START_DIR]/skp/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create directory /sdcard/revenge_of_the_skiabot/skps"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/skp/bar.jpg",
-      "[START_DIR]/skp/foo.png",
-      "/sdcard/revenge_of_the_skiabot/skps"
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/skps",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -570,14 +533,14 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/skp/* /sdcard/revenge_of_the_skiabot/skps"
+    "name": "extract /sdcard/revenge_of_the_skiabot/skps.tar.gz"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/tmp/SKP_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SKP_VERSION"
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -586,7 +549,73 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SKP_VERSION /sdcard/revenge_of_the_skiabot/SKP_VERSION"
+    "name": "remove /sdcard/revenge_of_the_skiabot/skps.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/SKP_VERSION.tar.gz",
+      "[START_DIR]/tmp/SKP_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of file [START_DIR]/tmp/SKP_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/SKP_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SKP_VERSION/* /sdcard/revenge_of_the_skiabot/SKP_VERSION"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -626,10 +655,28 @@
   },
   {
     "cmd": [
+      "tar",
+      "-C",
+      "[START_DIR]/skimage",
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_3/images.tar.gz",
+      "."
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/skimage",
+    "timeout": 300
+  },
+  {
+    "cmd": [
       "/usr/bin/adb.1.0.35",
-      "shell",
-      "cat",
-      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+      "push",
+      "[CLEANUP]/host_tar_gz_tmp_3/images.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -638,95 +685,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "read /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/images"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/images",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
+    "name": "push [START_DIR]/skimage/* /sdcard/revenge_of_the_skiabot/images"
   },
   {
     "cmd": [
@@ -743,34 +702,17 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "mkdir /sdcard/revenge_of_the_skiabot/images"
-  },
-  {
-    "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
-      "[START_DIR]/skimage",
-      "*"
-    ],
-    "infra_step": true,
-    "name": "ls [START_DIR]/skimage/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create directory /sdcard/revenge_of_the_skiabot/images"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/skimage/bar.jpg",
-      "[START_DIR]/skimage/foo.png",
-      "/sdcard/revenge_of_the_skiabot/images"
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/images",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -779,14 +721,14 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/skimage/* /sdcard/revenge_of_the_skiabot/images"
+    "name": "extract /sdcard/revenge_of_the_skiabot/images.tar.gz"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/tmp/SK_IMAGE_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -795,7 +737,73 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SK_IMAGE_VERSION /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+    "name": "remove /sdcard/revenge_of_the_skiabot/images.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_2/SK_IMAGE_VERSION.tar.gz",
+      "[START_DIR]/tmp/SK_IMAGE_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of file [START_DIR]/tmp/SK_IMAGE_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_2/SK_IMAGE_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SK_IMAGE_VERSION/* /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -835,10 +843,28 @@
   },
   {
     "cmd": [
+      "tar",
+      "-C",
+      "[START_DIR]/svg",
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_4/svgs.tar.gz",
+      "."
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/svg",
+    "timeout": 300
+  },
+  {
+    "cmd": [
       "/usr/bin/adb.1.0.35",
-      "shell",
-      "cat",
-      "/sdcard/revenge_of_the_skiabot/SVG_VERSION"
+      "push",
+      "[CLEANUP]/host_tar_gz_tmp_4/svgs.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -847,95 +873,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "read /sdcard/revenge_of_the_skiabot/SVG_VERSION"
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/SVG_VERSION"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/SVG_VERSION",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
-  },
-  {
-    "cmd": [
-      "python",
-      "\nimport subprocess\nimport sys\n\n# Remove the path.\nadb = sys.argv[1]\npath = sys.argv[2]\nprint('Removing %s' % path)\ncmd = [adb, 'shell', 'rm', '-rf', path]\nprint(' '.join(cmd))\nsubprocess.check_call(cmd)\n\n# Verify that the path was deleted.\nprint('Checking for existence of %s' % path)\ncmd = [adb, 'shell', 'ls', path]\nprint(' '.join(cmd))\ntry:\n  output = subprocess.check_output(\n      cmd, stderr=subprocess.STDOUT).decode('utf-8')\nexcept subprocess.CalledProcessError as e:\n  output = e.output.decode('utf-8')\nprint('Output was:')\nprint('======')\nprint(output)\nprint('======')\nif 'No such file or directory' not in output:\n  raise Exception('%s exists despite being deleted' % path)\n",
-      "/usr/bin/adb.1.0.35",
-      "/sdcard/revenge_of_the_skiabot/svgs"
-    ],
-    "env": {
-      "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
-    },
-    "infra_step": true,
-    "name": "rm /sdcard/revenge_of_the_skiabot/svgs",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@import subprocess@@@",
-      "@@@STEP_LOG_LINE@python.inline@import sys@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Remove the path.@@@",
-      "@@@STEP_LOG_LINE@python.inline@adb = sys.argv[1]@@@",
-      "@@@STEP_LOG_LINE@python.inline@path = sys.argv[2]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Removing %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'rm', '-rf', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@subprocess.check_call(cmd)@@@",
-      "@@@STEP_LOG_LINE@python.inline@@@@",
-      "@@@STEP_LOG_LINE@python.inline@# Verify that the path was deleted.@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Checking for existence of %s' % path)@@@",
-      "@@@STEP_LOG_LINE@python.inline@cmd = [adb, 'shell', 'ls', path]@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(' '.join(cmd))@@@",
-      "@@@STEP_LOG_LINE@python.inline@try:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = subprocess.check_output(@@@",
-      "@@@STEP_LOG_LINE@python.inline@      cmd, stderr=subprocess.STDOUT).decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@except subprocess.CalledProcessError as e:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  output = e.output.decode('utf-8')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('Output was:')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@print(output)@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('======')@@@",
-      "@@@STEP_LOG_LINE@python.inline@if 'No such file or directory' not in output:@@@",
-      "@@@STEP_LOG_LINE@python.inline@  raise Exception('%s exists despite being deleted' % path)@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
-    ]
+    "name": "push [START_DIR]/svg/* /sdcard/revenge_of_the_skiabot/svgs"
   },
   {
     "cmd": [
@@ -952,34 +890,17 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "mkdir /sdcard/revenge_of_the_skiabot/svgs"
-  },
-  {
-    "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
-      "[START_DIR]/svg",
-      "*"
-    ],
-    "infra_step": true,
-    "name": "ls [START_DIR]/svg/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create directory /sdcard/revenge_of_the_skiabot/svgs"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/svg/bar.jpg",
-      "[START_DIR]/svg/foo.png",
-      "/sdcard/revenge_of_the_skiabot/svgs"
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/svgs",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -988,14 +909,14 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/svg/* /sdcard/revenge_of_the_skiabot/svgs"
+    "name": "extract /sdcard/revenge_of_the_skiabot/svgs.tar.gz"
   },
   {
     "cmd": [
       "/usr/bin/adb.1.0.35",
-      "push",
-      "[START_DIR]/tmp/SVG_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SVG_VERSION"
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -1004,7 +925,73 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SVG_VERSION /sdcard/revenge_of_the_skiabot/SVG_VERSION"
+    "name": "remove /sdcard/revenge_of_the_skiabot/svgs.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_3/SVG_VERSION.tar.gz",
+      "[START_DIR]/tmp/SVG_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of file [START_DIR]/tmp/SVG_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_3/SVG_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SVG_VERSION/* /sdcard/revenge_of_the_skiabot/SVG_VERSION"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -1145,10 +1132,25 @@
   },
   {
     "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_4/uninteresting_hashes.txt.tar.gz",
+      "[START_DIR]/tmp/uninteresting_hashes.txt"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of file [START_DIR]/tmp/uninteresting_hashes.txt",
+    "timeout": 60
+  },
+  {
+    "cmd": [
       "/usr/bin/adb.1.0.35",
       "push",
-      "[START_DIR]/tmp/uninteresting_hashes.txt",
-      "/sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt"
+      "[CLEANUP]/host_file_tar_gz_tmp_4/uninteresting_hashes.txt.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -1157,7 +1159,42 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/uninteresting_hashes.txt /sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt"
+    "name": "push [START_DIR]/tmp/uninteresting_hashes.txt/* /sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt.tar.gz"
+  },
+  {
+    "cmd": [
+      "/usr/bin/adb.1.0.35",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/uninteresting_hashes.txt.tar.gz"
   },
   {
     "cmd": [
