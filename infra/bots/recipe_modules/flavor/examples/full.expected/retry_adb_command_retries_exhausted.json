@@ -13,9 +13,74 @@
   },
   {
     "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/file.txt.tar.gz",
+      "file.txt"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory file.txt",
+    "timeout": 60
+  },
+  {
+    "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "file.txt",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/file.txt.tar.gz",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push file.txt/* file.txt"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract file.txt.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove file.txt.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
       "file.txt"
     ],
     "cwd": "[START_DIR]/skia",
@@ -25,7 +90,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push file.txt file.txt"
+    "name": "check if file.txt exists"
   },
   {
     "cmd": [

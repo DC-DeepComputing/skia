@@ -13,9 +13,74 @@
   },
   {
     "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/file.txt.tar.gz",
+      "file.txt"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory file.txt",
+    "timeout": 60
+  },
+  {
+    "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "file.txt",
+      "[CLEANUP]/host_file_tar_gz_tmp_1/file.txt.tar.gz",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push file.txt/* file.txt"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract file.txt.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "file.txt.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove file.txt.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
       "file.txt"
     ],
     "cwd": "[START_DIR]/skia",
@@ -25,7 +90,7 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push file.txt file.txt"
+    "name": "check if file.txt exists"
   },
   {
     "cmd": [
@@ -211,30 +276,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/skia/resources",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/skia/resources/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skia/resources/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/skia/resources",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[START_DIR]/skia/resources/bar.jpg",
-      "[START_DIR]/skia/resources/foo.png",
-      "/sdcard/revenge_of_the_skiabot/resources"
+      "[CLEANUP]/host_tar_gz_tmp_1/resources.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -244,6 +307,58 @@
     },
     "infra_step": true,
     "name": "push [START_DIR]/skia/resources/* /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/resources"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create directory /sdcard/revenge_of_the_skiabot/resources"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/resources",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/resources.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/resources.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/resources.tar.gz"
   },
   {
     "cmd": [
@@ -280,6 +395,23 @@
       "@@@STEP_LOG_LINE@SKP_VERSION@42@@@",
       "@@@STEP_LOG_END@SKP_VERSION@@@"
     ]
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if /sdcard/revenge_of_the_skiabot/SKP_VERSION exists"
   },
   {
     "cmd": [
@@ -404,30 +536,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/skp",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_2/skps.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/skp/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skp/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/skp",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[START_DIR]/skp/bar.jpg",
-      "[START_DIR]/skp/foo.png",
-      "/sdcard/revenge_of_the_skiabot/skps"
+      "[CLEANUP]/host_tar_gz_tmp_2/skps.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -441,9 +571,10 @@
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "push",
-      "[START_DIR]/tmp/SKP_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SKP_VERSION"
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/skps"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -452,7 +583,106 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SKP_VERSION /sdcard/revenge_of_the_skiabot/SKP_VERSION"
+    "name": "create directory /sdcard/revenge_of_the_skiabot/skps"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/skps",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/skps.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/skps.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/skps.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_2/SKP_VERSION.tar.gz",
+      "[START_DIR]/tmp/SKP_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/tmp/SKP_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_2/SKP_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SKP_VERSION/* /sdcard/revenge_of_the_skiabot/SKP_VERSION"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SKP_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -489,6 +719,23 @@
       "@@@STEP_LOG_LINE@SK_IMAGE_VERSION@42@@@",
       "@@@STEP_LOG_END@SK_IMAGE_VERSION@@@"
     ]
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION exists"
   },
   {
     "cmd": [
@@ -613,30 +860,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/skimage",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_3/images.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/skimage/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/skimage/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/skimage",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[START_DIR]/skimage/bar.jpg",
-      "[START_DIR]/skimage/foo.png",
-      "/sdcard/revenge_of_the_skiabot/images"
+      "[CLEANUP]/host_tar_gz_tmp_3/images.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -650,9 +895,10 @@
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "push",
-      "[START_DIR]/tmp/SK_IMAGE_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/images"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -661,7 +907,106 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SK_IMAGE_VERSION /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+    "name": "create directory /sdcard/revenge_of_the_skiabot/images"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/images",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/images.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/images.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/images.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_3/SK_IMAGE_VERSION.tar.gz",
+      "[START_DIR]/tmp/SK_IMAGE_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/tmp/SK_IMAGE_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_3/SK_IMAGE_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SK_IMAGE_VERSION/* /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SK_IMAGE_VERSION.tar.gz"
   },
   {
     "cmd": [
@@ -698,6 +1043,23 @@
       "@@@STEP_LOG_LINE@SVG_VERSION@42@@@",
       "@@@STEP_LOG_END@SVG_VERSION@@@"
     ]
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "test",
+      "-f",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "check if /sdcard/revenge_of_the_skiabot/SVG_VERSION exists"
   },
   {
     "cmd": [
@@ -822,30 +1184,28 @@
   },
   {
     "cmd": [
-      "vpython3",
-      "-u",
-      "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "glob",
+      "tar",
+      "-C",
       "[START_DIR]/svg",
-      "*"
+      "--hard-dereference",
+      "-chzf",
+      "[CLEANUP]/host_tar_gz_tmp_4/svgs.tar.gz",
+      "."
     ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
     "infra_step": true,
-    "name": "ls [START_DIR]/svg/*",
-    "~followup_annotations": [
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/bar.jpg@@@",
-      "@@@STEP_LOG_LINE@glob@[START_DIR]/svg/foo.png@@@",
-      "@@@STEP_LOG_END@glob@@@"
-    ]
+    "name": "create tar.gz of directory [START_DIR]/svg",
+    "timeout": 60
   },
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
       "push",
-      "[START_DIR]/svg/bar.jpg",
-      "[START_DIR]/svg/foo.png",
-      "/sdcard/revenge_of_the_skiabot/svgs"
+      "[CLEANUP]/host_tar_gz_tmp_4/svgs.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -859,9 +1219,10 @@
   {
     "cmd": [
       "/opt/infra-android/tools/adb",
-      "push",
-      "[START_DIR]/tmp/SVG_VERSION",
-      "/sdcard/revenge_of_the_skiabot/SVG_VERSION"
+      "shell",
+      "mkdir",
+      "-p",
+      "/sdcard/revenge_of_the_skiabot/svgs"
     ],
     "cwd": "[START_DIR]/skia",
     "env": {
@@ -870,7 +1231,106 @@
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "infra_step": true,
-    "name": "push [START_DIR]/tmp/SVG_VERSION /sdcard/revenge_of_the_skiabot/SVG_VERSION"
+    "name": "create directory /sdcard/revenge_of_the_skiabot/svgs"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-C",
+      "/sdcard/revenge_of_the_skiabot/svgs",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/svgs.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/svgs.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/svgs.tar.gz"
+  },
+  {
+    "cmd": [
+      "tar",
+      "-chzf",
+      "[CLEANUP]/host_file_tar_gz_tmp_4/SVG_VERSION.tar.gz",
+      "[START_DIR]/tmp/SVG_VERSION"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "create tar.gz of directory [START_DIR]/tmp/SVG_VERSION",
+    "timeout": 60
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "push",
+      "[CLEANUP]/host_file_tar_gz_tmp_4/SVG_VERSION.tar.gz",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "push [START_DIR]/tmp/SVG_VERSION/* /sdcard/revenge_of_the_skiabot/SVG_VERSION"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "tar",
+      "-xzf",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "extract /sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+  },
+  {
+    "cmd": [
+      "/opt/infra-android/tools/adb",
+      "shell",
+      "rm",
+      "/sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
+    ],
+    "cwd": "[START_DIR]/skia",
+    "env": {
+      "ADB_VENDOR_KEYS": "/home/chrome-bot/.android/chrome_infrastructure_adbkey",
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "remove /sdcard/revenge_of_the_skiabot/SVG_VERSION.tar.gz"
   },
   {
     "cmd": [
