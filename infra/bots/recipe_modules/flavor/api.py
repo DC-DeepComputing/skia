@@ -140,11 +140,11 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
       if device_version != host_version:
         self.remove_file_on_device(device_version_file)
         self.create_clean_device_dir(device_path)
-        self.copy_directory_contents_to_device(
-            host_path, device_path)
+    self.copy_directory_contents_to_device(
+        host_path, device_path)
 
-        # Copy the new version file.
-        self.copy_file_to_device(actual_version_file, device_version_file)
+    # Copy the new version file.
+    self.copy_file_to_device(actual_version_file, device_version_file)
 
   def _copy_images(self):
     """Copy test images if needed."""
