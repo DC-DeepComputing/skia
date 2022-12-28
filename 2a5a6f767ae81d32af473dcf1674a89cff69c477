@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d452e0_786b69ee",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3360,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T20:26:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "830e8525_309b75a1",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fdb4e2b_7949d903",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "I guess...? For total completeness, admittedly, it\u0027s hard to argue against testing every permutation, but it\u0027s highly diminishing returns. `unary_op` and `binary_op` are very simple. It\u0027s really just testing that I remembered to add `case`s to a couple of switches. Admittedly, I have forgotten before and will forget again.",
       "parentUuid": "3fdb4e2b_7949d903",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "260b76fc_cfcbfcec",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T20:26:23Z",
+      "side": 1,
+      "message": "Thanks for twisting my arm to do the right thing. More thorough tests here uncovered a bug in `dump()` (displaying the wrong number of slots for \u003e4-slot operations).",
+      "parentUuid": "ab887508_8bea4bd7",
       "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
