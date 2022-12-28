@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "185edc9c_d8845741",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-28T18:53:03Z",
+      "side": 1,
+      "message": "Does add/sub on unsigned work by casting the operands to an int and casting the result back to unsigned?",
+      "range": {
+        "startLine": 246,
+        "startChar": 57,
+        "endLine": 246,
+        "endChar": 67
+      },
+      "revId": "4d85e19b7aecf5ae47c966479884a57bf06722fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
