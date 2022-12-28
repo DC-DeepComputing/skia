@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6286e27_33f44bbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-28T19:18:26Z",
+      "side": 1,
+      "message": "lgtm % nits",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15d1555b_bd5a93b7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3360,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-28T19:18:26Z",
+      "side": 1,
+      "message": "Maybe add a comment here that we aren\u0027t explicitly declaring uint stages for add, sub, mul, cmpeq, and cmpne because the `int` equivalents can operate on unsigned (by converting to/from signed)?\n\nFor multiply it maybe worth noting in a comment that we expect the hardware representation to produce the same result for signed and unsigned multiplication. I don\u0027t know when that would not be the case, except for the higher bits of a widening multiplication afaik (which I\u0027m guessing we\u0027re not worried about here?).",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fdb4e2b_7949d903",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-28T19:18:26Z",
+      "side": 1,
+      "message": "Should this test all the op_n_type permutations (e.g. div_n_floats, div_n_uints, div_n_ints, and so on)?",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
