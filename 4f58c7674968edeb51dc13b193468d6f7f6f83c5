@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4db3e705_fe9dc38b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-12-28T18:35:01Z",
+      "side": 1,
+      "message": "The change lgtm. Also consider adding a unit test for the no-op swizzle case.",
+      "revId": "4f58c7674968edeb51dc13b193468d6f7f6f83c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
