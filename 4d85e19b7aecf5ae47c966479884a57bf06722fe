@@ -70,6 +70,30 @@
       },
       "revId": "4d85e19b7aecf5ae47c966479884a57bf06722fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8725dc61_67d8b741",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T19:33:24Z",
+      "side": 1,
+      "message": "Skia currently requires a two\u0027s-complement little-endian CPU. It might be centrally documented already, but it\u0027s definitely called out in the code in various existing places:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:include/core/SkTypes.h;l\u003d225;drc\u003d2b8b2146765157b40197e0fd491402b69202968c\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/core/SkMathPriv.h;l\u003d80-83;drc\u003dcd938c5b0fe635a652fa21250f4849a4f746a108\n\nI could imagine a world where big-endian returns somehow (I was a Mac guy way before they went to Intel), but I don\u0027t think one\u0027s-complement is ever coming back around :)",
+      "parentUuid": "7f0e28d8_5e650566",
+      "range": {
+        "startLine": 246,
+        "startChar": 57,
+        "endLine": 246,
+        "endChar": 67
+      },
+      "revId": "4d85e19b7aecf5ae47c966479884a57bf06722fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
