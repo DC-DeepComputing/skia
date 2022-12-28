@@ -22,6 +22,30 @@
       },
       "revId": "4d85e19b7aecf5ae47c966479884a57bf06722fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c54a198_9e8754e5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T18:58:23Z",
+      "side": 1,
+      "message": "Signed and unsigned addition are the same operation in two\u0027s-complement arithmetic. (In fact, this is even true for two\u0027s complement multiplication, but is not true for division.)\n\nhttps://screenshot.googleplex.com/BBzvj3AG4BRWp56",
+      "parentUuid": "185edc9c_d8845741",
+      "range": {
+        "startLine": 246,
+        "startChar": 57,
+        "endLine": 246,
+        "endChar": 67
+      },
+      "revId": "4d85e19b7aecf5ae47c966479884a57bf06722fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
