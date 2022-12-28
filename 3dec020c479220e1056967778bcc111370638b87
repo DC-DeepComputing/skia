@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e04026_0e5c0838",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T20:26:46Z",
+      "side": 1,
+      "message": "^ too many slots",
+      "range": {
+        "startLine": 808,
+        "startChar": 49,
+        "endLine": 808,
+        "endChar": 52
+      },
+      "revId": "3dec020c479220e1056967778bcc111370638b87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
