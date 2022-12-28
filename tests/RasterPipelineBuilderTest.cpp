@@ -282,25 +282,26 @@ DEF_TEST(RasterPipelineBuilderUnaryAndBinaryOps, r) {
 
     // Create a very simple nonsense program.
     SkSL::RP::Builder builder;
-    builder.push_literal_f(0.0f);                  // push into 0
-    builder.push_literal_f(1.0f);                  // push into 1
-    builder.push_literal_f(2.0f);                  // push into 2
-    builder.push_literal_f(3.0f);                  // push into 3
-    builder.push_literal_f(4.0f);                  // push into 4
-    builder.binary_op(BuilderOp::add_n_floats, 2); // compute (1,2)+(3,4) and store into 1~2
-    builder.binary_op(BuilderOp::mul_n_floats, 1); // compute 1*2 and store into 1
-    builder.push_literal_i(5);                     // push into 2
-    builder.push_literal_i(6);                     // push into 3
-    builder.push_literal_i(7);                     // push into 4
-    builder.push_literal_i(8);                     // push into 5
-    builder.push_literal_i(9);                     // push into 6
-    builder.push_literal_i(10);                    // push into 7
-    builder.binary_op(BuilderOp::div_n_floats, 3); // compute (2,3,4)/(5,6,7) and store into 2~4
-    builder.binary_op(BuilderOp::sub_n_ints, 1);   // compute 3-4 and store into 3
-    builder.binary_op(BuilderOp::bitwise_and, 1);  // compute 2&11 and store into 2
-    builder.binary_op(BuilderOp::bitwise_xor, 1);  // compute 1^2 and store into 1
-    builder.unary_op(BuilderOp::bitwise_not, 2);   // compute ~(0,3) and store into 0~1
-    builder.discard_stack(2);                      // balance stack
+    builder.push_literal_f(0.0f);                   // push into 0
+    builder.push_literal_f(1.0f);                   // push into 1
+    builder.push_literal_f(2.0f);                   // push into 2
+    builder.push_literal_f(3.0f);                   // push into 3
+    builder.push_literal_f(4.0f);                   // push into 4
+    builder.binary_op(BuilderOp::add_n_floats, 2);  // compute (1,2)+(3,4) and store into 1~2
+    builder.binary_op(BuilderOp::mul_n_floats, 1);  // compute 1*2 and store into 1
+    builder.push_literal_i(5);                      // push into 2
+    builder.push_literal_i(6);                      // push into 3
+    builder.push_literal_i(7);                      // push into 4
+    builder.push_literal_i(8);                      // push into 5
+    builder.push_literal_i(9);                      // push into 6
+    builder.push_literal_i(10);                     // push into 7
+    builder.binary_op(BuilderOp::div_n_uints, 3);   // compute (2,3,4)/(5,6,7) and store into 2~4
+    builder.binary_op(BuilderOp::sub_n_ints, 1);    // compute 3-4 and store into 3
+    builder.binary_op(BuilderOp::bitwise_and, 1);   // compute 2&11 and store into 2
+    builder.binary_op(BuilderOp::bitwise_xor, 1);   // compute 1^2 and store into 1
+    builder.unary_op(BuilderOp::bitwise_not, 2);    // compute ~(0,3) and store into 0~1
+    builder.binary_op(BuilderOp::cmple_n_uints, 1); // compute $0<$1 and store into 0
+    builder.discard_stack(1);                       // balance stack
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/0,
                                                                 /*numUniformSlots=*/0);
     check(r, *program,
@@ -317,11 +318,12 @@ R"(    1. zero_slot_unmasked             $0 = 0
    11. copy_constant                  $5 = 0x00000008 (1.121039e-44)
    12. copy_constant                  $6 = 0x00000009 (1.261169e-44)
    13. copy_constant                  $7 = 0x0000000A (1.401298e-44)
-   14. div_3_floats                   $2..4 /= $5..7
+   14. div_3_uints                    $2..4 /= $5..7
    15. sub_int                        $3 -= $4
    16. bitwise_and                    $2 &= $3
    17. bitwise_xor                    $1 ^= $2
    18. bitwise_not_2                  $0..1 = ~$0..1
+   19. cmple_uint                     $0 = lessThanEqual($0, $1)
 )");
 }
 
