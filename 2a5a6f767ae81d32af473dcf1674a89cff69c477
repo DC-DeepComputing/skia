@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "830e8525_309b75a1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3360,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T19:27:42Z",
+      "side": 1,
+      "message": "Signed and unsigned multiplication are always the same result in the low N bits (e.g. the low 16 bits of `uint16*uint16` are the same as `int16*int16`), but can vary in the higher bits. This isn\u0027t an issue for us; the SkSL result of an N-bit integer multiply is an identically-typed N-bit result. This matters if you want to multiply `int32*int32` and produce a 64-bit result, but that\u0027s not something we support.",
+      "parentUuid": "15d1555b_bd5a93b7",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fdb4e2b_7949d903",
         "filename": "tests/RasterPipelineBuilderTest.cpp",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-12-28T19:18:26Z",
       "side": 1,
       "message": "Should this test all the op_n_type permutations (e.g. div_n_floats, div_n_uints, div_n_ints, and so on)?",
+      "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab887508_8bea4bd7",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-28T19:27:42Z",
+      "side": 1,
+      "message": "I guess...? For total completeness, admittedly, it\u0027s hard to argue against testing every permutation, but it\u0027s highly diminishing returns. `unary_op` and `binary_op` are very simple. It\u0027s really just testing that I remembered to add `case`s to a couple of switches. Admittedly, I have forgotten before and will forget again.",
+      "parentUuid": "3fdb4e2b_7949d903",
       "revId": "2a5a6f767ae81d32af473dcf1674a89cff69c477",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
