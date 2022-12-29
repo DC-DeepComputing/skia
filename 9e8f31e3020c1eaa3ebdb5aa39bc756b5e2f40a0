@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f503725c_b2925f82",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-12-29T19:24:48Z",
+      "side": 0,
+      "message": "This actually wasn\u0027t used in the existing implementation anyway. We only look up parameters via `getVariableSlots`.",
+      "range": {
+        "startLine": 130,
+        "startChar": 43,
+        "endLine": 130,
+        "endChar": 71
+      },
+      "revId": "9e8f31e3020c1eaa3ebdb5aa39bc756b5e2f40a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
