@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e90cbbe2_41bcfcef",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T21:53:53Z",
+      "side": 1,
+      "message": "Does strings.TrimPrefix not work here? If not, a comment should explain why.",
+      "range": {
+        "startLine": 420,
+        "startChar": 8,
+        "endLine": 420,
+        "endChar": 19
+      },
+      "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5643d6_15150f1e",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T21:53:53Z",
+      "side": 1,
+      "message": "I think returning a zero-valued gniFileContents struct is fine on an error - clients should not use the value if an error is returned.",
+      "range": {
+        "startLine": 448,
+        "startChar": 10,
+        "endLine": 448,
+        "endChar": 29
+      },
+      "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
