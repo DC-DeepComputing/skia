@@ -16,6 +16,24 @@
       "message": "This appears to have some slug changes (from a Herb CL?) mixed in? Needs a rebase and merge fix?",
       "revId": "d383bf339da2524b5994f3f84107540b6947f917",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "288774dc_ee6670a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T20:26:11Z",
+      "side": 1,
+      "message": "Rebased. PTAL.",
+      "parentUuid": "d43f453d_d90facca",
+      "revId": "d383bf339da2524b5994f3f84107540b6947f917",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
