@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df15497d_f8ad76ba",
+        "filename": "modules/skplaintexteditor/src/word_boundaries.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T19:15:44Z",
+      "side": 1,
+      "message": "This doesn\u0027t take the locale? Why not? If the idea was to make it compatible with pre-determined data (which could just ignore the locale passed anyway) then at least the locale should go into the `SkUnicode::Make()`, should it not?",
+      "range": {
+        "startLine": 15,
+        "startChar": 18,
+        "endLine": 15,
+        "endChar": 26
+      },
+      "revId": "bf3e9143d427e940d16dafdf7eaba2dc6ab3e19c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
