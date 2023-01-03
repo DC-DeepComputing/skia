@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7603c2_62ce3222",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T21:38:39Z",
+      "side": 0,
+      "message": "Looks like this `SK_API` was dropped, though this is more like `SK_SPI`.",
+      "range": {
+        "startLine": 451,
+        "startChar": 3,
+        "endLine": 451,
+        "endChar": 10
+      },
+      "revId": "cbb82107d3d80506a1cb72aafcda22d73d7b8acb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
