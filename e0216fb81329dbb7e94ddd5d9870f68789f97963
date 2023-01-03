@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf32c91a_b6b497bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-03T18:16:06Z",
+      "side": 1,
+      "message": "IWYU errors are not caused by this CL (there\u0027s breakage on the tree)",
+      "revId": "e0216fb81329dbb7e94ddd5d9870f68789f97963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
