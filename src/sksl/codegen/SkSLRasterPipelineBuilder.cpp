@@ -226,7 +226,7 @@ void Program::appendCopy(SkRasterPipeline* pipeline,
     if (numSlots > 0) {
         SkASSERT(numSlots <= 4);
         auto stage = (SkRasterPipeline::Stage)((int)baseStage + numSlots - 1);
-        auto* ctx = alloc->make<SkRasterPipeline_CopySlotsCtx>();
+        auto* ctx = alloc->make<SkRasterPipeline_BinaryOpCtx>();
         ctx->dst = dst;
         ctx->src = src;
         this->append(pipeline, stage, ctx);
@@ -299,7 +299,7 @@ void Program::appendAdjacentMultiSlotBinaryOp(SkRasterPipeline* pipeline, SkAren
     SkASSERT((dst + SkOpts::raster_pipeline_highp_stride * numSlots) == src);
 
     if (numSlots > 4) {
-        auto ctx = alloc->make<SkRasterPipeline_CopySlotsCtx>();
+        auto ctx = alloc->make<SkRasterPipeline_BinaryOpCtx>();
         ctx->dst = dst;
         ctx->src = src;
         this->append(pipeline, baseStage, ctx);
@@ -795,7 +795,7 @@ void Program::dump(SkWStream* out) {
         // Interpret the context value as a CopySlots structure for copy_n_slots.
         auto CopySlotsCtx = [&](const void* v,
                                 int numSlots) -> std::tuple<std::string, std::string> {
-            const auto *ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(v);
+            const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
             return std::make_tuple(PtrCtx(ctx->dst, numSlots),
                                    PtrCtx(ctx->src, numSlots));
         };
@@ -803,14 +803,14 @@ void Program::dump(SkWStream* out) {
         // Interpret the context value as a CopySlots structure for copy_n_constants.
         auto CopyConstantCtx = [&](const void* v,
                                    int numSlots) -> std::tuple<std::string, std::string> {
-            const auto *ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(v);
+            const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
             return std::make_tuple(PtrCtx(ctx->dst, numSlots),
                                    MultiImmCtx(ctx->src, numSlots));
         };
 
         // Interpret the context value as a CopySlots structure.
         auto AdjacentCopySlotsCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
-            const auto *ctx = static_cast<const SkRasterPipeline_CopySlotsCtx*>(v);
+            const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
             int numSlots = (ctx->src - ctx->dst) / N;
             return std::make_tuple(PtrCtx(ctx->dst, numSlots),
                                    PtrCtx(ctx->src, numSlots));
