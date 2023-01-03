@@ -52,6 +52,24 @@
       "parentUuid": "a4b72769_74ff28ab",
       "revId": "8b0def3a0c517c96326e40db2f2d2c86361666a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a99490ce_8ce83266",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T18:06:29Z",
+      "side": 1,
+      "message": "I would prefer to fix forward with https://skia-review.googlesource.com/c/skia/+/625576",
+      "parentUuid": "93aaa9b6_5cdce2b0",
+      "revId": "8b0def3a0c517c96326e40db2f2d2c86361666a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
