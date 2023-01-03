@@ -405,7 +405,7 @@ protected:
      *  The drawable does not need to be flattenable (e.g. implement getFactory and getTypeName).
      *  Any necessary serialization will be done with newPictureSnapshot.
      */
-    virtual sk_sp<SkDrawable> generateDrawable(const SkGlyph&); // TODO: = 0
+    virtual sk_sp<SkDrawable> generateDrawable(const SkGlyph&) = 0;
 
     /** Retrieves font metrics. */
     virtual void generateFontMetrics(SkFontMetrics*) = 0;

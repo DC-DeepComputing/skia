@@ -706,10 +706,6 @@ void SkScalerContext::getPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
 sk_sp<SkDrawable> SkScalerContext::getDrawable(SkGlyph& glyph) {
     return this->generateDrawable(glyph);
 }
-//TODO: make pure virtual
-sk_sp<SkDrawable> SkScalerContext::generateDrawable(const SkGlyph&) {
-    return nullptr;
-}
 
 void SkScalerContext::getFontMetrics(SkFontMetrics* fm) {
     SkASSERT(fm);
@@ -1271,6 +1267,9 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             if (metrics) {
                 sk_bzero(metrics, sizeof(*metrics));
             }
+        }
+        sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
+            return sk_sp<SkDrawable>();
         }
     };
 

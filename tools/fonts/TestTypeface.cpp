@@ -188,6 +188,10 @@ protected:
         SkFontPriv::ScaleFontMetrics(metrics, fMatrix.getScaleY());
     }
 
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
+        return sk_sp<SkDrawable>();
+    }
+
 private:
     SkMatrix fMatrix;
 };

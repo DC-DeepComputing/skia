@@ -756,4 +756,8 @@ void SkScalerContext_Mac::generateFontMetrics(SkFontMetrics* metrics) {
     }
 }
 
+sk_sp<SkDrawable> SkScalerContext_Mac::generateDrawable(const SkGlyph& glyph) {
+    return nullptr;
+}
+
 #endif

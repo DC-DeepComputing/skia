@@ -49,6 +49,7 @@ protected:
     void generateImage(const SkGlyph& glyph) override;
     bool generatePath(const SkGlyph& glyph, SkPath* path) override;
     void generateFontMetrics(SkFontMetrics*) override;
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override;
 
 private:
     class Offscreen {
