@@ -22,6 +22,30 @@
       },
       "revId": "8f4bcec43efa4b0d2b3e3f8c98f3e5f832182de6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "170184ee_d2716867",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-03T21:39:36Z",
+      "side": 1,
+      "message": "For sure (and it doesn\u0027t actually involve any new RP stages, so the cost is minimal).",
+      "parentUuid": "1ab8b989_7634520b",
+      "range": {
+        "startLine": 276,
+        "startChar": 9,
+        "endLine": 276,
+        "endChar": 19
+      },
+      "revId": "8f4bcec43efa4b0d2b3e3f8c98f3e5f832182de6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
