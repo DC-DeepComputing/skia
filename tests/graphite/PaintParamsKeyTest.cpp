@@ -10,6 +10,7 @@
 #ifdef SK_GRAPHITE_ENABLED
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
