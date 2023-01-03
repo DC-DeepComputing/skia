@@ -88,6 +88,24 @@
       "parentUuid": "d114b6e6_e1b16a5f",
       "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9292d3e_1c19f282",
+        "filename": "include/private/SkSafe32.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T15:39:29Z",
+      "side": 1,
+      "message": "That CL hasn\u0027t landed yet (I falsely remembered that it had)\nhttps://skia-review.googlesource.com/c/skia/+/620836",
+      "parentUuid": "f5fc6a76_eb476f26",
+      "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
