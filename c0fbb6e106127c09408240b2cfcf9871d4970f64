@@ -16,6 +16,24 @@
       "message": "Could the roll_freetype.sh script take care of this?",
       "revId": "c0fbb6e106127c09408240b2cfcf9871d4970f64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe02696_59541f3f",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T16:30:20Z",
+      "side": 1,
+      "message": "Yes, it should, just haven\u0027t done it yet. Mostly because the way bazel dependencies are expressed has been changing a lot recently, though it\u0027s probably stable enough now.",
+      "parentUuid": "43d11ea8_23a288b8",
+      "revId": "c0fbb6e106127c09408240b2cfcf9871d4970f64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
