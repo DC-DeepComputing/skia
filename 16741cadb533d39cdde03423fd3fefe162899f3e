@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e40a7d7_393fc56e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T17:01:27Z",
+      "side": 1,
+      "message": "Yeah, the path ops stuff in SkGlyph.cpp looks to all be around calculating the underline gaps. This was never the right place for this and should have always been done by taking the path from the glyph and then the user running path ops on the path. However, we also wanted to cache this information on the glyph after calculating, so didn\u0027t want the user to do it (and then possibly provide incorrect information to cache) so we make the call directly here just to cache. At this point it may make more sense to treat this information as a separate thing and have the strike cache do that instead of the glyph.",
+      "revId": "16741cadb533d39cdde03423fd3fefe162899f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
