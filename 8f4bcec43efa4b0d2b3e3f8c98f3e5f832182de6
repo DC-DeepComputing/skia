@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ab8b989_7634520b",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-03T20:25:27Z",
+      "side": 1,
+      "message": "I could have used `push_literal` and gotten the same result, but this lets me push multiple zeros in a single op, so it\u0027s probably a bit more efficient.",
+      "range": {
+        "startLine": 276,
+        "startChar": 9,
+        "endLine": 276,
+        "endChar": 19
+      },
+      "revId": "8f4bcec43efa4b0d2b3e3f8c98f3e5f832182de6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
