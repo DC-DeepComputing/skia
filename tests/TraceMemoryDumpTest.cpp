@@ -7,6 +7,7 @@
 
 #include "include/core/SkTypes.h"
 #if defined(SK_GL)
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"

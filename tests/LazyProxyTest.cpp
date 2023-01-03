@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -22,6 +23,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkRectPriv.h"
 #include "src/gpu/AtlasTypes.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrCaps.h"

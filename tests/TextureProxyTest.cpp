@@ -9,6 +9,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
@@ -23,6 +24,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkMessageBus.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"

@@ -8,6 +8,7 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"

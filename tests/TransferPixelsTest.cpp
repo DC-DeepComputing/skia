@@ -9,6 +9,7 @@
 
 #include "include/base/SkAlign.h"
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

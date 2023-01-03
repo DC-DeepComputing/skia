@@ -21,6 +21,7 @@
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"

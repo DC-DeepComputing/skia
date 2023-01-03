@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
@@ -16,6 +17,7 @@
 #include "include/gpu/GrTypes.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/Device_v1.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tests/CtsEnforcement.h"

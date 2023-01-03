@@ -7,6 +7,7 @@
 
 // This is a GPU-backend specific test.
 
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -18,6 +19,7 @@
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"

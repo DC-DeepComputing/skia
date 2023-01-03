@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"

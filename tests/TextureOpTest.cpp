@@ -7,6 +7,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -19,6 +20,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrCaps.h"

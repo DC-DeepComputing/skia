@@ -8,6 +8,7 @@
 #ifndef SkImage_DEFINED
 #define SkImage_DEFINED
 
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"

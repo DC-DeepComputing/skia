@@ -9,6 +9,7 @@
 
 #if SK_SUPPORT_GPU && defined(SK_VULKAN)
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"

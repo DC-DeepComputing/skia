@@ -9,6 +9,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
@@ -22,6 +23,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/utils/SkRandom.h"
 #include "src/gpu/KeyBuilder.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAutoLocaleSetter.h"
 #include "src/gpu/ganesh/GrCaps.h"

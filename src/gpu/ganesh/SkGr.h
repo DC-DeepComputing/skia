@@ -9,6 +9,7 @@
 #define SkGr_DEFINED
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkRefCnt.h"
@@ -18,6 +19,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/SkColorData.h"
 #include "src/gpu/Blend.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 

@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"

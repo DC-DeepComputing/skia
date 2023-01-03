@@ -26,6 +26,8 @@ class GrDeferredProxyUploader;
 class GrProxyProvider;
 class GrResourceProvider;
 class GrTextureProxyPriv;
+enum class SkBackingFit;
+enum class SkBudgeted : bool;
 struct SkISize;
 
 // This class delays the acquisition of textures until they are actually required

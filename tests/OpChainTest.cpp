@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -17,6 +18,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/utils/SkRandom.h"
 #include "src/gpu/AtlasTypes.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"

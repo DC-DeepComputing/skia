@@ -25,6 +25,7 @@ skia_filegroup(
         "SkBlendMode.h",
         "SkBlender.h",
         "SkBlurTypes.h",
+        "SkBudgeted.h",
         "SkCanvas.h",
         "SkCanvasVirtualEnforcer.h",
         "SkCapabilities.h",
