@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef4e80b_2c4ce0a1",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T22:26:11Z",
+      "side": 1,
+      "message": "Just wanted to point out that fixing `SkUnicode::Make()` to always exist (but return nullptr if there is no known dynamic backing implementation) would also fix any issues with building this as well.\n\n\nAlso (and related) it is awkward that one \"Make\" here takes an SkUnicode and the others do not. For now I\u0027m willing to live with that.",
+      "revId": "17ba1ce01083d9a041aa6562ad63963935f63269",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
