@@ -34,6 +34,24 @@
       "parentUuid": "0f82e83a_690a4a4f",
       "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7633f0f_d89d413a",
+        "filename": "include/private/SkSafe32.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-03T14:04:25Z",
+      "side": 1,
+      "message": "re: Having these in two places, can we just add a comment here (and in SkTemplates.h). Something like: \"This is a \u0027safe\u0027 abs for 32-bit integers that asserts when undefined behavior would occur. SkTAbs (in SkTemplates.h) is a general purpose absolute-value function.\" (And then the inverse comment in the other file).\n\nThe extra dependency on SkAssert isn\u0027t that big a deal.",
+      "parentUuid": "a19f2766_76ccf223",
+      "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
