@@ -8,7 +8,6 @@
 #ifndef SkBlockAllocator_DEFINED
 #define SkBlockAllocator_DEFINED
 
-#include "include/base/SkAlign.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"

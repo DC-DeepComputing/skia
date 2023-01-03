@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "include/base/SkAlign.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkBlockAllocator.h"
 #include "src/core/SkTBlockList.h"

@@ -7,7 +7,6 @@
 
 #include "src/codec/SkBmpRLECodec.h"
 
-#include "include/base/SkAlign.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorPriv.h"

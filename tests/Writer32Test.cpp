@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "include/base/SkAlign.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

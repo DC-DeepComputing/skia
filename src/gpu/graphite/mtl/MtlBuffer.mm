@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/mtl/MtlBuffer.h"
 
-#include "include/base/SkAlign.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 
 namespace skgpu::graphite {

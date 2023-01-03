@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "include/base/SkAlign.h"
 #include "include/core/SkAnnotation.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
