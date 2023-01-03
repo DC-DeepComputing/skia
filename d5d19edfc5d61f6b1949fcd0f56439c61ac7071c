@@ -16,6 +16,206 @@
       "message": "Thanks! Latest changes are mostly implementing suggestions from Nicolette, but also some other misc. cleanup.",
       "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98faec83_3fca21fd",
+        "filename": "src/core/SkATrace.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "Why is this needed now? Oh - I think it just got moved?\n\nBut you\u0027ve also added it to `SkTraceEventCommon.h`, which is included by this file, so this one might be redundant?",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b46494_b9f619d9",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: This is duplicated, so I\u0027m wondering if there\u0027s a more concise way to state it.\n\nThat said, if you\u0027re looking for info about `TRACE_STR_STATIC`, this is useful, and I don\u0027t have a better suggestion.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 72
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f94f0ba_d438c94b",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: I suppose this is an explanation of why we need this, even though we don\u0027t use anything from it directly? It seems odd that we can\u0027t use `static_assert` without this, but if we do, I still don\u0027t necessarily think we need to explain this here. I could imagine that we might have lots of includes that *could* get a comment explanation, but these would just be noisy.\n\nI don\u0027t have a strong preference here, though.\n\nEDIT: Looking down below, I see we use `std::basic_string_view`, which is defined here. I guess you\u0027re saying that we need this so we can use `std::basic_string_view` in `static_assert`s? I would remove the comment in this case, since it\u0027s clear why we need it.",
+      "range": {
+        "startLine": 105,
+        "startChar": 22,
+        "endLine": 105,
+        "endChar": 47
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcdd34cc_8ab47cc3",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "Didn\u0027t this become a compile-time failure if you don\u0027t have both?\n\nEDIT: Ah, only if you attempt to use `_ALWAYS`, I think.",
+      "range": {
+        "startLine": 114,
+        "startChar": 3,
+        "endLine": 114,
+        "endChar": 33
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7a780c4_69dba4c8",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "Alternatively, I think this `class` could become a `namespace`? Actually, this might be a good future cleanup, but this looks like it would require more churn.",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd01d6da_dc6b9cb4",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: This should probably include `google.com` - this code is open source, so it might not be obvious what the domain is.",
+      "range": {
+        "startLine": 183,
+        "startChar": 37,
+        "endLine": 183,
+        "endChar": 51
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5eba3a_6d43fab5",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "Did this section change in an interesting way? It looks like things either got moved, or Gerrit didn\u0027t figure out how to properly line it up.",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e78ce20_7b5deb7b",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: It\u0027s not easy for me to see what the `el` corresponds to. (I think it\u0027s line 226.) Maybe indent the in-between lines for clarity?",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf66645d_ce1cb477",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: This should line up with `TRACE_EVENT_END` (4 spaces)",
+      "range": {
+        "startLine": 302,
+        "startChar": 24,
+        "endLine": 302,
+        "endChar": 25
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7233fbdc_8b0234d9",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "nit: label this so we know where the corresponding `if` is.",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

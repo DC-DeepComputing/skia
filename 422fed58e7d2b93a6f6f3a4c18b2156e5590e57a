@@ -489,6 +489,30 @@
       },
       "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69bb97ba_3f2fc6b7",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-03T19:49:28Z",
+      "side": 1,
+      "message": "\u003e Would it make sense to reference go/skia-perfetto here as well? Is that a public page?\n\nFWIW, even if the page *was* public, go/ links don\u0027t work off-corp.",
+      "parentUuid": "4c2b2247_9af0a849",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 99
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
