@@ -7,6 +7,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
@@ -23,6 +24,7 @@
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBlendModePriv.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"

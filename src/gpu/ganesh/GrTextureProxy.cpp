@@ -11,6 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrDeferredProxyUploader.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"

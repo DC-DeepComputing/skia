@@ -8,9 +8,11 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBudgeted.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPoint.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
