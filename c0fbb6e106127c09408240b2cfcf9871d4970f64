@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d11ea8_23a288b8",
+        "filename": "bazel/deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-01-03T15:35:23Z",
+      "side": 1,
+      "message": "Could the roll_freetype.sh script take care of this?",
+      "revId": "c0fbb6e106127c09408240b2cfcf9871d4970f64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
