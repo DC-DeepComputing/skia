@@ -226,7 +226,6 @@ public:
     [[nodiscard]] bool pushVectorizedExpression(const Expression& expr, const Type& vectorType);
 
     void foldWithMultiOp(BuilderOp op, int elements);
-    void foldWithOp(BuilderOp op, int elements);
     void nextTempStack() {
         fBuilder.set_current_stack(++fCurrentTempStack);
     }
@@ -863,13 +862,6 @@ void Generator::foldWithMultiOp(BuilderOp op, int elements) {
     for (; elements >= 4; elements -= 2) {
         fBuilder.binary_op(op, /*slots=*/2);
     }
-    this->foldWithOp(op, elements);
-}
-
-void Generator::foldWithOp(BuilderOp op, int elements) {
-    // Fold the top N elements on the stack using an single-slot-only op, e.g.:
-    // (A && B && C) -> bitwise_and   $1 &= $2
-    //                  bitwise_and   $0 &= $1
     for (; elements >= 2; elements -= 1) {
         fBuilder.binary_op(op, /*slots=*/1);
     }
@@ -1005,25 +997,27 @@ bool Generator::pushBinaryExpression(const Expression& left, Operator op, const 
             if (!this->binaryOp(type, kEqualOps)) {
                 return unsupported();
             }
-            this->foldWithOp(BuilderOp::bitwise_and, type.slotCount());  // fold vector result
+            // equal(x,y) returns a vector; use & to fold into a scalar.
+            this->foldWithMultiOp(BuilderOp::bitwise_and_n_ints, type.slotCount());
             break;
 
         case OperatorKind::NEQ:
             if (!this->binaryOp(type, kNotEqualOps)) {
                 return unsupported();
             }
-            this->foldWithOp(BuilderOp::bitwise_or, type.slotCount());  // fold vector result
+            // notEqual(x,y) returns a vector; use | to fold into a scalar.
+            this->foldWithMultiOp(BuilderOp::bitwise_or_n_ints, type.slotCount());
             break;
 
         case OperatorKind::LOGICALAND:
             // We verified above that the RHS does not have side effects, so we don't need to worry
             // about short-circuiting side effects.
-            fBuilder.binary_op(BuilderOp::bitwise_and, /*slots=*/1);
+            fBuilder.binary_op(BuilderOp::bitwise_and_n_ints, /*slots=*/1);
             break;
 
         case OperatorKind::LOGICALOR:
             // We verified above that the RHS does not have side effects.
-            fBuilder.binary_op(BuilderOp::bitwise_or, /*slots=*/1);
+            fBuilder.binary_op(BuilderOp::bitwise_and_n_ints, /*slots=*/1);
             break;
 
         default:
@@ -1050,6 +1044,7 @@ bool Generator::pushConstructorCompound(const ConstructorCompound& c) {
 bool Generator::pushConstructorCast(const AnyConstructor& c) {
     SkASSERT(c.argumentSpan().size() == 1);
     const Expression& inner = *c.argumentSpan().front();
+    SkASSERT(inner.type().slotCount() == c.type().slotCount());
 
     if (!this->pushExpression(inner)) {
         return unsupported();
@@ -1057,6 +1052,11 @@ bool Generator::pushConstructorCast(const AnyConstructor& c) {
     if (inner.type().componentType().numberKind() == c.type().componentType().numberKind()) {
         // Since we ignore type precision, this cast is effectively a no-op.
         return true;
+    }
+    if (c.type().componentType().isBoolean()) {
+        // Converting int or float to boolean can be accomplished via `notEqual(x, 0)`.
+        fBuilder.push_zeros(c.type().slotCount());
+        return this->binaryOp(inner.type(), kNotEqualOps);
     }
 
     // TODO: add RP op to convert values on stack from the inner type to the outer type
