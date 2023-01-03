@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ec9269c_d018017b",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T20:00:36Z",
+      "side": 1,
+      "message": "Please pass the locale through. `extractWords` is only called from two places and the other can just pass `nullptr` for now.",
+      "revId": "a084020137961ac34010259230d96d4e9ee6387a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
