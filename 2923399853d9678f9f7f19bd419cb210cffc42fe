@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd7e77a_667a761b",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T16:42:24Z",
+      "side": 1,
+      "message": "Note that this is also never useful and as far as I know there is never a useful default. This is often the \"locale\" `utf8` or something like that. Also the system locale is a terrible default. In any event, the user needs to pass the locale and these should be using it on each run. This is just another way this is incomplete. I think I never got around to fixing this up due to spending all my time (at the time) figuring out that HarfBuzz\u0027s original `UNSAFE_TO_BREAK` flag didn\u0027t do what anyone thought it did, and also the need to completely re do all of this since font fallback needs to happen (completely) differently.",
+      "revId": "2923399853d9678f9f7f19bd419cb210cffc42fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
