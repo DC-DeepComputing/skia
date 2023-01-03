@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5883b1f_14acfa87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-03T23:44:18Z",
+      "side": 1,
+      "message": "Hi, it looks like this change breaks the Android framework roll, due to one singular usage of `SkAutoTMalloc` in Android\u0027s [frameworks/base/libs/hwui/RecordingCanvas.h](https://cs.android.com/android/platform/superproject/+/master:frameworks/base/libs/hwui/RecordingCanvas.h;l\u003d143;drc\u003d70cf50c24ac86efe373ab035c656c811344b0f0c).\n\nIf it\u0027s acceptable to just let that code use `skia::internal::SkAutoTMalloc`, then I assume we could synchronize a fix-forward on the Android roller\u0027s Gerrit topic. Or is a different approach preferable?",
+      "revId": "de83118cabbca6cc52f957d475b03ce4027b5389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
