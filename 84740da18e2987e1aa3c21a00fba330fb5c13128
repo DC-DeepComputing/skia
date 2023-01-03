@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7759165b_3b55a9df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-03T16:46:53Z",
+      "side": 1,
+      "message": "Thanks for the thorough test cases!",
+      "revId": "84740da18e2987e1aa3c21a00fba330fb5c13128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3754f22_7a9f3b23",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-03T16:46:53Z",
+      "side": 1,
+      "message": "nit: comment line wrapping here and with `AtY` seems shorter than 100 chars but also not what I\u0027d expect if we were wrapping at 80.",
+      "range": {
+        "startLine": 239,
+        "startChar": 67,
+        "endLine": 240,
+        "endChar": 53
+      },
+      "revId": "84740da18e2987e1aa3c21a00fba330fb5c13128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
