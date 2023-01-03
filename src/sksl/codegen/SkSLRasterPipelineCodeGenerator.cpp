@@ -266,6 +266,14 @@ private:
                                                 BuilderOp::div_n_ints,
                                                 BuilderOp::div_n_uints,
                                                 BuilderOp::unsupported};
+    static constexpr auto kBitwiseAndOps = TypedOps{BuilderOp::unsupported,
+                                                    BuilderOp::bitwise_and_n_ints,
+                                                    BuilderOp::bitwise_and_n_ints,
+                                                    BuilderOp::unsupported};
+    static constexpr auto kBitwiseOrOps = TypedOps{BuilderOp::unsupported,
+                                                   BuilderOp::bitwise_or_n_ints,
+                                                   BuilderOp::bitwise_or_n_ints,
+                                                   BuilderOp::unsupported};
     static constexpr auto kLessThanOps = TypedOps{BuilderOp::cmplt_n_floats,
                                                   BuilderOp::cmplt_n_ints,
                                                   BuilderOp::cmplt_n_uints,
@@ -1057,6 +1065,20 @@ bool Generator::pushConstructorCast(const AnyConstructor& c) {
         // Converting int or float to boolean can be accomplished via `notEqual(x, 0)`.
         fBuilder.push_zeros(c.type().slotCount());
         return this->binaryOp(inner.type(), kNotEqualOps);
+    }
+    if (inner.type().componentType().isBoolean()) {
+        // Converting boolean to int or float can be accomplished via bitwise-and.
+        if (c.type().componentType().isFloat()) {
+            fBuilder.push_literal_f(1.0f);
+        } else if (c.type().componentType().isSigned() || c.type().componentType().isUnsigned()) {
+            fBuilder.push_literal_i(1);
+        } else {
+            SkDEBUGFAILF("unexpected cast from bool to %s", c.type().description().c_str());
+            return unsupported();
+        }
+        fBuilder.duplicate(c.type().slotCount() - 1);
+        fBuilder.binary_op(BuilderOp::bitwise_and_n_ints, c.type().slotCount());
+        return true;
     }
 
     // TODO: add RP op to convert values on stack from the inner type to the outer type
