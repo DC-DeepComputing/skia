@@ -169,7 +169,7 @@ public:
     sk_sp<SkColorSpace> makeLinearGamma() const;
 
     /**
-     *  Returns a color space with the same gamut as this one, with with the sRGB transfer
+     *  Returns a color space with the same gamut as this one, with the sRGB transfer
      *  function. For color spaces whose gamut can not be described in terms of XYZ D50, returns
      *  sRGB.
      */
