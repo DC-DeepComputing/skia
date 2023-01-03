@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40a7dfef_30545924",
+        "filename": "include/core/SkBudgeted.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-03T21:04:40Z",
+      "side": 1,
+      "message": "Despite being `Sk...`, this enum is only used for GPU APIs. Can we move this into include/gpu? Perhaps even just put this enum in include/gpu/GrTypes.h?",
+      "revId": "0fb458a73529c899de7ffafcf3f2d6a0f478c071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
