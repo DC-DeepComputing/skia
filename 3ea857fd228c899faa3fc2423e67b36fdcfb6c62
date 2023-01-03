@@ -51,6 +51,23 @@
       "parentUuid": "460c9f58_b479f9a8",
       "revId": "3ea857fd228c899faa3fc2423e67b36fdcfb6c62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d925b92f_39915664",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-03T18:09:31Z",
+      "side": 1,
+      "message": "SK_PARAGRAPH_LIBTXT_SPACES_RESOLUTION was modified as\n\nAdded define:\nhttps://skia-review.googlesource.com/c/skia/+/335220\n\nRemoved use:\nhttps://skia-review.googlesource.com/c/skia/+/359566\nhttps://skia-review.googlesource.com/c/skia/+/568040\n\nRemoved define:\nhttps://skia-review.googlesource.com/c/skia/+/582341\n\nAs a result, this should no longer be needed.",
+      "revId": "3ea857fd228c899faa3fc2423e67b36fdcfb6c62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
