@@ -52,6 +52,24 @@
       "parentUuid": "bab1201a_0fd5c39e",
       "revId": "7df76269ab57fe2b5f2d9ded771f9750b9d88ade",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dc8001f_c4c10a75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T21:55:27Z",
+      "side": 1,
+      "message": "Given that this is not impacting the CQ, I would prefer to fix forward tomorrow instead of reverting these two CLS and relanding them.",
+      "parentUuid": "584c0408_132fee71",
+      "revId": "7df76269ab57fe2b5f2d9ded771f9750b9d88ade",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
