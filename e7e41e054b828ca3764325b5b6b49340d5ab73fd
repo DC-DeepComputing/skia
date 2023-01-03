@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5bff983_474e6aee",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-03T22:33:23Z",
+      "side": 1,
+      "message": "TrimPrefix works fine - thx.",
+      "parentUuid": "e90cbbe2_41bcfcef",
+      "range": {
+        "startLine": 420,
+        "startChar": 8,
+        "endLine": 420,
+        "endChar": 19
+      },
+      "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe5643d6_15150f1e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-03T21:53:53Z",
       "side": 1,
       "message": "I think returning a zero-valued gniFileContents struct is fine on an error - clients should not use the value if an error is returned.",
+      "range": {
+        "startLine": 448,
+        "startChar": 10,
+        "endLine": 448,
+        "endChar": 29
+      },
+      "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df4c01db_cb1b23cc",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-03T22:33:23Z",
+      "side": 1,
+      "message": "Good point - done. I left makeGniFileContents in, but LMK if you want that removed.",
+      "parentUuid": "fe5643d6_15150f1e",
       "range": {
         "startLine": 448,
         "startChar": 10,
