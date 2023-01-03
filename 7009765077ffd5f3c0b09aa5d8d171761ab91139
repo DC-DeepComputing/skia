@@ -52,6 +52,24 @@
       "parentUuid": "a19f2766_76ccf223",
       "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d114b6e6_e1b16a5f",
+        "filename": "include/private/SkSafe32.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T15:11:18Z",
+      "side": 1,
+      "message": "Done. SkAssert is now included directly (which hadn\u0027t landed yet previously)",
+      "parentUuid": "b7633f0f_d89d413a",
+      "revId": "7009765077ffd5f3c0b09aa5d8d171761ab91139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
