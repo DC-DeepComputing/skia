@@ -93,6 +93,30 @@
       },
       "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad41bc8b_aae48a08",
+        "filename": "bazel/exporter/gni_exporter.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-03T23:14:32Z",
+      "side": 1,
+      "message": "You definitely need makeGniFileContents to initialize the dictionary; where you have it LGTM.",
+      "parentUuid": "df4c01db_cb1b23cc",
+      "range": {
+        "startLine": 448,
+        "startChar": 10,
+        "endLine": 448,
+        "endChar": 29
+      },
+      "revId": "e7e41e054b828ca3764325b5b6b49340d5ab73fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
