@@ -1163,8 +1163,30 @@ static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, S
     return false;
 }
 
+// FIXME (kjlubick) use double[8] for cubic
+static bool FirstHorizontalIntersect(double yCoefficients[4], double axisIntercept, double* solution) {
+    yCoefficients[3] -= axisIntercept;
+    int count = RootsValidT(yCoefficients, roots);
+    for (int index = 0; index < count; ++index) {
+        double y = EvalCubicAt(yCofficients, roots[index]);
+        if (approximately_equal(y, axisIntercept)) {
+            *solution = y;
+            return true
+        }
+    }
+    return false;
+}
+
 bool SkChopMonoCubicAtY(const SkPoint src[4], SkScalar y, SkPoint dst[7]) {
-    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
+    double yCoefficients[4] = {src[0].fY, src[1].fY, src[2].fY, src[3].fY};
+    double solution = 0;
+    if (FirstHorizontalIntersect(yCoefficients, y, &solution)) {
+        double xCoefficients[4] = {src[0].fX, src[1].fX, src[2].fX, src[3].fX};
+        SkPoint cubicPair[7] = ChopCubicAt(xCoefficients, yCoefficients, solution);
+        memcpy(cubicPair, dst);
+        return true;
+    }
+    return false;
 }
 
 bool SkChopMonoCubicAtX(const SkPoint src[4], SkScalar x, SkPoint dst[7]) {
