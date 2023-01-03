@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e53e306a_4139b684",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-03T14:54:51Z",
+      "side": 1,
+      "message": "I think (fingers crossed) that this can all simplify to `return all(map(std::isfinite, v));`",
+      "range": {
+        "startLine": 896,
+        "startChar": 4,
+        "endLine": 907,
+        "endChar": 16
+      },
+      "revId": "2d6f369192cf4120c583b29a72840b07f5e6898d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
