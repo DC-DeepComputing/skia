@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2b481f_35133cdc",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-03T17:58:41Z",
+      "side": 1,
+      "message": "Looks like this line might be causing an Android roll failure, starting with http://ag/20858658\n\n```\nexternal/skia/src/core/SkPathRef.cpp\nexternal/skia/src/core/SkPathRef.cpp:448:9: error: reference to non-static member function must be called\n        genID |\u003d static_cast\u003cuint32_t\u003e(ft) \u003c\u003c kPathRefGenIDBitCnt;\n        ^~~~~\nexternal/skia/src/core/SkPathRef.cpp:448:40: error: use of undeclared identifier \u0027ft\u0027\n        genID |\u003d static_cast\u003cuint32_t\u003e(ft) \u003c\u003c kPathRefGenIDBitCnt;\n                                       ^\n2 errors generated.\n```",
+      "revId": "8b0def3a0c517c96326e40db2f2d2c86361666a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
