@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052accc7_6e42d8e3",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-03T18:04:18Z",
+      "side": 1,
+      "message": "Seems like these ought to be `float` ?",
+      "range": {
+        "startLine": 1370,
+        "startChar": 8,
+        "endLine": 1370,
+        "endChar": 11
+      },
+      "revId": "9c94837334ad8ac5d110c4b4f3968aa36cbc1a7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
