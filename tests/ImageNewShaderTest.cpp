@@ -157,9 +157,9 @@ DEF_TEST(ImageRawShader, reporter) {
     REPORTER_ASSERT(reporter, image);
 
     // We should be able to turn this into a "raw" image shader:
-    REPORTER_ASSERT(reporter, image->makeRawShader(SkSamplingOptions{}));
+    REPORTER_ASSERT(reporter, image->makeRawShader1(SkSamplingOptions{}));
 
     // ... but not if we request cubic filtering
     REPORTER_ASSERT(reporter,
-                    !image->makeRawShader(SkSamplingOptions{SkCubicResampler::Mitchell()}));
+                    !image->makeRawShader1(SkSamplingOptions{SkCubicResampler::Mitchell()}));
 }

@@ -26,7 +26,7 @@ public:
                                 const SkMatrix* localMatrix,
                                 bool clampAsIfUnpremul = false);
 
-    static sk_sp<SkShader> MakeRaw(sk_sp<SkImage>,
+    static sk_sp<SkShader> MakeRaw1(sk_sp<SkImage>,
                                    SkTileMode tmx,
                                    SkTileMode tmy,
                                    const SkSamplingOptions&,

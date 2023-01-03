@@ -150,7 +150,7 @@ sk_sp<SkFlattenable> SkImageShader::CreateProc(SkReadBuffer& buffer) {
     // TODO(skbug.com/12784): Subset is not serialized yet; it's only used by special images so it
     // will never be written to an SKP.
 
-    return raw ? SkImageShader::MakeRaw(std::move(img), tmx, tmy, sampling, &localMatrix)
+    return raw ? SkImageShader::MakeRaw1(std::move(img), tmx, tmy, sampling, &localMatrix)
                : SkImageShader::Make(std::move(img), tmx, tmy, sampling, &localMatrix);
 }
 
@@ -289,7 +289,7 @@ sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
     return MakeSubset(std::move(image), subset, tmx, tmy, options, localMatrix, clampAsIfUnpremul);
 }
 
-sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
+sk_sp<SkShader> SkImageShader::MakeRaw1(sk_sp<SkImage> image,
                                        SkTileMode tmx, SkTileMode tmy,
                                        const SkSamplingOptions& options,
                                        const SkMatrix* localMatrix) {
