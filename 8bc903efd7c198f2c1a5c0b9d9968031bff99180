@@ -33,6 +33,24 @@
       "message": "This is a big CL with many moving parts. I would suggest doing the SkTypes.h to SkAPI, SkAssert, SkDebug into their own CLs.\n\nAs a client I would see include/base as APIs I could use. Can we make it more scary like private_base or private/base? I would like to hear Brian\u0027s opinion here because I may be in the weeds.",
       "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4745e1d3_a06821b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-04T18:31:35Z",
+      "side": 1,
+      "message": "I do have some similar concerns. Bazel may prevent G3 clients from including things in include/base, but I agree that it looks/sounds like something that clients are meant to use... and we\u0027re O(years) away from our two major clients migrating.",
+      "parentUuid": "911c3283_03cecbb0",
+      "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
