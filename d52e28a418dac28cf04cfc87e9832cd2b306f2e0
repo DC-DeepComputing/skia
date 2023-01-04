@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdf4a23d_96ba459c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-04T18:35:09Z",
+      "side": 1,
+      "message": "Nolan is looking into fixing the use of SkAutoTMalloc in Android. Follow:\nhttps://b.corp.google.com/issues/264403827",
+      "revId": "d52e28a418dac28cf04cfc87e9832cd2b306f2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
