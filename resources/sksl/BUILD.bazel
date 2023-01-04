@@ -245,6 +245,7 @@ skia_filegroup(
         "errors/InvalidAssignment.rts",
         "errors/InvalidAtomicDeclarations.compute",
         "errors/InvalidAtomicOperations.compute",
+        "errors/InvalidBackendBindingFlags.sksl",
         "errors/InvalidExtensionDirective.sksl",
         "errors/InvalidOutParams.rts",
         "errors/InvalidToken.rts",
