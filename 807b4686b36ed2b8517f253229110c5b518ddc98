@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72bc5a72_666c95b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-04T14:31:05Z",
+      "side": 1,
+      "message": "I think this is going to fail with the new namespace/rename, because there are clients that refer to SkBudgeted (eg, when calling the public APIs that take that enum).",
+      "revId": "807b4686b36ed2b8517f253229110c5b518ddc98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
