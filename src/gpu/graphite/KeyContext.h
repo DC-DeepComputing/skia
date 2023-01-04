@@ -10,7 +10,9 @@
 
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkRefCnt.h"
 
+class SkColorSpace;
 
 namespace skgpu::graphite {
 
@@ -24,15 +26,13 @@ class ShaderCodeDictionary;
 class KeyContext {
 public:
     // Constructor for the pre-compile code path (i.e., no Recorder)
-    KeyContext(ShaderCodeDictionary* dict, RuntimeEffectDictionary* rtEffectDict)
-               : fDictionary(dict)
-               , fRTEffectDict(rtEffectDict) {
-    }
+    KeyContext(ShaderCodeDictionary*, RuntimeEffectDictionary*);
 
     // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
-    KeyContext(Recorder*, const SkM44& local2Dev);
+    KeyContext(Recorder*, const SkM44& local2Dev, sk_sp<SkColorSpace> dstColorSpace);
 
     KeyContext(const KeyContext&);
+    ~KeyContext();
 
     Recorder* recorder() const { return fRecorder; }
 
@@ -48,6 +48,7 @@ protected:
     SkMatrix* fLocalMatrix = nullptr;
     ShaderCodeDictionary* fDictionary;
     RuntimeEffectDictionary* fRTEffectDict;
+    sk_sp<SkColorSpace> fDstColorSpace;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {
