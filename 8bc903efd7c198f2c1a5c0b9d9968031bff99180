@@ -68,6 +68,24 @@
       "message": "I would like to add, that I think splitting up SkTypes is brilliant, and it would be great to get it in sooner rather than latter.",
       "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd6ea264_cf3aa56e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T18:44:04Z",
+      "side": 1,
+      "message": "\u003e I would suggest doing the SkTypes.h to SkAPI, SkAssert, SkDebug into their own CLs.\n\nThat was already done in https://skia-review.googlesource.com/c/skia/+/620836\n\nI can move include/base to include/private/base",
+      "parentUuid": "4745e1d3_a06821b8",
+      "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
