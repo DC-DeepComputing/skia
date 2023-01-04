@@ -16,6 +16,24 @@
       "message": "Despite being `Sk...`, this enum is only used for GPU APIs. Can we move this into include/gpu? Perhaps even just put this enum in include/gpu/GrTypes.h?",
       "revId": "0fb458a73529c899de7ffafcf3f2d6a0f478c071",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae5c9de_3cbdbd5e",
+        "filename": "include/core/SkBudgeted.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T14:25:20Z",
+      "side": 1,
+      "message": "Moved to include/gpu/GpuTypes.h since it appears to be used by Graphite also",
+      "parentUuid": "40a7dfef_30545924",
+      "revId": "0fb458a73529c899de7ffafcf3f2d6a0f478c071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
