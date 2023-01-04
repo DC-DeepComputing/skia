@@ -34,6 +34,24 @@
       "parentUuid": "b5883b1f_14acfa87",
       "revId": "de83118cabbca6cc52f957d475b03ce4027b5389",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d53c8b72_f802cfea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-04T00:10:48Z",
+      "side": 1,
+      "message": "The fix:\nhttps://skia-review.googlesource.com/c/skia/+/624734\n\nis about to drop.",
+      "parentUuid": "decf0d89_ff23741c",
+      "revId": "de83118cabbca6cc52f957d475b03ce4027b5389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
