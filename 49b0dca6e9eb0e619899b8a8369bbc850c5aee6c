@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "218df333_d043badd",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "With the updates to the `(1)` patch to make `SkUnicode::Make()` always exist, this `#ifdef` can now be removed. And maybe `SK_UNICODE_ICU_IMPLEMENTATION` and `SK_UNICODE_ICU_IMPLEMENTATION` can be removed (or at least not be public defines).",
+      "parentUuid": "5a6effe7_aac1d1e5",
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73943bbd_72d16553",
         "filename": "modules/skparagraph/BUILD.gn",
         "patchSetId": 14

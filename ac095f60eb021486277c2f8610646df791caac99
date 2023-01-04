@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d310ff97_44f9285a",
+        "filename": "modules/skshaper/src/SkShaper.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "Can be reverted to the previous?",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a52c09fb_c9559490",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "Need to resolve this conflict.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7e4664_6b0be4b0",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 16
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "And these.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07fab74f_5643c0ef",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "Need to resolve this conflict.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46f3bd8d_63cc42e8",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T16:21:04Z",
+      "side": 1,
+      "message": "Resolve this conflict.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
