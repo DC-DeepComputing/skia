@@ -10,6 +10,7 @@
 
 #include "include/gpu/GrContextOptions.h"
 #include "include/private/SkImageInfoPriv.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrResourceCache.h"
 
@@ -78,7 +79,7 @@ public:
                                    GrRenderable renderable,
                                    int renderTargetSampleCnt,
                                    GrMipmapped mipmapped,
-                                   SkBudgeted budgeted,
+                                   skgpu::Budgeted budgeted,
                                    GrProtected isProtected,
                                    std::string_view label);
 
@@ -93,7 +94,7 @@ public:
                                    GrColorType colorType,
                                    GrRenderable renderable,
                                    int renderTargetSampleCnt,
-                                   SkBudgeted budgeted,
+                                   skgpu::Budgeted budgeted,
                                    GrMipmapped mipmapped,
                                    GrProtected isProtected,
                                    const GrMipLevel texels[],
@@ -110,7 +111,7 @@ public:
                                    GrColorType srcColorType,
                                    GrRenderable,
                                    int renderTargetSampleCnt,
-                                   SkBudgeted,
+                                   skgpu::Budgeted,
                                    SkBackingFit,
                                    GrProtected,
                                    const GrMipLevel& mipLevel,
@@ -136,7 +137,7 @@ public:
      */
     sk_sp<GrTexture> createCompressedTexture(SkISize dimensions,
                                              const GrBackendFormat&,
-                                             SkBudgeted,
+                                             skgpu::Budgeted,
                                              GrMipmapped,
                                              GrProtected,
                                              SkData* data,
@@ -365,7 +366,7 @@ private:
                                      GrTextureType,
                                      GrRenderable,
                                      int renderTargetSampleCnt,
-                                     SkBudgeted,
+                                     skgpu::Budgeted,
                                      GrMipmapped,
                                      GrProtected,
                                      std::string_view label);
