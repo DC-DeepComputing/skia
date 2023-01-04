@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab773f7_caa704a1",
+        "filename": "src/sksl/SkSLString.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-04T21:09:53Z",
+      "side": 1,
+      "message": "cstdarg?\nChanging this could be in a follow on CL. This CL has a large surface area, and spoils quickly.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "b9721f88b93d17040079628c266692b7a8d0ea64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
