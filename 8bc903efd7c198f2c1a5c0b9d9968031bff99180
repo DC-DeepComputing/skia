@@ -51,6 +51,23 @@
       "parentUuid": "911c3283_03cecbb0",
       "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "656e4730_a075eff4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-04T18:36:56Z",
+      "side": 1,
+      "message": "I would like to add, that I think splitting up SkTypes is brilliant, and it would be great to get it in sooner rather than latter.",
+      "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
