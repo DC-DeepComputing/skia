@@ -151,6 +151,7 @@ CORE_FILES = [
     "SkExecutor.cpp",
     "SkFDot6.h",
     "SkFlattenable.cpp",
+    "SkFloatingPoint.cpp",
     "SkFont.cpp",
     "SkFontDescriptor.cpp",
     "SkFontDescriptor.h",
