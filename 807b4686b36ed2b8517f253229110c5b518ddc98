@@ -52,6 +52,24 @@
       "parentUuid": "8d2080a6_d775bf71",
       "revId": "807b4686b36ed2b8517f253229110c5b518ddc98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14ab5af9_84941bd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T15:51:10Z",
+      "side": 1,
+      "message": "Done, although clang-format seems to have been a bit zealous with what it changed.",
+      "parentUuid": "a860edcd_7abf8912",
+      "revId": "807b4686b36ed2b8517f253229110c5b518ddc98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
