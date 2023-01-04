@@ -16,6 +16,24 @@
       "message": "nit: Can we write this as: `using SkBudgeted \u003d skgpu::Budgeted;` instead?",
       "revId": "8c1fb5dd5852238d4324b76e61c1f6563ed0adab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3daafdff_345960d7",
+        "filename": "include/gpu/GpuTypes.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T21:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7275a8cc_bbf33415",
+      "revId": "8c1fb5dd5852238d4324b76e61c1f6563ed0adab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
