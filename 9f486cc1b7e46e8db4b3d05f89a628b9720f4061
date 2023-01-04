@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e88c5a1_8997c44f",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-04T19:51:01Z",
+      "side": 1,
+      "message": "Unicode",
+      "range": {
+        "startLine": 275,
+        "startChar": 54,
+        "endLine": 275,
+        "endChar": 61
+      },
+      "revId": "9f486cc1b7e46e8db4b3d05f89a628b9720f4061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
