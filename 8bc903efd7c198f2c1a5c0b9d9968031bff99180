@@ -16,6 +16,23 @@
       "message": "Actually, why is SkStringView.h in include/private to begin with? I only see it included from src/, tools/, and tests/",
       "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "911c3283_03cecbb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-04T18:30:04Z",
+      "side": 1,
+      "message": "This is a big CL with many moving parts. I would suggest doing the SkTypes.h to SkAPI, SkAssert, SkDebug into their own CLs.\n\nAs a client I would see include/base as APIs I could use. Can we make it more scary like private_base or private/base? I would like to hear Brian\u0027s opinion here because I may be in the weeds.",
+      "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
