@@ -3294,6 +3294,16 @@ SI void bitwise_not_fn(I32* dst) {
     *dst = ~*dst;
 }
 
+#if defined(JUMPER_IS_SCALAR)
+SI void cast_to_float_from_fn(I32* dst) {
+    *dst = sk_bit_cast<I32>((F)*dst);
+}
+#else
+SI void cast_to_float_from_fn(I32* dst) {
+    *dst = sk_bit_cast<I32>(__builtin_convertvector(*dst, F));
+}
+#endif
+
 #define DECLARE_UNARY_INT(name)                                                             \
     STAGE(name##_int, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 1); }    \
     STAGE(name##_2_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 2); } \
@@ -3301,6 +3311,7 @@ SI void bitwise_not_fn(I32* dst) {
     STAGE(name##_4_ints, I32* dst) { apply_adjacent_unary<I32, &name##_fn>(dst, dst + 4); }
 
 DECLARE_UNARY_INT(bitwise_not)
+DECLARE_UNARY_INT(cast_to_float_from)
 
 #undef DECLARE_UNARY_INT
 

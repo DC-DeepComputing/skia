@@ -9,6 +9,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "tests/Test.h"
 
@@ -1246,30 +1247,37 @@ DEF_TEST(SkRasterPipeline_CompareIntsWithHardcodedSlots, r) {
     }
 }
 
-DEF_TEST(SkRasterPipeline_UnaryBitwiseOps, r) {
+static int to_float(int a) { return sk_bit_cast<int>((float)a); }
+
+DEF_TEST(SkRasterPipeline_UnaryOps, r) {
     // Allocate space for 5 slots.
     alignas(64) int slots[5 * SkRasterPipeline_kMaxStride_highp];
     const int N = SkOpts::raster_pipeline_highp_stride;
 
-    struct BitwiseOp {
+    struct UnaryOp {
         SkRasterPipeline::Stage stage;
         int numSlotsAffected;
         std::function<int(int)> verify;
     };
 
-    static const BitwiseOp kBitwiseOps[] = {
+    static const UnaryOp kUnaryOps[] = {
         {SkRasterPipeline::Stage::bitwise_not_int,    1, [](int a) { return ~a; }},
         {SkRasterPipeline::Stage::bitwise_not_2_ints, 2, [](int a) { return ~a; }},
         {SkRasterPipeline::Stage::bitwise_not_3_ints, 3, [](int a) { return ~a; }},
         {SkRasterPipeline::Stage::bitwise_not_4_ints, 4, [](int a) { return ~a; }},
+
+        {SkRasterPipeline::Stage::cast_to_float_from_int,    1, to_float},
+        {SkRasterPipeline::Stage::cast_to_float_from_2_ints, 2, to_float},
+        {SkRasterPipeline::Stage::cast_to_float_from_3_ints, 3, to_float},
+        {SkRasterPipeline::Stage::cast_to_float_from_4_ints, 4, to_float},
     };
 
-    for (const BitwiseOp& op : kBitwiseOps) {
+    for (const UnaryOp& op : kUnaryOps) {
         // Initialize the slot values to -3,-2,-1...
         std::iota(&slots[0], &slots[5 * N], -3);
         int inputValue = slots[0];
 
-        // Run the bitwise op over our data.
+        // Run the unary op over our data.
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         p.append(op.stage, &slots[0]);
