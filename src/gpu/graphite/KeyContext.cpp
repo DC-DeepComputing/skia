@@ -7,16 +7,23 @@
 
 #include "src/gpu/graphite/KeyContext.h"
 
+#include "include/core/SkColorSpace.h"
 #include "src/gpu/graphite/RecorderPriv.h"
-//#include "src/gpu/graphite/ResourceProvider.h"
 
 namespace skgpu::graphite {
 
+KeyContext::KeyContext(ShaderCodeDictionary* dict, RuntimeEffectDictionary* rtEffectDict)
+        : fDictionary(dict)
+        , fRTEffectDict(rtEffectDict) {
+}
+
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
-                       const SkM44& local2Dev)
+                       const SkM44& local2Dev,
+                       sk_sp<SkColorSpace> dstColorSpace)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
-        , fLocalMatrix(nullptr) {
+        , fLocalMatrix(nullptr)
+        , fDstColorSpace(std::move(dstColorSpace)) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
 }
@@ -28,5 +35,7 @@ KeyContext::KeyContext(const KeyContext& other)
         , fDictionary(other.fDictionary)
         , fRTEffectDict(other.fRTEffectDict) {
 }
+
+KeyContext::~KeyContext() {}
 
 } // namespace skgpu::graphite

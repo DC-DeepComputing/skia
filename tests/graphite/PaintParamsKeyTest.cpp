@@ -633,7 +633,7 @@ void check_draw(skiatest::Reporter* reporter,
 // TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
     auto recorder = context->makeRecorder();
-    KeyContext keyContext(recorder.get(), {});
+    KeyContext keyContext(recorder.get(), {}, true); //$$
     auto dict = keyContext.dict();
 
     SkFont font(ToolUtils::create_portable_typeface(), 16);
