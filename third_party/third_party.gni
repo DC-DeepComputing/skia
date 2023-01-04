@@ -71,7 +71,7 @@ template("third_party") {
       if (!defined(configs)) {
         configs = []
       }
-      if (is_debug) {
+      if (!is_debug) {
         configs += [ "../../gn/skia:optimize" ]
       }
       configs += [ "../../gn/skia:recover_pointer_overflow" ]
