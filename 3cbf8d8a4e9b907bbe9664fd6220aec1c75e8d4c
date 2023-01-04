@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f03362e0_cd039d0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T16:44:52Z",
+      "side": 1,
+      "message": "Robert, you added use of this way back in https://github.com/google/skia/commit/3806b8fb7ffe757cf42f13024dbaf9f24856ccd3\n\nThat define is not set anymore, so this is now just dead code.",
+      "revId": "3cbf8d8a4e9b907bbe9664fd6220aec1c75e8d4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
