@@ -16,6 +16,24 @@
       "message": "I think this is going to fail with the new namespace/rename, because there are clients that refer to SkBudgeted (eg, when calling the public APIs that take that enum).",
       "revId": "807b4686b36ed2b8517f253229110c5b518ddc98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d2080a6_d775bf71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-04T14:32:19Z",
+      "side": 1,
+      "message": "Yeah, I realized that just after sending it for review. We could add a typedef to support the old name while we migrate those clients, yes?",
+      "parentUuid": "72bc5a72_666c95b2",
+      "revId": "807b4686b36ed2b8517f253229110c5b518ddc98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
