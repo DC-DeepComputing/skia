@@ -216,7 +216,7 @@ private:
 
 sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
-                           SkBudgeted budgeted,
+                           skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
@@ -330,7 +330,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     bool addInitialClear = !info.fInfo.isOpaque();
 
-    return Make(fRecorder, info.fInfo, SkBudgeted::kYes, Mipmapped::kNo,
+    return Make(fRecorder, info.fInfo, skgpu::Budgeted::kYes, Mipmapped::kNo,
                 props, addInitialClear).release();
 }
 
@@ -355,7 +355,7 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
                                                   mipmapped,
                                                   srcView.proxy()->textureInfo().isProtected(),
                                                   Renderable::kNo,
-                                                  SkBudgeted::kNo);
+                                                  skgpu::Budgeted::kNo);
     if (!dest) {
         return {};
     }

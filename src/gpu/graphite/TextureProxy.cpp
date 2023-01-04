@@ -14,7 +14,7 @@
 
 namespace skgpu::graphite {
 
-TextureProxy::TextureProxy(SkISize dimensions, const TextureInfo& info, SkBudgeted budgeted)
+TextureProxy::TextureProxy(SkISize dimensions, const TextureInfo& info, skgpu::Budgeted budgeted)
         : fDimensions(dimensions)
         , fInfo(info)
         , fBudgeted(budgeted)
@@ -33,7 +33,7 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
 
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& textureInfo,
-                           SkBudgeted budgeted,
+                           skgpu::Budgeted budgeted,
                            Volatile isVolatile,
                            LazyInstantiateCallback&& callback)
         : fDimensions(dimensions)
@@ -129,7 +129,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        Mipmapped mipmapped,
                                        Protected isProtected,
                                        Renderable renderable,
-                                       SkBudgeted budgeted) {
+                                       skgpu::Budgeted budgeted) {
     if (dimensions.width() < 1 || dimensions.height() < 1) {
         return nullptr;
     }
@@ -147,7 +147,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
 
 sk_sp<TextureProxy> TextureProxy::MakeLazy(SkISize dimensions,
                                            const TextureInfo& textureInfo,
-                                           SkBudgeted budgeted,
+                                           skgpu::Budgeted budgeted,
                                            Volatile isVolatile,
                                            LazyInstantiateCallback&& callback) {
     SkASSERT(textureInfo.isValid());
@@ -157,7 +157,7 @@ sk_sp<TextureProxy> TextureProxy::MakeLazy(SkISize dimensions,
 }
 
 sk_sp<TextureProxy> TextureProxy::MakeFullyLazy(const TextureInfo& textureInfo,
-                                                SkBudgeted budgeted,
+                                                skgpu::Budgeted budgeted,
                                                 Volatile isVolatile,
                                                 LazyInstantiateCallback&& callback) {
     return MakeLazy(SkISize::Make(-1, -1), textureInfo, budgeted, isVolatile, std::move(callback));

@@ -1261,7 +1261,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
                                               kPremul_SkAlphaType, nullptr);
 
     sk_sp<SkSurface> dstSurf = SkSurface::MakeRenderTarget(direct,
-                                                           SkBudgeted::kNo, imageInfo, 0,
+                                                           skgpu::Budgeted::kNo, imageInfo, 0,
                                                            kTopLeft_GrSurfaceOrigin,
                                                            nullptr, false);
     if (!dstSurf.get()) {

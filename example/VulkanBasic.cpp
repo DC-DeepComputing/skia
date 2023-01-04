@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
     // SkSurface::MakeFromBackendRenderTarget to wrap those premade VkImages in Skia. See the
     // HelloWorld example app to see how this is done.
     sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context.get(),
-                                                           SkBudgeted::kYes,
+                                                           skgpu::Budgeted::kYes,
                                                            imageInfo);
     if (!surface) {
         context.reset();

@@ -90,7 +90,7 @@ private:
             SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
             SkImageInfo imageInfo = SkImageInfo::Make(size, size, kRGBA_8888_SkColorType,
                                                       kPremul_SkAlphaType);
-            fSurface = SkSurface::MakeRenderTarget(direct, SkBudgeted::kNo, imageInfo, 0,
+            fSurface = SkSurface::MakeRenderTarget(direct, skgpu::Budgeted::kNo, imageInfo, 0,
                                                    &surfaceProps);
         }
 

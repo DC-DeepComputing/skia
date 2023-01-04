@@ -14,6 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
@@ -22,6 +23,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/utils/SkRandom.h"
 #include "src/gpu/KeyBuilder.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAutoLocaleSetter.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -272,7 +274,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
         const GrBackendFormat format = caps->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                      GrRenderable::kYes);
         auto proxy = proxyProvider->createProxy(format, kDims, GrRenderable::kYes, 1,
-                                                mipmapped, SkBackingFit::kExact, SkBudgeted::kNo,
+                                                mipmapped, SkBackingFit::kExact, skgpu::Budgeted::kNo,
                                                 GrProtected::kNo, /*label=*/{},
                                                 GrInternalSurfaceFlags::kNone);
         skgpu::Swizzle swizzle = caps->getReadSwizzle(format, GrColorType::kRGBA_8888);
@@ -284,7 +286,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
         const GrBackendFormat format = caps->getDefaultBackendFormat(GrColorType::kAlpha_8,
                                                                      GrRenderable::kNo);
         auto proxy = proxyProvider->createProxy(format, kDims, GrRenderable::kNo, 1, mipmapped,
-                                                SkBackingFit::kExact, SkBudgeted::kNo,
+                                                SkBackingFit::kExact, skgpu::Budgeted::kNo,
                                                 GrProtected::kNo, /*label=*/{},
                                                 GrInternalSurfaceFlags::kNone);
         skgpu::Swizzle swizzle = caps->getReadSwizzle(format, GrColorType::kAlpha_8);
