@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/base/SkMalloc.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -30,7 +31,6 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkMalloc.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"

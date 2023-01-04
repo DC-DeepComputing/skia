@@ -7,6 +7,7 @@
 
 #include "include/utils/SkShadowUtils.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkBlurTypes.h"
@@ -24,7 +25,6 @@
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkColorFilterPriv.h"

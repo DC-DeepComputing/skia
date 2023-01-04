@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/base/SkMalloc.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -20,7 +21,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkMalloc.h"
 #include "tools/ToolUtils.h"
 
 static sk_sp<SkSurface> make_surface(SkCanvas* root, int N, int padLeft, int padTop,

@@ -7,6 +7,7 @@
 
 #include "fuzz/Fuzz.h"
 #include "fuzz/FuzzCommon.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -33,7 +34,6 @@
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkPerlinNoiseShader.h"
-#include "include/private/SkTo.h"
 #include "include/svg/SkSVGCanvas.h"
 #include "include/utils/SkNullCanvas.h"
 #include "src/core/SkOSFile.h"

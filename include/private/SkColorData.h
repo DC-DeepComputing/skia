@@ -8,9 +8,9 @@
 #ifndef SkColorData_DEFINED
 #define SkColorData_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorPriv.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////

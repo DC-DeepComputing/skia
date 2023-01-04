@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkTime.h"
-#include "include/private/SkTo.h"
 #include "tests/Test.h"
 
 DEF_TEST(Time_GetDateTime, r) {

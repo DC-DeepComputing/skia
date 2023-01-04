@@ -7,9 +7,9 @@
 
 #include "src/gpu/ganesh/GrResourceProvider.h"
 
+#include "include/base/SingleOwner.h"
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrBackendSemaphore.h"
-#include "include/private/SingleOwner.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMipmap.h"

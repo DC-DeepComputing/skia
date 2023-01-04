@@ -8,8 +8,8 @@
 #ifndef SkSpinlock_DEFINED
 #define SkSpinlock_DEFINED
 
+#include "include/base/SkThreadAnnotations.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkThreadAnnotations.h"
 #include <atomic>
 
 class SK_CAPABILITY("mutex") SkSpinlock {

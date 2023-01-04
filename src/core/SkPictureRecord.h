@@ -8,6 +8,7 @@
 #ifndef SkPictureRecord_DEFINED
 #define SkPictureRecord_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCanvasVirtualEnforcer.h"
 #include "include/core/SkFlattenable.h"
@@ -17,7 +18,6 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTHash.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkWriter32.h"
 

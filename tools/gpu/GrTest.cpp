@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkString.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrRecordingContext.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkMathPriv.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"

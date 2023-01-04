@@ -8,8 +8,8 @@
 #ifndef SkSpan_DEFINED
 #define SkSpan_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 
 #include <cstddef>
 #include <initializer_list>

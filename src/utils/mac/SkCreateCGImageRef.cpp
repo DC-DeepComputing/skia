@@ -8,10 +8,10 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkMacros.h"
-#include "include/private/SkTo.h"
 #include "include/utils/mac/SkCGUtils.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 

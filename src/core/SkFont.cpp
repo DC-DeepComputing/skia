@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkMatrixPriv.h"

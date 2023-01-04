@@ -7,6 +7,8 @@
 
 #include "include/core/SkMatrix.h"
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint3.h"
@@ -15,8 +17,6 @@
 #include "include/core/SkString.h"
 #include "include/private/SkFloatBits.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixUtils.h"

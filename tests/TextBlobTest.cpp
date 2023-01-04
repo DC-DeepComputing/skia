@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -24,7 +25,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"

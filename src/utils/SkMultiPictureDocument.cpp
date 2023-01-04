@@ -7,6 +7,7 @@
 
 #include "src/utils/SkMultiPictureDocument.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
@@ -17,7 +18,6 @@
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 

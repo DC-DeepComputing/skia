@@ -7,10 +7,10 @@
 
 #include "src/utils/SkPolyUtils.h"
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"

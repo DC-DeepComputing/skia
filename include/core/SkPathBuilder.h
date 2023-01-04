@@ -8,6 +8,7 @@
 #ifndef SkPathBuilder_DEFINED
 #define SkPathBuilder_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -16,7 +17,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkPathRef.h"
-#include "include/private/SkTo.h"
 
 #include <initializer_list>
 

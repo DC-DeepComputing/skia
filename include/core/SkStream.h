@@ -8,11 +8,11 @@
 #ifndef SkStream_DEFINED
 #define SkStream_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 
 #include <cstdint>
 #include <cstdio>

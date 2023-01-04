@@ -7,10 +7,10 @@
 
 #include "include/core/SkPicture.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSerialProcs.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkPictureData.h"

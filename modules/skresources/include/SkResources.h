@@ -8,6 +8,7 @@
 #ifndef SkResources_DEFINED
 #define SkResources_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTHash.h"
 
 #include <memory>

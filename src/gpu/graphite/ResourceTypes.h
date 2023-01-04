@@ -8,8 +8,8 @@
 #ifndef skgpu_graphite_ResourceTypes_DEFINED
 #define skgpu_graphite_ResourceTypes_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkEnumBitMask.h"
 
 namespace skgpu::graphite {

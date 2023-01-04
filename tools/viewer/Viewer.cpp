@@ -7,6 +7,7 @@
 
 #include "tools/viewer/Viewer.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkGraphics.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorSpacePriv.h"

@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkBase64.h"
 #include "tests/Test.h"
 

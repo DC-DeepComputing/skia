@@ -7,8 +7,8 @@
 
 #include "tools/SkMetaData.h"
 
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 
 void SkMetaData::reset()
 {

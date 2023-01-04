@@ -7,12 +7,12 @@
 
 #include "src/codec/SkIcoCodec.h"
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "src/codec/SkBmpCodec.h"
 #include "src/codec/SkCodecPriv.h"

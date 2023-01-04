@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkThreadAnnotations.h"
 #include "include/private/SkSpinlock.h"
-#include "include/private/SkThreadAnnotations.h"
 
 #if 0
-    #include "include/private/SkMutex.h"
+    #include "include/base/SkMutex.h"
     #include <execinfo.h>
     #include <stdio.h>
 

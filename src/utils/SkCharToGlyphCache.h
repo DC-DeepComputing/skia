@@ -8,9 +8,9 @@
 #ifndef SkCharToGlyphCache_DEFINED
 #define SkCharToGlyphCache_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
-#include "include/private/SkTo.h"
 
 #include <cstdint>
 

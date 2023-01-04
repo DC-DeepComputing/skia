@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTDArray.h"
-#include "include/private/SkTFitsIn.h"
-#include "include/private/SkTo.h"
 
 #include <climits>
 #include <cstddef>

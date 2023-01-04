@@ -9,6 +9,7 @@
 
 #ifdef SK_SUPPORT_PDF
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -32,7 +33,6 @@
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"

@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkSemaphore.h"
 #include "include/core/SkExecutor.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkSemaphore.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkTArray.h"
 #include <deque>

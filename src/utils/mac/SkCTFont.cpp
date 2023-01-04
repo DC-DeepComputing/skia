@@ -9,9 +9,9 @@
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkOnce.h"
 #include "src/sfnt/SkOTTable_OS_2.h"
 #include "src/sfnt/SkSFNTHeader.h"
 #include "src/utils/mac/SkCTFont.h"

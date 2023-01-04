@@ -8,12 +8,12 @@
 #ifndef SkMatrix_DEFINED
 #define SkMatrix_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
-#include "include/private/SkTo.h"
 
 #include <cstdint>
 #include <cstring>

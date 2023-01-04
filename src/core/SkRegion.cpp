@@ -7,9 +7,9 @@
 
 #include "include/core/SkRegion.h"
 
+#include "include/base/SkTo.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkRegionPriv.h"
 #include "src/core/SkSafeMath.h"
 

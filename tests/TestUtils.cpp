@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
@@ -20,7 +21,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/utils/SkBase64.h"
 #include "src/core/SkAutoPixmapStorage.h"

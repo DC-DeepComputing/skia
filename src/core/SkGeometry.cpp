@@ -7,12 +7,12 @@
 
 #include "src/core/SkGeometry.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkPointPriv.h"
 #include "src/pathops/SkPathOpsCubic.h"

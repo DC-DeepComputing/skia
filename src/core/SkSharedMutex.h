@@ -8,14 +8,14 @@
 #ifndef SkSharedLock_DEFINED
 #define SkSharedLock_DEFINED
 
+#include "include/base/SkSemaphore.h"
+#include "include/base/SkThreadAnnotations.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
-#include "include/private/SkSemaphore.h"
-#include "include/private/SkThreadAnnotations.h"
 #include <atomic>
 
 #ifdef SK_DEBUG
-    #include "include/private/SkMutex.h"
+    #include "include/base/SkMutex.h"
     #include <memory>
 #endif  // SK_DEBUG
 

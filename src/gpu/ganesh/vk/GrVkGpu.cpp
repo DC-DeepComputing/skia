@@ -7,11 +7,11 @@
 
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 
+#include "include/base/SkTo.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMipmap.h"

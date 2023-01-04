@@ -12,8 +12,8 @@
 #include <jni.h>
 #include <sys/stat.h>
 
+#include "include/base/SkTo.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkTo.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/ResourceFactory.h"
 

@@ -7,6 +7,8 @@
 
 #include "src/codec/SkWuffsCodec.h"
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
@@ -23,8 +25,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkFrameHolder.h"

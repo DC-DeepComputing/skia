@@ -7,10 +7,10 @@
 
 #include "tools/ToolUtils.h"
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkMutex.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkUTF.h"

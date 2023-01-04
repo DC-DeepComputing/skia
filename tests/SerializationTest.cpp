@@ -6,6 +6,7 @@
  */
 
 #include "include/base/SkAlign.h"
+#include "include/base/SkMalloc.h"
 #include "include/core/SkAnnotation.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -44,7 +45,6 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkAnnotationKeys.h"
 #include "src/core/SkAutoMalloc.h"

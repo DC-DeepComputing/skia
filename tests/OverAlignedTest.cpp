@@ -6,8 +6,8 @@
  */
 
 #include "include/base/SkAlign.h"
+#include "include/base/SkMalloc.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "include/utils/SkRandom.h"
 #include "tests/Test.h"
 #include <stdint.h>

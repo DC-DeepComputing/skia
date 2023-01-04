@@ -7,6 +7,7 @@
 
 #include "src/core/SkDraw.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
@@ -21,7 +22,6 @@
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkAutoBlitterChoose.h"
 #include "src/core/SkBlendModePriv.h"

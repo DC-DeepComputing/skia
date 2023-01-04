@@ -7,10 +7,10 @@
 
 #include "include/svg/SkSVGCanvas.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkTo.h"
 #include "src/svg/SkSVGDevice.h"
 #include "src/xml/SkXMLWriter.h"
 

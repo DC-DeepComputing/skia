@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkColorType.h"
@@ -17,7 +18,6 @@
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/effects/SkColorMatrix.h"
-#include "include/private/SkTo.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 

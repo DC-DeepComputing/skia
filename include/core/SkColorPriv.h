@@ -8,10 +8,10 @@
 #ifndef SkColorPriv_DEFINED
 #define SkColorPriv_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMath.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 
 /** Turn 0..255 into 0..256 by adding 1 at the half-way point. Used to turn a
     byte into a scale value, so that we can say scale * value >> 8 instead of

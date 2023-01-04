@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include "gm/gm.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
@@ -29,7 +30,6 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkMask.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"

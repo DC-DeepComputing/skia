@@ -8,10 +8,10 @@
 #ifndef SkFDot6_DEFINED
 #define SkFDot6_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkTo.h"
 
 typedef int32_t SkFDot6;
 

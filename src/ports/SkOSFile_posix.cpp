@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
 

@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkMalloc.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskCache.h"

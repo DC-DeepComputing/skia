@@ -8,6 +8,7 @@
 #ifndef SkRuntimeEffect_DEFINED
 #define SkRuntimeEffect_DEFINED
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
@@ -16,7 +17,6 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTemplates.h"
 

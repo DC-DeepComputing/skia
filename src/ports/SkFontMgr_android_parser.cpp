@@ -7,10 +7,10 @@
 
 // Despite the name and location, this is portable code.
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTLogic.h"
 #include "include/private/SkTemplates.h"

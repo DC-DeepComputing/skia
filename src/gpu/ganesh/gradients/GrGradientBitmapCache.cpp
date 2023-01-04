@@ -8,9 +8,9 @@
 
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 
+#include "include/base/SkMalloc.h"
 #include "include/private/SkFloatBits.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/shaders/gradients/SkGradientShaderBase.h"

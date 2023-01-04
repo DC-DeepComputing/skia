@@ -7,9 +7,9 @@
 
 #include "src/core/SkResourceCache.h"
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkTraceMemoryDump.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkDiscardableMemory.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMessageBus.h"

@@ -7,8 +7,8 @@
 
 #include "src/core/SkWriter32.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkSamplingOptions.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkMatrixPriv.h"
 
 void SkWriter32::writeMatrix(const SkMatrix& matrix) {

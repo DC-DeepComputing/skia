@@ -10,12 +10,12 @@
 
 #include <array>
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/gpu/RectanizerSkyline.h"

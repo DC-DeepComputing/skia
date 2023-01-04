@@ -7,6 +7,7 @@
 
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
 
+#include "include/base/SkStringView.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -20,7 +21,6 @@
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
-#include "include/private/SkStringView.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTPin.h"

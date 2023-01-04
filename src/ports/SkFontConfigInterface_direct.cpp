@@ -7,12 +7,12 @@
 
 /* migrated from chrome/src/skia/ext/SkFontHost_fontconfig_direct.cpp */
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"

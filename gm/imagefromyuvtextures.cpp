@@ -8,6 +8,7 @@
 // This test only works with the GPU backend.
 
 #include "gm/gm.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -25,7 +26,6 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkYUVMath.h"
 #include "tools/Resources.h"

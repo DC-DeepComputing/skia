@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkOnce.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -17,9 +19,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkAlignedStorage.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkSLTypeShared.h"

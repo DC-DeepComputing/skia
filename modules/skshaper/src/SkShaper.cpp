@@ -5,13 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkTFitsIn.h"
 #include "modules/skshaper/include/SkShaper.h"
 
 #ifdef SK_UNICODE_AVAILABLE

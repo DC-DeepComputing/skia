@@ -8,9 +8,9 @@
 #ifndef SkArenaAlloc_DEFINED
 #define SkArenaAlloc_DEFINED
 
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkASAN.h"
 
 #include <algorithm>

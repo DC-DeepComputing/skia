@@ -7,9 +7,9 @@
 
 #include "src/sksl/ir/SkSLVariable.h"
 
+#include "include/base/SkStringView.h"
 #include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLLayout.h"
-#include "include/private/SkStringView.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLContext.h"

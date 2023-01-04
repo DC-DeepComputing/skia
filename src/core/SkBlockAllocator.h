@@ -9,11 +9,11 @@
 #define SkBlockAllocator_DEFINED
 
 #include "include/base/SkAlign.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkNoncopyable.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkASAN.h"
 
 #include <memory>  // std::unique_ptr

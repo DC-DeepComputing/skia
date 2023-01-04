@@ -7,6 +7,7 @@
 
 #include "src/pdf/SkPDFBitmap.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
 #include "include/core/SkEncodedImageFormat.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkStream.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkImageInfoPriv.h"
-#include "include/private/SkTo.h"
 #include "src/pdf/SkDeflate.h"
 #include "src/pdf/SkJpegInfo.h"
 #include "src/pdf/SkPDFDocumentPriv.h"

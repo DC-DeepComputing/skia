@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
 #include "tests/Test.h"
 
 #include <cstdint>

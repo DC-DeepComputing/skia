@@ -4,11 +4,11 @@
 
 #include <algorithm>
 #include <cstddef>
+#include "include/base/SkTo.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkBitmaskEnum.h"
-#include "include/private/SkTo.h"
 
 namespace skia {
 namespace text {
