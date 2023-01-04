@@ -407,7 +407,7 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
             Protected::kNo,
             Renderable::kNo);
     fProxies[fNumActivePages].reset(new TextureProxy({fTextureWidth, fTextureHeight}, textureInfo,
-                                                     SkBudgeted::kYes));
+                                                     skgpu::Budgeted::kYes));
     if (!fProxies[fNumActivePages]) {
         return false;
     }

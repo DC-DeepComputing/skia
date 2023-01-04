@@ -27,13 +27,13 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder*,
                                                               const SkBitmap&,
                                                               sk_sp<SkMipmap>,
                                                               Mipmapped,
-                                                              SkBudgeted);
+                                                              skgpu::Budgeted);
 
 sk_sp<SkImage> MakeFromBitmap(Recorder*,
                               const SkColorInfo&,
                               const SkBitmap&,
                               sk_sp<SkMipmap>,
-                              SkBudgeted,
+                              skgpu::Budgeted,
                               SkImage::RequiredImageProperties);
 } // namespace skgpu::graphite
 

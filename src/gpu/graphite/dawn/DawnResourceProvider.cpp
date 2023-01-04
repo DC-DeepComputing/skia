@@ -63,7 +63,7 @@ sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(const Compute
 
 sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
                                                    const TextureInfo& info,
-                                                   SkBudgeted budgeted) {
+                                                   skgpu::Budgeted budgeted) {
     return DawnTexture::Make(this->dawnSharedContext(), dimensions, info, budgeted);
 
 }

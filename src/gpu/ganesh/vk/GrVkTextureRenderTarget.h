@@ -28,7 +28,7 @@ class GrVkTextureRenderTarget: public GrVkTexture, public GrVkRenderTarget {
 public:
     static sk_sp<GrVkTextureRenderTarget> MakeNewTextureRenderTarget(
             GrVkGpu* gpu,
-            SkBudgeted budgeted,
+            skgpu::Budgeted budgeted,
             SkISize dimensions,
             VkFormat format,
             uint32_t mipLevels,
@@ -63,7 +63,7 @@ protected:
 
 private:
     GrVkTextureRenderTarget(GrVkGpu* gpu,
-                            SkBudgeted budgeted,
+                            skgpu::Budgeted budgeted,
                             SkISize dimensions,
                             sk_sp<GrVkImage> texture,
                             sk_sp<GrVkImage> colorAttachment,

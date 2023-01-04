@@ -11,6 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrDeferredProxyUploader.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
@@ -29,7 +30,7 @@ GrTextureProxy::GrTextureProxy(const GrBackendFormat& format,
                                GrMipmapped mipmapped,
                                GrMipmapStatus mipmapStatus,
                                SkBackingFit fit,
-                               SkBudgeted budgeted,
+                               skgpu::Budgeted budgeted,
                                GrProtected isProtected,
                                GrInternalSurfaceFlags surfaceFlags,
                                UseAllocator useAllocator,
@@ -55,7 +56,7 @@ GrTextureProxy::GrTextureProxy(LazyInstantiateCallback&& callback,
                                GrMipmapped mipmapped,
                                GrMipmapStatus mipmapStatus,
                                SkBackingFit fit,
-                               SkBudgeted budgeted,
+                               skgpu::Budgeted budgeted,
                                GrProtected isProtected,
                                GrInternalSurfaceFlags surfaceFlags,
                                UseAllocator useAllocator,

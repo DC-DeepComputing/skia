@@ -276,7 +276,7 @@ DrawResult ClockwiseGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, S
     if (auto topLeftSDC = skgpu::v1::SurfaceDrawContext::Make(
                 rContext, sdcColorType, nullptr, SkBackingFit::kExact, {100, 200}, SkSurfaceProps(),
                 /*label=*/{}, 1, GrMipmapped::kNo, GrProtected::kNo, kTopLeft_GrSurfaceOrigin,
-                SkBudgeted::kYes)) {
+                skgpu::Budgeted::kYes)) {
         topLeftSDC->clear(SK_PMColor4fTRANSPARENT);
         topLeftSDC->addDrawOp(ClockwiseTestOp::Make(rContext, false, 0));
         topLeftSDC->addDrawOp(ClockwiseTestOp::Make(rContext, true, 100));
@@ -299,7 +299,7 @@ DrawResult ClockwiseGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, S
     if (auto topLeftSDC = skgpu::v1::SurfaceDrawContext::Make(
                 rContext, sdcColorType, nullptr, SkBackingFit::kExact, {100, 200}, SkSurfaceProps(),
                 /*label=*/{}, 1, GrMipmapped::kNo, GrProtected::kNo, kBottomLeft_GrSurfaceOrigin,
-                SkBudgeted::kYes)) {
+                skgpu::Budgeted::kYes)) {
         topLeftSDC->clear(SK_PMColor4fTRANSPARENT);
         topLeftSDC->addDrawOp(ClockwiseTestOp::Make(rContext, false, 0));
         topLeftSDC->addDrawOp(ClockwiseTestOp::Make(rContext, true, 100));

@@ -16,6 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
 #include "tests/CtsEnforcement.h"
@@ -38,7 +39,7 @@ static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
 
 static sk_sp<SkSurface> make_surface(GrRecordingContext* rContext) {
     SkImageInfo info = SkImageInfo::Make(50, 50, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    return SkSurface::MakeRenderTarget(rContext, SkBudgeted::kNo, info, 4,
+    return SkSurface::MakeRenderTarget(rContext, skgpu::Budgeted::kNo, info, 4,
                                        kBottomLeft_GrSurfaceOrigin, nullptr);
 }
 

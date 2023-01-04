@@ -600,7 +600,7 @@ int main(int argc, char** argv) {
             width, height, config->getColorType(), config->getAlphaType(), config->refColorSpace());
     SkSurfaceProps props(config->getSurfaceFlags(), kRGB_H_SkPixelGeometry);
     sk_sp<SkSurface> surface =
-        SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info, config->getSamples(), &props);
+        SkSurface::MakeRenderTarget(ctx, skgpu::Budgeted::kNo, info, config->getSamples(), &props);
     if (!surface) {
         exitf(ExitErr::kUnavailable, "failed to create %ix%i render target for config %s",
                                      width, height, config->getTag().c_str());

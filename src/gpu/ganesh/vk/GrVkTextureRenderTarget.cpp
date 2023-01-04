@@ -23,7 +23,7 @@
 
 GrVkTextureRenderTarget::GrVkTextureRenderTarget(
         GrVkGpu* gpu,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         SkISize dimensions,
         sk_sp<GrVkImage> texture,
         sk_sp<GrVkImage> colorAttachment,
@@ -81,7 +81,7 @@ bool create_rt_attachments(GrVkGpu* gpu, SkISize dimensions, VkFormat format, in
 
 sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeNewTextureRenderTarget(
         GrVkGpu* gpu,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         SkISize dimensions,
         VkFormat format,
         uint32_t mipLevels,

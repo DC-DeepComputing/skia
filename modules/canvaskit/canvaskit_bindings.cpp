@@ -223,7 +223,7 @@ sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, in
             width, height, SkAlphaType::kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
 
     sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
+                             skgpu::Budgeted::kYes,
                              info, 0,
                              kBottomLeft_GrSurfaceOrigin,
                              nullptr, true));
@@ -232,7 +232,7 @@ sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, in
 
 sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageInfo sii) {
     sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(dContext.get(),
-                             SkBudgeted::kYes,
+                             skgpu::Budgeted::kYes,
                              toSkImageInfo(sii), 0,
                              kBottomLeft_GrSurfaceOrigin,
                              nullptr, true));
