@@ -32,9 +32,7 @@ using SkRP = SkRasterPipeline;
          BuilderOp::bitwise_not
 
 #define ALL_SINGLE_SLOT_BINARY_OP_CASES \
-         BuilderOp::bitwise_and:        \
-    case BuilderOp::bitwise_or:         \
-    case BuilderOp::bitwise_xor
+    BuilderOp::bitwise_and : case BuilderOp::bitwise_or : case BuilderOp::bitwise_xor
 
 #define ALL_MULTI_SLOT_BINARY_OP_CASES  \
          BuilderOp::add_n_floats:       \
@@ -303,7 +301,8 @@ void Program::appendMultiSlotUnaryOp(SkRasterPipeline* pipeline, SkRasterPipelin
 
 void Program::appendAdjacentSingleSlotBinaryOp(SkRasterPipeline* pipeline,
                                                SkRasterPipeline::Stage stage,
-                                               float* dst, const float* src) {
+                                               float* dst,
+                                               const float* src) {
     // The source and destination must be directly next to one another.
     SkASSERT((dst + SkOpts::raster_pipeline_highp_stride) == src);
     this->append(pipeline, stage, dst);
@@ -1002,7 +1001,9 @@ void Program::dump(SkWStream* out) {
                 break;
 
             case SkRP::merge_condition_mask:
-            case SkRP::bitwise_and: case SkRP::bitwise_or: case SkRP::bitwise_xor:
+            case SkRP::bitwise_and:
+            case SkRP::bitwise_or:
+            case SkRP::bitwise_xor:
             case SkRP::add_float:   case SkRP::add_int:
             case SkRP::sub_float:   case SkRP::sub_int:
             case SkRP::mul_float:   case SkRP::mul_int:

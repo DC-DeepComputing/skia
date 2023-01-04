@@ -139,8 +139,10 @@ private:
 
     // Appends a math operation with two inputs (dst op src) and one output (dst) to the pipeline.
     // `src` must be _immediately_ after `dst` in memory.
-    void appendAdjacentSingleSlotBinaryOp(SkRasterPipeline* pipeline, SkRasterPipeline::Stage stage,
-                                          float* dst, const float* src);
+    void appendAdjacentSingleSlotBinaryOp(SkRasterPipeline* pipeline,
+                                          SkRasterPipeline::Stage stage,
+                                          float* dst,
+                                          const float* src);
 
     // Appends a multi-slot two-input math operation to the pipeline. `src` must be _immediately_
     // after `dst` in memory. `baseStage` must refer to an unbounded "apply_to_n_slots" stage, which

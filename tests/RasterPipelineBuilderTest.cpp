@@ -343,8 +343,9 @@ DEF_TEST(RasterPipelineBuilderBinaryIntOps, r) {
     builder.discard_stack(4);
     std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/0,
                                                                 /*numUniformSlots=*/0);
-    check(r, *program,
-R"(    1. copy_constant                  $0 = 0x0000007B (1.723597e-43)
+    check(r,
+          *program,
+          R"(    1. copy_constant                  $0 = 0x0000007B (1.723597e-43)
     2. swizzle_4                      $0..3 = ($0..3).xxxx
     3. swizzle_4                      $3..6 = ($3..6).xxxx
     4. swizzle_4                      $6..9 = ($6..9).xxxx
