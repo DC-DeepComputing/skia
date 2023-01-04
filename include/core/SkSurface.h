@@ -14,6 +14,7 @@
 #include "include/core/SkSurfaceProps.h"
 
 #if SK_SUPPORT_GPU
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
 #endif
 
@@ -287,7 +288,7 @@ public:
         @param shouldCreateWithMips  hint that SkSurface will host mip map images
         @return                      SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
+    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo,
                                              int sampleCount, GrSurfaceOrigin surfaceOrigin,
                                              const SkSurfaceProps* surfaceProps,
@@ -314,7 +315,7 @@ public:
                             fonts; may be nullptr
         @return             SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
+    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo, int sampleCount,
                                              const SkSurfaceProps* surfaceProps) {
 #if SK_SUPPORT_GPU
@@ -339,7 +340,7 @@ public:
                           of raster surface; width, or height, or both, may be zero
         @return           SkSurface if all parameters are valid; otherwise, nullptr
     */
-    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, SkBudgeted budgeted,
+    static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context, skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo) {
 #if SK_SUPPORT_GPU
         if (!imageInfo.width() || !imageInfo.height()) {
@@ -362,7 +363,7 @@ public:
     */
     static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
                                              const SkSurfaceCharacterization& characterization,
-                                             SkBudgeted budgeted);
+                                             skgpu::Budgeted budgeted);
 
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
@@ -669,7 +670,7 @@ public:
 
     /** Returns SkImage capturing SkSurface contents. Subsequent drawing to SkSurface contents
         are not captured. SkImage allocation is accounted for if SkSurface was created with
-        SkBudgeted::kYes.
+        skgpu::Budgeted::kYes.
 
         @return  SkImage initialized with SkSurface contents
 

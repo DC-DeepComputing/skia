@@ -10,11 +10,13 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
@@ -51,7 +53,7 @@ static sk_sp<GrSurfaceProxy> make_offscreen_rt(GrProxyProvider* provider,
                                                SkISize dimensions,
                                                GrColorType colorType) {
     return provider->testingOnly_createInstantiatedProxy(dimensions, colorType, GrRenderable::kYes,
-                                                         1, SkBackingFit::kExact, SkBudgeted::kYes,
+                                                         1, SkBackingFit::kExact, skgpu::Budgeted::kYes,
                                                          GrProtected::kNo);
 }
 
@@ -60,7 +62,7 @@ static sk_sp<GrSurfaceProxy> make_texture(GrProxyProvider* provider,
                                           GrColorType colorType,
                                           GrRenderable renderable) {
     return provider->testingOnly_createInstantiatedProxy(dimensions, colorType, renderable, 1,
-                                                         SkBackingFit::kExact, SkBudgeted::kYes,
+                                                         SkBackingFit::kExact, skgpu::Budgeted::kYes,
                                                          GrProtected::kNo);
 }
 
@@ -150,7 +152,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DefferredProxyConversionTest,
     {
         sk_sp<GrTextureProxy> proxy = proxyProvider->createProxy(
                 format, kDims, GrRenderable::kYes, 1, GrMipmapped::kNo, SkBackingFit::kApprox,
-                SkBudgeted::kYes, GrProtected::kNo, /*label=*/{});
+                skgpu::Budgeted::kYes, GrProtected::kNo, /*label=*/{});
 
         // Both RenderTarget and Texture
         GrRenderTargetProxy* rtProxy = proxy->asRenderTargetProxy();
@@ -164,7 +166,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DefferredProxyConversionTest,
     {
         sk_sp<GrTextureProxy> proxy = proxyProvider->createProxy(
                 format, kDims, GrRenderable::kYes, 1, GrMipmapped::kNo, SkBackingFit::kApprox,
-                SkBudgeted::kYes, GrProtected::kNo, /*label=*/{});
+                skgpu::Budgeted::kYes, GrProtected::kNo, /*label=*/{});
 
         // Both RenderTarget and Texture - but via GrTextureProxy
         GrTextureProxy* tProxy = proxy->asTextureProxy();
@@ -178,7 +180,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DefferredProxyConversionTest,
     {
         sk_sp<GrTextureProxy> proxy = proxyProvider->createProxy(
                 format, kDims, GrRenderable::kNo, 1, GrMipmapped::kNo, SkBackingFit::kApprox,
-                SkBudgeted::kYes, GrProtected::kNo, /*label=*/{});
+                skgpu::Budgeted::kYes, GrProtected::kNo, /*label=*/{});
         // Texture-only
         GrTextureProxy* tProxy = proxy->asTextureProxy();
         REPORTER_ASSERT(reporter, tProxy);

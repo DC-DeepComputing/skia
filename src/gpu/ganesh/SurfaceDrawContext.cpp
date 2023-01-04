@@ -164,7 +164,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
         skgpu::Swizzle readSwizzle,
         skgpu::Swizzle writeSwizzle,
         GrSurfaceOrigin origin,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         const SkSurfaceProps& surfaceProps,
         std::string_view label) {
     // It is probably not necessary to check if the context is abandoned here since uses of the
@@ -214,7 +214,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
         GrMipmapped mipmapped,
         GrProtected isProtected,
         GrSurfaceOrigin origin,
-        SkBudgeted budgeted) {
+        skgpu::Budgeted budgeted) {
     if (!rContext) {
         return nullptr;
     }
@@ -256,7 +256,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
         GrMipmapped mipmapped,
         GrProtected isProtected,
         GrSurfaceOrigin origin,
-        SkBudgeted budgeted) {
+        skgpu::Budgeted budgeted) {
     const GrCaps* caps = rContext->priv().caps();
     auto [ct, _] = caps->getFallbackColorTypeAndFormat(colorType, sampleCnt);
     if (ct == GrColorType::kUnknown) {
@@ -1630,11 +1630,11 @@ bool SurfaceDrawContext::drawAndStencilPath(const GrHardClip* clip,
     return true;
 }
 
-SkBudgeted SurfaceDrawContext::isBudgeted() const {
+skgpu::Budgeted SurfaceDrawContext::isBudgeted() const {
     ASSERT_SINGLE_OWNER
 
     if (fContext->abandoned()) {
-        return SkBudgeted::kNo;
+        return skgpu::Budgeted::kNo;
     }
 
     SkDEBUGCODE(this->validate();)
@@ -2105,7 +2105,7 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
                                      GrMipmapped::kNo,
                                      copyRect,
                                      fit,
-                                     SkBudgeted::kYes,
+                                     skgpu::Budgeted::kYes,
                                      /*label=*/{},
                                      restrictions.fRectsMustMatch);
     SkASSERT(copy);

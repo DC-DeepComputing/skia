@@ -179,7 +179,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
 
     SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
                                               kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context, SkBudgeted::kNo,
+    sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context, skgpu::Budgeted::kNo,
                                                            imageInfo);
     REPORTER_ASSERT(reporter, surface);
 

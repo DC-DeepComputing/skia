@@ -11,7 +11,9 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/GrPixmap.h"
 
@@ -108,6 +110,6 @@ std::unique_ptr<skgpu::v1::SurfaceContext> CreateSurfaceContext(
             int sampleCount = 1,
             GrMipmapped = GrMipmapped::kNo,
             GrProtected = GrProtected::kNo,
-            SkBudgeted = SkBudgeted::kYes);
+            skgpu::Budgeted = skgpu::Budgeted::kYes);
 
 #endif

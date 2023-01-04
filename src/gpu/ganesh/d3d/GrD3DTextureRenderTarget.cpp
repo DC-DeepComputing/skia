@@ -12,7 +12,7 @@
 
 GrD3DTextureRenderTarget::GrD3DTextureRenderTarget(
         GrD3DGpu* gpu,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         SkISize dimensions,
         const GrD3DTextureResourceInfo& info,
         sk_sp<GrD3DResourceState> state,
@@ -41,7 +41,7 @@ GrD3DTextureRenderTarget::GrD3DTextureRenderTarget(
 
 GrD3DTextureRenderTarget::GrD3DTextureRenderTarget(
         GrD3DGpu* gpu,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         SkISize dimensions,
         const GrD3DTextureResourceInfo& info,
         sk_sp<GrD3DResourceState> state,
@@ -104,7 +104,7 @@ GrD3DTextureRenderTarget::GrD3DTextureRenderTarget(
 
 sk_sp<GrD3DTextureRenderTarget> GrD3DTextureRenderTarget::MakeNewTextureRenderTarget(
         GrD3DGpu* gpu,
-        SkBudgeted budgeted,
+        skgpu::Budgeted budgeted,
         SkISize dimensions,
         int sampleCnt,
         const D3D12_RESOURCE_DESC& resourceDesc,

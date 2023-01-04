@@ -326,7 +326,7 @@ private:
                            .directContext();
         fSurface =
             SkSurface::MakeRenderTarget(fCtx,
-                                        SkBudgeted::kNo,
+                                        skgpu::Budgeted::kNo,
                                         SkImageInfo::MakeN32Premul(FLAGS_width, FLAGS_height),
                                         0,
                                         GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin,

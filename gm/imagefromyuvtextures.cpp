@@ -133,7 +133,7 @@ protected:
                                             kRGBA_8888_SkColorType,
                                             kPremul_SkAlphaType);
         auto resultSurface = SkSurface::MakeRenderTarget(dContext,
-                                                         SkBudgeted::kYes,
+                                                         skgpu::Budgeted::kYes,
                                                          resultInfo,
                                                          1,
                                                          kTopLeft_GrSurfaceOrigin,
