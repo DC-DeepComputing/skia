@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "407cd552_b1d79c71",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-04T21:43:12Z",
+      "side": 1,
+      "message": "It doesn\u0027t really matter since they are the same, but kPremul seems like a better default to use.",
+      "range": {
+        "startLine": 341,
+        "startChar": 37,
+        "endLine": 341,
+        "endChar": 58
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a3669eb_93d9683d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-04T21:43:12Z",
+      "side": 1,
+      "message": "csXformMask?",
+      "range": {
+        "startLine": 562,
+        "startChar": 11,
+        "endLine": 562,
+        "endChar": 16
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de134dc7_4d45fe8f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-04T21:43:12Z",
+      "side": 1,
+      "message": "I think we would want to plumb the destination alpha type down as well, in the event that we have kUnpremul surfaces that can be filled with the result of a shader similar to GrSurfaceFillContext",
+      "range": {
+        "startLine": 402,
+        "startChar": 48,
+        "endLine": 402,
+        "endChar": 67
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
