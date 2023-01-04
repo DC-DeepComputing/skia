@@ -187,7 +187,9 @@ private:
 
     SpvId writeFunction(const FunctionDefinition& f, OutputStream& out);
 
-    void writeGlobalVar(ProgramKind kind, const VarDeclaration& v);
+    bool writeGlobalVarDeclaration(ProgramKind kind, const VarDeclaration& v);
+
+    SpvId writeGlobalVar(ProgramKind kind, SpvStorageClass_, const Variable& v);
 
     void writeVarDeclaration(const VarDeclaration& var, OutputStream& out);
 
@@ -204,7 +206,8 @@ private:
     SpvId writeFunctionCallArgument(const FunctionCall& call,
                                     int argIndex,
                                     std::vector<TempVar>* tempVars,
-                                    OutputStream& out);
+                                    OutputStream& out,
+                                    SpvId* outSynthesizedSamplerId = nullptr);
 
     void copyBackTempVars(const std::vector<TempVar>& tempVars, OutputStream& out);
 
@@ -507,6 +510,9 @@ private:
 
     void addRTFlipUniform(Position pos);
 
+    std::tuple<const Variable*, const Variable*> synthesizeTextureAndSampler(
+            const Variable& combinedSampler);
+
     const MemoryLayout fDefaultLayout;
 
     uint64_t fCapabilities;
@@ -528,6 +534,17 @@ private:
     StringStream fVariableBuffer;
     StringStream fNameBuffer;
     StringStream fDecorationBuffer;
+
+    // Mapping from combined sampler declarations to synthesized texture/sampler variables.
+    // This is only used if the SPIRVDawnCompatMode setting is enabled.
+    // TODO(skia:14023): Remove when WGSL codegen is complete
+    struct SynthesizedTextureSamplerPair {
+        std::string fTextureName;
+        std::string fSamplerName;
+        std::unique_ptr<Variable> fTexture;
+        std::unique_ptr<Variable> fSampler;
+    };
+    SkTHashMap<const Variable*, SynthesizedTextureSamplerPair> fSynthesizedSamplerMap;
 
     // These caches map SpvIds to Instructions, and vice-versa. This enables us to deduplicate code
     // (by detecting an Instruction we've already issued and reusing the SpvId), and to introspect
