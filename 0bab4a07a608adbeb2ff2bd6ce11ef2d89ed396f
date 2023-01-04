@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26d3cb68_d51035ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-04T22:42:14Z",
+      "side": 1,
+      "message": "FYI: I have a test-disable for Mac + Metal + IntelIrisPlus/IntelHD6000 on deck, but the toolchain is not working for me. I\u0027ll land the test-disable tomorrow.",
+      "revId": "0bab4a07a608adbeb2ff2bd6ce11ef2d89ed396f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
