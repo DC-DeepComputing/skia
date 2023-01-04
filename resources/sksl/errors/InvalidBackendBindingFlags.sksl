@@ -1,0 +1,90 @@
+layout(metal, spirv, wgsl, gl, binding = 0) uniform ubo1 { float f1; };  // multiple backends
+layout(texture=0, sampler=0) uniform sampler2D s1;  // invalid (requires backend)
+
+// -----
+// Metal
+// -----
+// Valid declarations:
+layout(metal, binding=0) uniform ubo2 { float f2; };  // valid
+layout(metal, binding=0) buffer ssbo1 { float f3; };  // valid
+layout(metal, texture=0) uniform texture2D t1;            // valid
+layout(metal, texture=0, sampler=0) uniform sampler2D s2; // valid
+
+// TODO(skia:14023): This should require 'texture' once the metal backend supports it
+layout(metal, binding=0) uniform texture2D t2;  // valid
+// TODO(skia:14023): This should require 'texture' and 'sampler' once the metal backend supports it
+layout(metal, binding=0) uniform sampler2D s3;  // valid
+
+// Invalid declarations:
+layout(metal, sampler=0) uniform texture2D t3;                        // invalid
+layout(metal, binding=0, texture=0, sampler=0) uniform sampler2D s4;  // invalid
+layout(metal, texture=0, sampler=0) uniform ubo3 { float f4; };       // invalid
+layout(metal, set=0, binding=0) uniform ubo4 { float f5; };           // invalid
+
+// ------
+// SPIR-V
+// ------
+// Valid declarations:
+layout(spirv, set=0, binding=0) uniform ubo5 { float f6; };  // valid
+layout(spirv, set=0, binding=0) buffer ssbo2 { float f7; };  // valid
+layout(spirv, set=0, binding=0) uniform texture2D t4;        // valid
+layout(spirv, set=0, binding=0) uniform sampler2D s5;        // valid
+
+// Invalid declarations:
+layout(spirv, texture=0) uniform texture2D t5;             // invalid
+layout(spirv, texture=0, sampler=0) uniform sampler2D s6;  // invalid
+
+// ----
+// WGSL
+// ----
+// Valid declarations:
+layout(wgsl, set=0, binding=0) uniform ubo6 { float f8; };  // valid
+layout(wgsl, set=0, binding=0) buffer ssbo3 { float f9; };  // valid
+layout(wgsl, set=0, texture=0) uniform texture2D t6;            // valid
+layout(wgsl, set=0, texture=0, sampler=0) uniform sampler2D s7; // valid
+
+// TODO(skia:14023): This should require 'texture' once the WGSL backend supports it
+layout(wgsl, set=0, binding=0) uniform texture2D t7;  // valid
+// TODO(skia:14023): This should require 'texture' and 'sampler' once the WGSL backend supports it
+layout(wgsl, set=0, binding=0) uniform sampler2D s8;  // valid
+
+// Invalid declarations:
+layout(wgsl, set=0, sampler=0) uniform texture2D t8;                        // invalid
+layout(wgsl, set=0, binding=0, texture=0, sampler=0) uniform sampler2D s9;  // invalid
+layout(wgsl, set=0, texture=0, sampler=0) uniform ubo7 { float f10; };      // invalid
+
+// -------------
+// GLSL (OpenGL)
+// -------------
+// Valid declarations:
+layout(gl, binding=0) uniform ubo8 { float f11; };  // valid
+layout(gl, binding=0) buffer ssbo4 { float f12; };  // valid
+layout(gl, binding=0) uniform texture2D t9;         // valid
+layout(gl, binding=0) uniform sampler2D s10;        // valid
+
+// Invalid declarations:
+layout(gl, texture=0) uniform texture2D t10;              // invalid
+layout(gl, texture=0, sampler=0) uniform sampler2D s11;   // invalid
+layout(gl, set=0, binding=0) uniform ubo9 { float f13; }; // invalid
+
+/*%%*
+only one backend qualifier can be used
+layout qualifier 'texture' is not permitted here
+layout qualifier 'sampler' is not permitted here
+layout qualifier 'sampler' is not permitted here
+'binding' modifier cannot coexist with 'texture'/'sampler'
+layout qualifier 'texture' is not permitted here
+layout qualifier 'sampler' is not permitted here
+layout qualifier 'set' is not permitted here
+layout qualifier 'texture' is not permitted here
+layout qualifier 'texture' is not permitted here
+layout qualifier 'sampler' is not permitted here
+layout qualifier 'sampler' is not permitted here
+'binding' modifier cannot coexist with 'texture'/'sampler'
+layout qualifier 'texture' is not permitted here
+layout qualifier 'sampler' is not permitted here
+layout qualifier 'texture' is not permitted here
+layout qualifier 'texture' is not permitted here
+layout qualifier 'sampler' is not permitted here
+layout qualifier 'set' is not permitted here
+*%%*/
