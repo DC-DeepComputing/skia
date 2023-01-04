@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7275a8cc_bbf33415",
+        "filename": "include/gpu/GpuTypes.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-04T21:16:13Z",
+      "side": 1,
+      "message": "nit: Can we write this as: `using SkBudgeted \u003d skgpu::Budgeted;` instead?",
+      "revId": "8c1fb5dd5852238d4324b76e61c1f6563ed0adab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
