@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1f47cd2_3e62dc82",
+        "filename": "modules/skshaper/src/SkShaper.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d310ff97_44f9285a",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a52c09fb_c9559490",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-04T16:21:04Z",
       "side": 1,
       "message": "Need to resolve this conflict.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e25dd9ce_1774a97e",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done. Sorry I rebased from Gerrit and it submitted the version with conflicts.",
+      "parentUuid": "a52c09fb_c9559490",
       "revId": "ac095f60eb021486277c2f8610646df791caac99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5087f402_507de9e5",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 16
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f7e4664_6b0be4b0",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07fab74f_5643c0ef",
@@ -69,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5062968d_3928d7ba",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07fab74f_5643c0ef",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46f3bd8d_63cc42e8",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-01-04T16:21:04Z",
       "side": 1,
       "message": "Resolve this conflict.",
+      "revId": "ac095f60eb021486277c2f8610646df791caac99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d5e869d_f974db52",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46f3bd8d_63cc42e8",
       "revId": "ac095f60eb021486277c2f8610646df791caac99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

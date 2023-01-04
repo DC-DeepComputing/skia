@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ae413c3_9d751cd7",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "The problem is that this \"sanitize\" variable is not declared anywhere so we cannot set it to anything reasonable. As a result it remains undefined and crashes the build in BUILD.gn\n  if (is_win \u0026\u0026 !is_clang \u0026\u0026 sanitize \u003d\u003d \"ASAN\") {\n  \nI would prefer to do something else here, too. I just don\u0027t know how to solve this problem properly.",
+      "parentUuid": "1d401535_29aca8dc",
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00116afd_312960d1",
         "filename": "modules/canvaskit/tests/paragraph_test.js",
         "patchSetId": 14
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-03T19:55:08Z",
       "side": 1,
       "message": "This should be made to work or be removed.",
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e0c04d0_0d826c2b",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 14
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done. I guess, I spent so much time on this rest that I could not just remove it right away...",
+      "parentUuid": "00116afd_312960d1",
       "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -70,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "849fc3fa_4cdc33b3",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "5a6effe7_aac1d1e5",
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73943bbd_72d16553",
@@ -93,6 +147,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4d31dc_6985aed8",
+        "filename": "modules/skparagraph/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73943bbd_72d16553",
+      "range": {
+        "startLine": 13,
+        "startChar": 31,
+        "endLine": 13,
+        "endChar": 69
+      },
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8690e052_896b0029",
@@ -106,6 +184,30 @@
       "writtenOn": "2023-01-03T19:55:08Z",
       "side": 1,
       "message": "Once again, this should be some test provided by skunicode, the point of which is to make skshaper not aware of the existence on icu or how skunicode is implemented.",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 41
+      },
+      "revId": "49b0dca6e9eb0e619899b8a8369bbc850c5aee6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "256f2766_5b349e34",
+        "filename": "modules/skshaper/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-04T17:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8690e052_896b0029",
       "range": {
         "startLine": 9,
         "startChar": 4,
