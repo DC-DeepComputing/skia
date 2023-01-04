@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8c29104_53add963",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-04T18:28:55Z",
+      "side": 1,
+      "message": "Actually, why is SkStringView.h in include/private to begin with? I only see it included from src/, tools/, and tests/",
+      "revId": "8bc903efd7c198f2c1a5c0b9d9968031bff99180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
