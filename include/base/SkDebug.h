@@ -20,7 +20,7 @@
 #endif
 
 #if !defined(SkDebugf)
-    void SkDebugf(const char format[], ...) SK_PRINTF_LIKE(1, 2);
+void SkDebugf(const char format[], ...) SK_PRINTF_LIKE(1, 2);
 #endif
 
 #if defined(SK_DEBUG)

@@ -3279,15 +3279,9 @@ STAGE(swizzle_4, SkRasterPipeline_SwizzleCtx* ctx) {
     swizzle_fn<4>(ctx);
 }
 
-STAGE(bitwise_and, I32* dst) {
-    dst[0] &= dst[1];
-}
-STAGE(bitwise_or, I32* dst) {
-    dst[0] |= dst[1];
-}
-STAGE(bitwise_xor, I32* dst) {
-    dst[0] ^= dst[1];
-}
+STAGE(bitwise_and, I32* dst) { dst[0] &= dst[1]; }
+STAGE(bitwise_or, I32* dst) { dst[0] |= dst[1]; }
+STAGE(bitwise_xor, I32* dst) { dst[0] ^= dst[1]; }
 STAGE(bitwise_not, I32* dst) {
     dst[0] = ~dst[0];
 }
