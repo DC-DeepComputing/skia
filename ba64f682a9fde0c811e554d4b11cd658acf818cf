@@ -49,6 +49,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4c1d608_80054cc7",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-04T22:07:54Z",
+      "side": 1,
+      "message": "Is this in contrast with what I did in http://review.skia.org/614556? Sounds like it could be a much cleaner approach than mine and accomplish the goals from that CL.",
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de134dc7_4d45fe8f",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 6
