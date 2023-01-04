@@ -8,6 +8,7 @@
 #ifndef SkWriter32_DEFINED
 #define SkWriter32_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -21,7 +22,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 
 struct SkSamplingOptions;
 

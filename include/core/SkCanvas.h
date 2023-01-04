@@ -8,6 +8,7 @@
 #ifndef SkCanvas_DEFINED
 #define SkCanvas_DEFINED
 
+#include "include/base/SkDeque.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
@@ -26,7 +27,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDeque.h"
 #include "include/private/SkMacros.h"
 
 #include <cstring>

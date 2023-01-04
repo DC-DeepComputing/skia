@@ -7,11 +7,11 @@
 
 #include "include/effects/SkRuntimeEffect.h"
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkCapabilities.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkSurface.h"
-#include "include/private/SkMutex.h"
 #include "include/sksl/DSLCore.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkCanvasPriv.h"

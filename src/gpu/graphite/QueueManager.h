@@ -8,9 +8,9 @@
 #ifndef skgpu_graphite_QueueManager_DEFINED
 #define skgpu_graphite_QueueManager_DEFINED
 
+#include "include/base/SkDeque.h"
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/private/SkDeque.h"
 
 #include <memory>
 #include <vector>

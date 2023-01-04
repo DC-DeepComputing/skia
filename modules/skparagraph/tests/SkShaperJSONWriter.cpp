@@ -7,11 +7,11 @@
 
 #include "modules/skparagraph/tests/SkShaperJSONWriter.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkTo.h"
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkUTF.h"
 

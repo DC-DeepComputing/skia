@@ -20,8 +20,8 @@
 #include <android/looper.h>
 #include <android/native_window_jni.h>
 
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 #include "src/utils/SkUTF.h"
 #include "tools/ResourceFactory.h"
 #include "tools/sk_app/Application.h"

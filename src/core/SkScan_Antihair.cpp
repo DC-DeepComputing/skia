@@ -7,8 +7,8 @@
 
 #include "src/core/SkScan.h"
 
+#include "include/base/SkTo.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkFDot6.h"
 #include "src/core/SkLineClipper.h"

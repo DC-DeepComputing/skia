@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -20,7 +21,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkMipmapBuilder.h"

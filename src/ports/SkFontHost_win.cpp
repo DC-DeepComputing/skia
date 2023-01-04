@@ -8,6 +8,8 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
+#include "include/base/SkOnce.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPath.h"
@@ -16,9 +18,7 @@
 #include "include/ports/SkTypeface_win.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkMacros.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkBase64.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkDescriptor.h"

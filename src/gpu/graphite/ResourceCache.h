@@ -8,8 +8,8 @@
 #ifndef skgpu_graphite_ResourceCache_DEFINED
 #define skgpu_graphite_ResourceCache_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkTDPQueue.h"

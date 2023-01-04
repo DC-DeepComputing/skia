@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
@@ -21,7 +22,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>

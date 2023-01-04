@@ -7,6 +7,7 @@
 
 #include "include/core/SkBitmap.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMallocPixelRef.h"
@@ -19,7 +20,6 @@
 #include "include/private/SkHalf.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"

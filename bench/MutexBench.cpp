@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 #include "bench/Benchmark.h"
+#include "include/base/SkMutex.h"
 #include "include/core/SkString.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkSpinlock.h"
 #include "src/core/SkSharedMutex.h"
 

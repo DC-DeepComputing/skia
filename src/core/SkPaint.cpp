@@ -7,6 +7,7 @@
 
 #include "include/core/SkPaint.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -19,7 +20,6 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"

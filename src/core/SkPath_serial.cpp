@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMath.h"
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBuffer.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"

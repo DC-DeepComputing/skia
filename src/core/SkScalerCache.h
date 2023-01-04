@@ -7,9 +7,9 @@
 #ifndef SkStrike_DEFINED
 #define SkStrike_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkArenaAlloc.h"

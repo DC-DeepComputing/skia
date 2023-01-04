@@ -7,10 +7,10 @@
 #ifndef GrBackendTextureImageGenerator_DEFINED
 #define GrBackendTextureImageGenerator_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkMutex.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrTexture.h"
 

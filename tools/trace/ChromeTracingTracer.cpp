@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkThreadID.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkThreadID.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/utils/SkJSONWriter.h"

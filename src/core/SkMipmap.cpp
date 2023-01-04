@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkImageInfoPriv.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMipmap.h"

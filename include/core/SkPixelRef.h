@@ -8,13 +8,13 @@
 #ifndef SkPixelRef_DEFINED
 #define SkPixelRef_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/SkIDChangeListener.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTDArray.h"
 
 #include <atomic>

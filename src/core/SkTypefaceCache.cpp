@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkMutex.h"
+#include "include/base/SkMutex.h"
 #include "src/core/SkTypefaceCache.h"
 #include <atomic>
 

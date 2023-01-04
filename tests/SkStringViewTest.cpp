@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkStringView.h"
+#include "include/base/SkStringView.h"
 #include "tests/Test.h"
 
 #include <string>

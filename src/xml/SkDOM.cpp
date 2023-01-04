@@ -9,8 +9,8 @@
 
 #include <memory>
 
+#include "include/base/SkTo.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkTo.h"
 #include "src/xml/SkXMLParser.h"
 #include "src/xml/SkXMLWriter.h"
 

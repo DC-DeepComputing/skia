@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkThreadID.h"
+#include "include/base/SkThreadID.h"
 
 #ifdef SK_BUILD_FOR_WIN
     #include "src/core/SkLeanWindows.h"

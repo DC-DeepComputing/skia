@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkUtils.h"

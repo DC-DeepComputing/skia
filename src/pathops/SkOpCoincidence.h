@@ -7,8 +7,8 @@
 #ifndef SkOpCoincidence_DEFINED
 #define SkOpCoincidence_DEFINED
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsTypes.h"
 

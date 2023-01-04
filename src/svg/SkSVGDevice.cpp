@@ -7,6 +7,7 @@
 
 #include "src/svg/SkSVGDevice.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
@@ -42,7 +43,6 @@
 #include "include/private/SkTHash.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/svg/SkSVGCanvas.h"
 #include "include/utils/SkBase64.h"
 #include "src/core/SkAnnotationKeys.h"

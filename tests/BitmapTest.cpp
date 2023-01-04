@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -18,8 +20,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkRandom.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"

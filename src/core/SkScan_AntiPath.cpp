@@ -7,10 +7,10 @@
 
 #include "src/core/SkScanPriv.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAntiRun.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkPathPriv.h"

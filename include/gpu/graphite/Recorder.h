@@ -8,11 +8,11 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/base/SingleOwner.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recording.h"
-#include "include/private/SingleOwner.h"
 #include "include/private/SkTHash.h"
 
 #include <vector>

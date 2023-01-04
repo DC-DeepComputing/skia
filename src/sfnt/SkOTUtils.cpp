@@ -9,9 +9,9 @@
 
 #include "src/sfnt/SkOTUtils.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkEndian.h"
 #include "src/sfnt/SkOTTableTypes.h"

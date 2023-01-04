@@ -1,13 +1,13 @@
 // Copyright 2019 Google LLC.
 
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkTFitsIn.h"
-#include "include/private/SkTo.h"
 #include "modules/skparagraph/include/Metrics.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphPainter.h"

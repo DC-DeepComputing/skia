@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkOnce.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkEndian.h"

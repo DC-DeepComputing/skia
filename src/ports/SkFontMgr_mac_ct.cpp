@@ -20,6 +20,8 @@
 #include <dlfcn.h>
 #endif
 
+#include "include/base/SkOnce.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
@@ -29,10 +31,8 @@
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkFontMgr_mac_ct.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/ports/SkTypeface_mac_ct.h"
 #include "src/utils/SkUTF.h"

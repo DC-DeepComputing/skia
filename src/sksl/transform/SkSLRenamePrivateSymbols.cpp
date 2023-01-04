@@ -5,13 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkStringView.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkSLSymbol.h"
-#include "include/private/SkStringView.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLContext.h"

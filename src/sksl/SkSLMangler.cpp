@@ -7,9 +7,9 @@
 
 #include "src/sksl/SkSLMangler.h"
 
+#include "include/base/SkStringView.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkStringView.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
 #include <algorithm>

@@ -7,6 +7,7 @@
 
 #include "src/utils/SkPatchUtils.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -20,7 +21,6 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"

@@ -8,11 +8,11 @@
 #ifndef GrSurfaceProxyView_DEFINED
 #define GrSurfaceProxyView_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrTypes.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkTypeTraits.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"

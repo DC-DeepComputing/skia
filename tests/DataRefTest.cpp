@@ -5,13 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"

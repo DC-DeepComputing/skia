@@ -8,6 +8,7 @@
 #ifndef SkPath_DEFINED
 #define SkPath_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkTypeTraits.h"
 
 #include <atomic>

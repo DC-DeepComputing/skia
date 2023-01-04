@@ -7,6 +7,7 @@
 
 #include "include/effects/SkOpPathEffect.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -19,7 +20,6 @@
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkPathEnums.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkPathEffectBase.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"

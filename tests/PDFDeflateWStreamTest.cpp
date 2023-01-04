@@ -8,11 +8,11 @@
 #include "include/core/SkTypes.h"
 
 #ifdef SK_SUPPORT_PDF
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkRandom.h"
 #include "src/pdf/SkDeflate.h"
 #include "tests/Test.h"

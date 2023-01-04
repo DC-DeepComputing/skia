@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -33,7 +34,6 @@
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "include/utils/SkPaintFilterCanvas.h"

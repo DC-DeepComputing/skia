@@ -16,10 +16,10 @@
 #include "src/core/SkFontDescriptor.h"
 #include "src/ports/SkFontMgr_custom.h"
 
+#include "include/base/SkThreadAnnotations.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkThreadAnnotations.h"
 #include "src/core/SkTypefaceCache.h"
 
 // SkFuchsiaFontDataCache keep track of SkData created from `fuchsia::mem::Buffer` where each buffer

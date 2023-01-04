@@ -7,11 +7,11 @@
 
 #include "src/core/SkBlitter.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAntiRun.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkMask.h"

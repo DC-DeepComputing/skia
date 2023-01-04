@@ -8,7 +8,7 @@
 
 #include "src/core/SkTSearch.h"
 
-#include "include/private/SkMalloc.h"
+#include "include/base/SkMalloc.h"
 
 #include <ctype.h>
 

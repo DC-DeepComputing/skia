@@ -7,12 +7,12 @@
 
 #include "src/pathops/SkPathOpsDebug.h"
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
-#include "include/private/SkMutex.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkOpAngle.h"

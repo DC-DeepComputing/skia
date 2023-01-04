@@ -7,11 +7,11 @@
 
 #include "src/core/SkPictureRecord.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkMatrixPriv.h"

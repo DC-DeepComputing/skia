@@ -9,11 +9,11 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkFontDescriptor.h"

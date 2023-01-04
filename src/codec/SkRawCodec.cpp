@@ -7,6 +7,7 @@
 
 #include "src/codec/SkRawCodec.h"
 
+#include "include/base/SkMutex.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"

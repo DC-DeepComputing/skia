@@ -19,6 +19,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontArguments.h"
@@ -33,13 +37,9 @@
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkFontDescriptor.h"

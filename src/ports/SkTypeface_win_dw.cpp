@@ -17,8 +17,8 @@
 // not use GDI, undefing GetGlyphIndices makes things less confusing.
 #undef GetGlyphIndices
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontStream.h"
 #include "src/core/SkScalerContext.h"

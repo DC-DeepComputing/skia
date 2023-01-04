@@ -7,8 +7,8 @@
 
 #include "src/core/SkMask.h"
 
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "src/core/SkSafeMath.h"
 
 #include <climits>

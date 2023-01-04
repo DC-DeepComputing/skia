@@ -7,6 +7,7 @@
 
 #include "src/sksl/ir/SkSLFunctionCall.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
@@ -14,7 +15,6 @@
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLString.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "include/sksl/DSLCore.h"
 #include "include/sksl/DSLExpression.h"
 #include "include/sksl/DSLType.h"

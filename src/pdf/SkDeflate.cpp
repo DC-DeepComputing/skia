@@ -7,9 +7,9 @@
 
 #include "src/pdf/SkDeflate.h"
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkTraceEvent.h"
 
 #include "zlib.h"

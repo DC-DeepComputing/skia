@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
@@ -26,7 +27,6 @@
 #include "include/docs/SkPDFDocument.h"
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTHash.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMask.h"

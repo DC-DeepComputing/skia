@@ -5,12 +5,12 @@
 * found in the LICENSE file.
 */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/utils/SkUTF.h"
 

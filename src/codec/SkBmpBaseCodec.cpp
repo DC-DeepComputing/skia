@@ -6,9 +6,9 @@
  */
 #include "src/codec/SkBmpBaseCodec.h"
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/SkMalloc.h"
 
 #include <utility>
 

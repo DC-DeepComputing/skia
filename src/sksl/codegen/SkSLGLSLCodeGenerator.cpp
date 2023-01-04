@@ -7,6 +7,7 @@
 
 #include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 
+#include "include/base/SkStringView.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkSLDefines.h"
@@ -16,7 +17,6 @@
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkSLString.h"
-#include "include/private/SkStringView.h"
 #include "include/private/SkTArray.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLOperator.h"

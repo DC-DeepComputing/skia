@@ -7,8 +7,8 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/utils/win/SkDWriteFontFileStream.h"
 #include "src/utils/win/SkHRESULT.h"

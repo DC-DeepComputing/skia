@@ -8,9 +8,9 @@
 #ifndef SkRasterPipeline_opts_DEFINED
 #define SkRasterPipeline_opts_DEFINED
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkData.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
 #include "modules/skcms/skcms.h"
 #include "src/core/SkUtils.h"  // unaligned_{load,store}
 #include <cstdint>

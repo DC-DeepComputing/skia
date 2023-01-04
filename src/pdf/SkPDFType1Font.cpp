@@ -3,8 +3,8 @@
 
 #include "src/pdf/SkPDFType1Font.h"
 
+#include "include/base/SkTo.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkStrikeSpec.h"
 
 #include <ctype.h>
