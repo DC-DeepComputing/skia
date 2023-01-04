@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkOnce.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkOpts.h"

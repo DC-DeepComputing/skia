@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkRandom.h"
 #include "tools/ToolUtils.h"
 

@@ -8,8 +8,8 @@
 #ifndef SkSafeMath_DEFINED
 #define SkSafeMath_DEFINED
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
 
 #include <cstddef>
 #include <cstdint>

@@ -8,10 +8,10 @@
 #ifndef skgpu_graphite_TextureProxy_DEFINED
 #define skgpu_graphite_TextureProxy_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/SkTo.h"
 
 #include <functional>
 

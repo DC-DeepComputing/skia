@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkImage.h"
@@ -16,7 +17,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
-#include "include/private/SkMalloc.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecorder.h"
 #include "src/core/SkRecords.h"

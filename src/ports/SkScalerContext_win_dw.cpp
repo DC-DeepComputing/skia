@@ -11,6 +11,8 @@
 
 #undef GetGlyphIndices
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkTo.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
@@ -21,8 +23,6 @@
 #include "include/core/SkOpenTypeSVGDecoder.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPictureRecorder.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkGlyph.h"

@@ -7,12 +7,12 @@
 
 #include "src/core/SkWriteBuffer.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"

@@ -8,8 +8,8 @@
 #ifndef GrVkResourceProvider_DEFINED
 #define GrVkResourceProvider_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/gpu/vk/GrVkTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkTDynamicHash.h"

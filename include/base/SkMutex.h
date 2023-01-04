@@ -8,10 +8,11 @@
 #ifndef SkMutex_DEFINED
 #define SkMutex_DEFINED
 
-#include "include/core/SkTypes.h"
-#include "include/private/SkSemaphore.h"
-#include "include/private/SkThreadAnnotations.h"
-#include "include/private/SkThreadID.h"
+#include "include/base/SkAssert.h"
+#include "include/base/SkDebug.h"
+#include "include/base/SkSemaphore.h"
+#include "include/base/SkThreadAnnotations.h"
+#include "include/base/SkThreadID.h"
 
 class SK_CAPABILITY("mutex") SkMutex {
 public:

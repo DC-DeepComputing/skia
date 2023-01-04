@@ -8,11 +8,11 @@
 #ifndef SkYUVAPixmaps_DEFINED
 #define SkYUVAPixmaps_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkYUVAInfo.h"
-#include "include/private/SkTo.h"
 
 #include <array>
 #include <bitset>

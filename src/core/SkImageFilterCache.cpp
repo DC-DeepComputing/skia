@@ -9,10 +9,10 @@
 
 #include <vector>
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkSpecialImage.h"

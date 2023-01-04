@@ -5,6 +5,7 @@
 
 #if !defined(SK_BUILD_FOR_GOOGLE3)
 
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPoint.h"
@@ -13,7 +14,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "src/core/SkZip.h"
 #include "tools/Resources.h"

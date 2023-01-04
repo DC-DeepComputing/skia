@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
@@ -17,7 +18,6 @@
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkShadowFlags.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/utils/SkShadowTessellator.h"

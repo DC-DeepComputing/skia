@@ -11,6 +11,7 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontParameters.h"
 #include "include/core/SkFontStyle.h"
@@ -18,7 +19,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkOnce.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
 #ifdef SK_BUILD_FOR_MAC

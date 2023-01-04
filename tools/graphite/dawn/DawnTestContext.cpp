@@ -7,11 +7,11 @@
 
 #include "tools/graphite/dawn/GraphiteDawnTestContext.h"
 
+#include "include/base/SkOnce.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "include/gpu/graphite/dawn/DawnUtils.h"
-#include "include/private/SkOnce.h"
 
 #include "dawn/dawn_proc.h"
 

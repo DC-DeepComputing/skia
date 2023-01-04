@@ -7,6 +7,8 @@
 
 #include "tools/debugger/DrawCommand.h"
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -32,9 +34,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkShadowFlags.h"
-#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkCanvasPriv.h"

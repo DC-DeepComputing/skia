@@ -3,6 +3,7 @@
 
 #include "modules/skplaintexteditor/src/shape.h"
 
+#include "include/base/SkTFitsIn.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPoint.h"
@@ -11,7 +12,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTFitsIn.h"
 #include "modules/skplaintexteditor/src/word_boundaries.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "src/core/SkTextBlobPriv.h"

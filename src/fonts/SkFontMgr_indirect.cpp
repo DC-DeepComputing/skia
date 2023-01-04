@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
@@ -14,8 +16,6 @@
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_indirect.h"
 #include "include/ports/SkRemotableFontMgr.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 

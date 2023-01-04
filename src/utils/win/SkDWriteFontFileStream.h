@@ -10,8 +10,8 @@
 
 #include "include/core/SkTypes.h"
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkMutex.h"
 #include "src/utils/win/SkObjBase.h"
 #include "src/utils/win/SkTScopedComPtr.h"
 

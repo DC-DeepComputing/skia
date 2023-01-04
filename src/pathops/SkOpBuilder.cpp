@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
@@ -14,7 +15,6 @@
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkOpContour.h"

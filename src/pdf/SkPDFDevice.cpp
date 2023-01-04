@@ -7,6 +7,7 @@
 
 #include "src/pdf/SkPDFDevice.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
@@ -21,7 +22,6 @@
 #include "include/encode/SkJpegEncoder.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkAnnotationKeys.h"
 #include "src/core/SkBitmapDevice.h"

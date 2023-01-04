@@ -8,13 +8,13 @@
 #ifndef skgpu_graphite_ShaderCodeDictionary_DEFINED
 #define skgpu_graphite_ShaderCodeDictionary_DEFINED
 
+#include "include/base/SkThreadAnnotations.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkTHash.h"
-#include "include/private/SkThreadAnnotations.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkEnumBitMask.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"

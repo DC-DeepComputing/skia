@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkTPin.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBitmapProcState.h"
 #include "src/core/SkOpts.h"
 

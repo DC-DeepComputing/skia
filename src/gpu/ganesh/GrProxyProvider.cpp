@@ -7,10 +7,10 @@
 
 #include "src/gpu/ganesh/GrProxyProvider.h"
 
+#include "include/base/SingleOwner.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SingleOwner.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "src/core/SkAutoPixmapStorage.h"

@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkMutex.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -17,11 +20,8 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkFDot6.h"

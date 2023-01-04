@@ -10,9 +10,9 @@
 
 #include <emscripten.h>
 #include <emscripten/bind.h>
+#include "include/base/SkMalloc.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkMalloc.h"
 
 using namespace emscripten;
 

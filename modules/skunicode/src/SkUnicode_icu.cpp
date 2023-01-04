@@ -6,16 +6,16 @@
 */
 #include "modules/skunicode/src/SkUnicode_icu.h"
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/utils/SkUTF.h"
 

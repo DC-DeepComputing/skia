@@ -2,6 +2,7 @@
 #ifndef ParagraphImpl_DEFINED
 #define ParagraphImpl_DEFINED
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPicture.h"
@@ -13,7 +14,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTemplates.h"

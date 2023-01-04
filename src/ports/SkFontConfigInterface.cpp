@@ -5,10 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/ports/SkFontConfigInterface.h"
-#include "include/private/SkMutex.h"
 
 static SkMutex& font_config_interface_mutex() {
     static SkMutex& mutex = *(new SkMutex);

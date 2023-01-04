@@ -9,12 +9,12 @@
 #define skgpu_ResourceKey_DEFINED
 
 #include "include/base/SkAlign.h"
+#include "include/base/SkOnce.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAlignedStorage.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 
 #include <new>
 

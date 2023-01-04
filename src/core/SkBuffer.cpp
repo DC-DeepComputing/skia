@@ -6,7 +6,7 @@
  */
 
 #include "include/base/SkAlign.h"
-#include "include/private/SkMalloc.h"
+#include "include/base/SkMalloc.h"
 #include "src/core/SkBuffer.h"
 #include <string.h>
 

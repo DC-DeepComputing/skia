@@ -5,10 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkSLString.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkOpts.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"

@@ -5,10 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOnce.h"
 #include "src/core/SkFontDescriptor.h"
 
 class SkFontStyle;

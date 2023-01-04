@@ -5,6 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkMutex.h"
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
@@ -20,11 +24,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTFitsIn.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkTypeTraits.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "modules/skunicode/include/SkUnicode.h"

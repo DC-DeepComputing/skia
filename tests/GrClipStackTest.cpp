@@ -6,6 +6,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
@@ -24,7 +25,6 @@
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/mock/GrMockTypes.h"
-#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRRectPriv.h"

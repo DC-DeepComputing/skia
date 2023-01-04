@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -33,10 +35,8 @@
 #include "include/private/SkFloatBits.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkIDChangeListener.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkPathEnums.h"
 #include "include/private/SkPathRef.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkNullCanvas.h"
 #include "include/utils/SkParse.h"
 #include "include/utils/SkParsePath.h"

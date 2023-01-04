@@ -8,6 +8,7 @@
 #ifndef TestSVGTypeface_DEFINED
 #define TestSVGTypeface_DEFINED
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPaint.h"
@@ -21,7 +22,6 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 

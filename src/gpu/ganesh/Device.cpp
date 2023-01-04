@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/Device_v1.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPathEffect.h"
@@ -17,7 +18,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkShadowFlags.h"
-#include "include/private/SkTo.h"
 #include "include/private/chromium/Slug.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkCanvasPriv.h"

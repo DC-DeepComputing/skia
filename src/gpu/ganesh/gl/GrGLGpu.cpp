@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkTypes.h"
@@ -17,7 +18,6 @@
 #include "include/private/SkHalf.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkLRUCache.h"

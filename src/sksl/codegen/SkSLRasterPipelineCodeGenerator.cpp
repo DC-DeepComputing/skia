@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkStringView.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLIRNode.h"
@@ -12,10 +14,8 @@
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
-#include "include/private/SkStringView.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
-#include "include/private/SkTo.h"
 #include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLAnalysis.h"

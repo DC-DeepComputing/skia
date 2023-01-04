@@ -5,8 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkDeque.h"
-#include "include/private/SkMalloc.h"
+#include "include/base/SkAssert.h"
+#include "include/base/SkDeque.h"
+#include "include/base/SkMalloc.h"
 
 struct SkDeque::Block {
     Block*  fNext;

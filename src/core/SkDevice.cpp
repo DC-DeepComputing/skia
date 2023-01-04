@@ -7,6 +7,7 @@
 
 #include "src/core/SkDevice.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkDrawable.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkRSXform.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkVertices.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"

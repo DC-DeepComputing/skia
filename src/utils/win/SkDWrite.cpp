@@ -7,8 +7,8 @@
 #include "include/core/SkTypes.h"
 #if defined(SK_BUILD_FOR_WIN)
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkString.h"
-#include "include/private/SkOnce.h"
 #include "src/utils/win/SkDWrite.h"
 #include "src/utils/win/SkHRESULT.h"
 

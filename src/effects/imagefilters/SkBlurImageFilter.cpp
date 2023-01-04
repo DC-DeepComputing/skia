@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMalloc.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkFlattenable.h"
@@ -20,7 +21,6 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkMalloc.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkImageFilter_Base.h"

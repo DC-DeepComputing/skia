@@ -7,7 +7,7 @@
 
 #include "src/pdf/SkPDFMakeToUnicodeCmap.h"
 
-#include "include/private/SkTo.h"
+#include "include/base/SkTo.h"
 #include "src/pdf/SkPDFUtils.h"
 #include "src/utils/SkUTF.h"
 

@@ -9,11 +9,11 @@
 
 #include <cctype>
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkScalerCache.h"
 

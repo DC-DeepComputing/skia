@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkPicturePriv.h"

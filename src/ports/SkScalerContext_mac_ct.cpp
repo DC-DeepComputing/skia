@@ -19,6 +19,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#include "include/base/SkTo.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkFontMetrics.h"
@@ -32,7 +33,6 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkFixed.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkGlyph.h"

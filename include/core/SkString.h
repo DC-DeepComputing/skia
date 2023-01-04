@@ -8,11 +8,11 @@
 #ifndef SkString_DEFINED
 #define SkString_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "include/private/SkTypeTraits.h"
 
 #include <atomic>

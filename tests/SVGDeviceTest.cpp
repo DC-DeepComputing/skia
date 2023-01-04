@@ -8,6 +8,7 @@
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -18,7 +19,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTextBlob.h"
 #include "include/effects/SkDashPathEffect.h"
-#include "include/private/SkTo.h"
 #include "include/svg/SkSVGCanvas.h"
 #include "include/utils/SkParse.h"
 #include "src/shaders/SkImageShader.h"

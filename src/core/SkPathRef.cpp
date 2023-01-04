@@ -7,10 +7,10 @@
 
 #include "include/private/SkPathRef.h"
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRRect.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkVx.h"
 
 #include <cstring>

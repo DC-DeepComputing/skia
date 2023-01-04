@@ -6,8 +6,8 @@
  */
 #include "src/sksl/SkSLModuleLoader.h"
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"

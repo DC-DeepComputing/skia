@@ -7,8 +7,8 @@
 
 #include "src/pdf/SkPDFMakeCIDGlyphWidthsArray.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPaint.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkScalerCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/pdf/SkPDFGlyphUse.h"

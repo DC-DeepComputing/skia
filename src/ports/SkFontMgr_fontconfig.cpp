@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
@@ -15,7 +16,6 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFixed.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"

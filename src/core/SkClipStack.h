@@ -8,13 +8,13 @@
 #ifndef SkClipStack_DEFINED
 #define SkClipStack_DEFINED
 
+#include "include/base/SkDeque.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
-#include "include/private/SkDeque.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTLazy.h"
 

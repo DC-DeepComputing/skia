@@ -8,13 +8,13 @@
 #ifndef GrCaps_DEFINED
 #define GrCaps_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkCapabilities.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDriverBugWorkarounds.h"
 #include "include/gpu/GrTypes.h"
-#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"

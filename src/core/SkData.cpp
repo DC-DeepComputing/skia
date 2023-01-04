@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkOnce.h"
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkOnce.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStreamPriv.h"

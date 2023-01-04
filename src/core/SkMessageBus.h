@@ -10,11 +10,11 @@
 
 #include <type_traits>
 
+#include "include/base/SkMutex.h"
+#include "include/base/SkOnce.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
-#include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 

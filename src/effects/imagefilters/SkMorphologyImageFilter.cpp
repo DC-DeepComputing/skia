@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -23,7 +24,6 @@
 #include "include/effects/SkImageFilters.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkSLSampleUsage.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkSpecialImage.h"

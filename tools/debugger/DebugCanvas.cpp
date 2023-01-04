@@ -7,6 +7,7 @@
 
 #include "tools/debugger/DebugCanvas.h"
 
+#include "include/base/SkTo.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkData.h"
@@ -23,7 +24,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTo.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkRectPriv.h"

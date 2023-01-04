@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTo.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkTo.h"
 #include "src/xml/SkXMLParser.h"
 
 #include <expat.h>

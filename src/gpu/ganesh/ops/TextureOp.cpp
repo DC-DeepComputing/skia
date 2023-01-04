@@ -7,11 +7,11 @@
 
 #include <new>
 
+#include "include/base/SkTo.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkTo.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMatrixPriv.h"

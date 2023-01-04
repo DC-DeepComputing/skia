@@ -4,10 +4,10 @@
 #include "include/private/SkContainers.h"
 
 #include "include/base/SkAlign.h"
+#include "include/base/SkMalloc.h"
+#include "include/base/SkTo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMalloc.h"
-#include "include/private/SkTo.h"
 
 #include <algorithm>
 #include <cstddef>

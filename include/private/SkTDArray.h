@@ -8,8 +8,8 @@
 #ifndef SkTDArray_DEFINED
 #define SkTDArray_DEFINED
 
+#include "include/base/SkTo.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkTo.h"
 
 #include <algorithm>
 #include <cstddef>

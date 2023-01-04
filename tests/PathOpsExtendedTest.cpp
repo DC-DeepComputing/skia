@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkMutex.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -20,7 +21,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatBits.h"
-#include "include/private/SkMutex.h"
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkParsePath.h"
 #include "src/core/SkPathPriv.h"

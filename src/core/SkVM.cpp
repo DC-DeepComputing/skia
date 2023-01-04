@@ -5,11 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/base/SkTFitsIn.h"
+#include "include/base/SkThreadID.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkTFitsIn.h"
-#include "include/private/SkThreadID.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCpu.h"

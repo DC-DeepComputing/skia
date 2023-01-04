@@ -7,8 +7,8 @@
 
 #include "src/gpu/ganesh/GrProgramDesc.h"
 
+#include "include/base/SkTo.h"
 #include "include/private/SkChecksum.h"
-#include "include/private/SkTo.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
