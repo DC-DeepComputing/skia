@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "check_base_includes_lib",
+    srcs = ["check_base_includes.go"],
+    importpath = "go.skia.org/skia/infra/bots/task_drivers/check_base_includes",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_skia_go_infra//go/skerr",
+        "@org_skia_go_infra//task_driver/go/td",
+    ],
+)
+
+go_binary(
+    name = "check_base_includes",
+    embed = [":check_base_includes_lib"],
+    visibility = ["//visibility:public"],
+)
