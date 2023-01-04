@@ -156,10 +156,10 @@ sk_sp<SkShader> SkImage::makeShader(SkTileMode tmx, SkTileMode tmy,
                                sampling, localMatrix);
 }
 
-sk_sp<SkShader> SkImage::makeRawShader(SkTileMode tmx, SkTileMode tmy,
+sk_sp<SkShader> SkImage::makeRawShader1(SkTileMode tmx, SkTileMode tmy,
                                        const SkSamplingOptions& sampling,
                                        const SkMatrix* localMatrix) const {
-    return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
+    return SkImageShader::MakeRaw1(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                   sampling, localMatrix);
 }
 

@@ -719,19 +719,19 @@ public:
      *    - Bicubic filtering is not supported. If SkSamplingOptions::useCubic is true, these
      *      factories will return nullptr.
      */
-    sk_sp<SkShader> makeRawShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions&,
+    sk_sp<SkShader> makeRawShader1(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions&,
                                   const SkMatrix* localMatrix = nullptr) const;
 
-    sk_sp<SkShader> makeRawShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions& sampling,
+    sk_sp<SkShader> makeRawShader1(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions& sampling,
                                   const SkMatrix& lm) const {
-        return this->makeRawShader(tmx, tmy, sampling, &lm);
+        return this->makeRawShader1(tmx, tmy, sampling, &lm);
     }
-    sk_sp<SkShader> makeRawShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const {
-        return this->makeRawShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, &lm);
+    sk_sp<SkShader> makeRawShader1(const SkSamplingOptions& sampling, const SkMatrix& lm) const {
+        return this->makeRawShader1(SkTileMode::kClamp, SkTileMode::kClamp, sampling, &lm);
     }
-    sk_sp<SkShader> makeRawShader(const SkSamplingOptions& sampling,
+    sk_sp<SkShader> makeRawShader1(const SkSamplingOptions& sampling,
                                   const SkMatrix* lm = nullptr) const {
-        return this->makeRawShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, lm);
+        return this->makeRawShader1(SkTileMode::kClamp, SkTileMode::kClamp, sampling, lm);
     }
 
     using CubicResampler = SkCubicResampler;

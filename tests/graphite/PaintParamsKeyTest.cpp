@@ -117,9 +117,16 @@ ColorFilterType random_colorfiltertype(SkRandom* rand) {
     return static_cast<ColorFilterType>(rand->nextULessThan(kColorFilterTypeCount));
 }
 
+sk_sp<SkColorSpace> make_random_color_space(SkRandom* rand) {
+    return nullptr;
+}
+
 sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
-    SkImageInfo info = SkImageInfo::Make(32, 32, SkColorType::kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType);
+    // TODO: add alpha-only images too
+    SkImageInfo info = SkImageInfo::Make(32, 32,
+                                         SkColorType::kRGBA_8888_SkColorType,
+                                         kPremul_SkAlphaType,
+                                         make_random_color_space(rand));
 
     SkBitmap bitmap;
     bitmap.allocPixels(info);

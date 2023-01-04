@@ -729,7 +729,7 @@ static sk_sp<SkShader> normal_map_image_shader() {
 }
 
 static sk_sp<SkShader> normal_map_raw_image_shader() {
-    return normal_map_image()->makeRawShader(SkSamplingOptions{});
+    return normal_map_image()->makeRawShader1(SkSamplingOptions{});
 }
 
 static sk_sp<SkImage> normal_map_unpremul_image() {
@@ -752,7 +752,7 @@ static sk_sp<SkShader> normal_map_unpremul_image_shader() {
 }
 
 static sk_sp<SkShader> normal_map_raw_unpremul_image_shader() {
-    return normal_map_unpremul_image()->makeRawShader(SkSamplingOptions{});
+    return normal_map_unpremul_image()->makeRawShader1(SkSamplingOptions{});
 }
 
 static sk_sp<SkShader> lit_shader(sk_sp<SkShader> normals) {

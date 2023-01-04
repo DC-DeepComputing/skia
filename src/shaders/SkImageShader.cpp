@@ -150,7 +150,7 @@ sk_sp<SkFlattenable> SkImageShader::CreateProc(SkReadBuffer& buffer) {
     // TODO(skbug.com/12784): Subset is not serialized yet; it's only used by special images so it
     // will never be written to an SKP.
 
-    return raw ? SkImageShader::MakeRaw(std::move(img), tmx, tmy, sampling, &localMatrix)
+    return raw ? SkImageShader::MakeRaw1(std::move(img), tmx, tmy, sampling, &localMatrix)
                : SkImageShader::Make(std::move(img), tmx, tmy, sampling, &localMatrix);
 }
 
@@ -289,7 +289,7 @@ sk_sp<SkShader> SkImageShader::Make(sk_sp<SkImage> image,
     return MakeSubset(std::move(image), subset, tmx, tmy, options, localMatrix, clampAsIfUnpremul);
 }
 
-sk_sp<SkShader> SkImageShader::MakeRaw(sk_sp<SkImage> image,
+sk_sp<SkShader> SkImageShader::MakeRaw1(sk_sp<SkImage> image,
                                        SkTileMode tmx, SkTileMode tmy,
                                        const SkSamplingOptions& options,
                                        const SkMatrix* localMatrix) {
@@ -393,6 +393,14 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
     using namespace skgpu::graphite;
 
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
+
+    if (!fRaw) {
+        // TODO: need to plumb destination color space down via the KeyContext
+        imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
+                                                fImage->alphaType(),
+                                                sk_srgb_singleton(), // for now, use SRGB
+                                                kPremul_SkAlphaType);
+    }
 
     auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
                                                                            fImage.get(),
