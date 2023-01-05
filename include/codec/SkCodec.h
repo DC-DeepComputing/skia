@@ -216,6 +216,11 @@ public:
     }
 
     /**
+     * Return the XMP metadata from the image, or nullptr if there is none.
+     */
+    sk_sp<SkData> getXmpMetadata() const { return fXmpMetadata; }
+
+    /**
      *  Returns the image orientation stored in the EXIF data.
      *  If there is no EXIF data, or if we cannot read the EXIF data, returns kTopLeft.
      */
@@ -761,7 +766,8 @@ protected:
     SkCodec(SkEncodedInfo&&,
             XformFormat srcFormat,
             std::unique_ptr<SkStream>,
-            SkEncodedOrigin = kTopLeft_SkEncodedOrigin);
+            SkEncodedOrigin = kTopLeft_SkEncodedOrigin,
+            sk_sp<SkData> xmpMetadata = nullptr);
 
     void setSrcXformFormat(XformFormat pixelFormat);
 
@@ -889,8 +895,9 @@ private:
     const SkEncodedInfo                fEncodedInfo;
     XformFormat                        fSrcXformFormat;
     std::unique_ptr<SkStream>          fStream;
-    bool                               fNeedsRewind;
+    bool fNeedsRewind = false;
     const SkEncodedOrigin              fOrigin;
+    const sk_sp<SkData> fXmpMetadata;
 
     SkImageInfo                        fDstInfo;
     Options                            fOptions;
@@ -906,13 +913,13 @@ private:
     skcms_AlphaFormat                  fDstXformAlphaFormat;
 
     // Only meaningful during scanline decodes.
-    int                                fCurrScanline;
+    int fCurrScanline = -1;
 
-    bool                               fStartedIncrementalDecode;
+    bool fStartedIncrementalDecode = false;
 
     // Allows SkAndroidCodec to call handleFrameIndex (potentially decoding a prior frame and
     // clearing to transparent) without SkCodec calling it, too.
-    bool                               fAndroidCodecHandlesFrameIndex;
+    bool fAndroidCodecHandlesFrameIndex = false;
 
     bool initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Alpha, bool srcIsOpaque);
 
