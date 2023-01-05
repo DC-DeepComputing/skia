@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e16f06dd_83810de7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-05T21:23:21Z",
+      "side": 1,
+      "message": "Heh, it looks like skottie was using the presence of that define to guard SkUnicode::Make not because it might not exist in Skia, but because it might not exist elsewhere, like in Chromium! [0] This is a skottie build but there isn\u0027t any SkUnicode being built anywhere. This is more of a skottie issue where skottie needs to declare if it is depending on SkUnicode or not.\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d579;drc\u003df62bcc24c9aaff6ea3db5c870d813fb9c6449f04",
+      "revId": "f5a02da58b634a8463d57c4b7cc53cd782463157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
