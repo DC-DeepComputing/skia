@@ -129,7 +129,10 @@ public:
     */
     SkPath(const SkPath& path);
 
-    /** Releases ownership of any shared data and deletes data if SkPath is sole owner.
+    SkPath(SkPath&& path);
+
+    /** Releases ownership of any shared data and deletes data if SkPath is sole
+       owner.
 
         example: https://fiddle.skia.org/c/@Path_destructor
     */
@@ -150,6 +153,7 @@ public:
         example: https://fiddle.skia.org/c/@Path_copy_operator
     */
     SkPath& operator=(const SkPath& path);
+    SkPath& operator=(SkPath&&);
 
     /** Compares a and b; returns true if SkPath::FillType, verb array, SkPoint array, and weights
         are equivalent.

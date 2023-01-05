@@ -305,7 +305,7 @@ bool SkBitmapDevice::onAccessPixels(SkPixmap* pmap) {
 }
 
 bool SkBitmapDevice::onPeekPixels(SkPixmap* pmap) {
-    const SkImageInfo info = fBitmap.info();
+    const SkImageInfo &info = fBitmap.info();
     if (fBitmap.getPixels() && (kUnknown_SkColorType != info.colorType())) {
         pmap->reset(fBitmap.info(), fBitmap.getPixels(), fBitmap.rowBytes());
         return true;

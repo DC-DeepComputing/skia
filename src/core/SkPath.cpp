@@ -183,6 +183,12 @@ SkPath::SkPath(const SkPath& that)
     SkDEBUGCODE(that.validate();)
 }
 
+SkPath::SkPath(SkPath&& that)
+    : fPathRef(std::move(that.fPathRef)) {
+    this->copyFields(that);
+    SkDEBUGCODE(that.validate();)
+}
+
 SkPath::~SkPath() {
     SkDEBUGCODE(this->validate();)
 }
@@ -192,6 +198,17 @@ SkPath& SkPath::operator=(const SkPath& that) {
 
     if (this != &that) {
         fPathRef.reset(SkRef(that.fPathRef.get()));
+        this->copyFields(that);
+    }
+    SkDEBUGCODE(this->validate();)
+    return *this;
+}
+
+SkPath& SkPath::operator=(SkPath&& that) {
+    SkDEBUGCODE(that.validate();)
+
+    if (this != &that) {
+        fPathRef = std::move(that.fPathRef);
         this->copyFields(that);
     }
     SkDEBUGCODE(this->validate();)
