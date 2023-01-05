@@ -34,6 +34,29 @@
       "parentUuid": "e16f06dd_83810de7",
       "revId": "f5a02da58b634a8463d57c4b7cc53cd782463157",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4a94f36_4cb218de",
+        "filename": "modules/skottie/BUILD.gn",
+        "patchSetId": 27
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-05T22:05:43Z",
+      "side": 1,
+      "message": "This should not be needed, Skottie can build without SkUnicode, the only direct call is conditional on SK_UNICODE_AVAILABLE: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skottie/src/text/SkottieShaper.cpp;drc\u003de308b1ca3a717d1c1d179c727dcc4d096ae04fe9;l\u003d542",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "f5a02da58b634a8463d57c4b7cc53cd782463157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
