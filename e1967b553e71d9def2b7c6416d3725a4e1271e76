@@ -16,6 +16,24 @@
       "message": "Isn\u0027t this just a pointer to the copy of glyphDecision in the map? Since we\u0027re not modifying it, why is there a switch below? Why not just put that code up with where the glyphDecision is set.",
       "revId": "e1967b553e71d9def2b7c6416d3725a4e1271e76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "561b4cac_aa55f210",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-05T21:12:25Z",
+      "side": 1,
+      "message": "Oh, I see, the decision may already exist.",
+      "parentUuid": "2b16d1a6_6b3e649f",
+      "revId": "e1967b553e71d9def2b7c6416d3725a4e1271e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
