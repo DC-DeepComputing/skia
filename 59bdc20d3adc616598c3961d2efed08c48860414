@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec6ea3e0_92f8917b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-05T16:15:14Z",
+      "side": 1,
+      "message": "A refactoring change just landed, so two headers have moved. You just need to apply this:\n\n    diff --git a/src/codec/SkJpegRCodec.cpp b/src/codec/SkJpegRCodec.cpp\n    index fd3d78e9b8..02a640e09a 100644\n    --- a/src/codec/SkJpegRCodec.cpp\n    +++ b/src/codec/SkJpegRCodec.cpp\n    @@ -24,9 +24,9 @@\n     #include \"include/core/SkStream.h\"\n     #include \"include/core/SkTypes.h\"\n     #include \"include/core/SkYUVAInfo.h\"\n    -#include \"include/private/SkMalloc.h\"\n     #include \"include/private/SkTemplates.h\"\n    -#include \"include/private/SkTo.h\"\n    +#include \"include/private/base/SkMalloc.h\"\n    +#include \"include/private/base/SkTo.h\"\n     #include \"modules/skcms/skcms.h\"\n     #include \"src/codec/SkCodecPriv.h\"\n     #include \"src/codec/SkParseEncodedOrigin.h\"",
+      "revId": "59bdc20d3adc616598c3961d2efed08c48860414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
