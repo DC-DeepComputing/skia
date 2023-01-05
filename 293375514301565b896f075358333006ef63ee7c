@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b61042f_af979f23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-05T19:26:22Z",
+      "side": 1,
+      "message": "Do you know if I need to add these to a .gni file or something for the Android build to be able to use them?",
+      "revId": "293375514301565b896f075358333006ef63ee7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
