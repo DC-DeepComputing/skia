@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4602a8a_4bdfd037",
+        "filename": "resources/sksl/errors/InvalidBackendBindingFlags.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-05T16:10:01Z",
+      "side": 1,
+      "message": "This test file is quite long.\nPlease split into separate test files for Metal, SPIR-V, WGSL and GLSL.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 8
+      },
+      "revId": "94875d1beaf0a655d8ce720566b692452e2a4674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b27cfc67_3fad9e9c",
         "filename": "resources/sksl/spirv/LayoutVkSampler.sksl",
         "patchSetId": 4
