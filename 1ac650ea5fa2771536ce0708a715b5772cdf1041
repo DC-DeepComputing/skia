@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e016699c_452bfc96",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-05T16:42:34Z",
+      "side": 1,
+      "message": "Nit: maybe just \"targetInfo\" to be consistent with the definition \u0026 DrawPass::Make?",
+      "range": {
+        "startLine": 37,
+        "startChar": 36,
+        "endLine": 37,
+        "endChar": 51
+      },
+      "revId": "1ac650ea5fa2771536ce0708a715b5772cdf1041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
