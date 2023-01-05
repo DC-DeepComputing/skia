@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0602f0f_3e5bcd51",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-05T23:24:39Z",
+      "side": 1,
+      "message": "Yes, Dawn is really the only backend where we need to do this splitting of texture/sampler bindings. Other backends (even those that also lack a combined sampler type, like Metal and D3D) are able to generate the right thing with the old `binding` syntax, so for now I made this a Dawn/WGSL specific condition and avoided introducing a \"current backend\" bit in Caps.\n\nThat said, I would like graphite to eventually use the backend-specific layout flags on all backends since those will enable us to perform validation and catch index conflicts in the compiler front-end, where the rules are slightly different for each backend. If/when we get there, we should generate all layout declarations based on the current backend.\n\nThough that\u0027s a nice-to-have and not really pressing at this time.",
+      "parentUuid": "48a43e93_37124e8f",
+      "range": {
+        "startLine": 225,
+        "startChar": 38,
+        "endLine": 225,
+        "endChar": 42
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8703cb2b_e63aa49d",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2023-01-05T14:40:18Z",
       "side": 1,
       "message": "I\u0027m assuming `set\u003d1` is a magic number linking to how the rest of graphite configures its bind groups, and that this works because no other resource will try to bind to set\u003d1, right?",
+      "range": {
+        "startLine": 232,
+        "startChar": 71,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d140371b_053c0c77",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-05T23:24:39Z",
+      "side": 1,
+      "message": "That\u0027s correct. `1` is a magic number that\u0027s hardcoded elsewhere. Maybe that should come from caps too to make it a bit more fool proof but afaik Graphite follows the same pattern as Ganesh, where descriptor set 0 holds the UBO and SSBO bindings and set 1 holds textures and samplers.\n\nI updated the comment above to be more specific.",
+      "parentUuid": "8703cb2b_e63aa49d",
       "range": {
         "startLine": 232,
         "startChar": 71,
@@ -101,6 +149,30 @@
       "side": 1,
       "message": "Don\u0027t forget the leading space\n\n`appendf(result, \" uniform...`",
       "parentUuid": "3750046c_36a3a9da",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 33
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c76b0974_c45a1bed",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-05T23:24:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f6f9c9c_75d6ea23",
       "range": {
         "startLine": 78,
         "startChar": 8,
