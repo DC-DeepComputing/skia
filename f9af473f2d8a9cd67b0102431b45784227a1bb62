@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a495bc28_ed9d3e23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-05T14:07:26Z",
+      "side": 1,
+      "message": "I think this looks ok overall. We\u0027ve been deep in the forest, so I want to step back and make sure I understand how we got here. I have a small concern that it\u0027s going to get even more difficult to guess where any particular header lives, but I hope that\u0027s a temporary problem, and I think the reasoning that\u0027s putting us here is:\n\nIdeally, we\u0027d want some alternate reality version of include/private to actually be a separate (and self-sufficient) chunk of headers that include/core relies on, and that clients don\u0027t (and can\u0027t). However, include/private today includes lots of references back into include/core? Given that, we choose to incrementally build include/base (actually include/private/base), which is the atomic core of skia\u0027s includes (and again, can\u0027t be used by clients). The files in this CL are chosen because they already exhibit the desired properties (no external dependencies). I assume the next step is to figure out how to move more of include/private into base? With the final goal being that include/private is empty? Or will there be a second module that\u0027s on the private side, but depends on both base and core?",
+      "revId": "f9af473f2d8a9cd67b0102431b45784227a1bb62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7fd6a8b_0837a95f",
+        "filename": "include/private/base/SkStringView.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-05T14:07:26Z",
+      "side": 1,
+      "message": "** Not for this CL **: Let\u0027s move this header to src/core (as I mentioned earlier, it\u0027s not included by anything else in include/).",
+      "revId": "2a175fd9f17ef0b8bf63734785a943736866984a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "698c9359_975af036",
+        "filename": "include/private/base/SkThreadID.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-05T14:07:26Z",
+      "side": 1,
+      "message": "** Not for this CL **: This seems unnecessary, unless clients are directly using SkMutex (or we use it in portions of Skia that are compiled to separate shared libraries). Does that happen? Having this written like this seems kind of silly? \n\nOptions that seem simpler:\n1) Move the definition of the SkMutex methods that call this to the .cpp\n2) Always mark this SK_SPI",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 47
+      },
+      "revId": "2a175fd9f17ef0b8bf63734785a943736866984a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
