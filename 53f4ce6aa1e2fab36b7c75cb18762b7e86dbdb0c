@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "609fcb34_bbc771c1",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-05T21:02:52Z",
+      "side": 1,
+      "message": "So this is the equivalent for masks?",
+      "revId": "53f4ce6aa1e2fab36b7c75cb18762b7e86dbdb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bcbfd56_4f400bfc",
         "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
         "patchSetId": 2
