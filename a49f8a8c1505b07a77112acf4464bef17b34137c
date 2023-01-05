@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9b185c0_1a1526ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-05T14:52:40Z",
+      "side": 1,
+      "message": "Why? Should they be updated?",
+      "range": {
+        "startLine": 11,
+        "startChar": 125,
+        "endLine": 11,
+        "endChar": 144
+      },
+      "revId": "a49f8a8c1505b07a77112acf4464bef17b34137c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57fc0189_ed99beb4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-05T14:52:40Z",
+      "side": 1,
+      "message": "What does this mean? Could they be built from Android Studio before? And now they cannot?",
+      "range": {
+        "startLine": 11,
+        "startChar": 146,
+        "endLine": 11,
+        "endChar": 262
+      },
+      "revId": "a49f8a8c1505b07a77112acf4464bef17b34137c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
