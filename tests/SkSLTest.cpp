@@ -331,7 +331,7 @@ static void test_clone(skiatest::Reporter* r, const char* testFile, int flags) {
 }
 
 // These debugging toggles enable extra logging in `test_raster_pipeline`.
-//#define REPORT_RP_PASS_FAIL 1
+#define REPORT_RP_PASS_FAIL 1
 //#define DUMP_RP_PROGRAMS 1
 
 #if defined(DUMP_RP_PROGRAMS)
