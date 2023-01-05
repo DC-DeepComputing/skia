@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edbc939_2992661b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-05T16:10:26Z",
+      "side": 1,
+      "message": "I\u0027ve added a default ctor to SkColorSpaceXformSteps to skip all this cruft.",
+      "parentUuid": "407cd552_b1d79c71",
+      "range": {
+        "startLine": 341,
+        "startChar": 37,
+        "endLine": 341,
+        "endChar": 58
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a3669eb_93d9683d",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-04T21:43:12Z",
       "side": 1,
       "message": "csXformMask?",
+      "range": {
+        "startLine": 562,
+        "startChar": 11,
+        "endLine": 562,
+        "endChar": 16
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1173e661_76c4b70d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-05T16:10:26Z",
+      "side": 1,
+      "message": "I went with csXformFlags and added a \"csXform\" prefix to the other 5 uniforms.",
+      "parentUuid": "4a3669eb_93d9683d",
       "range": {
         "startLine": 562,
         "startChar": 11,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07addaf8_098b5f3f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-05T16:10:26Z",
+      "side": 1,
+      "message": "Yep - I think it will involve less plumbing since the target ColorInfo will be inside the ContextKey - which is already plumbed.",
+      "parentUuid": "c4c1d608_80054cc7",
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de134dc7_4d45fe8f",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-01-04T21:43:12Z",
       "side": 1,
       "message": "I think we would want to plumb the destination alpha type down as well, in the event that we have kUnpremul surfaces that can be filled with the result of a shader similar to GrSurfaceFillContext",
+      "range": {
+        "startLine": 402,
+        "startChar": 48,
+        "endLine": 402,
+        "endChar": 67
+      },
+      "revId": "ba64f682a9fde0c811e554d4b11cd658acf818cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12565168_26ebb345",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-05T16:10:26Z",
+      "side": 1,
+      "message": "Right now, over in https://skia-review.googlesource.com/c/skia/+/626237, I\u0027m plumbing the entire target SkColorInfo - so it will have the alpha type.",
+      "parentUuid": "de134dc7_4d45fe8f",
       "range": {
         "startLine": 402,
         "startChar": 48,
