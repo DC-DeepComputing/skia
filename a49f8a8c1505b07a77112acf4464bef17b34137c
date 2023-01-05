@@ -45,6 +45,54 @@
       },
       "revId": "a49f8a8c1505b07a77112acf4464bef17b34137c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa9c3272_0dfc7cb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-05T15:46:05Z",
+      "side": 1,
+      "message": "No reason to anymore, see other comment.",
+      "parentUuid": "d9b185c0_1a1526ef",
+      "range": {
+        "startLine": 11,
+        "startChar": 125,
+        "endLine": 11,
+        "endChar": 144
+      },
+      "revId": "a49f8a8c1505b07a77112acf4464bef17b34137c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23f0c53f_0fe18f8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-05T15:46:05Z",
+      "side": 1,
+      "message": "Well last night it wasn\u0027t working, but after restarting Android Studio it seems to have gotten over it.",
+      "parentUuid": "57fc0189_ed99beb4",
+      "range": {
+        "startLine": 11,
+        "startChar": 146,
+        "endLine": 11,
+        "endChar": 262
+      },
+      "revId": "a49f8a8c1505b07a77112acf4464bef17b34137c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
