@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e9d832_d0f84713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-05T00:58:39Z",
+      "side": 1,
+      "message": "michaelludwig@: For the Graphite changes in general\nrobertphillips@: PTAL at ShaderCodeDictionary and ContextUtils changes\njamesgk@: I made some minor tweaks to how SSBO layout gets passed down the snippet generation functions, primarily in ShaderCodeDictionary and ContextUtils\njohnstiles@ \u0026 nicolettep@: FYI\n\nlehoangquyen@: FYI. Running viewer on grdawn currently gives me some bind group layout validation errors (due to a missing depth texture format + a dynamic buffer offset flag mismatch) which I worked around locally to get as far as viewing the imgui menu. There are two more changes I\u0027m going to send out later to wrap up the SkSL issues. Either way please try this CL (and the others in the chain) locally.",
+      "revId": "0d3d93116fc10a7a613a57c78e3f773c0b2e72a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
