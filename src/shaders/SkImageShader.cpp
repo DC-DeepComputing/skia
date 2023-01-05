@@ -395,10 +395,9 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
 
     if (!fRaw) {
-        // TODO: need to plumb destination color space down via the KeyContext
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
                                                 fImage->alphaType(),
-                                                sk_srgb_singleton(), // for now, use SRGB
+                                                keyContext.dstColorInfo().colorSpace(),
                                                 kPremul_SkAlphaType);
 
         // TODO: add alpha-only image handling here
