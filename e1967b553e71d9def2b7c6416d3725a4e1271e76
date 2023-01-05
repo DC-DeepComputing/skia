@@ -34,6 +34,24 @@
       "parentUuid": "2b16d1a6_6b3e649f",
       "revId": "e1967b553e71d9def2b7c6416d3725a4e1271e76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79267fc1_71cd4000",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-05T21:16:24Z",
+      "side": 1,
+      "message": "glyphDecision is only calculated for the first glyph. The switch uses the variable *decision for all glyphs. After the first glyph, all the remaining glyphs do a lookup and do the switch. Whole glyphs are never stored in the remote strike. They are only retained until after serialization when they are disposed. The map from glyphID to Action is all that is needed to process all future glyphs.",
+      "parentUuid": "2b16d1a6_6b3e649f",
+      "revId": "e1967b553e71d9def2b7c6416d3725a4e1271e76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
