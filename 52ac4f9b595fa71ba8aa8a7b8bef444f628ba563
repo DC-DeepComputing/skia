@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05450e92_a4e467e7",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-05T23:03:10Z",
+      "side": 0,
+      "message": "Oh, this is your Chromium build problem, right: you\u0027re dropping the skunicode guard.\n\nThis should not be needed.",
+      "revId": "52ac4f9b595fa71ba8aa8a7b8bef444f628ba563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
