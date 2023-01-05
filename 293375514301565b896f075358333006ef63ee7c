@@ -16,6 +16,24 @@
       "message": "Do you know if I need to add these to a .gni file or something for the Android build to be able to use them?",
       "revId": "293375514301565b896f075358333006ef63ee7c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "939b164e_9a70f3fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-05T19:57:19Z",
+      "side": 1,
+      "message": "I could totally be wrong, but I think we\u0027ll be fine.\n\nThe [roll](http://ag/20879784) that changed `include/private/SkMalloc.h` to `include/private/base/SkMalloc.h` didn\u0027t seem to generate any changes to `Android.bp`, and this just effectively undoes that move as far as users in Android framework are concerned, so I feel they should still be able to access it through the same mechanism as before.",
+      "parentUuid": "1b61042f_af979f23",
+      "revId": "293375514301565b896f075358333006ef63ee7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
