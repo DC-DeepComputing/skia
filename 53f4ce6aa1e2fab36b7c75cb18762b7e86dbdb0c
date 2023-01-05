@@ -22,6 +22,52 @@
       },
       "revId": "53f4ce6aa1e2fab36b7c75cb18762b7e86dbdb0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bcbfd56_4f400bfc",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-05T20:56:50Z",
+      "side": 1,
+      "message": "nit: space?",
+      "range": {
+        "startLine": 471,
+        "startChar": 29,
+        "endLine": 471,
+        "endChar": 30
+      },
+      "revId": "53f4ce6aa1e2fab36b7c75cb18762b7e86dbdb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c1f4c6_b233d723",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-05T20:56:50Z",
+      "side": 1,
+      "message": "nit: space?",
+      "range": {
+        "startLine": 510,
+        "startChar": 29,
+        "endLine": 510,
+        "endChar": 30
+      },
+      "revId": "53f4ce6aa1e2fab36b7c75cb18762b7e86dbdb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
