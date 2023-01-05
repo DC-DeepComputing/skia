@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a82d67d0_c60f147c",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.hlsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-05T00:48:23Z",
+      "side": 1,
+      "message": "It turns out spirv-cross does a transformation that is similar to what I implemented for Dawn. The only difference is that the resource binding ranges for textures and samplers are distinct (like in Metal) so it can assign index \"2\" to both.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 61
+      },
+      "revId": "5319c0c016c353e2e292b4ed07838006b2fa3a4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
