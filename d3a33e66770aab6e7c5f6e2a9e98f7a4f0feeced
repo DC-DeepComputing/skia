@@ -16,6 +16,24 @@
       "message": "Ugh... thanks for pointing out something super simple but super complicated. This was added in https://skia-review.googlesource.com/c/skia/+/155760 because the idea was to always build third_party stuff with optimizations, since in theory we weren\u0027t developing these third_party projects so there was no reason to make our debug bot tests slower. In general the build is written around whatever the bots want, since in theory a developer can just tweak the build however they wish.\n\nWith this change there is actually no need at all for the predicate or setting the config at all, since it is set by default in a non-debug build [0] (`default_configs` is used below in `set_defaults`). The existing predicate simply exists to avoid adding the `optimize` config a second time.\n\nNote that my local tweak to the build is usually to add `extra_cflags \u003d [\"-fno-omit-frame-pointer\", \"-g\", \"-O0\" ]` to my `args.gn` to force everything to build in debug (the `extra_xxx` generally come after all the other flags, overriding them). This is why I haven\u0027t really looked into this, since I generally set up my `args.gn` once and then this doesn\u0027t bother me again for a while.\n\nIn any event, this isn\u0027t really as straight forward as it seems it should be. Will think about it.\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gn/BUILDCONFIG.gn;l\u003d184;drc\u003d50012bd88eb956caf84f9465d65d8f544f1c0e26",
       "revId": "d3a33e66770aab6e7c5f6e2a9e98f7a4f0feeced",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d0574d_1b7d6820",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-01-05T10:57:39Z",
+      "side": 1,
+      "message": "Thanks for the background. Still wondering. 🤔 I already had \n`extra_cflags_cc \u003d [ \"-ggdb\", \"-O0\" ]\nextra_cflags \u003d [ \"-ggdb\", \"-O0\" ]`\nin my args.gn but nevertheless I am fairly certain I got optimizations applied in FreeType and found variables optimized out during debugging. That\u0027s the reason I started looking in `.gn` files and found this. So that alone does not seem to override it for `third_party`.",
+      "parentUuid": "1ad9cfa2_87b4312f",
+      "revId": "d3a33e66770aab6e7c5f6e2a9e98f7a4f0feeced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
