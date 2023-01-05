@@ -22,6 +22,30 @@
       },
       "revId": "1ac650ea5fa2771536ce0708a715b5772cdf1041",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf98ee9_44abfee9",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-05T16:44:31Z",
+      "side": 1,
+      "message": "Well, I guess DrawPass::Make has an ImageInfo instead of a ColorInfo. Maybe the definition could also call the parameter targetColorInfo?",
+      "parentUuid": "e016699c_452bfc96",
+      "range": {
+        "startLine": 37,
+        "startChar": 36,
+        "endLine": 37,
+        "endChar": 51
+      },
+      "revId": "1ac650ea5fa2771536ce0708a715b5772cdf1041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
