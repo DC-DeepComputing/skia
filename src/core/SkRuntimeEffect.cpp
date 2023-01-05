@@ -24,6 +24,7 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
+#include "src/core/SkStreamPriv.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
@@ -34,6 +35,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
+#include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
+#include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 #include "src/sksl/codegen/SkSLVMCodeGenerator.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLProgram.h"
@@ -1059,7 +1062,11 @@ public:
                          SkSpan<SkRuntimeEffect::ChildPtr> children)
             : fEffect(std::move(effect))
             , fUniforms(std::move(uniforms))
-            , fChildren(children.begin(), children.end()) {}
+            , fChildren(children.begin(), children.end()) {
+        fRPProgram = MakeRasterPipelineProgram(*fEffect->fBaseProgram,
+                                               fEffect->fMain,
+                                               /*debugTrace=*/nullptr);
+    }
 
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
@@ -1099,14 +1106,25 @@ public:
 #endif
 
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
-        return false;
+        if (!fRPProgram) {
+            return false;
+        }
+
+        sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
+                                                                            fUniforms,
+                                                                            rec.fDstCS);
+        auto uniforms = SkSpan<const float>(static_cast<const float*>(inputs->data()),
+                                            inputs->size() / sizeof(float));
+
+        fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, uniforms);
+        return true;
     }
 
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        SkASSERT(
-                SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get()));
+        SkASSERT(SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(),
+                                              fEffect.get()));
 
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
                 fEffect->uniforms(),
@@ -1173,6 +1191,7 @@ public:
     SK_FLATTENABLE_HOOKS(SkRuntimeColorFilter)
 
 private:
+    std::unique_ptr<SkSL::RP::Program> fRPProgram;
     sk_sp<SkRuntimeEffect> fEffect;
     sk_sp<const SkData> fUniforms;
     std::vector<SkRuntimeEffect::ChildPtr> fChildren;
