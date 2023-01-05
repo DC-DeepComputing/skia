@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a43e93_37124e8f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-05T14:40:18Z",
+      "side": 1,
+      "message": "Is this just because Dawn is the only one that has separate texture and sampler bindings for now? Seems like the layout type should come from bindingReqs too?",
+      "range": {
+        "startLine": 225,
+        "startChar": 38,
+        "endLine": 225,
+        "endChar": 42
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8703cb2b_e63aa49d",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-05T14:40:18Z",
+      "side": 1,
+      "message": "I\u0027m assuming `set\u003d1` is a magic number linking to how the rest of graphite configures its bind groups, and that this works because no other resource will try to bind to set\u003d1, right?",
+      "range": {
+        "startLine": 232,
+        "startChar": 71,
+        "endLine": 232,
+        "endChar": 76
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3750046c_36a3a9da",
+        "filename": "src/gpu/graphite/render/BitmapTextRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-05T14:40:18Z",
+      "side": 1,
+      "message": "I wonder if it would be easier to follow the effective declaration if we just do two append calls?\n\n    append(result, EmitSamplerLayout(...));\n    appendf(result, \"uniform sampler2D text_atlas_%d;\\n\", ...);\n    \nJust spit-balling, not super strong opinions on which one is more readable.",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 33
+      },
+      "revId": "bc38a4ace223e5759bb3610a2309bf1f879f2e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
