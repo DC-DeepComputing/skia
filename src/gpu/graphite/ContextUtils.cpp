@@ -10,6 +10,7 @@
 #include <string>
 #include "include/private/SkSLString.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/PaintParams.h"
@@ -188,7 +189,8 @@ std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
     return SkSL::String::printf("%sUniformData[%s].%s", bufferNamePrefix, ssboIndex, uniformName);
 }
 
-std::string EmitTexturesAndSamplers(const std::vector<PaintParamsKey::BlockReader>& readers,
+std::string EmitTexturesAndSamplers(const ResourceBindingRequirements& bindingReqs,
+                                    const std::vector<PaintParamsKey::BlockReader>& readers,
                                     int* binding) {
     std::string result;
     for (int i = 0; i < (int) readers.size(); ++i) {
@@ -199,13 +201,38 @@ std::string EmitTexturesAndSamplers(const std::vector<PaintParamsKey::BlockReade
 
             for (const TextureAndSampler& t : samplers) {
                 SkSL::String::appendf(&result,
-                                      "layout(binding=%d) uniform sampler2D %s_%d;\n",
-                                      *binding, t.name(), i);
-                (*binding)++;
+                                      "%s uniform sampler2D %s_%d;\n",
+                                      EmitSamplerLayout(bindingReqs, binding).c_str(),
+                                      t.name(),
+                                      i);
             }
         }
     }
 
+    return result;
+}
+
+std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, int* binding) {
+    std::string result;
+
+    // If fDistinctIndexRanges is false, then texture and sampler indices may clash with other
+    // resource indices. Graphite assumes that they will be placed in a separate descriptor set/bind
+    // group on those backends (i.e. Vulkan and Dawn).
+    if (bindingReqs.fSeparateTextureAndSamplerBinding) {
+        int samplerIndex = (*binding)++;
+        int textureIndex = (*binding)++;
+        SkSL::String::appendf(&result,
+                              "layout(wgsl, %ssampler=%d, texture=%d)",
+                              bindingReqs.fDistinctIndexRanges ? "" : "set=1, ",
+                              samplerIndex,
+                              textureIndex);
+    } else {
+        SkSL::String::appendf(&result,
+                              "layout(%sbinding=%d)",
+                              bindingReqs.fDistinctIndexRanges ? "" : "set=1, ",
+                              *binding);
+        (*binding)++;
+    }
     return result;
 }
 
@@ -265,7 +292,7 @@ std::string EmitVaryings(const RenderStep* step,
     return result;
 }
 
-std::string GetSkSLVS(const Layout uboLayout,
+std::string GetSkSLVS(const ResourceBindingRequirements& bindingReqs,
                       const RenderStep* step,
                       bool defineShadingSsboIndexVarying,
                       bool defineLocalCoordsVarying) {
@@ -292,7 +319,8 @@ std::string GetSkSLVS(const Layout uboLayout,
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     // TODO: replace hard-coded bufferID with the backend's renderstep uniform-buffer index.
     if (step->numUniforms() > 0) {
-        sksl += EmitRenderStepUniforms(1, "Step", uboLayout, step->uniforms());
+        sksl += EmitRenderStepUniforms(
+                1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
     }
 
     // Varyings needed by RenderStep
@@ -321,8 +349,7 @@ std::string GetSkSLVS(const Layout uboLayout,
     return sksl;
 }
 
-std::string GetSkSLFS(const Layout uboLayout,
-                      const Layout ssboLayout,
+std::string GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
                       const ShaderCodeDictionary* dict,
                       const RuntimeEffectDictionary* rteDict,
                       const RenderStep* step,
@@ -345,10 +372,9 @@ std::string GetSkSLFS(const Layout uboLayout,
     // Extra RenderStep uniforms are always backed by a UBO. Uniforms for the PaintParams are either
     // UBO or SSBO backed based on `useStorageBuffers`.
     std::string sksl;
-    sksl += shaderInfo.toSkSL(/*paintUniformsLayout=*/useStorageBuffers ? ssboLayout : uboLayout,
-                              /*renderStepUniformsLayout=*/uboLayout,
+    sksl += shaderInfo.toSkSL(bindingReqs,
                               step,
-                              /*defineShadingSsboIndexVarying=*/useStorageBuffers,
+                              useStorageBuffers,
                               /*defineLocalCoordsVarying=*/*requiresLocalCoordsVarying);
 
     return sksl;
