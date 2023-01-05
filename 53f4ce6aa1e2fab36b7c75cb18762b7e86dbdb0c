@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b586ceb8_1938ad44",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-05T20:34:49Z",
+      "side": 1,
+      "message": "Can we use names that are more clearly enums (ie, prefixed with `k`), and/or use an `enum class`? As it stands, these identifiers look like local variables (or even posix socket API!) when they\u0027re used.",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 236,
+        "endChar": 46
+      },
+      "revId": "53f4ce6aa1e2fab36b7c75cb18762b7e86dbdb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
