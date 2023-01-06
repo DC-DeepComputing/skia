@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb45e3cf_f12a19d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-06T20:10:29Z",
+      "side": 1,
+      "message": "For some reason gerrit is listing one of the move+edits as a copy+edit and a delete. Locally my git figures this out fine, but gerrit makes it a bit difficult to see the actual change, which is just to always comment out `FT_CONFIG_OPTION_USE_ZLIB` in `ftoption.h` so that the build can set it when needed instead.",
+      "revId": "7bb36741bb702ff4826981ef8825f869014d6aa8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
