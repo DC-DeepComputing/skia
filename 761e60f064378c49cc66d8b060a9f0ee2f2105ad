@@ -22,6 +22,30 @@
       },
       "revId": "761e60f064378c49cc66d8b060a9f0ee2f2105ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "639ffe5b_4dc95ced",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-06T18:42:07Z",
+      "side": 1,
+      "message": "Good thinking. I can do it with a clone, it\u0027ll just be more code.",
+      "parentUuid": "7f5efb1c_b0d38d97",
+      "range": {
+        "startLine": 1441,
+        "startChar": 0,
+        "endLine": 1452,
+        "endChar": 16
+      },
+      "revId": "761e60f064378c49cc66d8b060a9f0ee2f2105ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
