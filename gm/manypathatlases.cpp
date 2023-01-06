@@ -18,10 +18,10 @@
 namespace skiagm {
 
 /**
- * This test originally ensured that the ccpr path cache preserved fill rules properly. CCRP is gone
+ * This test originally ensured that the ccpr path cache preserved fill rules properly. CCPR is gone
  * now, but we decided to keep the test.
  */
-class ManyPathAtlasesGM : public GpuGM {
+class ManyPathAtlasesGM : public GM {
 public:
     ManyPathAtlasesGM(int maxAtlasSize) : fMaxAtlasSize(maxAtlasSize) {}
 private:
@@ -33,13 +33,14 @@ private:
         ctxOptions->fMaxTextureAtlasSize = fMaxAtlasSize;
     }
 
-    DrawResult onDraw(GrRecordingContext* rContext, SkCanvas* canvas, SkString* errorMsg) override {
+    void onDraw(SkCanvas* canvas) override {
         canvas->clear({1,1,0,1});
 
         // Flush the context to make the DAG empty. This will test the case where we try to add an
         // atlas task to an empty DAG.
-        if (auto dContext = rContext->asDirectContext()) {
-            dContext->flush();
+        auto rContext = canvas->recordingContext();
+        if (rContext && rContext->asDirectContext()) {
+            rContext->asDirectContext()->flush();
         }
 
         SkPath clip = SkPath().moveTo(-50, 20)
@@ -62,7 +63,6 @@ private:
         teal.setColor4f({.03f, .91f, .87f, 1});
         teal.setAntiAlias(true);
         canvas->drawPath(path, teal);
-        return DrawResult::kOk;
     }
 
     const int fMaxAtlasSize;
