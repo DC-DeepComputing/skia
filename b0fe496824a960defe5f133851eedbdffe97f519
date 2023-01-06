@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c9e2c5_a02b4cf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-06T22:11:21Z",
+      "side": 1,
+      "message": "Caveat: I don\u0027t have context on this, but it looks quite safe to me.",
+      "revId": "b0fe496824a960defe5f133851eedbdffe97f519",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
