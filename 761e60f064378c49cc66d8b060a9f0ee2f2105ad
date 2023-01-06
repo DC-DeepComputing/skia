@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f5efb1c_b0d38d97",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-06T18:32:49Z",
+      "side": 1,
+      "message": "I think we need to be careful to only push/evaluate p.operand once, or we could trigger side-effects twice? It may not be possible in ES2, but once we get to ES3, you could write something like:\n\n    int x \u003d array[++idx]++;",
+      "range": {
+        "startLine": 1441,
+        "startChar": 0,
+        "endLine": 1452,
+        "endChar": 16
+      },
+      "revId": "761e60f064378c49cc66d8b060a9f0ee2f2105ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
