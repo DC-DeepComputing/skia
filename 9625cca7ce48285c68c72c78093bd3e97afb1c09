@@ -16,6 +16,24 @@
       "message": "Right, I know you didn\u0027t love this part of the change (and I agree, it\u0027s not great). I don\u0027t see an easy alternative, though - and this is at least localized to SkAndroidCodec.cpp, which is good.\n\nOne thing to consider: Here we\u0027re checking for kN32 (which can be either RGBA or BGRA, although for Android I guess it\u0027s always RGBA?). In any case, it\u0027s possible that someone might ask to decode to the *other* 32-bit format (which would normally hit the `default` case below). So maybe move this block to the very end, right after the switch?\n\nI realize that the JPEGR codec is written to only support RGBA also, but if we fix that later to support BGRA, this wouldn\u0027t need to change again?",
       "revId": "9625cca7ce48285c68c72c78093bd3e97afb1c09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe661717_5ffe098f",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-06T22:04:37Z",
+      "side": 1,
+      "message": "Thanks Brian. That makes sense. Right, now JPEGR only handles RGBA, but with this addition we will be able to add BGRA fairly easy. I think mapping of N32 to RGBA depends on LE/BE, and I think for Android it should be always LE.\nI hope I captured your comment correctly.",
+      "parentUuid": "692110fa_bdc67222",
+      "revId": "9625cca7ce48285c68c72c78093bd3e97afb1c09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
