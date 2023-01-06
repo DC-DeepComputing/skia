@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "031de0af_51c531b1",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-06T20:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "213570fc_c80295d4",
+      "range": {
+        "startLine": 96,
+        "startChar": 10,
+        "endLine": 96,
+        "endChar": 24
+      },
+      "revId": "411ad7773143a731a7c2c44b3c8fb5f859e46b36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a744d293_37941052",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dcac79_37cc32ed",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-06T20:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a744d293_37941052",
+      "revId": "411ad7773143a731a7c2c44b3c8fb5f859e46b36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60a91dd0_bdd6a957",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-01-05T20:44:47Z",
       "side": 1,
       "message": "nit: This can just be `MakeWithoutCopy`",
+      "range": {
+        "startLine": 173,
+        "startChar": 27,
+        "endLine": 173,
+        "endChar": 39
+      },
+      "revId": "411ad7773143a731a7c2c44b3c8fb5f859e46b36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "361ff603_601f4bf9",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-06T20:25:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60a91dd0_bdd6a957",
       "range": {
         "startLine": 173,
         "startChar": 27,
