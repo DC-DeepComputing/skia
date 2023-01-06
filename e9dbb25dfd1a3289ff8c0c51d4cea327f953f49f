@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5cc7e78_f20eed46",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-06T21:51:31Z",
+      "side": 0,
+      "message": "Tegra3 never supported Vulkan",
+      "range": {
+        "startLine": 1091,
+        "startChar": 20,
+        "endLine": 1091,
+        "endChar": 47
+      },
+      "revId": "e9dbb25dfd1a3289ff8c0c51d4cea327f953f49f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
