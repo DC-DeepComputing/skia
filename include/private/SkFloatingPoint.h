@@ -218,4 +218,7 @@ static inline float sk_fmaf(float f, float m, float a) {
 #endif
 }
 
+bool sk_double_nearly_zero(double a);
+bool sk_doubles_nearly_equal_ulps(double a, double b);
+
 #endif
