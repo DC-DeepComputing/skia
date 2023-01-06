@@ -1451,6 +1451,12 @@ bool Generator::pushPrefixExpression(Operator op, const Expression& expr) {
             }
             return this->binaryOp(expr.type(), kSubtractOps);
 
+        case OperatorKind::PLUSPLUS:
+        case OperatorKind::MINUSMINUS: {
+            // Rewrite as `expr += 1`.
+            Literal oneLiteral{Position{}, 1.0, &expr.type().componentType()};
+            return this->pushBinaryExpression(expr, OperatorKind::PLUSEQ, oneLiteral);
+        }
         default:
             break;
     }
