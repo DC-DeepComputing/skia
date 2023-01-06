@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35de37e8_e94d81c1",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-06T18:48:46Z",
+      "side": 1,
+      "message": "We should probably change https://github.com/google/skia/blob/main/include/private/SkFloatBits.h which I borrowed the union trick from.",
+      "parentUuid": "83f9e038_46a2567c",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1cd58ba2_6c4e2bcf",
         "filename": "src/core/SkFloatingPoint.cpp",
         "patchSetId": 3
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5ea380c_3bbf4278",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-06T18:48:46Z",
+      "side": 1,
+      "message": "I believe so. I\u0027m just following the lead of SkSignBitTo2sCompliment, used by SkFloatAs2sCompliment, used by equal_ulps in SkPathOpsTypes.cpp",
+      "parentUuid": "1cd58ba2_6c4e2bcf",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 34
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0bcf5e94_74ab856a",
         "filename": "src/core/SkFloatingPoint.cpp",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2023-01-06T18:05:38Z",
       "side": 1,
       "message": "This conceptually makes sense to me and there doesn\u0027t seem to be a straight forward equivalent available in std (although std::ilogb and frexp could give us similar results if we interpret the epxonent and mantissa between a and b). Alternatively, we could see if std::nextafter is adaptable, but that only gives us the value that\u0027s +/-1 ulp from the input, vs. N ulps away.",
+      "range": {
+        "startLine": 35,
+        "startChar": 5,
+        "endLine": 35,
+        "endChar": 33
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfdfd559_311e1cde",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-06T18:48:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0bcf5e94_74ab856a",
       "range": {
         "startLine": 35,
         "startChar": 5,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b3444e0_e022eb18",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-06T18:48:46Z",
+      "side": 1,
+      "message": "The reason I named this function sk_doubles_nearly_equal_ulps instead of a more generic sk_doubles_nearly_equal is that it is *not* a more generic function.\n\nAs per https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/\n\"If you are comparing two arbitrary numbers that could be zero or non-zero then you need the kitchen sink. Good luck\"\n\nWe certainly could have that generic sk_doubles_nearly_equal, but that requires a bit more careful thought.",
+      "parentUuid": "d7513d9d_6c7ec337",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 45
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "406c3d6e_798ab9ef",
         "filename": "src/core/SkFloatingPoint.cpp",
         "patchSetId": 3
@@ -106,6 +202,30 @@
       "writtenOn": "2023-01-06T18:05:38Z",
       "side": 1,
       "message": "Maybe name it like maxULPsConsideredEqual?\n\nAlso it might be nice to take the maxULPs as a parameter to this function so that callers can choose the amount of relative error that\u0027s okay.",
+      "range": {
+        "startLine": 45,
+        "startChar": 25,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02809843_3d1356e8",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-06T18:48:46Z",
+      "side": 1,
+      "message": "I picked 16 because that was the value used by the PathOps variant: https://github.com/google/skia/blob/7f5868f9addb649dc7ee7d8e457c16e17126d109/src/pathops/SkPathOpsTypes.cpp#L137\n\nI suppose we could make this a parameter with a default value of that 16.",
+      "parentUuid": "406c3d6e_798ab9ef",
       "range": {
         "startLine": 45,
         "startChar": 25,
