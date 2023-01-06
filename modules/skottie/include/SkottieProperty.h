@@ -39,7 +39,8 @@ enum class TextPaintOrder : uint8_t {
 
 struct TextPropertyValue {
     sk_sp<SkTypeface>       fTypeface;
-    SkString                fText;
+    SkString                fText,
+                            fLocale;
     float                   fTextSize       = 0,
                             fMinTextSize    = 0,                                 // when auto-sizing
                             fMaxTextSize    = std::numeric_limits<float>::max(), // when auto-sizing
