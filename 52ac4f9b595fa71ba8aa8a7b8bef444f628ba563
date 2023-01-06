@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8242ce88_81982775",
+        "filename": "modules/canvaskit/package.json",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-06T20:51:38Z",
+      "side": 0,
+      "message": "I don\u0027t understand why this change is here (same with package-lock.json below). Are these really part of this change?",
+      "revId": "52ac4f9b595fa71ba8aa8a7b8bef444f628ba563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05450e92_a4e467e7",
         "filename": "modules/skottie/src/text/SkottieShaper.cpp",
         "patchSetId": 28
