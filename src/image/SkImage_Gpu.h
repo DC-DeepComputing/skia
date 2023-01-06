@@ -88,6 +88,8 @@ private:
 #ifdef SK_GRAPHITE_ENABLED
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       RequiredImageProperties) const override;
+
+    sk_sp<SkImage> onMakeSubset2(const SkIRect&, skgpu::graphite::Recorder*) const override;
 #endif
 
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,

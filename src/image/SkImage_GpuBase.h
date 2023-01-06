@@ -26,7 +26,8 @@ public:
     GrImageContext* context() const final { return fContext.get(); }
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
-    sk_sp<SkImage> onMakeSubset(const SkIRect& subset, GrDirectContext*) const final;
+    sk_sp<SkImage> onMakeSubset1(const SkIRect& subset, GrDirectContext*) const final;
+    sk_sp<SkImage> onMakeSubset2(const SkIRect& subset, skgpu::graphite::Recorder*) const final;
 
     bool onReadPixels(GrDirectContext *dContext,
                       const SkImageInfo& dstInfo,

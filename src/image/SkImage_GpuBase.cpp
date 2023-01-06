@@ -130,7 +130,7 @@ bool SkImage_GpuBase::getROPixels(GrDirectContext* dContext,
     return true;
 }
 
-sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
+sk_sp<SkImage> SkImage_GpuBase::onMakeSubset1(const SkIRect& subset,
                                              GrDirectContext* direct) const {
     if (!fContext->priv().matches(direct)) {
         return nullptr;

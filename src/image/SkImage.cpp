@@ -196,7 +196,7 @@ sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> encoded,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+sk_sp<SkImage> SkImage::makeSubset1(const SkIRect& subset, GrDirectContext* direct) const {
     if (subset.isEmpty()) {
         return nullptr;
     }
@@ -219,8 +219,39 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
         return sk_ref_sp(const_cast<SkImage*>(this));
     }
 
-    return as_IB(this)->onMakeSubset(subset, direct);
+    return as_IB(this)->onMakeSubset1(subset, direct);
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+
+sk_sp<SkImage> SkImage::makeSubset2(const SkIRect& subset,
+                                   skgpu::graphite::Recorder* recorder) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+#if SK_SUPPORT_GPU
+    auto myContext = as_IB(this)->context();
+    // This check is also performed in the subclass, but we do it here for the short-circuit below.
+    if (myContext && !myContext->priv().matches(direct)) {
+        return nullptr;
+    }
+#endif
+
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset) {
+        return sk_ref_sp(const_cast<SkImage*>(this));
+    }
+
+    return as_IB(this)->onMakeSubset2(subset, recorder);
+}
+
+#endif // SK_GRAPHITE_ENABLED
 
 #if SK_SUPPORT_GPU
 

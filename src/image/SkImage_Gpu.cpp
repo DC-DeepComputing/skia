@@ -872,6 +872,12 @@ sk_sp<SkImage> SkImage_Gpu::onMakeTextureImage(skgpu::graphite::Recorder*,
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }
+
+sk_sp<SkImage> SkImage_Gpu::onMakeSubset2(const SkIRect&,
+                                          skgpu::graphite::Recorder*) const {
+    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
+    return nullptr;
+}
 #endif
 
 
