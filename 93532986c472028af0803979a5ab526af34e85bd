@@ -22,6 +22,30 @@
       },
       "revId": "93532986c472028af0803979a5ab526af34e85bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f378eaea_7d9bb3f6",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-06T20:24:51Z",
+      "side": 1,
+      "message": "It might make sense to add a comment on these. Just deleting them makes it look like we forgot about them, but we do want to positively state here that we don\u0027t want them available at all (the `ftmodule.h` and `ftoption.h` should be provided through the genrule and include paths above).",
+      "parentUuid": "ea54c9ac_abadf035",
+      "range": {
+        "startLine": 273,
+        "startChar": 10,
+        "endLine": 273,
+        "endChar": 17
+      },
+      "revId": "93532986c472028af0803979a5ab526af34e85bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
