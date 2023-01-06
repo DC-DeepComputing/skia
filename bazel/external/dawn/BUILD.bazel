@@ -1171,6 +1171,7 @@ TINT_SRCS = [
     "src/tint/type/void.cc",
     "src/tint/type/void.h",
     # From dawn/src/tint/BUILD.gn:libtint_constant_src
+    "src/tint/constant/clone_context.h",
     "src/tint/constant/composite.cc",
     "src/tint/constant/composite.h",
     "src/tint/constant/node.cc",
