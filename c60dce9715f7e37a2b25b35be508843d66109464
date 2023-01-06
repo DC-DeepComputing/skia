@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e9bc9a_526bbbf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-06T04:40:12Z",
+      "side": 1,
+      "message": "PTAL. I tested the change on both Metal and Graphite. The stroke rendering doesn\u0027t quite work on Dawn since the backend seems to be missing some functionality around pipeline layout validation, but shader compilation succeeds.\n\nAlso, let me know if the way I refactored the vertex module functions makes sense or if there is a better way to arrange this.",
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

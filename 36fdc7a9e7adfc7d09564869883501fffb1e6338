@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44deaf44_aa14f928",
+        "filename": "src/gpu/ganesh/GrShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-06T04:40:12Z",
+      "side": 0,
+      "message": "brianosman@: I moved this to the base class instead of introducing a graphite-specific ShaderCaps subclass as with ganesh. Do you think this is the right approach? Do you know why these flags are maintained here instead of the base class?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "36fdc7a9e7adfc7d09564869883501fffb1e6338",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
