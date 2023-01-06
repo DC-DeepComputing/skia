@@ -312,6 +312,7 @@ DEF_TEST(Skottie_Properties, reporter) {
     REPORTER_ASSERT(reporter, texts[0].handle->get() == skottie::TextPropertyValue({
       test_typeface,
       SkString("inline_text"),
+      SkString(),
       100,
       0, 100,
       0,

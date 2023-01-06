@@ -540,6 +540,7 @@ void TextAdapter::reshape() {
                            kMaxSize = 1296.0f;
     const Shaper::TextDesc text_desc = {
         fText->fTypeface,
+        fText->fLocale.c_str(),
         SkTPin(fText->fTextSize,    kMinSize, kMaxSize),
         SkTPin(fText->fMinTextSize, kMinSize, kMaxSize),
         SkTPin(fText->fMaxTextSize, kMinSize, kMaxSize),

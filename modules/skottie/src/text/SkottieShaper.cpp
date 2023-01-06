@@ -40,7 +40,7 @@ public:
         , fBox(box)
         , fHAlignFactor(HAlignFactor(fDesc.fHAlign))
         , fFont(fDesc.fTypeface, fDesc.fTextSize)
-        , fShaper(SkShaper::Make(fontmgr)) {
+        , fShaper(SkShaper::Make(fontmgr, fDesc.fLocale)) {
         fFont.setHinting(SkFontHinting::kNone);
         fFont.setSubpixel(true);
         fFont.setLinearMetrics(true);
