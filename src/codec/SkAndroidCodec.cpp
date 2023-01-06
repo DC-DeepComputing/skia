@@ -148,6 +148,11 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
         case kARGB_4444_SkColorType:
             return kN32_SkColorType;
         case kN32_SkColorType:
+#ifdef SK_CODEC_DECODES_JPEGR
+            if (fCodec->getEncodedFormat() == SkEncodedImageFormat::kJPEGR) {
+                return kN32_SkColorType;
+            }
+#endif
             break;
         case kAlpha_8_SkColorType:
             // Fall through to kGray_8.  Before kGray_8_SkColorType existed,
