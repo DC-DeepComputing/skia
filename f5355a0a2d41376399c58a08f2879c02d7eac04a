@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83f9e038_46a2567c",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-06T18:05:38Z",
+      "side": 1,
+      "message": "I think union aliasing like this is no longer the recommended way to get the integer bits, and instead it\u0027s to do a memcpy from the double into a int64_t. Supposedly the compiler can detect this and make it equivalent to just aliasing, but is technically safer.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cd58ba2_6c4e2bcf",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-06T18:05:38Z",
+      "side": 1,
+      "message": "Does this also avoid the issues of comparing ulp bits between numbers of different signs later on in the nearlyEqualUlps function?",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 34
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bcf5e94_74ab856a",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-06T18:05:38Z",
+      "side": 1,
+      "message": "This conceptually makes sense to me and there doesn\u0027t seem to be a straight forward equivalent available in std (although std::ilogb and frexp could give us similar results if we interpret the epxonent and mantissa between a and b). Alternatively, we could see if std::nextafter is adaptable, but that only gives us the value that\u0027s +/-1 ulp from the input, vs. N ulps away.",
+      "range": {
+        "startLine": 35,
+        "startChar": 5,
+        "endLine": 35,
+        "endChar": 33
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7513d9d_6c7ec337",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-06T18:05:38Z",
+      "side": 1,
+      "message": "If every caller is expected to be checking against this internal constant, or calling `sk_double_nearly_zero` on both a and b, maybe it makes sense to just have this function check `a` and `b` for nearly zero. If they are both nearly zero, return true; if only one is, return false; and if neither are, then proceed with the rest of the function?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 45
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "406c3d6e_798ab9ef",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-06T18:05:38Z",
+      "side": 1,
+      "message": "Maybe name it like maxULPsConsideredEqual?\n\nAlso it might be nice to take the maxULPs as a parameter to this function so that callers can choose the amount of relative error that\u0027s okay.",
+      "range": {
+        "startLine": 45,
+        "startChar": 25,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
