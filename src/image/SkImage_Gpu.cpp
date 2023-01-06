@@ -822,7 +822,7 @@ bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
     if (!image->unique() || !texture->unique() ||
         texture->resourcePriv().refsWrappedObjects()) {
         // onMakeSubset will always copy the image.
-        image = as_IB(image)->onMakeSubset(image->bounds(), direct);
+        image = as_IB(image)->onMakeSubset1(image->bounds(), direct);
         if (!image) {
             return false;
         }
@@ -865,15 +865,6 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Gpu::onAsView(
     }
     return {std::move(view), ct};
 }
-
-#ifdef SK_GRAPHITE_ENABLED
-sk_sp<SkImage> SkImage_Gpu::onMakeTextureImage(skgpu::graphite::Recorder*,
-                                               SkImage::RequiredImageProperties) const {
-    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
-    return nullptr;
-}
-#endif
-
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
         GrRecordingContext* rContext,

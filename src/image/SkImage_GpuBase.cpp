@@ -28,8 +28,12 @@
 #include "src/image/SkImage_Gpu.h"
 #include "src/image/SkReadPixelsRec.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Log.h"
+#endif
+
 SkImage_GpuBase::SkImage_GpuBase(sk_sp<GrImageContext> context, SkImageInfo info, uint32_t uniqueID)
-        : INHERITED(std::move(info), uniqueID)
+        : SkImage_Base(std::move(info), uniqueID)
         , fContext(std::move(context)) {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +134,7 @@ bool SkImage_GpuBase::getROPixels(GrDirectContext* dContext,
     return true;
 }
 
-sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
+sk_sp<SkImage> SkImage_GpuBase::onMakeSubset1(const SkIRect& subset,
                                              GrDirectContext* direct) const {
     if (!fContext->priv().matches(direct)) {
         return nullptr;
@@ -158,6 +162,20 @@ sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
                                    std::move(copyView),
                                    this->imageInfo().colorInfo());
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+sk_sp<SkImage> SkImage_GpuBase::onMakeTextureImage(skgpu::graphite::Recorder*,
+                                                   SkImage::RequiredImageProperties) const {
+    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
+    return nullptr;
+}
+
+sk_sp<SkImage> SkImage_GpuBase::onMakeSubset2(const SkIRect&,
+                                              skgpu::graphite::Recorder*) const {
+    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
+    return nullptr;
+}
+#endif
 
 bool SkImage_GpuBase::onReadPixels(GrDirectContext* dContext,
                                    const SkImageInfo& dstInfo,

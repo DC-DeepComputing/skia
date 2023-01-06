@@ -252,6 +252,7 @@ protected:
         fPicture = recorder.finishRecordingAsPicture();
     }
 
+    // TODO: add Graphite version
     bool makeCaches(GrDirectContext* dContext) {
         {
             auto gen = fFactory(dContext, fPicture);
@@ -274,7 +275,7 @@ protected:
             if (!gen) {
                 return false;
             }
-            fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset, dContext);
+            fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset1(subset, dContext);
             if (!fImageSubset) {
                 return false;
             }

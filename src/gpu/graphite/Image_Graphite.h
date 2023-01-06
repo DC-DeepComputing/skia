@@ -27,7 +27,7 @@ class Recorder;
 
 class Image final : public SkImage_Base {
 public:
-    Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
+    Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&, bool);
     Image(TextureProxyView, const SkColorInfo&);
     ~Image() override;
 
@@ -49,9 +49,11 @@ public:
                      SkBitmap*,
                      CachingHint = kAllow_CachingHint) const override { return false; }
 
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override {
+    sk_sp<SkImage> onMakeSubset1(const SkIRect&, GrDirectContext*) const override {
         return nullptr;
     }
+
+    sk_sp<SkImage> onMakeSubset2(const SkIRect&, Recorder*) const override;
 
     bool onIsValid(GrRecordingContext*) const override { return true; }
 
