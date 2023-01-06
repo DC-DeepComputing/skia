@@ -1112,7 +1112,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Image_makeSubset
     */
-    sk_sp<SkImage> makeSubset(const SkIRect& subset, GrDirectContext* direct = nullptr) const;
+    sk_sp<SkImage> makeSubset1(const SkIRect& subset, GrDirectContext* direct = nullptr) const;
 
     /**
      *  Returns true if the image has mipmap levels.
@@ -1270,6 +1270,23 @@ public:
     */
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
                                     RequiredImageProperties = {}) const;
+
+    /** Returns subset of this image.
+
+        Returns nullptr if any of the following are true:
+          - Subset is empty
+          - Subset is not contained inside the image's bounds
+          - Pixels in the image could not be read or copied
+
+        If this image is texture-backed, the recorder parameter is required.
+        If the recorder parameter is provided, and the image is raster-backed, the subset will
+        be converted to texture-backed.
+
+        @param subset   bounds of returned SkImage
+        @param recorder the recorder in which to create the new image
+        @return        the subsetted image, or nullptr
+    */
+    sk_sp<SkImage> makeSubset2(const SkIRect& subset, skgpu::graphite::Recorder* = nullptr) const;
 #endif
 
     /** Returns raster image or lazy image. Copies SkImage backed by GPU texture into

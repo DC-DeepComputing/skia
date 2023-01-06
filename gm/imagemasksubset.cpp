@@ -84,8 +84,14 @@ DEF_SIMPLE_GM(imagemasksubset, canvas, 480, 480) {
         if (image) {
             canvas->drawImageRect(image, SkRect::Make(kSubset), kDest, SkSamplingOptions(),
                                   &paint, SkCanvas::kStrict_SrcRectConstraint);
-            auto direct = GrAsDirectContext(canvas->recordingContext());
-            sk_sp<SkImage> subset = image->makeSubset(kSubset, direct);
+            sk_sp<SkImage> subset;
+
+            if (auto direct = GrAsDirectContext(canvas->recordingContext())) {
+                subset = image->makeSubset1(kSubset, direct);
+            } else {
+                subset = image->makeSubset2(kSubset, canvas->recorder());
+            }
+
             canvas->drawImageRect(subset, kDest.makeOffset(kSize.width() * 1.5f, 0),
                                   SkSamplingOptions(), &paint);
         }
