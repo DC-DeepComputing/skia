@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88295789_963bce09",
+        "filename": "tests/RasterPipelineCodeGeneratorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-06T20:47:46Z",
+      "side": 0,
+      "message": "I\u0027m promoting this into a \"real\" test since it was the most focused test of swizzled lvalues that I could find.",
+      "range": {
+        "startLine": 442,
+        "startChar": 9,
+        "endLine": 442,
+        "endChar": 57
+      },
+      "revId": "5a845565e37665484c4f3bb71bec222f0162c169",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
