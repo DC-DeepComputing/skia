@@ -46,7 +46,6 @@ public:
     static std::unique_ptr<SkShaper> MakePrimitive();
     #ifdef SK_SHAPER_HARFBUZZ_AVAILABLE
     static std::unique_ptr<SkShaper> MakeShaperDrivenWrapper(sk_sp<SkFontMgr> = nullptr);
-    static std::unique_ptr<SkShaper> MakeShapeThenWrap(sk_sp<SkFontMgr> = nullptr);
     static std::unique_ptr<SkShaper> MakeShapeDontWrapOrReorder(sk_sp<SkFontMgr> = nullptr);
     static void PurgeHarfBuzzCache();
     #endif
