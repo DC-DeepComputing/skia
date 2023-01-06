@@ -1,0 +1,59 @@
+/*
+ * Copyright 2023 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "include/private/SkFloatingPoint.h"
+
+#include <cmath>
+
+union DoubleUnion {
+    double  fDouble;
+    int64_t fSignBitLong;
+};
+
+static inline int64_t double_to_twos_complement_bits(double x) {
+    // Convert a double to its bit pattern (w/o aliasing warnings)
+    DoubleUnion data;
+    data.fDouble = x;
+    int64_t bits = data.fSignBitLong;
+    // Convert a sign-bit int (i.e. double interpreted as int) into a 2s complement
+    // int. This also converts -0 (0x8000000000000000) to 0. Doing this to a double allows
+    // it to be compared using normal C operators (<, <=, etc.)
+    if (bits < 0) {
+        bits &= 0x7FFFFFFFFFFFFFFF;
+        bits = -bits;
+    }
+    return bits;
+}
+
+// Arbitrarily chosen.
+constexpr static double sk_double_epsilon = 0.0000000001;
+
+bool sk_doubles_nearly_equal_ulps(double a, double b) {
+    // If either of these are zero (or very close), then using Units of Least Precision
+    // will not be accurate and we should use sk_double_nearly_zero instead.
+    // https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+    // We cannot simplify these expressions because we don't want them to necessarily
+    // assert on NaN
+    SkASSERT(!(fabs(a) < sk_double_epsilon));
+    SkASSERT(!(fabs(b) < sk_double_epsilon));
+    // This algorithm does not work if both inputs are NaN.
+    SkASSERT(!(std::isnan(a) && std::isnan(b)));
+    static constexpr int epsilon = 16;
+    // If both inputs are infinity (or actually equal), this catches it.
+    if (a == b) {
+        return true;
+    }
+    int64_t aBits = double_to_twos_complement_bits(a);
+    int64_t bBits = double_to_twos_complement_bits(b);
+
+    // Find the difference in Units of Least Precision (ULPs).
+    return aBits < bBits + epsilon && bBits < aBits + epsilon;
+}
+
+bool sk_double_nearly_zero(double a) {
+    return a == 0 || fabs(a) < sk_double_epsilon;
+}
