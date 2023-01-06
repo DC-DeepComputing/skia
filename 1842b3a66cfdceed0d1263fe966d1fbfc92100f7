@@ -16,6 +16,23 @@
       "message": "thanks -- updated!",
       "revId": "1842b3a66cfdceed0d1263fe966d1fbfc92100f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d5201b8_294526a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-06T20:37:16Z",
+      "side": 1,
+      "message": "Do you mind propagating the `const SkData` pattern up to SkJpegCodec, just for consistency? Otherwise, I think this looks great.",
+      "revId": "1842b3a66cfdceed0d1263fe966d1fbfc92100f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
