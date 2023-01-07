@@ -34,6 +34,24 @@
       "parentUuid": "692110fa_bdc67222",
       "revId": "9625cca7ce48285c68c72c78093bd3e97afb1c09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab6b1c1_a87ba2df",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-07T14:40:21Z",
+      "side": 1,
+      "message": "Change looks good. The RGBA vs BGRA for N32 is actually tied to whatever the host OS tends to prefer (eg, some windowing systems tend to prefer BGRA for buffers), but ultimately it\u0027s the same end result: For any given platform, N32 never really changes. Android will almost certainly use the same N32 forever.",
+      "parentUuid": "fe661717_5ffe098f",
+      "revId": "9625cca7ce48285c68c72c78093bd3e97afb1c09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
