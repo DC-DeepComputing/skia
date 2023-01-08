@@ -16,6 +16,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "modules/skcms/skcms.h"
+#include "src/codec/SkJpegUtility.h"
 #include "src/core/SkMD5.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -235,5 +236,62 @@ DEF_TEST(AndroidCodec_xmpMetadata, r) {
             ERRORF(r, "XMP metadata for %s didn't match expected value", rec.path);
             continue;
         }
+    }
+}
+
+DEF_TEST(AndroidCodec_jpegSegmentScan, r) {
+    const struct Rec {
+        const char* path;
+        size_t sosSegmentCount;
+        size_t eoiSegmentCount;
+        size_t testSegmentIndex;
+        uint8_t testSegmentMarker;
+        size_t testSegmentOffset;
+        uint16_t testSegmentParameterLength;
+    } recs[] = {
+            {"images/wide_gamut_yellow_224_224_64.jpeg", 11, 15, 10, 0xda, 9768, 12},
+            {"images/CMYK.jpg", 7, 8, 1, 0xee, 2, 14},
+            {"images/b78329453.jpeg", 10, 23, 3, 0xe2, 154, 540},
+            {"images/brickwork-texture.jpg", 8, 28, 12, 0xc4, 34183, 42},
+            {"images/brickwork_normal-map.jpg", 8, 28, 27, 0xd9, 180612, 0},
+            {"images/cmyk_yellow_224_224_32.jpg", 19, 23, 2, 0xed, 854, 2828},
+            {"images/color_wheel.jpg", 10, 11, 2, 0xdb, 20, 67},
+            {"images/cropped_mandrill.jpg", 10, 11, 4, 0xc0, 158, 17},
+            {"images/dog.jpg", 10, 11, 5, 0xc4, 177, 28},
+            {"images/ducky.jpg", 12, 13, 10, 0xc4, 3718, 181},
+            {"images/exif-orientation-2-ur.jpg", 11, 12, 2, 0xe1, 20, 130},
+            {"images/flutter_logo.jpg", 9, 27, 21, 0xda, 5731, 8},
+            {"images/grayscale.jpg", 6, 16, 9, 0xda, 327, 8},
+            {"images/icc-v2-gbr.jpg", 12, 25, 24, 0xd9, 43832, 0},
+            {"images/mandrill_512_q075.jpg", 10, 11, 7, 0xc4, 393, 31},
+            {"images/mandrill_cmyk.jpg", 19, 35, 16, 0xdd, 574336, 4},
+            {"images/mandrill_h1v1.jpg", 10, 11, 1, 0xe0, 2, 16},
+            {"images/mandrill_h2v1.jpg", 10, 11, 0, 0xd8, 0, 0},
+            {"images/randPixels.jpg", 10, 11, 6, 0xc4, 200, 30},
+            {"images/wide_gamut_yellow_224_224_64.jpeg", 11, 15, 10, 0xda, 9768, 12},
+    };
+
+    for (const auto& rec : recs) {
+        auto stream = GetResourceAsStream(rec.path);
+        if (!stream) {
+            continue;
+        }
+
+        // Ensure that we get the expected number of segments for a scan that stops at StartOfScan.
+        JpegSegmentScan::Options options;
+        auto sosSegmentScan = JpegSegmentScan::Create(stream.get(), options);
+        REPORTER_ASSERT(r, rec.sosSegmentCount == sosSegmentScan->segments().size());
+
+        // Rewind and now go all the way to EndOfImage.
+        stream->rewind();
+        options.stopOnStartOfScan = false;
+        auto eoiSegmentScan = JpegSegmentScan::Create(stream.get(), options);
+        REPORTER_ASSERT(r, rec.eoiSegmentCount == eoiSegmentScan->segments().size());
+
+        // Verify the values for a randomly pre-selected segment index.
+        const auto& segment = eoiSegmentScan->segments()[rec.testSegmentIndex];
+        REPORTER_ASSERT(r, rec.testSegmentMarker == segment.marker);
+        REPORTER_ASSERT(r, rec.testSegmentOffset == segment.offset);
+        REPORTER_ASSERT(r, rec.testSegmentParameterLength == segment.parameterLength);
     }
 }
