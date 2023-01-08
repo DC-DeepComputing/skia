@@ -22,6 +22,30 @@
       },
       "revId": "36fdc7a9e7adfc7d09564869883501fffb1e6338",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9928c321_436d00fa",
+        "filename": "src/gpu/ganesh/GrShaderCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-08T01:57:11Z",
+      "side": 0,
+      "message": "As discussed in chat, yeah - this is the right home for this.",
+      "parentUuid": "44deaf44_aa14f928",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "36fdc7a9e7adfc7d09564869883501fffb1e6338",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
