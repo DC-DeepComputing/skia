@@ -1204,6 +1204,7 @@ optional("jpeg_decode") {
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
     "src/codec/SkJpegUtility.cpp",
+    "src/codec/SkJpegSegmentScan.cpp",
   ]
 }
 
