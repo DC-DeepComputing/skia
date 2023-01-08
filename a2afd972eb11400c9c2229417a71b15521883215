@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ed7c0dc_12d72630",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-08T22:33:30Z",
+      "side": 1,
+      "message": "This adds the utility and tests for it, but doesn\u0027t actually use the utility in shipping code.\n\nThis mirrors the functionality that we have in\nhttps://android.googlesource.com/platform/external/image_io/+/3ca31188d70c72e2879f70fdf52d95e37e1fefea/src/jpeg/jpeg_info_builder.cc#40\n\nOnce the dust settles on all of the auxiliary image formats (I\u0027m planning to support all 3), hopefully the winner will land in libjpeg.",
+      "revId": "a2afd972eb11400c9c2229417a71b15521883215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
