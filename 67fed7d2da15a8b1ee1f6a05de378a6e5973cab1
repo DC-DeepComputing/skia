@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0c18a1_9417861b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 3090,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-09T20:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88e8c71b_9af6ede8",
+      "range": {
+        "startLine": 3090,
+        "startChar": 26,
+        "endLine": 3090,
+        "endChar": 31
+      },
+      "revId": "67fed7d2da15a8b1ee1f6a05de378a6e5973cab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46f8867c_f703420b",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-01-09T20:10:58Z",
       "side": 1,
       "message": "/* param\u003d */ ??",
+      "range": {
+        "startLine": 3099,
+        "startChar": 24,
+        "endLine": 3099,
+        "endChar": 28
+      },
+      "revId": "67fed7d2da15a8b1ee1f6a05de378a6e5973cab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5382935a_6c6744ae",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 3099,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-09T20:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46f8867c_f703420b",
       "range": {
         "startLine": 3099,
         "startChar": 24,
