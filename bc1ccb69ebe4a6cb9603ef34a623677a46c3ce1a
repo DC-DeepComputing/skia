@@ -22,6 +22,30 @@
       },
       "revId": "bc1ccb69ebe4a6cb9603ef34a623677a46c3ce1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82985b68_96fbc83f",
+        "filename": "src/gpu/graphite/ClearBuffersTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-09T18:43:41Z",
+      "side": 1,
+      "message": "The others are consistent in that the destination is always an sk_sp\u003c\u003e. But I think we talked about eventually changing these methods to take BufferProxys instead.",
+      "parentUuid": "e43b92b8_e846d369",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "bc1ccb69ebe4a6cb9603ef34a623677a46c3ce1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
