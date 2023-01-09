@@ -60,6 +60,7 @@
 #include <freetype/t1tables.h>
 #include <freetype/ftfntfmt.h>
 
+using namespace skia_internal;
 
 namespace {
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;

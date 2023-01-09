@@ -17,6 +17,8 @@
 
 #include <functional>
 
+using namespace skia_internal;
+
 struct GrGradientBitmapCache::Entry {
     Entry*      fPrev;
     Entry*      fNext;

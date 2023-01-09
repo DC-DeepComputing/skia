@@ -536,7 +536,7 @@ private:
         kQuadCount = 8, // should handle most conics
         kPointCount = 1 + 2 * kQuadCount,
     };
-    SkAutoSTMalloc<kPointCount, SkPoint> fStorage;
+    skia_internal::SkAutoSTMalloc<kPointCount, SkPoint> fStorage;
     int fQuadCount; // #quads for current usage
 };
 

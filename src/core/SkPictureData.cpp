@@ -25,6 +25,8 @@
 #include "include/private/chromium/Slug.h"
 #endif
 
+using namespace skia_internal;
+
 template <typename T> int SafeCount(const T* obj) {
     return obj ? obj->size() : 0;
 }

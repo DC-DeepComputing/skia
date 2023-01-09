@@ -22,6 +22,8 @@
 #include <limits>
 #include <memory>
 
+using namespace skia_internal;
+
 class SkData;
 
 SkTypeface_Custom::SkTypeface_Custom(const SkFontStyle& style, bool isFixedPitch,

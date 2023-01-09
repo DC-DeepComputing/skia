@@ -50,6 +50,8 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/private/SkTemplates.h"
 
+using namespace skia_internal;
+
 // All positions must be divided by the target interval count, which will produce the expected
 // normalized position array for that interval number (assuming an appropriate color count is
 // provided).
