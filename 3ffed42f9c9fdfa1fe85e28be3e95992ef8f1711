@@ -16,6 +16,23 @@
       "message": "Which do you think is more logical?\nsrc/base\nor\nsrc/sksl\n?",
       "revId": "3ffed42f9c9fdfa1fe85e28be3e95992ef8f1711",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe56f5c1_c32b00d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-09T15:22:13Z",
+      "side": 1,
+      "message": "I\u0027d definitely pick core or base - it\u0027s only used in sksl today, but there\u0027s nothing really sksl-specific about it (and I could totally see it being used in some parts of core). It has no real dependencies, either (it\u0027s just a set of additional methods to help work with std::string_view, some of which are actually coming in future C++ versions). I\u0027d pick base package (but header in src/).",
+      "revId": "3ffed42f9c9fdfa1fe85e28be3e95992ef8f1711",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
