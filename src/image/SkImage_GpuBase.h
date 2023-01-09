@@ -28,6 +28,11 @@ public:
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
     sk_sp<SkImage> onMakeSubset(const SkIRect& subset, GrDirectContext*) const final;
 
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
+                                      RequiredImageProperties) const final;
+#endif
+
     bool onReadPixels(GrDirectContext *dContext,
                       const SkImageInfo& dstInfo,
                       void* dstPixels,
@@ -58,9 +63,6 @@ protected:
     SkImage_GpuBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
 
     sk_sp<GrImageContext> fContext;
-
-private:
-    using INHERITED = SkImage_Base;
 };
 
 #endif
