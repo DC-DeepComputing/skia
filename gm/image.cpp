@@ -398,7 +398,7 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 60) {
                 texImage = image->makeTextureImage(dContext);
             } else {
 #ifdef SK_GRAPHITE_ENABLED
-                texImage = image->makeTextureImage(recorder);
+                texImage = image->makeTextureImage1(recorder, { skgpu::graphite::Mipmapped::kNo });
 #endif
             }
             if (texImage) {
@@ -483,7 +483,7 @@ DEF_SIMPLE_GM_CAN_FAIL(image_subset, canvas, errorMsg, 440, 220) {
     }
 
     canvas->drawImage(img, 10, 10);
-    auto sub = img->makeSubset({100, 100, 200, 200});
+    auto sub = img->makeSubset1({100, 100, 200, 200});
     canvas->drawImage(sub, 220, 10);
     sub = serial_deserial(sub.get());
     canvas->drawImage(sub, 220+110, 10);

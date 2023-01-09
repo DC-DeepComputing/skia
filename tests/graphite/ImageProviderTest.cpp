@@ -86,13 +86,13 @@ sk_sp<SkImage> create_raster_backed_image_with_mipmaps(Recorder*) {
 /* 2 */
 sk_sp<SkImage> create_gpu_backed_image_no_mipmaps(Recorder* recorder) {
     sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
-    return raster->makeTextureImage(recorder, { Mipmapped::kNo });
+    return raster->makeTextureImage1(recorder, { Mipmapped::kNo });
 }
 
 /* 3 */
 sk_sp<SkImage> create_gpu_backed_image_with_mipmaps(Recorder* recorder) {
     sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
-    return raster->makeTextureImage(recorder, { Mipmapped::kYes });
+    return raster->makeTextureImage1(recorder, { Mipmapped::kYes });
 }
 
 /* 4 */

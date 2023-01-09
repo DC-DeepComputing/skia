@@ -147,14 +147,20 @@ public:
     virtual GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
                                                  GrSurfaceOrigin* origin) const;
 #endif
+
 #ifdef SK_GRAPHITE_ENABLED
     // Returns a TextureProxyView representation of the image, if possible. This also returns
     // a color type. This may be different than the image's color type when the image is not
     // texture-backed and the capabilities of the GPU require a data type conversion to put
     // the data in a texture.
+    //$$
     std::tuple<skgpu::graphite::TextureProxyView, SkColorType> asView(
             skgpu::graphite::Recorder*,
             skgpu::graphite::Mipmapped) const;
+
+    virtual sk_sp<SkImage> onMakeSubset2(const SkIRect&,
+                                        skgpu::graphite::Recorder*,
+                                        RequiredImageProperties) const = 0;
 #endif
 
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
@@ -166,7 +172,7 @@ public:
     virtual bool getROPixels(GrDirectContext*, SkBitmap*,
                              CachingHint = kAllow_CachingHint) const = 0;
 
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const = 0;
+    virtual sk_sp<SkImage> onMakeSubset1(const SkIRect&, GrDirectContext*) const = 0;
 
     virtual sk_sp<SkData> onRefEncoded() const { return nullptr; }
 
