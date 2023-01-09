@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "add2c378_9e446da3",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-09T16:08:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c5ea380c_3bbf4278",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 34
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bcf5e94_74ab856a",
@@ -203,6 +227,30 @@
       "side": 1,
       "message": "The reason I named this function sk_doubles_nearly_equal_ulps instead of a more generic sk_doubles_nearly_equal is that it is *not* a more generic function.\n\nAs per https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/\n\"If you are comparing two arbitrary numbers that could be zero or non-zero then you need the kitchen sink. Good luck\"\n\nWe certainly could have that generic sk_doubles_nearly_equal, but that requires a bit more careful thought.",
       "parentUuid": "d7513d9d_6c7ec337",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 45
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7486a1ee_1099fb25",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-09T16:08:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9b3444e0_e022eb18",
       "range": {
         "startLine": 36,
         "startChar": 4,
