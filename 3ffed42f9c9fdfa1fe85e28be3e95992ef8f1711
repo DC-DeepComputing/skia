@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "895e1a68_11814a8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T15:12:32Z",
+      "side": 1,
+      "message": "Which do you think is more logical?\nsrc/base\nor\nsrc/sksl\n?",
+      "revId": "3ffed42f9c9fdfa1fe85e28be3e95992ef8f1711",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
