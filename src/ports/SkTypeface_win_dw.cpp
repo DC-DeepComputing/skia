@@ -33,6 +33,8 @@
 #include "src/utils/win/SkDWrite.h"
 #include "src/utils/win/SkDWriteFontFileStream.h"
 
+using namespace skia_internal;
+
 HRESULT DWriteFontTypeface::initializePalette() {
     if (!fIsColorFont) {
         return S_OK;

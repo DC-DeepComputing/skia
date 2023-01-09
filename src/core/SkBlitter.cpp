@@ -27,6 +27,8 @@
 #include "src/core/SkXfermodeInterpretation.h"
 #include "src/shaders/SkShaderBase.h"
 
+using namespace skia_internal;
+
 // Hacks for testing.
 bool gUseSkVMBlitter{false};
 bool gSkForceRasterPipelineBlitter{false};

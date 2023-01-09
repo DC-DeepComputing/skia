@@ -12,6 +12,8 @@
 #include "include/private/SkTemplates.h"
 #include "src/utils/SkPolyUtils.h"
 
+using namespace skia_internal;
+
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 class PolyUtilsBench : public Benchmark {

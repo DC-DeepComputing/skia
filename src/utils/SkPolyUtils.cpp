@@ -25,6 +25,8 @@
 #include <limits>
 #include <new>
 
+using namespace skia_internal;
+
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 //////////////////////////////////////////////////////////////////////////////////

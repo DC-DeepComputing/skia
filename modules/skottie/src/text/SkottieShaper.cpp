@@ -22,6 +22,8 @@
 #include <limits.h>
 #include <numeric>
 
+using namespace skia_internal;
+
 namespace skottie {
 namespace {
 

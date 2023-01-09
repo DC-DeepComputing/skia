@@ -27,6 +27,8 @@
 #include <string.h>
 #include <utility>
 
+using namespace skia_internal;
+
 static void getGlyphPositions(const SkFont& font, const uint16_t glyphs[],
                              int count, SkScalar x, SkScalar y, SkPoint pos[]) {
     SkAutoSTMalloc<128, SkScalar> widthStorage(count);
