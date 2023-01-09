@@ -753,6 +753,14 @@ public:
             bool                     (*peek)(const void*, size_t),
             std::unique_ptr<SkCodec> (*make)(std::unique_ptr<SkStream>, SkCodec::Result*));
 
+    // XXX
+    // - Make this private, so it is used only by SkAndroidCodec.
+    // - Make this return an std::unique_ptr<> to a private SkGainmapInfoInternal something
+    // - Have SkAndroidCodec translate SkGainmapInfoInternal to SkAndroidGainmapInfo
+    bool getGainmapInfo(std::unique_ptr<SkStream>* stream) {
+        return this->onGetGainmapInfo(stream);
+    }
+
 protected:
     const SkEncodedInfo& getEncodedInfo() const { return fEncodedInfo; }
 
@@ -769,6 +777,8 @@ protected:
     XformFormat getSrcXformFormat() const {
         return fSrcXformFormat;
     }
+
+    virtual bool onGetGainmapInfo(std::unique_ptr<SkStream>*) { return false; }
 
     virtual SkISize onGetScaledDimensions(float /*desiredScale*/) const {
         // By default, scaling is not supported.

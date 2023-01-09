@@ -2043,4 +2043,36 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     REPORTER_ASSERT(r, bitmaps[2].getColor(0, 0) == 0xFF010101);
     REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
 }
+
+DEF_TEST(Codec_jpegGainmapMultiPicture, r) {
+    const char* path = "images/iphone_13_pro.jpeg";
+    auto stream = GetResourceAsStream(path);
+    REPORTER_ASSERT(r, stream);
+
+    std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
+    REPORTER_ASSERT(r, codec);
+
+    std::unique_ptr<SkStream> gainmapStream;
+    REPORTER_ASSERT(r, codec->getGainmapInfo(&gainmapStream));
+    REPORTER_ASSERT(r, gainmapStream);
+
+    std::unique_ptr<SkCodec> gainmapCodec = SkCodec::MakeFromStream(std::move(gainmapStream));
+    REPORTER_ASSERT(r, gainmapCodec);
+
+    SkBitmap bm;
+    bm.allocPixels(gainmapCodec->getInfo());
+    REPORTER_ASSERT(
+            r,
+            SkCodec::kSuccess == gainmapCodec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes()));
+
+    /*
+        // Spot-check the image size and pixels.
+        REPORTER_ASSERT(r, bitmaps[1].dimensions() == SkISize::Make(1512, 2016));
+        REPORTER_ASSERT(r, bitmaps[1].getColor(0, 0) == 0xFF3B3B3B);
+        REPORTER_ASSERT(r, bitmaps[1].getColor(1511, 2015) == 0xFF101010);
+        REPORTER_ASSERT(r, bitmaps[2].dimensions() == SkISize::Make(576, 768));
+        REPORTER_ASSERT(r, bitmaps[2].getColor(0, 0) == 0xFF010101);
+        REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
+    */
+}
 #endif
