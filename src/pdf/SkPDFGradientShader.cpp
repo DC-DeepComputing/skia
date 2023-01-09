@@ -16,6 +16,8 @@
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUtils.h"
 
+using namespace skia_internal;
+
 static uint32_t hash(const SkShaderBase::GradientInfo& v) {
     uint32_t buffer[] = {
         (uint32_t)v.fColorCount,
