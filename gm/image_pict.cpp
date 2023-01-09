@@ -126,7 +126,7 @@ DEF_GM( return new ImagePictGM; )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static std::unique_ptr<SkImageGenerator> make_pic_generator(GrDirectContext*,
+static std::unique_ptr<SkImageGenerator> make_pic_generator(SkCanvas*,
                                                             sk_sp<SkPicture> pic) {
     SkMatrix matrix;
     matrix.setTranslate(-100, -100);
@@ -150,7 +150,7 @@ protected:
 private:
     SkBitmap fBM;
 };
-static std::unique_ptr<SkImageGenerator> make_ras_generator(GrDirectContext*,
+static std::unique_ptr<SkImageGenerator> make_ras_generator(SkCanvas*,
                                                             sk_sp<SkPicture> pic) {
     SkBitmap bm;
     bm.allocN32Pixels(100, 100);
@@ -173,7 +173,6 @@ public:
             surface->getCanvas()->translate(-100, -100);
             surface->getCanvas()->drawPicture(pic);
             sk_sp<SkImage> image(surface->makeImageSnapshot());
-            std::tie(fView, std::ignore) = as_IB(image)->asView(rContext, GrMipmapped::kNo);
         }
     }
 protected:
@@ -184,21 +183,24 @@ protected:
         SkASSERT(rContext);
         SkASSERT(rContext->priv().matches(fRContext.get()));
 
-        if (!fView) {
+        GrSurfaceProxyView view;
+
+        std::tie(view, std::ignore) = as_IB(fImage)->asView(rContext, GrMipmapped::kNo);
+        if (!view) {
             return {};
         }
 
-        SkASSERT_RELEASE(info.dimensions() == fView.proxy()->dimensions());
+        SkASSERT_RELEASE(info.dimensions() == view.proxy()->dimensions());
 
         if (policy == GrImageTexGenPolicy::kDraw) {
-            return fView;
+            return view;
         }
         auto budgeted = policy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted
                                 ? skgpu::Budgeted::kNo
                                 : skgpu::Budgeted::kYes;
         return GrSurfaceProxyView::Copy(
                 fRContext.get(),
-                fView,
+                view,
                 mipmapped,
                 SkIRect::MakeWH(info.width(), info.height()),
                 SkBackingFit::kExact,
@@ -206,12 +208,18 @@ protected:
                 /*label=*/"SurfaceProxyView_GenerateTexture");
     }
 
+    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
+                                      const SkImageInfo&,
+                                      skgpu::graphite::Mipmapped) {
+        return fImage;
+    }
+
 private:
     sk_sp<GrRecordingContext> fRContext;
-    GrSurfaceProxyView        fView;
+    sk_sp<SkImage>            fImage;
 };
 
-static std::unique_ptr<SkImageGenerator> make_tex_generator(GrDirectContext* dContext,
+static std::unique_ptr<SkImageGenerator> make_tex_generator(SkCanvas* canvas,
                                                             sk_sp<SkPicture> pic) {
     if (!dContext) {
         return nullptr;
@@ -223,7 +231,7 @@ static std::unique_ptr<SkImageGenerator> make_tex_generator(GrDirectContext* dCo
 }
 
 class ImageCacheratorGM : public skiagm::GM {
-    typedef std::unique_ptr<SkImageGenerator> (*FactoryFunc)(GrDirectContext*, sk_sp<SkPicture>);
+    typedef std::unique_ptr<SkImageGenerator> (*FactoryFunc)(SkCanvas*, sk_sp<SkPicture>);
 
     SkString         fName;
     FactoryFunc      fFactory;
@@ -252,9 +260,10 @@ protected:
         fPicture = recorder.finishRecordingAsPicture();
     }
 
-    bool makeCaches(GrDirectContext* dContext) {
+    // TODO: add Graphite version
+    bool makeCaches(SkCanvas* canvas) {
         {
-            auto gen = fFactory(dContext, fPicture);
+            auto gen = fFactory(canvas, fPicture);
             if (!gen) {
                 return false;
             }
@@ -270,11 +279,11 @@ protected:
 
             // We re-create the generator here on the off chance that making a subset from
             // 'fImage' might perturb its state.
-            auto gen = fFactory(dContext, fPicture);
+            auto gen = fFactory(canvas, fPicture);
             if (!gen) {
                 return false;
             }
-            fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset, dContext);
+            fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset1(subset, dContext);
             if (!fImageSubset) {
                 return false;
             }
@@ -341,7 +350,7 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         auto dContext = GrAsDirectContext(canvas->recordingContext());
-        if (!this->makeCaches(dContext)) {
+        if (!this->makeCaches(canvas)) {
             errorMsg->printf("Could not create cached images");
             return DrawResult::kSkip;
         }
