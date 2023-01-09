@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c933d7ac_07e7a88e",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T14:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35de37e8_e94d81c1",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cd58ba2_6c4e2bcf",
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "I picked 16 because that was the value used by the PathOps variant: https://github.com/google/skia/blob/7f5868f9addb649dc7ee7d8e457c16e17126d109/src/pathops/SkPathOpsTypes.cpp#L137\n\nI suppose we could make this a parameter with a default value of that 16.",
       "parentUuid": "406c3d6e_798ab9ef",
+      "range": {
+        "startLine": 45,
+        "startChar": 25,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "f5355a0a2d41376399c58a08f2879c02d7eac04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46118c1b_7a2dc718",
+        "filename": "src/core/SkFloatingPoint.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T14:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02809843_3d1356e8",
       "range": {
         "startLine": 45,
         "startChar": 25,
