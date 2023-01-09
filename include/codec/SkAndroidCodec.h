@@ -269,6 +269,20 @@ public:
 
     SkCodec* codec() const { return fCodec.get(); }
 
+    struct AndroidGainmapInfo {
+        float fGainmapMinValue[3] = {-1.f, -1.f, -1.f};
+        float fGainmapMaxValue[3] = {1.f, 1.f, 1.f};
+        float fGainmapGamma[3] = {1.f, 1.f, 1.f};
+
+        float fEpsilonSdr[3] = {0.01f, 0.01f, 0.01f};
+        float fEpsilonHdr[3] = {0.01f, 0.01f, 0.01f};
+
+        float fHdrRatioMin = 0.f;
+        float fHdrRatioMax = 16.f;
+    };
+    bool getAndroidGainmap(AndroidGainmapInfo* info,
+                           std::unique_ptr<SkStream>* outGainmapImageStream);
+
 protected:
     SkAndroidCodec(SkCodec*);
 

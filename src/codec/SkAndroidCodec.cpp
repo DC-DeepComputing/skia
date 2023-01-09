@@ -19,6 +19,7 @@
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegGainmap.h"
 #include "src/codec/SkSampledCodec.h"
 
 #if defined(SK_CODEC_DECODES_WEBP) || defined(SK_CODEC_DECODES_RAW) || \
@@ -409,4 +410,17 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
 SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* pixels,
         size_t rowBytes) {
     return this->getAndroidPixels(info, pixels, rowBytes, nullptr);
+}
+
+bool SkAndroidCodec::getAndroidGainmap(AndroidGainmapInfo* info,
+                                       std::unique_ptr<SkStream>* outGainmapImageStream) {
+    SkJpegGainmapInfoInternal infoInternal;
+    if (!fCodec->onGetGainmapInfo(&infoInternal, outGainmapImageStream)) {
+        return false;
+    }
+    for (size_t i = 0; i < 3; ++i) {
+        info->fGainmapMinValue[i] = infoInternal.logratioMinValue;
+        info->fGainmapMaxValue[i] = infoInternal.logratioMaxValue;
+    }
+    return true;
 }

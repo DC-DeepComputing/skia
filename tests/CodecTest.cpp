@@ -2042,4 +2042,4 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     REPORTER_ASSERT(r, bitmaps[2].getColor(0, 0) == 0xFF010101);
     REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
 }
-#endif
+#endif  // SK_CODEC_DECODES_JPEG
