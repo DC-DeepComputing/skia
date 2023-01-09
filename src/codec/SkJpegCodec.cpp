@@ -25,9 +25,12 @@
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegDecoderMgr.h"
+#include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegPriv.h"
+#include "src/codec/SkJpegSegmentScan.h"
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/codec/SkSwizzler.h"
+#include "src/xml/SkDOM.h"
 
 #include <array>
 #include <csetjmp>
@@ -174,8 +177,37 @@ sk_sp<const SkData> read_metadata_marker(jpeg_decompress_struct* dinfo,
     return nullptr;
 }
 
-sk_sp<const SkData> read_xmp_metadata(jpeg_decompress_struct* dinfo) {
-    return read_metadata_marker(dinfo, kXMPMarker, kXMPSig, sizeof(kXMPSig));
+/*
+ * Helper function to search through an XML tree for a node that indicating that the image is an HDR
+ * gainmap.
+ */
+static const SkDOM::Node* FindHDRGainMapNode(const SkDOM& dom, const SkDOM::Node* node) {
+    // We are searching for an Element node with this name.
+    const char* kExpectedName = "rdf:Description";
+    // And with this attribute set to this value.
+    const char* kAttribute = "xmlns:HDRGainMap";
+    const char* kExpectedValue = "http://ns.apple.com/HDRGainMap/1.0/";
+
+    if (!node) {
+        return nullptr;
+    }
+    if (dom.getType(node) != SkDOM::kElement_Type) {
+        return nullptr;
+    }
+
+    const char* nodeName = dom.getName(node);
+    if (nodeName && !strcmp(kExpectedName, nodeName)) {
+        const char* attrValue = dom.findAttr(node, kAttribute);
+        if (attrValue && !strcmp(kExpectedValue, attrValue)) {
+            return node;
+        }
+    }
+    for (const auto* child = dom.getFirstChild(node); child; child = dom.getNextSibling(child)) {
+        if (const auto* found = FindHdrGainmap(dom, child)) {
+            return found;
+        }
+    }
+    return nullptr;
 }
 
 SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
@@ -202,6 +234,7 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
         jpeg_save_markers(dinfo, kExifMarker, 0xFFFF);
         jpeg_save_markers(dinfo, kICCMarker, 0xFFFF);
     }
+    jpeg_save_markers(dinfo, kXMPMarker, 0xFFFF);
 
     // Read the jpeg header
     switch (jpeg_read_header(dinfo, true)) {
@@ -1036,6 +1069,70 @@ bool SkGetJpegInfo(const void* data, size_t len,
         *size = {SkToS32(dinfo->image_width), SkToS32(dinfo->image_height)};
     }
     return true;
+}
+
+bool SkJpegCodec::onGetGainmapInfo(std::unique_ptr<SkStream>* gainmapImageStream) {
+    if (!stream()->hasPosition()) return false;
+
+    size_t streamPositionToRestore = stream()->getPosition();
+    if (!stream()->rewind()) {
+        printf("Failed to rewind\n");
+        return false;
+    }
+
+    bool result = false;
+
+    // Create a scan to use for creating Multi-Picture image streams.
+    auto scan = JpegSegmentScan::Create(stream(), JpegSegmentScan::Options());
+    if (scan) {
+        // Extract the Multi-Picture image streams.
+        auto mpStreams = JpegExtractMultiPictureStreams(scan.get());
+        if (mpStreams) {
+            // Iterate over the Multi-Picture image streams.
+            for (auto& mpImage : mpStreams->images) {
+                if (!mpImage.stream) continue;
+
+                // Read the JPEG header (everything up to StartOfStream) from the stream to find the
+                // XMP metadata.
+                JpegDecoderMgr* decoderMgrRawPtr = nullptr;
+                SkCodec::Result readHeaderResult =
+                        ReadHeader(mpImage.stream.get(), nullptr, &decoderMgrRawPtr, nullptr);
+                if (kSuccess == readHeaderResult) {
+                    std::unique_ptr<JpegDecoderMgr> decodeMgr(decoderMgrRawPtr);
+
+                    // Extract the XMP metadata (if any).
+                    auto xmpMetadata = read_xmp_metadata(decoderMgr->dinfo());
+                    if (xmpMetadata) {
+                        std::unique_ptr<SkMemoryStream> xmlStream = SkMemoryStream::MakeDirect(
+                                xmpMetadata->data(), xmpMetadata->size());
+                        SkDOM dom;
+
+                        // Search for an XML node that indicates that this image is a gainmap.
+                        const auto* gainmapNode = FindHDRGainMapNode(dom, dom.build(*xmlStream));
+                        if (gainmapNode) {
+                            // This is a gainmap!
+                            if (gainmapImageStream) {
+                                // If we are to save the stream, then rewind and save it.
+                                if (mpImage.stream->rewind()) {
+                                    *gainmapImageStream = std::move(mpImage.stream);
+                                    result = true;
+                                }
+                            } else {
+                                // Otherwise just note that we have succeeded.
+                                result = true;
+                            }
+
+                            // Stop iterating through image streams.
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    stream()->seek(streamPositionToRestore);
+    return result;
 }
 
 #endif // SK_CODEC_DECODES_JPEG
