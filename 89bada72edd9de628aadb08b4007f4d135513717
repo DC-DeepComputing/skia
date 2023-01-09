@@ -16,6 +16,23 @@
       "message": "PTAL. Including Brian for API review.",
       "revId": "89bada72edd9de628aadb08b4007f4d135513717",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8197a87_88f652c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-09T20:12:17Z",
+      "side": 1,
+      "message": "Swapping out API review to Text group manager.",
+      "revId": "89bada72edd9de628aadb08b4007f4d135513717",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
