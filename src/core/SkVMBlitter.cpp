@@ -5,24 +5,45 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkMacros.h"
+#include "src/core/SkVMBlitter.h"
+
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
+#include "include/private/base/SkAlign.h"
+#include "include/private/base/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
-#include "src/core/SkCoreBlitters.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkMask.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkVM.h"
-#include "src/core/SkVMBlitter.h"
 #include "src/shaders/SkColorFilterShader.h"
+#include "src/shaders/SkShaderBase.h"
 
+#include <atomic>
 #include <cinttypes>
+#include <cstddef>
+#include <cstdlib>
+#include <cstring>
+#include <optional>
+#include <utility>
+#include <vector>
+
+struct SkStageRec;
 
 #define SK_BLITTER_TRACE_IS_SKVM
 #include "src/utils/SkBlitterTrace.h"

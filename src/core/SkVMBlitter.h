@@ -8,12 +8,26 @@
 #ifndef SkVMBlitter_DEFINED
 #define SkVMBlitter_DEFINED
 
+#include "include/core/SkBlender.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkVM.h"
+
+#include <cstdint>
+
+class SkString;
+class SkPaint;
+struct SkIRect;
+struct SkMask;
 
 class SkVMBlitter final : public SkBlitter {
 public:
