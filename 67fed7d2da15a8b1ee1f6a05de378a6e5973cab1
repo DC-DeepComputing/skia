@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "696aaacf_526789a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-09T19:58:21Z",
+      "side": 1,
+      "message": "This is a first attempt at adding the remote glyph cache to the DM test infrastructure. It is not perfect, but is better than not testing that we are doing now.",
+      "revId": "67fed7d2da15a8b1ee1f6a05de378a6e5973cab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
