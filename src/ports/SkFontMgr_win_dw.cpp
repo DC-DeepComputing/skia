@@ -30,6 +30,8 @@
 #include <dwrite_2.h>
 #include <dwrite_3.h>
 
+using namespace skia_internal;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 class StreamFontFileLoader : public IDWriteFontFileLoader {

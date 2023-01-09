@@ -64,6 +64,8 @@
 #include <string.h>
 #include <memory>
 
+using namespace skia_internal;
+
 /** Assumes src and dst are not nullptr. */
 void SkStringFromCFString(CFStringRef src, SkString* dst) {
     // Reserve enough room for the worst-case string,

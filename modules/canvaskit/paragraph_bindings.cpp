@@ -25,6 +25,7 @@
 #include "modules/canvaskit/WasmCommon.h"
 
 using namespace emscripten;
+using namespace skia_internal;
 
 namespace para = skia::textlayout;
 

@@ -27,6 +27,8 @@
 #include <fontconfig/fontconfig.h>
 #include <string.h>
 
+using namespace skia_internal;
+
 class SkData;
 
 // FC_POSTSCRIPT_NAME was added with b561ff20 which ended up in 2.10.92
