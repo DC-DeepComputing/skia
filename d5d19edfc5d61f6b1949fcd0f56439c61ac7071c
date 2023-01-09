@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "04928967_d5cf1570",
+        "filename": "src/core/SkATrace.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "`SkTraceEventCommon.h` now only overrides tracing macros in Android framework when `SK_ANDROID_FRAMEWORK_USE_PERFETTO` is set, which only excludes host builds, where ATrace is a no-op anyway. This is to keep our number of separate cases where we override tracing macros differently to \"just\" three, instead of adding a fourth case (i.e. if we had separate cases for \"just ATrace\" vs. \"ATrace or Perfetto\". Instead we just have the \"ATrace or Perfetto\" case, since that\u0027s the only one that would be used in practice anyway).\n\nSo `SkTraceEventCommon.h` now only needs to `#include \u003ccutils/trace.h\u003e` when `SK_ANDROID_FRAMEWORK_USE_PERFETTO` is set, but this file still needs it to compile for `SK_BUILD_FOR_ANDROID_FRAMEWORK` in general.",
+      "parentUuid": "98faec83_3fca21fd",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "55b46494_b9f619d9",
         "filename": "src/core/SkTraceEvent.h",
         "patchSetId": 10
@@ -48,6 +66,30 @@
       "writtenOn": "2023-01-03T19:49:28Z",
       "side": 1,
       "message": "nit: This is duplicated, so I\u0027m wondering if there\u0027s a more concise way to state it.\n\nThat said, if you\u0027re looking for info about `TRACE_STR_STATIC`, this is useful, and I don\u0027t have a better suggestion.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 72
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e40e1eb9_c5157a4e",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Yeah ideally I\u0027d like this comment to pop up for folks in their IDEs, and I\u0027m unsure how to make that happen without duplicating...? Not super pretty though. :/",
+      "parentUuid": "55b46494_b9f619d9",
       "range": {
         "startLine": 46,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36ec1e77_07c323a9",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f94f0ba_d438c94b",
+      "range": {
+        "startLine": 105,
+        "startChar": 22,
+        "endLine": 105,
+        "endChar": 47
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcdd34cc_8ab47cc3",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-01-03T19:49:28Z",
       "side": 1,
       "message": "Didn\u0027t this become a compile-time failure if you don\u0027t have both?\n\nEDIT: Ah, only if you attempt to use `_ALWAYS`, I think.",
+      "range": {
+        "startLine": 114,
+        "startChar": 3,
+        "endLine": 114,
+        "endChar": 33
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a27da18_1700ec44",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "The compile-time failure that I added will only check if `TRACE_EVENT_ATRACE_OR_PERFETTO_FORCEABLE` is used correctly (that it was given a category that ends with `.always` if `force_always_trace \u003d\u003d true`), but honestly that\u0027s sort of an internal implementation detail that\u0027s handled by `TRACE_EVENT0_ALWAYS`, which is what Skia developers should be calling.\n\nOtherwise the only other compile-time failures are:\n1. A non-always category entry must be present in this list for categories used in macros like `TRACE_EVENT0`.\n2. A `.always` category variant must be present in this list for categories used in `TRACE_EVENT0_ALWAYS`.\n\n(Those are both given to us for free by Perfetto)\n\nBut there\u0027s no cross-checking that the other one is present. How do you feel about this, and the approach of the comment saying \"you should probably add both, but you don\u0027t have to\"? Should we go with the \"you always have to add both\" approach instead?",
+      "parentUuid": "bcdd34cc_8ab47cc3",
       "range": {
         "startLine": 114,
         "startChar": 3,
@@ -121,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff4936cf_9fec2255",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "+1 to good future cleanup, but yeah it would cause some churn by requiring coordination with where this is referenced in HWUI and RenderEngine.",
+      "parentUuid": "f7a780c4_69dba4c8",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd01d6da_dc6b9cb4",
@@ -134,6 +242,30 @@
       "writtenOn": "2023-01-03T19:49:28Z",
       "side": 1,
       "message": "nit: This should probably include `google.com` - this code is open source, so it might not be obvious what the domain is.",
+      "range": {
+        "startLine": 183,
+        "startChar": 37,
+        "endLine": 183,
+        "endChar": 51
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c074f1_ac70daf2",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd01d6da_dc6b9cb4",
       "range": {
         "startLine": 183,
         "startChar": 37,
@@ -161,6 +293,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdd2e8e3_f8113f5e",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Just moved around.",
+      "parentUuid": "7b5eba3a_6d43fab5",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e78ce20_7b5deb7b",
@@ -174,6 +324,24 @@
       "writtenOn": "2023-01-03T19:49:28Z",
       "side": 1,
       "message": "nit: It\u0027s not easy for me to see what the `el` corresponds to. (I think it\u0027s line 226.) Maybe indent the in-between lines for clarity?",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48055f30_960b8391",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e78ce20_7b5deb7b",
       "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -201,6 +369,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7119b711_e7facad7",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Oh good catch, fixed.",
+      "parentUuid": "cf66645d_ce1cb477",
+      "range": {
+        "startLine": 302,
+        "startChar": 24,
+        "endLine": 302,
+        "endChar": 25
+      },
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7233fbdc_8b0234d9",
@@ -214,6 +406,24 @@
       "writtenOn": "2023-01-03T19:49:28Z",
       "side": 1,
       "message": "nit: label this so we know where the corresponding `if` is.",
+      "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8ac4669_9ac589ac",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7233fbdc_8b0234d9",
       "revId": "d5d19edfc5d61f6b1949fcd0f56439c61ac7071c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

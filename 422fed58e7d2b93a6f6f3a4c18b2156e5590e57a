@@ -513,6 +513,30 @@
       },
       "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c42314_e7c7ef1c",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T17:51:53Z",
+      "side": 1,
+      "message": "Added a TODO to \"update this explanation (and associated docs) as the Perfetto transition progresses.\"",
+      "parentUuid": "69bb97ba_3f2fc6b7",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 99
+      },
+      "revId": "422fed58e7d2b93a6f6f3a4c18b2156e5590e57a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
