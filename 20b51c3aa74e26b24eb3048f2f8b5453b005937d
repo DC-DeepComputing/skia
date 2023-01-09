@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4b24620_cadcbc47",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-09T16:00:14Z",
+      "side": 1,
+      "message": "Nit: We can leave out this first argument since it\u0027s used by default in the two-parameter constructor. Unless you prefer to be explicit.",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 50
+      },
+      "revId": "20b51c3aa74e26b24eb3048f2f8b5453b005937d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
