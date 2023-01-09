@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d38356d0_5dd38cef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-09T15:22:35Z",
+      "side": 1,
+      "message": "Let\u0027s actually pause on this until b/264705852 is resolved (today).",
+      "revId": "db9eb3181da936f4270c5cbac00fab70bdad2c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
