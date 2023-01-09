@@ -159,7 +159,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     sk_sp<SkImage> image = SkImage::MakeRasterData(info, std::move(data), info.minRowBytes());
     REPORTER_ASSERT(reporter, image);
 
-    sk_sp<SkImage> imageGpu = image->makeTextureImage(recorder.get());
+    sk_sp<SkImage> imageGpu = image->makeTextureImage1(recorder.get(), { Mipmapped::kNo });
     REPORTER_ASSERT(reporter, imageGpu);
 
     TextureProxy* imageProxy = nullptr;
