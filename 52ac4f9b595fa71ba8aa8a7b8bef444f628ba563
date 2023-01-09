@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7972e83b_3c018d96",
+        "filename": "modules/canvaskit/package-lock.json",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-09T14:24:26Z",
+      "side": 0,
+      "message": "Done.\nI tested CanvasKit build and all the local changes went in accidentally.",
+      "parentUuid": "ac4dbc60_19476a5c",
+      "revId": "52ac4f9b595fa71ba8aa8a7b8bef444f628ba563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8242ce88_81982775",
