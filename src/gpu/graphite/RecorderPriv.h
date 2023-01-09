@@ -23,6 +23,8 @@ public:
     void add(sk_sp<Task>);
     void flushTrackedDevices();
 
+    uint32_t id() const { return fRecorder->fRecorderID; }
+
     const Caps* caps() const { return fRecorder->fSharedContext->caps(); }
 
     ResourceProvider* resourceProvider() { return fRecorder->fResourceProvider.get(); }
