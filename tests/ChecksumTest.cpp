@@ -97,10 +97,9 @@ DEF_TEST(ChecksumConsistent, r) {
 }
 
 DEF_TEST(ChecksumStrings, r) {
-    constexpr char kMessage[] = "Checksums are supported for SkString, string, and string_view.";
+    constexpr char kMessage[] = "Checksums are supported for string, and string_view.";
     const uint32_t expectedHash = SkOpts::hash(kMessage, strlen(kMessage));
 
-    REPORTER_ASSERT(r, expectedHash == SkGoodHash()(SkString(kMessage)));
     REPORTER_ASSERT(r, expectedHash == SkGoodHash()(std::string(kMessage)));
     REPORTER_ASSERT(r, expectedHash == SkGoodHash()(std::string_view(kMessage)));
 }
