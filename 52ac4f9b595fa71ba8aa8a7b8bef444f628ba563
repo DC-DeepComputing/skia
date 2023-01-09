@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "621ff0c2_4a48ad7e",
+        "filename": "modules/canvaskit/package-lock.json",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-09T18:06:41Z",
+      "side": 0,
+      "message": "Ok, I know how it happened, and it\u0027s just me being stupid.",
+      "parentUuid": "5dc0029e_194d6dfd",
+      "revId": "52ac4f9b595fa71ba8aa8a7b8bef444f628ba563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8242ce88_81982775",
