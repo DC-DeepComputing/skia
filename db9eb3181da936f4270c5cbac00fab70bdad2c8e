@@ -16,6 +16,23 @@
       "message": "Let\u0027s actually pause on this until b/264705852 is resolved (today).",
       "revId": "db9eb3181da936f4270c5cbac00fab70bdad2c8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c93619bb_86a90e54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-09T16:22:59Z",
+      "side": 1,
+      "message": "Adding lgtm so this can go in once the android issue is resolved",
+      "revId": "db9eb3181da936f4270c5cbac00fab70bdad2c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
