@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1311eaf_23c47312",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-09T19:37:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "de417954_0957bd3e",
+      "range": {
+        "startLine": 168,
+        "startChar": 67,
+        "endLine": 168,
+        "endChar": 69
+      },
+      "revId": "693f69e7cae4c0d93e1684d370df5a549a2757d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3795fc71_7db463ec",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "This is the sort of spelling error that happens very late at night :/",
       "parentUuid": "3795fc71_7db463ec",
+      "range": {
+        "startLine": 71,
+        "startChar": 27,
+        "endLine": 71,
+        "endChar": 36
+      },
+      "revId": "693f69e7cae4c0d93e1684d370df5a549a2757d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38602fea_644325b8",
+        "filename": "src/codec/SkJpegSegmentScan.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-09T19:37:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "00e0f7fc_55946c73",
       "range": {
         "startLine": 71,
         "startChar": 27,
@@ -226,6 +274,30 @@
       "side": 1,
       "message": "Fixed.",
       "parentUuid": "352de763_f50f83ba",
+      "range": {
+        "startLine": 58,
+        "startChar": 18,
+        "endLine": 58,
+        "endChar": 32
+      },
+      "revId": "693f69e7cae4c0d93e1684d370df5a549a2757d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b034258d_7e9e1c88",
+        "filename": "src/codec/SkJpegSegmentScan.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-09T19:37:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4e214f5e_52b347c1",
       "range": {
         "startLine": 58,
         "startChar": 18,
