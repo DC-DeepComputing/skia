@@ -116,6 +116,30 @@
       },
       "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f79cb1e_3900fa64",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-09T16:22:11Z",
+      "side": 1,
+      "message": "Ok, we can revisit if needed once we can actual profile replaying scenarios.",
+      "parentUuid": "48c3d9db_059b0015",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 54
+      },
+      "revId": "b00505f3bee6425a4f43352af688ddabc998713a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
