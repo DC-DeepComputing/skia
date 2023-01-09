@@ -27,7 +27,7 @@ namespace skgpu::graphite {
 
 Image::Image(uint32_t uniqueID,
              TextureProxyView view,
-             const SkColorInfo& info)
+             const SkColorInfo& info, bool)
     : SkImage_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
     , fTextureProxyView(std::move(view)) {
 }
@@ -40,16 +40,50 @@ Image::Image(TextureProxyView view,
 
 Image::~Image() {}
 
-sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
-                                                   sk_sp<SkColorSpace>,
-                                                   GrDirectContext*) const {
+sk_sp<SkImage> Image::onMakeSubset2(const SkIRect&, Recorder*) const {
     return nullptr;
+}
+
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                   sk_sp<SkColorSpace> targetCS,
+                                                   GrDirectContext*) const {
+#if 0
+    SkColorInfo info(targetCT, this->alphaType(), std::move(targetCS));
+    if (!fContext->priv().matches(dContext)) {
+        return nullptr;
+    }
+
+    auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
+                                                    SkBackingFit::kExact);
+    if (!sfc) {
+        return nullptr;
+    }
+    // We respecify info's CT because we called MakeWithFallback.
+    auto ct = GrColorTypeToSkColorType(sfc->colorInfo().colorType());
+    info = info.makeColorType(ct);
+
+    // Draw this image's texture into the SFC.
+    auto [view, _] = this->asView(dContext, GrMipmapped(this->hasMipmaps()));
+    auto texFP = GrTextureEffect::Make(std::move(view), this->alphaType());
+    auto colorFP = GrColorSpaceXformEffect::Make(std::move(texFP),
+                                                 this->imageInfo().colorInfo(),
+                                                 info);
+    sfc->fillWithFP(std::move(colorFP));
+
+    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(dContext),
+                                   kNeedNewImageUniqueID,
+                                   sfc->readSurfaceView(),
+                                   std::move(info));
+#else
+    return nullptr;
+#endif
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
     return sk_make_sp<Image>(kNeedNewImageUniqueID,
                              fTextureProxyView,
-                             this->imageInfo().colorInfo().makeColorSpace(std::move(newCS)));
+                             this->imageInfo().colorInfo().makeColorSpace(std::move(newCS)),
+                             true);
 }
 
 void Image::onAsyncRescaleAndReadPixels(const SkImageInfo& info,

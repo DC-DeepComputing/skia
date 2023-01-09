@@ -134,7 +134,7 @@ bool SkImage_GpuBase::getROPixels(GrDirectContext* dContext,
     return true;
 }
 
-sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
+sk_sp<SkImage> SkImage_GpuBase::onMakeSubset1(const SkIRect& subset,
                                              GrDirectContext* direct) const {
     if (!fContext->priv().matches(direct)) {
         return nullptr;
@@ -166,6 +166,12 @@ sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
 #ifdef SK_GRAPHITE_ENABLED
 sk_sp<SkImage> SkImage_GpuBase::onMakeTextureImage(skgpu::graphite::Recorder*,
                                                    SkImage::RequiredImageProperties) const {
+    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
+    return nullptr;
+}
+
+sk_sp<SkImage> SkImage_GpuBase::onMakeSubset2(const SkIRect&,
+                                              skgpu::graphite::Recorder*) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }

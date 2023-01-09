@@ -143,10 +143,15 @@ static void imagesubsetproc(SkCanvas* canvas, sk_sp<SkImage> image, const SkBitm
         return;
     }
 
-    auto direct = GrAsDirectContext(canvas->recordingContext());
-    if (sk_sp<SkImage> subset = image->makeSubset(srcR, direct)) {
+    auto dContext = GrAsDirectContext(canvas->recordingContext());
+    if (sk_sp<SkImage> subset = image->makeSubset1(srcR, dContext)) {
         canvas->drawImageRect(subset, dstR, sampling, paint);
     }
+#ifdef SK_GRAPHITE_ENABLED
+    if (sk_sp<SkImage> subset = image->makeSubset2(srcR, canvas->recorder())) {
+        canvas->drawImageRect(subset, dstR, sampling, paint);
+    }
+#endif
 }
 
 typedef void DrawRectRectProc(SkCanvas*, sk_sp<SkImage>, const SkBitmap&,
