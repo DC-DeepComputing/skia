@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7cbd885_9e97f4e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T20:32:48Z",
+      "side": 1,
+      "message": "Didn\u0027t we have a skbug.com/ issue to tag here?",
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4965fcf7_daf6ef80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T20:32:48Z",
+      "side": 1,
+      "message": "Can you update the bazel.md or where-ever the user docs are for what this symlink is and how to overwrite it if necessary?",
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4779460b_d9f286cb",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T20:32:48Z",
+      "side": 1,
+      "message": "no longer our toolchain directory, technically",
+      "range": {
+        "startLine": 54,
+        "startChar": 94,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e21daba_158768ce",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T20:32:48Z",
+      "side": 1,
+      "message": "I\u0027m a tiny bit worried that the ~ could cause issues (e.g. not be expanded), but we can try it out in practice to see.",
+      "range": {
+        "startLine": 58,
+        "startChar": 33,
+        "endLine": 58,
+        "endChar": 34
+      },
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
