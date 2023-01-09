@@ -16,6 +16,29 @@
       "message": "@kjlubick@google.com for IWYU change.",
       "revId": "f19b5d439cf8b4ba3a5ce0088d89dbfec0b58576",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dabe795_9c15e970",
+        "filename": "toolchain/linux_trampolines/IWYU_mapping.imp",
+        "patchSetId": 5
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-09T16:48:07Z",
+      "side": 1,
+      "message": "Not sure if this trailing comma will gum up the works. Feel free to Ack this comment if the CI IWYU tests pass",
+      "range": {
+        "startLine": 258,
+        "startChar": 83,
+        "endLine": 258,
+        "endChar": 84
+      },
+      "revId": "f19b5d439cf8b4ba3a5ce0088d89dbfec0b58576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
