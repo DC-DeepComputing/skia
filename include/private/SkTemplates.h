@@ -301,6 +301,7 @@ private:
     std::unique_ptr<T, SkOverloadedFunctionObject<void(void*), sk_free>> fPtr;
 };
 
+namespace skia_internal {
 template <size_t kCountRequested,
           typename T,
           typename = std::enable_if_t<std::is_trivially_default_constructible<T>::value &&
@@ -405,6 +406,8 @@ private:
         T           fTStorage[1];   // do NOT want to invoke T::T()
     };
 };
+
+}  // namespace skia_internal
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

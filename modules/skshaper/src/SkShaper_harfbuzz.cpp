@@ -40,6 +40,8 @@
 #include <type_traits>
 #include <utility>
 
+using namespace skia_internal;
+
 // HB_FEATURE_GLOBAL_START and HB_FEATURE_GLOBAL_END were not added until HarfBuzz 2.0
 // They would have always worked, they just hadn't been named yet.
 #if !defined(HB_FEATURE_GLOBAL_START)
