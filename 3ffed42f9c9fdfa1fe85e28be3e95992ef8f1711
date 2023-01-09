@@ -69,6 +69,24 @@
       "parentUuid": "895e1a68_11814a8d",
       "revId": "3ffed42f9c9fdfa1fe85e28be3e95992ef8f1711",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "048732d4_f16d2fae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-09T17:19:10Z",
+      "side": 1,
+      "message": "This all SGTM--_everything_ in this particular header is available in C++20/23, I believe. They\u0027re just compatibility shims for C++17 that we will eventually remove once we upgrade our min spec one day.",
+      "parentUuid": "897b3940_a6a90a38",
+      "revId": "3ffed42f9c9fdfa1fe85e28be3e95992ef8f1711",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
