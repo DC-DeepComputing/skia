@@ -22,6 +22,30 @@
       },
       "revId": "20b51c3aa74e26b24eb3048f2f8b5453b005937d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4086ac5b_ab49b837",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-09T16:02:12Z",
+      "side": 1,
+      "message": "Yeah - in this case I would like to leave it since it makes it clear that we\u0027re returning a completely new Image w/ a different ID than the original.",
+      "parentUuid": "f4b24620_cadcbc47",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 50
+      },
+      "revId": "20b51c3aa74e26b24eb3048f2f8b5453b005937d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
