@@ -287,7 +287,7 @@ BASE_SRCS_ALL = [
     "include/private/base/SkMutex.h",
     "include/private/base/SkOnce.h",
     "include/private/base/SkSemaphore.h",
-    "include/private/base/SkStringView.h",
+    "src/core/SkStringView.h",
     "include/private/base/SkTFitsIn.h",
     "include/private/base/SkThreadAnnotations.h",
     "include/private/base/SkThreadID.h",

@@ -6,10 +6,10 @@
  */
 
 #include "include/core/SkStream.h"
-#include "include/private/base/SkStringView.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkStringView.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "tests/Test.h"
 

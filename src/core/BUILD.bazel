@@ -321,6 +321,7 @@ CORE_FILES = [
     "SkStrikeCache.h",
     "SkStrikeSpec.cpp",
     "SkStrikeSpec.h",
+    "SkStringView.h",
     "SkStroke.cpp",
     "SkStroke.h",
     "SkStrokeRec.cpp",

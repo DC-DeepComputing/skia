@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/base/SkStringView.h"
+#include "src/core/SkStringView.h"
 #include "src/sksl/SkSLIntrinsicList.h"
 
 namespace SkSL {
