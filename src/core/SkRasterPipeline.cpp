@@ -20,6 +20,8 @@
 #include <cstring>
 #include <vector>
 
+using namespace skia_internal;
+
 bool gForceHighPrecisionRasterPipeline;
 
 SkRasterPipeline::SkRasterPipeline(SkArenaAlloc* alloc) : fAlloc(alloc) {

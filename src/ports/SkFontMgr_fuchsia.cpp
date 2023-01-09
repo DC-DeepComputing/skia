@@ -22,6 +22,8 @@
 #include "include/private/base/SkThreadAnnotations.h"
 #include "src/core/SkTypefaceCache.h"
 
+using namespace skia_internal;
+
 // SkFuchsiaFontDataCache keep track of SkData created from `fuchsia::mem::Buffer` where each buffer
 // is identified with a unique identifier. It allows to share the same SkData instances between all
 // SkTypeface instances created from the same buffer.

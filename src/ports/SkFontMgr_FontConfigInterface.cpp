@@ -18,6 +18,8 @@
 #include "src/ports/SkFontConfigTypeface.h"
 #include <new>
 
+using namespace skia_internal;
+
 std::unique_ptr<SkStreamAsset> SkTypeface_FCI::onOpenStream(int* ttcIndex) const {
     *ttcIndex =  this->getIdentity().fTTCIndex;
 

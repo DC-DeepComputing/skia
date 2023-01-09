@@ -34,6 +34,8 @@
 #include "src/gpu/ganesh/geometry/GrPathUtils.h"
 #endif
 
+using namespace skia_internal;
+
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 /**

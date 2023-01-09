@@ -29,6 +29,8 @@
 #include <algorithm>
 #include <limits>
 
+using namespace skia_internal;
+
 class SkData;
 
 class SkTypeface_Android : public SkTypeface_FreeType {

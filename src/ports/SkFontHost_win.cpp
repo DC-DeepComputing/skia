@@ -41,6 +41,8 @@
 #include <usp10.h>
 #include <objbase.h>
 
+using namespace skia_internal;
+
 namespace {
 static inline const constexpr bool kSkShowTextBlitCoverage = false;
 }
