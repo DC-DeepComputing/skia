@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc0029e_194d6dfd",
+        "filename": "modules/canvaskit/package-lock.json",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-09T18:04:41Z",
+      "side": 0,
+      "message": "I fixed it (again) but I really don\u0027t know how it happened. History shows all the steps... I am sorry.",
+      "parentUuid": "0cd5d682_d3dabb5f",
+      "revId": "52ac4f9b595fa71ba8aa8a7b8bef444f628ba563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8242ce88_81982775",
