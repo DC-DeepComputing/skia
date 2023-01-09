@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0deb62d_b26abaa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "\u003e LGTM, thanks for updating the path renderers to support no inf support. Originally I\u0027d been hoping we could keep graphite on platforms that always supported infinity so its PatchWriters would never need Optional attributes. While we could define two different PatchWriter templates to select from, I think using Optional is worth it to keep the code size down. Perhaps down the road there will be time to explore an alternative curve type mechanism.\n\u003e \n\nAck.\n\n\u003e My final thought is that with the branching in `vertexSkSL()`, it\u0027s looking like RenderStep maybe should be updated to always return a `std::string` instead of `const char*`. `const char*` was chosen to try and enforce that nothing can change within a RenderStep, but it makes for a lot of redundant SkSL in cases like this where we could otherwise just append two strings together. I don\u0027t think that should necessarily block this change, but just something to mull over as we go.\n\nDone. I sent https://skia-review.googlesource.com/c/skia/+/625728 which changes the interface and I updated this CL to build the vertex programs using a format string. FWIW `RenderStep::texturesAndSamplersSkSL` already returns std::string. I think it\u0027s OK to change the rest of the fragment SkSL methods to do the same if/when we need it.",
+      "parentUuid": "5fb8febf_610cbb3c",
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adcf7688_0fe53da7",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-01-09T16:20:27Z",
       "side": 1,
       "message": "I think in other places we\u0027ve settled on just passing in `const Caps*` to match what SharedContext returns from caps().",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 32
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad09468_3a024c14",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adcf7688_0fe53da7",
       "range": {
         "startLine": 78,
         "startChar": 21,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c37c2a24_32a2496a",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ac0204a_cda564b2",
+      "range": {
+        "startLine": 92,
+        "startChar": 100,
+        "endLine": 92,
+        "endChar": 101
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ebd969d_e0afc46a",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-01-09T16:20:27Z",
       "side": 1,
       "message": "nit: length",
+      "range": {
+        "startLine": 104,
+        "startChar": 100,
+        "endLine": 104,
+        "endChar": 101
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd143d91_797700b8",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ebd969d_e0afc46a",
       "range": {
         "startLine": 104,
         "startChar": 100,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24b12066_2f54c979",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee387f88_5297a0aa",
+      "range": {
+        "startLine": 107,
+        "startChar": 100,
+        "endLine": 107,
+        "endChar": 102
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faa16795_63555c23",
@@ -140,6 +254,30 @@
       "writtenOn": "2023-01-09T16:20:27Z",
       "side": 1,
       "message": "nit: length",
+      "range": {
+        "startLine": 98,
+        "startChar": 100,
+        "endLine": 98,
+        "endChar": 102
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2629fbdf_e8a104bb",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faa16795_63555c23",
       "range": {
         "startLine": 98,
         "startChar": 100,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c4ce3a9_f28a79e6",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96564f50_0912f823",
+      "range": {
+        "startLine": 111,
+        "startChar": 100,
+        "endLine": 111,
+        "endChar": 102
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1ee4fd9_25980f3e",
@@ -186,6 +348,30 @@
       "writtenOn": "2023-01-09T16:20:27Z",
       "side": 1,
       "message": "nit: length",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 104
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00100595_e9f3172f",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1ee4fd9_25980f3e",
       "range": {
         "startLine": 103,
         "startChar": 0,
@@ -219,6 +405,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a887a8f7_3a15fee4",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daaa9ca0_67413722",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 104
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7725af97_b9559f11",
@@ -232,6 +442,30 @@
       "writtenOn": "2023-01-09T16:20:27Z",
       "side": 1,
       "message": "nit: length",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 102
+      },
+      "revId": "c60dce9715f7e37a2b25b35be508843d66109464",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f974c07c_b4d14322",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7725af97_b9559f11",
       "range": {
         "startLine": 124,
         "startChar": 0,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad82010b_6c9f19a5",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-09T23:24:41Z",
+      "side": 1,
+      "message": "It turns out I didn\u0027t have the order of attributes right earlier. Now things get drawn correctly on Dawn.",
+      "revId": "e297e0d1c5d3c983804ca2a7faeeb3db9fab2c83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
