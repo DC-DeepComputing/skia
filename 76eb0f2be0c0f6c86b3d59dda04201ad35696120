@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f88ae1_29850218",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-10T18:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7cbd885_9e97f4e9",
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4965fcf7_daf6ef80",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3e721c_c58b2053",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-10T18:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4965fcf7_daf6ef80",
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4779460b_d9f286cb",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-01-09T20:32:48Z",
       "side": 1,
       "message": "no longer our toolchain directory, technically",
+      "range": {
+        "startLine": 54,
+        "startChar": 94,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "76eb0f2be0c0f6c86b3d59dda04201ad35696120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c70aad3_cebc1f0c",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-10T18:29:51Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "4779460b_d9f286cb",
       "range": {
         "startLine": 54,
         "startChar": 94,
