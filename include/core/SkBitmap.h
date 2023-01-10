@@ -1238,6 +1238,7 @@ public:
 private:
     sk_sp<SkPixelRef>   fPixelRef;
     SkPixmap            fPixmap;
+public:
     sk_sp<SkMipmap>     fMips;
 
     friend class SkImage_Raster;
