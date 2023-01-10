@@ -255,4 +255,13 @@ static inline PackColorProc choose_pack_color_proc(bool isPremul, SkColorType co
 
 bool is_orientation_marker(const uint8_t* data, size_t data_length, SkEncodedOrigin* orientation);
 
+/*
+ * Internal representation of gainmap parameter, converted to AndroidGainmapInfo.
+ */
+struct SkCodecGainmapInfo {
+    // The interval in log space that the gainmap is mapped into.
+    float logRatioMin = -1.f;
+    float logRatioMax = 1.f;
+};
+
 #endif // SkCodecPriv_DEFINED
