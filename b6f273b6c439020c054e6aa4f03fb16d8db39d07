@@ -22,6 +22,30 @@
       },
       "revId": "b6f273b6c439020c054e6aa4f03fb16d8db39d07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd595da_8ad31b66",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T23:41:21Z",
+      "side": 1,
+      "message": "The implementation happens to be an SkStream that is backed by an SkData (so it\u0027s totally independent).\n\nIdeally I\u0027d like it to be the case that we can have multiple SkStreams referencing different sub-sections of the same FILE (to avoid copying data around), but that\u0027s an optimization for \"when it matters, if it matters\".",
+      "parentUuid": "05c93b72_85d5f6d0",
+      "range": {
+        "startLine": 279,
+        "startChar": 73,
+        "endLine": 279,
+        "endChar": 81
+      },
+      "revId": "b6f273b6c439020c054e6aa4f03fb16d8db39d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
