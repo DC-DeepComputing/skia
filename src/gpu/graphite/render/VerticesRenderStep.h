@@ -15,7 +15,10 @@ namespace skgpu::graphite {
 
 class VerticesRenderStep final : public RenderStep {
 public:
-    explicit VerticesRenderStep(PrimitiveType, bool hasColor, bool hasTexCoords);
+    // TODO: have a dedicated vertex renderer for compute-tessellated paths?
+    VerticesRenderStep(PrimitiveType, bool hasColor, bool hasTexCoords);
+
+    VerticesRenderStep(PrimitiveType, DepthStencilSettings depthStencilSettings);
 
     ~VerticesRenderStep() override;
 

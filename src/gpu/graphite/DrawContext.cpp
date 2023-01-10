@@ -139,12 +139,16 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
         return;
     }
 
+    SkASSERT(fComputePasses == nullptr);
+    SkASSERT(fClearBuffersTask == nullptr);
     auto pass = DrawPass::Make(recorder,
                                std::move(fPendingDraws),
                                fTarget,
                                this->imageInfo(),
                                std::make_pair(fPendingLoadOp, fPendingStoreOp),
-                               fPendingClearColor);
+                               fPendingClearColor,
+                               &fComputePasses,
+                               &fClearBuffersTask);
     fDrawPasses.push_back(std::move(pass));
     fPendingDraws = std::make_unique<DrawList>();
     fPendingLoadOp = LoadOp::kLoad;
@@ -228,6 +232,15 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
 
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+}
+
+sk_sp<Task> DrawContext::snapComputePassTask(Recorder*) {
+    // TODO: different compute passes should become a single task.
+    return std::move(fComputePasses);
+}
+
+sk_sp<Task> DrawContext::snapClearBuffersTask(Recorder*) {
+    return std::move(fClearBuffersTask);
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {

@@ -45,7 +45,7 @@ void compile(const RendererProvider* rendererProvider,
             continue;
         }
 
-        for (auto&& s : r->steps()) {
+        for (auto&& s : r->renderSteps()) {
             SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
 
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID

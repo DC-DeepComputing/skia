@@ -86,6 +86,11 @@ DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider, const C
                 { BufferType::kVertex,  kVertexBufferSize,  caps },
                 { BufferType::kIndex,   kIndexBufferSize,   caps },
                 { BufferType::kUniform, kUniformBufferSize, caps },
+                { BufferType::kStorage, kStorageBufferSize, caps } }}
+        , fCurrentPrivateBuffers{{
+                { BufferType::kVertex,  kVertexBufferSize,  caps },
+                { BufferType::kIndex,   kIndexBufferSize,   caps },
+                { BufferType::kUniform, kUniformBufferSize, caps },
                 { BufferType::kStorage, kStorageBufferSize, caps } }} {}
 
 DrawBufferManager::~DrawBufferManager() {}
@@ -97,6 +102,42 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type, size_t blockSize, con
         : fType(type)
         , fStartAlignment(starting_alignment(type, !caps->drawBufferCanBeMapped(), caps))
         , fBlockSize(SkAlignTo(blockSize, fStartAlignment)) {}
+
+std::tuple<void*, BindBufferInfo> DrawBufferManager::getVertexBufferSlice(size_t requiredBytes) {
+    if (!requiredBytes) {
+        return {};
+    }
+
+    auto& info = fCurrentBuffers[kVertexBufferIndex];
+    return this->prepareBindBuffer(&info, requiredBytes);
+}
+
+BindBufferInfo DrawBufferManager::getUnmappedVertexBufferSlice(size_t requiredBytes) {
+    if (!requiredBytes) {
+        return {};
+    }
+
+    auto& info = fCurrentPrivateBuffers[kVertexBufferIndex];
+    return this->preparePrivateBindBuffer(&info, requiredBytes);
+}
+
+BindBufferInfo DrawBufferManager::getUnmappedIndexBufferSlice(size_t requiredBytes) {
+    if (!requiredBytes) {
+        return {};
+    }
+
+    auto& info = fCurrentPrivateBuffers[kIndexBufferIndex];
+    return this->preparePrivateBindBuffer(&info, requiredBytes);
+}
+
+BindBufferInfo DrawBufferManager::getUnmappedSsboSlice(size_t requiredBytes) {
+    if (!requiredBytes) {
+        return {};
+    }
+
+    auto& info = fCurrentPrivateBuffers[kStorageBufferIndex];
+    return this->preparePrivateBindBuffer(&info, requiredBytes);
+}
 
 std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t requiredBytes) {
     if (!requiredBytes) {
@@ -195,6 +236,13 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
         }
         info.fOffset = 0;
     }
+    for (auto &info : fCurrentPrivateBuffers) {
+        if (!info.fBuffer) {
+            continue;
+        }
+        recording->priv().addResourceRef(std::move(info.fBuffer));
+        info.fOffset = 0;
+    }
 }
 
 std::pair<void*, BindBufferInfo> DrawBufferManager::prepareBindBuffer(BufferInfo* info,
@@ -241,6 +289,37 @@ std::pair<void*, BindBufferInfo> DrawBufferManager::prepareBindBuffer(BufferInfo
     void* ptr = SkTAddOffset<void>(info->getMappableBuffer()->map(),
                                    static_cast<ptrdiff_t>(bindInfo.fOffset));
     return {ptr, bindInfo};
+}
+
+BindBufferInfo DrawBufferManager::preparePrivateBindBuffer(BufferInfo* info, size_t requiredBytes) {
+    SkASSERT(info);
+    SkASSERT(requiredBytes);
+
+    if (info->fBuffer &&
+        !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, info->fStartAlignment)) {
+        SkASSERT(!info->fTransferBuffer);
+        fUsedBuffers.emplace_back(std::move(info->fBuffer), std::move(info->fTransferBuffer));
+    }
+
+    if (!info->fBuffer) {
+        size_t bufferSize = sufficient_block_size(requiredBytes, info->fBlockSize);
+        info->fBuffer = fResourceProvider->findOrCreateBuffer(
+                bufferSize,
+                info->fType,
+                PrioritizeGpuReads::kYes);
+        info->fOffset = 0;
+        if (!info->fBuffer) {
+            return {};
+        }
+    }
+
+    info->fOffset = SkAlignTo(info->fOffset, info->fStartAlignment);
+    BindBufferInfo bindInfo;
+    bindInfo.fBuffer = info->fBuffer.get();
+    bindInfo.fOffset = info->fOffset;
+    info->fOffset += requiredBytes;
+
+    return bindInfo;
 }
 
 // ------------------------------------------------------------------------------------------------

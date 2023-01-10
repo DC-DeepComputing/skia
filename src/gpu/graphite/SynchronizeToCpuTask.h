@@ -13,8 +13,6 @@
 
 namespace skgpu::graphite {
 
-class Buffer;
-
 /**
  * Task that synchronizes the contents of a buffer from the GPU to the CPU. This task ensures that
  * all modifications to the buffer made the GPU are visible from the CPU. This task may not result

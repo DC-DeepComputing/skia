@@ -91,6 +91,9 @@ public:
                                          SkImage::ReadPixelsCallback callback,
                                          SkImage::ReadPixelsContext context);
 
+    void drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable = false) override;
+    void drawPathUsingGpuComputeTessellation(const SkPath& path, const SkPaint& paint);
+
     const Transform& localToDeviceTransform();
 
     SkStrikeDeviceInfo strikeDeviceInfo() const override;
@@ -128,7 +131,6 @@ private:
     void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
     void drawPoints(SkCanvas::PointMode mode, size_t count,
                     const SkPoint[], const SkPaint& paint) override;
-    void drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable = false) override;
 
     // No need to specialize drawDRRect, drawArc, drawRegion, drawPatch as the default impls all
     // route to drawPath, drawRect, or drawVertices as desired.
@@ -205,7 +207,8 @@ private:
                       const SkStrokeRec&,
                       SkEnumBitMask<DrawFlags> = DrawFlags::kNone,
                       sk_sp<SkBlender> primitiveBlender = nullptr,
-                      bool skipColorXform = false);
+                      bool skipColorXform = false,
+                      bool useComputeTessellation = false);
 
     // Like drawGeometry() but is Shape-only, depth-only, fill-only, and lets the ClipStack define
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
@@ -229,7 +232,8 @@ private:
     const Renderer* chooseRenderer(const Geometry&,
                                    const Clip&,
                                    const SkStrokeRec&,
-                                   bool requireMSAA) const;
+                                   bool requireMSAA,
+                                   bool useComputeTessellation = false) const;
 
     bool needsFlushBeforeDraw(int numNewDraws) const;
 

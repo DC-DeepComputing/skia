@@ -65,6 +65,7 @@ bool GraphiteDawnMetalWindowContext_mac::onInitializeContext() {
     // Create a CAMetalLayer that covers the whole window that will be passed to
     // CreateSurface.
     fMetalLayer = [CAMetalLayer layer];
+    fMetalLayer.allowsNextDrawableTimeout = NO;
     fMainView.wantsLayer = YES;
     fMainView.layer = fMetalLayer;
 

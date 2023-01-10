@@ -110,11 +110,12 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
 
-    bool requiresMSAA()        const { return fFlags & Flags::kRequiresMSAA;        }
-    bool performsShading()     const { return fFlags & Flags::kPerformsShading;     }
-    bool hasTextures()         const { return fFlags & Flags::kHasTextures;         }
-    bool emitsCoverage()       const { return fFlags & Flags::kEmitsCoverage;       }
-    bool emitsPrimitiveColor() const { return fFlags & Flags::kEmitsPrimitiveColor; }
+    bool requiresMSAA()              const { return fFlags & Flags::kRequiresMSAA;               }
+    bool performsShading()           const { return fFlags & Flags::kPerformsShading;            }
+    bool hasTextures()               const { return fFlags & Flags::kHasTextures;                }
+    bool emitsCoverage()             const { return fFlags & Flags::kEmitsCoverage;              }
+    bool emitsPrimitiveColor()       const { return fFlags & Flags::kEmitsPrimitiveColor;        }
+    bool requiresComputeVertexStep() const { return fFlags & Flags::kRequiresComputeVertexStep; }
 
     PrimitiveType primitiveType()  const { return fPrimitiveType;  }
     size_t        vertexStride()   const { return fVertexStride;   }
@@ -149,17 +150,18 @@ public:
     //    - Does DrawList->DrawPass conversion build a separate array of blind data that the
     //      stateless Renderstep can refer to for {draw,step} pairs?
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
-protected:
     enum class Flags : unsigned {
-        kNone                  = 0b00000,
-        kRequiresMSAA          = 0b00001,
-        kPerformsShading       = 0b00010,
-        kHasTextures           = 0b00100,
-        kEmitsCoverage         = 0b01000,
-        kEmitsPrimitiveColor   = 0b10000,
+        kNone                      = 0b000000,
+        kRequiresMSAA              = 0b000001,
+        kPerformsShading           = 0b000010,
+        kHasTextures               = 0b000100,
+        kEmitsCoverage             = 0b001000,
+        kEmitsPrimitiveColor       = 0b010000,
+        kRequiresComputeVertexStep = 0b100000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
 
+protected:
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
     // the RenderStep constructor by subclasses.
@@ -204,28 +206,58 @@ private:
 };
 SK_MAKE_BITMASK_OPS(RenderStep::Flags);
 
+class ComputeStep {
+public:
+    virtual ~ComputeStep() = default;
+
+    virtual const char* computeSkSL() const = 0;
+
+    // TODO: this denotes intermedate vs initial step. But I think this belongs in a VertexStep that
+    // manages one or more ComputeSteps instead.
+    bool handlesInputGeometry() const { return fHandlesInputGeometry; }
+
+    // TODO: make this a safer interface somehow.
+    virtual void writeInputGeometry(const DrawParams&, int ssboIndex, void* inputBuffer) const {}
+
+protected:
+    explicit ComputeStep(bool handlesInputGeometry);
+
+private:
+    // TODO: this should probably be packed flags instead of bools
+    bool fHandlesInputGeometry;
+};
+
 class Renderer {
     using StepFlags = RenderStep::Flags;
 public:
     // The maximum number of render steps that any Renderer is allowed to have.
     static constexpr int kMaxRenderSteps = 4;
+    static constexpr int kMaxComputeSteps = 2;
 
-    const RenderStep& step(int i) const {
-        SkASSERT(i >= 0 && i < fStepCount);
-        return *fSteps[i];
+    const RenderStep& renderStep(int i) const {
+        SkASSERT(i >= 0 && i < fRenderStepCount);
+        return *fRenderSteps[i];
     }
-    SkSpan<const RenderStep* const> steps() const {
-        SkASSERT(fStepCount > 0); // steps() should only be called on valid Renderers.
-        return {fSteps.data(), static_cast<size_t>(fStepCount) };
+    SkSpan<const RenderStep* const> renderSteps() const {
+        SkASSERT(fRenderStepCount > 0); // renderSteps() should only be called on valid Renderers.
+        return {fRenderSteps.data(), static_cast<size_t>(fRenderStepCount)};
+    }
+    SkSpan<const ComputeStep* const> computeSteps() const {
+        if (fComputeStepCount == 0) {
+            return {};
+        }
+        return {fComputeSteps.data(), static_cast<size_t>(fComputeStepCount)};
     }
 
     const char*   name()           const { return fName.c_str(); }
     DrawTypeFlags drawTypes()      const { return fDrawTypes; }
-    int           numRenderSteps() const { return fStepCount;    }
+    int           numRenderSteps() const { return fRenderStepCount; }
 
-    bool requiresMSAA()        const { return fStepFlags & StepFlags::kRequiresMSAA;        }
-    bool emitsCoverage()       const { return fStepFlags & StepFlags::kEmitsCoverage;       }
-    bool emitsPrimitiveColor() const { return fStepFlags & StepFlags::kEmitsPrimitiveColor; }
+    bool requiresMSAA()        const { return fRenderStepFlags & StepFlags::kRequiresMSAA;        }
+    bool emitsCoverage()       const { return fRenderStepFlags & StepFlags::kEmitsCoverage;       }
+    bool emitsPrimitiveColor() const { return fRenderStepFlags & StepFlags::kEmitsPrimitiveColor; }
+
+    bool hasComputeSteps() const { return fComputeStepCount > 0; }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
@@ -248,32 +280,50 @@ private:
              const RenderStep* s1, const RenderStep* s2, const RenderStep* s3, const RenderStep* s4)
             : Renderer(name, drawTypes, std::array<const RenderStep*, 4>{s1, s2, s3, s4}) {}
 
+    Renderer(std::string_view name, DrawTypeFlags drawTypes,
+             const ComputeStep* c, const RenderStep* s)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 1>{s}, {c}) {}
+
+    Renderer(std::string_view name, DrawTypeFlags drawTypes,
+             const ComputeStep* c,
+             const RenderStep* s1, const RenderStep* s2)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 2>{s1, s2}, {c}) {}
+
     template<size_t N>
-    Renderer(std::string_view name, DrawTypeFlags drawTypes, std::array<const RenderStep*, N> steps)
+    Renderer(std::string_view name, DrawTypeFlags drawTypes,
+             std::array<const RenderStep*, N> renderSteps,
+             std::vector<const ComputeStep*> computeSteps = {})
             : fName(name)
             , fDrawTypes(drawTypes)
-            , fStepCount(SkTo<int>(N)) {
+            , fRenderStepCount(SkTo<int>(N))
+            , fComputeStepCount(computeSteps.size()) {
         static_assert(N <= kMaxRenderSteps);
-        for (int i = 0 ; i < fStepCount; ++i) {
-            fSteps[i] = steps[i];
-            fStepFlags |= fSteps[i]->fFlags;
-            fDepthStencilFlags |= fSteps[i]->depthStencilFlags();
+        for (int i = 0; i < fRenderStepCount; ++i) {
+            fRenderSteps[i] = renderSteps[i];
+            fRenderStepFlags |= fRenderSteps[i]->fFlags;
+            fDepthStencilFlags |= fRenderSteps[i]->depthStencilFlags();
+        }
+        for (int i = 0; i < fComputeStepCount; ++i) {
+            fComputeSteps[i] = computeSteps[i];
         }
         // At least one step needs to actually shade.
-        SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
+        SkASSERT(fRenderStepFlags & RenderStep::Flags::kPerformsShading);
     }
 
     // For RendererProvider to manage initialization; it will never expose a Renderer that is only
     // default-initialized and not replaced because it's algorithm is disabled by caps/options.
-    Renderer() : fSteps(), fName(""), fStepCount(0) {}
+    Renderer() : fRenderSteps(), fName(""), fRenderStepCount(0), fComputeStepCount(0) {}
     Renderer& operator=(Renderer&&) = default;
 
-    std::array<const RenderStep*, kMaxRenderSteps> fSteps;
+    std::array<const RenderStep*, kMaxRenderSteps> fRenderSteps;
     std::string fName;
     DrawTypeFlags fDrawTypes = DrawTypeFlags::kAll;
-    int fStepCount;
+    int fRenderStepCount;
 
-    SkEnumBitMask<StepFlags> fStepFlags = StepFlags::kNone;
+    std::array<const ComputeStep*, kMaxComputeSteps> fComputeSteps;
+    int fComputeStepCount;
+
+    SkEnumBitMask<StepFlags> fRenderStepFlags = StepFlags::kNone;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 };
 

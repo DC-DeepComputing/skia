@@ -30,10 +30,18 @@ public:
     DrawBufferManager(ResourceProvider*, const Caps*);
     ~DrawBufferManager();
 
+    // TODO: Add a generic mechanism to get a GPU-only buffer slice.
+    std::tuple<void*, BindBufferInfo> getVertexBufferSlice(size_t requiredBytes);
+
     std::tuple<VertexWriter, BindBufferInfo> getVertexWriter(size_t requiredBytes);
     std::tuple<IndexWriter, BindBufferInfo> getIndexWriter(size_t requiredBytes);
     std::tuple<UniformWriter, BindBufferInfo> getUniformWriter(size_t requiredBytes);
     std::tuple<UniformWriter, BindBufferInfo> getSsboWriter(size_t requiredBytes);
+
+    // Return a buffer 
+    BindBufferInfo getUnmappedVertexBufferSlice(size_t requiredBytes);
+    BindBufferInfo getUnmappedIndexBufferSlice(size_t requiredBytes);
+    BindBufferInfo getUnmappedSsboSlice(size_t requiredBytes);
 
     // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
     // 'unusedBytes' is less than the 'requiredBytes' to the original allocation.
@@ -71,11 +79,15 @@ private:
         sk_sp<Buffer> fTransferBuffer{};
         size_t fOffset = 0;
 
+        // TODO
+        bool fClearRequested = false;
+
         Buffer* getMappableBuffer() {
             return fTransferBuffer ? fTransferBuffer.get() : fBuffer.get();
         }
     };
     std::pair<void*, BindBufferInfo> prepareBindBuffer(BufferInfo* info, size_t requiredBytes);
+    BindBufferInfo preparePrivateBindBuffer(BufferInfo* info, size_t requiredBytes);
 
     ResourceProvider* const fResourceProvider;
     const Caps* const fCaps;
@@ -85,6 +97,7 @@ private:
     static constexpr size_t kUniformBufferIndex = 2;
     static constexpr size_t kStorageBufferIndex = 3;
     std::array<BufferInfo, 4> fCurrentBuffers;
+    std::array<BufferInfo, 4> fCurrentPrivateBuffers;
 
     // Vector of buffer and transfer buffer pairs.
     std::vector<std::pair<sk_sp<Buffer>, sk_sp<Buffer>>> fUsedBuffers;

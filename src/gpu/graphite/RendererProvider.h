@@ -43,6 +43,14 @@ public:
     const Renderer* convexTessellatedWedges() const { return &fConvexTessellatedWedges; }
     const Renderer* tessellatedStrokes() const { return &fTessellatedStrokes; }
 
+    // Path rendering for fills and strokes that tessellate geometry using compute shaders.
+    const Renderer* computeConvexTessellatedWedges() const {
+        return &fComputeConvexTessellatedWedges;
+    }
+    const Renderer* computeStencilTessellatedWedges(SkPathFillType type) const {
+        return &fComputeStencilTessellatedWedges[(int)type];
+    }
+
     // Atlas'ed text rendering
     const Renderer* bitmapText() const { return &fBitmapText; }
     const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }
@@ -84,12 +92,16 @@ private:
     // Renderers are composed of 1+ steps, and some steps can be shared by multiple Renderers.
     // Renderers don't keep their RenderSteps alive so RendererProvider holds them here.
     std::vector<std::unique_ptr<RenderStep>> fRenderSteps;
+    std::vector<std::unique_ptr<ComputeStep>> fComputeSteps;
 
     // NOTE: Keep all Renderers dense to support automatically completing 'fRenderers'.
     Renderer fStencilTessellatedCurves[kPathTypeCount];
     Renderer fStencilTessellatedWedges[kPathTypeCount];
     Renderer fConvexTessellatedWedges;
     Renderer fTessellatedStrokes;
+
+    Renderer fComputeConvexTessellatedWedges;
+    Renderer fComputeStencilTessellatedWedges[kPathTypeCount];
 
     Renderer fBitmapText;
     Renderer fSDFText[2]; // bool isLCD

@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ClearBuffersTask.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DrawContext.h"
@@ -341,7 +342,7 @@ public:
     }
 
     const RenderStep& renderStep() const {
-        return fDraw->fRenderer->step(RenderStepField::get(fPipelineKey));
+        return fDraw->fRenderer->renderStep(RenderStepField::get(fPipelineKey));
     }
 
     const DrawList::Draw& draw() const { return *fDraw; }
@@ -410,7 +411,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
                                          std::pair<LoadOp, StoreOp> ops,
-                                         std::array<float, 4> clearColor) {
+                                         std::array<float, 4> clearColor,
+                                         sk_sp<ComputePassTask>* outComputeTask,
+                                         sk_sp<ClearBuffersTask>* outClearBuffersTask) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -481,7 +484,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
-            const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
+            const RenderStep* const step = draw.fRenderer->renderSteps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
 
             GraphicsPipelineCache::Index pipelineIndex = pipelineCache.insert(
@@ -581,11 +584,83 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
         }
 
-        renderStep.writeVertices(&drawWriter, draw.fDrawParams, key.shadingSsboIndex());
+        if (renderStep.requiresComputeVertexStep()) {
+            SkASSERT(draw.fRenderer->hasComputeSteps());
+
+            auto [uboWriter, ubo] = bufferMgr->getUniformWriter(64);
+            uboWriter.write(&draw.fDrawParams.transform().matrix(), 64);
+
+            // TODO: this should come from a generic buffer pool. Also this requires a 16 byte
+            // alignment
+            // Buffer sizes:
+            //      Verb Count:     80,000   |    100,000   |   1,000,000
+            //      -------------------------|--------------|--------------
+            //         Storage:  2,560,016 B |  3,200,016 B |  32,000,160 B
+            //          Vertex: 62,400,000 B | 78,000,000 B | 780,000,000 B
+            //  Index (32-bit): 62,400,000 B | 78,000,000 B | 780,000,000 B
+            // Workgroup Count:     5,013
+            // Compute Runtime:    338 us
+            //  Segments per-c:      16
+            //
+            //      at 200,000 segments, CPU-side vertex processing (MiddleOutFanRenderStep +
+            //      TessellateCurvesRenderStep) takes ~4 seconds.
+            //      Avg. compute execution 800us
+            //                 writeVertices CPU: 70ms
+            //      writeInputGeometry (compute): 20ms
+            //
+            //
+            constexpr size_t kVerbCount = 8000;//80000;//100000;
+            auto [inputPtr, inputBuffer] = bufferMgr->getVertexBufferSlice(kVerbCount * 32 + 16);
+            draw.fRenderer->computeSteps()[0]->writeInputGeometry(
+                    draw.fDrawParams,
+                    key.shadingSsboIndex(),
+                    inputPtr);
+
+            auto globalCounts = bufferMgr->getUnmappedSsboSlice(sizeof(uint16_t));
+            auto indirectBuffer = bufferMgr->getUnmappedSsboSlice(20);
+
+            constexpr size_t kVertexCount = (64 + 1) * kVerbCount;
+            constexpr size_t kIndexCount = 3 * kVertexCount;
+            auto vertexBuffer =
+                    bufferMgr->getUnmappedVertexBufferSlice(kVertexCount * renderStep.vertexStride());
+            auto indexBuffer = bufferMgr->getUnmappedIndexBufferSlice(kIndexCount * sizeof(uint32_t));
+
+            drawWriter.drawIndexedIndirect(vertexBuffer, indexBuffer, indirectBuffer);
+
+            // TODO: There's a lot to clean up:
+            // - pipeline caching/keying
+            // - compute pipeline batching
+            // - multiple compute steps
+            ComputePipelineDesc pipelineDesc;
+            pipelineDesc.setProgram(draw.fRenderer->computeSteps()[0]->computeSkSL(),
+                                    draw.fRenderer->name());
+
+            // TODO: Process up to 16 contours with up to 64 segments each. On M1 Pro the hardware
+            // workgroup size is capped at 1024 so this needs to be configured more cleverly.
+            ComputePassDesc passDesc;
+            passDesc.fGlobalDispatchSize = WorkgroupSize(
+                    ((draw.fDrawParams.geometry().shape().asPath().countVerbs() + 15) & ~15) >> 4,
+                    1,
+                    1);
+            passDesc.fLocalDispatchSize = WorkgroupSize(16, 64, 1);
+
+            *outComputeTask = ComputePassTask::Make({{/*index=*/0, ubo},
+                                                     {/*index=*/1, inputBuffer},
+                                                     {/*index=*/2, globalCounts},
+                                                     {/*index=*/3, vertexBuffer},
+                                                     {/*index=*/4, indexBuffer},
+                                                     {/*index=*/5, indirectBuffer}},
+                                                    pipelineDesc,
+                                                    passDesc);
+            *outClearBuffersTask = ClearBuffersTask::Make(
+                    {{indirectBuffer.fBuffer, indirectBuffer.fOffset, 20},
+                     {globalCounts.fBuffer, globalCounts.fOffset, 4}});
+        } else {
+            renderStep.writeVertices(&drawWriter, draw.fDrawParams, key.shadingSsboIndex());
+        }
     }
     // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();
-
 
     drawPass->fPipelineDescs   = pipelineCache.detach();
     drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();

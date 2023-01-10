@@ -13,6 +13,8 @@
 #include "include/core/SkSurfaceProps.h"
 
 #include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/ClearBuffersTask.h"
+#include "src/gpu/graphite/ComputePassTask.h"
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawTypes.h"
@@ -111,6 +113,10 @@ public:
     // Returns null if there are no pending commands or draw passes to move into a task.
     sk_sp<Task> snapRenderPassTask(Recorder*);
 
+    // TODO: document and improve the invariants.
+    sk_sp<Task> snapComputePassTask(Recorder*);
+    sk_sp<Task> snapClearBuffersTask(Recorder*);
+
     // Ends the current UploadList if needed, and moves the accumulated Uploads into an UploadTask
     // that can be drawn and depended on. The caller is responsible for configuring the returned
     // Tasks's dependencies.
@@ -148,6 +154,10 @@ private:
     // consecutive DrawPasses to the same target are stored in a DrawPassChain. A DrawContext with
     // multiple DrawPassChains is then clearly accumulating subpasses across multiple targets.
     std::vector<std::unique_ptr<DrawPass>> fDrawPasses;
+
+    // TODO: store accummulated compute passes here. Single compute task is a hack right now.
+    sk_sp<ComputePassTask> fComputePasses;
+    sk_sp<ClearBuffersTask> fClearBuffersTask;
 
     // Stores the most immediately recorded uploads into Textures. This list is mutable and
     // can be appended to, or have its commands rewritten if they are inlined into a parent DC.

@@ -169,6 +169,8 @@ skia_graphite_sources = [
   "$_src/render/TessellateCurvesRenderStep.h",
   "$_src/render/TessellateStrokesRenderStep.cpp",
   "$_src/render/TessellateStrokesRenderStep.h",
+  "$_src/render/TessellateWedgesComputeStep.cpp",
+  "$_src/render/TessellateWedgesComputeStep.h",
   "$_src/render/TessellateWedgesRenderStep.cpp",
   "$_src/render/TessellateWedgesRenderStep.h",
   "$_src/render/VerticesRenderStep.cpp",

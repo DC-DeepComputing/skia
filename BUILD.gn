@@ -2992,6 +2992,7 @@ if (skia_enable_tools) {
         "tools/viewer/ClickHandlerSlide.h",
         "tools/viewer/ClipSlide.cpp",
         "tools/viewer/ClockSlide.cpp",
+        "tools/viewer/ComputePathTessellatorsSlide.cpp",
         "tools/viewer/CowboySlide.cpp",
         "tools/viewer/DegenerateQuadsSlide.cpp",
         "tools/viewer/DegenerateTwoPtRadialsSlide.cpp",

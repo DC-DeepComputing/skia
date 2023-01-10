@@ -49,4 +49,6 @@ RenderStep::RenderStep(std::string_view className,
     }
 }
 
+ComputeStep::ComputeStep(bool handlesInputGeometry) : fHandlesInputGeometry(handlesInputGeometry) {}
+
 } // namespace skgpu::graphite

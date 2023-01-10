@@ -435,6 +435,14 @@ void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
     callback(context, nullptr);
 }
 
+void Device::drawPathUsingGpuComputeTessellation(const SkPath& path, const SkPaint& paint) {
+    this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(path)),
+                       paint, SkStrokeRec(paint), DrawFlags::kNone,
+                       /*primitiveBlender=*/nullptr,
+                       /*skipColorXform=*/false,
+                       /*useComputeTessellation=*/true);
+}
+
 bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     // TODO: we may need to share this in a more central place to handle uploads
     // to backend textures
@@ -799,7 +807,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                           const SkStrokeRec& style,
                           SkEnumBitMask<DrawFlags> flags,
                           sk_sp<SkBlender> primitiveBlender,
-                          bool skipColorXform) {
+                          bool skipColorXform,
+                          bool useComputeTessellation) {
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -825,13 +834,13 @@ void Device::drawGeometry(const Transform& localToDevice,
             // Recurse using the path and new style, while disabling downstream path effect handling
             this->drawGeometry(localToDevice, Geometry(Shape(dst)), paint, newStyle,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
-                               skipColorXform);
+                               skipColorXform, useComputeTessellation);
             return;
         } else {
             SKGPU_LOG_W("Path effect failed to apply, drawing original path.");
             this->drawGeometry(localToDevice, geometry, paint, style,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
-                               skipColorXform);
+                               skipColorXform, useComputeTessellation);
             return;
         }
     }
@@ -842,7 +851,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         // with a rect draw? What about fast paths for rrect blur masks...
         this->drawGeometry(localToDevice, geometry, paint, style,
                            flags | DrawFlags::kIgnoreMaskFilter, std::move(primitiveBlender),
-                           skipColorXform);
+                           skipColorXform, useComputeTessellation);
         return;
     }
 
@@ -853,7 +862,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         SkPath devicePath = geometry.shape().asPath();
         devicePath.transform(localToDevice.matrix().asM33());
         this->drawGeometry(Transform::Identity(), Geometry(Shape(devicePath)), paint, style, flags,
-                           std::move(primitiveBlender), skipColorXform);
+                           std::move(primitiveBlender), skipColorXform, useComputeTessellation);
         return;
     }
 
@@ -883,7 +892,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Some Renderer decisions are based on estimated fill rate, which requires the clipped bounds.
     // Since the fallbacks shouldn't change the bounds of the draw, it's okay to have evaluated the
     // clip stack before calling ChooseRenderer.
-    const Renderer* renderer = this->chooseRenderer(geometry, clip, style, /*requireMSAA=*/false);
+    const Renderer* renderer = this->chooseRenderer(geometry, clip, style, /*requireMSAA=*/false, useComputeTessellation);
     if (!renderer) {
         SKGPU_LOG_W("Skipping draw with no supported renderer.");
         return;
@@ -896,7 +905,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // client-facing, painters-order-oriented API. We assert here vs. in Renderer's constructor to
     // allow internal-oriented Renderers that are never selected for a "regular" draw call to have
     // more flexibility in their settings.
-    for (const RenderStep* step : renderer->steps()) {
+    for (const RenderStep* step : renderer->renderSteps()) {
         auto dss = step->depthStencilSettings();
         SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
                  (!dss.fDepthTestEnabled ||
@@ -1013,7 +1022,8 @@ void Device::drawClipShape(const Transform& localToDevice,
 const Renderer* Device::chooseRenderer(const Geometry& geometry,
                                        const Clip& clip,
                                        const SkStrokeRec& style,
-                                       bool requireMSAA) const {
+                                       bool requireMSAA,
+                                       bool useComputeTessellation) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkStrokeRec::Style type = style.getStyle();
 
@@ -1042,6 +1052,22 @@ const Renderer* Device::chooseRenderer(const Geometry& geometry,
     // viewport bounds, strokes and stroke-and-fills are pre-chopped to the viewport bounds outset
     // by the stroke radius (hence taking the whole style and not just its type).
 
+    if (useComputeTessellation) {
+        if (shape.convex() && !shape.inverted()) {
+            return renderers->computeConvexTessellatedWedges();
+        }
+
+        // TODO: Combine this heuristic with what is used in PathStencilCoverOp to choose between
+        // wedges curves consistently in Graphite and Ganesh.
+        const bool preferWedges = (shape.isPath() && shape.path().countVerbs() < 50) ||
+                                  clip.drawBounds().area() <= (256 * 256);
+        if (preferWedges) {
+            return renderers->computeStencilTessellatedWedges(shape.fillType());
+        }
+        return renderers->computeStencilTessellatedWedges(shape.fillType());
+        // return renderers->computeConvexTessellatedWedges();
+    }
+
     if (type == SkStrokeRec::kStroke_Style ||
         type == SkStrokeRec::kHairline_Style) {
         // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
@@ -1063,8 +1089,8 @@ const Renderer* Device::chooseRenderer(const Geometry& geometry,
     } else {
         // TODO: Combine this heuristic with what is used in PathStencilCoverOp to choose between
         // wedges curves consistently in Graphite and Ganesh.
-        const bool preferWedges = (shape.isPath() && shape.path().countVerbs() < 50) ||
-                                   clip.drawBounds().area() <= (256 * 256);
+        const bool preferWedges = true;//(shape.isPath() && shape.path().countVerbs() < 50) ||
+                                   //clip.drawBounds().area() <= (256 * 256);
 
         if (preferWedges) {
             return renderers->stencilTessellatedWedges(shape.fillType());
@@ -1101,6 +1127,16 @@ void Device::flushPendingWorkToRecorder() {
     fClip.recordDeferredClipDraws();
     auto drawTask = fDC->snapRenderPassTask(fRecorder);
     if (drawTask) {
+        // TODO: this handles the ordering for the compute task which is created and depended on by
+        // snapRenderPassTask. This structure is not great.
+        auto clearBuffersTask = fDC->snapClearBuffersTask(fRecorder);
+        if (clearBuffersTask) {
+            fRecorder->priv().add(std::move(clearBuffersTask));
+        }
+        auto computeTask = fDC->snapComputePassTask(fRecorder);
+        if (computeTask) {
+            fRecorder->priv().add(std::move(computeTask));
+        }
         fRecorder->priv().add(std::move(drawTask));
     }
 

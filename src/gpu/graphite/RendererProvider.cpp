@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/render/SDFTextRenderStep.h"
 #include "src/gpu/graphite/render/TessellateCurvesRenderStep.h"
 #include "src/gpu/graphite/render/TessellateStrokesRenderStep.h"
+#include "src/gpu/graphite/render/TessellateWedgesComputeStep.h"
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
 #include "src/gpu/graphite/render/VerticesRenderStep.h"
 #include "src/sksl/SkSLUtil.h"
@@ -69,6 +70,16 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         }
     }
 
+    // Initialize tessellating path renderers that use compute shaders.
+    auto drawPrecomputedTriangles =
+            std::make_unique<VerticesRenderStep>(PrimitiveType::kTriangles, kDirectDepthGEqualPass);
+    auto tessellateWedgesComputeStep = std::make_unique<TessellateWedgesComputeStep>();
+
+    fComputeConvexTessellatedWedges = Renderer("TessellateWedges[Compute]",
+                                               DrawTypeFlags::kShape,
+                                               tessellateWedgesComputeStep.get(),
+                                               drawPrecomputedTriangles.get());
+
     // The tessellating path renderers that use stencil can share the cover steps.
     auto coverFill = std::make_unique<CoverBoundsRenderStep>(false);
     auto coverInverse = std::make_unique<CoverBoundsRenderStep>(true);
@@ -83,6 +94,11 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                   "evenodd", infinitySupport, kEvenOddStencilPass, bufferManager)
                         : std::make_unique<TessellateWedgesRenderStep>(
                                   "winding", infinitySupport, kWindingStencilPass, bufferManager);
+        auto precomputedTrianglesWithStencil =
+                evenOdd ? std::make_unique<VerticesRenderStep>(PrimitiveType::kTriangles,
+                                                               kEvenOddStencilPass)
+                        : std::make_unique<VerticesRenderStep>(PrimitiveType::kTriangles,
+                                                               kWindingStencilPass);
 
         for (bool inverse : {false, true}) {
             static const char* kTessVariants[4] =
@@ -105,15 +121,26 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                                         kTextAndShape,
                                                         stencilWedge.get(),
                                                         coverStep);
+
+            fComputeStencilTessellatedWedges[index] =
+                    Renderer("StencilTessellatedWedges[Compute]" + variant,
+                             DrawTypeFlags::kShape,
+                             tessellateWedgesComputeStep.get(),
+                             precomputedTrianglesWithStencil.get(),
+                             coverStep);
         }
 
         fRenderSteps.push_back(std::move(stencilFan));
         fRenderSteps.push_back(std::move(stencilCurve));
         fRenderSteps.push_back(std::move(stencilWedge));
+        fRenderSteps.push_back(std::move(precomputedTrianglesWithStencil));
     }
 
     fRenderSteps.push_back(std::move(coverInverse));
     fRenderSteps.push_back(std::move(coverFill));
+    fRenderSteps.push_back(std::move(drawPrecomputedTriangles));
+
+    fComputeSteps.push_back(std::move(tessellateWedgesComputeStep));
 
     // Fill out 'fRenderers' by iterating the "span" from fStencilTessellatedCurves to fRenderers
     // and checking if they've been skipped or not.

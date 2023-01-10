@@ -101,6 +101,14 @@ enum class LastRemovedRef {
     kCache,
 };
 
+/**
+ * Should the region of a buffer be cleared to 0 before it gets used on the GPU.
+ */
+enum class ClearBufferBeforeUse : bool {
+    kNo = false,
+    kYes = true,
+};
+
 /*
  * Struct that can be passed into bind buffer calls on the CommandBuffer. The ownership of the
  * buffer and its usage in command submission must be tracked by the caller (e.g. as with

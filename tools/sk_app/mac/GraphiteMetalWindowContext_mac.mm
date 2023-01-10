@@ -54,6 +54,7 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     fMetalLayer = [CAMetalLayer layer];
     fMetalLayer.device = fDevice.get();
     fMetalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
+    fMetalLayer.allowsNextDrawableTimeout = NO;
 
     // resize ignores the passed values and uses the fMainView directly.
     this->resize(0, 0);

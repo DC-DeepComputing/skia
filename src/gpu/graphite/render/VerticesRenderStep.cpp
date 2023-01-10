@@ -65,22 +65,57 @@ std::string variant_name(PrimitiveType type, bool hasColor, bool hasTexCoords) {
     return name;
 }
 
+SkEnumBitMask<RenderStep::Flags> step_flags(bool performsShading,
+                                            bool hasColor,
+                                            bool usesComputeTessellation) {
+    using Flags = RenderStep::Flags;
+    SkEnumBitMask<Flags> flags = Flags::kNone;
+    if (performsShading) {
+        flags |= Flags::kPerformsShading;
+    }
+    if (hasColor) {
+        flags |= Flags::kEmitsPrimitiveColor;
+    }
+    if (usesComputeTessellation) {
+        flags |= Flags::kRequiresComputeVertexStep;
+        flags |= Flags::kRequiresMSAA;
+    }
+    return flags;
+}
+
 }  // namespace
 
 VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool hasTexCoords)
-        : RenderStep("VerticesRenderStep",
-                     variant_name(type, hasColor, hasTexCoords),
-                     hasColor ? Flags::kEmitsPrimitiveColor | Flags::kPerformsShading
-                              : Flags::kPerformsShading,
+        : RenderStep(
+                  "VerticesRenderStep",
+                  variant_name(type, hasColor, hasTexCoords),
+                  step_flags(/*performsShading=*/true, hasColor, /*usesComputeTessellation=*/false),
+                  /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},
+                                {"depth", SkSLType::kFloat}},
+                  type,
+                  kDirectDepthGEqualPass,
+                  /*vertexAttrs=*/kAttributes[2 * hasTexCoords + hasColor],
+                  /*instanceAttrs=*/{},
+                  /*varyings=*/kVaryings[hasColor])
+        , fHasColor(hasColor)
+        , fHasTexCoords(hasTexCoords) {}
+
+VerticesRenderStep::VerticesRenderStep(PrimitiveType type,
+                                       DepthStencilSettings depthStencilSettings)
+        : RenderStep("VerticesRenderStep-compute",
+                     variant_name(type, /*hasColor=*/false, /*hasTexCoords=*/false),
+                     step_flags(/*performsShading=*/depthStencilSettings.fDepthWriteEnabled,
+                                /*hasColor=*/false,
+                                /*usesComputeTessellation=*/true),
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},
                                    {"depth", SkSLType::kFloat}},
                      type,
-                     kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/  kAttributes[2*hasTexCoords + hasColor],
+                     depthStencilSettings,
+                     /*vertexAttrs=*/kAttributePositionOnly,
                      /*instanceAttrs=*/{},
-                     /*varyings=*/     kVaryings[hasColor])
-        , fHasColor(hasColor)
-        , fHasTexCoords(hasTexCoords) {}
+                     /*varyings=*/{})
+        , fHasColor(false)
+        , fHasTexCoords(false) {}
 
 VerticesRenderStep::~VerticesRenderStep() {}
 

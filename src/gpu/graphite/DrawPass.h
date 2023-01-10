@@ -26,7 +26,9 @@ struct SkImageInfo;
 namespace skgpu::graphite {
 
 class BoundsManager;
+class ClearBuffersTask;
 class CommandBuffer;
+class ComputePassTask;
 class DrawList;
 class GraphicsPipeline;
 class Recorder;
@@ -55,12 +57,15 @@ class DrawPass {
 public:
     ~DrawPass();
 
+    // TODO: Is this the best place to construct dependent compute passes?
     static std::unique_ptr<DrawPass> Make(Recorder*,
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy> target,
                                           const SkImageInfo& targetInfo,
                                           std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor);
+                                          std::array<float, 4> clearColor,
+                                          sk_sp<ComputePassTask>* outComputeTask,
+                                          sk_sp<ClearBuffersTask>* outClearBuffersTask);
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.

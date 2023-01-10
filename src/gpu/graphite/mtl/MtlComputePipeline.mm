@@ -49,6 +49,7 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(ResourceProvider* resourcePro
 
     (*psoDescriptor).label = @(pipelineDesc.name().c_str());
     (*psoDescriptor).computeFunction = [shaderLibrary.get() newFunctionWithName:@"computeMain"];
+    (*psoDescriptor).threadGroupSizeIsMultipleOfThreadExecutionWidth = YES;
 
     // TODO(b/240604614): Populate input data attribute and buffer layout descriptors using the
     // `stageInputDescriptor` property based on the contents of `pipelineDesc` (on iOS 10+ or
