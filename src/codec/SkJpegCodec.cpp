@@ -18,22 +18,31 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAInfo.h"
+#include "include/private/SkFloatingPoint.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
+#include "include/utils/SkParse.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegDecoderMgr.h"
+#include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegPriv.h"
+#include "src/codec/SkJpegSegmentScan.h"
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/codec/SkSwizzler.h"
+
+#ifdef SK_XML
+#include "src/xml/SkDOM.h"
+#endif
 
 #include <array>
 #include <csetjmp>
 #include <cstring>
 #include <utility>
+#include <vector>
 
 class SkSampler;
 
@@ -179,10 +188,12 @@ sk_sp<const SkData> read_xmp_metadata(jpeg_decompress_struct* dinfo) {
     return read_metadata_marker(dinfo, kXMPMarker, kXMPSig, sizeof(kXMPSig));
 }
 
-SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
-        JpegDecoderMgr** decoderMgrOut,
+SkCodec::Result SkJpegCodec::ReadHeader(
+        SkStream* stream,
+        SkCodec** codecOut,
+        std::unique_ptr<JpegDecoderMgr>* decoderMgrOut,
+        sk_sp<const SkData>* xmpMetadataOut,
         std::unique_ptr<SkEncodedInfo::ICCProfile> defaultColorProfile) {
-
     // Create a JpegDecoderMgr to own all of the decompress information
     std::unique_ptr<JpegDecoderMgr> decoderMgr(new JpegDecoderMgr(stream));
 
@@ -203,6 +214,9 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
         jpeg_save_markers(dinfo, kExifMarker, 0xFFFF);
         jpeg_save_markers(dinfo, kICCMarker, 0xFFFF);
     }
+    if (xmpMetadataOut) {
+        jpeg_save_markers(dinfo, kXMPMarker, 0xFFFF);
+    }
 
     // Read the jpeg header
     switch (jpeg_read_header(dinfo, true)) {
@@ -212,6 +226,10 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
             return decoderMgr->returnFailure("ReadHeader", kIncompleteInput);
         default:
             return decoderMgr->returnFailure("ReadHeader", kInvalidInput);
+    }
+
+    if (xmpMetadataOut) {
+        *xmpMetadataOut = read_xmp_metadata(dinfo);
     }
 
     if (codecOut) {
@@ -263,7 +281,7 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
         *codecOut = codec;
     } else {
         SkASSERT(nullptr != decoderMgrOut);
-        *decoderMgrOut = decoderMgr.release();
+        *decoderMgrOut = std::move(decoderMgr);
     }
     return kSuccess;
 }
@@ -276,7 +294,7 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> s
 std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
         Result* result, std::unique_ptr<SkEncodedInfo::ICCProfile> defaultColorProfile) {
     SkCodec* codec = nullptr;
-    *result = ReadHeader(stream.get(), &codec, nullptr, std::move(defaultColorProfile));
+    *result = ReadHeader(stream.get(), &codec, nullptr, nullptr, std::move(defaultColorProfile));
     if (kSuccess == *result) {
         // Codec has taken ownership of the stream, we do not need to delete it
         SkASSERT(codec);
@@ -362,12 +380,12 @@ SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
 }
 
 bool SkJpegCodec::onRewind() {
-    JpegDecoderMgr* decoderMgr = nullptr;
-    if (kSuccess != ReadHeader(this->stream(), nullptr, &decoderMgr, nullptr)) {
+    std::unique_ptr<JpegDecoderMgr> decoderMgr;
+    if (kSuccess != ReadHeader(this->stream(), nullptr, &decoderMgr, nullptr, nullptr)) {
         return fDecoderMgr->returnFalse("onRewind");
     }
     SkASSERT(nullptr != decoderMgr);
-    fDecoderMgr.reset(decoderMgr);
+    fDecoderMgr = std::move(decoderMgr);
 
     fSwizzler.reset(nullptr);
     fSwizzleSrcRow = nullptr;
@@ -1041,8 +1059,184 @@ bool SkGetJpegInfo(const void* data, size_t len,
 
 bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
                                    std::unique_ptr<SkStream>* gainmapImageStream) {
-    // TODO(ccameron): Parse gainmap here.
-    *info = SkGainmapInfo();
+    // The current implementation of Multi-Picture images requires a seekable stream.
+    // Save the position so that it can be restored before returning.
+    if (!stream()->hasPosition()) {
+        SkCodecPrintf("Multi-Picture gainmap extraction requires a seekable stream.\n");
+        return false;
+    }
+    size_t streamPositionToRestore = stream()->getPosition();
+    if (!stream()->rewind()) {
+        SkCodecPrintf("Failed to rewind decoder stream.\n");
+        return false;
+    }
+
+    bool result = false;
+    result = getGainmapInfoMultiPicture(info, gainmapImageStream);
+
+    if (!stream()->seek(streamPositionToRestore)) {
+        SkCodecPrintf("Failed reset decoder stream.\n");
+    }
+    return result;
+}
+
+#ifdef SK_XML
+/*
+ * Helper function to search through an XML tree for a node that indicating that the image is an HDR
+ * gainmap.
+ */
+static bool FindHDRGainMapNode(const SkDOM& dom, const SkDOM::Node* node, SkGainmapInfo* info) {
+    // Search children for a match before checking this node.
+    if (!node) {
+        return false;
+    }
+    for (const auto* child = dom.getFirstChild(node); child; child = dom.getNextSibling(child)) {
+        if (FindHDRGainMapNode(dom, child, info)) {
+            return true;
+        }
+    }
+
+    // Search for an node that matches the following XML block.
+    //
+    //   <rdf:Description rdf:about=""
+    //         xmlns:apdi="http://ns.apple.com/pixeldatainfo/1.0/"
+    //         xmlns:HDRGainMap="http://ns.apple.com/HDRGainMap/1.0/">
+    //      <apdi:AuxiliaryImageType>urn:com:apple:photo:2020:aux:hdrgainmap</apdi:AuxiliaryImageType>
+    //      <apdi:StoredFormat>1278226488</apdi:StoredFormat>
+    //      <apdi:NativeFormat>1278226488</apdi:NativeFormat>
+    //      <HDRGainMap:HDRGainMapVersion>65536</HDRGainMap:HDRGainMapVersion>
+    //   </rdf:Description>
+    //
+    // The StoredFormat and NativeFormat correspond to 'L008' or kCVPixelFormatType_OneComponent8,
+    // which is redundant information, so ignore these. Require all other fields.
+    if (dom.getType(node) != SkDOM::kElement_Type) {
+        return false;
+    }
+    const char* nodeName = dom.getName(node);
+    if (!nodeName || strcmp("rdf:Description", nodeName)) {
+        return false;
+    }
+    if (!dom.hasAttr(node, "xmlns:apdi", "http://ns.apple.com/pixeldatainfo/1.0/")) {
+        return false;
+    }
+    if (!dom.hasAttr(node, "xmlns:HDRGainMap", "http://ns.apple.com/HDRGainMap/1.0/")) {
+        return false;
+    }
+    bool foundExpectedVersion = false;
+    bool foundExpectedAuxiliaryImageType = false;
+    for (const auto* child = dom.getFirstChild(node); child; child = dom.getNextSibling(child)) {
+        const char* childName = dom.getName(child);
+        if (!childName) {
+            continue;
+        }
+        if (!strcmp("HDRGainMap:HDRGainMapVersion", childName)) {
+            for (const auto* grandChild = dom.getFirstChild(child); grandChild;
+                 grandChild = dom.getNextSibling(grandChild)) {
+                if (dom.getType(grandChild) != SkDOM::kText_Type) {
+                    continue;
+                }
+                const char* grandChildName = dom.getName(grandChild);
+                if (!grandChildName) {
+                    continue;
+                }
+                int32_t value = 0;
+                if (!SkParse::FindS32(grandChildName, &value)) {
+                    continue;
+                }
+                if (value == 65536) {
+                    foundExpectedVersion = true;
+                }
+            }
+        }
+        if (!strcmp("apdi:AuxiliaryImageType", childName)) {
+            for (const auto* grandChild = dom.getFirstChild(child); grandChild;
+                 grandChild = dom.getNextSibling(grandChild)) {
+                if (dom.getType(grandChild) != SkDOM::kText_Type) {
+                    continue;
+                }
+                const char* grandChildName = dom.getName(grandChild);
+                if (!grandChildName) {
+                    continue;
+                }
+                if (!strstr(grandChildName, "urn:com:apple:photo:2020:aux:hdrgainmap")) {
+                    continue;
+                }
+                foundExpectedAuxiliaryImageType = true;
+            }
+        }
+    }
+    if (!foundExpectedVersion || !foundExpectedAuxiliaryImageType) {
+        return false;
+    }
+
+    constexpr float kLogRatioMin = 0.f;
+    constexpr float kLogRatioMax = 1.f;
+    info->fLogRatioMin = {kLogRatioMin, kLogRatioMin, kLogRatioMin, 1.f};
+    info->fLogRatioMax = {kLogRatioMax, kLogRatioMax, kLogRatioMax, 1.f};
+    info->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
+    info->fEpsilonSdr = 1 / 128.f;
+    info->fEpsilonHdr = 1 / 128.f;
+    info->fHdrRatioMin = 1.f;
+    info->fHdrRatioMax = sk_float_exp(kLogRatioMax);
+    return true;
+}
+#endif
+
+bool SkJpegCodec::getGainmapInfoMultiPicture(SkGainmapInfo* info,
+                                             std::unique_ptr<SkStream>* gainmapImageStream) {
+#ifdef SK_XML
+    // Create a scan to use for creating Multi-Picture image streams.
+    auto scan = SkJpegSegmentScan::Create(stream(), SkJpegSegmentScan::Options());
+    if (!scan) {
+        return false;
+    }
+
+    // Extract the Multi-Picture image streams.
+    auto mpStreams = SkJpegExtractMultiPictureStreams(scan.get());
+    if (!mpStreams) {
+        return false;
+    }
+
+    // Iterate over the Multi-Picture image streams.
+    for (auto& mpImage : mpStreams->images) {
+        if (!mpImage.stream) {
+            continue;
+        }
+
+        // Read the JPEG header (everything up to StartOfStream) from the stream to find the
+        // XMP metadata.
+        std::unique_ptr<JpegDecoderMgr> decoderMgr;
+        sk_sp<const SkData> xmpMetadata;
+        SkCodec::Result readHeaderResult =
+                ReadHeader(mpImage.stream.get(), nullptr, &decoderMgr, &xmpMetadata, nullptr);
+        if (kSuccess != readHeaderResult || !xmpMetadata) {
+            continue;
+        }
+
+        // Parse the XMP metadata.
+        std::unique_ptr<SkMemoryStream> xmlStream =
+                SkMemoryStream::MakeDirect(xmpMetadata->data(), xmpMetadata->size());
+        if (!xmlStream) {
+            continue;
+        }
+
+        // Search for a gainmap-indicating node in the XML tree.
+        SkDOM dom;
+        if (!FindHDRGainMapNode(dom, dom.build(*xmlStream), info)) {
+            continue;
+        }
+
+        // This is indeed the gainmap.
+        if (gainmapImageStream) {
+            if (!mpImage.stream->rewind()) {
+                SkCodecPrintf("Failed to rewind gainmap image stream.\n");
+                return false;
+            }
+            *gainmapImageStream = std::move(mpImage.stream);
+        }
+        return true;
+    }
+#endif
     return false;
 }
 
