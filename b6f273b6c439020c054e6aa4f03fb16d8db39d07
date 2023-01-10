@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c93b72_85d5f6d0",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-01-10T23:34:52Z",
+      "side": 1,
+      "message": "should this be a SkData? Otherwise if this is a SkStream it suggests there\u0027s some overlap with the initial stream to me. Or is that the case? in which case how does that work?",
+      "range": {
+        "startLine": 279,
+        "startChar": 73,
+        "endLine": 279,
+        "endChar": 81
+      },
+      "revId": "b6f273b6c439020c054e6aa4f03fb16d8db39d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
