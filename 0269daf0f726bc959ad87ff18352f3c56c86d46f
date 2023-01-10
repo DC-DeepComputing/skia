@@ -33,6 +33,24 @@
       "message": "What\u0027s the source of the image? (Just wondering about copyright, etc...)",
       "revId": "0269daf0f726bc959ad87ff18352f3c56c86d46f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5705428f_e53dcd8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T14:45:27Z",
+      "side": 1,
+      "message": "This came from google3 (codesearch for apple_hdr_and_depth.jpg). I talked with the uploader and it\u0027s a personal image shot on an iPhone 13 pro that they uploaded for testing, and they gave permission to upload to public repositories for testing.",
+      "parentUuid": "686c9e69_ce831ab4",
+      "revId": "0269daf0f726bc959ad87ff18352f3c56c86d46f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
