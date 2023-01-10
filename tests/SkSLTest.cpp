@@ -39,6 +39,7 @@
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "src/sksl/tracing/SkRPDebugTrace.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -403,10 +404,11 @@ static void test_raster_pipeline(skiatest::Reporter* r, const char* testFile, in
     // Compile our program.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/1000);
     SkRasterPipeline pipeline(&alloc);
+    SkSL::SkRPDebugTrace debugTrace;
     std::unique_ptr<SkSL::RP::Program> rasterProg =
             SkSL::MakeRasterPipelineProgram(*program,
                                             *main->definition(),
-                                            /*debugTrace=*/nullptr);
+                                            &debugTrace);
     if (!rasterProg) {
         report_rp_fail(r, testFile, flags, "code is not supported");
         return;
