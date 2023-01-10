@@ -288,8 +288,8 @@ std::tuple<SkRect, size_t> SkScalerCache::prepareForMaskDrawing(
         if (SkScalarsAreFinite(pos.x(), pos.y())) {
             auto [digest, glyphIncrease] = this->digest(packedID);
             increase += glyphIncrease;
+            // N.B. this must have the same behavior as RemoteStrike::prepareForMaskDrawing.
             if (!digest.isEmpty()) {
-                // N.B. this must have the same behavior as RemoteStrike::prepareForMaskDrawing.
                 if (digest.canDrawAsMask()) {
                     const SkGlyphRect glyphBounds = digest.bounds().offset(pos);
                     boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
