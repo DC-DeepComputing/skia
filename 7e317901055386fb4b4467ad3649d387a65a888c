@@ -16,6 +16,24 @@
       "message": "Ewww.... I don\u0027t want part of chromium\u0027s build to be in Skia. I have no issue with Skia making it easy to list out all of its file in lists so others can use them for building, but this is super awkward. Chromium\u0027s build should be in Chromium. If this is the kind of thing that is needed, then each of the codecs should be an independent target with its own list, so that Chromium can the add which ever it wants.",
       "revId": "7e317901055386fb4b4467ad3649d387a65a888c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "570ceedc_4661dddd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-10T18:33:48Z",
+      "side": 1,
+      "message": "I wanted that too, but some of the codecs have an overlap of files they need (e.g. SkEncodedInfo.cpp). GN doesn\u0027t like the same source file to be listed multiple times (Bazel just deduplicates this). So I would have to slightly re-write the bazel rules to make different GN rules possible.\n\nMaybe that\u0027s worth it. For now, I\u0027ll undo the chromium part so I can land the gni_exporter change.",
+      "parentUuid": "6cbc946f_3a3d3f0c",
+      "revId": "7e317901055386fb4b4467ad3649d387a65a888c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
