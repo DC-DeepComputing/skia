@@ -116,9 +116,20 @@ declare_args() {
   skia_enable_skshaper_tests = skia_enable_skshaper
 }`
 
+// The footer written to gn/gpu.gni.
+const gpuGNIFooter = `
+# TODO(kjlubick) Update clients to use the individual targets
+# instead of the monolithic ones.
+skia_gpu_sources = skia_gpu_public + skia_gpu_private
+skia_gl_gpu_sources = skia_gpu_gl_public + skia_gpu_gl_private + skia_gpu_chromium_public
+skia_vk_sources = skia_gpu_vk_public + skia_gpu_vk_private
+
+`
+
 // Map of GNI file names to footer text to be appended to the end of the file.
 var footerMap = map[string]string{
 	"gn/core.gni":                   coreGNIFooter,
+	"gn/gpu.gni":                    gpuGNIFooter,
 	"gn/sksl_tests.gni":             skslTestsFooter,
 	"modules/skshaper/skshaper.gni": skshaperFooter,
 }
