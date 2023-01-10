@@ -16,6 +16,23 @@
       "message": "First gainmap format down!",
       "revId": "0ab909e2a1f378765120ae2bde925fe02a84ef00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41547913_df151b44",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-10T20:59:09Z",
+      "side": 1,
+      "message": "Rather than tying this stuff to expat, I think we should make a separate GN argument:\n\n1) Add something like `skia_decode_jpeg_gainmaps \u003d false` to skia.gni. Alternately, we could default it to match `skia_use_libjpeg_turbo_decode`, but I\u0027m thinking we keep it opt-in for now?\n\n2) Adjust the \"xml\" component so that it\u0027s `enabled` is now `skia_use_expat || skia_decode_jpeg_gainmaps`\n\n3) Here, add `\":xml\"` to the `deps` list. That will get us the `SK_XML` define for free (it\u0027s in the public_defines of `xml`), but I actually think we should avoid using that in the code to detect the feature presence. Instead...\n\nI was going to suggest we go all out, and put the gainmap stuff in a separate component, but I think instead we can do it all right here:\n\n4) Add a block:\n```if (skia_decode_jpeg_gainmaps) {\n    deps +\u003d [ \":xml\" ]\n    sources +\u003d [ \"src/codec/SkJpegGainmap.cpp\" ]\n    defines +\u003d [ \"SK_CODEC_DECODES_JPEG_GAINMAPS\" ]\n}```\n\n... then, use the new define in SkJpegCodec to guard the impl of onGetGainmapInfo. Everything else in the code can remain unguarded (I don\u0027t think it\u0027s a big deal to tell libjpeg to keep the markers around?).",
+      "revId": "0ab909e2a1f378765120ae2bde925fe02a84ef00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
