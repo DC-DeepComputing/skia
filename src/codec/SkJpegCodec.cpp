@@ -18,7 +18,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAInfo.h"
-#include "include/private/SkGainmapInfo.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMalloc.h"
@@ -26,6 +25,7 @@
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegDecoderMgr.h"
+#include "src/codec/SkJpegGainmap.h"  // IWYU pragma: keep
 #include "src/codec/SkJpegPriv.h"
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/codec/SkSwizzler.h"
@@ -36,6 +36,7 @@
 #include <utility>
 
 class SkSampler;
+struct SkGainmapInfo;
 
 // This warning triggers false postives way too often in here.
 #if defined(__GNUC__) && !defined(__clang__)
@@ -202,6 +203,7 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
     if (codecOut) {
         jpeg_save_markers(dinfo, kExifMarker, 0xFFFF);
         jpeg_save_markers(dinfo, kICCMarker, 0xFFFF);
+        jpeg_save_markers(dinfo, kMpfMarker, 0xFFFF);
     }
 
     // Read the jpeg header
@@ -1020,6 +1022,7 @@ bool SkGetJpegInfo(const void* data, size_t len,
     jpeg_decompress_struct* dinfo = decoderMgr.dinfo();
     jpeg_save_markers(dinfo, kExifMarker, 0xFFFF);
     jpeg_save_markers(dinfo, kICCMarker, 0xFFFF);
+    jpeg_save_markers(dinfo, kMpfMarker, 0xFFFF);
     if (JPEG_HEADER_OK != jpeg_read_header(dinfo, true)) {
         return false;
     }
@@ -1041,8 +1044,14 @@ bool SkGetJpegInfo(const void* data, size_t len,
 
 bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
                                    std::unique_ptr<SkStream>* gainmapImageStream) {
-    // TODO(ccameron): Parse gainmap here.
-    *info = SkGainmapInfo();
+#ifdef SK_XML
+    // Attempt to extract Multi-Picture Format gainmap formats.
+    auto mpfMetadata =
+            read_metadata_marker(fDecoderMgr->dinfo(), kMpfMarker, kMpfSig, sizeof(kMpfSig));
+    if (SkJpegGetMultiPictureGainmap(mpfMetadata, stream(), info, gainmapImageStream)) {
+        return true;
+    }
+#endif  // SK_XML
     return false;
 }
 
