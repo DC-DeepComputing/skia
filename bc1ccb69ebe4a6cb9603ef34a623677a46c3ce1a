@@ -46,6 +46,30 @@
       },
       "revId": "bc1ccb69ebe4a6cb9603ef34a623677a46c3ce1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77520d9c_d6604f4d",
+        "filename": "src/gpu/graphite/ClearBuffersTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-10T14:40:34Z",
+      "side": 1,
+      "message": "BufferProxy might be up in the air, but if we don\u0027t end up with buffer proxies, I think `const Buffer*` makes sense in this case, since the Buffer for compute is possibly cleared many times in a Recording between render encoders, so it only has to be ref\u0027ed by the recording once. Assuming there ends up being a good spot to consolidate those ownership tracking (since this is outside the BufferManager, which was doing it for other buffers), we can hopefully do a consistency pass over all the tasks to settle on one way of doing things.",
+      "parentUuid": "82985b68_96fbc83f",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "bc1ccb69ebe4a6cb9603ef34a623677a46c3ce1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
