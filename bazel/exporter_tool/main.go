@@ -18,6 +18,36 @@ import (
 )
 
 var gniExportDescs = []exporter.GNIExportDesc{
+	{GNI: "gn/codec.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "skia_codec_chromium",
+			Rules: []string{
+				"//src/codec:core_hdrs",
+				"//src/codec:core_srcs",
+				"//src/codec:decode_bmp_hdrs",
+				"//src/codec:decode_bmp_srcs",
+				"//src/codec:decode_gif_hdrs",
+				"//src/codec:decode_gif_srcs",
+				"//src/codec:decode_jpeg_hdrs",
+				"//src/codec:decode_jpeg_srcs",
+				"//src/codec:decode_png_hdrs",
+				"//src/codec:decode_png_srcs",
+				"//src/codec:decode_webp_hdrs",
+				"//src/codec:decode_webp_srcs",
+			},
+		},
+		{Var: "skia_codec_core",
+			Rules: []string{
+				"//src/codec:core_hdrs",
+				"//src/codec:core_srcs",
+			},
+		},
+		{Var: "skia_codec_decode_bmp",
+			Rules: []string{
+				"//src/codec:decode_bmp_hdrs",
+				"//src/codec:decode_bmp_srcs",
+			},
+		},
+	}},
 	{GNI: "gn/core.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_core_public",
 			Rules: []string{"//include/core:public_hdrs"}},
