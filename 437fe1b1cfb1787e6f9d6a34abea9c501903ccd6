@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb0aa3a_af1ca5bd",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T16:18:25Z",
+      "side": 1,
+      "message": "I still don\u0027t understand this. Please let me know exactly what configuration causes an issue so I can take a look. (\"In some cases\" is not enough information here.) `sanitize` is in the `declare_args()` of `gn/BUILDCONFIG.gn` so should be set in every build of Skia done in Skia. It appears that this is done in `gn/BUILDCONFIG.gn` so that it is always set everywhere (it appears `third_party/freetype2/BUILD.gn` is using it to default to building FreeType from source in an MSAN build).\n\nNow if it is some flutter or other build, then maybe I could see some issue happening, though I\u0027m not sure why this file would come up in those builds. This file is specifically Skia Build setting itself up to build Skia. Other projects would set up their general build in their own way and shouldn\u0027t be using this file?",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6acef9f2_6599ecf5",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T16:18:25Z",
+      "side": 1,
+      "message": "There really cannot be a \"default\" here. The build is either building none, one, or both of these. If neither is being built, that\u0027s fine too. In other words, I don\u0027t see the point of this addition.",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a616e58_d598d434",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T16:18:25Z",
+      "side": 1,
+      "message": "This ifdef is no longer needed or really wanted. The method now always exists and will return `nullptr` if the implementation isn\u0027t compiled in.",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46abc863_29e2a5e7",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T16:18:25Z",
+      "side": 1,
+      "message": "This ifdef is no longer needed or really wanted. The method now always exists and will return `nullptr` if the implementation isn\u0027t compiled in.\n\nWith all these ifdefs removed, the \"IMPLEMENTATION\" details no longer need to be public.",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
