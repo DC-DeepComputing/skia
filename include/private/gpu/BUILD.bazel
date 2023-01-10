@@ -7,6 +7,7 @@ exports_files_legacy()
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
+        "GrConfig.h",
         "//include/private/gpu/ganesh:private_hdrs",
     ] + select_multi(
         {

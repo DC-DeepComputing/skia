@@ -9,7 +9,7 @@
 #define GrThreadSafePipelineBuilder_Base_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/GrConfig.h"
+#include "include/private/gpu/GrConfig.h"
 #include <atomic>
 
 #if GR_TEST_UTILS
