@@ -10,6 +10,7 @@
 
 #include "include/core/SkPaint.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "include/private/gpu/GrConfig.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/ganesh/Device_v1.h"
 #include "src/gpu/ganesh/GrImageContextPriv.h"

@@ -12,6 +12,10 @@
 #include "include/core/SkMath.h"
 #include "include/private/SkTPin.h"
 #include "include/private/base/SkTo.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkTypes.h"
+
+#include <cstdint>
 
 /** Turn 0..255 into 0..256 by adding 1 at the half-way point. Used to turn a
     byte into a scale value, so that we can say scale * value >> 8 instead of

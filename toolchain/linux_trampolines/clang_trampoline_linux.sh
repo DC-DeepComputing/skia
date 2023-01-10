@@ -39,6 +39,7 @@ supported_files_or_dirs=(
   "src/core/SkFloatingPoint.cpp"
   "src/core/SkGeometry.cpp"
   "src/core/SkGlyph.cpp"
+  "src/core/SkImageInfo.cpp"
   "src/core/SkLineClipper.cpp"
   "src/core/SkMaskFilter.cpp"
   "src/core/SkMatrix.cpp"
