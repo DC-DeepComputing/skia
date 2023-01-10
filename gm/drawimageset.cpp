@@ -119,7 +119,7 @@ private:
         // rotation
         matrices[0].setRotate(30);
         matrices[0].postTranslate(d / 3, 0);
-        // perespective
+        // perspective
         SkPoint src[4];
         SkRect::MakeWH(kM * kTileW, kN * kTileH).toQuad(src);
         SkPoint dst[4] = {{0, 0},

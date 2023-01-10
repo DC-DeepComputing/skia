@@ -99,6 +99,9 @@ public:
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
+    sk_sp<SkImage> onMakeSubset2(const SkIRect&,
+                                 skgpu::graphite::Recorder*,
+                                 RequiredImageProperties) const override;
 
     SkPixelRef* getPixelRef() const { return fBitmap.pixelRef(); }
 
@@ -276,25 +279,62 @@ bool SkImage_Raster::isPinnedOnContext(GrRecordingContext* rContext) const {
 }
 #endif
 
-sk_sp<SkImage> SkImage_Raster::onMakeSubset(const SkIRect& subset, GrDirectContext*) const {
-    SkImageInfo info = fBitmap.info().makeDimensions(subset.size());
+static sk_sp<SkImage> make_raster(const SkBitmap& origBitmap,
+                                  const SkIRect& subset,
+                                  bool withMipmaps) {
+    SkImageInfo info = origBitmap.info().makeDimensions(subset.size());
     SkBitmap bitmap;
     if (!bitmap.tryAllocPixels(info)) {
         return nullptr;
     }
 
     void* dst = bitmap.getPixels();
-    void* src = fBitmap.getAddr(subset.x(), subset.y());
+    void* src = origBitmap.getAddr(subset.x(), subset.y());
     if (!dst || !src) {
         SkDEBUGFAIL("SkImage_Raster::onMakeSubset with nullptr src or dst");
         return nullptr;
     }
 
-    SkRectMemcpy(dst, bitmap.rowBytes(), src, fBitmap.rowBytes(), bitmap.rowBytes(),
+    SkRectMemcpy(dst, bitmap.rowBytes(), src, origBitmap.rowBytes(), bitmap.rowBytes(),
                  subset.height());
+
+    if (withMipmaps) {
+        bitmap.fMips.reset(SkMipmap::Build(bitmap.pixmap(), nullptr));
+#if 0
+        SkMipmapBuilder builder(img->imageInfo());
+
+        static void fill_in_mips(SkMipmapBuilder* builder, sk_sp<SkImage> img) {
+            int count = builder->countLevels();
+            for (int i = 0; i < count; ++i) {
+                SkPixmap pm = builder->level(i);
+                auto surf = SkSurface::MakeRasterDirect(pm);
+                surf->getCanvas()->drawImageRect(img, SkRect::MakeIWH(pm.width(), pm.height()),
+                                                 SkSamplingOptions());
+            }
+        }
+#endif
+    }
 
     bitmap.setImmutable();
     return bitmap.asImage();
+}
+
+sk_sp<SkImage> SkImage_Raster::onMakeSubset(const SkIRect& subset, GrDirectContext*) const {
+    return make_raster(fBitmap, subset, /* withMipmaps= */ false);
+}
+
+sk_sp<SkImage> SkImage_Raster::onMakeSubset2(const SkIRect& subset,
+                                             skgpu::graphite::Recorder* recorder,
+                                             RequiredImageProperties requiredProperties) const {
+    bool addRasterMipmaps = requiredProperties.fMipmapped == skgpu::graphite::Mipmapped::kYes;
+
+    sk_sp<SkImage> img = make_raster(fBitmap, subset, addRasterMipmaps);
+
+    if (recorder) {
+        return img->makeTextureImage(recorder, requiredProperties);
+    } else {
+        return img;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
