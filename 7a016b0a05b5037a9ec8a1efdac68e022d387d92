@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92907671_c8e8d78a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-10T16:43:47Z",
+      "side": 1,
+      "message": "A couple of things about this felt a little sketchy to me: 1) tracking the replay transform as a field on the command buffer and applying it to scissors this way, and 2) deciding to use a replay transform based on whether we are rendering to a deferred target / fully-lazy texture proxy. I think these are generally correct approaches to supporting replay transforms but I\u0027m open to other ideas.\n\nI also want to make sure the public API makes sense even as we add more options for transforming replays, although I imagine that integer translations will always be a common use-case. For now only int translations are supported since we can see rendering artifacts with non-whole numbers. I have an animated GM that demonstrates this which I can add to this CL or upload separately.",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
