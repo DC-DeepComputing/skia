@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cbc946f_3a3d3f0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T16:47:18Z",
+      "side": 1,
+      "message": "Ewww.... I don\u0027t want part of chromium\u0027s build to be in Skia. I have no issue with Skia making it easy to list out all of its file in lists so others can use them for building, but this is super awkward. Chromium\u0027s build should be in Chromium. If this is the kind of thing that is needed, then each of the codecs should be an independent target with its own list, so that Chromium can the add which ever it wants.",
+      "revId": "7e317901055386fb4b4467ad3649d387a65a888c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
