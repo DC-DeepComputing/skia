@@ -596,11 +596,6 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
 
     // 1. Ask the generator to natively create one.
     {
-        // Disable mipmaps here bc Graphite doesn't currently support mipmap regeneration
-        // In this case, we would allocate the mipmaps and fill in the base layer but the mipmap
-        // levels would never be filled out - yielding incorrect draws. Please see: b/238754357.
-        requiredProps.fMipmapped = Mipmapped::kNo;
-
         ScopedGenerator generator(fSharedGenerator);
         sk_sp<SkImage> newImage = generator->makeTextureImage(recorder,
                                                               this->imageInfo(),
