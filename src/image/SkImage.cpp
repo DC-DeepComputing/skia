@@ -196,7 +196,7 @@ sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> encoded,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+sk_sp<SkImage> SkImage::makeSubset1(const SkIRect& subset, GrDirectContext* direct) const {
     if (subset.isEmpty()) {
         return nullptr;
     }
@@ -219,7 +219,7 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
         return sk_ref_sp(const_cast<SkImage*>(this));
     }
 
-    return as_IB(this)->onMakeSubset(subset, direct);
+    return as_IB(this)->onMakeSubset1(subset, direct);
 }
 
 #if SK_SUPPORT_GPU

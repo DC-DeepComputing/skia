@@ -32,6 +32,7 @@
 #include <cstring>
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/ImageProvider.h"
 #include <unordered_map>
 #endif
@@ -583,7 +584,7 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
     }
 #if defined(SK_GRAPHITE_ENABLED)
     else if (canvas->recorder()) {
-        return orig->makeTextureImage(canvas->recorder());
+        return orig->makeTextureImage1(canvas->recorder());
     }
 #endif
 
@@ -708,7 +709,7 @@ public:
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, requiredProps);
+        sk_sp<SkImage> newImage = image->makeTextureImage1(recorder, requiredProps);
         if (!newImage) {
             return nullptr;
         }

@@ -237,18 +237,34 @@ bool SkImage_Lazy::onIsValid(GrRecordingContext* context) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+sk_sp<SkImage> SkImage_Lazy::onMakeSubset1(const SkIRect& subset, GrDirectContext* direct) const {
     // TODO: can we do this more efficiently, by telling the generator we want to
     //       "realize" a subset?
 
 #if SK_SUPPORT_GPU
-    auto pixels = direct ? this->makeTextureImage(direct)
-                         : this->makeRasterImage();
+    auto nonLazyImg = direct ? this->makeTextureImage(direct)
+                             : this->makeRasterImage();
 #else
     auto pixels = this->makeRasterImage();
 #endif
-    return pixels ? pixels->makeSubset(subset, direct) : nullptr;
+    return nonLazyImg ? nonLazyImg->makeSubset1(subset, direct) : nullptr;
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+
+sk_sp<SkImage> SkImage_Lazy::onMakeSubset2(const SkIRect& subset,
+                                           skgpu::graphite::Recorder* recorder,
+                                           RequiredImageProperties requiredProperties) const {
+    // TODO: can we do this more efficiently, by telling the generator we want to
+    //       "realize" a subset?
+
+    sk_sp<SkImage> nonLazyImg = recorder ? this->makeTextureImage1(recorder, requiredProperties)
+                                         : this->makeRasterImage();
+
+    return nonLazyImg ? nonLazyImg->makeSubset2(subset, recorder, requiredProperties) : nullptr;
+}
+
+#endif // SK_GRAPHITE_ENABLED
 
 sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                           sk_sp<SkColorSpace> targetCS,
@@ -596,11 +612,6 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
 
     // 1. Ask the generator to natively create one.
     {
-        // Disable mipmaps here bc Graphite doesn't currently support mipmap regeneration
-        // In this case, we would allocate the mipmaps and fill in the base layer but the mipmap
-        // levels would never be filled out - yielding incorrect draws. Please see: b/238754357.
-        requiredProps.fMipmapped = Mipmapped::kNo;
-
         ScopedGenerator generator(fSharedGenerator);
         sk_sp<SkImage> newImage = generator->makeTextureImage(recorder,
                                                               this->imageInfo(),

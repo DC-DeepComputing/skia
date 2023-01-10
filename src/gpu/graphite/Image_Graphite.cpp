@@ -27,7 +27,7 @@ namespace skgpu::graphite {
 
 Image::Image(uint32_t uniqueID,
              TextureProxyView view,
-             const SkColorInfo& info)
+             const SkColorInfo& info, bool)
     : SkImage_Base(SkImageInfo::Make(view.proxy()->dimensions(), info), uniqueID)
     , fTextureProxyView(std::move(view)) {
 }
@@ -40,16 +40,75 @@ Image::Image(TextureProxyView view,
 
 Image::~Image() {}
 
-sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
-                                                   sk_sp<SkColorSpace>,
+sk_sp<SkImage> Image::onMakeSubset2(const SkIRect& subset,
+                                    Recorder* recorder,
+                                    RequiredImageProperties requiredProps) const {
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset && (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps())) {
+        const SkImage* image = this;
+        return sk_ref_sp(const_cast<SkImage*>(image));
+    }
+
+    TextureProxyView srcView = this->textureProxyView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    TextureProxyView copiedView = TextureProxyView::Copy(recorder,
+                                                         this->imageInfo().colorInfo(),
+                                                         srcView,
+                                                         subset,
+                                                         requiredProps.fMipmapped);
+    if (!copiedView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
+                                  std::move(copiedView),
+                                  this->imageInfo().colorInfo(), true));
+}
+
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                   sk_sp<SkColorSpace> targetCS,
                                                    GrDirectContext*) const {
+#if 0
+    SkColorInfo info(targetCT, this->alphaType(), std::move(targetCS));
+    if (!fContext->priv().matches(dContext)) {
+        return nullptr;
+    }
+
+    auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
+                                                    SkBackingFit::kExact);
+    if (!sfc) {
+        return nullptr;
+    }
+    // We respecify info's CT because we called MakeWithFallback.
+    auto ct = GrColorTypeToSkColorType(sfc->colorInfo().colorType());
+    info = info.makeColorType(ct);
+
+    // Draw this image's texture into the SFC.
+    auto [view, _] = this->asView(dContext, GrMipmapped(this->hasMipmaps()));
+    auto texFP = GrTextureEffect::Make(std::move(view), this->alphaType());
+    auto colorFP = GrColorSpaceXformEffect::Make(std::move(texFP),
+                                                 this->imageInfo().colorInfo(),
+                                                 info);
+    sfc->fillWithFP(std::move(colorFP));
+
+    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(dContext),
+                                   kNeedNewImageUniqueID,
+                                   sfc->readSurfaceView(),
+                                   std::move(info));
+#else
     return nullptr;
+#endif
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
     return sk_make_sp<Image>(kNeedNewImageUniqueID,
                              fTextureProxyView,
-                             this->imageInfo().colorInfo().makeColorSpace(std::move(newCS)));
+                             this->imageInfo().colorInfo().makeColorSpace(std::move(newCS)),
+                             true);
 }
 
 void Image::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
@@ -86,12 +145,28 @@ std::unique_ptr<GrFragmentProcessor> Image::onAsFragmentProcessor(
 }
 #endif
 
-sk_sp<SkImage> Image::onMakeTextureImage(Recorder*, RequiredImageProperties requiredProps) const {
+sk_sp<SkImage> Image::onMakeTextureImage(Recorder* recorder,
+                                         RequiredImageProperties requiredProps) const {
     SkASSERT(requiredProps.fMipmapped == Mipmapped::kYes && !this->hasMipmaps());
-    // TODO: copy the base layer into a new image that has mip levels. For now we just return
-    // the un-mipmapped version and allow the sampling to be downgraded to linear
-    SKGPU_LOG_W("Graphite does not yet allow explicit mipmap level addition");
-    return sk_ref_sp(this);
+
+    TextureProxyView srcView = this->textureProxyView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeSize(this->imageInfo().dimensions());
+    TextureProxyView copiedView = TextureProxyView::Copy(recorder,
+                                                         this->imageInfo().colorInfo(),
+                                                         srcView,
+                                                         bounds,
+                                                         requiredProps.fMipmapped);
+    if (!copiedView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
+                                  std::move(copiedView),
+                                  this->imageInfo().colorInfo(), true));
 }
 
 } // namespace skgpu::graphite
@@ -124,7 +199,7 @@ bool validate_backend_texture(const Caps* caps,
 
 using namespace skgpu::graphite;
 
-sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
+sk_sp<SkImage> SkImage::makeTextureImage1(Recorder* recorder,
                                          RequiredImageProperties requiredProps) const {
     if (!recorder) {
         return nullptr;
@@ -139,7 +214,23 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
+
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+}
+
+sk_sp<SkImage> SkImage::makeSubset2(const SkIRect& subset,
+                                    skgpu::graphite::Recorder* recorder,
+                                    RequiredImageProperties requiredProps) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+    return as_IB(this)->onMakeSubset2(subset, recorder, requiredProps);
 }
 
 sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(
