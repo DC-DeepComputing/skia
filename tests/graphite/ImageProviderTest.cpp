@@ -319,3 +319,37 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageProviderTest_Graphite_Testing, rep
 
     run_test(reporter, context, recorder.get(), testcases);
 }
+
+// Here we're testing that the RequiredProperties parameter to makeTextureImage
+// works as expected.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Test, reporter, context) {
+    FactoryT testcases[] = {
+            create_raster_backed_image_no_mipmaps,
+            create_raster_backed_image_with_mipmaps,
+            create_gpu_backed_image_no_mipmaps,
+            create_gpu_backed_image_with_mipmaps,
+            create_picture_backed_image,
+            create_bitmap_generator_backed_image,
+    };
+
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    for (auto factory : testcases) {
+        sk_sp<SkImage> orig = factory(recorder.get());
+
+        for (Mipmapped mm : { Mipmapped::kNo, Mipmapped::kYes }) {
+            sk_sp<SkImage> i = orig->makeTextureImage(recorder.get(), { mm });
+
+            bool mipmapOptAllowed = orig->hasMipmaps() && mm == Mipmapped::kNo;
+
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, (i->hasMipmaps() == (mm == Mipmapped::kYes)) ||
+                                      (i->hasMipmaps() && mipmapOptAllowed));
+
+            if (!orig->isTextureBacked()) {
+                i = orig->makeTextureImage(nullptr, { mm });
+                REPORTER_ASSERT(reporter, !i);
+            }
+        }
+    }
+}
