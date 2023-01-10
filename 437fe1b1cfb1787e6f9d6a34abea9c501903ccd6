@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "827f2faa_f735dfa7",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-10T20:20:28Z",
+      "side": 1,
+      "message": "The issue happens when we try to build Skia in Flutter. Here\u0027s the error I\u0027m getting:\n\n```\nERROR at //third_party/skia/gn/skia/BUILD.gn:298:14 (//flutter/third_party/canvaskit:canvaskit_lite): Undefined identifier\n  } else if (sanitize !\u003d \"\" \u0026\u0026 sanitize !\u003d \"MSVC\") {\n             ^-------\nSee //third_party/skia/third_party/third_party.gni:77:20: which caused the file to be included.\n      configs +\u003d [ \"../../gn/skia:recover_pointer_overflow\" ]\n                   ^---------------------------------------\n```",
+      "parentUuid": "edb0aa3a_af1ca5bd",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
