@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac268692_25340f28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T14:47:45Z",
+      "side": 1,
+      "message": "ptal -- This patch just does the plumbing of the SkAndroidCodec API. I wanted to isolate this part out in case you want it reworked (I tried a bunch of other approaches, and this was the one that \"felt right\" to me, but I don\u0027t know the lay of the land here).",
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
