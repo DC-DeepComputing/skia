@@ -56,6 +56,30 @@
       },
       "revId": "78c8a3e8d8279068bc73cf1be4240cc6f97a33d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5162e2ac_af36da99",
+        "filename": "src/codec/SkJpegGainmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T21:53:40Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "77cdd4f8_3f9a002c",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 53
+      },
+      "revId": "78c8a3e8d8279068bc73cf1be4240cc6f97a33d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
