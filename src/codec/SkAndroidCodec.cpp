@@ -410,3 +410,8 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* 
         size_t rowBytes) {
     return this->getAndroidPixels(info, pixels, rowBytes, nullptr);
 }
+
+bool SkAndroidCodec::getAndroidGainmap(SkGainmapInfo* info,
+                                       std::unique_ptr<SkStream>* outGainmapImageStream) {
+    return fCodec->onGetGainmapInfo(info, outGainmapImageStream);
+}

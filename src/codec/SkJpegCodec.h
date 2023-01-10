@@ -75,6 +75,9 @@ protected:
 
     bool conversionSupported(const SkImageInfo&, bool, bool) override;
 
+    bool onGetGainmapInfo(SkGainmapInfo* info,
+                          std::unique_ptr<SkStream>* gainmapImageStream) override;
+
 private:
     /*
      * Allows SkRawCodec to communicate the color profile from the exif data.
