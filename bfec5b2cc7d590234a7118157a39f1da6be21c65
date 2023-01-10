@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcc790e3_0d3d340b",
+        "filename": "BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 1209,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T22:27:16Z",
+      "side": 1,
+      "message": "Does this really need to be a public define? (We already have too many of them.) It looks like this is just for the tests? If so, then the tests should be built conditionally.",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b4d9de_d38b5cea",
+        "filename": "tests/AndroidCodecTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T22:27:16Z",
+      "side": 1,
+      "message": "Instead of having a public define just to add this test, instead this should be in a separate file which is conditionally compiled and linked into the tests. Either directly in the tests target or probably more likely by creating an `optional` target with the tests in it and then making the tests and dm and whatever depend on that target. See `test_lib(\"tests\")` in the root `BUILD.gn` and maybe how the modules or the `optional` template work.",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94ae65cb_317e09fe",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1946,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T22:27:16Z",
+      "side": 1,
+      "message": "Why this change? If this was working in general before, why wouldn\u0027t it work in general now?",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
