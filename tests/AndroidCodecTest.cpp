@@ -15,6 +15,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkGainmapInfo.h"  // IWYU pragma: keep
 #include "modules/skcms/skcms.h"
 #include "src/core/SkMD5.h"
 #include "tests/Test.h"
@@ -237,3 +238,36 @@ DEF_TEST(AndroidCodec_xmpMetadata, r) {
         }
     }
 }
+
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+DEF_TEST(AndroidCodec_jpegGainmapMultiPicture, r) {
+    const char* path = "images/iphone_13_pro.jpeg";
+    auto stream = GetResourceAsStream(path);
+    REPORTER_ASSERT(r, stream);
+
+    std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
+    REPORTER_ASSERT(r, codec);
+
+    std::unique_ptr<SkAndroidCodec> androidCodec = SkAndroidCodec::MakeFromCodec(std::move(codec));
+    REPORTER_ASSERT(r, androidCodec);
+
+    SkGainmapInfo gainmapInfo;
+    std::unique_ptr<SkStream> gainmapStream;
+    REPORTER_ASSERT(r, androidCodec->getAndroidGainmap(&gainmapInfo, &gainmapStream));
+    REPORTER_ASSERT(r, gainmapStream);
+
+    std::unique_ptr<SkCodec> gainmapCodec = SkCodec::MakeFromStream(std::move(gainmapStream));
+    REPORTER_ASSERT(r, gainmapCodec);
+
+    SkBitmap bm;
+    bm.allocPixels(gainmapCodec->getInfo());
+    REPORTER_ASSERT(
+            r,
+            SkCodec::kSuccess == gainmapCodec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes()));
+
+    // Spot-check the image size and pixels.
+    REPORTER_ASSERT(r, bm.dimensions() == SkISize::Make(1512, 2016));
+    REPORTER_ASSERT(r, bm.getColor(0, 0) == 0xFF3B3B3B);
+    REPORTER_ASSERT(r, bm.getColor(1511, 2015) == 0xFF101010);
+}
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS

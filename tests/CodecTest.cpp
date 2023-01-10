@@ -45,10 +45,10 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
-#ifdef SK_CODEC_DECODES_JPEG
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
-#endif
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 #ifdef SK_ENABLE_ANDROID_UTILS
 #include "client_utils/android/FrontBufferedStream.h"
@@ -1943,7 +1943,7 @@ DEF_TEST(Codec_noConversion, r) {
     }
 }
 
-#ifdef SK_CODEC_DECODES_JPEG
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 DEF_TEST(Codec_jpegSegmentScan, r) {
     const struct Rec {
         const char* path;
@@ -2042,4 +2042,4 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     REPORTER_ASSERT(r, bitmaps[2].getColor(0, 0) == 0xFF010101);
     REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
 }
-#endif
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
