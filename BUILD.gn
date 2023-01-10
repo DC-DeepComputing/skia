@@ -1198,11 +1198,15 @@ optional("avif") {
 optional("jpeg_decode") {
   enabled = skia_use_libjpeg_turbo_decode
   public_defines = [ "SK_CODEC_DECODES_JPEG" ]
+  if (skia_use_expat) {
+    public_defines += [ "SK_XML" ]
+  }
 
   deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
   sources = [
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
+    "src/codec/SkJpegGainmap.cpp",
     "src/codec/SkJpegMultiPicture.cpp",
     "src/codec/SkJpegSegmentScan.cpp",
     "src/codec/SkJpegUtility.cpp",
