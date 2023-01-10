@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8970e8c1_1a300754",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-10T15:14:13Z",
+      "side": 1,
+      "message": "Please tag `Bug: skia:14031`",
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ac268692_25340f28",
