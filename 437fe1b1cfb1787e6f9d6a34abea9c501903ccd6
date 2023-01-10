@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d60cac19_243d042f",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-10T22:10:00Z",
+      "side": 1,
+      "message": "Ok, interesting. I\u0027m pretty sure in any flutter build that we\u0027re going to want to avoid building anything out of Skia\u0027s third_party. I assume this is because of pulling in `third_party(\"icu_bidi\")`? As I would expect, attempting to share `third_party/icu_bidi/BUILD.gn` this way is not a great idea. At the very least, this cannot be pulling in `third_party.gni` if it is to be shared. This is just a minimal build of icu and should be treated as a minimal build of icu. Flutter has its own build of icu and therefore should have its own minimal build of icu. They really cannot be shared as the icu in Skia and Flutter may not always be the same.",
+      "parentUuid": "827f2faa_f735dfa7",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
