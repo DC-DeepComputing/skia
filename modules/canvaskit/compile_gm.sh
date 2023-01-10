@@ -96,6 +96,7 @@ echo "Compiling bitcode"
   skia_use_fontconfig=false \
   skia_use_freetype=true \
   skia_use_libheif=true \
+  skia_use_jpeg_gainmaps=false \
   skia_use_libjpeg_turbo_decode=true \
   skia_use_libjpeg_turbo_encode=true \
   skia_use_libpng_decode=true \
