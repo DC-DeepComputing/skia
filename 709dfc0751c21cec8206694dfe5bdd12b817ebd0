@@ -16,6 +16,46 @@
       "message": "ptal -- This patch just does the plumbing of the SkAndroidCodec API. I wanted to isolate this part out in case you want it reworked (I tried a bunch of other approaches, and this was the one that \"felt right\" to me, but I don\u0027t know the lay of the land here).",
       "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8615a2d5_c421d202",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-10T15:13:16Z",
+      "side": 1,
+      "message": "Looking around, I see that we\u0027re really inconsistent about returning `bool` or `Result` from all the codec methods. `bool` is probably ok here, though.",
+      "range": {
+        "startLine": 287,
+        "startChar": 4,
+        "endLine": 287,
+        "endChar": 8
+      },
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "281fce53_4f7524ed",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-10T15:13:16Z",
+      "side": 1,
+      "message": "Do you picture that the stream pointer is optional, if someone only wants the info? Or are both pointers always required to be non-null?",
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
