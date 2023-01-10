@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acaf3c26_c99dbf22",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-01-10T22:07:28Z",
+      "side": 1,
+      "message": "Yeah, for this one \"false\" isn\u0027t a failure (there just is no gainmap). We could potentially distinguish between a file that \"looks like it should\" have a gainmap, but for some reason fails to extract one and one that \"looks like it doesn\u0027t\", but I\u0027m not sure how I\u0027d use that information.",
+      "parentUuid": "8615a2d5_c421d202",
+      "range": {
+        "startLine": 287,
+        "startChar": 4,
+        "endLine": 287,
+        "endChar": 8
+      },
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "281fce53_4f7524ed",
         "filename": "include/codec/SkCodec.h",
         "patchSetId": 2
@@ -71,6 +95,24 @@
       "writtenOn": "2023-01-10T15:13:16Z",
       "side": 1,
       "message": "Do you picture that the stream pointer is optional, if someone only wants the info? Or are both pointers always required to be non-null?",
+      "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124649dd_f829a41f",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-01-10T22:07:28Z",
+      "side": 1,
+      "message": "I made the stream pointer optional in case someone wants to just know if the gainmap is present or not. I don\u0027t have a concrete idea of when this would be used, but it seemed like a useful feature to have (I wouldn\u0027t want to paint the API usage into a place where it had no other option).",
+      "parentUuid": "281fce53_4f7524ed",
       "revId": "709dfc0751c21cec8206694dfe5bdd12b817ebd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
