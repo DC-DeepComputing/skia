@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85f900ab_f50484ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T23:31:48Z",
+      "side": 1,
+      "message": "Thanks, it makes sense to pull the tests out into their own file. Done.",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcc790e3_0d3d340b",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-01-10T22:27:16Z",
       "side": 1,
       "message": "Does this really need to be a public define? (We already have too many of them.) It looks like this is just for the tests? If so, then the tests should be built conditionally.",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f878d3_0b4d3ec5",
+        "filename": "BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 1209,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T23:31:48Z",
+      "side": 1,
+      "message": "Moved the test to be included conditionally.",
+      "parentUuid": "bcc790e3_0d3d340b",
       "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -37,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a991547_93b6a7f9",
+        "filename": "tests/AndroidCodecTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T23:31:48Z",
+      "side": 1,
+      "message": "Moved the test to a separate file that is conditionally included.",
+      "parentUuid": "24b4d9de_d38b5cea",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94ae65cb_317e09fe",
         "filename": "tests/CodecTest.cpp",
         "patchSetId": 10
@@ -48,6 +101,24 @@
       "writtenOn": "2023-01-10T22:27:16Z",
       "side": 1,
       "message": "Why this change? If this was working in general before, why wouldn\u0027t it work in general now?",
+      "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97674286_096bf8f3",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1946,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-10T23:31:48Z",
+      "side": 1,
+      "message": "I moved SegmentScan and MultiPictureFormat support behind the flag as well, because they exist only to support gainmap extraction.",
+      "parentUuid": "94ae65cb_317e09fe",
       "revId": "bfec5b2cc7d590234a7118157a39f1da6be21c65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
