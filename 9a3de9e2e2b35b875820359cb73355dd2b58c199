@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da51cd77_8cf0739f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-10T21:48:18Z",
+      "side": 1,
+      "message": "I looked at the SPIRVCodeGenerator, and its approach seemed to be to always use LValues for index-expressions and field-access expressions. In cases where LValues didn\u0027t exist (object is temporary), it would synthesize a temporary variable. This actually seems like a pretty reasonable approach to me.",
+      "revId": "9a3de9e2e2b35b875820359cb73355dd2b58c199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
