@@ -46,6 +46,30 @@
       },
       "revId": "b6f273b6c439020c054e6aa4f03fb16d8db39d07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b801093_242c3cc1",
+        "filename": "include/codec/SkAndroidCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-01-10T23:43:04Z",
+      "side": 1,
+      "message": "ack, and it does look like SkStream has fork() / duplicate() so for files that\u0027s plausible. I\u0027m not entirely sure we can reliably leverage that, though, but as long as the returned stream is independent from the input stream that works for me",
+      "parentUuid": "6fd595da_8ad31b66",
+      "range": {
+        "startLine": 279,
+        "startChar": 73,
+        "endLine": 279,
+        "endChar": 81
+      },
+      "revId": "b6f273b6c439020c054e6aa4f03fb16d8db39d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
