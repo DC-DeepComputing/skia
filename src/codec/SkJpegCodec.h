@@ -28,6 +28,7 @@ class SkData;
 class SkSampler;
 class SkStream;
 class SkSwizzler;
+struct SkCodecGainmapInfo;
 struct SkImageInfo;
 
 /*
@@ -75,6 +76,9 @@ protected:
 
     bool conversionSupported(const SkImageInfo&, bool, bool) override;
 
+    bool onGetGainmapInfo(SkCodecGainmapInfo* info,
+                          std::unique_ptr<SkStream>* gainmapImageStream) override;
+
 private:
     /*
      * Allows SkRawCodec to communicate the color profile from the exif data.
@@ -95,6 +99,11 @@ private:
      * decoderMgrOut must be non-nullptr and decoderMgrOut will be set to a new
      * JpegDecoderMgr pointer.
      *
+     * @param xmpMetadataOut
+     * If this returns true, and xmpMetadataOut will be set to the image's XMP
+     * metadata, if any. The data will reference memory owned by the
+     * JpegDecoderMgr (either owned by codecOut or returned in decoderMgrOut).
+     *
      * @param stream
      * Deleted on failure.
      * codecOut will take ownership of it in the case where we created a codec.
@@ -104,9 +113,11 @@ private:
      * If the jpeg does not have an embedded color profile, the image data should
      * be tagged with this color profile.
      */
-    static Result ReadHeader(SkStream* stream, SkCodec** codecOut,
-            JpegDecoderMgr** decoderMgrOut,
-            std::unique_ptr<SkEncodedInfo::ICCProfile> defaultColorProfile);
+    static Result ReadHeader(SkStream* stream,
+                             SkCodec** codecOut,
+                             std::unique_ptr<JpegDecoderMgr>* decoderMgrOut,
+                             sk_sp<const SkData>* xmpMetadataOut,
+                             std::unique_ptr<SkEncodedInfo::ICCProfile> defaultColorProfile);
 
     /*
      * Creates an instance of the decoder

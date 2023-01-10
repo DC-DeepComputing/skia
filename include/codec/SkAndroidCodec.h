@@ -269,6 +269,46 @@ public:
 
     SkCodec* codec() const { return fCodec.get(); }
 
+    /**
+     *  Android gainmap rendering parameters. Suppose we have a display with HDR to SDR ratio of H.
+     *  Suppose we wish to render a pixel with SDR pixel value S and gainmap pixel value G on this
+     *  display. Let D be the displayed pixel value. The computation of D is as follows:
+     *
+     *  First, let W be a weight parameter that determines the amount to which the gainmap will be
+     *  applied.
+     *    W = clamp((log(H) - log(fHdrRatioMax)) / (log(fHdrRatioMax) - log(fHdrRatioMin), 0, 1)
+     *
+     *  Next, convert the gainmap pixel value G to a value L in log space.
+     *    L = mix(fLogRatioMin, fLogRatioMax, pow(G, fGainmapGamma))
+     *
+     *  Finally, apply the gainmap to compute the displayed pixel.
+     *    D = (S + fEpsilonSdr) * exp(L * W) - fEpsilonHdr
+     */
+    struct AndroidGainmapInfo {
+        /**
+         *  Parameters for converting the gainmap from its image encoding to log space. These are
+         *  specified per color channel.
+         */
+        float fLogRatioMin[3] = {-1.f, -1.f, -1.f};
+        float fLogRatioMax[3] = {1.f, 1.f, 1.f};
+        float fGainmapGamma[3] = {1.f, 1.f, 1.f};
+
+        /**
+         *  Parameters selected to avoid divide by zero errors.
+         */
+        float fEpsilonSdr = 0.01;
+        float fEpsilonHdr = 0.01;
+
+        /**
+         *  Parameters that indicate the minimum HDR capability below which the gainmap is not
+         *  applied at all, and the maximum HDR capacity above which the gainmap is fully applied.
+         */
+        float fHdrRatioMin = 1.f;
+        float fHdrRatioMax = 16.f;
+    };
+    bool getAndroidGainmap(AndroidGainmapInfo* info,
+                           std::unique_ptr<SkStream>* outGainmapImageStream);
+
 protected:
     SkAndroidCodec(SkCodec*);
 

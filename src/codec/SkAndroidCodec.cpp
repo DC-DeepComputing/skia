@@ -410,3 +410,21 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* 
         size_t rowBytes) {
     return this->getAndroidPixels(info, pixels, rowBytes, nullptr);
 }
+
+bool SkAndroidCodec::getAndroidGainmap(AndroidGainmapInfo* info,
+                                       std::unique_ptr<SkStream>* outGainmapImageStream) {
+    SkCodecGainmapInfo infoInternal;
+    if (!fCodec->onGetGainmapInfo(&infoInternal, outGainmapImageStream)) {
+        return false;
+    }
+    for (size_t i = 0; i < 3; ++i) {
+        info->fLogRatioMin[i] = infoInternal.logRatioMin;
+        info->fLogRatioMax[i] = infoInternal.logRatioMax;
+        info->fGainmapGamma[i] = 1.f;
+    }
+    info->fEpsilonSdr = 0.01;
+    info->fEpsilonHdr = 0.01;
+    info->fHdrRatioMin = 1.f;
+    info->fHdrRatioMax = sk_float_exp(infoInternal.logRatioMax);
+    return true;
+}
