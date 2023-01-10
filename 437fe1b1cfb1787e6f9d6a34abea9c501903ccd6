@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a57def53_6d6818ee",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-10T22:25:48Z",
+      "side": 1,
+      "message": "So I see few ways out of it:\n1. icu_bidi/BUILD.gn and ask Flutter to build its own.\n2. Remove icu_bidi/BUILD.gn and modify icu/BUILD.gn so it can build only bidi part of it when needed (but still, Flutter will have to do the same)\n3. Try to share icu_bidi/BUILD.gn but without using third_party.gni (not sure if it can be done, but I can try)",
+      "parentUuid": "d60cac19_243d042f",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
