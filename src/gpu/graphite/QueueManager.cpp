@@ -55,7 +55,9 @@ bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider) {
 }
 
 bool QueueManager::addRecording(const InsertRecordingInfo& info,
-                                Context* context) {
+                                Context* context,
+                                float x,
+                                float y) {
     sk_sp<RefCntedCallback> callback;
     if (info.fFinishedProc) {
         callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
@@ -109,9 +111,12 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info,
         }
     }
 
+    SkM44 replayTransform;
+    replayTransform.setTranslate(x, y);
     if (!info.fRecording->priv().addCommands(context,
                                              fCurrentCommandBuffer.get(),
-                                             static_cast<Surface*>(info.fTargetSurface))) {
+                                             static_cast<Surface*>(info.fTargetSurface),
+                                             replayTransform)) {
         if (callback) {
             callback->setFailureResult();
         }

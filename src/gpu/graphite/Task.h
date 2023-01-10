@@ -10,6 +10,8 @@
 
 #include "include/core/SkRefCnt.h"
 
+class SkM44;
+
 namespace skgpu::graphite {
 
 class CommandBuffer;
@@ -27,6 +29,8 @@ public:
 
     // Returns true on success; false on failure.
     virtual bool addCommands(Context*, CommandBuffer*) = 0;
+
+    virtual void setReplayTransform(CommandBuffer*, const SkM44&) {}
 
 protected:
     Task();

@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
 
+#include "src/core/SkMatrixPriv.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/mtl/MtlBlitCommandEncoder.h"
@@ -112,7 +113,18 @@ bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         return false;
     }
 
+    // setViewport sets the rtAdjust intrinsic uniform and so must be called before uploading the
+    // intrinsic uniforms.
     this->setViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height(), 0, 1);
+
+    constexpr size_t kRtAdjustFloats = 4;
+    constexpr size_t kReplayTransformFloats = 16;
+    float intrinsicUniforms[kRtAdjustFloats + kReplayTransformFloats];
+    memcpy(intrinsicUniforms, fRtAdjust.ptr(), kRtAdjustFloats * sizeof(float));
+    fReplayTransform.getColMajor(intrinsicUniforms + kRtAdjustFloats);
+    fActiveRenderCommandEncoder->setVertexBytes(intrinsicUniforms,
+                                                sizeof(intrinsicUniforms),
+                                                MtlGraphicsPipeline::kIntrinsicUniformBufferIndex);
 
     for (size_t i = 0; i < drawPasses.size(); ++i) {
         this->addDrawPass(drawPasses[i].get());
@@ -456,6 +468,13 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
                                   unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
+
+    SkRect s = SkMatrixPriv::MapRect(fReplayTransform, SkRect::MakeXYWH(left, top, width, height));
+    left = SkScalarFloorToInt(s.left());
+    top = SkScalarFloorToInt(s.top());
+    width = SkScalarCeilToInt(s.width());
+    height = SkScalarCeilToInt(s.height());
+
     MTLScissorRect scissorRect = { left, top, width, height };
     fActiveRenderCommandEncoder->setScissorRect(scissorRect);
 }
@@ -466,14 +485,19 @@ void MtlCommandBuffer::setViewport(float x, float y, float width, float height,
     MTLViewport viewport = { x, y, width, height, minDepth, maxDepth };
     fActiveRenderCommandEncoder->setViewport(viewport);
 
-    float invTwoW = 2.f / width;
-    float invTwoH = 2.f / height;
     // Metal's framebuffer space has (0, 0) at the top left. This agrees with Skia's device coords.
     // However, in NDC (-1, -1) is the bottom left. So we flip the origin here (assuming all
     // surfaces we have are TopLeft origin).
-    float rtAdjust[4] = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
-    fActiveRenderCommandEncoder->setVertexBytes(rtAdjust, 4 * sizeof(float),
-                                                MtlGraphicsPipeline::kIntrinsicUniformBufferIndex);
+    float invTwoW = 2.f / width;
+    float invTwoH = 2.f / height;
+    fRtAdjust[0] = invTwoW;
+    fRtAdjust[1] = -invTwoH;
+    fRtAdjust[2] = -1.f - x * invTwoW;
+    fRtAdjust[3] = 1.f + y * invTwoH;
+}
+
+void MtlCommandBuffer::setReplayTransform(const SkM44& replayTransform) {
+    fReplayTransform = replayTransform;
 }
 
 void MtlCommandBuffer::setBlendConstants(float* blendConstants) {

@@ -10,6 +10,8 @@
 
 #include "include/gpu/graphite/Recording.h"
 
+class SkM44;
+
 namespace skgpu::graphite {
 
 class Context;
@@ -30,7 +32,10 @@ public:
     int numNonVolatilePromiseImages() const;
 #endif
 
-    bool addCommands(Context*, CommandBuffer*, Surface* targetSurface);
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     Surface* replaySurface,
+                     const SkM44& replayTransform);
     void addResourceRef(sk_sp<Resource> resource);
     void addTask(sk_sp<Task> task);
 
