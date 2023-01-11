@@ -17,6 +17,7 @@
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkMatrixUtils.h"
 #include "src/core/SkPicturePriv.h"
+#include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkVM.h"
@@ -311,20 +312,30 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& viewMatrix,
     return image->makeShader(fTmx, fTmy, SkSamplingOptions(fFilter), nullptr);
 }
 
-bool SkPictureShader::onAppendStages(const SkStageRec& rec) const {
+bool SkPictureShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    return false;
+#if 0
+    // TODO: Figure this out. Probably need to have total for deciding scale/caching but only update
+    // the pending or the lm we pass to rasterShader.
     auto lm = rec.fLocalM ? *rec.fLocalM : SkMatrix::I();
     // Keep bitmapShader alive by using alloc instead of stack memory
     auto& bitmapShader = *rec.fAlloc->make<sk_sp<SkShader>>();
-    bitmapShader = this->rasterShader(rec.fMatrixProvider.localToDevice(), &lm,
+    bitmapShader = this->rasterShader(SkMatrix::I(), &lm,
                                       rec.fDstColorType, rec.fDstCS, rec.fSurfaceProps);
     if (!bitmapShader) {
         return false;
     }
 
-    SkStageRec localRec = rec;
-    localRec.fLocalM = lm.isIdentity() ? nullptr : &lm;
+    SkMatrix ilm;
+    if (!lm->invert(&ilm)) {
+        return false;
+    }
+    rec.fPipeline->append_matrix(rec.fAlloc, ilm);
+    //SkStageRec localRec = rec;
+    //localRec.fLocalM = lm.isIdentity() ? nullptr : &lm;
 
-    return as_SB(bitmapShader)->appendStages(localRec);
+    return as_SB(bitmapShader)->onAppendStages(rec, lmRec);
+#endif
 }
 
 skvm::Color SkPictureShader::onProgram(skvm::Builder* p,

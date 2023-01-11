@@ -162,13 +162,13 @@ static void draw_points(SkCanvas::PointMode mode,
 static void transform_shader(SkPaint* paint, const SkMatrix& ctm) {
     SkASSERT(!ctm.isIdentity());
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
-    // A shader's matrix is:  CTM x LocalMatrix x WrappingLocalMatrix.  We want to
+    // A shader's matrix is:  CTM x LocalMatrixRec x WrappingLocalMatrix.  We want to
     // switch to device space, where CTM = I, while keeping the original behavior.
     //
-    //               I * LocalMatrix * NewWrappingMatrix = CTM * LocalMatrix
-    //                   LocalMatrix * NewWrappingMatrix = CTM * LocalMatrix
-    //  InvLocalMatrix * LocalMatrix * NewWrappingMatrix = InvLocalMatrix * CTM * LocalMatrix
-    //                                 NewWrappingMatrix = InvLocalMatrix * CTM * LocalMatrix
+    //               I * LocalMatrixRec * NewWrappingMatrix = CTM * LocalMatrixRec
+    //                   LocalMatrixRec * NewWrappingMatrix = CTM * LocalMatrixRec
+    //  InvLocalMatrix * LocalMatrixRec * NewWrappingMatrix = InvLocalMatrix * CTM * LocalMatrixRec
+    //                                 NewWrappingMatrix = InvLocalMatrix * CTM * LocalMatrixRec
     //
     SkMatrix lm = SkPDFUtils::GetShaderLocalMatrix(paint->getShader());
     SkMatrix lmInv;

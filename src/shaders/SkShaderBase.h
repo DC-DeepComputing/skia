@@ -219,9 +219,40 @@ public:
      */
     bool asLuminanceColor(SkColor*) const;
 
-    // If this returns false, then we draw nothing (do not fall back to shader context)
+    // If this returns false, then we draw nothing (do not fall back to shader context). This should
+    // only be called on a root-level effect. To invoke nested effects use onAppendStages()
+    // directly.
     SK_WARN_UNUSED_RESULT
-    bool appendStages(const SkStageRec&) const;
+    bool appendRootStages(const SkStageRec& rec) const;
+
+    class LocalMatrixRec {
+    public:
+        LocalMatrixRec() = default;
+
+        std::tuple<bool, LocalMatrixRec> SK_WARN_UNUSED_RESULT apply(const SkStageRec& rec,
+                                                                     const SkMatrix& preInv = {}) const;
+
+        // Gets the "total inverse". This is the concatenation inverse CTM and inverse of all local
+        // matrices accumulated from the root shader. This assumes no effect has done a non-local-
+        // matrix manipulation of the local coordinates and is thus a bogus concept. However, it is
+        // still used in raster pipline to select a MIP level for the entire draw.
+        bool SK_WARN_UNUSED_RESULT totalInverse(const SkMatrixProvider&, SkMatrix* out) const;
+
+        LocalMatrixRec concat(const SkMatrix& lm) const;
+
+    private:
+        LocalMatrixRec(const SkMatrix& pending, const SkMatrix& total)
+                : fPendingLocalMatrix(pending), fTotalLocalMatrix(total) {}
+        // The local matrices accumulated while walking down the shader hierarchy that have NOT yet
+        // been incorporated into the SkRasterPipeline. nullptr means identity.
+        const SkMatrix fPendingLocalMatrix;
+        // The total of all local matrices accumulated walking down the shader hierarchy including
+        // those already incorporated into the SkRasterPipelines and the pending matrix.
+        const SkMatrix fTotalLocalMatrix;
+    };
+
+    // Default impl creates shadercontext and calls that (not very efficient)
+    virtual bool onAppendStages(const SkStageRec&, const LocalMatrixRec&) const;
 
     bool SK_WARN_UNUSED_RESULT computeTotalInverse(const SkMatrix& ctm,
                                                    const SkMatrix* localMatrix,
@@ -301,9 +332,6 @@ protected:
     virtual bool onAsLuminanceColor(SkColor*) const {
         return false;
     }
-
-    // Default impl creates shadercontext and calls that (not very efficient)
-    virtual bool onAppendStages(const SkStageRec&) const;
 
     virtual SkStageUpdater* onAppendUpdatableStages(const SkStageRec&) const { return nullptr; }
 

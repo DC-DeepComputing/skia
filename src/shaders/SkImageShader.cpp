@@ -478,7 +478,9 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
     return SkSamplingOptions(filter, sampling.mipmap);
 }
 
-bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) const {
+bool SkImageShader::doStages(const SkStageRec& rec,
+                             const LocalMatrixRec& lmRec,
+                             TransformShader* updater) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset));  // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
     auto sampling = fSampling;
@@ -497,9 +499,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     SkArenaAlloc* alloc = rec.fAlloc;
 
     SkMatrix totalInverse;
-    if (!this->computeTotalInverse(rec.fMatrixProvider.localToDevice(),
-                                   rec.fLocalM,
-                                   &totalInverse)) {
+    if (!lmRec.totalInverse(rec.fMatrixProvider, &totalInverse)) {
         return false;
     }
     totalInverse.normalizePerspective();
@@ -512,12 +512,10 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     SkPixmap pm;
     SkMatrix sampleM;
     std::tie(pm, sampleM) = access->level();
-    sampleM.preConcat(totalInverse);
-
-    p->append(SkRasterPipeline::seed_shader);
 
     if (updater) {
-        updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
+        SkASSERT(false);
+        //updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
     } else {
         if (!sampling.useCubic) {
             // TODO: can tweak_sampling sometimes for cubic too when B=0
@@ -525,7 +523,10 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
                 sampling = tweak_sampling(sampling, sampleM);
             }
         }
-        p->append_matrix(alloc, sampleM);
+        auto [success, _] = lmRec.apply(rec, sampleM);
+        if (!success) {
+            return false;
+        }
     }
 
     auto gather = alloc->make<SkRasterPipeline_GatherCtx>();
@@ -755,13 +756,13 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     return append_misc();
 }
 
-bool SkImageShader::onAppendStages(const SkStageRec& rec) const {
-    return this->doStages(rec, nullptr);
+bool SkImageShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    return this->doStages(rec, lmRec, nullptr);
 }
 
 SkStageUpdater* SkImageShader::onAppendUpdatableStages(const SkStageRec& rec) const {
     TransformShader* updater = rec.fAlloc->make<TransformShader>(*this);
-    return this->doStages(rec, updater) ? updater : nullptr;
+    return this->doStages(rec, /*rm this whole function, right?*/{}, updater) ? updater : nullptr;
 }
 
 SkUpdatableShader* SkImageShader::onUpdatableShader(SkArenaAlloc* alloc) const {

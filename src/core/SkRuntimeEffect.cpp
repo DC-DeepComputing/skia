@@ -1278,7 +1278,7 @@ public:
     }
 #endif
 
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool onAppendStages(const SkStageRec& rec, const LocalMatrixRec&) const override {
         return false;
     }
 

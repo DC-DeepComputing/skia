@@ -82,7 +82,7 @@ public:
                 int index0, int index1, int index2);
 
 protected:
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool onAppendStages(const SkStageRec& rec, const LocalMatrixRec&) const override {
         rec.fPipeline->append(SkRasterPipeline::seed_shader);
         if (fUsePersp) {
             rec.fPipeline->append(SkRasterPipeline::matrix_perspective, &fM33);
@@ -421,7 +421,6 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
                           fDst.colorType(),
                           fDst.colorSpace(),
                           shaderPaint,
-                          nullptr,
                           *fMatrixProvider,
                           props};
         if (auto updater = as_SB(blendShader)->appendUpdatableStages(rec)) {
