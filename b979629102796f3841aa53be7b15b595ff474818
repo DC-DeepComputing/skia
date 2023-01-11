@@ -33,6 +33,24 @@
       "message": "I assume you didn\u0027t want to replace the existing logic here. (Add your tests, but keep the GL ones, too).",
       "revId": "b979629102796f3841aa53be7b15b595ff474818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e30678_5cba0e40",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 2249,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-11T13:39:35Z",
+      "side": 1,
+      "message": "Yikes! Fixed.",
+      "parentUuid": "23bceb38_3383ea5f",
+      "revId": "b979629102796f3841aa53be7b15b595ff474818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
