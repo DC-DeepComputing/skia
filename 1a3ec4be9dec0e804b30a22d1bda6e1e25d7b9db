@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da56a0b3_991e3673",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-11T18:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de840d4e_3fb3cb54",
+      "range": {
+        "startLine": 343,
+        "startChar": 9,
+        "endLine": 343,
+        "endChar": 21
+      },
+      "revId": "1a3ec4be9dec0e804b30a22d1bda6e1e25d7b9db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b57eebd7_db69e956",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-01-11T16:17:47Z",
       "side": 1,
       "message": "I\u0027m wasn\u0027t sure from the variable name what mipmapOptAllowed meant. Maybe it would be clearer to just comment these expectations?",
+      "revId": "1a3ec4be9dec0e804b30a22d1bda6e1e25d7b9db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13f299f6_80b523e4",
+        "filename": "tests/graphite/ImageProviderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-11T18:20:11Z",
+      "side": 1,
+      "message": "I\u0027ve added a comment to \u0027mipmapOptAllowed\u0027 that, hopefully, clarifies things.",
+      "parentUuid": "b57eebd7_db69e956",
       "revId": "1a3ec4be9dec0e804b30a22d1bda6e1e25d7b9db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
