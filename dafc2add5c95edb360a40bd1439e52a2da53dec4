@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60101764_67344bf5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T15:35:03Z",
+      "side": 1,
+      "message": "Interesting. This logic relies on the fact that our definition of unrollable matches ES2 constraints. You could certainly imagine a loop that we determine to be unrollable, but that isn\u0027t strictly ES2 compliant -- if it had a second part to the initializer or test, for example. If those expressions had side-effects, we\u0027d end up eliding them here.\n\nNot a problem today (and probably never will be), but I wonder if we should at least add a comment?",
+      "range": {
+        "startLine": 837,
+        "startChar": 0,
+        "endLine": 839,
+        "endChar": 5
+      },
+      "revId": "dafc2add5c95edb360a40bd1439e52a2da53dec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
