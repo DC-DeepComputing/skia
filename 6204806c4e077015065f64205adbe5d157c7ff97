@@ -33,6 +33,24 @@
       "message": "Are you going to wait until we can land the test image to land this CL?",
       "revId": "6204806c4e077015065f64205adbe5d157c7ff97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba423e2e_4c0afbeb",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-11T21:21:33Z",
+      "side": 1,
+      "message": "I heard back and I\u0027m supposed to wait until the 17th to land this.",
+      "parentUuid": "4b1bf954_b8770f0b",
+      "revId": "6204806c4e077015065f64205adbe5d157c7ff97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
