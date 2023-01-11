@@ -5560,8 +5560,9 @@ DEF_TEST(SkParagraph_FormattingInfinity, reporter) {
     ParagraphStyle paragraphStyle;
     paragraphStyle.setTextStyle(textStyle);
 
-    auto draw = [&](const char* prefix, TextAlign textAlign) {
+    auto draw = [&](const char* prefix, TextAlign textAlign, TextDirection textDirection) {
         paragraphStyle.setTextAlign(textAlign);
+        paragraphStyle.setTextDirection(textDirection);
         ParagraphBuilderImpl builder(paragraphStyle, fontCollection);
         builder.addText(text);
         auto paragraph = builder.Build();
@@ -5570,10 +5571,11 @@ DEF_TEST(SkParagraph_FormattingInfinity, reporter) {
         canvas.get()->translate(0, 100);
     };
 
-    draw("left", TextAlign::kLeft);
-    draw("right", TextAlign::kRight);
-    draw("center", TextAlign::kCenter);
-    draw("justify", TextAlign::kJustify);
+    draw("left", TextAlign::kLeft, TextDirection::kLtr);
+    draw("right", TextAlign::kRight, TextDirection::kLtr);
+    draw("center", TextAlign::kCenter, TextDirection::kLtr);
+    draw("justify LTR", TextAlign::kJustify, TextDirection::kLtr);
+    draw("justify RTL", TextAlign::kJustify, TextDirection::kRtl);
 };
 
 DEF_TEST(SkParagraph_Infinity, reporter) {
