@@ -16,6 +16,23 @@
       "message": "FYI, I\u0027ve updated the patch to common-ize a bunch of XMP functionality (that will be needed by other formats very shortly).",
       "revId": "b979629102796f3841aa53be7b15b595ff474818",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bceb38_3383ea5f",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 2249,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T13:36:30Z",
+      "side": 1,
+      "message": "I assume you didn\u0027t want to replace the existing logic here. (Add your tests, but keep the GL ones, too).",
+      "revId": "b979629102796f3841aa53be7b15b595ff474818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
