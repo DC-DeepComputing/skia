@@ -23,6 +23,7 @@ tests_sources = [
   "$_tests/BitSetTest.cpp",
   "$_tests/BitmapCopyTest.cpp",
   "$_tests/BitmapGetColorTest.cpp",
+  "$_tests/BitmapMakeSubsetCopyTest.cpp",
   "$_tests/BitmapTest.cpp",
   "$_tests/BlendTest.cpp",
   "$_tests/BlitMaskClip.cpp",
