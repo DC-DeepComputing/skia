@@ -87,6 +87,7 @@ var CanvasKit = {
   _MakeImage: function() {},
   _MakeManagedAnimation: function() {},
   _MakeOnScreenGLSurface: function() {},
+  _MakeOnScreenGLSurfaceP: function() {},
   _MakeParticles: function() {},
   _MakePicture: function() {},
   _MakeRenderTargetII: function() {},

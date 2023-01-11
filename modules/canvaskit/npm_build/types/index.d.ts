@@ -256,9 +256,11 @@ export interface CanvasKit {
      * @param width - number of pixels of the width of the visible area.
      * @param height - number of pixels of the height of the visible area.
      * @param colorSpace
+     * @param sampleCount
+     * @param stencil
      */
     MakeOnScreenGLSurface(ctx: GrDirectContext, width: number, height: number,
-                          colorSpace: ColorSpace): Surface | null;
+                          colorSpace: ColorSpace, sampleCount?: number, stencil?: number): Surface | null;
 
     /**
      * Creates a context that operates over the given WebGPU Device.
