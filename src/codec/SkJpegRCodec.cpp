@@ -32,9 +32,16 @@
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/core/SkStreamPriv.h"
 
-static SkEncodedOrigin get_orientation(const jpegr_info_struct& frameInfo) {
-    // TODO: Get orientation from EXIF via librecoverymap
-    return kTopLeft_SkEncodedOrigin;
+static SkEncodedOrigin get_orientation(const std::vector<uint8_t> *exifData) {
+    SkEncodedOrigin orientation = kDefault_SkEncodedOrigin;
+    if (exifData && exifData->size() > 6) {
+        constexpr size_t kOffset = 6;
+        const size_t exifSize = exifData->size();
+        const uint8_t *data = exifData->data();
+        SkParseEncodedOrigin(data + kOffset, exifSize - kOffset,
+                &orientation);
+    }
+    return orientation;
 }
 
 bool SkJpegRCodec::IsJpegR(const void* buffer, size_t bytesRead) {
@@ -116,11 +123,19 @@ SkCodec::Result SkJpegRCodec::ReadHeader(SkStream* stream,
 
         compressedImage.data = (void*)data->data();
         compressedImage.length = data->size();
+        jpegRInfo.exifData = nullptr;
+        jpegRInfo.iccData = nullptr;
         if (recoveryMap->getJPEGRInfo(&compressedImage, &jpegRInfo) != 0) {
+            delete jpegRInfo.exifData;
+            delete jpegRInfo.iccData;
             return kInvalidInput;
         }
+        std::unique_ptr<std::vector<uint8_t>> exifData;
+        exifData.reset(jpegRInfo.exifData);
 
         // TODO: create profile from ICCProfile
+        std::unique_ptr<std::vector<uint8_t>> iccData;
+        iccData.reset(jpegRInfo.iccData);
 
         // JPEGR always report 10-bit color depth
         const uint8_t colorDepth = 10;
@@ -132,7 +147,7 @@ SkCodec::Result SkJpegRCodec::ReadHeader(SkStream* stream,
                                                  colorDepth,
                                                  std::move(profile));
 
-        SkEncodedOrigin orientation = get_orientation(jpegRInfo);
+        SkEncodedOrigin orientation = get_orientation(exifData.get());
 
         SkJpegRCodec* codec = new SkJpegRCodec(std::move(info),
                                                std::unique_ptr<SkStream>(stream),
