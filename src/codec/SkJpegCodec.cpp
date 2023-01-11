@@ -1048,6 +1048,11 @@ bool SkGetJpegInfo(const void* data, size_t len,
 bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
                                    std::unique_ptr<SkStream>* gainmapImageStream) {
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+    // Attempt to extract JpegR gainmap formats.
+    if (SkJpegGetJpegRGainmap(getXmpMetadata(), stream(), info, gainmapImageStream)) {
+        return true;
+    }
+
     // Attempt to extract Multi-Picture Format gainmap formats.
     auto mpfMetadata =
             read_metadata_marker(fDecoderMgr->dinfo(), kMpfMarker, kMpfSig, sizeof(kMpfSig));
