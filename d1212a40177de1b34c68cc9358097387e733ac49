@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbbcda43_a53a9282",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-11T22:37:52Z",
+      "side": 1,
+      "message": "An alternative is to set the capacity to max(4, pairs.size() * 5/3) which is sort of in line with what SkTHashMap::set does if capacity and count are both 0.\n\nI don\u0027t what motivated the 5/3 ratio but I assume that it\u0027s a valid use case to construct a map or a set with an initializer list and then never modify the collection, in which the extra capacity would be unnecessary.",
+      "range": {
+        "startLine": 439,
+        "startChar": 8,
+        "endLine": 439,
+        "endChar": 44
+      },
+      "revId": "d1212a40177de1b34c68cc9358097387e733ac49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
