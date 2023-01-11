@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfd0ed56_6dbd5654",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-11T21:18:32Z",
+      "side": 1,
+      "message": "This function could probably call the other one after it queries the two values, right?",
+      "range": {
+        "startLine": 189,
+        "startChar": 17,
+        "endLine": 189,
+        "endChar": 38
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a0d464_bb382268",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-11T21:18:32Z",
+      "side": 1,
+      "message": "nit: I\u0027m a bit confused what the P suffix means. Maybe \"Cached\" or just rely on function overloading (specify both to be _MakeOnScreenGLSurface)",
+      "range": {
+        "startLine": 949,
+        "startChar": 14,
+        "endLine": 949,
+        "endChar": 37
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bb4f94c_97dd1793",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-11T21:18:32Z",
+      "side": 1,
+      "message": "Add documentation of what these are and if not provided, they will be queried from the canvas",
+      "range": {
+        "startLine": 259,
+        "startChar": 14,
+        "endLine": 259,
+        "endChar": 25
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7bdfbcc_d6423ce9",
+        "filename": "modules/canvaskit/webgl.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-11T21:18:32Z",
+      "side": 1,
+      "message": "Instead of comparing to undefined, I usually do something like\n!sc \u0026\u0026 !st\nunless sc and st could both validly be zero.\n\nIf we do need to compare to undefined, use \u003d\u003d\u003d and leave a comment why.",
+      "range": {
+        "startLine": 120,
+        "startChar": 18,
+        "endLine": 120,
+        "endChar": 27
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
