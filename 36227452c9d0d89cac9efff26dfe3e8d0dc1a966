@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a011d9_daee666e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T15:07:33Z",
+      "side": 1,
+      "message": "Is there any way we can get some tests as we add features here? Are there at least tests being added on the Android side? I know this code can\u0027t possibly work yet, because librecoverymap doesn\u0027t actually fill out the exif and ICC data yet -- given that, I\u0027d like to wait to land this until it\u0027s at least *possible* to test it.",
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f7c07f_fb2314a2",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T15:07:33Z",
+      "side": 1,
+      "message": "`kDefault_SkEncodedOrigin` here, just to be clear",
+      "range": {
+        "startLine": 36,
+        "startChar": 34,
+        "endLine": 36,
+        "endChar": 58
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dfe3474_c562b29b",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T15:07:33Z",
+      "side": 1,
+      "message": "Writing this as `exifData-\u003edata()` seems simpler (easier for a human to parse)",
+      "range": {
+        "startLine": 40,
+        "startChar": 30,
+        "endLine": 40,
+        "endChar": 46
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3182471a_a988aa33",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T15:07:33Z",
+      "side": 1,
+      "message": "This code is only deleting `exifData`, not `iccData` (both when it succeeds, and when it fails).\n\nAside: Does librecoverymap seriously return this data with raw pointers to heap-allocated `std::vectors`?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
