@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "754b963e_d4c4de67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-11T13:28:58Z",
+      "side": 1,
+      "message": "FYI, I\u0027ve updated the patch to common-ize a bunch of XMP functionality (that will be needed by other formats very shortly).",
+      "revId": "b979629102796f3841aa53be7b15b595ff474818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
