@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed07ead1_020fee75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T18:58:27Z",
+      "side": 1,
+      "message": "Yes, we are going to add CTS tests of Android side. This is tracked by b/262053659\nWe will definitely cover different orientation in those tests. Meanwhile I am testing it manually when developing jpegrecoverymap and skia parts",
+      "parentUuid": "86a011d9_daee666e",
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19f7c07f_fb2314a2",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-11T15:07:33Z",
       "side": 1,
       "message": "`kDefault_SkEncodedOrigin` here, just to be clear",
+      "range": {
+        "startLine": 36,
+        "startChar": 34,
+        "endLine": 36,
+        "endChar": 58
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d498e13e_c4fededa",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T18:58:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19f7c07f_fb2314a2",
       "range": {
         "startLine": 36,
         "startChar": 34,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c766b38_cd07e1d3",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T18:58:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dfe3474_c562b29b",
+      "range": {
+        "startLine": 40,
+        "startChar": 30,
+        "endLine": 40,
+        "endChar": 46
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3182471a_a988aa33",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-01-11T15:07:33Z",
       "side": 1,
       "message": "This code is only deleting `exifData`, not `iccData` (both when it succeeds, and when it fails).\n\nAside: Does librecoverymap seriously return this data with raw pointers to heap-allocated `std::vectors`?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccd2f6ea_9c3d3bef",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T18:58:27Z",
+      "side": 1,
+      "message": "I added iccData handling.\nAs for returning pointers: yes, this is how jpegrecoverymap API was defined. I am going to change it (to pass references to vectors, not pointers), but I need your suggestion: The API (jpegr_info_struct) is defined in libjpegrecoverymap: I need to make simultaneous change both in Skia and in libjpegrecoverymap otherwise there will be build failure. What would be the best way to do this? Is it allowed to make temporary change in Android\u0027s copy of Skia (so that change in jpegrecoverymap builds within Android) and then add the change in Skia mainline?",
+      "parentUuid": "3182471a_a988aa33",
       "range": {
         "startLine": 126,
         "startChar": 0,
