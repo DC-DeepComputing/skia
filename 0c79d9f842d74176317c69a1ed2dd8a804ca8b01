@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1c6d65e_552158fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-11T21:41:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28724644_65b3b046",
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfd0ed56_6dbd5654",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-11T21:18:32Z",
       "side": 1,
       "message": "This function could probably call the other one after it queries the two values, right?",
+      "range": {
+        "startLine": 189,
+        "startChar": 17,
+        "endLine": 189,
+        "endChar": 38
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba418e7_1404db95",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-11T21:41:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfd0ed56_6dbd5654",
       "range": {
         "startLine": 189,
         "startChar": 17,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "632c4326_79b3afd6",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-11T21:41:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1a0d464_bb382268",
+      "range": {
+        "startLine": 949,
+        "startChar": 14,
+        "endLine": 949,
+        "endChar": 37
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bb4f94c_97dd1793",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c91bb4b2_1d612d69",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-11T21:41:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bb4f94c_97dd1793",
+      "range": {
+        "startLine": 259,
+        "startChar": 14,
+        "endLine": 259,
+        "endChar": 25
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7bdfbcc_d6423ce9",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-01-11T21:18:32Z",
       "side": 1,
       "message": "Instead of comparing to undefined, I usually do something like\n!sc \u0026\u0026 !st\nunless sc and st could both validly be zero.\n\nIf we do need to compare to undefined, use \u003d\u003d\u003d and leave a comment why.",
+      "range": {
+        "startLine": 120,
+        "startChar": 18,
+        "endLine": 120,
+        "endChar": 27
+      },
+      "revId": "0c79d9f842d74176317c69a1ed2dd8a804ca8b01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "084d3f3d_81ad417d",
+        "filename": "modules/canvaskit/webgl.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-11T21:41:22Z",
+      "side": 1,
+      "message": "I believe these can both be 0, so I added an `\u003d\u003d\u003d undefined` check and a comment.",
+      "parentUuid": "a7bdfbcc_d6423ce9",
       "range": {
         "startLine": 120,
         "startChar": 18,
