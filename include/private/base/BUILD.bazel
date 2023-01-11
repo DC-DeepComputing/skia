@@ -22,6 +22,7 @@ skia_filegroup(
         "SkFeatures.h",
         "SkLoadUserConfig.h",
         "SkMalloc.h",
+        "SkMath.h",
         "SkMutex.h",
         "SkOnce.h",
         "SkSemaphore.h",

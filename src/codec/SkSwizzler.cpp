@@ -11,7 +11,7 @@
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
-#include "include/core/SkMath.h"
+#include "include/private/base/SkMath.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkEncodedInfo.h"

@@ -8,7 +8,7 @@
 #include "modules/skottie/src/effects/MotionBlurEffect.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkMath.h"
+#include "include/private/base/SkMath.h"
 #include "include/core/SkPixmap.h"
 #include "include/private/SkVx.h"
 #include "modules/skottie/src/animator/Animator.h"
