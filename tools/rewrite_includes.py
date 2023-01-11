@@ -50,6 +50,9 @@ ignorelist = [
   'SkDeque.h',
   'SkMalloc.h',
   'SkTo.h',
+  # Temporary shims for Chromium
+  'SkDiscardableMemory.h',
+  'GrVkSecondaryCBDrawContext.h',
 ]
 
 assert '/' in [os.sep, os.altsep]
@@ -107,7 +110,8 @@ for file_path in to_rewrite():
       if (len(parts) == 3
           and '#' in parts[0]
           and 'include' in parts[0]
-          and os.path.basename(parts[1]) in headers):
+          and os.path.basename(parts[1]) in headers
+          and 'keep' not in parts[2]):
         header = fix_path(os.path.relpath(headers[os.path.basename(parts[1])], '.'))
         includes.append(parts[0] + '"%s"' % header + parts[2])
       else:
