@@ -247,6 +247,30 @@
       },
       "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937233fe_e4c5444d",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T19:48:59Z",
+      "side": 1,
+      "message": "Of the things you suggested, I think I like the version where you keep pointers in the struct, but have the client create the vectors. It wouldn\u0027t even need to heap-allocate them, right? It could just put pointers to stack-allocated vectors in the struct, and the library could populate those. (And it could support leaving those as nullptr as a signal that the client doesn\u0027t care about that data). This has the advantage of not changing the API, but it also seems the most flexible.",
+      "parentUuid": "ff14e663_80fa2d0f",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
