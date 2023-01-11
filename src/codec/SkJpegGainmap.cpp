@@ -224,3 +224,163 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
     }
     return result;
 }
+
+// Helper macro for iterating SkDOM::Node children.
+#define ITER_CHILDREN(PARENT, CHILD, NAME)               \
+    const auto* CHILD = dom.getFirstChild(PARENT, NAME); \
+    CHILD;                                               \
+    CHILD = dom.getNextSibling(CHILD, NAME)
+
+static bool SkJpegGetJpegRGainmapParseXMP(sk_sp<const SkData> xmpMetadata,
+                                          size_t* outOffset,
+                                          size_t* outSize,
+                                          float* outRangeScalingFactor) {
+    printf("** SkJpegGetJpegRGainmap\n");
+    if (!xmpMetadata) {
+        return false;
+    }
+    std::unique_ptr<SkMemoryStream> xmlStream =
+            SkMemoryStream::MakeDirect(xmpMetadata->data(), xmpMetadata->size());
+    if (!xmlStream) {
+        return false;
+    }
+    SkDOM dom;
+    const SkDOM::Node* root = dom.build(*xmlStream);
+    if (!root) {
+        return false;
+    }
+
+    for (ITER_CHILDREN(root, rdfRdfNode, "rdf:RDF")) {
+        for (ITER_CHILDREN(rdfRdfNode, rdfDescriptionNode, "rdf:Description")) {
+            if (!dom.hasAttr(rdfDescriptionNode,
+                             "xmlns:GContainer",
+                             "http://ns.google.com/photos/1.0/container/")) {
+                continue;
+            }
+            if (!dom.hasAttr(rdfDescriptionNode,
+                             "xmlns:RecoveryMap",
+                             "http://ns.google.com/photos/1.0/recoverymap/")) {
+                continue;
+            }
+            const auto* version = dom.getFirstChild(rdfDescriptionNode, "GContainer:Version");
+            if (!version) {
+                SkCodecPrintf("Missing GContainer:Version");
+                return false;
+            }
+            const auto* directory = dom.getFirstChild(rdfDescriptionNode, "GContainer:Directory");
+            if (!version) {
+                SkCodecPrintf("Missing GContainer:Directory");
+                return false;
+            }
+            const auto* seq = dom.getFirstChild(directory, "rdf:Seq");
+            if (!seq) {
+                SkCodecPrintf("Missing rdf:Seq");
+                return false;
+            }
+
+            size_t totalOffset = 0;
+            size_t gContainerItemIndex = 0;
+            for (ITER_CHILDREN(seq, li, "rdf:li")) {
+                const auto* item = dom.getFirstChild(li, "GContainer:Item");
+                if (!item) {
+                    SkCodecPrintf("List item does not have GContainer:Item.\n");
+                    return false;
+                }
+                if (gContainerItemIndex == 0) {
+                    if (!dom.hasAttr(item, "GContainer:ItemSemantic", "Primary")) {
+                        SkCodecPrintf("First item is not Primary.\n");
+                        return false;
+                    }
+                    if (!dom.hasAttr(item, "RecoveryMap:Version", "1")) {
+                        SkCodecPrintf("RecoveryMap:Version is not 1.");
+                        return false;
+                    }
+                    SkScalar rangeScalingFactor = 1.f;
+                    if (!dom.findScalars(
+                                item, "RecoveryMap:RangeScalingFactor", &rangeScalingFactor, 1)) {
+                        SkCodecPrintf("RecoveryMap:RangeScalingFactor is absent.");
+                        return false;
+                    }
+                    *outRangeScalingFactor = rangeScalingFactor;
+                } else {
+                    int32_t length = 0;
+                    if (!dom.findS32(item, "GContainer:ItemLength", &length)) {
+                        SkCodecPrintf("GContainer:ItemLength is absent.");
+                        return false;
+                    }
+                    if (!dom.hasAttr(item, "GContainer:ItemSemantic", "RecoveryMap")) {
+                        totalOffset += length;
+                        continue;
+                    }
+                    *outOffset = totalOffset;
+                    *outSize = length;
+                    return true;
+                }
+                gContainerItemIndex += 1;
+            }
+        }
+    }
+    return true;
+}
+
+bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
+                           SkStream* decoderStream,
+                           SkGainmapInfo* outInfo,
+                           std::unique_ptr<SkStream>* outGainmapImageStream) {
+    size_t itemOffset = 0;
+    size_t itemSize = 0;
+    float rangeScalingFactor = 1.f;
+    if (!SkJpegGetJpegRGainmapParseXMP(xmpMetadata, &itemOffset, &itemSize, &rangeScalingFactor)) {
+        return false;
+    }
+    // printf("%d %d %f\n", (int)offset, (int)size, rangeScalingFactor);
+
+
+    // The current implementation of Multi-Picture images requires a seekable stream.
+    // Save the position so that it can be restored before returning.
+    if (!decoderStream->hasPosition()) {
+        SkCodecPrintf("Multi-Picture gainmap extraction requires a seekable stream.\n");
+        return false;
+    }
+    size_t streamPositionToRestore = decoderStream->getPosition();
+    if (!decoderStream->rewind()) {
+        SkCodecPrintf("Failed to rewind decoder stream.\n");
+        return false;
+    }
+
+    ////
+
+
+    SkJpegSegmentScan::Options options;
+    options.stopOnStartOfScan = false;
+    auto scan = SkJpegSegmentScan::Create(decoderStream, options);
+    if (!scan) {
+      printf("no scan!\n");
+      return false;
+    }
+
+    const auto& lastSegment = scan->segments().back();
+    printf("%x\n", lastSegment.marker);
+
+    auto gainmapImageStream = scan->getSubsetStream(
+          lastSegment.offset + SkJpegSegmentScan::kMarkerCodeSize + itemOffset, itemSize);
+    if (!gainmapImageStream) {
+        return false;
+    }
+
+    FILE* fout = fopen("out.jpg", "wb");
+    uint8_t byte;
+    while (gainmapImageStream->read(&byte, 1) == 1) {
+        fwrite(&byte, 1, 1, fout);
+    }
+    fclose(fout);
+    gainmapImageStream->rewind();
+
+    *outGainmapImageStream = std::move(gainmapImageStream);
+
+    // Restore the decoder's stream to its initial state.
+    if (!decoderStream->seek(streamPositionToRestore)) {
+        SkCodecPrintf("Failed reset decoder stream.\n");
+    }
+    return true;
+}

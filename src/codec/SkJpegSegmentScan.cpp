@@ -16,6 +16,8 @@
 #include <cstring>
 #include <utility>
 
+#define SkCodecPrintf printf
+
 SkJpegSegmentScan::SkJpegSegmentScan(SkStream* stream,
                                      size_t initialPosition,
                                      std::vector<Segment>&& segments)
@@ -102,6 +104,7 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
             }
         }
         segments.push_back(segment);
+        printf("Marker %x\n", segment.marker);
 
         // Validate StartOfImage and EndOfImage marker pairs, and stop reading when our termination
         // conditions are met.
@@ -139,6 +142,8 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
 
 bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
     uint8_t markerCode[kMarkerCodeSize] = {0};
+    size_t start = stream->getPosition();
+    printf("SkipPastEntropyCodedData at 0x%x\n", (int)start);
 
     while (1) {
         // Peek at the two bytes for the marker.
@@ -189,6 +194,7 @@ bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
         }
     }
 
+    printf("    ... 0x%x\n", (int)(stream->getPosition() - start));
     return true;
 }
 

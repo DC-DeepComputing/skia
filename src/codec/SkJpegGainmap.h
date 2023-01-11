@@ -24,4 +24,9 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
                                   SkGainmapInfo* outInfo,
                                   std::unique_ptr<SkStream>* outGainmapImageStream);
 
+bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
+                           SkStream* decoderStream,
+                           SkGainmapInfo* outInfo,
+                           std::unique_ptr<SkStream>* outGainmapImageStream);
+
 #endif
