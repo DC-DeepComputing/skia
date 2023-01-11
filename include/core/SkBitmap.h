@@ -171,6 +171,12 @@ public:
     */
     sk_sp<SkColorSpace> refColorSpace() const;
 
+    /** Returns whether or not this bitmap has mipmap data.
+
+        @return  whether or not this bitmap has mipmap data
+    */
+    bool hasMipmaps() const { return SkToBool(fMips); }
+
     /** Returns number of bytes per pixel required by SkColorType.
         Returns zero if colorType( is kUnknown_SkColorType.
 
@@ -1234,6 +1240,8 @@ public:
         */
         bool allocPixelRef(SkBitmap* bitmap) override;
     };
+
+    SkBitmap makeSubsetCopy(const SkIRect& subset, bool withMipmaps) const;
 
 private:
     sk_sp<SkPixelRef>   fPixelRef;
