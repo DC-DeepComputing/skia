@@ -42,7 +42,7 @@ public:
 
         sk_sp<SkImage> img = sk_sp<SkImage>(new skgpu::graphite::Image(this->uniqueID(),
                                                                        fTextureProxyView,
-                                                                       this->colorInfo()));
+                                                                       this->colorInfo(), true));
 
         canvas->drawImageRect(img, SkRect::Make(this->subset()), dst,
                               sampling, paint, SkCanvas::kStrict_SrcRectConstraint);
@@ -95,7 +95,7 @@ public:
             return nullptr;
         }
 
-        return sk_make_sp<Image>(this->uniqueID(), fTextureProxyView, this->colorInfo());
+        return sk_make_sp<Image>(this->uniqueID(), fTextureProxyView, this->colorInfo(), true);
     }
 
     sk_sp<SkShader> onAsShader(SkTileMode tileMode,
