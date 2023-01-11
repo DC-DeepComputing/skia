@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12da0436_c0093abb",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-11T22:55:02Z",
+      "side": 1,
+      "message": "I think I got this to work by:\n\n1. Create our own `//flutter/third_party/icu_bidi/BUILD.gn` in Flutter.\n\n\n2. Add a `skia_3p_icu_bidi_dir` variable in `skia/modules/skunicode/BUILD.gn` and changing the line:\n```\ndeps +\u003d [ \"../../third_party/icu_bidi\" ]\n```\nto:\n```\ndeps +\u003d [ skia_3p_icu_bidi_dir ]\n```\n\n\n3. In Flutter, set `skia_3p_icu_bidi_dir` to point to our `//flutter/third_party/icu_bidi/BUILD.gn`.\n\n\n4. Here\u0027s the content of our `//flutter/third_party/icu_bidi/BUILD.gn`: https://gist.github.com/mdebbar/e44b151f2130a38b7825d83164c89b72 (I tried to mimic what Skia\u0027s `third_party` template does).",
+      "parentUuid": "a57def53_6d6818ee",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
