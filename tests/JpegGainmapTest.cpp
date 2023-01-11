@@ -131,6 +131,7 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
         SkColor farCornerColor;
     } recs[] = {
             {"images/iphone_13_pro.jpeg", SkISize::Make(1512, 2016), 0xFF3B3B3B, 0xFF101010},
+            {"images/jpegr.jpg", SkISize::Make(1008, 756), 0xFFCACACA, 0xFFC8C8C8},
     };
 
     for (const auto& rec : recs) {
