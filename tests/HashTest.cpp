@@ -162,6 +162,19 @@ DEF_TEST(HashMapCtor, r) {
     REPORTER_ASSERT(r, !found);
 }
 
+DEF_TEST(HashMapCtorOneElem, r) {
+    SkTHashMap<int, std::string_view> map{{1, "one"}};
+    REPORTER_ASSERT(r, map.count() == 1);
+    REPORTER_ASSERT(r, map.approxBytesUsed() >= (sizeof(int) + sizeof(std::string_view)));
+
+    std::string_view* found = map.find(1);
+    REPORTER_ASSERT(r, found);
+    REPORTER_ASSERT(r, *found == "one");
+
+    found = map.find(2);
+    REPORTER_ASSERT(r, !found);
+}
+
 DEF_TEST(HashSetCtor, r) {
     SkTHashSet<std::string_view> set{"one", "two", "three", "four"};
     REPORTER_ASSERT(r, set.count() == 4);
@@ -173,6 +186,15 @@ DEF_TEST(HashSetCtor, r) {
     REPORTER_ASSERT(r, set.contains("four"));
     REPORTER_ASSERT(r, !set.contains("five"));
     REPORTER_ASSERT(r, !set.contains("six"));
+}
+
+DEF_TEST(HashSetCtorOneElem, r) {
+    SkTHashSet<std::string_view> set{"one"};
+    REPORTER_ASSERT(r, set.count() == 1);
+    REPORTER_ASSERT(r, set.approxBytesUsed() >= sizeof(std::string_view));
+
+    REPORTER_ASSERT(r, set.contains("one"));
+    REPORTER_ASSERT(r, !set.contains("two"));
 }
 
 template <typename T>

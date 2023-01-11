@@ -436,7 +436,7 @@ public:
     };
 
     SkTHashMap(std::initializer_list<Pair> pairs) {
-        fTable.resize(pairs.size() * 5 / 3);
+        fTable.resize(pairs.size() * 5 / 3 + 1);
         for (const Pair& p : pairs) {
             fTable.set(p);
         }
@@ -527,7 +527,7 @@ public:
 
     // Construct with an initializer list of Ts.
     SkTHashSet(std::initializer_list<T> vals) {
-        fTable.resize(vals.size() * 5 / 3);
+        fTable.resize(vals.size() * 5 / 3 + 1);
         for (const T& val : vals) {
             fTable.set(val);
         }
