@@ -13,6 +13,7 @@
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 
 #include <cstdint>
+#include <optional>
 #include <string_view>
 #include <type_traits>
 #include <utility>
@@ -33,11 +34,14 @@ class ExpressionStatement;
 class FieldAccess;
 class FunctionDeclaration;
 class FunctionDefinition;
+class GlobalVarDeclaration;
 class Literal;
+class MemoryLayout;
 class OutputStream;
 class ProgramElement;
 class ReturnStatement;
 class Statement;
+class StructDefinition;
 class Type;
 class VarDeclaration;
 class VariableReference;
@@ -127,6 +131,7 @@ private:
     void writeLine(std::string_view s = std::string_view());
     void finishLine();
     void writeName(std::string_view name);
+    void writeVariableDecl(const Type& type, std::string_view name, Delimiter delimiter);
 
     // Helpers to declare a pipeline stage IO parameter declaration.
     void writePipelineIODeclaration(Modifiers modifiers,
@@ -172,6 +177,16 @@ private:
 
     // Generic recursive ProgramElement visitor.
     void writeProgramElement(const ProgramElement& e);
+    void writeGlobalVarDeclaration(const GlobalVarDeclaration& d);
+    void writeStructDefinition(const StructDefinition& s);
+
+    // Writes the WGSL struct fields for SkSL structs and interface blocks. Enforces WGSL address
+    // space layout constraints
+    // (https://www.w3.org/TR/WGSL/#address-space-layout-constraints) if a `layout` is
+    // provided. A struct that does not need to be host-shareable does not require a `layout`.
+    void writeFields(const std::vector<Type::Field>& fields,
+                     Position parentPos,
+                     const std::optional<MemoryLayout>& layout);
 
     // We bundle all varying pipeline stage inputs and outputs in a struct.
     void writeStageInputStruct();
