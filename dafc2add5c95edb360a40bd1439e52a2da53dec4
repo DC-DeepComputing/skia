@@ -22,6 +22,30 @@
       },
       "revId": "dafc2add5c95edb360a40bd1439e52a2da53dec4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa44a79_3b477354",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-11T16:07:07Z",
+      "side": 1,
+      "message": "Does this preexisting comment count?\n\n```\n/**\n * The unrollability information for an ES2-compatible loop.\n */\nstruct LoopUnrollInfo {\n```",
+      "parentUuid": "60101764_67344bf5",
+      "range": {
+        "startLine": 837,
+        "startChar": 0,
+        "endLine": 839,
+        "endChar": 5
+      },
+      "revId": "dafc2add5c95edb360a40bd1439e52a2da53dec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
