@@ -199,6 +199,30 @@
       },
       "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d376ef_ccac3958",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T19:29:31Z",
+      "side": 1,
+      "message": "Sorry I was not clear: \nOne idea is like this:\njpegr_info_struct is defined as:\nstruct jpegr_info_struct {\n    size_t width;\n    size_t height;\n    std::vector\u003cuint8_t\u003e* iccData;\n    std::vector\u003cuint8_t\u003e* exifData;\n};\n\nI can change it to \nstruct jpegr_info_struct {\n    size_t width;\n    size_t height;\n    std::vector\u003cuint8_t\u003e iccData;\n    std::vector\u003cuint8_t\u003e exifData;\n};\n\nIn this case empty vectors will be created on stack where jpegRInfo is declared and filled in librecoverymap. This will require API change on both librecoverymap and Skia.\n\nThe other way is to create vectors (on heap) in SkJpegRCodec::ReadHeaders and pass them (via pointers) to librecoverymap. This would allow to avoid ownership change and will not require API change:\n\njpegRInfo.exifData \u003d new vector\u003cuint8_t\u003e();\nstd::unique_ptr\u003cstd::vector\u003cuint8_t\u003e\u003e exifData;\nexifData.reset(jpegRInfo.exifData);\n\nrecoveryMap-\u003egetJPEGRInfo(\u0026compressedImage, \u0026jpegRInfo);\n...",
+      "parentUuid": "01652d8d_2399956b",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
