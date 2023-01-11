@@ -52,6 +52,7 @@ ignorelist = [
   'SkTo.h',
   # Temporary shims for Chromium
   'SkDiscardableMemory.h',
+  'SkMath.h',
   'GrVkSecondaryCBDrawContext.h',
 ]
 
@@ -114,7 +115,10 @@ for file_path in to_rewrite():
         header = fix_path(os.path.relpath(headers[os.path.basename(parts[1])], '.'))
         includes.append(parts[0] + '"%s"' % header + parts[2])
       else:
-        for inc in sorted(includes):
+        # deduplicate includes in this block. If a file needs to be included
+        # multiple times, the separate includes should go in different blocks.
+        includes = sorted(list(set(includes)))
+        for inc in includes:
           output.write(inc.strip('\n') + '\n')
         includes = []
         output.write(line.strip('\n') + '\n')
