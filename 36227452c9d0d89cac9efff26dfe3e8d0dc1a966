@@ -271,6 +271,30 @@
       },
       "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e09c33_72a73d73",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T20:16:32Z",
+      "side": 1,
+      "message": "Thanks. Changed.",
+      "parentUuid": "937233fe_e4c5444d",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
