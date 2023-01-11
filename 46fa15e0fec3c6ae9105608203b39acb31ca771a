@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf3621f_f4660026",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-11T16:28:06Z",
+      "side": 1,
+      "message": "these comments in the generated files are awesome.",
+      "range": {
+        "startLine": 716,
+        "startChar": 0,
+        "endLine": 716,
+        "endChar": 69
+      },
+      "revId": "46fa15e0fec3c6ae9105608203b39acb31ca771a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
