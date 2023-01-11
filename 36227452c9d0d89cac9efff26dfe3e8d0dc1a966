@@ -175,6 +175,30 @@
       },
       "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01652d8d_2399956b",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-11T19:07:27Z",
+      "side": 1,
+      "message": "How is that going to work with references, exactly? (Will the caller supply the vectors, and the library populate them?). If that\u0027s the case, then pointers seem fine, too -- but if the library is going to have to create the vectors, it can\u0027t return references to them, right?\n\nAs for making API changes like this: No you don\u0027t want to land changes in Android\u0027s Skia. That\u0027s going to create merge trouble later. Instead, we generally land changes behind a #define, update the defines with a temporary value to guard the code in the downstream repository (eg, Android), then make a change in Android that updates the code and removes the define all at once. (After that, we come back and delete the old code that\u0027s no longer used in Skia).\n\nYou could also disable building the jpegr code in Android while you make the API change to librecoverymap, then update the code here, and re-enable it in Android after the new version rolls in?",
+      "parentUuid": "ccd2f6ea_9c3d3bef",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
