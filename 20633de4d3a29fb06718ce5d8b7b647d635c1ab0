@@ -63,6 +63,30 @@
       },
       "revId": "20633de4d3a29fb06718ce5d8b7b647d635c1ab0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "244537e4_045098ee",
+        "filename": "src/gpu/ganesh/vk/GrVkRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-11T20:38:09Z",
+      "side": 1,
+      "message": "After thoughtful reflection, this does not address the bug as it\u0027s on Linux, so I\u0027m removing it.",
+      "parentUuid": "2b656b5b_f04b2ad8",
+      "range": {
+        "startLine": 259,
+        "startChar": 4,
+        "endLine": 259,
+        "endChar": 57
+      },
+      "revId": "20633de4d3a29fb06718ce5d8b7b647d635c1ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
