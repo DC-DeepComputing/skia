@@ -131,7 +131,7 @@ public:
     bool isPinnedOnContext(GrRecordingContext*) const override;
 #endif
 
-    bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
+    bool onHasMipmaps() const override { return fBitmap.hasMipmaps(); }
 
     SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
 
@@ -276,25 +276,47 @@ bool SkImage_Raster::isPinnedOnContext(GrRecordingContext* rContext) const {
 }
 #endif
 
-sk_sp<SkImage> SkImage_Raster::onMakeSubset(const SkIRect& subset, GrDirectContext*) const {
-    SkImageInfo info = fBitmap.info().makeDimensions(subset.size());
-    SkBitmap bitmap;
-    if (!bitmap.tryAllocPixels(info)) {
-        return nullptr;
+SkBitmap SkBitmap::makeSubsetCopy(const SkIRect& subset, bool withMipmaps) const {
+    SkImageInfo info = this->info().makeDimensions(subset.size());
+    SkBitmap copyBitmap;
+    if (!copyBitmap.tryAllocPixels(info)) {
+        SkDEBUGFAIL("SkBitmap::makeSubsetCopy allocation failure");
+        return {};
     }
 
-    void* dst = bitmap.getPixels();
-    void* src = fBitmap.getAddr(subset.x(), subset.y());
+    void* dst = copyBitmap.getPixels();
+    void* src = this->getAddr(subset.x(), subset.y());
     if (!dst || !src) {
-        SkDEBUGFAIL("SkImage_Raster::onMakeSubset with nullptr src or dst");
-        return nullptr;
+        SkDEBUGFAIL("SkBitmap::makeSubsetCopy with nullptr src or dst");
+        return {};
     }
 
-    SkRectMemcpy(dst, bitmap.rowBytes(), src, fBitmap.rowBytes(), bitmap.rowBytes(),
+    SkRectMemcpy(dst, copyBitmap.rowBytes(), src, this->rowBytes(), copyBitmap.rowBytes(),
                  subset.height());
 
-    bitmap.setImmutable();
-    return bitmap.asImage();
+    if (withMipmaps) {
+        bool fullCopy = subset == SkIRect::MakeSize(this->dimensions());
+
+        if (fMips && fullCopy) {
+            copyBitmap.fMips.reset(SkMipmap::Build(copyBitmap.pixmap(), nullptr, false));
+            for (int i = 0; i < copyBitmap.fMips->countLevels(); ++i) {
+                SkMipmap::Level srcLevel, dstLevel;
+                fMips->getLevel(i, &srcLevel);
+                copyBitmap.fMips->getLevel(i, &dstLevel);
+                srcLevel.fPixmap.readPixels(dstLevel.fPixmap);
+            }
+        } else {
+            copyBitmap.fMips.reset(SkMipmap::Build(copyBitmap.pixmap(), nullptr));
+        }
+    }
+
+    copyBitmap.setImmutable();
+    return copyBitmap;
+}
+
+sk_sp<SkImage> SkImage_Raster::onMakeSubset(const SkIRect& subset, GrDirectContext*) const {
+    SkBitmap copy = fBitmap.makeSubsetCopy(subset, /* withMipmaps= */ false);
+    return copy.asImage();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

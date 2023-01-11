@@ -295,22 +295,13 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
     // upload of the data to the gpu can happen at anytime and the bitmap may change by then.
     SkBitmap copyBitmap = bitmap;
     if (!this->renderingDirectly() && !bitmap.isImmutable()) {
-        copyBitmap.allocPixels();
-        if (!bitmap.readPixels(copyBitmap.pixmap())) {
+        // Only create mipmaps on the copy if they are copied from the original
+        bool copyMipmaps = mipmapped == GrMipmapped::kYes && bitmap.hasMipmaps();
+
+        copyBitmap = bitmap.makeSubsetCopy(SkIRect::MakeSize(bitmap.dimensions()), copyMipmaps);
+        if (copyBitmap.isNull()) {
             return nullptr;
         }
-        if (mipmapped == GrMipmapped::kYes && bitmap.fMips) {
-            copyBitmap.fMips = sk_sp<SkMipmap>(SkMipmap::Build(copyBitmap.pixmap(),
-                                                               nullptr,
-                                                               false));
-            for (int i = 0; i < copyBitmap.fMips->countLevels(); ++i) {
-                SkMipmap::Level src, dst;
-                bitmap.fMips->getLevel(i, &src);
-                copyBitmap.fMips->getLevel(i, &dst);
-                src.fPixmap.readPixels(dst.fPixmap);
-            }
-        }
-        copyBitmap.setImmutable();
     }
 
     sk_sp<GrTextureProxy> proxy;
