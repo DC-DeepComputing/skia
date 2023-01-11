@@ -223,6 +223,30 @@
       },
       "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff14e663_80fa2d0f",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-11T19:36:55Z",
+      "side": 1,
+      "message": "Or something like this:\nstd::unique_ptr\u003cstd::vector\u003cuint8_t\u003e\u003e exifData \u003d std::make_unique\u003cstd::vector\u003cuint8_t\u003e\u003e ();\n\njpegRInfo.exifData \u003d exifData.get();\nrecoveryMap-\u003egetJPEGRInfo(\u0026compressedImage, \u0026jpegRInfo);",
+      "parentUuid": "b5d376ef_ccac3958",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 43
+      },
+      "revId": "36227452c9d0d89cac9efff26dfe3e8d0dc1a966",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
