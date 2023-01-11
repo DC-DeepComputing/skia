@@ -397,7 +397,7 @@ BASE_SRCS_ALL = [
     "src/core/SkDescriptor.h",
     "src/core/SkDevice.cpp",
     "src/core/SkDevice.h",
-    "src/core/SkDiscardableMemory.h",
+    "include/private/chromium/SkDiscardableMemory.h",
     "src/core/SkDistanceFieldGen.cpp",
     "src/core/SkDistanceFieldGen.h",
     "src/core/SkDocument.cpp",

@@ -20,10 +20,19 @@ skia_filegroup(
     ],
 )
 
+# This group is mapped to //gn/core.gni:skia_discardable_memory_chromium.
+skia_filegroup(
+    name = "discardable_memory_hdrs",
+    srcs = [
+        "SkDiscardableMemory.h",
+    ],
+)
+
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
         "SkChromeRemoteGlyphCache.h",
+        ":discardable_memory_hdrs",
         ":shared_private_hdrs",
     ],
     visibility = ["//include/private:__pkg__"],

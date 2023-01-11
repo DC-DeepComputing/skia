@@ -50,6 +50,8 @@ ignorelist = [
   'SkDeque.h',
   'SkMalloc.h',
   'SkTo.h',
+  # Temporary shim for Chromium
+  'SkDiscardableMemory.h',
 ]
 
 assert '/' in [os.sep, os.altsep]
