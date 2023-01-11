@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa61a53_e0b9f84b",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-11T20:07:25Z",
+      "side": 1,
+      "message": "Why it\u0027s RTL? I don\u0027t see where it comes from...",
+      "range": {
+        "startLine": 555,
+        "startChar": 34,
+        "endLine": 555,
+        "endChar": 37
+      },
+      "revId": "09de3f3c2939511d90158a20c4fb6d2c273fe427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
