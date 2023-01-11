@@ -22,6 +22,30 @@
       },
       "revId": "09de3f3c2939511d90158a20c4fb6d2c273fe427",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e470d5_a8fc073d",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-11T20:08:33Z",
+      "side": 1,
+      "message": "This is not actual code that runs, only which is parsed for type information. If these types were not compatible, we would get an error from the Typescript compiler.",
+      "parentUuid": "daa61a53_e0b9f84b",
+      "range": {
+        "startLine": 555,
+        "startChar": 34,
+        "endLine": 555,
+        "endChar": 37
+      },
+      "revId": "09de3f3c2939511d90158a20c4fb6d2c273fe427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
