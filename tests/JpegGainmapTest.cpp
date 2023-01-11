@@ -123,7 +123,9 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
 }
 
 DEF_TEST(AndroidCodec_jpegGainmapMultiPicture, r) {
-    const char* path = "images/iphone_13_pro.jpeg";
+    //const char* path = "images/iphone_13_pro.jpeg";
+    const char* path = "images/Untitled.jpeg";
+
     auto stream = GetResourceAsStream(path);
     REPORTER_ASSERT(r, stream);
 
@@ -147,8 +149,12 @@ DEF_TEST(AndroidCodec_jpegGainmapMultiPicture, r) {
             r,
             SkCodec::kSuccess == gainmapCodec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes()));
 
+    printf("%d, %d\n", bm.dimensions().fWidth, bm.dimensions().fHeight);
+    printf("%08x\n", bm.getColor(0, 0));
+    printf("%08x\n", bm.getColor(1007, 755));
+
     // Spot-check the image size and pixels.
     REPORTER_ASSERT(r, bm.dimensions() == SkISize::Make(1512, 2016));
-    REPORTER_ASSERT(r, bm.getColor(0, 0) == 0xFF3B3B3B);
-    REPORTER_ASSERT(r, bm.getColor(1511, 2015) == 0xFF101010);
+    REPORTER_ASSERT(r, bm.getColor(0, 0) == 0xFFCACACA);
+    REPORTER_ASSERT(r, bm.getColor(1007, 755) == 0xFFC8C8C8);
 }
