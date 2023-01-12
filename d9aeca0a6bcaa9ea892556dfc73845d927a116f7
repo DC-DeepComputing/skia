@@ -22,6 +22,30 @@
       },
       "revId": "d9aeca0a6bcaa9ea892556dfc73845d927a116f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d4090d_95c996c0",
+        "filename": "include/private/base/SkMath.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T19:16:12Z",
+      "side": 1,
+      "message": "I think we\u0027ll want to attempt this in a follow-up CL. I tried it and saw compile errors crop up in SkAAClip.cpp that I don\u0027t want to try to fix here.",
+      "parentUuid": "7b1e8c2f_7842f64d",
+      "range": {
+        "startLine": 48,
+        "startChar": 50,
+        "endLine": 48,
+        "endChar": 60
+      },
+      "revId": "d9aeca0a6bcaa9ea892556dfc73845d927a116f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
