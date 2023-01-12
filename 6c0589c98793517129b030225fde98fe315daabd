@@ -110,6 +110,30 @@
       },
       "revId": "6c0589c98793517129b030225fde98fe315daabd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87380665_1f13db35",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-01-12T19:44:54Z",
+      "side": 1,
+      "message": "When the writing direction is LTR I believe the TextLine::format implementation doesn\u0027t do anything since each TextLine ends with a hard break (eot is also considered a hard break I think?) so no text justification will be done.",
+      "parentUuid": "f194dfc4_b994b19c",
+      "range": {
+        "startLine": 637,
+        "startChar": 20,
+        "endLine": 637,
+        "endChar": 34
+      },
+      "revId": "6c0589c98793517129b030225fde98fe315daabd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
