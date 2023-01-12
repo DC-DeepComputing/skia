@@ -10,6 +10,7 @@
 
 #include "include/private/SkSLDefines.h"
 #include "src/core/SkTHash.h"
+#include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLType.h"
 
@@ -49,6 +50,7 @@ class Statement;
 class StructDefinition;
 class TernaryExpression;
 class VarDeclaration;
+class Variable;
 class VariableReference;
 enum class OperatorPrecedence : uint8_t;
 struct Modifiers;
@@ -126,6 +128,7 @@ public:
                               "FSOut",
                               "_globalUniforms",
                               "_GlobalUniforms",
+                              "_return",
                               "_stageIn",
                               "_stageOut",
                               "VSIn",
@@ -226,17 +229,32 @@ private:
     // the first parameters for a function that requires them. Returns true if any arguments were
     // written.
     bool writeFunctionDependencyArgs(const FunctionDeclaration&);
+    bool writeFunctionDependencyParams(const FunctionDeclaration&);
+
+    // Generate an out-parameter helper function for the given call and return its name.
+    std::string writeOutParamHelper(const FunctionCall&,
+                                    const ExpressionArray& args,
+                                    const SkTArray<VariableReference*>& outVars);
 
     // Stores the disallowed identifier names.
-    // TODO(skia:13092): populate this
     SkTHashSet<std::string_view> fReservedWords;
     ProgramRequirements fRequirements;
     int fPipelineInputCount = 0;
     bool fDeclaredUniformsStruct = false;
 
+    // Out-parameters to functions are declared as pointers. While we process the arguments to a
+    // out-parameter helper function, we need to temporarily track that they are re-declared as
+    // pointer-parameters in the helper, so that expression-tree processing can know to correctly
+    // dereference them when the variable is referenced. The contents of this set are expected to
+    // be populated anew for each out-param helper.
+    SkTHashSet<const Variable*> fOutParamArgVars;
+
     // Output processing state.
     int fIndentation = 0;
     bool fAtLineStart = false;
+
+    int fSwizzleHelperCount = 0;
+    StringStream fExtraFunctions;  // all internally synthesized helpers are written here
 };
 
 }  // namespace SkSL
