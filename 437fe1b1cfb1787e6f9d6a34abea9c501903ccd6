@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfbaf539_51ed3fa6",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-12T15:47:41Z",
+      "side": 1,
+      "message": "@bungeman@google.com would you mind reviewing the `icu_bidi/BUILD.gn` that I created for Flutter: https://gist.github.com/mdebbar/e44b151f2130a38b7825d83164c89b72\n\nI\u0027m not really sure what I\u0027m doing there. Just copied the file from this CL, and mimicked what the `third_party` template does (minus some Skia-specific stuff). It\u0027s possible that I didn\u0027t do it correctly.",
+      "parentUuid": "8d537f32_e8956bb4",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
