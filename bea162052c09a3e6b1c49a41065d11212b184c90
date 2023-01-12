@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5f69c5_b6a23bc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T13:33:43Z",
+      "side": 1,
+      "message": "Please also add an entry to //modules/canvaskit/CHANGELOG.md",
+      "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7382cdc7_6a37e669",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T13:33:43Z",
+      "side": 1,
+      "message": "This is not a real test (see the comment at the top of the file). While this change *is* necessary to make sure the Typescript types are valid, we need to modify something in //modules/canvaskit/tests as well for the execution to be checked.",
+      "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
