@@ -51,6 +51,7 @@ enum class BuilderOp {
     push_clone_from_stack,
     copy_stack_to_slots,
     copy_stack_to_slots_unmasked,
+    diagonal_matrix,
     discard_stack,
     select,
     push_condition_mask,
@@ -408,6 +409,12 @@ public:
     // Transposes a matrix of size CxR on the stack (into a matrix of size RxC).
     void transpose(int columns, int rows) {
         fInstructions.push_back({BuilderOp::transpose, {}, columns, rows});
+    }
+
+    // Generates a CxR diagonal matrix from the top two scalars on the stack. The second scalar is
+    // used as the diagonal value; the first scalar (usually zero) fills in the rest of the slots.
+    void diagonal_matrix(int columns, int rows) {
+        fInstructions.push_back({BuilderOp::diagonal_matrix, {}, columns, rows});
     }
 
     void push_condition_mask() {
