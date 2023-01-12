@@ -1333,25 +1333,11 @@ bool Generator::pushConstructorCast(const AnyConstructor& c) {
 }
 
 bool Generator::pushConstructorDiagonalMatrix(const ConstructorDiagonalMatrix& c) {
+    fBuilder.push_zeros(1);
     if (!this->pushExpression(*c.argument())) {
         return unsupported();
     }
-
-    const int slotsPerElement = 1; // matrices are composed of scalars
-    int distanceFromStackTop = 0;
-    for (int col = 0; col < c.type().columns(); ++col) {
-        // Skip position (0,0); we've pushed it already.
-        int startingRow = (col == 0) ? 1 : 0;
-        for (int row = startingRow; row < c.type().rows(); ++row) {
-            if (col == row) {
-                fBuilder.push_clone(slotsPerElement, distanceFromStackTop);
-            } else {
-                fBuilder.push_zeros(slotsPerElement);
-            }
-
-            distanceFromStackTop += slotsPerElement;
-        }
-    }
+    fBuilder.diagonal_matrix(c.type().columns(), c.type().rows());
 
     return true;
 }
