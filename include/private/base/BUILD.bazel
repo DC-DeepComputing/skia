@@ -15,8 +15,10 @@ skia_filegroup(
     srcs = [
         "SkAPI.h",
         "SkAlign.h",
+        "SkAlignedStorage.h",
         "SkAssert.h",
         "SkAttributes.h",
+        "SkContainers.h",
         "SkDebug.h",
         "SkDeque.h",
         "SkFeatures.h",
@@ -25,6 +27,7 @@ skia_filegroup(
         "SkMutex.h",
         "SkOnce.h",
         "SkSemaphore.h",
+        "SkSpan_impl.h",
         "SkTFitsIn.h",
         "SkThreadAnnotations.h",
         "SkThreadID.h",
