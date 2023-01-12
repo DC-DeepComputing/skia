@@ -241,11 +241,11 @@ public:
 
     // helpers
 
-    bool write8(U8CPU value)   {
+    bool write8(uint_fast8_t value)   {
         uint8_t v = SkToU8(value);
         return this->write(&v, 1);
     }
-    bool write16(U16CPU value) {
+    bool write16(uint_fast16_t value) {
         uint16_t v = SkToU16(value);
         return this->write(&v, 2);
     }

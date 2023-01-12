@@ -1041,9 +1041,9 @@ static const uint8_t* getInverseGammaTableClearType() {
 //Cannot assume that the input rgb is gray due to possible setting of kGenA8FromLCD_Flag.
 template<bool APPLY_PREBLEND>
 static inline uint8_t rgb_to_a8(SkGdiRGB rgb, const uint8_t* table8) {
-    U8CPU r = (rgb >> 16) & 0xFF;
-    U8CPU g = (rgb >>  8) & 0xFF;
-    U8CPU b = (rgb >>  0) & 0xFF;
+    uint_fast8_t r = (rgb >> 16) & 0xFF;
+    uint_fast8_t g = (rgb >>  8) & 0xFF;
+    uint_fast8_t b = (rgb >>  0) & 0xFF;
     return sk_apply_lut_if<APPLY_PREBLEND>(SkComputeLuminance(r, g, b), table8);
 }
 
@@ -1051,9 +1051,9 @@ template<bool APPLY_PREBLEND>
 static inline uint16_t rgb_to_lcd16(SkGdiRGB rgb, const uint8_t* tableR,
                                                   const uint8_t* tableG,
                                                   const uint8_t* tableB) {
-    U8CPU r = sk_apply_lut_if<APPLY_PREBLEND>((rgb >> 16) & 0xFF, tableR);
-    U8CPU g = sk_apply_lut_if<APPLY_PREBLEND>((rgb >>  8) & 0xFF, tableG);
-    U8CPU b = sk_apply_lut_if<APPLY_PREBLEND>((rgb >>  0) & 0xFF, tableB);
+    uint_fast8_t r = sk_apply_lut_if<APPLY_PREBLEND>((rgb >> 16) & 0xFF, tableR);
+    uint_fast8_t g = sk_apply_lut_if<APPLY_PREBLEND>((rgb >>  8) & 0xFF, tableG);
+    uint_fast8_t b = sk_apply_lut_if<APPLY_PREBLEND>((rgb >>  0) & 0xFF, tableB);
     if constexpr (kSkShowTextBlitCoverage) {
         r = std::max(r, 10u);
         g = std::max(g, 10u);

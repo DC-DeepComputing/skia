@@ -63,7 +63,7 @@ static inline uint32_t SkSwizzle_RB(uint32_t c) {
     return (c & ~kRBMask) | (c0 << SK_B32_SHIFT) | (c1 << SK_R32_SHIFT);
 }
 
-static inline uint32_t SkPackARGB_as_RGBA(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline uint32_t SkPackARGB_as_RGBA(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     SkASSERT_IS_BYTE(a);
     SkASSERT_IS_BYTE(r);
     SkASSERT_IS_BYTE(g);
@@ -72,7 +72,7 @@ static inline uint32_t SkPackARGB_as_RGBA(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
            (g << SK_RGBA_G32_SHIFT) | (b << SK_RGBA_B32_SHIFT);
 }
 
-static inline uint32_t SkPackARGB_as_BGRA(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline uint32_t SkPackARGB_as_BGRA(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     SkASSERT_IS_BYTE(a);
     SkASSERT_IS_BYTE(r);
     SkASSERT_IS_BYTE(g);
@@ -116,7 +116,7 @@ static inline SkPMColor SkSwizzle_BGRA_to_PMColor(uint32_t c) {
 /** Computes the luminance from the given r, g, and b in accordance with
     SK_LUM_COEFF_X. For correct results, r, g, and b should be in linear space.
 */
-static inline U8CPU SkComputeLuminance(U8CPU r, U8CPU g, U8CPU b) {
+static inline uint_fast8_t SkComputeLuminance(uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     //The following is
     //r * SK_LUM_COEFF_R + g * SK_LUM_COEFF_G + b * SK_LUM_COEFF_B
     //with SK_LUM_COEFF_X in 1.8 fixed point (rounding adjusted to sum to 256).
@@ -126,7 +126,7 @@ static inline U8CPU SkComputeLuminance(U8CPU r, U8CPU g, U8CPU b) {
 /** Calculates 256 - (value * alpha256) / 255 in range [0,256],
  *  for [0,255] value and [0,256] alpha256.
  */
-static inline U16CPU SkAlphaMulInv256(U16CPU value, U16CPU alpha256) {
+static inline uint_fast16_t SkAlphaMulInv256(uint_fast16_t value, uint_fast16_t alpha256) {
     unsigned prod = 0xFFFF - value * alpha256;
     return (prod + (prod >> 8)) >> 8;
 }
@@ -175,7 +175,7 @@ static inline SkPMColor SkFourByteInterp256(SkPMColor src, SkPMColor dst, int sc
  *   (src, dst, 0) returns dst
  *   (src, dst, 0xFF) returns src
  */
-static inline SkPMColor SkFourByteInterp(SkPMColor src, SkPMColor dst, U8CPU srcWeight) {
+static inline SkPMColor SkFourByteInterp(SkPMColor src, SkPMColor dst, uint_fast8_t srcWeight) {
     int scale = (int)SkAlpha255To256(srcWeight);
     return SkFourByteInterp256(src, dst, scale);
 }
@@ -258,7 +258,7 @@ static inline SkPMColor SkFastFourByteInterp256(SkPMColor src, SkPMColor dst, un
  * Nearly the same as SkFourByteInterp, but faster and a touch more accurate, due to better
  * srcWeight scaling to [0, 256].
  */
-static inline SkPMColor SkFastFourByteInterp(SkPMColor src, SkPMColor dst, U8CPU srcWeight) {
+static inline SkPMColor SkFastFourByteInterp(SkPMColor src, SkPMColor dst, uint_fast8_t srcWeight) {
     SkASSERT(srcWeight <= 255);
     // scale = srcWeight + (srcWeight >> 7) is more accurate than
     // scale = srcWeight + 1, but 7% slower
@@ -272,7 +272,7 @@ static inline SkPMColor SkPMLerp(SkPMColor src, SkPMColor dst, unsigned scale) {
     return SkFastFourByteInterp256(src, dst, scale);
 }
 
-static inline SkPMColor SkBlendARGB32(SkPMColor src, SkPMColor dst, U8CPU aa) {
+static inline SkPMColor SkBlendARGB32(SkPMColor src, SkPMColor dst, uint_fast8_t aa) {
     SkASSERT((unsigned)aa <= 255);
 
     unsigned src_scale = SkAlpha255To256(aa);
@@ -315,14 +315,14 @@ static inline SkPMColor SkBlendARGB32(SkPMColor src, SkPMColor dst, U8CPU aa) {
     #define SkB32ToB16(b)   SkB32ToB16_MACRO(b)
 #endif
 
-static inline U16CPU SkPixel32ToPixel16(SkPMColor c) {
+static inline uint_fast16_t SkPixel32ToPixel16(SkPMColor c) {
     unsigned r = ((c >> (SK_R32_SHIFT + (8 - SK_R16_BITS))) & SK_R16_MASK) << SK_R16_SHIFT;
     unsigned g = ((c >> (SK_G32_SHIFT + (8 - SK_G16_BITS))) & SK_G16_MASK) << SK_G16_SHIFT;
     unsigned b = ((c >> (SK_B32_SHIFT + (8 - SK_B16_BITS))) & SK_B16_MASK) << SK_B16_SHIFT;
     return r | g | b;
 }
 
-static inline U16CPU SkPack888ToRGB16(U8CPU r, U8CPU g, U8CPU b) {
+static inline uint_fast16_t SkPack888ToRGB16(uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     return  (SkR32ToR16(r) << SK_R16_SHIFT) |
             (SkG32ToG16(g) << SK_G16_SHIFT) |
             (SkB32ToB16(b) << SK_B16_SHIFT);
@@ -330,7 +330,7 @@ static inline U16CPU SkPack888ToRGB16(U8CPU r, U8CPU g, U8CPU b) {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-static inline SkColor SkPixel16ToColor(U16CPU src) {
+static inline SkColor SkPixel16ToColor(uint_fast16_t src) {
     SkASSERT(src == SkToU16(src));
 
     unsigned    r = SkPacked16ToR32(src);
@@ -354,7 +354,7 @@ typedef uint16_t SkPMColor16;
 #define SK_G4444_SHIFT    8
 #define SK_B4444_SHIFT    4
 
-static inline U8CPU SkReplicateNibble(unsigned nib) {
+static inline uint_fast8_t SkReplicateNibble(unsigned nib) {
     SkASSERT(nib <= 0xF);
     return (nib << 4) | nib;
 }
@@ -366,7 +366,7 @@ static inline U8CPU SkReplicateNibble(unsigned nib) {
 
 #define SkPacked4444ToA32(c)    SkReplicateNibble(SkGetPackedA4444(c))
 
-static inline SkPMColor SkPixel4444ToPixel32(U16CPU c) {
+static inline SkPMColor SkPixel4444ToPixel32(uint_fast16_t c) {
     uint32_t d = (SkGetPackedA4444(c) << SK_A32_SHIFT) |
                  (SkGetPackedR4444(c) << SK_R32_SHIFT) |
                  (SkGetPackedG4444(c) << SK_G32_SHIFT) |

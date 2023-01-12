@@ -279,7 +279,7 @@ static const SkBitmapProcState::MatrixProc MirrorX_MirrorY_Procs[] = {
 ///////////////////////////////////////////////////////////////////////////////
 // This next chunk has some specializations for unfiltered translate-only matrices.
 
-static inline U16CPU int_clamp(int x, int n) {
+static inline uint_fast16_t int_clamp(int x, int n) {
     if (x <  0) { x = 0; }
     if (x >= n) { x = n - 1; }
     return x;
@@ -304,11 +304,11 @@ static inline int sk_int_mod(int x, int n) {
     return x;
 }
 
-static inline U16CPU int_repeat(int x, int n) {
+static inline uint_fast16_t int_repeat(int x, int n) {
     return sk_int_mod(x, n);
 }
 
-static inline U16CPU int_mirror(int x, int n) {
+static inline uint_fast16_t int_mirror(int x, int n) {
     x = sk_int_mod(x, 2 * n);
     if (x >= n) {
         x = n + ~(x - n);
@@ -329,7 +329,7 @@ static void fill_backwards(uint16_t xptr[], int pos, int count) {
     }
 }
 
-template< U16CPU (tiley)(int x, int n) >
+template< uint_fast16_t (tiley)(int x, int n) >
 static void clampx_nofilter_trans(const SkBitmapProcState& s,
                                   uint32_t xy[], int count, int x, int y) {
     SkASSERT(s.fInvMatrix.isTranslate());
@@ -381,7 +381,7 @@ static void clampx_nofilter_trans(const SkBitmapProcState& s,
     sk_memset16(xptr, width - 1, count);
 }
 
-template< U16CPU (tiley)(int x, int n) >
+template< uint_fast16_t (tiley)(int x, int n) >
 static void repeatx_nofilter_trans(const SkBitmapProcState& s,
                                    uint32_t xy[], int count, int x, int y) {
     SkASSERT(s.fInvMatrix.isTranslate());
@@ -418,7 +418,7 @@ static void repeatx_nofilter_trans(const SkBitmapProcState& s,
     }
 }
 
-template< U16CPU (tiley)(int x, int n) >
+template< uint_fast16_t (tiley)(int x, int n) >
 static void mirrorx_nofilter_trans(const SkBitmapProcState& s,
                                    uint32_t xy[], int count, int x, int y) {
     SkASSERT(s.fInvMatrix.isTranslate());

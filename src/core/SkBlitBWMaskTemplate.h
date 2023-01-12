@@ -17,7 +17,7 @@
 /*
     SK_BLITBWMASK_NAME          name of function(const SkBitmap& bitmap, const SkMask& mask, const SkIRect& clip, SK_BLITBWMASK_ARGS)
     SK_BLITBWMASK_ARGS          list of additional arguments to SK_BLITBWMASK_NAME, beginning with a comma
-    SK_BLITBWMASK_BLIT8         name of function(U8CPU byteMask, SK_BLITBWMASK_DEVTYPE* dst, int x, int y)
+    SK_BLITBWMASK_BLIT8         name of function(uint_fast8_t byteMask, SK_BLITBWMASK_DEVTYPE* dst, int x, int y)
     SK_BLITBWMASK_GETADDR       either writable_addr[8,16,32]
     SK_BLITBWMASK_DEVTYPE       either U32 or U16 or U8
 */
@@ -46,7 +46,7 @@ static void SK_BLITBWMASK_NAME(const SkPixmap& dstPixmap, const SkMask& srcMask,
             SK_BLITBWMASK_DEVTYPE* dst = device;
             unsigned rb = mask_rowBytes;
             do {
-                U8CPU mask = *bits++;
+                uint_fast8_t mask = *bits++;
                 SK_BLITBWMASK_BLIT8(mask, dst);
                 dst += 8;
             } while (--rb != 0);
@@ -84,7 +84,7 @@ static void SK_BLITBWMASK_NAME(const SkPixmap& dstPixmap, const SkMask& srcMask,
             left_mask &= rite_mask;
             SkASSERT(left_mask != 0);
             do {
-                U8CPU mask = *bits & left_mask;
+                uint_fast8_t mask = *bits & left_mask;
                 SK_BLITBWMASK_BLIT8(mask, device);
                 bits += mask_rowBytes;
                 device = (SK_BLITBWMASK_DEVTYPE*)((char*)device + bitmap_rowBytes);
@@ -96,7 +96,7 @@ static void SK_BLITBWMASK_NAME(const SkPixmap& dstPixmap, const SkMask& srcMask,
                 int runs = full_runs;
                 SK_BLITBWMASK_DEVTYPE* dst = device;
                 const uint8_t* b = bits;
-                U8CPU   mask;
+                uint_fast8_t   mask;
 
                 mask = *b++ & left_mask;
                 SK_BLITBWMASK_BLIT8(mask, dst);

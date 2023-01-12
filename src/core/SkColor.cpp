@@ -13,7 +13,7 @@
 
 #include <algorithm>
 
-SkPMColor SkPreMultiplyARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+SkPMColor SkPreMultiplyARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     return SkPremultiplyARGBInline(a, r, g, b);
 }
 
@@ -24,17 +24,17 @@ SkPMColor SkPreMultiplyColor(SkColor c) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static inline SkScalar ByteToScalar(U8CPU x) {
+static inline SkScalar ByteToScalar(uint_fast8_t x) {
     SkASSERT(x <= 255);
     return SkIntToScalar(x) / 255;
 }
 
-static inline SkScalar ByteDivToScalar(int numer, U8CPU denom) {
+static inline SkScalar ByteDivToScalar(int numer, uint_fast8_t denom) {
     // cast to keep the answer signed
     return SkIntToScalar(numer) / (int)denom;
 }
 
-void SkRGBToHSV(U8CPU r, U8CPU g, U8CPU b, SkScalar hsv[3]) {
+void SkRGBToHSV(uint_fast8_t r, uint_fast8_t g, uint_fast8_t b, SkScalar hsv[3]) {
     SkASSERT(hsv);
 
     unsigned min = std::min(r, std::min(g, b));
@@ -74,13 +74,13 @@ void SkRGBToHSV(U8CPU r, U8CPU g, U8CPU b, SkScalar hsv[3]) {
     hsv[2] = v;
 }
 
-SkColor SkHSVToColor(U8CPU a, const SkScalar hsv[3]) {
+SkColor SkHSVToColor(uint_fast8_t a, const SkScalar hsv[3]) {
     SkASSERT(hsv);
 
     SkScalar s = SkTPin(hsv[1], 0.0f, 1.0f);
     SkScalar v = SkTPin(hsv[2], 0.0f, 1.0f);
 
-    U8CPU v_byte = SkScalarRoundToInt(v * 255);
+    uint_fast8_t v_byte = SkScalarRoundToInt(v * 255);
 
     if (SkScalarNearlyZero(s)) { // shade of gray
         return SkColorSetARGB(a, v_byte, v_byte, v_byte);

@@ -73,7 +73,7 @@ static SkColor compute_canonical_color(const SkPaint& paint, bool lcd) {
     } else {
         // A8, though can have mixed BMP text but it shouldn't matter because BMP text won't have
         // gamma corrected masks anyways, nor color
-        U8CPU lum = SkComputeLuminance(SkColorGetR(canonicalColor),
+        uint_fast8_t lum = SkComputeLuminance(SkColorGetR(canonicalColor),
                                        SkColorGetG(canonicalColor),
                                        SkColorGetB(canonicalColor));
         // reduce to our finite number of bits

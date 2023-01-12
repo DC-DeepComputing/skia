@@ -662,7 +662,7 @@ public:
     */
     int saveLayerAlphaf(const SkRect* bounds, float alpha);
     // Helper that accepts an int between 0 and 255, and divides it by 255.0
-    int saveLayerAlpha(const SkRect* bounds, U8CPU alpha) {
+    int saveLayerAlpha(const SkRect* bounds, uint_fast8_t alpha) {
         return this->saveLayerAlphaf(bounds, alpha * (1.0f / 255));
     }
 

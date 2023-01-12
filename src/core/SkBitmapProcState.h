@@ -126,7 +126,7 @@ private:
 #endif
 
 #ifdef SK_DEBUG
-    static inline uint32_t pack_two_shorts(U16CPU pri, U16CPU sec) {
+    static inline uint32_t pack_two_shorts(uint_fast16_t pri, uint_fast16_t sec) {
         SkASSERT((uint16_t)pri == pri);
         SkASSERT((uint16_t)sec == sec);
         return PACK_TWO_SHORTS(pri, sec);
