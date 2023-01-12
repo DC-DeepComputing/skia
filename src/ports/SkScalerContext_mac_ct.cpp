@@ -406,12 +406,12 @@ static void cgpixels_to_bits(uint8_t dst[], const CGRGBPixel src[], int count) {
 
 template<bool APPLY_PREBLEND>
 static inline uint8_t rgb_to_a8(CGRGBPixel rgb, const uint8_t* table8) {
-    U8CPU r = 0xFF - ((rgb >> 16) & 0xFF);
-    U8CPU g = 0xFF - ((rgb >>  8) & 0xFF);
-    U8CPU b = 0xFF - ((rgb >>  0) & 0xFF);
-    U8CPU lum = sk_apply_lut_if<APPLY_PREBLEND>(SkComputeLuminance(r, g, b), table8);
+    uint_fast8_t r = 0xFF - ((rgb >> 16) & 0xFF);
+    uint_fast8_t g = 0xFF - ((rgb >>  8) & 0xFF);
+    uint_fast8_t b = 0xFF - ((rgb >>  0) & 0xFF);
+    uint_fast8_t lum = sk_apply_lut_if<APPLY_PREBLEND>(SkComputeLuminance(r, g, b), table8);
     if constexpr (kSkShowTextBlitCoverage) {
-        lum = std::max(lum, (U8CPU)0x30);
+        lum = std::max(lum, (uint_fast8_t)0x30);
     }
     return lum;
 }
@@ -436,13 +436,13 @@ static void RGBToA8(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes,
 template<bool APPLY_PREBLEND>
 static uint16_t RGBToLcd16(CGRGBPixel rgb,
                            const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB) {
-    U8CPU r = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >> 16) & 0xFF), tableR);
-    U8CPU g = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >>  8) & 0xFF), tableG);
-    U8CPU b = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >>  0) & 0xFF), tableB);
+    uint_fast8_t r = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >> 16) & 0xFF), tableR);
+    uint_fast8_t g = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >>  8) & 0xFF), tableG);
+    uint_fast8_t b = sk_apply_lut_if<APPLY_PREBLEND>(0xFF - ((rgb >>  0) & 0xFF), tableB);
     if constexpr (kSkShowTextBlitCoverage) {
-        r = std::max(r, (U8CPU)0x30);
-        g = std::max(g, (U8CPU)0x30);
-        b = std::max(b, (U8CPU)0x30);
+        r = std::max(r, (uint_fast8_t)0x30);
+        g = std::max(g, (uint_fast8_t)0x30);
+        b = std::max(b, (uint_fast8_t)0x30);
     }
     return SkPack888ToRGB16(r, g, b);
 }
@@ -466,12 +466,12 @@ static void RGBToLcd16(const CGRGBPixel* SK_RESTRICT cgPixels, size_t cgRowBytes
 }
 
 static SkPMColor cgpixels_to_pmcolor(CGRGBPixel rgb) {
-    U8CPU a = (rgb >> 24) & 0xFF;
-    U8CPU r = (rgb >> 16) & 0xFF;
-    U8CPU g = (rgb >>  8) & 0xFF;
-    U8CPU b = (rgb >>  0) & 0xFF;
+    uint_fast8_t a = (rgb >> 24) & 0xFF;
+    uint_fast8_t r = (rgb >> 16) & 0xFF;
+    uint_fast8_t g = (rgb >>  8) & 0xFF;
+    uint_fast8_t b = (rgb >>  0) & 0xFF;
     if constexpr (kSkShowTextBlitCoverage) {
-        a = std::max(a, (U8CPU)0x30);
+        a = std::max(a, (uint_fast8_t)0x30);
     }
     return SkPackARGB32(a, r, g, b);
 }

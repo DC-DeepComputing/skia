@@ -19,7 +19,7 @@ static void create_gradient(SkBitmap* bm) {
     float blue = 255.0f;
 
     for (int y = 0; y < height; y++) {
-        *bm->getAddr32(0, y) = SkColorSetRGB(0, 0, (U8CPU) blue);
+        *bm->getAddr32(0, y) = SkColorSetRGB(0, 0, (uint_fast8_t) blue);
         blue -= deltaB;
     }
 }

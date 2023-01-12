@@ -42,8 +42,8 @@ DEF_TEST(ColorPremul, reporter) {
 DEF_TEST(ColorInterp, reporter) {
     SkRandom r;
 
-    U8CPU a0 = 0;
-    U8CPU a255 = 255;
+    uint_fast8_t a0 = 0;
+    uint_fast8_t a255 = 255;
     for (int i = 0; i < 200; i++) {
         SkColor colorSrc = r.nextU();
         SkColor colorDst = r.nextU();
@@ -60,8 +60,8 @@ DEF_TEST(ColorInterp, reporter) {
 DEF_TEST(ColorFastIterp, reporter) {
     SkRandom r;
 
-    U8CPU a0 = 0;
-    U8CPU a255 = 255;
+    uint_fast8_t a0 = 0;
+    uint_fast8_t a255 = 255;
     for (int i = 0; i < 200; i++) {
         SkColor colorSrc = r.nextU();
         SkColor colorDst = r.nextU();

@@ -518,7 +518,7 @@ SkPMColor SkPerlinNoiseShaderImpl::PerlinNoiseShaderContext::shade(
     newPoint.fX = SkScalarRoundToScalar(newPoint.fX);
     newPoint.fY = SkScalarRoundToScalar(newPoint.fY);
 
-    U8CPU rgba[4];
+    uint_fast8_t rgba[4];
     for (int channel = 3; channel >= 0; --channel) {
         SkScalar value;
         value = calculateTurbulenceValueForPoint(channel, stitchData, newPoint);

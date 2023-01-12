@@ -215,7 +215,7 @@ void SkBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
                 int affectedRightBit = mask.fBounds.width() - 1;
                 ptrdiff_t rowBytes = (affectedRightBit >> 3) + 1;
                 SkASSERT(bits + rowBytes <= endOfImage);
-                U8CPU rightMask = generate_right_mask((affectedRightBit & 7) + 1);
+                uint_fast8_t rightMask = generate_right_mask((affectedRightBit & 7) + 1);
                 bits_to_runs(this, cx, cy, bits, 0xFF, rowBytes, rightMask);
                 bits += maskRowBytes;
                 cy += 1;
@@ -234,12 +234,12 @@ void SkBlitter::blitMask(const SkMask& mask, const SkIRect& clip) {
 
             // Calculate left byte and mask
             const uint8_t* leftByte = bits;
-            U8CPU leftMask = 0xFFU >> (leftEdge & 7);
+            uint_fast8_t leftMask = 0xFFU >> (leftEdge & 7);
 
             // Calculate right byte and mask
             int affectedRightBit = rightEdge - 1;
             const uint8_t* rightByte = bits + (affectedRightBit >> 3);
-            U8CPU rightMask = generate_right_mask((affectedRightBit & 7) + 1);
+            uint_fast8_t rightMask = generate_right_mask((affectedRightBit & 7) + 1);
 
             // leftByte and rightByte are byte locations therefore, to get a count of bytes the
             // code must add one.
@@ -882,12 +882,12 @@ const SkPixmap* SkRectClipCheckBlitter::justAnOpaqueColor(uint32_t* value) {
     return fBlitter->justAnOpaqueColor(value);
 }
 
-void SkRectClipCheckBlitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkRectClipCheckBlitter::blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     SkASSERT(fClipRect.contains(SkIRect::MakeXYWH(x, y, 2, 1)));
     fBlitter->blitAntiH2(x, y, a0, a1);
 }
 
-void SkRectClipCheckBlitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkRectClipCheckBlitter::blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     SkASSERT(fClipRect.contains(SkIRect::MakeXYWH(x, y, 1, 2)));
     fBlitter->blitAntiV2(x, y, a0, a1);
 }

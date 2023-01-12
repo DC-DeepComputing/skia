@@ -490,7 +490,7 @@ GrGeometryProcessor* AtlasTextOp::setupDfProcessor(SkArenaAlloc* arena,
 #ifdef SK_GAMMA_APPLY_TO_A8
         float correction = 0;
         if (this->maskType() != MaskType::kAliasedDistanceField) {
-            U8CPU lum = SkColorSpaceLuminance::computeLuminance(SK_GAMMA_EXPONENT,
+            uint_fast8_t lum = SkColorSpaceLuminance::computeLuminance(SK_GAMMA_EXPONENT,
                                                                 fLuminanceColor);
             correction = dfAdjustTable->getAdjustment(lum >> kDistanceAdjustLumShift,
                                                       fUseGammaCorrectDistanceTable);

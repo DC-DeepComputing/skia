@@ -116,18 +116,18 @@ FT_Pixel_Mode compute_pixel_mode(SkMask::Format format) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-uint16_t packTriple(U8CPU r, U8CPU g, U8CPU b) {
+uint16_t packTriple(uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     if constexpr (kSkShowTextBlitCoverage) {
-        r = std::max(r, (U8CPU)0x40);
-        g = std::max(g, (U8CPU)0x40);
-        b = std::max(b, (U8CPU)0x40);
+        r = std::max(r, (uint_fast8_t)0x40);
+        g = std::max(g, (uint_fast8_t)0x40);
+        b = std::max(b, (uint_fast8_t)0x40);
     }
     return SkPack888ToRGB16(r, g, b);
 }
 
-uint16_t grayToRGB16(U8CPU gray) {
+uint16_t grayToRGB16(uint_fast8_t gray) {
     if constexpr (kSkShowTextBlitCoverage) {
-        gray = std::max(gray, (U8CPU)0x40);
+        gray = std::max(gray, (uint_fast8_t)0x40);
     }
     return SkPack888ToRGB16(gray, gray, gray);
 }
@@ -619,13 +619,13 @@ bool colrv1_configure_skpaint(FT_Face face,
             colorStopsSorted[index].pos = color_stop.stop_offset / kColorStopShift;
             FT_UInt16& palette_index = color_stop.color.palette_index;
             if (palette_index == kForegroundColorPaletteIndex) {
-                U8CPU newAlpha = SkColorGetA(foregroundColor) *
+                uint_fast8_t newAlpha = SkColorGetA(foregroundColor) *
                                  SkColrV1AlphaToFloat(color_stop.color.alpha);
                 colorStopsSorted[index].color = SkColorSetA(foregroundColor, newAlpha);
             } else if (palette_index >= palette.size()) {
                 return false;
             } else {
-                U8CPU newAlpha = SkColorGetA(palette[palette_index]) *
+                uint_fast8_t newAlpha = SkColorGetA(palette[palette_index]) *
                                  SkColrV1AlphaToFloat(color_stop.color.alpha);
                 colorStopsSorted[index].color = SkColorSetA(palette[palette_index], newAlpha);
             }
@@ -650,13 +650,13 @@ bool colrv1_configure_skpaint(FT_Face face,
             // Dont' draw anything with this color if the palette index is out of bounds.
             SkColor color = SK_ColorTRANSPARENT;
             if (solid.color.palette_index == kForegroundColorPaletteIndex) {
-                U8CPU newAlpha = SkColorGetA(foregroundColor) *
+                uint_fast8_t newAlpha = SkColorGetA(foregroundColor) *
                                  SkColrV1AlphaToFloat(solid.color.alpha);
                 color = SkColorSetA(foregroundColor, newAlpha);
             } else if (solid.color.palette_index >= palette.size()) {
                 return false;
             } else {
-                U8CPU newAlpha = SkColorGetA(palette[solid.color.palette_index]) *
+                uint_fast8_t newAlpha = SkColorGetA(palette[solid.color.palette_index]) *
                                  SkColrV1AlphaToFloat(solid.color.alpha);
                 color = SkColorSetA(palette[solid.color.palette_index], newAlpha);
             }

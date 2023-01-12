@@ -78,7 +78,7 @@ public:
     virtual const SkPixmap* justAnOpaqueColor(uint32_t* value);
 
     // (x, y), (x + 1, y)
-    virtual void blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+    virtual void blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
         int16_t runs[3];
         uint8_t aa[2];
 
@@ -91,7 +91,7 @@ public:
     }
 
     // (x, y), (x, y + 1)
-    virtual void blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+    virtual void blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
         int16_t runs[2];
         uint8_t aa[1];
 
@@ -262,8 +262,8 @@ public:
                               SkAlpha leftAlpha, SkAlpha rightAlpha) override;
     void blitMask(const SkMask&, const SkIRect& clip) override;
     const SkPixmap* justAnOpaqueColor(uint32_t* value) override;
-    void blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) override;
-    void blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) override;
+    void blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) override;
+    void blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) override;
 
     int requestRowsPreserved() const override {
         return fBlitter->requestRowsPreserved();

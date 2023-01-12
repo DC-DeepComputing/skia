@@ -24,7 +24,7 @@ public:
         return gTable;
     }
 
-    static Scale GetScale(U8CPU alpha) {
+    static Scale GetScale(uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
         return gTable[alpha];
     }
@@ -42,7 +42,7 @@ public:
             // now red is unpremultiplied
         }
     */
-    static U8CPU ApplyScale(Scale scale, U8CPU component) {
+    static uint_fast8_t ApplyScale(Scale scale, uint_fast8_t component) {
         SkASSERT(component <= 255);
         return (scale * component + (1 << 23)) >> 24;
     }

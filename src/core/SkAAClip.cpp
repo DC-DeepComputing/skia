@@ -87,7 +87,7 @@ public:
     bool done() const { return fDone; }
     int left() const { return fLeft; }
     int right() const { return fRight; }
-    U8CPU alpha() const { return fAlpha; }
+    uint_fast8_t alpha() const { return fAlpha; }
     void next() {
         if (!fDone) {
             fLeft = fRight;
@@ -270,11 +270,11 @@ public:
     bool blitPath(SkAAClip* target, const SkPath& path, bool doAA);
 
 private:
-    using AlphaProc = U8CPU (*)(U8CPU alphaA, U8CPU alphaB);
+    using AlphaProc = uint_fast8_t (*)(uint_fast8_t alphaA, uint_fast8_t alphaB);
     void operateX(int lastY, RowIter& iterA, RowIter& iterB, AlphaProc proc);
     void operateY(const SkAAClip& A, const SkAAClip& B, SkClipOp op);
 
-    void addRun(int x, int y, U8CPU alpha, int count) {
+    void addRun(int x, int y, uint_fast8_t alpha, int count) {
         SkASSERT(count > 0);
         SkASSERT(fBounds.contains(x, y));
         SkASSERT(fBounds.contains(x + count - 1, y));
@@ -311,7 +311,7 @@ private:
         SkASSERT(row->fWidth <= fBounds.width());
     }
 
-    void addColumn(int x, int y, U8CPU alpha, int height) {
+    void addColumn(int x, int y, uint_fast8_t alpha, int height) {
         SkASSERT(fBounds.contains(x, y + height - 1));
 
         this->addRun(x, y, alpha, 1);
@@ -511,7 +511,7 @@ private:
         return next;
     }
 
-    static void AppendRun(SkTDArray<uint8_t>& data, U8CPU alpha, int count) {
+    static void AppendRun(SkTDArray<uint8_t>& data, uint_fast8_t alpha, int count) {
         do {
             int n = count;
             if (n > 255) {
@@ -542,8 +542,8 @@ void SkAAClip::Builder::operateX(int lastY, RowIter& iterA, RowIter& iterB, Alph
     int prevRite = fBounds.fLeft;
 
     do {
-        U8CPU alphaA = 0;
-        U8CPU alphaB = 0;
+        uint_fast8_t alphaA = 0;
+        uint_fast8_t alphaB = 0;
         int left, rite;
 
         if (leftA < leftB) {
@@ -592,8 +592,8 @@ void SkAAClip::Builder::operateX(int lastY, RowIter& iterA, RowIter& iterB, Alph
 }
 
 void SkAAClip::Builder::operateY(const SkAAClip& A, const SkAAClip& B, SkClipOp op) {
-    static const AlphaProc kDiff = [](U8CPU a, U8CPU b) { return SkMulDiv255Round(a, 0xFF - b); };
-    static const AlphaProc kIntersect = [](U8CPU a, U8CPU b) { return SkMulDiv255Round(a, b); };
+    static const AlphaProc kDiff = [](uint_fast8_t a, uint_fast8_t b) { return SkMulDiv255Round(a, 0xFF - b); };
+    static const AlphaProc kIntersect = [](uint_fast8_t a, uint_fast8_t b) { return SkMulDiv255Round(a, b); };
     AlphaProc proc = (op == SkClipOp::kDifference) ? kDiff : kIntersect;
 
     Iter iterA = RunHead::Iterate(A);
@@ -1853,7 +1853,7 @@ static MergeAAProc find_merge_aa_proc(SkMask::Format format) {
     }
 }
 
-static U8CPU bit2byte(int bitInAByte) {
+static uint_fast8_t bit2byte(int bitInAByte) {
     SkASSERT(bitInAByte <= 0xFF);
     // negation turns any non-zero into 0xFFFFFF??, so we just shift down
     // some value >= 8 to get a full FF value

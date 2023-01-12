@@ -258,8 +258,8 @@ void SuperBlitter::blitH(int x, int y, int width) {
 }
 
 #if 0 // UNUSED
-static void set_left_rite_runs(SkAlphaRuns& runs, int ileft, U8CPU leftA,
-                               int n, U8CPU riteA) {
+static void set_left_rite_runs(SkAlphaRuns& runs, int ileft, uint_fast8_t leftA,
+                               int n, uint_fast8_t riteA) {
     SkASSERT(leftA <= 0xFF);
     SkASSERT(riteA <= 0xFF);
 
@@ -456,7 +456,7 @@ MaskSuperBlitter::MaskSuperBlitter(SkBlitter* realBlitter, const SkIRect& ir,
     memset(fStorage, 0, fMask.fBounds.height() * fMask.fRowBytes + 1);
 }
 
-static void add_aa_span(uint8_t* alpha, U8CPU startAlpha) {
+static void add_aa_span(uint8_t* alpha, uint_fast8_t startAlpha) {
     /*  I should be able to just add alpha[x] + startAlpha.
         However, if the trailing edge of the previous span and the leading
         edge of the current span round to the same super-sampled x value,
@@ -467,7 +467,7 @@ static void add_aa_span(uint8_t* alpha, U8CPU startAlpha) {
     *alpha = SkToU8(tmp - (tmp >> 8));
 }
 
-static inline uint32_t quadplicate_byte(U8CPU value) {
+static inline uint32_t quadplicate_byte(uint_fast8_t value) {
     uint32_t pair = (value << 8) | value;
     return (pair << 16) | pair;
 }
@@ -477,7 +477,7 @@ static inline uint32_t quadplicate_byte(U8CPU value) {
 // enough to just subtract the high-bit. Actually clamping with a branch would
 // be slower (e.g. if (tmp > 255) tmp = 255;)
 //
-static inline void saturated_add(uint8_t* ptr, U8CPU add) {
+static inline void saturated_add(uint8_t* ptr, uint_fast8_t add) {
     unsigned tmp = *ptr + add;
     SkASSERT(tmp <= 256);
     *ptr = SkToU8(tmp - (tmp >> 8));
@@ -486,8 +486,8 @@ static inline void saturated_add(uint8_t* ptr, U8CPU add) {
 // minimum count before we want to setup an inner loop, adding 4-at-a-time
 #define MIN_COUNT_FOR_QUAD_LOOP  16
 
-static void add_aa_span(uint8_t* alpha, U8CPU startAlpha, int middleCount,
-                        U8CPU stopAlpha, U8CPU maxValue) {
+static void add_aa_span(uint8_t* alpha, uint_fast8_t startAlpha, int middleCount,
+                        uint_fast8_t stopAlpha, uint_fast8_t maxValue) {
     SkASSERT(middleCount >= 0);
 
     saturated_add(alpha, startAlpha);

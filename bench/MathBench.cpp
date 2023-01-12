@@ -139,7 +139,7 @@ private:
     using INHERITED = MathBench;
 };
 
-static inline uint32_t QMul64(uint32_t value, U8CPU alpha) {
+static inline uint32_t QMul64(uint32_t value, uint_fast8_t alpha) {
     SkASSERT((uint8_t)alpha == alpha);
     const uint32_t mask = 0xFF00FF;
 

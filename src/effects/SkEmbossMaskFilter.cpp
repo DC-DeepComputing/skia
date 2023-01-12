@@ -59,7 +59,7 @@ sk_sp<SkMaskFilter> SkBlurMaskFilter::MakeEmboss(SkScalar blurSigma, const SkSca
     light.fAmbient = SkUnitScalarClampToByte(ambient);
     // specular should be 0..15.99 as a scalar
     static const SkScalar kSpecularMultiplier = SkIntToScalar(255) / 16;
-    light.fSpecular = static_cast<U8CPU>(SkTPin(specular, 0.0f, 16.0f) * kSpecularMultiplier + 0.5);
+    light.fSpecular = static_cast<uint_fast8_t>(SkTPin(specular, 0.0f, 16.0f) * kSpecularMultiplier + 0.5);
 
     return SkEmbossMaskFilter::Make(blurSigma, light);
 }

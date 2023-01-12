@@ -287,7 +287,7 @@ protected:
         }
         SkRandom rand;
         SkColor color = 0xFF000000;
-        U8CPU alpha = 0xFF;
+        uint_fast8_t alpha = 0xFF;
         SkPaint paint;
         paint.setStrokeCap(SkPaint::kRound_Cap);
         if (_type == KMaskShader) {
