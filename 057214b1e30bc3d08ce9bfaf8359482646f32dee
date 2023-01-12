@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62c6c98c_691fd820",
+        "filename": "modules/canvaskit/webgl.js",
+        "patchSetId": 14
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 19564
+      },
+      "writtenOn": "2023-01-12T19:56:03Z",
+      "side": 1,
+      "message": "I think I should still do this to handle the case where the user provides one but not the other. Either that or add more overrides to handle that case.",
+      "revId": "057214b1e30bc3d08ce9bfaf8359482646f32dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
