@@ -92,6 +92,7 @@ public:
 
     void writeHalf(const SkMatrix&);
     void writeHalfArray(SkSpan<const float>);
+    void writeHalf4x4(const SkM44&);
 
     // Debug only utilities used for debug assertions and tests.
     void checkReset() const;
