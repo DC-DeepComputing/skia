@@ -87,6 +87,29 @@
       },
       "revId": "6c0589c98793517129b030225fde98fe315daabd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f194dfc4_b994b19c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T19:36:28Z",
+      "side": 1,
+      "message": "So, for (kJustify \u0026\u0026 inifinite Line) we are going to pass it down and there it will be treated as kJustify.\nAs you said in the description of this CL: it has to be the same as kStart. Shouldn\u0027t we update the effectiveAlign for this case?",
+      "range": {
+        "startLine": 637,
+        "startChar": 20,
+        "endLine": 637,
+        "endChar": 34
+      },
+      "revId": "6c0589c98793517129b030225fde98fe315daabd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
