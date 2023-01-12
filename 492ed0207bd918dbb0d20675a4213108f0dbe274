@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07424daa_d0680474",
+        "filename": "modules/canvaskit/tests/core_test.js",
+        "patchSetId": 10
+      },
+      "lineNbr": 2017,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T18:14:19Z",
+      "side": 1,
+      "message": "Yes, this is what I meant. Instead of CK, you want CanvasKit though.",
+      "range": {
+        "startLine": 2017,
+        "startChar": 12,
+        "endLine": 2017,
+        "endChar": 19
+      },
+      "revId": "492ed0207bd918dbb0d20675a4213108f0dbe274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
