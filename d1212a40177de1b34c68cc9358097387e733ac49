@@ -22,6 +22,30 @@
       },
       "revId": "d1212a40177de1b34c68cc9358097387e733ac49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "390e20f5_da22ddd2",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-12T20:09:54Z",
+      "side": 1,
+      "message": "I think your current fix is good (we don\u0027t have any compelling reason to change behavior--the assert is the only broken thing here)",
+      "parentUuid": "cbbcda43_a53a9282",
+      "range": {
+        "startLine": 439,
+        "startChar": 8,
+        "endLine": 439,
+        "endChar": 44
+      },
+      "revId": "d1212a40177de1b34c68cc9358097387e733ac49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
