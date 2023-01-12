@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b0b7fa1_fb14d785",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T14:31:50Z",
+      "side": 1,
+      "message": "I understand what you wanted to do but this line does not compile.",
+      "range": {
+        "startLine": 626,
+        "startChar": 49,
+        "endLine": 626,
+        "endChar": 58
+      },
+      "revId": "63d414098d4aab29c85a3af271d105a35ac1d1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
