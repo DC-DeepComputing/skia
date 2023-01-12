@@ -55,17 +55,17 @@ struct GrContextOptions;
 
 static const int DEV_W = 100, DEV_H = 100;
 static const SkIRect DEV_RECT = SkIRect::MakeWH(DEV_W, DEV_H);
-static const U8CPU DEV_PAD = 0xee;
+static const uint_fast8_t DEV_PAD = 0xee;
 
 static SkPMColor get_canvas_color(int x, int y) {
     SkASSERT(x >= 0 && x < DEV_W);
     SkASSERT(y >= 0 && y < DEV_H);
 
-    U8CPU r = x;
-    U8CPU g = y;
-    U8CPU b = 0xc;
+    uint_fast8_t r = x;
+    uint_fast8_t g = y;
+    uint_fast8_t b = 0xc;
 
-    U8CPU a = 0x0;
+    uint_fast8_t a = 0x0;
     switch ((x+y) % 5) {
         case 0:
             a = 0xff;
@@ -87,7 +87,7 @@ static SkPMColor get_canvas_color(int x, int y) {
 }
 
 // assumes any premu/.unpremul has been applied
-static uint32_t pack_color_type(SkColorType ct, U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static uint32_t pack_color_type(SkColorType ct, uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     uint32_t r32;
     uint8_t* result = reinterpret_cast<uint8_t*>(&r32);
     switch (ct) {
@@ -113,10 +113,10 @@ static uint32_t pack_color_type(SkColorType ct, U8CPU a, U8CPU r, U8CPU g, U8CPU
 
 static uint32_t get_bitmap_color(int x, int y, int w, SkColorType ct, SkAlphaType at) {
     int n = y * w + x;
-    U8CPU b = n & 0xff;
-    U8CPU g = (n >> 8) & 0xff;
-    U8CPU r = (n >> 16) & 0xff;
-    U8CPU a = 0;
+    uint_fast8_t b = n & 0xff;
+    uint_fast8_t g = (n >> 8) & 0xff;
+    uint_fast8_t r = (n >> 16) & 0xff;
+    uint_fast8_t a = 0;
     switch ((x+y) % 5) {
         case 4:
             a = 0xff;

@@ -797,7 +797,7 @@ public:
         @param g  amount of green, from no green (0) to full green (255)
         @param b  amount of blue, from no blue (0) to full blue (255)
     */
-    void eraseARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) const {
+    void eraseARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) const {
         this->eraseColor(SkColorSetARGB(a, r, g, b));
     }
 

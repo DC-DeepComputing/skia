@@ -1037,14 +1037,14 @@ static void fuzz_canvas(Fuzz* fuzz, SkCanvas* canvas, int depth = 9) {
             case 6: {
                 uint8_t alpha;
                 fuzz->next(&alpha);
-                canvas->saveLayerAlpha(nullptr, (U8CPU)alpha);
+                canvas->saveLayerAlpha(nullptr, (uint_fast8_t)alpha);
                 break;
             }
             case 7: {
                 SkRect bounds;
                 uint8_t alpha;
                 fuzz->next(&bounds, &alpha);
-                canvas->saveLayerAlpha(&bounds, (U8CPU)alpha);
+                canvas->saveLayerAlpha(&bounds, (uint_fast8_t)alpha);
                 break;
             }
             case 8: {

@@ -18,7 +18,7 @@
 
 class Sprite_D32_S32 : public SkSpriteBlitter {
 public:
-    Sprite_D32_S32(const SkPixmap& src, U8CPU alpha)  : INHERITED(src) {
+    Sprite_D32_S32(const SkPixmap& src, uint_fast8_t alpha)  : INHERITED(src) {
         SkASSERT(src.colorType() == kN32_SkColorType);
 
         unsigned flags32 = 0;
@@ -40,7 +40,7 @@ public:
         size_t dstRB = fDst.rowBytes();
         size_t srcRB = fSource.rowBytes();
         SkBlitRow::Proc32 proc = fProc32;
-        U8CPU             alpha = fAlpha;
+        uint_fast8_t             alpha = fAlpha;
 
         do {
             proc(dst, src, width, alpha);
@@ -51,7 +51,7 @@ public:
 
 private:
     SkBlitRow::Proc32   fProc32;
-    U8CPU               fAlpha;
+    uint_fast8_t               fAlpha;
 
     using INHERITED = SkSpriteBlitter;
 };
@@ -104,7 +104,7 @@ SkSpriteBlitter* SkSpriteBlitter::ChooseL32(const SkPixmap& source, const SkPain
         return nullptr;
     }
 
-    U8CPU alpha = paint.getAlpha();
+    uint_fast8_t alpha = paint.getAlpha();
 
     if (source.colorType() == kN32_SkColorType) {
         if (paint.isSrcOver()) {

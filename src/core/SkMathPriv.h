@@ -101,7 +101,7 @@ static inline size_t sk_negate_to_size_t(int32_t value) {
 /** Return a*b/255, truncating away any fractional bits. Only valid if both
  a and b are 0..255
  */
-static inline U8CPU SkMulDiv255Trunc(U8CPU a, U8CPU b) {
+static inline uint_fast8_t SkMulDiv255Trunc(uint_fast8_t a, uint_fast8_t b) {
     SkASSERT((uint8_t)a == a);
     SkASSERT((uint8_t)b == b);
     unsigned prod = a*b + 1;
@@ -111,7 +111,7 @@ static inline U8CPU SkMulDiv255Trunc(U8CPU a, U8CPU b) {
 /** Return (a*b)/255, taking the ceiling of any fractional bits. Only valid if
  both a and b are 0..255. The expected result equals (a * b + 254) / 255.
  */
-static inline U8CPU SkMulDiv255Ceiling(U8CPU a, U8CPU b) {
+static inline uint_fast8_t SkMulDiv255Ceiling(uint_fast8_t a, uint_fast8_t b) {
     SkASSERT((uint8_t)a == a);
     SkASSERT((uint8_t)b == b);
     unsigned prod = a*b + 255;

@@ -24,7 +24,7 @@ public:
         @param count number of colors to blend
         @param alpha global alpha to be applied to all src colors
      */
-    typedef void (*Proc32)(uint32_t dst[], const SkPMColor src[], int count, U8CPU alpha);
+    typedef void (*Proc32)(uint32_t dst[], const SkPMColor src[], int count, uint_fast8_t alpha);
 
     static Proc32 Factory32(unsigned flags32);
 

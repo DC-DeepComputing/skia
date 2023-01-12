@@ -275,7 +275,7 @@ public:
     void setAlphaf(float a);
 
     // Helper that accepts an int between 0 and 255, and divides it by 255.0
-    void setAlpha(U8CPU a) {
+    void setAlpha(uint_fast8_t a) {
         this->setAlphaf(a * (1.0f / 255));
     }
 
@@ -289,7 +289,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Paint_setARGB
     */
-    void setARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b);
+    void setARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b);
 
     /** Returns the thickness of the pen used by SkPaint to
         outline the shape.

@@ -31,7 +31,7 @@ public:
     virtual SkScalar fromLuma(SkScalar gamma, SkScalar luma) const = 0;
 
     /** Converts a color to a luminance value. */
-    static U8CPU computeLuminance(SkScalar gamma, SkColor c) {
+    static uint_fast8_t computeLuminance(SkScalar gamma, SkColor c) {
         const SkColorSpaceLuminance& luminance = Fetch(gamma);
         SkScalar r = luminance.toLuma(gamma, SkIntToScalar(SkColorGetR(c)) / 255);
         SkScalar g = luminance.toLuma(gamma, SkIntToScalar(SkColorGetG(c)) / 255);
@@ -53,31 +53,31 @@ public:
  * @param N [1, 8] the number of bits used by base.
  * @param base the number to be scaled to [0, 255].
  */
-template<U8CPU N> static inline U8CPU sk_t_scale255(U8CPU base) {
+template<uint_fast8_t N> static inline uint_fast8_t sk_t_scale255(uint_fast8_t base) {
     base <<= (8 - N);
-    U8CPU lum = base;
+    uint_fast8_t lum = base;
     for (unsigned int i = N; i < 8; i += N) {
         lum |= base >> i;
     }
     return lum;
 }
-template<> /*static*/ inline U8CPU sk_t_scale255<1>(U8CPU base) {
+template<> /*static*/ inline uint_fast8_t sk_t_scale255<1>(uint_fast8_t base) {
     return base * 0xFF;
 }
-template<> /*static*/ inline U8CPU sk_t_scale255<2>(U8CPU base) {
+template<> /*static*/ inline uint_fast8_t sk_t_scale255<2>(uint_fast8_t base) {
     return base * 0x55;
 }
-template<> /*static*/ inline U8CPU sk_t_scale255<4>(U8CPU base) {
+template<> /*static*/ inline uint_fast8_t sk_t_scale255<4>(uint_fast8_t base) {
     return base * 0x11;
 }
-template<> /*static*/ inline U8CPU sk_t_scale255<8>(U8CPU base) {
+template<> /*static*/ inline uint_fast8_t sk_t_scale255<8>(uint_fast8_t base) {
     return base;
 }
 ///@}
 
 template <int R_LUM_BITS, int G_LUM_BITS, int B_LUM_BITS> class SkTMaskPreBlend;
 
-void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar contrast,
+void SkTMaskGamma_build_correcting_lut(uint8_t table[256], uint_fast8_t srcI, SkScalar contrast,
                                        const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
                                        const SkColorSpaceLuminance& dstConvert, SkScalar dstGamma);
 
@@ -111,8 +111,8 @@ public:
     SkTMaskGamma(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma) : fIsLinear(false) {
         const SkColorSpaceLuminance& paintConvert = SkColorSpaceLuminance::Fetch(paintGamma);
         const SkColorSpaceLuminance& deviceConvert = SkColorSpaceLuminance::Fetch(deviceGamma);
-        for (U8CPU i = 0; i < (1 << MAX_LUM_BITS); ++i) {
-            U8CPU lum = sk_t_scale255<MAX_LUM_BITS>(i);
+        for (uint_fast8_t i = 0; i < (1 << MAX_LUM_BITS); ++i) {
+            uint_fast8_t lum = sk_t_scale255<MAX_LUM_BITS>(i);
             SkTMaskGamma_build_correcting_lut(fGammaTables[i], lum, contrast,
                                               paintConvert, paintGamma,
                                               deviceConvert, deviceGamma);
@@ -221,10 +221,10 @@ SkTMaskGamma<R_LUM_BITS, G_LUM_BITS, B_LUM_BITS>::preBlend(SkColor color) const 
  *  @component the initial component.
  *  @lut a look-up table which transforms the component.
  */
-template<bool APPLY_LUT> static inline U8CPU sk_apply_lut_if(U8CPU component, const uint8_t*) {
+template<bool APPLY_LUT> static inline uint_fast8_t sk_apply_lut_if(uint_fast8_t component, const uint8_t*) {
     return component;
 }
-template<> /*static*/ inline U8CPU sk_apply_lut_if<true>(U8CPU component, const uint8_t* lut) {
+template<> /*static*/ inline uint_fast8_t sk_apply_lut_if<true>(uint_fast8_t component, const uint8_t* lut) {
     return lut[component];
 }
 ///@}

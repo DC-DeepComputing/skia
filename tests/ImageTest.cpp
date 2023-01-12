@@ -579,7 +579,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
     for (int y = 0; y < 256; ++y) {
         for (int x = 0; x < 256; ++x) {
             *bmp.getAddr32(x, y) =
-                    SkColorSetARGB((U8CPU)y, 255 - (U8CPU)y, (U8CPU)x, 255 - (U8CPU)x);
+                    SkColorSetARGB((uint_fast8_t)y, 255 - (uint_fast8_t)y, (uint_fast8_t)x, 255 - (uint_fast8_t)x);
         }
     }
     auto dContext = ctxInfo.directContext();

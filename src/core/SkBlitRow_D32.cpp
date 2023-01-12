@@ -13,7 +13,7 @@
 static void blit_row_s32_opaque(SkPMColor* dst,
                                 const SkPMColor* src,
                                 int count,
-                                U8CPU alpha) {
+                                uint_fast8_t alpha) {
     SkASSERT(255 == alpha);
     memcpy(dst, src, count * sizeof(SkPMColor));
 }
@@ -55,7 +55,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
     }
 
 
-    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
 
         auto src4 = (const __m128i*)src;
@@ -120,7 +120,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         return _mm_or_si128(dst_rb, dst_ag);
     }
 
-    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
 
         auto src4 = (const __m128i*)src;
@@ -148,7 +148,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
 #elif defined(SK_ARM_HAS_NEON)
     #include <arm_neon.h>
 
-    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
 
         uint16_t src_scale = SkAlpha255To256(alpha);
@@ -193,7 +193,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         }
     }
 
-    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha < 255);
 
         unsigned alpha256 = SkAlpha255To256(alpha);
@@ -270,7 +270,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
     }
 
 #else
-    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
         while (count --> 0) {
             *dst = SkPMLerp(*src, *dst, SkAlpha255To256(alpha));
@@ -279,7 +279,7 @@ static void blit_row_s32_opaque(SkPMColor* dst,
         }
     }
 
-    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, U8CPU alpha) {
+    static void blit_row_s32a_blend(SkPMColor* dst, const SkPMColor* src, int count, uint_fast8_t alpha) {
         SkASSERT(alpha <= 255);
         while (count --> 0) {
             *dst = SkBlendARGB32(*src, *dst, alpha);

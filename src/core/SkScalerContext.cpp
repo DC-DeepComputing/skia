@@ -5,12 +5,13 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkPaint.h"
+
 #include "src/core/SkScalerContext.h"
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMaskFilter.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkColorData.h"
@@ -33,6 +34,8 @@
 #include "src/core/SkTextFormatParams.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/utils/SkMatrix22.h"
+
+#include <cstdint>
 #include <new>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +65,7 @@ SkScalerContextRec SkScalerContext::PreprocessRec(const SkTypeface& typeface,
     SkColor lumColor = rec.getLuminanceColor();
 
     if (rec.fMaskFormat == SkMask::kA8_Format) {
-        U8CPU lum = SkComputeLuminance(SkColorGetR(lumColor),
+        uint_fast8_t lum = SkComputeLuminance(SkColorGetR(lumColor),
                                        SkColorGetG(lumColor),
                                        SkColorGetB(lumColor));
         lumColor = SkColorSetRGB(lum, lum, lum);
@@ -380,7 +383,7 @@ static void pack4xHToMask(const SkPixmap& src, const SkMask& dst,
                 fir[subpxl_index] = std::min(fir[subpxl_index], 255);
             }
 
-            U8CPU r, g, b;
+            uint_fast8_t r, g, b;
             if (doBGR) {
                 r = fir[2];
                 g = fir[1];
@@ -391,12 +394,12 @@ static void pack4xHToMask(const SkPixmap& src, const SkMask& dst,
                 b = fir[2];
             }
             if constexpr (kSkShowTextBlitCoverage) {
-                r = std::max(r, 10u);
-                g = std::max(g, 10u);
-                b = std::max(b, 10u);
+                r = std::max(r, uint_fast8_t(10u));
+                g = std::max(g, uint_fast8_t(10u));
+                b = std::max(b, uint_fast8_t(10u));
             }
             if (toA8) {
-                U8CPU a = (r + g + b) / 3;
+                uint_fast8_t a = (r + g + b) / 3;
                 if (maskPreBlend.isApplicable()) {
                     a = maskPreBlend.fG[a];
                 }

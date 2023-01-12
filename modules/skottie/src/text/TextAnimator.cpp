@@ -160,7 +160,7 @@ TextAnimator::ResolvedProps TextAnimator::modulateProps(const ResolvedProps& pro
                                 fTextProps.fill_opacity*2.55f,
                                 clamped_amount);
         modulated_props.fill_color = SkColorSetA(modulated_props.fill_color,
-                                                 static_cast<U8CPU>(std::round(alpha)));
+                                                 static_cast<uint_fast8_t>(std::round(alpha)));
     }
     if (fHasStrokeOpacity) {
         // 255-based
@@ -168,7 +168,7 @@ TextAnimator::ResolvedProps TextAnimator::modulateProps(const ResolvedProps& pro
                                 fTextProps.stroke_opacity*2.55f,
                                 clamped_amount);
         modulated_props.stroke_color = SkColorSetA(modulated_props.stroke_color,
-                                                   static_cast<U8CPU>(std::round(alpha)));
+                                                   static_cast<uint_fast8_t>(std::round(alpha)));
     }
     if (fHasOpacity) {
         modulated_props.opacity = lerp(props.opacity, fTextProps.opacity*0.01f, clamped_amount);
