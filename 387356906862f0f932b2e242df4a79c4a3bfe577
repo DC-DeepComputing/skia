@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d3118bb_8c0411a9",
+        "filename": "src/gpu/ganesh/gl/GrGLUtil.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-12T15:08:14Z",
+      "side": 1,
+      "message": "We could use the identical SK_MACRO_CONCAT (and SK_MACRO_CONCAT_IMPL_PRIV) instead of a separate GR one.",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 32
+      },
+      "revId": "387356906862f0f932b2e242df4a79c4a3bfe577",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
