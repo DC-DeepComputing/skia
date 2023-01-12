@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50bd7d43_58d146d7",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T19:14:30Z",
+      "side": 1,
+      "message": "Should we add something for justified and RTL? (I assume for an infinite line width it will be \"End\"/RightAligned?",
+      "range": {
+        "startLine": 626,
+        "startChar": 15,
+        "endLine": 626,
+        "endChar": 28
+      },
+      "revId": "6c0589c98793517129b030225fde98fe315daabd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
