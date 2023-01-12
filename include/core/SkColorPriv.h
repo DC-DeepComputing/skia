@@ -19,7 +19,7 @@
 
     In debugging, asserts that alpha is 0..255
 */
-static inline unsigned SkAlpha255To256(U8CPU alpha) {
+static inline unsigned SkAlpha255To256(uint_fast8_t alpha) {
     SkASSERT(SkToU8(alpha) == alpha);
     // this one assues that blending on top of an opaque dst keeps it that way
     // even though it is less accurate than a+(a>>7) for non-opaque dsts
@@ -31,8 +31,8 @@ static inline unsigned SkAlpha255To256(U8CPU alpha) {
  */
 #define SkAlphaMul(value, alpha256)     (((value) * (alpha256)) >> 8)
 
-static inline U8CPU SkUnitScalarClampToByte(SkScalar x) {
-    return static_cast<U8CPU>(SkTPin(x, 0.0f, 1.0f) * 255 + 0.5);
+static inline uint_fast8_t SkUnitScalarClampToByte(SkScalar x) {
+    return static_cast<uint_fast8_t>(SkTPin(x, 0.0f, 1.0f) * 255 + 0.5);
 }
 
 #define SK_A32_BITS     8
@@ -101,7 +101,7 @@ static inline U8CPU SkUnitScalarClampToByte(SkScalar x) {
  *  Pack the components into a SkPMColor, checking (in the debug version) that
  *  the components are 0..255, and are already premultiplied (i.e. alpha >= color)
  */
-static inline SkPMColor SkPackARGB32(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline SkPMColor SkPackARGB32(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     SkA32Assert(a);
     SkASSERT(r <= a);
     SkASSERT(g <= a);
@@ -115,13 +115,13 @@ static inline SkPMColor SkPackARGB32(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
  *  Same as SkPackARGB32, but this version guarantees to not check that the
  *  values are premultiplied in the debug version.
  */
-static inline SkPMColor SkPackARGB32NoCheck(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline SkPMColor SkPackARGB32NoCheck(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     return (a << SK_A32_SHIFT) | (r << SK_R32_SHIFT) |
            (g << SK_G32_SHIFT) | (b << SK_B32_SHIFT);
 }
 
 static inline
-SkPMColor SkPremultiplyARGBInline(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+SkPMColor SkPremultiplyARGBInline(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     SkA32Assert(a);
     SkR32Assert(r);
     SkG32Assert(g);

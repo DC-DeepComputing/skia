@@ -150,7 +150,7 @@
 namespace SK_OPTS_NS {
 
 /*not static*/
-inline void blit_row_s32a_opaque(SkPMColor* dst, const SkPMColor* src, int len, U8CPU alpha) {
+inline void blit_row_s32a_opaque(SkPMColor* dst, const SkPMColor* src, int len, uint_fast8_t alpha) {
     SkASSERT(alpha == 0xFF);
     sk_msan_assert_initialized(src, src+len);
 

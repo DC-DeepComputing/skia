@@ -916,7 +916,7 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
             if (SK_Scalar1 == coverage) {
                 paint.writable()->setStrokeWidth(0);
             } else if (bm && SkBlendMode_SupportsCoverageAsAlpha(bm.value())) {
-                U8CPU newAlpha;
+                uint_fast8_t newAlpha;
 #if 0
                 newAlpha = SkToU8(SkScalarRoundToInt(coverage *
                                                      origPaint.getAlpha()));

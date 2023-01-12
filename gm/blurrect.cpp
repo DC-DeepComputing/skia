@@ -108,7 +108,7 @@ typedef void (*PaintProc)(SkPaint*, SkScalar width);
 
 class BlurRectGM : public skiagm::GM {
 public:
-    BlurRectGM(const char name[], U8CPU alpha) : fName(name), fAlpha(SkToU8(alpha)) {}
+    BlurRectGM(const char name[], uint_fast8_t alpha) : fName(name), fAlpha(SkToU8(alpha)) {}
 
 private:
     sk_sp<SkMaskFilter> fMaskFilters[kLastEnum_SkBlurStyle + 1];

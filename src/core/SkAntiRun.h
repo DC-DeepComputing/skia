@@ -50,8 +50,8 @@ public:
      *  assuming we're on the same scanline. If the caller is switching
      *  scanlines, then offsetX should be 0 when this is called.
      */
-    SK_ALWAYS_INLINE int add(int x, U8CPU startAlpha, int middleCount, U8CPU stopAlpha,
-                             U8CPU maxValue, int offsetX) {
+    SK_ALWAYS_INLINE int add(int x, uint_fast8_t startAlpha, int middleCount, uint_fast8_t stopAlpha,
+                             uint_fast8_t maxValue, int offsetX) {
         SkASSERT(middleCount >= 0);
         SkASSERT(x >= 0 && x + (startAlpha != 0) + middleCount + (stopAlpha != 0) <= fWidth);
 

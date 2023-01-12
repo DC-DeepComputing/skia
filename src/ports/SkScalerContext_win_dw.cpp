@@ -992,10 +992,10 @@ void SkScalerContext_DW::GrayscaleToA8(const uint8_t* SK_RESTRICT src,
 
     for (int y = 0; y < glyph.height(); y++) {
         for (int i = 0; i < width; i++) {
-            U8CPU a = *(src++);
+            uint_fast8_t a = *(src++);
             dst[i] = sk_apply_lut_if<APPLY_PREBLEND>(a, table8);
             if constexpr (kSkShowTextBlitCoverage) {
-                dst[i] = std::max<U8CPU>(0x30, dst[i]);
+                dst[i] = std::max<uint_fast8_t>(0x30, dst[i]);
             }
         }
         dst = SkTAddOffset<uint8_t>(dst, dstRB);
@@ -1012,12 +1012,12 @@ void SkScalerContext_DW::RGBToA8(const uint8_t* SK_RESTRICT src,
 
     for (int y = 0; y < glyph.height(); y++) {
         for (int i = 0; i < width; i++) {
-            U8CPU r = *(src++);
-            U8CPU g = *(src++);
-            U8CPU b = *(src++);
+            uint_fast8_t r = *(src++);
+            uint_fast8_t g = *(src++);
+            uint_fast8_t b = *(src++);
             dst[i] = sk_apply_lut_if<APPLY_PREBLEND>((r + g + b) / 3, table8);
             if constexpr (kSkShowTextBlitCoverage) {
-                dst[i] = std::max<U8CPU>(0x30, dst[i]);
+                dst[i] = std::max<uint_fast8_t>(0x30, dst[i]);
             }
         }
         dst = SkTAddOffset<uint8_t>(dst, dstRB);
@@ -1034,7 +1034,7 @@ void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyp
 
     for (int y = 0; y < glyph.height(); y++) {
         for (int i = 0; i < width; i++) {
-            U8CPU r, g, b;
+            uint_fast8_t r, g, b;
             if (RGB) {
                 r = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableR);
                 g = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableG);
@@ -1045,9 +1045,9 @@ void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyp
                 r = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableR);
             }
             if constexpr (kSkShowTextBlitCoverage) {
-                r = std::max<U8CPU>(0x30, r);
-                g = std::max<U8CPU>(0x30, g);
-                b = std::max<U8CPU>(0x30, b);
+                r = std::max<uint_fast8_t>(0x30, r);
+                g = std::max<uint_fast8_t>(0x30, g);
+                b = std::max<uint_fast8_t>(0x30, b);
             }
             dst[i] = SkPack888ToRGB16(r, g, b);
         }

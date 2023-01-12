@@ -48,11 +48,11 @@ static SkPMColor get_src_color(int x, int y) {
     SkASSERT(x >= 0 && x < DEV_W);
     SkASSERT(y >= 0 && y < DEV_H);
 
-    U8CPU r = x;
-    U8CPU g = y;
-    U8CPU b = 0xc;
+    uint_fast8_t r = x;
+    uint_fast8_t g = y;
+    uint_fast8_t b = 0xc;
 
-    U8CPU a = 0xff;
+    uint_fast8_t a = 0xff;
     switch ((x+y) % 5) {
         case 0:
             a = 0xff;
@@ -76,9 +76,9 @@ static SkPMColor get_src_color(int x, int y) {
 static SkPMColor get_dst_bmp_init_color(int x, int y, int w) {
     int n = y * w + x;
 
-    U8CPU b = n & 0xff;
-    U8CPU g = (n >> 8) & 0xff;
-    U8CPU r = (n >> 16) & 0xff;
+    uint_fast8_t b = n & 0xff;
+    uint_fast8_t g = (n >> 8) & 0xff;
+    uint_fast8_t r = (n >> 16) & 0xff;
     return SkPackARGB32(0xff, r, g , b);
 }
 
@@ -88,21 +88,21 @@ static SkPMColor convert_to_pmcolor(SkColorType ct, SkAlphaType at, const uint32
     *doUnpremul = (kUnpremul_SkAlphaType == at);
 
     const uint8_t* c = reinterpret_cast<const uint8_t*>(addr);
-    U8CPU a,r,g,b;
+    uint_fast8_t a,r,g,b;
     switch (ct) {
         case kBGRA_8888_SkColorType:
-            b = static_cast<U8CPU>(c[0]);
-            g = static_cast<U8CPU>(c[1]);
-            r = static_cast<U8CPU>(c[2]);
-            a = static_cast<U8CPU>(c[3]);
+            b = static_cast<uint_fast8_t>(c[0]);
+            g = static_cast<uint_fast8_t>(c[1]);
+            r = static_cast<uint_fast8_t>(c[2]);
+            a = static_cast<uint_fast8_t>(c[3]);
             break;
         case kRGB_888x_SkColorType:  // fallthrough
         case kRGBA_8888_SkColorType:
-            r = static_cast<U8CPU>(c[0]);
-            g = static_cast<U8CPU>(c[1]);
-            b = static_cast<U8CPU>(c[2]);
+            r = static_cast<uint_fast8_t>(c[0]);
+            g = static_cast<uint_fast8_t>(c[1]);
+            b = static_cast<uint_fast8_t>(c[2]);
             // We set this even when for kRGB_888x because our caller will validate that it is 0xff.
-            a = static_cast<U8CPU>(c[3]);
+            a = static_cast<uint_fast8_t>(c[3]);
             break;
         default:
             SkDEBUGFAIL("Unexpected colortype");

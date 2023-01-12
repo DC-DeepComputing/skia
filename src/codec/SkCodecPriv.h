@@ -205,7 +205,7 @@ static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
     return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
 }
 
-static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline SkPMColor premultiply_argb_as_rgba(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     if (a != 255) {
         r = SkMulDiv255Round(r, a);
         g = SkMulDiv255Round(g, a);
@@ -215,7 +215,7 @@ static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CP
     return SkPackARGB_as_RGBA(a, r, g, b);
 }
 
-static inline SkPMColor premultiply_argb_as_bgra(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+static inline SkPMColor premultiply_argb_as_bgra(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     if (a != 255) {
         r = SkMulDiv255Round(r, a);
         g = SkMulDiv255Round(g, a);
@@ -234,7 +234,7 @@ static inline bool is_rgba(SkColorType colorType) {
 }
 
 // Method for coverting to a 32 bit pixel.
-typedef uint32_t (*PackColorProc)(U8CPU a, U8CPU r, U8CPU g, U8CPU b);
+typedef uint32_t (*PackColorProc)(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b);
 
 static inline PackColorProc choose_pack_color_proc(bool isPremul, SkColorType colorType) {
     bool isRGBA = is_rgba(colorType);

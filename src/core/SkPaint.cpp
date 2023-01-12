@@ -131,7 +131,7 @@ void SkPaint::setAlphaf(float a) {
     fColor4f.fA = SkTPin(a, 0.0f, 1.0f);
 }
 
-void SkPaint::setARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
+void SkPaint::setARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b) {
     this->setColor(SkColorSetARGB(a, r, g, b));
 }
 

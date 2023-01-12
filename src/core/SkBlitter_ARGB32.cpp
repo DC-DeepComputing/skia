@@ -644,7 +644,7 @@ static bool blit_color(const SkPixmap& device,
 
 static void SkARGB32_Blit32(const SkPixmap& device, const SkMask& mask,
                             const SkIRect& clip, SkPMColor srcColor) {
-    U8CPU alpha = SkGetPackedA32(srcColor);
+    uint_fast8_t alpha = SkGetPackedA32(srcColor);
     unsigned flags = SkBlitRow::kSrcPixelAlpha_Flag32;
     if (alpha != 255) {
         flags |= SkBlitRow::kGlobalAlpha_Flag32;
@@ -733,7 +733,7 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
     }
 }
 
-void SkARGB32_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Blitter::blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x + 1, y);)
 
@@ -741,7 +741,7 @@ void SkARGB32_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
     device[1] = SkBlendARGB32(fPMColor, device[1], a1);
 }
 
-void SkARGB32_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Blitter::blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x, y + 1);)
 
@@ -834,7 +834,7 @@ void SkARGB32_Opaque_Blitter::blitMask(const SkMask& mask,
     }
 }
 
-void SkARGB32_Opaque_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Opaque_Blitter::blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x + 1, y);)
 
@@ -842,7 +842,7 @@ void SkARGB32_Opaque_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
     device[1] = SkFastFourByteInterp(fPMColor, device[1], a1);
 }
 
-void SkARGB32_Opaque_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Opaque_Blitter::blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x, y + 1);)
 
@@ -931,7 +931,7 @@ void SkARGB32_Black_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
     }
 }
 
-void SkARGB32_Black_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Black_Blitter::blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x + 1, y);)
 
@@ -939,7 +939,7 @@ void SkARGB32_Black_Blitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
     device[1] = (a1 << SK_A32_SHIFT) + SkAlphaMulQ(device[1], 256 - a1);
 }
 
-void SkARGB32_Black_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkARGB32_Black_Blitter::blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     uint32_t* device = fDevice.writable_addr32(x, y);
     SkDEBUGCODE((void)fDevice.writable_addr32(x, y + 1);)
 
@@ -954,7 +954,7 @@ void SkARGB32_Black_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
 // instead of kSrcOver_Mode
 static void blend_srcmode(SkPMColor* SK_RESTRICT device,
                           const SkPMColor* SK_RESTRICT span,
-                          int count, U8CPU aa) {
+                          int count, uint_fast8_t aa) {
     int aa256 = SkAlpha255To256(aa);
     for (int i = 0; i < count; ++i) {
         device[i] = SkFourByteInterp256(span[i], device[i], aa256);
