@@ -787,6 +787,10 @@ sk_sp<SkImage> SkMipmapBuilder::attachTo(const SkImage* src) {
     return src->withMipmaps(fMM);
 }
 
+sk_sp<SkMipmap> SkMipmapBuilder::refMipmap() {
+    return fMM;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkSamplingOptions SkSamplingPriv::FromFQ(SkLegacyFQ fq, SkMediumAs behavior) {

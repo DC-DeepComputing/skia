@@ -171,6 +171,12 @@ public:
     */
     sk_sp<SkColorSpace> refColorSpace() const;
 
+    /** Returns whether or not this bitmap has mipmap data.
+
+        @return  whether or not this bitmap has mipmap data
+    */
+    bool hasMipmaps() const { return SkToBool(fMips); }
+
     /** Returns number of bytes per pixel required by SkColorType.
         Returns zero if colorType( is kUnknown_SkColorType.
 
@@ -1235,11 +1241,27 @@ public:
         bool allocPixelRef(SkBitmap* bitmap) override;
     };
 
+    /** Unlike extractSubset, this call explicitly copies pixel data to the new bitmap.
+        The result's bounds will be the intersection of the subset and the original
+        bounds().
+
+        subset may be larger than bounds(). Any area outside of bounds() is ignored.
+
+        If there is a failure while making the copy the result's isNull() check will
+        be true.
+
+        @param subset      rectangle of pixels to be copied
+        @param withMipmaps should the resulting copy have mipmaps generated for it
+        @return            the new SkBitmap
+    */
+    SkBitmap makeSubsetCopy(const SkIRect& subset, bool withMipmaps) const;
+
 private:
     sk_sp<SkPixelRef>   fPixelRef;
     SkPixmap            fPixmap;
     sk_sp<SkMipmap>     fMips;
 
+    friend class BitmapMipmapTestAccess; // fMips
     friend class SkImage_Raster;
     friend class SkReadBuffer;        // unflatten
     friend class GrProxyProvider;     // fMips

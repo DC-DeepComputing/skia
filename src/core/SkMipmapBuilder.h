@@ -10,6 +10,8 @@
 
 #include "include/core/SkImage.h"
 
+class SkMipmap;
+
 class SkMipmapBuilder {
 public:
     SkMipmapBuilder(const SkImageInfo&);
@@ -27,6 +29,8 @@ public:
     sk_sp<SkImage> attachTo(sk_sp<SkImage> src) {
         return this->attachTo(src.get());
     }
+
+    sk_sp<SkMipmap> refMipmap();
 
 private:
     sk_sp<SkMipmap> fMM;
