@@ -642,4 +642,9 @@ void UniformManager::writeHalfArray(SkSpan<const float> arr) {
     this->writeArray(kType, arr.data(), arr.size());
 }
 
+void UniformManager::writeHalf4x4(const SkM44& mat) {
+    static constexpr SkSLType kType = SkSLType::kHalf4x4;
+    this->write(kType, &mat);
+}
+
 } // namespace skgpu::graphite
