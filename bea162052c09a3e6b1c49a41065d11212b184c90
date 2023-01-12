@@ -87,6 +87,24 @@
       "parentUuid": "0c0a7e86_a00d6603",
       "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8920dcf0_bddcc681",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T20:01:39Z",
+      "side": 1,
+      "message": "Marking as resolved because of the other test you added.",
+      "parentUuid": "a0e0064e_422b5814",
+      "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
