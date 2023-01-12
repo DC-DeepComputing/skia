@@ -28,6 +28,8 @@ public:
         return this->attachTo(src.get());
     }
 
+    sk_sp<SkMipmap> refMipmap();
+
 private:
     sk_sp<SkMipmap> fMM;
 
