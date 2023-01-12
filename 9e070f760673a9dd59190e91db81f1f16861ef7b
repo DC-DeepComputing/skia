@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33dd0c79_ea7368cc",
+        "filename": "gn/skia.gni",
+        "patchSetId": 34
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T16:04:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d445cb6e_a26f2612",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7ceea05_824d704b",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-01-12T15:53:10Z",
       "side": 1,
       "message": "Is this the same as:\n```\ndeps +\u003d [ skia_icu_bidi_third_party_dir ]\n```\n?",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c5dba3_8d29c74a",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 34
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T16:04:23Z",
+      "side": 1,
+      "message": "Probably. Skia using \"$var\" everywhere.",
+      "parentUuid": "b7ceea05_824d704b",
       "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
