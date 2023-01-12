@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1e8c2f_7842f64d",
+        "filename": "include/private/base/SkMath.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-12T19:05:49Z",
+      "side": 1,
+      "message": "We just need to replace all of these with the standard types (`uint_fast8_t` and `uint_fast16_t`) and remove the ones from `SkTypes.h`. Then we don\u0027t need to worry about where these come from or that they\u0027re not `Sk` prefixed, etc. It\u0027s just that doing it like this makes it harder to find and update these later.",
+      "range": {
+        "startLine": 48,
+        "startChar": 50,
+        "endLine": 48,
+        "endChar": 60
+      },
+      "revId": "d9aeca0a6bcaa9ea892556dfc73845d927a116f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
