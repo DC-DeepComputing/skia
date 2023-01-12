@@ -386,6 +386,8 @@ sksl_spirv_tests = [
 sksl_wgsl_tests = [
   "shared/HelloWorld.sksl",
   "shared/InstanceID.vert",
+  "shared/InoutParameters.sksl",
+  "shared/OutParamsAreDistinct.sksl",
   "shared/Structs.sksl",
   "shared/TernaryExpression.sksl",
   "shared/VectorConstructors.sksl",
@@ -397,6 +399,7 @@ sksl_wgsl_tests = [
   "wgsl/MainDoesNotHaveFragCoordParameter.sksl",
   "wgsl/MainHasFragCoordParameter.sksl",
   "wgsl/MainHasVoidReturn.sksl",
+  "wgsl/OutParams.sksl",
   "wgsl/UserDefinedPipelineIO.sksl",
   "wgsl/VertexPositionOutputIsAlwaysDeclared.vert",
 ]
