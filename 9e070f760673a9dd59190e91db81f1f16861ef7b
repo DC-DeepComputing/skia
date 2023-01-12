@@ -104,6 +104,24 @@
       "parentUuid": "56c5dba3_8d29c74a",
       "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e70d2d1_99e3b41a",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 34
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T16:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa0b2be5_76807e28",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
