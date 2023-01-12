@@ -15,7 +15,7 @@
 #include "include/core/SkString.h"
 #include "include/private/SkFloatBits.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkVx.h"
+#include "include/private/base/SkVx.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkMatrixPriv.h"
