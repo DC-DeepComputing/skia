@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- `CanvasKit.MakeOnScreenGLSurface` allows providing a cached sample count and stencil
+  value to avoid repeated lookups on Surface creation.
+
 ## [0.37.2] - 2022-11-15
 
 ### Fixed
@@ -252,7 +255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
  - `Font.getGlyphIntercepts()`
- 
+
 ### Fixed
  - Bug with images using certain exif metadata. (skbug.com/11968)
 
@@ -418,7 +421,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    `CanvasKit.Shader`.
  - `MakeRasterDirectSurface` for giving the user direct access to drawn pixels.
  - `getLineMetrics` to Paragraph.
- - `Canvas.saveLayerPaint` as an experimental, undocumented "fast path" if one only needs to pass 
+ - `Canvas.saveLayerPaint` as an experimental, undocumented "fast path" if one only needs to pass
    the paint.
  - Support for .woff and .woff2 fonts. Disable .woff2 for reduced code size by supplying
    no_woff2 to compile.sh. (This removes the code to do brotli decompression).
