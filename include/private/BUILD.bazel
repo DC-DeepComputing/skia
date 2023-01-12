@@ -27,11 +27,9 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
-        "SkAlignedStorage.h",
         "SkBitmaskEnum.h",
         "SkChecksum.h",
         "SkColorData.h",
-        "SkContainers.h",
         "SkEncodedInfo.h",
         "SkFixed.h",
         "SkFloatBits.h",
@@ -40,7 +38,6 @@ skia_filegroup(
         "SkHalf.h",
         "SkIDChangeListener.h",
         "SkMacros.h",
-        "SkPathEnums.h",
         "SkNoncopyable.h",
         "SkOpts_spi.h",
         "SkPathRef.h",
@@ -53,8 +50,6 @@ skia_filegroup(
         "SkTLogic.h",
         "SkTPin.h",
         "SkTemplates.h",
-        "SkTypeTraits.h",
-        "SkVx.h",
         "SkWeakRefCnt.h",
         ":sksl_private_hdrs",
         "//include/private/chromium:private_hdrs",

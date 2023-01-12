@@ -8,7 +8,7 @@
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
-#include "include/core/SkMath.h"
+#include "include/private/base/SkMath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"

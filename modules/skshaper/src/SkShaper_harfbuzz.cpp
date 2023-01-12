@@ -21,7 +21,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTypeTraits.h"
+#include "include/private/base/SkTypeTraits.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTFitsIn.h"
