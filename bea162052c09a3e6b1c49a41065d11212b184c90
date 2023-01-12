@@ -69,6 +69,24 @@
       "parentUuid": "7382cdc7_6a37e669",
       "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e0064e_422b5814",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-12T18:12:24Z",
+      "side": 1,
+      "message": "That\u0027s a fair point - we cannot use the standard test wrapper because we want to explicitly test this new API, nor CanvasKit.MakeCanvasSurface which hides the need to call MakeOnScreenGLSurface\n\nhttps://github.com/google/skia/blob/788138bb6ed9dab005495e507ed919780ad153bf/modules/canvaskit/tests/util.js#L28-L34\nis where that wrapper is defined, you will want to use the existing \u003ccanvas id\u003d\u0027test\u0027\u003e and then make similar calls to https://github.com/google/skia/blob/788138bb6ed9dab005495e507ed919780ad153bf/modules/canvaskit/webgl.js#L160-L183 to set up the gl context, the gr context, and then the surface.",
+      "parentUuid": "0c0a7e86_a00d6603",
+      "revId": "bea162052c09a3e6b1c49a41065d11212b184c90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
