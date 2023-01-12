@@ -192,6 +192,9 @@ static int stack_usage(const Instruction& inst) {
         case BuilderOp::swizzle_4:
             return 4 - inst.fImmA;
 
+        case BuilderOp::diagonal_matrix:
+            return inst.fImmA * inst.fImmB - 2;
+
         case ALL_MULTI_SLOT_UNARY_OP_CASES:
         default:
             return 0;
@@ -586,6 +589,20 @@ void Program::appendStages(SkRasterPipeline* pipeline,
                 for (int r = 0; r < inst.fImmB; ++r) {
                     for (int c = 0; c < inst.fImmA; ++c) {
                         ctx->offsets[index++] = ((c * inst.fImmB) + r) * N * sizeof(float);
+                    }
+                }
+                this->append(pipeline, SkRP::Stage::transpose, ctx);
+                break;
+            }
+            case BuilderOp::diagonal_matrix: {
+                auto* ctx = alloc->make<SkRasterPipeline_TransposeCtx>();
+                ctx->ptr = tempStackPtr - (2 * N);
+                ctx->count = inst.fImmA * inst.fImmB;
+                sk_bzero(ctx->offsets, std::size(ctx->offsets));
+                size_t index = 0;
+                for (int c = 0; c < inst.fImmA; ++c) {
+                    for (int r = 0; r < inst.fImmB; ++r) {
+                        ctx->offsets[index++] = (c == r) ? N * sizeof(float) : 0;
                     }
                 }
                 this->append(pipeline, SkRP::Stage::transpose, ctx);
