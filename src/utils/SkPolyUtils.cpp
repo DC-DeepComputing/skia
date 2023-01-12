@@ -13,7 +13,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/SkVx.h"
+#include "include/private/base/SkVx.h"
 #include "include/private/base/SkMalloc.h"
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkRectPriv.h"
