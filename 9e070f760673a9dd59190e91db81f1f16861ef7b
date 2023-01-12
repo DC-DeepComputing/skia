@@ -16,6 +16,40 @@
       "message": "I added a build variable skia_icu_bidi_third_party_dir that can point to Flutter build when needed.",
       "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d445cb6e_a26f2612",
+        "filename": "gn/skia.gni",
+        "patchSetId": 34
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-12T15:53:10Z",
+      "side": 1,
+      "message": "This variable isn\u0027t needed anymore. You can go back to hardcoding the path in your `icu_bidi/BUILD.gn`.",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ceea05_824d704b",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 34
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-12T15:53:10Z",
+      "side": 1,
+      "message": "Is this the same as:\n```\ndeps +\u003d [ skia_icu_bidi_third_party_dir ]\n```\n?",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
