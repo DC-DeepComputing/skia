@@ -143,6 +143,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a4d9ff_f2dc3f88",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T15:48:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6acef9f2_6599ecf5",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a616e58_d598d434",
@@ -160,6 +178,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96caa47e_fc9e556a",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T15:48:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a616e58_d598d434",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46abc863_29e2a5e7",
@@ -173,6 +209,24 @@
       "writtenOn": "2023-01-10T16:18:25Z",
       "side": 1,
       "message": "This ifdef is no longer needed or really wanted. The method now always exists and will return `nullptr` if the implementation isn\u0027t compiled in.\n\nWith all these ifdefs removed, the \"IMPLEMENTATION\" details no longer need to be public.",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57295b1e_1fc382cc",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 33
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T15:48:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46abc863_29e2a5e7",
       "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

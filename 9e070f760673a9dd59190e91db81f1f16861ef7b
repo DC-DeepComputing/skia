@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "964b8d99_84a493a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T15:48:09Z",
+      "side": 1,
+      "message": "I added a build variable skia_icu_bidi_third_party_dir that can point to Flutter build when needed.",
+      "revId": "9e070f760673a9dd59190e91db81f1f16861ef7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
