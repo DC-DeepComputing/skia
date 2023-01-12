@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73544cac_e4b4b684",
+        "filename": "include/core/SkColor.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-12T21:03:36Z",
+      "side": 1,
+      "message": "To be technically correct...\n\n`a`, `r`, `g`, and `b` need to be cast to at least `SkColor` (`uint32_t`) before the shift operator is applied. If `uint_fast8_t` is smaller than `int` then the values will be promoted to `int` and the shift will be signed and produce a signed result and at least the shift of `a` might be undefined (shifting a set bit into the sign bit).\n\nEven worse, `int` is allowed to be smaller than `uint32_t`, though most of Skia probably just wouldn\u0027t compile in that case. In which case the shifts would be undefined.\n\nOf course, if `uint_fast8_t` happens to be larger than `SkColor` the casts would be pessimizing and we\u0027d be better off without them. Of course, the optimizer should figure that out an emit good code anyway... but who knows. Really you want to cast to a type which is the bigger of `uint_fast8_t` and `SkColor`. Like `using G \u003d std::conditional_t\u003csizeof(uint_fast8_t) \u003e sizeof(SkColor), uint_fast8_t, SkColor\u003e;`",
+      "revId": "9041ee90730b0be4d20638d1a10a0ace5ec1fa58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
