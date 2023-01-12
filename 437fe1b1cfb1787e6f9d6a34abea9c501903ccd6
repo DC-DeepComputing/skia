@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d537f32_e8956bb4",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 33
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-12T14:52:36Z",
+      "side": 1,
+      "message": "I think it\u0027s doable (Flutter builds its own icu_bidi as it has to). I am going to make these changes but it\u0027s up to Ben to approve it.",
+      "parentUuid": "12da0436_c0093abb",
+      "revId": "437fe1b1cfb1787e6f9d6a34abea9c501903ccd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6acef9f2_6599ecf5",
         "filename": "modules/skunicode/include/SkUnicode.h",
         "patchSetId": 33
