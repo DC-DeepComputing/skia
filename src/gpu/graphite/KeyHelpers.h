@@ -20,6 +20,8 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include "src/gpu/Swizzle.h"
+
 class SkData;
 class SkRuntimeEffect;
 
@@ -145,11 +147,13 @@ struct ImageShaderBlock {
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,
-                  SkRect subset);
+                  SkRect subset,
+                  skgpu::Swizzle readSwizzle);
 
         SkSamplingOptions fSampling;
         SkTileMode fTileModes[2];
         SkRect fSubset;
+        skgpu::Swizzle fReadSwizzle;
 
         SkColorSpaceXformSteps fSteps;
 
