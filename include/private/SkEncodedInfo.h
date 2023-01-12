@@ -25,15 +25,15 @@ struct SkEncodedInfo {
 public:
     class ICCProfile {
     public:
-        static std::unique_ptr<ICCProfile> Make(sk_sp<SkData>);
+        static std::unique_ptr<ICCProfile> Make(sk_sp<const SkData>);
         static std::unique_ptr<ICCProfile> Make(const skcms_ICCProfile&);
 
         const skcms_ICCProfile* profile() const { return &fProfile; }
     private:
-        ICCProfile(const skcms_ICCProfile&, sk_sp<SkData> = nullptr);
+        ICCProfile(const skcms_ICCProfile&, sk_sp<const SkData> = nullptr);
 
         skcms_ICCProfile fProfile;
-        sk_sp<SkData>    fData;
+        sk_sp<const SkData> fData;
     };
 
     enum Alpha {
