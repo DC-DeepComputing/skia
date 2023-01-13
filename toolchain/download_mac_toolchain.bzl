@@ -55,8 +55,14 @@ def _download_mac_toolchain_impl(ctx):
     # our toolchain directory to refer to during compilation.
     # We also create a symlink in the user's home directory for linking.
 
-    ctx.execute(["rm", "-rf", "~/.skiabazel"])
-    ctx.execute(["mkdir", "-p", "~/.skiabazel/symlinks/xcode"])
+    if ctx.os.name.startswith("win"):
+        skia_bazel_path = ctx.os.environ["USERPROFILE"] + "/.skiabazel"
+    else:
+        skia_bazel_path = ctx.os.environ["HOME"] + "/.skiabazel"
+
+    # Use `ctx.execute` as `ctx.delete` only works within workspace.
+    ctx.execute(["rm", "-rf", skia_bazel_path])
+    ctx.execute(["mkdir", "-p", skia_bazel_path + "/symlinks/xcode"])
 
     # https://developer.apple.com/library/archive/technotes/tn2339/_index.html
     res = ctx.execute(["xcode-select", "-p"])
@@ -77,8 +83,10 @@ def _download_mac_toolchain_impl(ctx):
 
     # Global symlink for future toolchain configs
     sdk_path = res.stdout.rstrip() + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/"
-    symlink_path = "~/.skiabazel/symlinks/xcode/MacSDK/"
-    ctx.execute(["ln -s", sdk_path, symlink_path])
+    symlink_path = skia_bazel_path + "/symlinks/xcode/MacSDK"
+
+    # Use `execute` instead of `symlink` as the latter only works inside the workspace.
+    ctx.execute(["ln", "-s", sdk_path, symlink_path])
 
     # This list of files lines up with _make_default_flags() in mac_toolchain_config.bzl
     # It is all locations that our toolchain could find a system header.
