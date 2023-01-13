@@ -13,6 +13,8 @@
 #include "src/core/SkMathPriv.h"
 #include "tests/Test.h"
 
+#include <cstdint>
+
 DEF_TEST(ColorPremul, reporter) {
     for (int a = 0; a <= 255; a++) {
         for (int x = 0; x <= 255; x++) {
@@ -42,8 +44,8 @@ DEF_TEST(ColorPremul, reporter) {
 DEF_TEST(ColorInterp, reporter) {
     SkRandom r;
 
-    U8CPU a0 = 0;
-    U8CPU a255 = 255;
+    uint_fast8_t a0 = 0;
+    uint_fast8_t a255 = 255;
     for (int i = 0; i < 200; i++) {
         SkColor colorSrc = r.nextU();
         SkColor colorDst = r.nextU();
@@ -60,8 +62,8 @@ DEF_TEST(ColorInterp, reporter) {
 DEF_TEST(ColorFastIterp, reporter) {
     SkRandom r;
 
-    U8CPU a0 = 0;
-    U8CPU a255 = 255;
+    uint_fast8_t a0 = 0;
+    uint_fast8_t a255 = 255;
     for (int i = 0; i < 200; i++) {
         SkColor colorSrc = r.nextU();
         SkColor colorDst = r.nextU();

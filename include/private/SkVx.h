@@ -668,18 +668,19 @@ SIN Vec<N,float> fract(const Vec<N,float>& x) { return x - floor(x); }
 //    - a half  is 16-bit, 1-5-10 sign-exponent-mantissa, with  15 exponent bias.
 SIN Vec<N,uint16_t> to_half_finite_ftz(const Vec<N,float>& x) {
     Vec<N,uint32_t> sem = bit_pun<Vec<N,uint32_t>>(x),
-                    s   = sem & 0x8000'0000,
+                    s   = sem & uint32_t(0x8000'0000),
                      em = sem ^ s,
-                is_norm =  em > 0x387f'd000, // halfway between largest f16 denorm and smallest norm
-                   norm = (em>>13) - ((127-15)<<10);
+                // halfway between largest f16 denorm and smallest norm
+                is_norm =  em > uint32_t(0x387f'd000),
+                   norm = (em>>13) - (uint32_t(127-15)<<10);
     return cast<uint16_t>((s>>16) | (is_norm & norm));
 }
 SIN Vec<N,float> from_half_finite_ftz(const Vec<N,uint16_t>& x) {
     Vec<N,uint32_t> wide = cast<uint32_t>(x),
-                      s  = wide & 0x8000,
+                      s  = wide & uint32_t(0x8000),
                       em = wide ^ s,
-                 is_norm =   em > 0x3ff,
-                    norm = (em<<13) + ((127-15)<<23);
+                 is_norm =   em > uint32_t(0x3ff),
+                    norm = (em<<13) + (uint32_t(127-15)<<23);
     return bit_pun<Vec<N,float>>((s<<16) | (is_norm & norm));
 }
 

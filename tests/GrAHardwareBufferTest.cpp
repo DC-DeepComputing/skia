@@ -31,11 +31,11 @@ static SkPMColor get_src_color(int x, int y) {
     SkASSERT(x >= 0 && x < DEV_W);
     SkASSERT(y >= 0 && y < DEV_H);
 
-    U8CPU r = x;
-    U8CPU g = y;
-    U8CPU b = 0xc;
+    uint_fast8_t r = x;
+    uint_fast8_t g = y;
+    uint_fast8_t b = 0xc;
 
-    U8CPU a = 0xff;
+    uint_fast8_t a = 0xff;
     switch ((x+y) % 5) {
         case 0:
             a = 0xff;

@@ -17,7 +17,9 @@
 #include "include/docs/SkPDFDocument.h"
 #include "tests/Test.h"
 
-static void run_test(SkWStream* out, SkBlendMode mode, U8CPU alpha) {
+#include <cstdint>
+
+static void run_test(SkWStream* out, SkBlendMode mode, uint_fast8_t alpha) {
     auto pdfDoc = SkPDF::MakeDocument(out);
     SkCanvas* c = pdfDoc->beginPage(612.0f, 792.0f);
     SkPaint black;
@@ -38,7 +40,7 @@ DEF_TEST(SkPDF_OpaqueSrcModeToSrcOver, r) {
     SkDynamicMemoryWStream srcMode;
     SkDynamicMemoryWStream srcOverMode;
 
-    U8CPU alpha = SK_AlphaOPAQUE;
+    uint_fast8_t alpha = SK_AlphaOPAQUE;
     run_test(&srcMode, SkBlendMode::kSrc, alpha);
     run_test(&srcOverMode, SkBlendMode::kSrcOver, alpha);
     REPORTER_ASSERT(r, srcMode.bytesWritten() == srcOverMode.bytesWritten());

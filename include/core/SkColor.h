@@ -35,6 +35,14 @@ typedef uint8_t SkAlpha;
 */
 typedef uint32_t SkColor;
 
+static constexpr bool color_bigger = sizeof(uint_fast8_t) > sizeof(SkColor);
+// If uint_fast8_t is 8 bits for a given platform, we need to cast them to
+// SkColor before doing bit shifts, otherwise C++ will promote them to `signed int`
+// which is problematic if we are doing bitwise operations and we should cast to
+// SkColor (32 bits). However, if uint_fast8_t is bigger than SkColor (e.g. 64 bits),
+// then we don't want to downcast them, so we would want to keep them as is.
+using channel_t = std::conditional_t<color_bigger, uint_fast8_t, SkColor>;
+
 /** Returns color value from 8-bit component values. Asserts if SK_DEBUG is defined
     if a, r, g, or b exceed 255. Since color is unpremultiplied, a may be smaller
     than the largest of r, g, and b.
@@ -45,9 +53,10 @@ typedef uint32_t SkColor;
     @param b  amount of blue, from no blue (0) to full blue (255)
     @return   color and alpha, unpremultiplied
 */
-static constexpr inline SkColor SkColorSetARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
-    return SkASSERT(a <= 255 && r <= 255 && g <= 255 && b <= 255),
-           (a << 24) | (r << 16) | (g << 8) | (b << 0);
+static constexpr inline SkColor SkColorSetARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g,
+                                               uint_fast8_t b) {
+    SkASSERT(sizeof(uint_fast8_t) == 8 || (a <= 255 && r <= 255 && g <= 255 && b <= 255));
+    return (channel_t(a) << 24) | (channel_t(r) << 16) | (channel_t(g) << 8) | (channel_t(b) << 0);
 }
 
 /** Returns color value from 8-bit component values, with alpha set
@@ -78,8 +87,8 @@ static constexpr inline SkColor SkColorSetARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU 
     @param a  alpha: transparent at zero, fully opaque at 255
     @return   color with transparency
 */
-static constexpr inline SkColor SK_WARN_UNUSED_RESULT SkColorSetA(SkColor c, U8CPU a) {
-    return (c & 0x00FFFFFF) | (a << 24);
+static constexpr inline SkColor SK_WARN_UNUSED_RESULT SkColorSetA(SkColor c, uint_fast8_t a) {
+    return (c & 0x00FFFFFF) | (channel_t(a) << 24);
 }
 
 /** Represents fully transparent SkAlpha value. SkAlpha ranges from zero,
@@ -155,7 +164,7 @@ constexpr SkColor SK_ColorMAGENTA     = SkColorSetARGB(0xFF, 0xFF, 0x00, 0xFF);
     @param blue   blue component value from zero to 255
     @param hsv    three element array which holds the resulting HSV components
 */
-SK_API void SkRGBToHSV(U8CPU red, U8CPU green, U8CPU blue, SkScalar hsv[3]);
+SK_API void SkRGBToHSV(uint_fast8_t red, uint_fast8_t green, uint_fast8_t blue, SkScalar hsv[3]);
 
 /** Converts ARGB to its HSV components. Alpha in ARGB is ignored.
     hsv[0] contains hsv hue, and is assigned a value from zero to less than 360.
@@ -180,7 +189,7 @@ static inline void SkColorToHSV(SkColor color, SkScalar hsv[3]) {
     @param hsv    three element array which holds the input HSV components
     @return       ARGB equivalent to HSV
 */
-SK_API SkColor SkHSVToColor(U8CPU alpha, const SkScalar hsv[3]);
+SK_API SkColor SkHSVToColor(uint_fast8_t alpha, const SkScalar hsv[3]);
 
 /** Converts HSV components to an ARGB color. Alpha is set to 255.
     hsv[0] represents hsv hue, an angle from zero to less than 360.
@@ -211,7 +220,7 @@ typedef uint32_t SkPMColor;
     @param b  amount of blue, from no blue (0) to full blue (255)
     @return   premultiplied color
 */
-SK_API SkPMColor SkPreMultiplyARGB(U8CPU a, U8CPU r, U8CPU g, U8CPU b);
+SK_API SkPMColor SkPreMultiplyARGB(uint_fast8_t a, uint_fast8_t r, uint_fast8_t g, uint_fast8_t b);
 
 /** Returns pmcolor closest to color c. Multiplies c RGB components by the c alpha,
     and arranges the bytes to match the format of kN32_SkColorType.

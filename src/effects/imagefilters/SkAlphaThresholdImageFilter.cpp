@@ -292,8 +292,8 @@ sk_sp<SkSpecialImage> SkAlphaThresholdImageFilter::onFilterImage(const Context& 
         return nullptr;
     }
 
-    U8CPU innerThreshold = (U8CPU)(fInnerThreshold * 0xFF);
-    U8CPU outerThreshold = (U8CPU)(fOuterThreshold * 0xFF);
+    uint_fast8_t innerThreshold = (uint_fast8_t)(fInnerThreshold * 0xFF);
+    uint_fast8_t outerThreshold = (uint_fast8_t)(fOuterThreshold * 0xFF);
     SkColor* dptr = dst.getAddr32(0, 0);
     int dstWidth = dst.width(), dstHeight = dst.height();
     SkIPoint srcOffset = { bounds.fLeft - inputOffset.fX, bounds.fTop - inputOffset.fY };
@@ -307,23 +307,23 @@ sk_sp<SkSpecialImage> SkAlphaThresholdImageFilter::onFilterImage(const Context& 
             localInverse.mapXY((SkScalar)x + bounds.fLeft, (SkScalar)y + bounds.fTop, &position);
             if (fRegion.contains((int32_t)position.x(), (int32_t)position.y())) {
                 if (SkColorGetA(source) < innerThreshold) {
-                    U8CPU alpha = SkColorGetA(source);
+                    uint_fast8_t alpha = SkColorGetA(source);
                     if (alpha == 0) {
                         alpha = 1;
                     }
                     float scale = (float)innerThreshold / alpha;
                     outputColor = SkColorSetARGB(innerThreshold,
-                                                  (U8CPU)(SkColorGetR(source) * scale),
-                                                  (U8CPU)(SkColorGetG(source) * scale),
-                                                  (U8CPU)(SkColorGetB(source) * scale));
+                                                  (uint_fast8_t)(SkColorGetR(source) * scale),
+                                                  (uint_fast8_t)(SkColorGetG(source) * scale),
+                                                  (uint_fast8_t)(SkColorGetB(source) * scale));
                 }
             } else {
                 if (SkColorGetA(source) > outerThreshold) {
                     float scale = (float)outerThreshold / SkColorGetA(source);
                     outputColor = SkColorSetARGB(outerThreshold,
-                                                  (U8CPU)(SkColorGetR(source) * scale),
-                                                  (U8CPU)(SkColorGetG(source) * scale),
-                                                  (U8CPU)(SkColorGetB(source) * scale));
+                                                  (uint_fast8_t)(SkColorGetR(source) * scale),
+                                                  (uint_fast8_t)(SkColorGetG(source) * scale),
+                                                  (uint_fast8_t)(SkColorGetB(source) * scale));
                 }
             }
             dptr[y * dstWidth + x] = outputColor;

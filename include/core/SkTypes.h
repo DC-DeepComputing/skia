@@ -184,16 +184,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Fast type for unsigned 8 bits. Use for parameter passing and local
-    variables, not for storage
-*/
-typedef unsigned U8CPU;
-
-/** Fast type for unsigned 16 bits. Use for parameter passing and local
-    variables, not for storage
-*/
-typedef unsigned U16CPU;
-
 static constexpr int16_t SK_MaxS16 = INT16_MAX;
 static constexpr int16_t SK_MinS16 = -SK_MaxS16;
 

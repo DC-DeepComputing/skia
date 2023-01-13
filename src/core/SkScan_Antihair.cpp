@@ -68,7 +68,7 @@ static inline int SmallDot6Scale(int value, int dot6) {
 ///////////////////////////////////////////////////////////////////////////////
 
 static void call_hline_blitter(SkBlitter* blitter, int x, int y, int count,
-                               U8CPU alpha) {
+                               uint_fast8_t alpha) {
     SkASSERT(count > 0);
 
     int16_t runs[HLINE_STACK_BUFFER + 1];
@@ -628,7 +628,7 @@ static inline FDot8 SkFixedToFDot8(SkFixed x) {
     return (x + 0x80) >> 8;
 }
 
-static void do_scanline(FDot8 L, int top, FDot8 R, U8CPU alpha,
+static void do_scanline(FDot8 L, int top, FDot8 R, uint_fast8_t alpha,
                         SkBlitter* blitter) {
     SkASSERT(L < R);
 
@@ -843,13 +843,13 @@ static inline int FDot8Ceil(FDot8 x) {
 }
 
 // 1 - (1 - a)*(1 - b)
-static inline U8CPU InvAlphaMul(U8CPU a, U8CPU b) {
+static inline uint_fast8_t InvAlphaMul(uint_fast8_t a, uint_fast8_t b) {
     // need precise rounding (not just SkAlphaMul) so that values like
     // a=228, b=252 don't overflow the result
     return SkToU8(a + b - SkAlphaMulRound(a, b));
 }
 
-static void inner_scanline(FDot8 L, int top, FDot8 R, U8CPU alpha,
+static void inner_scanline(FDot8 L, int top, FDot8 R, uint_fast8_t alpha,
                            SkBlitter* blitter) {
     SkASSERT(L < R);
 

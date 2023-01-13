@@ -13,7 +13,9 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkColorMatrix.h"
 
-static SkScalar byte_to_unit_float(U8CPU byte) {
+#include <cstdint>
+
+static SkScalar byte_to_unit_float(uint_fast8_t byte) {
     if (0xFF == byte) {
         // want to get this exact
         return 1;

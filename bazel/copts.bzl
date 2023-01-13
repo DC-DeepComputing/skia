@@ -150,6 +150,8 @@ WARNINGS = [
         "-Wno-unused-function",
         "-Wno-unused-template",
         "-Wno-unused-const-variable",
+        "-Wsign-conversion",
+        "-Wshorten-64-to-32",
     ],
     "//conditions:default": [],
 })

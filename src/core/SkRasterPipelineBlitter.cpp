@@ -44,8 +44,8 @@ public:
 
     void blitH     (int x, int y, int w)                            override;
     void blitAntiH (int x, int y, const SkAlpha[], const int16_t[]) override;
-    void blitAntiH2(int x, int y, U8CPU a0, U8CPU a1)               override;
-    void blitAntiV2(int x, int y, U8CPU a0, U8CPU a1)               override;
+    void blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1)               override;
+    void blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1)               override;
     void blitMask  (const SkMask&, const SkIRect& clip)             override;
     void blitRect  (int x, int y, int width, int height)            override;
     void blitV     (int x, int y, int height, SkAlpha alpha)        override;
@@ -432,7 +432,7 @@ void SkRasterPipelineBlitter::blitAntiH(int x, int y, const SkAlpha aa[], const 
     }
 }
 
-void SkRasterPipelineBlitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkRasterPipelineBlitter::blitAntiH2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     SkIRect clip = {x,y, x+2,y+1};
     uint8_t coverage[] = { (uint8_t)a0, (uint8_t)a1 };
 
@@ -445,7 +445,7 @@ void SkRasterPipelineBlitter::blitAntiH2(int x, int y, U8CPU a0, U8CPU a1) {
     this->blitMask(mask, clip);
 }
 
-void SkRasterPipelineBlitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
+void SkRasterPipelineBlitter::blitAntiV2(int x, int y, uint_fast8_t a0, uint_fast8_t a1) {
     SkIRect clip = {x,y, x+1,y+2};
     uint8_t coverage[] = { (uint8_t)a0, (uint8_t)a1 };
 
