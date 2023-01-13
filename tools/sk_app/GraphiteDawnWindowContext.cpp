@@ -124,7 +124,16 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         if (properties.backendType != type) {
             continue;
         }
-        auto device = wgpu::Device::Acquire(adapter.CreateDevice());
+
+        wgpu::FeatureName features[] = {
+            wgpu::FeatureName::DepthClipControl,
+            wgpu::FeatureName::Depth32FloatStencil8,
+        };
+        wgpu::DeviceDescriptor desc;
+        desc.requiredFeaturesCount = std::size(features);
+        desc.requiredFeatures = features;
+
+        auto device = wgpu::Device::Acquire(adapter.CreateDevice(&desc));
         device.SetUncapturedErrorCallback(
                 [](WGPUErrorType type, const char* message, void*) {
                     SkDebugf("Device error: %s\n", message);

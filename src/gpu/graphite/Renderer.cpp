@@ -24,7 +24,8 @@ RenderStep::RenderStep(std::string_view className,
                DepthStencilSettings depthStencilSettings,
                SkSpan<const Attribute> vertexAttrs,
                SkSpan<const Attribute> instanceAttrs,
-               SkSpan<const Varying> varyings)
+               SkSpan<const Varying> varyings,
+               size_t numTextures)
         : fUniqueID(next_id())
         , fFlags(flags)
         , fPrimitiveType(primitiveType)
@@ -35,6 +36,7 @@ RenderStep::RenderStep(std::string_view className,
         , fVaryings(varyings.begin(), varyings.end())
         , fVertexStride(0)
         , fInstanceStride(0)
+        , fNumTextures(numTextures)
         , fName(className) {
     for (auto v : this->vertexAttributes()) {
         fVertexStride += v.sizeAlign4();
@@ -47,6 +49,8 @@ RenderStep::RenderStep(std::string_view className,
         fName += variantName;
         fName += "]";
     }
+
+    SkASSERT(!this->hasTextures() || this->numTextures() > 0);
 }
 
 } // namespace skgpu::graphite
