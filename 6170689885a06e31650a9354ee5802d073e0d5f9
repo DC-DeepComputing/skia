@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c453ed4f_bf08d097",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "Some small things to address. But overall looks good. Also adding Brian, since you\u0027ll need someone to give you API approval.",
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "622660a8_1541a591",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "nit: I *thought* we had a convention of assuming that `SkData` is const, so no need to mark it as such. In fact, the docs say\n\n```\n/**\n *  SkData holds an immutable data buffer. Not only is the data immutable,\n *  but the actual ptr that is returned (by data() or bytes()) is guaranteed\n *  to always be the same for the life of this instance.\n */\n```\n\nThat said I just searched for `const SkData` and have found it, sometimes like here in an `sk_sp`.\n\nAlso, admittedly, we have `writable_data`, which conflicts with that guidance.",
+      "range": {
+        "startLine": 28,
+        "startChar": 54,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83fe9f9a_a852d736",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "Why did this change? See https://skia.org/docs/dev/contrib/style/#naming:\n\n\u003e Static non-class functions in implementation files are lower-case with underscores separating words:",
+      "range": {
+        "startLine": 101,
+        "startChar": 27,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747f5327_8c481321",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "I think this is got left in accidentally?",
+      "range": {
+        "startLine": 117,
+        "startChar": 7,
+        "endLine": 117,
+        "endChar": 11
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6485c1c1_57c44b76",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "This says to fail, but it looks like we\u0027re just printing a warning right now?",
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70297c2d_c4801084",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-13T16:51:30Z",
+      "side": 1,
+      "message": "Why did this change from `read_color_profile`? See https://skia.org/docs/dev/contrib/style/#naming:\n\n\u003e Static non-class functions in implementation files are lower-case with underscores separating words:",
+      "range": {
+        "startLine": 210,
+        "startChar": 50,
+        "endLine": 210,
+        "endChar": 66
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
