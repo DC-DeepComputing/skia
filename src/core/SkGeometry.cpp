@@ -1163,8 +1163,228 @@ static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, S
     return false;
 }
 
+int FindValidTValues(double candidates[3], int realRoots, double t[3]) {
+    int foundRoots = 0;
+    for (int index = 0; index < realRoots; ++index) {
+        double tValue = candidates[index];
+        if (approximately_zero_or_more(tValue) && approximately_one_or_less(tValue)) {
+            if (approximately_less_than_zero(tValue)) {
+                tValue = 0;
+            } else if (approximately_greater_than_one(tValue)) {
+                tValue = 1;
+            }
+            for (int idx2 = 0; idx2 < foundRoots; ++idx2) {
+                if (approximately_equal(t[idx2], tValue)) {
+                    goto nextRoot;
+                }
+            }
+            t[foundRoots++] = tValue;
+        }
+nextRoot:
+        {}
+    }
+    return foundRoots;
+}
+
+//inline bool approximately_zero(double x) {
+//    return fabs(x) < FLT_EPSILON;
+//}
+//
+//inline bool approximately_zero_when_compared_to(double x, double y) {
+//    return x == 0 || fabs(x) < fabs(y * FLT_EPSILON);
+//}
+
+static int handle_zero(const double B, const double C, double solution[2]) {
+    if (approximately_zero(B)) {
+        solution[0] = 0;
+        return C == 0;
+    }
+    solution[0] = -C / B;
+    return 1;
+}
+
+int QuadRootsReal(const double A, const double B, const double C, double solution[2]) {
+    if (!A) {
+        return handle_zero(B, C, solution);
+    }
+    const double p = B / (2 * A);
+    const double q = C / A;
+    if (approximately_zero(A) && (approximately_zero_inverse(p) || approximately_zero_inverse(q))) {
+        return handle_zero(B, C, solution);
+    }
+    /* normal form: x^2 + px + q = 0 */
+    const double p2 = p * p;
+    if (!sk_doubles_nearly_equal_ulps(p2, q) && p2 < q) {
+        return 0;
+    }
+    double sqrt_D = 0;
+    if (p2 > q) {
+        sqrt_D = sqrt(p2 - q);
+    }
+    solution[0] = sqrt_D - p;
+    solution[1] = -sqrt_D - p;
+    if (sk_doubles_nearly_equal_ulps(solution[0], solution[1])) {
+        return 1;
+    }
+    return 2;
+}
+
+static const double PI = 3.141592653589793;
+
+int CubicRootsReal(double A, double B, double C, double D, double solution[3]) {
+    if (approximately_zero(A)
+            && approximately_zero_when_compared_to(A, B)
+            && approximately_zero_when_compared_to(A, C)
+            && approximately_zero_when_compared_to(A, D)) {  // we're just a quadratic
+        return QuadRootsReal(B, C, D, solution);
+    }
+    if (approximately_zero_when_compared_to(D, A)
+            && approximately_zero_when_compared_to(D, B)
+            && approximately_zero_when_compared_to(D, C)) {  // 0 is one root
+        int num = QuadRootsReal(A, B, C, solution);
+        for (int i = 0; i < num; ++i) {
+            if (approximately_zero(solution[i])) {
+                return num;
+            }
+        }
+        solution[num++] = 0;
+        return num;
+    }
+    if (approximately_zero(A + B + C + D)) {  // 1 is one root
+        int num = QuadRootsReal(A, A + B, -D, solution);
+        for (int i = 0; i < num; ++i) {
+            if (sk_doubles_nearly_equal_ulps(solution[i], 1)) {
+                return num;
+            }
+        }
+        solution[num++] = 1;
+        return num;
+    }
+    double a, b, c;
+    {
+        double invA = 1 / A;
+        a = B * invA;
+        b = C * invA;
+        c = D * invA;
+    }
+    double a2 = a * a;
+    double Q = (a2 - b * 3) / 9;
+    double R = (2 * a2 * a - 9 * a * b + 27 * c) / 54;
+    double R2 = R * R;
+    double Q3 = Q * Q * Q;
+    double R2MinusQ3 = R2 - Q3;
+    double adiv3 = a / 3;
+    double r;
+    double* roots = solution;
+    if (R2MinusQ3 < 0) {   // we have 3 real roots
+        // the divide/root can, due to finite precisions, be slightly outside of -1...1
+        double theta = acos(SkTPin(R / sqrt(Q3), -1., 1.));
+        double neg2RootQ = -2 * sqrt(Q);
+
+        r = neg2RootQ * cos(theta / 3) - adiv3;
+        *roots++ = r;
+
+        r = neg2RootQ * cos((theta + 2 * PI) / 3) - adiv3;
+        if (!sk_doubles_nearly_equal_ulps(solution[0], r)) {
+            *roots++ = r;
+        }
+        r = neg2RootQ * cos((theta - 2 * PI) / 3) - adiv3;
+        if (!sk_doubles_nearly_equal_ulps(solution[0], r) && (roots - solution == 1 ||
+            !sk_doubles_nearly_equal_ulps(solution[1], r))) {
+            *roots++ = r;
+        }
+    } else {  // we have 1 real root
+        double sqrtR2MinusQ3 = sqrt(R2MinusQ3);
+        A = fabs(R) + sqrtR2MinusQ3;
+        A = SkDCubeRoot(A);
+        if (R > 0) {
+            A = -A;
+        }
+        if (A != 0) {
+            A += Q / A;
+        }
+        r = A - adiv3;
+        *roots++ = r;
+        if (sk_doubles_nearly_equal_ulps(R2, Q3)) {
+            r = -A / 2 - adiv3;
+            if (!sk_doubles_nearly_equal_ulps(solution[0], r)) {
+                *roots++ = r;
+            }
+        }
+    }
+    return static_cast<int>(roots - solution);
+}
+
+void ComputeCubicCoefficients(const double* src, double* A, double* B, double* C, double* D) {
+    *A = src[3];  // d
+    *B = src[2] * 3;  // 3*c
+    *C = src[1] * 3;  // 3*b
+    *D = src[0];  // a
+    *A -= *D - *C + *B;     // A =   -a + 3*b - 3*c + d
+    *B += 3 * *D - 2 * *C;  // B =  3*a - 6*b + 3*c
+    *C -= 3 * *D;           // C = -3*a + 3*b
+}
+
+int CubicRootsValidT(double cubicCoefficients[4], double t[3]) {
+    double A, B, C, D;
+    ComputeCubicCoefficients(cubicCoefficients, &A, &B, &C, &D);
+
+    double solution[3];
+    int realRoots = CubicRootsReal(A, B, C, D, solution);
+    int foundRoots = FindValidTValues(solution, realRoots, t);
+    for (int index = 0; index < realRoots; ++index) {
+        double tValue = solution[index];
+        if (between(1, tValue, 1.00005)) {
+            for (int idx2 = 0; idx2 < foundRoots; ++idx2) {
+                if (approximately_equal(t[idx2], 1)) {
+                    goto nextRoot;
+                }
+            }
+            SkASSERT(foundRoots < 3);
+            t[foundRoots++] = 1;
+        } else if (between(-0.00005, tValue, 0)) {
+            for (int idx2 = 0; idx2 < foundRoots; ++idx2) {
+                if (approximately_equal(t[idx2], 0)) {
+                    goto nextRoot;
+                }
+            }
+            SkASSERT(foundRoots < 3);
+            t[foundRoots++] = 0;
+        }
+nextRoot:
+        ;
+    }
+    return foundRoots;
+}
+
+static bool FirstHorizontalIntersect(double yCoefficients[4], double axisIntercept,
+                                     double* solution) {
+    yCoefficients[3] -= axisIntercept;
+    int count = CubicRootsValidT(yCoefficients, roots);
+    for (int index = 0; index < count; ++index) {
+        double y = EvalCubicAt(yCofficients, roots[index]);
+        if (approximately_equal(y, axisIntercept)) {
+            *solution = y;
+            return true;
+        }
+    }
+    return false;
+}
+
 bool SkChopMonoCubicAtY(const SkPoint src[4], SkScalar y, SkPoint dst[7]) {
-    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
+    double yCoefficients[4] = {src[0].fY, src[1].fY, src[2].fY, src[3].fY};
+    double solution = 0;
+    if (FirstHorizontalIntersect(yCoefficients, y, &solution)) {
+        double coefficients[8] = {src[0].fX, src[0].fY, src[1].fX, src[1].fY,
+                                  src[2].fX, src[2].fY, src[3].fX, src[3].fY};
+        double cubicPair[14] = ChopCubicAt(coefficients, solution);
+        for (int i = 0; i < 14; i += 2) {
+            dst[i].fX = sk_double_to_float(cubicPair[i]);
+            dst[i].fY = sk_double_to_float(cubicPair[i + 1]);
+        }
+        return true;
+    }
+    return false;
 }
 
 bool SkChopMonoCubicAtX(const SkPoint src[4], SkScalar x, SkPoint dst[7]) {
