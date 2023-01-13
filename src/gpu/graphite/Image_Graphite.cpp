@@ -40,10 +40,68 @@ Image::Image(TextureProxyView view,
 
 Image::~Image() {}
 
-sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
-                                                   sk_sp<SkColorSpace>,
+sk_sp<SkImage> Image::onMakeSubset(const SkIRect& subset,
+                                   Recorder* recorder,
+                                   RequiredImageProperties requiredProps) const {
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset && (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps())) {
+        const SkImage* image = this;
+        return sk_ref_sp(const_cast<SkImage*>(image));
+    }
+
+    TextureProxyView srcView = this->textureProxyView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    TextureProxyView copiedView = TextureProxyView::Copy(recorder,
+                                                         this->imageInfo().colorInfo(),
+                                                         srcView,
+                                                         subset,
+                                                         requiredProps.fMipmapped);
+    if (!copiedView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
+                                  std::move(copiedView),
+                                  this->imageInfo().colorInfo()));
+}
+
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                   sk_sp<SkColorSpace> targetCS,
                                                    GrDirectContext*) const {
+#if 0
+    SkColorInfo info(targetCT, this->alphaType(), std::move(targetCS));
+    if (!fContext->priv().matches(dContext)) {
+        return nullptr;
+    }
+
+    auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
+                                                    SkBackingFit::kExact);
+    if (!sfc) {
+        return nullptr;
+    }
+    // We respecify info's CT because we called MakeWithFallback.
+    auto ct = GrColorTypeToSkColorType(sfc->colorInfo().colorType());
+    info = info.makeColorType(ct);
+
+    // Draw this image's texture into the SFC.
+    auto [view, _] = this->asView(dContext, GrMipmapped(this->hasMipmaps()));
+    auto texFP = GrTextureEffect::Make(std::move(view), this->alphaType());
+    auto colorFP = GrColorSpaceXformEffect::Make(std::move(texFP),
+                                                 this->imageInfo().colorInfo(),
+                                                 info);
+    sfc->fillWithFP(std::move(colorFP));
+
+    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(dContext),
+                                   kNeedNewImageUniqueID,
+                                   sfc->readSurfaceView(),
+                                   std::move(info));
+#else
     return nullptr;
+#endif
 }
 
 sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
@@ -155,7 +213,23 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
+
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+}
+
+sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
+                                   skgpu::graphite::Recorder* recorder,
+                                   RequiredImageProperties requiredProps) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+    return as_IB(this)->onMakeSubset(subset, recorder, requiredProps);
 }
 
 sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(
