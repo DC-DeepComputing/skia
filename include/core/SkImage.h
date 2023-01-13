@@ -1270,6 +1270,27 @@ public:
     */
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
                                     RequiredImageProperties = {}) const;
+
+    /** Returns subset of this image.
+
+        Returns nullptr if any of the following are true:
+          - Subset is empty
+          - Subset is not contained inside the image's bounds
+          - Pixels in the image could not be read or copied
+
+        If this image is texture-backed, the recorder parameter is required.
+        If the recorder parameter is provided, and the image is raster-backed, the subset will
+        be converted to texture-backed.
+
+        @param subset                   bounds of returned SkImage
+        @param recorder                 the recorder in which to create the new image
+        @param RequiredImageProperties  properties the returned SkImage must possess (e.g.,
+                                        mipmaps)
+        @return                         the subsetted image, or nullptr
+    */
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              skgpu::graphite::Recorder*,
+                              RequiredImageProperties = {}) const;
 #endif
 
     /** Returns raster image or lazy image. Copies SkImage backed by GPU texture into
@@ -1432,6 +1453,9 @@ public:
     */
     sk_sp<SkImage> reinterpretColorSpace(sk_sp<SkColorSpace> newColorSpace) const;
 
+public:
+    sk_sp<SkImage> withMipmaps(sk_sp<SkMipmap>) const;
+
 private:
     SkImage(const SkImageInfo& info, uint32_t uniqueID);
 
@@ -1441,8 +1465,6 @@ private:
 
     SkImageInfo     fInfo;
     const uint32_t  fUniqueID;
-
-    sk_sp<SkImage> withMipmaps(sk_sp<SkMipmap>) const;
 
     using INHERITED = SkRefCnt;
 };

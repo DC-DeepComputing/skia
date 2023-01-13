@@ -40,8 +40,38 @@ Image::Image(TextureProxyView view,
 
 Image::~Image() {}
 
-sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
-                                                   sk_sp<SkColorSpace>,
+sk_sp<SkImage> Image::onMakeSubset(const SkIRect& subset,
+                                   Recorder* recorder,
+                                   RequiredImageProperties requiredProps) const {
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset && (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps())) {
+        const SkImage* image = this;
+        return sk_ref_sp(const_cast<SkImage*>(image));
+    }
+
+    TextureProxyView srcView = this->textureProxyView();
+    if (!srcView) {
+        return nullptr;
+    }
+
+    TextureProxyView copiedView = TextureProxyView::Copy(recorder,
+                                                         this->imageInfo().colorInfo(),
+                                                         srcView,
+                                                         subset,
+                                                         requiredProps.fMipmapped);
+    if (!copiedView) {
+        return nullptr;
+    }
+
+    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
+                                  std::move(copiedView),
+                                  this->imageInfo().colorInfo()));
+}
+
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                   sk_sp<SkColorSpace> targetCS,
                                                    GrDirectContext*) const {
     return nullptr;
 }
@@ -156,6 +186,21 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
         }
     }
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
+}
+
+sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
+                                   skgpu::graphite::Recorder* recorder,
+                                   RequiredImageProperties requiredProps) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+    return as_IB(this)->onMakeSubset(subset, recorder, requiredProps);
 }
 
 sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(
