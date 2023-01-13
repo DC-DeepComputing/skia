@@ -23,9 +23,8 @@ struct SkStageRec {
     SkRasterPipeline*       fPipeline;
     SkArenaAlloc*           fAlloc;
     SkColorType             fDstColorType;
-    SkColorSpace*           fDstCS;         // may be nullptr
+    SkColorSpace*           fDstCS;          // may be nullptr
     const SkPaint&          fPaint;
-    const SkMatrix*         fLocalM;        // may be nullptr
     const SkMatrixProvider& fMatrixProvider;
     const SkSurfaceProps&   fSurfaceProps;
 };
