@@ -98,17 +98,9 @@ SkImage* SkLocalMatrixShader::onIsAImage(SkMatrix* outMatrix, SkTileMode* mode) 
     return image;
 }
 
-bool SkLocalMatrixShader::onAppendStages(const SkStageRec& rec) const {
-    SkTCopyOnFirstWrite<SkMatrix> lm(fLocalMatrix);
-    if (rec.fLocalM) {
-        *lm.writable() = ConcatLocalMatrices(*rec.fLocalM, *lm);
-    }
-
-    SkStageRec newRec = rec;
-    newRec.fLocalM = lm;
-    return as_SB(fWrappedShader)->appendStages(newRec);
+bool SkLocalMatrixShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    return as_SB(fWrappedShader)->onAppendStages(rec, lmRec.concat(fLocalMatrix));
 }
-
 
 skvm::Color SkLocalMatrixShader::onProgram(skvm::Builder* p,
                                            skvm::Coord device, skvm::Coord local, skvm::Color paint,
@@ -170,7 +162,7 @@ public:
 protected:
     void flatten(SkWriteBuffer&) const override { SkASSERT(false); }
 
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const override {
         SkOverrideDeviceMatrixProvider matrixProvider(fCTM);
         SkStageRec newRec = {
             rec.fPipeline,
@@ -178,11 +170,11 @@ protected:
             rec.fDstColorType,
             rec.fDstCS,
             rec.fPaint,
-            rec.fLocalM,
             matrixProvider,
             rec.fSurfaceProps
         };
-        return as_SB(fProxyShader)->appendStages(newRec);
+        //  TODO: WTDH? appendRootStages doesn't take a LMR
+        return as_SB(fProxyShader)->appendRootStages(newRec);
     }
 
     skvm::Color onProgram(skvm::Builder* p,

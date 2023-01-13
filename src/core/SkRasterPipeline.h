@@ -64,7 +64,7 @@ struct skcms_TransferFunction;
     M(alpha_to_red) M(alpha_to_red_dst)                            \
     M(bt709_luminance_or_luma_to_alpha) M(bt709_luminance_or_luma_to_rgb) \
     M(bilerp_clamp_8888)                                           \
-    M(load_src) M(store_src) M(store_src_a) M(load_dst) M(store_dst) \
+    M(load_src) M(load_src_xy) M(store_src) M(store_src_xy) M(store_src_a) M(load_dst) M(store_dst) \
     M(scale_u8) M(scale_565) M(scale_1_float) M(scale_native)      \
     M( lerp_u8) M( lerp_565) M( lerp_1_float) M(lerp_native)       \
     M(dstatop) M(dstin) M(dstout) M(dstover)                       \

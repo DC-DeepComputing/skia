@@ -50,6 +50,7 @@ skvm::Coord SkTransformShader::applyMatrix(
     return {x, y};
 }
 
+#if 0
 void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const {
     fProcessingAsPerspective = matrix.hasPerspective();
     if (SkMatrix lm; fShader.makeAsALocalMatrixShader(&lm) && lm.hasPerspective()) {
@@ -61,10 +62,11 @@ void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p
         p->append(SkRasterPipeline::matrix_2x3, fMatrixStorage);
     }
 }
+#endif
 
 bool SkTransformShader::update(const SkMatrix& ctm) const {
-    if (SkMatrix matrix; fShader.computeTotalInverse(ctm, nullptr, &matrix)) {
-        if (!fProcessingAsPerspective) {
+    if (SkMatrix matrix; ctm.invert(&matrix)) {
+        if (!fProcessingAsPerspective && false) {
             SkASSERT(!matrix.hasPerspective());
             if (matrix.hasPerspective()) {
                 return false;
@@ -77,7 +79,13 @@ bool SkTransformShader::update(const SkMatrix& ctm) const {
     return false;
 }
 
-bool SkTransformShader::onAppendStages(const SkStageRec& rec) const {
-    // TODO
-    return false;
+bool SkTransformShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    auto [sucess, newLMRec] = lmRec.apply(rec);
+    if (!sucess) {
+        return false;
+    }
+    // WHAT SHOULD TOTAL MATRIX DO HERE?
+    rec.fPipeline->append(SkRasterPipeline::matrix_perspective, fMatrixStorage);
+    fShader.onAppendStages(rec, newLMRec);
+    return true;
 }

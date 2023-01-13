@@ -445,25 +445,6 @@ sk_sp<SkShader> SkMakeBitmapShaderForPaint(const SkPaint& paint, const SkBitmap&
 
 void SkShaderBase::RegisterFlattenables() { SK_REGISTER_FLATTENABLE(SkImageShader); }
 
-class SkImageShader::TransformShader : public SkTransformShader {
-public:
-    explicit TransformShader(const SkImageShader& shader)
-            : SkTransformShader{shader}
-            , fImageShader{shader} {}
-
-    skvm::Color onProgram(skvm::Builder* b,
-                          skvm::Coord device, skvm::Coord local, skvm::Color color,
-                          const SkMatrixProvider& matrices, const SkMatrix* localM,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        return fImageShader.makeProgram(
-                b, device, local, color, matrices, localM, dst, uniforms, this, alloc);
-    }
-
-private:
-    const SkImageShader& fImageShader;
-};
-
 static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatrix& matrix) {
     SkFilterMode filter = sampling.filter;
 
@@ -478,7 +459,9 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
     return SkSamplingOptions(filter, sampling.mipmap);
 }
 
-bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) const {
+bool SkImageShader::doStages(const SkStageRec& rec,
+                             const LocalMatrixRec& lmRec,
+                             TransformShader* updater) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset));  // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
     auto sampling = fSampling;
@@ -497,9 +480,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     SkArenaAlloc* alloc = rec.fAlloc;
 
     SkMatrix totalInverse;
-    if (!this->computeTotalInverse(rec.fMatrixProvider.localToDevice(),
-                                   rec.fLocalM,
-                                   &totalInverse)) {
+    if (!lmRec.totalInverse(rec.fMatrixProvider, &totalInverse)) {
         return false;
     }
     totalInverse.normalizePerspective();
@@ -512,12 +493,10 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     SkPixmap pm;
     SkMatrix sampleM;
     std::tie(pm, sampleM) = access->level();
-    sampleM.preConcat(totalInverse);
-
-    p->append(SkRasterPipeline::seed_shader);
 
     if (updater) {
-        updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
+        SkASSERT(false);
+        //updater->appendMatrix(rec.fMatrixProvider.localToDevice(), p);
     } else {
         if (!sampling.useCubic) {
             // TODO: can tweak_sampling sometimes for cubic too when B=0
@@ -525,7 +504,10 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
                 sampling = tweak_sampling(sampling, sampleM);
             }
         }
-        p->append_matrix(alloc, sampleM);
+        auto [success, _] = lmRec.apply(rec, sampleM);
+        if (!success) {
+            return false;
+        }
     }
 
     auto gather = alloc->make<SkRasterPipeline_GatherCtx>();
@@ -755,17 +737,8 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     return append_misc();
 }
 
-bool SkImageShader::onAppendStages(const SkStageRec& rec) const {
-    return this->doStages(rec, nullptr);
-}
-
-SkStageUpdater* SkImageShader::onAppendUpdatableStages(const SkStageRec& rec) const {
-    TransformShader* updater = rec.fAlloc->make<TransformShader>(*this);
-    return this->doStages(rec, updater) ? updater : nullptr;
-}
-
-SkUpdatableShader* SkImageShader::onUpdatableShader(SkArenaAlloc* alloc) const {
-    return alloc->make<TransformShader>(*this);
+bool SkImageShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    return this->doStages(rec, lmRec, nullptr);
 }
 
 skvm::Color SkImageShader::onProgram(skvm::Builder* b,
@@ -819,7 +792,7 @@ skvm::Color SkImageShader::makeProgram(
 
     skvm::Coord upperLocal;
     if (coordShader != nullptr) {
-        upperLocal = coordShader->applyMatrix(p, upperInv, origLocal, uniforms);
+        //upperLocal = coordShader->applyMatrix(p, upperInv, origLocal, uniforms);
     } else {
         upperLocal = SkShaderBase::ApplyMatrix(p, upperInv, origLocal, uniforms);
     }
