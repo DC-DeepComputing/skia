@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c39fef36_4cfe271c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T21:50:00Z",
+      "side": 1,
+      "message": "!\n\nThat\u0027s a surprising case... did you discover this because one of our tests does it? I\u0027m not sure offhand what the Metal codegen would do in this case.",
+      "range": {
+        "startLine": 1345,
+        "startChar": 37,
+        "endLine": 1346,
+        "endChar": 12
+      },
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
