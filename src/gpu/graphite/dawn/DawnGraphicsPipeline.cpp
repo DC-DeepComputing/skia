@@ -327,106 +327,29 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     SkASSERT(depthStencilSettings.fDepthTestEnabled ||
              depthStencilSettings.fDepthCompareOp == CompareOp::kAlways);
     wgpu::DepthStencilState depthStencil;
-    wgpu::TextureFormat dsFormat =
-            renderPassDesc.fDepthStencilAttachment.fTextureInfo.dawnTextureSpec().fFormat;
-    depthStencil.format = DawnFormatIsDepthOrStencil(dsFormat) ? dsFormat
-                                                               : wgpu::TextureFormat::Undefined;
-    if (depthStencilSettings.fDepthTestEnabled) {
-        depthStencil.depthWriteEnabled = depthStencilSettings.fDepthWriteEnabled;
+    if (renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()) {
+        wgpu::TextureFormat dsFormat =
+                renderPassDesc.fDepthStencilAttachment.fTextureInfo.dawnTextureSpec().fFormat;
+        depthStencil.format =
+                DawnFormatIsDepthOrStencil(dsFormat) ? dsFormat : wgpu::TextureFormat::Undefined;
+        if (depthStencilSettings.fDepthTestEnabled) {
+            depthStencil.depthWriteEnabled = depthStencilSettings.fDepthWriteEnabled;
+        }
+        depthStencil.depthCompare = compare_op_to_dawn(depthStencilSettings.fDepthCompareOp);
+        depthStencil.stencilFront = stencil_face_to_dawn(depthStencilSettings.fFrontStencil);
+        depthStencil.stencilBack = stencil_face_to_dawn(depthStencilSettings.fBackStencil);
+        depthStencil.stencilReadMask = depthStencilSettings.fFrontStencil.fReadMask;
+        depthStencil.stencilWriteMask = depthStencilSettings.fFrontStencil.fWriteMask;
+        // TODO: figure out how to set below fields properly
+        // depthStencil.depthBias = 0;
+        // depthStencil.depthBiasSlopeScale = 0.0f;
+        // depthStencil.depthBiasClamp = 0.0f;
+
+        descriptor.depthStencil = &depthStencil;
     }
-    depthStencil.depthCompare = compare_op_to_dawn(depthStencilSettings.fDepthCompareOp);
-    depthStencil.stencilFront = stencil_face_to_dawn(depthStencilSettings.fFrontStencil);
-    depthStencil.stencilBack = stencil_face_to_dawn(depthStencilSettings.fBackStencil);
-    depthStencil.stencilReadMask = depthStencilSettings.fFrontStencil.fReadMask;
-    depthStencil.stencilWriteMask = depthStencilSettings.fFrontStencil.fWriteMask;
-    // TODO: figure out how to set below fields properly
-    // depthStencil.depthBias = 0;
-    // depthStencil.depthBiasSlopeScale = 0.0f;
-    // depthStencil.depthBiasClamp = 0.0f;
 
-    descriptor.depthStencil = &depthStencil;
-
-    // Pipeline layout
-    {
-        std::array<wgpu::BindGroupLayout, 2> groupLayouts;
-        {
-            std::array<wgpu::BindGroupLayoutEntry, 3> entries;
-            entries[0].binding = kIntrinsicUniformBufferIndex;
-            entries[0].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
-            entries[0].buffer.type = wgpu::BufferBindingType::Uniform;
-            entries[0].buffer.hasDynamicOffset = false;
-            entries[0].buffer.minBindingSize = 0;
-
-            entries[1].binding = kRenderStepUniformBufferIndex;
-            entries[1].visibility = step->uniforms().size()
-                    ? wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment
-                    : wgpu::ShaderStage::None;
-            entries[1].buffer.type = wgpu::BufferBindingType::Uniform;
-            entries[1].buffer.hasDynamicOffset = false;
-            entries[1].buffer.minBindingSize = 0;
-
-            entries[2].binding = kPaintUniformBufferIndex;
-            entries[2].visibility = hasFragment
-                    ? wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment
-                    : wgpu::ShaderStage::None;
-            entries[2].buffer.type = wgpu::BufferBindingType::Uniform;
-            entries[2].buffer.hasDynamicOffset = false;
-            entries[2].buffer.minBindingSize = 0;
-
-            wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
-#if defined(SK_DEBUG)
-            groupLayoutDesc.label = step->name();
-#endif
-            groupLayoutDesc.entryCount = entries.size();
-            groupLayoutDesc.entries = entries.data();
-            groupLayouts[0] = device.CreateBindGroupLayout(&groupLayoutDesc);
-            if (!groupLayouts[0]) {
-                return {};
-            }
-        }
-
-        if (hasFragment) {
-            // TODO: not using the hardcoded texture info
-            constexpr size_t kNumTextures = 1;
-            std::vector<wgpu::BindGroupLayoutEntry> entries(kNumTextures * 2);
-            for (size_t i = 0; i < kNumTextures * 2;) {
-                entries[i].binding = i;
-                entries[i].visibility = wgpu::ShaderStage::Fragment;
-                entries[i].sampler.type = wgpu::SamplerBindingType::Filtering;
-                ++i;
-                entries[i].binding = i;
-                entries[i].visibility = wgpu::ShaderStage::Fragment;
-                entries[i].texture.sampleType = wgpu::TextureSampleType::Float;
-                entries[i].texture.viewDimension = wgpu::TextureViewDimension::e2D;
-                entries[i].texture.multisampled = false;
-                ++i;
-            }
-
-            wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
-#if defined(SK_DEBUG)
-            groupLayoutDesc.label = step->name();
-#endif
-            groupLayoutDesc.entryCount = entries.size();
-            groupLayoutDesc.entries = entries.data();
-            groupLayouts[1] = device.CreateBindGroupLayout(&groupLayoutDesc);
-            if (!groupLayouts[1]) {
-                return {};
-            }
-        }
-
-        wgpu::PipelineLayoutDescriptor layoutDesc;
-#if defined(SK_DEBUG)
-        layoutDesc.label = step->name();
-#endif
-        layoutDesc.bindGroupLayoutCount =
-            hasFragment ? groupLayouts.size() : groupLayouts.size() - 1;
-        layoutDesc.bindGroupLayouts = groupLayouts.data();
-        auto layout = device.CreatePipelineLayout(&layoutDesc);
-        if (!layout) {
-            return {};
-        }
-        descriptor.layout = std::move(layout);
-    }
+    // Auto Pipeline layout
+    descriptor.layout = nullptr;
 
     // Vertex state
     std::array<wgpu::VertexBufferLayout, kNumVertexBuffers> vertexBufferLayouts;
