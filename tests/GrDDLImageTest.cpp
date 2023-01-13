@@ -26,10 +26,11 @@
 class GrRecordingContext;
 struct GrContextOptions;
 
-DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLevel_T) {
+DEF_GANESH_TEST(Image_MakeSubset, reporter, options, CtsEnforcement::kApiLevel_T) {
     sk_gpu_test::GrContextFactory factory(options);
     for (int ct = 0; ct < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++ct) {
         auto contextType = static_cast<sk_gpu_test::GrContextFactory::ContextType>(ct);
+
         auto dContext = factory.get(contextType);
         if (!dContext) {
             continue;
@@ -46,37 +47,39 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         auto rasterImg = bm.asImage();
         REPORTER_ASSERT(reporter, rasterImg->isValid(static_cast<GrRecordingContext*>(nullptr)));
 
-        // raster + context:
-        auto subImg1 = rasterImg->makeSubset(subsetBounds, dContext);
-        REPORTER_ASSERT(reporter, subImg1->isValid(dContext));
-
         // raster + no context:
-        auto subImg2 = rasterImg->makeSubset(subsetBounds, nullptr);
+        auto subImg2 = rasterImg->makeSubset(subsetBounds);
         REPORTER_ASSERT(reporter, subImg2->isValid(static_cast<GrRecordingContext*>(nullptr)));
 
-        // Texture image:
-        auto surf = SkSurface::MakeRenderTarget(dContext, skgpu::Budgeted::kNo, ii);
-        SkSurfaceCharacterization sc;
-        REPORTER_ASSERT(reporter, surf->characterize(&sc));
-        GrBackendTexture tex = dContext->createBackendTexture(ii.width(),
-                                                              ii.height(),
-                                                              ii.colorType(),
-                                                              GrMipmapped(sc.isMipMapped()),
-                                                              GrRenderable::kYes);
-        auto gpuImage = SkImage::MakeFromTexture(dContext, tex, kTopLeft_GrSurfaceOrigin,
-                                                 ii.colorType(), ii.alphaType(),
-                                                 ii.refColorSpace());
-        REPORTER_ASSERT(reporter, gpuImage->isValid(dContext));
+        if (dContext) {
+            // raster + context:
+            auto subImg1 = rasterImg->makeSubset(subsetBounds, dContext);
+            REPORTER_ASSERT(reporter, subImg1->isValid(dContext));
 
-        // gpu image + context:
-        auto subImg5 = gpuImage->makeSubset(subsetBounds, dContext);
-        REPORTER_ASSERT(reporter, subImg5->isValid(dContext));
+            // Texture image:
+            GrBackendTexture tex = dContext->createBackendTexture(ii.width(),
+                                                                  ii.height(),
+                                                                  ii.colorType(),
+                                                                  GrMipmapped::kNo,
+                                                                  GrRenderable::kYes);
+            auto ganeshImage = SkImage::MakeFromTexture(dContext, tex, kTopLeft_GrSurfaceOrigin,
+                                                        ii.colorType(), ii.alphaType(),
+                                                        ii.refColorSpace());
+            REPORTER_ASSERT(reporter, ganeshImage->isValid(dContext));
 
-        // gpu image + nullptr:
-        REPORTER_ASSERT(reporter, !gpuImage->makeSubset(subsetBounds, nullptr));
+            // gpu image + context:
+            auto subImg5 = ganeshImage->makeSubset(subsetBounds, dContext);
+            REPORTER_ASSERT(reporter, subImg5->isValid(dContext));
 
-        dContext->flush();
-        dContext->submit(true);
-        dContext->deleteBackendTexture(tex);
+            // gpu image + nullptr:
+            REPORTER_ASSERT(reporter, !ganeshImage->makeSubset(subsetBounds));
+
+            dContext->flush();
+            dContext->submit(true);
+            dContext->deleteBackendTexture(tex);
+        }
+
+        // Graphite??
+
     }
 }
