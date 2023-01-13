@@ -31,12 +31,13 @@ SDFTextRenderStep::SDFTextRenderStep(bool isA8)
         : RenderStep("SDFTextRenderStep",
                      isA8 ? "A8" : "565",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
-                                   {"atlasSizeInv", SkSLType::kFloat2},
-                                   {"distanceAdjust", SkSLType::kFloat}},
+                     /*uniforms=*/
+                     {{"deviceMatrix", SkSLType::kFloat4x4},
+                      {"atlasSizeInv", SkSLType::kFloat2},
+                      {"distanceAdjust", SkSLType::kFloat}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
@@ -48,7 +49,8 @@ SDFTextRenderStep::SDFTextRenderStep(bool isA8)
                      /*varyings=*/
                      {{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kFloat}}) {
+                      {"texIndex", SkSLType::kFloat}},
+                     /*numTextures=*/kNumSDFAtlasTextures) {
     // TODO: store if it's A8 and adjust shader
 }
 

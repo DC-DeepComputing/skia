@@ -33,11 +33,11 @@ BitmapTextRenderStep::BitmapTextRenderStep()
         : RenderStep("BitmapTextRenderStep",
                      "",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
-                                   {"atlasSizeInv", SkSLType::kFloat2}},
+                     /*uniforms=*/
+                     {{"deviceMatrix", SkSLType::kFloat4x4}, {"atlasSizeInv", SkSLType::kFloat2}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
@@ -49,7 +49,8 @@ BitmapTextRenderStep::BitmapTextRenderStep()
                      /*varyings=*/
                      {{"textureCoords", SkSLType::kFloat2},
                       {"texIndex", SkSLType::kHalf},
-                      {"maskFormat", SkSLType::kHalf}}) {}
+                      {"maskFormat", SkSLType::kHalf}},
+                     /*numTextures=*/kNumTextAtlasTextures) {}
 
 BitmapTextRenderStep::~BitmapTextRenderStep() {}
 
