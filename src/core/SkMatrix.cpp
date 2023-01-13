@@ -21,6 +21,7 @@
 #include "include/private/base/SkVx.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixUtils.h"
+#include "src/core/SkPointPriv.h"
 #include "src/core/SkSamplingPriv.h"
 
 #include <algorithm>
@@ -1873,6 +1874,37 @@ SkScalar SkMatrixPriv::DifferentialAreaScale(const SkMatrix& m, const SkPoint& p
     double denom = 1.0 / xyw.fZ;   // 1/w
     denom = denom * denom * denom; // 1/w^3
     return SkScalarAbs(SkDoubleToScalar(sk_determinant(jacobian.fMat, true) * denom));
+}
+
+bool SkMatrixPriv::NearlyAffine(const SkMatrix& m, const SkRect& bounds) {
+    if (!m.hasPerspective()) {
+        return true;
+    }
+
+//    if (SkScalarNearlyZero(m.getPerspX()) && SkScalarNearlyZero(m.getPerspX()) &&
+//        SkScalarNearlyZero(SK_Scalar1 - m[8])) {
+//        return true;
+//    }
+//
+//    return false;
+
+    SkPoint quad[4];
+    m.mapRectToQuad(quad, bounds);
+
+    // if the lengths of the opposing sides are within 1/4 pixel,
+    // then perspective has little effect
+    SkScalar d01 = SkPointPriv::DistanceToSqd(quad[0], quad[1]);
+    SkScalar d23 = SkPointPriv::DistanceToSqd(quad[2], quad[3]);
+    if (!SkScalarNearlyEqual(d01, d23, 1.f/4)) {
+        return false;
+    }
+    SkScalar d03 = SkPointPriv::DistanceToSqd(quad[0], quad[3]);
+    SkScalar d12 = SkPointPriv::DistanceToSqd(quad[1], quad[2]);
+    if (!SkScalarNearlyEqual(d03, d12, 1.f/4)) {
+        return false;
+    }
+
+    return true;
 }
 
 SkScalar SkMatrixPriv::ComputeResScaleForStroking(const SkMatrix& matrix) {
