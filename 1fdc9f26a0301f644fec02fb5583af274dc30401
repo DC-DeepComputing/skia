@@ -22,6 +22,30 @@
       },
       "revId": "1fdc9f26a0301f644fec02fb5583af274dc30401",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46335ebb_12ff8143",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T13:54:46Z",
+      "side": 1,
+      "message": "OK, I think I understand how the stack machine works and how the 0 and 1 constants get pushed to those offsets. lgtm",
+      "parentUuid": "99ea4dd2_67a9a951",
+      "range": {
+        "startLine": 338,
+        "startChar": 55,
+        "endLine": 338,
+        "endChar": 88
+      },
+      "revId": "1fdc9f26a0301f644fec02fb5583af274dc30401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
