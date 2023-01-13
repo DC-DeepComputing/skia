@@ -33,11 +33,11 @@ BitmapTextRenderStep::BitmapTextRenderStep()
         : RenderStep("BitmapTextRenderStep",
                      "",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
-                                   {"atlasSizeInv", SkSLType::kFloat2}},
+                     /*uniforms=*/
+                     {{"deviceMatrix", SkSLType::kFloat4x4}, {"atlasSizeInv", SkSLType::kFloat2}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
@@ -71,11 +71,11 @@ std::string BitmapTextRenderStep::vertexSkSL() const {
 }
 
 std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int binding) const {
+        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
 
     for (unsigned int i = 0; i < kNumTextAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, &binding);
+        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
         SkSL::String::appendf(&result, " uniform sampler2D text_atlas_%d;\n", i);
     }
 

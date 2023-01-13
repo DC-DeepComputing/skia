@@ -31,12 +31,13 @@ SDFTextRenderStep::SDFTextRenderStep(bool isA8)
         : RenderStep("SDFTextRenderStep",
                      isA8 ? "A8" : "565",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
-                                   {"atlasSizeInv", SkSLType::kFloat2},
-                                   {"distanceAdjust", SkSLType::kFloat}},
+                     /*uniforms=*/
+                     {{"deviceMatrix", SkSLType::kFloat4x4},
+                      {"atlasSizeInv", SkSLType::kFloat2},
+                      {"distanceAdjust", SkSLType::kFloat}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
+                     /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
@@ -71,11 +72,11 @@ std::string SDFTextRenderStep::vertexSkSL() const {
 }
 
 std::string SDFTextRenderStep::texturesAndSamplersSkSL(
-        const ResourceBindingRequirements& bindingReqs, int binding) const {
+        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
 
     for (unsigned int i = 0; i < kNumSDFAtlasTextures; ++i) {
-        result += EmitSamplerLayout(bindingReqs, &binding);
+        result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
         SkSL::String::appendf(&result, " uniform sampler2D sdf_atlas_%d;\n", i);
     }
 

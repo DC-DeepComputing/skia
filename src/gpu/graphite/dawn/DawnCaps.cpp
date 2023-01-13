@@ -117,7 +117,19 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
     info.fSampleCount = this->defaultMSAASamples();
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = singleSpec.fFormat;
-    info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+    info.fUsage = wgpu::TextureUsage::RenderAttachment;
+    return info;
+}
+
+TextureInfo DawnCaps::getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                                    Discardable discardable) const {
+    const DawnTextureSpec& singleSpec = singleSampledInfo.dawnTextureSpec();
+
+    DawnTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFormat = singleSpec.fFormat;
+    info.fUsage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding;
     return info;
 }
 
@@ -173,7 +185,14 @@ SkColorType DawnCaps::supportedWritePixelsColorType(SkColorType dstColorType,
 SkColorType DawnCaps::supportedReadPixelsColorType(SkColorType srcColorType,
                                                    const TextureInfo& srcTextureInfo,
                                                    SkColorType dstColorType) const {
-    SkASSERT(false);
+    auto dawnFormat = getFormatFromColorType(srcColorType);
+    const FormatInfo& info = this->getFormatInfo(dawnFormat);
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const auto& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == srcColorType) {
+            return srcColorType;
+        }
+    }
     return kUnknown_SkColorType;
 }
 
@@ -200,6 +219,8 @@ void DawnCaps::initCaps(const wgpu::Device& device) {
     fStorageBufferPreferred = false;
 
     fDrawBufferCanBeMapped = false;
+
+    fDirectLoadMSAAFromResolveSupport = false;
 
     // TODO: support clamp to border.
     fClampToBorderSupport = false;

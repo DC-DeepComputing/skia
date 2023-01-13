@@ -354,7 +354,8 @@ std::string GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
                       UniquePaintParamsID paintID,
                       bool useStorageBuffers,
                       BlendInfo* blendInfo,
-                      bool* requiresLocalCoordsVarying) {
+                      bool* requiresLocalCoordsVarying,
+                      int* numTexturesAndSamplersUsed) {
     if (!paintID.isValid()) {
         // TODO: we should return the error shader code here
         return {};
@@ -373,7 +374,8 @@ std::string GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
     sksl += shaderInfo.toSkSL(bindingReqs,
                               step,
                               useStorageBuffers,
-                              /*defineLocalCoordsVarying=*/*requiresLocalCoordsVarying);
+                              /*defineLocalCoordsVarying=*/*requiresLocalCoordsVarying,
+                              numTexturesAndSamplersUsed);
 
     return sksl;
 }

@@ -56,7 +56,8 @@ std::string GetSkSLFS(const ResourceBindingRequirements&,
                       UniquePaintParamsID paintID,
                       bool useStorageBuffers,
                       BlendInfo* blendInfo,
-                      bool* requiresLocalCoordsVarying);
+                      bool* requiresLocalCoordsVarying,
+                      int* numTexturesAndSamplersUsed);
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
@@ -81,7 +82,6 @@ std::string EmitVaryings(const RenderStep* step,
                          const char* direction,
                          bool emitShadingSsboIndexVarying,
                          bool emitLocalCoordsVarying);
-
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ContextUtils_DEFINED
