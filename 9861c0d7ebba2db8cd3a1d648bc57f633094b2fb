@@ -87,6 +87,30 @@
       },
       "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e8d1d98_292bddfd",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T23:22:05Z",
+      "side": 1,
+      "message": "Well, I\u0027m sure a capable intern with interest/experience in compilers could have implemented a good solution with the right guidance but it\u0027s definitely good for the hosts to study and surface as many problems as possible beforehand. Nevertheless, that won\u0027t be necessary 😊",
+      "parentUuid": "d38b375d_9d303f94",
+      "range": {
+        "startLine": 1345,
+        "startChar": 37,
+        "endLine": 1346,
+        "endChar": 12
+      },
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
