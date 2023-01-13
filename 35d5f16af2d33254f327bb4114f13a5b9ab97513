@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ce046d_fbe3dd72",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T20:02:36Z",
+      "side": 1,
+      "message": "circuiting",
+      "range": {
+        "startLine": 893,
+        "startChar": 21,
+        "endLine": 893,
+        "endChar": 30
+      },
+      "revId": "35d5f16af2d33254f327bb4114f13a5b9ab97513",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222ef09d_3e5aeb65",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T20:02:36Z",
+      "side": 1,
+      "message": "Use `%d`",
+      "range": {
+        "startLine": 905,
+        "startChar": 54,
+        "endLine": 905,
+        "endChar": 68
+      },
+      "revId": "35d5f16af2d33254f327bb4114f13a5b9ab97513",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
