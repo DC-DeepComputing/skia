@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ea4dd2_67a9a951",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T03:48:25Z",
+      "side": 1,
+      "message": "Apologies in advance, since I\u0027m not very familiar with how RP instructions work. FWICT these are the swizzle offsets and for a 4x4 resize target they look like this:\n\n 0 1 5 5\n 2 3 5 5\n 5 5 6 5\n 5 5 5 6\n\nWhat do the 5s and 6s mean exactly? Based on your comments in SkSLRasterPipelineBuilder.cpp, I imagine these refer to 0 and 1 values but I can\u0027t quite tell how the specific offsets achieve that.",
+      "range": {
+        "startLine": 338,
+        "startChar": 55,
+        "endLine": 338,
+        "endChar": 88
+      },
+      "revId": "1fdc9f26a0301f644fec02fb5583af274dc30401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
