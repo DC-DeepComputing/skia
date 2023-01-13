@@ -46,6 +46,30 @@
       },
       "revId": "1fdc9f26a0301f644fec02fb5583af274dc30401",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d9b203b_ebd2cf87",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T14:25:07Z",
+      "side": 1,
+      "message": "Actually, thank you for drawing my attention to it. 5 and 6 were off by one--they should have been 4 and 5 (since the input matrix was covering $0..3). This was only working because we didn\u0027t have any SkSL tests which actually verified that a resized matrix contained 0s and 1s in the expected locations.\n\nI\u0027ve updated UniformMatrixResize to test this, and fixed the off by one.",
+      "parentUuid": "46335ebb_12ff8143",
+      "range": {
+        "startLine": 338,
+        "startChar": 55,
+        "endLine": 338,
+        "endChar": 88
+      },
+      "revId": "1fdc9f26a0301f644fec02fb5583af274dc30401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
