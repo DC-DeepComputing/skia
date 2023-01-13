@@ -63,6 +63,30 @@
       },
       "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d38b375d_9d303f94",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T23:00:26Z",
+      "side": 1,
+      "message": "I am glad we are not leaving this work to an intern :)",
+      "parentUuid": "b08f393e_0f434e54",
+      "range": {
+        "startLine": 1345,
+        "startChar": 37,
+        "endLine": 1346,
+        "endChar": 12
+      },
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
