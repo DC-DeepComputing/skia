@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95aa83c_727c5b5b",
+        "filename": "bazel/external/libwebp/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2023-01-13T03:06:59Z",
+      "side": 1,
+      "message": "even though this file appears in the source list it was needed here to avoid an include failure (it\u0027s included in sharpyuv.c).",
+      "revId": "e35fdc7403acf6b911cc6e780c8f274cfb2c4428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
