@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a7ff1cc_9dfd04b6",
+        "filename": "resources/sksl/wgsl/GlobalUniforms.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:55:55Z",
+      "side": 1,
+      "message": "Won\u0027t this return black?",
+      "range": {
+        "startLine": 6,
+        "startChar": 17,
+        "endLine": 6,
+        "endChar": 41
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d22913_b6d6d045",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:55:55Z",
+      "side": 1,
+      "message": "Should this be `is_in_global_uniforms(var) || the original condition`?\n(This doesn\u0027t actually quite check the same thing... e.g. the previous code didn\u0027t enforce `isOpaque` at all)",
+      "range": {
+        "startLine": 975,
+        "startChar": 8,
+        "endLine": 977,
+        "endChar": 31
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db703382_224bb926",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:55:55Z",
+      "side": 1,
+      "message": "`is_in_global_uniforms`?",
+      "range": {
+        "startLine": 1137,
+        "startChar": 16,
+        "endLine": 1137,
+        "endChar": 91
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
