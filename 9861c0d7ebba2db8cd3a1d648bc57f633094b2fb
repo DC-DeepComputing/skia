@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e6c74c2_54c0c1f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T22:46:48Z",
+      "side": 1,
+      "message": "For the time being, I think this is ready for review since it unblocks several tests. However I\u0027m inclined to ditch this in favor of doing an IR transformation for all cases that aren\u0027t easily translatable to WGSL where the solution involves hoisting an expression out into statements in the surrounding block (for example for ternaries, assignments-to-swizzle, and possibly for out-param intermediaries as I describe below). Please take a look at my comment below and let me know what you think.",
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c39fef36_4cfe271c",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-01-13T21:50:00Z",
       "side": 1,
       "message": "!\n\nThat\u0027s a surprising case... did you discover this because one of our tests does it? I\u0027m not sure offhand what the Metal codegen would do in this case.",
+      "range": {
+        "startLine": 1345,
+        "startChar": 37,
+        "endLine": 1346,
+        "endChar": 12
+      },
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b08f393e_0f434e54",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T22:46:48Z",
+      "side": 1,
+      "message": "(Apologies for the novel, I was writing this into a document but I\u0027ll just paste it here since you asked...)\n\nThe Metal codegen generally does the right thing, since it detects the case when the same variable is passed as an argument more than once and resolves all references to it to effectively the same parameter within the scope of the out-param-helper function.\n\nHowever, once situation that would fail the analysis (even though our Metal implementation looks safe to me) is the OutParamsAreDistinctFromGlobal.sksl test case. This is especially broken in the WGSL codegen in the way that I implemented module-private variables (idiomatically, these are declared as `var\u003cprivate\u003e` at global scope). In that particular test case, the code I generate looked like this:\n\n```\nvar\u003cprivate\u003e x: f32;\n\nfn _outParamHelper_0_out_params_are_distinct_from_global_bh(x: ptr\u003cprivate, f32\u003e) -\u003e bool {\n    var _var0: f32;\n    var _return: bool \u003d out_params_are_distinct_from_global_bh(\u0026_var0);\n    (*x) \u003d _var0;\n    return _return;\n}\n\nfn out_params_are_distinct_from_global_bh(y: ptr\u003cfunction, f32\u003e) -\u003e bool {\n    (*y) \u003d 2.0;\n    return x \u003d\u003d 1.0 \u0026\u0026 (*y) \u003d\u003d 2.0;\n}\n\nfn main(coords: vec2\u003cf32\u003e) -\u003e vec4\u003cf32\u003e {\n    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen,\n                  vec4\u003cbool\u003e(_outParamHelper_0_out_params_are_distinct_from_global_bh(\u0026x)));\n}\n\n```\n\nThis generates the following error:\n```\n../wgsl-testing/OutParamAliasing.wgsl:26:87 warning: invalid aliased pointer argument\n                  vec4\u003cbool\u003e(_outParamHelper_0_out_params_are_distinct_from_global_bh(\u0026x)));\n                                                                                      ^\n\n../wgsl-testing/OutParamAliasing.wgsl:22:12 note: aliases with module-scope variable read in \u0027out_params_are_distinct_from_global_bh\u0027\n    return x \u003d\u003d 1.0 \u0026\u0026 (*y) \u003d\u003d 2.0;\n           ^    \n```\n\nThe outParamHelper function doesn\u0027t help in this case because it still takes a pointer. One solution to this is to declare module scope variables in a function-scope struct (like we do with the `Globals` struct for Metal) and resolve dependencies such that any references to the variable within the body as well as in arguments to out-parameters are provided as a single pointer to the wrapper:\n```\nstruct Globals {\n    x: f32,\n};\nfn _outParamHelper_0_out_params_are_distinct_from_global_bh(_globals: ptr\u003cfunction, Globals\u003e) -\u003e bool {\n    var _var0: f32;\n    var _return: bool \u003d out_params_are_distinct_from_global_bh(_globals, \u0026_var0);\n    (*_globals).x \u003d _var0;\n    return _return;\n}\n\nfn out_params_are_distinct_from_global_bh(_globals: ptr\u003cfunction, Globals\u003e, y: ptr\u003cfunction, f32\u003e) -\u003e bool {\n    (*y) \u003d 2.0;\n    return (*_globals).x \u003d\u003d 1.0 \u0026\u0026 (*y) \u003d\u003d 2.0;\n}\n\nfn main(coords: vec2\u003cf32\u003e) -\u003e vec4\u003cf32\u003e {\n    var _globals: Globals;\n    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen,\n                  vec4\u003cbool\u003e(_outParamHelper_0_out_params_are_distinct_from_global_bh(\u0026_globals)));\n}\n\n```\n\nThis avoids aliasing. It\u0027s unfortunate that it we can\u0027t use an idiomatic `var\u003cprivate\u003e` declaration but it has the same affect and should work for I/O parameters as out-param arguments too (e.g. passing `sk_FragColor` as an out-param, which is inside a synthesized struct AND is referenced at global scope in SkSL).\n\nHOWEVER, one case that we can\u0027t handle this way are workgroup variables. In WGSL they are declared at module-scope and we can\u0027t trivially stick them inside a function-scope struct (and write them out), especially when atomics and barriers are involved. They have to be accessed at module scope to work correctly.\n\nWGSL currently does not allow pointers to workgroup in function parameters (except behind an extension via the `enable chromium_experimental_full_ptr_parameters` directive) but there is talk of allowing them in the future (see https://github.com/gpuweb/gpuweb/issues/3276 and https://github.com/gpuweb/gpuweb/issues/3546; https://github.com/gfx-rs/naga/issues/2120#issuecomment-1307939996 mentions \"supporting such pointers through selective specialization of functions\" which reminds me of our out-param helpers). Maybe for the time being we should disallow workgroup variables to be out-param arguments but eventually we may want to support them depending on how our compute programs evolve.\n\nAs an additional note, we handle this nicely in our SPIR-V codegen without synthesizing any out-param helper functions and that code translates to WGSL (via tint) without any aliasing issues. Here is the result of feeding `OutParamsAreDistinctFromGlobal.asm.frag` from our corpus to tint:\n\n```\nvar\u003cprivate\u003e x : f32;\n\nfn out_params_are_distinct_from_global_bh(x_44 : ptr\u003cfunction, f32\u003e) -\u003e bool {\n  var x_49 : bool;\n  *(x_44) \u003d 2.0f;\n  let x_10 : f32 \u003d x;\n  x_49 \u003d false;\n  if ((x_10 \u003d\u003d 1.0f)) {\n    x_49 \u003d true;\n  }\n  return x_49;\n}\n\nfn main(x_50 : ptr\u003cfunction, vec2\u003cf32\u003e\u003e) -\u003e vec4\u003cf32\u003e {\n  var x_11 : f32;\n  var x_52 : vec4\u003cf32\u003e;\n  x \u003d 1.0f;\n  let x_53 : bool \u003d out_params_are_distinct_from_global_bh(\u0026(x_11));\n  let x_12 : f32 \u003d x_11;\n  x \u003d x_12;\n  if (x_53) {\n    let x_13 : vec4\u003cf32\u003e \u003d x_9.colorGreen;\n    x_52 \u003d x_13;\n  } else {\n    let x_14 : vec4\u003cf32\u003e \u003d x_9.colorRed;\n    x_52 \u003d x_14;\n  }\n  let x_15 : vec4\u003cf32\u003e \u003d x_52;\n  return x_15;\n}\n```\n\nTBH I think this is the ideal translation. It demonstrates hoisting of out-param temporaries into the surrounding scope as variable declarations without using an out-param-helper-wrapper which itself has to take pointer arguments. It also demonstrates hoisting of a ternary expression, which we are going to have to implement. I\u0027m guessing this is straightforward in SPIR-V codegen due to SSA form but because function calls and ternary expressions can appear deeply nested in an expression, perhaps the best way to handle both cases is via a transformation in the IR, specifically for WGSL.",
+      "parentUuid": "c39fef36_4cfe271c",
       "range": {
         "startLine": 1345,
         "startChar": 37,
