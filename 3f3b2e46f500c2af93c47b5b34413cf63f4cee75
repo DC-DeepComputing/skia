@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff9848f_ebbc1c0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:33:35Z",
+      "side": 1,
+      "message": "Please fix IWYU",
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66ada93e_fca873cf",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:33:35Z",
+      "side": 1,
+      "message": "Use `%d` instead",
+      "range": {
+        "startLine": 131,
+        "startChar": 34,
+        "endLine": 131,
+        "endChar": 73
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16c284bb_1ebed6d5",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:33:35Z",
+      "side": 1,
+      "message": "Use `%.*s` instead (first storing the result of `to_scalar_type` in a variable)",
+      "range": {
+        "startLine": 132,
+        "startChar": 34,
+        "endLine": 132,
+        "endChar": 93
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "385f62d0_6f324195",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:33:35Z",
+      "side": 1,
+      "message": "`!type.isUnsizedArray()`",
+      "range": {
+        "startLine": 135,
+        "startChar": 16,
+        "endLine": 135,
+        "endChar": 35
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8a654b_74237c3a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-13T19:33:35Z",
+      "side": 1,
+      "message": "PTAL http://go/totw/163#the-problem\n\nDon\u0027t pass `const optional\u003cT\u003e\u0026`. This requires the compiler to allocate space on the stack for an `optional\u003cT\u003e` and to construct the `optional` (although not the `T`). It\u0027s simpler and lighter-weight to pass `T*` and let `nullptr` be the sentinel for unused.",
+      "range": {
+        "startLine": 189,
+        "startChar": 21,
+        "endLine": 189,
+        "endChar": 56
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
