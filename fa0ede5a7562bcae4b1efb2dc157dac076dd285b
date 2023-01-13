@@ -22,6 +22,30 @@
       },
       "revId": "fa0ede5a7562bcae4b1efb2dc157dac076dd285b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57fc0357_d5232d6f",
+        "filename": "tools/fiddle/fiddle_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-13T20:12:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "822e4aa7_f8aaa27a",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 29
+      },
+      "revId": "fa0ede5a7562bcae4b1efb2dc157dac076dd285b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
