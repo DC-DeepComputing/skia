@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e23cbc89_bc014766",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-13T22:08:42Z",
+      "side": 1,
+      "message": "Do we want to build new mipmaps if we\u0027re not copying these over?",
+      "revId": "f45c93a23547ba024b25b16986e5c4d4e646344a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
