@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80778c2a_cfbba1f9",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-13T18:25:26Z",
+      "side": 1,
+      "message": "Yeah, I had previously pushed for const SkData in some other CLs, because that\u0027s been the trend lately. writable_data definitely exists (and is used), so I think it\u0027s helpful to distinguish SkData that\u0027s really const. (Particularly when it\u0027s a non-owning SkData that points into data from another buffer).",
+      "parentUuid": "622660a8_1541a591",
+      "range": {
+        "startLine": 28,
+        "startChar": 54,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83fe9f9a_a852d736",
