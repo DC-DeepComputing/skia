@@ -53,6 +53,8 @@ public:
         return nullptr;
     }
 
+    sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredImageProperties) const override;
+
     bool onIsValid(GrRecordingContext*) const override { return true; }
 
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
