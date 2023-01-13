@@ -46,6 +46,30 @@
       },
       "revId": "d9aeca0a6bcaa9ea892556dfc73845d927a116f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c986e6f_31d4d0b0",
+        "filename": "include/private/base/SkMath.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-13T16:50:23Z",
+      "side": 1,
+      "message": "As we figured out, since `U8CPU` is used in public API, uint_fast8_t isn\u0027t really suitable, so just moved `U8CPU` to base.",
+      "parentUuid": "c2d4090d_95c996c0",
+      "range": {
+        "startLine": 48,
+        "startChar": 50,
+        "endLine": 48,
+        "endChar": 60
+      },
+      "revId": "d9aeca0a6bcaa9ea892556dfc73845d927a116f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
