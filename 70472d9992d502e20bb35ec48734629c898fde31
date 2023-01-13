@@ -16,6 +16,29 @@
       "message": "Hi Michael, PTAL. Thanks",
       "revId": "70472d9992d502e20bb35ec48734629c898fde31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c182f21_1ccd1287",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-13T18:58:58Z",
+      "side": 1,
+      "message": "Are these viewer-specific or will they be generally required by Skia? If it\u0027s the latter I wonder if graphite could communicate them as required features somehow.",
+      "range": {
+        "startLine": 129,
+        "startChar": 12,
+        "endLine": 130,
+        "endChar": 51
+      },
+      "revId": "70472d9992d502e20bb35ec48734629c898fde31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
