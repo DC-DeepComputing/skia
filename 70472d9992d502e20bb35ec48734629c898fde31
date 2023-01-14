@@ -39,6 +39,30 @@
       },
       "revId": "70472d9992d502e20bb35ec48734629c898fde31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a640b77e_19ced4a6",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-14T03:09:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure if we need DepthClipControl? The intent is that all draws use a depth test, although it\u0027s possible that in some cases we skip it since we know a priori that it wouldn\u0027t matter and that puts us in a state where we try to disable the depth test. The exception would be if DepthClipControl also lets us change the depth test function, or if it\u0027s a requirement for the depth/stencil texture formats.\n\ngraphite should also be able to operate with \"depth24plus-stencil8\", or potentially separate depth and stencil attachments. Given that, I think the dawn caps and context need to be able to detect what\u0027s possible and utilize those. `viewer` can be in control of its wgpu Device creation like we\u0027d typically expect any other client to be as well.\n\nIf somehow a required feature weren\u0027t present, I think graphite would log an error and fail to create a context.\n\n\n----\n\nNow that said, if we currently need depth32-stencil8 in order to get dawn viewer to work, that suggests the dawn backend isn\u0027t yet able to handle the other depth/stencil formats and maybe we should add those as well? I\u0027d also like to better understand why viewer doesn\u0027t work if DepthClipControl isn\u0027t provided. Maybe that will reveal an issue with how graphite is configuring its pipelines that has changed from my mental model, or perhaps it was just an inadvertent lapse.",
+      "parentUuid": "6c182f21_1ccd1287",
+      "range": {
+        "startLine": 129,
+        "startChar": 12,
+        "endLine": 130,
+        "endChar": 51
+      },
+      "revId": "70472d9992d502e20bb35ec48734629c898fde31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
