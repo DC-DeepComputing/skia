@@ -22,7 +22,7 @@
  *
  *  Next, let L be the gainmap value in log space. We compute this from the value G that was
  *  sampled from the texture as follows:
- *    L = mix(fLogRatioMin, fLogRatioMax, pow(G, fGainmapGamma))
+ *    L = mix(log(fGainmapMin), log(fGainmapMax), pow(G, fGainmapGamma))
  *
  *  Finally, apply the gainmap to compute D, the displayed pixel.
  *    D = (S + fEpsilonSdr) * exp(L * W) - fEpsilonHdr
@@ -31,25 +31,27 @@
  */
 struct SkGainmapInfo {
     /**
-     *  Parameters for converting the gainmap from its image encoding to log space. These are
-     *  specified per color channel. The alpha value is unused.
+     *  The maximum and minimum HDR to SDR ratio (in linear space) that the gainmap image can
+     *  encode, and the gamma used to encode the gainmap image. These are specified per color
+     *  channel. The alpha value is unused.
      */
-    SkColor4f fLogRatioMin = {0.f, 0.f, 0.f, 1.0};
-    SkColor4f fLogRatioMax = {1.f, 1.f, 1.f, 1.0};
+    SkColor4f fGainmapMin = {1.f, 1.f, 1.f, 1.0};
+    SkColor4f fGainmapMax = {2.f, 2.f, 2.f, 1.0};
     SkColor4f fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
 
     /**
-     *  Parameters selected to avoid divide by zero errors.
+     *  Parameters selected to avoid divide by zero errors while creating the gainmap. These
+     *  may be preserved or set to zero for rendering.
      */
-    float fEpsilonSdr = 0.01f;
-    float fEpsilonHdr = 0.01f;
+    float fEpsilonSdr = 0.f;
+    float fEpsilonHdr = 0.f;
 
     /**
      *  Parameters that indicate the minimum HDR capability below which the gainmap is not
      *  applied at all, and the maximum HDR capacity above which the gainmap is fully applied.
      */
     float fHdrRatioMin = 1.f;
-    float fHdrRatioMax = 50.f;
+    float fHdrRatioMax = 2.f;
 };
 
 #endif

@@ -288,15 +288,15 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
                 }
                 *outGainmapImageStream = std::move(mpImage.stream);
             }
-            constexpr float kLogRatioMin = 0.f;
-            constexpr float kLogRatioMax = 1.f;
-            outInfo->fLogRatioMin = {kLogRatioMin, kLogRatioMin, kLogRatioMin, 1.f};
-            outInfo->fLogRatioMax = {kLogRatioMax, kLogRatioMax, kLogRatioMax, 1.f};
+            const float kGainmapMin = 0.f;
+            const float kGainmapMax = sk_float_exp(1.f);
+            outInfo->fGainmapMin = {kGainmapMin, kGainmapMin, kGainmapMin, 1.f};
+            outInfo->fGainmapMax = {kGainmapMax, kGainmapMax, kGainmapMax, 1.f};
             outInfo->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
-            outInfo->fEpsilonSdr = 1 / 128.f;
-            outInfo->fEpsilonHdr = 1 / 128.f;
-            outInfo->fHdrRatioMin = 1.f;
-            outInfo->fHdrRatioMax = sk_float_exp(kLogRatioMax);
+            outInfo->fEpsilonSdr = 0.f;
+            outInfo->fEpsilonHdr = 0.f;
+            outInfo->fHdrRatioMin = kGainmapMin;
+            outInfo->fHdrRatioMax = kGainmapMax;
             return true;
         }
     }
