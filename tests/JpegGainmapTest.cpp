@@ -8,11 +8,14 @@
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkGainmapInfo.h"
+#include "include/private/SkGainmapShader.h"
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #include "tests/Test.h"
@@ -164,5 +167,238 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
         REPORTER_ASSERT(r,
                         bm.getColor(rec.dimensions.fWidth - 1, rec.dimensions.fHeight - 1) ==
                                 rec.farCornerColor);
+    }
+}
+
+static bool approx_equal(const SkColor4f& a, const SkColor4f& b) {
+    constexpr float kEpsilon = 1e-3f;
+    return std::abs(a.fR - b.fR) < kEpsilon && std::abs(a.fG - b.fG) < kEpsilon &&
+           std::abs(a.fB - b.fB) < kEpsilon && std::abs(a.fA - b.fA) < kEpsilon;
+}
+
+static void write_pixel(SkBitmap& bm,
+                        int x,
+                        int y,
+                        SkColor4f color,
+                        sk_sp<SkColorSpace> cs = SkColorSpace::MakeSRGB()) {
+    SkImageInfo info = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, cs);
+    const float pixel[] = {
+            color.fR,
+            color.fG,
+            color.fB,
+            color.fA,
+    };
+    SkPixmap src(info, pixel, info.minRowBytes());
+    bm.writePixels(src, x, y);
+}
+
+static sk_sp<SkImage> make_1x1_image(sk_sp<SkColorSpace> cs,
+                                     SkAlphaType alphaType,
+                                     SkColor4f color,
+                                     bool colorIsSRGB) {
+    SkImageInfo info = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, alphaType, cs);
+    SkBitmap bm;
+    if (!bm.tryAllocPixels(info)) {
+        return nullptr;
+    }
+    bm.eraseColor(SK_ColorTRANSPARENT);
+    write_pixel(bm, 0, 0, color, colorIsSRGB ? nullptr : cs);
+    return SkImage::MakeFromBitmap(bm);
+}
+
+// Returns an unpremultiplied color in sRGB color space.
+SkColor4f apply_1x1_gainmap(sk_sp<SkImage> sdrImage,
+                            sk_sp<SkImage> gainmapImage,
+                            const SkGainmapInfo& gainmapInfo,
+                            float dstHdrRatio,
+                            sk_sp<SkColorSpace> dstColorSpace = SkColorSpace::MakeSRGB(),
+                            SkAlphaType dstAlphaType = kPremul_SkAlphaType) {
+    SkImageInfo canvasInfo =
+            SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, dstAlphaType, dstColorSpace);
+    SkBitmap canvasBitmap;
+    if (!canvasBitmap.tryAllocPixels(canvasInfo)) {
+        return SkColors::kTransparent;
+    }
+
+    constexpr SkRect k1x1Rect = SkRect::MakeWH(1, 1);
+    sk_sp<SkShader> shader = SkDrawImageWithGainmapShader(sdrImage,
+                                                          k1x1Rect,
+                                                          SkSamplingOptions(),
+                                                          gainmapImage,
+                                                          k1x1Rect,
+                                                          SkSamplingOptions(),
+                                                          gainmapInfo,
+                                                          k1x1Rect,
+                                                          dstColorSpace,
+                                                          dstHdrRatio);
+
+    SkPaint paint;
+    paint.setShader(shader);
+
+    SkCanvas canvas(canvasBitmap);
+    canvas.drawRect(k1x1Rect, paint);
+
+    SkImageInfo dstInfo = SkImageInfo::Make(
+            1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB());
+    float dstPixel[4];
+    canvasBitmap.readPixels(dstInfo, dstPixel, sizeof(dstPixel), 0, 0);
+    return {dstPixel[0], dstPixel[1], dstPixel[2], dstPixel[3]};
+}
+
+DEF_TEST(AndroidCodec_applyGainmapColorSpaces, r) {
+    constexpr SkColor4f sdrColor = {1.f, 2.f, 3.f, 1.f};
+    auto sdrImage = make_1x1_image(SkColorSpace::MakeSRGB()->makeColorSpin(),
+                                   kPremul_SkAlphaType,
+                                   sdrColor,
+                                   /*colorIsSRGB=*/true);
+
+    // Because the gainmap is applied in sdrImage's color space, this will gain red by exp(0.5),
+    // green by exp(1), and blue by exp(0).
+    constexpr SkColor4f gainColor = {1.f, 0.0f, 0.5f, 1.f};
+    auto gainmapImage = make_1x1_image(
+            SkColorSpace::MakeSRGBLinear(), kPremul_SkAlphaType, gainColor, /*colorIsSRGB=*/false);
+
+    SkGainmapInfo gainmapInfo;
+    const auto dstColorSpace =
+            SkColorSpace::MakeRGB(SkNamedTransferFn::kHLG, SkNamedGamut::kRec2020);
+    const SkColor4f color = apply_1x1_gainmap(
+            sdrImage, gainmapImage, gainmapInfo, gainmapInfo.fHdrRatioMax, dstColorSpace);
+    constexpr SkColor4f kExpectedColor = {1.1640f, 2.6881f, 3.0000f, 1.0000f};
+    REPORTER_ASSERT(r, approx_equal(color, kExpectedColor));
+}
+
+DEF_TEST(AndroidCodec_applyGainmapAlphaType, r) {
+    constexpr SkColor4f kSdrColor = {1.f, 0.5f, 0.2f, 0.5};
+    constexpr SkColor4f kGainmapColor = {1.f, 1.f, 1.f, 1.f};
+    constexpr SkColor4f kExpectedColor = {1.3441f, 0.6767f, 0.2762f, 0.5000f};
+
+    const struct Rec {
+        const SkAlphaType imageAlphaType;
+        const SkAlphaType canvasAlphaType;
+    } recs[] = {
+            {kPremul_SkAlphaType, kPremul_SkAlphaType},
+            {kPremul_SkAlphaType, kUnpremul_SkAlphaType},
+            {kUnpremul_SkAlphaType, kPremul_SkAlphaType},
+            {kUnpremul_SkAlphaType, kUnpremul_SkAlphaType},
+    };
+
+    for (const auto& rec : recs) {
+        auto sdrImage = make_1x1_image(
+                SkColorSpace::MakeSRGB(), rec.imageAlphaType, kSdrColor, /*colorIsSRGB=*/true);
+        auto gainmapImage = make_1x1_image(SkColorSpace::MakeSRGB(),
+                                           kOpaque_SkAlphaType,
+                                           kGainmapColor,
+                                           /*colorIsSRGB=*/false);
+
+        SkGainmapInfo gainmapInfo;
+        const SkColor4f color = apply_1x1_gainmap(sdrImage,
+                                                  gainmapImage,
+                                                  gainmapInfo,
+                                                  gainmapInfo.fHdrRatioMax,
+                                                  SkColorSpace::MakeSRGB(),
+                                                  rec.canvasAlphaType);
+        REPORTER_ASSERT(r, approx_equal(color, kExpectedColor));
+    }
+}
+
+DEF_TEST(AndroidCodec_applyGainmapImageRects, r) {
+    SkColor4f sdrColors[4][2] = {
+            {{1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 0.5f, 1.0f}},
+            {{1.0f, 0.5f, 1.0f, 1.0f}, {1.0f, 0.5f, 0.5f, 1.0f}},
+            {{0.5f, 1.0f, 1.0f, 1.0f}, {0.5f, 1.0f, 0.5f, 1.0f}},
+            {{0.5f, 0.5f, 1.0f, 1.0f}, {0.5f, 0.5f, 0.5f, 1.0f}},
+    };
+
+    // The top pixel indicates to gain only red, and the bottom pixel indicates to gain everything
+    // except red.
+    SkColor4f gainmapColors[2][1] = {
+            {{1.0f, 0.0f, 0.0f, 1.f}},
+            {{0.0f, 1.0f, 1.0f, 1.f}},
+    };
+
+    // Constants for the gainmap applied to 1.0 and 0.5.
+    constexpr float k10G = 1.353256028586302f;   // This is linearToSRGB(2.0).
+    constexpr float k05G = 0.6858361015012847f;  // This is linearToSRGB(srgbToLinear(0.5)*2.0)
+    SkColor4f expectedColors[4][2] = {
+            {{k10G, 1.0f, 1.0f, 1.0f}, {k10G, 1.0f, 0.5f, 1.0f}},
+            {{k10G, 0.5f, 1.0f, 1.0f}, {k10G, 0.5f, 0.5f, 1.0f}},
+            {{0.5f, k10G, k10G, 1.0f}, {0.5f, k10G, k05G, 1.0f}},
+            {{0.5f, k05G, k10G, 1.0f}, {0.5f, k05G, k05G, 1.0f}},
+    };
+
+    sk_sp<SkImage> sdrImage;
+    SkRect sdrImageRect;
+    {
+        SkImageInfo info = SkImageInfo::Make(
+                2, 5, kRGBA_F32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+        SkBitmap bm;
+        if (!bm.tryAllocPixels(info)) {
+            ERRORF(r, "Failed to allocate SDR pixels");
+            return;
+        }
+        bm.eraseColor(SK_ColorTRANSPARENT);
+        for (int x = 0; x < 2; ++x) {
+            for (int y = 0; y < 4; ++y) {
+                write_pixel(bm, x, y + 1, sdrColors[y][x]);
+            }
+        }
+        sdrImage = SkImage::MakeFromBitmap(bm);
+        sdrImageRect = SkRect::MakeXYWH(0.f, 1.f, 2.f, 4.f);
+    }
+
+    sk_sp<SkImage> gainmapImage;
+    SkRect gainmapImageRect;
+    {
+        SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
+        SkBitmap bm;
+        if (!bm.tryAllocPixels(info)) {
+            ERRORF(r, "Failed to allocate gainmap pixels");
+            return;
+        }
+        bm.eraseColor(SK_ColorTRANSPARENT);
+        write_pixel(bm, 1, 0, gainmapColors[0][0]);
+        write_pixel(bm, 1, 1, gainmapColors[1][0]);
+        gainmapImage = SkImage::MakeFromBitmap(bm);
+        gainmapImageRect = SkRect::MakeXYWH(1.f, 0.f, 1.f, 2.f);
+    }
+
+    SkImageInfo canvasInfo = SkImageInfo::Make(
+            4, 6, kRGBA_F32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+    SkBitmap canvasBitmap;
+    SkRect canvasRect;
+    {
+        if (!canvasBitmap.tryAllocPixels(canvasInfo)) {
+            ERRORF(r, "Failed to allocate canvas pixels");
+            return;
+        }
+        canvasBitmap.eraseColor(SK_ColorTRANSPARENT);
+        canvasRect = SkRect::MakeXYWH(1.f, 1.f, 2.f, 4.f);
+    }
+
+    SkGainmapInfo gainmapInfo;
+    {
+        sk_sp<SkShader> shader = SkDrawImageWithGainmapShader(sdrImage,
+                                                              sdrImageRect,
+                                                              SkSamplingOptions(),
+                                                              gainmapImage,
+                                                              gainmapImageRect,
+                                                              SkSamplingOptions(),
+                                                              gainmapInfo,
+                                                              canvasRect,
+                                                              canvasInfo.refColorSpace(),
+                                                              gainmapInfo.fHdrRatioMax);
+
+        SkPaint paint;
+        paint.setShader(shader);
+
+        SkCanvas canvas(canvasBitmap);
+        canvas.drawRect(canvasRect, paint);
+    }
+
+    for (int y = 0; y < 4; ++y) {
+        for (int x = 0; x < 2; ++x) {
+            auto color = canvasBitmap.getColor4f(x + 1, y + 1);
+            REPORTER_ASSERT(r, approx_equal(color, expectedColors[y][x]));
+        }
     }
 }
