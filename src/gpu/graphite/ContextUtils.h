@@ -56,7 +56,8 @@ std::string GetSkSLFS(const ResourceBindingRequirements&,
                       UniquePaintParamsID paintID,
                       bool useStorageBuffers,
                       BlendInfo* blendInfo,
-                      bool* requiresLocalCoordsVarying);
+                      bool* requiresLocalCoordsVarying,
+                      int* numTexturesAndSamplersUsed);
 
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
