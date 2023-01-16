@@ -22,6 +22,30 @@
       },
       "revId": "e8c3fa6d7d2f055e72ef04e6a5d200fce0323fb4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "293821ad_0fee6973",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 9155
+      },
+      "writtenOn": "2023-01-16T17:15:52Z",
+      "side": 1,
+      "message": "Particularly, I need to revert this CL partially, http://ag/21010473, in order to land my minikin CL. Do you know if Skia can use `libicu` instead?\n\nI have a long-term bug http://b/223366263 to remove `libandroidicu` completely.",
+      "parentUuid": "a3393060_b27ea9f1",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 83
+      },
+      "revId": "e8c3fa6d7d2f055e72ef04e6a5d200fce0323fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
