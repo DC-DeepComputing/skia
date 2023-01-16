@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3393060_b27ea9f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 9155
+      },
+      "writtenOn": "2023-01-16T16:39:58Z",
+      "side": 1,
+      "message": "Jorge, I am trying to change minikin to use `libicu`\nhttps://r.android.com/2378748.\n\nDo you know why Skia needs this CL? AFAIK, `libandroidicu` only offers some extra functions, e.g. URegex and UConverter.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 83
+      },
+      "revId": "e8c3fa6d7d2f055e72ef04e6a5d200fce0323fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
