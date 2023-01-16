@@ -32,9 +32,16 @@
 #include "src/codec/SkParseEncodedOrigin.h"
 #include "src/core/SkStreamPriv.h"
 
-static SkEncodedOrigin get_orientation(const jpegr_info_struct& frameInfo) {
-    // TODO: Get orientation from EXIF via librecoverymap
-    return kTopLeft_SkEncodedOrigin;
+static SkEncodedOrigin get_orientation(const std::vector<uint8_t> &exifData) {
+    SkEncodedOrigin orientation = kDefault_SkEncodedOrigin;
+    if (exifData.size() > 6) {
+        constexpr size_t kOffset = 6;
+        const size_t exifSize = exifData.size();
+        const uint8_t *data = exifData.data();
+        SkParseEncodedOrigin(data + kOffset, exifSize - kOffset,
+                &orientation);
+    }
+    return orientation;
 }
 
 bool SkJpegRCodec::IsJpegR(const void* buffer, size_t bytesRead) {
@@ -116,14 +123,23 @@ SkCodec::Result SkJpegRCodec::ReadHeader(SkStream* stream,
 
         compressedImage.data = (void*)data->data();
         compressedImage.length = data->size();
+
+        std::vector<uint8_t> exifData;
+        std::vector<uint8_t> iccData;
+        jpegRInfo.exifData = &exifData;
+        jpegRInfo.iccData = &iccData;
+
         if (recoveryMap->getJPEGRInfo(&compressedImage, &jpegRInfo) != 0) {
             return kInvalidInput;
         }
 
-        // TODO: create profile from ICCProfile
-
         // JPEGR always report 10-bit color depth
         const uint8_t colorDepth = 10;
+
+        // iccSkData will outlive iccData as it is passed to profile, hence we need a copy
+        sk_sp<SkData> iccSkData = SkData::MakeWithCopy(iccData.data(), iccData.size());
+        profile = SkEncodedInfo::ICCProfile::Make(std::move(iccSkData));
+        // TODO: Figure out if we need to expose default profile for JPEGR and what it should be
 
         SkEncodedInfo info = SkEncodedInfo::Make(jpegRInfo.width,
                                                  jpegRInfo.height,
@@ -132,7 +148,7 @@ SkCodec::Result SkJpegRCodec::ReadHeader(SkStream* stream,
                                                  colorDepth,
                                                  std::move(profile));
 
-        SkEncodedOrigin orientation = get_orientation(jpegRInfo);
+        SkEncodedOrigin orientation = get_orientation(exifData);
 
         SkJpegRCodec* codec = new SkJpegRCodec(std::move(info),
                                                std::unique_ptr<SkStream>(stream),
