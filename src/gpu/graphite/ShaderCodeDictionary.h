@@ -37,6 +37,7 @@ namespace skgpu::graphite {
 class RenderStep;
 class RuntimeEffectDictionary;
 
+struct FragSkSLInfo;
 struct ResourceBindingRequirements;
 
 // TODO: How to represent the type (e.g., 2D) of texture being sampled?
@@ -160,7 +161,8 @@ public:
     std::string toSkSL(const ResourceBindingRequirements& bindingReqs,
                        const RenderStep* step,
                        const bool useStorageBuffers,
-                       const bool defineLocalCoordsVarying) const;
+                       const bool defineLocalCoordsVarying,
+                       int* numTexturesAndSamplersUsed) const;
 
 private:
     std::vector<PaintParamsKey::BlockReader> fBlockReaders;
