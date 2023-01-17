@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd30ebf0_f4a98986",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-17T18:24:44Z",
+      "side": 1,
+      "message": "lgtm % one question about how a local include interacts with surrounding namespace declarations.",
+      "revId": "b32a9d80ed1a3e4c78a27019aed4c96741158b73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eece034_e84ac2d4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-17T18:24:44Z",
+      "side": 1,
+      "message": "I think this include will place the declarations in SkRasterPipeline.h under `namespace SkSL::RP` due to its location. Is that intentional?",
+      "range": {
+        "startLine": 514,
+        "startChar": 0,
+        "endLine": 514,
+        "endChar": 38
+      },
+      "revId": "b32a9d80ed1a3e4c78a27019aed4c96741158b73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
