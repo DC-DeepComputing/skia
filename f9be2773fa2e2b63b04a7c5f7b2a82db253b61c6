@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "922d8b0e_4a9dc8b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-17T05:44:37Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com, @nicolettep@google.com, @armansito@chromium.org PTAL. Not sure this is the right way to extract the number of textures from the generated SkSL or not.",
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
