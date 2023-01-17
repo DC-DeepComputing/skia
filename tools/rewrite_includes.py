@@ -49,6 +49,7 @@ ignorelist = [
   # Temporary (hopefully) shims for Android
   'SkMalloc.h',
   'SkMath.h',
+  'SkTemplates.h',
 ]
 
 assert '/' in [os.sep, os.altsep]

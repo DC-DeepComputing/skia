@@ -16,6 +16,7 @@
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkOpAngle.h"
+#include "include/private/base/SkMath.h"
 #include "src/pathops/SkOpCoincidence.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
