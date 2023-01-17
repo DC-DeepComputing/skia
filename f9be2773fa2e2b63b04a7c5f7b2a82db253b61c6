@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf1809fa_1692517e",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-17T21:19:22Z",
+      "side": 1,
+      "message": "+1. Though I\u0027m also wondering if DawnGraphicsPipeline could just query the RenderStep(s) directly to build the bind group layout from structured data instead of having to go through ContextUtils helpers. One blocker in that way is the way `RenderStep::texturesAndSamplersSkSL` works today as Michael commented on elsewhere.",
+      "parentUuid": "22c85e29_188e1bc2",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc7f4854_af44a6f1",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2023-01-17T21:06:51Z",
       "side": 1,
       "message": "Skia follows this pattern in several places, but it\u0027s the first use of it in RenderStep, where other reflection of its shading programs are just available as values. \n\nI don\u0027t know if Graphite has enough types yet to be able to adequately let RenderStep just have an array of samplers that it exposes, and then the logic in `texturesAndSamplersSkSL` goes away entirely because it\u0027s just auto generated, and the program builder can immediately know how many textures and samplers it uses.\n\nCC\u0027ing Jim, who first added these functions to weigh in on it.",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "451b022f_624fc7bf",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-17T21:19:22Z",
+      "side": 1,
+      "message": "I was going to leave a comment here along the same lines. If RenderSteps could return a structured description of its texture/sampler binding declarations (similarly to how things work for attribute declarations today), it would be easier to extract that information to build the bind group layout.",
+      "parentUuid": "bc7f4854_af44a6f1",
       "range": {
         "startLine": 91,
         "startChar": 4,
