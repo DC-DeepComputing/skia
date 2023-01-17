@@ -16,6 +16,24 @@
       "message": "Rather late comment on this, but while looking at adding some configuration, I noticed that `SkAttributes.h` (which defines `SK_ATTRIBUTE`, `SK_UNUSED`, `SK_WARN_UNUSED_RESULT`, `SK_ALWAYS_INLINE`, and `SK_NEVER_INLINE` is they are not already defined) is here before loading the user config. However, that seems odd, since before all of these were defined (if not already defined) before in `SkTypes.h` after the user config, and also these are only defined if not defined, so that either the build or the user config could define them to whatever they so wished.\n\nI\u0027m considering creating a change to move this back to after user config, but I\u0027m wondering if there was a principled reason for moving these defined before the user config.",
       "revId": "8f541068859732fee75411f4e196bfd700d7b8d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dc0816a_545c89b1",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-17T20:27:18Z",
+      "side": 1,
+      "message": "Opened https://skia-review.googlesource.com/c/skia/+/630410 to propose moving the include to after the user config is loaded.",
+      "parentUuid": "e2fdf23a_3e399536",
+      "revId": "8f541068859732fee75411f4e196bfd700d7b8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
