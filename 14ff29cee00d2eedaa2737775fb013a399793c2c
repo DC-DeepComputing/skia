@@ -60,6 +60,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8854fff1_8e62a1f0",
+        "filename": "src/gpu/graphite/Image_GraphiteBase.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-17T19:42:01Z",
+      "side": 1,
+      "message": "I updated the CL -- it\u0027s needed for code that shouldn\u0027t be in the header.",
+      "parentUuid": "c4744f39_296b63ce",
+      "revId": "14ff29cee00d2eedaa2737775fb013a399793c2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b656af7b_c3048c7f",
         "filename": "src/gpu/graphite/Image_GraphiteBase.cpp",
         "patchSetId": 4
