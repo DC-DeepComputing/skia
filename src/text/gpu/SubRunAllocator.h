@@ -10,7 +10,7 @@
 
 #include "include/private/base/SkMath.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkTemplates.h"
+#include "include/private/base/SkTemplates.h"
 #include "src/core/SkArenaAlloc.h"
 
 #include <algorithm>
