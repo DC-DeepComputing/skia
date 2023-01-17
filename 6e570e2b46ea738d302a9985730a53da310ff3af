@@ -51,6 +51,64 @@
       "parentUuid": "ebb190e5_27b8534c",
       "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5c768a_09ec93cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T15:45:01Z",
+      "side": 1,
+      "message": "The main reason I made that was because I was having trouble symlinking inside of the toolchain dir without it throwing an error. If this works then this is a better approach.",
+      "parentUuid": "30ef0e49_34e06a9f",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9c10ec_f53cdde9",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T15:45:01Z",
+      "side": 1,
+      "message": "If John\u0027s build is working, then this isn\u0027t true unless he changed his Xcode dir name",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ffe850b_f31a8c45",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T15:45:01Z",
+      "side": 1,
+      "message": "path",
+      "range": {
+        "startLine": 41,
+        "startChar": 17,
+        "endLine": 41,
+        "endChar": 20
+      },
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
