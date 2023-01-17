@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43782943_e6198a3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19569
+      },
+      "writtenOn": "2023-01-17T23:32:07Z",
+      "side": 1,
+      "message": "Rev2 adds a new GM test.",
+      "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

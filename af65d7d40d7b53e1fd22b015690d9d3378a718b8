@@ -67,6 +67,24 @@
       "message": "Good to hear from you, Stan! I hit the CQ to see if any existing image tests covert this, if not we should probably have a new one with this CL. Otherwise, it looks correct.",
       "revId": "af65d7d40d7b53e1fd22b015690d9d3378a718b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c2fbe55_b63d7735",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19569
+      },
+      "writtenOn": "2023-01-17T23:32:07Z",
+      "side": 1,
+      "message": "Hi Brian,\nIf you land another CL, please share the link (in case the fix is different than what I suggested).\nI\u0027ve uploaded patch set 2 with a new gm test. Maybe I should have modified an existing test, but not sure which one.",
+      "parentUuid": "3f29b2a4_ebd0849c",
+      "revId": "af65d7d40d7b53e1fd22b015690d9d3378a718b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
