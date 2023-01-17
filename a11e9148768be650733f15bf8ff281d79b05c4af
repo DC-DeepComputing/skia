@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "342c0053_135642a1",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T18:47:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ff2968c_f7830a79",
+      "range": {
+        "startLine": 3,
+        "startChar": 24,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c33c2e4d_92100b22",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-17T17:55:25Z",
       "side": 1,
       "message": "I did not know this. Can you link a source for future reference?",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 19
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d4a162_3d1cadea",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T18:47:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c33c2e4d_92100b22",
       "range": {
         "startLine": 33,
         "startChar": 16,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e08451_4b14502e",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T18:47:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7ac591c_ca003619",
+      "range": {
+        "startLine": 44,
+        "startChar": 19,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13c265fa_6ae03825",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-01-17T17:55:25Z",
       "side": 1,
       "message": "nit: Be consistent with single quotes or double quotes. Either is fine inside a given file.",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 83,
+        "endChar": 4
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a3ce1fb_428df728",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T18:47:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13c265fa_6ae03825",
       "range": {
         "startLine": 83,
         "startChar": 3,
