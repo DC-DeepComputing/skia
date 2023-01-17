@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a74aa8d_68b392e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-17T15:47:10Z",
+      "side": 1,
+      "message": "(User direct access/inspection seems like an anti-feature of a hermetic build toolchain to me)",
+      "parentUuid": "d557de26_f9941330",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de9c10ec_f53cdde9",
         "filename": "site/docs/dev/contrib/bazel.md",
         "patchSetId": 5
