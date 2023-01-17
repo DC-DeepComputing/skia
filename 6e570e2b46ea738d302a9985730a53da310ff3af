@@ -214,6 +214,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81c5d748_1d84045c",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T16:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dddaa35_eaf8705f",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ffe850b_f31a8c45",
