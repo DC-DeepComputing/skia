@@ -125,6 +125,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a4f7b2_3763bac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T16:18:14Z",
+      "side": 1,
+      "message": "Agreed, I saw the `.skiabazel` as a necessary evil, turns out it was just the regular kind of evil. It would make building more prone to non-determinism, I\u0027ll mark this as resolved and if people want a script to grab the symlink dir we can do so later.",
+      "parentUuid": "7a74aa8d_68b392e9",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de9c10ec_f53cdde9",
@@ -156,6 +174,24 @@
       "side": 1,
       "message": "Yes, it\u0027s working now (and my Xcode is named `/Applications/Xcode_14.0.1.app`)",
       "parentUuid": "de9c10ec_f53cdde9",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dddaa35_eaf8705f",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T16:18:14Z",
+      "side": 1,
+      "message": "Awesome, then it looks like we can just remove this whole paragraph",
+      "parentUuid": "fe953412_69ed4ddc",
       "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
