@@ -22,6 +22,30 @@
       },
       "revId": "90b8bb7f3f6f10facbb14985b1c5c5ce6b48b8c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed067086_b1ef967d",
+        "filename": "src/core/SkImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T18:25:05Z",
+      "side": 1,
+      "message": "Fixed in https://skia-review.googlesource.com/c/skia/+/630697",
+      "parentUuid": "7fe63a4d_809beaa9",
+      "range": {
+        "startLine": 11,
+        "startChar": 22,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "90b8bb7f3f6f10facbb14985b1c5c5ce6b48b8c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
