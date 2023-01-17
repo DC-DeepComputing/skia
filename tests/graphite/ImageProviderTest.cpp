@@ -321,22 +321,20 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageProviderTest_Graphite_Testing, rep
     run_test(reporter, context, recorder.get(), testcases);
 }
 
-// Here we're testing that the RequiredProperties parameter to makeTextureImage
-// works as expected.
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Test, reporter, context) {
+// Here we're testing that the RequiredProperties parameter to makeTextureImage and makeSubset
+// work as expected.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter, context) {
     FactoryT testcases[] = {
-            create_raster_backed_image_no_mipmaps,
-            create_raster_backed_image_with_mipmaps,
-            create_gpu_backed_image_no_mipmaps,
-            create_gpu_backed_image_with_mipmaps,
-
-            /*
-             * These 2 factories currently don't correctly create mipmaps bc mipmap regeneration
-             * isn't implemented (b/238754357):
-             *   create_picture_backed_image,
-             *   create_bitmap_generator_backed_image,
-             */
+        create_raster_backed_image_no_mipmaps,
+        create_raster_backed_image_with_mipmaps,
+        create_gpu_backed_image_no_mipmaps,
+        create_gpu_backed_image_with_mipmaps,
+        create_picture_backed_image,
+        create_bitmap_generator_backed_image,
     };
+
+    const SkIRect kFakeSubset = SkIRect::MakeWH(kImageSize.width(), kImageSize.height());
+    const SkIRect kTrueSubset = kFakeSubset.makeInset(4, 4);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
@@ -354,9 +352,31 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Test, reporter, conte
             REPORTER_ASSERT(reporter, (i->hasMipmaps() == (mm == Mipmapped::kYes)) ||
                                       (i->hasMipmaps() && mipmapOptAllowed));
 
+            i = orig->makeSubset(kTrueSubset, recorder.get(), { mm });
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->dimensions() == kTrueSubset.size());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
+
+            i = orig->makeSubset(kFakeSubset, recorder.get(), { mm });
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->dimensions() == kFakeSubset.size());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes) ||
+                                      (i->hasMipmaps() && mipmapOptAllowed));
+
             if (!orig->isTextureBacked()) {
                 i = orig->makeTextureImage(nullptr, { mm });
                 REPORTER_ASSERT(reporter, !i);
+
+                // Make sure makeSubset w/o a recorder works as expected
+                i = orig->makeSubset(kTrueSubset, nullptr, { mm });
+                REPORTER_ASSERT(reporter, !i->isTextureBacked());
+                REPORTER_ASSERT(reporter, i->dimensions() == kTrueSubset.size());
+                REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
+
+                i = orig->makeSubset(kFakeSubset, nullptr, { mm });
+                REPORTER_ASSERT(reporter, !i->isTextureBacked());
+                REPORTER_ASSERT(reporter, i->dimensions() == kFakeSubset.size());
+                REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
             }
         }
     }

@@ -75,8 +75,8 @@ sk_sp<SkImage> Image::onMakeSubset(const SkIRect& subset,
                                   this->imageInfo().colorInfo()));
 }
 
-sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
-                                                   sk_sp<SkColorSpace>,
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                   sk_sp<SkColorSpace> targetCS,
                                                    GrDirectContext*) const {
     return nullptr;
 }
