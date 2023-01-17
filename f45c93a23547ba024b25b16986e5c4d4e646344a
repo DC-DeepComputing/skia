@@ -33,6 +33,24 @@
       "message": "Do we want to build new mipmaps if we\u0027re not copying these over?",
       "revId": "f45c93a23547ba024b25b16986e5c4d4e646344a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eed3919_842578cb",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-17T15:13:52Z",
+      "side": 1,
+      "message": "withMipMaps will generate the mipmaps if a nullptr is passed in. I\u0027ve added a comment below.",
+      "parentUuid": "e23cbc89_bc014766",
+      "revId": "f45c93a23547ba024b25b16986e5c4d4e646344a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
