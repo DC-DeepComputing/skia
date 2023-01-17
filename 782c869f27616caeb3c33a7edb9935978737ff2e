@@ -16,6 +16,23 @@
       "message": "Updated to use std::vector instead of std::map (under the assumption it will decrease code size).",
       "revId": "782c869f27616caeb3c33a7edb9935978737ff2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40db1c48_3f4bf07e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "lgtm, but let\u0027s see what the code size bots say.",
+      "revId": "782c869f27616caeb3c33a7edb9935978737ff2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

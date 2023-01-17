@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ac2dc87_b82c262e",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "Good to know. I\u0027m all for adding `const`; I just know I had been told to remove it in the past.",
+      "parentUuid": "d85d0171_f4b5a698",
+      "range": {
+        "startLine": 28,
+        "startChar": 54,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83fe9f9a_a852d736",
@@ -126,6 +150,30 @@
       "side": 1,
       "message": "Oh, I didn\u0027t realize that was the convention. Changed it back!",
       "parentUuid": "83fe9f9a_a852d736",
+      "range": {
+        "startLine": 101,
+        "startChar": 27,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "043e67bb_57bb678c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d31e992_3a9a911c",
       "range": {
         "startLine": 101,
         "startChar": 27,
@@ -183,6 +231,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45f7987f_f845e78a",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbf4a63b_006b848d",
+      "range": {
+        "startLine": 117,
+        "startChar": 7,
+        "endLine": 117,
+        "endChar": 11
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6485c1c1_57c44b76",
@@ -214,6 +286,24 @@
       "side": 1,
       "message": "Changed to fail.",
       "parentUuid": "6485c1c1_57c44b76",
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fb93461_9d733a20",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47f7607b_89807df0",
       "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -255,6 +345,30 @@
       "side": 1,
       "message": "(same, fixed)",
       "parentUuid": "70297c2d_c4801084",
+      "range": {
+        "startLine": 210,
+        "startChar": 50,
+        "endLine": 210,
+        "endChar": 66
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa00519_8e8cb05c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-17T16:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3a0688f_24b2fe27",
       "range": {
         "startLine": 210,
         "startChar": 50,
