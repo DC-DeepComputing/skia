@@ -163,6 +163,30 @@
       },
       "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17aeb173_4570f18e",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T15:51:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ffe850b_f31a8c45",
+      "range": {
+        "startLine": 41,
+        "startChar": 17,
+        "endLine": 41,
+        "endChar": 20
+      },
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
