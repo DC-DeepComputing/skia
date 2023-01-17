@@ -15,6 +15,7 @@
 #include "src/pathops/SkOpAngle.h"
 #include "src/pathops/SkOpCoincidence.h"
 #include "src/pathops/SkOpContour.h"
+#include "include/private/base/SkMath.h"
 #include "src/pathops/SkOpEdgeBuilder.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
