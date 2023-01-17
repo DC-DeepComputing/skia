@@ -107,6 +107,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "773dc5a8_f99c6d51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T15:56:42Z",
+      "side": 1,
+      "message": "For what it\u0027s worth, this used to not work before this CL https://skia-review.googlesource.com/c/skia/+/563876 because of recursive symlinkng errors. Once we streamlined the symlink incudes, we should have also changed the hardcoded path.",
+      "parentUuid": "13cc99e9_35528e85",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de9c10ec_f53cdde9",
