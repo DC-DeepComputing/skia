@@ -16,7 +16,7 @@
 #include "include/private/SkSLProgramKind.h"
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
-#include "src/core/SkSafeMath.h"
+#include "src/base/SkSafeMath.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"

@@ -11,7 +11,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkFloatBits.h"
 #include "include/private/base/SkPathEnums.h"

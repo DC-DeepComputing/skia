@@ -20,7 +20,7 @@
 #include "src/core/SkPicturePlayback.h"
 #include "src/core/SkPictureRecord.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkSafeMath.h"
+#include "src/base/SkSafeMath.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/utils/SkPatchUtils.h"

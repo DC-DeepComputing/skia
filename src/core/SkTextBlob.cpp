@@ -12,7 +12,7 @@
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkSafeMath.h"
+#include "src/base/SkSafeMath.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTextBlobPriv.h"

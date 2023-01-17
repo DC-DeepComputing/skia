@@ -8,7 +8,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkTSort.h"
 #include "src/pathops/SkIntersections.h"

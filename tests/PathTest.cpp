@@ -30,7 +30,7 @@
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/pathops/SkPathOps.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkFloatBits.h"

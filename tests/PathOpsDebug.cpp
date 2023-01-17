@@ -16,6 +16,7 @@
 #include "src/pathops/SkOpCoincidence.h"
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpSegment.h"
+#include "include/private/base/SkMath.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"

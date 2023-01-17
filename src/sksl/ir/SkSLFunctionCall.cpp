@@ -9,7 +9,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLString.h"

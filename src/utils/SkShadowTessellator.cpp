@@ -17,7 +17,7 @@
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/core/SkDrawShadowInfo.h"

@@ -17,7 +17,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "src/core/SkPaintPriv.h"
-#include "src/core/SkSafeMath.h"
+#include "src/base/SkSafeMath.h"
 
 class SkReadBuffer;
 class SkWriteBuffer;

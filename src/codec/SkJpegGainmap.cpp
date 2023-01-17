@@ -10,7 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/utils/SkParse.h"
 #include "src/codec/SkCodecPriv.h"

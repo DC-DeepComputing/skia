@@ -16,7 +16,7 @@
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMipmapBuilder.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkSafeMath.h"
+#include "src/base/SkSafeMath.h"
 
 namespace {
     // This generator intentionally should always fail on all attempts to get its pixels,

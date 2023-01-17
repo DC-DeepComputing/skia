@@ -15,7 +15,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/private/SkSLString.h"
 #include "include/private/SkTemplates.h"

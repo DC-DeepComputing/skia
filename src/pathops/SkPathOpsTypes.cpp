@@ -6,8 +6,9 @@
  */
 #include "src/pathops/SkPathOpsTypes.h"
 
-#include "include/private/SkFloatingPoint.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/base/SkMath.h"
 #include "include/private/base/SkFloatBits.h"
 
 #include <algorithm>
