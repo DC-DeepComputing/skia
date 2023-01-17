@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ff2968c_f7830a79",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T17:55:25Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 3,
+        "startChar": 24,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33c2e4d_92100b22",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T17:55:25Z",
+      "side": 1,
+      "message": "I did not know this. Can you link a source for future reference?",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 19
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7ac591c_ca003619",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T17:55:25Z",
+      "side": 1,
+      "message": "suggestion: If you just need the output from this command, I usually prefer subprocess.check_output()",
+      "range": {
+        "startLine": 44,
+        "startChar": 19,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13c265fa_6ae03825",
+        "filename": "tools/macsdk_dir.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T17:55:25Z",
+      "side": 1,
+      "message": "nit: Be consistent with single quotes or double quotes. Either is fine inside a given file.",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 83,
+        "endChar": 4
+      },
+      "revId": "a11e9148768be650733f15bf8ff281d79b05c4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
