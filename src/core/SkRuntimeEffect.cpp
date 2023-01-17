@@ -1278,7 +1278,10 @@ public:
     }
 #endif
 
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool onAppendStages(const SkStageRec& rec, const LocalMatrixRec&) const override {
+        // Note: When this is supported the LMRec passed to children must have the total matrix
+        // marked incomplete if the runtime shader calls them with anything other than passthrough
+        // coords.
         return false;
     }
 

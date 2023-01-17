@@ -34,6 +34,33 @@ SkShaderBase::SkShaderBase() = default;
 
 SkShaderBase::~SkShaderBase() = default;
 
+std::tuple<bool, SkShaderBase::LocalMatrixRec>
+SkShaderBase::LocalMatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) const {
+    SkMatrix total;
+    if (!fPendingLocalMatrix.invert(&total)) {
+        return {false, {}};
+    }
+    total = SkMatrix::Concat(postInv, total);
+    // append_matrix is a no-op if inverse worked out to identity.
+    rec.fPipeline->append_matrix(rec.fAlloc, total);
+    return {true, LocalMatrixRec{SkMatrix::I(), fTotalLocalMatrix, fTotalMatrixIsValid}};
+}
+
+bool SkShaderBase::LocalMatrixRec::totalInverse(const SkMatrixProvider& provider,
+                                                SkMatrix* out) const {
+    SkMatrix total = SkMatrix::Concat(provider.localToDevice(), fTotalLocalMatrix);
+    if (!total.invert(out)) {
+        return false;
+    }
+    return true;
+}
+
+SkShaderBase::LocalMatrixRec SkShaderBase::LocalMatrixRec::concat(const SkMatrix& lm) const {
+    return {SkShaderBase::ConcatLocalMatrices(fPendingLocalMatrix, lm),
+            SkShaderBase::ConcatLocalMatrices(fTotalLocalMatrix  , lm),
+            fTotalMatrixIsValid};
+}
+
 void SkShaderBase::flatten(SkWriteBuffer& buffer) const { this->INHERITED::flatten(buffer); }
 
 bool SkShaderBase::computeTotalInverse(const SkMatrix& ctm,
@@ -107,18 +134,6 @@ sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
     return nullptr;
 }
 
-SkUpdatableShader* SkShaderBase::updatableShader(SkArenaAlloc* alloc) const {
-    if (auto updatable = this->onUpdatableShader(alloc)) {
-        return updatable;
-    }
-
-    return alloc->make<SkTransformShader>(*as_SB(this));
-}
-
-SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
-    return nullptr;
-}
-
 #ifdef SK_GRAPHITE_ENABLED
 // TODO: add implementations for derived classes
 void SkShaderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
@@ -141,11 +156,17 @@ sk_sp<SkShader> SkBitmap::makeShader(SkTileMode tmx, SkTileMode tmy,
                                tmx, tmy, sampling, lm);
 }
 
-bool SkShaderBase::appendStages(const SkStageRec& rec) const {
-    return this->onAppendStages(rec);
+bool SkShaderBase::appendRootStages(const SkStageRec& rec) const {
+    rec.fPipeline->append(SkRasterPipeline::seed_shader);
+    auto ictm = rec.fMatrixProvider.localToDevice();
+    if (!ictm.invert(&ictm)) {
+        return false;
+    }
+    rec.fPipeline->append_matrix(rec.fAlloc, ictm);
+    return this->onAppendStages(rec, LocalMatrixRec{});
 }
 
-bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
+bool SkShaderBase::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
     // SkShader::Context::shadeSpan() handles the paint opacity internally,
     // but SkRasterPipelineBlitter applies it as a separate stage.
     // We skip the internal shadeSpan() step by forcing the paint opaque.
@@ -154,8 +175,12 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
         opaquePaint.writable()->setAlpha(SK_AlphaOPAQUE);
     }
 
-    ContextRec cr(*opaquePaint, rec.fMatrixProvider.localToDevice(), rec.fLocalM, rec.fDstColorType,
-                  sk_srgb_singleton(), rec.fSurfaceProps);
+    ContextRec cr(*opaquePaint,
+                  SkMatrix::I(),
+                  /*localM=*/nullptr, // We insert a stage that handles lmRec below.
+                  rec.fDstColorType,
+                  sk_srgb_singleton(),
+                  rec.fSurfaceProps);
 
     struct CallbackCtx : SkRasterPipeline_CallbackCtx {
         sk_sp<const SkShader> shader;
@@ -178,7 +203,10 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
     };
 
     if (cb->ctx) {
-        rec.fPipeline->append(SkRasterPipeline::seed_shader);
+        auto [result, _] = lmRec.apply(rec);
+        if (!result) {
+            return false;
+        }
         rec.fPipeline->append(SkRasterPipeline::callback, cb);
         rec.fAlloc->make<SkColorSpaceXformSteps>(sk_srgb_singleton(), kPremul_SkAlphaType,
                                                  rec.fDstCS,          kPremul_SkAlphaType)

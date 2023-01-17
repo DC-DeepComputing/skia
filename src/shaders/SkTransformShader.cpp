@@ -9,75 +9,66 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/shaders/SkTransformShader.h"
 
-SkTransformShader::SkTransformShader(const SkShaderBase& shader) : fShader{shader} {}
+SkTransformShader::SkTransformShader(const SkShaderBase& shader, bool allowPerspective) : fShader{shader}, fAllowPerspective{allowPerspective} {
+    SkMatrix::I().get9(fMatrixStorage);
+}
 
 skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
                       skvm::Coord device, skvm::Coord local, skvm::Color color,
                       const SkMatrixProvider& matrices, const SkMatrix* localM,
                       const SkColorInfo& dst,
                       skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
-    skvm::Coord newLocal = this->applyMatrix(b, matrices.localToDevice(), local, uniforms);
-    SkMatrixProvider matrixProvider{SkMatrix::I()};
-    return fShader.program(
-            b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
-}
+    // We assume the caller is folding the CTM into the per-update matrix for effeciency.
+    SkASSERT(matrices.localToDevice().isIdentity());
 
-skvm::Coord SkTransformShader::applyMatrix(
-        skvm::Builder* b, const SkMatrix& matrix, skvm::Coord local,
-        skvm::Uniforms* uniforms) const {
-    fMatrix = uniforms->pushPtr(&fMatrixStorage);
+    auto matrix = uniforms->pushPtr(&fMatrixStorage);
 
     skvm::F32 x = local.x,
               y = local.y;
 
     auto dot = [&,x,y](int row) {
-        return b->mad(x, b->arrayF(fMatrix, 3*row+0),
-                      b->mad(y, b->arrayF(fMatrix, 3*row+1),
-                             b->arrayF(fMatrix, 3*row+2)));
+        return b->mad(x, b->arrayF(matrix, 3*row+0),
+                      b->mad(y, b->arrayF(matrix, 3*row+1),
+                             b->arrayF(matrix, 3*row+2)));
     };
 
     x = dot(0);
     y = dot(1);
-    fProcessingAsPerspective = matrix.hasPerspective();
-    if (SkMatrix lm; fShader.makeAsALocalMatrixShader(&lm) && lm.hasPerspective()) {
-        fProcessingAsPerspective = true;
-    }
-    if (fProcessingAsPerspective) {
+    if (fAllowPerspective) {
         x = x * (1.0f / dot(2));
         y = y * (1.0f / dot(2));
     }
 
-    return {x, y};
+    skvm::Coord newLocal = {x, y};
+    SkMatrixProvider matrixProvider{SkMatrix::I()};
+    return fShader.program(
+            b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
 }
 
-void SkTransformShader::appendMatrix(const SkMatrix& matrix, SkRasterPipeline* p) const {
-    fProcessingAsPerspective = matrix.hasPerspective();
-    if (SkMatrix lm; fShader.makeAsALocalMatrixShader(&lm) && lm.hasPerspective()) {
-        fProcessingAsPerspective = true;
-    }
-    if (fProcessingAsPerspective) {
-        p->append(SkRasterPipeline::matrix_perspective, fMatrixStorage);
-    } else {
-        p->append(SkRasterPipeline::matrix_2x3, fMatrixStorage);
-    }
-}
-
-bool SkTransformShader::update(const SkMatrix& ctm) const {
-    if (SkMatrix matrix; fShader.computeTotalInverse(ctm, nullptr, &matrix)) {
-        if (!fProcessingAsPerspective) {
-            SkASSERT(!matrix.hasPerspective());
-            if (matrix.hasPerspective()) {
-                return false;
-            }
+bool SkTransformShader::update(const SkMatrix& matrix) {
+    if (SkMatrix inv; matrix.invert(&inv)) {
+        if (!fAllowPerspective && inv.hasPerspective()) {
+            return false;
         }
 
-        matrix.get9(fMatrixStorage);
+        inv.get9(fMatrixStorage);
         return true;
     }
     return false;
 }
 
-bool SkTransformShader::onAppendStages(const SkStageRec& rec) const {
-    // TODO
-    return false;
+bool SkTransformShader::onAppendStages(const SkStageRec& rec, const LocalMatrixRec& lmRec) const {
+    // We assume the caller is folding the CTM into the per-update matrix for effeciency.
+    SkASSERT(rec.fMatrixProvider.localToDevice().isIdentity() &&
+             !lmRec.hasPendingLocalMatrix());
+    auto type = fAllowPerspective ? SkRasterPipeline::matrix_perspective :
+                                    SkRasterPipeline::matrix_2x3;
+    rec.fPipeline->append(type, fMatrixStorage);
+
+    // We didn't incorporate fMatrixStorage into the total matrix and it's contents can change
+    // between runs of the pipeline.
+    LocalMatrixRec newLMRec = lmRec;
+    newLMRec.markTotalMatrixInvalid();
+    fShader.onAppendStages(rec, newLMRec);
+    return true;
 }

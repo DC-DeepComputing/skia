@@ -1629,6 +1629,10 @@ STAGE(load_src, const float* ptr) {
     b = sk_unaligned_load<F>(ptr + 2*N);
     a = sk_unaligned_load<F>(ptr + 3*N);
 }
+STAGE(load_src_xy, const float* ptr) {
+    r = sk_unaligned_load<F>(ptr + 0*N);
+    g = sk_unaligned_load<F>(ptr + 1*N);
+}
 
 // store registers r,g,b,a into context (mirrors load_src)
 STAGE(store_src, float* ptr) {
@@ -1645,6 +1649,10 @@ STAGE(store_src_rg, float* ptr) {
 // store register a into context
 STAGE(store_src_a, float* ptr) {
     sk_unaligned_store(ptr, a);
+}
+STAGE(store_src_xy, float* ptr) {
+    sk_unaligned_store(ptr + 0*N, r);
+    sk_unaligned_store(ptr + 1*N, g);
 }
 
 // load registers dr,dg,db,da from context (mirrors store_dst)
@@ -4700,6 +4708,10 @@ STAGE_PP(bt709_luminance_or_luma_to_rgb, NoCtx) {
 
 // ~~~~~~ Coverage scales / lerps ~~~~~~ //
 
+STAGE_GG(load_src_xy, const float* ptr) {
+    x = sk_unaligned_load<F>(ptr + 0*N);
+    y = sk_unaligned_load<F>(ptr + 1*N);
+}
 STAGE_PP(load_src, const uint16_t* ptr) {
     r = sk_unaligned_load<U16>(ptr + 0*N);
     g = sk_unaligned_load<U16>(ptr + 1*N);
@@ -4714,6 +4726,10 @@ STAGE_PP(store_src, uint16_t* ptr) {
 }
 STAGE_PP(store_src_a, uint16_t* ptr) {
     sk_unaligned_store(ptr, a);
+}
+STAGE_GG(store_src_xy, float* ptr) {
+    sk_unaligned_store(ptr + 0*N, x);
+    sk_unaligned_store(ptr + 1*N, y);
 }
 STAGE_PP(load_dst, const uint16_t* ptr) {
     dr = sk_unaligned_load<U16>(ptr + 0*N);
