@@ -17,7 +17,7 @@
 #include "include/core/SkUnPreMultiply.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkTemplates.h"
+#include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
