@@ -30,6 +30,8 @@
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/TextureProxyView.h"
+
+#include "src/gpu/graphite/Image_Graphite.h"
 #endif
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
@@ -392,7 +394,12 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                              skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
-    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
+    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
+                                                                           fImage.get(),
+                                                                           fSampling);
+    SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
+    skgpu::Swizzle readSwizzle = static_cast<Image*>(as_IB(imageToDraw))->textureProxyView().swizzle();
+    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset, readSwizzle);
 
     if (!fRaw) {
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
@@ -402,10 +409,6 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
         // TODO: add alpha-only image handling here
     }
-
-    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
-                                                                           fImage.get(),
-                                                                           fSampling);
 
     if (imageToDraw) {
         imgData.fSampling = newSampling;

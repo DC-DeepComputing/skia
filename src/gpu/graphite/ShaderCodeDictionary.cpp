@@ -564,6 +564,7 @@ static constexpr Uniform kImageShaderUniforms[] = {
         { "filterMode",            SkSLType::kInt },
         { "useCubic",              SkSLType::kInt },
         { "cubicCoeffs",           SkSLType::kFloat4x4 },
+        { "readSwizzle",           SkSLType::kInt },
         // The next 6 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },
@@ -588,6 +589,133 @@ static_assert(1 == static_cast<int>(SkFilterMode::kLinear),
               "ImageShader code depends on SkFilterMode");
 
 static constexpr char kImageShaderName[] = "sk_image_shader";
+
+
+// readSwizzle likely to be accessed from texture utils; image_graphite. Also in Caps, drawcontext.
+// Proxy views = view is proxy + swizzle that is applied
+// We don’t really need the proxy though
+// But we need that view to be stored
+// By the time we pass to the code generator it’s more important the swizzle is in there
+
+//TextureAndSampler is really just a name???
+
+std::string GenerateImageShaderExpression(const ShaderInfo& shaderInfo,
+                                          int entryIndex,
+                                          const PaintParamsKey::BlockReader& reader,
+                                          const ShaderSnippet::Args& args) {
+    // TODO: Assert no children
+    // SkASSERT(reader.entry()->fUniforms.empty());
+    // SkASSERT(reader.numDataPayloadFields() == 1);
+    const ShaderSnippet* entry = reader.entry();
+
+    std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex);
+
+    std::string imgSize               = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+    std::string subsetName            = entry->getMangledUniformName(shaderInfo, 1, entryIndex);
+    std::string tmXName               = entry->getMangledUniformName(shaderInfo, 2, entryIndex);
+    std::string tmYName               = entry->getMangledUniformName(shaderInfo, 3, entryIndex);
+    std::string filterMode            = entry->getMangledUniformName(shaderInfo, 4, entryIndex);
+    std::string useCubic              = entry->getMangledUniformName(shaderInfo, 5, entryIndex);
+    std::string cubicCoeffs           = entry->getMangledUniformName(shaderInfo, 6, entryIndex);
+    std::string readSwizzle           = entry->getMangledUniformName(shaderInfo, 7, entryIndex);
+    std::string csXformFlags          = entry->getMangledUniformName(shaderInfo, 8, entryIndex);
+    std::string csXformSrcKind        = entry->getMangledUniformName(shaderInfo, 9, entryIndex);
+    std::string csXformDstKind        = entry->getMangledUniformName(shaderInfo, 10, entryIndex);
+    std::string csXformSrcCoeffs      = entry->getMangledUniformName(shaderInfo, 11, entryIndex);
+    std::string csXformDstCoeffs      = entry->getMangledUniformName(shaderInfo, 12, entryIndex);
+    std::string csXformGamutTransform = entry->getMangledUniformName(shaderInfo, 13, entryIndex);
+
+    std::string result;
+
+    SkSL::String::appendf(&result,
+                          "%s(coords, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+                          reader.entry()->fStaticFunctionName,
+                          imgSize.c_str(),
+                          subsetName.c_str(),
+                          tmXName.c_str(),
+                          tmYName.c_str(),
+                          filterMode.c_str(),
+                          useCubic.c_str(),
+                          cubicCoeffs.c_str(),
+                          readSwizzle.c_str(),
+                          csXformFlags.c_str(),
+                          csXformSrcKind.c_str(),
+                          csXformDstKind.c_str(),
+                          csXformSrcCoeffs.c_str(),
+                          csXformDstCoeffs.c_str(),
+                          csXformGamutTransform.c_str(),
+                          samplerVarName.c_str());
+
+    /**
+     * Different read swizzles that we are expected to encounter
+     * RGB1
+     * 000r
+     * rrr1
+     * BGRA
+     * Write swizzles:
+     * a000
+     * BGRA
+    */
+    // SkSL::String::appendf(&result,
+    //                       "%.*s = sample(%s, coords).%s;\n",
+    //                       (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
+    //                       samplerVarName.c_str(),
+    //                       swizzle.c_str());
+    return result;
+
+    // depending on the swizzle,
+    // maybe get swizzle from sampler?
+    // return SkSL::String::printf("%s_%d(%.*s, %.*s, %.*s)",
+    //                         entry->fName,
+    //                         entryIndex,
+    //                         (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
+    //                         (int)args.fDestColor.size(),        args.fDestColor.data(),
+    //                         (int)args.fFragCoord.size(),        args.fFragCoord.data());
+
+}
+// emit diff SkSL based on swizzle
+// Custom callback to generate shader. We used to have one back when we couldn’t pass a sampler
+// around. Other shader expressions: Runtime, FixedFunction
+
+
+// expression: const ShaderInfo&,
+    //    int entryIndex,
+    //    const PaintParamsKey::BlockReader& reader,
+    //    const ShaderSnippet::Args& args
+// use this if you have children shaders
+//  half4 BuiltinFunctionName(/* default snippet arguments */);
+
+// Define a custom image shader callback so we can apply a swizzle to texture reads.
+// std::string GenerateImageShaderGlueCode(const std::string& resultName,
+//                                         int entryIndex,
+//                                         const SkPaintParamsKey::BlockReader& reader,
+//                                         const std::string& priorStageOutputName,
+//                                         const std::vector<std::string>& childNames,
+//                                         int indent) {
+//     SkASSERT(childNames.empty());
+//     std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
+//     std::string subsetName = reader.entry()->getMangledUniformName(0, entryIndex);
+//     std::string tmXName = reader.entry()->getMangledUniformName(1, entryIndex);
+//     std::string tmYName = reader.entry()->getMangledUniformName(2, entryIndex);
+//     std::string imgWidthName = reader.entry()->getMangledUniformName(3, entryIndex);
+//     std::string imgHeightName = reader.entry()->getMangledUniformName(4, entryIndex);
+//     std::string result;
+//     add_indent(&result, indent);
+//     SkSL::String::appendf(&result,
+//                           "float2 coords = %s(%s, %s, %s, %s, %s);",
+//                           reader.entry()->fStaticFunctionName,
+//                           subsetName.c_str(),
+//                           tmXName.c_str(),
+//                           tmYName.c_str(),
+//                           imgWidthName.c_str(),
+//                           imgHeightName.c_str());
+//     add_indent(&result, indent);
+//     SkSL::String::appendf(&result,
+//                           "%s = sample(%s, coords);\n",
+//                           resultName.c_str(),
+//                           samplerVarName.c_str());
+//     return result;
+// }
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
@@ -1223,7 +1351,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords,
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
-            GenerateDefaultExpression,
+            GenerateImageShaderExpression,
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload

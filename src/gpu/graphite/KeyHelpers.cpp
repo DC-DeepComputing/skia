@@ -9,6 +9,7 @@
 
 #include "include/core/SkData.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/SkHalf.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkDebugUtils.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -323,6 +324,12 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     } else {
         gatherer->write(SkM44());
     }
+    // TODO: Fill with real data, but for now, write the read swizzle as rrrr.
+    if (imgData.fReadSwizzle != skgpu::Swizzle()) {
+        gatherer->write(3);
+    } else {
+        gatherer->write(0);
+    }
 
     add_color_space_uniforms(imgData.fSteps, gatherer);
 
@@ -334,10 +341,12 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
 ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                        SkTileMode tileModeX,
                                        SkTileMode tileModeY,
-                                       SkRect subset)
+                                       SkRect subset,
+                                       skgpu::Swizzle readSwizzle)
         : fSampling(sampling)
         , fTileModes{tileModeX, tileModeY}
-        , fSubset(subset) {
+        , fSubset(subset)
+        , fReadSwizzle(readSwizzle) {
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
