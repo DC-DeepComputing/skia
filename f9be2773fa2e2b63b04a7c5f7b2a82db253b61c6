@@ -16,6 +16,52 @@
       "message": "@michaelludwig@google.com, @nicolettep@google.com, @armansito@chromium.org PTAL. Not sure this is the right way to extract the number of textures from the generated SkSL or not.",
       "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c85e29_188e1bc2",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-17T21:06:51Z",
+      "side": 1,
+      "message": "Now that we are adding a 3rd out parameter, I think we should probably just define a simple struct in this header that is \n\n    struct FragSkSL {\n         std::string fSkSL;\n         BlendInfo fBlendInfo;\n         bool fRequiresLocalCoords;\n         int fNumTexturesAndSamplers\n    }; // or some related name\n    \nThen GetSkSLFS can simply return all of this metadata with the sksl. This is not a perf hotspot so having it return a larger type vs. filling out existing stack variables doesn\u0027t seem critical and will help simplify the function signature.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7f4854_af44a6f1",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-17T21:06:51Z",
+      "side": 1,
+      "message": "Skia follows this pattern in several places, but it\u0027s the first use of it in RenderStep, where other reflection of its shading programs are just available as values. \n\nI don\u0027t know if Graphite has enough types yet to be able to adequately let RenderStep just have an array of samplers that it exposes, and then the logic in `texturesAndSamplersSkSL` goes away entirely because it\u0027s just auto generated, and the program builder can immediately know how many textures and samplers it uses.\n\nCC\u0027ing Jim, who first added these functions to weigh in on it.",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
