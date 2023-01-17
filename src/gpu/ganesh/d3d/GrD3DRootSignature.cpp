@@ -23,8 +23,8 @@ sk_sp<GrD3DRootSignature> GrD3DRootSignature::Make(GrD3DGpu* gpu, int numTexture
     int parameterCount = 1;
 
     int numShaderViews = numTextureSamplers + numUAVs;
-    SkAutoTArray<D3D12_DESCRIPTOR_RANGE> samplerRanges(numTextureSamplers);
-    SkAutoTArray<D3D12_DESCRIPTOR_RANGE> shaderViewRanges(numShaderViews);
+    AutoTArray<D3D12_DESCRIPTOR_RANGE> samplerRanges(numTextureSamplers);
+    AutoTArray<D3D12_DESCRIPTOR_RANGE> shaderViewRanges(numShaderViews);
     if (numTextureSamplers) {
         // Now handle the textures and samplers. We need a range for each sampler because of the
         // interaction between how we set bindings and spirv-cross. Each binding value is used for

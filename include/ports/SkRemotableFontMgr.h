@@ -13,6 +13,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 
+using namespace skia_private;
+
 class SkDataTable;
 class SkStreamAsset;
 
@@ -48,7 +50,7 @@ private:
     friend SkRemotableFontIdentitySet* sk_remotable_font_identity_set_new();
 
     int fCount;
-    SkAutoTArray<SkFontIdentity> fData;
+    AutoTArray<SkFontIdentity> fData;
 
     using INHERITED = SkRefCnt;
 };
