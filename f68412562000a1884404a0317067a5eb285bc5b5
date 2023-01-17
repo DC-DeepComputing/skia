@@ -16,6 +16,24 @@
       "message": "Jorge are you OK with this? Also, I was thinking about mentioning this script in //site/docs/dev/contrib/bazel.md. Do you think that\u0027s necessary?",
       "revId": "f68412562000a1884404a0317067a5eb285bc5b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1042b8cf_054afd91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-17T22:44:48Z",
+      "side": 1,
+      "message": "Looks good! I think it\u0027s fine, imo the bazel.md should be slim. This script self documents well.",
+      "parentUuid": "ee503389_eba94e05",
+      "revId": "f68412562000a1884404a0317067a5eb285bc5b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
