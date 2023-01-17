@@ -188,6 +188,9 @@ public:
     // Returns positive infinity if the transformed homogeneous point has w <= 0.
     static SkScalar DifferentialAreaScale(const SkMatrix& m, const SkPoint& p);
 
+    // Returns true if any perspective in the matrix has a neglible effect.
+    static bool NearlyAffine(const SkMatrix& m, const SkRect& bounds);
+
     static SkScalar ComputeResScaleForStroking(const SkMatrix& matrix);
 };
 
