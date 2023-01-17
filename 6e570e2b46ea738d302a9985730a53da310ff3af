@@ -16,6 +16,23 @@
       "message": "PTAL. As best I can tell creating MacSDK links in ~/.skiabazel was redundant as they could be referenced from the toolchain directory.",
       "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb190e5_27b8534c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T13:26:57Z",
+      "side": 1,
+      "message": "Jorge intentionally made the symlink outside of the Bazel directory so it could be modified/inspected by the user.\n\nIs there a way we can still have the external (user-pokeable) directory but not run into the expansion of ~?",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
