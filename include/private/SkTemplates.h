@@ -302,10 +302,6 @@ private:
 };
 }  // namespace skia_private
 
-// TODO remove after all external client uses are removed.
-template <typename T>
-using SkAutoTMalloc = skia_private::AutoTMalloc<T>;
-
 template <size_t kCountRequested,
           typename T,
           typename = std::enable_if_t<std::is_trivially_default_constructible<T>::value &&
