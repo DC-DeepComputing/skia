@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee503389_eba94e05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T22:36:08Z",
+      "side": 1,
+      "message": "Jorge are you OK with this? Also, I was thinking about mentioning this script in //site/docs/dev/contrib/bazel.md. Do you think that\u0027s necessary?",
+      "revId": "f68412562000a1884404a0317067a5eb285bc5b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
