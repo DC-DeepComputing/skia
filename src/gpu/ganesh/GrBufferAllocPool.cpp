@@ -7,7 +7,7 @@
 
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
-#include "include/private/SkMacros.h"
+#include "include/private/base/SkMacros.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/ganesh/GrBufferAllocPool.h"

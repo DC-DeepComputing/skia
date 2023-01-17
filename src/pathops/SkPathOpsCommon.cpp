@@ -8,7 +8,7 @@
 #include "src/pathops/SkPathOpsCommon.h"
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkMacros.h"
+#include "include/private/base/SkMacros.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/core/SkTSort.h"
 #include "src/pathops/SkOpAngle.h"

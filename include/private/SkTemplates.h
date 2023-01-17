@@ -9,8 +9,8 @@
 #define SkTemplates_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkTLogic.h"
 #include "include/private/base/SkAlign.h"
+#include "include/private/base/SkTLogic.h"
 #include "include/private/base/SkMalloc.h"
 
 #include <array>

@@ -19,7 +19,7 @@
 #include "include/core/SkVertices.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkTPin.h"
+#include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/base/SkVx.h"
 #include "src/core/SkArenaAlloc.h"

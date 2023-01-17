@@ -11,7 +11,7 @@
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkTPin.h"
+#include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/base/SkVx.h"
 #include "src/core/SkPointPriv.h"

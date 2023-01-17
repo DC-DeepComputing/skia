@@ -10,9 +10,9 @@
 
 #include "include/private/base/SkMath.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkMacros.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/base/SkAlign.h"
+#include "include/private/base/SkMacros.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkASAN.h"
 

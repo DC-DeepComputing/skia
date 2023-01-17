@@ -12,7 +12,7 @@
 #include "include/private/SkFixed.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkTPin.h"
+#include "include/private/base/SkTPin.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkMathPriv.h"
