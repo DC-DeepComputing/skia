@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17be388_eec30a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T16:21:01Z",
+      "side": 1,
+      "message": "Updated to use std::vector instead of std::map (under the assumption it will decrease code size).",
+      "revId": "782c869f27616caeb3c33a7edb9935978737ff2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
