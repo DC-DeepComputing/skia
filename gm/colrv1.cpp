@@ -27,7 +27,8 @@ namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+  // const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
@@ -104,16 +105,17 @@ protected:
     }
 
     sk_sp<SkTypeface> makeVariedTypeface() {
-        if (!fTypeface) {
-            return nullptr;
-        }
-        SkSpan<const SkFontArguments::VariationPosition::Coordinate> coords =
-                fVariationSliders.getCoordinates();
-        SkFontArguments::VariationPosition varPos = {coords.data(),
-                                                     static_cast<int>(coords.size())};
-        SkFontArguments args;
-        args.setVariationDesignPosition(varPos);
-        return fTypeface->makeClone(args);
+      return fTypeface;
+        // if (!fTypeface) {
+        //     return nullptr;
+        // }
+        // SkSpan<const SkFontArguments::VariationPosition::Coordinate> coords =
+        //         fVariationSliders.getCoordinates();
+        // SkFontArguments::VariationPosition varPos = {coords.data(),
+        //                                              static_cast<int>(coords.size())};
+        // SkFontArguments args;
+        // args.setVariationDesignPosition(varPos);
+        // return fTypeface->makeClone(args);
     }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {

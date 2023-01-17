@@ -600,6 +600,12 @@ optional("fontmgr_win_gdi") {
   libs = [ "Gdi32.lib" ]
 }
 
+skia_executable("fttest") {
+  sources = [ "src/fttest.c" ]
+  include_dirs = [ "." ]
+  deps = [ "//third_party/freetype2" ]
+}
+
 if (skia_lex) {
   skia_executable("sksllex") {
     sources = [
