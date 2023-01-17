@@ -93607,6 +93607,7 @@
   "commit_queue": {
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
+    "BazelBuild-skia_public-release-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-tests-enforce_iwyu-linux_x64": {},
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
@@ -93703,17 +93704,7 @@
     "CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize": {},
     "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {},
     "Housekeeper-OnDemand-Presubmit": {},
-    "Housekeeper-PerCommit-CheckGeneratedFiles": {
-      "location_regexes": [
-        ".*BUILD.bazel",
-        "DEPS",
-        "gn/.*.gni",
-        "modules/.*.gni",
-        "src/gpu/effects/generated/.*",
-        "src/sksl/.*",
-        "src/gpu/gpu_workaround_list.txt"
-      ]
-    },
+    "Housekeeper-PerCommit-CheckGeneratedFiles": {},
     "Housekeeper-PerCommit-InfraTests_Linux": {},
     "Housekeeper-PerCommit-RunGnToBp": {},
     "Perf-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Graphite_Metal": {
