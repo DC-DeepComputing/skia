@@ -22,6 +22,30 @@
       },
       "revId": "f56c6a43ff65c3a154cee2c6b59d8aa059197781",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc98fc8b_b1e1d470",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-17T23:26:43Z",
+      "side": 1,
+      "message": "go/skia-client-search showed four direct includes. I did not investigate further yet.",
+      "parentUuid": "4c5e7d8b_ec4ea22a",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "f56c6a43ff65c3a154cee2c6b59d8aa059197781",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
