@@ -93608,11 +93608,7 @@
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
-    "BazelBuild-tests-enforce_iwyu-linux_x64": {
-      "location_regexes": [
-        "tests/.*"
-      ]
-    },
+    "BazelBuild-tests-enforce_iwyu-linux_x64": {},
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
