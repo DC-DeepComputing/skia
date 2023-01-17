@@ -33,6 +33,24 @@
       "message": "Jorge intentionally made the symlink outside of the Bazel directory so it could be modified/inspected by the user.\n\nIs there a way we can still have the external (user-pokeable) directory but not run into the expansion of ~?",
       "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30ef0e49_34e06a9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-17T13:52:20Z",
+      "side": 1,
+      "message": "I tried for a long time to get that to work, but couldn\u0027t find a way. toolchain/download_mac_toolchain.bzl, which uses repository_ctx(1) can get both the HOME environment variable as well as the workspace - so it has no problem creating ~/.skiabazel. However, I couldn\u0027t find a way for ctx(2) to access either directory location. If the sole reason for creating MacSDK links in ~/.skiabazel was to put them in an easy to find location, would having a script to display this location suffice? It\u0027s really a no-no to write files outside of the Bazel repository isn\u0027t it?\n\n(1) https://bazel.build/rules/lib/repository_ctx\n(2) https://bazel.build/rules/lib/ctx",
+      "parentUuid": "ebb190e5_27b8534c",
+      "revId": "6e570e2b46ea738d302a9985730a53da310ff3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
