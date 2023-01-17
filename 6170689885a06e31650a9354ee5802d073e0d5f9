@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85d0171_f4b5a698",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T10:24:11Z",
+      "side": 1,
+      "message": "I\u0027ve removed the const here. There are several other consts (e.g, for SkStream from an SkData).\n\nIf we want to update const-ness in the APIs here, I can do that in a separate patch (which focuses just on that change, and updates all of the various places that need updating).",
+      "parentUuid": "80778c2a_cfbba1f9",
+      "range": {
+        "startLine": 28,
+        "startChar": 54,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83fe9f9a_a852d736",
@@ -78,6 +102,30 @@
       "writtenOn": "2023-01-13T16:51:30Z",
       "side": 1,
       "message": "Why did this change? See https://skia.org/docs/dev/contrib/style/#naming:\n\n\u003e Static non-class functions in implementation files are lower-case with underscores separating words:",
+      "range": {
+        "startLine": 101,
+        "startChar": 27,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d31e992_3a9a911c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T10:24:11Z",
+      "side": 1,
+      "message": "Oh, I didn\u0027t realize that was the convention. Changed it back!",
+      "parentUuid": "83fe9f9a_a852d736",
       "range": {
         "startLine": 101,
         "startChar": 27,
@@ -113,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbf4a63b_006b848d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T10:24:11Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "747f5327_8c481321",
+      "range": {
+        "startLine": 117,
+        "startChar": 7,
+        "endLine": 117,
+        "endChar": 11
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6485c1c1_57c44b76",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 3
@@ -130,6 +202,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47f7607b_89807df0",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T10:24:11Z",
+      "side": 1,
+      "message": "Changed to fail.",
+      "parentUuid": "6485c1c1_57c44b76",
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70297c2d_c4801084",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 3
@@ -141,6 +231,30 @@
       "writtenOn": "2023-01-13T16:51:30Z",
       "side": 1,
       "message": "Why did this change from `read_color_profile`? See https://skia.org/docs/dev/contrib/style/#naming:\n\n\u003e Static non-class functions in implementation files are lower-case with underscores separating words:",
+      "range": {
+        "startLine": 210,
+        "startChar": 50,
+        "endLine": 210,
+        "endChar": 66
+      },
+      "revId": "6170689885a06e31650a9354ee5802d073e0d5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a0688f_24b2fe27",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-17T10:24:11Z",
+      "side": 1,
+      "message": "(same, fixed)",
+      "parentUuid": "70297c2d_c4801084",
       "range": {
         "startLine": 210,
         "startChar": 50,
