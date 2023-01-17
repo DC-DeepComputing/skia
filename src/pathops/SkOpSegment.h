@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkMath.h"
 #include "include/pathops/SkPathOps.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/pathops/SkOpAngle.h"
