@@ -708,7 +708,7 @@ bool Generator::writeGlobals() {
                         return unsupported();
 
                     default:
-                        SkDEBUGFAILF("Unsupported builtin %d", builtin);
+                        // SkDEBUGFAILF("Unsupported builtin %d", builtin);
                         return unsupported();
                 }
             }
