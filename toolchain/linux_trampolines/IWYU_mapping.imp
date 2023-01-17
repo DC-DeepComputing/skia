@@ -247,6 +247,8 @@
   { symbol: ["inflate", "private", "\"zlib.h\"", "public"] },
   { symbol: ["inflateEnd", "private", "\"zlib.h\"", "public"] },
 
+  { include: ["<asm/errno-base.h>", "private", "<errno.h>", "public"] },
+
   # IWYU seems to get confused on where the namespace sktext is "defined". Any files in
   # this list are ok.
   { symbol: ["sktext", "private", "\"src/text/StrikeForGPU.h\"", "public"] },
