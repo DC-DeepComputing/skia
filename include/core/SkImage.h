@@ -1458,8 +1458,7 @@ private:
     SkImage(const SkImageInfo& info, uint32_t uniqueID);
 
     friend class SkBitmap;
-    friend class SkImage_Base;   // for private ctor
-    friend class SkImage_Raster; // for withMipmaps
+    friend class SkImage_Base;
     friend class SkMipmapBuilder;
 
     SkImageInfo     fInfo;

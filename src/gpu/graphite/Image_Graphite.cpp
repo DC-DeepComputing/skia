@@ -48,31 +48,8 @@ sk_sp<SkImage> Image::onMakeSubset(const SkIRect&, GrDirectContext*) const {
 sk_sp<SkImage> Image::onMakeSubset(const SkIRect& subset,
                                    Recorder* recorder,
                                    RequiredImageProperties requiredProps) const {
-    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
-
-    // optimization : return self if the subset == our bounds
-    if (bounds == subset && (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps())) {
-        const SkImage* image = this;
-        return sk_ref_sp(const_cast<SkImage*>(image));
-    }
-
-    TextureProxyView srcView = this->textureProxyView();
-    if (!srcView) {
-        return nullptr;
-    }
-
-    TextureProxyView copiedView = TextureProxyView::Copy(recorder,
-                                                         this->imageInfo().colorInfo(),
-                                                         srcView,
-                                                         subset,
-                                                         requiredProps.fMipmapped);
-    if (!copiedView) {
-        return nullptr;
-    }
-
-    return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
-                                  std::move(copiedView),
-                                  this->imageInfo().colorInfo()));
+    // TODO: add implementation
+    return nullptr;
 }
 
 sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType,
