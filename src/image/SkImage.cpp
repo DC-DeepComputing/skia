@@ -516,6 +516,34 @@ std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Base::asView(
     SkColorType ct = this->colorType();
     return { image->textureProxyView(), ct };
 }
+
+sk_sp<SkImage> SkImage::makeColorSpace2(sk_sp<SkColorSpace> target,
+                                       skgpu::graphite::Recorder* recorder) const {
+    return this->makeColorTypeAndColorSpace2(this->colorType(), std::move(target), recorder);
+}
+
+sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace2(SkColorType targetColorType,
+                                                   sk_sp<SkColorSpace> targetColorSpace,
+                                                   skgpu::graphite::Recorder* recorder) const {
+    if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetColorSpace.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage*>(this));
+    }
+
+    return as_IB(this)->onMakeColorTypeAndColorSpace2(targetColorType,
+                                                     std::move(targetColorSpace),
+                                                     recorder);
+}
+
 #endif // SK_GRAPHITE_ENABLED
 
 GrDirectContext* SkImage_Base::directContext() const {
@@ -652,11 +680,11 @@ bool SkImage::isLazyGenerated() const {
 
 bool SkImage::isAlphaOnly() const { return SkColorTypeIsAlphaOnly(fInfo.colorType()); }
 
-sk_sp<SkImage> SkImage::makeColorSpace(sk_sp<SkColorSpace> target, GrDirectContext* direct) const {
-    return this->makeColorTypeAndColorSpace(this->colorType(), std::move(target), direct);
+sk_sp<SkImage> SkImage::makeColorSpace1(sk_sp<SkColorSpace> target, GrDirectContext* direct) const {
+    return this->makeColorTypeAndColorSpace1(this->colorType(), std::move(target), direct);
 }
 
-sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
+sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace1(SkColorType targetColorType,
                                                    sk_sp<SkColorSpace> targetColorSpace,
                                                    GrDirectContext* dContext) const {
     if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
@@ -681,7 +709,7 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
         return sk_ref_sp(const_cast<SkImage*>(this));
     }
 
-    return as_IB(this)->onMakeColorTypeAndColorSpace(targetColorType,
+    return as_IB(this)->onMakeColorTypeAndColorSpace1(targetColorType,
                                                      std::move(targetColorSpace), dContext);
 }
 

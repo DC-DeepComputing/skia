@@ -7,7 +7,9 @@
 
 #include "src/gpu/graphite/Image_Graphite.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkSurface.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -84,6 +86,24 @@ sk_sp<SkImage> Image::onMakeTextureImage(Recorder* recorder,
     return sk_sp<Image>(new Image(kNeedNewImageUniqueID,
                                   std::move(copiedView),
                                   this->imageInfo().colorInfo()));
+}
+
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                    sk_sp<SkColorSpace> targetCS,
+                                                    Recorder* recorder) const {
+    SkImageInfo ii = SkImageInfo::Make(this->dimensions(), targetCT, this->alphaType(),
+                                       std::move(targetCS));
+
+    Mipmapped mipmapped = Mipmapped::kNo; //!!
+
+    sk_sp<SkSurface> s = SkSurface::MakeGraphite(recorder, ii, mipmapped);
+    if (!s) {
+        return nullptr;
+    }
+
+    s->getCanvas()->drawImage(this, 0, 0);
+
+    return s->asImage();
 }
 
 } // namespace skgpu::graphite

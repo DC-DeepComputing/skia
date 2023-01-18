@@ -1292,6 +1292,39 @@ public:
                               skgpu::graphite::Recorder*,
                               RequiredImageProperties = {}) const;
 
+    /** Creates SkImage in target SkColorSpace.
+        Returns nullptr if SkImage could not be created.
+
+        Returns original SkImage if it is in target SkColorSpace.
+        Otherwise, converts pixels from SkImage SkColorSpace to target SkColorSpace.
+        If SkImage colorSpace() returns nullptr, SkImage SkColorSpace is assumed to be sRGB.
+
+        If this image is graphite-backed, the recorder parameter is required.
+
+        @param target   SkColorSpace describing color range of returned SkImage
+        @param recorder The Recorder in which to create the new image
+        @return         created SkImage in target SkColorSpace
+    */
+    sk_sp<SkImage> makeColorSpace2(sk_sp<SkColorSpace> target,
+                                  skgpu::graphite::Recorder*) const;
+
+    /** Experimental.
+        Creates SkImage in target SkColorType and SkColorSpace.
+        Returns nullptr if SkImage could not be created.
+
+        Returns original SkImage if it is in target SkColorType and SkColorSpace.
+
+        If this image is graphite-backed, the recorder parameter is required.
+
+        @param targetColorType  SkColorType of returned SkImage
+        @param targetColorSpace SkColorSpace of returned SkImage
+        @param recorder         The Recorder in which to create the new image
+        @return                 created SkImage in target SkColorType and SkColorSpace
+    */
+    sk_sp<SkImage> makeColorTypeAndColorSpace2(SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetColorSpace,
+                                              skgpu::graphite::Recorder*) const;
+
 #endif // SK_GRAPHITE_ENABLED
 
     /** Returns raster image or lazy image. Copies SkImage backed by GPU texture into
@@ -1427,7 +1460,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Image_makeColorSpace
     */
-    sk_sp<SkImage> makeColorSpace(sk_sp<SkColorSpace> target,
+    sk_sp<SkImage> makeColorSpace1(sk_sp<SkColorSpace> target,
                                   GrDirectContext* direct = nullptr) const;
 
     /** Experimental.
@@ -1444,7 +1477,7 @@ public:
         @param direct           The GrDirectContext in play, if it exists
         @return                 created SkImage in target SkColorType and SkColorSpace
     */
-    sk_sp<SkImage> makeColorTypeAndColorSpace(SkColorType targetColorType,
+    sk_sp<SkImage> makeColorTypeAndColorSpace1(SkColorType targetColorType,
                                               sk_sp<SkColorSpace> targetColorSpace,
                                               GrDirectContext* direct = nullptr) const;
 

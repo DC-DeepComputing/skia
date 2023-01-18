@@ -310,7 +310,7 @@ private:
                 int i = y * kM + x;
                 fSet[i].fAlpha = (kM - x) / (float) kM;
                 if (y % 2 == 0) {
-                    fSet[i].fImage = fSet[i].fImage->makeColorTypeAndColorSpace(
+                    fSet[i].fImage = fSet[i].fImage->makeColorTypeAndColorSpace1(
                             kAlpha_8_SkColorType, alphaSpace, direct);
                 }
             }

@@ -32,7 +32,6 @@ public:
     }
 
     using Image_Base::onMakeSubset;
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredImageProperties) const override;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const override;
 
@@ -45,9 +44,14 @@ public:
                                                          sk_sp<RefCntedCallback>,
                                                          GraphitePromiseTextureReleaseProc);
 
-private:
+protected:
     sk_sp<SkImage> onMakeTextureImage(Recorder*, RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                sk_sp<SkColorSpace> targetCS,
+                                                Recorder*) const override;
 
+private:
     TextureProxyView fTextureProxyView;
 };
 

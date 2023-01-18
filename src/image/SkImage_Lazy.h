@@ -45,12 +45,16 @@ public:
     sk_sp<SkData> onRefEncoded() const override;
     sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
 #ifdef SK_GRAPHITE_ENABLED
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, skgpu::graphite::Recorder*,
+    sk_sp<SkImage> onMakeSubset(const SkIRect&,
+                                skgpu::graphite::Recorder*,
                                 RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                 sk_sp<SkColorSpace> targetCS,
+                                                 skgpu::graphite::Recorder*) const override;
 #endif
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     bool onIsLazyGenerated() const override { return true; }
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace1(SkColorType, sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
