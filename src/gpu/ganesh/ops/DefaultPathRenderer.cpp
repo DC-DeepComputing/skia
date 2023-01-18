@@ -786,6 +786,10 @@ PathRenderer::CanDrawPath DefaultPathRenderer::onCanDrawPath(const CanDrawPathAr
     if (!args.fShape->style().isSimpleFill() && !isHairline) {
         return CanDrawPath::kNo;
     }
+    // Don't try to draw hairlines with any non-software renderer if avoidLineDraws is true.
+    if (args.fCaps->avoidLineDraws() && isHairline) {
+        return CanDrawPath::kNo;
+    }
     // This is the fallback renderer for when a path is too complicated for the others to draw.
     return CanDrawPath::kAsBackup;
 }

@@ -670,6 +670,11 @@ void SurfaceDrawContext::drawRect(const GrClip* clip,
     AutoCheckFlush acf(this->drawingManager());
 
     const SkStrokeRec& stroke = style->strokeRec();
+    if (this->caps()->avoidLineDraws() && stroke.isHairlineStyle()) {
+        this->drawShapeUsingPathRenderer(clip, std::move(paint), aa, viewMatrix,
+                                         GrStyledShape(rect, *style, DoSimplify::kNo));
+        return;
+    }
     if (stroke.getStyle() == SkStrokeRec::kFill_Style) {
         // Fills the rect, using rect as its own local coordinates
         this->fillRectToRect(clip, std::move(paint), aa, viewMatrix, rect, rect);

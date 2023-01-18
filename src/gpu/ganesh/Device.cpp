@@ -439,6 +439,13 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     bool isHairline = (0 == width) ||
                        (1 == width && this->localToDevice().getMinMaxScales(scales) &&
                         SkScalarNearlyEqual(scales[0], 1.f) && SkScalarNearlyEqual(scales[1], 1.f));
+
+    const GrCaps* caps = fContext->priv().caps();
+    if ((mode == SkCanvas::kLines_PointMode || mode == SkCanvas::kPolygon_PointMode) &&
+        isHairline && caps->avoidLineDraws()) {
+        isHairline = false;
+    }
+
     // we only handle non-coverage-aa hairlines and paints without path effects or mask filters,
     // else we let the SkDraw call our drawPath()
     if (!isHairline ||
