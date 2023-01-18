@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a54a2f21_60056e7c",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1283,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T14:30:29Z",
+      "side": 1,
+      "message": "yeah, exactly. It stops a child image shader from assuming it can pick a mip level based on the total matrix. Will probably trigger some default behavior in pictureshader once i figure that out 😊",
+      "parentUuid": "b815f9d5_bce4ea9c",
+      "range": {
+        "startLine": 1282,
+        "startChar": 74,
+        "endLine": 1283,
+        "endChar": 28
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74933860_7e2164a6",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 5
@@ -196,6 +220,30 @@
       "side": 1,
       "message": "Oh right, that\u0027s in Analysis.",
       "parentUuid": "260968a1_0940dcd0",
+      "range": {
+        "startLine": 1283,
+        "startChar": 87,
+        "endLine": 1284,
+        "endChar": 17
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51909652_8b125bc8",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T14:30:29Z",
+      "side": 1,
+      "message": "It\u0027s probably a marginal perf difference (i.e. multiple local matrices could be collapsed or nearest sampling can be used if total transform aligns dev pixels with image pixels). It\u0027s really related to the thing mentioned above (can image/picture make assumptions about the matrix that would affect rendering quality if wrong).\n\nI should add something to this comment that the generated RP will have to save/restore the coords between children like the blend shader now does.",
+      "parentUuid": "fabec105_8c1010c6",
       "range": {
         "startLine": 1283,
         "startChar": 87,
