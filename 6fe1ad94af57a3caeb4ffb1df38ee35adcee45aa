@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7791a166_e35d97b9",
+        "filename": "src/codec/SkGainmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T16:22:10Z",
+      "side": 1,
+      "message": "This file (copy of logic) is leftover, right?",
+      "revId": "6fe1ad94af57a3caeb4ffb1df38ee35adcee45aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d68cc5ad_95efc3d6",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T16:22:10Z",
+      "side": 1,
+      "message": "I\u0027m not following this step ... don\u0027t we want to start with the base image\u0027s color space (especially as we\u0027re then concat\u0027ing the base-to-gainmap xform at the end of this chain)?\n\nAh, I get it - you\u0027re trying to suppress the automatic conversion to dest that happens in the image shader. I was expecting that in the gainmap path, but forgot you\u0027d need it here, too.\n\nAnother option is to use `SkImage::makeRawShader`. It automatically suppresses all color space transformation, and suppresses automatic premul of unpremul images. (Although that might not be what you want here...). It also doesn\u0027t support bicubic filtering, so your current approach might be better.\n\n...\n\nEdit: I\u0027m just trying to figure out how we eventually get rid of this dependency, where we need to know the dst here. If we could/did use makeRawShader (maybe we accept/workaround the bicubic issues, and possibly have the premul option separate from the colorspace option), then we could add a sentinel color space to the MakeColorSpaceXform() factory that means \"dst\" when the shader is converted to an FP/pipeline. With those changes (which would be generally helpful, I think?), we\u0027d have a path to this being dst-independent.\n\nNo need to solve it all now, I just wanted to think through the solution, so we don\u0027t paint ourselves into a corner.",
+      "range": {
+        "startLine": 73,
+        "startChar": 27,
+        "endLine": 73,
+        "endChar": 74
+      },
+      "revId": "6fe1ad94af57a3caeb4ffb1df38ee35adcee45aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
