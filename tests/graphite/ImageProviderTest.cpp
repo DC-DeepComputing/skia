@@ -370,6 +370,17 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter
             REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes) ||
                                       (i->hasMipmaps() && mipmapOptAllowed));
 
+            i = orig->makeSubset(kTrueSubset, recorder.get(), { mm });
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->dimensions() == kTrueSubset.size());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
+
+            i = orig->makeSubset(kFakeSubset, recorder.get(), { mm });
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->dimensions() == kFakeSubset.size());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes) ||
+                                      (i->hasMipmaps() && mipmapOptAllowed));
+
             if (!orig->isTextureBacked()) {
                 i = orig->makeTextureImage(nullptr, { mm });
                 REPORTER_ASSERT(reporter, !i);
