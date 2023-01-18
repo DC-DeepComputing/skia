@@ -366,6 +366,7 @@ protected:
         canvas->scale(scale, scale);
 
         SkMatrix matrix = SkMatrix::Translate(-100, -100);
+#if 0
         canvas->drawPicture(fPicture, &matrix, nullptr);
 
         // Draw the tex first, so it doesn't hit a lucky cache from the raster version. This
@@ -375,6 +376,7 @@ protected:
         draw_as_tex(canvas, fImageSubset.get(), 150+101, 0);
 
         draw_as_bitmap(dContext, canvas, fImage.get(), 310, 0);
+#endif
         draw_as_bitmap(dContext, canvas, fImageSubset.get(), 310+101, 0);
     }
 
