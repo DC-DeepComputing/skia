@@ -9,9 +9,33 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
+#include "include/core/SkPath.h"
+
+#include <chrono>
+
+namespace {
+
+SkPath make_cursor_path() {
+    constexpr float kWidth  = 0.2f,
+                    kHeight = 0.75f;
+
+    SkPath p;
+
+    p.lineTo(kWidth  , 0);
+    p.moveTo(kWidth/2, 0);
+    p.lineTo(kWidth/2, kHeight);
+    p.moveTo(0       , kHeight);
+    p.lineTo(kWidth  , kHeight);
+
+    return p;
+}
+
+} // namespace
 
 SkottieTextEditor::SkottieTextEditor(std::unique_ptr<skottie::TextPropertyHandle>&& prop)
     : fTextProp(std::move(prop))
+    , fCursorPath(make_cursor_path())
+    , fCursorBounds(fCursorPath.computeTightBounds())
 {}
 
 SkottieTextEditor::~SkottieTextEditor() = default;
@@ -22,8 +46,15 @@ void SkottieTextEditor::toggleEnabled() {
     auto txt = fTextProp->get();
     txt.fDecorator = fEnabled ? sk_ref_sp(this) : nullptr;
     fTextProp->set(txt);
+
+    fTimeBase = std::chrono::steady_clock::now();
 }
 
+std::tuple<size_t, size_t> SkottieTextEditor::currentSelection() const {
+    // Selection can be inverted.
+    return std::make_tuple(std::min(std::get<0>(fSelection), std::get<1>(fSelection)),
+                           std::max(std::get<0>(fSelection), std::get<1>(fSelection)));
+}
 
 size_t SkottieTextEditor::closestGlyph(const SkPoint& pt) const {
     float  min_distance = std::numeric_limits<float>::max();
@@ -40,10 +71,72 @@ size_t SkottieTextEditor::closestGlyph(const SkPoint& pt) const {
     return min_index;
 }
 
+void SkottieTextEditor::drawCursor(SkCanvas* canvas, const GlyphInfo glyphs[], size_t size) const {
+    constexpr double kCursorHz = 2;
+    const auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::steady_clock::now() - fTimeBase).count();
+    const long cycle = static_cast<long>(static_cast<double>(now_ms) * 0.001 * kCursorHz);
+    if (cycle & 1) {
+        // blink
+        return;
+    }
+
+    auto current_text = fTextProp->get();
+    const auto    txt = current_text.fText;
+
+    const auto glyph_index = [&]() -> size_t {
+        if (!fCursorIndex) {
+            return 0;
+        }
+
+        for (size_t i = 0; i < size; ++i) {
+            if (glyphs[i].fCluster >= fCursorIndex - 1) {
+                return i;
+            }
+        }
+
+        return size - 1;
+    }();
+
+    SkPaint p;
+    p.setAntiAlias(true);
+    p.setStyle(SkPaint::kStroke_Style);
+    p.setStrokeWidth(2);
+    p.setStrokeCap(SkPaint::kRound_Cap);
+
+    const auto& gbounds = glyphs[glyph_index].fBounds;
+    const auto cscale = current_text.fTextSize;
+    const auto cxpos = (fCursorIndex ? gbounds.fRight : gbounds.fLeft)
+                        - fCursorBounds.width()  * cscale * 0.5f,
+               cypos = gbounds.fBottom - fCursorBounds.height() * cscale;
+    const auto cpath = fCursorPath.makeTransform(SkMatrix::Translate(cxpos, cypos) *
+                                                 SkMatrix::Scale(cscale, cscale));
+
+    SkAutoCanvasRestore acr(canvas, true);
+    canvas->concat(glyphs[glyph_index].fMatrix);
+    canvas->drawPath(cpath, p);
+}
+
+void SkottieTextEditor::insertChar(SkUnichar c) {
+    auto txt = fTextProp->get();
+
+    txt.fText.insertUnichar(fCursorIndex++, c);
+    fTextProp->set(txt);
+}
+
+void SkottieTextEditor::deleteChars(size_t offset, size_t count) {
+    auto txt = fTextProp->get();
+
+    txt.fText.remove(offset, count);
+    fTextProp->set(txt);
+
+    if (fCursorIndex >= offset) {
+        fCursorIndex -= count;
+    }
+}
+
 void SkottieTextEditor::onDecorate(SkCanvas* canvas, const GlyphInfo glyphs[], size_t size) {
-    // Selection can be inverted.
-    const auto sel_start = std::min(std::get<0>(fSelection), std::get<1>(fSelection)),
-               sel_end   = std::max(std::get<0>(fSelection), std::get<1>(fSelection));
+    const auto [sel_start, sel_end] = this->currentSelection();
 
     fGlyphData.clear();
 
@@ -63,6 +156,11 @@ void SkottieTextEditor::onDecorate(SkCanvas* canvas, const GlyphInfo glyphs[], s
         static constexpr SkColor4f kSelectionColor{0, 0, 1, 0.4f};
         canvas->drawRect(ginfo.fBounds, SkPaint(kSelectionColor));
     }
+
+    // Only draw the cursor when there's no active selection.
+    if (sel_start == sel_end) {
+        this->drawCursor(canvas, glyphs, size);
+    }
 }
 
 bool SkottieTextEditor::onMouseInput(SkScalar x, SkScalar y, skui::InputState state,
@@ -77,7 +175,7 @@ bool SkottieTextEditor::onMouseInput(SkScalar x, SkScalar y, skui::InputState st
 
         const auto closest = this->closestGlyph({x, y});
         fSelection = {closest, closest};
-    } break;
+    }   break;
     case skui::InputState::kUp:
         fMouseDown = false;
         break;
@@ -92,6 +190,47 @@ bool SkottieTextEditor::onMouseInput(SkScalar x, SkScalar y, skui::InputState st
     default:
         break;
     }
+
+    return true;
+}
+
+bool SkottieTextEditor::onCharInput(SkUnichar c) {
+    if (!fEnabled || fGlyphData.empty()) {
+        return false;
+    }
+
+    switch (c) {
+    case '|':
+        this->toggleEnabled();
+        break;
+    case ']': {
+        if (fCursorIndex < fTextProp->get().fText.size()) {
+            fCursorIndex++;
+        }
+    } break;
+    case '[':
+        if (fCursorIndex > 0) {
+            fCursorIndex--;
+        }
+        break;
+    case '\\': { // DEL
+        const auto [sel_start, sel_end] = this->currentSelection();
+        if (sel_start != sel_end) {
+            this->deleteChars(sel_start, sel_end - sel_start);
+            fSelection = {0,0};
+        } else {
+            if (fCursorIndex) {
+                this->deleteChars(fCursorIndex - 1, 1);
+            }
+        }
+    }   break;
+    default:
+        this->insertChar(c);
+        break;
+    }
+
+    // Reset the cursor blink timer on input.
+    fTimeBase = std::chrono::steady_clock::now();
 
     return true;
 }
