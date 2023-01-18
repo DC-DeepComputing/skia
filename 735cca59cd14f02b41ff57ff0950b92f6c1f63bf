@@ -16,6 +16,52 @@
       "message": "The Canary-G3 failure is not a compile failure so it should be good to go.\nThe Canary-Android does not look a compile failure so it should be good to go.\nThe fallback if there is a problem would be to add a using statement to define SkAutoTArray.",
       "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c6c8913_22e7f8d1",
+        "filename": "docs/examples/strokerect_gm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-18T13:56:53Z",
+      "side": 1,
+      "message": "As a follow-up, maybe replace this with a std::vector?",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 26
+      },
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac7a0b9_41647f46",
+        "filename": "platform_tools/debugging/lldb/skia.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-18T13:56:53Z",
+      "side": 1,
+      "message": "Intentional change? Do we even need this file?",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 30
+      },
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
