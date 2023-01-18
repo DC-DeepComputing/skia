@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62083ec2_f4c55424",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-18T14:16:20Z",
+      "side": 1,
+      "message": "This feels less clunky than what it\u0027s replacing.\n\nIt\u0027s not 100% clear that the \"right\" way of writing the gainmap shader will necessarily use this.",
+      "revId": "1ea5e300169e17861daef3569d82621acf7f2eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
