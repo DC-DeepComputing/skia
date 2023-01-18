@@ -127,7 +127,7 @@ size_t SkImage_GpuYUVA::onTextureSize() const {
     return size;
 }
 
-sk_sp<SkImage> SkImage_GpuYUVA::onMakeColorTypeAndColorSpace(SkColorType,
+sk_sp<SkImage> SkImage_GpuYUVA::onMakeColorTypeAndColorSpace1(SkColorType,
                                                              sk_sp<SkColorSpace> targetCS,
                                                              GrDirectContext* direct) const {
     // We explicitly ignore color type changes, for now.

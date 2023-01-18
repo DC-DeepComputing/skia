@@ -266,7 +266,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
 
 #endif // SK_GRAPHITE_ENABLED
 
-sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace1(SkColorType targetCT,
                                                           sk_sp<SkColorSpace> targetCS,
                                                           GrDirectContext*) const {
     SkAutoMutexExclusive autoAquire(fOnMakeColorTypeAndSpaceMutex);
@@ -639,4 +639,22 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
 
     return nullptr;
 }
+
+sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                           sk_sp<SkColorSpace> targetCS,
+                                                           skgpu::graphite::Recorder*) const {
+    SkAutoMutexExclusive autoAquire(fOnMakeColorTypeAndSpaceMutex);
+    if (fOnMakeColorTypeAndSpaceResult &&
+        targetCT == fOnMakeColorTypeAndSpaceResult->colorType() &&
+        SkColorSpace::Equals(targetCS.get(), fOnMakeColorTypeAndSpaceResult->colorSpace())) {
+        return fOnMakeColorTypeAndSpaceResult;
+    }
+    Validator validator(fSharedGenerator, &targetCT, targetCS);
+    sk_sp<SkImage> result = validator ? sk_sp<SkImage>(new SkImage_Lazy(&validator)) : nullptr;
+    if (result) {
+        fOnMakeColorTypeAndSpaceResult = result;
+    }
+    return result;
+}
+
 #endif

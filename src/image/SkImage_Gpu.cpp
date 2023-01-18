@@ -286,7 +286,7 @@ GrBackendTexture SkImage_Gpu::onGetBackendTexture(bool flushPendingGrContextIO,
 
 size_t SkImage_Gpu::onTextureSize() const { return fChooser.gpuMemorySize(); }
 
-sk_sp<SkImage> SkImage_Gpu::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+sk_sp<SkImage> SkImage_Gpu::onMakeColorTypeAndColorSpace1(SkColorType targetCT,
                                                          sk_sp<SkColorSpace> targetCS,
                                                          GrDirectContext* dContext) const {
     SkColorInfo info(targetCT, this->alphaType(), std::move(targetCS));

@@ -21,9 +21,10 @@ sk_sp<SkImage> Image_Base::onMakeSubset(const SkIRect&, GrDirectContext*) const 
     return nullptr;
 }
 
-sk_sp<SkImage> Image_Base::onMakeColorTypeAndColorSpace(SkColorType,
+sk_sp<SkImage> Image_Base::onMakeColorTypeAndColorSpace1(SkColorType,
                                                         sk_sp<SkColorSpace>,
                                                         GrDirectContext*) const {
+    SKGPU_LOG_W("Cannot convert Graphite-backed image to Ganesh");
     return nullptr;
 }
 
@@ -91,4 +92,3 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
 
     return as_IB(this)->onMakeSubset(subset, recorder, requiredProps);
 }
-
