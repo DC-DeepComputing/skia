@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a9dad5f_08a99136",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-18T13:53:58Z",
+      "side": 1,
+      "message": "The Canary-G3 failure is not a compile failure so it should be good to go.\nThe Canary-Android does not look a compile failure so it should be good to go.\nThe fallback if there is a problem would be to add a using statement to define SkAutoTArray.",
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
