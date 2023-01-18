@@ -155,10 +155,6 @@ public:
     std::tuple<skgpu::graphite::TextureProxyView, SkColorType> asView(
             skgpu::graphite::Recorder*,
             skgpu::graphite::Mipmapped) const;
-
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&,
-                                        skgpu::graphite::Recorder*,
-                                        RequiredImageProperties) const = 0;
 #endif
 
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
@@ -196,7 +192,7 @@ public:
 
     virtual bool onIsValid(GrRecordingContext*) const = 0;
 
-    virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
+    virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace1(SkColorType, sk_sp<SkColorSpace>,
                                                         GrDirectContext*) const = 0;
 
     virtual sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const = 0;
@@ -209,6 +205,12 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
     virtual sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                               RequiredImageProperties) const = 0;
+    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&,
+                                        skgpu::graphite::Recorder*,
+                                        RequiredImageProperties) const = 0;
+    virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType,
+                                                         sk_sp<SkColorSpace>,
+                                                         skgpu::graphite::Recorder*) const = 0;
 #endif
 
 protected:

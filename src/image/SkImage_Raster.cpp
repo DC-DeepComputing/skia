@@ -116,7 +116,7 @@ public:
         SkASSERT(bitmapMayBeMutable || fBitmap.isImmutable());
     }
 
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace1(SkColorType, sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const override;
@@ -173,6 +173,9 @@ private:
 #ifdef SK_GRAPHITE_ENABLED
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType,
+                                                 sk_sp<SkColorSpace>,
+                                                 skgpu::graphite::Recorder*) const override;
 #endif
 
     SkBitmap fBitmap;
@@ -488,7 +491,7 @@ bool SkImage_Raster::onAsLegacyBitmap(GrDirectContext*, SkBitmap* bitmap) const 
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace1(SkColorType targetCT,
                                                             sk_sp<SkColorSpace> targetCS,
                                                             GrDirectContext*) const {
     SkPixmap src;
@@ -586,4 +589,21 @@ sk_sp<SkImage> SkImage_Raster::onMakeTextureImage(skgpu::graphite::Recorder* rec
                                            skgpu::Budgeted::kNo,
                                            requiredProps);
 }
+
+sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                             sk_sp<SkColorSpace> targetCS,
+                                                             skgpu::graphite::Recorder*) const {
+    SkPixmap src;
+    SkAssertResult(fBitmap.peekPixels(&src));
+
+    SkBitmap dst;
+    if (!dst.tryAllocPixels(fBitmap.info().makeColorType(targetCT).makeColorSpace(targetCS))) {
+        return nullptr;
+    }
+
+    SkAssertResult(dst.writePixels(src));
+    dst.setImmutable();
+    return dst.asImage();
+}
+
 #endif

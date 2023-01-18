@@ -86,6 +86,12 @@ sk_sp<SkImage> Image::onMakeTextureImage(Recorder* recorder,
                                   this->imageInfo().colorInfo()));
 }
 
+sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace2(SkColorType,
+                                                    sk_sp<SkColorSpace>,
+                                                    Recorder*) const {
+    return nullptr;
+}
+
 } // namespace skgpu::graphite
 
 using namespace skgpu::graphite;

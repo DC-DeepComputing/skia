@@ -42,7 +42,7 @@ public:
 
     bool onIsValid(GrRecordingContext*) const override { return true; }
 
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace1(SkColorType,
                                                 sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
 
