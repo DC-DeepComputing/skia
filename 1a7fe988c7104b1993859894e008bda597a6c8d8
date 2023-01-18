@@ -16,6 +16,24 @@
       "message": "LargeProgram_Functions! 😮\n\nI got curious how big the .skvm version is, and then realized that the computed value isn\u0027t used. 😊",
       "revId": "1a7fe988c7104b1993859894e008bda597a6c8d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02695cd3_476b1285",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-18T18:36:26Z",
+      "side": 1,
+      "message": "Even if it were used, SkVM is smart enough to fold 1+1+1+1+1+1.... into the proper result. I think we can see this in some other tests.",
+      "parentUuid": "1eca2b90_5a997ce2",
+      "revId": "1a7fe988c7104b1993859894e008bda597a6c8d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
