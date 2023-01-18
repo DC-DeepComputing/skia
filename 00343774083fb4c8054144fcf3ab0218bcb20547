@@ -16,6 +16,24 @@
       "message": "Should we also guard this by:\n```\n#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION\n```",
       "revId": "00343774083fb4c8054144fcf3ab0218bcb20547",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b4d6863_ca4b13d9",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-18T16:09:42Z",
+      "side": 1,
+      "message": "Yes but I have to put all usages and the declaration of this variable under #ifndef (which I just did).\nSome release builds complain about declaration without usage and SkASSERT does not count as a usage.",
+      "parentUuid": "2140bacf_aae2d3d7",
+      "revId": "00343774083fb4c8054144fcf3ab0218bcb20547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
