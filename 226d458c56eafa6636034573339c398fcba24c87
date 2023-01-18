@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bca58670_fd512b4e",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T17:01:57Z",
+      "side": 1,
+      "message": "I agree that there\u0027s no way for the only instruction to be `discard_stack`, but we are banking on that fact here, without an explicit check. I was going to suggest an assert, but I guess fromBack already has one, so I guess we\u0027re good...",
+      "revId": "226d458c56eafa6636034573339c398fcba24c87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8552cc5e_079c1865",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T17:01:57Z",
+      "side": 1,
+      "message": "If the previous was `copy_stack_to_slots`, then it seems possible for this to produce different results (but with no actual consequence, I suppose?). The `copy_stack_to_slots` would be masked, so the thing that was on the stack will be a mix of actually-new values that were stored, and values that weren\u0027t written (due to masking). Without this optimization, we\u0027d emit `push_slots`, so we\u0027d get the real values in every lane (including masked lanes).\n\n... but I guess that\u0027s safe because we never really interleave mask changes with theses kinds of ops? eg, we wouldn\u0027t issue a push_slots, expecting to get a variable\u0027s contents on the stack, and then un-mask lanes? Eh, could that happen in the context of a loop with continues? Probably not.",
+      "revId": "226d458c56eafa6636034573339c398fcba24c87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
