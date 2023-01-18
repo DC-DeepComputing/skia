@@ -16,6 +16,24 @@
       "message": "Do we want SkAttributes to explicitly #include \"include/private/base/SkLoadUserConfig.h\" also?",
       "revId": "6a5135e6102c3cb3d627a7549c11f2e34bed5321",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ceba933_d71e606f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-18T16:27:53Z",
+      "side": 1,
+      "message": "Eck, yes, probably? Ideally, every user defined setting should work by being set by the build `-DSK_USE_THING\u003dBAR`, or by their `SkUserConfig.h` like `#define SK_USE_THING BAR` (it is their build, so they can deal with any conflicts here, with our default `SkUserConfig.h` not defining anything), and then Skia can set a default\n```\n#if !defined(SK_USE_THING)\n#  define SK_USE_THING FOO\n#endif\n```\n\nThough you are right, we\u0027ve not been very good at adding commented out \"not defines\" in our `SkUserConfig.h\" to document these.\n\nI suppose this could also be said for `SkAssert.h` which should directly include `SkUserConfig.h` because it could be used to define `SK_ABORT`. The issue here of course is that we want our `SkUserConfig.h` to never define anything, so it should never look like `SkUserConfig.h` is ever used to iwyu. Maybe the solution to this is to have an alternate `SkUserConfig.h` for iwyu builds which defines everything it possibly can. This might also help us notice when a new configuration macro is added but hasn\u0027t been added to `SkUserConfig.h` (or at least the iwyu one, which would have a note about being sure to add to the \"empty\" one). Then we wouldn\u0027t need all these keep pragmas.",
+      "parentUuid": "02d1b68c_81d825c0",
+      "revId": "6a5135e6102c3cb3d627a7549c11f2e34bed5321",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
