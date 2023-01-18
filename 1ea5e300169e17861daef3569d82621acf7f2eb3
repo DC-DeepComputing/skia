@@ -16,6 +16,23 @@
       "message": "This feels less clunky than what it\u0027s replacing.\n\nIt\u0027s not 100% clear that the \"right\" way of writing the gainmap shader will necessarily use this.",
       "revId": "1ea5e300169e17861daef3569d82621acf7f2eb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "997b1675_352b8dd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T14:45:19Z",
+      "side": 1,
+      "message": "Yeah, this is a good change. Typically we like to leave a forwarding factory for the old name, so that SKPs can still be deserialized. This would just mean registering the old class name with a factory that reads the old serialized format, and then constructs an instance of the new thing (using the new factories, or whatever). Example here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkMatrixTransformImageFilter.cpp;l\u003d104;drc\u003d6cd8e5eec521e6ff5d818bf2ff336813f7fea890",
+      "revId": "1ea5e300169e17861daef3569d82621acf7f2eb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
