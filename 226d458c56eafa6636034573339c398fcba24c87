@@ -33,6 +33,24 @@
       "message": "If the previous was `copy_stack_to_slots`, then it seems possible for this to produce different results (but with no actual consequence, I suppose?). The `copy_stack_to_slots` would be masked, so the thing that was on the stack will be a mix of actually-new values that were stored, and values that weren\u0027t written (due to masking). Without this optimization, we\u0027d emit `push_slots`, so we\u0027d get the real values in every lane (including masked lanes).\n\n... but I guess that\u0027s safe because we never really interleave mask changes with theses kinds of ops? eg, we wouldn\u0027t issue a push_slots, expecting to get a variable\u0027s contents on the stack, and then un-mask lanes? Eh, could that happen in the context of a loop with continues? Probably not.",
       "revId": "226d458c56eafa6636034573339c398fcba24c87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5f63e72_6a57652e",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-18T17:09:14Z",
+      "side": 1,
+      "message": "Yes, you\u0027re right; the non-executing lanes could have gotten different values back from the `push_slots` call, versus the values that they currently hold. I don\u0027t think there\u0027s any case where this could change the program\u0027s correctness. The values in the dead lanes can be different, but those dead lanes should never get stored back to the slots, and we shouldn\u0027t be making any decisions that matter based on the contents of a dead lane. We do make decisions based on \"which lanes are active\" (the execution mask), but not \"the values stored in dead-lane slots.\"\n\nI guess if we implemented `dFdx` as a lane shuffle, and had code with a uniformity violation, we could observe a difference, but that\u0027s OK, I think.",
+      "parentUuid": "8552cc5e_079c1865",
+      "revId": "226d458c56eafa6636034573339c398fcba24c87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
