@@ -1221,7 +1221,7 @@ optional("jpeg_decode") {
     "src/codec/SkJpegUtility.cpp",
   ]
   if (skia_use_jpeg_gainmaps) {
-    defines = [ "SK_CODEC_DECODES_JPEG_GAINMAPS" ]
+    public_defines += [ "SK_CODEC_DECODES_JPEG_GAINMAPS" ]
     deps += [ ":xml" ]
     sources += [
       "src/codec/SkJpegGainmap.cpp",
