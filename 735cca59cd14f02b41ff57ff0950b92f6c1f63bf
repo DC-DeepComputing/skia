@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c9d4a6_49877d64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-18T14:01:59Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c6c8913_22e7f8d1",
@@ -41,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "751e3fb6_0c5a3709",
+        "filename": "docs/examples/strokerect_gm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-18T14:01:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8c6c8913_22e7f8d1",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 26
+      },
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cac7a0b9_41647f46",
@@ -54,6 +95,30 @@
       "writtenOn": "2023-01-18T13:56:53Z",
       "side": 1,
       "message": "Intentional change? Do we even need this file?",
+      "range": {
+        "startLine": 86,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 30
+      },
+      "revId": "735cca59cd14f02b41ff57ff0950b92f6c1f63bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc6b1d63_781bc97b",
+        "filename": "platform_tools/debugging/lldb/skia.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-18T14:01:59Z",
+      "side": 1,
+      "message": "This is the file to print out Skia\u0027s custom data structures in the lldb debugger. I need to rename SkAutoSTArray before I can fully fix it.",
+      "parentUuid": "cac7a0b9_41647f46",
       "range": {
         "startLine": 86,
         "startChar": 6,
