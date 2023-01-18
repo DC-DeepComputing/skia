@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bde3860_6a1a028d",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-18T17:42:29Z",
+      "side": 1,
+      "message": "I would argue this assert probably isn\u0027t giving us much value any more given the above if-block",
+      "revId": "ec323c1af6915cd72233c1d43e1c518d4064252e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24a36da_f389fedf",
+        "filename": "src/gpu/graphite/Image_Graphite.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-18T17:42:29Z",
+      "side": 1,
+      "message": "Add subset parameter name ?",
+      "range": {
+        "startLine": 50,
+        "startChar": 43,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "ec323c1af6915cd72233c1d43e1c518d4064252e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
