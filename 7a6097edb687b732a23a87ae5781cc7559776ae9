@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be1f3b47_4e571b56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T16:51:15Z",
+      "side": 1,
+      "message": "I\u0027m guessing you\u0027ve already thought about how to patch over this? From looking at the code again, I\u0027m picturing something where the little string-builder helpers actually concat, or return a struct with the new base pointer and remaining count (when the count for an arg consumes all the slots of one variable), so you could emit things like `ok,a`?",
+      "revId": "7a6097edb687b732a23a87ae5781cc7559776ae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
