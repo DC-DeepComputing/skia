@@ -33,6 +33,24 @@
       "message": "Maybe just delete this line?",
       "revId": "c0a43f5a87a9e07b2d801fa12f5d0480e9cbb5c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f617aa_4c297adc",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-18T14:30:29Z",
+      "side": 1,
+      "message": "Done (and in fact removed the switch entirely, because it\u0027s currently non-functional)",
+      "parentUuid": "cc5e7633_dd36abb4",
+      "revId": "c0a43f5a87a9e07b2d801fa12f5d0480e9cbb5c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
