@@ -16,6 +16,24 @@
       "message": "@jlavrova@google.com friendly reminder that we also need this CL: https://skia-review.googlesource.com/c/skia/+/618518",
       "revId": "dfb124fbd2a5721ac740f2fe10c0bca0e0c021ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46f9bc3f_cb4ad4c9",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-18T15:50:32Z",
+      "side": 1,
+      "message": "Sure, as a next step",
+      "parentUuid": "94a055e6_84e4c12b",
+      "revId": "dfb124fbd2a5721ac740f2fe10c0bca0e0c021ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
