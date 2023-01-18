@@ -21,8 +21,7 @@
    21. zero_slot_unmasked             $2 = 0
    22. copy_slot_unmasked             $3 = i
    23. copy_4_slots_masked            i4 = Mask($0..3)
-   24. copy_4_slots_unmasked          $0..3 = i4
-   25. cast_to_float_from_4_ints      $0..3 = IntToFloat($0..3)
-   26. copy_4_slots_masked            [main].result = Mask($0..3)
-   27. mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
-   28. load_src                       src.rgba = [main].result
+   24. cast_to_float_from_4_ints      $0..3 = IntToFloat($0..3)
+   25. copy_4_slots_masked            [main].result = Mask($0..3)
+   26. mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
+   27. load_src                       src.rgba = [main].result

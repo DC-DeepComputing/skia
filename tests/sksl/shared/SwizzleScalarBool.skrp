@@ -22,10 +22,9 @@
    22. zero_slot_unmasked             $2 = 0
    23. copy_slot_unmasked             $3 = b
    24. copy_4_slots_masked            b4 = Mask($0..3)
-   25. copy_4_slots_unmasked          $0..3 = b4
-   26. copy_constant                  $4 = 0x3F800000 (1.0)
-   27. swizzle_4                      $4..7 = ($4..7).xxxx
-   28. bitwise_and_4_ints             $0..3 &= $4..7
-   29. copy_4_slots_masked            [main].result = Mask($0..3)
-   30. mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
-   31. load_src                       src.rgba = [main].result
+   25. copy_constant                  $4 = 0x3F800000 (1.0)
+   26. swizzle_4                      $4..7 = ($4..7).xxxx
+   27. bitwise_and_4_ints             $0..3 &= $4..7
+   28. copy_4_slots_masked            [main].result = Mask($0..3)
+   29. mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
+   30. load_src                       src.rgba = [main].result
