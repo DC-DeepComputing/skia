@@ -74,12 +74,6 @@ sk_sp<SkImage> SkImage::makeTextureImage(Recorder* recorder,
         requiredProps.fMipmapped = Mipmapped::kNo;
     }
 
-    if (as_IB(this)->isGraphiteBacked()) {
-        if (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps()) {
-            const SkImage* image = this;
-            return sk_ref_sp(const_cast<SkImage*>(image));
-        }
-    }
     return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
 }
 
@@ -93,12 +87,6 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
     const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
     if (!bounds.contains(subset)) {
         return nullptr;
-    }
-
-    // optimization : return self if the subset == our bounds and requirements met
-    if (bounds == subset && (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps())) {
-        const SkImage* image = this;
-        return sk_ref_sp(const_cast<SkImage*>(image));
     }
 
     return as_IB(this)->onMakeSubset(subset, recorder, requiredProps);
