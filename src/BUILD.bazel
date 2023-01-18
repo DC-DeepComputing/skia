@@ -129,7 +129,7 @@ generate_cpp_files_for_headers(
     to_generate = [
         "src/base/SkStringView.h",
         "src/base/SkSafeMath.h",
-        "src/core/SkASAN.h",
+        "src/base/SkASAN.h",
         "src/core/SkAutoMalloc.h",
         "src/core/SkMathPriv.h",
         "src/core/SkMatrixPriv.h",

@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/GrMemoryPool.h"
 
 #include "include/private/base/SkTPin.h"
-#include "src/core/SkASAN.h"
+#include "src/base/SkASAN.h"
 
 #ifdef SK_DEBUG
     #include <atomic>

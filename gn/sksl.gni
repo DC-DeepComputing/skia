@@ -299,6 +299,7 @@ skslc_deps = [
   "$_src/base/SkMalloc.cpp",
   "$_src/base/SkSafeMath.cpp",
   "$_src/base/SkSemaphore.cpp",
+  "$_src/base/SkUTF.cpp",
   "$_src/core/SkArenaAlloc.cpp",
   "$_src/core/SkBlockAllocator.cpp",
   "$_src/core/SkCpu.cpp",
@@ -320,6 +321,5 @@ skslc_deps = [
   "$_src/utils/SkOSPath.cpp",
   "$_src/utils/SkParse.cpp",
   "$_src/utils/SkShaderUtils.cpp",
-  "$_src/utils/SkUTF.cpp",
   "$_src/utils/SkVMVisualizer.cpp",
 ]

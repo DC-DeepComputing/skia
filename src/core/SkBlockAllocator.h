@@ -14,7 +14,7 @@
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkASAN.h"
+#include "src/base/SkASAN.h"
 
 #include <memory>  // std::unique_ptr
 #include <cstddef> // max_align_t

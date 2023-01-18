@@ -38,7 +38,6 @@ CORE_FILES = [
     "Sk4px.h",
     "SkAAClip.cpp",
     "SkAAClip.h",
-    "SkASAN.h",
     "SkATrace.cpp",
     "SkATrace.h",
     "SkAdvancedTypefaceMetrics.h",

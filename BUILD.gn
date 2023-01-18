@@ -1678,6 +1678,7 @@ skia_static_library("pathkit") {
     "src/base/SkSafeMath.cpp",
     "src/base/SkSemaphore.cpp",
     "src/base/SkTDArray.cpp",
+    "src/base/SkUTF.cpp",
     "src/core/SkAnalyticEdge.cpp",
     "src/core/SkArenaAlloc.cpp",
     "src/core/SkContourMeasure.cpp",
@@ -1719,7 +1720,6 @@ skia_static_library("pathkit") {
     "src/utils/SkDashPath.cpp",
     "src/utils/SkParse.cpp",
     "src/utils/SkParsePath.cpp",
-    "src/utils/SkUTF.cpp",
   ]
 }
 
