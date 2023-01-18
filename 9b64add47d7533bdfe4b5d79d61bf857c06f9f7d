@@ -160,6 +160,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "260968a1_0940dcd0",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T14:12:53Z",
+      "side": 1,
+      "message": "FYI: We already have logic for detecting pass-through coord sampling in runtime effects, because it speeds up GPU, too.",
+      "parentUuid": "74933860_7e2164a6",
+      "range": {
+        "startLine": 1283,
+        "startChar": 87,
+        "endLine": 1284,
+        "endChar": 17
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1f16452_c2a005d1",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 5
