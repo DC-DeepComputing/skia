@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0d4679_dde7cf7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-18T20:34:33Z",
+      "side": 1,
+      "message": "Here is the vertex simplification CL that fixes up some but not all of the issues with stroke rendering. Per our discussion yesterday, this should land after a CL that enables the AnalyticRRectRenderStep for fills only, but I wanted to send this out since it\u0027s a meatier change.",
+      "revId": "33421d99cce40e430114ea502f92cc70bf6a90bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
