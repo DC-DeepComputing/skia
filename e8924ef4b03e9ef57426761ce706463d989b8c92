@@ -34,6 +34,24 @@
       "parentUuid": "fef1de51_30b80690",
       "revId": "e8924ef4b03e9ef57426761ce706463d989b8c92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24dadc61_922b7c98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-18T16:14:46Z",
+      "side": 1,
+      "message": "We can but then we will have to add a parameter (utf8 vs utf16). It will not make the client code more clear, I think. I would rather keep it as is for now and see how we are going to use it (and maybe change later).",
+      "parentUuid": "1617fe5a_01bc78f5",
+      "revId": "e8924ef4b03e9ef57426761ce706463d989b8c92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
