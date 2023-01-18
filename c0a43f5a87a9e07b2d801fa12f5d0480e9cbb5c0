@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bf1d105_a9f8e130",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-18T13:55:25Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "c0a43f5a87a9e07b2d801fa12f5d0480e9cbb5c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc5e7633_dd36abb4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-01-18T13:55:25Z",
+      "side": 1,
+      "message": "Maybe just delete this line?",
+      "revId": "c0a43f5a87a9e07b2d801fa12f5d0480e9cbb5c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
