@@ -34,6 +34,24 @@
       "parentUuid": "46165d31_620f2f4d",
       "revId": "264fd479c82732a8d6d57d058333ee8668b471e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "865164d9_defe0901",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1224,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-18T17:28:05Z",
+      "side": 1,
+      "message": "lgtm",
+      "parentUuid": "e2ed9070_ff89868b",
+      "revId": "264fd479c82732a8d6d57d058333ee8668b471e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
