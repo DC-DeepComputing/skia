@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff7e0b4_88f218e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T18:49:16Z",
+      "side": 1,
+      "message": "ah, subtle.. max index vs total number of verts. Thanks for the fix!",
+      "revId": "e632b4f3c6577955e0ce32a9af5f307634f7c2f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
