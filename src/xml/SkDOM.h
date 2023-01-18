@@ -12,7 +12,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 
 struct SkDOMNode;
 struct SkDOMAttr;

@@ -13,7 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/base/SkTArray.h"
-#include "src/utils/SkUTF.h"
+#include "src/base/SkUTF.h"
 
 #include <cstring>
 #include <cstdint>

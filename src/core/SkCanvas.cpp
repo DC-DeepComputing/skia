@@ -23,7 +23,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/base/SkTo.h"
 #include "include/utils/SkNoDrawCanvas.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBitmapDevice.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkCanvasPriv.h"

@@ -129,9 +129,9 @@ generate_cpp_files_for_headers(
     to_generate = [
         "src/base/SkStringView.h",
         "src/base/SkSafeMath.h",
-        "src/core/SkASAN.h",
+        "src/base/SkASAN.h",
+        "src/base/SkArenaAllocList.h",
         "src/core/SkAutoMalloc.h",
-        "src/core/SkMathPriv.h",
         "src/core/SkMatrixPriv.h",
         "src/core/SkPathPriv.h",
         "src/core/SkScopeExit.h",

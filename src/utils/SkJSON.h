@@ -10,7 +10,7 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 
 #include <cstdint>
 #include <cstring>

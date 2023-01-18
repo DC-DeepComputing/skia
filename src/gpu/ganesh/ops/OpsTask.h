@@ -17,7 +17,7 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTypeTraits.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkClipStack.h"
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTLazy.h"

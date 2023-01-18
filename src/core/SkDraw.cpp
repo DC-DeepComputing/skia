@@ -21,7 +21,7 @@
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkAutoBlitterChoose.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlitter.h"

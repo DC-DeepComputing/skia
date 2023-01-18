@@ -8,7 +8,7 @@
 #include "include/core/SkMallocPixelRef.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkScalar.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMatrixProvider.h"

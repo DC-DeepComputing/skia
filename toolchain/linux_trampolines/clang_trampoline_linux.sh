@@ -41,6 +41,7 @@ supported_files_or_dirs=(
   "src/core/SkLineClipper.cpp"
   "src/core/SkMaskFilter.cpp"
   "src/core/SkMatrix.cpp"
+  "src/core/SkMath.cpp"
   "src/core/SkPaint.cpp"
   "src/core/SkPath.cpp"
   "src/core/SkPathBuilder.cpp"

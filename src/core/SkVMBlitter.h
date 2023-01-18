@@ -9,7 +9,7 @@
 #define SkVMBlitter_DEFINED
 
 #include "include/core/SkPixmap.h"
-#include "src/core/SkArenaAlloc.h"
+#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkTLazy.h"
