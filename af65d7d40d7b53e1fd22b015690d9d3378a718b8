@@ -85,6 +85,24 @@
       "parentUuid": "3f29b2a4_ebd0849c",
       "revId": "af65d7d40d7b53e1fd22b015690d9d3378a718b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72518f4c_2de2c997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T15:50:13Z",
+      "side": 1,
+      "message": "I didn\u0027t upload another change, I just ran the CQ on this one to see if any existing GMs changed (they didn\u0027t). Minor comments on the GM but mostly lgtm.",
+      "parentUuid": "2c2fbe55_b63d7735",
+      "revId": "af65d7d40d7b53e1fd22b015690d9d3378a718b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -16,6 +16,98 @@
       "message": "Rev2 adds a new GM test.",
       "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7979559_c4d7c535",
+        "filename": "gm/imagefiltersunpremul.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T15:50:13Z",
+      "side": 1,
+      "message": "Usually for a simple GM like this we\u0027d do something like\n\n```\nDEF_SIMPLE_GM(imagefiltersunpremul, canvas, kSquareSide, kSquareSide) {\n....\n}\n```\n\nrather than writing out the class (and just not worry about remaking the unpremul image on each frame since this isn\u0027t a useful perf test).",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6cd75e7_92013463",
+        "filename": "gm/imagefiltersunpremul.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T15:50:13Z",
+      "side": 1,
+      "message": "kSquareSide would be more inkeeping with the style.",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 36
+      },
+      "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd39c6ca_8ea1fbd9",
+        "filename": "gm/imagefiltersunpremul.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T15:50:13Z",
+      "side": 1,
+      "message": "not needed (and same for SkAlphaType::). These are plain ole enums, not enum classes.",
+      "range": {
+        "startLine": 51,
+        "startChar": 60,
+        "endLine": 51,
+        "endChar": 73
+      },
+      "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "229e96b5_bf45f27b",
+        "filename": "gm/imagefiltersunpremul.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-18T15:50:13Z",
+      "side": 1,
+      "message": "nice and simple repro - just a passthrough image filter!",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 60
+      },
+      "revId": "6a2bc9892b8c023066df0c847c1332ffc7a01ff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
