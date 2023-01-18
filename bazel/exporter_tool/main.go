@@ -44,6 +44,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//include/private/chromium:shared_private_hdrs",
 				"//src/base:private_hdrs",
 				"//src/base:skslc_srcs",
+				"//src/base:skslc_hdrs",
 				"//src/base:srcs",
 				"//src/core:core_hdrs",
 				"//src/core:core_skslc_hdrs",
@@ -147,6 +148,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skslc_deps",
 			Rules: []string{
+				"//src/base:skslc_hdrs",
 				"//src/base:skslc_srcs",
 				"//src/core:core_skslc_srcs",
 				"//src/gpu/ganesh:core_skslc_srcs",

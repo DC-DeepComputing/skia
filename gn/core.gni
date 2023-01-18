@@ -126,6 +126,7 @@ skia_core_public = [
 #  //include/private/chromium:shared_private_hdrs
 #  //src/base:private_hdrs
 #  //src/base:skslc_srcs
+#  //src/base:skslc_hdrs
 #  //src/base:srcs
 #  //src/core:core_hdrs
 #  //src/core:core_skslc_hdrs
@@ -203,6 +204,8 @@ skia_core_sources = [
   "$_src/base/SkSemaphore.cpp",
   "$_src/base/SkStringView.h",
   "$_src/base/SkTDArray.cpp",
+  "$_src/base/SkUTF.cpp",
+  "$_src/base/SkUTF.h",
   "$_src/core/Sk4px.h",
   "$_src/core/SkAAClip.cpp",
   "$_src/core/SkAAClip.h",

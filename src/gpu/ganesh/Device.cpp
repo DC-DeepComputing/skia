@@ -19,6 +19,7 @@
 #include "include/private/SkShadowFlags.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/chromium/Slug.h"
+#include "src/base/SkUTF.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkClipStack.h"
@@ -53,7 +54,6 @@
 #include "src/image/SkReadPixelsRec.h"
 #include "src/image/SkSurface_Gpu.h"
 #include "src/text/GlyphRun.h"
-#include "src/utils/SkUTF.h"
 
 #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
     #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
