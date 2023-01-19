@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da7d76f3_cc62ab3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-19T17:28:03Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "9d78b378beede379b4dbe44c1b98a22cf691b931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3363d0b_fc75f978",
@@ -24,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "580e26f4_803b1690",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-19T17:28:03Z",
+      "side": 1,
+      "message": "I would like to do the removal for both these in a separate CL.",
+      "parentUuid": "b3363d0b_fc75f978",
+      "range": {
+        "startLine": 415,
+        "startChar": 6,
+        "endLine": 415,
+        "endChar": 19
+      },
+      "revId": "9d78b378beede379b4dbe44c1b98a22cf691b931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f497cf97_f399a5dc",
@@ -37,6 +78,30 @@
       "writtenOn": "2023-01-19T17:03:54Z",
       "side": 1,
       "message": "go/skia-client-search also shows no hits for this one.",
+      "range": {
+        "startLine": 419,
+        "startChar": 6,
+        "endLine": 419,
+        "endChar": 20
+      },
+      "revId": "9d78b378beede379b4dbe44c1b98a22cf691b931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2b833a1_c74fa2b8",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-19T17:28:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f497cf97_f399a5dc",
       "range": {
         "startLine": 419,
         "startChar": 6,
