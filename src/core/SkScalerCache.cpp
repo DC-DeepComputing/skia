@@ -106,11 +106,6 @@ std::tuple<SkDrawable*, size_t> SkScalerCache::mergeDrawable(SkGlyph* glyph,
     return {glyph->drawable(), delta};
 }
 
-int SkScalerCache::countCachedGlyphs() const {
-    SkAutoMutexExclusive lock(fMu);
-    return fDigestForPackedGlyphID.count();
-}
-
 std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::internalPrepare(
         SkSpan<const SkGlyphID> glyphIDs, PathDetail pathDetail, const SkGlyph** results) {
     const SkGlyph** cursor = results;

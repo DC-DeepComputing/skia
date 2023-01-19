@@ -46,9 +46,6 @@ public:
     std::tuple<SkDrawable*, size_t> mergeDrawable(
             SkGlyph* glyph, sk_sp<SkDrawable> drawable) SK_EXCLUDES(fMu);
 
-    // Return the number of glyphs currently cached.
-    int countCachedGlyphs() const SK_EXCLUDES(fMu);
-
     // If the advance axis intersects the glyph's path, append the positions scaled and offset
     // to the array (if non-null), and set the count to the updated array length.
     void findIntercepts(const SkScalar bounds[2], SkScalar scale, SkScalar xPos,

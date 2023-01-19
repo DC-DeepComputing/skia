@@ -57,14 +57,8 @@ void SkStrikeCache::Dump() {
     SkDebugf("    count  [ %8d  %8d ]\n",
              SkGraphics::GetFontCacheCountUsed(), SkGraphics::GetFontCacheCountLimit());
 
-    int counter = 0;
-
-    auto visitor = [&counter](const SkStrike& strike) {
-        const SkScalerContextRec& rec = strike.fScalerCache.getScalerContext()->getRec();
-
-        SkDebugf("index %d checksum: %x\n", counter, strike.getDescriptor().getChecksum());
-        SkDebugf("%s", rec.dump().c_str());
-        counter += 1;
+    auto visitor = [](const SkStrike& strike) {
+        strike.fScalerCache.dump();
     };
 
     GlobalStrikeCache()->forEachStrike(visitor);
@@ -106,9 +100,7 @@ void SkStrikeCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
 
         dump->dumpNumericValue(dumpName.c_str(),
                                "size", "bytes", strike.fMemoryUsed);
-        dump->dumpNumericValue(dumpName.c_str(),
-                               "glyph_count", "objects",
-                               strike.fScalerCache.countCachedGlyphs());
+
         dump->setMemoryBacking(dumpName.c_str(), "malloc", nullptr);
     };
 
