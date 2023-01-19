@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8161440_9d8d55cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T03:33:55Z",
+      "side": 1,
+      "message": "Once https://skia-review.googlesource.com/c/skia/+/631399, we can expand the set of enabled-by-default draws.",
+      "revId": "67db0cacbec670041d81183121a9a68af20884aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
