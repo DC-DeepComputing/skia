@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af05cbbb_7f7fe112",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-19T19:12:23Z",
+      "side": 1,
+      "message": "Tagging Rob on comments we want his opinion on. I will address the tile mode GM failure shortly",
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05c4977d_3cb95a7a",
@@ -107,6 +124,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "641e4432_2d07e849",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-19T19:12:23Z",
+      "side": 1,
+      "message": "@robertphillips@google.com",
+      "parentUuid": "ca339963_4c194ea8",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 29
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43f6157e_48cd37dc",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 9
@@ -118,6 +159,30 @@
       "writtenOn": "2023-01-19T18:08:51Z",
       "side": 1,
       "message": "nit: This feels weird; `as_IB` performs a cast, then we\u0027re casting again. `as_IB` also strips off the `sk_sp`, off so you can\u0027t just remove it entirely, but it seems like you could use `static_cast\u003cImage*\u003e(imageToDraw.get())` or `static_cast\u003cImage\u0026\u003e(*imageToDraw)`. \n\nShould Graphite have a `graphite::as_Image` helper method like we use throughout the rest of Skia? (Rob, WDYT?) \n\nThis is fine for the current CL but it seemed worth bringing up.",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 51
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d53d69b_bf26a5c9",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-19T19:12:23Z",
+      "side": 1,
+      "message": "@robertphillips@google.com",
+      "parentUuid": "43f6157e_48cd37dc",
       "range": {
         "startLine": 418,
         "startChar": 12,
