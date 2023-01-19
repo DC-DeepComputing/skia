@@ -2475,7 +2475,7 @@ if (skia_enable_tools) {
       ":skia",
       ":tool_utils",
       ":trace",
-      "modules/skparagraph",
+      "modules/skparagraph:tests",
       "modules/skshaper",
       "modules/svg",
     ]
