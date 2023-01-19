@@ -8,7 +8,7 @@
 #ifndef GrMemoryPool_DEFINED
 #define GrMemoryPool_DEFINED
 
-#include "src/core/SkBlockAllocator.h"
+#include "src/base/SkBlockAllocator.h"
 
 #ifdef SK_DEBUG
 #include "src/core/SkTHash.h"
