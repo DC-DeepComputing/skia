@@ -16,13 +16,13 @@
    16. copy_constant                  $0 = 0x0000007D (1.751623e-43)
    17. copy_constant                  $1 = 0x00000050 (1.121039e-43)
    18. copy_constant                  $2 = 0x00000050 (1.121039e-43)
-   19. copy_constant                  $3 = 0x000000E1 (3.152922e-43)
-   20. copy_4_slots_unmasked          expectedA = $0..3
+   19. copy_constant                  expectedA(3) = 0x000000E1 (3.152922e-43)
+   20. copy_3_slots_unmasked          expectedA(0..2) = $0..2
    21. copy_constant                  $0 = 0x0000007D (1.751623e-43)
    22. copy_constant                  $1 = 0x00000064 (1.401298e-43)
    23. copy_constant                  $2 = 0x0000004B (1.050974e-43)
-   24. copy_constant                  $3 = 0x000000E1 (3.152922e-43)
-   25. copy_4_slots_unmasked          expectedB = $0..3
+   24. copy_constant                  expectedB(3) = 0x000000E1 (3.152922e-43)
+   25. copy_3_slots_unmasked          expectedB(0..2) = $0..2
    26. store_condition_mask           $8 = CondMask
    27. copy_slot_unmasked             $9 = uintValues(0)
    28. copy_constant                  $10 = 0x00000050 (1.121039e-43)

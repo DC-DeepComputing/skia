@@ -3,8 +3,8 @@
     3. copy_constant                  $0 = 0x00000001 (1.401298e-45)
     4. zero_slot_unmasked             $1 = 0
     5. zero_slot_unmasked             $2 = 0
-    6. copy_constant                  $3 = 0x00000002 (2.802597e-45)
-    7. copy_4_slots_unmasked          expected = $0..3
+    6. copy_constant                  expected(3) = 0x00000002 (2.802597e-45)
+    7. copy_3_slots_unmasked          expected(0..2) = $0..2
     8. store_condition_mask           $8 = CondMask
     9. copy_constant                  $9 = testInputs(0)
    10. cast_to_int_from_float         $9 = FloatToInt($9)

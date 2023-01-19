@@ -251,8 +251,8 @@
   251. copy_constant                  $0 = 0x00000002 (2.802597e-45)
   252. copy_constant                  $1 = 0x00000002 (2.802597e-45)
   253. copy_constant                  $2 = 0x00000002 (2.802597e-45)
-  254. copy_constant                  $3 = 0x00000002 (2.802597e-45)
-  255. copy_4_slots_unmasked          i4 = $0..3
+  254. copy_constant                  i4(3) = 0x00000002 (2.802597e-45)
+  255. copy_3_slots_unmasked          i4(0..2) = $0..2
   256. copy_constant                  $0 = 0x40000000 (2.0)
   257. copy_constant                  $1 = 0x40000000 (2.0)
   258. copy_constant                  $2 = 0x40000000 (2.0)
@@ -291,8 +291,8 @@
   291. copy_constant                  $0 = 0x00000002 (2.802597e-45)
   292. copy_constant                  $1 = 0x00000002 (2.802597e-45)
   293. copy_constant                  $2 = 0x00000002 (2.802597e-45)
-  294. copy_constant                  $3 = 0x00000002 (2.802597e-45)
-  295. copy_4_slots_unmasked          u4 = $0..3
+  294. copy_constant                  u4(3) = 0x00000002 (2.802597e-45)
+  295. copy_3_slots_unmasked          u4(0..2) = $0..2
   296. copy_constant                  $0 = 0x80000000 (-0.0)
   297. copy_constant                  $1 = 0x80000000 (-0.0)
   298. copy_constant                  $2 = 0x80000000 (-0.0)

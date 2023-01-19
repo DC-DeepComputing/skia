@@ -3,8 +3,8 @@
     3. copy_constant                  $0 = 0xBF800000 (-1.0)
     4. zero_slot_unmasked             $1 = 0
     5. copy_constant                  $2 = 0x3F800000 (1.0)
-    6. copy_constant                  $3 = 0x40400000 (3.0)
-    7. copy_4_slots_unmasked          expected = $0..3
+    6. copy_constant                  expected(3) = 0x40400000 (3.0)
+    7. copy_3_slots_unmasked          expected(0..2) = $0..2
     8. store_condition_mask           $8 = CondMask
     9. copy_constant                  $9 = testInputs(0)
    10. ceil_float                     $9 = ceil($9)

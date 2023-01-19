@@ -2,12 +2,12 @@
     2. init_lane_masks                CondMask = LoopMask = RetMask = true
     3. copy_constant                  $0 = 0xC0400000 (-3.0)
     4. copy_constant                  $1 = 0x40C00000 (6.0)
-    5. copy_constant                  $2 = 0xC0400000 (-3.0)
-    6. copy_3_slots_unmasked          expected1 = $0..2
+    5. copy_constant                  expected1(2) = 0xC0400000 (-3.0)
+    6. copy_2_slots_unmasked          expected1(0..1) = $0..1
     7. copy_constant                  $0 = 0x40C00000 (6.0)
     8. copy_constant                  $1 = 0xC1400000 (-12.0)
-    9. copy_constant                  $2 = 0x40C00000 (6.0)
-   10. copy_3_slots_unmasked          expected2 = $0..2
+    9. copy_constant                  expected2(2) = 0x40C00000 (6.0)
+   10. copy_2_slots_unmasked          expected2(0..1) = $0..1
    11. store_condition_mask           $14 = CondMask
    12. copy_3_constants               $15..17 = testMatrix3x3(0..2)
    13. copy_3_slots_unmasked          $8..10 = $15..17
