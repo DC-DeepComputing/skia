@@ -20,9 +20,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
-#include "include/private/SkFloatingPoint.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/SkGainmapShader.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "tests/Test.h"
 
 static bool approx_equal(const SkColor4f& a, const SkColor4f& b) {
