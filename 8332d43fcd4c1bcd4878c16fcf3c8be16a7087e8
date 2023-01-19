@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05c4977d_3cb95a7a",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-19T17:55:02Z",
+      "side": 1,
+      "message": "Misspelled? This says red blue green alpha",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 9
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40862b16_d8380493",
         "filename": "include/core/SkSwizzle.h",
         "patchSetId": 9
