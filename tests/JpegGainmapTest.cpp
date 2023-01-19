@@ -8,11 +8,14 @@
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImageEncoder.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkGainmapInfo.h"
+#include "include/private/SkGainmapShader.h"
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #include "tests/Test.h"
@@ -123,9 +126,25 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
 }
 
+// Create a gamma=2.2 color space that can reach the specified headroom.
+sk_sp<SkColorSpace> get_g22_color_space(float headroom) {
+    float g = 2.2f;
+    float a = sk_float_pow(headroom, 1.f / 2.2f);
+    skcms_TransferFunction trfn = {g, a, 0.f, 0.f, 0.f, 0.f, 0.f};
+    return SkColorSpace::MakeRGB(trfn, SkNamedGamut::kSRGB);
+}
+
+void save_bitmap(const SkBitmap& bitmap, const char* fname) {
+    auto data = SkEncodeBitmap(bitmap, SkEncodedImageFormat::kJPEG, 80);
+    FILE* fout = fopen(fname, "wb");
+    fwrite(data->data(), data->size(), 1, fout);
+    fclose(fout);
+}
+
 DEF_TEST(AndroidCodec_jpegGainmap, r) {
     const struct Rec {
         const char* path;
+        const char* name;
         SkISize dimensions;
         SkColor originColor;
         SkColor farCornerColor;
@@ -136,6 +155,7 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
         SkGainmapInfo::Type type;
     } recs[] = {
             {"images/iphone_13_pro.jpeg",
+             "mpf",
              SkISize::Make(1512, 2016),
              0xFF3B3B3B,
              0xFF101010,
@@ -145,6 +165,7 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
              2.71828f,
              SkGainmapInfo::Type::kMultiPicture},
             {"images/jpegr.jpg",
+             "jpegr",
              SkISize::Make(1008, 756),
              0xFFCACACA,
              0xFFC8C8C8,
@@ -161,6 +182,22 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
 
         std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
         REPORTER_ASSERT(r, codec);
+
+        sk_sp<SkImage> baseImage;
+        {
+            SkBitmap baseBitmap;
+            baseBitmap.allocPixels(codec->getInfo());
+            REPORTER_ASSERT(r,
+                            SkCodec::kSuccess == codec->getPixels(baseBitmap.info(),
+                                                                  baseBitmap.getPixels(),
+                                                                  baseBitmap.rowBytes()));
+            baseImage = SkImage::MakeFromBitmap(baseBitmap);
+
+            // Dump the base image.
+            char fname[256];
+            sprintf(fname, "base-%s.jpg", rec.name);
+            save_bitmap(baseBitmap, fname);
+        }
 
         std::unique_ptr<SkAndroidCodec> androidCodec =
                 SkAndroidCodec::MakeFromCodec(std::move(codec));
@@ -179,6 +216,59 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
         REPORTER_ASSERT(r,
                         SkCodec::kSuccess ==
                                 gainmapCodec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes()));
+
+        sk_sp<SkImage> gainmapImage;
+        {
+            SkBitmap gainmapBitmap;
+            gainmapBitmap.allocPixels(gainmapCodec->getInfo());
+            REPORTER_ASSERT(r,
+                            SkCodec::kSuccess == gainmapCodec->getPixels(gainmapBitmap.info(),
+                                                                         gainmapBitmap.getPixels(),
+                                                                         gainmapBitmap.rowBytes()));
+            gainmapImage = SkImage::MakeFromBitmap(gainmapBitmap);
+
+            // Dump the gainmap image.
+            char fname[256];
+            sprintf(fname, "gainmap-%s.jpg", rec.name);
+            save_bitmap(gainmapBitmap, fname);
+        }
+
+        // Draw the image with the specified HDR ratio.
+        {
+            const float displayHdrRatio = 2.7f;
+
+            // The canvas will be "extended range" 8888 -- a 2.2 gamma that can reach
+            // displayHdrRatio.
+            SkImageInfo canvasInfo = SkImageInfo::Make(baseImage->dimensions(),
+                                                       kN32_SkColorType,
+                                                       kPremul_SkAlphaType,
+                                                       get_g22_color_space(displayHdrRatio));
+            SkBitmap canvasBitmap;
+            canvasBitmap.allocPixels(canvasInfo);
+            canvasBitmap.eraseColor(SK_ColorTRANSPARENT);
+
+            // Draw the image with all the parameters.
+            SkCanvas canvas(canvasBitmap);
+            sk_sp<SkShader> shader = SkGainmapShader::Make(baseImage,
+                                                           SkRect::Make(baseImage->dimensions()),
+                                                           SkSamplingOptions(),
+                                                           gainmapImage,
+                                                           SkRect::Make(gainmapImage->dimensions()),
+                                                           SkSamplingOptions(),
+                                                           gainmapInfo,
+                                                           SkRect::Make(canvasInfo.dimensions()),
+                                                           displayHdrRatio,
+                                                           canvasInfo.refColorSpace());
+            SkPaint paint;
+            paint.setShader(shader);
+            canvas.drawRect(SkRect::Make(canvasInfo.dimensions()), paint);
+
+            // And save it.
+            char fname[256];
+            sprintf(fname, "out-%s-%1.02f.jpg", rec.name, displayHdrRatio);
+            save_bitmap(canvasBitmap, fname);
+        }
+        continue;
 
         // Spot-check the image size and pixels.
         REPORTER_ASSERT(r, bm.dimensions() == rec.dimensions);
