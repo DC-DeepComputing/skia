@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "592309bf_12a0cec6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:04:53Z",
+      "side": 1,
+      "message": "lgtm!",
+      "revId": "5564553914228509ec293399cd334d05d27a06c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6408d932_2a1a1e81",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:04:53Z",
+      "side": 1,
+      "message": "I know this code is for testing but it\u0027s technically incorrect right? `$1..4` are all encoded as uints when the trig_float functions apply to them below. Just checking my understanding here that this code isn\u0027t meant to produce valid results.",
+      "range": {
+        "startLine": 545,
+        "startChar": 4,
+        "endLine": 547,
+        "endChar": 64
+      },
+      "revId": "5564553914228509ec293399cd334d05d27a06c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
