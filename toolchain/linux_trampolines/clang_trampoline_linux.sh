@@ -28,7 +28,6 @@ supported_files_or_dirs=(
   "src/utils/"
   "tools/debugger/"
   "tests/"
-  "src/core/SkArenaAlloc.cpp"
   "src/core/SkColor.cpp"
   "src/core/SkColorSpace.cpp"
   "src/core/SkCubicClipper.cpp"
