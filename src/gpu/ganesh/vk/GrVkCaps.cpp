@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 
 #include <memory>
+#include <iostream>
 
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
@@ -599,6 +600,7 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
         fTextureBarrierSupport = false;
     }
 
+    std::cout << "***** properties.driverVersion = " << properties.driverVersion << " *****" << std::endl;
 #ifdef SK_BUILD_FOR_WIN
     // Gen 12 Intel devices running on windows has issues using barriers for dst reads. This is seen
     // when running the unit tests SkRuntimeEffect_Blender_GPU and DMSAA_aa_dst_read_after_dmsaa.
