@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2a18eba_17f4082b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T03:32:17Z",
+      "side": 1,
+      "message": "Looking through the GM diffs, I\u0027m not seeing anything unexpected. There are a number that draw better (but still not totally correct, relating to incomplete perspective local matrix or clip shader support). There is also the broader issue of analytic anti-aliasing not working correctly with blend modes that don\u0027t automatically support coverage-as-alpha (e.g. kClear will clear everything the underlying geometry touches for now).",
+      "revId": "acb005908affcede7a8176c1294a4380d2ae95dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
