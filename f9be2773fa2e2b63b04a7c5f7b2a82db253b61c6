@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57740cc5_fe50ecd1",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-19T08:06:56Z",
+      "side": 1,
+      "message": "We could change `RenderStep` to return structured data to help `DawnGraphicsPipeline` extract number of textures directly to build bind group layout. However, I think that is a bit redundant on `DawnGraphicsPipeline` side to do the calculation after `GetSkSLFS` call. Because in that case `DawnGraphicsPipeline` would also have to manually loop through the PainParams\u0027 corresponding shader blocks to calculate total number of textures, similar to what `ShaderInfo::toSkSL` is doing afaik.\n\nSo imo, it\u0027s better to just do two things in one step: `ShaderInfo::toSkSL` does both the SkSL generation and reflections/total number of textures\u0027 computation in one pass.",
+      "parentUuid": "cf1809fa_1692517e",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc7f4854_af44a6f1",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 3
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "I was going to leave a comment here along the same lines. If RenderSteps could return a structured description of its texture/sampler binding declarations (similarly to how things work for attribute declarations today), it would be easier to extract that information to build the bind group layout.",
       "parentUuid": "bc7f4854_af44a6f1",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde9f353_7f610fc8",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-19T08:06:56Z",
+      "side": 1,
+      "message": "If we want to return structured data (e.g array of texture\u0027s descriptions) instead of the SkSL code here, what should be included in the descriptions?\n\nCurrently I don\u0027t see anything useful besides strings array of textures\u0027 names. If we expose more than that (filtering, tile mode, etc), then the logic of `writeUniformsAndTextures` function would be moved to the caller instead (because now there would be enough info for the caller to do that directly). In that case, there would be too many changes need to be done in this CL. Perhaps we could do this in another CL?",
+      "parentUuid": "451b022f_624fc7bf",
       "range": {
         "startLine": 91,
         "startChar": 4,
