@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6382f8ae_094df69c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-19T18:27:07Z",
+      "side": 1,
+      "message": "lgtm once the iwyu issue with some of the files not pulling in `std::unique_ptr` is fixed.",
+      "revId": "9cc65b3380ae9a76f507e408439526efd3f978bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
