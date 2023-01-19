@@ -7,6 +7,8 @@
 
 #include "src/core/SkBlockAllocator.h"
 
+#include "include/private/base/SkDebug.h"
+
 #ifdef SK_DEBUG
 #include <vector>
 #endif

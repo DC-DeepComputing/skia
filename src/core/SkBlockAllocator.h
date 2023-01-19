@@ -8,13 +8,13 @@
 #ifndef SkBlockAllocator_DEFINED
 #define SkBlockAllocator_DEFINED
 
-#include "include/core/SkTypes.h"
-#include "include/private/SkNoncopyable.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkMath.h"
+#include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTo.h"
-#include "src/core/SkASAN.h"
+#include "src/base/SkASAN.h"
 
 #include <memory>  // std::unique_ptr
 #include <cstddef> // max_align_t
