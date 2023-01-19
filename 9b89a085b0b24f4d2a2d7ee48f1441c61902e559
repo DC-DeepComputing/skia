@@ -16,6 +16,23 @@
       "message": "patchset 3 addressed feedback",
       "revId": "9b89a085b0b24f4d2a2d7ee48f1441c61902e559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fffb295_db57655d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T20:35:05Z",
+      "side": 1,
+      "message": "lgtm but I think Stan needs to be listed in AUTHORS explicitly now.",
+      "revId": "9b89a085b0b24f4d2a2d7ee48f1441c61902e559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
