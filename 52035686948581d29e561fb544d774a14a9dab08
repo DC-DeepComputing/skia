@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a1d7fb_1c376336",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-19T14:45:11Z",
+      "side": 1,
+      "message": "IIUC, this assert isn\u0027t correct. Client ICU is not the only alternative to ICU4C, is it?\n\nIs it possible to build SkParagraph without ICU and without client ICU?",
+      "revId": "52035686948581d29e561fb544d774a14a9dab08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
