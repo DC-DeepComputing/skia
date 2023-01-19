@@ -51,6 +51,24 @@
       "message": "Ugh... either `SkLoadUserConfig.h` needs to set a `SK_USER_CONFIG_LOADED` that we can assert on here, or `SkLoadUserConfig.h` itself needs to `#include SkAPI.h` and anything else that it should have access to. Will attempt this later suggestion.",
       "revId": "51728b0d4fb22bfedc05971c3dd81d2b8d3ef4f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3cf6cc6_a196b6ea",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-19T15:57:52Z",
+      "side": 1,
+      "message": "And I see now this was done with https://skia-review.googlesource.com/c/skia/+/631776 .",
+      "parentUuid": "f10f1e2b_4e29dde7",
+      "revId": "51728b0d4fb22bfedc05971c3dd81d2b8d3ef4f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
