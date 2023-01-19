@@ -52,6 +52,24 @@
       "parentUuid": "13d21cc9_3ba2b8df",
       "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b043447_6878d515",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-19T13:33:49Z",
+      "side": 1,
+      "message": "I\u0027m also not sure that the SK_API annotations is needed, those symbols should only be used internally.",
+      "parentUuid": "a645d9b9_9d08f1d6",
+      "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
