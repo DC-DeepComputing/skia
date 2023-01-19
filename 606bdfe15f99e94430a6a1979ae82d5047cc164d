@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3400d9_a2511048",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:13:21Z",
+      "side": 1,
+      "message": "Is there a limit to the size of the range this instruction can apply to? Does this need to detect that case (so one can\u0027t chain and grow these ops indefinitely?",
+      "range": {
+        "startLine": 289,
+        "startChar": 32,
+        "endLine": 289,
+        "endChar": 37
+      },
+      "revId": "606bdfe15f99e94430a6a1979ae82d5047cc164d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555c4a44_6fe80bb5",
+        "filename": "tests/sksl/folding/ArraySizeFolding.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:13:21Z",
+      "side": 1,
+      "message": "For my understanding, what does `g[1]` vs `g[0]` mean exactly? (Where should I look in the code to learn more about them?)",
+      "range": {
+        "startLine": 4,
+        "startChar": 38,
+        "endLine": 4,
+        "endChar": 42
+      },
+      "revId": "606bdfe15f99e94430a6a1979ae82d5047cc164d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
