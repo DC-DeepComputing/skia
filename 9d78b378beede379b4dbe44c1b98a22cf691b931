@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3363d0b_fc75f978",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-19T17:03:54Z",
+      "side": 1,
+      "message": "I don\u0027t think there are any client uses remaining",
+      "range": {
+        "startLine": 415,
+        "startChar": 6,
+        "endLine": 415,
+        "endChar": 19
+      },
+      "revId": "9d78b378beede379b4dbe44c1b98a22cf691b931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f497cf97_f399a5dc",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-19T17:03:54Z",
+      "side": 1,
+      "message": "go/skia-client-search also shows no hits for this one.",
+      "range": {
+        "startLine": 419,
+        "startChar": 6,
+        "endLine": 419,
+        "endChar": 20
+      },
+      "revId": "9d78b378beede379b4dbe44c1b98a22cf691b931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
