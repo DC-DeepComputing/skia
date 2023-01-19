@@ -14,6 +14,7 @@
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/base/SkVx.h"
+#include "src/base/SkCubics.h"
 #include "src/core/SkPointPriv.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
@@ -1163,8 +1164,39 @@ static bool cubic_dchop_at_intercept(const SkPoint src[4], SkScalar intercept, S
     return false;
 }
 
+static bool FirstHorizontalIntersect(double yCoefficients[4], double axisIntercept,
+                                     double* solution) {
+    double roots[3] = {0, 0, 0};
+    int count = SkCubics::RootsValidT(yCoefficients[0],
+                                      yCoefficients[1],
+                                      yCoefficients[2],
+                                      yCoefficients[3] - axisIntercept,
+                                      roots);
+    for (int index = 0; index < count; ++index) {
+        double y = SkCubics::EvalAt(yCoefficients, roots[index]);
+        if (sk_double_nearly_zero(y - axisIntercept)) {
+            *solution = y;
+            return true;
+        }
+    }
+    return false;
+}
+
 bool SkChopMonoCubicAtY(const SkPoint src[4], SkScalar y, SkPoint dst[7]) {
-    return cubic_dchop_at_intercept(src, y, dst, &SkDCubic::horizontalIntersect);
+    double yCoefficients[4] = {src[0].fY, src[1].fY, src[2].fY, src[3].fY};
+    double solution = 0;
+    if (FirstHorizontalIntersect(yCoefficients, y, &solution)) {
+        double coefficients[8] = {src[0].fX, src[0].fY, src[1].fX, src[1].fY,
+                                  src[2].fX, src[2].fY, src[3].fX, src[3].fY};
+        double cubicPair[14];
+        SkCubicsXY::ChopAt(coefficients, solution, cubicPair);
+        for (int i = 0; i < 14; i += 2) {
+            dst[i].fX = sk_double_to_float(cubicPair[i]);
+            dst[i].fY = sk_double_to_float(cubicPair[i + 1]);
+        }
+        return true;
+    }
+    return false;
 }
 
 bool SkChopMonoCubicAtX(const SkPoint src[4], SkScalar x, SkPoint dst[7]) {
