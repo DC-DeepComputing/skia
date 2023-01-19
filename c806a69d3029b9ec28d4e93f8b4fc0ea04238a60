@@ -70,6 +70,24 @@
       "parentUuid": "a645d9b9_9d08f1d6",
       "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f104bb1e_02b4af20",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-19T13:48:01Z",
+      "side": 1,
+      "message": "Never mind, apparently ui/gfx does reference SkAbort:\n\nld.lld: error: undefined symbol: SkAbort_FileLine(char const*, int, char const*, ...)\n\n\u003e\u003e\u003e referenced by skia_util.cc\n\n\u003e\u003e\u003e               obj/ui/gfx/gfx_skia/skia_util.o:(gfx::BitmapsAreEqual(SkBitmap const\u0026, SkBitmap const\u0026))\n\n\u003e\u003e\u003e referenced by skia_util.cc\n\n\u003e\u003e\u003e               obj/ui/gfx/gfx_skia/skia_util.o:(gfx::BitmapsAreEqual(SkBitmap const\u0026, SkBitmap const\u0026))\n\n\u003e\u003e\u003e referenced by skia_util.cc\n\n\u003e\u003e\u003e               obj/ui/gfx/gfx_skia/skia_util.o:(gfx::BitmapsAreEqual(SkBitmap const\u0026, SkBitmap const\u0026))",
+      "parentUuid": "1b043447_6878d515",
+      "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
