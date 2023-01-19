@@ -12,6 +12,7 @@
 
 class SkJpegEncoderMgr;
 class SkWStream;
+struct SkGainmapInfo;
 struct skcms_ICCProfile;
 
 class SK_API SkJpegEncoder : public SkEncoder {
@@ -72,6 +73,9 @@ public:
          */
         const skcms_ICCProfile* fICCProfile = nullptr;
         const char* fICCProfileDescription = nullptr;
+
+        SkGainmapInfo* fGainmapInfo = nullptr;
+        SkPixmap* fGainmap = nullptr;
     };
 
     /**

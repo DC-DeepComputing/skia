@@ -45,8 +45,8 @@ public:
      * Create the decode manager
      * Does not take ownership of stream
      */
-    static std::unique_ptr<SkJpegEncoderMgr> Make(SkWStream* stream) {
-        return std::unique_ptr<SkJpegEncoderMgr>(new SkJpegEncoderMgr(stream));
+    static std::unique_ptr<SkJpegEncoderMgr> Make(SkWStream* stream, sk_sp<SkData> suffix) {
+        return std::unique_ptr<SkJpegEncoderMgr>(new SkJpegEncoderMgr(stream, std::move(suffix)));
     }
 
     bool setParams(const SkImageInfo& srcInfo, const SkJpegEncoder::Options& options);
@@ -63,9 +63,10 @@ public:
 
 private:
 
-    SkJpegEncoderMgr(SkWStream* stream)
-        : fDstMgr(stream)
+    SkJpegEncoderMgr(SkWStream* stream, sk_sp<SkData> suffix)
+        : fDstMgr(stream, suffix.get())
         , fProc(nullptr)
+        , fSuffix(std::move(suffix))
     {
         fCInfo.err = jpeg_std_error(&fErrMgr);
         fErrMgr.error_exit = skjpeg_error_exit;
@@ -77,6 +78,7 @@ private:
     skjpeg_error_mgr        fErrMgr;
     skjpeg_destination_mgr  fDstMgr;
     transform_scanline_proc fProc;
+    sk_sp<SkData>           fSuffix;
 };
 
 bool SkJpegEncoderMgr::setParams(const SkImageInfo& srcInfo, const SkJpegEncoder::Options& options)
@@ -177,13 +179,70 @@ bool SkJpegEncoderMgr::setParams(const SkImageInfo& srcInfo, const SkJpegEncoder
     return true;
 }
 
+sk_sp<SkData> get_jpegr_xmp_data(float rangeScalingFactor, int32_t transferFunction, int32_t itemLength) {
+    SkDynamicMemoryWStream s;
+    s.write(kXMPSig, sizeof(kXMPSig));
+    s.writeText(
+        "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.1.2\">\n"
+        "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
+        "<rdf:Description xmlns:GContainer=\"http://ns.google.com/photos/1.0/container/\" "
+                         "xmlns:RecoveryMap=\"http://ns.google.com/photos/1.0/recoverymap/\">\n"
+        "<GContainer:Version>1</GContainer:Version>\n"
+        "<GContainer:Directory>\n"
+        "<rdf:Seq>\n"
+        "<rdf:li>\n"
+        "<GContainer:Item GContainer:ItemSemantic=\"Primary\" "
+                         "GContainer:ItemMime=\"image/jpeg\" "
+                         "RecoveryMap:Version=\"1\" "
+                         "RecoveryMap:RangeScalingFactor=\"");
+    s.writeScalarAsText(rangeScalingFactor);
+    s.writeText("\" ");
+    s.writeText("RecoveryMap:TransferFunction=\"");
+    s.writeDecAsText(transferFunction);
+    s.writeText("\"/>\n");
+    s.writeText(
+        "</rdf:li>\n"
+        "<rdf:li>\n"
+        "<GContainer:Item GContainer:ItemSemantic=\"RecoveryMap\" "
+                         "GContainer:ItemMime=\"image/jpeg\" "
+                         "GContainer:ItemLength=\"");
+    s.writeDecAsText(itemLength);
+    s.writeText("\"/>\n");
+    s.writeText(
+        "</rdf:li>\n"
+        "</rdf:Seq>\n"
+        "</GContainer:Directory>\n"
+        "</rdf:Description>\n"
+        "</rdf:RDF>\n"
+        "</x:xmpmeta>\n");
+    return s.detachAsData();
+}
+
 std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst, const SkPixmap& src,
                                                const Options& options) {
     if (!SkPixmapIsValid(src)) {
         return nullptr;
     }
 
-    std::unique_ptr<SkJpegEncoderMgr> encoderMgr = SkJpegEncoderMgr::Make(dst);
+    sk_sp<SkData> jpegrXmp;
+    sk_sp<SkData> jpegrGainmapEncoded;
+    if (options.fGainmap && options.fGainmapInfo) {
+        SkDynamicMemoryWStream s;
+        printf("encoding...\n");
+        Options gainmapOptions = options;
+        gainmapOptions.fGainmap = nullptr;
+        gainmapOptions.fGainmapInfo = nullptr;
+        if (SkJpegEncoder::Encode(&s, *options.fGainmap, gainmapOptions)) {
+            jpegrGainmapEncoded = s.detachAsData();
+            float rangeScalingFactor = 10.664f;
+            int32_t transferFunction = 0;
+            int32_t length = jpegrGainmapEncoded->size();
+            printf("getting xmp\n");
+            jpegrXmp = get_jpegr_xmp_data(rangeScalingFactor, transferFunction, length);
+        }
+    }
+
+    std::unique_ptr<SkJpegEncoderMgr> encoderMgr = SkJpegEncoderMgr::Make(dst, std::move(jpegrGainmapEncoded));
 
     skjpeg_error_mgr::AutoPushJmpBuf jmp(encoderMgr->errorMgr());
     if (setjmp(jmp)) {
@@ -196,6 +255,10 @@ std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst, const SkPixmap& s
 
     jpeg_set_quality(encoderMgr->cinfo(), options.fQuality, TRUE);
     jpeg_start_compress(encoderMgr->cinfo(), TRUE);
+
+    if (jpegrXmp) {
+        jpeg_write_marker(encoderMgr->cinfo(), kXMPMarker, jpegrXmp->bytes(), jpegrXmp->size());
+    }
 
     sk_sp<SkData> icc =
             icc_from_color_space(src.info(), options.fICCProfile, options.fICCProfileDescription);

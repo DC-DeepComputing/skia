@@ -14,7 +14,6 @@
 #include "include/private/SkGainmapInfo.h"
 #include "src/core/SkColorFilterPriv.h"
 
-#ifdef SK_ENABLE_SKSL
 static constexpr char gGainmapSKSL[] =
         "uniform shader base;"
         "uniform shader gainmap;"
@@ -26,11 +25,11 @@ static constexpr char gGainmapSKSL[] =
         "uniform half W;"
         ""
         "half4 main(float2 coord) {"
-        "    half4 S = base.eval(coord);"
-        "    half4 G = gainmap.eval(coord);"
-        "    half3 L = mix(logRatioMin.rgb, logRatioMax.rgb, pow(G.rgb, gainmapGamma.rgb));"
-        "    half3 H = (S.rgb + epsilonSdr) * exp(L * W) - epsilonHdr;"
-        "    return half4(H.r, H.g, H.b, S.a);"
+        "half4 S = base.eval(coord);"
+        "half4 G = gainmap.eval(coord);"
+        "half3 L = mix(logRatioMin.rgb, logRatioMax.rgb, pow(G.rgb, gainmapGamma.rgb));"
+        "half3 H = (S.rgb + epsilonSdr) * exp(L * W) - epsilonHdr;"
+        "return half4(H.r, H.g, H.b, S.a);"
         "}";
 
 static sk_sp<SkRuntimeEffect> gainmap_apply_effect() {
@@ -39,7 +38,6 @@ static sk_sp<SkRuntimeEffect> gainmap_apply_effect() {
     SkASSERT(effect);
     return sk_ref_sp(effect);
 }
-#endif  // SK_ENABLE_SKSL
 
 sk_sp<SkShader> SkGainmapShader::Make(sk_sp<SkImage> baseImage,
                                       const SkRect& baseRect,
@@ -51,7 +49,6 @@ sk_sp<SkShader> SkGainmapShader::Make(sk_sp<SkImage> baseImage,
                                       const SkRect& dstRect,
                                       float dstHdrRatio,
                                       sk_sp<SkColorSpace> dstColorSpace) {
-#ifdef SK_ENABLE_SKSL
     sk_sp<SkColorSpace> baseColorSpace =
             baseImage->colorSpace() ? baseImage->refColorSpace() : SkColorSpace::MakeSRGB();
 
@@ -113,8 +110,4 @@ sk_sp<SkShader> SkGainmapShader::Make(sk_sp<SkImage> baseImage,
 
     // Return a shader that will apply the gainmap and then convert to the destination color space.
     return gainmapMathShader->makeWithColorFilter(colorXformGainmapToDst);
-#else
-    // This shader is currently only implemented using SkSL.
-    return nullptr;
-#endif
 }

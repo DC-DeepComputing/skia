@@ -20,6 +20,7 @@ extern "C" {
     #include "jpeglib.h"
 }
 
+class SkData;
 class SkWStream;
 
 void skjpeg_error_exit(j_common_ptr cinfo);
@@ -29,9 +30,10 @@ void skjpeg_error_exit(j_common_ptr cinfo);
  * object.
  */
 struct SK_SPI skjpeg_destination_mgr : jpeg_destination_mgr {
-    skjpeg_destination_mgr(SkWStream* stream);
+    skjpeg_destination_mgr(SkWStream* stream, SkData* suffix);
 
-    SkWStream*  fStream;
+    SkWStream* const fStream;
+    SkData* const    fSuffix;
 
     enum {
         kBufferSize = 1024

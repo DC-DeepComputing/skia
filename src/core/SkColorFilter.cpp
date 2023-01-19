@@ -332,7 +332,6 @@ protected:
 private:
     friend void ::SkRegisterColorSpaceXformColorFilterFlattenable();
     SK_FLATTENABLE_HOOKS(ColorSpaceXformColorFilter)
-    static sk_sp<SkFlattenable> LegacyGammaOnlyCreateProc(SkReadBuffer& buffer);
 
     const sk_sp<SkColorSpace> fSrc;
     const sk_sp<SkColorSpace> fDst;
@@ -341,17 +340,6 @@ private:
     friend class SkColorFilter;
     using INHERITED = SkColorFilterBase;
 };
-
-sk_sp<SkFlattenable> ColorSpaceXformColorFilter::LegacyGammaOnlyCreateProc(SkReadBuffer& buffer) {
-    uint32_t dir = buffer.read32();
-    if (!buffer.validate(dir <= 1)) {
-        return nullptr;
-    }
-    if (dir == 0) {
-      return SkColorFilters::LinearToSRGBGamma();
-    }
-	return SkColorFilters::SRGBToLinearGamma();
-}
 
 sk_sp<SkFlattenable> ColorSpaceXformColorFilter::CreateProc(SkReadBuffer& buffer) {
     sk_sp<SkColorSpace> colorSpaces[2];
@@ -598,9 +586,6 @@ void SkRegisterComposeColorFilterFlattenable() {
 
 void SkRegisterColorSpaceXformColorFilterFlattenable() {
     SK_REGISTER_FLATTENABLE(ColorSpaceXformColorFilter);
-    // TODO(ccameron): Remove after grace period for SKPs to stop using old serialization.
-    SkFlattenable::Register("SkSRGBGammaColorFilter",
-                            ColorSpaceXformColorFilter::LegacyGammaOnlyCreateProc);
 }
 
 void SkRegisterWorkingFormatColorFilterFlattenable() {
