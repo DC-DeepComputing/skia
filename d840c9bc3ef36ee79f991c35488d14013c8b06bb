@@ -16,6 +16,24 @@
       "message": "This is breaking Android and G3 rolls:\n\nhttps://android-build.googleplex.com/builds/pending/P48054018/aosp_bramble-userdebug/latest/view/logs/build_error.log\n\nhttps://fusion2.corp.google.com/presubmit/tap/503105395/OCL:503105395:BASE:503109888:1674125499027:6b04f833/targets/invocations/76a6ac97-7ee7-45bc-8e87-2e7b7ea25dd3/targets/%2F%2Fjava%2Fcom%2Fgoogle%2Fandroid%2Fapps%2Fyoutube%2Fproducer%2Fplugins%2Fengine:engine_test/log\n\n\nld.lld: error: undefined symbol: SkUnicode::MakeClientBasedUnicode(SkSpan\u003cchar\u003e, std::__ndk1::vector\u003cSkUnicode::BidiRegion, std::__ndk1::allocator\u003cSkUnicode::BidiRegion\u003e \u003e, std::__ndk1::vector\u003cunsigned long, std::__ndk1::allocator\u003cunsigned long\u003e \u003e, std::__ndk1::vector\u003cunsigned long, std::__ndk1::allocator\u003cunsigned long\u003e \u003e, std::__ndk1::vector\u003cSkUnicode::LineBreakBefore, std::__ndk1::allocator\u003cSkUnicode::LineBreakBefore\u003e \u003e)\n\u003e\u003e\u003e referenced by ParagraphBuilderImpl.cpp:189 (third_party/skia/HEAD/modules/skparagraph/src/ParagraphBuilderImpl.cpp:189)\n\u003e\u003e\u003e               blaze-out/android-x86_64-fastbuild/bin/third_party/skia/HEAD/_objs/skparagraph/ParagraphBuilderImpl.pic.o:(skia::textlayout::ParagraphBuilderImpl::Build())\nclang: error: linker command failed with exit code 1 (use -v to see invocation)",
       "revId": "d840c9bc3ef36ee79f991c35488d14013c8b06bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe785ef_a19d551f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-01-19T14:38:50Z",
+      "side": 1,
+      "message": "This is because it\u0027s possible to have a build that has NO ICU \u0026\u0026 NO CLIENT ICU. So doing the client-icu logic inside:\n```\n#ifndef SK_UNICODE_ICU_IMPLEMENTATION\n...\n#endif\n```\ndoesn\u0027t always work. Right?",
+      "parentUuid": "cd3003c7_c6d52775",
+      "revId": "d840c9bc3ef36ee79f991c35488d14013c8b06bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
