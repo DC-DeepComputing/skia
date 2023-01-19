@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "288a7b6e_3f4c0ff3",
+        "filename": "src/codec/SkGainmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-19T11:12:38Z",
+      "side": 1,
+      "message": "Oops, yes. Removed!",
+      "parentUuid": "7791a166_e35d97b9",
+      "revId": "6fe1ad94af57a3caeb4ffb1df38ee35adcee45aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d68cc5ad_95efc3d6",
         "filename": "src/shaders/SkGainmapShader.cpp",
         "patchSetId": 8
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-18T16:22:10Z",
       "side": 1,
       "message": "I\u0027m not following this step ... don\u0027t we want to start with the base image\u0027s color space (especially as we\u0027re then concat\u0027ing the base-to-gainmap xform at the end of this chain)?\n\nAh, I get it - you\u0027re trying to suppress the automatic conversion to dest that happens in the image shader. I was expecting that in the gainmap path, but forgot you\u0027d need it here, too.\n\nAnother option is to use `SkImage::makeRawShader`. It automatically suppresses all color space transformation, and suppresses automatic premul of unpremul images. (Although that might not be what you want here...). It also doesn\u0027t support bicubic filtering, so your current approach might be better.\n\n...\n\nEdit: I\u0027m just trying to figure out how we eventually get rid of this dependency, where we need to know the dst here. If we could/did use makeRawShader (maybe we accept/workaround the bicubic issues, and possibly have the premul option separate from the colorspace option), then we could add a sentinel color space to the MakeColorSpaceXform() factory that means \"dst\" when the shader is converted to an FP/pipeline. With those changes (which would be generally helpful, I think?), we\u0027d have a path to this being dst-independent.\n\nNo need to solve it all now, I just wanted to think through the solution, so we don\u0027t paint ourselves into a corner.",
+      "range": {
+        "startLine": 73,
+        "startChar": 27,
+        "endLine": 73,
+        "endChar": 74
+      },
+      "revId": "6fe1ad94af57a3caeb4ffb1df38ee35adcee45aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3b58fd_870ff804",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-19T11:12:38Z",
+      "side": 1,
+      "message": "Yeah, something similar to the `SkWorkingFormatColorFilter` (at least in name).\n\nSo this would be something like:\n```\n  gainmapMathColorSpace \u003d baseImage-\u003ecolorSpace()-\u003emakeLinearGamma();\n  baseImageShader \u003d baseImage-\u003emakeShader(.)-\u003e\n                    makeWithWorkingSpace(gainmapMathColorSpace, kUPMA)\n  gainmapShader \u003d gainmapImage-\u003emakeShader(.)-\u003e\n                  makeWithWorkingSpace(nullptr, kUPMA)\n  ... create gainmapMathShader ...\n  return gainmapMathShader-\u003emakeWithoutWorkingSpace(gainmapMathColorSpace, kUPMA)\n```\n\nSo there the `makeWithWorkingSpace` converts everything to the specified format, then the `makeWithoutWorkingSpace` converts everything from the specified format to \"whatever the destination color space is\" (or potentially cancels out with a `makeWithWorkingSpace` in the next stage of the pipeline).\n\nFrom grasping around at the various `onProgram` implementations, I think this amounts to having the \"with[out]WorkingSpace\" override the SkColorInfo that gets passed around to children. (But that\u0027s me grasping).\n\nI\u0027m hesitant to move to `makeRawShader` for the gainmap because of the filtering (it\u0027s low-res and upscaled). Also, fortunately, all image formats that support gainmaps are opaque (for now).\n\nOnce all of that is taken care of, we could make this take SkShaders for the base and gainmap, and take an explicit SkColorSpace to be linearized for the working space.",
+      "parentUuid": "d68cc5ad_95efc3d6",
       "range": {
         "startLine": 73,
         "startChar": 27,
