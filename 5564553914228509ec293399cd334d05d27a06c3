@@ -39,6 +39,30 @@
       },
       "revId": "5564553914228509ec293399cd334d05d27a06c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "280acd9b_2a4019e8",
+        "filename": "tests/RasterPipelineBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-19T18:10:45Z",
+      "side": 1,
+      "message": "Yes, the code is nonsense. We are just checking that the builder does what we tell it. None of it does useful work.",
+      "parentUuid": "6408d932_2a1a1e81",
+      "range": {
+        "startLine": 545,
+        "startChar": 4,
+        "endLine": 547,
+        "endChar": 64
+      },
+      "revId": "5564553914228509ec293399cd334d05d27a06c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
