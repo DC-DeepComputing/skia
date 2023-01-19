@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbc557c1_a67423b4",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T21:16:36Z",
+      "side": 1,
+      "message": "I was talking with the AA outset challenge a little with Rob and we realized that scaling up decreases the device-space outset relative to the original bounds so that will never cause shapes to overlap. It\u0027s only downscaling that does so. If we have client\u0027s tell us their min and max scale factors for replaying we can conservatively still track draw bounding boxes.\n\nRob also agreed that we should probably keep the replay transform math/representation in the SkSL restricted to what we\u0027re supporting holistically. Having the ability to set a matrix on the command buffer but not having the rest of the system know how to handle an arbitrary matrix could lead to surprises. Additionally, if we limit ourselves to translations or scale+translations, the entire adjustment can be captured in the rtAdjust value I think. The scissor will still need to be updated dynamically since that operates separately from the viewport, IIRC.",
+      "parentUuid": "80486f9a_3dace7c3",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4223cd29_055dc4fa",
         "filename": "src/gpu/graphite/RenderPassTask.h",
         "patchSetId": 1
