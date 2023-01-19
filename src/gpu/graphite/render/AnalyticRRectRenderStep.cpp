@@ -455,32 +455,42 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             xs = ltrbOrQuadYs.LRRL;
             ys = ltrbOrQuadYs.TTBB;
 
-            strokeRadius = xRadiiOrFlags.y;
-            cornerRadii = float2(radiiOrQuadXs[cornerID]);  // strokes require circular corners
-
-            // Configure corner shape based on style, defaulting to kRoundStyle since any circular
-            // corner remains round regardless.
-            // TODO should this analysis be done on the CPU and we upload 4 joinScales instead of
-            // 1 join style that has to be combined with the per-corner radii?
+            // Default to kRoundStyle since any circular corner remains round regardless of style
             joinScale = kRoundScale;
-            if (cornerRadii.x <= kEpsilon) {
-                // Join type only affects rectangular corners. For simplicity, hairline rect corners
-                // are always mitered.
-                if (strokeRadius == 0.0 || xRadiiOrFlags.z > 0.0) {
-                    joinScale = kMiterScale;
-                } else if (xRadiiOrFlags.z == 0.0) {
-                    joinScale = kBevelScale;
-                } // else remain rounded
-            }
+            if (xRadiiOrFlags.y < 0.0) {
+                // A hairline so the X radii are encoded as negative values in this field, and Y
+                // radii are stored directly in the subsequent float4.
+                strokeRadius = 0.0;
+                cornerRadii = float2(-xRadiiOrFlags[cornerID] - 2.0,
+                                     radiiOrQuadXs[cornerID]);
+                if (cornerRadii.x <= kEpsilon || cornerRadii.y <= kEpsilon) {
+                    joinScale = kMiterScale; // Hairlines treat bevels as miters
+                }
 
-            // When not rounded, this will be overwritten to sensible default values later on.
-            uvScale = inversesqrt(cornerRadii*cornerRadii + strokeRadius*strokeRadius);
-            coverageWidth = float2(cornerRadii.x, strokeRadius) * uvScale;
+                uvScale = 1.0 / cornerRadii;
+                // The final width is 0 but "r-s">0 so we calculate innner circular coverage like we
+                // would for a regular curved stroke corner.
+                coverageWidth = float2(1.0, 0.0);
+            } else {
+                strokeRadius = xRadiiOrFlags.z;
+                cornerRadii = float2(radiiOrQuadXs[cornerID]); // regular strokes are circular
+                if (cornerRadii.x <= kEpsilon) {
+                    // Join type only affects rectangular corners.
+                    if (xRadiiOrFlags.w > 0.0) {
+                        joinScale = kMiterScale;
+                    } else if (xRadiiOrFlags.z == 0.0) {
+                        joinScale = kBevelScale;
+                    } // else remain rounded
+                }
 
-            if (!bidirectionalCoverage && coverageWidth.x > coverageWidth.y) {
-                // Flip the two components of coverage width so that "r"-"s" is less than 0 and the
-                // fragment shader will skip the inner circle distance evaluation.
-                coverageWidth = coverageWidth.yx;
+                uvScale = float2(inversesqrt(cornerRadii.x*cornerRadii.x
+                                                    + strokeRadius*strokeRadius));
+                coverageWidth = float2(cornerRadii.x, strokeRadius) * uvScale;
+                if (!bidirectionalCoverage && coverageWidth.x > coverageWidth.y) {
+                    // Flip the two components of coverage width so that "r"-"s" is less than 0 and
+                    // the fragment shader will skip the inner circle distance evaluation.
+                    coverageWidth = coverageWidth.yx;
+                }
             }
         } else if (any(greaterThan(xRadiiOrFlags, float4(0.0)))) {
             // Filled round rect
@@ -787,7 +797,7 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
 
     if (params.isStroke()) {
         SkASSERT(params.strokeStyle().halfWidth() >= 0.f);
-        SkASSERT(shape.isRect() ||
+        SkASSERT(shape.isRect() || params.strokeStyle().halfWidth() == 0.f ||
                  (shape.isRRect() && SkRRectPriv::AllCornersCircular(shape.rrect())));
 
         const float strokeRadius = params.strokeStyle().halfWidth();
@@ -826,19 +836,19 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
             }
         }
 
-        skvx::float4 cornerRadii;
-        if (shape.isRRect()) {
-            // X and Y radii are the same, but each corner could be different. Take X arbitrarily.
-            cornerRadii = load_x_radii(shape.rrect());
+        skvx::float4 xRadii = shape.isRRect() ? load_x_radii(shape.rrect()) : skvx::float4(0.f);
+        if (params.strokeStyle().halfWidth() > 0.f) {
+            // Write a negative value outside [-1, 0] to signal a stroked shape, then the style
+            // params, followed by corner radii and bounds.
+            vw << -2.f << 0.f << strokeRadius << params.strokeStyle().joinLimit()
+               << xRadii << bounds.ltrb();
         } else {
-            // All four corner radii are 0s for a rectangle
-            cornerRadii = 0.f;
+            // Write -2 - cornerRadii to encode the X radii in such a way to trigger stroking but
+            // guarantee the 2nd field is non-zero to signal hairline. Then we upload Y radii as
+            // well to allow for elliptical hairlines.
+            skvx::float4 yRadii = shape.isRRect() ? load_y_radii(shape.rrect()) : skvx::float4(0.f);
+            vw << (-2.f - xRadii) << yRadii << bounds.ltrb();
         }
-
-        // Write a negative value outside [-1, 0] to signal a stroked shape, then the style params,
-        // followed by corner radii and bounds.
-        vw << -2.f << strokeRadius << params.strokeStyle().joinLimit() << /*unused*/0.f
-           << cornerRadii << bounds.ltrb();
     } else {
         // TODO: Add quadrilateral support to Shape with per-edge flags.
         if (shape.isRect() || (shape.isRRect() && shape.rrect().isRect())) {
