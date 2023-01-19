@@ -106,6 +106,24 @@
       "parentUuid": "f104bb1e_02b4af20",
       "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05363ff6_7326928c",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-19T16:27:44Z",
+      "side": 1,
+      "message": "And for some reason Chromium\u0027s `gpu/vulkan/init/gr_vk_memory_allocator_impl.cc` uses `SkASSERT`?\n\nThe Bitmap.h ones (and I\u0027m sure many others) are because Skia uses `SkASSERT` in public headers (which uses `SkAbort_FileLine` in Chromium). As a result `SkAbort_FileLine` really needs to be API because many translation units are going to be calling it.",
+      "parentUuid": "db3a13f9_59630b4f",
+      "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
