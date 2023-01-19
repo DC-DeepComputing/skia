@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSwizzle.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Context.h"
@@ -564,6 +565,7 @@ static constexpr Uniform kImageShaderUniforms[] = {
         { "filterMode",            SkSLType::kInt },
         { "useCubic",              SkSLType::kInt },
         { "cubicCoeffs",           SkSLType::kFloat4x4 },
+        { "readSwizzle",           SkSLType::kInt },
         // The next 6 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },
@@ -587,7 +589,68 @@ static_assert(0 == static_cast<int>(SkFilterMode::kNearest),
 static_assert(1 == static_cast<int>(SkFilterMode::kLinear),
               "ImageShader code depends on SkFilterMode");
 
+static_assert(0 == static_cast<int>(SkReadSwizzle::kRBGA),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(1 == static_cast<int>(SkReadSwizzle::kRGB1),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(2 == static_cast<int>(SkReadSwizzle::k000R),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(3 == static_cast<int>(SkReadSwizzle::kRRR1),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(4 == static_cast<int>(SkReadSwizzle::kBGRA),
+              "ImageShader code depends on SkReadSwizzle");
+
 static constexpr char kImageShaderName[] = "sk_image_shader";
+
+std::string GenerateImageShaderExpression(const ShaderInfo& shaderInfo,
+                                          int entryIndex,
+                                          const PaintParamsKey::BlockReader& reader,
+                                          const ShaderSnippet::Args& args) {
+
+    // TODO: Assert no children. Also, do we really need this custom callback still....?
+    // SkASSERT(reader.entry()->fUniforms.empty());
+    // SkASSERT(reader.numDataPayloadFields() == 1);
+    const ShaderSnippet* entry = reader.entry();
+
+    std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex);
+
+    std::string imgSize               = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+    std::string subsetName            = entry->getMangledUniformName(shaderInfo, 1, entryIndex);
+    std::string tmXName               = entry->getMangledUniformName(shaderInfo, 2, entryIndex);
+    std::string tmYName               = entry->getMangledUniformName(shaderInfo, 3, entryIndex);
+    std::string filterMode            = entry->getMangledUniformName(shaderInfo, 4, entryIndex);
+    std::string useCubic              = entry->getMangledUniformName(shaderInfo, 5, entryIndex);
+    std::string cubicCoeffs           = entry->getMangledUniformName(shaderInfo, 6, entryIndex);
+    std::string readSwizzle           = entry->getMangledUniformName(shaderInfo, 7, entryIndex);
+    std::string csXformFlags          = entry->getMangledUniformName(shaderInfo, 8, entryIndex);
+    std::string csXformSrcKind        = entry->getMangledUniformName(shaderInfo, 9, entryIndex);
+    std::string csXformDstKind        = entry->getMangledUniformName(shaderInfo, 10, entryIndex);
+    std::string csXformSrcCoeffs      = entry->getMangledUniformName(shaderInfo, 11, entryIndex);
+    std::string csXformDstCoeffs      = entry->getMangledUniformName(shaderInfo, 12, entryIndex);
+    std::string csXformGamutTransform = entry->getMangledUniformName(shaderInfo, 13, entryIndex);
+
+    std::string result;
+
+    SkSL::String::appendf(&result,
+                          "%s(coords, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+                          reader.entry()->fStaticFunctionName,
+                          imgSize.c_str(),
+                          subsetName.c_str(),
+                          tmXName.c_str(),
+                          tmYName.c_str(),
+                          filterMode.c_str(),
+                          useCubic.c_str(),
+                          cubicCoeffs.c_str(),
+                          readSwizzle.c_str(),
+                          csXformFlags.c_str(),
+                          csXformSrcKind.c_str(),
+                          csXformDstKind.c_str(),
+                          csXformSrcCoeffs.c_str(),
+                          csXformDstCoeffs.c_str(),
+                          csXformGamutTransform.c_str(),
+                          samplerVarName.c_str());
+    return result;
+}
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
@@ -1223,7 +1286,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords,
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
-            GenerateDefaultExpression,
+            GenerateImageShaderExpression,
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
