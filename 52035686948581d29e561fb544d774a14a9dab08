@@ -16,6 +16,24 @@
       "message": "IIUC, this assert isn\u0027t correct. Client ICU is not the only alternative to ICU4C, is it?\n\nIs it possible to build SkParagraph without ICU and without client ICU?",
       "revId": "52035686948581d29e561fb544d774a14a9dab08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b976ca81_66e8010f",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-19T14:47:34Z",
+      "side": 1,
+      "message": "Yes. It\u0027s also possible to have both of them in the build. This is how I test my code. \nOtherwise I would do #ifdef SK_UNICODE_CLIENT_IMPLEMENTATION - but I cannot because in case of both implementation in the build I need to go with SK_UNICODE_ICU_IMPLEMENTATION as default.\nI will figure something out.",
+      "parentUuid": "84a1d7fb_1c376336",
+      "revId": "52035686948581d29e561fb544d774a14a9dab08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
