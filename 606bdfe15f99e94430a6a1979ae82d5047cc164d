@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4bdf035_ba8a7b32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:30:26Z",
+      "side": 1,
+      "message": "Thank you for the explanations!",
+      "revId": "606bdfe15f99e94430a6a1979ae82d5047cc164d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac3400d9_a2511048",
@@ -48,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0dbd91e_698f4f75",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:30:26Z",
+      "side": 1,
+      "message": "OK, that explains why the test output all looks broken up correctly 😊",
+      "parentUuid": "5c6a19d7_7c772b24",
+      "range": {
+        "startLine": 289,
+        "startChar": 32,
+        "endLine": 289,
+        "endChar": 37
+      },
+      "revId": "606bdfe15f99e94430a6a1979ae82d5047cc164d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "555c4a44_6fe80bb5",
@@ -85,6 +126,30 @@
       "side": 1,
       "message": "The f[] and g[] arrays are from here:\n\nhttps://osscs.corp.google.com/android/platform/superproject/+/master:external/skia/resources/sksl/folding/ArraySizeFolding.sksl;l\u003d33;drc\u003d44c00ae64a4e3eb2ff815f3817e6f319d18c55cc\n\nThe c[] and e[] arrays are here:\n\nhttps://osscs.corp.google.com/android/platform/superproject/+/master:external/skia/resources/sksl/folding/ArraySizeFolding.sksl;l\u003d12;drc\u003d44c00ae64a4e3eb2ff815f3817e6f319d18c55cc\n\nHere is what the code looks like after inlining--this should make it easier to follow:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/sksl/folding/ArraySizeFolding.glsl\n\nThe first line `zero_4_slots_unmasked          f[0](0..3) \u003d 0` clears `f[0], f[1], f[2]` and `g[0]`.\nThe next line `zero_4_slots_unmasked          g[1](0..3) \u003d 0` clears `g[1], g[2], _3_b[0]` and `_3_b[1]`.\nThe next line `zero_4_slots_unmasked          _4_c[0](0..3) \u003d 0` clears `_4_c[0], _4_c[1], _5_d[0]` and `_5_d[1]`.\netc.",
       "parentUuid": "555c4a44_6fe80bb5",
+      "range": {
+        "startLine": 4,
+        "startChar": 38,
+        "endLine": 4,
+        "endChar": 42
+      },
+      "revId": "606bdfe15f99e94430a6a1979ae82d5047cc164d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43f1974b_9d7e39f1",
+        "filename": "tests/sksl/folding/ArraySizeFolding.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-19T18:30:26Z",
+      "side": 1,
+      "message": "Thank you, this makes sense!",
+      "parentUuid": "e3ed0491_7846a16c",
       "range": {
         "startLine": 4,
         "startChar": 38,
