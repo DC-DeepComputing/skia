@@ -3,8 +3,8 @@
     3. zero_slot_unmasked             $0 = 0
     4. copy_constant                  $1 = 0x40A00000 (5.0)
     5. copy_constant                  $2 = 0x41200000 (10.0)
-    6. copy_constant                  $3 = 0x41700000 (15.0)
-    7. copy_4_slots_unmasked          h22 = $0..3
+    6. copy_constant                  h22(3) = 0x41700000 (15.0)
+    7. copy_3_slots_unmasked          h22(0..2) = $0..2
     8. copy_4_constants               $0..3 = testMatrix2x2
     9. zero_slot_unmasked             $4 = 0
    10. copy_constant                  $5 = 0x3F800000 (1.0)

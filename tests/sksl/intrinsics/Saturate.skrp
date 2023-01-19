@@ -3,8 +3,8 @@
     3. zero_slot_unmasked             $0 = 0
     4. zero_slot_unmasked             $1 = 0
     5. copy_constant                  $2 = 0x3F400000 (0.75)
-    6. copy_constant                  $3 = 0x3F800000 (1.0)
-    7. copy_4_slots_unmasked          expected = $0..3
+    6. copy_constant                  expected(3) = 0x3F800000 (1.0)
+    7. copy_3_slots_unmasked          expected(0..2) = $0..2
     8. store_condition_mask           $8 = CondMask
     9. copy_constant                  $9 = testInputs(0)
    10. zero_slot_unmasked             $10 = 0

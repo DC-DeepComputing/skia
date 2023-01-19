@@ -243,6 +243,34 @@ void Builder::push_duplicates(int count) {
     }
 }
 
+void Builder::pop_slots_unmasked(SlotRange dst) {
+    SkASSERT(dst.count >= 0);
+
+    while (!fInstructions.empty() && dst.count > 0) {
+        Instruction& lastInstruction = fInstructions.back();
+
+        // If the previous instruction was pushing a constant, we can save a step by copying that
+        // constant directly into the destination slot.
+        if (lastInstruction.fOp == BuilderOp::push_literal_f) {
+            int immValue = lastInstruction.fImmA;
+            fInstructions.pop_back();
+
+            // We need to fill the _last_ slot of the passed-in slot range.
+            Slot dstSlot = dst.index + dst.count - 1;
+            fInstructions.push_back({BuilderOp::copy_constant, {dstSlot}, immValue});
+            --dst.count;
+            continue;
+        }
+
+        break;
+    }
+
+    if (dst.count > 0) {
+        this->copy_stack_to_slots_unmasked(dst);
+        this->discard_stack(dst.count);
+    }
+}
+
 void Builder::copy_stack_to_slots(SlotRange dst, int offsetFromStackTop) {
     // If the last instruction copied the previous stack slots, just extend it.
     if (!fInstructions.empty()) {
@@ -968,8 +996,9 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 pipeline->push_back({RPOp::mask_off_return_mask, nullptr});
                 break;
 
+            case BuilderOp::copy_constant:
             case BuilderOp::push_literal_f: {
-                float* dst = tempStackPtr;
+                float* dst = (inst.fOp == BuilderOp::push_literal_f) ? tempStackPtr : SlotA();
                 if (inst.fImmA == 0) {
                     pipeline->push_back({RPOp::zero_slot_unmasked, dst});
                     break;
