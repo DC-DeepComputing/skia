@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54ccb4a_f09c7390",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-19T13:22:36Z",
+      "side": 1,
+      "message": "Yeah, it seems more in line with IWYU for the user config file to include skapi if they need it.",
+      "revId": "c806a69d3029b9ec28d4e93f8b4fc0ea04238a60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
