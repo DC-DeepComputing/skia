@@ -10,13 +10,17 @@
 
 #include "include/core/SkImage.h"
 #include "include/core/SkM44.h"
+#include "include/core/SkSwizzle.h"
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkShaderBase.h"
+
+namespace skgpu {
+class Swizzle;
+}
 
 namespace skgpu::graphite {
 class KeyContext;
 }
-
 class SkImageShader : public SkShaderBase {
 public:
     static sk_sp<SkShader> Make(sk_sp<SkImage>,
@@ -86,6 +90,9 @@ private:
             skvm::Uniforms* uniforms, const TransformShader* coordShader, SkArenaAlloc*) const;
 
     bool doStages(const SkStageRec&, TransformShader* = nullptr) const;
+#ifdef SK_GRAPHITE_ENABLED
+    SkReadSwizzle swizzleClassToReadEnum(const skgpu::Swizzle& swizzle) const;
+#endif
 
     sk_sp<SkImage>          fImage;
     const SkSamplingOptions fSampling;
