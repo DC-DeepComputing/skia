@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSwizzle.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Context.h"
@@ -564,6 +565,7 @@ static constexpr Uniform kImageShaderUniforms[] = {
         { "filterMode",            SkSLType::kInt },
         { "useCubic",              SkSLType::kInt },
         { "cubicCoeffs",           SkSLType::kFloat4x4 },
+        { "readSwizzle",           SkSLType::kInt },
         // The next 6 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },
@@ -586,6 +588,17 @@ static_assert(0 == static_cast<int>(SkFilterMode::kNearest),
               "ImageShader code depends on SkFilterMode");
 static_assert(1 == static_cast<int>(SkFilterMode::kLinear),
               "ImageShader code depends on SkFilterMode");
+
+static_assert(0 == static_cast<int>(SkReadSwizzle::kRBGA),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(1 == static_cast<int>(SkReadSwizzle::kRGB1),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(2 == static_cast<int>(SkReadSwizzle::k000R),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(3 == static_cast<int>(SkReadSwizzle::kRRR1),
+              "ImageShader code depends on SkReadSwizzle");
+static_assert(4 == static_cast<int>(SkReadSwizzle::kBGRA),
+              "ImageShader code depends on SkReadSwizzle");
 
 static constexpr char kImageShaderName[] = "sk_image_shader";
 

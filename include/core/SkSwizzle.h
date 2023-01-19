@@ -16,4 +16,24 @@
 */
 SK_API void SkSwapRB(uint32_t* dest, const uint32_t* src, int count);
 
-#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+/**
+ * Enumerate the few possible read and write swizzle options for smaller storage.
+*/
+enum class SkReadSwizzle {
+    kRBGA, // Default
+    kRGB1,
+    k000R,
+    kRRR1,
+    kBGRA,
+};
+
+enum class SkWriteSwizzle {
+    kRGBA, // Default
+    kA000,
+    kBGRA,
+};
+
+#endif // SK_GRAPHITE_ENABLED
+#endif // SkSwizzle_DEFINED

@@ -13,6 +13,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkSwizzle.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/private/SkColorData.h"
@@ -145,11 +146,13 @@ struct ImageShaderBlock {
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,
-                  SkRect subset);
+                  SkRect subset,
+                  SkReadSwizzle readSwizzle);
 
         SkSamplingOptions fSampling;
         SkTileMode fTileModes[2];
         SkRect fSubset;
+        SkReadSwizzle fReadSwizzle;
 
         SkColorSpaceXformSteps fSteps;
 
