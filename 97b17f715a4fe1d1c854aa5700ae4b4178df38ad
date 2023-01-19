@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d052e813_2d023b08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T18:12:43Z",
+      "side": 1,
+      "message": "Looking at git history, these functions came in the initial dump of types from Cary in 2013 when he started this version of path ops. In 2013, I\u0027m not sure if Skia was using C++11 yet, which is when std::cbrt was added. \n\nThe only other thinking I can see is that perhaps this implementation is more efficient but slightly less accurate than what comes in std::cbrt. Given PathOps is already not fast, I don\u0027t think that should stop us from attempting this simplification.",
+      "revId": "97b17f715a4fe1d1c854aa5700ae4b4178df38ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
