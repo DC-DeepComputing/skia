@@ -103,6 +103,75 @@
       },
       "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f6157e_48cd37dc",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-19T18:08:51Z",
+      "side": 1,
+      "message": "nit: This feels weird; `as_IB` performs a cast, then we\u0027re casting again. `as_IB` also strips off the `sk_sp`, off so you can\u0027t just remove it entirely, but it seems like you could use `static_cast\u003cImage*\u003e(imageToDraw.get())` or `static_cast\u003cImage\u0026\u003e(*imageToDraw)`. \n\nShould Graphite have a `graphite::as_Image` helper method like we use throughout the rest of Skia? (Rob, WDYT?) \n\nThis is fine for the current CL but it seemed worth bringing up.",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 51
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0be51a2e_12dfb0a7",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-19T18:08:51Z",
+      "side": 1,
+      "message": "Is this meant to be externally-accessible? If not, preface the function name with `$`.",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13ae984c_558cc236",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-19T18:08:51Z",
+      "side": 1,
+      "message": "Remove; just modify `color` directly.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
