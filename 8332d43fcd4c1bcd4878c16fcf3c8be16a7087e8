@@ -16,6 +16,29 @@
       "message": "Hi, John! Here is some code for you to check out regarding applying read swizzles to texture samples. I implemented it as a uniform as suggested. Note that without the *write* swizzle work (follow-up CL), the imgui window will still appear incorrect (not red - black now).",
       "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40862b16_d8380493",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-19T17:08:11Z",
+      "side": 1,
+      "message": "I\u0027m curious about your thoughts on where the best place to put this is.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 29
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
