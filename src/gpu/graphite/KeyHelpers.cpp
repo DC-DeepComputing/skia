@@ -324,6 +324,21 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
         gatherer->write(SkM44());
     }
 
+    if (imgData.fReadSwizzle == skgpu::Swizzle()) {
+        gatherer->write(0);
+    } else if (imgData.fReadSwizzle == skgpu::Swizzle::RGB1()) {
+        gatherer->write(1);
+    } else if (imgData.fReadSwizzle == skgpu::Swizzle("000r")) {
+        gatherer->write(2);
+    } else if (imgData.fReadSwizzle == skgpu::Swizzle("rrr1")) {
+        gatherer->write(3);
+    } else if (imgData.fReadSwizzle == skgpu::Swizzle::BGRA()) {
+        gatherer->write(4);
+    } else {
+        gatherer->write(0);
+        SkDebugf("Encountered unsupported read swizzle. Defaulting to RGBA.");
+    }
+
     add_color_space_uniforms(imgData.fSteps, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kImageShader));
@@ -334,10 +349,12 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
 ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                        SkTileMode tileModeX,
                                        SkTileMode tileModeY,
-                                       SkRect subset)
+                                       SkRect subset,
+                                       skgpu::Swizzle readSwizzle)
         : fSampling(sampling)
         , fTileModes{tileModeX, tileModeY}
-        , fSubset(subset) {
+        , fSubset(subset)
+        , fReadSwizzle(readSwizzle) {
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
