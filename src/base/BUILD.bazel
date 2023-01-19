@@ -7,7 +7,9 @@ exports_files_legacy()
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
+        "SkCubics.h",
         "SkLeanWindows.h",
+        "SkQuads.h",
         "SkSafeMath.h",
         "SkStringView.h",
     ],
@@ -28,8 +30,10 @@ skia_filegroup(
 skia_filegroup(
     name = "srcs",
     srcs = [
+        "SkCubics.cpp",
         "SkDeque.cpp",
         "SkFloatingPoint.cpp",
+        "SkQuads.cpp",
         "SkTDArray.cpp",
         ":skslc_srcs",
     ],
