@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1bac3cc2_b9a05119",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T19:33:47Z",
+      "side": 1,
+      "message": "Right, I think if we didn\u0027t aggregate all of textures in FragSkSL (using the reflection on RenderStep for that part, while still walking the paint to get the other more dynamic textures), I think we\u0027d still want it to report the results of its paint walk so that DawnGraphicsPipeline wouldn\u0027t have to do that again.\n\nHowever, I think having GetSkSLFS return the aggregation of both the paint and the renderstep makes the most sense and can be done with this CL. We can then add more aggregated reflection as we need to (e.g. all the uniforms, or all the attributes for more explicit pipeline creation).\n\nOnce RenderStep exposes its texture samplers, I think it would just change how GetSkSLFS calculated the `fNumTexturesAndSamplers`; DawnGraphicsPipeline wouldn\u0027t be querying RenderStep directly. This would be mostly because GetSkSLFS would be responsible for iterating those samplers and generating the SkSL to declare them in the shader. As you noted in the other comment, that work should definitely be another CL, but improving the return type of this function is easier and can go in this CL I think.",
+      "parentUuid": "57740cc5_fe50ecd1",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc7f4854_af44a6f1",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 3
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "If we want to return structured data (e.g array of texture\u0027s descriptions) instead of the SkSL code here, what should be included in the descriptions?\n\nCurrently I don\u0027t see anything useful besides strings array of textures\u0027 names. If we expose more than that (filtering, tile mode, etc), then the logic of `writeUniformsAndTextures` function would be moved to the caller instead (because now there would be enough info for the caller to do that directly). In that case, there would be too many changes need to be done in this CL. Perhaps we could do this in another CL?",
       "parentUuid": "451b022f_624fc7bf",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e74050d_f0b8ebec",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-19T19:33:47Z",
+      "side": 1,
+      "message": "Yeah, I was imagining the logic of `writeUniformsAndTextures` would get lifted to `GetSkSLFS`, but it\u0027s definitely at least one whole CL to add this structured data to RenderStep so I agree that for now we keep `texturesAndSamplersSkSL` as you\u0027ve modified it.",
+      "parentUuid": "bde9f353_7f610fc8",
       "range": {
         "startLine": 91,
         "startChar": 4,
