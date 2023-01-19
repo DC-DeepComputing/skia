@@ -105,5 +105,12 @@
 //#define SK_PRINTF_LIKE(A, B) __attribute__((format(printf, (A), (B))))
 //#define SK_NO_SANITIZE(A) __attribute__((no_sanitize(A)))
 
+/*
+ * If compiling Skia as a DLL, public APIs should be exported. Skia will set
+ * SK_API to something sensible for Clang and MSVC, but if clients need to
+ * customize it for their build system or compiler, they may.
+ */
+//#define SK_API __declspec(dllexport)
+
 
 #endif
