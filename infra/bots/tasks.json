@@ -1,15 +1,5 @@
 {
   "jobs": {
-    "BazelBuild-base-enforce_iwyu-linux_x64": {
-      "tasks": [
-        "BazelBuild-base-enforce_iwyu-linux_x64"
-      ]
-    },
-    "BazelBuild-base-release-linux_x64": {
-      "tasks": [
-        "BazelBuild-base-release-linux_x64"
-      ]
-    },
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {
       "tasks": [
         "BazelBuild-example_hello_world_dawn-release-linux_x64"
@@ -3668,94 +3658,6 @@
     }
   },
   "tasks": {
-    "BazelBuild-base-enforce_iwyu-linux_x64": {
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "skia/bots/bazel_build_task_driver",
-          "path": "bazel_build_task_driver",
-          "version": "version:1"
-        },
-        {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
-          "version": "version:0"
-        }
-      ],
-      "command": [
-        "bazel_build_task_driver/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-base-enforce_iwyu-linux_x64",
-        "--label=//src:base",
-        "--config=enforce_iwyu",
-        "--workdir=.",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal",
-        "--bazel_arg=--nobuild_runfile_manifests",
-        "--bazel_arg=--nobuild_runfile_links"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "bazelisk"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "BazelBuild-base-release-linux_x64": {
-      "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "skia/bots/bazel_build_task_driver",
-          "path": "bazel_build_task_driver",
-          "version": "version:1"
-        },
-        {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
-          "version": "version:0"
-        }
-      ],
-      "command": [
-        "bazel_build_task_driver/bazel_build",
-        "--project_id=skia-swarming-bots",
-        "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-base-release-linux_x64",
-        "--label=//src:base",
-        "--config=release",
-        "--workdir=.",
-        "--bazel_arg=--config=for_linux_x64_with_rbe",
-        "--bazel_arg=--jobs=100",
-        "--bazel_arg=--remote_download_minimal",
-        "--bazel_arg=--nobuild_runfile_manifests",
-        "--bazel_arg=--nobuild_runfile_links"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia"
-      ],
-      "env_prefixes": {
-        "PATH": [
-          "bazelisk"
-        ]
-      },
-      "idempotent": true,
-      "max_attempts": 1,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -93703,8 +93605,6 @@
     }
   },
   "commit_queue": {
-    "BazelBuild-base-enforce_iwyu-linux_x64": {},
-    "BazelBuild-base-release-linux_x64": {},
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
     "BazelBuild-skia_public-release-linux_x64": {},
