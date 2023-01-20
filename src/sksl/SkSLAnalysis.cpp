@@ -249,6 +249,9 @@ public:
                 if (var->modifiers().fFlags & (Modifiers::kConst_Flag | Modifiers::kUniform_Flag)) {
                     fErrors->error(expr.fPosition, "cannot modify immutable variable '" +
                             std::string(var->name()) + "'");
+                } else if (var->storage() == Variable::Storage::kGlobal &&
+                           (var->modifiers().fFlags & Modifiers::kIn_Flag)) {
+                    fErrors->error(expr.fPosition, "cannot assign to pipeline input variable");
                 } else {
                     SkASSERT(fAssignedVar == nullptr);
                     fAssignedVar = &varRef;
