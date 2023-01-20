@@ -86,6 +86,24 @@
       "parentUuid": "53071d22_d8cf5ea7",
       "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdbc493a_f8bb1e7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-01-20T00:49:26Z",
+      "side": 1,
+      "message": "Tried this patch and confirmed that it works as intended.\n\nThe expectations for the framework selectable_region_test.dart/\"mouse can select across bidi text\" test will need to be updated to match the fix.",
+      "parentUuid": "c241f83c_07b95807",
+      "revId": "a36901fb92df893f642ed06b764e4513f88b6a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
