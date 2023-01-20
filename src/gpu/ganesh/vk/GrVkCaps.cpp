@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 
+#include <iostream>
 #include <memory>
 
 #include "include/gpu/GrBackendSurface.h"
@@ -600,10 +601,11 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     }
 
 #ifdef SK_BUILD_FOR_WIN
+    std::cout << "****** INTEL GEN: " << GetIntelGen(GetIntelGPUType(properties.deviceID)) >= 9 << " ******" << std::endl;
     // Gen 12 Intel devices running on windows has issues using barriers for dst reads. This is seen
     // when running the unit tests SkRuntimeEffect_Blender_GPU and DMSAA_aa_dst_read_after_dmsaa.
     if (kIntel_VkVendor == properties.vendorID &&
-        GetIntelGen(GetIntelGPUType(properties.deviceID)) == 12) {
+        GetIntelGen(GetIntelGPUType(properties.deviceID)) >= 9) {
         fTextureBarrierSupport = false;
     }
 #endif
@@ -1956,11 +1958,17 @@ static bool intel_deviceID_present(const std::array<uint32_t, N>& array, uint32_
     return std::find(array.begin(), array.end(), deviceID) != array.end();
 }
 
+
 GrVkCaps::IntelGPUType GrVkCaps::GetIntelGPUType(uint32_t deviceID) {
-    // Some common Intel GPU models, currently we cover ICL/RKL/TGL/ADL
+    // Some common Intel GPU models, currently we cover SKL/ICL/RKL/TGL/ADL
     // Referenced from the following Mesa source files:
     // https://github.com/mesa3d/mesa/blob/master/include/pci_ids/i965_pci_ids.h
     // https://github.com/mesa3d/mesa/blob/master/include/pci_ids/iris_pci_ids.h
+    static constexpr std::array<uint32_t, 25> kSkyLakeIDs = {
+        {0x1902, 0x1906, 0x190A, 0x190B, 0x190E, 0x1912, 0x1913,
+         0x1915, 0x1916, 0x1917, 0x191A, 0x191B, 0x191D, 0x191E,
+         0x1921, 0x1923, 0x1926, 0x1927, 0x192A, 0x192B, 0x192D,
+         0x1932, 0x193A, 0x193B, 0x193D}};
     static constexpr std::array<uint32_t, 14> kIceLakeIDs = {
         {0x8A50, 0x8A51, 0x8A52, 0x8A53, 0x8A54, 0x8A56, 0x8A57,
          0x8A58, 0x8A59, 0x8A5A, 0x8A5B, 0x8A5C, 0x8A5D, 0x8A71}};
@@ -1973,6 +1981,9 @@ GrVkCaps::IntelGPUType GrVkCaps::GetIntelGPUType(uint32_t deviceID) {
         {0x4680, 0x4681, 0x4682, 0x4683, 0x4690,
          0x4691, 0x4692, 0x4693, 0x4698, 0x4699}};
 
+    if (intel_deviceID_present(kSkyLakeIDs, deviceID)) {
+        return IntelGPUType::kSkyLake;
+    }
     if (intel_deviceID_present(kIceLakeIDs, deviceID)) {
         return IntelGPUType::kIceLake;
     }
