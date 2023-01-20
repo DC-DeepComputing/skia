@@ -4197,7 +4197,7 @@
         {
           "name": "skia/tools/goldctl/${platform}",
           "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+          "version": "git_revision:9f6c2de25cce548433f4d0301bbde675a65a2f95"
         }
       ],
       "command": [
@@ -4248,7 +4248,7 @@
         {
           "name": "skia/tools/goldctl/${platform}",
           "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+          "version": "git_revision:9f6c2de25cce548433f4d0301bbde675a65a2f95"
         }
       ],
       "command": [
@@ -61391,7 +61391,7 @@
         {
           "name": "skia/tools/goldctl/${platform}",
           "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+          "version": "git_revision:9f6c2de25cce548433f4d0301bbde675a65a2f95"
         }
       ],
       "command": [
