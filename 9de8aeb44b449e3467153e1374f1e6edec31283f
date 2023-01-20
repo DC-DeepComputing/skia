@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c2db08_2d4ac89b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T16:47:02Z",
+      "side": 1,
+      "message": "Just added some notes to the CL to explain the logic, if that\u0027s helpful.",
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "294a234f_45ee62a4",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T16:47:02Z",
+      "side": 1,
+      "message": "This is essentially an inlined version of SkAlphaMulQ, up to the point where we\u0027d combine `rb` and `ag`. Then, rather than do that (because we\u0027re going to have to pick them apart again...)",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 56
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91d78c67_3028e236",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T16:47:02Z",
+      "side": 1,
+      "message": "... we do the addition to `src` while things are still split into channel pairs. This prevents the overflow into adjacent channels. So we now have the even and odd channel sums, with a possible overflow bit spilling into the (otherwise zero\u0027d) space between.\n\nLuckily, the math is such that alpha can\u0027t overflow (and it\u0027s in the highest bits).",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 24
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "938a547a_f8c36a36",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T16:47:02Z",
+      "side": 1,
+      "message": "We do saturating adds of each color channel, then mask all the results together.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 37
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
