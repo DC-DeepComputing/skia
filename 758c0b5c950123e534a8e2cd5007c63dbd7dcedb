@@ -34,6 +34,24 @@
       "parentUuid": "6f5f4c7c_d8577e7d",
       "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e589db4_bac5d989",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T14:09:08Z",
+      "side": 1,
+      "message": "Ah, no, the ref count starts at one if you do that. (You can look at the impl of sk_make_sp -- you can actually just construct an sk_sp from a new-allocated object to get things correct).",
+      "parentUuid": "5e51f66c_43d69735",
+      "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
