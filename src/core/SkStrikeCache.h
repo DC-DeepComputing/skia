@@ -32,16 +32,11 @@ class SkStrikeCache;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-class SkStrikePinner {
-public:
-    virtual ~SkStrikePinner() = default;
-    virtual bool canDelete() = 0;
-    virtual void assertValid() {}
-};
 
-class SkStrike final : public SkRefCnt, public sktext::StrikeForGPU {
+/*
+class SkStrike2 final : public SkRefCnt, public sktext::StrikeForGPU {
 public:
-    SkStrike(SkStrikeCache* strikeCache,
+    SkStrike2(SkStrikeCache* strikeCache,
              const SkStrikeSpec& strikeSpec,
              std::unique_ptr<SkScalerContext> scaler,
              const SkFontMetrics* metrics,
@@ -206,6 +201,7 @@ public:
     size_t                          fMemoryUsed{sizeof(SkScalerCache)};
     bool                            fRemoved{false};
 };  // SkStrike
+*/
 
 class SkStrikeCache final : public sktext::StrikeForGPUCacheInterface {
 public:
