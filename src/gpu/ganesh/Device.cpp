@@ -19,8 +19,6 @@
 #include "include/private/SkShadowFlags.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/chromium/Slug.h"
-#include "src/base/SkTLazy.h"
-#include "src/base/SkUTF.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkClipStack.h"
@@ -34,6 +32,7 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkStroke.h"
+#include "src/core/SkTLazy.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/gpu/ganesh/GrBlurUtils.h"
@@ -54,6 +53,7 @@
 #include "src/image/SkReadPixelsRec.h"
 #include "src/image/SkSurface_Gpu.h"
 #include "src/text/GlyphRun.h"
+#include "src/utils/SkUTF.h"
 
 #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
     #include "include/private/chromium/SkChromeRemoteGlyphCache.h"

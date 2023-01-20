@@ -20,7 +20,6 @@
 #include "include/private/base/SkVx.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkTLazy.h"
 #include "src/core/SkCubicClipper.h"
 #include "src/core/SkEdgeClipper.h"
 #include "src/core/SkGeometry.h"
@@ -29,6 +28,7 @@
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStringUtils.h"
+#include "src/core/SkTLazy.h"
 
 #include <algorithm>
 #include <cmath>

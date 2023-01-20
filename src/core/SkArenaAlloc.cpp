@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/base/SkArenaAlloc.h"
+#include "src/core/SkArenaAlloc.h"
 
 #include "include/private/base/SkMalloc.h"
 

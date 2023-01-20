@@ -9,7 +9,7 @@
 #include "modules/svg/include/SkSVGPoly.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGValue.h"
-#include "src/base/SkTLazy.h"
+#include "src/core/SkTLazy.h"
 
 SkSVGPoly::SkSVGPoly(SkSVGTag t) : INHERITED(t) {}
 

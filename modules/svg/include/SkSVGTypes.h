@@ -19,7 +19,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTDArray.h"
-#include "src/base/SkTLazy.h"
+#include "src/core/SkTLazy.h"
 
 using SkSVGColorType     = SkColor;
 using SkSVGIntegerType   = int;

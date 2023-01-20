@@ -10,7 +10,7 @@
 
 #include "modules/svg/include/SkSVGContainer.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
+#include "src/core/SkTLazy.h"
 
 class SkSVGLengthContext;
 

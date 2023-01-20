@@ -11,7 +11,6 @@
 #include "include/core/SkStream.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/private/base/SkTo.h"
-#include "src/base/SkUTF.h"
 #include "src/pdf/SkPDFDevice.h"
 #include "src/pdf/SkPDFFont.h"
 #include "src/pdf/SkPDFGradientShader.h"
@@ -19,6 +18,7 @@
 #include "src/pdf/SkPDFShader.h"
 #include "src/pdf/SkPDFTag.h"
 #include "src/pdf/SkPDFUtils.h"
+#include "src/utils/SkUTF.h"
 
 #include <utility>
 

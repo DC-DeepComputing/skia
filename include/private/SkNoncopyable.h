@@ -8,7 +8,7 @@
 #ifndef SkNoncopyable_DEFINED
 #define SkNoncopyable_DEFINED
 
-#include "include/private/base/SkAPI.h"
+#include "include/core/SkTypes.h"
 
 /** \class SkNoncopyable
 

@@ -35,6 +35,7 @@ skia_filegroup(
         "SkGainmapInfo.h",
         "SkHalf.h",
         "SkIDChangeListener.h",
+        "SkNoncopyable.h",
         "SkOpts_spi.h",
         "SkPathRef.h",
         "SkShadowFlags.h",

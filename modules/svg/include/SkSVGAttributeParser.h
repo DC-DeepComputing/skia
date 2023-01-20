@@ -10,9 +10,9 @@
 
 #include <vector>
 
-#include "include/private/base/SkNoncopyable.h"
+#include "include/private/SkNoncopyable.h"
 #include "modules/svg/include/SkSVGTypes.h"
-#include "src/base/SkTLazy.h"
+#include "src/core/SkTLazy.h"
 
 class SkSVGAttributeParser : public SkNoncopyable {
 public:

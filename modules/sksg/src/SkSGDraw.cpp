@@ -13,7 +13,7 @@
 #include "modules/sksg/include/SkSGGeometryNode.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
 #include "modules/sksg/include/SkSGPaint.h"
-#include "src/base/SkTLazy.h"
+#include "src/core/SkTLazy.h"
 
 namespace sksg {
 
