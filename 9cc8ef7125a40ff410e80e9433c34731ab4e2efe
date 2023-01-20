@@ -52,6 +52,24 @@
       "parentUuid": "c8c681cb_09263c50",
       "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21157d74_e5846d47",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T16:03:48Z",
+      "side": 0,
+      "message": "Update: A chrome bug surfaced that was ultimately caused by this problem. I spent the last day or so revisiting the scalar SkPMSrcOver code, and landed on something that\u0027s certainly slower than the existing code (36 instructions vs. 16), but appears to be correct. (And faster than everything else I tried).\n\nCode-gen comparison: https://godbolt.org/z/evYc7bWh7\n\nI\u0027m going to run the canary to make sure this doesn\u0027t impact layout tests, and then probably have to keep an eye on perf bots.",
+      "parentUuid": "69921b4f_c8589bec",
+      "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
