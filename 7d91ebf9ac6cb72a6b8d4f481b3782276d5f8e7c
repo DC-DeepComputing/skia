@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2e2ac8b_94610691",
+        "filename": "src/codec/SkGainmapShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-01-20T00:56:19Z",
+      "side": 1,
+      "message": "this is extremely expensive as it triggers a new SkImage, which in turn makes it un-cachable. So this is triggering texture uploads every frame if the SkImage isn\u0027t already GPU-backed (and if it is maybe copies? dunno). But there\u0027s good news! I think you just want to replace makeShader with makeRawShader which just disables the colorspace handling when you sample from it. As a bonus, makeRawShader is publicly stable ( Android exposes it here: https://developer.android.com/reference/android/graphics/RuntimeShader#setInputBuffer(java.lang.String,%20android.graphics.BitmapShader) )",
+      "range": {
+        "startLine": 185,
+        "startChar": 36,
+        "endLine": 185,
+        "endChar": 57
+      },
+      "revId": "7d91ebf9ac6cb72a6b8d4f481b3782276d5f8e7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
