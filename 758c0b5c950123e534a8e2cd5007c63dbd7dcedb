@@ -16,6 +16,24 @@
       "message": "Per ASAN bots, this is leaking: https://logs.chromium.org/logs/skia/5fe6461e893fdb11/+/steps/symbolized_dm/0/stdout\n\nI don\u0027t see anything obvious, maybe the leak was introduced in https://skia-review.googlesource.com/c/skia/+/631098, but only now being triggered.",
       "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e51f66c_43d69735",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-20T14:06:03Z",
+      "side": 1,
+      "message": "Sorry for the really basic question, but was this the right pattern? Is the ref initialized to 0 by the ctor (and incremented to 1 by sk_ref_sp), or did it start at 1, and then I add a leak with sk_ref_sp.\n```\n    return sk_ref_sp(new ColorSpaceXformColorFilter(std::move(src), std::move(dst)));\n```",
+      "parentUuid": "6f5f4c7c_d8577e7d",
+      "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
