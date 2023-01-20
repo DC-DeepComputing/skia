@@ -65,6 +65,9 @@ public:
 
     virtual TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                                   Discardable discardable) const = 0;
+    // Use for creating an intermediate texture to copy data from a resolve texture.
+    virtual TextureInfo getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                                      Discardable discardable) const = 0;
 
     virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
                                                           uint32_t sampleCount,
@@ -156,6 +159,14 @@ public:
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
 
+    // Returns whether it's possible to load MSAA data from a resolve texture directly in the same
+    // render pass that would write new data to that texture.
+    bool directLoadMSAAFromResolveSupport() const { return fDirectLoadMSAAFromResolveSupport; }
+
+    // Return whether copyTextureToTexture() requires the dest texture to be renderable or not.
+    // This can happen if backend uses drawing to implement the copy.
+    bool textureCopyRequiresRenderable() const { return fTextureCopyRequiresRenderable; }
+
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
     skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
@@ -235,6 +246,8 @@ protected:
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
+    bool fDirectLoadMSAAFromResolveSupport = true;
+    bool fTextureCopyRequiresRenderable = false;
 
     ResourceBindingRequirements fResourceBindingReqs;
 
