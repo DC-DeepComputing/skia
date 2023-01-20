@@ -16,6 +16,24 @@
       "message": "lgtm modulo merge conflict. I assume in the follow up CL where PathOps uses the SkCubics/SkQuads functions, the unit tests for SkDCubics/Quads will be removed and we\u0027ll just test the base version?",
       "revId": "fd6416d10d9b015a8ec365ae46cc63329f1f9dfc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b301d658_cab2edbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-20T21:00:53Z",
+      "side": 1,
+      "message": "Yes, exactly.",
+      "parentUuid": "0b50ce73_38e2ff8e",
+      "revId": "fd6416d10d9b015a8ec365ae46cc63329f1f9dfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
