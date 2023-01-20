@@ -99,7 +99,24 @@ protected:
     bool onEncodeRows(int numRows) override;
 
 private:
+    friend class SkJpegGainmapEncoder;
     SkJpegEncoder(std::unique_ptr<SkJpegEncoderMgr>, const SkPixmap& src);
+
+    /**
+     *  Create a jpeg encoder that will encode the |src| pixels and |xmpMetadata| XMP to the |dst|
+     *  stream, followed by the data in |suffix|. |options| may be used to control the encoding
+     *  behavior.
+     *
+     *  |dst|, |xmpMetadat|, and |suffix| are unowned and must remain valid for the lifetime of the
+     *  object.
+     *
+     *  This returns nullptr on an invalid or unsupported |src|.
+     */
+    static std::unique_ptr<SkEncoder> Make(SkWStream* dst,
+                                           const SkPixmap& src,
+                                           const Options& options,
+                                           SkData* xmpMetadta,
+                                           SkData* suffix);
 
     std::unique_ptr<SkJpegEncoderMgr> fEncoderMgr;
     using INHERITED = SkEncoder;
