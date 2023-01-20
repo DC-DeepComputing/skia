@@ -33,6 +33,24 @@
       "message": "lgtm from the right account this time",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830b3719_f00350f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T21:31:49Z",
+      "side": 1,
+      "message": "Yeah. This version helps a bit, but we can (and must) do better. John has an alternate CL that buffers directly in the scan (I think), and it\u0027s another 2x speedup over this. Probably going to go that route.",
+      "parentUuid": "942d87db_b19d7103",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
