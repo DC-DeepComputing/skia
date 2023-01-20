@@ -1,9 +1,10 @@
 
 out vec4 sk_FragColor;
-uniform vec4 inputVal;
-uniform vec4 expected;
+uniform vec4 testInputs;
 uniform vec4 colorGreen;
 uniform vec4 colorRed;
 vec4 main() {
-    return ((((((degrees(inputVal.x) == expected.x && degrees(inputVal.xy) == expected.xy) && degrees(inputVal.xyz) == expected.xyz) && degrees(inputVal) == expected) && 90.0 == expected.x) && vec2(90.0, 180.0) == expected.xy) && vec3(90.0, 180.0, 270.0) == expected.xyz) && vec4(90.0, 180.0, 270.0, 360.0) == expected ? colorGreen : colorRed;
+    const vec4 expected = vec4(-0.021816615, 0.0, 0.01308997, 0.03926991);
+    const vec4 allowedDelta = vec4(0.0005);
+    return ((abs(radians(testInputs.x) - -0.021816615) < 0.0005 && all(lessThan(abs(radians(testInputs.xy) - vec2(-0.021816615, 0.0)), vec2(0.0005)))) && all(lessThan(abs(radians(testInputs.xyz) - vec3(-0.021816615, 0.0, 0.01308997)), vec3(0.0005)))) && all(lessThan(abs(radians(testInputs) - expected), allowedDelta)) ? colorGreen : colorRed;
 }
