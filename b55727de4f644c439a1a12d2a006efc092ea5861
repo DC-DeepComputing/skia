@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e618c9fa_d684b53c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-20T20:49:20Z",
+      "side": 1,
+      "message": "Let me know when the last comment is fixed up and I can submit it to the CQ for you.",
+      "revId": "b55727de4f644c439a1a12d2a006efc092ea5861",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1831048_e824b241",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-20T20:49:20Z",
+      "side": 1,
+      "message": "I think this can be `\u003d` instead of `+\u003d` since fSkSL should start out empty, it\u0027s the same result but clearer that we aren\u0027t appending anything anymore.",
+      "range": {
+        "startLine": 372,
+        "startChar": 18,
+        "endLine": 372,
+        "endChar": 19
+      },
+      "revId": "b55727de4f644c439a1a12d2a006efc092ea5861",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

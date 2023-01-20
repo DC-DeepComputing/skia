@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71d620c8_b46d83e0",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-20T20:49:20Z",
+      "side": 1,
+      "message": "Thanks lgtm with one minor nit.",
+      "parentUuid": "cc99e74d_164dc1a6",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "f9be2773fa2e2b63b04a7c5f7b2a82db253b61c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc7f4854_af44a6f1",
