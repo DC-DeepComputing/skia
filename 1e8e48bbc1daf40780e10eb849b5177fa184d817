@@ -22,6 +22,30 @@
       },
       "revId": "1e8e48bbc1daf40780e10eb849b5177fa184d817",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4c2b555_bdb4f3ad",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-01-20T18:54:48Z",
+      "side": 1,
+      "message": "Bad, bad merge! I will redo it.",
+      "parentUuid": "1ba875b2_681dc2cc",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 59
+      },
+      "revId": "1e8e48bbc1daf40780e10eb849b5177fa184d817",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
