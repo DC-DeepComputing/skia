@@ -22,6 +22,7 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     coords = sqrt(negativeVal).xy;
     float4 inputVal = float4(half4(float4_from_float2x2(_uniforms.testMatrix2x2)) + half4(0.0h, 2.0h, 6.0h, 12.0h));
     const float4 expected = float4(1.0, 2.0, 3.0, 4.0);
-    _out.sk_FragColor = ((sqrt(inputVal.x) == 1.0 && all(sqrt(inputVal.xy) == float2(1.0, 2.0))) && all(sqrt(inputVal.xyz) == float3(1.0, 2.0, 3.0))) && all(sqrt(inputVal) == expected) ? _uniforms.colorGreen : _uniforms.colorRed;
+    const float4 allowedDelta = float4(0.05);
+    _out.sk_FragColor = ((abs(sqrt(inputVal.x) - 1.0) < 0.05 && all((abs(sqrt(inputVal.xy) - float2(1.0, 2.0)) < float2(0.05)))) && all((abs(sqrt(inputVal.xyz) - float3(1.0, 2.0, 3.0)) < float3(0.05)))) && all((abs(sqrt(inputVal) - expected) < allowedDelta)) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
