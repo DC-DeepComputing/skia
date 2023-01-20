@@ -226,8 +226,20 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
                                                drawPass->clearColor(),
                                                drawPass->requiresMSAA());
 
+    bool requireLoadMSAAFromResolve = drawPass->requiresMSAA() && loadOp == LoadOp::kLoad;
+    // If direct load from resolve texture is not supported, we need an extra texture.
+    bool requireExtraTextureForLoading =
+            requireLoadMSAAFromResolve && !caps->directLoadMSAAFromResolveSupport();
+    TextureInfo extraMSAALoadTextureInfo =
+            requireExtraTextureForLoading
+                    ? caps->getDefaultMSAALoadTextureInfo(targetInfo, Discardable::kYes)
+                    : TextureInfo();
+
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
-    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+    return RenderPassTask::Make(std::move(fDrawPasses),
+                                desc,
+                                std::move(targetProxy),
+                                std::move(extraMSAALoadTextureInfo));
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {

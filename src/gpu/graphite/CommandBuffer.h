@@ -60,6 +60,7 @@ public:
 
     bool addRenderPass(const RenderPassDesc&,
                        sk_sp<Texture> colorTexture,
+                       sk_sp<Texture> msaaLoadTexture,
                        sk_sp<Texture> resolveTexture,
                        sk_sp<Texture> depthStencilTexture,
                        SkRect viewport,
@@ -108,6 +109,7 @@ private:
 
     virtual bool onAddRenderPass(const RenderPassDesc&,
                                  const Texture* colorTexture,
+                                 const Texture* msaaLoadTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,
                                  SkRect viewport,

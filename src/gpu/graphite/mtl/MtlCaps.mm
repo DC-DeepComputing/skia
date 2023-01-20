@@ -631,6 +631,23 @@ TextureInfo MtlCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledI
     return info;
 }
 
+TextureInfo MtlCaps::getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                                   Discardable discardable) const {
+    const MtlTextureSpec& singleSpec = singleSampledInfo.mtlTextureSpec();
+
+    MTLTextureUsage usage = MTLTextureUsageRenderTarget;
+
+    MtlTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFormat = singleSpec.fFormat;
+    info.fUsage = usage;
+    info.fStorageMode = this->getDefaultMSAAStorageMode(discardable);
+    info.fFramebufferOnly = false;
+
+    return info;
+}
+
 TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
             SkEnumBitMask<DepthStencilFlags> depthStencilType,
             uint32_t sampleCount,

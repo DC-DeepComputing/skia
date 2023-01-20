@@ -194,6 +194,13 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
     return info;
 }
 
+TextureInfo VulkanCaps::getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                                      Discardable discardable) const {
+    // This function is only needed if caps.directLoadMSAAFromResolveSupport() is false
+    SkASSERT(false);
+    return singleSampledInfo;
+}
+
 TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags> flags,
                                                           uint32_t sampleCount,
                                                           Protected isProtected) const {

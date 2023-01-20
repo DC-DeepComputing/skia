@@ -25,19 +25,21 @@ class DawnTexture;
 
 class DawnCommandBuffer final : public CommandBuffer {
 public:
-    static std::unique_ptr<DawnCommandBuffer> Make(const DawnSharedContext* d);
+    static std::unique_ptr<DawnCommandBuffer> Make(const DawnSharedContext*, DawnResourceProvider*);
     ~DawnCommandBuffer() override;
 
     wgpu::CommandBuffer finishEncoding();
 
 private:
-    DawnCommandBuffer(const DawnSharedContext* sharedContext);
+    DawnCommandBuffer(const DawnSharedContext* sharedContext,
+                      DawnResourceProvider* resourceProvider);
 
     void onResetCommandBuffer() override;
     bool setNewCommandBufferResources() override;
 
     bool onAddRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
+                         const Texture* msaaLoadTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
                          SkRect viewport,
@@ -49,8 +51,14 @@ private:
     // Methods for populating a Dawn RenderPassEncoder:
     bool beginRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
+                         const Texture* msaaLoadTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture);
+    bool beginRenderPassWithBlit(const RenderPassDesc& frontendRenderPassDesc,
+                                 const wgpu::RenderPassDescriptor& wgpuRenderPassDesc,
+                                 const wgpu::TextureView& srcTextureView,
+                                 const SkIRect& srcRect,
+                                 const SkIPoint& dstPoint);
     void endRenderPass();
 
     void addDrawPass(const DrawPass*);
@@ -119,6 +127,11 @@ private:
     // Commiting uniform buffers' changes if any before drawing
     void syncUniformBuffers();
 
+    bool copyTextureWithBlit(const Texture* src,
+                             SkIRect srcRect,
+                             const Texture* dst,
+                             SkIPoint dstPoint);
+
     bool fBoundUniformBuffersDirty = false;
 
     std::array<const DawnBuffer*, DawnGraphicsPipeline::kNumUniformBuffers> fBoundUniformBuffers;
@@ -129,9 +142,11 @@ private:
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     wgpu::Buffer fInstrinsicConstantBuffer;
+    wgpu::Buffer fBlitConstantBuffer;
 
     const DawnGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
     const DawnSharedContext* fSharedContext;
+    DawnResourceProvider* fResourceProvider;
 };
 
 }  // namespace skgpu::graphite

@@ -46,6 +46,7 @@ private:
     // implemented the objects they use.
     bool onAddRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
+                         const Texture* msaaLoadTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
                          SkRect viewport,

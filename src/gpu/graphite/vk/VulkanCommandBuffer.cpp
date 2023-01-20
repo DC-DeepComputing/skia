@@ -240,6 +240,7 @@ void VulkanCommandBuffer::waitUntilFinished() {
 bool VulkanCommandBuffer::onAddRenderPass(
         const RenderPassDesc&,
         const Texture* colorTexture,
+        const Texture* msaaLoadTexture,
         const Texture* resolveTexture,
         const Texture* depthStencilTexture,
         SkRect viewport,
