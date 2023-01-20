@@ -16,6 +16,29 @@
       "message": "Once https://skia-review.googlesource.com/c/skia/+/631399, we can expand the set of enabled-by-default draws.",
       "revId": "67db0cacbec670041d81183121a9a68af20884aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bca3abda_46b9614c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-20T16:28:05Z",
+      "side": 1,
+      "message": "This is already encapsulated in validRRect.",
+      "range": {
+        "startLine": 166,
+        "startChar": 64,
+        "endLine": 166,
+        "endChar": 83
+      },
+      "revId": "67db0cacbec670041d81183121a9a68af20884aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
