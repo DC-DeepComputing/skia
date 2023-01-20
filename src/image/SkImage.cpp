@@ -542,7 +542,7 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
         return sk_ref_sp(const_cast<SkImage*>(this));
     }
 
-    return as_IB(this)->onMakeColorTypeAndColorSpace(targetColorType,
+    return as_IB(this)->onMakeColorTypeAndColorSpace2(targetColorType,
                                                      std::move(targetColorSpace),
                                                      recorder,
                                                      requiredProps);

@@ -177,7 +177,7 @@ sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect&,
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage_GpuBase::onMakeColorTypeAndColorSpace(SkColorType,
+sk_sp<SkImage> SkImage_GpuBase::onMakeColorTypeAndColorSpace2(SkColorType,
                                                              sk_sp<SkColorSpace>,
                                                              skgpu::graphite::Recorder*,
                                                              RequiredImageProperties) const {

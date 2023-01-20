@@ -48,10 +48,10 @@ public:
     sk_sp<SkImage> onMakeSubset(const SkIRect&,
                                 skgpu::graphite::Recorder*,
                                 RequiredImageProperties) const override;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
-                                                sk_sp<SkColorSpace> targetCS,
-                                                skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType targetCT,
+                                                 sk_sp<SkColorSpace> targetCS,
+                                                 skgpu::graphite::Recorder*,
+                                                 RequiredImageProperties) const override;
 #endif
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     bool onIsLazyGenerated() const override { return true; }

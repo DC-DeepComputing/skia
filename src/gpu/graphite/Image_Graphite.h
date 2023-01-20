@@ -49,7 +49,7 @@ protected:
     sk_sp<SkImage> copyImage(const SkIRect& subset, Recorder*, RequiredImageProperties) const;
     sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredImageProperties) const override;
     using Image_Base::onMakeColorTypeAndColorSpace;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType targetCT,
                                                 sk_sp<SkColorSpace> targetCS,
                                                 Recorder*,
                                                 RequiredImageProperties) const override;

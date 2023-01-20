@@ -65,7 +65,7 @@ protected:
     sk_sp<SkImage> onMakeSubset(const SkIRect& subset,
                                 skgpu::graphite::Recorder*,
                                 RequiredImageProperties) const final;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace2(SkColorType,
                                                 sk_sp<SkColorSpace>,
                                                 skgpu::graphite::Recorder*,
                                                 RequiredImageProperties) const final;
