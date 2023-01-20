@@ -65,6 +65,10 @@ protected:
         for (auto pm : {PerspMode::kX, PerspMode::kY, PerspMode::kXY}) {
             for (int i = 0; i < kSteps; ++i) {
                 canvas->save();
+
+                paint.setColor(SK_ColorRED);
+                canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
+
                 SkMatrix persp = SkMatrix::I();
                 switch (pm) {
                     case PerspMode::kX:
@@ -78,6 +82,18 @@ protected:
                         persp.setPerspY(i*-0.00125f/kSteps);
                         break;
                 }
+//                switch (pm) {
+//                    case PerspMode::kX:
+//                        persp.setPerspX(i*0.000625f/kSteps/2048);
+//                        break;
+//                    case PerspMode::kY:
+//                        persp.setPerspY(i*0.000625f/kSteps/8192);
+//                        break;
+//                    case PerspMode::kXY:
+//                        persp.setPerspX(i*-0.00025f/kSteps/8192);
+//                        persp.setPerspY(i*-0.000375f/kSteps/8192);
+//                        break;
+//                }
                 persp = SkMatrix::Concat(persp, SkMatrix::Translate(-x, -y));
                 persp = SkMatrix::Concat(SkMatrix::Translate(x, y), persp);
                 canvas->concat(persp);

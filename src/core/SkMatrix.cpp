@@ -21,6 +21,7 @@
 #include "include/private/base/SkVx.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixUtils.h"
+#include "src/core/SkPointPriv.h"
 #include "src/core/SkSamplingPriv.h"
 
 #include <algorithm>
@@ -1873,6 +1874,97 @@ SkScalar SkMatrixPriv::DifferentialAreaScale(const SkMatrix& m, const SkPoint& p
     double denom = 1.0 / xyw.fZ;   // 1/w
     denom = denom * denom * denom; // 1/w^3
     return SkScalarAbs(SkDoubleToScalar(sk_determinant(jacobian.fMat, true) * denom));
+}
+
+bool SkMatrixPriv::NearlyAffine(const SkMatrix& m, const SkRect& bounds) {
+    if (!m.hasPerspective()) {
+        return true;
+    }
+
+//    if (SkScalarNearlyZero(m.getPerspX()) && SkScalarNearlyZero(m.getPerspX()) &&
+//        SkScalarNearlyZero(SK_Scalar1 - m[8])) {
+//        return true;
+//    }
+//
+//    return false;
+
+//    SkPoint quad[4];
+//    m.mapRectToQuad(quad, bounds);
+//
+//    // if the lengths of the opposing sides are within 1/4 pixel,
+//    // then perspective has little effect
+//    SkScalar d01 = SkPointPriv::DistanceToSqd(quad[0], quad[1]);
+//    SkScalar d23 = SkPointPriv::DistanceToSqd(quad[2], quad[3]);
+//    if (!SkScalarNearlyEqual(d01, d23, 1.f/4)) {
+//        return false;
+//    }
+//    SkScalar d03 = SkPointPriv::DistanceToSqd(quad[0], quad[3]);
+//    SkScalar d12 = SkPointPriv::DistanceToSqd(quad[1], quad[2]);
+//    if (!SkScalarNearlyEqual(d03, d12, 1.f/4)) {
+//        return false;
+//    }
+//
+//    if (!SkScalarNearlyEqual(d01*d12, d23*d03, 1.f/4)) {
+//        return false;
+//    }
+
+//    SkScalar a0 = DifferentialAreaScale(m, quad[0]);
+//    SkScalar a1 = DifferentialAreaScale(m, quad[1]);
+//    if (!SkScalarNearlyEqual(a0, a1)) {
+//        return false;
+//    }
+//    SkScalar a2 = DifferentialAreaScale(m, quad[2]);
+//    if (!SkScalarNearlyEqual(a0, a2)) {
+//        return false;
+//    }
+//    SkScalar a3 = DifferentialAreaScale(m, quad[3]);
+//    if (!SkScalarNearlyEqual(a0, a3)) {
+//        return false;
+//    }
+
+    // IDEA: Can compute the constant part of the determinant by taking the cross product, and then
+    // take a dot product with each transformed point.
+    SkPoint quad[4];
+    bounds.toQuad(quad);
+    SkPoint3 xyw[4];
+    m.mapHomogeneousPoints(xyw, quad, 4);
+
+    // Since the Jacobian is a 3x3 matrix, the determinant is just a triple product.
+    // The initial cross product is constant across all four points.
+    SkPoint3 v1{m.getScaleX(), m.getSkewY(), m.getPerspX()};
+    SkPoint3 v2{m.getSkewX(), m.getScaleY(), m.getPerspY()};
+    SkPoint3 crossProd = v1.cross(v2);
+
+    // Calc initial differential area scale
+    if (xyw[0].fZ < SK_ScalarNearlyZero) {
+        // Reaching the discontinuity of xy/w and where the point would clip to w >= 0
+        return SK_ScalarInfinity;
+    }
+
+    // Finishing up the triple product with a dot product
+    double det = crossProd.dot(xyw[0]);
+    double denom = 1.0 / xyw[0].fZ;   // 1/w
+    denom = denom * denom * denom; // 1/w^3
+    SkScalar a0 = SkScalarAbs(SkDoubleToScalar(det*denom));
+
+    for (int i = 1; i < 4; ++i) {
+        if (xyw[i].fZ < SK_ScalarNearlyZero) {
+            // Reaching the discontinuity of xy/w and where the point would clip to w >= 0
+            return SK_ScalarInfinity;
+        }
+
+        // Finishing up the triple product with a dot product
+        det = crossProd.dot(xyw[i]);
+
+        denom = 1.0 / xyw[i].fZ;   // 1/w
+        denom = denom * denom * denom; // 1/w^3
+        SkScalar a = SkScalarAbs(SkDoubleToScalar(det*denom));
+        if (!SkScalarNearlyEqual(a0, a)) {
+            return false;
+        }
+    }
+
+   return true;
 }
 
 SkScalar SkMatrixPriv::ComputeResScaleForStroking(const SkMatrix& matrix) {
