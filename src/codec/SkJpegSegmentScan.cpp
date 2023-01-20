@@ -149,25 +149,29 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
             new SkJpegSegmentScan(stream, initialPosition, std::move(segments)));
 }
 
-bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
-    uint8_t markerCode[kMarkerCodeSize] = {0};
+enum class EntropyBufferResult {
+    kUnexpectedEOF,
+    kNeedsMoreBuffer,
+    kEndOfEntropyEncodedData,
+};
 
-    while (1) {
-        // Peek at the two bytes for the marker.
-        if (peek(stream, markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
-            // Assume to be EOF.
-            SkCodecPrintf("Failed to peek two ECD bytes (unexpected EOF?).\n");
-            return false;
+EntropyBufferResult EntropyBufferSeek(uint8_t* buffer, int32_t bufferSize, int32_t& position) {
+    position = 0;
+    while (position < bufferSize) {
+        // TODO(ccameron): Use memchr to skip faster.
+        if (buffer[position] != 0xFF) {
+            ++position;
+            continue;
         }
 
-        // If the first byte is not 0xFF, it's part of the entropy-coded data,
-        // so skip to the next byte.
-        if (markerCode[0] != 0xFF) {
-            if (stream->skip(1) != 1) {
-                SkCodecPrintf("Failed to skip single ECD byte.\n");
-                return false;
+        // The last character of the stream is an 0xFF.
+        if (bufferSize - position == 1) {
+            // If the buffer was size 1, then we're at the EOF (we read bigger chunks than that).
+            if (bufferSize == 1) {
+                return EntropyBufferResult::kUnexpectedEOF;
             }
-            continue;
+            // Otherwise, read another chunk (we'll start at this 0xFF).
+            return EntropyBufferResult::kNeedsMoreBuffer;
         }
 
         // If the byte after the 0xFF is 0x00, assume we are in an entropy-coding
@@ -175,21 +179,58 @@ bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
         // text of F.1.2.3: Whenever the byte value 0xFF is created in the code
         // string, a 0x00 byte is stuffed into the code string. If a 0x00 byte is
         // detected after a 0xFF byte, the decoder must discard it.
-        if (markerCode[1] == 0x00) {
-            if (stream->skip(kMarkerCodeSize) != kMarkerCodeSize) {
-                SkCodecPrintf("Failed to skip stuffed ECD byte.\n");
-                return false;
-            }
+        if (buffer[position + 1] == 0x00) {
+            position += 2;
             continue;
         }
 
-        // We are at the end of the entropy-coded data.
-        break;
+        // We are at the end of the entropy coded data (but we may have more 0xFF stuffing before we
+        // get to the next marker).
+        return EntropyBufferResult::kEndOfEntropyEncodedData;
+    }
+
+    // We ran out of buffer. Get more.
+    return EntropyBufferResult::kNeedsMoreBuffer;
+}
+
+bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
+    // Seek through entropy-coded data in reads of 4k (reading byte by byte is very slow).
+    while (1) {
+        constexpr size_t kBufferSize = 4096;
+        uint8_t buffer[kBufferSize];
+        size_t bytesRead = stream->read(buffer, kBufferSize);
+        if (bytesRead == 0) {
+            return false;
+        }
+        int32_t position = 0;
+        int32_t bufferSize = bytesRead;
+        auto result = EntropyBufferSeek(buffer, bufferSize, position);
+        if (result == EntropyBufferResult::kUnexpectedEOF) {
+            SkCodecPrintf("Unexpected end of file\n");
+            return false;
+        }
+
+        // If we stopped before the end of the buffer, seek backward.
+        if (position != bufferSize) {
+            stream->move(position - bufferSize);
+        }
+
+        // If we're at the end of the Entropy Coded Data, stop.
+        if (result == EntropyBufferResult::kEndOfEntropyEncodedData) {
+            break;
+        }
+
+        // Otherwise, keep reading chunks.
+        SkASSERT(result == EntropyBufferResult::kNeedsMoreBuffer);
     }
 
     // See section B.1.1.3: Any marker may optionally be preceded by any number
     // of fill bytes, which are bytes assigned code 0xFF. Skip past any 0xFF
     // fill bytes that may be present at the end of the entropy-coded data.
+    uint8_t markerCode[2];
+    if (peek(stream, markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
+        return false;
+    }
     while (markerCode[1] == 0xFF) {
         if (stream->skip(1) != 1) {
             SkCodecPrintf("Failed to skip post-ECD fill.\n");
