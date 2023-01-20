@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "755ccddc_4718af99",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-20T16:56:33Z",
+      "side": 1,
+      "message": "constexpr uint64_t mask \u003d 0x00ff00ff00ff00ff;\nuint64_t argb \u003d mask \u0026 ((dst \u003c\u003c 24) | dst);\nargb *\u003d scale;\nargb \u0026\u003d mask;\nargb +\u003d mask \u0026 ((src \u003c\u003c 24) | src);\n\nthen do saturate on uint32 instead.\n\nreturn argb \u003e\u003e 32 | argb;\n\nI don\u0027t have time to check this out on Compiler Optimizer, but I can return to it after my haircut and lunch.",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 15
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "294a234f_45ee62a4",
         "filename": "include/core/SkColorPriv.h",
         "patchSetId": 6
