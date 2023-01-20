@@ -33,6 +33,24 @@
       "message": "Waiting on Chrome Canary",
       "revId": "e1482ed0ac5462d9217becff2ffda8f19a812e0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "966165ec_0a239163",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-20T17:35:22Z",
+      "side": 1,
+      "message": "hmmm... Chromium Canary seems ok... the failures there are infra and what looks like some unrelated test failures? If there were issues with this change I would expect something to not compile or link. (I suppose the real bot to make sure runs is `win_chromium_compile_dbg_ng` which is one of the few component builds on Windows which really care about this.)",
+      "parentUuid": "f70565fd_d9747495",
+      "revId": "e1482ed0ac5462d9217becff2ffda8f19a812e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
