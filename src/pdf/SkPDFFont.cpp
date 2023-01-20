@@ -30,7 +30,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMask.h"
-#include "src/core/SkScalerCache.h"
+#include "src/core/SkStrike.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTHash.h"
