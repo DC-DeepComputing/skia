@@ -246,33 +246,6 @@ void Builder::push_duplicates(int count) {
 
 void Builder::pop_slots_unmasked(SlotRange dst) {
     SkASSERT(dst.count >= 0);
-
-    SkTArray<Instruction> constantsToPush;
-    while (!fInstructions.empty() && dst.count > 0) {
-        Instruction& lastInstruction = fInstructions.back();
-
-        // If the last instructions is pushing a constant, we can save a step by copying those
-        // constants directly into the destination slot.
-        if (lastInstruction.fOp == BuilderOp::push_literal_f) {
-            int immValue = lastInstruction.fImmA;
-            fInstructions.pop_back();
-
-            // We need to fill the _last_ slot of the passed-in slot range.
-            Slot dstSlot = dst.index + dst.count - 1;
-            constantsToPush.push_back({BuilderOp::copy_constant, {dstSlot}, immValue});
-            --dst.count;
-            continue;
-        }
-
-        break;
-    }
-
-    // Append our constant-push instructions (if any) to the instruction list. Reverse their order
-    // so that they run forwards in memory.
-    for (int index = constantsToPush.size(); index--;) {
-        fInstructions.push_back(constantsToPush[index]);
-    }
-
     if (dst.count > 0) {
         this->copy_stack_to_slots_unmasked(dst);
         this->discard_stack(dst.count);
@@ -323,8 +296,47 @@ void Builder::copy_stack_to_slots_unmasked(SlotRange dst, int offsetFromStackTop
         }
     }
 
-    fInstructions.push_back({BuilderOp::copy_stack_to_slots_unmasked, {dst.index},
-                             dst.count, offsetFromStackTop});
+    SkTArray<Instruction> constantsToPush;
+    if (offsetFromStackTop == dst.count) {
+        while (!fInstructions.empty() && dst.count > 0) {
+            Instruction& lastInstruction = fInstructions.back();
+
+            // If the last instruction is pushing a constant, we can copy the constant directly into
+            // the destination slot. We still need to push the constant, but there's a very high
+            // likelihood that it will be discarded.
+            if (lastInstruction.fOp == BuilderOp::push_literal_f) {
+                int immValue = lastInstruction.fImmA;
+                fInstructions.pop_back();
+
+                // We need to fill the _last_ slot of the passed-in slot range.
+                Slot dstSlot = dst.index + dst.count - 1;
+                constantsToPush.push_back({BuilderOp::copy_constant, {dstSlot}, immValue});
+                --dst.count;
+                continue;
+            }
+
+            break;
+        }
+    }
+
+    // Append our constant-push instructions (if any) to the instruction list. Reverse their order
+    // so that they run forwards in memory.
+    for (int index = constantsToPush.size(); index--;) {
+        fInstructions.push_back(constantsToPush[index]);
+    }
+
+    // Actually emit the op which copies the stack into slots.
+    if (dst.count > 0) {
+        fInstructions.push_back({BuilderOp::copy_stack_to_slots_unmasked, {dst.index},
+                                 dst.count, offsetFromStackTop});
+    }
+
+    // If we replaced any push_literal ops, we need to balance the stack, which means writing them
+    // _back_ into the op list. If we are being called by pop_slots, they will be eliminated in a
+    // moment.
+    for (int index = 0; index < constantsToPush.size(); ++index) {
+        fInstructions.push_back({BuilderOp::push_literal_f, {}, constantsToPush[index].fImmA});
+    }
 }
 
 void Builder::pop_return_mask() {
