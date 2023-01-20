@@ -13,20 +13,76 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegPriv.h"
 
+#include <algorithm>
 #include <cstring>
 #include <utility>
 
-// Some seekable SkStream sub-classes do not implement peek. Manually implement it via
-// setting and restoring the stream's position.
-static size_t peek(SkStream* stream, void* data, size_t size) {
-    size_t initialPosition = stream->getPosition();
-    size_t result = stream->read(data, size);
-    if (!stream->seek(initialPosition)) {
-        SkCodecPrintf("Failed to restore position during peek.\n");
-        return 0;
+class SkJpegSegmentScan::ForwardScanAdapter {
+    // Size we're targeting to read from the base stream
+    static constexpr size_t kMaxReadSize = 8192;
+    // "shrug" number; big enough we can reliably do 8192 size reads
+    static constexpr size_t kBufferSize = 9216;
+public:
+    explicit ForwardScanAdapter(SkStream* stream) : fStream(stream) {}
+
+    size_t peek(void* buffer, size_t size) {
+        fillIfNeeded(size);
+        auto toCopy = std::min(fSizeRemaining, size);
+        memcpy(buffer, fBuffer + fReadHead, toCopy);
+        return toCopy;
     }
-    return result;
-}
+
+    size_t read(void* buffer, size_t size) {
+        size = peek(buffer, size);
+        fReadHead += size;
+        fSizeRemaining -= size;
+        fOffsetFromStart += size;
+        return size;
+    }
+
+    size_t skip(size_t size) {
+        size_t startPos = fOffsetFromStart;
+        if (size > fSizeRemaining) {
+            fOffsetFromStart += fSizeRemaining;
+            size -= fSizeRemaining;
+            fSizeRemaining = 0;
+            fReadHead = 0;
+            fOffsetFromStart += fStream->skip(size);
+        } else {
+            fSizeRemaining -= size;
+            fReadHead += size;
+            fOffsetFromStart += size;
+        }
+        return fOffsetFromStart - startPos;
+    }
+
+    size_t offsetFromStart() const {
+        return fOffsetFromStart;
+    }
+
+    // Returns any unread data back to the stream
+    void refund() {
+        fStream->seek(fStream->getPosition() - fSizeRemaining);
+        fSizeRemaining = 0;
+        fReadHead = 0;
+    }
+
+private:
+    SkStream* fStream;
+    char fBuffer[kBufferSize];
+    size_t fSizeRemaining = 0;
+    size_t fReadHead = 0;
+    size_t fOffsetFromStart = 0;
+
+    void fillIfNeeded(size_t toAccess) {
+        if (fSizeRemaining < toAccess) {
+            memcpy(fBuffer, fBuffer + fReadHead, fSizeRemaining);
+            fReadHead = 0;
+            size_t toRead = std::min(kMaxReadSize, kBufferSize - fSizeRemaining);
+            fSizeRemaining += fStream->read(fBuffer + fSizeRemaining, toRead);
+        }
+    }
+};
 
 SkJpegSegmentScan::SkJpegSegmentScan(SkStream* stream,
                                      size_t initialPosition,
@@ -52,7 +108,6 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
     size_t startOfImageCount = 0;
     size_t endOfImageCount = 0;
     std::vector<Segment> segments;
-    size_t initialPosition = stream->getPosition();
 
     // This implementation relies on using getPosition. It is possible to implement this with just
     // rewind.
@@ -61,10 +116,13 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
         return nullptr;
     }
 
+    size_t initialPosition = stream->getPosition();
+    ForwardScanAdapter adapter(stream);
+
     // First peek to see the Jpeg signature.
     {
         uint8_t signature[sizeof(kJpegSig)];
-        if (peek(stream, signature, sizeof(kJpegSig)) != sizeof(kJpegSig)) {
+        if (adapter.peek(signature, sizeof(kJpegSig)) != sizeof(kJpegSig)) {
             SkCodecPrintf("Failed to peek Jpeg signature.\n");
             return nullptr;
         }
@@ -78,9 +136,8 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
         // Read each segment, starting with its marker. See section B.1.1.3: All markers are
         // assigned two-byte codes: a 0xFF byte followed by a byte which is not equal to 0x00 or
         // 0xFF.
-        const size_t offset = stream->getPosition() - initialPosition;
         uint8_t markerCode[kMarkerCodeSize] = {0};
-        if (stream->read(markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
+        if (adapter.read(markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
             SkCodecPrintf("Unexpected EOF at first marker code.\n");
             break;
         }
@@ -92,7 +149,7 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
         // We are at a marker for the beginning of a segment.
         Segment segment;
         segment.marker = markerCode[1];
-        segment.offset = offset;
+        segment.offset = adapter.offsetFromStart() - kMarkerCodeSize;
 
         // Some markers stand alone, which means that they do not have parameters, see Marker
         // assignments, in section B.1.1.3.
@@ -103,12 +160,12 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
             // marker segment is the two-byte length parameter. This length parameter encodes the
             // number of bytes in the marker segment, including the length parameter and excluding
             // the two-byte marker.
-            if (peek(stream, parameterLength, kParameterLengthSize) != kParameterLengthSize) {
+            if (adapter.peek(parameterLength, kParameterLengthSize) != kParameterLengthSize) {
                 SkCodecPrintf("Failed to peek segment parameter length.\n");
                 return nullptr;
             }
             segment.parameterLength = 256 * parameterLength[0] + parameterLength[1];
-            if (stream->skip(segment.parameterLength) != segment.parameterLength) {
+            if (adapter.skip(segment.parameterLength) != segment.parameterLength) {
                 SkCodecPrintf("Failed to seek past segment parameters.\n");
                 return nullptr;
             }
@@ -139,22 +196,23 @@ std::unique_ptr<SkJpegSegmentScan> SkJpegSegmentScan::Create(SkStream* stream,
         }
 
         // Allow entroy-coded data to follow any segment.
-        if (!SkipPastEntropyCodedData(stream)) {
+        if (!SkipPastEntropyCodedData(adapter)) {
             SkCodecPrintf("Failed to seek past entropy coded data.\n");
             return nullptr;
         }
     }
+    adapter.refund();
 
     return std::unique_ptr<SkJpegSegmentScan>(
             new SkJpegSegmentScan(stream, initialPosition, std::move(segments)));
 }
 
-bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
+bool SkJpegSegmentScan::SkipPastEntropyCodedData(ForwardScanAdapter& adapter) {
     uint8_t markerCode[kMarkerCodeSize] = {0};
 
     while (1) {
         // Peek at the two bytes for the marker.
-        if (peek(stream, markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
+        if (adapter.peek(markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
             // Assume to be EOF.
             SkCodecPrintf("Failed to peek two ECD bytes (unexpected EOF?).\n");
             return false;
@@ -163,7 +221,7 @@ bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
         // If the first byte is not 0xFF, it's part of the entropy-coded data,
         // so skip to the next byte.
         if (markerCode[0] != 0xFF) {
-            if (stream->skip(1) != 1) {
+            if (adapter.skip(1) != 1) {
                 SkCodecPrintf("Failed to skip single ECD byte.\n");
                 return false;
             }
@@ -176,7 +234,7 @@ bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
         // string, a 0x00 byte is stuffed into the code string. If a 0x00 byte is
         // detected after a 0xFF byte, the decoder must discard it.
         if (markerCode[1] == 0x00) {
-            if (stream->skip(kMarkerCodeSize) != kMarkerCodeSize) {
+            if (adapter.skip(kMarkerCodeSize) != kMarkerCodeSize) {
                 SkCodecPrintf("Failed to skip stuffed ECD byte.\n");
                 return false;
             }
@@ -191,11 +249,11 @@ bool SkJpegSegmentScan::SkipPastEntropyCodedData(SkStream* stream) {
     // of fill bytes, which are bytes assigned code 0xFF. Skip past any 0xFF
     // fill bytes that may be present at the end of the entropy-coded data.
     while (markerCode[1] == 0xFF) {
-        if (stream->skip(1) != 1) {
+        if (adapter.skip(1) != 1) {
             SkCodecPrintf("Failed to skip post-ECD fill.\n");
             return false;
         }
-        if (peek(stream, markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
+        if (adapter.peek(markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
             SkCodecPrintf("Failed to peek past post-ECD fill (unexpected EOF?).\n");
             return false;
         }
@@ -265,8 +323,9 @@ std::unique_ptr<SkStream> SkJpegSegmentScan::getSubsetStream(size_t offset, size
     }
 
     sk_sp<SkData> data = SkData::MakeUninitialized(size);
-    if (fStream->read(data->writable_data(), size) != size) {
-        SkCodecPrintf("Failed to read subset stream data.\n");
+    auto read = fStream->read(data->writable_data(), size);
+    if (read != size) {
+        SkCodecPrintf("Failed to read subset stream data; wanted %zu got %zu.\n", size, read);
         return nullptr;
     }
 
