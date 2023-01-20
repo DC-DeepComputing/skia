@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e781da5_0dedb494",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-20T17:06:00Z",
+      "side": 1,
+      "message": "Yeah, I was also considering what could be done with a 64 bit version, since most things do 64 bit native now.",
+      "parentUuid": "755ccddc_4718af99",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 15
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "294a234f_45ee62a4",
         "filename": "include/core/SkColorPriv.h",
         "patchSetId": 6
@@ -100,6 +124,30 @@
       "writtenOn": "2023-01-20T16:47:02Z",
       "side": 1,
       "message": "We do saturating adds of each color channel, then mask all the results together.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 37
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c69544_b9783ae0",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-20T17:06:00Z",
+      "side": 1,
+      "message": "Once upon a time, I would have said this should be done branchless by using the \"overflow bit\" to create the mask. As things are though, the conditional moves will probably be almost always perfectly predicted, since this doesn\u0027t often overflow. Anyhow, something to consider, I suppose.",
+      "parentUuid": "938a547a_f8c36a36",
       "range": {
         "startLine": 159,
         "startChar": 0,
