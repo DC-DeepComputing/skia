@@ -94,8 +94,9 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make() {
 }
 
 std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext() {
-    return skgpu::graphite::ContextFactory::MakeDawn(fBackendContext,
-                                                     skgpu::graphite::ContextOptions{});
+    skgpu::graphite::ContextOptions contextOptions;
+    contextOptions.fStoreContextRefInRecorder = true;
+    return skgpu::graphite::ContextFactory::MakeDawn(fBackendContext, contextOptions);
 }
 
 }  // namespace skiatest::graphite

@@ -81,14 +81,17 @@ sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& opti
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
                                                             const TextureInfo& info) {
-    SkASSERT(false);
-    return {};
+    wgpu::Texture texture = DawnTexture::MakeDawnTexture(dawnSharedContext(), dimensions, info);
+    if (!texture) {
+        return {};
+    }
+
+    return BackendTexture(std::move(texture));
 }
 
 void DawnResourceProvider::onDeleteBackendTexture(BackendTexture& texture) {
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kDawn);
-    SkASSERT(false);
 }
 
 const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
