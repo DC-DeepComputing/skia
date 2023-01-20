@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fab52dc_f1cd19be",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T18:09:06Z",
+      "side": 1,
+      "message": "My quick 64-bit experiments didn\u0027t yield much, so I\u0027m going to try landing the current version. Obviously, we can revisit if there\u0027s a way to speed this up, but getting something in will resolve the chrome icon bug.",
+      "parentUuid": "2e781da5_0dedb494",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 15
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "294a234f_45ee62a4",
         "filename": "include/core/SkColorPriv.h",
         "patchSetId": 6
