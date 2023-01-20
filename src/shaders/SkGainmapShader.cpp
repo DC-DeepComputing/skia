@@ -73,14 +73,13 @@ sk_sp<SkShader> SkGainmapShader::Make(sk_sp<SkImage> baseImage,
 
     // The base image shader will convert into the color space in which the gainmap is applied.
     const SkMatrix baseRectToDstRect = SkMatrix::RectToRect(baseRect, dstRect);
-    auto baseImageShader = baseImage->reinterpretColorSpace(dstColorSpace)
-                                   ->makeShader(baseSamplingOptions, &baseRectToDstRect)
+    auto baseImageShader = baseImage->makeRawShader(baseSamplingOptions, &baseRectToDstRect)
                                    ->makeWithColorFilter(colorXformSdrToGainmap);
 
     // The gainmap image shader will ignore any color space that the gainmap has.
     const SkMatrix gainmapRectToDstRect = SkMatrix::RectToRect(gainmapRect, dstRect);
-    auto gainmapImageShader = gainmapImage->reinterpretColorSpace(dstColorSpace)
-                                      ->makeShader(gainmapSamplingOptions, &gainmapRectToDstRect);
+    auto gainmapImageShader =
+            gainmapImage->makeRawShader(gainmapSamplingOptions, &gainmapRectToDstRect);
 
     // Create the shader to apply the gainmap.
     sk_sp<SkShader> gainmapMathShader;
