@@ -68,6 +68,24 @@
       "message": "What about this approach:\nhttps://skia-review.googlesource.com/c/skia/+/631105\n\nIt chunks the entropy data (but only the entropy data).",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd4c6c86_a88177bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T22:19:58Z",
+      "side": 1,
+      "message": "That looks promising (it still uses small peeks for the final padding bytes, but I\u0027m guessing those are less of an issue than the big loop). John, do you want to test that CL out, and see how the perf compares?",
+      "parentUuid": "f350b5f5_0a605089",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
