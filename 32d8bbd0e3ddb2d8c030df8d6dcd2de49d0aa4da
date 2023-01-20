@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dfe0ea3_4f1b01a1",
+        "filename": "src/core/SkColorFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T14:15:28Z",
+      "side": 1,
+      "message": "Ah yeah, I missed this. I\u0027d suggest just doing:\n`return sk_make_sp\u003cColorSpaceXformColorFilter\u003e(std::move(src), std::move(dst));`",
+      "revId": "32d8bbd0e3ddb2d8c030df8d6dcd2de49d0aa4da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
