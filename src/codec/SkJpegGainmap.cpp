@@ -465,6 +465,27 @@ bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
         return false;
     }
 
+    // We are about to do some expensive jumping around and peeking in the stream, so make a
+    // memory stream, if the original stream isn't already one.
+    std::unique_ptr<SkStream> memoryStream;
+    if (!decoderStream->getMemoryBase()) {
+        if (!decoderStream->hasLength()) {
+            SkCodecPrintf("RecoveryMap gainmap extraction requires a known length stream.\n");
+            return false;
+        }
+
+        size_t originalPos = decoderStream->getPosition();
+        size_t size = decoderStream->getLength() - originalPos;
+        sk_sp<SkData> data = SkData::MakeUninitialized(size);
+        if (decoderStream->read(data->writable_data(), size) != size) {
+            SkCodecPrintf("Failed to read decoder stream contents.\n");
+            return false;
+        }
+
+        memoryStream = SkMemoryStream::Make(std::move(data));
+        decoderStream = memoryStream.get();
+    }
+
     // The offset read from the XMP metadata is relative to the end of the EndOfImage marker in the
     // original decoder stream. Create a full scan of the original decoder stream, so we can find
     // that EndOfImage marker's offset in the decoder stream.
