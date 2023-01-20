@@ -56,12 +56,14 @@ void CommandBuffer::callFinishedProcs(bool success) {
 
 bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> colorTexture,
+                                  sk_sp<Texture> msaaLoadTexture,
                                   sk_sp<Texture> resolveTexture,
                                   sk_sp<Texture> depthStencilTexture,
                                   SkRect viewport,
                                   const std::vector<std::unique_ptr<DrawPass>>& drawPasses) {
     if (!this->onAddRenderPass(renderPassDesc,
                                colorTexture.get(),
+                               msaaLoadTexture.get(),
                                resolveTexture.get(),
                                depthStencilTexture.get(),
                                viewport,
@@ -74,6 +76,9 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     }
     if (resolveTexture) {
         this->trackResource(std::move(resolveTexture));
+    }
+    if (msaaLoadTexture) {
+        this->trackResource(std::move(msaaLoadTexture));
     }
     if (depthStencilTexture) {
         this->trackResource(std::move(depthStencilTexture));
