@@ -367,12 +367,16 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
                                         Mipmapped mipmapped) {
     SkASSERT(SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(srcRect));
 
+    auto* caps = recorder->priv().caps();
+    Renderable renderable =
+            caps->textureCopyRequiresRenderable() ? Renderable::kYes : Renderable::kNo;
+
     sk_sp<TextureProxy> dest = TextureProxy::Make(recorder->priv().caps(),
                                                   srcRect.size(),
                                                   srcColorInfo.colorType(),
                                                   mipmapped,
                                                   srcView.proxy()->textureInfo().isProtected(),
-                                                  Renderable::kNo,
+                                                  renderable,
                                                   skgpu::Budgeted::kNo);
     if (!dest) {
         return {};

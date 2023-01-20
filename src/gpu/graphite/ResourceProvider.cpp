@@ -122,6 +122,21 @@ sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize d
     return this->findOrCreateTextureWithKey(dimensions, info, key, skgpu::Budgeted::kYes);
 }
 
+sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAALoadTexture(SkISize dimensions,
+                                                                        const TextureInfo& info) {
+    SkASSERT(info.isValid());
+
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    GraphiteResourceKey key;
+    // We always make MSAA load texture shareable. Between any render pass the values
+    // are reset. Thus it is safe to be used by multiple different render passes without worry of
+    // stomping on each other's data.
+    fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, Shareable::kYes, &key);
+
+    return this->findOrCreateTextureWithKey(dimensions, info, key, skgpu::Budgeted::kYes);
+}
+
 sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
                                                             const TextureInfo& info,
                                                             const GraphiteResourceKey& key,

@@ -73,6 +73,7 @@ private:
 
     bool onAddRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
+                         const Texture* msaaLoadTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
                          SkRect viewport,
@@ -84,6 +85,7 @@ private:
     // Methods for populating a MTLRenderCommandEncoder:
     bool beginRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
+                         const Texture* msaaLoadTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture);
     void endRenderPass();

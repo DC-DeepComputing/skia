@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/RenderPassTask.h"
 
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/DrawPass.h"
@@ -19,22 +20,29 @@ namespace skgpu::graphite {
 
 sk_sp<RenderPassTask> RenderPassTask::Make(std::vector<std::unique_ptr<DrawPass>> passes,
                                            const RenderPassDesc& desc,
-                                           sk_sp<TextureProxy> target) {
+                                           sk_sp<TextureProxy> target,
+                                           TextureInfo msaaLoadTextureInfo) {
     // For now we have one DrawPass per RenderPassTask
     SkASSERT(passes.size() == 1);
     if (!target) {
         return nullptr;
     }
 
-    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes), desc, target));
+    return sk_sp<RenderPassTask>(new RenderPassTask(
+            std::move(passes),
+            desc,
+            target,
+            std::move(msaaLoadTextureInfo)));
 }
 
 RenderPassTask::RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                                const RenderPassDesc& desc,
-                               sk_sp<TextureProxy> target)
+                               sk_sp<TextureProxy> target,
+                               TextureInfo msaaLoadTextureInfo)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
-        , fTarget(std::move(target)) {}
+        , fTarget(std::move(target))
+        , fMSAALoadTextureInfo(std::move(msaaLoadTextureInfo)) {}
 
 RenderPassTask::~RenderPassTask() = default;
 
@@ -72,6 +80,7 @@ bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer)
     // the discardable attachments from the Context.
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
     sk_sp<Texture> colorAttachment;
+    sk_sp<Texture> msaaLoadTexture;
     sk_sp<Texture> resolveAttachment;
     if (fRenderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()) {
         SkASSERT(fTarget->numSamples() == 1 &&
@@ -83,6 +92,13 @@ bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer)
             return false;
         }
         resolveAttachment = fTarget->refTexture();
+
+        if (fMSAALoadTextureInfo.isValid()) {
+            msaaLoadTexture = resourceProvider->findOrCreateDiscardableMSAALoadTexture(
+                    fTarget->dimensions(), fMSAALoadTextureInfo);
+        } else {
+            msaaLoadTexture = resolveAttachment;
+        }
     } else {
         colorAttachment = fTarget->refTexture();
     }
@@ -105,8 +121,21 @@ bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer)
     // single sample resolve as an input attachment in that subpass, and then do a draw. The big
     // thing with Vulkan is that this input attachment and subpass means we also need to update
     // the fRenderPassDesc here.
+
+    if (msaaLoadTexture != nullptr && msaaLoadTexture != resolveAttachment) {
+        // If we cannot directly load resolve texture's old content in one single render
+        // pass, then do a copying to msaaLoadTexture here.
+        if (!commandBuffer->copyTextureToTexture(resolveAttachment,
+                                                 SkIRect::MakeSize(resolveAttachment->dimensions()),
+                                                 msaaLoadTexture,
+                                                 SkIPoint::Make(0, 0))) {
+            return false;
+        }
+    }
+
     return commandBuffer->addRenderPass(fRenderPassDesc,
                                         std::move(colorAttachment),
+                                        std::move(msaaLoadTexture),
                                         std::move(resolveAttachment),
                                         std::move(depthStencilAttachment),
                                         SkRect::Make(fTarget->dimensions()),

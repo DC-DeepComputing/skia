@@ -65,6 +65,12 @@ public:
     sk_sp<Texture> findOrCreateDiscardableMSAAAttachment(SkISize dimensions,
                                                          const TextureInfo&);
 
+    // Used for copying old resolve data to an intermediate texture. This is needed when
+    // a backend doesn't support loading MSAA from the resolve texture directly in the same render
+    // pass.
+    sk_sp<Texture> findOrCreateDiscardableMSAALoadTexture(SkISize dimensions,
+                                                          const TextureInfo&);
+
     sk_sp<Buffer> findOrCreateBuffer(size_t size, BufferType type, PrioritizeGpuReads);
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SkSamplingOptions&,

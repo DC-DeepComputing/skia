@@ -104,11 +104,16 @@ void MtlCommandBuffer::onResetCommandBuffer() {
 
 bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                        const Texture* colorTexture,
+                                       const Texture* msaaLoadTexture,
                                        const Texture* resolveTexture,
                                        const Texture* depthStencilTexture,
                                        SkRect viewport,
                                        const std::vector<std::unique_ptr<DrawPass>>& drawPasses) {
-    if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
+    if (!this->beginRenderPass(renderPassDesc,
+                               colorTexture,
+                               msaaLoadTexture,
+                               resolveTexture,
+                               depthStencilTexture)) {
         return false;
     }
 
@@ -138,6 +143,7 @@ bool MtlCommandBuffer::onAddComputePass(const ComputePassDesc& computePassDesc,
 
 bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                        const Texture* colorTexture,
+                                       const Texture* msaaLoadTexture,
                                        const Texture* resolveTexture,
                                        const Texture* depthStencilTexture) {
     SkASSERT(!fActiveRenderCommandEncoder);
@@ -240,6 +246,11 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         // Manually load the contents of the resolve texture into the MSAA attachment as a draw,
         // so the actual load op for the MSAA attachment had better have been discard.
         SkASSERT(colorInfo.fLoadOp == LoadOp::kDiscard);
+
+        // We support directly loading the resolve texture. There shouldn't be any extra load
+        // texture passed here.
+        SkASSERT(resolveTexture == msaaLoadTexture);
+
         auto loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
         if (!loadPipeline) {
             SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
