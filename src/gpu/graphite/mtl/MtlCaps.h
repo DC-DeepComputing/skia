@@ -30,6 +30,9 @@ public:
     TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                           Discardable discardable) const override;
 
+    TextureInfo getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                              Discardable discardable) const override;
+
     TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
                                                   uint32_t sampleCount,
                                                   Protected) const override;
