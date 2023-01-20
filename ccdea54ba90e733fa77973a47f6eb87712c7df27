@@ -16,6 +16,23 @@
       "message": "lgtm, this makes sense. That said, `SkJpegSegmentScan::SkipPastEntropyCodedData` should chew off chunks of ~1k (to match `skjpeg_source_mgr`).",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc00891_3636ea95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-01-20T21:14:10Z",
+      "side": 1,
+      "message": "lgtm from the right account this time",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
