@@ -28,6 +28,8 @@ public:
                                              Renderable) const override;
     TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                           Discardable discardable) const override;
+    TextureInfo getDefaultMSAALoadTextureInfo(const TextureInfo& singleSampledInfo,
+                                              Discardable discardable) const override;
     TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
                                                   uint32_t sampleCount,
                                                   Protected) const override;
@@ -40,6 +42,8 @@ public:
                             ResourceType,
                             Shareable,
                             GraphiteResourceKey*) const override;
+
+    uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
 
 private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
@@ -65,7 +69,6 @@ private:
     uint32_t maxRenderTargetSampleCount(wgpu::TextureFormat format) const;
     bool isTexturable(wgpu::TextureFormat format) const;
     bool isRenderable(wgpu::TextureFormat format, uint32_t numSamples) const;
-    uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
 
     struct FormatInfo {
         uint32_t colorTypeFlags(SkColorType colorType) const {
