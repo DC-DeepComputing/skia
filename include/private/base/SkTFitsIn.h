@@ -9,7 +9,6 @@
 #define SkTFitsIn_DEFINED
 
 #include <limits>
-#include <stdint.h>
 #include <type_traits>
 
 /**
