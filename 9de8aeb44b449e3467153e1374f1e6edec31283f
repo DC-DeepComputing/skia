@@ -204,6 +204,30 @@
       },
       "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c04df7_9fc04103",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-20T18:14:57Z",
+      "side": 1,
+      "message": "Just took another stab at this, and quickly remembered the specific issues with using the overflow bit to build the mask w/o branches... The natural thing is to isolate that bit, then use that to somehow build a mask of all bits in the corresponding byte. But the obvious ways to do that don\u0027t work cleanly (subtract one fails, because if the bit isn\u0027t set, we have 0-1, and end up with the full mask regardless). So the other option is to broadcast the bit via repeated shifts and ors, but that takes several instructions, because you need to build up the masks as 2/4/8 bits. Unless I\u0027m missing some other clever trick?",
+      "parentUuid": "8c85e1e1_09b762cd",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 37
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
