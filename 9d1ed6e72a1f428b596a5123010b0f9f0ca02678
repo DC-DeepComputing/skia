@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f72572_4efb2124",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-20T20:50:16Z",
+      "side": 1,
+      "message": "Without this, dm was quitting immediately when running Graphite Dawn because it couldn\u0027t do a readback.",
+      "revId": "9d1ed6e72a1f428b596a5123010b0f9f0ca02678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
