@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f38e0f7e_9ecb0d24",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-21T02:02:39Z",
+      "side": 1,
+      "message": "up to you: might be nice to name the variable in the error message? just use `std::string(var-\u003ename())` like the error on L251",
+      "range": {
+        "startLine": 254,
+        "startChar": 84,
+        "endLine": 254,
+        "endChar": 92
+      },
+      "revId": "fecc1bfbf0d1df4cce158a9aa13ebe31379f8841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
