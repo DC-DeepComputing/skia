@@ -103,6 +103,23 @@
       "message": "I don\u0027t think this justifies the RAM cost it comes with, the other CL by itself seems to be \"fast enough\"",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90ffedb3_5b7d902e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-01-21T02:10:46Z",
+      "side": 1,
+      "message": "although that said, `GetResourceAsStream` supporting producing SkFILEStreams is a good improvement regardless and would improve test coverage. That would have caught other issues like ::peek() not being commonly available.",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
