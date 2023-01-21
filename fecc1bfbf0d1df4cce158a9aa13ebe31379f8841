@@ -39,6 +39,30 @@
       },
       "revId": "fecc1bfbf0d1df4cce158a9aa13ebe31379f8841",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d725b3_bf19f3f9",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T05:44:16Z",
+      "side": 1,
+      "message": "That\u0027s what I initially had but I thought the output looked jarring when the variable is an anonymous interface block field (just an empty string for the base variable).\n\nI went ahead and added some more plumbing for field access expressions so that they are printed to at most one level of indirection. PTAL.",
+      "parentUuid": "f38e0f7e_9ecb0d24",
+      "range": {
+        "startLine": 254,
+        "startChar": 84,
+        "endLine": 254,
+        "endChar": 92
+      },
+      "revId": "fecc1bfbf0d1df4cce158a9aa13ebe31379f8841",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
