@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a09b34ff_5a219db2",
+        "filename": "resources/sksl/intrinsics/Degrees.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-21T01:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba216da7_74f5b42f",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 36
+      },
+      "revId": "3ac8b5b3906c2daebb9323d744deff101d28aaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f164c9a9_a75e31c7",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-01-21T01:51:56Z",
       "side": 1,
       "message": "Use `radians` to match the file name.",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 36
+      },
+      "revId": "3ac8b5b3906c2daebb9323d744deff101d28aaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff305885_3bc4ed0a",
+        "filename": "resources/sksl/intrinsics/Radians.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-21T01:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f164c9a9_a75e31c7",
       "range": {
         "startLine": 9,
         "startChar": 29,
