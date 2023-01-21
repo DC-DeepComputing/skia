@@ -40,13 +40,12 @@ class SkWStream;
 
 class SkJpegEncoderMgr final : SkNoncopyable {
 public:
-
     /*
      * Create the decode manager
-     * Does not take ownership of stream
+     * Does not take ownership of stream or suffix.
      */
-    static std::unique_ptr<SkJpegEncoderMgr> Make(SkWStream* stream) {
-        return std::unique_ptr<SkJpegEncoderMgr>(new SkJpegEncoderMgr(stream));
+    static std::unique_ptr<SkJpegEncoderMgr> Make(SkWStream* stream, SkData* suffix) {
+        return std::unique_ptr<SkJpegEncoderMgr>(new SkJpegEncoderMgr(stream, suffix));
     }
 
     bool setParams(const SkImageInfo& srcInfo, const SkJpegEncoder::Options& options);
@@ -62,11 +61,7 @@ public:
     }
 
 private:
-
-    SkJpegEncoderMgr(SkWStream* stream)
-        : fDstMgr(stream)
-        , fProc(nullptr)
-    {
+    SkJpegEncoderMgr(SkWStream* stream, SkData* suffix) : fDstMgr(stream, suffix), fProc(nullptr) {
         fCInfo.err = jpeg_std_error(&fErrMgr);
         fErrMgr.error_exit = skjpeg_error_exit;
         jpeg_create_compress(&fCInfo);
@@ -179,11 +174,19 @@ bool SkJpegEncoderMgr::setParams(const SkImageInfo& srcInfo, const SkJpegEncoder
 
 std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst, const SkPixmap& src,
                                                const Options& options) {
+    return Make(dst, src, options, nullptr, nullptr);
+}
+
+std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst,
+                                               const SkPixmap& src,
+                                               const Options& options,
+                                               SkData* xmpMetadata,
+                                               SkData* suffix) {
     if (!SkPixmapIsValid(src)) {
         return nullptr;
     }
 
-    std::unique_ptr<SkJpegEncoderMgr> encoderMgr = SkJpegEncoderMgr::Make(dst);
+    std::unique_ptr<SkJpegEncoderMgr> encoderMgr = SkJpegEncoderMgr::Make(dst, suffix);
 
     skjpeg_error_mgr::AutoPushJmpBuf jmp(encoderMgr->errorMgr());
     if (setjmp(jmp)) {
@@ -196,6 +199,11 @@ std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst, const SkPixmap& s
 
     jpeg_set_quality(encoderMgr->cinfo(), options.fQuality, TRUE);
     jpeg_start_compress(encoderMgr->cinfo(), TRUE);
+
+    if (xmpMetadata) {
+        jpeg_write_marker(
+                encoderMgr->cinfo(), kXMPMarker, xmpMetadata->bytes(), xmpMetadata->size());
+    }
 
     sk_sp<SkData> icc =
             icc_from_color_space(src.info(), options.fICCProfile, options.fICCProfileDescription);
