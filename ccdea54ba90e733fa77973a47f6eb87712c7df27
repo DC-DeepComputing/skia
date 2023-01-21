@@ -120,6 +120,24 @@
       "message": "although that said, `GetResourceAsStream` supporting producing SkFILEStreams is a good improvement regardless and would improve test coverage. That would have caught other issues like ::peek() not being commonly available.",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1bc7148_7301e69e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-21T13:03:16Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m going to abandon this CL, but land that change by itself. I was actually surprised to see that our testing framework never uses file streams.",
+      "parentUuid": "90ffedb3_5b7d902e",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
