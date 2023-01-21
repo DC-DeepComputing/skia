@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50bdfdd0_fd9f0364",
+        "filename": "resources/sksl/wgsl/GlobalUniforms.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T00:40:32Z",
+      "side": 1,
+      "message": "Good catch. Done.",
+      "parentUuid": "1a7ff1cc_9dfd04b6",
+      "range": {
+        "startLine": 6,
+        "startChar": 17,
+        "endLine": 6,
+        "endChar": 41
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8d22913_b6d6d045",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f929bcc4_fa31a515",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T00:40:32Z",
+      "side": 1,
+      "message": "Right, this is making an exception for texture and sampler variables (which are not considered part of the global uniforms struct but get declared as uniform), which will be handled by this method.\n\n\u003e (This doesn\u0027t actually quite check the same thing... e.g. the previous code didn\u0027t enforce isOpaque at all)\n\nThis should still have had the same effect because I didn\u0027t expect a variable at global scope that is declared as in/out (`isOpaque` should always return false in that case). Though with the helper method this looks cleaner now.",
+      "parentUuid": "e8d22913_b6d6d045",
+      "range": {
+        "startLine": 975,
+        "startChar": 8,
+        "endLine": 977,
+        "endChar": 31
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db703382_224bb926",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-01-13T19:55:55Z",
       "side": 1,
       "message": "`is_in_global_uniforms`?",
+      "range": {
+        "startLine": 1137,
+        "startChar": 16,
+        "endLine": 1137,
+        "endChar": 91
+      },
+      "revId": "dcb769720c982ca99f171bad32e2e0ce62c234f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fa0d77c_cc168eec",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T00:40:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db703382_224bb926",
       "range": {
         "startLine": 1137,
         "startChar": 16,
