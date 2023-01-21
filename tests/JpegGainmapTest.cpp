@@ -8,11 +8,16 @@
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImageEncoder.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
+#include "include/encode/SkJpegEncoder.h"
 #include "include/private/SkGainmapInfo.h"
+#include "include/private/SkGainmapShader.h"
+#include "include/private/SkJpegGainmapEncoder.h"
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #include "tests/Test.h"
@@ -123,6 +128,102 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     REPORTER_ASSERT(r, bitmaps[2].getColor(575, 767) == 0xFFB5B5B5);
 }
 
+// Decode an image and its gainmap.
+template <typename Reporter>
+void decode_all(Reporter& r,
+                std::unique_ptr<SkStream> stream,
+                SkBitmap& baseBitmap,
+                SkBitmap& gainmapBitmap,
+                SkGainmapInfo& gainmapInfo) {
+    // Decode the base bitmap.
+    std::unique_ptr<SkCodec> baseCodec = SkCodec::MakeFromStream(std::move(stream));
+    REPORTER_ASSERT(r, baseCodec);
+    baseBitmap.allocPixels(baseCodec->getInfo());
+    REPORTER_ASSERT(r,
+                    SkCodec::kSuccess == baseCodec->getPixels(baseBitmap.info(),
+                                                              baseBitmap.getPixels(),
+                                                              baseBitmap.rowBytes()));
+    std::unique_ptr<SkAndroidCodec> androidCodec =
+            SkAndroidCodec::MakeFromCodec(std::move(baseCodec));
+    REPORTER_ASSERT(r, androidCodec);
+
+    // Extract the gainmap info and stream.
+    std::unique_ptr<SkStream> gainmapStream;
+    REPORTER_ASSERT(r, androidCodec->getAndroidGainmap(&gainmapInfo, &gainmapStream));
+    REPORTER_ASSERT(r, gainmapStream);
+
+    // Decode the gainmap bitmap.
+    std::unique_ptr<SkCodec> gainmapCodec = SkCodec::MakeFromStream(std::move(gainmapStream));
+    REPORTER_ASSERT(r, gainmapCodec);
+    SkBitmap bm;
+    bm.allocPixels(gainmapCodec->getInfo());
+    gainmapBitmap.allocPixels(gainmapCodec->getInfo());
+    REPORTER_ASSERT(r,
+                    SkCodec::kSuccess == gainmapCodec->getPixels(gainmapBitmap.info(),
+                                                                 gainmapBitmap.getPixels(),
+                                                                 gainmapBitmap.rowBytes()));
+}
+
+// Render an applied gainmap.
+SkBitmap render_gainmap(const SkImageInfo& renderInfo,
+                        float renderHdrRatio,
+                        const SkBitmap& baseBitmap,
+                        const SkBitmap& gainmapBitmap,
+                        const SkGainmapInfo& gainmapInfo,
+                        int x,
+                        int y) {
+    SkRect baseRect = SkRect::MakeXYWH(x, y, renderInfo.width(), renderInfo.height());
+
+    float scaleX = gainmapBitmap.width() / static_cast<float>(baseBitmap.width());
+    float scaleY = gainmapBitmap.height() / static_cast<float>(baseBitmap.height());
+    SkRect gainmapRect = SkRect::MakeXYWH(baseRect.x() * scaleX,
+                                          baseRect.y() * scaleY,
+                                          baseRect.width() * scaleX,
+                                          baseRect.height() * scaleY);
+
+    SkRect dstRect = SkRect::Make(renderInfo.dimensions());
+
+    sk_sp<SkImage> baseImage = SkImage::MakeFromBitmap(baseBitmap);
+    sk_sp<SkImage> gainmapImage = SkImage::MakeFromBitmap(gainmapBitmap);
+    sk_sp<SkShader> shader = SkGainmapShader::Make(baseImage,
+                                                   baseRect,
+                                                   SkSamplingOptions(),
+                                                   gainmapImage,
+                                                   gainmapRect,
+                                                   SkSamplingOptions(),
+                                                   gainmapInfo,
+                                                   dstRect,
+                                                   renderHdrRatio,
+                                                   renderInfo.refColorSpace());
+
+    SkBitmap result;
+    result.allocPixels(renderInfo);
+    result.eraseColor(SK_ColorTRANSPARENT);
+    SkCanvas canvas(result);
+
+    SkPaint paint;
+    paint.setShader(shader);
+    canvas.drawRect(dstRect, paint);
+
+    return result;
+}
+
+// Render a single pixel of an applied gainmap and return it.
+SkColor4f render_gainmap_pixel(float renderHdrRatio,
+                               const SkBitmap& baseBitmap,
+                               const SkBitmap& gainmapBitmap,
+                               const SkGainmapInfo& gainmapInfo,
+                               int x,
+                               int y) {
+    SkImageInfo testPixelInfo = SkImageInfo::Make(
+            1, 1, kRGBA_F16_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+    SkBitmap testPixelBitmap = render_gainmap(
+            testPixelInfo, renderHdrRatio, baseBitmap, gainmapBitmap, gainmapInfo, x, y);
+    return testPixelBitmap.getColor4f(0, 0);
+}
+
+static bool approx_eq(float x, float y, float epsilon) { return std::abs(x - y) < epsilon; };
+
 DEF_TEST(AndroidCodec_jpegGainmap, r) {
     const struct Rec {
         const char* path;
@@ -156,51 +257,85 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
     };
 
     for (const auto& rec : recs) {
-        auto stream = GetResourceAsStream(rec.path);
-        REPORTER_ASSERT(r, stream);
-
-        std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
-        REPORTER_ASSERT(r, codec);
-
-        std::unique_ptr<SkAndroidCodec> androidCodec =
-                SkAndroidCodec::MakeFromCodec(std::move(codec));
-        REPORTER_ASSERT(r, androidCodec);
-
+        SkBitmap baseBitmap;
+        SkBitmap gainmapBitmap;
         SkGainmapInfo gainmapInfo;
-        std::unique_ptr<SkStream> gainmapStream;
-        REPORTER_ASSERT(r, androidCodec->getAndroidGainmap(&gainmapInfo, &gainmapStream));
-        REPORTER_ASSERT(r, gainmapStream);
-
-        std::unique_ptr<SkCodec> gainmapCodec = SkCodec::MakeFromStream(std::move(gainmapStream));
-        REPORTER_ASSERT(r, gainmapCodec);
-
-        SkBitmap bm;
-        bm.allocPixels(gainmapCodec->getInfo());
-        REPORTER_ASSERT(r,
-                        SkCodec::kSuccess ==
-                                gainmapCodec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes()));
+        decode_all(r, GetResourceAsStream(rec.path), baseBitmap, gainmapBitmap, gainmapInfo);
 
         // Spot-check the image size and pixels.
-        REPORTER_ASSERT(r, bm.dimensions() == rec.dimensions);
-        REPORTER_ASSERT(r, bm.getColor(0, 0) == rec.originColor);
+        REPORTER_ASSERT(r, gainmapBitmap.dimensions() == rec.dimensions);
+        REPORTER_ASSERT(r, gainmapBitmap.getColor(0, 0) == rec.originColor);
         REPORTER_ASSERT(r,
-                        bm.getColor(rec.dimensions.fWidth - 1, rec.dimensions.fHeight - 1) ==
-                                rec.farCornerColor);
+                        gainmapBitmap.getColor(rec.dimensions.fWidth - 1,
+                                               rec.dimensions.fHeight - 1) == rec.farCornerColor);
 
         // Verify the gainmap rendering parameters.
-        auto approxEq = [=](float x, float y) { return std::abs(x - y) < 1e-3f; };
+        constexpr float kEpsilon = 1e-3f;
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMin.fR, rec.logRatioMin, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMin.fG, rec.logRatioMin, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMin.fB, rec.logRatioMin, kEpsilon));
 
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fR, rec.logRatioMin));
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fG, rec.logRatioMin));
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fB, rec.logRatioMin));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMax.fR, rec.logRatioMax, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMax.fG, rec.logRatioMax, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fLogRatioMax.fB, rec.logRatioMax, kEpsilon));
 
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fR, rec.logRatioMax));
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fG, rec.logRatioMax));
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fB, rec.logRatioMax));
-
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fHdrRatioMin, rec.hdrRatioMin));
-        REPORTER_ASSERT(r, approxEq(gainmapInfo.fHdrRatioMax, rec.hdrRatioMax));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fHdrRatioMin, rec.hdrRatioMin, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(gainmapInfo.fHdrRatioMax, rec.hdrRatioMax, kEpsilon));
 
         REPORTER_ASSERT(r, gainmapInfo.fType == rec.type);
     }
 }
+
+#ifdef SK_ENCODE_JPEG
+DEF_TEST(AndroidCodec_jpegGainmapTranscode, r) {
+    const char* path = "images/iphone_13_pro.jpeg";
+    SkBitmap baseBitmap[2];
+    SkBitmap gainmapBitmap[2];
+    SkGainmapInfo gainmapInfo[2];
+
+    // Decode an MPF-based gainmap image.
+    decode_all(r, GetResourceAsStream(path), baseBitmap[0], gainmapBitmap[0], gainmapInfo[0]);
+
+    // Encode to JpegR.
+    SkDynamicMemoryWStream encodeStream;
+    bool encodeResult = SkJpegGainmapEncoder::EncodeJpegR(&encodeStream,
+                                                          baseBitmap[0].pixmap(),
+                                                          SkJpegEncoder::Options(),
+                                                          gainmapBitmap[0].pixmap(),
+                                                          SkJpegEncoder::Options(),
+                                                          gainmapInfo[0]);
+    REPORTER_ASSERT(r, encodeResult);
+
+    // Decode the just-encoded JpegR.
+    auto decodeStream = std::make_unique<SkMemoryStream>(encodeStream.detachAsData());
+    decode_all(r, std::move(decodeStream), baseBitmap[1], gainmapBitmap[1], gainmapInfo[1]);
+
+    // Verify that the representations are different.
+    REPORTER_ASSERT(r, gainmapInfo[0].fLogRatioMin != gainmapInfo[1].fLogRatioMin);
+
+    // Render a few pixels and verify that they come out the same. Rendering requires SkSL.
+#ifdef SK_ENABLE_SKSL
+    const struct Rec {
+        int x;
+        int y;
+        float hdrRatio;
+        SkColor4f expectedColor;
+    } recs[] = {
+            {1446, 1603, 1.05f, {0.984375f, 1.004883f, 1.008789f, 1.f}},
+            {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}},
+    };
+
+    for (const auto& rec : recs) {
+        SkColor4f p0 = render_gainmap_pixel(
+                rec.hdrRatio, baseBitmap[0], gainmapBitmap[0], gainmapInfo[0], rec.x, rec.y);
+        SkColor4f p1 = render_gainmap_pixel(
+                rec.hdrRatio, baseBitmap[1], gainmapBitmap[1], gainmapInfo[1], rec.x, rec.y);
+
+        constexpr float kEpsilon = 1e-2f;
+        REPORTER_ASSERT(r, approx_eq(p0.fR, p1.fR, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(p0.fG, p1.fG, kEpsilon));
+        REPORTER_ASSERT(r, approx_eq(p0.fB, p1.fB, kEpsilon));
+    }
+#endif  // SK_ENABLE_SKSL
+}
+#endif  // SK_ENCODE_JPEG
