@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a1e1aea_9d26c74e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bff9848f_ebbc1c0e",
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66ada93e_fca873cf",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-13T19:33:35Z",
       "side": 1,
       "message": "Use `%d` instead",
+      "range": {
+        "startLine": 131,
+        "startChar": 34,
+        "endLine": 131,
+        "endChar": 73
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec196582_e250a9d7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66ada93e_fca873cf",
       "range": {
         "startLine": 131,
         "startChar": 34,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec4c2335_ea858166",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16c284bb_1ebed6d5",
+      "range": {
+        "startLine": 132,
+        "startChar": 34,
+        "endLine": 132,
+        "endChar": 93
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "385f62d0_6f324195",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d6c8dbf_61da14d9",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "385f62d0_6f324195",
+      "range": {
+        "startLine": 135,
+        "startChar": 16,
+        "endLine": 135,
+        "endChar": 35
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc8a654b_74237c3a",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-01-13T19:33:35Z",
       "side": 1,
       "message": "PTAL http://go/totw/163#the-problem\n\nDon\u0027t pass `const optional\u003cT\u003e\u0026`. This requires the compiler to allocate space on the stack for an `optional\u003cT\u003e` and to construct the `optional` (although not the `T`). It\u0027s simpler and lighter-weight to pass `T*` and let `nullptr` be the sentinel for unused.",
+      "range": {
+        "startLine": 189,
+        "startChar": 21,
+        "endLine": 189,
+        "endChar": 56
+      },
+      "revId": "3f3b2e46f500c2af93c47b5b34413cf63f4cee75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eecccd1d_896ecc05",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc8a654b_74237c3a",
       "range": {
         "startLine": 189,
         "startChar": 21,
