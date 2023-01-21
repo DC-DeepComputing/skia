@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a8f49b_2ea95c5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:51:56Z",
+      "side": 1,
+      "message": "lgtm % comments regarding test files",
+      "revId": "3ac8b5b3906c2daebb9323d744deff101d28aaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba216da7_74f5b42f",
+        "filename": "resources/sksl/intrinsics/Degrees.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:51:56Z",
+      "side": 1,
+      "message": "Use `degrees` to match the file name.",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 36
+      },
+      "revId": "3ac8b5b3906c2daebb9323d744deff101d28aaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f164c9a9_a75e31c7",
+        "filename": "resources/sksl/intrinsics/Radians.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-21T01:51:56Z",
+      "side": 1,
+      "message": "Use `radians` to match the file name.",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 36
+      },
+      "revId": "3ac8b5b3906c2daebb9323d744deff101d28aaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
