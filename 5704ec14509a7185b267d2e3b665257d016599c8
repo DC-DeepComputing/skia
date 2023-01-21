@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1da33060_6010c77f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-21T01:48:07Z",
+      "side": 1,
+      "message": "tiny nit: consider passing an `SkSpan` rather than hard-coding the container type.",
+      "range": {
+        "startLine": 984,
+        "startChar": 42,
+        "endLine": 984,
+        "endChar": 53
+      },
+      "revId": "5704ec14509a7185b267d2e3b665257d016599c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
