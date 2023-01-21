@@ -86,6 +86,23 @@
       "parentUuid": "f350b5f5_0a605089",
       "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e116e0_09564f21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-01-21T02:09:35Z",
+      "side": 1,
+      "message": "I don\u0027t think this justifies the RAM cost it comes with, the other CL by itself seems to be \"fast enough\"",
+      "revId": "ccdea54ba90e733fa77973a47f6eb87712c7df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
