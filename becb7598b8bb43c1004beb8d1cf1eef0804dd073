@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea9c3959_ed07463c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-22T09:52:24Z",
+      "side": 1,
+      "message": "ptal -- this allows transcoding the other gainmap formats to JpegR. I\u0027m not sure if we\u0027re going to expose this, but it\u0027s nice to have in our pocket.",
+      "revId": "becb7598b8bb43c1004beb8d1cf1eef0804dd073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
