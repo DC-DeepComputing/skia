@@ -52,6 +52,24 @@
       "parentUuid": "ea5549a9_c7fe5b68",
       "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab30e1bb_decd92f2",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-23T21:47:41Z",
+      "side": 1,
+      "message": "(To be more clear, implementing MxS has allowed us to run a preexisting SkSL test that previously wasn\u0027t supported. It contains both MxS and MxV tests in it, and the MxV test is not working.)",
+      "parentUuid": "b6d01a4d_11ab03c5",
+      "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
