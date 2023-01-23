@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be2254d4_1f10d738",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-23T12:57:06Z",
+      "side": 1,
+      "message": "This is the 3rd (of 3!) gainmap formats we\u0027ll be supporting.",
+      "revId": "ab41b8d4ef532236d9b12afd1b6a3d7d87facec5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
