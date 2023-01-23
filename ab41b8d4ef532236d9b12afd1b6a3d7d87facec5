@@ -39,6 +39,30 @@
       },
       "revId": "ab41b8d4ef532236d9b12afd1b6a3d7d87facec5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3af475f_45bd8b3d",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-23T19:54:42Z",
+      "side": 1,
+      "message": "Fixed!",
+      "parentUuid": "ef3ecf58_0603ad54",
+      "range": {
+        "startLine": 17,
+        "startChar": 96,
+        "endLine": 17,
+        "endChar": 97
+      },
+      "revId": "ab41b8d4ef532236d9b12afd1b6a3d7d87facec5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
