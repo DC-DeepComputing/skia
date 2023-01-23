@@ -9,10 +9,11 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "src/base/SkQuads.h"
-#include "src/pathops/SkPathOpsQuad.h"
 #include "tests/Test.h"
 
 #include <algorithm>
+#include <cfloat>
+#include <cmath>
 #include <cstddef>
 #include <iterator>
 #include <string>
@@ -38,48 +39,23 @@ static void testQuadRootsReal(skiatest::Reporter* reporter, std::string name,
         }
     }
 
-    {
-        skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
-        double roots[2] = {0, 0};
-        int rootCount = SkDQuad::RootsReal(A, B, C, roots);
-        REPORTER_ASSERT(reporter, expectedRoots.size() == size_t(rootCount),
-                        "Wrong number of roots returned %zu != %d", expectedRoots.size(),
-                        rootCount);
+    double roots[2] = {0, 0};
+    int rootCount = SkQuads::RootsReal(A, B, C, roots);
+    REPORTER_ASSERT(reporter, expectedRoots.size() == size_t(rootCount),
+                    "Wrong number of roots returned %zu != %d", expectedRoots.size(),
+                    rootCount);
 
-        // We don't care which order the roots are returned from the algorithm.
-        // For determinism, we will sort them (and ensure the provided solutions are also sorted).
-        std::sort(std::begin(roots), std::begin(roots) + rootCount);
-        for (int i = 0; i < rootCount; i++) {
-            if (sk_double_nearly_zero(expectedRoots[i])) {
-                REPORTER_ASSERT(reporter, sk_double_nearly_zero(roots[i]),
-                                "0 != %.16f at index %d", roots[i], i);
-            } else {
-                REPORTER_ASSERT(reporter,
-                                sk_doubles_nearly_equal_ulps(expectedRoots[i], roots[i], 64),
-                                "%.16f != %.16f at index %d", expectedRoots[i], roots[i], i);
-            }
-        }
-    }
-    {
-        skiatest::ReporterContext subsubtest(reporter, "SkQuads Implementation");
-        double roots[2] = {0, 0};
-        int rootCount = SkQuads::RootsReal(A, B, C, roots);
-        REPORTER_ASSERT(reporter, expectedRoots.size() == size_t(rootCount),
-                        "Wrong number of roots returned %zu != %d", expectedRoots.size(),
-                        rootCount);
-
-        // We don't care which order the roots are returned from the algorithm.
-        // For determinism, we will sort them (and ensure the provided solutions are also sorted).
-        std::sort(std::begin(roots), std::begin(roots) + rootCount);
-        for (int i = 0; i < rootCount; i++) {
-            if (sk_double_nearly_zero(expectedRoots[i])) {
-                REPORTER_ASSERT(reporter, sk_double_nearly_zero(roots[i]),
-                                "0 != %.16f at index %d", roots[i], i);
-            } else {
-                REPORTER_ASSERT(reporter,
-                                sk_doubles_nearly_equal_ulps(expectedRoots[i], roots[i], 64),
-                                "%.16f != %.16f at index %d", expectedRoots[i], roots[i], i);
-            }
+    // We don't care which order the roots are returned from the algorithm.
+    // For determinism, we will sort them (and ensure the provided solutions are also sorted).
+    std::sort(std::begin(roots), std::begin(roots) + rootCount);
+    for (int i = 0; i < rootCount; i++) {
+        if (sk_double_nearly_zero(expectedRoots[i])) {
+            REPORTER_ASSERT(reporter, sk_double_nearly_zero(roots[i]),
+                            "0 != %.16f at index %d", roots[i], i);
+        } else {
+            REPORTER_ASSERT(reporter,
+                            sk_doubles_nearly_equal_ulps(expectedRoots[i], roots[i], 64),
+                            "%.16f != %.16f at index %d", expectedRoots[i], roots[i], i);
         }
     }
 }
@@ -115,6 +91,30 @@ DEF_TEST(QuadRootsReal_ActualQuadratics, reporter) {
     testQuadRootsReal(reporter, "no roots 5x^2 + 6x + 7",
                        5, 6, 7,
                        {});
+
+    testQuadRootsReal(reporter, "no roots 4x^2 + 1",
+                       4, 0, 1,
+                       {});
+
+    testQuadRootsReal(reporter, "one root is zero, another is big",
+                       14, -13, 0,
+                       {0,
+                        0.9285714285714286
+                      //0.9285714285714285714285714 from Wolfram Alpha
+                        });
+
+    // Values from a failing test case observed during testing.
+    testQuadRootsReal(reporter, "one root is zero, another is small",
+                       0.2929016490705016, 0.0000030451558069, 0,
+                       {-0.00001039651301576329, 0});
+
+    testQuadRootsReal(reporter, "b and c are zero, a is positive 4x^2",
+                       4, 0, 0,
+                       {0});
+
+    testQuadRootsReal(reporter, "b and c are zero, a is negative -4x^2",
+                       -4, 0, 0,
+                       {0});
 }
 
 DEF_TEST(QuadRootsReal_Linear, reporter) {
@@ -135,4 +135,22 @@ DEF_TEST(QuadRootsReal_Constant, reporter) {
     testQuadRootsReal(reporter, "Infinite solutions y = 0",
                        0, 0, 0,
                        {0.});
+}
+
+DEF_TEST(QuadRootsReal_NonFiniteNumbers, reporter) {
+    testQuadRootsReal(reporter, "Discriminant is negative infinity, no solutions",
+                       DBL_MAX, 0, DBL_MAX,
+                       {});
+
+    testQuadRootsReal(reporter, "Discriminant is positive infinity, no solutions",
+                       1, DBL_MAX, 0,
+                       {});
+
+    testQuadRootsReal(reporter, "Double Overflow, no solutions",
+                       DBL_MAX, DBL_MAX, DBL_MAX,
+                       {});
+
+    testQuadRootsReal(reporter, "Nan introduced, no solutions",
+                       1, NAN, -3,
+                       {});
 }

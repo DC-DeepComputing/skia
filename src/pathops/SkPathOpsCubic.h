@@ -99,8 +99,6 @@ struct SkDCubic {
     static int pointCount() { return kPointCount; }
     static int pointLast() { return kPointLast; }
     SkDPoint ptAtT(double t) const;
-    static int RootsReal(double A, double B, double C, double D, double t[3]);
-    static int RootsValidT(const double A, const double B, const double C, double D, double s[3]);
 
     int searchRoots(double extremes[6], int extrema, double axisIntercept,
                     SearchAxis xAxis, double* validRoots) const;
