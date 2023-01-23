@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d62a1cc7_8e39f9f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-23T15:49:00Z",
+      "side": 1,
+      "message": "Merge approved for m109 stable refresh.",
+      "revId": "2e380e13ded184bce88dedd77cc5f13491e02b54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
