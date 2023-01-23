@@ -11,8 +11,6 @@
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTDArray.h"
 
-#include <cstddef>
-
 class SkOpAngle;
 class SkOpCoincidence;
 class SkOpContour;
@@ -320,7 +318,6 @@ public:
 #endif
 
     static const char* OpStr(SkPathOp );
-    static void MathematicaIze(char* str, size_t bufferSize);
     static bool ValidWind(int winding);
     static void WindingPrintf(int winding);
 
