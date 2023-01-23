@@ -34,6 +34,24 @@
       "parentUuid": "f887236b_2ad0cc0b",
       "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d01a4d_11ab03c5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-23T21:44:18Z",
+      "side": 1,
+      "message": "That said, I think there might be something goofy going on with non-square matrices that wasn\u0027t caught by the initial tests. I got MxS and SxM working locally and it\u0027s tripping up on float3x2 * float2x3.",
+      "parentUuid": "ea5549a9_c7fe5b68",
+      "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
