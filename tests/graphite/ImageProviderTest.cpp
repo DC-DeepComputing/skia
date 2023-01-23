@@ -388,3 +388,51 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter
         }
     }
 }
+
+// Here we're testing that the RequiredProperties parameter of:
+//    SkImage::makeColorSpace and
+//    SkImage::makeColorTypeAndColorSpace
+// works as expected.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MakeColorSpace_Test, reporter, context) {
+    struct {
+        // Some of the factories don't correctly create mipmaps through makeTextureImage
+        // bc Graphite's mipmap regeneration isn't implemented yet (b/238754357).
+        bool     fMipmapsBlockedByBug;
+        FactoryT fFactory;
+    } testcases[] = {
+            { false, create_raster_backed_image_no_mipmaps   },
+            { false, create_raster_backed_image_with_mipmaps },
+            { false, create_gpu_backed_image_no_mipmaps      },
+            { false, create_gpu_backed_image_with_mipmaps    },
+            { false, create_picture_backed_image             },
+            { false, create_bitmap_generator_backed_image    },
+    };
+
+    sk_sp<SkColorSpace> spin = SkColorSpace::MakeSRGB()->makeColorSpin();
+
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    for (auto test : testcases) {
+        sk_sp<SkImage> orig = test.fFactory(recorder.get());
+
+        SkASSERT(orig->colorType() == kRGBA_8888_SkColorType);
+        SkASSERT(!orig->colorSpace() || orig->colorSpace() == SkColorSpace::MakeSRGB().get());
+
+        for (Mipmapped mm : { Mipmapped::kNo, Mipmapped::kYes }) {
+            sk_sp<SkImage> i = orig->makeColorSpace(spin, recorder.get(), { mm });
+
+            // makeTextureImage has an optimization which allows Mipmaps on an Image if it
+            // would take extra work to remove them.
+            bool mipmapOptAllowed = orig->hasMipmaps() && mm == Mipmapped::kNo;
+
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
+
+            i = orig->makeColorTypeAndColorSpace(kRGB_565_SkColorType, spin,
+                                                 recorder.get(), { mm });
+
+            REPORTER_ASSERT(reporter, i->isTextureBacked());
+            REPORTER_ASSERT(reporter, i->hasMipmaps() == (mm == Mipmapped::kYes));
+        }
+    }
+}
