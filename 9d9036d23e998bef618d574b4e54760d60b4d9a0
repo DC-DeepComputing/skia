@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21ac43d_2181b686",
+        "filename": "tests/SerializationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-23T22:22:24Z",
+      "side": 1,
+      "message": "Probably want these to be `static` functions and use `dump_typeface` capitalization",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 487,
+        "endChar": 1
+      },
+      "revId": "9d9036d23e998bef618d574b4e54760d60b4d9a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
