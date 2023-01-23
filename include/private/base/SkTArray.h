@@ -172,6 +172,16 @@ public:
         }
     }
 
+    /**
+     * Same as reserve_back(), but allocates more space than is necessary.
+     */
+    void reserve_back_and_grow(int n) {
+        SkASSERT(n >= 0);
+        if (n > 0) {
+            this->checkRealloc(n, kGrowing);
+        }
+    }
+
     void removeShuffle(int n) {
         SkASSERT(n < this->size());
         int newCount = fSize - 1;

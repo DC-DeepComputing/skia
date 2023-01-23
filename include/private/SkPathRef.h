@@ -392,9 +392,9 @@ private:
     void incReserve(int additionalVerbs, int additionalPoints) {
         SkDEBUGCODE(this->validate();)
         if (additionalPoints > 0)
-            fPoints.reserve_back(additionalPoints);
+            fPoints.reserve_back_and_grow(additionalPoints);
         if (additionalVerbs > 0)
-            fVerbs.reserve_back(additionalVerbs);
+            fVerbs.reserve_back_and_grow(additionalVerbs);
         SkDEBUGCODE(this->validate();)
     }
 
