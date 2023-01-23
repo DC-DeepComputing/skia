@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b278e629_9cc2a972",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-23T20:53:39Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "a03bddc0b85287d63f7d533ecb3bfee4ba7364d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9e4f6fe_367cd01f",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-01-23T20:05:19Z",
       "side": 1,
       "message": "Extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 67,
+        "startChar": 32,
+        "endLine": 67,
+        "endChar": 33
+      },
+      "revId": "a03bddc0b85287d63f7d533ecb3bfee4ba7364d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4694d4e_57578503",
+        "filename": "src/core/SkStrike.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-23T20:53:39Z",
+      "side": 1,
+      "message": "I\u0027ll fix in next CL.",
+      "parentUuid": "a9e4f6fe_367cd01f",
       "range": {
         "startLine": 67,
         "startChar": 32,
