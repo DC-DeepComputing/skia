@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d33432c2_6b5ddece",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-23T16:55:32Z",
+      "side": 1,
+      "message": "PTAL.",
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cbdf9e9_d4edc297",
+        "filename": "src/core/SkMatrixPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-23T16:55:32Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure if this should be squared or not, since it\u0027s comparing areas. But we might also change the internal implementation to not use area, so it may not matter.",
+      "range": {
+        "startLine": 196,
+        "startChar": 43,
+        "endLine": 196,
+        "endChar": 62
+      },
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
