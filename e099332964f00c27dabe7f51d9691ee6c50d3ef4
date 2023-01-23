@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8d37e7b_8d8bc523",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T18:11:50Z",
+      "side": 1,
+      "message": "You can use the c++17 version (min/max across a sequence of values in an initializer-list) if you prefer `std::max({R, G, B})`",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 97
+      },
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40016e1_5632291f",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T18:11:50Z",
+      "side": 1,
+      "message": "Oof, this loop looks brutal. I guess this is hopefully a rare situation, though. (We could probably build this as a draw call with a custom shader, getting SIMD benefits from the blitter...). Probably not worth doing now, but maybe leave a comment?",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e268f3_f6374921",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T18:11:50Z",
+      "side": 1,
+      "message": "`gainmapInfoJpegR` ?",
+      "range": {
+        "startLine": 219,
+        "startChar": 31,
+        "endLine": 219,
+        "endChar": 42
+      },
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c349b6ec_f0ddc848",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T18:11:50Z",
+      "side": 1,
+      "message": "With count being 1, maybe just do:\n\n    uint8_t segmentMarker \u003d kXMPMarker;\n    SkData* segmentData \u003d xmpMetadata.get();\n    ::Make(..., 1, \u0026segmentMarker, \u0026segmentData, ...)",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f2b567_2545f774",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T18:11:50Z",
+      "side": 1,
+      "message": "`result.reserve(segmentCount);`",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
