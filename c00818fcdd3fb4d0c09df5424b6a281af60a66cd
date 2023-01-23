@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d099fffb_91de4455",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-23T22:16:20Z",
+      "side": 1,
+      "message": "So, the purpose is to support BitmapRegionDecoder API. Currently HEIF codec does the same as far as I can tell from the code - decode the full image.",
+      "parentUuid": "105245dc_2d6e38e7",
+      "revId": "c00818fcdd3fb4d0c09df5424b6a281af60a66cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "799765b8_ab6cc365",
@@ -76,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f100b7d_abd416b2",
+        "filename": "src/codec/SkJpegRCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-23T22:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "799765b8_ab6cc365",
+      "range": {
+        "startLine": 365,
+        "startChar": 18,
+        "endLine": 365,
+        "endChar": 29
+      },
+      "revId": "c00818fcdd3fb4d0c09df5424b6a281af60a66cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2be4ad87_fd621b50",
@@ -89,6 +131,30 @@
       "writtenOn": "2023-01-23T21:20:22Z",
       "side": 1,
       "message": "need to initialize this (to nullptr, probably?). SkJpegCodec also resets it in onRewind.",
+      "range": {
+        "startLine": 132,
+        "startChar": 13,
+        "endLine": 132,
+        "endChar": 27
+      },
+      "revId": "c00818fcdd3fb4d0c09df5424b6a281af60a66cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b433c8df_dc7ff004",
+        "filename": "src/codec/SkJpegRCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-23T22:16:20Z",
+      "side": 1,
+      "message": "Oops! This was not good. Great catch, thanks",
+      "parentUuid": "2be4ad87_fd621b50",
       "range": {
         "startLine": 132,
         "startChar": 13,
