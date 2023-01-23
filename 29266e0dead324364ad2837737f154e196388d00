@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "119843d8_5a455f08",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T21:38:46Z",
+      "side": 1,
+      "message": "Aha, yeah. The colums/rows are different from the underlying type when dealing with a vector. Got it.",
+      "range": {
+        "startLine": 1224,
+        "startChar": 0,
+        "endLine": 1232,
+        "endChar": 71
+      },
+      "revId": "29266e0dead324364ad2837737f154e196388d00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
