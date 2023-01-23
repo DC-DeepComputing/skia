@@ -25,26 +25,18 @@ static int solve_linear(const double M, const double B, double solution[2]) {
 }
 
 int SkQuads::RootsReal(const double A, const double B, const double C, double solution[2]) {
-    if (!A) {
-        return solve_linear(B, C, solution);
-    }
-    const double p = B / (2 * A);
-    const double q = C / A;
     if (sk_double_nearly_zero(A)) {
         return solve_linear(B, C, solution);
     }
-    /* normal form: x^2 + px + q = 0 */
-    const double p2 = p * p;
-    if (!sk_doubles_nearly_equal_ulps(p2, q) && p2 < q) {
+    const double discriminant = B * B - (4 * A * C);
+    if (discriminant < 0 || !std::isfinite(discriminant)) {
         return 0;
     }
-    double sqrt_D = 0;
-    if (p2 > q) {
-        sqrt_D = sqrt(p2 - q);
-    }
-    solution[0] = sqrt_D - p;
-    solution[1] = -sqrt_D - p;
-    if (sk_doubles_nearly_equal_ulps(solution[0], solution[1])) {
+    double sqrt_D = std::sqrt(discriminant);
+    solution[0] = (-B - sqrt_D) / (2 * A);
+    solution[1] = (-B + sqrt_D) / (2 * A);
+    if (sk_double_nearly_zero(sqrt_D) ||
+        sk_doubles_nearly_equal_ulps(solution[0], solution[1])) {
         return 1;
     }
     return 2;

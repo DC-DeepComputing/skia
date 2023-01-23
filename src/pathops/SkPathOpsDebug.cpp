@@ -490,22 +490,6 @@ void SkPathOpsDebug::DumpGlitchType(GlitchType glitchType) {
 #endif
 
 #if defined SK_DEBUG || !FORCE_RELEASE
-void SkPathOpsDebug::MathematicaIze(char* str, size_t bufferLen) {
-    size_t len = strlen(str);
-    bool num = false;
-    for (size_t idx = 0; idx < len; ++idx) {
-        if (num && str[idx] == 'e') {
-            if (len + 2 >= bufferLen) {
-                return;
-            }
-            memmove(&str[idx + 2], &str[idx + 1], len - idx);
-            str[idx] = '*';
-            str[idx + 1] = '^';
-            ++len;
-        }
-        num = str[idx] >= '0' && str[idx] <= '9';
-    }
-}
 
 bool SkPathOpsDebug::ValidWind(int wind) {
     return wind > SK_MinS32 + 0xFFFF && wind < SK_MaxS32 - 0xFFFF;

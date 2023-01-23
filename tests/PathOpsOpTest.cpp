@@ -3619,7 +3619,8 @@ static void loop1asQuad(skiatest::Reporter* reporter, const char* filename) {
     SkASSERT(c1InfTCount == 2);
     SkDEBUGCODE(int c2InfTCount =) c2.findInflections(c2InflectionTs);
     SkASSERT(c2InfTCount == 1);
-    SkASSERT(c1InflectionTs[0] > c1InflectionTs[1]);
+    SkASSERTF(c1InflectionTs[0] > c1InflectionTs[1], "%f is not > %f\n",
+              c1InflectionTs[0], c1InflectionTs[1]);
     SkDCubicPair c1pair = c1.chopAt(c1InflectionTs[0]);
     SkDCubicPair c1apair = c1pair.first().chopAt(c1InflectionTs[1]);
     SkDCubicPair c2pair = c2.chopAt(c2InflectionTs[0]);
