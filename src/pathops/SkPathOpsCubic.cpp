@@ -6,8 +6,8 @@
  */
 #include "src/pathops/SkPathOpsCubic.h"
 
-#include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
+#include "src/base/SkCubics.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkTSort.h"
 #include "src/pathops/SkIntersections.h"
@@ -18,7 +18,6 @@
 #include "src/pathops/SkPathOpsTypes.h"
 
 #include <algorithm>
-#include <cmath>
 
 struct SkDLine;
 
@@ -371,136 +370,6 @@ int SkDCubic::searchRoots(double extremeTs[6], int extrema, double axisIntercept
     return validCount;
 }
 
-// cubic roots
-
-static const double PI = 3.141592653589793;
-
-// from SkGeometry.cpp (and Numeric Solutions, 5.6)
-int SkDCubic::RootsValidT(double A, double B, double C, double D, double t[3]) {
-    double s[3];
-    int realRoots = RootsReal(A, B, C, D, s);
-    int foundRoots = SkDQuad::AddValidTs(s, realRoots, t);
-    for (int index = 0; index < realRoots; ++index) {
-        double tValue = s[index];
-        if (!approximately_one_or_less(tValue) && between(1, tValue, 1.00005)) {
-            for (int idx2 = 0; idx2 < foundRoots; ++idx2) {
-                if (approximately_equal(t[idx2], 1)) {
-                    goto nextRoot;
-                }
-            }
-            SkASSERT(foundRoots < 3);
-            t[foundRoots++] = 1;
-        } else if (!approximately_zero_or_more(tValue) && between(-0.00005, tValue, 0)) {
-            for (int idx2 = 0; idx2 < foundRoots; ++idx2) {
-                if (approximately_equal(t[idx2], 0)) {
-                    goto nextRoot;
-                }
-            }
-            SkASSERT(foundRoots < 3);
-            t[foundRoots++] = 0;
-        }
-nextRoot:
-        ;
-    }
-    return foundRoots;
-}
-
-int SkDCubic::RootsReal(double A, double B, double C, double D, double s[3]) {
-#ifdef SK_DEBUG
-    #if ONE_OFF_DEBUG && ONE_OFF_DEBUG_MATHEMATICA
-    // create a string mathematica understands
-    // GDB set print repe 15 # if repeated digits is a bother
-    //     set print elements 400 # if line doesn't fit
-    char str[1024];
-    sk_bzero(str, sizeof(str));
-    snprintf(str, sizeof(str), "Solve[%1.19g x^3 + %1.19g x^2 + %1.19g x + %1.19g == 0, x]",
-            A, B, C, D);
-    SkPathOpsDebug::MathematicaIze(str, sizeof(str));
-    SkDebugf("%s\n", str);
-    #endif
-#endif
-    if (approximately_zero(A)
-            && approximately_zero_when_compared_to(A, B)
-            && approximately_zero_when_compared_to(A, C)
-            && approximately_zero_when_compared_to(A, D)) {  // we're just a quadratic
-        return SkDQuad::RootsReal(B, C, D, s);
-    }
-    if (approximately_zero_when_compared_to(D, A)
-            && approximately_zero_when_compared_to(D, B)
-            && approximately_zero_when_compared_to(D, C)) {  // 0 is one root
-        int num = SkDQuad::RootsReal(A, B, C, s);
-        for (int i = 0; i < num; ++i) {
-            if (approximately_zero(s[i])) {
-                return num;
-            }
-        }
-        s[num++] = 0;
-        return num;
-    }
-    if (approximately_zero(A + B + C + D)) {  // 1 is one root
-        int num = SkDQuad::RootsReal(A, A + B, -D, s);
-        for (int i = 0; i < num; ++i) {
-            if (AlmostDequalUlps(s[i], 1)) {
-                return num;
-            }
-        }
-        s[num++] = 1;
-        return num;
-    }
-    double a, b, c;
-    {
-        double invA = 1 / A;
-        a = B * invA;
-        b = C * invA;
-        c = D * invA;
-    }
-    double a2 = a * a;
-    double Q = (a2 - b * 3) / 9;
-    double R = (2 * a2 * a - 9 * a * b + 27 * c) / 54;
-    double R2 = R * R;
-    double Q3 = Q * Q * Q;
-    double R2MinusQ3 = R2 - Q3;
-    double adiv3 = a / 3;
-    double r;
-    double* roots = s;
-    if (R2MinusQ3 < 0) {   // we have 3 real roots
-        // the divide/root can, due to finite precisions, be slightly outside of -1...1
-        double theta = acos(SkTPin(R / sqrt(Q3), -1., 1.));
-        double neg2RootQ = -2 * sqrt(Q);
-
-        r = neg2RootQ * cos(theta / 3) - adiv3;
-        *roots++ = r;
-
-        r = neg2RootQ * cos((theta + 2 * PI) / 3) - adiv3;
-        if (!AlmostDequalUlps(s[0], r)) {
-            *roots++ = r;
-        }
-        r = neg2RootQ * cos((theta - 2 * PI) / 3) - adiv3;
-        if (!AlmostDequalUlps(s[0], r) && (roots - s == 1 || !AlmostDequalUlps(s[1], r))) {
-            *roots++ = r;
-        }
-    } else {  // we have 1 real root
-        double sqrtR2MinusQ3 = sqrt(R2MinusQ3);
-        A = fabs(R) + sqrtR2MinusQ3;
-        A = std::cbrt(A); // cube root
-        if (R > 0) {
-            A = -A;
-        }
-        if (A != 0) {
-            A += Q / A;
-        }
-        r = A - adiv3;
-        *roots++ = r;
-        if (AlmostDequalUlps((double) R2, (double) Q3)) {
-            r = -A / 2 - adiv3;
-            if (!AlmostDequalUlps(s[0], r)) {
-                *roots++ = r;
-            }
-        }
-    }
-    return static_cast<int>(roots - s);
-}
-
 // OPTIMIZE? compute t^2, t(1-t), and (1-t)^2 and pass them to another version of derivative at t?
 SkDVector SkDCubic::dxdyAtT(double t) const {
     SkDVector result = { derivative_at_t(&fPts[0].fX, t), derivative_at_t(&fPts[0].fY, t) };
@@ -580,7 +449,7 @@ int SkDCubic::findMaxCurvature(double tValues[]) const {
     for (i = 0; i < 4; i++) {
         coeffX[i] = coeffX[i] + coeffY[i];
     }
-    return RootsValidT(coeffX[0], coeffX[1], coeffX[2], coeffX[3], tValues);
+    return SkCubics::RootsValidT(coeffX[0], coeffX[1], coeffX[2], coeffX[3], tValues);
 }
 
 SkDPoint SkDCubic::ptAtT(double t) const {

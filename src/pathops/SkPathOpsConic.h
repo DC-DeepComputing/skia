@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/base/SkQuads.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
@@ -111,7 +112,7 @@ struct SkDConic {
     SkDPoint ptAtT(double t) const;
 
     static int RootsReal(double A, double B, double C, double t[2]) {
-        return SkDQuad::RootsReal(A, B, C, t);
+        return SkQuads::RootsReal(A, B, C, t);
     }
 
     static int RootsValidT(const double A, const double B, const double C, double s[2]) {
