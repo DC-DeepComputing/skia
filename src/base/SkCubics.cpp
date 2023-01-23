@@ -57,8 +57,8 @@ int SkCubics::RootsReal(double A, double B, double C, double D, double solution[
     double* roots = solution;
     if (R2MinusQ3 < 0) {   // we have 3 real roots
         // the divide/root can, due to finite precisions, be slightly outside of -1...1
-        double theta = acos(SkTPin(R / sqrt(Q3), -1., 1.));
-        double neg2RootQ = -2 * sqrt(Q);
+        double theta = acos(SkTPin(R / std::sqrt(Q3), -1., 1.));
+        double neg2RootQ = -2 * std::sqrt(Q);
 
         r = neg2RootQ * cos(theta / 3) - adiv3;
         *roots++ = r;
@@ -73,7 +73,7 @@ int SkCubics::RootsReal(double A, double B, double C, double D, double solution[
             *roots++ = r;
         }
     } else {  // we have 1 real root
-        double sqrtR2MinusQ3 = sqrt(R2MinusQ3);
+        double sqrtR2MinusQ3 = std::sqrt(R2MinusQ3);
         A = fabs(R) + sqrtR2MinusQ3;
         A = std::cbrt(A); // cube root
         if (R > 0) {
