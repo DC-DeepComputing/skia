@@ -7,6 +7,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
+#include "src/base/SkCubics.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsCurve.h"
@@ -136,7 +137,10 @@ public:
         }
         double A, B, C, D;
         SkDCubic::Coefficients(&c[0].fX, &A, &B, &C, &D);
-        int count = SkDCubic::RootsValidT(A, B, C, D, roots);
+        SkDebugf("Cubic: A %f B %f C %f D %f\n", A, B, C, D);
+        //int count = SkDCubic::RootsValidT(A, B, C, D, roots);
+        int count = SkCubics::RootsValidT(A, B, C, D, roots);
+        SkDebugf("%d solutions: %0.16f %0.16f %0.16f\n", count, roots[0], roots[1], roots[2]);
         for (int index = 0; index < count; ++index) {
             SkDPoint calcPt = c.ptAtT(roots[index]);
             if (!approximately_zero(calcPt.fX)) {

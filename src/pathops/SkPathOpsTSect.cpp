@@ -850,6 +850,7 @@ bool SkTSect::extractCoincident(
     SkTSpan* oppFirst = first->findOppT(first->fCoinStart.perpT());
     SkOPASSERT(last->fCoinEnd.isMatch());
     bool oppMatched = first->fCoinStart.perpT() < first->fCoinEnd.perpT();
+    SkDebugf("oppMatched %f < %f = %d\n", first->fCoinStart.perpT(), first->fCoinEnd.perpT(), oppMatched);
     double coinStart;
     SkDEBUGCODE(double coinEnd);
     SkTSpan* cutFirst;
@@ -895,6 +896,7 @@ bool SkTSect::extractCoincident(
         swap(oppFirst, oppLast);
         swap(oppStartT, oppEndT);
     }
+    SkDebugf("assert %f < %f\n", oppStartT, oppEndT);
     SkOPASSERT(oppStartT < oppEndT);
     SkASSERT(coinStart == first->fStartT);
     SkASSERT(coinEnd == last->fEndT);

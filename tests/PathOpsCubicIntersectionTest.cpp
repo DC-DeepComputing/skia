@@ -412,6 +412,8 @@ static void oneOff(skiatest::Reporter* reporter, const CubicPts& cubic1, const C
         cubic2[2].fX, cubic2[2].fY, cubic2[3].fX, cubic2[3].fY);
 #endif
     SkIntersections intersections;
+    SkDebugf("Starting intersection\n");
+    c1.dump(); c2.dump();
     intersections.intersect(c1, c2);
 #if DEBUG_T_SECT_DUMP == 3
     SkDebugf("</div>\n\n");
@@ -740,4 +742,11 @@ DEF_TEST(PathOpsCubicIntersection, reporter) {
     standardTestCases(reporter);
     if ((false)) CubicIntersection_IntersectionFinder();
     if ((false)) CubicIntersection_RandTest(reporter);
+}
+
+
+DEF_TEST(PathOpsCubicIntersection_kjlubick, reporter) {
+    const CubicPts& cubic1 = coinSet[4];
+    const CubicPts& cubic2 = coinSet[5];
+    oneOff(reporter, cubic1, cubic2, true);
 }

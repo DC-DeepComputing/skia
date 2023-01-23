@@ -6,6 +6,7 @@
  */
 #include "src/pathops/SkPathOpsQuad.h"
 
+#include "src/base/SkQuads.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkLineParameters.h"
 #include "src/pathops/SkPathOpsConic.h"
@@ -143,6 +144,7 @@ nextRoot:
 //  is in b squared less two a c
 int SkDQuad::RootsValidT(double A, double B, double C, double t[2]) {
     double s[2];
+    //int realRoots = SkQuads::RootsReal(A, B, C, s);
     int realRoots = RootsReal(A, B, C, s);
     int foundRoots = AddValidTs(s, realRoots, t);
     return foundRoots;
