@@ -38,10 +38,10 @@
    38. zero_slot_unmasked             v11(3) = 0
    39. copy_constant                  v12(0) = 0x3F800000 (1.0)
    40. zero_slot_unmasked             v12(1) = 0
-   41. zero_2_slots_unmasked          $0..1 = 0
-   42. copy_2_slots_unmasked          v13 = $0..1
-   43. zero_2_slots_unmasked          $0..1 = 0
-   44. copy_2_slots_unmasked          v14 = $0..1
+   41. zero_slot_unmasked             v13(0) = 0
+   42. zero_slot_unmasked             v13(1) = 0
+   43. zero_slot_unmasked             v14(0) = 0
+   44. zero_slot_unmasked             v14(1) = 0
    45. copy_constant                  $0 = 0xFFFFFFFF
    46. copy_slot_unmasked             $1 = $0
    47. copy_2_slots_unmasked          v15 = $0..1

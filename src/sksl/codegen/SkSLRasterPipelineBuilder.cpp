@@ -148,7 +148,7 @@ void Builder::discard_stack(int32_t count) {
                 }
                 continue;
 
-            case BuilderOp::push_literal_f:
+            case BuilderOp::push_literal:
             case BuilderOp::push_condition_mask:
             case BuilderOp::push_loop_mask:
             case BuilderOp::push_return_mask:
@@ -233,10 +233,6 @@ void Builder::push_duplicates(int count) {
             lastInstruction.fImmA += count;
             return;
         }
-        if (lastInstruction.fOp == BuilderOp::push_literal_f && lastInstruction.fImmA == 0) {
-            fInstructions.back() = {BuilderOp::push_zeros, {}, count + 1};
-            return;
-        }
     }
     SkASSERT(count >= 0);
     if (count >= 3) {
@@ -266,13 +262,28 @@ void Builder::pop_slots_unmasked(SlotRange dst) {
 
         // If the last instructions is pushing a constant, we can save a step by copying those
         // constants directly into the destination slot.
-        if (lastInstruction.fOp == BuilderOp::push_literal_f) {
+        if (lastInstruction.fOp == BuilderOp::push_literal) {
             int immValue = lastInstruction.fImmA;
             fInstructions.pop_back();
 
             // We need to fill the _last_ slot of the passed-in slot range.
             Slot dstSlot = dst.index + dst.count - 1;
             constantsToPush.push_back({BuilderOp::copy_constant, {dstSlot}, immValue});
+            --dst.count;
+            continue;
+        }
+
+        // If the last instruction is pushing a zero, we can save a step by directly zeroing out
+        // the destination slot.
+        if (lastInstruction.fOp == BuilderOp::push_zeros) {
+            lastInstruction.fImmA--;
+            if (lastInstruction.fImmA == 0) {
+                fInstructions.pop_back();
+            }
+
+            // We need to zero the _last_ slot of the passed-in slot range.
+            Slot dstSlot = dst.index + dst.count - 1;
+            constantsToPush.push_back({BuilderOp::zero_slot_unmasked, {dstSlot}, 1});
             --dst.count;
             continue;
         }
@@ -528,7 +539,7 @@ void Program::optimize() {
 
 static int stack_usage(const Instruction& inst) {
     switch (inst.fOp) {
-        case BuilderOp::push_literal_f:
+        case BuilderOp::push_literal:
         case BuilderOp::push_condition_mask:
         case BuilderOp::push_loop_mask:
         case BuilderOp::push_return_mask:
@@ -1050,12 +1061,8 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 break;
 
             case BuilderOp::copy_constant:
-            case BuilderOp::push_literal_f: {
-                float* dst = (inst.fOp == BuilderOp::push_literal_f) ? tempStackPtr : SlotA();
-                if (inst.fImmA == 0) {
-                    pipeline->push_back({RPOp::zero_slot_unmasked, dst});
-                    break;
-                }
+            case BuilderOp::push_literal: {
+                float* dst = (inst.fOp == BuilderOp::push_literal) ? tempStackPtr : SlotA();
                 int* constantPtr;
                 if (int** lookup = constantLookupMap.find(inst.fImmA)) {
                     constantPtr = *lookup;
