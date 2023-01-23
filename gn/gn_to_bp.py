@@ -90,6 +90,13 @@ cc_defaults {
             ],
         },
 
+        riscv64: {
+            // TODO(b/254713216): Disable thinlto for targets failing the build
+            lto: {
+                thin: false,
+            },
+        },
+
         x86: {
             srcs: [
                 $x86_srcs
