@@ -16,6 +16,24 @@
       "message": "Do we detect/elide identity transposes (as would happen when trying to transpose a vector?). I looked at the code a bit, but it wasn\u0027t immediately clear.\n\nAlso, can these be `leftColumns` and `leftRows`, or might those be different from the `left.type()` values? (Guessing this has to do with the vector case?)",
       "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea5549a9_c7fe5b68",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-23T21:40:39Z",
+      "side": 1,
+      "message": "Identity shuffles are optimized away by the builder: https://osscs.corp.google.com/skia/skia/+/main:src/sksl/codegen/SkSLRasterPipelineBuilder.cpp;l\u003d428-450;drc\u003d61df113fa38b45cbaad5bdfe17de4c6d7604812e",
+      "parentUuid": "f887236b_2ad0cc0b",
+      "revId": "edd86c73ccf7cfda9d4cacaada0d4f78b599315f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
