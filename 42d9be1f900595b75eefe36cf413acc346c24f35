@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce9d5388_83d84c09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-23T19:00:26Z",
+      "side": 1,
+      "message": "I ran across this while trying to address the given bug. This code is 9 years old and it doesn\u0027t seem to affect the Chrome layout tests according to Canary -- I propose we remove it.",
+      "revId": "42d9be1f900595b75eefe36cf413acc346c24f35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
