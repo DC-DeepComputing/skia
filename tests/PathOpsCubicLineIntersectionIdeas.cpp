@@ -6,6 +6,7 @@
  */
 #include "include/core/SkTypes.h"
 #include "include/utils/SkRandom.h"
+#include "src/base/SkCubics.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
@@ -164,7 +165,7 @@ DEF_TEST(PathOpsCubicLineRoots, reporter) {
         SkDCubic::Coefficients(&cubic[0].fY, &A, &B, &C, &D);
         D -= pt.fY;
         double allRoots[3] = {0}, validRoots[3] = {0};
-        int realRoots = SkDCubic::RootsReal(A, B, C, D, allRoots);
+        int realRoots = SkCubics::RootsReal(A, B, C, D, allRoots);
         int valid = SkDQuad::AddValidTs(allRoots, realRoots, validRoots);
         if (valid != 1) {
             continue;
@@ -261,7 +262,7 @@ static double testOneFailure(const CubicLineFailures& failure) {
     SkDCubic::Coefficients(&cubic[0].fY, &A, &B, &C, &D);
     D -= pt.fY;
     double allRoots[3] = {0}, validRoots[3] = {0};
-    int realRoots = SkDCubic::RootsReal(A, B, C, D, allRoots);
+    int realRoots = SkCubics::RootsReal(A, B, C, D, allRoots);
     int valid = SkDQuad::AddValidTs(allRoots, realRoots, validRoots);
     SkASSERT_RELEASE(valid == 1);
     SkASSERT_RELEASE(realRoots != 1);
