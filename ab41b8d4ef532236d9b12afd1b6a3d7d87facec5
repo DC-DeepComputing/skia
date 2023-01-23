@@ -16,6 +16,29 @@
       "message": "This is the 3rd (of 3!) gainmap formats we\u0027ll be supporting.",
       "revId": "ab41b8d4ef532236d9b12afd1b6a3d7d87facec5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3ecf58_0603ad54",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T16:28:58Z",
+      "side": 1,
+      "message": "B",
+      "range": {
+        "startLine": 17,
+        "startChar": 96,
+        "endLine": 17,
+        "endChar": 97
+      },
+      "revId": "ab41b8d4ef532236d9b12afd1b6a3d7d87facec5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
