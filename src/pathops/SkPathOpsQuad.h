@@ -100,7 +100,6 @@ struct SkDQuad {
     static int pointCount() { return kPointCount; }
     static int pointLast() { return kPointLast; }
     SkDPoint ptAtT(double t) const;
-    static int RootsReal(double A, double B, double C, double t[2]);
     static int RootsValidT(const double A, const double B, const double C, double s[2]);
     static void SetABC(const double* quad, double* a, double* b, double* c);
     SkDQuad subDivide(double t1, double t2) const;
