@@ -70,6 +70,24 @@
       "parentUuid": "69921b4f_c8589bec",
       "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba08462e_a2ab6a3b",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T15:44:10Z",
+      "side": 0,
+      "message": "Skia\u0027s perf bots spotted some VERY small regressions, but nothing that makes me want to revert.",
+      "parentUuid": "21157d74_e5846d47",
+      "revId": "9cc8ef7125a40ff410e80e9433c34731ab4e2efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

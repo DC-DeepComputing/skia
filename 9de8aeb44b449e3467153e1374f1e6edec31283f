@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15145167_683cea7c",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T15:44:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "294a234f_45ee62a4",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 56
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91d78c67_3028e236",
@@ -149,6 +173,30 @@
       "writtenOn": "2023-01-20T16:47:02Z",
       "side": 1,
       "message": "... we do the addition to `src` while things are still split into channel pairs. This prevents the overflow into adjacent channels. So we now have the even and odd channel sums, with a possible overflow bit spilling into the (otherwise zero\u0027d) space between.\n\nLuckily, the math is such that alpha can\u0027t overflow (and it\u0027s in the highest bits).",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 24
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce41de0f_8c083f68",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T15:44:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "91d78c67_3028e236",
       "range": {
         "startLine": 155,
         "startChar": 0,
@@ -244,6 +292,30 @@
       "side": 1,
       "message": "Just took another stab at this, and quickly remembered the specific issues with using the overflow bit to build the mask w/o branches... The natural thing is to isolate that bit, then use that to somehow build a mask of all bits in the corresponding byte. But the obvious ways to do that don\u0027t work cleanly (subtract one fails, because if the bit isn\u0027t set, we have 0-1, and end up with the full mask regardless). So the other option is to broadcast the bit via repeated shifts and ors, but that takes several instructions, because you need to build up the masks as 2/4/8 bits. Unless I\u0027m missing some other clever trick?",
       "parentUuid": "8c85e1e1_09b762cd",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 37
+      },
+      "revId": "9de8aeb44b449e3467153e1374f1e6edec31283f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9af7536e_33c474bb",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T15:44:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f5c04df7_9fc04103",
       "range": {
         "startLine": 159,
         "startChar": 0,

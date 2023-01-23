@@ -22,6 +22,30 @@
       },
       "revId": "a260f7da24636837e6b6db6b9f1bc29622b5aecc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8489f71d_fa0fc0a2",
+        "filename": "include/core/SkColorPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T15:44:10Z",
+      "side": 1,
+      "message": "Ah, yes. Yes, it is.\nhttps://skia-review.googlesource.com/c/skia/+/632585",
+      "parentUuid": "4fc74b49_8a724443",
+      "range": {
+        "startLine": 159,
+        "startChar": 9,
+        "endLine": 159,
+        "endChar": 17
+      },
+      "revId": "a260f7da24636837e6b6db6b9f1bc29622b5aecc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
