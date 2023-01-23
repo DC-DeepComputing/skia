@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f319ec19_2eb8e364",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-23T14:08:06Z",
+      "side": 1,
+      "message": "How does this happen? Don\u0027t we detect literal zeros and convert those to push_zero at that time? Seems weird to do that peephole here, only after we later decide to duplicate them?",
+      "revId": "8df99c77ce215535cd6007217471a02591886363",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
