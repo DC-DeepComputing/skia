@@ -63,37 +63,45 @@ sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBle
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-
+    SkDebugf("\n\n\n-------------- New PaintParams::toKey call--------------\n\n\n");
+    SkDebugf("before solid shader block begin\n");
     // TODO: figure out how we can omit this block when the Paint's color isn't used.
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
                                       fColor.makeOpaque().premul());
+    SkDebugf("done, ab to end block\n");
     builder->endBlock();
 
     if (fShader) {
+        SkDebugf("fshader is not null, adding to key\n");
         as_SB(fShader)->addToKey(keyContext, builder, gatherer);
     }
 
     if (fPrimitiveBlender) {
+        SkDebugf("prim blender about to be added to key\n");
         as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer,
                                            /* primitiveColorBlender= */ true);
     }
-
+    SkDebugf("determining alpha color filter\n");
     // Apply the paint's alpha value.
     auto alphaColorFilter = SkColorFilters::Blend({0, 0, 0, fColor[3]},
                                                   /*colorSpace*/nullptr,
                                                   SkBlendMode::kDstIn);
     if (alphaColorFilter) {
+        SkDebugf("adding alpha color filter\n");
         as_CFB(alphaColorFilter)->addToKey(keyContext, builder, gatherer);
     }
 
     if (fColorFilter) {
+        SkDebugf("adding color filter\n");
         as_CFB(fColorFilter)->addToKey(keyContext, builder, gatherer);
     }
 
     if (fFinalBlender) {
+        SkDebugf("adding final blender\n");
         as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer,
                                        /* primitiveColorBlender= */false);
     } else {
+        SkDebugf("adding blend mode block\n");
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
         builder->endBlock();
     }
