@@ -16,6 +16,46 @@
       "message": "Sorry ... this is what I should have done from the beginning.",
       "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "335bf19d_64bee653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-24T14:36:00Z",
+      "side": 1,
+      "message": "Very nice refactor.",
+      "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9d00c2_75c87657",
+        "filename": "src/codec/SkJpegSegmentScan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-24T14:36:00Z",
+      "side": 1,
+      "message": "Guessing the ifdef guard got caught up in seach-and-replace? I\u0027d leave this one matching the filename.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
