@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec407d88_326098f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-24T01:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "517526e8_dabd1083",
+      "revId": "ed094207fa7ecc92d31926bc39fc9d6626577948",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc63d46b_e5c5f618",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-01-23T18:48:45Z",
       "side": 1,
       "message": "kTopLevel (we don\u0027t need paren injection)",
+      "range": {
+        "startLine": 250,
+        "startChar": 86,
+        "endLine": 250,
+        "endChar": 94
+      },
+      "revId": "ed094207fa7ecc92d31926bc39fc9d6626577948",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6344946e_b214c642",
+        "filename": "src/sksl/SkSLAnalysis.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-01-24T01:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc63d46b_e5c5f618",
       "range": {
         "startLine": 250,
         "startChar": 86,
