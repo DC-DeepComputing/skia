@@ -40,6 +40,7 @@ class FunctionCall;
 class FunctionDeclaration;
 class FunctionDefinition;
 class GlobalVarDeclaration;
+class IfStatement;
 class Literal;
 class MemoryLayout;
 class OutputStream;
@@ -176,6 +177,7 @@ private:
     void writeStatements(const StatementArray& statements);
     void writeBlock(const Block& b);
     void writeExpressionStatement(const ExpressionStatement& s);
+    void writeIfStatement(const IfStatement& s);
     void writeReturnStatement(const ReturnStatement& s);
     void writeVarDeclaration(const VarDeclaration& varDecl);
 
