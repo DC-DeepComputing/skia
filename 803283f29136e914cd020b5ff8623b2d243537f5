@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b42ca6de_12685563",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-24T11:12:19Z",
+      "side": 1,
+      "message": "nit: `Bug`*",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 6
+      },
+      "revId": "803283f29136e914cd020b5ff8623b2d243537f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929e0656_57511f54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-24T11:12:19Z",
+      "side": 1,
+      "message": "Added a `Canary-Android` build to run this change through Android\u0027s presubmits.",
+      "revId": "803283f29136e914cd020b5ff8623b2d243537f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "673cb2fe_90275d27",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-01-24T11:12:19Z",
+      "side": 1,
+      "message": "I\u0027m confused by this message. It\u0027s labeled as a `TODO`, but isn\u0027t this block doing exactly what the `TODO` says? i.e. isn\u0027t this done?\n\nMaybe the real `TODO` is to re-enable thinlto?",
+      "revId": "803283f29136e914cd020b5ff8623b2d243537f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
