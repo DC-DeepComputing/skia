@@ -16,6 +16,23 @@
       "message": "Ambivalent on the name change. skia_private LGTM",
       "revId": "6e9721b2a22afa01bf7c893ce344918ba47f0c1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "150824b2_9c2d0d82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-24T17:30:48Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "6e9721b2a22afa01bf7c893ce344918ba47f0c1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
