@@ -3184,6 +3184,10 @@ STAGE_BRANCH(branch_if_no_active_lanes, int* offset) {
     return any(execution_mask()) ? 1 : *offset;
 }
 
+STAGE_BRANCH(branch_if_all_lanes_equal, SkRasterPipeline_BranchIfEqualCtx* ctx) {
+    return all(cond_to_mask(*(F*)ctx->ptr == ctx->value)) ? ctx->offset : 1;
+}
+
 STAGE_BRANCH(jump, int* offset) {
     return *offset;
 }
