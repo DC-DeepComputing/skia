@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc0e8957_e0dcb3c7",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T18:03:00Z",
+      "side": 1,
+      "message": "Nit: inner",
+      "range": {
+        "startLine": 475,
+        "startChar": 68,
+        "endLine": 475,
+        "endChar": 74
+      },
+      "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3bcced_4043d07e",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T18:03:00Z",
+      "side": 1,
+      "message": "Does hairline use a smaller number of attributes?",
+      "range": {
+        "startLine": 854,
+        "startChar": 12,
+        "endLine": 854,
+        "endChar": 61
+      },
+      "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
