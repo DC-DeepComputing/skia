@@ -144,6 +144,11 @@ DEF_TEST(CubicRootsReal_ActualCubics, reporter) {
                         2.350781059358212
                       //2.350781059358212171622054 from Wolfram Alpha
                        });
+
+    testCubicRootsReal(reporter, "R^2 and Q^3 are near zero",
+                       -0.33790159225463867, -0.81997990608215332,
+                       -0.66327774524688721, -0.17884063720703125,
+                       {-0.7995944894729731});
 }
 
 DEF_TEST(CubicRootsReal_Quadratics, reporter) {
@@ -267,6 +272,13 @@ DEF_TEST(CubicRootsValidT, reporter) {
                      0.6666666666666667,
                      0.75});
 
+    testCubicValidT(reporter, "three roots total, two in range 54x^3 - 117x^2 + 45x + 0",
+                    54, -117, 45, 0,
+                    {0.,
+                     0.5,
+                     // 5/3 is the other root, but not in [0, 1]
+                    });
+
     testCubicValidT(reporter, "one root = 1 10x^3 - 20x^2 - 30x + 40",
                     10, -20, -30, 40,
                     {1.});
@@ -275,7 +287,7 @@ DEF_TEST(CubicRootsValidT, reporter) {
                     2, -3, -4, 0,
                     {0.});
 
-    testCubicValidT(reporter, "two roots -2x^3 - 3x^2 + 4x + 0",
+    testCubicValidT(reporter, "three roots total, two in range -2x^3 - 3x^2 + 4x + 0",
                     -2, -3, 4, 0,
                     { 0.,
                       0.8507810593582122,
