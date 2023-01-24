@@ -34,7 +34,10 @@ public:
 
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
 
-    bool addCommands(Context*, CommandBuffer*) override;
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,

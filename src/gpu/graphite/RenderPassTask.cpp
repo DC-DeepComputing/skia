@@ -58,7 +58,10 @@ bool RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer) {
+bool RenderPassTask::addCommands(Context* context,
+                                 CommandBuffer* commandBuffer,
+                                 const Texture* replayTarget,
+                                 SkIVector replayTranslation) {
     // TBD: Expose the surfaces that will need to be attached within the renderpass?
 
     // TODO: for task execution, start the render pass, then iterate passes and
@@ -67,6 +70,12 @@ bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer)
 
     // Instantiate the target
     SkASSERT(fTarget && fTarget->isInstantiated());
+
+    if (fTarget->texture() == replayTarget) {
+        commandBuffer->setReplayTranslation(replayTranslation);
+    } else {
+        commandBuffer->clearReplayTranslation();
+    }
 
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
     // the discardable attachments from the Context.

@@ -42,7 +42,10 @@ bool PietRenderTask::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool PietRenderTask::addCommands(ResourceProvider*, CommandBuffer* commandBuffer) {
+bool PietRenderTask::addCommands(ResourceProvider*,
+                                 CommandBuffer* commandBuffer,
+                                 const Texture* replayTarget,
+                                 SkIVector replayTranslation) {
     for (PietRenderInstance& instance : fInstances) {
         instance.addCommands(commandBuffer);
     }

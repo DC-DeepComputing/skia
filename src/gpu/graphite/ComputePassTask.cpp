@@ -32,7 +32,10 @@ bool ComputePassTask::prepareResources(ResourceProvider* provider,
     return fPipeline != nullptr;
 }
 
-bool ComputePassTask::addCommands(Context*, CommandBuffer* commandBuffer) {
+bool ComputePassTask::addCommands(Context*,
+                                  CommandBuffer* commandBuffer,
+                                  const Texture* replayTarget,
+                                  SkIVector replayTranslation) {
     SkASSERT(fPipeline);
     return commandBuffer->addComputePass(fComputePassDesc, fPipeline, fBindings);
 }

@@ -456,7 +456,8 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
                                   unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
-    MTLScissorRect scissorRect = { left, top, width, height };
+    MTLScissorRect scissorRect = {
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height};
     fActiveRenderCommandEncoder->setScissorRect(scissorRect);
 }
 
@@ -465,6 +466,10 @@ void MtlCommandBuffer::setViewport(float x, float y, float width, float height,
     SkASSERT(fActiveRenderCommandEncoder);
     MTLViewport viewport = { x, y, width, height, minDepth, maxDepth };
     fActiveRenderCommandEncoder->setViewport(viewport);
+
+    // Roll the replay translation into rtAdjust by offsetting the translation it applies.
+    x -= fReplayTranslation.x();
+    y -= fReplayTranslation.y();
 
     float invTwoW = 2.f / width;
     float invTwoH = 2.f / height;
