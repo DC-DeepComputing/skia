@@ -304,10 +304,11 @@ std::string GetSkSLVS(const ResourceBindingRequirements& bindingReqs,
 
     // Fixed program header
     std::string sksl =
-        "layout (binding=0) uniform intrinsicUniforms {\n"
-        "    layout(offset=0) float4 rtAdjust;\n"
-        "};\n"
-        "\n";
+            "layout (binding=0) uniform intrinsicUniforms {\n"
+            "    layout(offset=0) float4 rtAdjust;\n"
+            "    layout(offset=16) float4x4 replayTransform;\n"
+            "};\n"
+            "\n";
 
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
@@ -330,6 +331,7 @@ std::string GetSkSLVS(const ResourceBindingRequirements& bindingReqs,
     sksl += "float2 stepLocalCoords = float2(0);";
     // Vertex shader body
     sksl += step->vertexSkSL();
+    sksl += "devPosition.xy = (replayTransform * devPosition.xy01).xy;";
     sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + devPosition.ww * rtAdjust.zw,"
             "devPosition.zw);";
 

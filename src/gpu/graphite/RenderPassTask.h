@@ -36,6 +36,8 @@ public:
 
     bool addCommands(Context*, CommandBuffer*) override;
 
+    void setReplayTransform(CommandBuffer*, const SkM44&) override;
+
 private:
     RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                    const RenderPassDesc&,
@@ -44,6 +46,11 @@ private:
     std::vector<std::unique_ptr<DrawPass>> fDrawPasses;
     RenderPassDesc fRenderPassDesc;
     sk_sp<TextureProxy> fTarget;
+
+    // Whether this task should have a replay transform applied. This is only true if the task's
+    // target is a deferred canvas. Otherwise the task is either part of a regular recording or
+    // part of a saved layer and either way should be drawn directly to its given target.
+    bool fUseReplayTransform;
 };
 
 } // namespace skgpu::graphite

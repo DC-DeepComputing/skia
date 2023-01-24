@@ -30,7 +30,7 @@ public:
     virtual ~QueueManager();
 
     // Adds the commands from the passed in Recording to the current CommandBuffer
-    bool SK_WARN_UNUSED_RESULT addRecording(const InsertRecordingInfo&, Context*);
+    bool SK_WARN_UNUSED_RESULT addRecording(const InsertRecordingInfo&, Context*, float x, float y);
 
     // Adds the commands from the passed in Task to the current CommandBuffer
     bool SK_WARN_UNUSED_RESULT addTask(Task*, Context*);

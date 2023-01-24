@@ -114,9 +114,13 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
 }
 
 bool Context::insertRecording(const InsertRecordingInfo& info) {
+    return this->insertRecordingWithIntegerOffset(info, 0, 0);
+}
+
+bool Context::insertRecordingWithIntegerOffset(const InsertRecordingInfo& info, int x, int y) {
     ASSERT_SINGLE_OWNER
 
-    return fQueueManager->addRecording(info, this);
+    return fQueueManager->addRecording(info, this, x, y);
 }
 
 bool Context::submit(SyncToCpu syncToCpu) {

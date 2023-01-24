@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/RenderPassTask.h"
 
+#include "include/core/SkM44.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/DrawPass.h"
@@ -34,7 +35,8 @@ RenderPassTask::RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                                sk_sp<TextureProxy> target)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
-        , fTarget(std::move(target)) {}
+        , fTarget(std::move(target))
+        , fUseReplayTransform(fTarget->isFullyLazy()) {}
 
 RenderPassTask::~RenderPassTask() = default;
 
@@ -56,6 +58,15 @@ bool RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
         }
     }
     return true;
+}
+
+void RenderPassTask::setReplayTransform(CommandBuffer* commandBuffer,
+                                        const SkM44& replayTransform) {
+    if (fUseReplayTransform) {
+        commandBuffer->setReplayTransform(replayTransform);
+    } else {
+        commandBuffer->setReplayTransform(SkM44());
+    }
 }
 
 bool RenderPassTask::addCommands(Context* context, CommandBuffer* commandBuffer) {

@@ -18,6 +18,8 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 
+class SkM44;
+
 namespace skgpu {
 class RefCntedCallback;
 }
@@ -91,6 +93,8 @@ public:
                               sk_sp<Texture> dst,
                               SkIPoint dstPoint);
     bool synchronizeBufferToCpu(sk_sp<Buffer>);
+
+    virtual void setReplayTransform(const SkM44&) {}
 
 #ifdef SK_ENABLE_PIET_GPU
     void renderPietScene(const skgpu::piet::Scene& scene, sk_sp<Texture> target);

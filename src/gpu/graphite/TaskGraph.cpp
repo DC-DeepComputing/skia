@@ -31,8 +31,13 @@ bool TaskGraph::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool TaskGraph::addCommands(Context* context, CommandBuffer* commandBuffer) {
+bool TaskGraph::addCommands(Context* context,
+                            CommandBuffer* commandBuffer,
+                            const SkM44& replayTransform) {
     for (const auto& task: fTasks) {
+        // The replay transform must be set before we add any calls to setScissor, since the
+        // transform will be applied to the scissors.
+        task->setReplayTransform(commandBuffer, replayTransform);
         if (!task->addCommands(context, commandBuffer)) {
             return false;
         }

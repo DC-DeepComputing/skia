@@ -14,6 +14,7 @@
 
 #include <memory>
 
+#include "include/core/SkM44.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkCFObject.h"
 
@@ -57,6 +58,8 @@ public:
         }
     }
     bool commit();
+
+    void setReplayTransform(const SkM44&) override;
 
 #ifdef SK_ENABLE_PIET_GPU
     void setPietRenderer(const skgpu::piet::MtlRenderer* renderer) { fPietRenderer = renderer; }
@@ -107,6 +110,9 @@ private:
                     unsigned int width, unsigned int height);
     void setViewport(float x, float y, float width, float height,
                      float minDepth, float maxDepth);
+
+    SkV4 fRtAdjust;
+    SkM44 fReplayTransform;
 
     void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount);
     void drawIndexed(PrimitiveType type, unsigned int baseIndex, unsigned int indexCount,

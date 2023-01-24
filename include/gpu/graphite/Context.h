@@ -49,6 +49,7 @@ public:
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
 
     bool insertRecording(const InsertRecordingInfo&);
+    bool insertRecordingWithIntegerOffset(const InsertRecordingInfo&, int x, int y);
     bool submit(SyncToCpu = SyncToCpu::kNo);
 
     void asyncReadPixels(const SkImage* image,
