@@ -177,4 +177,23 @@ private:
     const std::vector<SkJpegSegment> fSegments;
 };
 
+class SkJpegSegmentScanningStream : public SkStream {
+public:
+    SkJpegSegmentScanningStream(std::unique_ptr<SkStream>);
+
+    // SkStream implementation:
+    size_t read(void*, size_t) override;
+
+    // Return a stream initialized to read starting |offset| bytes from the end of the specified
+    // |marker|.
+    std::unique_ptr<SkStream> getStreamRelative(uint8_t marker, size_t offset, size_t size);
+
+    // ...
+    const std::vector<SkJpegSegment>& getSegments() { return fSegments; }
+
+private:
+    SkJpegSegmentScanner fScanner;
+    std::unique_ptr<SkStream> fStream;
+};
+
 #endif

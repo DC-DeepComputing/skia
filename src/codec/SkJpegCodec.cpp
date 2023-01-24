@@ -328,6 +328,9 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> s
 
 std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
         Result* result, std::unique_ptr<SkEncodedInfo::ICCProfile> defaultColorProfile) {
+    // TODO:
+    // If |stream| isn't seekable then wrap it in a SkJpegSegmentScanningStream.
+
     SkCodec* codec = nullptr;
     *result = ReadHeader(stream.get(), &codec, nullptr, std::move(defaultColorProfile));
     if (kSuccess == *result) {

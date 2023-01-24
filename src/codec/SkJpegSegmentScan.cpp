@@ -213,6 +213,20 @@ void SkJpegSegmentScanner::onByte(uint8_t byte) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// SkJpegSegmentScanningStream
+
+void SkJpegSegmentScanningStream::SkJpegSegmentScanningStream(std::unique_ptr<SkStream> stream)
+        : fScanner(SkJpegSegmentScanner::kMarkerEndOfImage)
+        , fStream(std
+                  : move(stream)) {}
+
+size_t SkJpegSegmentScanningStream::read(void* buffer, size_t size) {
+    size_t bytesRead = fStream->read(buffer, size);
+    fScanner.OnBytes(buffer, bytesRead);
+    return bytesRead;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegSeekableScan
 
 SkJpegSeekableScan::SkJpegSeekableScan(SkStream* stream,
