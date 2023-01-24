@@ -2359,6 +2359,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         return SkMakeZip(packedGlyphIDs, positions);
     };
     SkPoint glyphRunListLocation = glyphRunList.sourceBounds().center();
+    bool matrixNearAffine = SkMatrixPriv::NearlyAffine(positionMatrix,
+                                                       glyphRunList.sourceBounds(),
+                                                       0.5f);
     for (auto& glyphRun : glyphRunList) {
         rejected->setSource(glyphRun.source());
         const SkFont& runFont = glyphRun.font();
@@ -2373,7 +2376,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0) &&
                 approximateDeviceTextSize < 512) {
 #if !defined(SK_DISABLE_SDF_TEXT)
-            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, positionMatrix)) {
+            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, matrixNearAffine)) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         SkStrikeSpec::MakeSDFT(
@@ -2424,13 +2427,16 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
             }
 #endif // !defined(SK_DISABLE_SDF_TEXT)
 
-            if (!rejected->source().empty() && !positionMatrix.hasPerspective()) {
+            if (!rejected->source().empty() && matrixNearAffine) {
                 // Process masks including ARGB - this should be the 99.99% case.
                 // This will handle medium size emoji that are sharing the run with SDFT drawn text.
                 // If things are too big they will be passed along to the drawing of last resort
                 // below.
+                SkMatrix creationMatrix = positionMatrix;
+                creationMatrix.setPerspX(0);
+                creationMatrix.setPerspY(0);
                 SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
-                        runFont, runPaint, deviceProps, scalerContextFlags, positionMatrix);
+                        runFont, runPaint, deviceProps, scalerContextFlags, creationMatrix);
 
                 if constexpr (kTrace) {
                     msg.appendf("  Mask case:\n%s", strikeSpec.dump().c_str());
@@ -2439,7 +2445,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                 accepted->startDevicePositioning(
-                        rejected->source(), positionMatrix, strike->roundingSpec());
+                        rejected->source(), creationMatrix, strike->roundingSpec());
                 if constexpr (kTrace) {
                     msg.appendf("    glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                 }
@@ -2465,7 +2471,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         }
 
         if (!rejected->source().empty()) {
-            // Drawable case - handle big things with that have a drawable.
+            // Drawable case - handle big things that have a drawable.
             auto [strikeSpec, strikeToSourceScale] =
                     SkStrikeSpec::MakePath(runFont, runPaint, deviceProps, scalerContextFlags);
 
