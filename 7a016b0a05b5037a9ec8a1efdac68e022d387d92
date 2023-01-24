@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9447ae72_b8685215",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T15:13:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0982efd_4751fb39",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "530e8a55_4cb15aab",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-01-19T20:33:38Z",
       "side": 1,
       "message": "WDYT about adding the x and y offsets to InsertRecordingInfo?",
+      "range": {
+        "startLine": 51,
+        "startChar": 31,
+        "endLine": 51,
+        "endChar": 50
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0350d27_974d90ca",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T15:13:16Z",
+      "side": 1,
+      "message": "I didn\u0027t go this way here because I\u0027m wondering what would this look like if we eventually support arbitrary transforms? Would we have both a matrix and offset fields in InsertRecordingInfo, and if so would the offset fields take precedence?",
+      "parentUuid": "530e8a55_4cb15aab",
       "range": {
         "startLine": 51,
         "startChar": 31,
@@ -108,6 +150,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6edc05ac_b3528416",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T15:13:16Z",
+      "side": 1,
+      "message": "Keeping this to translations for now makes sense. I hadn\u0027t been too worried about this part of the implementation, since I figured it was a work in progress anyways, but it definitely seems like a good idea to start with a minimal implementation that doesn\u0027t necessarily anticipate future functionality.\n\nIf we roll the translation into rtAdjust, as I understand that would just affect `rtAdjust.zw`? Looking at how rtAdjust is applied, do we have to worry about cases where `devPosition.w` !\u003d 1?",
+      "parentUuid": "bbc557c1_a67423b4",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4223cd29_055dc4fa",
         "filename": "src/gpu/graphite/RenderPassTask.h",
         "patchSetId": 1
@@ -119,6 +185,30 @@
       "writtenOn": "2023-01-19T20:33:38Z",
       "side": 1,
       "message": "Initially I thought we could skip tracking this and just always apply the replay transform, but then I fully understood your comment about saveLayers and that a given Recording could have render passes to a mix of surfaces, only some of which should be transformed.\n\nInstead of this, or passing the replay transform into addCommands, what if CommandBuffer (or something else) had a map from target to replay transform? This would let us naturally replay recordings even if they were always to the original surface. Any target not in the map would just see the identity transform.\n\nA possible variation on this would be addCommands() still taking the transform, but somehow the task graph can see what the target is, look up the right transform to pass in?",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d031ab13_dbed43b5",
+        "filename": "src/gpu/graphite/RenderPassTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T15:13:16Z",
+      "side": 1,
+      "message": "Is a map necessary? I think there will only be one target per render pass for which we\u0027d want to apply the replay transform. So maybe we could store that one target in the CommandBuffer, along with the transform, and only apply the transform to tasks with that target?",
+      "parentUuid": "4223cd29_055dc4fa",
       "range": {
         "startLine": 53,
         "startChar": 9,
@@ -159,6 +249,30 @@
       "writtenOn": "2023-01-19T20:33:38Z",
       "side": 1,
       "message": "`SkRect::roundOut()` returns an SkIRect that is basically this calculation, although maybe more correct. As is think there\u0027s a subtle issue with how it rounds out. Ex, we have left \u003d 10.5 and width \u003d 10. The original float rect is spanning 10.5 to 20.5 so typically rounding out would span 10 to 21 (final width \u003d 11). With this code we ceil(10) instead and the final span is 10 to 20.\n\nThis could be part of the flickering that you were seeing when animating float transforms. The other possible cause is that right now ClipStack will represent \"originally\" integer clip rects as just a scissor. With a fractional replay translation, that clip rect should adjust accordingly but would end up popping to integer coordinates. See [1] but I think when the ClipStack is for the replay target, we want to skip this early-out and also mark the corresponding clip elements as used by a draw so that we still record depth-only draws for the clip shapes. These would then respond to the fractional offsets of the replay transform automatically and clip any MSAA samples that are outside the original shape but became visible from rounding out of the integer scissor rect.\n\nWe might also need to update the logic in `CoverBoundsRenderStep` to make sure it always covers the final scissor. Intersection clips use inverse fills to set the depth buffer out to the edge of the scissor rect, but right now [2] draws out to the original scissor coordinates w/o taking into account any rounding. While it would still be translated fractionally, a gap from rounding could lead to MSAA samples at the edge of the replay scissor not actually clipped out. I *think* we just have to pad those draw bounds by 1 to be safe.\n [1]https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/ClipStack.cpp;drc\u003deb345886902a18428ba8ccca1033ce7283762483;l\u003d1151\n [2]https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/render/CoverBoundsRenderStep.cpp;drc\u003dbd4afe81bde34ce44866a5181eb20c635277931a;l\u003d74",
+      "range": {
+        "startLine": 473,
+        "startChar": 4,
+        "endLine": 476,
+        "endChar": 43
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55c97033_e81a47f5",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T15:13:16Z",
+      "side": 1,
+      "message": "Are these concerns still relevant if we\u0027re sticking to integer translations? (And if not, can we address them in a follow-up CL to support float translations?)",
+      "parentUuid": "4b1c3a72_04bc605e",
       "range": {
         "startLine": 473,
         "startChar": 4,
