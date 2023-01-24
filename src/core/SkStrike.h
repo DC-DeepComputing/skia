@@ -19,6 +19,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTHash.h"
 
+#include <atomic>
 #include <memory>
 
 class SkScalerContext;
@@ -161,7 +162,7 @@ private:
     size_t prepareDrawable(SkGlyph*) SK_REQUIRES(fStrikeLock);
 
     // Maintain memory use statistics.
-    void updateDelta(size_t increase) SK_EXCLUDES(fStrikeLock);
+    void updateMemoryUsage(size_t increase) SK_EXCLUDES(fStrikeLock);
 
     enum PathDetail {
         kMetricsOnly,
@@ -197,6 +198,8 @@ private:
     // Context that corresponds to the glyph information in this strike.
     const std::unique_ptr<SkScalerContext> fScalerContext SK_GUARDED_BY(fStrikeLock);
 
+    std::atomic<size_t> fMemoryUsed{sizeof(SkStrike)};
+
     // So, we don't grow our arrays a lot.
     inline static constexpr size_t kMinGlyphCount = 8;
     inline static constexpr size_t kMinGlyphImageSize = 16 /* height */ * 8 /* width */;
@@ -208,7 +211,6 @@ private:
     SkStrike*                       fNext{nullptr};
     SkStrike*                       fPrev{nullptr};
     std::unique_ptr<SkStrikePinner> fPinner;
-    size_t                          fMemoryUsed{sizeof(SkStrike)};
     bool                            fRemoved{false};
 };
 
