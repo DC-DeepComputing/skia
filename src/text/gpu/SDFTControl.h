@@ -47,12 +47,12 @@ public:
     getSDFFont(const SkFont& font, const SkMatrix& viewMatrix, const SkPoint& textLocation) const;
 
     bool isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                const SkMatrix& matrix) const;
+                bool matrixNearlyAffine) const;
 #else
     SDFTControl() {}
 #endif
     bool isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                  const SkMatrix& matrix) const;
+                  bool matrixNearlyAffine) const;
 
 private:
 #if !defined(SK_DISABLE_SDF_TEXT)

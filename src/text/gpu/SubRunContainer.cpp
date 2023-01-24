@@ -2359,6 +2359,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         return SkMakeZip(packedGlyphIDs, positions);
     };
     SkPoint glyphRunListLocation = glyphRunList.sourceBounds().center();
+    bool matrixNearAffine = SkMatrixPriv::NearlyAffine(positionMatrix,
+                                                       glyphRunList.sourceBounds(),
+                                                       0.5f);
     for (auto& glyphRun : glyphRunList) {
         rejected->setSource(glyphRun.source());
         const SkFont& runFont = glyphRun.font();
@@ -2373,7 +2376,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0) &&
                 approximateDeviceTextSize < 512) {
 #if !defined(SK_DISABLE_SDF_TEXT)
-            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, positionMatrix)) {
+            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, matrixNearAffine)) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         SkStrikeSpec::MakeSDFT(
@@ -2465,7 +2468,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         }
 
         if (!rejected->source().empty()) {
-            // Drawable case - handle big things with that have a drawable.
+            // Drawable case - handle big things that have a drawable.
             auto [strikeSpec, strikeToSourceScale] =
                     SkStrikeSpec::MakePath(runFont, runPaint, deviceProps, scalerContextFlags);
 
@@ -2492,7 +2495,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 }
             }
         }
-        if (!rejected->source().empty()) {
+        if (!rejected->source().empty() && positionMatrix.hasPerspective() != matrixNearAffine) {
             // Path case - handle big things without color and that have a path.
             auto [strikeSpec, strikeToSourceScale] =
                     SkStrikeSpec::MakePath(runFont, runPaint, deviceProps, scalerContextFlags);

@@ -83,7 +83,9 @@ protected:
                 canvas->concat(persp);
 
                 paint.setColor(SK_ColorBLACK);
-                canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
+                if (persp.hasPerspective()) {
+                    canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
+                }
 
                 y += textHeight + 5.f;
                 canvas->restore();
