@@ -712,6 +712,8 @@ TINT_SRCS = [
     "src/tint/ast/depth_multisampled_texture.h",
     "src/tint/ast/depth_texture.cc",
     "src/tint/ast/depth_texture.h",
+    "src/tint/ast/diagnostic_attribute.cc",
+    "src/tint/ast/diagnostic_attribute.h",
     "src/tint/ast/diagnostic_control.cc",
     "src/tint/ast/diagnostic_control.h",
     "src/tint/ast/disable_validation_attribute.cc",
