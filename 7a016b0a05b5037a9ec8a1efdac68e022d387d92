@@ -103,6 +103,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2bfdf03_73fd209c",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-24T17:26:11Z",
+      "side": 1,
+      "message": "If we expanded to that, I think we could one of three things, depending on how much adoption we have and how hard it is to update clients:\n\n  - Define the precedence order so that both are defined, likely matrix and then a further posttransform integer offset. The matrix would default to identity so clients wouldn\u0027t need to be updated.\n  - Add a constructor for (int x, int y) that creates a Translate(x,y) matrix automatically; so clients likely wouldn\u0027t need to be modified unless they were assigning to the fields directly.\n  - Add a build flag that changes between the two definitions of InsertRecordingInfo and then migrate clients over. In all likelihood this would just be chromium.\n  \nI think there\u0027s a lot of ways to handle it down the road that aren\u0027t problematic, so I\u0027m inclined to keep the Context API itself smaller.",
+      "parentUuid": "a0350d27_974d90ca",
+      "range": {
+        "startLine": 51,
+        "startChar": 31,
+        "endLine": 51,
+        "endChar": 50
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80486f9a_3dace7c3",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 1
@@ -174,6 +198,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "368dfdaf_d43a2455",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-24T17:26:11Z",
+      "side": 1,
+      "message": "Yep, it would just affect `rtAdjust.zw`, but I don\u0027t think we have to worry about `devPosition.w !\u003d 1`, since the way rtAdjust is appled ensures the position and dimensions of the viewport are effectively post homogeneous division.\n\nI think that means we could even just say that the replay translation is passed through as part of `setViewport(vx + tx, vy + ty, w, h)` but maybe it\u0027s easier to keep them separate until the command buffer is actually preparing the rtAdjust uniform values.",
+      "parentUuid": "6edc05ac_b3528416",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4223cd29_055dc4fa",
         "filename": "src/gpu/graphite/RenderPassTask.h",
         "patchSetId": 1
@@ -221,6 +269,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42508a49_1d41545b",
+        "filename": "src/gpu/graphite/RenderPassTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-24T17:26:11Z",
+      "side": 1,
+      "message": "That would end up looking like a loop over the tasks, and we\u0027d say if \"task is replay target\" pass in replay transform, otherwise pass in identity?\n\nI like that, although it would mean tasks need to expose a way of identifying their target. Once we have upload/copy tasks that need to respond to the replay transform as well, then we might have a better sense of how we could simplify (or not) this logic. Maybe it works out that the most straight forward approach is to always pass in the replay transform to `addCommands` and the tasks just know whether or not they should use it.\n\nOne thing that might make that last point simpler for tasks is if `addCommands` also took in the replay target, so a task could just compare then-and-there whether or not its dst or source proxy was equal to the replay target. I\u0027m okay postponing those decisions until later unless you\u0027re sold on one of these ideas and want to do it now.",
+      "parentUuid": "d031ab13_dbed43b5",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98921e1d_19351d30",
         "filename": "src/gpu/graphite/Task.h",
         "patchSetId": 1
@@ -232,6 +304,24 @@
       "writtenOn": "2023-01-19T20:33:38Z",
       "side": 1,
       "message": "wdyt about having addCommands() just take the replay transform, like it does in `TaskGraph::addCommands`? I think that gets the info in all the right places still but avoids the ordering requirement you mention in TaskGraph.cpp.\n\nedit* see more detailed brain storming in earlier comment.",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe387170_9cf08a86",
+        "filename": "src/gpu/graphite/Task.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-24T17:26:11Z",
+      "side": 1,
+      "message": "Linking in one idea from 2nd round of comments, would be the `addCommands` functions take the replay transform and replay target as arguments. Or they take the actual InsertRecordingInfo? Or CommandBuffer lets you query the last set replay target and transform so tasks can query that if they are relevant.",
+      "parentUuid": "98921e1d_19351d30",
       "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -273,6 +363,30 @@
       "side": 1,
       "message": "Are these concerns still relevant if we\u0027re sticking to integer translations? (And if not, can we address them in a follow-up CL to support float translations?)",
       "parentUuid": "4b1c3a72_04bc605e",
+      "range": {
+        "startLine": 473,
+        "startChar": 4,
+        "endLine": 476,
+        "endChar": 43
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2af14ba4_709ba7c0",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-24T17:26:11Z",
+      "side": 1,
+      "message": "No, I think then we\u0027d just say the new scissor was (left+tx, top+ty, width, height) and there\u0027d be no rounding that would cause gaps between the intended scissor and final scissor.",
+      "parentUuid": "55c97033_e81a47f5",
       "range": {
         "startLine": 473,
         "startChar": 4,
