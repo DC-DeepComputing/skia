@@ -141,6 +141,7 @@ public:
 
 private:
     friend class SkStrikeCache;
+    class Monitor;
     template <typename Fn>
     size_t commonFilterLoop(SkDrawableGlyphBuffer* accepted, Fn&& fn) SK_REQUIRES(fStrikeLock);
 
@@ -198,7 +199,8 @@ private:
     // Context that corresponds to the glyph information in this strike.
     const std::unique_ptr<SkScalerContext> fScalerContext SK_GUARDED_BY(fStrikeLock);
 
-    std::atomic<size_t> fMemoryUsed{sizeof(SkStrike)};
+    // Used while changing the strike to track memory increase.
+    size_t fMemoryIncrease SK_GUARDED_BY(fStrikeLock) {0};
 
     // So, we don't grow our arrays a lot.
     inline static constexpr size_t kMinGlyphCount = 8;
@@ -211,6 +213,7 @@ private:
     SkStrike*                       fNext{nullptr};
     SkStrike*                       fPrev{nullptr};
     std::unique_ptr<SkStrikePinner> fPinner;
+    size_t                          fMemoryUsed{sizeof(SkStrike)};
     bool                            fRemoved{false};
 };
 
