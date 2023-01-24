@@ -73,7 +73,7 @@ SkGlyph* SkStrike::mergeGlyphAndImage(SkPackedGlyphID toID, const SkGlyph& fromG
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 
     return glyph;
 }
@@ -90,7 +90,7 @@ const SkPath* SkStrike::mergePath(SkGlyph* glyph, const SkPath* path, bool hairl
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 
     return glyph->path();
 }
@@ -108,7 +108,7 @@ const SkDrawable* SkStrike::mergeDrawable(SkGlyph* glyph, sk_sp<SkDrawable> draw
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return glyph->drawable();
 }
 
@@ -127,7 +127,7 @@ SkSpan<const SkGlyph*> SkStrike::metrics(
         std::tie(glyphs, increase)= this->internalPrepare(glyphIDs, kMetricsOnly, results);
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return glyphs;
 }
 
@@ -140,7 +140,7 @@ SkSpan<const SkGlyph*> SkStrike::preparePaths(
         std::tie(glyphs, increase) = this->internalPrepare(glyphIDs, kMetricsAndPath, results);
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return glyphs;
 }
 
@@ -158,7 +158,7 @@ SkSpan<const SkGlyph*> SkStrike::prepareImages(
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return {results, glyphIDs.size()};
 }
 
@@ -176,7 +176,7 @@ SkSpan<const SkGlyph*> SkStrike::prepareDrawables(
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return {results, glyphIDs.size()};
 }
 
@@ -198,7 +198,7 @@ void SkStrike::prepareForDrawingMasksCPU(SkDrawableGlyphBuffer* accepted) {
 
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 }
 
 // Note: this does not actually fill out the image. That happens at atlas building time.
@@ -227,7 +227,7 @@ SkRect SkStrike::prepareForMaskDrawing(SkDrawableGlyphBuffer* accepted,
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return boundingRect.rect();
 }
 
@@ -262,7 +262,7 @@ SkRect SkStrike::prepareForSDFTDrawing(SkDrawableGlyphBuffer* accepted,
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return boundingRect.rect();
 }
 #endif
@@ -291,7 +291,7 @@ void SkStrike::prepareForPathDrawing(SkDrawableGlyphBuffer* accepted,
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 }
 
 void SkStrike::prepareForDrawableDrawing(SkDrawableGlyphBuffer* accepted,
@@ -318,7 +318,7 @@ void SkStrike::prepareForDrawableDrawing(SkDrawableGlyphBuffer* accepted,
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 }
 
 SkScalar SkStrike::findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) {
@@ -333,7 +333,7 @@ SkScalar SkStrike::findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) {
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
     return maxDimension;
 }
 
@@ -349,7 +349,7 @@ void SkStrike::glyphIDsToPaths(SkSpan<sktext::IDOrPath> idsOrPaths) {
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 }
 
 void SkStrike::glyphIDsToDrawables(SkSpan<sktext::IDOrDrawable> idsOrDrawables) {
@@ -365,7 +365,7 @@ void SkStrike::glyphIDsToDrawables(SkSpan<sktext::IDOrDrawable> idsOrDrawables) 
         }
     }
 
-    this->updateDelta(increase);
+    this->updateMemoryUsage(increase);
 }
 
 void SkStrike::dump() const {
@@ -494,10 +494,13 @@ std::tuple<SkSpan<const SkGlyph*>, size_t> SkStrike::internalPrepare(
     return {{results, glyphIDs.size()}, delta};
 }
 
-void SkStrike::updateDelta(size_t increase) {
+void SkStrike::updateMemoryUsage(size_t increase) {
     if (increase != 0) {
-        SkAutoMutexExclusive lock{fStrikeCache->fLock};
         fMemoryUsed += increase;
+
+        // fRemoved and the cache's total memory are managed under the cache's lock. This allows
+        // them to be accessed under LRU operation.
+        SkAutoMutexExclusive lock{fStrikeCache->fLock};
         if (!fRemoved) {
             fStrikeCache->fTotalMemoryUsed += increase;
         }
