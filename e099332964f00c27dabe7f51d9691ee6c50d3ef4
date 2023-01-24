@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2030be1_41108526",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-24T22:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8d37e7b_8d8bc523",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 97
+      },
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f40016e1_5632291f",
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbd01aa6_4fa79d6c",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-24T22:45:48Z",
+      "side": 1,
+      "message": "Yeah, this is pretty performance-atrocious. Added a TODO",
+      "parentUuid": "f40016e1_5632291f",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85e268f3_f6374921",
         "filename": "src/images/SkJpegGainmapEncoder.cpp",
         "patchSetId": 8
@@ -54,6 +96,30 @@
       "writtenOn": "2023-01-23T18:11:50Z",
       "side": 1,
       "message": "`gainmapInfoJpegR` ?",
+      "range": {
+        "startLine": 219,
+        "startChar": 31,
+        "endLine": 219,
+        "endChar": 42
+      },
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e41a55_a070ebb2",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-24T22:45:48Z",
+      "side": 1,
+      "message": "Yes! Fixed.",
+      "parentUuid": "85e268f3_f6374921",
       "range": {
         "startLine": 219,
         "startChar": 31,
@@ -94,6 +160,24 @@
       "writtenOn": "2023-01-23T18:11:50Z",
       "side": 1,
       "message": "`result.reserve(segmentCount);`",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad357735_b7cbeabb",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-24T22:45:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8f2b567_2545f774",
       "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
