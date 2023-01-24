@@ -125,6 +125,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5e6197_2c6545d2",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T21:59:09Z",
+      "side": 1,
+      "message": "Sounds good; put translation into InsertRecordingInfo.",
+      "parentUuid": "c2bfdf03_73fd209c",
+      "range": {
+        "startLine": 51,
+        "startChar": 31,
+        "endLine": 51,
+        "endChar": 50
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80486f9a_3dace7c3",
@@ -222,6 +246,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "372ec3e4_185cd9a9",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T21:59:09Z",
+      "side": 1,
+      "message": "Well this brings up another idea -- if we apply the replay translation to the values passed in to e.g. MTLRenderCommandEncoder::setViewport, can we get away with not changing rtAdjust at all? Would this also work for scaling? Would you consider it better than using rtAdjust for translation and scaling?\n\nFrom what I understand, currently we always just set the viewport to (0, 0, target.width, target.height); at least I was operating under that assumption in this CL. Not sure if that\u0027s a safe assumption in the first place or if breaking that assumption will complicate things.",
+      "parentUuid": "368dfdaf_d43a2455",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4223cd29_055dc4fa",
         "filename": "src/gpu/graphite/RenderPassTask.h",
         "patchSetId": 1
@@ -291,6 +339,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fd6a654_8e19f640",
+        "filename": "src/gpu/graphite/RenderPassTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T21:59:09Z",
+      "side": 1,
+      "message": "Passing target and translation into `addCommands`.",
+      "parentUuid": "42508a49_1d41545b",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98921e1d_19351d30",
@@ -322,6 +394,24 @@
       "side": 1,
       "message": "Linking in one idea from 2nd round of comments, would be the `addCommands` functions take the replay transform and replay target as arguments. Or they take the actual InsertRecordingInfo? Or CommandBuffer lets you query the last set replay target and transform so tasks can query that if they are relevant.",
       "parentUuid": "98921e1d_19351d30",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e170bb8_bdce03aa",
+        "filename": "src/gpu/graphite/Task.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T21:59:09Z",
+      "side": 1,
+      "message": "I like the idea of consolidating the transform and target arguments, but using InsertRecordingInfo seems a little weird to me. Would it be worth defining a new type? This could introduce less noise into the `addCommands` signatures.",
+      "parentUuid": "fe387170_9cf08a86",
       "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -387,6 +477,30 @@
       "side": 1,
       "message": "No, I think then we\u0027d just say the new scissor was (left+tx, top+ty, width, height) and there\u0027d be no rounding that would cause gaps between the intended scissor and final scissor.",
       "parentUuid": "55c97033_e81a47f5",
+      "range": {
+        "startLine": 473,
+        "startChar": 4,
+        "endLine": 476,
+        "endChar": 43
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2538e7e_d9ea0f70",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-01-24T21:59:09Z",
+      "side": 1,
+      "message": "Implemented with just ints for now.",
+      "parentUuid": "2af14ba4_709ba7c0",
       "range": {
         "startLine": 473,
         "startChar": 4,
