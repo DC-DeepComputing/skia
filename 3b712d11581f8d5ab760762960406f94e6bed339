@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ce1ccb_9decaef7",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1904,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T16:18:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d12ccb2_b8732414",
+      "range": {
+        "startLine": 1904,
+        "startChar": 15,
+        "endLine": 1904,
+        "endChar": 32
+      },
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c57b633_c33be10c",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "547c67de_9ada4dec",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1919,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T16:18:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c57b633_c33be10c",
+      "range": {
+        "startLine": 1919,
+        "startChar": 19,
+        "endLine": 1919,
+        "endChar": 36
+      },
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfd81e39_1608a4ad",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-01-23T18:57:00Z",
       "side": 1,
       "message": "`tolerance*tolerance` per other comment?",
+      "range": {
+        "startLine": 1926,
+        "startChar": 40,
+        "endLine": 1926,
+        "endChar": 49
+      },
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "582e1dec_d2c0ad49",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1926,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T16:18:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfd81e39_1608a4ad",
       "range": {
         "startLine": 1926,
         "startChar": 40,
@@ -124,6 +196,30 @@
       "side": 1,
       "message": "Maybe then the current `NearlyAffine` impl should square tolerance internally as long as it remains impl based? Callers would never need to be updated and maybe would be more consistent across future changes?",
       "parentUuid": "1cbdf9e9_d4edc297",
+      "range": {
+        "startLine": 196,
+        "startChar": 43,
+        "endLine": 196,
+        "endChar": 62
+      },
+      "revId": "3b712d11581f8d5ab760762960406f94e6bed339",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a23ebd5_4fce7e4d",
+        "filename": "src/core/SkMatrixPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T16:18:24Z",
+      "side": 1,
+      "message": "Good idea, done.",
+      "parentUuid": "44d218b6_8510fda8",
       "range": {
         "startLine": 196,
         "startChar": 43,
