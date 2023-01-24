@@ -18,7 +18,10 @@ sk_sp<SynchronizeToCpuTask> SynchronizeToCpuTask::Make(sk_sp<Buffer> buffer) {
 
 SynchronizeToCpuTask::~SynchronizeToCpuTask() {}
 
-bool SynchronizeToCpuTask::addCommands(Context*, CommandBuffer* commandBuffer) {
+bool SynchronizeToCpuTask::addCommands(Context*,
+                                       CommandBuffer* commandBuffer,
+                                       const Texture* replayTarget,
+                                       SkIVector replayTranslation) {
     return commandBuffer->synchronizeBufferToCpu(std::move(fBuffer));
 }
 

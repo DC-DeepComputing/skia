@@ -31,9 +31,12 @@ bool TaskGraph::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool TaskGraph::addCommands(Context* context, CommandBuffer* commandBuffer) {
+bool TaskGraph::addCommands(Context* context,
+                            CommandBuffer* commandBuffer,
+                            const Texture* replayTarget,
+                            SkIVector replayTranslation) {
     for (const auto& task: fTasks) {
-        if (!task->addCommands(context, commandBuffer)) {
+        if (!task->addCommands(context, commandBuffer, replayTarget, replayTranslation)) {
             return false;
         }
     }

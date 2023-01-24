@@ -30,7 +30,10 @@ public:
         return true;
     }
 
-    bool addCommands(Context*, CommandBuffer*) override;
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}

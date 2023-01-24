@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Task_DEFINED
 #define skgpu_graphite_Task_DEFINED
 
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 
 namespace skgpu::graphite {
@@ -16,6 +17,7 @@ class CommandBuffer;
 class Context;
 class ResourceProvider;
 class RuntimeEffectDictionary;
+class Texture;
 
 class Task : public SkRefCnt {
 public:
@@ -26,7 +28,10 @@ public:
     virtual bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) = 0;
 
     // Returns true on success; false on failure.
-    virtual bool addCommands(Context*, CommandBuffer*) = 0;
+    virtual bool addCommands(Context*,
+                             CommandBuffer*,
+                             const Texture* replayTarget,
+                             SkIVector replayTranslation) = 0;
 
 protected:
     Task();

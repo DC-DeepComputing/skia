@@ -31,7 +31,10 @@ public:
 
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
 
-    bool addCommands(Context*, CommandBuffer*) override;
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     CopyBufferToBufferTask(sk_sp<Buffer> srcBuffer, size_t srcOffset,
@@ -57,7 +60,10 @@ public:
 
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
 
-    bool addCommands(Context*, CommandBuffer*) override;
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     CopyTextureToBufferTask(sk_sp<TextureProxy>,
@@ -84,7 +90,10 @@ public:
 
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
 
-    bool addCommands(Context*, CommandBuffer*) override;
+    bool addCommands(Context*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     CopyTextureToTextureTask(sk_sp<TextureProxy> srcProxy,

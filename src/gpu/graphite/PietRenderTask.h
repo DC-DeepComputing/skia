@@ -45,7 +45,10 @@ public:
 
     bool prepareResources(ResourceProvider*, const RuntimeEffectDictionary*) override;
 
-    bool addCommands(ResourceProvider*, CommandBuffer*) override;
+    bool addCommands(ResourceProvider*,
+                     CommandBuffer*,
+                     const Texture* replayTarget,
+                     SkIVector replayTranslation) override;
 
 private:
     std::vector<PietRenderInstance> fInstances;

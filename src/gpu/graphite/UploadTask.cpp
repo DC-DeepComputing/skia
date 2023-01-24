@@ -248,7 +248,9 @@ bool UploadTask::prepareResources(ResourceProvider* resourceProvider,
 }
 
 bool UploadTask::addCommands(Context* context,
-                             CommandBuffer* commandBuffer) {
+                             CommandBuffer* commandBuffer,
+                             const Texture* replayTarget,
+                             SkIVector replayTranslation) {
     for (unsigned int i = 0; i < fInstances.size(); ++i) {
         fInstances[i].addCommand(context, commandBuffer);
     }
