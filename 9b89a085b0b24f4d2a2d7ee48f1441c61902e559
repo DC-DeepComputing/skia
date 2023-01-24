@@ -50,6 +50,23 @@
       "message": "verified CLA is signed on signcla, so yes just add to AUTHORS as a part of this CL",
       "revId": "9b89a085b0b24f4d2a2d7ee48f1441c61902e559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "811e365b_e99ef168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-24T15:09:34Z",
+      "side": 1,
+      "message": "I\u0027ll handle the AUTHORS file -- it needs further clean-up beyond adding Stan.",
+      "revId": "9b89a085b0b24f4d2a2d7ee48f1441c61902e559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
