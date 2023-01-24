@@ -56,6 +56,30 @@
       },
       "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153715c6_21531df2",
+        "filename": "src/codec/SkJpegSegmentScan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-01-24T15:42:05Z",
+      "side": 1,
+      "message": "Oops!",
+      "parentUuid": "1b9d00c2_75c87657",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
