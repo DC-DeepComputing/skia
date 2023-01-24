@@ -3585,6 +3585,14 @@ if (skia_enable_tools) {
       sources = [ "fuzz/oss_fuzz/FuzzCOLRv1.cpp" ]
       deps = []
     }
+
+    libfuzzer_app("api_root_solver") {
+      sources = [
+        "fuzz/FuzzCubicQuadRoots.cpp",
+        "fuzz/oss_fuzz/FuzzAPICubicQuadRoots.cpp",
+      ]
+      deps = []
+    }
   }
 }
 
