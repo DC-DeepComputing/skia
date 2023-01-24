@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1f074d_a636c519",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-24T13:37:58Z",
+      "side": 1,
+      "message": "Sorry ... this is what I should have done from the beginning.",
+      "revId": "4fbedecb3b6f7aca1718d48b10d332fd828cb59b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
