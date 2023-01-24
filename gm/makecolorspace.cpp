@@ -104,6 +104,7 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
 
     // Use the lazy images on the first iteration, and concrete (raster/GPU) images on the second
     auto direct = GrAsDirectContext(canvas->recordingContext());
+    auto recorder = canvas->recorder();
     for (bool lazy : {true, false}) {
         for (size_t j = 0; j < std::size(images); ++j) {
             const SkImage* image = images[j].get();
