@@ -39,7 +39,7 @@
 #  if defined(SK_BUILD_FOR_WIN)
 #    define SK_ALWAYS_INLINE __forceinline
 #  else
-#    define SK_ALWAYS_INLINE SK_ATTRIBUTE(always_inline) inline
+#    define SK_ALWAYS_INLINE inline SK_ATTRIBUTE(always_inline)
 #  endif
 #endif
 
@@ -69,6 +69,21 @@
  */
 #if !defined(SK_NO_SANITIZE)
 #  define SK_NO_SANITIZE(A) SK_ATTRIBUTE(no_sanitize(A))
+#endif
+
+/**
+ * Annotates a class' non-trivial special functions as trivial for the purposes of calls.
+ * Allows a class with a non-trivial destructor to be __is_trivially_relocatable.
+ * Use of this attribute on a public API breaks platform ABI.
+ * Annotated classes may not hold pointers derived from `this`.
+ * Annotated classes must implement move+delete as equivalent to memcpy+free.
+ * Use may require more complete types, as callee destroys.
+ *
+ * https://clang.llvm.org/docs/AttributeReference.html#trivial-abi
+ * https://libcxx.llvm.org/DesignDocs/UniquePtrTrivialAbi.html
+ */
+#if !defined(SK_TRIVIAL_ABI)
+#  define SK_TRIVIAL_ABI
 #endif
 
 #endif
