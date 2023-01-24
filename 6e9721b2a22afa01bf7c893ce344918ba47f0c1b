@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29755654_7ced1b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-24T16:38:47Z",
+      "side": 1,
+      "message": "Ambivalent on the name change. skia_private LGTM",
+      "revId": "6e9721b2a22afa01bf7c893ce344918ba47f0c1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
