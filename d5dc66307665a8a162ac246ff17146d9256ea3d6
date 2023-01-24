@@ -16,6 +16,24 @@
       "message": "This may be redundant - I presume this is off by default in Skia. But if we\u0027re going to state it at all, it should be in all cases, rather than just `if not renderengine`.",
       "revId": "d5dc66307665a8a162ac246ff17146d9256ea3d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd1a00e_d1fdf0d9",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-01-24T14:58:20Z",
+      "side": 1,
+      "message": "Meant to remove it entirely. Done.",
+      "parentUuid": "6a7feed8_b1ae7d0a",
+      "revId": "d5dc66307665a8a162ac246ff17146d9256ea3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
