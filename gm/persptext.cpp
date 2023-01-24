@@ -28,14 +28,14 @@
 
 class PerspTextGM : public skiagm::GM {
 public:
-    PerspTextGM() {
+    PerspTextGM(bool minimal) : fMinimal(minimal) {
         this->setBGColor(0xFFFFFFFF);
     }
 
 protected:
 
     SkString onShortName() override {
-        return SkString("persptext");
+        return SkString(fMinimal ? "persptext_minimal" : "persptext");
     }
 
     SkISize onISize() override {
@@ -62,20 +62,24 @@ protected:
 
         SkScalar x = 10, y = textHeight + 5.f;
         const int kSteps = 8;
+        float kMinimalFactor = fMinimal ? 32.f : 1.f;
         for (auto pm : {PerspMode::kX, PerspMode::kY, PerspMode::kXY}) {
             for (int i = 0; i < kSteps; ++i) {
                 canvas->save();
+                paint.setColor(SK_ColorRED);
+                canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
+
                 SkMatrix persp = SkMatrix::I();
                 switch (pm) {
                     case PerspMode::kX:
-                        persp.setPerspX(i*0.00025f/kSteps);
+                        persp.setPerspX(i*0.00025f/kSteps/kMinimalFactor);
                         break;
                     case PerspMode::kY:
-                        persp.setPerspY(i*0.0025f/kSteps);
+                        persp.setPerspY(i*0.0025f/kSteps/kMinimalFactor);
                         break;
                     case PerspMode::kXY:
-                        persp.setPerspX(i*-0.00025f/kSteps);
-                        persp.setPerspY(i*-0.00125f/kSteps);
+                        persp.setPerspX(i*-0.00025f/kSteps/kMinimalFactor);
+                        persp.setPerspY(i*-0.00125f/kSteps/kMinimalFactor);
                         break;
                 }
                 persp = SkMatrix::Concat(persp, SkMatrix::Translate(-x, -y));
@@ -83,6 +87,11 @@ protected:
                 canvas->concat(persp);
 
                 paint.setColor(SK_ColorBLACK);
+                SkRect bounds = SkRect::MakeXYWH(0, -textHeight, textWidth, textHeight);
+                bounds.offset(x, y);
+                if (SkMatrixPriv::NearlyAffine(persp, bounds, SK_Scalar1/(1 << 12))) {
+                    paint.setColor(SK_ColorRED);
+                }
                 canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
 
                 y += textHeight + 5.f;
@@ -97,6 +106,8 @@ protected:
 
 private:
     enum class PerspMode { kX, kY, kXY };
+    bool fMinimal;
 };
 
-DEF_GM(return new PerspTextGM;)
+DEF_GM(return new PerspTextGM(true);)
+DEF_GM(return new PerspTextGM(false);)
