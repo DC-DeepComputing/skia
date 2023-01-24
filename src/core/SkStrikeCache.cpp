@@ -308,7 +308,9 @@ void SkStrikeCache::validate() const {
     }
     if (fTotalMemoryUsed != computedBytes) {
         SkDebugf("fTotalMemoryUsed: %zu, computedBytes: %zu", fTotalMemoryUsed, computedBytes);
-        SK_ABORT("fTotalMemoryUsed == computedBytes");
+        // Another thread may be increasing the bytes on a Strike, but not added them to the
+        // SkStrikeCache yet.
+        SK_ABORT("fTotalMemoryUsed <= computedBytes");
     }
 #endif
 }
