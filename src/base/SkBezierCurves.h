@@ -21,8 +21,8 @@
 class SkBezierCubic {
 public:
     /**
-     * Splits the provided curve at the location t, resulting in two
-     * bezier curves that share a point (the end point from curve 1
+     * Splits the provided Bézier curve at the location t, resulting in two
+     * Bézier curves that share a point (the end point from curve 1
      * and the start point from curve 2 are the same).
      *
      * t must be in the interval [0, 1].
@@ -31,8 +31,22 @@ public:
      * 0-7 are the first curve (representing the interval [0, t]), and
      * indices 6-13 are the second curve (representing [t, 1]).
      */
-    static void subdivide(const double curve[8], double t,
+    static void Subdivide(const double curve[8], double t,
                           double twoCurves[14]);
+
+    /**
+     * Converts the provided Bézier curve into the the equivalent cubic
+     *    f(t) = A*t^3 + B*t^2 + C*t + D
+     * where f(t) will represent Y coordinates over time if yValues is
+     * true and the X coordinates if yValues is false.
+     *
+     * In effect, this turns the control points into an actual line.
+     *
+     * Parameters A, B, C, and D will be set to the correct coefficients
+     * when this function returns.
+     */
+    static void ConvertToPolynomial(const double curve[8], bool yValues,
+                                    double* A, double* B, double* C, double* D);
 };
 
 #endif
