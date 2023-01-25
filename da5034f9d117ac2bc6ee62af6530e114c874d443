@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eb9ff94_67d17a88",
+        "filename": "src/images/SkJPEGWriteUtility.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-25T16:22:29Z",
+      "side": 0,
+      "message": "Hi, current Skia-Android gardener here. It looks like this constructor is currently used in Android\u0027s `frameworks/base/libs/hwui/jni/YuvToJpegEncoder.cpp`, and this change breaks the Android roll. Should we revert or fix forward? I\u0027m guessing a fix forward could either be in `frameworks/base/libs/hwui/jni/YuvToJpegEncoder.cpp` directly, or overloading the constructor here to optionally match the old signature?",
+      "revId": "da5034f9d117ac2bc6ee62af6530e114c874d443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
