@@ -288,15 +288,15 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
                 }
                 *outGainmapImageStream = std::move(mpImage.stream);
             }
-            constexpr float kLogRatioMin = 0.f;
-            constexpr float kLogRatioMax = 1.f;
-            outInfo->fLogRatioMin = {kLogRatioMin, kLogRatioMin, kLogRatioMin, 1.f};
-            outInfo->fLogRatioMax = {kLogRatioMax, kLogRatioMax, kLogRatioMax, 1.f};
+            const float kGainmapRatioMin = 1.f;
+            const float kGainmapRatioMax = sk_float_exp(1.f);
+            outInfo->fGainmapRatioMin = {kGainmapRatioMin, kGainmapRatioMin, kGainmapRatioMin, 1.f};
+            outInfo->fGainmapRatioMax = {kGainmapRatioMax, kGainmapRatioMax, kGainmapRatioMax, 1.f};
             outInfo->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
-            outInfo->fEpsilonSdr = 1 / 128.f;
-            outInfo->fEpsilonHdr = 1 / 128.f;
-            outInfo->fHdrRatioMin = 1.f;
-            outInfo->fHdrRatioMax = sk_float_exp(kLogRatioMax);
+            outInfo->fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
+            outInfo->fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
+            outInfo->fRenderRatioSdr = 1.f;
+            outInfo->fRenderRatioHdr = kGainmapRatioMax;
             outInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
             outInfo->fType = SkGainmapInfo::Type::kMultiPicture;
             return true;
@@ -493,15 +493,15 @@ bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
         *outGainmapImageStream = std::move(gainmapImageStream);
     }
 
-    const float kLogRatioMax = sk_float_log(rangeScalingFactor);
-    const float kLogRatioMin = -kLogRatioMax;
-    outInfo->fLogRatioMin = {kLogRatioMin, kLogRatioMin, kLogRatioMin, 1.f};
-    outInfo->fLogRatioMax = {kLogRatioMax, kLogRatioMax, kLogRatioMax, 1.f};
+    const float kGainmapRatioMax = rangeScalingFactor;
+    const float kGainmapRatioMin = 1.f / rangeScalingFactor;
+    outInfo->fGainmapRatioMin = {kGainmapRatioMin, kGainmapRatioMin, kGainmapRatioMin, 1.f};
+    outInfo->fGainmapRatioMax = {kGainmapRatioMax, kGainmapRatioMax, kGainmapRatioMax, 1.f};
     outInfo->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
-    outInfo->fEpsilonSdr = 0.f;
-    outInfo->fEpsilonHdr = 0.f;
-    outInfo->fHdrRatioMin = 1.f;
-    outInfo->fHdrRatioMax = rangeScalingFactor;
+    outInfo->fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
+    outInfo->fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
+    outInfo->fRenderRatioSdr = 1.f;
+    outInfo->fRenderRatioHdr = rangeScalingFactor;
     outInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
     outInfo->fType = type;
     return true;
@@ -560,18 +560,20 @@ bool SkJpegGetHDRGMGainmapInfo(sk_sp<const SkData> xmpMetadata,
     dom.findScalar(node, "hdrgm:HDRCapacityMax", &hdrCapacityMax);
 
     // Translate all parameters to SkGainmapInfo's expected format.
-    // TODO(ccameron): Move all of SkGainmapInfo to linear space.
     const float kLog2 = sk_float_log(2.f);
-    outGainmapInfo->fLogRatioMin = {
-            gainMapMin.fR * kLog2, gainMapMin.fG * kLog2, gainMapMin.fB * kLog2, 1.f};
-    outGainmapInfo->fLogRatioMax = {
-            gainMapMax.fR * kLog2, gainMapMax.fG * kLog2, gainMapMax.fB * kLog2, 1.f};
+    outGainmapInfo->fGainmapRatioMin = {sk_float_exp(gainMapMin.fR * kLog2),
+                                        sk_float_exp(gainMapMin.fG * kLog2),
+                                        sk_float_exp(gainMapMin.fB * kLog2),
+                                        1.f};
+    outGainmapInfo->fGainmapRatioMax = {sk_float_exp(gainMapMax.fR * kLog2),
+                                        sk_float_exp(gainMapMax.fG * kLog2),
+                                        sk_float_exp(gainMapMax.fB * kLog2),
+                                        1.f};
     outGainmapInfo->fGainmapGamma = gamma;
-    // TODO(ccameron): Use SkColor4f for epsilons.
-    outGainmapInfo->fEpsilonSdr = (offsetSdr.fR + offsetSdr.fG + offsetSdr.fB) / 3.f;
-    outGainmapInfo->fEpsilonHdr = (offsetHdr.fR + offsetHdr.fG + offsetHdr.fB) / 3.f;
-    outGainmapInfo->fHdrRatioMin = sk_float_exp(hdrCapacityMin * kLog2);
-    outGainmapInfo->fHdrRatioMax = sk_float_exp(hdrCapacityMax * kLog2);
+    outGainmapInfo->fEpsilonSdr = offsetSdr;
+    outGainmapInfo->fEpsilonHdr = offsetHdr;
+    outGainmapInfo->fRenderRatioSdr = sk_float_exp(hdrCapacityMin * kLog2);
+    outGainmapInfo->fRenderRatioHdr = sk_float_exp(hdrCapacityMax * kLog2);
     if (baseRendition && !strcmp(baseRendition, "HDR")) {
         outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kHDR;
     } else {

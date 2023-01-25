@@ -52,12 +52,11 @@ static sk_sp<SkImage> make_1x1_image(
 // Return gainmap info that will scale 1 up to the specified hdrRatioMax.
 static SkGainmapInfo simple_gainmap_info(float hdrRatioMax) {
     SkGainmapInfo gainmapInfo;
-    const float logHdrRatioMax = sk_float_log(hdrRatioMax);
-    gainmapInfo.fHdrRatioMax = hdrRatioMax;
-    gainmapInfo.fEpsilonSdr = 0.f;
-    gainmapInfo.fEpsilonHdr = 0.f;
-    gainmapInfo.fLogRatioMin = {0.f, 0.f, 0.f, 0.f};
-    gainmapInfo.fLogRatioMax = {logHdrRatioMax, logHdrRatioMax, logHdrRatioMax, 1.f};
+    gainmapInfo.fRenderRatioHdr = hdrRatioMax;
+    gainmapInfo.fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
+    gainmapInfo.fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
+    gainmapInfo.fGainmapRatioMin = {1.f, 1.f, 1.f, 1.f};
+    gainmapInfo.fGainmapRatioMax = {hdrRatioMax, hdrRatioMax, hdrRatioMax, 1.f};
     return gainmapInfo;
 }
 
@@ -140,7 +139,7 @@ DEF_TEST(GainmapShader_rects, r) {
                                                    SkSamplingOptions(),
                                                    gainmapInfo,
                                                    canvasRect,
-                                                   gainmapInfo.fHdrRatioMax,
+                                                   gainmapInfo.fRenderRatioHdr,
                                                    canvasInfo.refColorSpace());
     SkPaint paint;
     paint.setShader(shader);
@@ -186,6 +185,6 @@ DEF_TEST(GainmapShader_colorSpace, r) {
     SkGainmapInfo gainmapInfo = simple_gainmap_info(2.f);
 
     auto color = draw_1x1_gainmap(
-            sdrImage, gainmapImage, gainmapInfo, gainmapInfo.fHdrRatioMax, dstColorSpace);
+            sdrImage, gainmapImage, gainmapInfo, gainmapInfo.fRenderRatioHdr, dstColorSpace);
     REPORTER_ASSERT(r, approx_equal(color, kExpectedColor));
 }
