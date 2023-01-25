@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27dc8d52_407f93cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10818
+      },
+      "writtenOn": "2023-01-25T20:17:54Z",
+      "side": 1,
+      "message": "LGTM, can always specialize t \u003d 0.5 later (`SubdivideInHalf` ?)",
+      "revId": "7cf077ef51cc64018ece7f2be383167fa75a97e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
