@@ -193,8 +193,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = []string{
 				"r8", "565",
 				"pic-8888", "serialize-8888",
-				"linear-f16", "srgb-rgba", "srgb-f16", "narrow-rgba", "narrow-f16",
-				"p3-rgba", "p3-f16", "rec2020-rgba", "rec2020-f16"}
+				"-linear-f16", "srgb-rgba", "-srgb-f16", "-narrow-rgba", "-narrow-f16",
+				"-p3-rgba", "-p3-f16", "-rec2020-rgba", "-rec2020-f16"}
 		}
 
 		if b.extraConfig("PDF") {
@@ -530,10 +530,22 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			args = append(args, "--gpuResourceCacheLimit", "16777216")
 		}
 
-		// Test rendering to wrapped dsts on a few bots
-		// Also test "narrow-glf16", which hits F16 surfaces and F16 vertex colors.
+		if b.extraConfig("ColorSpaces") {
+			if b.extraConfig("Graphite") {
+				if b.extraConfig("Metal") {
+					configs = []string{"p3-grmtl","rec2020-grmtl","linear-grmtl","narrow-grmtl","narrow-grmtlf16","srgb-grmtl"}
+				}
+			} else {
+				if b.extraConfig("Metal") {
+					configs = []string{"p3-mtl","rec2020-mtl","linear-mtl","narrow-mtl","narrow-mtlf16","srgb-mtl"}
+				}
+			}
+		}
+
 		if b.extraConfig("BonusConfigs") {
-			configs = []string{"glbetex", "glbert", "narrow-glf16", "glreducedshaders", "glr8"}
+			// Test rendering to wrapped dsts on a few bots
+			// Also test "narrow-glf16", which hits F16 surfaces and F16 vertex colors.
+			configs = []string{"glbetex", "glbert", "-narrow-glf16", "glreducedshaders", "glr8"}  // srgb-gl srgb-gles?
 		}
 
 		if b.os("ChromeOS") {

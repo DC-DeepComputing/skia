@@ -119,6 +119,7 @@ static const struct {
 #endif
 #ifdef SK_METAL
     { "mtl",                   "gpu", "api=metal" },
+    { "mtlf16",                "gpu", "api=metal,color=f16" },
     { "mtl1010102",            "gpu", "api=metal,color=1010102" },
     { "mtlmsaa4",              "gpu", "api=metal,samples=4" },
     { "mtlmsaa8",              "gpu", "api=metal,samples=8" },
@@ -142,6 +143,7 @@ static const struct {
 #endif
 #ifdef SK_METAL
     { "grmtl",                 "graphite", "api=metal" },
+    { "grmtlf16",              "graphite", "api=metal,color=f16" },
 #endif
 #ifdef SK_VULKAN
     { "grvk",                  "graphite", "api=vulkan" },
@@ -258,7 +260,7 @@ SkCommandLineConfig::SkCommandLineConfig(const SkString& tag,
         if (it == kColorSpaces->end()) {
             fViaParts.push_back(via);
         } else {
-            fColorSpace = sk_ref_sp(it->second);
+            fColorSpace1 = sk_ref_sp(it->second);
         }
     }
 }
@@ -720,6 +722,10 @@ void ParseConfigs(const CommandLineFlags::StringArray& configs,
                   SkCommandLineConfigArray*            outResult) {
     outResult->clear();
     for (int i = 0; i < configs.size(); ++i) {
+
+        SkString           foo(configs[i]);
+        SkDebugf("%d %s\n", i, foo.c_str());
+
         SkString           extendedBackend;
         SkString           extendedOptions;
         SkString           simpleBackend;

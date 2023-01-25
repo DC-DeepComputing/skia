@@ -1064,13 +1064,14 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfi
         const SkCommandLineConfig& config = *configs[i];
         Sink* sink = create_sink(grCtxOptions, &config);
         if (sink == nullptr) {
+            sink = create_sink(grCtxOptions, &config);
             info("Skipping config %s: Don't understand '%s'.\n", config.getTag().c_str(),
                  config.getTag().c_str());
             continue;
         }
 
         // The command line config already parsed out the via-style color space. Apply it here.
-        sink->setColorSpace(config.refColorSpace());
+        sink->setColorSpace(config.refColorSpace1());
 
         const SkTArray<SkString>& parts = config.getViaParts();
         for (int j = parts.size(); j-- > 0;) {
