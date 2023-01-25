@@ -35,13 +35,13 @@ public:
     virtual const SkCommandLineConfigSvg* asConfigSvg() const { return nullptr; }
     const SkString&                       getTag() const { return fTag; }
     const SkString&                       getBackend() const { return fBackend; }
-    sk_sp<SkColorSpace>                   refColorSpace() const { return fColorSpace; }
+    sk_sp<SkColorSpace>                   refColorSpace1() const { return fColorSpace1; }
     const SkTArray<SkString>&             getViaParts() const { return fViaParts; }
 
 private:
     SkString            fTag;
     SkString            fBackend;
-    sk_sp<SkColorSpace> fColorSpace;
+    sk_sp<SkColorSpace> fColorSpace1;
     SkTArray<SkString>  fViaParts;
 };
 
