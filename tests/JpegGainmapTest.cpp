@@ -128,18 +128,18 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
         SkISize dimensions;
         SkColor originColor;
         SkColor farCornerColor;
-        float logRatioMin;
-        float logRatioMax;
-        float hdrRatioMin;
-        float hdrRatioMax;
+        float gainmapRatioMin;
+        float gainmapRatioMax;
+        float renderRatioMin;
+        float renderRatioMax;
         SkGainmapInfo::Type type;
     } recs[] = {
             {"images/iphone_13_pro.jpeg",
              SkISize::Make(1512, 2016),
              0xFF3B3B3B,
              0xFF101010,
-             0.f,
              1.f,
+             2.71828f,
              1.f,
              2.71828f,
              SkGainmapInfo::Type::kMultiPicture},
@@ -147,8 +147,8 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
              SkISize::Make(1008, 756),
              0xFFCACACA,
              0xFFC8C8C8,
-             -2.3669f,
-             2.3669f,
+             1.f / 10.6643f,
+             10.6643f,
              1.f,
              10.6643f,
              SkGainmapInfo::Type::kJpegR_HLG},
@@ -156,8 +156,8 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
              SkISize::Make(188, 250),
              0xFFE9E9E9,
              0xFFAAAAAA,
-             -2.209409f,
-             2.209409f,
+             1.f / 9.110335f,
+             9.110335f,
              1.f,
              9.110335f,
              SkGainmapInfo::Type::kHDRGM},
@@ -200,16 +200,16 @@ DEF_TEST(AndroidCodec_jpegGainmap, r) {
             // Verify the gainmap rendering parameters.
             auto approxEq = [=](float x, float y) { return std::abs(x - y) < 1e-3f; };
 
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fR, rec.logRatioMin));
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fG, rec.logRatioMin));
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMin.fB, rec.logRatioMin));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMin.fR, rec.gainmapRatioMin));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMin.fG, rec.gainmapRatioMin));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMin.fB, rec.gainmapRatioMin));
 
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fR, rec.logRatioMax));
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fG, rec.logRatioMax));
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fLogRatioMax.fB, rec.logRatioMax));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMax.fR, rec.gainmapRatioMax));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMax.fG, rec.gainmapRatioMax));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fGainmapRatioMax.fB, rec.gainmapRatioMax));
 
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fHdrRatioMin, rec.hdrRatioMin));
-            REPORTER_ASSERT(r, approxEq(gainmapInfo.fHdrRatioMax, rec.hdrRatioMax));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fDisplayRatioSdr, rec.renderRatioMin));
+            REPORTER_ASSERT(r, approxEq(gainmapInfo.fDisplayRatioHdr, rec.renderRatioMax));
 
             REPORTER_ASSERT(r, gainmapInfo.fType == rec.type);
         }
