@@ -93,6 +93,30 @@
       },
       "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8b6539f_92131943",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-01-25T19:18:53Z",
+      "side": 1,
+      "message": "Ah, I missed that yRadii is a float4, thanks for filling me in.",
+      "parentUuid": "590592e2_b323d6a5",
+      "range": {
+        "startLine": 854,
+        "startChar": 12,
+        "endLine": 854,
+        "endChar": 61
+      },
+      "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
