@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d421eac1_6dc1deb5",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-01-25T16:09:44Z",
+      "side": 1,
+      "message": "It seems like in normal Skia nomenclature this would be something like SkAutoMemoryIncreaseTracker",
+      "range": {
+        "startLine": 52,
+        "startChar": 37,
+        "endLine": 52,
+        "endChar": 44
+      },
+      "revId": "b4e746b027dabc50422692cfb53e957656e2372a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
