@@ -83,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d637a5a6_230672f9",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-25T12:51:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fbd01aa6_4fa79d6c",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85e268f3_f6374921",
@@ -130,6 +148,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b1d616_a68498da",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-25T12:51:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "47e41a55_a070ebb2",
+      "range": {
+        "startLine": 219,
+        "startChar": 31,
+        "endLine": 219,
+        "endChar": 42
+      },
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c349b6ec_f0ddc848",
@@ -143,6 +185,24 @@
       "writtenOn": "2023-01-23T18:11:50Z",
       "side": 1,
       "message": "With count being 1, maybe just do:\n\n    uint8_t segmentMarker \u003d kXMPMarker;\n    SkData* segmentData \u003d xmpMetadata.get();\n    ::Make(..., 1, \u0026segmentMarker, \u0026segmentData, ...)",
+      "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4650ba_66510e84",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-25T12:51:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c349b6ec_f0ddc848",
       "revId": "e099332964f00c27dabe7f51d9691ee6c50d3ef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
