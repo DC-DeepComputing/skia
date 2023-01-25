@@ -9,7 +9,7 @@
 #define SkTDPQueue_DEFINED
 
 #include "include/private/base/SkTDArray.h"
-#include "src/core/SkTSort.h"
+#include "src/base/SkTSort.h"
 
 #include <utility>
 

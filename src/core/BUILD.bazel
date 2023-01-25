@@ -17,8 +17,6 @@ CORE_SKSLC_FILES = [
     "SkString.cpp",
     "SkStringUtils.cpp",
     "SkStringUtils.h",
-    "SkUtils.cpp",
-    "SkUtils.h",
     "SkVM.cpp",
     "SkVM.h",
 ]
@@ -318,9 +316,6 @@ CORE_FILES = [
     "SkTHash.h",
     "SkTInternalLList.h",
     "SkTMultiMap.h",
-    "SkTSearch.cpp",
-    "SkTSearch.h",
-    "SkTSort.h",
     "SkTaskGroup.cpp",
     "SkTaskGroup.h",
     "SkTextBlob.cpp",
