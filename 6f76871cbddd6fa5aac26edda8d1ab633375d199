@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fbeb222_ea690f1d",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T17:59:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "625bc5af_01314b3c",
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6633b769_320051ae",
@@ -89,6 +107,30 @@
       "side": 1,
       "message": "These ones I happen to know are super lightweight, it\u0027s a library call which is just a getter on a field of the underlying `CTFontDescriptor`. This is really nothing compared to the silly overhead of getting at any bits in the `OS/2` table, where CoreText will make a copy each time a table is requested, and then Skia warps that in an SkData, so there are at least two dynamic allocations just getting the data. (Which is why this change goes out of its way not to access it twice.) Also, this is in getting the font metrics, which basically happens once when creating an SkTypeface.\n\nOn the other hand, almost all fonts do have these tables, so there\u0027s no reason not to factor these out.",
       "parentUuid": "6633b769_320051ae",
+      "range": {
+        "startLine": 760,
+        "startChar": 27,
+        "endLine": 761,
+        "endChar": 43
+      },
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "602c03aa_153fdf67",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T17:59:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f509e8ba_fa49b285",
       "range": {
         "startLine": 760,
         "startChar": 27,
