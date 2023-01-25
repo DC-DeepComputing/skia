@@ -129,6 +129,7 @@ else
     # analysis. If we aren't sure why IWYU wants to include something, try changing verbose to 3.
     external/clang_linux_amd64/bin/include-what-you-use $@ \
         -Xiwyu --keep="include/core/SkTypes.h" \
+        -Xiwyu --keep="include/base/private/SkDebug.h" \
         -Xiwyu --no_default_mappings \
         -Xiwyu --mapping_file=$MAPPING_FILE -Xiwyu --no_comments \
         -Xiwyu --quoted_includes_first -Xiwyu --verbose=3
