@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6450553f_41ec1388",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T20:10:57Z",
+      "side": 1,
+      "message": "Hmmm, didn\u0027t even look at that, since this is just moving here. Probably a fine change since it\u0027s being touched anyway.",
+      "parentUuid": "f0d6f270_ac450437",
+      "range": {
+        "startLine": 736,
+        "startChar": 47,
+        "endLine": 736,
+        "endChar": 60
+      },
+      "revId": "27b275586804ee275d03722bb9b3e1e0acec0292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a057a768_43a4bd46",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-25T18:35:07Z",
       "side": 1,
       "message": "tiny nit: `CTFontGetUnitsPerEm` returns `unsigned int`, not `unsigned`\nhttps://screenshot.googleplex.com/AxXM475DKxy2yr6",
+      "range": {
+        "startLine": 737,
+        "startChar": 14,
+        "endLine": 737,
+        "endChar": 22
+      },
+      "revId": "27b275586804ee275d03722bb9b3e1e0acec0292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9aaa65e_9282633a",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T20:10:57Z",
+      "side": 1,
+      "message": "`unsigned` and `unsigned int` are the same thing. From a rough grep it appears that about half the time Skia spells this as `unsigned int` and half the time spells this as just `unsigned`. Doesn\u0027t hurt to be clear here, I suppose.",
+      "parentUuid": "a057a768_43a4bd46",
       "range": {
         "startLine": 737,
         "startChar": 14,
