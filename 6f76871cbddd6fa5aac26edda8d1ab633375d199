@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "625bc5af_01314b3c",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T16:58:27Z",
+      "side": 1,
+      "message": "The bigger issue is that I probably need to make sure I actually got back a table.",
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6633b769_320051ae",
         "filename": "src/ports/SkScalerContext_mac_ct.cpp",
         "patchSetId": 1
@@ -14,6 +31,30 @@
       "writtenOn": "2023-01-25T16:44:57Z",
       "side": 1,
       "message": "Unless we know for a fact that the `CTFont` routines are super lightweight, we probably want to avoid calling them twice (here and above on L743/744).",
+      "range": {
+        "startLine": 760,
+        "startChar": 27,
+        "endLine": 761,
+        "endChar": 43
+      },
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f509e8ba_fa49b285",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-25T16:58:27Z",
+      "side": 1,
+      "message": "These ones I happen to know are super lightweight, it\u0027s a library call which is just a getter on a field of the underlying `CTFontDescriptor`. This is really nothing compared to the silly overhead of getting at any bits in the `OS/2` table, where CoreText will make a copy each time a table is requested, and then Skia warps that in an SkData, so there are at least two dynamic allocations just getting the data. (Which is why this change goes out of its way not to access it twice.) Also, this is in getting the font metrics, which basically happens once when creating an SkTypeface.\n\nOn the other hand, almost all fonts do have these tables, so there\u0027s no reason not to factor these out.",
+      "parentUuid": "6633b769_320051ae",
       "range": {
         "startLine": 760,
         "startChar": 27,
