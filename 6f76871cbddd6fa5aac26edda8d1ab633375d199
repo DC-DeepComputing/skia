@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4791a2_82036c0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-25T17:00:41Z",
+      "side": 1,
+      "message": "+Julia since she knows the font code much better than I do",
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "625bc5af_01314b3c",
