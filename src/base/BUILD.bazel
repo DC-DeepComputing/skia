@@ -15,9 +15,13 @@ IWYU_HDRS = [
     "SkArenaAllocList.h",
     "SkLeanWindows.h",
     "SkScopeExit.h",
-    "SkTBlockList.h",
     "SkStringView.h",
+    "SkTBlockList.h",
+    "SkTDPQueue.h",
+    "SkTInternalLList.h",
     "SkTLazy.h",
+    "SkTSort.h",
+    "SkZip.h",
 ]
 
 skia_filegroup(
@@ -30,7 +34,9 @@ skia_filegroup(
         "SkMathPriv.h",
         "SkQuads.h",
         "SkSafeMath.h",
+        "SkTSearch.h",
         "SkUTF.h",
+        "SkUtils.h",
     ],
     visibility = ["//src:__pkg__"],
 )
@@ -54,6 +60,7 @@ skia_filegroup(
         "SkSemaphore.cpp",
         "SkThreadID.cpp",
         "SkUTF.cpp",
+        "SkUtils.cpp",
     ],
 )
 
@@ -65,6 +72,7 @@ skia_filegroup(
         "SkFloatingPoint.cpp",
         "SkQuads.cpp",
         "SkTDArray.cpp",
+        "SkTSearch.cpp",
         ":skslc_srcs",
     ],
     visibility = ["//src:__pkg__"],
