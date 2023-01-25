@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c74e6f8a_eda8d5f7",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-25T16:54:53Z",
+      "side": 1,
+      "message": "I\u0027d moved the join style\u0027s storage location from z to w in this CL but missed updating this check so we were dropping bevel corners on regular strokes (seen from preliminary gold results).",
+      "range": {
+        "startLine": 487,
+        "startChar": 45,
+        "endLine": 487,
+        "endChar": 46
+      },
+      "revId": "892440d0c51cb247c4f06f263fb91a04da45242f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
