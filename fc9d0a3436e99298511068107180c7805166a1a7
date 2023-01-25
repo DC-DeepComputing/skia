@@ -16,6 +16,24 @@
       "message": "I have no idea what this is doing, but PathOps has this (in a function called \"Coefficients\" [1]) and without it, the algorithm does not work.\n\nDo you know?\n\n[1] https://github.com/google/skia/blob/9cb4038da49ea2c86f4bb8e4b2e7d59c1a0c5bba/src/pathops/SkPathOpsCubic.cpp#L132-L140",
       "revId": "fc9d0a3436e99298511068107180c7805166a1a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9719332_9e847c8e",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-25T14:03:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cbfc6c1_e900872a",
+      "revId": "fc9d0a3436e99298511068107180c7805166a1a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

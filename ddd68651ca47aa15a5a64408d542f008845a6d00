@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c521145f_06c7d859",
+        "filename": "src/base/SkBezierCurves.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-25T14:03:10Z",
+      "side": 1,
+      "message": "Shoutout to Tyler for helping me understand why the old code (SkDCubic::Coefficients) was doing what it did. I hope this commentary (and slightly re-written computation) makes that more clear.",
+      "revId": "ddd68651ca47aa15a5a64408d542f008845a6d00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
