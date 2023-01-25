@@ -172,6 +172,16 @@ public:
         }
     }
 
+    /**
+     * Same as reserve(), but if an allocation is necessary, allocates more space then necessary.
+     */
+    void reserve_and_grow(int n) {
+        SkASSERT(n >= 0);
+        if (n > 0) {
+            this->checkReallocForSize(n, kGrowing);
+        }
+    }
+
     void removeShuffle(int n) {
         SkASSERT(n < this->size());
         int newCount = fSize - 1;
@@ -599,11 +609,6 @@ private:
         SkASSERT(fSize >= 0);
         SkASSERT(fCapacity >= 0);
 
-        // Return if there are enough remaining allocated elements to satisfy the request.
-        if (this->capacity() - fSize >= delta) {
-            return;
-        }
-
         // Don't overflow fSize or size_t later in the memory allocation. Overflowing memory
         // allocation really only applies to fSizes on 32-bit machines; on 64-bit machines this
         // will probably never produce a check. Since kMaxCapacity is bounded above by INT_MAX,
@@ -611,16 +616,28 @@ private:
         if (delta > kMaxCapacity - fSize) {
             sk_report_container_overflow_and_die();
         }
-        const int newCount = fSize + delta;
 
-        SkSpan<std::byte> allocation = Allocate(newCount, growthFactor);
+        checkReallocForSize(delta + fSize, growthFactor);
+    }
+
+  void checkReallocForSize(int size, double growthFactor) {
+        SkASSERT(size >= 0);
+        SkASSERT(fSize >= 0);
+        SkASSERT(fCapacity >= 0);
+
+        // Return if there are enough remaining allocated elements to satisfy the request.
+        if (this->capacity() >= size) {
+            return;
+        }
+
+        SkSpan<std::byte> allocation = Allocate(size, growthFactor);
 
         this->move(TCast(allocation.data()));
         if (fOwnMemory) {
             sk_free(fData);
         }
         this->setDataFromBytes(allocation);
-        SkASSERT(this->capacity() >= newCount);
+        SkASSERT(this->capacity() >= size);
         SkASSERT(fData != nullptr);
     }
 
