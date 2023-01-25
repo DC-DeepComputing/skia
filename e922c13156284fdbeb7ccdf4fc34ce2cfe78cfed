@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf13e36c_4f6d19af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-25T17:16:17Z",
+      "side": 1,
+      "message": "Bypassing OWNERS check due to clean revert",
+      "revId": "e922c13156284fdbeb7ccdf4fc34ce2cfe78cfed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
