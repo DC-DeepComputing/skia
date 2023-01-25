@@ -57,3 +57,21 @@ void SkBezierCubic::Subdivide(const double curve[8], double t,
     alpha_X(4) /*= beta_X(1) */ = interpolate(alpha_X(3), beta_X(2), t);
     alpha_Y(4) /*= beta_Y(1) */ = interpolate(alpha_Y(3), beta_Y(2), t);
 }
+
+void SkBezierCubic::ConvertToPolynomial(const double curve[8], bool yValues,
+                                        double* A, double* B, double* C, double* D) {
+    const double* offset_curve = yValues ? curve + 1 : curve;
+    const auto P = [&offset_curve](size_t n) { return offset_curve[2*(n-1)]; };
+    // A cubic Bézier curve is interpolated as follows:
+    //  c(t) = (1 - t)^3 P_1 + 3t(1 - t)^2 P_2 + 3t^2 (1 - t) P_3 + t^3 P_4
+    //       = (-P_1 + 3P_2 + -3P_3 + P_4) t^3 + (3P_1 - 6P_2 + 3P_3) t^2 +
+    //         (-3P_1 + 3P_2) t + P_1
+    // Where P_N is the Nth point. The second step expands the polynomial and groups
+    // by powers of t. The desired output is a cubic formula, so we just need to
+    // combine the appropriate points to make the coefficients.
+    *A = -P(1) + 3*P(2) - 3*P(3) + P(4);
+    *B = 3*P(1) - 6*P(2) + 3*P(3);
+    *C = -3*P(1) + 3*P(2);
+    *D = P(1);
+}
+
