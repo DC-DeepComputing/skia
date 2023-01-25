@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a9ae1f_1e649bb9",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-25T15:38:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc0e8957_e0dcb3c7",
+      "range": {
+        "startLine": 475,
+        "startChar": 68,
+        "endLine": 475,
+        "endChar": 74
+      },
+      "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d3bcced_4043d07e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-24T18:03:00Z",
       "side": 1,
       "message": "Does hairline use a smaller number of attributes?",
+      "range": {
+        "startLine": 854,
+        "startChar": 12,
+        "endLine": 854,
+        "endChar": 61
+      },
+      "revId": "df6c24e254c3899b26130898b068efcaf1e4a963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590592e2_b323d6a5",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-25T15:38:16Z",
+      "side": 1,
+      "message": "Strokes use 4 independent floats (-2, 0., stroke radius, style) followed by xRadii and LTRB \u003d\u003e 12 floats.\nHairlines use (-2-xRadii), yRadii, and then LTRB so it\u0027s still 12 floats. We avoid uploading stroke radius of 0 and any style since one is known and style is always mitered in the shader code for hairlines. The (-2-xRadii) lets us use the same test for the first float to determine if the instance is stroked or not, but I suppose in reality this means that proper strokes have a smaller number of attributes than hairlines since its second float is unused.",
+      "parentUuid": "0d3bcced_4043d07e",
       "range": {
         "startLine": 854,
         "startChar": 12,
