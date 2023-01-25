@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6633b769_320051ae",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-25T16:44:57Z",
+      "side": 1,
+      "message": "Unless we know for a fact that the `CTFont` routines are super lightweight, we probably want to avoid calling them twice (here and above on L743/744).",
+      "range": {
+        "startLine": 760,
+        "startChar": 27,
+        "endLine": 761,
+        "endChar": 43
+      },
+      "revId": "6f76871cbddd6fa5aac26edda8d1ab633375d199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
