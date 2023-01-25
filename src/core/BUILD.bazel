@@ -17,8 +17,6 @@ CORE_SKSLC_FILES = [
     "SkString.cpp",
     "SkStringUtils.cpp",
     "SkStringUtils.h",
-    "SkUtils.cpp",
-    "SkUtils.h",
     "SkVM.cpp",
     "SkVM.h",
 ]
@@ -313,14 +311,9 @@ CORE_FILES = [
     "SkSurfaceCharacterization.cpp",
     "SkSurfacePriv.h",
     "SkSwizzle.cpp",
-    "SkTDPQueue.h",
     "SkTDynamicHash.h",
     "SkTHash.h",
-    "SkTInternalLList.h",
     "SkTMultiMap.h",
-    "SkTSearch.cpp",
-    "SkTSearch.h",
-    "SkTSort.h",
     "SkTaskGroup.cpp",
     "SkTaskGroup.h",
     "SkTextBlob.cpp",
@@ -362,7 +355,6 @@ CORE_FILES = [
     "SkYUVMath.h",
     "SkYUVPlanesCache.cpp",
     "SkYUVPlanesCache.h",
-    "SkZip.h",
 ]
 
 split_srcs_and_hdrs(
