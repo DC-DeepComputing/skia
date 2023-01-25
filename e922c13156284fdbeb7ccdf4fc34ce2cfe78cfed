@@ -16,6 +16,23 @@
       "message": "Bypassing OWNERS check due to clean revert",
       "revId": "e922c13156284fdbeb7ccdf4fc34ce2cfe78cfed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45522386_c78b6581",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-01-25T17:31:44Z",
+      "side": 1,
+      "message": "Context for revert: Nicolette and I considered fixing forward, but are uncertain whether adding back (overloading) the old constructor or changing its usage in Android is preferred. It seems like the new `suffix` parameter is optional and null-checked, but we don\u0027t have context here, and reviewers and author are OOO. Sounds like author was open to revert and fix later approach.",
+      "revId": "e922c13156284fdbeb7ccdf4fc34ce2cfe78cfed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
