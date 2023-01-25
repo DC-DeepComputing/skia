@@ -72,8 +72,7 @@ static SkBitmap draw_shader(SkCanvas* canvas, sk_sp<SkShader> shader,
 
     if (surface) {
         surface->getCanvas()->clear(SK_ColorWHITE);
-        surface->getCanvas()->scale(kBoxSize, kBoxSize);
-        surface->getCanvas()->drawRect({0, 0, 1, 1}, paint);
+        surface->getCanvas()->drawRect({0, 0, kBoxSize, kBoxSize}, paint);
 
         bitmap.allocPixels(info);
         surface->readPixels(bitmap, 0, 0);
@@ -101,6 +100,7 @@ static SkString make_unary_sksl_1d(const char* fn, bool requireES3) {
             "uniform float xScale; uniform float xBias;"
             "uniform float yScale; uniform float yBias;"
             "half4 main(float2 p) {"
+            "    p.xy *= 1.0 / %d.0;"
             "    const float2 v1 = float2(1);"
             "    const float2 v2 = float2(2);"
             "    p = float2(p.x, 1 - p.x) * xScale + xBias;"
@@ -110,7 +110,7 @@ static SkString make_unary_sksl_1d(const char* fn, bool requireES3) {
             "    float y = float(%s) * yScale + yBias;"
             "    return y.xxx1;"
             "}",
-            requireES3 ? "300" : "100", fn);
+            requireES3 ? "300" : "100", kBoxSize, fn);
 }
 
 // Draws one row of boxes, then advances the canvas translation vertically
