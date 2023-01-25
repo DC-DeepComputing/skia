@@ -119,6 +119,7 @@ static const struct {
 #endif
 #ifdef SK_METAL
     { "mtl",                   "gpu", "api=metal" },
+    { "mtlf16",                "gpu", "api=metal,color=f16" },
     { "mtl1010102",            "gpu", "api=metal,color=1010102" },
     { "mtlmsaa4",              "gpu", "api=metal,samples=4" },
     { "mtlmsaa8",              "gpu", "api=metal,samples=8" },
@@ -142,6 +143,7 @@ static const struct {
 #endif
 #ifdef SK_METAL
     { "grmtl",                 "graphite", "api=metal" },
+    { "grmtlf16",              "graphite", "api=metal,color=f16" },
 #endif
 #ifdef SK_VULKAN
     { "grvk",                  "graphite", "api=vulkan" },
