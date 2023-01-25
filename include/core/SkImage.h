@@ -8,13 +8,15 @@
 #ifndef SkImage_DEFINED
 #define SkImage_DEFINED
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
-#include "include/core/SkScalar.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/base/SkAPI.h"
 #if SK_SUPPORT_GPU
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
@@ -23,8 +25,10 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #endif
 
-#include <memory>
+#include <cstddef>
+#include <cstdint>
 #include <functional>
+#include <memory>
 #include <optional>
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
@@ -38,20 +42,22 @@ class GrDirectContext;
 class GrRecordingContext;
 class GrYUVABackendTextureInfo;
 class GrYUVABackendTextures;
-class SkCanvas;
+class SkBitmap;
+class SkColorSpace;
 class SkData;
-class SkImage;
 class SkImageFilter;
 class SkImageGenerator;
+class SkMatrix;
 class SkMipmap;
 class SkPaint;
 class SkPicture;
+class SkShader;
 class SkPixmap;
 class SkPromiseImageTexture;
-class SkSurface;
 class SkYUVAPixmaps;
-
+enum SkColorType : int;
 enum class SkEncodedImageFormat;
+struct SkIPoint;
 
 #if defined(SK_GRAPHITE_ENABLED)
 namespace skgpu::graphite {
@@ -439,9 +445,18 @@ public:
     */
     static sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
                                                const GrYUVABackendTextures& yuvaTextures,
-                                               sk_sp<SkColorSpace> imageColorSpace = nullptr,
-                                               TextureReleaseProc textureReleaseProc = nullptr,
-                                               ReleaseContext releaseContext = nullptr);
+                                               sk_sp<SkColorSpace> imageColorSpace,
+                                               TextureReleaseProc textureReleaseProc,
+                                               ReleaseContext releaseContext);
+    static sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
+                                               const GrYUVABackendTextures& yuvaTextures,
+                                               sk_sp<SkColorSpace> imageColorSpace,
+                                               TextureReleaseProc textureReleaseProc);
+    static sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
+                                               const GrYUVABackendTextures& yuvaTextures,
+                                               sk_sp<SkColorSpace> imageColorSpace);
+    static sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
+                                               const GrYUVABackendTextures& yuvaTextures);
 
     /** Creates SkImage from SkYUVAPixmaps.
 
@@ -468,9 +483,18 @@ public:
     */
     static sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
                                               const SkYUVAPixmaps& pixmaps,
-                                              GrMipmapped buildMips = GrMipmapped::kNo,
-                                              bool limitToMaxTextureSize = false,
-                                              sk_sp<SkColorSpace> imageColorSpace = nullptr);
+                                              GrMipmapped buildMips,
+                                              bool limitToMaxTextureSize,
+                                              sk_sp<SkColorSpace> imageColorSpace);
+    static sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
+                                              const SkYUVAPixmaps& pixmaps,
+                                              GrMipmapped buildMips,
+                                              bool limitToMaxTextureSize);
+    static sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
+                                              const SkYUVAPixmaps& pixmaps,
+                                              GrMipmapped buildMips);
+    static sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
+                                              const SkYUVAPixmaps& pixmaps);
 
     using PromiseImageTextureContext = void*;
     using PromiseImageTextureFulfillProc =
@@ -562,11 +586,16 @@ public:
         @param colorSpace      range of colors; may be nullptr
         @return                created SkImage, or nullptr
     */
-    static sk_sp<SkImage> MakeFromAHardwareBuffer(
-            AHardwareBuffer* hardwareBuffer,
-            SkAlphaType alphaType = kPremul_SkAlphaType,
-            sk_sp<SkColorSpace> colorSpace = nullptr,
-            GrSurfaceOrigin surfaceOrigin = kTopLeft_GrSurfaceOrigin);
+    static sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
+                                                  SkAlphaType alphaType,
+                                                  sk_sp<SkColorSpace> colorSpace,
+                                                  GrSurfaceOrigin surfaceOrigin);
+    static sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
+                                                  SkAlphaType alphaType,
+                                                  sk_sp<SkColorSpace> colorSpace);
+    static sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
+                                                  SkAlphaType alphaType);
+    static sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer);
 
     /** Creates SkImage from Android hardware buffer and uploads the data from the SkPixmap to it.
         Returned SkImage takes a reference on the buffer.
@@ -694,18 +723,12 @@ public:
      */
     sk_sp<SkShader> makeShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions&,
                                const SkMatrix* localMatrix = nullptr) const;
-
     sk_sp<SkShader> makeShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions& sampling,
-                               const SkMatrix& lm) const {
-        return this->makeShader(tmx, tmy, sampling, &lm);
-    }
-    sk_sp<SkShader> makeShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const {
-        return this->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, &lm);
-    }
+                               const SkMatrix& lm) const;
+    // Defaults to clamp in both X and Y.
+    sk_sp<SkShader> makeShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const;
     sk_sp<SkShader> makeShader(const SkSamplingOptions& sampling,
-                               const SkMatrix* lm = nullptr) const {
-        return this->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, lm);
-    }
+                               const SkMatrix* lm = nullptr) const;
 
     /**
      *  makeRawShader functions like makeShader, but for images that contain non-color data.
@@ -722,18 +745,12 @@ public:
      */
     sk_sp<SkShader> makeRawShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions&,
                                   const SkMatrix* localMatrix = nullptr) const;
-
     sk_sp<SkShader> makeRawShader(SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions& sampling,
-                                  const SkMatrix& lm) const {
-        return this->makeRawShader(tmx, tmy, sampling, &lm);
-    }
-    sk_sp<SkShader> makeRawShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const {
-        return this->makeRawShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, &lm);
-    }
+                                  const SkMatrix& lm) const;
+    // Defaults to clamp in both X and Y.
+    sk_sp<SkShader> makeRawShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const;
     sk_sp<SkShader> makeRawShader(const SkSamplingOptions& sampling,
-                                  const SkMatrix* lm = nullptr) const {
-        return this->makeRawShader(SkTileMode::kClamp, SkTileMode::kClamp, sampling, lm);
-    }
+                                  const SkMatrix* lm = nullptr) const;
 
     using CubicResampler = SkCubicResampler;
 
