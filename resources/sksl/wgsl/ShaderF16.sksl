@@ -1,0 +1,16 @@
+/*#pragma settings WGSLEnableShaderF16*/
+
+uniform half4 colorGreen, colorRed;
+
+void helper(out half value) {
+    value = colorRed.r;
+}
+
+void main() {
+    half scalar = colorGreen.r;
+    helper(scalar);
+
+    half2 vec = colorGreen.rg;
+    half4x4 mat = half4x4(colorGreen.g);
+    sk_FragColor = mat * half4(vec, 0, scalar);
+}

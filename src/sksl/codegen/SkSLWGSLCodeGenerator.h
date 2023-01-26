@@ -67,65 +67,6 @@ struct Program;
  */
 class WGSLCodeGenerator : public CodeGenerator {
 public:
-    // See https://www.w3.org/TR/WGSL/#builtin-values
-    enum class Builtin {
-        // Vertex stage:
-        kVertexIndex,    // input
-        kInstanceIndex,  // input
-        kPosition,       // output, fragment stage input
-
-        // Fragment stage:
-        kFrontFacing,  // input
-        kSampleIndex,  // input
-        kFragDepth,    // output
-        kSampleMask,   // input, output
-
-        // Compute stage:
-        kLocalInvocationId,     // input
-        kLocalInvocationIndex,  // input
-        kGlobalInvocationId,    // input
-        kWorkgroupId,           // input
-        kNumWorkgroups,         // input
-    };
-
-    // Represents a function's dependencies that are not accessible in global scope. For instance,
-    // pipeline stage input and output parameters must be passed in as an argument.
-    //
-    // This is a bitmask enum.
-    enum class FunctionDependencies : uint8_t {
-        kNone = 0,
-        kPipelineInputs = 1,
-        kPipelineOutputs = 2,
-    };
-
-    // Variable declarations can be terminated by:
-    //   - comma (","), e.g. in struct member declarations or function parameters
-    //   - semicolon (";"), e.g. in function scope variables
-    // A "none" option is provided to skip the delimiter when not needed, e.g. at the end of a list
-    // of declarations.
-    enum class Delimiter {
-        kComma,
-        kSemicolon,
-        kNone,
-    };
-
-    struct ProgramRequirements {
-        using DepsMap = skia_private::THashMap<const FunctionDeclaration*, FunctionDependencies>;
-
-        ProgramRequirements() = default;
-        ProgramRequirements(DepsMap dependencies, bool mainNeedsCoordsArgument)
-                : dependencies(std::move(dependencies))
-                , mainNeedsCoordsArgument(mainNeedsCoordsArgument) {}
-
-        // Mappings used to synthesize function parameters according to dependencies on pipeline
-        // input/output variables.
-        DepsMap dependencies;
-
-        // True, if the main function takes a coordinate parameter. This is used to ensure that
-        // sk_FragCoord is declared as part of pipeline inputs.
-        bool mainNeedsCoordsArgument;
-    };
-
     WGSLCodeGenerator(const Context* context, const Program* program, OutputStream* out)
             : INHERITED(context, program, out)
             , fReservedWords({"array",
@@ -145,8 +86,62 @@ private:
     using INHERITED = CodeGenerator;
     using Precedence = OperatorPrecedence;
 
+    class FunctionDependencyResolver;
+
+    // Variable declarations can be terminated by:
+    //   - comma (","), e.g. in struct member declarations or function parameters
+    //   - semicolon (";"), e.g. in function scope variables
+    // A "none" option is provided to skip the delimiter when not needed, e.g. at the end of a list
+    // of declarations.
+    enum class Delimiter {
+        kComma,
+        kSemicolon,
+        kNone,
+    };
+
+    // See https://www.w3.org/TR/WGSL/#memory-view-types
+    enum class PtrAddressSpace {
+        kFunction,
+        kPrivate,
+        kStorage,
+    };
+
+    // Represents a function's dependencies that are not accessible in global scope. For instance,
+    // pipeline stage input and output parameters must be passed in as an argument.
+    //
+    // This is a bitmask enum.
+    enum class FunctionDependencies : uint8_t {
+        kNone = 0,
+        kPipelineInputs = 1,
+        kPipelineOutputs = 2,
+    };
+
+    struct ProgramRequirements {
+        using DepsMap = skia_private::THashMap<const FunctionDeclaration*, FunctionDependencies>;
+
+        ProgramRequirements() = default;
+        ProgramRequirements(DepsMap dependencies, bool mainNeedsCoordsArgument)
+                : dependencies(std::move(dependencies))
+                , mainNeedsCoordsArgument(mainNeedsCoordsArgument) {}
+
+        // Mappings used to synthesize function parameters according to dependencies on pipeline
+        // input/output variables.
+        DepsMap dependencies;
+
+        // True, if the main function takes a coordinate parameter. This is used to ensure that
+        // sk_FragCoord is declared as part of pipeline inputs.
+        bool mainNeedsCoordsArgument;
+    };
+
+    static std::string_view AddressSpaceToStr(PtrAddressSpace);
+    static std::string_view DelimiterToStr(Delimiter);
+
     // Called by generateCode() as the first step.
     void preprocessProgram();
+
+    // Resolve the dependencies of function declarations. This is used to inject additional function
+    // parameters for dependencies that are declared in function scope.
+    void resolveProgramRequirements();
 
     // Write output content while correctly handling indentation.
     void write(std::string_view s);
@@ -166,7 +161,7 @@ private:
                                 Delimiter delimiter);
     void writeBuiltinIODecl(const Type& type,
                             std::string_view name,
-                            Builtin builtin,
+                            int skslBuiltin,
                             Delimiter delimiter);
 
     // Write a function definition.
@@ -229,6 +224,9 @@ private:
                      Position parentPos,
                      const MemoryLayout* layout = nullptr);
 
+    // Built-in WGSL/Tint extensions that we enable and assume support for.
+    void writeExtensions();
+
     // We bundle all varying pipeline stage inputs and outputs in a struct.
     void writeStageInputStruct();
     void writeStageOutputStruct();
@@ -257,6 +255,17 @@ private:
     std::string writeOutParamHelper(const FunctionCall&,
                                     const ExpressionArray& args,
                                     const skia_private::TArray<VariableReference*>& outVars);
+
+    // Convert a SkSL type to a WGSL type. Handles all plain types except structure types
+    // (see https://www.w3.org/TR/WGSL/#plain-types-section).
+    std::string getTypeName(const Type&);
+
+    // Create a mangled WGSL type name that can be used in function and variable declarations
+    // (regular type names cannot be used in this manner since they may contain tokens that are not
+    // allowed in symbol names).
+    std::string getMangledTypeName(const Type&);
+    std::string getPtrTypeName(const Type&,
+                               PtrAddressSpace addressSpace = PtrAddressSpace::kFunction);
 
     // Stores the disallowed identifier names.
     skia_private::THashSet<std::string_view> fReservedWords;
