@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
+#include "src/gpu/graphite/ReadWriteSwizzle.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
@@ -323,6 +324,7 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     } else {
         gatherer->write(SkM44());
     }
+    gatherer->write(SkTo<int>(imgData.fReadSwizzle));
 
     add_color_space_uniforms(imgData.fSteps, gatherer);
 
@@ -334,10 +336,12 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
 ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
                                        SkTileMode tileModeX,
                                        SkTileMode tileModeY,
-                                       SkRect subset)
+                                       SkRect subset,
+                                       ReadSwizzle readSwizzle)
         : fSampling(sampling)
         , fTileModes{tileModeX, tileModeY}
-        , fSubset(subset) {
+        , fSubset(subset)
+        , fReadSwizzle(readSwizzle) {
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
