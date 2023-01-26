@@ -18,6 +18,11 @@ class SwitchCaseContainsExit : public ProgramVisitor {
 public:
     SwitchCaseContainsExit(bool conditionalExits) : fConditionalExits(conditionalExits) {}
 
+    bool visitExpression(const Expression& expr) override {
+        // We can avoid processing expressions entirely.
+        return false;
+    }
+
     bool visitStatement(const Statement& stmt) override {
         switch (stmt.kind()) {
             case Statement::Kind::kBlock:
