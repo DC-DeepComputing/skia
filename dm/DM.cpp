@@ -282,7 +282,7 @@ static void done(const char* config, const char* src, const char* srcOptions, co
 
         SkAutoSpinlock lock(*gMutex);
         info("\n%dMB RAM, %dMB peak, %d queued, %d active:\n",
-             curr, peak, gPending - gRunning->size(), gRunning->size());
+            curr, peak, gPending - gRunning->size(), gRunning->size());
         for (auto& task : *gRunning) {
             task.dump();
         }
@@ -290,10 +290,12 @@ static void done(const char* config, const char* src, const char* srcOptions, co
 }
 
 static void start(const char* config, const char* src, const char* srcOptions, const char* name) {
-    SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
-    vlog("start %s\n", id.c_str());
-    SkAutoSpinlock lock(*gMutex);
-    gRunning->push_back({id,SkGetThreadID()});
+    if (strcmp(name,"scaled_tilemodes_npot") == 0) {
+        SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
+        vlog("start %s\n", id.c_str());
+        SkAutoSpinlock lock(*gMutex);
+        gRunning->push_back({id,SkGetThreadID()});
+    }
 }
 
 static void find_culprit() {
