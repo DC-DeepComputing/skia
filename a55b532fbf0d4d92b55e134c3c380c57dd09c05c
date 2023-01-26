@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a880a58b_46280032",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-26T21:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4e53eeb_17b9b23b",
+      "range": {
+        "startLine": 2453,
+        "startChar": 11,
+        "endLine": 2453,
+        "endChar": 99
+      },
+      "revId": "a55b532fbf0d4d92b55e134c3c380c57dd09c05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d31c08ce_c5011680",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-01-26T21:16:18Z",
       "side": 1,
       "message": "Maybe add a comment saying this really needs to stay in sync w/ the other copy?",
+      "revId": "a55b532fbf0d4d92b55e134c3c380c57dd09c05c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19743c9e_5abe46e8",
+        "filename": "tests/SkStrikeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-26T21:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d31c08ce_c5011680",
       "revId": "a55b532fbf0d4d92b55e134c3c380c57dd09c05c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
