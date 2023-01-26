@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae4c44f_6bdacddb",
+        "filename": "resources/sksl/wgsl/IndexExpression.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T21:08:54Z",
+      "side": 1,
+      "message": "For vectors and matrices, we will convert `foo[1]` to `foo.y` when the index-expression is constant. (The test output demonstrates this.)\nIf you want to explicitly test index expressions, index by a non-constant expression, like a variable.",
+      "range": {
+        "startLine": 6,
+        "startChar": 37,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "5a15467cb8ab711b00920755ca1770dc9cf1defc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
