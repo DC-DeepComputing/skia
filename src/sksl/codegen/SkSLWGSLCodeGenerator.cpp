@@ -109,10 +109,10 @@ std::string_view address_space_to_str(PtrAddressSpace addressSpace) {
 std::string_view to_scalar_type(const Type& type) {
     SkASSERT(type.typeKind() == Type::TypeKind::kScalar);
     switch (type.numberKind()) {
-        // Floating-point numbers in WebGPU currently always have 32-bit footprint and
-        // relaxed-precision is not supported without extensions. f32 is the only floating-point
-        // number type in WGSL (see the discussion on https://github.com/gpuweb/gpuweb/issues/658).
         case Type::NumberKind::kFloat:
+            if (!type.highPrecision()) {
+                return "f16";
+            }
             return "f32";
         case Type::NumberKind::kSigned:
             return "i32";
@@ -465,6 +465,7 @@ bool WGSLCodeGenerator::generateCode() {
         AutoOutputStream outputToHeader(this, &header, &fIndentation);
         // TODO(skia:13092): Implement the following:
         // - global uniform/storage resource declarations, including interface blocks.
+        this->writeExtensions();
         this->writeStageInputStruct();
         this->writeStageOutputStruct();
         this->writeNonBlockUniformsForTests();
@@ -1627,6 +1628,11 @@ void WGSLCodeGenerator::writeFields(SkSpan<const Type::Field> fields,
         const Type* fieldType = field.fType;
         this->writeVariableDecl(*fieldType, field.fName, Delimiter::kComma);
     }
+}
+
+void WGSLCodeGenerator::writeExtensions() {
+    this->writeLine("enable f16;");
+    this->writeLine();
 }
 
 void WGSLCodeGenerator::writeStageInputStruct() {

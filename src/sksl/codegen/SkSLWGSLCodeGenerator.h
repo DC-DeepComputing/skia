@@ -231,6 +231,9 @@ private:
                      Position parentPos,
                      const MemoryLayout* layout = nullptr);
 
+    // Built-in WGSL/Tint extensions that we enable and assume support for.
+    void writeExtensions();
+
     // We bundle all varying pipeline stage inputs and outputs in a struct.
     void writeStageInputStruct();
     void writeStageOutputStruct();
