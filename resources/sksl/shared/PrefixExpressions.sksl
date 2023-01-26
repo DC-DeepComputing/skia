@@ -1,0 +1,16 @@
+uniform half4 colorGreen, colorRed;
+uniform int mask;
+
+half4 main(float2 c) {
+    bool ok = true;
+    ok = ok && !(colorGreen.g == 1.0);
+
+    // Unary bitwise negation '~':
+    uint2 mask = uint2(uint(mask), ~uint(mask));
+    int2 imask = int2(~mask);
+    mask = ~mask & uint2(~imask);
+
+    // prefix '!' and '-'.
+    half4x4 m = half4x4(half(mask.x));
+    return !(colorGreen.r == 1.0) ? -m * -colorGreen : colorRed;
+}
