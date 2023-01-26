@@ -1,3 +1,5 @@
+enable f16;
+
 struct VSIn {
     @builtin(vertex_index) sk_VertexID: u32,
 };
