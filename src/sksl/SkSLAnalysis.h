@@ -115,7 +115,11 @@ bool SwitchCaseContainsConditionalExit(Statement& stmt);
 std::unique_ptr<ProgramUsage> GetUsage(const Program& program);
 std::unique_ptr<ProgramUsage> GetUsage(const Module& module);
 
+/** Returns true if the passed-in statement might alter `var`. */
 bool StatementWritesToVariable(const Statement& stmt, const Variable& var);
+
+/** Returns true if the passed-in statement might have its control-flow affected by `continue`. */
+bool HasContinue(const Statement& stmt);
 
 /**
  * Returns true if the expression can be assigned-into. Pass `info` if you want to know the
