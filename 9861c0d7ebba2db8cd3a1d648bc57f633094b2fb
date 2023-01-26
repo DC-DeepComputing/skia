@@ -111,6 +111,30 @@
       },
       "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6903870_78d5fe01",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "It might be best to preserve this info in a doc after all; it\u0027s a lot to comprehend. I think it all SGTM, but it\u0027ll be interesting to sort out ternary hoisting at the IR level.",
+      "parentUuid": "3e8d1d98_292bddfd",
+      "range": {
+        "startLine": 1345,
+        "startChar": 37,
+        "endLine": 1346,
+        "endChar": 12
+      },
+      "revId": "9861c0d7ebba2db8cd3a1d648bc57f633094b2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37e76cb_42a355f6",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 999,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "Can `isSynthesizedOutParamArg` possibly be true for a global? It seems impossible to me. I think you could probably restructure this so that `fOutParamArgVars.contains` is only checked in the else-case for `Variable::Storage::kLocal`-typed variables (and in the other cases, I suppose we could assert `!fOutParamArgVars.contains` if want to be sure).",
+      "range": {
+        "startLine": 999,
+        "startChar": 54,
+        "endLine": 999,
+        "endChar": 78
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3600535_7125df2e",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "`empty()`",
+      "range": {
+        "startLine": 1298,
+        "startChar": 25,
+        "endLine": 1298,
+        "endChar": 39
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f388794_58ee1c14",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "The control flow is kind of hairy here--`writeFunctionCall` calls this function, and this function calls `writeExpression`. It should only be possible to call it for an lvalue, but I\u0027m not sure if that\u0027s enough to consider it as safe. It might be possible to use `myArray[func()]` as an lvalue and get back into `writeFunctionCall`, then we nuke this set ahead of its time.\n\nRather than reset `fOutParamArgVars`, can we save it off at the top of the function by `std::move`-ing it into a local, then `std::move` it back at this point? It should generally be fast (since it\u0027s going to be empty).\n\nTangentially, we probably want to make sure we forbid `myArray[func()]` as an out-param anyway... we don\u0027t want to double-evaluate `func()`. ES2 wouldn\u0027t allow it, but when we go to ES3, AFAIK, there\u0027s nothing preventing it. Either that, or rethink out-param helpers from scratch? +brianosman@google.com",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 28
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d13cfe1_a9fca247",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "I read \"regular expression-tree\" and got temporarily confused by the overloaded terminology; how about \"normal expression-tree\" or just \"expression-tree\"?",
+      "range": {
+        "startLine": 247,
+        "startChar": 49,
+        "endLine": 247,
+        "endChar": 67
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41bd16b_98d73ee8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "I think this is saying the set is cleared every time we are finished make a new helper function; is that right?",
+      "range": {
+        "startLine": 248,
+        "startChar": 67,
+        "endLine": 249,
+        "endChar": 63
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9fcf182_79012259",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T20:40:58Z",
+      "side": 1,
+      "message": "synthesized",
+      "range": {
+        "startLine": 257,
+        "startChar": 53,
+        "endLine": 257,
+        "endChar": 64
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
