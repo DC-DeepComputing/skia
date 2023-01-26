@@ -397,6 +397,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4e1836e_ba3cb32a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T19:48:40Z",
+      "side": 1,
+      "message": "I moved the store_src_rg stage out of the SkSL only section and paired it with load_src_rg.",
+      "parentUuid": "6d2af773_d1061753",
+      "range": {
+        "startLine": 1644,
+        "startChar": 0,
+        "endLine": 1648,
+        "endChar": 1
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d98ff3e_5d285377",
