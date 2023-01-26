@@ -375,6 +375,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d2af773_d1061753",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T16:22:40Z",
+      "side": 1,
+      "message": "As long as the highp store op exists, it\u0027s harmless to also have a lowp store op. (SkSL won\u0027t ever use it.)",
+      "parentUuid": "576387d5_0cc747f5",
+      "range": {
+        "startLine": 1644,
+        "startChar": 0,
+        "endLine": 1648,
+        "endChar": 1
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d98ff3e_5d285377",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 5
