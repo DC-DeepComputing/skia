@@ -350,7 +350,7 @@ private:
         kSegmentMask_SerializationShift = 0                 // requires 4 bits (deprecated)
     };
 
-    SkPathRef() {
+    SkPathRef(int numVerbs = 0, int numPoints = 0) {
         fBoundsIsDirty = true;    // this also invalidates fIsFinite
         fGenerationID = kEmptyGenID;
         fSegmentMask = 0;
@@ -359,6 +359,10 @@ private:
         // The next two values don't matter unless fIsOval or fIsRRect are true.
         fRRectOrOvalIsCCW = false;
         fRRectOrOvalStartIdx = 0xAC;
+        if (numPoints > 0)
+            fPoints.reserve_back(numPoints);
+        if (numVerbs > 0)
+            fVerbs.reserve_back(numVerbs);
         SkDEBUGCODE(fEditorsAttached.store(0);)
         SkDEBUGCODE(this->validate();)
     }
@@ -392,9 +396,9 @@ private:
     void incReserve(int additionalVerbs, int additionalPoints) {
         SkDEBUGCODE(this->validate();)
         if (additionalPoints > 0)
-            fPoints.reserve_back(additionalPoints);
+            fPoints.reserve_and_grow(fPoints.size() + additionalPoints);
         if (additionalVerbs > 0)
-            fVerbs.reserve_back(additionalVerbs);
+            fVerbs.reserve_and_grow(fVerbs.size() + additionalVerbs);
         SkDEBUGCODE(this->validate();)
     }
 

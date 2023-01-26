@@ -32,13 +32,14 @@ SkPathRef::Editor::Editor(sk_sp<SkPathRef>* pathRef,
     if ((*pathRef)->unique()) {
         (*pathRef)->incReserve(incReserveVerbs, incReservePoints);
     } else {
-        SkPathRef* copy = new SkPathRef;
+        SkPathRef* copy;
         // No need to copy if the existing ref is the empty ref (because it doesn't contain
         // anything).
         if (!(*pathRef)->isInitialEmptyPathRef()) {
+            copy = new SkPathRef;
             copy->copy(**pathRef, incReserveVerbs, incReservePoints);
         } else {
-            copy->incReserve(incReservePoints, incReservePoints);
+            copy = new SkPathRef(incReserveVerbs, incReservePoints);
         }
         pathRef->reset(copy);
     }
