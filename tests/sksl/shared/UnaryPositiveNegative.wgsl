@@ -1,14 +1,16 @@
+enable f16;
+
 struct FSIn {
     @builtin(front_facing) sk_Clockwise: bool,
     @builtin(position) sk_FragCoord: vec4<f32>,
 };
 struct FSOut {
-    @location(0) sk_FragColor: vec4<f32>,
+    @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-    colorWhite: vec4<f32>,
-    colorGreen: vec4<f32>,
-    colorRed: vec4<f32>,
+    colorWhite: vec4<f16>,
+    colorGreen: vec4<f16>,
+    colorRed: vec4<f16>,
     testMatrix2x2: mat2x2<f32>,
     testMatrix3x3: mat3x3<f32>,
     testMatrix4x4: mat4x4<f32>,
@@ -35,9 +37,9 @@ fn test_iscalar_b() -> bool {
     return x == -1;
 }
 fn test_fvec_b() -> bool {
-    var x: vec2<f32> = _globalUniforms.colorWhite.xy;
+    var x: vec2<f16> = _globalUniforms.colorWhite.xy;
     x = -x;
-    return all(x == vec2<f32>(-1.0));
+    return all(x == vec2<f16>(-1.0));
 }
 fn test_ivec_b() -> bool {
     var x: vec2<i32> = vec2<i32>(i32(_globalUniforms.colorWhite.x));
@@ -62,7 +64,7 @@ fn test_mat4_b() -> bool {
     x = (-1.0 * x);
     return mat4x4f32_eq_mat4x4f32(x, negated);
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn main(coords: vec2<f32>) -> vec4<f16> {
     var _0_x: f32 = f32(_globalUniforms.colorWhite.x);
     _0_x = -_0_x;
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((((_0_x == -1.0 && test_iscalar_b()) && test_fvec_b()) && test_ivec_b()) && test_mat2_b()) && test_mat3_b()) && test_mat4_b()));

@@ -1,16 +1,18 @@
+enable f16;
+
 struct FSIn {
     @builtin(front_facing) sk_Clockwise: bool,
     @builtin(position) sk_FragCoord: vec4<f32>,
 };
 struct FSOut {
-    @location(0) sk_FragColor: vec4<f32>,
+    @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-    colorGreen: vec4<f32>,
-    colorRed: vec4<f32>,
+    colorGreen: vec4<f16>,
+    colorRed: vec4<f16>,
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn main(coords: vec2<f32>) -> vec4<f16> {
     var a: i32 = 0;
     var b: i32 = 0;
     var c: i32 = 0;

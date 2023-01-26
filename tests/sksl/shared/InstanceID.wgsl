@@ -1,3 +1,5 @@
+enable f16;
+
 struct VSIn {
     @builtin(instance_index) sk_InstanceID: u32,
 };

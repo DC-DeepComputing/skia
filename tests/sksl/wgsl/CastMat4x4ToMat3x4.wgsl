@@ -1,8 +1,10 @@
+enable f16;
+
 struct FSIn {
     @builtin(front_facing) sk_Clockwise: bool,
 };
 struct FSOut {
-    @location(0) sk_FragColor: vec4<f32>,
+    @location(0) sk_FragColor: vec4<f16>,
 };
 fn mat3x4f32_diagonal(x: f32) -> mat3x4<f32> {
     return mat3x4<f32>(x, 0.0, 0.0, 0.0, 0.0, x, 0.0, 0.0, 0.0, 0.0, x, 0.0);
@@ -16,7 +18,7 @@ fn mat4x4f32_diagonal(x: f32) -> mat4x4<f32> {
 fn main(_stageOut: ptr<function, FSOut>) {
     var a: mat3x4<f32> = mat3x4f32_diagonal(1.0);
     var b: mat3x4<f32> = mat3x4f32_from_mat4x4f32(mat4x4f32_diagonal(1.0));
-    (*_stageOut).sk_FragColor.x = f32(select(1, 0, all(a[0] == b[0])));
+    (*_stageOut).sk_FragColor.x = f16(select(1, 0, all(a[0] == b[0])));
 }
 @fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
     var _stageOut: FSOut;

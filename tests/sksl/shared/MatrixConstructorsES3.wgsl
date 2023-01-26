@@ -1,13 +1,15 @@
+enable f16;
+
 struct FSIn {
     @builtin(front_facing) sk_Clockwise: bool,
     @builtin(position) sk_FragCoord: vec4<f32>,
 };
 struct FSOut {
-    @location(0) sk_FragColor: vec4<f32>,
+    @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-    colorGreen: vec4<f32>,
-    colorRed: vec4<f32>,
+    colorGreen: vec4<f16>,
+    colorRed: vec4<f16>,
     testMatrix2x2: mat2x2<f32>,
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
@@ -54,7 +56,7 @@ fn mat4x3f32_eq_mat4x3f32(left: mat4x3<f32>, right: mat4x3<f32>) -> bool {
 fn mat4x3f32_from_f32_vec4f32_vec4f32_vec3f32(x0: f32, x1: vec4<f32>, x2: vec4<f32>, x3: vec3<f32>) -> mat4x3<f32> {
     return mat4x3<f32>(vec3<f32>(x0, x1.xy), vec3<f32>(x1.zw, x2.x), vec3<f32>(x2.yzw), vec3<f32>(x3.xyz));
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn main(coords: vec2<f32>) -> vec4<f16> {
     var f4: vec4<f32> = vec4f32_from_mat2x2f32(_globalUniforms.testMatrix2x2);
     var ok: bool = mat2x3f32_eq_mat2x3f32(mat2x3f32_from_vec4f32_vec2f32(f4, f4.xy), mat2x3<f32>(vec3<f32>(1.0, 2.0, 3.0), vec3<f32>(4.0, 1.0, 2.0)));
     ok = ok && mat2x4f32_eq_mat2x4f32(mat2x4f32_from_vec3f32_vec4f32_f32(f4.xyz, f4.wxyz, f4.w), mat2x4<f32>(vec4<f32>(1.0, 2.0, 3.0, 4.0), vec4<f32>(1.0, 2.0, 3.0, 4.0)));
