@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e135582b_5603611f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Sorry for taking so long on this! I wanted to get a little farther ahead and see if I was on the path towards more simplification. I\u0027m pretty confident that MatrixRec can be used with the other SkShader implementations and lead to some simplification. I have it working locally with SkVM and am on the way to Ganesh. I can also eliminate SkMatrixProvider. Also, apologies that this is such a monolith. I couldn\u0027t think of a good way to slice this into more incremental but still meaningful changes.",
+      "revId": "d89697c54671d84c90f39cee1178dd3a8b3ec790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99619aa8_9316a854",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "I will happily accept suggestions on a better name for this.",
+      "range": {
+        "startLine": 198,
+        "startChar": 10,
+        "endLine": 198,
+        "endChar": 19
+      },
+      "revId": "d89697c54671d84c90f39cee1178dd3a8b3ec790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

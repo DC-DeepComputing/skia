@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bcd156e_74090a46",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1282,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b2d8497_45b39b22",
+      "range": {
+        "startLine": 1282,
+        "startChar": 17,
+        "endLine": 1282,
+        "endChar": 39
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b815f9d5_bce4ea9c",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "yeah, exactly. It stops a child image shader from assuming it can pick a mip level based on the total matrix. Will probably trigger some default behavior in pictureshader once i figure that out 😊",
       "parentUuid": "b815f9d5_bce4ea9c",
+      "range": {
+        "startLine": 1282,
+        "startChar": 74,
+        "endLine": 1283,
+        "endChar": 28
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "996a01c1_6e12bb85",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1283,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a54a2f21_60056e7c",
       "range": {
         "startLine": 1282,
         "startChar": 74,
@@ -254,6 +302,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a4a809_593cc2cc",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51909652_8b125bc8",
+      "range": {
+        "startLine": 1283,
+        "startChar": 87,
+        "endLine": 1284,
+        "endChar": 17
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1f16452_c2a005d1",
@@ -279,6 +351,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "576387d5_0cc747f5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Really, however you want to go here is ok with me. I\u0027m not sure this one was here when I started this change a long time ago, or maybe I just missed it. Does it matter that down below store_src_xy is a GG?",
+      "parentUuid": "e1f16452_c2a005d1",
+      "range": {
+        "startLine": 1644,
+        "startChar": 0,
+        "endLine": 1648,
+        "endChar": 1
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d98ff3e_5d285377",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 5
@@ -290,6 +386,30 @@
       "writtenOn": "2023-01-17T22:02:28Z",
       "side": 1,
       "message": "unused var?",
+      "range": {
+        "startLine": 253,
+        "startChar": 76,
+        "endLine": 253,
+        "endChar": 93
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85f8e74_51b25575",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-26T15:04:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d98ff3e_5d285377",
       "range": {
         "startLine": 253,
         "startChar": 76,
