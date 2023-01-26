@@ -19,6 +19,7 @@
     M(black_color) M(white_color)                                  \
     M(uniform_color) M(uniform_color_dst)                          \
     M(seed_shader)                                                 \
+    M(load_src_xy) M(store_src_xy)                                 \
     M(load_a8)     M(load_a8_dst)   M(store_a8)    M(gather_a8)    \
     M(load_565)    M(load_565_dst)  M(store_565)   M(gather_565)   \
     M(load_4444)   M(load_4444_dst) M(store_4444)  M(gather_4444)  \
