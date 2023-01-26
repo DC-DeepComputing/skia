@@ -246,10 +246,7 @@ public:
         fInstructions.push_back({BuilderOp::set_current_stack, {}, stackIdx});
     }
 
-    void label(int labelID) {
-        SkASSERT(labelID >= 0 && labelID < fNumLabels);
-        fInstructions.push_back({BuilderOp::label, {}, labelID});
-    }
+    void label(int labelID);
 
     void jump(int labelID) {
         SkASSERT(labelID >= 0 && labelID < fNumLabels);
