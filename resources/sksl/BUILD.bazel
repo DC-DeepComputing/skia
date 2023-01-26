@@ -1008,6 +1008,7 @@ skia_filegroup(
         "wgsl/FunctionCallDependencies.sksl",
         "wgsl/GlobalUniforms.sksl",
         "wgsl/IfStatement.sksl",
+        "wgsl/IndexExpression.sksl",
         "wgsl/MainDoesNotHaveFragCoordParameter.sksl",
         "wgsl/MainHasFragCoordParameter.sksl",
         "wgsl/MainHasVoidReturn.sksl",
