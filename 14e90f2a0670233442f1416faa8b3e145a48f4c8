@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "003c0f93_a8dffbc3",
+        "filename": "resources/sksl/wgsl/Equality.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T21:04:49Z",
+      "side": 1,
+      "message": "We generally don\u0027t ever want to turn a test failure into a success. \nConsider `ok \u0026\u0026 !(f1 !\u003d f2)`.",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 14
+      },
+      "revId": "14e90f2a0670233442f1416faa8b3e145a48f4c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
