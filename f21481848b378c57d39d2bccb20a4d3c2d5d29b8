@@ -16,6 +16,24 @@
       "message": "Nice. Yeah, I think for the kinds of shaders people often write, this is even more likely to produce wins than the ternary optimization. (eg, using uniforms to pick a few different modes of operation in color space conversion, customizable filters, etc...).",
       "revId": "f21481848b378c57d39d2bccb20a4d3c2d5d29b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4484c543_2326f1ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T15:50:39Z",
+      "side": 1,
+      "message": "Yeah, this entire rabbit hole was motivated by the HighContrastFilter, which does\n\n```\n                \"if (grayscale \u003d\u003d 1) {\"\n                    \"c.rgb \u003d dot(half3(0.2126, 0.7152, 0.0722), c.rgb).rrr;\"\n                \"}\"\n                \"if (invertStyle \u003d\u003d 1) {\"  // brightness\n                    \"c.rgb \u003d 1 - c.rgb;\"\n                \"} else if (invertStyle \u003d\u003d 2) {\"  // lightness\n                    \"c.rgb \u003d rgb_to_hsl(c.rgb);\"\n                    \"c.b \u003d 1 - c.b;\"\n                    \"c.rgb \u003d $hsl_to_rgb(c.rgb);\"\n                \"}\"\n```\n\nAnd I wanted to focus on optimizing those checks.\nAlso, I figure I can use the branch op when implementing `switch`. We don\u0027t want `switch` on a uniform to evaluate every `case`.",
+      "parentUuid": "feb6b508_8e637b91",
+      "revId": "f21481848b378c57d39d2bccb20a4d3c2d5d29b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
