@@ -269,10 +269,76 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture*,
     return false;
 }
 
-bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer*,
-                                                const Texture*,
+bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
+                                                const Texture* texture,
                                                 const BufferTextureCopyData* copyData,
                                                 int count) {
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+    // this->addingWork(gpu);
+
+    VkBuffer srcBuffer = static_cast<const VulkanBuffer*>(buffer)->vkBuffer();
+    VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage dstTextureAsVkImage =  dstTexture->vkImage();
+
+    // VkLayout uploadTexture->setImageLayout(this,
+    //                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+    //                             VK_ACCESS_TRANSFER_WRITE_BIT,
+    //                             VK_PIPELINE_STAGE_TRANSFER_BIT,
+    //                             false);
+//VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
+
+    // copyData info
+    // size_t fBufferOffset;
+    // size_t fBufferRowBytes;
+    // SkIRect fRect;
+    // unsigned int fMipLevel;
+
+    /**
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkImage                                     dstImage,
+        could also do getVkImage::getVkImage
+
+    VkImageLayout                               dstImageLayout,
+        backendtexture.h getVkImageLayout
+    uint32_t                                    regionCount,
+        mipLevel count
+    const VkBufferImageCopy*                    pRegions);
+        for each region (miplevel), set up a copy region
+        // Set up copy region
+        VkBufferImageCopy region;
+        memset(&region, 0, sizeof(VkBufferImageCopy));
+        region.bufferOffset = bufferOffset;
+        region.bufferRowLength = (uint32_t)(rowBytes/bpp);
+        region.bufferImageHeight = 0;
+        region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+        region.imageOffset = { rect.left(), rect.top(), 0 };
+        region.imageExtent = { (uint32_t)rect.width(), (uint32_t)rect.height(), 1 };
+        pointer to an array of VkBufferImageCopy structures specifying the regions to copy
+    */
+    VkBufferImageCopy region;
+    memset(&region, 0, sizeof(VkBufferImageCopy));
+    region.bufferOffset = copyData.fBufferOffset;
+    region.bufferRowLength = (uint32_t)(copyData.fBufferRowBytes/bpp);
+    region.bufferImageHeight = 0;
+    region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+    region.imageOffset = { copyData.fRect.left(), copyData.fRect.top(), 0 };
+    region.imageExtent = { (uint32_t)copyData.fRect.width(), (uint32_t)copyData.fRect.height(), 1 };
+
+    // From texture, should I obtain an image, and therefore a VkImage?
+    VULKAN_CALL_RESULT(fSharedContext->interface(), CmdCopyBufferToImage(fPrimaryCommandBuffer,
+                                                                         srcBuffer,
+                                                                         dstTextureAsVkImage,
+                                                                         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,//dstLayout,
+                                                                         1, //copyRegionCount,
+                                                                         &region));//copyRegions));
+    if (result != VK_SUCCESS) {
+        // Destroy resources?
+        return false;
+    }
+
+    // this->addResource(dstImage->resource());
     return false;
 }
 
