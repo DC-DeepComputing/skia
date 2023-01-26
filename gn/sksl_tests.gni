@@ -392,6 +392,7 @@ sksl_wgsl_tests = [
   "shared/InstanceID.vert",
   "shared/MatrixConstructorsES2.sksl",
   "shared/MatrixConstructorsES3.sksl",
+  "shared/MatrixEquality.sksl",
   "shared/OutParamsAreDistinct.sksl",
   "shared/Structs.sksl",
   "shared/TernaryExpression.sksl",
