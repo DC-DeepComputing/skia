@@ -1141,6 +1141,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	match := []string{}
+	match = append(match, "scaled_tilemodes_npot$")
 	if b.extraConfig("Valgrind") { // skia:3021
 		match = append(match, "~Threaded")
 	}
