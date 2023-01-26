@@ -269,11 +269,46 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture*,
     return false;
 }
 
-bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer*,
-                                                const Texture*,
+bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
+                                                const Texture* texture,
                                                 const BufferTextureCopyData* copyData,
                                                 int count) {
-    return false;
+    // TODO: CopyData can be an array, so iterate accordingly.
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+
+    VkBuffer srcBuffer = static_cast<const VulkanBuffer*>(buffer)->vkBuffer();
+    VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage dstTextureAsVkImage =  dstTexture->vkImage();
+
+    // Set up copy region
+    // TODO: Determine BPP.
+    size_t bpp = 1;
+    VkBufferImageCopy region;
+    memset(&region, 0, sizeof(VkBufferImageCopy));
+    region.bufferOffset = bufferOffset;
+    region.bufferRowLength = (uint32_t)(rowBytes/bpp);
+    region.bufferImageHeight = 0;
+    region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+    region.imageOffset = { copyData.fRect.left(), copyData.fRect.top(), 0 };
+    region.imageExtent = { (uint32_t)copyData.fRect.width(), (uint32_t)copyData.fRect.height(), 1 };
+
+
+    VULKAN_CALL_RESULT(fSharedContext->interface(), CmdCopyBufferToImage(
+            fPrimaryCommandBuffer,
+            srcBuffer,
+            dstTextureAsVkImage,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, // TODO: Is this always the layout we want?
+            1, // TODO: Handle cases with more than 1 regionCount (mip level).
+            &region));
+
+    if (result != VK_SUCCESS) {
+        // TODO: Destroy resources.
+        return false;
+    }
+
+    // TODO: Add resource to command buffer, perhaps using setNewCommandBufferResources?
+    return true;
 }
 
 bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
