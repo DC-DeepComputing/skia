@@ -1,0 +1,66 @@
+    1. store_src_rg                   c = src.rg
+    2. init_lane_masks                CondMask = LoopMask = RetMask = true
+    3. copy_constant                  ok = 0xFFFFFFFF
+    4. copy_slot_unmasked             $0 = ok
+    5. copy_constant                  $1 = colorGreen(1)
+    6. copy_constant                  $2 = 0x3F800000 (1.0)
+    7. cmpeq_float                    $1 = equal($1, $2)
+    8. bitwise_not_int                $1 = ~$1
+    9. bitwise_and_int                $0 &= $1
+   10. copy_slot_unmasked             ok = $0
+   11. copy_constant                  $0 = mask
+   12. copy_constant                  $1 = mask
+   13. bitwise_not_int                $1 = ~$1
+   14. copy_2_slots_unmasked          mask = $0..1
+   15. bitwise_not_2_ints             $0..1 = ~$0..1
+   16. copy_2_slots_unmasked          imask = $0..1
+   17. copy_2_slots_unmasked          $0..1 = mask
+   18. bitwise_not_2_ints             $0..1 = ~$0..1
+   19. copy_2_slots_unmasked          $2..3 = imask
+   20. bitwise_not_2_ints             $2..3 = ~$2..3
+   21. bitwise_and_2_ints             $0..1 &= $2..3
+   22. copy_2_slots_unmasked          mask = $0..1
+   23. zero_slot_unmasked             $0 = 0
+   24. copy_slot_unmasked             $1 = mask(0)
+   25. cast_to_float_from_uint        $1 = UintToFloat($1)
+   26. shuffle                        $0..15 = ($0..15)[1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]
+   27. copy_4_slots_unmasked          m(0..3) = $0..3
+   28. copy_4_slots_unmasked          m(4..7) = $4..7
+   29. copy_4_slots_unmasked          m(8..11) = $8..11
+   30. copy_4_slots_unmasked          m(12..15) = $12..15
+   31. copy_constant                  $48 = colorGreen(0)
+   32. copy_constant                  $49 = 0x3F800000 (1.0)
+   33. cmpeq_float                    $48 = equal($48, $49)
+   34. bitwise_not_int                $48 = ~$48
+   35. branch_if_no_active_lanes_eq   branch +27 (label 0 at #62) if no lanes of $48 == 0xFFFFFFFF
+   36. zero_4_slots_unmasked          $16..19 = 0
+   37. zero_4_slots_unmasked          $20..23 = 0
+   38. zero_4_slots_unmasked          $24..27 = 0
+   39. zero_4_slots_unmasked          $28..31 = 0
+   40. copy_4_slots_unmasked          $32..35 = m(0..3)
+   41. copy_4_slots_unmasked          $36..39 = m(4..7)
+   42. copy_4_slots_unmasked          $40..43 = m(8..11)
+   43. copy_4_slots_unmasked          $44..47 = m(12..15)
+   44. sub_n_floats                   $16..31 -= $32..47
+   45. shuffle                        $17..31 = ($17..31)[3 7 11 0 4 8 12 1 5 9 13 2 6 10 14]
+   46. zero_4_slots_unmasked          $32..35 = 0
+   47. copy_4_constants               $36..39 = colorGreen
+   48. sub_4_floats                   $32..35 -= $36..39
+   49. copy_4_slots_unmasked          $0..3 = $16..19
+   50. copy_4_slots_unmasked          $4..7 = $32..35
+   51. dot_4_floats                   $0 = dot($0..3, $4..7)
+   52. copy_4_slots_unmasked          $1..4 = $20..23
+   53. copy_4_slots_unmasked          $5..8 = $32..35
+   54. dot_4_floats                   $1 = dot($1..4, $5..8)
+   55. copy_4_slots_unmasked          $2..5 = $24..27
+   56. copy_4_slots_unmasked          $6..9 = $32..35
+   57. dot_4_floats                   $2 = dot($2..5, $6..9)
+   58. copy_4_slots_unmasked          $3..6 = $28..31
+   59. copy_4_slots_unmasked          $7..10 = $32..35
+   60. dot_4_floats                   $3 = dot($3..6, $7..10)
+   61. jump                           jump +3 (label 1 at #64)
+   62. label                          label 0x00000000
+   63. copy_4_constants               $0..3 = colorRed
+   64. label                          label 0x00000001
+   65. copy_4_slots_unmasked          [main].result = $0..3
+   66. load_src                       src.rgba = [main].result
