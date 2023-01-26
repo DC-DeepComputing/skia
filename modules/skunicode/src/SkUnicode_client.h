@@ -20,7 +20,13 @@
 
 #define SKICU_FUNC(funcname) decltype(funcname)* sk_##funcname;
 
+SKICU_FUNC(ubidi_close)
+SKICU_FUNC(ubidi_getDirection)
+SKICU_FUNC(ubidi_getLength)
+SKICU_FUNC(ubidi_getLevelAt)
+SKICU_FUNC(ubidi_openSized)
 SKICU_FUNC(ubidi_reorderVisual)
+SKICU_FUNC(ubidi_setPara)
 
 #undef SKICU_FUNC
 
