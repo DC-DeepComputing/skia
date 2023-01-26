@@ -198,6 +198,9 @@ private:
     void writeConstructorCompound(const ConstructorCompound& c, Precedence parentPrecedence);
     void writeConstructorCompoundVector(const ConstructorCompound& c, Precedence parentPrecedence);
 
+    // Synthesized helper functions for comparison operators that are not supported by WGSL.
+    void writeMatrixEquality(const Expression& left, const Expression& right);
+
     // Generic recursive ProgramElement visitor.
     void writeProgramElement(const ProgramElement& e);
     void writeGlobalVarDeclaration(const GlobalVarDeclaration& d);
@@ -258,7 +261,8 @@ private:
     bool fAtLineStart = false;
 
     int fSwizzleHelperCount = 0;
-    StringStream fExtraFunctions;  // all internally synhtesized helpers are written here
+    StringStream fExtraFunctions;      // all internally synthesized helpers are written here
+    SkTHashSet<std::string> fHelpers;  // all synthesized helpe functions, by name
 };
 
 }  // namespace SkSL
