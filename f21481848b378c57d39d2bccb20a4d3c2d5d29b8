@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feb6b508_8e637b91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-26T15:46:45Z",
+      "side": 1,
+      "message": "Nice. Yeah, I think for the kinds of shaders people often write, this is even more likely to produce wins than the ternary optimization. (eg, using uniforms to pick a few different modes of operation in color space conversion, customizable filters, etc...).",
+      "revId": "f21481848b378c57d39d2bccb20a4d3c2d5d29b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
