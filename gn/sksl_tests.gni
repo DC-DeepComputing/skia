@@ -427,8 +427,10 @@ sksl_wgsl_tests = [
   "wgsl/MainHasFragCoordParameter.sksl",
   "wgsl/MainHasVoidReturn.sksl",
   "wgsl/Matrices.sksl",
+  "wgsl/MatricesF16.sksl",
   "wgsl/MatrixConstructorDiagonal.sksl",
   "wgsl/OutParams.sksl",
+  "wgsl/ShaderF16.sksl",
   "wgsl/UserDefinedPipelineIO.sksl",
   "wgsl/VertexPositionOutputIsAlwaysDeclared.vert",
 ]

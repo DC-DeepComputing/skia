@@ -84,6 +84,10 @@ struct ProgramSettings {
     // If true, SPIR-V codegen restricted to a subset supported by Dawn.
     // TODO(skia:13840, skia:14023): Remove this setting when Skia can use WGSL on Dawn.
     bool fSPIRVDawnCompatMode = false;
+    // If true, the WGSL backend will enable the f16 extension and generate f16 for all scalar and
+    // vector `half` types. Enable this only if the Dawn backend reports support for the
+    // "shader-f16" feature (see https://www.w3.org/TR/webgpu/#shader-f16).
+    bool fWGSLEnableShaderF16 = false;
 };
 
 /**
