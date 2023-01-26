@@ -400,6 +400,38 @@ void Builder::zero_slots_unmasked(SlotRange dst) {
     fInstructions.push_back({BuilderOp::zero_slot_unmasked, {dst.index}, dst.count});
 }
 
+void Builder::label(int labelID) {
+    SkASSERT(labelID >= 0 && labelID < fNumLabels);
+
+    for (int index = fInstructions.size(); index--;) {
+        Instruction& lastInstruction = fInstructions[index];
+
+        // If the previous instruction was a label...
+        if (lastInstruction.fOp == BuilderOp::label) {
+            // ... keep checking backwards.
+            continue;
+        }
+
+        // If the previous instruction was a branch...
+        if (lastInstruction.fOp == BuilderOp::jump ||
+            lastInstruction.fOp == BuilderOp::branch_if_any_active_lanes ||
+            lastInstruction.fOp == BuilderOp::branch_if_no_active_lanes ||
+            lastInstruction.fOp == BuilderOp::branch_if_stack_top_equals) {
+            // ... to this label...
+            if (lastInstruction.fImmA == labelID) {
+                // ... it is a no-op, since it always goes to the next instruction.
+                fInstructions.removeShuffle(index);
+                --fNumBranches;
+                continue;
+            }
+        }
+
+        break;
+    }
+
+    fInstructions.push_back({BuilderOp::label, {}, labelID});
+}
+
 static int pack_nybbles(SkSpan<const int8_t> components) {
     // Pack up to 8 elements into nybbles, in reverse order.
     int packed = 0;

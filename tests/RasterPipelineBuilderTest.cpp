@@ -436,10 +436,12 @@ R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
         builder.immediate_f(2.0f);
         builder.branch_if_no_active_lanes(label2);
         builder.branch_if_no_active_lanes(label3);
+        builder.branch_if_any_active_lanes(label3);
         builder.label(label3);
         builder.immediate_f(3.0f);
         builder.branch_if_any_active_lanes(label1);
         builder.branch_if_any_active_lanes(label1);
+        builder.jump(label4);
         builder.label(label4);
         builder.branch_if_stack_top_equals(0, label3);
         builder.branch_if_stack_top_equals(0, label2);
