@@ -443,6 +443,9 @@ static bool detect_shader_settings(const std::string& text,
                 if (consume_suffix(&settingsText, " SPIRVDawnCompatMode")) {
                     settings->fSPIRVDawnCompatMode = true;
                 }
+                if (consume_suffix(&settingsText, " WGSLEnableShaderF16")) {
+                    settings->fWGSLEnableShaderF16 = true;
+                }
 
                 if (settingsText.empty()) {
                     break;

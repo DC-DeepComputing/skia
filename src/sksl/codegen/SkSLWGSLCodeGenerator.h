@@ -109,6 +109,13 @@ public:
         kNone,
     };
 
+    // See https://www.w3.org/TR/WGSL/#memory-view-types
+    enum class PtrAddressSpace {
+        kFunction,
+        kPrivate,
+        kStorage,
+    };
+
     struct ProgramRequirements {
         using DepsMap = skia_private::THashMap<const FunctionDeclaration*, FunctionDependencies>;
 
@@ -229,6 +236,9 @@ private:
                      Position parentPos,
                      const MemoryLayout* layout = nullptr);
 
+    // Built-in WGSL/Tint extensions that we enable and assume support for.
+    void writeExtensions();
+
     // We bundle all varying pipeline stage inputs and outputs in a struct.
     void writeStageInputStruct();
     void writeStageOutputStruct();
@@ -257,6 +267,11 @@ private:
     std::string writeOutParamHelper(const FunctionCall&,
                                     const ExpressionArray& args,
                                     const skia_private::TArray<VariableReference*>& outVars);
+
+    std::string getTypeName(const Type&);
+    std::string getMangledTypeName(const Type&);
+    std::string getPtrTypeName(const Type&,
+                               PtrAddressSpace addressSpace = PtrAddressSpace::kFunction);
 
     // Stores the disallowed identifier names.
     skia_private::THashSet<std::string_view> fReservedWords;
