@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eef15de_b7788292",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T21:12:06Z",
+      "side": 1,
+      "message": "helper",
+      "range": {
+        "startLine": 265,
+        "startChar": 58,
+        "endLine": 265,
+        "endChar": 63
+      },
+      "revId": "cf8f7bb77812c8006441cfc2cb43386f97a4bb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
