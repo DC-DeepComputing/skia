@@ -46,6 +46,7 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
+#include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLProgram.h"
@@ -124,13 +125,17 @@ std::string_view to_scalar_type(const Type& type) {
 // Convert a SkSL type to a WGSL type. Handles all plain types except structure types
 // (see https://www.w3.org/TR/WGSL/#plain-types-section).
 std::string to_wgsl_type(const Type& type) {
-    // TODO(skia:13092): Handle array, matrix, sampler types.
     switch (type.typeKind()) {
         case Type::TypeKind::kScalar:
             return std::string(to_scalar_type(type));
         case Type::TypeKind::kVector: {
             std::string_view ct = to_scalar_type(type.componentType());
             return String::printf("vec%d<%.*s>", type.columns(), (int)ct.length(), ct.data());
+        }
+        case Type::TypeKind::kMatrix: {
+            std::string_view ct = to_scalar_type(type.componentType());
+            return String::printf(
+                    "mat%dx%d<%.*s>", type.columns(), type.rows(), (int)ct.length(), ct.data());
         }
         case Type::TypeKind::kArray: {
             std::string elementType = to_wgsl_type(type.componentType());
@@ -791,6 +796,9 @@ void WGSLCodeGenerator::writeExpression(const Expression& e, Precedence parentPr
         case Expression::Kind::kFunctionCall:
             this->writeFunctionCall(e.as<FunctionCall>());
             break;
+        case Expression::Kind::kIndex:
+            this->writeIndexExpression(e.as<IndexExpression>());
+            break;
         case Expression::Kind::kLiteral:
             this->writeLiteral(e.as<Literal>());
             break;
@@ -929,6 +937,13 @@ void WGSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
         }
     }
     this->write(")");
+}
+
+void WGSLCodeGenerator::writeIndexExpression(const IndexExpression& i) {
+    this->writeExpression(*i.base(), Precedence::kPostfix);
+    this->write("[");
+    this->writeExpression(*i.index(), Precedence::kTopLevel);
+    this->write("]");
 }
 
 void WGSLCodeGenerator::writeLiteral(const Literal& l) {

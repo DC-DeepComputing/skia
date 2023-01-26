@@ -54,6 +54,7 @@ class VarDeclaration;
 class Variable;
 class VariableReference;
 enum class OperatorPrecedence : uint8_t;
+struct IndexExpression;
 struct Modifiers;
 struct Program;
 struct Swizzle;
@@ -186,6 +187,7 @@ private:
     void writeBinaryExpression(const BinaryExpression& b, Precedence parentPrecedence);
     void writeFieldAccess(const FieldAccess& f);
     void writeFunctionCall(const FunctionCall&);
+    void writeIndexExpression(const IndexExpression& i);
     void writeLiteral(const Literal& l);
     void writeSwizzle(const Swizzle& swizzle);
     void writeTernaryExpression(const TernaryExpression& t, Precedence parentPrecedence);

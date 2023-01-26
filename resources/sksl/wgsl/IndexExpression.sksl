@@ -1,0 +1,7 @@
+uniform float4 array[5];
+uniform float2 vector;
+uniform float2x2 matrix;
+
+half4 main() {
+    return half4(array[0][0], vector[1], matrix[0][1], 1);
+}
