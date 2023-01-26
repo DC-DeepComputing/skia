@@ -1278,7 +1278,12 @@ public:
     }
 #endif
 
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool onAppendStages(const SkStageRec& rec, const MatrixRec&) const override {
+        // Note for future implementor: When SkRTShader is upgraded to support SkRasterPipeline,
+        // the MatrixRec passed to children must have the total matrix marked invalid
+        // (MatrixRec::markTotalMatrixInvalid) if the runtime shader calls them with anything other
+        // than passthrough coords. The stages store_src_xy, load_src_xy can be used to save and
+        // restore the coordinates between children.
         return false;
     }
 
