@@ -36,6 +36,7 @@ luci.realm(
             groups = [
                 "project-skia-admins",
                 "project-skia-external-task-schedulers",
+                "mdb/chrome-troopers",
             ],
         ),
         luci.binding(
