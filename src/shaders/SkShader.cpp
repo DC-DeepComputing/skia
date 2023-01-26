@@ -34,6 +34,33 @@ SkShaderBase::SkShaderBase() = default;
 
 SkShaderBase::~SkShaderBase() = default;
 
+SkShaderBase::MatrixRec::MatrixRec(const SkMatrixProvider& mp)
+        : fPendingMatrix(mp.localToDevice())
+        , fTotalMatrix(mp.localToDevice())
+        , fTotalMatrixIsValid(mp.localToDeviceHitsPixelCenters()) {}
+
+std::tuple<bool, SkShaderBase::MatrixRec>
+SkShaderBase::MatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) const {
+    SkMatrix total;
+    if (!fPendingMatrix.invert(&total)) {
+        return {false, *this};
+    }
+    total = SkMatrix::Concat(postInv, total);
+    if (!fRPSeeded) {
+        rec.fPipeline->append(SkRasterPipelineOp::seed_shader);
+    }
+    // append_matrix is a no-op if inverse worked out to identity.
+    rec.fPipeline->append_matrix(rec.fAlloc, total);
+    return {true, MatrixRec{SkMatrix::I(), fTotalMatrix, fTotalMatrixIsValid, /*rpSeeded=*/true}};
+}
+
+SkShaderBase::MatrixRec SkShaderBase::MatrixRec::concat(const SkMatrix& m) const {
+    return {SkShaderBase::ConcatLocalMatrices(fPendingMatrix, m),
+            SkShaderBase::ConcatLocalMatrices(fTotalMatrix  , m),
+            fTotalMatrixIsValid,
+            fRPSeeded};
+}
+
 void SkShaderBase::flatten(SkWriteBuffer& buffer) const { this->INHERITED::flatten(buffer); }
 
 bool SkShaderBase::computeTotalInverse(const SkMatrix& ctm,
@@ -107,18 +134,6 @@ sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
     return nullptr;
 }
 
-SkUpdatableShader* SkShaderBase::updatableShader(SkArenaAlloc* alloc) const {
-    if (auto updatable = this->onUpdatableShader(alloc)) {
-        return updatable;
-    }
-
-    return alloc->make<SkTransformShader>(*as_SB(this));
-}
-
-SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
-    return nullptr;
-}
-
 #ifdef SK_GRAPHITE_ENABLED
 // TODO: add implementations for derived classes
 void SkShaderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
@@ -141,11 +156,11 @@ sk_sp<SkShader> SkBitmap::makeShader(SkTileMode tmx, SkTileMode tmy,
                                tmx, tmy, sampling, lm);
 }
 
-bool SkShaderBase::appendStages(const SkStageRec& rec) const {
-    return this->onAppendStages(rec);
+bool SkShaderBase::appendRootStages(const SkStageRec& rec, const SkMatrixProvider& mp) const {
+    return this->appendStages(rec, MatrixRec(mp));
 }
 
-bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
+bool SkShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
     // SkShader::Context::shadeSpan() handles the paint opacity internally,
     // but SkRasterPipelineBlitter applies it as a separate stage.
     // We skip the internal shadeSpan() step by forcing the paint opaque.
@@ -154,8 +169,12 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
         opaquePaint.writable()->setAlpha(SK_AlphaOPAQUE);
     }
 
-    ContextRec cr(*opaquePaint, rec.fMatrixProvider.localToDevice(), rec.fLocalM, rec.fDstColorType,
-                  sk_srgb_singleton(), rec.fSurfaceProps);
+    ContextRec cr(*opaquePaint,
+                  SkMatrix::I(),
+                  /*localM=*/nullptr,  // We insert a stage that handles mRec below.
+                  rec.fDstColorType,
+                  sk_srgb_singleton(),
+                  rec.fSurfaceProps);
 
     struct CallbackCtx : SkRasterPipeline_CallbackCtx {
         sk_sp<const SkShader> shader;
@@ -178,7 +197,10 @@ bool SkShaderBase::onAppendStages(const SkStageRec& rec) const {
     };
 
     if (cb->ctx) {
-        rec.fPipeline->append(SkRasterPipelineOp::seed_shader);
+        auto [result, _] = mRec.apply(rec);
+        if (!result) {
+            return false;
+        }
         rec.fPipeline->append(SkRasterPipelineOp::callback, cb);
         rec.fAlloc->make<SkColorSpaceXformSteps>(sk_srgb_singleton(), kPremul_SkAlphaType,
                                                  rec.fDstCS,          kPremul_SkAlphaType)
