@@ -1,0 +1,10 @@
+uniform half4 colorGreen, colorRed;
+
+void main () {
+    bool ok = true;
+    ok = ok && !(colorGreen.g == 1.0);
+
+    // prefix '!' and '-'.
+    half4x4 m = half4x4(1);
+    sk_FragColor = !(colorGreen.r == 1.0) ? -m * -colorGreen : colorRed;
+}
