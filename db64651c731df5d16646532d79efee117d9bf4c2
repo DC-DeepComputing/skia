@@ -34,6 +34,24 @@
       "parentUuid": "1da764c3_c2d42c8b",
       "revId": "db64651c731df5d16646532d79efee117d9bf4c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1877abbf_7191969a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-26T15:51:31Z",
+      "side": 1,
+      "message": "Forgot that `sqrt(x^2)` \u003d\u003d `abs(x)`, not `x`.",
+      "parentUuid": "308dc432_ad6c8c27",
+      "revId": "db64651c731df5d16646532d79efee117d9bf4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
