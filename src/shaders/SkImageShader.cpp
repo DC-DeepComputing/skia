@@ -410,38 +410,71 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                              skgpu::graphite::PaintParamsKeyBuilder* builder,
                              skgpu::graphite::PipelineDataGatherer* gatherer) const {
+    //SkDebugf("\n\n\n-------------- New SkImageShader::addToKey call--------------\n\n\n");
     using namespace skgpu::graphite;
+    //SkDebugf("Obtaining graphite-backed image and sampling\n");
 
     auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
                                                                            fImage.get(),
                                                                            fSampling);
-    SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
-    ReadSwizzle readSwizzle = this->swizzleClassToReadEnum(
-            static_cast<Image*>(as_IB(imageToDraw))->textureProxyView().swizzle());
-
+    //SkDebugf("Call did not crash.\n");
+    // SkASSERT(as_IB(imageToDraw)->isGraphiteBacked());
+    // //SkDebugf("Assertion passed.\n");
+    ReadSwizzle readSwizzle = ReadSwizzle::kRGBA;
+    if (imageToDraw) {
+        //SkDebugf("image is not null.\n");
+        auto graphiteImage = static_cast<Image*>(imageToDraw.get());
+        //SkDebugf("SkImage successfully cast to Image.\n");
+        if (graphiteImage) {
+            //SkDebugf("Image is not null.\n");
+            auto testView = graphiteImage->textureProxyView();
+            //SkDebugf("texture proxy view obtained.\n");
+            if (testView) {
+                //SkDebugf("texture proxy view is not null.\n");
+                readSwizzle = this->swizzleClassToReadEnum(testView.swizzle());
+                //SkDebugf("Readswizzle successfully obtained.\n");
+            } else {
+                SkDebugf("acquired read swizzle is null.\n");
+            }
+        } else {
+            SkDebugf("graphite image is null.\n");
+        }
+    } else {
+        SkDebugf("Image to draw is null.\n");
+    }
+    // ReadSwizzle readSwizzle = this->swizzleClassToReadEnum(
+    //         static_cast<Image*>(imageToDraw.get())->textureProxyView().swizzle());
+    //SkDebugf("Creating image data.\n");
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset, readSwizzle);
 
     if (!fRaw) {
+        //SkDebugf("Not raw, applying transformation.\n");
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
                                                 fImage->alphaType(),
                                                 keyContext.dstColorInfo().colorSpace(),
                                                 keyContext.dstColorInfo().alphaType());
+        //SkDebugf("transformation successfully applied.\n");
 
         // TODO: add alpha-only image handling here
     }
 
     if (imageToDraw) {
+        //SkDebugf("imageToDraw if block reached.\n");
         imgData.fSampling = newSampling;
         skgpu::graphite::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
                                                    ? skgpu::graphite::Mipmapped::kYes
                                                    : skgpu::graphite::Mipmapped::kNo;
-
+        //SkDebugf("calling imageToDraw as_IB:\n");
         auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
+        //SkDebugf("call successful. Adding ref to textureproxy.\n");
         imgData.fTextureProxy = view.refProxy();
+        //SkDebugf("updating read swizzle based upon new view.\n");
         imgData.fReadSwizzle = this->swizzleClassToReadEnum(view.swizzle());
     }
 
+    //SkDebugf("Beginning ImageShaderBlock.\n");
     ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+    //SkDebugf("Ending ImageShaderBlock.\n");
     builder->endBlock();
 }
 #endif

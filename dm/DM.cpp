@@ -258,42 +258,46 @@ static int                gPending;
 static SkTArray<Running>* gRunning = new SkTArray<Running>;
 
 static void done(const char* config, const char* src, const char* srcOptions, const char* name) {
-    SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
-    vlog("done  %s\n", id.c_str());
-    int pending;
-    {
-        SkAutoSpinlock lock(*gMutex);
-        for (int i = 0; i < gRunning->size(); i++) {
-            if (gRunning->at(i).id == id) {
-                gRunning->removeShuffle(i);
-                break;
+    if (strcmp(name,"scaled_tilemodes_npot") == 0) {
+        SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
+        vlog("done  %s\n", id.c_str());
+        int pending;
+        {
+            SkAutoSpinlock lock(*gMutex);
+            for (int i = 0; i < gRunning->size(); i++) {
+                if (gRunning->at(i).id == id) {
+                    gRunning->removeShuffle(i);
+                    break;
+                }
             }
+            pending = --gPending;
         }
-        pending = --gPending;
-    }
 
-    // We write out dm.json file and print out a progress update every once in a while.
-    // Notice this also handles the final dm.json and progress update when pending == 0.
-    if (pending % 500 == 0) {
-        dump_json();
+        // We write out dm.json file and print out a progress update every once in a while.
+        // Notice this also handles the final dm.json and progress update when pending == 0.
+        if (pending % 500 == 0) {
+            dump_json();
 
-        int curr = sk_tools::getCurrResidentSetSizeMB(),
-            peak = sk_tools::getMaxResidentSetSizeMB();
+            int curr = sk_tools::getCurrResidentSetSizeMB(),
+                peak = sk_tools::getMaxResidentSetSizeMB();
 
-        SkAutoSpinlock lock(*gMutex);
-        info("\n%dMB RAM, %dMB peak, %d queued, %d active:\n",
-             curr, peak, gPending - gRunning->size(), gRunning->size());
-        for (auto& task : *gRunning) {
-            task.dump();
+            SkAutoSpinlock lock(*gMutex);
+            info("\n%dMB RAM, %dMB peak, %d queued, %d active:\n",
+                curr, peak, gPending - gRunning->size(), gRunning->size());
+            for (auto& task : *gRunning) {
+                task.dump();
+            }
         }
     }
 }
 
 static void start(const char* config, const char* src, const char* srcOptions, const char* name) {
-    SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
-    vlog("start %s\n", id.c_str());
-    SkAutoSpinlock lock(*gMutex);
-    gRunning->push_back({id,SkGetThreadID()});
+    if (strcmp(name,"scaled_tilemodes_npot") == 0) {
+        SkString id = SkStringPrintf("%s %s %s %s", config, src, srcOptions, name);
+        vlog("start %s\n", id.c_str());
+        SkAutoSpinlock lock(*gMutex);
+        gRunning->push_back({id,SkGetThreadID()});
+    }
 }
 
 static void find_culprit() {
