@@ -16,6 +16,23 @@
       "message": "Thanks for the quick review!",
       "revId": "b1a3cd6d3e167056d71deec5019879467d7c1f91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f95b032_ffc72012",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-26T14:54:26Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "b1a3cd6d3e167056d71deec5019879467d7c1f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
