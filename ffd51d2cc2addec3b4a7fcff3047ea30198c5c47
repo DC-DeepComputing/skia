@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee8eb0cb_d107317d",
+        "filename": "src/sksl/analysis/SkSLIsDynamicallyUniformExpression.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-26T15:13:34Z",
+      "side": 1,
+      "message": "I had to think about this a bit... pure seems conservative, but correct? For example, we have the derivative instructions marked pure, and that is actually okay in this case (the derivative of any dynamically uniform expression is zero). But we don\u0027t have child-eval marked pure, and (in my mind) those should all satisfy the criteria here, too: Running a color filter on the same color (or a shader at the same coords) should produce the same answer. Do we have any functions (other than atomics in compute?) that don\u0027t preserve the dynamically-uniform property?",
+      "revId": "ffd51d2cc2addec3b4a7fcff3047ea30198c5c47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
