@@ -495,6 +495,30 @@
       },
       "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea87cfc_a4dafeef",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T16:29:14Z",
+      "side": 1,
+      "message": "Usually I prefer to put everything at top level, and make \"inner\" classes as typedefs. e.g.\n\n```\nclass AbcInnerClass { ... };\n\nclass Abc {\npublic: \n  using InnerClass \u003d AbcInnerClass;\n};\n```\n\nThis lets you forward declare the inner class when you need to.\nHowever, I\u0027m not sure if it\u0027d be possible in this scenario, since we have an inner-inner class that needs to hold an `Abc`. I\u0027d need to experiment with it.",
+      "parentUuid": "aa2a0b7a_79e4987c",
+      "range": {
+        "startLine": 208,
+        "startChar": 87,
+        "endLine": 208,
+        "endChar": 93
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
