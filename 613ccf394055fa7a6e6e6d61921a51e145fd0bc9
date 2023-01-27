@@ -34,6 +34,24 @@
       "parentUuid": "2c05a5d1_aa6d94ac",
       "revId": "613ccf394055fa7a6e6e6d61921a51e145fd0bc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045fca56_dc47de0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:23:40Z",
+      "side": 1,
+      "message": "just a minor comment, appendRootStages can\u0027t be overridden. It\u0027s not virtual.",
+      "parentUuid": "8eee51a0_d7145a7d",
+      "revId": "613ccf394055fa7a6e6e6d61921a51e145fd0bc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
