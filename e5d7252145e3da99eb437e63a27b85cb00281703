@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a8b52b_44e7f691",
+        "filename": "src/core/SkRasterPipelineOpList.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T15:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d86c59a_44a5ed69",
+      "range": {
+        "startLine": 100,
+        "startChar": 78,
+        "endLine": 100,
+        "endChar": 79
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50d515ae_6b2fdd5f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7236525f_46ee7a73",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T15:50:07Z",
+      "side": 1,
+      "message": "It\u0027s not quite guaranteed to be seeded here. The MatrixRec lazily seeds the first time apply() is called. But that is now done here!",
+      "parentUuid": "50d515ae_6b2fdd5f",
+      "range": {
+        "startLine": 1344,
+        "startChar": 0,
+        "endLine": 1346,
+        "endChar": 63
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40325f2b_5edc896b",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-01-27T15:39:45Z",
       "side": 1,
       "message": "You can remove \u003catomic\u003e entirely. I verified that the code isn\u0027t using atomics anywhere, and that IWYU won\u0027t complain.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 17
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c547559_5a980cbd",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T15:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40325f2b_5edc896b",
       "range": {
         "startLine": 50,
         "startChar": 0,
