@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26fd88ed_c6642cab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T20:49:41Z",
+      "side": 1,
+      "message": "web test suppressions have landed:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4197741",
+      "revId": "e93f00d783e9dc6c04b52d73e3dd48a1aa43d5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
