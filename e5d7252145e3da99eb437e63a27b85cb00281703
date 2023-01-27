@@ -140,6 +140,121 @@
       },
       "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c10e8c03_50fbe33d",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:59:29Z",
+      "side": 1,
+      "message": "Please prefer a struct instead of a pair or a tuple whenever the elements can have meaningful names. (You can still use structured bindings at the call site and return via `{x,y}`, but a named struct gives better output in the debugger, makes the code easier to read later, and gives the compiler less work to do.)",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 41
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9517add_0d738f2d",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:59:29Z",
+      "side": 1,
+      "message": "Do we want to set `fRPSeeded \u003d true` here to avoid re-seeding, on the off chance that someone has a legitimate need to `apply` the same matrix twice? \n\nThe function is marked `const` now; I\u0027m not sure if this will be a huge ripple effect to change. If un-consting is hard, it might be OK to guard against this in some other way (if we could assert that the RP isn\u0027t seeded yet, for instance? this would require an O(n) scan of the RP stage list, unfortunately)",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 8
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f315cdc1_a1d8d1ae",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:59:29Z",
+      "side": 1,
+      "message": "Returns\n\n(Source: http://go/cstyle#function_declarations\n\n\u0027Function comments should be written with an implied subject of _This function_ and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".)",
+      "range": {
+        "startLine": 203,
+        "startChar": 11,
+        "endLine": 203,
+        "endChar": 17
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7a383a_bf4ba9dd",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:59:29Z",
+      "side": 1,
+      "message": "Appends\n\nAlso, please use doc-comment `/**` style for consistency with surrounding methods",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b76294e8_aa83c1b1",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:59:29Z",
+      "side": 1,
+      "message": "returns (to match \"appends\")\n\nAlso, this doesn\u0027t describe the boolean in the tuple (which indicates failure due to non-invertible matrix, I think?). However, if you return a named struct, that will be self-explanatory and won\u0027t need further comment.",
+      "range": {
+        "startLine": 208,
+        "startChar": 87,
+        "endLine": 208,
+        "endChar": 93
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
