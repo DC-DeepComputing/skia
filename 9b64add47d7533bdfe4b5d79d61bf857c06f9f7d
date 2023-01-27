@@ -421,6 +421,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bd1d182_e7c16a7c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1648,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:01:29Z",
+      "side": 1,
+      "message": "Perfect, thanks!",
+      "parentUuid": "a4e1836e_ba3cb32a",
+      "range": {
+        "startLine": 1644,
+        "startChar": 0,
+        "endLine": 1648,
+        "endChar": 1
+      },
+      "revId": "9b64add47d7533bdfe4b5d79d61bf857c06f9f7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d98ff3e_5d285377",
