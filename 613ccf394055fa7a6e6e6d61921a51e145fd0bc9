@@ -16,6 +16,24 @@
       "message": "One meta-comment about this change: the API change to `SkShaderBase` makes color filters and shaders subtly different. For shaders, we now override `appendStages` (or `appendRootStages`) but for color filters, we still override `onAppendStages`.\n\nThis is easily fixable--`SkColorFilterBase::appendStages` is a total no-op that just thunks into `onAppendStages`. I think we can just rename all the `onAppendStages` methods to `appendStages` and call it fixed. We don\u0027t need to do that in this CL, but it seems like something we ought to change for consistency.",
       "revId": "613ccf394055fa7a6e6e6d61921a51e145fd0bc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eee51a0_d7145a7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:22:32Z",
+      "side": 1,
+      "message": "sgtm, can do in a follow up.",
+      "parentUuid": "2c05a5d1_aa6d94ac",
+      "revId": "613ccf394055fa7a6e6e6d61921a51e145fd0bc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
