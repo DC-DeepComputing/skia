@@ -423,6 +423,30 @@
       },
       "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9df79c1_de18f30a",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T16:23:52Z",
+      "side": 1,
+      "message": "Oh, that _is_ a bummer--I never considered the case of an inner class returning an instance of the outer class. Sorry. (Inner classes in C++ are kinda busted in general.)",
+      "parentUuid": "cb1cc528_119898db",
+      "range": {
+        "startLine": 208,
+        "startChar": 87,
+        "endLine": 208,
+        "endChar": 93
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
