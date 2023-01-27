@@ -36,6 +36,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09b0aa33_6c3c96f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-27T21:07:04Z",
+      "side": 1,
+      "message": "I think we should have method reserve() use the kGrowth factor, and reserve_back() use the kExectFit factor. This will bring reserve() into parity with std::vector and SkTDArray. I think that it could be implemented like:\n    void reserve(int n) {\n        SkASSERT(n \u003e\u003d 0);\n        if (n \u003e\u003d this-\u003esize()) {\n            this-\u003echeckRealloc(n - size(), kGrowing);\n        }\n    }\n    \nWhat do you think? Also, by adding a new function to this call you increased the binary size by 4K. I think the above will not grow the binary at all.",
+      "revId": "82c587a590f20835880f2cbb3ef50a700a7e65a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "378dbb49_9defa1ae",
