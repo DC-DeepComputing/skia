@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3ad1d01_28db930a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19119
+      },
+      "writtenOn": "2023-01-27T02:09:09Z",
+      "side": 1,
+      "message": "Canary failure is not related to the CL",
+      "revId": "aea2f8ec5124a96be6e136ed53d37fc1b375e418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
