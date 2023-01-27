@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04cbd2bb_c5112ac8",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Sorry I was trying to say that in the latest PS we call apply on the passed in MatrixRec so seeding (and parent local matrices) are accounted for here.",
+      "parentUuid": "ac51fc1f_af849690",
+      "range": {
+        "startLine": 1344,
+        "startChar": 0,
+        "endLine": 1346,
+        "endChar": 63
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40325f2b_5edc896b",
@@ -189,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f5fbc0_d1804197",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c10e8c03_50fbe33d",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 41
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9517add_0d738f2d",
@@ -214,6 +262,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90bcbd19_07381386",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Honestly, this seems like overkill to me given what this currently represents: a snapshot in time when appendStages() is called. I thought about making it mutable and setting it to true here, but then it starts to feel like the object is a ongoing tracker of state rather than a snapshot, in which case fPendingMatrix should also be reset to identity here.\n\nWe could make it actually be that and thread it down through appendStages by * rather than const\u0026. I think in that case concat() would modify the existing MatrixRec rather than return a new one.\n\nI\u0027m happy to try making that modification to see if we like it better.",
+      "parentUuid": "c9517add_0d738f2d",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 8
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f315cdc1_a1d8d1ae",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 14
@@ -225,6 +297,30 @@
       "writtenOn": "2023-01-27T15:59:29Z",
       "side": 1,
       "message": "Returns\n\n(Source: http://go/cstyle#function_declarations\n\n\u0027Function comments should be written with an implied subject of _This function_ and should start with the verb phrase; for example, \"Opens the file\", rather than \"Open the file\".)",
+      "range": {
+        "startLine": 203,
+        "startChar": 11,
+        "endLine": 203,
+        "endChar": 17
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64fa937d_2226e54e",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f315cdc1_a1d8d1ae",
       "range": {
         "startLine": 203,
         "startChar": 11,
@@ -271,6 +367,54 @@
       "writtenOn": "2023-01-27T15:59:29Z",
       "side": 1,
       "message": "returns (to match \"appends\")\n\nAlso, this doesn\u0027t describe the boolean in the tuple (which indicates failure due to non-invertible matrix, I think?). However, if you return a named struct, that will be self-explanatory and won\u0027t need further comment.",
+      "range": {
+        "startLine": 208,
+        "startChar": 87,
+        "endLine": 208,
+        "endChar": 93
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "708526e6_2929cb55",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a7a383a_bf4ba9dd",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb1cc528_119898db",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-27T16:20:48Z",
+      "side": 1,
+      "message": "Done, though it\u0027s a little sad that the struct can only be forward declared here.",
+      "parentUuid": "b76294e8_aa83c1b1",
       "range": {
         "startLine": 208,
         "startChar": 87,
