@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac51fc1f_af849690",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T16:08:40Z",
+      "side": 1,
+      "message": "Should we change this to `apply` an identity matrix or something? I need the coordinates to be seeded if they haven\u0027t been seeded already, but we can\u0027t wipe out the coords if this is a nested call. (Or is this something you are planning to fix in a later CL?)",
+      "parentUuid": "7236525f_46ee7a73",
+      "range": {
+        "startLine": 1344,
+        "startChar": 0,
+        "endLine": 1346,
+        "endChar": 63
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40325f2b_5edc896b",
         "filename": "src/shaders/SkPictureShader.cpp",
         "patchSetId": 14
