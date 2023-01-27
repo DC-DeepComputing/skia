@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c9dd5b8_4542d607",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-01-27T16:31:36Z",
+      "side": 1,
+      "message": "Hmm, looks like a Skia owner needs to stamp this.",
+      "revId": "1060594fa14e194af407dafbc0ecc8abc464fe02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
