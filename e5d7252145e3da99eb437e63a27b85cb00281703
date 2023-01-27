@@ -286,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04e91fe2_5a312170",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T16:25:52Z",
+      "side": 1,
+      "message": "Nah, that\u0027s OK. I think the odds that this will actually bite us in a realistic way are pretty small. I just noticed the lack of setting `fRPSeeded` after the append and thought maybe there\u0027s an edge case worth considering. But in reality it\u0027s not a very sharp edge.",
+      "parentUuid": "90bcbd19_07381386",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 8
+      },
+      "revId": "e5d7252145e3da99eb437e63a27b85cb00281703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f315cdc1_a1d8d1ae",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 14
