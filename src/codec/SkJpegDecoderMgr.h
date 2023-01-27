@@ -18,6 +18,7 @@ extern "C" {
     #include "jpeglib.h"
 }
 
+class SkJpegSourceMgr;
 class SkStream;
 
 class JpegDecoderMgr : SkNoncopyable {
@@ -67,9 +68,19 @@ public:
     jpeg_decompress_struct* dinfo() { return &fDInfo; }
 
 private:
+    // Wrapper that calls into the full SkJpegSourceMgr interface.
+    struct SourceMgr : jpeg_source_mgr {
+        static void InitSource(j_decompress_ptr dinfo);
+        static void SkipInputData(j_decompress_ptr dinfo, long num_bytes_long);
+        static boolean FillInputBuffer(j_decompress_ptr dinfo);
+        static void TermSource(j_decompress_ptr dinfo);
+
+        SourceMgr(std::unique_ptr<SkJpegSourceMgr> mgr);
+        std::unique_ptr<SkJpegSourceMgr> fSourceMgr;
+    };
 
     jpeg_decompress_struct fDInfo;
-    skjpeg_source_mgr      fSrcMgr;
+    SourceMgr              fSrcMgr;
     skjpeg_error_mgr       fErrorMgr;
     jpeg_progress_mgr      fProgressMgr;
     bool                   fInit;
