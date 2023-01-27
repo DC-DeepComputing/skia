@@ -1635,7 +1635,7 @@ DEF_TEST(SkRasterPipeline_BranchIfNoActiveLanes, r) {
     }
 }
 
-DEF_TEST(SkRasterPipeline_BranchIfAllSlotsEqual, r) {
+DEF_TEST(SkRasterPipeline_BranchIfActiveLanesEqual, r) {
     // Allocate space for 4 slots.
     alignas(64) float slots[4 * SkRasterPipeline_kMaxStride_highp] = {};
     const int N = SkOpts::raster_pipeline_highp_stride;
@@ -1647,10 +1647,15 @@ DEF_TEST(SkRasterPipeline_BranchIfAllSlotsEqual, r) {
     alignas(64) int allFives[SkRasterPipeline_kMaxStride_highp] = {};
     std::fill(std::begin(allFives), std::end(allFives), 5);
 
-    // An array of all 5s, except for a single 6 in one slot.
+    // An array of all 5s, except for a single 6 in one lane.
     alignas(64) int almostAllFives[SkRasterPipeline_kMaxStride_highp] = {};
     std::fill(std::begin(almostAllFives), std::end(almostAllFives), 5);
     almostAllFives[N - 1] = 6;
+
+    // A condition mask with all lanes on except for the six-lane.
+    alignas(64) int mask[SkRasterPipeline_kMaxStride_highp] = {};
+    std::fill(std::begin(mask), std::end(mask), ~0);
+    mask[N - 1] = 0;
 
     // Make a program which conditionally branches past a swap_rb op.
     SkRasterPipeline_BranchIfEqualCtx matching;
@@ -1667,12 +1672,15 @@ DEF_TEST(SkRasterPipeline_BranchIfAllSlotsEqual, r) {
     SkRasterPipeline p(&alloc);
     p.append_constant_color(&alloc, kColorBlack);                          // set the color to black
     p.append(SkRasterPipelineOp::init_lane_masks);                         // set all lanes active
-    p.append(SkRasterPipelineOp::branch_if_all_lanes_equal, &nonmatching); // don't skip next line
-    p.append_constant_color(&alloc, kColorRed);                            // sets the color to red
-    p.append(SkRasterPipelineOp::branch_if_all_lanes_equal, &matching);    // do skip next line
+    p.append(SkRasterPipelineOp::branch_if_active_lanes_equal, &nonmatching);// don't skip next line
+    p.append_constant_color(&alloc, kColorRed);                            // set the color to red
+    p.append(SkRasterPipelineOp::branch_if_active_lanes_equal, &matching); // do skip next line
     p.append(SkRasterPipelineOp::swap_rb);                                 // swap R and B (= blue)
+    p.append(SkRasterPipelineOp::load_condition_mask, mask);               // mask off the six
+    p.append(SkRasterPipelineOp::branch_if_active_lanes_equal, &nonmatching);// do skip next line
+    p.append(SkRasterPipelineOp::white_color);                             // set the color to white
     p.append(SkRasterPipelineOp::store_src, slots);                        // store final red color
-    p.run(0,0,1,1);
+    p.run(0,0,SkOpts::raster_pipeline_highp_stride,1);
 
     // Verify that the slots contain red.
     float* destPtr = &slots[0];

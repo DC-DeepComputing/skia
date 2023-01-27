@@ -370,8 +370,8 @@ R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
     5. branch_if_no_active_lanes      branch_if_no_active_lanes -1 (#4)
     6. immediate_f                    src.r = 0x40400000 (3.0)
     7. branch_if_any_active_lanes     branch_if_any_active_lanes -4 (#3)
-    8. branch_if_all_lanes_equal      branch_if_all_lanes_equal -2 (#6), if $0 == 0x00000000 (0.0)
-    9. branch_if_all_lanes_equal      branch_if_all_lanes_equal -6 (#3), if $0 == 0x00000001 (1.401298e-45)
+    8. branch_if_active_lanes_equal   branch_if_active_lanes_equal -2 (#6), if $0 == 0x00000000 (0.0)
+    9. branch_if_active_lanes_equal   branch_if_active_lanes_equal -6 (#3), if $0 == 0x00000001 (1.401298e-45)
 )";
     static constexpr char kExpectationWithKnownExecutionMask[] =
 R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
@@ -380,8 +380,8 @@ R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
     4. immediate_f                    src.r = 0x40000000 (2.0)
     5. immediate_f                    src.r = 0x40400000 (3.0)
     6. jump                           jump -3 (#3)
-    7. branch_if_all_lanes_equal      branch_if_all_lanes_equal -2 (#5), if $0 == 0x00000000 (0.0)
-    8. branch_if_all_lanes_equal      branch_if_all_lanes_equal -5 (#3), if $0 == 0x00000001 (1.401298e-45)
+    7. branch_if_active_lanes_equal   branch_if_active_lanes_equal -2 (#5), if $0 == 0x00000000 (0.0)
+    8. branch_if_active_lanes_equal   branch_if_active_lanes_equal -5 (#3), if $0 == 0x00000001 (1.401298e-45)
 )";
 #else
     // We don't have guaranteed tail-calling, so we rewind the stack immediately before any backward
@@ -397,9 +397,9 @@ R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
     8. stack_rewind
     9. branch_if_any_active_lanes     branch_if_any_active_lanes -6 (#3)
    10. stack_rewind
-   11. branch_if_all_lanes_equal      branch_if_all_lanes_equal -4 (#7), if $0 == 0x00000000 (0.0)
+   11. branch_if_active_lanes_equal   branch_if_active_lanes_equal -4 (#7), if $0 == 0x00000000 (0.0)
    12. stack_rewind
-   13. branch_if_all_lanes_equal      branch_if_all_lanes_equal -10 (#3), if $0 == 0x00000001 (1.401298e-45)
+   13. branch_if_active_lanes_equal   branch_if_active_lanes_equal -10 (#3), if $0 == 0x00000001 (1.401298e-45)
 )";
     static constexpr char kExpectationWithKnownExecutionMask[] =
 R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
@@ -410,9 +410,9 @@ R"(    1. copy_constant                  $0 = 0x00000001 (1.401298e-45)
     6. stack_rewind
     7. jump                           jump -4 (#3)
     8. stack_rewind
-    9. branch_if_all_lanes_equal      branch_if_all_lanes_equal -4 (#5), if $0 == 0x00000000 (0.0)
+    9. branch_if_active_lanes_equal   branch_if_active_lanes_equal -4 (#5), if $0 == 0x00000000 (0.0)
    10. stack_rewind
-   11. branch_if_all_lanes_equal      branch_if_all_lanes_equal -8 (#3), if $0 == 0x00000001 (1.401298e-45)
+   11. branch_if_active_lanes_equal   branch_if_active_lanes_equal -8 (#3), if $0 == 0x00000001 (1.401298e-45)
 )";
 #endif
 
