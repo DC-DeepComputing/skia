@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e87347_a254270f",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:16:37Z",
+      "side": 1,
+      "message": "can",
+      "range": {
+        "startLine": 109,
+        "startChar": 61,
+        "endLine": 109,
+        "endChar": 64
+      },
+      "revId": "501568508308dac5132c6d3f15d3b2a62363b13f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab7054a1_bc807aa9",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:16:37Z",
+      "side": 1,
+      "message": "transform",
+      "range": {
+        "startLine": 13,
+        "startChar": 36,
+        "endLine": 13,
+        "endChar": 44
+      },
+      "revId": "501568508308dac5132c6d3f15d3b2a62363b13f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f17cdd_8edef0fe",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:16:37Z",
+      "side": 1,
+      "message": "coordinates",
+      "range": {
+        "startLine": 13,
+        "startChar": 59,
+        "endLine": 13,
+        "endChar": 70
+      },
+      "revId": "501568508308dac5132c6d3f15d3b2a62363b13f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c0f6179_57bd8b67",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:16:37Z",
+      "side": 1,
+      "message": "matrices to facilitate",
+      "range": {
+        "startLine": 14,
+        "startChar": 66,
+        "endLine": 14,
+        "endChar": 85
+      },
+      "revId": "501568508308dac5132c6d3f15d3b2a62363b13f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcd34c1_7eca9360",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:16:37Z",
+      "side": 1,
+      "message": "transform",
+      "range": {
+        "startLine": 17,
+        "startChar": 19,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "501568508308dac5132c6d3f15d3b2a62363b13f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
