@@ -302,6 +302,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a32bb0_aee8d095",
+        "filename": "src/shaders/SkTransformShader.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:20:54Z",
+      "side": 1,
+      "message": "Yes, the changes were perfect (modulo typos 😊)",
+      "parentUuid": "a4a0ada8_85bf8175",
+      "range": {
+        "startLine": 13,
+        "startChar": 21,
+        "endLine": 13,
+        "endChar": 70
+      },
+      "revId": "1d1260c1c5ccbf07a9c29c5436d103ae4c784b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1846583_135e4e7a",
