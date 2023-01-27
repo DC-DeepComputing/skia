@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7778f275_b31ab7ce",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-27T16:24:29Z",
+      "side": 1,
+      "message": "remove?",
+      "revId": "e32cb6999990bded44685ea8f18ea0213348de2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
