@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3e6fab2_8232c921",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-27T15:07:35Z",
+      "side": 1,
+      "message": "Oh, is this trying to explain the _absence_ of the CTM?\n\nHow about \"The CTM is intentionally skipped here; it\u0027s applied last, after xforms and texture translations.\"",
+      "parentUuid": "19f31e54_5e448c55",
+      "range": {
+        "startLine": 118,
+        "startChar": 11,
+        "endLine": 118,
+        "endChar": 14
+      },
+      "revId": "1d1260c1c5ccbf07a9c29c5436d103ae4c784b66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5609e142_c0e56244",
         "filename": "src/core/SkDraw_vertices.cpp",
         "patchSetId": 12
