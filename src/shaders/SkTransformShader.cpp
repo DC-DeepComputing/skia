@@ -14,13 +14,16 @@ SkTransformShader::SkTransformShader(const SkShaderBase& shader, bool allowPersp
     SkMatrix::I().get9(fMatrixStorage);
 }
 
-skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
-                      skvm::Coord device, skvm::Coord local, skvm::Color color,
-                      const SkMatrixProvider& matrices, const SkMatrix* localM,
-                      const SkColorInfo& dst,
-                      skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkTransformShader::program(skvm::Builder* b,
+                                       skvm::Coord device,
+                                       skvm::Coord local,
+                                       skvm::Color color,
+                                       const MatrixRec& mRec,
+                                       const SkColorInfo& dst,
+                                       skvm::Uniforms* uniforms,
+                                       SkArenaAlloc* alloc) const {
     // We assume the caller is folding the CTM into the per-update matrix for effeciency.
-    SkASSERT(matrices.localToDevice().isIdentity());
+    SkASSERT(!mRec.hasPendingMatrix());
 
     auto matrix = uniforms->pushPtr(&fMatrixStorage);
 
@@ -41,9 +44,9 @@ skvm::Color SkTransformShader::onProgram(skvm::Builder* b,
     }
 
     skvm::Coord newLocal = {x, y};
-    SkMatrixProvider matrixProvider{SkMatrix::I()};
-    return fShader.program(
-            b, device, newLocal, color, matrixProvider, localM, dst, uniforms, alloc);
+    MatrixRec newLMRec = mRec;
+    newLMRec.markTotalMatrixInvalid();
+    return fShader.program(b, device, newLocal, color, newLMRec, dst, uniforms, alloc);
 }
 
 bool SkTransformShader::update(const SkMatrix& matrix) {
