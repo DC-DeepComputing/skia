@@ -1325,8 +1325,8 @@ public:
 #endif
 
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
-    bool onAppendStages(const SkStageRec& rec) const override {
-        // Lazily compile the program the first time we see it used in onAppendStages.
+    bool appendStages(const SkStageRec& rec, const MatrixRec&) const override {
+        // Lazily compile the program the first time we see it used in appendStages.
         fCompileRPProgramOnce([this] {
             const_cast<SkRTShader*>(this)->fRPProgram =
                     MakeRasterPipelineProgram(*fEffect->fBaseProgram,
@@ -1348,7 +1348,7 @@ public:
         return true;
     }
 #else
-    bool onAppendStages(const SkStageRec& rec) const override {
+    bool appendStages(const SkStageRec& rec, const MatrixRec&) const override {
         return false;
     }
 #endif
