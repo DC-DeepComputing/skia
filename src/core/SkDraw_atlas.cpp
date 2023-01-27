@@ -54,10 +54,14 @@ class UpdatableColorShader : public SkShaderBase {
 public:
     explicit UpdatableColorShader(SkColorSpace* cs)
         : fSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType, cs, kUnpremul_SkAlphaType} {}
-    skvm::Color onProgram(
-            skvm::Builder* builder, skvm::Coord device, skvm::Coord local, skvm::Color paint,
-            const SkMatrixProvider& provider, const SkMatrix* localM, const SkColorInfo& dst,
-            skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+    skvm::Color program(skvm::Builder* builder,
+                        skvm::Coord device,
+                        skvm::Coord local,
+                        skvm::Color paint,
+                        const MatrixRec&,
+                        const SkColorInfo& dst,
+                        skvm::Uniforms* uniforms,
+                        SkArenaAlloc* alloc) const override {
         skvm::Uniform color = uniforms->pushPtr(fValues);
         skvm::F32 r = builder->arrayF(color, 0);
         skvm::F32 g = builder->arrayF(color, 1);
@@ -117,7 +121,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
         SkStageRec rec = {&pipeline, &alloc, fDst.colorType(), fDst.colorSpace(), p, props};
         // We pass an identity matrix here rather than the CTM. The CTM gets folded into the
         // per-triangle matrix.
-        if (!as_SB(transformShader)->appendRootStages(rec, SkMatrixProvider{SkMatrix::I()})) {
+        if (!as_SB(transformShader)->appendRootStages(rec, SkMatrix::I())) {
             return false;
         }
 
