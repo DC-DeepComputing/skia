@@ -22,6 +22,30 @@
       },
       "revId": "3d36e9d73a8c7bfd2b22076004531cc427d76984",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f783494f_fcb15030",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-28T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55c5826a_050875e7",
+      "range": {
+        "startLine": 183,
+        "startChar": 36,
+        "endLine": 183,
+        "endChar": 39
+      },
+      "revId": "3d36e9d73a8c7bfd2b22076004531cc427d76984",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
