@@ -16,6 +16,24 @@
       "message": "There\u0027s enough bookkeeping with saving/restoring/recycling continue slots, might be nice to add an RAII helper? The forStatement code has the extra checks to decide if it needs one, but it seems like we could remove those to get simpler (shared) code? (Now that we\u0027re recycling the slots, it doesn\u0027t seem as important to avoid allocating them in the first place).",
       "revId": "a5d594507694965014d6f597689ec8222e5bd54f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4875e52b_85d96ec0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-29T13:09:05Z",
+      "side": 1,
+      "message": "Good idea, I\u0027ll give that a try in a followup.",
+      "parentUuid": "3339d535_35e0c9e7",
+      "revId": "a5d594507694965014d6f597689ec8222e5bd54f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
