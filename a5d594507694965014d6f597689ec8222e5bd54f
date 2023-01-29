@@ -34,6 +34,24 @@
       "parentUuid": "3339d535_35e0c9e7",
       "revId": "a5d594507694965014d6f597689ec8222e5bd54f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e9043a_977bbb3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-29T13:10:37Z",
+      "side": 1,
+      "message": "Yeah, I just looked at the next CL, and see that you applied the continue optimizations there (and they also let you elide some instructions), so keeping the logic is worthwhile. Might fold all of that into the stack-helper (conditional allocation in constructor, methods that optionally do the mask reset/apply, and cleanup/recycle in the destructor). Either way, easier to do that after this and the next CL land.",
+      "parentUuid": "4875e52b_85d96ec0",
+      "revId": "a5d594507694965014d6f597689ec8222e5bd54f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
