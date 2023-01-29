@@ -21,15 +21,7 @@
 
 SkJpegSegmentScanner::SkJpegSegmentScanner(uint8_t stopMarker) : fStopMarker(stopMarker) {}
 
-size_t SkJpegSegmentScanner::bytesSinceDone() const {
-    SkASSERT(fState == State::kDone);
-    return fOffset - fSegments.back().offset - kMarkerCodeSize;
-}
-
-const std::vector<SkJpegSegment>& SkJpegSegmentScanner::getSegments() const {
-    SkASSERT(fState == State::kDone);
-    return fSegments;
-}
+const std::vector<SkJpegSegment>& SkJpegSegmentScanner::getSegments() const { return fSegments; }
 
 void SkJpegSegmentScanner::onBytes(const void* data, size_t size) {
     const uint8_t* bytes = reinterpret_cast<const uint8_t*>(data);
@@ -311,20 +303,4 @@ sk_sp<SkData> SkJpegSeekableScan::copyParameters(const SkJpegSegment& segment,
     }
 
     return result;
-}
-
-std::unique_ptr<SkStream> SkJpegSeekableScan::getSubsetStream(size_t offset, size_t size) {
-    // Read the image's data. It would be better to fork `stream` and limit its position and size.
-    if (!fStream->seek(fInitialPosition + offset)) {
-        SkCodecPrintf("Failed to seek to subset stream position.\n");
-        return nullptr;
-    }
-
-    sk_sp<SkData> data = SkData::MakeUninitialized(size);
-    if (fStream->read(data->writable_data(), size) != size) {
-        SkCodecPrintf("Failed to read subset stream data.\n");
-        return nullptr;
-    }
-
-    return SkMemoryStream::Make(data);
 }

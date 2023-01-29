@@ -15,6 +15,7 @@
 #include "include/private/SkGainmapInfo.h"
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
+#include "src/codec/SkJpegSourceMgr.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
@@ -85,11 +86,28 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
     auto stream = GetResourceAsStream(path);
     REPORTER_ASSERT(r, stream);
 
+    // Search and parse the MPF header.
     auto segmentScan = SkJpegSeekableScan::Create(stream.get());
     REPORTER_ASSERT(r, segmentScan);
+    std::unique_ptr<SkJpegMultiPictureParameters> mpParams;
+    for (const auto& segment : segmentScan->segments()) {
+        static constexpr uint32_t kMpfMarker = 0xE2;
+        static constexpr uint8_t kMpfSig[] = {'M', 'P', 'F', '\0'};
+        if (segment.marker != kMpfMarker) {
+            continue;
+        }
+        auto parameterData = segmentScan->copyParameters(segment, kMpfSig, sizeof(kMpfSig));
+        if (!parameterData) {
+            continue;
+        }
+        mpParams = SkJpegParseMultiPicture(parameterData);
+    }
+
+    stream->rewind();
+    auto sourceMgr = SkJpegSourceMgr::Make(stream.get());
 
     // Extract the streams for the MultiPicture images.
-    auto mpStreams = SkJpegExtractMultiPictureStreams(segmentScan.get());
+    auto mpStreams = SkJpegExtractMultiPictureStreams(mpParams.get(), sourceMgr.get());
     REPORTER_ASSERT(r, mpStreams);
     size_t numberOfImages = mpStreams->images.size();
 

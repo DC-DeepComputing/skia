@@ -16,7 +16,7 @@
 #include <vector>
 
 class SkData;
-class SkJpegSeekableScan;
+class SkJpegSourceMgr;
 
 /*
  * Parsed Jpeg Multi-Picture Format structure as specified in CIPA DC-x007-2009. An introduction to
@@ -64,6 +64,6 @@ struct SkJpegMultiPictureStreams {
     std::vector<Image> images;
 };
 std::unique_ptr<SkJpegMultiPictureStreams> SkJpegExtractMultiPictureStreams(
-        SkJpegSeekableScan* scan);
+        const SkJpegMultiPictureParameters* mpParams, SkJpegSourceMgr* decoderSource);
 
 #endif

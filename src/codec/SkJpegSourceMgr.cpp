@@ -11,6 +11,40 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegSegmentScan.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// SkStream helpers.
+
+/*
+ * Class that will will rewind an SkStream, and then restore it to its original position when it
+ * goes out of scope. If the SkStream is not seekable, then the stream will not be altered at all,
+ * and will return false from canRestore.
+ */
+
+class ScopedSkStreamRestorer {
+public:
+    ScopedSkStreamRestorer(SkStream* stream)
+            : fStream(stream), fPosition(stream->hasPosition() ? stream->getPosition() : 0) {
+        if (canRestore()) {
+            if (!fStream->rewind()) {
+                SkCodecPrintf("Failed to rewind decoder stream.\n");
+            }
+        }
+    }
+    ~ScopedSkStreamRestorer() {
+        if (canRestore()) {
+            if (!fStream->seek(fPosition)) {
+                SkCodecPrintf("Failed to restore decoder stream.\n");
+            }
+        }
+    }
+    bool canRestore() const { return fStream->hasPosition(); }
+
+private:
+    SkStream* const fStream;
+    const size_t fPosition;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegMemorySourceMgr
@@ -41,9 +75,25 @@ public:
         bytesInBuffer -= bytesToSkip;
         return true;
     }
+    const std::vector<SkJpegSegment>& getAllSegments() override {
+        if (!fScanner) {
+            fScanner =
+                    std::make_unique<SkJpegSegmentScanner>(SkJpegSegmentScanner::kMarkerEndOfImage);
+            fScanner->onBytes(fStream->getMemoryBase(), fStream->getLength());
+        }
+        return fScanner->getSegments();
+    }
+    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) override {
+        if (offset > fStream->getLength() || size > fStream->getLength() - offset) {
+            return nullptr;
+        }
+        return SkMemoryStream::MakeCopy(
+                reinterpret_cast<const uint8_t*>(fStream->getMemoryBase()) + offset, size);
+    }
 
 private:
     SkStream* const fStream;  // unowned.
+    std::unique_ptr<SkJpegSegmentScanner> fScanner;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,10 +142,46 @@ public:
         nextInputByte = fBuffer->bytes();
         return true;
     }
+    const std::vector<SkJpegSegment>& getAllSegments() override {
+        if (!fScanner) {
+            fScanner =
+                    std::make_unique<SkJpegSegmentScanner>(SkJpegSegmentScanner::kMarkerEndOfImage);
+            size_t initialPosition = fStream->getPosition();
+            fStream->rewind();
+            while (!fScanner->isDone() && !fScanner->hadError()) {
+                constexpr size_t kBufferSize = 1024;
+                uint8_t buffer[kBufferSize];
+                size_t bytesRead = fStream->read(buffer, kBufferSize);
+                if (bytesRead == 0) {
+                    SkCodecPrintf("Unexpected EOF.\n");
+                    break;
+                }
+                fScanner->onBytes(buffer, bytesRead);
+            }
+            fStream->seek(initialPosition);
+        }
+        return fScanner->getSegments();
+    }
+    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) override {
+        size_t initialPosition = fStream->getPosition();
+        if (!fStream->seek(offset)) {
+            SkCodecPrintf("Failed to seek to subset stream position.\n");
+            return nullptr;
+        }
+        sk_sp<SkData> data = SkData::MakeUninitialized(size);
+        if (fStream->read(data->writable_data(), size) != size) {
+            SkCodecPrintf("Failed to read subset stream data.\n");
+            fStream->seek(initialPosition);
+            return nullptr;
+        }
+        fStream->seek(initialPosition);
+        return SkMemoryStream::Make(data);
+    }
 
 private:
     SkStream* const fStream;  // unowned.
     sk_sp<SkData> fBuffer;
+    std::unique_ptr<SkJpegSegmentScanner> fScanner;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

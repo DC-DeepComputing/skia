@@ -45,12 +45,8 @@ public:
     // Provide more bytes of data to the state machine.
     void onBytes(const void* data, size_t size);
 
-    // Return the number of bytes that have been received via OnBytes since the marker that caused
-    // the transition to kDone was read. This will assert that the state is kDone.
-    size_t bytesSinceDone() const;
-
-    // Return the segments that have been retrieved so far. This will assert that no errors have
-    // been encountered.
+    // Return the segments that have been retrieved so far. If an error was encountered, this will
+    // include all segments up to the error.
     const std::vector<SkJpegSegment>& getSegments() const;
 
     // Convenient markers to know.
@@ -164,10 +160,6 @@ public:
     sk_sp<SkData> copyParameters(const SkJpegSegment& segment,
                                  const void* signature,
                                  const size_t signatureLength);
-
-    // Return a stream for a subset of the original stream, starting at the specified offset, and
-    // with the specified length.
-    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size);
 
 private:
     SkJpegSeekableScan(SkStream* stream, size_t initialPosition, std::vector<SkJpegSegment>&&);
