@@ -46,9 +46,24 @@ SkShaderBase::MatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) c
     if (!fRPSeeded) {
         rec.fPipeline->append(SkRasterPipelineOp::seed_shader);
     }
-    // append_matrix is a no-op if inverse worked out to identity.
+    // append_matrix is a no-op if total worked out to identity.
     rec.fPipeline->append_matrix(rec.fAlloc, total);
     return MatrixRec{SkMatrix::I(), fTotalMatrix, fTotalMatrixIsValid, /*rpSeeded=*/true};
+}
+
+std::optional<SkShaderBase::MatrixRec>
+SkShaderBase::MatrixRec::apply(skvm::Builder* p,
+                               skvm::Coord* local,
+                               skvm::Uniforms* uniforms,
+                               const SkMatrix& postInv) const {
+    SkMatrix total;
+    if (!fPendingMatrix.invert(&total)) {
+        return {};
+    }
+    total = SkMatrix::Concat(postInv, total);
+    // ApplyMatrix is a no-op if total worked out to identity.
+    *local = SkShaderBase::ApplyMatrix(p, total, *local, uniforms);
+    return MatrixRec{SkMatrix::I(), fTotalMatrix, fTotalMatrixIsValid, fRPSeeded};
 }
 
 SkShaderBase::MatrixRec SkShaderBase::MatrixRec::concat(const SkMatrix& m) const {
@@ -207,11 +222,13 @@ bool SkShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& mRec) co
     return false;
 }
 
-skvm::Color SkShaderBase::program(skvm::Builder* p,
-                                  skvm::Coord device, skvm::Coord local, skvm::Color paint,
-                                  const SkMatrixProvider& matrices, const SkMatrix* localM,
-                                  const SkColorInfo& dst,
-                                  skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
+skvm::Color SkShaderBase::rootProgram(skvm::Builder* p,
+                                      skvm::Coord device,
+                                      skvm::Color paint,
+                                      const SkMatrix& ctm,
+                                      const SkColorInfo& dst,
+                                      skvm::Uniforms* uniforms,
+                                      SkArenaAlloc* alloc) const {
     // Shader subclasses should always act as if the destination were premul or opaque.
     // SkVMBlitter handles all the coordination of unpremul itself, via premul.
     SkColorInfo tweaked = dst.alphaType() == kUnpremul_SkAlphaType
@@ -230,8 +247,14 @@ skvm::Color SkShaderBase::program(skvm::Builder* p,
     // shader program hash and blitter Key.  This makes it safe for us to use
     // that bit to make decisions when constructing an SkVMBlitter, like doing
     // SrcOver -> Src strength reduction.
-    if (auto color = this->onProgram(p, device,local, paint, matrices,localM, tweaked,
-                                     uniforms,alloc)) {
+    if (auto color = this->program(p,
+                                   device,
+                                   /*local=*/device,
+                                   paint,
+                                   MatrixRec(ctm),
+                                   tweaked,
+                                   uniforms,
+                                   alloc)) {
         if (this->isOpaque()) {
             color.a = p->splat(1.0f);
         }
