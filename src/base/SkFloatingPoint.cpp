@@ -11,6 +11,22 @@
 
 #include <cmath>
 
+uint64_t sk_double_to_bits(double x) {
+    // Convert a double to its bit pattern
+    uint64_t bits = 0;
+    static_assert(sizeof(x) == sizeof(bits));
+    std::memcpy(&bits, &x, sizeof(bits));
+    return bits;
+}
+
+double sk_bits_to_double(uint64_t bits) {
+    // Convert a double to its bit pattern
+    double x = 0;
+    static_assert(sizeof(x) == sizeof(bits));
+    std::memcpy(&x, &bits, sizeof(double));
+    return x;
+}
+
 static inline int64_t double_to_twos_complement_bits(double x) {
     // Convert a double to its bit pattern
     int64_t bits = 0;
