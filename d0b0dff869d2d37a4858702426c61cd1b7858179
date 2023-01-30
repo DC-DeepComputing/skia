@@ -16,6 +16,24 @@
       "message": "After this commit, some header files in mobule\u0027s include directory (like modules/skparagraph/include/FontCollection.h) references src/core/SkTHash.h, is that correct?",
       "revId": "d0b0dff869d2d37a4858702426c61cd1b7858179",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "268ced99_d3c7ee57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-30T13:21:06Z",
+      "side": 1,
+      "message": "Yes, Skia modules are allowed to use Skia internals. \n\n```\n~/skia/skia/modules$ git grep \u0027#include \"src\u0027 | wc -l\n153\n```",
+      "parentUuid": "be88a6e1_92e10561",
+      "revId": "d0b0dff869d2d37a4858702426c61cd1b7858179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
