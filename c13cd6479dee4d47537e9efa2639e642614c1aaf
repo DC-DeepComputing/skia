@@ -16,6 +16,24 @@
       "message": "A year late but... didn\u0027t realize this was still directly calling `EMCXX` not just to link but also to build all of these. Since this is separate from the gn build the defines and such can vary between the gn build of Skia the library and this build of the gms, leading to diffs in the headers (usually attributes defined differently). The equivalent to this in `compile.sh` seems to have been updated, but not this one. I will take a look into fixing that.",
       "revId": "c13cd6479dee4d47537e9efa2639e642614c1aaf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bfa260c_d394e952",
+        "filename": "modules/canvaskit/compile_gm.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-30T13:43:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5ea428bd_60fb345f",
+      "revId": "c13cd6479dee4d47537e9efa2639e642614c1aaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
