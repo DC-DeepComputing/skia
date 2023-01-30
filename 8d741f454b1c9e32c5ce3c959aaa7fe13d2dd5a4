@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b79dd760_381317a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-30T12:51:26Z",
+      "side": 1,
+      "message": "This is towards enabling SkStreams that are un-seek-able, so that we can have feature parity.",
+      "revId": "8d741f454b1c9e32c5ce3c959aaa7fe13d2dd5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
