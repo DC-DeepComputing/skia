@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5881d5e7_b352bb49",
+        "filename": "src/base/SkBezierCurves.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-30T16:15:19Z",
+      "side": 1,
+      "message": "Could we just return a `std::tuple\u003cdouble, double, double, double\u003e` or `std::array\u003cdouble, 4\u003e` here? vs. having to pass in 4 pointers? I don\u0027t know if std::array supports expansion but the tuple version could be nice to let callers write `auto [a,b,c,d] \u003d ConvertToPolynomial(...);`",
+      "range": {
+        "startLine": 48,
+        "startChar": 11,
+        "endLine": 48,
+        "endChar": 15
+      },
+      "revId": "4ef71f6aa8495b9943dd06965c237edf4e7c9f14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
