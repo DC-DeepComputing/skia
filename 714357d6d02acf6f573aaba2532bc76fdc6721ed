@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55979f32_cde6a46f",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-30T20:38:52Z",
+      "side": 1,
+      "message": "Do we need all of these, or can we just have two versions: One that doesn\u0027t have imageColorSpace, and one that does, and also has the two proc parameters with default values? Maintaining these lists of overloads feels like a bit of pain now, right?",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 90
+      },
+      "revId": "714357d6d02acf6f573aaba2532bc76fdc6721ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
