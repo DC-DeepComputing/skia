@@ -22,6 +22,30 @@
       },
       "revId": "4c002b8310589c7978034ca98bf6aebf4fb5c295",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67cd834c_d37f690c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-30T18:38:25Z",
+      "side": 1,
+      "message": "Don\u0027t thank me, the math is all stolen from SkVM. I\u0027m just moving it into SkRP. :)",
+      "parentUuid": "cfa17034_4e758eab",
+      "range": {
+        "startLine": 1510,
+        "startChar": 4,
+        "endLine": 1514,
+        "endChar": 35
+      },
+      "revId": "4c002b8310589c7978034ca98bf6aebf4fb5c295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
