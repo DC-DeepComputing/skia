@@ -176,6 +176,24 @@
       "message": "Doesn\u0027t this really want the `_back ` interpretation of the parameter? We don\u0027t want to ensure room for at least `additionalPoints` but rather `count() + additionalPoints`.",
       "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d984366_c8d20e77",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-30T21:57:45Z",
+      "side": 1,
+      "message": "@sky@chromium.org - can you address Brian\u0027s concern here?",
+      "parentUuid": "6fa787af_eccc488d",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
