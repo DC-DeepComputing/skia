@@ -28,6 +28,7 @@
 #include <limits>
 
 class SkArenaAlloc;
+class SkGlyph;
 class SkScalerContext;
 
 // -- SkPackedGlyphID ------------------------------------------------------------------------------
@@ -289,10 +290,15 @@ inline SkGlyphRect rect_union(SkGlyphRect a, SkGlyphRect b) {
 inline SkGlyphRect rect_intersection(SkGlyphRect a, SkGlyphRect b) {
     return skvx::min(a.fRect, b.fRect);
 }
+
+enum class GlyphAction {
+    kUnset,
+    kAccept,
+    kReject,
+    kDrop,
+    kSize,
+};
 }  // namespace skglyph
-
-
-class SkGlyph;
 
 // SkGlyphDigest contains a digest of information for making GPU drawing decisions. It can be
 // referenced instead of the glyph itself in many situations. In the remote glyphs cache the
@@ -312,6 +318,22 @@ public:
     bool canDrawAsMask() const { return fCanDrawAsMask; }
     bool canDrawAsSDFT() const { return fCanDrawAsSDFT; }
     SkMask::Format maskFormat() const { return static_cast<SkMask::Format>(fFormat); }
+    skglyph::GlyphAction pathAction() const {
+        return static_cast<skglyph::GlyphAction>(fPathAction);
+    }
+    void setPathAction(skglyph::GlyphAction action) {
+        using namespace skglyph;
+        SkASSERT(static_cast<GlyphAction>(fPathAction) == GlyphAction::kUnset);
+        fPathAction = static_cast<uint32_t>(action);
+    }
+    skglyph::GlyphAction drawableAction() const {
+        return static_cast<skglyph::GlyphAction>(fDrawableAction);
+    }
+    void setDrawableAction(skglyph::GlyphAction action) {
+        using namespace skglyph;
+        SkASSERT(static_cast<GlyphAction>(fDrawableAction) == GlyphAction::kUnset);
+        fDrawableAction = static_cast<uint32_t>(action);
+    }
     uint16_t maxDimension()  const {
         return std::max(fWidth, fHeight);
     }
@@ -329,12 +351,15 @@ public:
 private:
     static_assert(SkPackedGlyphID::kEndData == 20);
     static_assert(SkMask::kCountMaskFormats <= 8);
+    static_assert(SkTo<int>(skglyph::GlyphAction::kSize) <= 4);
     struct {
-        uint32_t fIndex         : SkPackedGlyphID::kEndData;
-        uint32_t fIsEmpty       : 1;
-        uint32_t fCanDrawAsMask : 1;
-        uint32_t fCanDrawAsSDFT : 1;
-        uint32_t fFormat        : 3;
+        uint32_t fIndex          : SkPackedGlyphID::kEndData;
+        uint32_t fIsEmpty        : 1;
+        uint32_t fCanDrawAsMask  : 1;
+        uint32_t fCanDrawAsSDFT  : 1;
+        uint32_t fFormat         : 3;
+        uint32_t fPathAction     : 2;  // GlyphAction
+        uint32_t fDrawableAction : 2;  // GlyphAction
     };
     int16_t fLeft, fTop;
     uint16_t fWidth, fHeight;
