@@ -16,6 +16,29 @@
       "message": "PrefixExpression also does bitwise-not (`~x`). \nIt looks like your code matches Metal very closely, and `~x` should just work. The WebGPU spec seems to show that it is supported: https://www.w3.org/TR/WGSL/#bit-expr\n\nPlease add a test?",
       "revId": "46f746982c7cbe390f77f30bf41fa470e592a842",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a272d45_b8e0892a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-30T15:44:49Z",
+      "side": 1,
+      "message": "\"We expect\" is ambiguous--is this actually a TODO? If so, let\u0027s put TODO. \nIf this is already handled somewhere, it would be useful to mention where it\u0027s done.",
+      "range": {
+        "startLine": 1033,
+        "startChar": 12,
+        "endLine": 1033,
+        "endChar": 21
+      },
+      "revId": "46f746982c7cbe390f77f30bf41fa470e592a842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
