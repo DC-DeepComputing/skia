@@ -34,6 +34,24 @@
       "parentUuid": "ff0c691c_5588f5a1",
       "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c86a3c2a_17e989a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-30T15:26:48Z",
+      "side": 1,
+      "message": "It\u0027s interesting that you think it is tight. std::vector is not tight, and neither is SkTDArray. SkTArray seems like the odd one out here.",
+      "parentUuid": "4b4c6428_5dddba4e",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
