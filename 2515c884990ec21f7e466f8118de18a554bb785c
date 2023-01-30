@@ -16,6 +16,24 @@
       "message": "nit: Here (and below), might want to make this /*  */ style comments so they\u0027re picked up by the documentation generation that I\u0027m sure someone looks at.",
       "revId": "2515c884990ec21f7e466f8118de18a554bb785c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d032e57d_52d4d4b1",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-30T20:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be86a33d_991bd5b9",
+      "revId": "2515c884990ec21f7e466f8118de18a554bb785c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
