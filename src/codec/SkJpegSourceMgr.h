@@ -8,11 +8,16 @@
 #ifndef SkJpegSourceMgr_codec_DEFINED
 #define SkJpegSourceMgr_codec_DEFINED
 
+#include "include/core/SkRefCnt.h"
+
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 
+class SkData;
+class SkJpegSegmentScanner;
 class SkStream;
+struct SkJpegSegment;
 
 /*
  * Interface to adapt an SkStream to the jpeg_source_mgr interface. This interface has different
@@ -21,7 +26,7 @@ class SkStream;
 class SkJpegSourceMgr {
 public:
     static std::unique_ptr<SkJpegSourceMgr> Make(SkStream* stream);
-    virtual ~SkJpegSourceMgr() {}
+    virtual ~SkJpegSourceMgr();
 
     // Interface called by libjpeg via its jpeg_source_mgr interface.
     virtual void initSource(const uint8_t*& nextInputByte, size_t& bytesInBuffer) = 0;
@@ -29,6 +34,28 @@ public:
     virtual bool skipInputBytes(size_t bytes,
                                 const uint8_t*& nextInputByte,
                                 size_t& bytesInBuffer) = 0;
+
+    // Parse this stream all the way through its EndOfImage marker and return the list of segments.
+    // Return false if there is an error or if no EndOfImage marker is found.
+    virtual const std::vector<SkJpegSegment>& getAllSegments() = 0;
+
+    // Return a stream for the subset of this source's stream with the specified offset and size.
+    virtual std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) = 0;
+
+    // Copy the parameters from a segment. Return nullptr if the initial bytes of the parameters
+    // section do not match the specified signature. Return the parameters starting from end of the
+    // signature (so, kParameterLengthSize + signatureLength bytes into the parameter data). This
+    // function only works for streams that are memory-backed.
+    sk_sp<SkData> copyParameters(const SkJpegSegment& segment,
+                                 const void* signature,
+                                 const size_t signatureLength);
+
+protected:
+    SkJpegSourceMgr(SkStream* stream);
+    SkStream* const fStream;  // unowned
+
+    // The segment scanner is lazily creatd only when needed.
+    std::unique_ptr<SkJpegSegmentScanner> fScanner;
 };
 
 #endif

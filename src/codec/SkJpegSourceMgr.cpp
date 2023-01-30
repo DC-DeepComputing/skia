@@ -11,13 +11,47 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegSegmentScan.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// SkStream helpers.
+
+/*
+ * Class that will will rewind an SkStream, and then restore it to its original position when it
+ * goes out of scope. If the SkStream is not seekable, then the stream will not be altered at all,
+ * and will return false from canRestore.
+ */
+
+class ScopedSkStreamRestorer {
+public:
+    ScopedSkStreamRestorer(SkStream* stream)
+            : fStream(stream), fPosition(stream->hasPosition() ? stream->getPosition() : 0) {
+        if (canRestore()) {
+            if (!fStream->rewind()) {
+                SkCodecPrintf("Failed to rewind decoder stream.\n");
+            }
+        }
+    }
+    ~ScopedSkStreamRestorer() {
+        if (canRestore()) {
+            if (!fStream->seek(fPosition)) {
+                SkCodecPrintf("Failed to restore decoder stream.\n");
+            }
+        }
+    }
+    bool canRestore() const { return fStream->hasPosition(); }
+
+private:
+    SkStream* const fStream;
+    const size_t fPosition;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegMemorySourceMgr
 
 class SkJpegMemorySourceMgr : public SkJpegSourceMgr {
 public:
-    SkJpegMemorySourceMgr(SkStream* stream) : fStream(stream) {}
+    SkJpegMemorySourceMgr(SkStream* stream) : SkJpegSourceMgr(stream) {}
     ~SkJpegMemorySourceMgr() override {}
 
     void initSource(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
@@ -41,9 +75,21 @@ public:
         bytesInBuffer -= bytesToSkip;
         return true;
     }
-
-private:
-    SkStream* const fStream;  // unowned.
+    const std::vector<SkJpegSegment>& getAllSegments() override {
+        if (fScanner) {
+            return fScanner->getSegments();
+        }
+        fScanner = std::make_unique<SkJpegSegmentScanner>(SkJpegSegmentScanner::kMarkerEndOfImage);
+        fScanner->onBytes(fStream->getMemoryBase(), fStream->getLength());
+        return fScanner->getSegments();
+    }
+    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) override {
+        if (offset > fStream->getLength() || size > fStream->getLength() - offset) {
+            return nullptr;
+        }
+        return SkMemoryStream::MakeCopy(
+                reinterpret_cast<const uint8_t*>(fStream->getMemoryBase()) + offset, size);
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +97,7 @@ private:
 
 class SkJpegBufferedSourceMgr : public SkJpegSourceMgr {
 public:
-    SkJpegBufferedSourceMgr(SkStream* stream) : fStream(stream) {}
+    SkJpegBufferedSourceMgr(SkStream* stream) : SkJpegSourceMgr(stream) {}
     ~SkJpegBufferedSourceMgr() override {}
 
     void initSource(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
@@ -92,9 +138,39 @@ public:
         nextInputByte = fBuffer->bytes();
         return true;
     }
+    const std::vector<SkJpegSegment>& getAllSegments() override {
+        if (fScanner) {
+            return fScanner->getSegments();
+        }
+        ScopedSkStreamRestorer streamRestorer(fStream);
+        fScanner = std::make_unique<SkJpegSegmentScanner>(SkJpegSegmentScanner::kMarkerEndOfImage);
+        while (!fScanner->isDone() && !fScanner->hadError()) {
+            constexpr size_t kBufferSize = 1024;
+            uint8_t buffer[kBufferSize];
+            size_t bytesRead = fStream->read(buffer, kBufferSize);
+            if (bytesRead == 0) {
+                SkCodecPrintf("Unexpected EOF.\n");
+                break;
+            }
+            fScanner->onBytes(buffer, bytesRead);
+        }
+        return fScanner->getSegments();
+    }
+    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) override {
+        ScopedSkStreamRestorer streamRestorer(fStream);
+        if (!fStream->seek(offset)) {
+            SkCodecPrintf("Failed to seek to subset stream position.\n");
+            return nullptr;
+        }
+        sk_sp<SkData> data = SkData::MakeUninitialized(size);
+        if (fStream->read(data->writable_data(), size) != size) {
+            SkCodecPrintf("Failed to read subset stream data.\n");
+            return nullptr;
+        }
+        return SkMemoryStream::Make(data);
+    }
 
 private:
-    SkStream* const fStream;  // unowned.
     sk_sp<SkData> fBuffer;
 };
 
@@ -107,4 +183,68 @@ std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream) {
         return std::make_unique<SkJpegMemorySourceMgr>(stream);
     }
     return std::make_unique<SkJpegBufferedSourceMgr>(stream);
+}
+
+SkJpegSourceMgr::SkJpegSourceMgr(SkStream* stream) : fStream(stream) {}
+
+SkJpegSourceMgr::~SkJpegSourceMgr() = default;
+
+sk_sp<SkData> SkJpegSourceMgr::copyParameters(const SkJpegSegment& segment,
+                                              const void* signature,
+                                              const size_t signatureLength) {
+    // This functionality is only available for seekable streams.
+    if (!fStream->hasPosition()) {
+        return nullptr;
+    }
+
+    constexpr size_t kParameterLengthSize = SkJpegSegmentScanner::kParameterLengthSize;
+    constexpr size_t kMarkerCodeSize = SkJpegSegmentScanner::kMarkerCodeSize;
+    // If the segment's parameter length isn't long enough for the signature and the length,
+    // early-out.
+    if (segment.parameterLength < signatureLength + kParameterLengthSize) {
+        return nullptr;
+    }
+    size_t sizeToRead = segment.parameterLength - signatureLength - kParameterLengthSize;
+
+    // Seek to the start of the segment.
+    if (!fStream->seek(segment.offset)) {
+        SkCodecPrintf("Failed to seek to segment\n");
+        return nullptr;
+    }
+
+    // Read the marker and verify it matches `segment`.
+    uint8_t markerCode[kMarkerCodeSize] = {0};
+    if (fStream->read(markerCode, kMarkerCodeSize) != kMarkerCodeSize) {
+        SkCodecPrintf("Failed to read segment marker code\n");
+        return nullptr;
+    }
+    SkASSERT(markerCode[0] == 0xFF);
+    SkASSERT(markerCode[1] == segment.marker);
+
+    // Read the parameter length and verify it matches `segment`.
+    uint8_t parameterLength[kParameterLengthSize] = {0};
+    if (fStream->read(parameterLength, kParameterLengthSize) != kParameterLengthSize) {
+        SkCodecPrintf("Failed to read parameter length\n");
+        return nullptr;
+    }
+    SkASSERT(256 * parameterLength[0] + parameterLength[1] == segment.parameterLength);
+
+    // Check the next bytes against `signature`.
+    auto segmentSignature = SkData::MakeUninitialized(signatureLength);
+    if (fStream->read(segmentSignature->writable_data(), segmentSignature->size()) !=
+        segmentSignature->size()) {
+        SkCodecPrintf("Failed to read parameters\n");
+        return nullptr;
+    }
+    if (memcmp(segmentSignature->data(), signature, signatureLength) != 0) {
+        return nullptr;
+    }
+
+    // Finally, read the remainder of the segment.
+    auto result = SkData::MakeUninitialized(sizeToRead);
+    if (fStream->read(result->writable_data(), sizeToRead) != sizeToRead) {
+        return nullptr;
+    }
+
+    return result;
 }
