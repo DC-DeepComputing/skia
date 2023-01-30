@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db7054bf_ccbb4440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-30T16:13:22Z",
+      "side": 1,
+      "message": "Ok, so should the new callsites use `\u003carray\u003e.reserve(\u003carray\u003e.count() + \u003cadditional\u003e)`?\n\nI still seems odd to have such similarly named methods use different policies. What if we renamed `reserve_back` to something different like `extend_capacity`?",
+      "parentUuid": "37cb3572_d53af8d4",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fa787af_eccc488d",
