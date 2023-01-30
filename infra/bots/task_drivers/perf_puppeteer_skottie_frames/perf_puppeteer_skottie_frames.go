@@ -156,6 +156,7 @@ var cpuSkiplist = []string{
     "loading",
     "Loading_2",
     "animacion1_-_payme",
+    "cubo_livre",
 }
 var gpuSkiplist = []string{}
 
