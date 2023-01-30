@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cb3572_d53af8d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-30T16:04:41Z",
+      "side": 1,
+      "message": "Our current course of actions is to unify the container naming to std::vector type names. Having reserve() with loose bounds follows that plan. The current code expects reserve_back() to be tight, but actually doesn\u0027t use reserve() all that much. So, I think we are free to update its behavior.",
+      "parentUuid": "f1a9d070_5e397ce1",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fa787af_eccc488d",
