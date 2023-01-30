@@ -199,7 +199,7 @@ public:
     public:
         MatrixRec() = default;
 
-        MatrixRec(const SkMatrix&);
+        MatrixRec(const SkMatrix& ctm);
 
         /**
          * Returns a new MatrixRec that represents the existing total and pending matrix
@@ -230,34 +230,43 @@ public:
          * may not be valid. Shaders should avoid making decisions based on this matrix if
          * totalMatrixIsValid() is false.
          */
-        SkMatrix totalMatrix() const { return fTotalMatrix; }
+        SkMatrix totalMatrix() const { return SkMatrix::Concat(fCTM, fTotalLocalMatrix); }
 
         /** Gets the inverse of totalMatrix(), if invertible. */
         bool SK_WARN_UNUSED_RESULT totalInverse(SkMatrix* out) const {
-                return fTotalMatrix.invert(out);
+            return this->totalMatrix().invert(out);
         }
 
         /** Is there a transform that has not yet been applied by a parent shader? */
-        bool hasPendingMatrix() const { return !fPendingMatrix.isIdentity(); }
+        bool hasPendingMatrix() const {
+            return (!fCTMApplied && !fCTM.isIdentity()) || !fPendingLocalMatrix.isIdentity();
+        }
 
     private:
-        MatrixRec(const SkMatrix& pending, const SkMatrix& total, bool totalIsValid, bool rpSeeded)
-                : fPendingMatrix(pending)
-                , fTotalMatrix(total)
+        MatrixRec(const SkMatrix& ctm,
+                  const SkMatrix& totalLocalMatrix,
+                  const SkMatrix& pendingLocalMatrix,
+                  bool totalIsValid,
+                  bool ctmApplied)
+                : fCTM(ctm)
+                , fTotalLocalMatrix(totalLocalMatrix)
+                , fPendingLocalMatrix(pendingLocalMatrix)
                 , fTotalMatrixIsValid(totalIsValid)
-                , fRPSeeded(rpSeeded) {}
+                , fCTMApplied(ctmApplied) {}
+
+        // The starting CTM
+        const SkMatrix fCTM;
+
+        // Total local of all local matrices.
+        const SkMatrix fTotalLocalMatrix;
 
         // The accumulated local matrices from walking down the shader hierarchy that have NOT yet
         // been incorporated into the SkRasterPipeline.
-        const SkMatrix fPendingMatrix;
-        // The total of all local matrices accumulated walking down the shader hierarchy including
-        // those already incorporated into the SkRasterPipelines (including fPendingLocalMatrix).
-        const SkMatrix fTotalMatrix;
+        const SkMatrix fPendingLocalMatrix;
 
         bool fTotalMatrixIsValid = true;
 
-        // When used with raster pipeline, have the initial device coords been seeded.
-        bool fRPSeeded = false;
+        bool fCTMApplied = false;
     };
 
     /**
