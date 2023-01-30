@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9afded12_d459b683",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T17:15:20Z",
+      "side": 1,
+      "message": "For my understanding, do we plan to later edit the map pointed to by `fMapPtr`? My concern would be Dawn returning a const pointer, expecting it to not be muddled with, and then by forcing a change we enable it to be edited which could lead to an unexpected circumstance within Dawn.",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 104,
+        "endChar": 67
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
