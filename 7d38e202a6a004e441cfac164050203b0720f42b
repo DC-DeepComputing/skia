@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e7fd5cd_87e17568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-30T12:53:35Z",
+      "side": 1,
+      "message": "This is a re-land of the previous patch (it broke builds that used skjpeg_destination_mgr directly).\n\nIt\u0027s because of this that my changes to skjpeg_source_mgr are not touching that class (I think it\u0027s safe to remove it, but ... separately).",
+      "revId": "7d38e202a6a004e441cfac164050203b0720f42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
