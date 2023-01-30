@@ -13,6 +13,7 @@
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/sksg/include/SkSGColorFilter.h"
 #include "modules/sksg/include/SkSGPaint.h"
+#include "src/core/SkSwizzlePriv.h"
 #include "src/utils/SkJSON.h"
 
 namespace skottie::internal {
