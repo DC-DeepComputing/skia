@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0c691c_5588f5a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-30T15:09:30Z",
+      "side": 1,
+      "message": "@bsalomon@google.com - what do you think of having reserve() allocate with growth vs reserve_back() to reserve with tight bounds?",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
