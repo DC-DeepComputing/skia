@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be86a33d_991bd5b9",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-30T15:57:25Z",
+      "side": 1,
+      "message": "nit: Here (and below), might want to make this /*  */ style comments so they\u0027re picked up by the documentation generation that I\u0027m sure someone looks at.",
+      "revId": "2515c884990ec21f7e466f8118de18a554bb785c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
