@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a058d906_5e1d9060",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-30T15:41:13Z",
+      "side": 1,
+      "message": "This is the next baby step towards un-seekable stream support.",
+      "revId": "4c206aa3fd3076152b8c1b5b4181bc434e63a35a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
