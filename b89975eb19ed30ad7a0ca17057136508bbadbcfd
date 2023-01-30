@@ -22,6 +22,30 @@
       },
       "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61910aac_e116841f",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-30T17:32:51Z",
+      "side": 1,
+      "message": "Currently Dawn\u0027s `MapRead` usage is only used for `BufferType::kXferGpuToCpu` buffers which are not supposed to be written to by CPU. They are supposed to be written by GPU and read by CPU. So it should be safe, unless graphite upper layer uses those buffers in inappropriate manners.\n\nIf we want a more robust enforcement, I think we would need to complete the refactoring of Buffer\u0027s design to separate `mapRead/mapWrite` calls. https://buganizer.corp.google.com/issues/262249983\n\nBesides, AFAIK a buffer\u0027s mapping\u0027s internal implementations in Dawn (Metal, Vulkan, D3D12) will return non-const raw pointer regardless of whether the buffer is writable or not. (similar to OpenGL).",
+      "parentUuid": "9afded12_d459b683",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 104,
+        "endChar": 67
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
