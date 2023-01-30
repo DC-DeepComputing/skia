@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb54593a_9ea58055",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "I\u0027ve given some initial feedback and posted some questions I have.",
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c23852b_44ce1744",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Overarching questions for my understanding...Thank you for taking the time to explain.\n\nAre these properties only relevant for Dawn? From what I can tell, for Vulkan and Metal, the default cases you set seem to be the case. So do these have utility for any other backends besides Dawn? \n\nIn Ganesh, I see we had `dmsaaResolveCanBeUsedAsTextureInSameRenderPass` - is there a reason we deviated slightly from that approach and instead now use multiple flags?",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 89
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cb038e3_4bd67f31",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "nit: Align with other assignments",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 55
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9590a0b5_6fe4b1f4",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Shouldn\u0027t `getDefaultMSAALoadTextureInfo` take `fTextureCopyRequiresRenderable` into account to determine how to create the default MSAA load texture?",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbef5fbd_34ad8675",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Reformat this to adhere to the line length limit",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 105
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "292a8fc8_7490e6e9",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "It might be beneficial to add a comment prior to this value stating what it is at this call and other Dawn WriteBuffer calls",
+      "range": {
+        "startLine": 267,
+        "startChar": 32,
+        "endLine": 267,
+        "endChar": 34
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b803671_152845b7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Do we have a buganizer item for this? If not, we should make one and add the issue here.",
+      "range": {
+        "startLine": 284,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 39
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0af0893b_36d398e4",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Nit: typo",
+      "range": {
+        "startLine": 787,
+        "startChar": 16,
+        "endLine": 787,
+        "endChar": 28
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5886bcd9_373feb87",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Same feedback about TODOs as above - we should create \u0026 tag a buganizer task to ensure this actually gets addressed.",
+      "range": {
+        "startLine": 794,
+        "startChar": 3,
+        "endLine": 794,
+        "endChar": 55
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce43a976_7d84094c",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Is it typical to include all of this information? Is there costly overhead in doing this? I know for SkSL we noticed performance wins with just deleting some tabs/spaces, so something of this scale makes me raise my eyebrows a bit. I don\u0027t immediately see us doing something similar in Ganesh.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 14
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9376962_0d4fd3cc",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this method only be populated if `directLoadMSAAFromResolveSupport` is false? Does Metal support sampling from and writing to the same texture in one render pass? From what I could briefly dig up, it does.\n\nIf I am mistaken and Metal does not support this and this method should, in fact, be populated, then we should set that flag to false. If it *is* supported, we should delete this implementation like you did for `VulkanCaps`, right?",
+      "range": {
+        "startLine": 634,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32aeec39_6b7b3fe6",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Why not just have backend Caps implementation files return a nullptr if no MSAA load texture is needed, and then just assert that msaaLoadTexture is a nullptr?",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 52
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fb7d8de_21e72b8b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-01-30T23:10:49Z",
+      "side": 1,
+      "message": "Clarification suggestion: We could point out that for Vulkan, caps.directLoadMSAAFromResolveSupport() should always be false since it is supported.",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 87
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
