@@ -16,6 +16,24 @@
       "message": "Hmmm.. I suppose the only real clean-up needed might be that Chromium\u0027s `skia/config/SkUserConfig.h` should probably `#include \"include/private/base/SkAPI.h\" itself?\n\n`SkAPI` is an interesting case because, while we don\u0027t want anyone to directly include that header or use `SkAPI` on their own declarations, basically every public header with a function declaration without definition must use it. In Chromium\u0027s case, everything in `skia/ext` is part of Chromium\u0027s build of Skia, so they are using this inside Skia. If the idea is to just limit it to Skia\u0027s build of Skia then we need to do a lot more work to make Skia an actual library first (as opposed to what it currently is, which is a source code dump that applications can build as a library).",
       "revId": "77145270db32ac1040515278bccd4bc9bfaafc05",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2db699d3_066f1338",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-30T13:44:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e0a07701_27924990",
+      "revId": "77145270db32ac1040515278bccd4bc9bfaafc05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
