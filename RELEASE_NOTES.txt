@@ -2,6 +2,11 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 112
+-------------
+  * SkRuntimeEffect::makeImage and SkRuntimeShaderBuilder::makeImage have been removed.
+
+
 Milestone 111
 -------------
   * SkToBool is no longer part of the public API.
