@@ -52,6 +52,41 @@
       "parentUuid": "4b4c6428_5dddba4e",
       "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a9d070_5e397ce1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-30T15:50:07Z",
+      "side": 1,
+      "message": "Derp, now that you say that, of course std::vector isn\u0027t tight! \n\nShould we only have `_back` methods, one loose and one tight? I.e. `reserve_back()` and `reserve_back_tight()` (or `reserve_back_minimal()`) and no `reserve()`?",
+      "parentUuid": "c86a3c2a_17e989a5",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fa787af_eccc488d",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-01-30T15:50:07Z",
+      "side": 1,
+      "message": "Doesn\u0027t this really want the `_back ` interpretation of the parameter? We don\u0027t want to ensure room for at least `additionalPoints` but rather `count() + additionalPoints`.",
+      "revId": "a3c9835d94330e11e29af62e7c48b14136b7f965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
