@@ -58,10 +58,10 @@ int SkCubics::RootsReal(double A, double B, double C, double D, double solution[
     double R = (2 * a2 * a - 9 * a * b + 27 * c) / 54;
     double R2 = R * R;
     double Q3 = Q * Q * Q;
-    if (!std::isfinite(R2) || !std::isfinite(Q3)) {
+    double R2MinusQ3 = R2 - Q3;
+    if (!std::isfinite(R2MinusQ3)) {
         return 0;
     }
-    double R2MinusQ3 = R2 - Q3;
     double adiv3 = a / 3;
     double r;
     double* roots = solution;
