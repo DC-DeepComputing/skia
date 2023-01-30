@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f45b5682_2992bc59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2023-01-30T15:05:45Z",
+      "side": 1,
+      "message": "Works for me. Done.",
+      "parentUuid": "09b0aa33_6c3c96f6",
+      "revId": "82c587a590f20835880f2cbb3ef50a700a7e65a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "378dbb49_9defa1ae",
@@ -66,6 +84,30 @@
       "writtenOn": "2023-01-27T20:42:46Z",
       "side": 1,
       "message": "I\u0027m not the biggest fan of this name. Happy to change this to whatever you prefer.",
+      "range": {
+        "startLine": 178,
+        "startChar": 9,
+        "endLine": 178,
+        "endChar": 25
+      },
+      "revId": "82c587a590f20835880f2cbb3ef50a700a7e65a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04517d58_26fd5b82",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2023-01-30T15:05:45Z",
+      "side": 1,
+      "message": "No longer applicable.",
+      "parentUuid": "378dbb49_9defa1ae",
       "range": {
         "startLine": 178,
         "startChar": 9,
