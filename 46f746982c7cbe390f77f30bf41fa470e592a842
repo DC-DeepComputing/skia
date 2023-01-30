@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a715db6_48671d9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-30T15:40:46Z",
+      "side": 1,
+      "message": "PrefixExpression also does bitwise-not (`~x`). \nIt looks like your code matches Metal very closely, and `~x` should just work. The WebGPU spec seems to show that it is supported: https://www.w3.org/TR/WGSL/#bit-expr\n\nPlease add a test?",
+      "revId": "46f746982c7cbe390f77f30bf41fa470e592a842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
