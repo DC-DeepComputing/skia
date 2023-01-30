@@ -340,10 +340,11 @@ SkM44 SkM44::LookAt(const SkV3& eye, const SkV3& center, const SkV3& up) {
 
 SkM44 SkM44::Perspective(float near, float far, float angle) {
     SkASSERT(far > near);
+    SkASSERT(angle != 0);
 
     float denomInv = sk_ieee_float_divide(1, far - near);
     float halfAngle = angle * 0.5f;
-    float cot = sk_float_cos(halfAngle) / sk_float_sin(halfAngle);
+    float cot = sk_ieee_float_divide(1, sk_float_tan(halfAngle));
 
     SkM44 m;
     m.setRC(0, 0, cot);
