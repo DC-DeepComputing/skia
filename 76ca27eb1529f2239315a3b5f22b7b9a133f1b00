@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb6e436_d5f1ad1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18329
+      },
+      "writtenOn": "2023-01-31T08:45:01Z",
+      "side": 1,
+      "message": "Please take a look, thanks.\nDawn is now deprecating DawnTogglesDeviceDescriptor and replacing it with DawnTogglesDescriptor. This CL make the test code in Skia follow this change.",
+      "revId": "76ca27eb1529f2239315a3b5f22b7b9a133f1b00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
