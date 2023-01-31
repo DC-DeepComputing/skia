@@ -133,6 +133,30 @@
       },
       "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f304937_2f9b9c7b",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-31T17:45:50Z",
+      "side": 1,
+      "message": "`wgpu::Texture` and `wgpu::TextureView` are currently released inside `BackendTexture::~BackendTexture()`. It\u0027s a bit different from Metal in that Metal\u0027s texture handle is released inside `onDeleteBackendTexture`.\n\nIs there any reason why we need additional `onDeleteBackendTexture` method instead of doing the cleanup inside BackendTexture\u0027s dtor?",
+      "parentUuid": "276c7fae_bb8907e7",
+      "range": {
+        "startLine": 92,
+        "startChar": 27,
+        "endLine": 92,
+        "endChar": 49
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
