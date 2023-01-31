@@ -275,6 +275,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2beabc3e_bd6915d9",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-31T05:13:41Z",
+      "side": 1,
+      "message": "Are you referring to the comments or the constant variables\u0027 declarations below?\n\nI think the comments will just be discarded by the shader compiler, it shouldn\u0027t affect the runtime performance. CC @armansito@chromium.org. I\u0027m just thinking adding these comments would make it easier for the readers to understand where the constant numbers come from. Since the Dawn\u0027s NDC and texture space have opposite directions unlike Metal, Vulkan or OpenGL where most ppl are familiar with. \n\nNevertheless, I could just move these comments to the outer C++ source code if you want.\n\nBesides, this blitting shader is a bit more general than typical fullscreen drawing shader such as the one in graphite Metal backend (Ganesh I\u0027m not very familiar). Unlike metal\u0027s backend\u0027s version which copies entire texture to another texture\u0027s entire rectangle, this shader could do a copy of a sub region within a texture (as I mentioned above, we use it for swapchain\u0027s textures\u0027 copying use cases). And this shader draws one big triangle instead of a quad.",
+      "parentUuid": "ce43a976_7d84094c",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 14
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9376962_0d4fd3cc",
         "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
         "patchSetId": 8
