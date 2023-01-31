@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebdbcf54_41e4f4d4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-31T16:42:29Z",
+      "side": 1,
+      "message": "My intuition is that you need to do the child-effect expansion in `makeStages`, because the branch conversion that happens there (label to relative stage count) depends on having the correct number of intervening stages, and we don\u0027t know that until we\u0027ve emitted the stages for child calls.",
+      "range": {
+        "startLine": 831,
+        "startChar": 0,
+        "endLine": 844,
+        "endChar": 22
+      },
+      "revId": "7b4f56236225c01f4fb858091ff8ef55931404a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
