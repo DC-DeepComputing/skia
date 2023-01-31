@@ -12,10 +12,12 @@
 #include "include/core/SkSpan.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkVx.h"
+#include "src/base/SkVx.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Uniform.h"
+
+#include <array>
 
 class SkM44;
 class SkMatrix;
@@ -85,6 +87,7 @@ public:
     void write(int);
     void write(skvx::float2);
     void write(skvx::float4);
+    void write(const std::array<float, 4>);
 
     void writeArray(SkSpan<const SkColor4f>);
     void writeArray(SkSpan<const SkPMColor4f>);
