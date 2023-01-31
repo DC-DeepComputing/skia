@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecebeec4_5831e3fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "EEEEK! Thanks! Added tests for that bug!",
+      "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe55e37_2f97a8a0",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "FYI I renamed these (they were too confusing before).",
+      "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

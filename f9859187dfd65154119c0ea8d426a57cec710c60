@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65c84883_c8e87b4a",
+        "filename": "gn/skia.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "Sorry, I always do this locally to run the unittests (and then have to remember to delete it!).\n\nHmm, maybe I should put it in my args.gn.",
+      "parentUuid": "0e897f14_5551004a",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe42142b_75d4cc08",
         "filename": "src/codec/SkJpegSourceMgr.cpp",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-31T16:12:24Z",
       "side": 1,
       "message": "What are the semantics of `skipInputBytes`, again? We\u0027re adjusting `bytesToSkip` here (as if we intend to use the remainder to further adjust our position in the stream), but we don\u0027t do that anywhere. It seems like the implementation of this needs to include some kind of loop where we keep reading chunks and feeding them to the scanner, until we\u0027ve effectively seeked past the requested number of bytes? (Analogous to what happens in BufferedSourceMgr).",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f431cea5_1d232f15",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "YES you\u0027re right! YIKES!\n\nThis should read bytesToSkip, not \"default of fBuffer-\u003esize()\". And then we need to loop to account for the fact that bytesToSkip can be \u003e fBuffer-\u003esize().\n\nI found that this path is exercised by `images/icc-v2-gbr.jpg` (it has a huge APP segment that we ignore). It crashed (when using a non-seekable stream) before this.",
+      "parentUuid": "fe42142b_75d4cc08",
       "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -60,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3400ae44_686401bd",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "`readToBufferAndScan` will update `fBufferSize`. Setting `bytesInBuffer \u003d 0` indicates to libjpeg that it needs to call `fillInputBuffer`. Added a comment.",
+      "parentUuid": "fb0f5cba_ac024db2",
+      "range": {
+        "startLine": 227,
+        "startChar": 24,
+        "endLine": 227,
+        "endChar": 25
+      },
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c40463b_a0929b45",
         "filename": "src/codec/SkJpegSourceMgr.cpp",
         "patchSetId": 5
@@ -71,6 +131,24 @@
       "writtenOn": "2023-01-31T16:12:24Z",
       "side": 1,
       "message": "This is only called with the default value, right? And we don\u0027t have any safety check if it\u0027s called with a different value (particularly one larger than `kBufferSize`, which would stomp on the heap).",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601db929_f1fcb68c",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-01-31T22:31:16Z",
+      "side": 1,
+      "message": "Removed the default value and added an SkAssert that we dont\u0027 specify a size greater than fBuffer-\u003esize().",
+      "parentUuid": "5c40463b_a0929b45",
       "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
