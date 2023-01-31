@@ -104,6 +104,24 @@
       "parentUuid": "242e3514_e43c6bbd",
       "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ff89fa6_24552e2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T14:11:57Z",
+      "side": 1,
+      "message": "That CL is not used anywhere at all--there is a followup unsubmitted CL which adds the RP stages using that primitive. The RP implementation of SkSL is disabled entirely right now.\n\nI honestly don\u0027t think we should just blindly disable tests here; there\u0027s got to be a real reason we went from passing to timing-out, but I don\u0027t think it\u0027s that CL. I will revert it to test the theory.",
+      "parentUuid": "16896c8b_0e47182d",
+      "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
