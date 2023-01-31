@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91f90c03_d45ab315",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-31T18:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cad402bc_57868ff3",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 9
+      },
+      "revId": "b6e00c0acd589684a6406febad7eec3da765ca67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dff4b2f_6f24355d",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-01-31T17:51:30Z",
       "side": 1,
       "message": "I believe we usually have asserts somewhere that all the enum values will fit for this pattern.",
+      "revId": "b6e00c0acd589684a6406febad7eec3da765ca67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "337683f6_4c3401ab",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-01-31T18:17:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dff4b2f_6f24355d",
       "revId": "b6e00c0acd589684a6406febad7eec3da765ca67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
