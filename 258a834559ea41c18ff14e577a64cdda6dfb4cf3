@@ -86,6 +86,24 @@
       "message": "It\u0027s why Perf-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-Puppeteer_SkottieFrames is failing on the CI",
       "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16896c8b_0e47182d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-01-31T13:34:20Z",
+      "side": 1,
+      "message": "It gets blamed on https://skia-review.googlesource.com/c/skia/+/635616, which is a bit odd -- does that mean that we were not using RP before, but we are now that atan2 is available?\n\nI\u0027m fine skipping (since nobody would use Skottie/WASM with the CPU backend), assuming the slowdown is expected or explainable.  Testing non-WASM cpu locally there is no noticeable slowdown, and the frame times are quite low (2-4ms).",
+      "parentUuid": "242e3514_e43c6bbd",
+      "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
