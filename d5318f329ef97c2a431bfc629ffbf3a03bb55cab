@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e3591d_52e75526",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-31T21:51:18Z",
+      "side": 1,
+      "message": "I discussed offline with Nicolette about this approach and will try and summarize our thoughts here vs. inline with the code.\n\n1. In general, having to introduce this extra copy and extra resource seems like it\u0027s going to have a large negative performance impact. These issues around loading and resolving to the same texture are likely to impact many adopters of webgpu that would want to do memoryless MSAA attachments. I strongly think we should figure out how to have Dawn support this. In particular, Nicolette\u0027s review of the GPU backends does not suggest that hardware prevents us from doing this. In particular, https://github.com/gpuweb/gpuweb/issues/108 that Nicolette found does not seem like it concluded with an inability to load and resolve on any of the backends that Dawn needs to support.\n   - Is this just not yet implemented in Dawn?\n   - Does webgpu need to be further updated to refine this part of the spec?\n   - Are there ways we can configure a subpass to do this, along the lines we would do for Vulkan?\n   - Some of the CLs referenced in this bug https://bugs.chromium.org/p/dawn/issues/detail?id\u003d56 make it sound like it should be possible in Dawn? We may just need to set up the descriptors differently?\n   \n2. Assuming #1 cannot be resolved quickly (which is unlikely), I am wondering if a slightly lighter weight approach would be to not use memoryless/discardable MSAA attachments in Dawn. Then when the Dawn command buffer processes a graphite renderpass, it loads from the \"resolve\" texture and draws to the msaa texture with a store action. Then when that encoder is finished, it adds a blit render encoder to manually resolve the msaa texture to the \"resolve\" texture. Because they are in split into two encoders, we should avoid the validation error of sampling and resolving to the same texture.\n\n3. Even if #2 is not possible, or too expensive relative to extra texture+copy, I think this leaks too much into the high-level graphite API and I\u0027m not sure it\u0027s necessary. The DawnCaps can expose its own functions for determining a msaaLoadtextureinfo that any Dawn component can access. The command buffer or queue manager can still use the DawnResourceProvider to get a load texture if it needs it (assuming #2 doesn\u0027t work out). The behavior would remain hidden from the outer logic.",
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c23852b_44ce1744",
@@ -149,6 +166,30 @@
       "side": 1,
       "message": "I just think `fTextureCopyRequiresRenderable` will have to be `true` in Dawn backend anw. Hence the code in this `DawnCaps` file including this method will just operate as if that flag is already `true`. i.e. the MSAA load texture has to be `renderable`.",
       "parentUuid": "9590a0b5_6fe4b1f4",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f74757_6f0157f9",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-31T21:51:18Z",
+      "side": 1,
+      "message": "If it helps simplify the implementation, we\u0027ve had some discussions about requiring all backend textures that would be wrapped in an SkSurface be both renderable and texturable. If we only have one capability, we either have to go through these sorts of workarounds for copies or we\u0027re unable to read back from the texture for complex blending scenarios, which impacts correctness.\n\nWe can easily update our own apps to ensure the swapchain resources are configured correctly for this context. Clients that want to create swapchains that are framebuffer-only could do so, but would have to then manually or copy a separate offscreen SkSurface into the framebuffer for each frame. Like you pointed out in another comment, in practice, I don\u0027t think this would actually impact Chrome very much.",
+      "parentUuid": "2335359e_a31937d0",
       "range": {
         "startLine": 124,
         "startChar": 0,
