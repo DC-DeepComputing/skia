@@ -45,6 +45,54 @@
       },
       "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c69417f3_a5a37e2a",
+        "filename": "tests/CubicRootsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-31T22:57:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f52a8c0b_3c246c6b",
+      "range": {
+        "startLine": 222,
+        "startChar": 99,
+        "endLine": 222,
+        "endChar": 100
+      },
+      "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d78d5cf_330f3414",
+        "filename": "tests/CubicRootsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-31T22:57:00Z",
+      "side": 1,
+      "message": "For these numbers, it probably doesn\u0027t matter. For fuzz cases in general, I prefer the hex values to float literals because I know it\u0027s the same double every time and I don\u0027t have to worry about the compiler rounding or interpreting it slightly differently.",
+      "parentUuid": "1084aaf4_5975a416",
+      "range": {
+        "startLine": 222,
+        "startChar": 63,
+        "endLine": 222,
+        "endChar": 81
+      },
+      "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
