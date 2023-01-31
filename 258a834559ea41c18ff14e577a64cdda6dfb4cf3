@@ -69,6 +69,23 @@
       "parentUuid": "90bd2b9b_8ddfc129",
       "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a2e49d_a182426b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-31T12:37:08Z",
+      "side": 1,
+      "message": "It\u0027s why Perf-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-Puppeteer_SkottieFrames is failing on the CI",
+      "revId": "258a834559ea41c18ff14e577a64cdda6dfb4cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
