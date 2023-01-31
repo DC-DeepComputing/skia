@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f437f8e_63f482eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-31T15:58:12Z",
+      "side": 1,
+      "message": "lgtm modulo one question about adding a comment.",
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c53e8bd2_9b2a4151",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-31T15:58:12Z",
+      "side": 1,
+      "message": "nice catch!",
+      "range": {
+        "startLine": 282,
+        "startChar": 24,
+        "endLine": 282,
+        "endChar": 37
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9afded12_d459b683",
@@ -67,6 +107,29 @@
         "startChar": 7,
         "endLine": 104,
         "endChar": 67
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276c7fae_bb8907e7",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-01-31T15:58:12Z",
+      "side": 1,
+      "message": "Does this not need to do anything? Does Dawn automatically clean everything up when the wgpu::Texture stored in `texture` is deleted?\n\nThe super `ResourceProvider` is invalidating `texture` right after calling this, and if that\u0027s all that\u0027s necessary for Dawn, can we add a comment to that effect here?",
+      "range": {
+        "startLine": 92,
+        "startChar": 27,
+        "endLine": 92,
+        "endChar": 49
       },
       "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
