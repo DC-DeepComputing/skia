@@ -515,8 +515,9 @@ void draw_image(GrRecordingContext* rContext,
                                        sdc->colorInfo());
     if (image.isAlphaOnly()) {
         if (const auto* shader = as_SB(paint.getShader())) {
-            auto shaderFP = shader->asFragmentProcessor(
-                    GrFPArgs(rContext, matrixProvider, &sdc->colorInfo(), sdc->surfaceProps()));
+            auto shaderFP = shader->asRootFragmentProcessor(
+                    GrFPArgs(rContext, &sdc->colorInfo(), sdc->surfaceProps()),
+                    matrixProvider.localToDevice());
             if (!shaderFP) {
                 return;
             }
@@ -529,8 +530,13 @@ void draw_image(GrRecordingContext* rContext,
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaintReplaceShader(rContext, sdc->colorInfo(), paint, matrixProvider,
-                                       std::move(fp), sdc->surfaceProps(), &grPaint)) {
+    if (!SkPaintToGrPaintReplaceShader(rContext,
+                                       sdc->colorInfo(),
+                                       paint,
+                                       ctm,
+                                       std::move(fp),
+                                       sdc->surfaceProps(),
+                                       &grPaint)) {
         return;
     }
 
