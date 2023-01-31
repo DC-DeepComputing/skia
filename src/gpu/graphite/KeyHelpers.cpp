@@ -432,7 +432,7 @@ void add_matrix_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
                                          PipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kMatrixColorFilter)
     gatherer->write(data.fMatrix);
-    gatherer->write(data.fTranslate);
+    gatherer->writeArray(SkSpan<const float>(data.fTranslate));
     gatherer->write(static_cast<int>(data.fInHSLA));
 
     gatherer->addFlags(

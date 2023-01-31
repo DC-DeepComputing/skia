@@ -12,7 +12,7 @@
 #include "include/core/SkSpan.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkVx.h"
+#include "src/base/SkVx.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Uniform.h"
