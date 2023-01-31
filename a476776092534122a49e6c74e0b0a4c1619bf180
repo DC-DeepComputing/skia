@@ -93,6 +93,30 @@
       },
       "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d384ef2_6220b8f6",
+        "filename": "tests/CubicRootsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T22:58:00Z",
+      "side": 1,
+      "message": "Oh, this is reproducing the fuzzer issue as it found it? OK.",
+      "parentUuid": "6d78d5cf_330f3414",
+      "range": {
+        "startLine": 222,
+        "startChar": 63,
+        "endLine": 222,
+        "endChar": 81
+      },
+      "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
