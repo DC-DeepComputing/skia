@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1ec74fe_14a70aaa",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-31T04:56:57Z",
+      "side": 1,
+      "message": "The `fTextureCopyRequiresRenderable` flag was added by me to support the case when a texture can only be copied using drawing instead of going through standard `copyTextureToTexture` Dawn command. And for drawings, we need to make sure that the destination texture is `renderable`.\n\nIn Dawn backend, a `Texture` object has 2 associated native objects: a `wgpu::Texture` object and a `wgpu::TextureView` object.\n\nIt\u0027s possible that a `Texture` object only has associated `wgpu::TextureView` exposed. For example, if a texture is created from `wgpu::SwapChain` then only its texture view is available to us, there is no way to obtain the original `wgpu::Texture` directly from that swapchain. In this case, we cannot use standard `copyTextureToTexture` Dawn command for a graphite\u0027s texture copy operation. Because that command requires `wgpu::Texture` as an argument. The only way to do the copy is sampling the source texture and draw onto the destination texture. The drawing can work on texture views.",
+      "parentUuid": "8c23852b_44ce1744",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 89
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cb038e3_4bd67f31",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
