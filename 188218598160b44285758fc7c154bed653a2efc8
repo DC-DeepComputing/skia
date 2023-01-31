@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44218e39_b98ec11c",
+        "filename": "tools/perf-canvaskit-puppeteer/skottie-frames.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T23:07:13Z",
+      "side": 1,
+      "message": "Maybe the better fix (later) is to render fewer frames?",
+      "range": {
+        "startLine": 33,
+        "startChar": 23,
+        "endLine": 33,
+        "endChar": 26
+      },
+      "revId": "188218598160b44285758fc7c154bed653a2efc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
