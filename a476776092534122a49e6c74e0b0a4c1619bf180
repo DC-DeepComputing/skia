@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1084aaf4_5975a416",
+        "filename": "tests/CubicRootsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T19:59:51Z",
+      "side": 1,
+      "message": "Is this preferable to spelling out the value directly somehow? Is there something about the hex form that can\u0027t be spelled as a plain double value?",
+      "range": {
+        "startLine": 222,
+        "startChar": 63,
+        "endLine": 222,
+        "endChar": 81
+      },
+      "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52a8c0b_3c246c6b",
+        "filename": "tests/CubicRootsTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T19:59:51Z",
+      "side": 1,
+      "message": "nit: line \u003e100 char",
+      "range": {
+        "startLine": 222,
+        "startChar": 99,
+        "endLine": 222,
+        "endChar": 100
+      },
+      "revId": "a476776092534122a49e6c74e0b0a4c1619bf180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
