@@ -514,7 +514,7 @@ AtlasTextOp::MaskType op_mask_type(MaskFormat maskFormat) {
 
 SkPMColor4f calculate_colors(skgpu::v1::SurfaceDrawContext* sdc,
                              const SkPaint& paint,
-                             const SkMatrixProvider& matrix,
+                             const SkMatrix& matrix,
                              MaskFormat maskFormat,
                              GrPaint* grPaint) {
     GrRecordingContext* rContext = sdc->recordingContext();
@@ -1448,7 +1448,7 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
 
     GrPaint grPaint;
     const SkPMColor4f drawingColor =
-            calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
+            calculate_colors(sdc, paint, drawMatrix, fMaskFormat, &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::Make(*this,
                                                 drawMatrix,
@@ -1785,8 +1785,11 @@ public:
         const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
         GrPaint grPaint;
-        SkPMColor4f drawingColor = calculate_colors(
-                sdc, paint, viewMatrix, fVertexFiller.grMaskType(), &grPaint);
+        SkPMColor4f drawingColor = calculate_colors(sdc,
+                                                    paint,
+                                                    drawMatrix,
+                                                    fVertexFiller.grMaskType(),
+                                                    &grPaint);
 
         auto geometry = AtlasTextOp::Geometry::Make(*this,
                                                     drawMatrix,
@@ -2042,7 +2045,7 @@ public:
 
         GrPaint grPaint;
         SkPMColor4f drawingColor =
-                calculate_colors(sdc, paint, viewMatrix, MaskFormat::kA8, &grPaint);
+                calculate_colors(sdc, paint, drawMatrix, MaskFormat::kA8, &grPaint);
 
         auto [maskType, DFGPFlags, useGammaCorrectDistanceTable] =
                 calculate_sdf_parameters(*sdc, drawMatrix, fUseLCDText, fAntiAliased);
