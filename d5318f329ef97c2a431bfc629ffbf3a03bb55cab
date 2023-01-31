@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68dc5300_e75449ff",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-31T04:58:39Z",
+      "side": 1,
+      "message": "Nevertheless, I suppose we don\u0027t use native swapchain\u0027s textures that much. In chrome, we don\u0027t use native swapchains at all AFAIK. Swapchains seem to be only used by skia tools (`viewer` etc) atm. And for those tools, I don\u0027t see any instances of copying textures to swapchain nor \"MSAA load from resolve\" feature being used. Hence maybe I could just remove this flag and instead add an `SkASSERT` when only texture view is exposed for a texture.",
+      "parentUuid": "f1ec74fe_14a70aaa",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 89
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cb038e3_4bd67f31",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
