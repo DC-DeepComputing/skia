@@ -22,6 +22,30 @@
       },
       "revId": "7b4f56236225c01f4fb858091ff8ef55931404a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb987af2_ce18cd0c",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T16:45:32Z",
+      "side": 1,
+      "message": "Ack. You\u0027re right, the branch conversion needs to change. But we can\u0027t invoke children in `makeStages` because `makeStages` doesn\u0027t append directly to the RP; it appends to an array of `Stage` entries. \n\nI will need to rewrite the label/branch conversion to occur in `appendStages`, not `makeStages`. \n\nI can bring this back to WIP and make that change.",
+      "parentUuid": "ebdbcf54_41e4f4d4",
+      "range": {
+        "startLine": 831,
+        "startChar": 0,
+        "endLine": 844,
+        "endChar": 22
+      },
+      "revId": "7b4f56236225c01f4fb858091ff8ef55931404a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
