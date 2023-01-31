@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3793ab0b_99b58f5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-01-31T22:14:28Z",
+      "side": 1,
+      "message": "This turns out to be fairly straight forward to enable, but I have noticed that PDF doesn\u0027t actually compress all that well (even with gzip\u0027ed streams) so this makes printing a fully expanded https://fonts.google.com/noto/specimen/Noto+Color+Emoji/glyphs printed to PDF go from 6.6MB to 15.7MB. However, this is more or less perfect for scaling and the existing bitmaps being used for COLRv0 and COLRv1 are actually produced with aliased rendering at a fairly small size (I think size 64).\n\nIn particular with a font like https://fonts.google.com/specimen/Cairo+Play this makes a big difference, as with this font )and without this change) the glyphs without any color draw from outlines and the glyphs with color are drawn with bitmaps, which is rather awkward looking sometimes.\n\nIn any event, may need to add some way to control the size maybe. Or maybe not. Will need to look more.",
+      "revId": "40e5336f96b5f0fea22dd64d5c2fe4c81d5f0de6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
