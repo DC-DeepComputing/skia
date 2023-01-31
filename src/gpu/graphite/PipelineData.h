@@ -15,7 +15,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
-#include "include/private/base/SkVx.h"
+#include "src/base/SkVx.h"
 #include "src/core/SkEnumBitMask.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -117,6 +117,7 @@ public:
     void write(int i) { fUniformManager.write(i); }
     void write(skvx::float2 v) { fUniformManager.write(v); }
     void write(skvx::float4 v) { fUniformManager.write(v); }
+    void write(const std::array<float, 4> v) { fUniformManager.write(v); }
 
     void write(SkSLType t, const void* data) { fUniformManager.write(t, data); }
     void write(const Uniform& u, const uint8_t* data) { fUniformManager.write(u, data); }

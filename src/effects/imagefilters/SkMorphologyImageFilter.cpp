@@ -23,6 +23,7 @@
 #include "include/effects/SkImageFilters.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkSLSampleUsage.h"
+#include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
@@ -63,6 +64,10 @@ struct GrShaderCaps;
 
 #if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE2
     #include <emmintrin.h>
+#endif
+
+#if defined(SK_ARM_HAS_NEON)
+    #include <arm_neon.h>
 #endif
 
 namespace {
