@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "061b0319_8ec3bedc",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-01-31T16:11:24Z",
+      "side": 1,
+      "message": "You can use `sk_bit_cast` for this. I don\u0027t think you need new functions.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 40
+      },
+      "revId": "cb9e076bc271e7b1e1cd0db4bde1b55254c1ab70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
