@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2335359e_a31937d0",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-01-31T05:23:29Z",
+      "side": 1,
+      "message": "I just think `fTextureCopyRequiresRenderable` will have to be `true` in Dawn backend anw. Hence the code in this `DawnCaps` file including this method will just operate as if that flag is already `true`. i.e. the MSAA load texture has to be `renderable`.",
+      "parentUuid": "9590a0b5_6fe4b1f4",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbef5fbd_34ad8675",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 8
