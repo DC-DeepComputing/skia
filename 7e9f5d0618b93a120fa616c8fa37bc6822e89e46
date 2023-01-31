@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbd3b1f_8ee07f3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-31T18:20:13Z",
+      "side": 1,
+      "message": "Michael, can you double-check the stuff Nicolette and I added for KeyHelper? I picked std::array because it seemed like the right tool for the job, but if there\u0027s a better fit (which does not require adding unnecessary dependencies on skvx), we\u0027d like to know.",
+      "revId": "7e9f5d0618b93a120fa616c8fa37bc6822e89e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
