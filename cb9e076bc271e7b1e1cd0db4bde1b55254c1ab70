@@ -22,6 +22,30 @@
       },
       "revId": "cb9e076bc271e7b1e1cd0db4bde1b55254c1ab70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e688fc_fd7ab453",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-01-31T19:52:47Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/636236",
+      "parentUuid": "061b0319_8ec3bedc",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 40
+      },
+      "revId": "cb9e076bc271e7b1e1cd0db4bde1b55254c1ab70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
