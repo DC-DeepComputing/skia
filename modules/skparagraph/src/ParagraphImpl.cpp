@@ -510,8 +510,10 @@ void ParagraphImpl::buildClusterTable() {
         run.setClusterRange(runStart, fClusters.size());
         fMaxIntrinsicWidth += run.advance().fX;
     }
+    ClusterIndex pos = fRuns.empty() ? 0 : fRuns.back().leftToRight() ? fRuns.back().size() : 0;
+    RunIndex runIndex = fRuns.empty() ? EMPTY_RUN : fRuns.back().index();
     fClustersIndexFromCodeUnit[fText.size()] = fClusters.size();
-    fClusters.emplace_back(this, EMPTY_RUN, 0, 0, this->text({fText.size(), fText.size()}), 0, 0);
+    fClusters.emplace_back(this, runIndex, pos, pos, this->text({fText.size(), fText.size()}), 0, 0);
 }
 
 bool ParagraphImpl::shapeTextIntoEndlessLine() {

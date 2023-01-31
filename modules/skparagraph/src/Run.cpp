@@ -100,56 +100,21 @@ void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
     }
 }
 
-// Find a cluster range from text range (within one run)
-// Cluster range is normalized ([start:end) start < end regardless of TextDirection
-// Boolean value in triple indicates whether the cluster range was found or not
-std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange text) const {
-    if (text.width() == 0) {
-        // Special Flutter case for "\n" and "...\n"
-        if (text.end > this->fTextRange.start) {
-            ClusterIndex index = fOwner->clusterIndex(text.end - 1);
-            return std::make_tuple(true, index, index);
-        } else {
-            return std::make_tuple(false, 0, 0);
-        }
-    }
-
-    ClusterRange clusterRange;
-    bool found = true;
-    // Deal with the case when either start or end are not align with glyph cluster edge
-    // In such case we shift the text range to the right
-    // (cutting from the left and adding to the right)
-    if (leftToRight()) {
-        // LTR: [start:end)
-        found = clusterRange.start != fClusterRange.end;
-        clusterRange.start = fOwner->clusterIndex(text.start);
-        clusterRange.end = fOwner->clusterIndex(text.end - 1);
-    } else {
-        // RTL: (start:end]
-        clusterRange.start = fOwner->clusterIndex(text.end);
-        clusterRange.end = fOwner->clusterIndex(text.start + 1);
-        found = clusterRange.end != fClusterRange.start;
-    }
-
-    return std::make_tuple(
-            found,
-            clusterRange.start,
-            clusterRange.end);
-}
-
-std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGlyphClusters(TextRange text) const {
-    TextIndex start = fOwner->findPreviousGlyphClusterBoundary(text.start);
-    TextIndex end = fOwner->findNextGlyphClusterBoundary(text.end);
-    return std::make_tuple(true, start, end);
+TextRange Run::findLimitingGlyphClusters(TextRange text) const {
+    return {
+        fOwner->findPreviousGlyphClusterBoundary(text.start),
+        fOwner->findNextGlyphClusterBoundary(text.end)
+    };
 }
 
 // Adjust the text to grapheme edges so the first grapheme start is in the text and the last grapheme start is in the text
 // It actually means that the first grapheme is entirely in the text and the last grapheme does not have to be
 // 12345 234 2:2 -> 2,5 4:4
-std::tuple<bool, TextIndex, TextIndex> Run::findLimitingGraphemes(TextRange text) const {
-    TextIndex start = fOwner->findPreviousGraphemeBoundary(text.start);
-    TextIndex end = fOwner->findNextGraphemeBoundary(text.end);
-    return std::make_tuple(true, start, end);
+TextRange Run::findLimitingGraphemes(TextRange text) const {
+    return {
+        fOwner->findPreviousGraphemeBoundary(text.start),
+        fOwner->findNextGraphemeBoundary(text.end)
+    };
 }
 
 void Run::iterateThroughClusters(const ClusterVisitor& visitor) {
@@ -270,7 +235,7 @@ void Run::updateMetrics(InternalLineMetrics* endlineMetrics) {
 }
 
 SkScalar Cluster::sizeToChar(TextIndex ch) const {
-    if (ch < fTextRange.start || ch >= fTextRange.end) {
+    if (fTextRange.width() == 0 || ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;
     }
     auto shift = ch - fTextRange.start;
@@ -280,10 +245,10 @@ SkScalar Cluster::sizeToChar(TextIndex ch) const {
 }
 
 SkScalar Cluster::sizeFromChar(TextIndex ch) const {
-    if (ch < fTextRange.start || ch >= fTextRange.end) {
+    if (fTextRange.width() == 0 || ch < fTextRange.start || ch > fTextRange.end) {
         return 0;
     }
-    auto shift = fTextRange.end - ch - 1;
+    auto shift = fTextRange.end - ch;
     auto ratio = shift * 1.0 / fTextRange.width();
 
     return SkDoubleToScalar(fWidth * ratio);

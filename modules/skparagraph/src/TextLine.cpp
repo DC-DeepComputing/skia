@@ -754,22 +754,14 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     while (true) {
         // Update textRange by cluster edges (shift start up to the edge of the cluster)
         // TODO: remove this limitation?
-        TextRange updatedTextRange;
-        bool found;
-        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
-                                        run->findLimitingGlyphClusters(textRange);
-        if (!found) {
-            return result;
-        }
-
+        TextRange updatedTextRange = run->findLimitingGlyphClusters(textRange);
         if ((textAdjustment & TextAdjustment::Grapheme) == 0) {
             textRange = updatedTextRange;
             break;
         }
 
         // Update text range by grapheme edges (shift start up to the edge of the grapheme)
-        std::tie(found, updatedTextRange.start, updatedTextRange.end) =
-                                    run->findLimitingGraphemes(updatedTextRange);
+        updatedTextRange = run->findLimitingGraphemes(updatedTextRange);
         if (updatedTextRange == textRange) {
             break;
         }
@@ -780,16 +772,19 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
 
         // Move the start until it's on the grapheme edge (and glypheme, too)
     }
+
     Cluster* start = &fOwner->cluster(fOwner->clusterIndex(textRange.start));
-    Cluster* end = &fOwner->cluster(fOwner->clusterIndex(textRange.end - (textRange.width() == 0 ? 0 : 1)));
-    if (!run->leftToRight()) {
-        std::swap(start, end);
+    Cluster* end = &fOwner->cluster(fOwner->clusterIndex(textRange.end - (textRange.width() == 0?0:1)));
+
+    if (run->leftToRight()) {
+        result.pos = start->startPos();
+        result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - start->startPos();
+    } else {
+        result.pos = end->startPos();
+        result.size = (start->isHardBreak() ? start->startPos() : start->endPos()) - end->startPos();
     }
 
-    result.pos = start->startPos();
-    result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - start->startPos();
-
-    auto textStartInRun = run->positionX(start->startPos());
+    auto textStartInRun = run->positionX(result.pos);
     auto textStartInLine = runOffsetInLine + textOffsetInRunInLine;
 /*
     if (!run->fJustificationShifts.empty()) {
@@ -811,18 +806,29 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                              run->calculateWidth(result.pos, result.pos + result.size, false),
                              run->calculateHeight(this->fAscentStyle,this->fDescentStyle));
 
-    // Correct the width in case the text edges don't match clusters
-    // TODO: This is where we get smart about selecting a part of a cluster
-    //  by shaping each grapheme separately and then use the result sizes
-    //  to calculate the proportions
-    auto leftCorrection = start->sizeToChar(originalTextRange.start);
-    auto rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
-    result.clip.fLeft += leftCorrection;
-    result.clip.fRight -= rightCorrection;
-    result.clippingNeeded = leftCorrection != 0 || rightCorrection != 0;
+    if (originalTextRange.start > textRange.start ||
+        originalTextRange.end < textRange.end) {
+        // Correct the width in case the text edges don't match glyph clusters
+        auto leftCorrection = start->sizeToChar(originalTextRange.start);
+        auto rightCorrection = end->sizeFromChar(originalTextRange.end);
+        SkDebugf("[%d: %d) => [%d: %d), @%d, %d: [%f:%f) + [%f:%f) = ", // جَآَهُ
+                 originalTextRange.start, originalTextRange.end, textRange.start, textRange.end,
+                 result.pos, result.size,
+                 result.clip.fLeft, result.clip.fRight, leftCorrection, rightCorrection);
 
-    textStartInLine -= leftCorrection;
+        result.clip.fLeft += leftCorrection;
+        result.clip.fRight -= rightCorrection;
+        result.clippingNeeded = leftCorrection != 0 || rightCorrection != 0;
+
+        textStartInLine -= leftCorrection;
+    } else {
+        SkDebugf("[%d: %d), @%d, %d: = ",
+                 textRange.start, textRange.end,
+                 result.pos, result.size);
+    }
+
     result.clip.offset(textStartInLine, 0);
+    SkDebugf("@%f[%f:%f)\n", textStartInLine, result.clip.fLeft, result.clip.fRight);
 
     if (compareRound(result.clip.fRight, fAdvance.fX) > 0 && !includeGhostSpaces) {
         // There are few cases when we need it.
