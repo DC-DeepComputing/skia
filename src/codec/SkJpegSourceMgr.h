@@ -16,6 +16,10 @@
 #include <cstdint>
 #include <memory>
 
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+#include <vector>
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
 class SkStream;
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS

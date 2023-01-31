@@ -27,22 +27,16 @@
 
 class ScopedSkStreamRestorer {
 public:
-    ScopedSkStreamRestorer(SkStream* stream)
-            : fStream(stream), fPosition(stream->hasPosition() ? stream->getPosition() : 0) {
-        if (canRestore()) {
-            if (!fStream->rewind()) {
-                SkCodecPrintf("Failed to rewind decoder stream.\n");
-            }
+    ScopedSkStreamRestorer(SkStream* stream) : fStream(stream), fPosition(stream->getPosition()) {
+        if (!fStream->rewind()) {
+            SkCodecPrintf("Failed to rewind decoder stream.\n");
         }
     }
     ~ScopedSkStreamRestorer() {
-        if (canRestore()) {
-            if (!fStream->seek(fPosition)) {
-                SkCodecPrintf("Failed to restore decoder stream.\n");
-            }
+        if (!fStream->seek(fPosition)) {
+            SkCodecPrintf("Failed to restore decoder stream.\n");
         }
     }
-    bool canRestore() const { return fStream->hasPosition(); }
 
 private:
     SkStream* const fStream;
@@ -182,10 +176,166 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// SkJpegUnseekableSourceMgr
+
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+/*
+ * This class implements SkJpegSourceMgr for a stream that cannot seek or rewind. It scans the data
+ * as it is presented to the decoder. This allows it to track the position of segments, so that it
+ * can extract subsets at a specific offset (e.g, relative to the EndOfImage segment for JpegR or
+ * relative to an MPF segment for MPF).
+ */
+class SkJpegUnseekableSourceMgr : public SkJpegSourceMgr {
+public:
+    SkJpegUnseekableSourceMgr(SkStream* stream) : SkJpegSourceMgr(stream) {
+        constexpr size_t kBufferSize = 1024;
+        fBuffer = SkData::MakeUninitialized(kBufferSize);
+        fScanner = std::make_unique<SkJpegSegmentScanner>(SkJpegSegmentScanner::kMarkerEndOfImage);
+    }
+    ~SkJpegUnseekableSourceMgr() override {}
+
+    void initSource(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
+        nextInputByte = fBuffer->bytes();
+        bytesInBuffer = 0;
+    }
+    bool fillInputBuffer(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
+        if (!readToBufferAndScan(fBuffer->size())) {
+            SkCodecPrintf("Failure filling unseekable input buffer.\n");
+            return false;
+        }
+        nextInputByte = fBuffer->bytes();
+        bytesInBuffer = fLastReadSize;
+        return true;
+    }
+    bool skipInputBytes(size_t bytesToSkip,
+                        const uint8_t*& nextInputByte,
+                        size_t& bytesInBuffer) override {
+        // Skip through the already-read (or already in memory) buffer.
+        if (bytesToSkip <= bytesInBuffer) {
+            nextInputByte += bytesToSkip;
+            bytesInBuffer -= bytesToSkip;
+            return true;
+        }
+        bytesToSkip -= bytesInBuffer;
+
+        // Read the remaining bytes to skip into fBuffer and feed them into fScanner.
+        while (bytesToSkip > 0) {
+            if (!readToBufferAndScan(std::min(bytesToSkip, fBuffer->size()))) {
+                SkCodecPrintf("Failure filling unseekable input buffer.\n");
+                return false;
+            }
+            bytesToSkip -= fLastReadSize;
+        }
+
+        // Indicate to libjpeg that it it needs to call fillInputBuffer.
+        bytesInBuffer = 0;
+        nextInputByte = fBuffer->bytes();
+        return true;
+    }
+    const std::vector<SkJpegSegment>& getAllSegments() override {
+        while (!fScanner->isDone() && !fScanner->hadError()) {
+            if (!readToBufferAndScan(fBuffer->size())) {
+                SkCodecPrintf("Failure finishing unseekable input buffer.\n");
+                break;
+            }
+        }
+        return fScanner->getSegments();
+    }
+    std::unique_ptr<SkStream> getSubsetStream(size_t offset, size_t size) override {
+        // This function should not be called before the scan has completed.
+        SkASSERT(fScanner->isDone() || fScanner->hadError());
+
+        // If we have read past offset, we can never get that data back again.
+        if (offset < fLastReadOffset) {
+            SkCodecPrintf("Requested subset stream for data that is gone.\n");
+            return nullptr;
+        }
+
+        // Allocate the memory to return.
+        sk_sp<SkData> subsetData = SkData::MakeUninitialized(size);
+        uint8_t* subsetDataCurrent = reinterpret_cast<uint8_t*>(subsetData->writable_data());
+
+        // If we haven't yet read to offset, skip forward to there.
+        if (offset - fLastReadOffset > fLastReadSize) {
+            fLastReadOffset += fLastReadSize;
+            fLastReadSize = 0;
+            size_t bytesToSkip = offset - fLastReadOffset;
+            while (bytesToSkip > 0) {
+                size_t bytesSkipped = fStream->skip(bytesToSkip);
+                if (bytesSkipped == 0) {
+                    SkCodecPrintf("Failed to skip bytes before subset.\n");
+                    return nullptr;
+                }
+                bytesToSkip -= bytesSkipped;
+                fLastReadOffset += bytesSkipped;
+            }
+        }
+
+        // We may already have some of the data for this subset read into |fBuffer|. Save that
+        // to |subsetData|. Note that this can only happen if we didn't do the skip above.
+        size_t offsetIntoBuffer = offset - fLastReadOffset;
+        if (offsetIntoBuffer < fLastReadSize) {
+            size_t bytesToReadFromBuffer = fLastReadSize - offsetIntoBuffer;
+            memcpy(subsetDataCurrent, fBuffer->bytes() + offsetIntoBuffer, bytesToReadFromBuffer);
+
+            size -= bytesToReadFromBuffer;
+            subsetDataCurrent += bytesToReadFromBuffer;
+        }
+        fLastReadOffset += fLastReadSize;
+        fLastReadSize = 0;
+
+        // Read the remaining data from |fStream|.
+        while (size > 0) {
+            size_t bytesRead = fStream->read(subsetDataCurrent, size);
+            if (bytesRead == 0) {
+                SkCodecPrintf("Failed to read subset stream data.\n");
+                return nullptr;
+            }
+            size -= bytesRead;
+            subsetDataCurrent += bytesRead;
+            fLastReadOffset += bytesRead;
+        }
+
+        return SkMemoryStream::Make(subsetData);
+    }
+
+private:
+    // Read the specified number of bytes into fBuffer and feed them to fScanner. The number of
+    // bytes must not be larger than fBuffer's size.
+    bool readToBufferAndScan(size_t bytesToRead) {
+        SkASSERT(bytesToRead <= fBuffer->size());
+        fLastReadOffset += fLastReadSize;
+        fLastReadSize = fStream->read(fBuffer->writable_data(), bytesToRead);
+        if (fLastReadSize == 0) {
+            SkCodecPrintf("Hit end of file reading an unseekable stream.\n");
+            return false;
+        }
+        fScanner->onBytes(fBuffer->bytes(), fLastReadSize);
+        return true;
+    }
+
+    sk_sp<SkData> fBuffer;
+
+    // The number of bytes that were most recently read into fBuffer (this can be less than the size
+    // of fBuffer).
+    size_t fLastReadSize = 0;
+
+    // The offset into the stream (total number of bytes read) at the time of our most recent read
+    // into fBuffer.
+    size_t fLastReadOffset = 0;
+};
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkJpegSourceMgr
 
 // static
 std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream) {
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+    if (!stream->hasPosition()) {
+        return std::make_unique<SkJpegUnseekableSourceMgr>(stream);
+    }
+#endif
     if (stream->hasLength() && stream->getMemoryBase()) {
         return std::make_unique<SkJpegMemorySourceMgr>(stream);
     }
