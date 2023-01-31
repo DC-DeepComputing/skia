@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e897f14_5551004a",
+        "filename": "gn/skia.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-31T16:12:24Z",
+      "side": 1,
+      "message": "I think we need to leave this false by default? (This is leading to the canvaskit build failures, where expat isn\u0027t available)?",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe42142b_75d4cc08",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-31T16:12:24Z",
+      "side": 1,
+      "message": "What are the semantics of `skipInputBytes`, again? We\u0027re adjusting `bytesToSkip` here (as if we intend to use the remainder to further adjust our position in the stream), but we don\u0027t do that anywhere. It seems like the implementation of this needs to include some kind of loop where we keep reading chunks and feeding them to the scanner, until we\u0027ve effectively seeked past the requested number of bytes? (Analogous to what happens in BufferedSourceMgr).",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0f5cba_ac024db2",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-31T16:12:24Z",
+      "side": 1,
+      "message": "Irrelevant until the bigger issue in this function is fixed, but shouldn\u0027t this be `fBufferSize`?",
+      "range": {
+        "startLine": 227,
+        "startChar": 24,
+        "endLine": 227,
+        "endChar": 25
+      },
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c40463b_a0929b45",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-01-31T16:12:24Z",
+      "side": 1,
+      "message": "This is only called with the default value, right? And we don\u0027t have any safety check if it\u0027s called with a different value (particularly one larger than `kBufferSize`, which would stomp on the heap).",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
