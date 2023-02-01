@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cfcc010_54d6ecab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:41:43Z",
+      "side": 1,
+      "message": "KeyHelper changes look good to me.",
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57c57fa1_77f50650",
+        "filename": "src/core/SkSwizzlePriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:41:43Z",
+      "side": 1,
+      "message": "Given that the file is in src/core and there\u0027s not an public API for swizzles, the -Priv suffix seems to not match our usual convention. Could we just have it be SkSwizzle.h?",
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc1cae80_f2ead541",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:41:43Z",
+      "side": 1,
+      "message": "nti extra space",
+      "range": {
+        "startLine": 209,
+        "startChar": 28,
+        "endLine": 209,
+        "endChar": 29
+      },
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5f440cb_bfcc2bcb",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:41:43Z",
+      "side": 1,
+      "message": "nit: can consolidate the spacing between the aligned fields",
+      "range": {
+        "startLine": 213,
+        "startChar": 14,
+        "endLine": 213,
+        "endChar": 17
+      },
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f47cc3_34e346d1",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:41:43Z",
+      "side": 1,
+      "message": "I don\u0027t know if you want to take this on, but these could/should probably be SkV2\u0027s and then I suspect we don\u0027t need PipelineData to include SkVx.h at all.",
+      "range": {
+        "startLine": 119,
+        "startChar": 15,
+        "endLine": 119,
+        "endChar": 29
+      },
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
