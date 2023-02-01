@@ -67,6 +67,7 @@
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 //#include "src/sksl/tracing/SkRPDebugTrace.h"
+#include "third_party/externals/imgui/imgui.h"
 #endif
 
 #include <algorithm>
@@ -1182,6 +1183,12 @@ public:
         if (!fRPProgram) {
             return false;
         }
+
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
+
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                             fUniforms,
                                                                             rec.fDstCS);
@@ -1189,6 +1196,7 @@ public:
         RuntimeEffectRPCallbacks callbacks(rec, identity, fChildren);
         bool success = fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                 uniforms_as_span(inputs.get()));
+        rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
         return success;
     }
 #else
@@ -1394,6 +1402,11 @@ public:
             return false;
         }
 
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
+
         std::optional<MatrixRec> newMRec = mRec.apply(rec);
         if (!newMRec.has_value()) {
             return false;
@@ -1405,6 +1418,7 @@ public:
         RuntimeEffectRPCallbacks callbacks(rec, *newMRec, fChildren);
         bool success = fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                 uniforms_as_span(inputs.get()));
+        rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
         return success;
     }
 #else
