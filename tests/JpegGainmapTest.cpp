@@ -228,7 +228,7 @@ static bool approx_eq_rgb(const SkColor4f& x, const SkColor4f& y, float epsilon)
            approx_eq(x.fB, y.fB, epsilon);
 }
 
-DEF_TEST(AndroidCodec_jpegGainmap, r) {
+DEF_TEST(AndroidCodec_jpegGainmapDecode, r) {
     const struct Rec {
         const char* path;
         SkISize dimensions;

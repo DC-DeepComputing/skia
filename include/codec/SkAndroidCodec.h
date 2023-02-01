@@ -92,11 +92,6 @@ public:
     }
 
     /**
-     * Return the XMP metadata from the image.
-     */
-    sk_sp<const SkData> getXmpMetadata() const { return fCodec->fXmpMetadata; }
-
-    /**
      *  Format of the encoded data.
      */
     SkEncodedImageFormat getEncodedFormat() const { return fCodec->getEncodedFormat(); }
