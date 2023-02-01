@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ad5598_3c8d0988",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-01T21:50:38Z",
+      "side": 1,
+      "message": "I believe this may have broken some builds due to not also updating `public.bzl` (yes... three build systems is too many, but we\u0027re sure to be rid of one of them soonish...).",
+      "revId": "ad3f8d9c449ac11ea7aca73ec5827f85b338cf02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
