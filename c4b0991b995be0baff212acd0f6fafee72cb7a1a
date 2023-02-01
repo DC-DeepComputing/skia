@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8b9a40_019bfbdd",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-02-01T20:48:41Z",
+      "side": 1,
+      "message": "Don\u0027t you not need this mark here given that you mark on the non-passthrough samples in `RuntimeEffectRPCallbacks::appendShader`?",
+      "range": {
+        "startLine": 1215,
+        "startChar": 0,
+        "endLine": 1216,
+        "endChar": 44
+      },
+      "revId": "c4b0991b995be0baff212acd0f6fafee72cb7a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
