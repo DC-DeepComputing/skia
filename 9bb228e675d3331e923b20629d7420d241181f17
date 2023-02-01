@@ -39,6 +39,30 @@
       },
       "revId": "9bb228e675d3331e923b20629d7420d241181f17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "014b185f_709bd8e2",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-01T20:36:00Z",
+      "side": 1,
+      "message": "I will experiment w/ some consolidation in a follow up.",
+      "parentUuid": "ced34722_05927d8c",
+      "range": {
+        "startLine": 64,
+        "startChar": 1,
+        "endLine": 64,
+        "endChar": 29
+      },
+      "revId": "9bb228e675d3331e923b20629d7420d241181f17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
