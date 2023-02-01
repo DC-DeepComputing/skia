@@ -6,6 +6,8 @@ Milestone 112
 -------------
   * SkImage::CubicResampler has been removed. Clients should use SkCubicResampler from
     include/core/SkSamplingOptions.h instead (the former was an alias for the latter).
+  * SkRuntimeEffect::makeImage and SkRuntimeShaderBuilder::makeImage can no longer produce
+    unpremultiplied images on GPU. They already couldn't on CPU.
 
 Milestone 111
 -------------
