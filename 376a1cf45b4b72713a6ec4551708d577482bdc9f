@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d04c6c3_a160cbe4",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95fdd165_108522a2",
+      "range": {
+        "startLine": 8,
+        "startChar": 27,
+        "endLine": 8,
+        "endChar": 46
+      },
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a72293d_34e447ad",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-01-30T20:48:39Z",
       "side": 1,
       "message": "Shouldn\u0027t these all be \"Image_YUVA\" ?",
+      "range": {
+        "startLine": 19,
+        "startChar": 15,
+        "endLine": 19,
+        "endChar": 25
+      },
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0392c9e7_0ba8e119",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a72293d_34e447ad",
       "range": {
         "startLine": 19,
         "startChar": 15,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a080a6f9_83adf18d",
+        "filename": "src/gpu/graphite/YUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b7b1d7a_dc558ca8",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 34
+      },
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbc28fd0_235d1e9b",
@@ -117,6 +189,30 @@
       "writtenOn": "2023-01-30T20:57:37Z",
       "side": 1,
       "message": "Doesn\u0027t this not apply to Graphite ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 83,
+        "endLine": 25,
+        "endChar": 83
+      },
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68059972_c4e560c6",
+        "filename": "src/gpu/graphite/YUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbc28fd0_235d1e9b",
       "range": {
         "startLine": 24,
         "startChar": 83,
@@ -144,6 +240,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d97b0dc6_83c320bb",
+        "filename": "src/gpu/graphite/YUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1e58f5bb_b5d800e9",
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "347e1941_7a3f18b0",
@@ -157,6 +271,24 @@
       "writtenOn": "2023-01-30T20:57:37Z",
       "side": 1,
       "message": "I\u0027m a bit surprised we don\u0027t do this w/ a Span",
+      "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff9d0e3d_1b60c8fc",
+        "filename": "src/gpu/graphite/YUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-01T20:14:08Z",
+      "side": 1,
+      "message": "I\u0027m going to leave this for now -- I believe I need to make sure fProxies won\u0027t change in any way after the span returns.",
+      "parentUuid": "347e1941_7a3f18b0",
       "revId": "376a1cf45b4b72713a6ec4551708d577482bdc9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
