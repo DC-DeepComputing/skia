@@ -61,7 +61,7 @@
 #endif
 
 // This flag can be enabled to use the new Raster Pipeline code generator for SkSL.
-//#define SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+#define SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
@@ -195,6 +195,44 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
 }
 
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+class RuntimeEffectRPCallbacks : public SkSL::RP::Callbacks {
+public:
+    RuntimeEffectRPCallbacks(const SkStageRec& s,
+                             const SkShaderBase::MatrixRec& m,
+                             SkSpan<const SkRuntimeEffect::ChildPtr> c)
+            : fStage(s), fMatrix(m), fChildren(c) {}
+
+    bool appendShader(int index) override {
+        if (SkShader* shader = fChildren[index].shader()) {
+            return as_SB(shader)->appendStages(fStage, fMatrix);
+        }
+        // Return the paint color when a null child shader is evaluated.
+        fStage.fPipeline->append_constant_color(fStage.fAlloc, fStage.fPaint.getColor4f());
+        return true;
+    }
+    bool appendColorFilter(int index) override {
+        if (SkColorFilter* colorFilter = fChildren[index].colorFilter()) {
+            return as_CFB(colorFilter)->appendStages(fStage, /*shaderIsOpaque=*/false);
+        }
+        // Return the original color as-is when a null child color filter is evaluated.
+        return true;
+    }
+    bool appendBlender(int index) override {
+        // TODO: SkBlender does not yet support appendStages
+        return false;
+    }
+    void toLinearSrgb() override {
+        // TODO: SkColorSpaceXformSteps?
+    }
+    void fromLinearSrgb() override {
+        // TODO: SkColorSpaceXformSteps?
+    }
+
+    const SkStageRec& fStage;
+    const SkShaderBase::MatrixRec& fMatrix;
+    SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
+};
+
 static SkSpan<const float> uniforms_as_span(const SkData* inputs) {
     SkASSERT(inputs);
     return SkSpan<const float>{static_cast<const float*>(inputs->data()),
@@ -1147,9 +1185,11 @@ public:
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                             fUniforms,
                                                                             rec.fDstCS);
-
-        fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, uniforms_as_span(inputs.get()));
-        return true;
+        SkShaderBase::MatrixRec identity;
+        RuntimeEffectRPCallbacks callbacks(rec, identity, fChildren);
+        bool success = fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
+                                                uniforms_as_span(inputs.get()));
+        return success;
     }
 #else
     bool appendStages(const SkStageRec& rec, bool) const override {
@@ -1362,9 +1402,10 @@ public:
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                             fUniforms,
                                                                             rec.fDstCS);
-
-        fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, uniforms_as_span(inputs.get()));
-        return true;
+        RuntimeEffectRPCallbacks callbacks(rec, *newMRec, fChildren);
+        bool success = fRPProgram->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
+                                                uniforms_as_span(inputs.get()));
+        return success;
     }
 #else
     bool appendStages(const SkStageRec& rec, const MatrixRec&) const override {
