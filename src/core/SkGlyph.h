@@ -326,7 +326,7 @@ public:
     void setPathAction(skglyph::GlyphAction action) {
         using namespace skglyph;
         SkASSERT(static_cast<GlyphAction>(fPathAction) == GlyphAction::kUnset);
-        fPathAction = static_cast<uint32_t>(action);
+        fPathAction = SkTo<uint32_t>(action);
     }
     skglyph::GlyphAction drawableAction() const {
         return static_cast<skglyph::GlyphAction>(fDrawableAction);
@@ -334,8 +334,17 @@ public:
     void setDrawableAction(skglyph::GlyphAction action) {
         using namespace skglyph;
         SkASSERT(static_cast<GlyphAction>(fDrawableAction) == GlyphAction::kUnset);
-        fDrawableAction = static_cast<uint32_t>(action);
+        fDrawableAction = SkTo<uint32_t>(action);
     }
+    skglyph::GlyphAction maskAction() const {
+        return static_cast<skglyph::GlyphAction>(fMaskAction);
+    }
+    void setMaskAction(skglyph::GlyphAction action) {
+        using namespace skglyph;
+        SkASSERT(static_cast<GlyphAction>(fMaskAction) == GlyphAction::kUnset);
+        fMaskAction = SkTo<uint32_t>(action);
+    }
+
     uint16_t maxDimension()  const {
         return std::max(fWidth, fHeight);
     }
@@ -362,6 +371,7 @@ private:
         uint32_t fFormat         : 3;
         uint32_t fPathAction     : 2;  // GlyphAction
         uint32_t fDrawableAction : 2;  // GlyphAction
+        uint32_t fMaskAction     : 2;  // GlyphAction for SDFT and transformed mask.
     };
     int16_t fLeft, fTop;
     uint16_t fWidth, fHeight;
