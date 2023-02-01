@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dee020a_693838ac",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2446,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-01T19:08:27Z",
+      "side": 1,
+      "message": "Is this extra indent intentional ?",
+      "range": {
+        "startLine": 2433,
+        "startChar": 0,
+        "endLine": 2446,
+        "endChar": 9
+      },
+      "revId": "14e67c2450181b837c25be703ef7984c4665bd40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
