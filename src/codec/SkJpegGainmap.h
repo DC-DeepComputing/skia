@@ -12,6 +12,7 @@
 
 class SkData;
 class SkStream;
+class SkJpegXmp;
 struct SkGainmapInfo;
 
 #include <memory>
@@ -27,7 +28,7 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
 /*
  * Implementation of onGetGainmap that detects JpegR based gainmaps.
  */
-bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
+bool SkJpegGetJpegRGainmap(const SkJpegXmp* xmp,
                            SkStream* decoderStream,
                            SkGainmapInfo* outInfo,
                            std::unique_ptr<SkStream>* outGainmapImageStream);
@@ -36,7 +37,7 @@ bool SkJpegGetJpegRGainmap(sk_sp<const SkData> xmpMetadata,
  * Implementation of onGetGainmap that detects HDRGM based gainmaps and converts them to
  * SkGainmapInfo.
  */
-bool SkJpegGetHDRGMGainmapInfo(sk_sp<const SkData> xmpMetadata,
+bool SkJpegGetHDRGMGainmapInfo(const SkJpegXmp* xmp,
                                SkStream* decoderStream,
                                SkGainmapInfo* outGainmapInfo);
 
