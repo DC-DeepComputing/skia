@@ -34,6 +34,24 @@
       "parentUuid": "0a0f9c26_8b25d7ad",
       "revId": "0aa8b80ac4c1fad4a595330446d32c705c0866d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6a5bc2_b579856a",
+        "filename": "src/ports/SkDebug_stdio.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-01T18:16:57Z",
+      "side": 1,
+      "message": "Fair point",
+      "parentUuid": "8804111c_36225e5d",
+      "revId": "0aa8b80ac4c1fad4a595330446d32c705c0866d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
