@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f64b54e_08fba93d",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-01T17:18:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7778f275_b31ab7ce",
+      "revId": "e32cb6999990bded44685ea8f18ea0213348de2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f661caec_75f300cb",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-01-27T16:47:33Z",
       "side": 1,
       "message": "On my local machine at least after applying these changes the \"ParagraphSlideLast\" GM crashed here in viewer (it doesn\u0027t crash without this change).\n\n`ASSERT: 77.499939 !\u003d 64.849945`\n\nNot sure if this expected or not.",
+      "revId": "e32cb6999990bded44685ea8f18ea0213348de2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "344dcb01_867df929",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-01T17:18:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f661caec_75f300cb",
       "revId": "e32cb6999990bded44685ea8f18ea0213348de2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
