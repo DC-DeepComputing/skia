@@ -157,6 +157,30 @@
       },
       "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f4c130_558ba19b",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T14:32:07Z",
+      "side": 1,
+      "message": "I want to say that it\u0027s to allow for OpenGL where the resource provider is able to work with the GL context to call `glDeleteTexture`, but it is more abstraction than seems necessary for the other backend APIs.\n\nI don\u0027t see why MtlTexture couldn\u0027t do its `SkCFSafeRelease(handle)`, but I also don\u0027t know the decision making behind that. I think once all the higher priority work settles down, we could revisit it and see if `onDeleteBackendTexture` is actually necessary.\n\nFor now, I think it\u0027s fine to have Dawn not doing anything inside onDeleteBackendTexture(), but I think a comment would be helpful to remind future readers.",
+      "parentUuid": "5f304937_2f9b9c7b",
+      "range": {
+        "startLine": 92,
+        "startChar": 27,
+        "endLine": 92,
+        "endChar": 49
+      },
+      "revId": "b89975eb19ed30ad7a0ca17057136508bbadbcfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
