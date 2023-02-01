@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a0f9c26_8b25d7ad",
+        "filename": "src/ports/SkDebug_stdio.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-01T18:07:29Z",
+      "side": 1,
+      "message": "I\u0027m wondering if `SkLoadUserConfig.h` should be included before `SkFeatures.h`, since the latter is also checking for `SK_BUILD_FOR_ANDROID`, which `SkLoadUserConfig.h` seems to fix up? Or could that break anything?",
+      "revId": "0aa8b80ac4c1fad4a595330446d32c705c0866d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
