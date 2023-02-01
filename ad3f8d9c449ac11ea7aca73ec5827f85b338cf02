@@ -16,6 +16,24 @@
       "message": "I believe this may have broken some builds due to not also updating `public.bzl` (yes... three build systems is too many, but we\u0027re sure to be rid of one of them soonish...).",
       "revId": "ad3f8d9c449ac11ea7aca73ec5827f85b338cf02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc185cf5_b2662aa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-01T21:52:36Z",
+      "side": 1,
+      "message": "Though it turns out it\u0027s probably slightly more complicated than that, since the codecs aren\u0027t actually in `public.bzl`, I don\u0027t think.",
+      "parentUuid": "29ad5598_3c8d0988",
+      "revId": "ad3f8d9c449ac11ea7aca73ec5827f85b338cf02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
