@@ -126,8 +126,7 @@ private:
     SkJpegCodec(SkEncodedInfo&& info,
                 std::unique_ptr<SkStream> stream,
                 JpegDecoderMgr* decoderMgr,
-                SkEncodedOrigin origin,
-                sk_sp<const SkData> xmpMetadata);
+                SkEncodedOrigin origin);
 
     void initializeSwizzler(const SkImageInfo& dstInfo, const Options& options,
                             bool needsCMYKToRGB);

@@ -762,16 +762,13 @@ protected:
     SkCodec(SkEncodedInfo&&,
             XformFormat srcFormat,
             std::unique_ptr<SkStream>,
-            SkEncodedOrigin = kTopLeft_SkEncodedOrigin,
-            sk_sp<const SkData> xmpMetadata = nullptr);
+            SkEncodedOrigin = kTopLeft_SkEncodedOrigin);
 
     void setSrcXformFormat(XformFormat pixelFormat);
 
     XformFormat getSrcXformFormat() const {
         return fSrcXformFormat;
     }
-
-    sk_sp<const SkData> getXmpMetadata() const { return fXmpMetadata; }
 
     virtual bool onGetGainmapInfo(SkGainmapInfo*, std::unique_ptr<SkStream>*) { return false; }
 
@@ -896,8 +893,7 @@ private:
     XformFormat                        fSrcXformFormat;
     std::unique_ptr<SkStream>          fStream;
     bool fNeedsRewind = false;
-    const SkEncodedOrigin              fOrigin;
-    const sk_sp<const SkData> fXmpMetadata;
+    const SkEncodedOrigin fOrigin;
 
     SkImageInfo                        fDstInfo;
     Options                            fOptions;
