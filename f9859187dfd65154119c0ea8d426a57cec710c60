@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c063a0b_66bbe6a7",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-01T14:07:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f431cea5_1d232f15",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb0f5cba_ac024db2",
@@ -108,6 +126,30 @@
       "side": 1,
       "message": "`readToBufferAndScan` will update `fBufferSize`. Setting `bytesInBuffer \u003d 0` indicates to libjpeg that it needs to call `fillInputBuffer`. Added a comment.",
       "parentUuid": "fb0f5cba_ac024db2",
+      "range": {
+        "startLine": 227,
+        "startChar": 24,
+        "endLine": 227,
+        "endChar": 25
+      },
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6045bdc3_53f13ff7",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-01T14:07:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3400ae44_686401bd",
       "range": {
         "startLine": 227,
         "startChar": 24,

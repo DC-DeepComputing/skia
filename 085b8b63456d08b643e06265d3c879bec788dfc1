@@ -18,6 +18,40 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00555563_430eaa81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-01T14:07:02Z",
+      "side": 1,
+      "message": "First round of fixes look really good - I could follow the logic much better. I think I only found one more loophole. (I\u0027m also trying to reason about the restrictions around the order that things can be called... do those line up with our actual usage?)",
+      "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7e2a0d7_8b2e0533",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-01T14:07:02Z",
+      "side": 1,
+      "message": "I\u0027m guessing we will never encounter this (subset streams we request are always going to be large relative to the buffer size), but I think there\u0027s still a tiny potential problem:\n\nAssume the buffer is still populated before we call this, and we request a subset stream that fits entirely within the buffer\u0027s contents. We will produce that stream correctly, but this adjustment of fLastReadOffset is pessimistic (we\u0027ve skipped over the entire buffer contents unnecessarily). That could lead to a false-negative if we then ask for another subset stream that starts within the remaining chunk of buffer.\n\nWith a buffer size of 1k, I\u0027m guessing this is all impossible, but I assume that if you push things to the limit (make the buffer size 4MB or something), the bug would immediately spring up?",
+      "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbe55e37_2f97a8a0",
@@ -31,6 +65,24 @@
       "writtenOn": "2023-01-31T22:31:16Z",
       "side": 1,
       "message": "FYI I renamed these (they were too confusing before).",
+      "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26d110a2_ded80916",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-01T14:07:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cbe55e37_2f97a8a0",
       "revId": "085b8b63456d08b643e06265d3c879bec788dfc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
